@@ -117,3 +117,4 @@ ios/ZipArchive.framework/Headers/SSZipCommon.h
 ios/ZipArchive.framework/Headers/ZipArchive.h
 ios/ZipArchive.framework/Info.plist
 ios/ZipArchive.framework/Modules/module.modulemap
+*.h

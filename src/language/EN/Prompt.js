@@ -73,6 +73,7 @@ const Prompt = {
   THE_CURRENT_LAYER: 'The current layer is',
   ENTER_KEY_WORDS: 'Please enter key words',
   SEARCHING: 'Searching',
+  SEARCHING_DEVICE_NOT_FOUND: 'No device found',
   READING_DATA: 'Reading Data',
   CREATE_SUCCESSFULLY: 'Created Successfully',
   NO_SCENE_LIST: 'No data',

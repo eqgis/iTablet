@@ -765,8 +765,6 @@ function selectLabelToEdit() {
   let layers = _params.layers.layers
   // 其他图层设置为不可选
   _setMyLayersSelectable(layers, false)
-
-  Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
 }
 
 /**
@@ -823,8 +821,6 @@ function selectLabelToStyle() {
   let layers = _params.layers.layers
   // 其他图层设置为不可选
   _setMyLayersSelectable(layers, false)
-
-  Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
 }
 
 //设置我的图层的可选择性

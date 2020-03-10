@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "React/RCTBridgeModule.h"
 #import <ZipArchive/ZipArchive.h>
-#import "SMap.h"
 #import "FileUtils.h"
 
 NSString *USER_NAME;

@@ -175,6 +175,7 @@ const Profile = {
   SETTING_ABOUT: '',
   SETTING_ABOUT_AFTER: 'について',
   SETTING_CHECK_VERSION: 'バージョン確認',
+  SETTING_SUGGESTION_FEEDBACK: '意見のフィードバック',
   SETTING_LANGUAGE: '言語',
   SETTING_LANGUAGE_AUTO: 'システムと同様',
   SETTING_LOCATION_DEVICE: 'ロケーション デバイス',
@@ -255,6 +256,19 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: 'ナビマップ',
   ITABLET_DATAANALYSIS: 'データ解析',
   ITABLET_PLOTTING: 'アニメシンボル',
+
+  //意见反馈
+  SUGGESTION_FUNCTION_ABNORMAL: '機能異常:機能障害や使用不可',
+  SUGGESTION_PRODUCT_ADVICE: '制品提案:使用するのが嫌で、私は提案があります',
+  SUGGESTION_OTHER_PROBLEMS: 'その他の問題',
+  SUGGESTION_SELECT_PROBLEMS: 'あなたがフィードバックしたい問題点を選んでください',
+  SUGGESTION_PROBLEMS_DETAIL: '詳しい問題や意見を補充してください',
+  SUGGESTION_PROBLEMS_DESCRIPTION: '問題記述を入力してください',
+  SUGGESTION_CONTACT_WAY: '連絡先',
+  SUGGESTION_CONTACT_WAY_INPUT: '連絡先を入力してください',
+  SUGGESTION_SUBMIT: '提出',
+  SUGGESTION_SUBMIT_SUCCEED: '提出成功',
+  SUGGESTION_SUBMIT_FAILED: '提出失敗',
 }
 
 export { Profile }

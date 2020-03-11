@@ -73,6 +73,7 @@ const Prompt = {
   THE_CURRENT_LAYER: 'Geçerli Katman',
   ENTER_KEY_WORDS: 'Lütfen anahtar kelimeleri girin',
   SEARCHING: 'Arıyor',
+  SEARCHING_DEVICE_NOT_FOUND: 'hiçbir cihaz bulunamadı',
   READING_DATA: 'Veri Okuyor',
   CREATE_SUCCESSFULLY: 'Başarıyla oluşturuldu',
   NO_SCENE_LIST: 'Veri Yok',

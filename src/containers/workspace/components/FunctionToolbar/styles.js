@@ -25,6 +25,7 @@ export default StyleSheet.create({
   btn: {
     paddingHorizontal: scaleSize(5),
     paddingBottom: scaleSize(10),
+    width: scaleSize(80),
   },
   progress: {
     width: scaleSize(60),

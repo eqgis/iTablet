@@ -664,6 +664,8 @@ export default class MT_layerManager extends React.Component {
 
   _renderItem = ({ item, section, index, parentData }) => {
     // sectionID = sectionID || 0
+    item.index = index //记录位置用于上下移动
+    item.layerCount = section.data.length//记录数目上下移动
     if (section.visible) {
       if (item) {
         let action

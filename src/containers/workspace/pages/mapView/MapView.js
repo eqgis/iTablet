@@ -45,7 +45,7 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
+  PreviewColorPicker, LayerVisibilityView,
 } from '../../components'
 import { ToolbarModule } from '../../components/ToolBar/modules'
 import {
@@ -2978,6 +2978,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
+        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)}/>
       </Container>
     )
   }

@@ -119,3 +119,9 @@ ios/ZipArchive.framework/Info.plist
 ios/ZipArchive.framework/Modules/module.modulemap
 *.h
 ios/SDKExport/libWeChatSDK.a
+.babelrc
+.buckconfig
+.eslintignore
+.eslintrc.js
+.flowconfig
+.gitattributes

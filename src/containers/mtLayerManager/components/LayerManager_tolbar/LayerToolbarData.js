@@ -771,8 +771,20 @@ async function getVisibleScalePickerData(min, max) {
     key: getLanguage(global.language).Map_Layer.LAYERS_CLEAR,
     value: 0,
   }
+  let customOptionMin = {
+    key: getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE,
+    value:0,
+    type:'min',
+  }
+  let customOptionMax = {
+    key: getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE,
+    value:0,
+    type:'max',
+  }
   minOption.push(clearOption)
   maxOption.push(clearOption)
+  minOption.unshift(customOptionMin)
+  maxOption.unshift(customOptionMax)
   let pickerData = [
     {
       key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,

@@ -4,7 +4,7 @@ import StyleData from './StyleData'
 import * as StyleAction from './StyleAction'
 import { ConstToolType } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { line, point, region, grid, colors, colorsWithNull } from './data'
+import { line, point, region, grid, text, font, colors, colorsWithNull } from './data'
 
 function getData(type, params) {
   let data = []
@@ -28,6 +28,7 @@ function getData(type, params) {
       }
       break
     case ConstToolType.POINTCOLOR_SET:
+    case ConstToolType.TEXTCOLOR_SET:
       data = colors
       break
     case ConstToolType.LINECOLOR_SET:
@@ -35,6 +36,9 @@ function getData(type, params) {
     case ConstToolType.REGIONAFTERCOLOR_SET:
     case ConstToolType.REGIONBORDERCOLOR_SET:
       data = colorsWithNull
+      break
+    case  ConstToolType.TEXTFONT:
+      data = font
       break
   }
   ToolbarModule.setParams(params)
@@ -60,6 +64,9 @@ function getMenuData() {
         break
       case 5:
         data = region(_params.language, _params.device.orientation)
+        break
+      case 7:
+        data = text(_params.language, _params.device.orientation)
         break
       case 83:
         data = grid(_params.language)

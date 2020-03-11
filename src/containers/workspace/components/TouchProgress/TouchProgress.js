@@ -583,6 +583,34 @@ export default class TouchProgress extends Component {
           }
           break
         }
+        case 7:
+          if(
+            this.props.selectName ===
+            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            let fontsize = await SCartography.getTextSizeOfLayer(this.props.currentLayer.name)
+            this._panBtnStyles.style.left =
+              (fontsize * progressWidth) / 20 + panBtnDevLeft
+            this._previousLeft = (fontsize * progressWidth) / 20
+            this._BackLine.style.width =
+              (fontsize * progressWidth) / 20
+            tips =
+              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+              '     ' +
+              parseInt(fontsize)
+          } else if(this.props.selectName === 'TEXT_ROTATION') {
+            let angle = await SCartography.getTextAngleOfLayer(this.props.currentLayer.name)
+            this._panBtnStyles.style.left =
+              (angle * progressWidth) / 360 + panBtnDevLeft
+            this._previousLeft = (angle * progressWidth) / 360
+            this._BackLine.style.width = (angle * progressWidth) / 360
+            tips =
+              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+              '     ' +
+              parseInt(angle) +
+              '°'
+          }
+          break
         case 83: {
           if (
             this.props.selectName ===
@@ -713,20 +741,23 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       if (
         this.props.selectName ===
@@ -914,20 +945,23 @@ export default class TouchProgress extends Component {
         newValue = value * 200
       }
     } else if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1057,6 +1091,21 @@ export default class TouchProgress extends Component {
         case 5:
           newValue = value * 100
           break
+        case 7:
+          if (
+            this.props.selectName ===
+            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            newValue = value * 20
+            if (newValue <= 1) {
+              newValue = 1
+            } else if (newValue > 20) {
+              newValue = 20
+            }
+          } else if (this.props.selectName === 'TEXT_ROTATION'){
+            newValue = value * 360
+          }
+          break
         case 83:
           if (
             this.props.selectName ===
@@ -1092,20 +1141,23 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1568,6 +1620,35 @@ export default class TouchProgress extends Component {
 
           break
         }
+        case 7: {
+          if(
+            this.props.selectName ===
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
+              await SCartography.setTextSizeOfLayer(value, this.props.currentLayer.name)
+              if (value <= 1) {
+                value = 1
+              } else if (value > 20) {
+                value = 20
+              }
+              tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+                '     ' +
+                parseInt(value)
+            } else if(this.props.selectName === 'TEXT_ROTATION') {
+              await SCartography.setTextAngleOfLayer(value, this.props.currentLayer.name)
+              if (value < 0) {
+                value = 0
+              } else if (value > 360) {
+                value = 360
+              }
+              tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+                '     ' +
+                parseInt(value) +
+                '°'
+            }
+            break
+        }
         case 83: {
           if (
             this.props.selectName ===
@@ -1906,6 +1987,33 @@ export default class TouchProgress extends Component {
           }
           break
         }
+        case 7: {
+          if(
+            this.props.selectName ===
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
+              if (value <= 1) {
+                value = 1
+              } else if (value > 20) {
+                value = 20
+              }
+              tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+                '     ' +
+                parseInt(value)
+            } else if(this.props.selectName === 'TEXT_ROTATION') {
+              if (value < 0) {
+                value = 0
+              } else if (value > 360) {
+                value = 360
+              }
+              tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+                '     ' +
+                parseInt(value) +
+                '°'
+            }
+            break
+        }
         case 83: {
           if (
             this.props.selectName ===
@@ -2053,20 +2161,23 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:

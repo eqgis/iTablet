@@ -84,9 +84,11 @@ async function getTabBarData(type, params = {}) {
     type === ConstToolType.GRID_STYLE ||
     type === ConstToolType.LINECOLOR_SET ||
     type === ConstToolType.POINTCOLOR_SET ||
+    type === ConstToolType.TEXTCOLOR_SET ||
     type === ConstToolType.REGIONBEFORECOLOR_SET ||
     type === ConstToolType.REGIONBORDERCOLOR_SET ||
-    type === ConstToolType.REGIONAFTERCOLOR_SET
+    type === ConstToolType.REGIONAFTERCOLOR_SET ||
+    type === ConstToolType.TEXTFONT
   ) {
     tabBarData = styleModule().getData(type, params)
   } else if (
@@ -174,6 +176,8 @@ function getMenuDialogData(type, ...others) {
     case ConstToolType.REGIONBEFORECOLOR_SET:
     case ConstToolType.REGIONAFTERCOLOR_SET:
     case ConstToolType.REGIONBORDERCOLOR_SET:
+    case ConstToolType.TEXTCOLOR_SET:
+    case ConstToolType.TEXTFONT:
       data = styleModule().getMenuData(type)
       break
     case ConstToolType.LEGEND:

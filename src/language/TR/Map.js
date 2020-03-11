@@ -487,6 +487,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: 'Maksimum Görünürlük Ölçeği',
   LAYERS_MINIMUM: 'Maksimum Görünürlük Ölçeği',
   LAYERS_UER_DEFINE: 'Kullanıcı tanımı',
+  LAYER_NONE: 'hayır',
   LAYERS_SET_AS_CURRENT_SCALE: 'Geçerli Ölçek Olarak Ayarla',
   LAYERS_CLEAR: 'Clear',
   LAYERS_LAYER_NAME: 'Katman Adı',

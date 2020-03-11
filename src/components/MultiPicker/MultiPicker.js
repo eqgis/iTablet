@@ -121,6 +121,12 @@ export default class MultiPicker extends React.Component {
     }
   }
 
+  _scrollEnd = ()=>{
+    let index = this._getFirstDataIndex()
+    let item = this.props.popData[index].selectedItem
+    this.props.onRightSelect && this.props.onRightSelect(item)
+  }
+
   renderLinkList = () => {
     return (
       <View style={styles.linkView}>
@@ -177,8 +183,9 @@ export default class MultiPicker extends React.Component {
             if (this.update) return
             let index = this._getFirstDataIndex()
             this.props.popData[index].selectedItem = item
-            this.props.onRightSelect && this.props.onRightSelect(item)
           }}
+          onScrollEnd={this._scrollEnd}
+          onDragEnd={this._scrollEnd}
           onSelect={item => {
             if (this.update) return
             let index = this._getFirstDataIndex()

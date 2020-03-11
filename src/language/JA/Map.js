@@ -501,6 +501,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: '最大表示スケール',
   LAYERS_MINIMUM: '最小表示スケール',
   LAYERS_UER_DEFINE: 'ユーザー定義',
+  LAYER_NONE: 'なし',
   LAYERS_SET_AS_CURRENT_SCALE: '現在スケールに設定',
   LAYERS_CLEAR: 'クリア',
   LAYERS_LAYER_NAME: 'レイヤータイトル',

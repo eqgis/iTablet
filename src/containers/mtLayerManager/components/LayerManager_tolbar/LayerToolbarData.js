@@ -741,7 +741,7 @@ async function getVisibleScalePickerData(min, max) {
   let maxOption = option.clone()
   let maxInitItem =
     max === 0
-      ? { key: '0', value: 0 }
+      ? { key: getLanguage(GLOBAL.language).Map_Layer.LAYER_NONE, value: 0 }
       : { key: '1 : ' + dataUtil.NumberWithThousandSep(max), value: max }
   n = 0
   for (; n < maxOption.length; n++) {
@@ -767,12 +767,18 @@ async function getVisibleScalePickerData(min, max) {
   //     maxOption = maxOption.slice(0, i)
   //   }
   // }
-  let clearOption = {
-    key: getLanguage(global.language).Map_Layer.LAYERS_CLEAR,
-    value: 0,
+  let customOptionMin = {
+    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
+    value:0,
+    type:'min',
   }
-  minOption.push(clearOption)
-  maxOption.push(clearOption)
+  let customOptionMax = {
+    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
+    value:0,
+    type:'max',
+  }
+  minOption.unshift(customOptionMin)
+  maxOption.unshift(customOptionMax)
   let pickerData = [
     {
       key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,

@@ -61,7 +61,6 @@ android/app/release/
 android/app/app.iml
 android/local.properties
 android/app/build/
-android/build.gradle
 android/app/src/main/assets/Trial_License.slm
 android/.DS_Store
 src/.DS_Store
@@ -119,3 +118,12 @@ ios/ZipArchive.framework/Info.plist
 ios/ZipArchive.framework/Modules/module.modulemap
 *.h
 ios/SDKExport/libWeChatSDK.a
+ios/SDKExport/WXApiObject.h
+ios/SDKExport/WXApi.h
+.babelrc
+.buckconfig
+.eslintignore
+.eslintrc.js
+.flowconfig
+.gitattributes
+android/local.properties

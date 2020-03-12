@@ -765,8 +765,6 @@ function selectLabelToEdit() {
   let layers = _params.layers.layers
   // 其他图层设置为不可选
   _setMyLayersSelectable(layers, false)
-
-  Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
 }
 
 /**
@@ -823,8 +821,6 @@ function selectLabelToStyle() {
   let layers = _params.layers.layers
   // 其他图层设置为不可选
   _setMyLayersSelectable(layers, false)
-
-  Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
 }
 
 //设置我的图层的可选择性
@@ -912,19 +908,20 @@ function geometrySelected(event) {
 }
 
 function colorAction(params) {
+  let event = ToolbarModule.getData().event
   switch (params.type) {
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET:
-      SMap.setTaggingMarkerColor(params.key)
+      SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
       break
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET:
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET:
-      SMap.setTaggingLineColor(params.key)
+      SMap.setTaggingLineColor(params.key, event.layerInfo.path, event.id)
       break
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET:
-      SMap.setTaggingFillForeColor(params.key)
+      SMap.setTaggingFillForeColor(params.key, event.layerInfo.path, event.id)
       break
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET:
-      SMap.setTaggingTextColor(params.key)
+      SMap.setTaggingTextColor(params.key, event.layerInfo.path, event.id)
       break
     default:
       break
@@ -932,24 +929,25 @@ function colorAction(params) {
 }
 
 function setTaggingTextFont(param) {
+  let event = ToolbarModule.getData().event
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
-      SMap.setTaggingTextFont('BOLD')
+      SMap.setTaggingTextFont('BOLD', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
-      SMap.setTaggingTextFont('ITALIC')
+      SMap.setTaggingTextFont('ITALIC', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
-      SMap.setTaggingTextFont('UNDERLINE')
+      SMap.setTaggingTextFont('UNDERLINE', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
-      SMap.setTaggingTextFont('STRIKEOUT')
+      SMap.setTaggingTextFont('STRIKEOUT', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
-      SMap.setTaggingTextFont('SHADOW')
+      SMap.setTaggingTextFont('SHADOW', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
-      SMap.setTaggingTextFont('OUTLINE')
+      SMap.setTaggingTextFont('OUTLINE', event.layerInfo.path, event.id)
       break
   }
 }

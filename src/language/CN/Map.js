@@ -511,6 +511,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: '最大可见比例尺',
   LAYERS_MINIMUM: '最小可见比例尺',
   LAYERS_UER_DEFINE: '自定义',
+  LAYER_NONE:'无',
   LAYERS_SET_AS_CURRENT_SCALE: '设置为当前比例尺',
   LAYERS_CLEAR: '清除',
   LAYERS_LAYER_NAME: '图层标题',

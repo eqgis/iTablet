@@ -10,6 +10,7 @@ import {
 } from 'imobile_for_reactnative'
 import constants from '../../constants'
 import { ConstToolType } from '../../../../constants'
+import { ToolbarModule } from '../ToolBar/modules'
 
 export default class SymbolList extends React.Component {
   props: {
@@ -55,14 +56,15 @@ export default class SymbolList extends React.Component {
     if (this.props.layerData.type === 5) {
       SCartography.setFillSymbolID(data.id, this.props.layerData.name)
     }
+    let event = ToolbarModule.getData().event
     if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) {
-      SMap.setTaggingSymbolID(data.id)
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     }
     if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE) {
-      SMap.setTaggingSymbolID(data.id)
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     }
     if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION) {
-      SMap.setTaggingSymbolID(data.id)
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     }
   }
 

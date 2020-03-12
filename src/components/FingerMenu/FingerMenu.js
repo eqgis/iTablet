@@ -17,6 +17,8 @@ export default class FingerMenu extends React.Component {
     autoSelect?: boolean, // 松手自动选择
     onSelect?: () => {}, // 选中item的回调
     onScroll?: () => {}, // 滚动选中item的回调
+    onScrollEnd?: () => {}, //滚动结束的回调
+    onDragEnd?: () => {}, //手指拖动结束的回调
     rowHeight?: number,
     style?: Object,
   }
@@ -264,12 +266,12 @@ export default class FingerMenu extends React.Component {
           //     this.timer = null
           //   }
           // }}
-          // onScrollEndDrag={event => {
-          //   if (!this.timer) {
-          //     this.contentOffset = event.nativeEvent.contentOffset
-          //     this.timer = setTimeout(() => this._scrollToIndex(), 500)
-          //   }
-          // }}
+          onScrollEndDrag={()=>{
+            this.props.onDragEnd && this.props.onDragEnd()
+          }}
+          onMomentumScrollEnd={() => {
+            this.props.onScrollEnd && this.props.onScrollEnd()
+          }}
           onScroll={event => {
             this.contentOffset = event.nativeEvent.contentOffset
             let zombieNums = Math.floor(this.props.viewableItems / 2)

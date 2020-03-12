@@ -64,6 +64,12 @@ async function tableAction(params) {
     case ConstToolType.REGIONBORDERCOLOR_SET:
       SCartography.setFillBorderColor(params.key, params.layerName)
       break
+    case ConstToolType.TEXTCOLOR_SET:
+      SCartography.setTextColorOfLayer(params.key, params.layerName)
+      break
+  }
+  if(!params.type && params.action) {
+    params.action(params)
   }
 }
 
@@ -99,6 +105,30 @@ function layerListAction(data) {
   }
 }
 
+function setTextFont(param) {
+  let layerName = ToolbarModule.getParams().currentLayer.name
+  switch (param.title) {
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
+      SCartography.setTextFontOfLayer('BOLD', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
+      SCartography.setTextFontOfLayer('ITALIC', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
+      SCartography.setTextFontOfLayer('UNDERLINE', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
+      SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
+      SCartography.setTextFontOfLayer('SHADOW', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
+      SCartography.setTextFontOfLayer('OUTLINE', layerName)
+      break
+  }
+}
+
 function menu(type, selectKey, params = {}) {
   const _params = ToolbarModule.getParams()
   let isFullScreen, showMenuDialog, isTouchProgress
@@ -115,6 +145,8 @@ function menu(type, selectKey, params = {}) {
         type === ConstToolType.REGIONBEFORECOLOR_SET ||
         type === ConstToolType.REGIONAFTERCOLOR_SET ||
         type === ConstToolType.REGIONBORDERCOLOR_SET ||
+        type === ConstToolType.TEXTCOLOR_SET ||
+        type === ConstToolType.TEXTFONT ||
         type === ConstToolType.LEGEND ||
         type === ConstToolType.LEGEND_NOT_VISIBLE) &&
         isBoxShow)
@@ -136,6 +168,8 @@ function menu(type, selectKey, params = {}) {
       type === ConstToolType.REGIONBEFORECOLOR_SET ||
       type === ConstToolType.REGIONAFTERCOLOR_SET ||
       type === ConstToolType.REGIONBORDERCOLOR_SET ||
+      type === ConstToolType.TEXTCOLOR_SET ||
+      type === ConstToolType.TEXTFONT ||
       type === ConstToolType.LEGEND ||
       type === ConstToolType.LEGEND_NOT_VISIBLE
     ) {
@@ -202,4 +236,5 @@ export default {
   tableAction,
   layerListAction,
   menu,
+  setTextFont,
 }

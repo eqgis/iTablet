@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
 import { SLocation } from 'imobile_for_reactnative'
 import Container from '../../components/Container'
 import { scaleSize } from '../../utils'
@@ -22,12 +22,15 @@ class LocationSetting extends React.Component {
     this.state = {
       devices: ['local'],
       currentOption: this.prevOption,
+      showSearch: true,
+      searchNotify: getLanguage(global.language).Prompt.SEARCHING,
     }
   }
 
   componentDidMount() {
     this.addListener()
     SLocation.searchDevice(true)
+    this.startShowSearching()
   }
 
   componentWillUnmount() {
@@ -50,6 +53,19 @@ class LocationSetting extends React.Component {
     this.props.setDevice(currentOption)
     SLocation.changeDevice(currentOption)
     NavigationService.goBack()
+  }
+
+  startShowSearching = async () => {
+    await new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true)
+      }, 10000)
+    })
+    if(this.state.devices.length === 1) {
+      this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
+    } else if(this.state.devices.length > 1) {
+      this.setState({ showSearch: false})
+    }
   }
 
   renderItem = key => {
@@ -119,6 +135,18 @@ class LocationSetting extends React.Component {
     )
   }
 
+  renderSearch() {
+    return (
+      <View style={styles.searchItem}>
+        {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
+        <Text style={styles.searchText}>
+          {this.state.searchNotify}
+        </Text>
+
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -131,6 +159,7 @@ class LocationSetting extends React.Component {
         }}
       >
         {this.renderList()}
+        {this.state.showSearch && this.renderSearch()}
       </Container>
     )
   }
@@ -143,6 +172,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: scaleSize(20),
     marginVertical: scaleSize(10),
+  },
+  searchItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: scaleSize(20),
+    marginVertical: scaleSize(10),
+  },
+  searchText: {
+    fontSize: scaleSize(26),
+    marginHorizontal: scaleSize(20),
   },
   text: {
     fontSize: scaleSize(26),

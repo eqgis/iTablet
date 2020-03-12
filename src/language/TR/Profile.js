@@ -173,6 +173,7 @@ const Profile = {
   SETTING_ABOUT: '',
   SETTING_ABOUT_AFTER: ' Hakkında',
   SETTING_CHECK_VERSION: 'Sürüm Kontrolü',
+  SETTING_SUGGESTION_FEEDBACK: 'geribesleme',
   SETTING_LANGUAGE: 'Dil',
   SETTING_LANGUAGE_AUTO: 'Otomatik',
   SETTING_LOCATION_DEVICE: 'Konumlandır',
@@ -252,5 +253,18 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: 'Navigasyon',
   ITABLET_DATAANALYSIS: 'Veri Analizi',
   ITABLET_PLOTTING: 'Çizim',
+
+  //意见反馈
+  SUGGESTION_FUNCTION_ABNORMAL: 'Anormal fonksiyon: arıza veya mevcut değil',
+  SUGGESTION_PRODUCT_ADVICE: 'Ürün önerisi: rahatsız edici kullanım, önerilerim var',
+  SUGGESTION_OTHER_PROBLEMS: 'Diğer konular',
+  SUGGESTION_SELECT_PROBLEMS: 'Lütfen geri bildirimde bulunmak istediğiniz soruyu seçin',
+  SUGGESTION_PROBLEMS_DETAIL: 'Lütfen ayrıntılı sorular ve yorumlar ekleyin',
+  SUGGESTION_PROBLEMS_DESCRIPTION: 'Lütfen sorunun bir açıklamasını girin',
+  SUGGESTION_CONTACT_WAY: 'İletişim bilgileri',
+  SUGGESTION_CONTACT_WAY_INPUT: 'Lütfen iletişim bilgilerini girin',
+  SUGGESTION_SUBMIT: 'sunmak',
+  SUGGESTION_SUBMIT_SUCCEED: 'Başarıyla gönder',
+  SUGGESTION_SUBMIT_FAILED: 'İşlem başarısız oldu',
 }
 export { Profile }

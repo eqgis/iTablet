@@ -77,6 +77,7 @@ const Prompt = {
   THE_CURRENT_LAYER: '現在レイヤー',
   ENTER_KEY_WORDS: '検索キーワード入力してください',
   SEARCHING: '検索中',
+  SEARCHING_DEVICE_NOT_FOUND: '外部デバイスは検出されませんでした',
   READING_DATA: 'データ読取中',
   CREATE_SUCCESSFULLY: '作成に成功',
   SAVE_SUCCESSFULLY: '保存に成功',

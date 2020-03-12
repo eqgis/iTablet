@@ -494,6 +494,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: 'Maximum Visible Scale',
   LAYERS_MINIMUM: 'Minimum Visible Scale',
   LAYERS_UER_DEFINE: 'User Define',
+  LAYER_NONE: 'None',
   LAYERS_SET_AS_CURRENT_SCALE: 'Set as Current Scale',
   LAYERS_CLEAR: 'Clear',
   LAYERS_LAYER_NAME: 'Layer Name',

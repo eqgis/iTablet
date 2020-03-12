@@ -49,6 +49,8 @@ export default class MultiPicker extends React.Component {
     confirm: () => {},
     cancel: () => {},
     popData: Array,
+    onLeftSelect?: () => {}, //左侧滚动选中事件
+    onRightSelect?: () => {}, //右侧滚动选中事件
     currentPopData: Object,
     viewableItems?: number,
   }
@@ -119,6 +121,12 @@ export default class MultiPicker extends React.Component {
     }
   }
 
+  _scrollEnd = ()=>{
+    let index = this._getFirstDataIndex()
+    let item = this.props.popData[index].selectedItem
+    this.props.onRightSelect && this.props.onRightSelect(item)
+  }
+
   renderLinkList = () => {
     return (
       <View style={styles.linkView}>
@@ -145,6 +153,7 @@ export default class MultiPicker extends React.Component {
                     this.secondMenu._scrollToIndex(this._getSecondDataIndex())
                 },
               )
+            this.props.onLeftSelect && this.props.onLeftSelect(item)
           }}
           onSelect={item => {
             this.currentFirstData = item
@@ -161,6 +170,7 @@ export default class MultiPicker extends React.Component {
                     this.secondMenu._scrollToIndex(this._getSecondDataIndex())
                 },
               )
+            this.props.onLeftSelect && this.props.onLeftSelect(item)
           }}
           viewableItems={this.props.viewableItems}
         />
@@ -174,10 +184,13 @@ export default class MultiPicker extends React.Component {
             let index = this._getFirstDataIndex()
             this.props.popData[index].selectedItem = item
           }}
+          onScrollEnd={this._scrollEnd}
+          onDragEnd={this._scrollEnd}
           onSelect={item => {
             if (this.update) return
             let index = this._getFirstDataIndex()
             this.props.popData[index].selectedItem = item
+            this.props.onRightSelect && this.props.onRightSelect(item)
           }}
           viewableItems={this.props.viewableItems}
         />

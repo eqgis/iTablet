@@ -71,6 +71,7 @@ export default class MyDataPage extends Component {
     JSIPortalServce = new OnlineServicesUtils('iportal')
     this.getItemCallback = params.getItemCallback || undefined
     this.chatCallback = params.chatCallback || undefined
+    this.exitCallback = params.exitCallback || undefined
     this.exportPath = ''
   }
 
@@ -89,6 +90,9 @@ export default class MyDataPage extends Component {
     this._getSectionData()
   }
 
+  componentWillUnmount() {
+    this.exitCallback && this.exitCallback()
+  }
   /********************************** 接口 *************************************/
 
   /**各个页面实现 */

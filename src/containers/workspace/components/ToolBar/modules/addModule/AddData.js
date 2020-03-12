@@ -128,6 +128,8 @@ async function getUDBsAndMaps() {
         //Const.DATA_SOURCE,
         image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
         data: filterUDBs,
+        addDatasource: true,
+        getDatasource: getUDBsAndMaps,
       },
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu

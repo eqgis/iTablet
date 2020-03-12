@@ -2,6 +2,7 @@ import React from 'react'
 import { color, size } from '../../../../../styles'
 import { scaleSize, setSpText } from '../../../../../utils'
 import { getLanguage } from '../../../../../language'
+import NavigationService from '../../../../NavigationService'
 import {
   StyleSheet,
   TouchableOpacity,
@@ -336,6 +337,33 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.buttons && section.buttons.length > 0 && (
             <View style={styles.sectionButtons}>{section.buttons}</View>
+          )}
+          {section.addDatasource && (
+            <TouchableOpacity
+            style={
+              (styles.selectImgView,
+              {
+                flexDirection: 'row',
+                alignItems: 'center',
+                position: 'absolute',
+                right: scaleSize(30),
+                height: scaleSize(80),
+              })
+            }
+            onPress={() =>  NavigationService.navigate('MyDatasource', {
+              title: getLanguage(global.language).Profile.DATA,
+              exitCallback: async () => {
+                let data = await section.getDatasource()
+                this.setState({ sections: data.data})
+              },
+            })}
+          >
+            <Image
+              source={require('../../../../../assets/mapTools/icon_add_white.png')}
+              resizeMode={'contain'}
+              style={styles.selectImg}
+            />
+          </TouchableOpacity>
           )}
         </View>
       </TouchableHighlight>

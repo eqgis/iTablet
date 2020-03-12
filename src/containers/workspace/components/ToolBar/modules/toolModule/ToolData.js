@@ -339,7 +339,7 @@ function getData(type, params) {
         },
         {
           key: 'showEditLabel',
-          title: getLanguage(global.language).Map_Layer.PLOTS_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: ToolAction.showEditLabel,
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
@@ -403,7 +403,7 @@ function getData(type, params) {
         {
           key: 'tagging_edit',
           title: getLanguage(global.language).Map_Main_Menu.EDIT,
-          action: ToolAction.selectLabelToEdit,
+          action: () => ToolAction.selectLabelToEdit(),
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
         },

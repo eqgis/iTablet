@@ -152,6 +152,7 @@ const Map_Main_Menu = {
   TOUR_NAME: '旅行轨迹名称',
 
   STYLE_TRANSFER: 'AI配图',
+  OBJ_EDIT: '对象编辑',
 
   TOOLS_MAGNIFIER: '放大镜',
   TOOLS_SELECT_ALL: '全选',

@@ -152,6 +152,7 @@ const Map_Main_Menu = {
   TOUR_NAME: '旅行軌跡名',
 
   STYLE_TRANSFER: 'AIマップ作成',
+  OBJ_EDIT: 'オブジェクト編集',
 
   TOOLS_MAGNIFIER: '拡大鏡',
   TOOLS_SELECT_ALL: 'すべて選択',

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "React/RCTBridgeModule.h"
 #import <ZipArchive/ZipArchive.h>
-#import "SMap.h"
 #import "FileUtils.h"
 
 NSString *USER_NAME;
@@ -31,4 +30,6 @@ static BOOL hasImportedData = NO;
 + (NSDictionary *)readLocalFileWithPath:(NSString *)path;
 +(BOOL)getUriState:(NSURL *)url;
 +(void)sendShareResult;
++ (BOOL)copyFiles:(NSString *)from targetDictionary:(NSString *)to filterFileSuffix:(NSString *)filterFileSuffix
+filterFileDicName:(NSString*)filterFileDicName otherFileDicName:(NSString*)otherFileDicName isOnly:(BOOL)isOnly;
 @end

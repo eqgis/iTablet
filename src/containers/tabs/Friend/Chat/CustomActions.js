@@ -17,7 +17,7 @@ import {
   PermissionsAndroid,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
-import { SOnlineService } from 'imobile_for_reactnative'
+import { SOnlineService, SMap } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import { SimpleDialog } from '../Component'
@@ -159,7 +159,7 @@ export default class CustomActions extends React.Component {
       return
     }
 
-    let location = await AppUtils.getCurrentLocation()
+    let location = await SMap.getCurrentLocation()
     if (location.longitude === 0 && location.latitude === 0) {
       Toast.show(getLanguage(global.language).Prompt.LOCATION_ERROR)
       return

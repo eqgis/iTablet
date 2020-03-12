@@ -97,6 +97,16 @@ function layerListAction(data) {
     })
     _params.showFullMap(true)
     _params.navigation.navigate('MapView')
+  } else if (data.type === 7) {
+    _params.showFullMap && _params.showFullMap(true)
+    _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+      containerType: ToolbarType.list,
+      isFullScreen: true,
+      column: 4,
+      height: 0,
+      showMenuDialog: true,
+    })
+    _params.navigation.navigate('MapView')
   } else {
     Toast.show(
       getLanguage(_params.language).Prompt.THE_CURRENT_LAYER_CANNOT_BE_STYLED,

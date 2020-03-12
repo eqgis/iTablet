@@ -145,6 +145,7 @@ const Map_Main_Menu = {
   TOUR_NAME: 'Gezinti Adı',
 
   STYLE_TRANSFER: 'AI Kartografi',
+  OBJ_EDIT: 'Nesne düzenleme',
 
   TOOLS_SCENE_SELECT: 'Seç',
   TOOLS_PATH_ANALYSIS: 'Yol Analizi',

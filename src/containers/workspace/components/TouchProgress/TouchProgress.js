@@ -741,7 +741,10 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
       (
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
@@ -945,7 +948,10 @@ export default class TouchProgress extends Component {
         newValue = value * 200
       }
     } else if (
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
       (
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
@@ -1141,7 +1147,10 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
       (
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
@@ -2161,7 +2170,10 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOL &&
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
       (
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||

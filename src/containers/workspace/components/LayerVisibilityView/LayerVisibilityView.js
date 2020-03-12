@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer:{
-    width:scaleSize(200),
+    width:scaleSize(220),
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   input:{
     color:color.content_white,
     height:Const.BOTTOM_HEIGHT,
-    width:scaleSize(160),
+    width:scaleSize(200),
     fontSize:setSpText(20),
     ...Platform.select({
       android:{

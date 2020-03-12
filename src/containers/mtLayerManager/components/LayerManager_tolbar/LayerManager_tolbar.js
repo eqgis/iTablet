@@ -1014,8 +1014,8 @@ export default class LayerManager_tolbar extends React.Component {
         ref={ref => (this.picker = ref)}
         language={GLOBAL.language}
         confirm={async item => {
-          let min = this.selectedMinItem !== undefined ? this.selectedMinItem.value : item[0].selectedItem.value
-          let max = this.selectedMaxItem !== undefined ? this.selectedMaxItem.value : item[1].selectedItem.value
+          let min = item[0].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMinItem.value : item[0].selectedItem.value
+          let max = item[1].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMaxItem.value : item[1].selectedItem.value
           if (min !== 0 && max !== 0 && min <= max) {
             //最大比例尺必须大于最小比例尺
             Toast.show(

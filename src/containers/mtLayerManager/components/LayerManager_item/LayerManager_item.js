@@ -492,8 +492,8 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
+            let {px,py,width,height}  = this.PressViewPosition
             if(layer.index > 0){
-              let {px,py,width,height}  = this.PressViewPosition
               py = py - height
               ActionPopover.show(
                 {
@@ -509,6 +509,16 @@ export default class LayerManager_item extends React.Component {
                 data:layer,
               })
               this.PressViewPosition = {px,py,width,height}
+            }else{
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
             }
           }.bind(this)())
         },
@@ -524,8 +534,8 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
+            let {px,py,width,height}  = this.PressViewPosition
             if(layer.index < layer.layerCount - 1){
-              let {px,py,width,height}  = this.PressViewPosition
               py = py + height
               ActionPopover.show(
                 {
@@ -541,6 +551,16 @@ export default class LayerManager_item extends React.Component {
                 data:layer,
               })
               this.PressViewPosition = {px,py,width,height}
+            }else{
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
             }
 
           }.bind(this)())

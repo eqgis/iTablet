@@ -83,6 +83,7 @@
       },
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
+        {"key": "addModule", "type": "MAP_ADD"},
         {"key": "themeModule", "type": "MAP_THEME"},
         {"key": "styleModule", "type": "MAP_STYLE"},
         {"key": "toolModule", "type": "MAP_TOOLS"},

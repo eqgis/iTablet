@@ -17,6 +17,7 @@ import DataItem from './DataItem'
 import CatagoryMenu from './CatagoryMenu'
 import MoreMenu from './MoreMenu'
 import SearchMenu from './SearchMenu'
+import { getThemeAssets } from '../../../../assets'
 
 var JSOnlineService
 var JSIPortalService
@@ -39,7 +40,7 @@ export default class PublicData extends React.Component {
       loadError: false,
       loadMore: false,
       isRefresh: false,
-      isShowCloseCatagory: true,
+      isShowCloseCatagory: false,
     }
     this.currentPage = 1
     this.totalPage = 0
@@ -48,7 +49,7 @@ export default class PublicData extends React.Component {
   }
 
   componentDidMount() {
-    this.CatagoryMenu.setVisible(true)
+    this.getData()
   }
 
   getData = async () => {
@@ -407,7 +408,7 @@ export default class PublicData extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={require('../../../../assets/header/icon_search.png')}
+            source={getThemeAssets().find.filter}
             style={styles.searchImg}
           />
         </TouchableOpacity>

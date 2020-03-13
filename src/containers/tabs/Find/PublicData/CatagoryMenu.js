@@ -65,7 +65,7 @@ export default class CatagoryMenu extends React.Component {
     let heigth = scaleSize(40) + scaleSize(90) * items
     Animated.timing(this.height, {
       toValue: heigth,
-      duration: 500,
+      duration: 0,
     }).start()
   }
 

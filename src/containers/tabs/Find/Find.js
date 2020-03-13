@@ -267,7 +267,7 @@ export default class Find extends Component {
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
             // Const.SUPERMAPKNOWN,
-            leftImagePath: require('../../../assets/Mine/icon_discover_notice_light.png'),
+            leftImagePath: getThemeAssets().find.supermap_zd,
             isInformSpot: this.state.superMapKnown,
             onClick: () => {
               // NavigationService.navigate('SuperMapKnown')

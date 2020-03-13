@@ -300,16 +300,16 @@ function getThemeMapCreate(type) {
   )
     return { data, buttons }
   data = [
-    {
-      //统一风格
-      key: constants.THEME_UNIFY_STYLE,
-      title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_MAP,
-      //constants.THEME_UNIFY_STYLE,
-      action: getUnifyStyleAdd,
-      size: 'large',
-      image: getThemeAssets().themeType.theme_create_unify_style,
-      selectedImage: getThemeAssets().themeType.theme_create_unify_style,
-    },
+    // {
+    //   //统一风格
+    //   key: constants.THEME_UNIFY_STYLE,
+    //   title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_MAP,
+    //   //constants.THEME_UNIFY_STYLE,
+    //   action: getUnifyStyleAdd,
+    //   size: 'large',
+    //   image: getThemeAssets().themeType.theme_create_unify_style,
+    //   selectedImage: getThemeAssets().themeType.theme_create_unify_style,
+    // },
     {
       //单值风格
       key: constants.THEME_UNIQUE_STYLE,

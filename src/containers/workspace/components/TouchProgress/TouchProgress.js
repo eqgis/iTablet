@@ -11,7 +11,7 @@ import {
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import {screen, scaleSize} from '../../../../utils'
+import {screen, scaleSize, setSpText} from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -746,7 +746,7 @@ export default class TouchProgress extends Component {
 
     if (
       (
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
       ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
       ) &&
       (
@@ -2527,7 +2527,7 @@ export default class TouchProgress extends Component {
             }}
             activeOpacity={1}
           >
-            <Text style={[styles.tipsText]}>{strArray[0]}</Text>
+            <Text style={styles.tipsText}>{strArray[0]}</Text>
             <TextInput
               ref={ref=>(this.input = ref)}
               value={num !== undefined ? num + '' : ' '}
@@ -2545,8 +2545,8 @@ export default class TouchProgress extends Component {
               onBlur={()=>{
                 this._caculateProgress(~~this.tempText)
               }}
-              style={[styles.tipsText]}/>
-            <Text style={[styles.tipsText]}>{strArray[1]}</Text>
+              style={styles.input}/>
+            <Text style={styles.tipsText}>{strArray[1]}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -2607,9 +2607,21 @@ const styles = StyleSheet.create({
     flexDirection:'row',
   },
   tipsText: {
-    fontSize: scaleSize(22),
+    fontSize: setSpText(20),
     // fontFamily 字体
     fontWeight: 'bold',
     color: 'white',
+  },
+  input:{
+    fontSize: setSpText(24),
+    fontWeight: 'bold',
+    textAlign:'center',
+    color: 'white',
+    minWidth:scaleSize(40),
+    ...Platform.select({
+      android:{
+        padding:0,
+      },
+    }),
   },
 })

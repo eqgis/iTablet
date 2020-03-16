@@ -25,7 +25,7 @@ export default class GroupTab extends React.Component {
 
   componentDidMount() {
     SMap.getSymbolGroups().then(result => {
-      if (global.language === 'EN') {
+      if (global.language !== 'CN') {
         for (let i = 0; i < result.length; i++) {
           if (result[i].name === '点符号库') {
             result[i].name = 'Marker Library'

@@ -180,7 +180,7 @@ const Map_Main_Menu = {
   CUT_FIRST: 'Lütfen önce haritayı kesin',
   THEME: 'Oluştur',
   THEME_UNIFORM_MAP: 'Tek Tip Harita',
-  THEME_UNIQUE_VALUES_MAP: 'Benzersin Değerler\n Harita',
+  THEME_UNIQUE_VALUES_MAP: 'Benzersiz Değerler\n Harita',
   THEME_RANGES_MAP: 'Ranges Map',
   THEME_UNIFORM_LABLE: 'Harita Aralıkları',
   THEME_UNIQUE_VALUE_LABLE_MAP: 'Tek Tip\n Etiket Harita',
@@ -539,6 +539,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'Yinele',
   ATTRIBUTE_REVERT: 'Geri Dön',
   ATTRIBUTE_FIELD_ADD: 'Ekle',
+  ATTRIBUTE_ADD: 'Öznitelik Ekle',
+  ATTRIBUTE_DETAIL: 'Öznitelik Detay',
+  REQUIRED: 'Gereken',
+  NAME: 'Ad',
+  TYPE: 'Türü',
+  LENGTH: 'Uzunluk',
+  DEFAULT: 'Varsayılan',
+  CONFIRM_ADD: 'Ekle',
 
   DETAIL: 'Detay',
   // 统计模式

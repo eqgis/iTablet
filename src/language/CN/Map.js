@@ -563,6 +563,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: '恢复',
   ATTRIBUTE_REVERT: '还原',
   ATTRIBUTE_FIELD_ADD: '添加',
+  ATTRIBUTE_ADD: '添加属性',
+  ATTRIBUTE_DETAIL: '属性详情',
+  REQUIRED: '必填',
+  NAME: '名称',
+  TYPE: '类型',
+  ENGTH: '长度',
+  DEFAULT: '缺省值',
+  CONFIRM_ADD: '确认',
 
   DETAIL: '详情',
   // 统计模式

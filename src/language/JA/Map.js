@@ -554,6 +554,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'やり直す',
   ATTRIBUTE_REVERT: '復元',
   ATTRIBUTE_FIELD_ADD: '追加',
+  ATTRIBUTE_ADD: '属性追加',
+  ATTRIBUTE_DETAIL: '属性詳細',
+  REQUIRED: '必須',
+  NAME: '名前',
+  TYPE: 'タイプ',
+  LENGTH: '長さ',
+  DEFAULT: 'デフォルト',
+  CONFIRM_ADD: '追加',
 
   DETAIL: '詳細',
   // 統計モード

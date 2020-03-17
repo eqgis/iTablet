@@ -232,7 +232,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.PUBLIC_DATA,
-            leftImagePath: require('../../../assets/Find/find_publicmap.png'),
+            leftImagePath: getThemeAssets().find.app,
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('PublicData')

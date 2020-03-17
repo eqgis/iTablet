@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
   stateView: {
     height: scaleSize(40),
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: color.content_white,
   },
   HeaderRightContainer: {
     flexDirection: 'row',
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
   //SearchMenu
   SearchMenuContainer: {
     width: '100%',
-    maxHeight: '60%',
+    maxHeight: '65%',
     backgroundColor: '#EEEEEE',
     justifyContent: 'center',
   },
@@ -209,6 +211,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchButtonText: {
+    fontSize: scaleSize(26),
+  },
+
+  //orderBar
+  orderView: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: scaleSize(20),
+    justifyContent: 'space-between',
+  },
+  orderItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orderImg: {
+    width: scaleSize(50),
+    height: scaleSize(50),
+    marginHorizontal: scaleSize(10),
+  },
+  orderText: {
+    width: scaleSize(40),
     fontSize: scaleSize(26),
   },
 })

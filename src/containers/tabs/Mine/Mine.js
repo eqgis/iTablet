@@ -483,8 +483,10 @@ export default class Mine extends Component {
     this.screenHeight = Dimensions.get('window').height
     return (
       <Container ref={ref => (this.container = ref)} withoutHeader>
-        {this._renderProfile()}
-        {this._renderDatas()}
+        <View style={styles.mineContainer}>
+          {this._renderProfile()}
+          {this._renderDatas()}
+        </View>
       </Container>
     )
   }

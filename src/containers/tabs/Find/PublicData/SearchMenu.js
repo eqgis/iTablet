@@ -7,25 +7,36 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import DropdownView from './DropdownView'
 import styles from './styles'
-import { Toast } from '../../../../utils'
+
+const orderBy = {
+  lastModifiedTime: 'LASTMODIFIEDTIME',
+  fileName: 'fileName',
+}
+
+const orderType = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+}
 
 export default class SearchMenu extends React.Component {
   props: {
-    onPress: () => {},
+    setParams: () => {},
   }
 
   constructor(props) {
     super(props)
     this.state = {
       data: this.getData(),
-      selectList: [],
+      selectList: this.getAllDataTypes(),
+      orderBy: orderBy.lastModifiedTime,
+      orderType: orderType.DESC,
+      searchText: '',
       visible: false,
     }
-    this.searchText = ''
   }
 
   getData = () => [
@@ -51,6 +62,15 @@ export default class SearchMenu extends React.Component {
     },
   ]
 
+  getAllDataTypes = () => {
+    let allData = this.getData()
+    let allDataList = []
+    for (let i = 1; i < allData.length; i++) {
+      allDataList.push(allData[i].key)
+    }
+    return allDataList
+  }
+
   getValueByKey = key => {
     let data = this.getData()
     for (let i = 0; i < data.length; i++) {
@@ -64,9 +84,104 @@ export default class SearchMenu extends React.Component {
     if (this.state.visible !== visible) {
       this.setState({ visible: visible })
     }
-    if (!visible) {
-      this.reset()
+  }
+
+  reset = () => {
+    if(this.state.searchText !== '') {
+      this.setSearchText('')
+      this.searchBar && this.searchBar.clear()
     }
+  }
+
+  search = () => {
+    this.setVisible(false)
+  }
+
+  setParams = () => {
+    let selectTypes = []
+    for (let i = 0; i < this.state.selectList.length; i++) {
+      selectTypes = selectTypes.concat(this.getValueByKey(this.state.selectList[i]))
+    }
+    this.props.setParams({
+      keywords: this.state.searchText === '' ? undefined : this.state.searchText,
+      selectTypes: selectTypes,
+      orderBy: this.state.orderBy,
+      orderType: this.state.orderType,
+    })
+  }
+
+  setSearchText = text => {
+    this.setState({searchText: text})
+    this.props.setParams({
+      keywords: text === '' ? undefined : text,
+    })
+  }
+
+  setTypes = selectList => {
+    let selectTypes = []
+    for (let i = 0; i < selectList.length; i++) {
+      selectTypes = selectTypes.concat(this.getValueByKey(selectList[i]))
+    }
+    this.props.setParams({
+      selectTypes: selectTypes,
+    })
+  }
+
+  setOrder = value => {
+    let order = this._getOrder(value)
+    this.setState({
+      orderBy: order._orderBy,
+      orderType: order._orderType,
+    })
+    this.props.setParams({
+      orderBy: order._orderBy,
+      orderType: order._orderType,
+    })
+  }
+
+  _getOrder = orderBy => {
+    let  _orderBy, _orderType
+    _orderBy = orderBy
+    if(this.state.orderBy === orderBy) {
+      if(this.state.orderType === orderType.ASC) {
+        _orderType = orderType.DESC
+      } else {
+        _orderType = orderType.ASC
+      }
+    } else {
+      _orderType = orderType.DESC
+    }
+    return { _orderBy, _orderType }
+  }
+
+  renderOrderBar = () => {
+    let indicator = this.state.orderType === orderType.ASC ? '↑' : '↓'
+    return (
+      <View style={styles.orderView}>
+        <TouchableOpacity
+          style={styles.orderItem}
+          onPress={()=>{this.setOrder(orderBy.fileName)}}
+        >
+          <Image source={getThemeAssets().find.sort_name}
+            style={styles.orderImg} />
+          <Text style={styles.textStyle}>{getLanguage(global.language).Find.SORT_BY_NAME}</Text>
+          <Text style={styles.orderText}>
+            {this.state.orderBy === orderBy.fileName ? indicator : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.orderItem}
+          onPress={()=>{this.setOrder(orderBy.lastModifiedTime)}}
+        >
+          <Image source={getThemeAssets().find.sort_time}
+            style={styles.orderImg} />
+          <Text style={styles.textStyle}>{getLanguage(global.language).Find.SORT_BY_TIME}</Text>
+          <Text style={styles.orderText}>
+            {this.state.orderBy === orderBy.lastModifiedTime ? indicator : ''}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   renderItemAllSelect = item => {
@@ -80,15 +195,14 @@ export default class SearchMenu extends React.Component {
         <TouchableOpacity
           style={styles.ListItemViewStyle}
           onPress={() => {
-            if (isAllSelected) {
-              this.setState({ selectList: [] })
-            } else {
-              let selectList = []
+            let selectList = []
+            if (!isAllSelected) {
               for (let i = 1; i < allData.length; i++) {
                 selectList.push(allData[i].key)
               }
-              this.setState({ selectList: selectList })
             }
+            this.setState({ selectList })
+            this.setTypes(selectList)
           }}
         >
           <Image source={img} style={styles.MenuImageStyle} />
@@ -120,6 +234,7 @@ export default class SearchMenu extends React.Component {
               selectList.splice(indexInList, 1)
             }
             this.setState({ selectList: selectList })
+            this.setTypes(selectList)
           }}
         >
           <Image source={img} style={styles.MenuImageStyle} />
@@ -144,43 +259,17 @@ export default class SearchMenu extends React.Component {
             ref={ref => (this.searchBar = ref)}
             style={styles.searchInputStyle}
             placeholder={getLanguage(global.language).Profile.SEARCH}
+            defaultValue={this.state.searchText}
             placeholderTextColor={'#A7A7A7'}
             returnKeyType={'search'}
             onSubmitEditing={this.search}
             onChangeText={value => {
-              this.searchText = value
+              this.setSearchText(value)
             }}
           />
         </View>
       </View>
     )
-  }
-
-  reset = () => {
-    this.searchText = ''
-    this.searchBar && this.searchBar.clear()
-    this.setState({ selectList: [] })
-  }
-
-  search = () => {
-    if (this.searchText === '') {
-      Toast.show(getLanguage(global.language).Prompt.ENTER_KEY_WORDS)
-      return
-    }
-    if (this.state.selectList.length === 0) {
-      Toast.show(getLanguage(global.language).Find.SELECT_DATATYPES_FIRST)
-      return
-    }
-    let selectList = this.state.selectList
-    let selectTypes = []
-    for (let i = 0; i < selectList.length; i++) {
-      selectTypes = selectTypes.concat(this.getValueByKey(selectList[i]))
-    }
-
-    this.props.onPress({
-      keywords: this.searchText,
-      selectTypes: selectTypes,
-    })
   }
 
   renderButtons = () => {
@@ -204,6 +293,7 @@ export default class SearchMenu extends React.Component {
     return (
       <View style={styles.SearchMenuContainer}>
         {this.renderSearchBar()}
+        {this.renderOrderBar()}
         <FlatList
           data={this.state.data}
           renderItem={this.renderItem}

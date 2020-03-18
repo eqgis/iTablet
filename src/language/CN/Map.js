@@ -275,6 +275,9 @@ const Map_Main_Menu = {
   //外业采集 采集
   CREATE_WITH_SYMBOLS: '普通创建',
   CREATE_WITH_TEMPLATE: '模板创建',
+  POINT_SYMBOL_LIBRARY: '点符号库',
+  LINE_SYMBOL_LIBRARY: '线型符号库',
+  REGION_SYMBOL_LIBRARY: '填充符号库',
 
   COLLECTION: '采集',
   COLLECTION_RECENT: '最近',

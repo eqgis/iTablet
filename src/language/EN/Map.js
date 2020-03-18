@@ -261,6 +261,10 @@ const Map_Main_Menu = {
 
   CREATE_WITH_SYMBOLS: 'Create with Symbols',
   CREATE_WITH_TEMPLATE: 'Create with Template',
+  POINT_SYMBOL_LIBRARY: 'Marker Libarary',
+  LINE_SYMBOL_LIBRARY: 'Line Libarary',
+  REGION_SYMBOL_LIBRARY: 'Fill Libarary',
+
   COLLECTION: 'Collect',
   COLLECTION_RECENT: 'Recent',
   COLLECTION_SYMBOL: 'Symbol',

@@ -250,6 +250,10 @@ const Map_Main_Menu = {
 
   CREATE_WITH_SYMBOLS: 'Sembollerle Oluştur',
   CREATE_WITH_TEMPLATE: 'Şablonla Oluştur',
+  POINT_SYMBOL_LIBRARY: 'Nokta Sembol Grafiği',
+  LINE_SYMBOL_LIBRARY: 'Çizgi Sembol Grafiği',
+  REGION_SYMBOL_LIBRARY: 'Poligon Sembol Grafiği',
+
   COLLECTION: 'Toplama',
   COLLECTION_RECENT: 'Yeni Tarihli',
   COLLECTION_SYMBOL: 'Sembol',

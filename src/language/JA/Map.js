@@ -264,6 +264,9 @@ const Map_Main_Menu = {
   //外业コレクション コレクション
   CREATE_WITH_SYMBOLS: '通常作成',
   CREATE_WITH_TEMPLATE: 'テンプレートで作成',
+  POINT_SYMBOL_LIBRARY: 'ポイントシンボルライブラリ',
+  LINE_SYMBOL_LIBRARY: 'ラインシンボルライブラリ',
+  REGION_SYMBOL_LIBRARY: 'ポリゴンシンボルライブラリ',
 
   COLLECTION: 'コレクト',
   COLLECTION_RECENT: '最近',

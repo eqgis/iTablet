@@ -268,6 +268,9 @@ const Map_Main_Menu = {
   //外业コレクション コレクション
   CREATE_WITH_SYMBOLS: '通常作成',
   CREATE_WITH_TEMPLATE: 'テンプレートで作成',
+  POINT_SYMBOL_LIBRARY: 'ポイントシンボルライブラリ',
+  LINE_SYMBOL_LIBRARY: 'ラインシンボルライブラリ',
+  REGION_SYMBOL_LIBRARY: 'ポリゴンシンボルライブラリ',
 
   COLLECTION: 'コレクト',
   COLLECTION_RECENT: '最近',
@@ -558,6 +561,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'やり直す',
   ATTRIBUTE_REVERT: '復元',
   ATTRIBUTE_FIELD_ADD: '追加',
+  ATTRIBUTE_ADD: '属性追加',
+  ATTRIBUTE_DETAIL: '属性詳細',
+  REQUIRED: '必須',
+  NAME: '名前',
+  TYPE: 'タイプ',
+  LENGTH: '長さ',
+  DEFAULT: 'デフォルト',
+  CONFIRM_ADD: '追加',
 
   DETAIL: '詳細',
   // 統計モード

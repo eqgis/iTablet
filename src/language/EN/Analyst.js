@@ -29,7 +29,7 @@ const Analyst_Methods = {
 }
 
 const Analyst_Labels = {
-  ANALYST: 'Analyst',
+  ANALYST: 'Analyze',
   CONFIRM: 'Confirm',
   RESET: 'Reset',
   CANCEL: 'Cancel',

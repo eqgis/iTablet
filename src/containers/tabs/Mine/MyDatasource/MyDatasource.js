@@ -107,15 +107,6 @@ class MyDatasource extends MyDataPage {
     },
   ]
 
-  getCustomItemPopupData = () => [
-    {
-      title: getLanguage(this.props.language).Profile.NEW_DATASET,
-      action: () => {
-        this._createDataset()
-      },
-    },
-  ]
-
   onItemPress = info => {
     this.itemInfo = info
     this._openDatasource()
@@ -123,12 +114,6 @@ class MyDatasource extends MyDataPage {
 
   _openDatasource = () => {
     NavigationService.navigate('MyDataset', {
-      data: this.itemInfo.item,
-    })
-  }
-
-  _createDataset = () => {
-    NavigationService.navigate('NewDataset', {
       data: this.itemInfo.item,
     })
   }

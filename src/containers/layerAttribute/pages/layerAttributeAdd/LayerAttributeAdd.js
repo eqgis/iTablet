@@ -185,18 +185,18 @@ export default class LayerAttributeAdd extends React.Component {
 
   getType = ({ labelTitle, value }) => {
     switch (labelTitle) {
-      case global.language === 'CN' ? '类型' : 'Type':
+      case getLanguage(global.language).Map_Attribute.TYPE:
         this.setState({
           type: value,
         })
         break
-      case global.language === 'CN' ? '必填' : 'Required':
+      case getLanguage(global.language).Map_Attribute.REQUIRED:
         this.setState({
           isRequired: value,
           isDefaultValueCanEdit: value,
         })
         break
-      case global.language === 'CN' ? '缺省值' : 'Default Value':
+      case getLanguage(global.language).Map_Attribute.DEFAULT:
         this.setState({
           defaultValue: value,
         })
@@ -205,22 +205,22 @@ export default class LayerAttributeAdd extends React.Component {
 
   getInputValue = ({ title, text }) => {
     switch (title) {
-      case global.language === 'CN' ? '名称' : 'Name':
+      case getLanguage(global.language).Map_Attribute.NAME:
         this.setState({
           name: text,
         })
         break
-      case global.language === 'CN' ? '别名' : 'Caption':
+      case getLanguage(global.language).Map_Attribute.ALIAS:
         this.setState({
           caption: text,
         })
         break
-      case global.language === 'CN' ? '必填' : 'Required':
+      case getLanguage(global.language).Map_Attribute.REQUIRED:
         this.setState({
           maxLength: parseInt(text),
         })
         break
-      case global.language === 'CN' ? '缺省值' : 'Default Value':
+      case getLanguage(global.language).Map_Attribute.DEFAULT:
         this.setState({
           defaultValue: text,
         })
@@ -239,7 +239,7 @@ export default class LayerAttributeAdd extends React.Component {
     return (
       <View style={styles.btns}>
         <Button
-          title={global.language === 'CN' ? '确认' : 'Sure'}
+          title={getLanguage(global.language).Map_Attribute.CONFIRM_ADD}
           style={{
             width: '94%',
             height: scaleSize(60),
@@ -372,14 +372,14 @@ export default class LayerAttributeAdd extends React.Component {
   }
 
   renderDefaultValue = () => {
-    let defaultValueTile = global.language === 'CN' ? '缺省值' : 'Default Value'
+    let defaultValueTile = getLanguage(global.language).Map_Attribute.DEFAULT
     return !this.state.isRequired ? null : this.state.type === 1 ? (
       <View style={styles.defaultValueItem}>
         <Text style={styles.rowLabel}>{defaultValueTile}</Text>
         <RadioGroup
           data={[
-            { title: global.language === 'CN' ? '是' : 'YES', value: true },
-            { title: global.language === 'CN' ? '否' : 'NO', value: false },
+            { title: getLanguage(global.language).Prompt.YES, value: true },
+            { title: getLanguage(global.language).Prompt.NO, value: false },
           ]}
           column={2}
           getSelected={result => {
@@ -425,7 +425,7 @@ export default class LayerAttributeAdd extends React.Component {
           disable={this.state.isEdit}
           defaultValue={this.state.name}
           type={Row.Type.INPUT_WRAP}
-          title={global.language === 'CN' ? '名称' : 'Name'}
+          title={getLanguage(global.language).Map_Attribute.NAME}
           getValue={this.getInputValue}
         />
         <Row
@@ -435,14 +435,14 @@ export default class LayerAttributeAdd extends React.Component {
           disable={this.state.isEdit}
           defaultValue={this.state.caption}
           type={Row.Type.INPUT_WRAP}
-          title={global.language === 'CN' ? '别名' : 'Caption'}
+          title={getLanguage(global.language).Map_Attribute.ALIAS}
           getValue={this.getInputValue}
         />
         <Row
           style={{ marginTop: scaleSize(30) }}
           key={'类型'}
           type={Row.Type.RADIO_GROUP}
-          title={global.language === 'CN' ? '类型' : 'Type'}
+          title={getLanguage(global.language).Map_Attribute.TYPE}
           defaultValue={this.state.type}
           disable={this.state.isEdit}
           customRgihtView={
@@ -478,7 +478,7 @@ export default class LayerAttributeAdd extends React.Component {
           customRightStyle={{ height: scaleSize(50) }}
           key={'长度'}
           type={Row.Type.TEXT_BTN}
-          title={global.language === 'CN' ? '长度' : 'Length'}
+          title={getLanguage(global.language).Map_Attribute.LENGTH}
           customRgihtView={
             <View
               style={{
@@ -513,12 +513,12 @@ export default class LayerAttributeAdd extends React.Component {
           style={{ marginTop: scaleSize(15) }}
           key={'必填'}
           type={Row.Type.RADIO_GROUP}
-          title={global.language === 'CN' ? '必填' : 'Required'}
+          title={getLanguage(global.language).Map_Attribute.REQUIRED}
           disable={this.state.isEdit}
           defaultValue={this.state.isRequired}
           radioArr={[
-            { title: global.language === 'CN' ? '是' : 'YES', value: true },
-            { title: global.language === 'CN' ? '否' : 'NO', value: false },
+            { title: getLanguage(global.language).Prompt.YES, value: true },
+            { title: getLanguage(global.language).Prompt.NO, value: false },
           ]}
           radioColumn={2}
           getValue={this.getType}
@@ -536,12 +536,8 @@ export default class LayerAttributeAdd extends React.Component {
         // scrollable
         headerProps={{
           title: this.state.isEdit
-            ? global.language === 'CN'
-              ? '属性详情'
-              : 'Attribute Detail'
-            : global.language === 'CN'
-              ? '添加属性'
-              : 'Add Attribute',
+            ? getLanguage(global.language).Map_Attribute.ATTRIBUTE_DETAIL
+            : getLanguage(global.language).Map_Attribute.ATTRIBUTE_ADD,
           navigation: this.props.navigation,
         }}
       >

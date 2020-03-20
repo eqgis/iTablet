@@ -420,6 +420,13 @@ function getData(type, params) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       data = [
         {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: ToolAction.deleteLabel,
@@ -439,13 +446,6 @@ function getData(type, params) {
           action: () => EditAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
-        },
-        {
-          key: constants.MOVE,
-          title: getLanguage(global.language).Map_Main_Menu.MOVE,
-          action: EditAction.move,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
       ]
       buttons = [

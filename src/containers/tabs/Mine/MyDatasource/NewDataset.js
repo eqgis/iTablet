@@ -31,26 +31,93 @@ class NewDataset extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.state = {
-      title:
-        params.data.name &&
-        params.data.name.substr(0, params.data.name.lastIndexOf('.')),
-      data: params.data,
-      datasets: [
-        {
-          key: new Date().getTime(),
-          datasetName: undefined,
-          datasetType: undefined,
-        },
-      ],
+      title: params.title,
+      datasets: [],
       errorMap: (new Map(): Map<string, Object>),
     }
+    this.getDatasets = params.getDatasets
+    this.refreshCallback = params.refreshCallback || undefined
   }
 
+  componentDidMount() {
+    this.setState({ datasets: [{
+      key: new Date().getTime(),
+      datasetName: this._getAvailableName('New_Point'),
+      datasetType: DatasetType.POINT,
+    }]})
+  }
+
+  _getAvailableName = (name, checkCurrent = true) => {
+    let i = 1
+    let datasetName = name
+    let result = false
+    while(!result) {
+      if(this._isAvailableName(datasetName, checkCurrent)){
+        result = true
+      } else {
+        datasetName = name + '_' + i++
+      }
+    }
+    return datasetName
+  }
+
+  _isAvailableName = (name, checkCurrent) => {
+    let list = []
+    let datasets = this.getDatasets()
+    for(let i = 0; i < datasets.length; i++) {
+      list.push(datasets[i].datasetName)
+    }
+    if(checkCurrent) {
+      for(let i = 0; i < this.state.datasets.length; i++) {
+        list.push(this.state.datasets[i].datasetName)
+      }
+    }
+    let result = true
+    for(let i = 0; i < list.length; i++) {
+      if(list.includes(name)) {
+        result = false
+        break
+      }
+    }
+    return result
+  }
+
+  _getDefaultDatasetNameByType = datasetType => {
+    let datasetName = 'New_Dataset'
+    switch (datasetType) {
+      case DatasetType.POINT:
+        datasetName = 'New_Point'
+        break
+      case DatasetType.LINE:
+        datasetName = 'New_Line'
+        break
+      case DatasetType.REGION:
+        datasetName = 'New_Region'
+        break
+      case DatasetType.TEXT:
+        datasetName = 'New_Text'
+        break
+      case DatasetType.CAD:
+        datasetName = 'New_CAD'
+        break
+    }
+    return datasetName
+  }
+
+
   _addDataset = () => {
+    let lastDatasetType
+    let length = this.state.datasets.length
+    if(length > 0) {
+      lastDatasetType = this.state.datasets[length - 1].datasetType
+    }
+    let datasetType = lastDatasetType || DatasetType.POINT
+    let datasetName = this._getDefaultDatasetNameByType(datasetType)
+    datasetName = this._getAvailableName(datasetName)
     let data = {
       key: new Date().getTime(),
-      datasetName: undefined,
-      datasetType: undefined,
+      datasetName: datasetName,
+      datasetType: datasetType,
     }
     let datasets = this.state.datasets.clone()
     datasets.push(data)
@@ -77,8 +144,8 @@ class NewDataset extends Component {
     let datasets = [
       {
         key: new Date().getTime(),
-        datasetName: undefined,
-        datasetType: undefined,
+        datasetName: this._getAvailableName('New_Point', false),
+        datasetType: DatasetType.POINT,
       },
     ]
     this.setState(state => {
@@ -132,12 +199,6 @@ class NewDataset extends Component {
           true,
           getLanguage(global.language).Prompt.CREATING,
         )
-        let homePath = await FileTools.appendingHomeDirectory()
-        let datasourceParams = {}
-        datasourceParams.server = homePath + this.state.data.path
-        datasourceParams.engineType = EngineType.UDB
-        datasourceParams.alias = this.state.title
-        await SMap.openDatasource2(datasourceParams)
         if (!(await this._isAvailableDatasetName(newDatasets))) {
           setTimeout(() => {
             Toast.show(getLanguage(global.language).Prompt.INVALID_DATASET_NAME)
@@ -151,16 +212,15 @@ class NewDataset extends Component {
               newDatasets[i].datasetType,
             )
           }
-          setTimeout(() => {
+          setTimeout(async () => {
             Toast.show(getLanguage(global.language).Prompt.CREATE_SUCCESSFULLY)
+            this.refreshCallback && await this.refreshCallback()
             this._clearDatasets()
             this.container && this.container.setLoading(false)
           }, 1000)
         }
-        SMap.closeDatasource(this.state.title)
       }
     } catch (error) {
-      SMap.closeDatasource(this.state.title)
       setTimeout(() => {
         Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
         this.container && this.container.setLoading(false)
@@ -224,6 +284,7 @@ class NewDataset extends Component {
             defaultValue={item.datasetName || ''}
             onChangeText={text => {
               item.datasetName = text
+              item.nameChanged =true
               let { error } = dataUtil.isLegalName(text, GLOBAL.language)
               this.setErrorMap(item.key, error)
             }}
@@ -283,7 +344,13 @@ class NewDataset extends Component {
             item.datasetType === type ? { backgroundColor: '#4680DF' } : {},
           ]}
           onPress={() => {
+            if(item.datasetType === type) {
+              return
+            }
             item.datasetType = type
+            if(!item.nameChanged) {
+              item.datasetName = this._getAvailableName(this._getDefaultDatasetNameByType(type))
+            }
             let datasets = this.state.datasets.clone()
             this.setState({ datasets })
           }}

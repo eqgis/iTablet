@@ -156,6 +156,7 @@ export default class NavigationStartButton extends React.Component {
     this.setVisible(false)
     GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
     if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+      GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
       SMap.outdoorNavigation(1)
     } else if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
       SMap.indoorNavigation(1)

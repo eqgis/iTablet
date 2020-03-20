@@ -224,7 +224,7 @@ export default class Find extends Component {
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.PUBLIC_MAP,
             //  Const.PUBLICMAP,
-            leftImagePath: require('../../../assets/Find/find_publicmap.png'),
+            leftImagePath: getThemeAssets().find.public_map,
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('PublicMap')
@@ -232,7 +232,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.PUBLIC_DATA,
-            leftImagePath: getThemeAssets().find.app,
+            leftImagePath: getThemeAssets().find.public_data,
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('PublicData')
@@ -267,7 +267,7 @@ export default class Find extends Component {
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
             // Const.SUPERMAPKNOWN,
-            leftImagePath: getThemeAssets().find.supermap_zd,
+            leftImagePath: getThemeAssets().find.supermapkonw,
             isInformSpot: this.state.superMapKnown,
             onClick: () => {
               // NavigationService.navigate('SuperMapKnown')
@@ -288,7 +288,7 @@ export default class Find extends Component {
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
             //Const.FORUMOFSUPERMAP,
-            leftImagePath: require('../../../assets/Find/find_forum.png'),
+            leftImagePath: getThemeAssets().find.forum,
             isInformSpot: false,
             onClick: this.goToSuperMapForum,
           })}

@@ -272,7 +272,13 @@ export default class MapView extends React.Component {
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = GLOBAL.Type === constants.MAP_AR
 
-    this.selectedDataset = {}
+    //  导航选中的数据
+    this.selectedData = {
+      selectedDatasources:[], //选中的数据源
+      selectedDatasets:[],  //选中的数据集
+      currentDatasource:[], //当前使用的数据源
+      currentDataset:{},  //当前使用的数据集
+    }
     this.floorHiddenListener = null
   }
 
@@ -651,12 +657,12 @@ export default class MapView extends React.Component {
     await SMap.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
-    let { startX, startY, endX, endY, startFloor, endFloor } = params
+    let { startX, startY, endX, endY, startFloor, endFloor, datasourceName} = params
     try {
       if (params.isIndoor) {
         await SMap.getStartPoint(startX, startY, true, startFloor)
         await SMap.getEndPoint(endX, endY, true, endFloor)
-        await SMap.startIndoorNavigation()
+        await SMap.startIndoorNavigation(datasourceName)
         let rel = await SMap.beginIndoorNavigation()
         if (!rel) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1992,13 +1998,13 @@ export default class MapView extends React.Component {
     this.mapType = mapType
   }
 
-  //设置室外导航数据集和模型文件
+  //设置已选中的和当前正在试用的导航数据
   setNavigationDatas = params => {
-    this.selectedDataset = params
+    this.selectedData = params
   }
 
   getNavigationDatas = () => {
-    return this.selectedDataset
+    return this.selectedData
   }
 
   //楼层控件
@@ -2723,6 +2729,7 @@ export default class MapView extends React.Component {
       <MapSelectPointButton
         setLoading={this.setLoading}
         getNavigationDatas={this.getNavigationDatas}
+        setNavigationDatas={this.setNavigationDatas}
         navigationhistory={this.props.navigationhistory}
         setNavigationHistory={this.props.setNavigationHistory}
         changeNavPathInfo={this.changeNavPathInfo}

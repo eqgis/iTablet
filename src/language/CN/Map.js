@@ -46,9 +46,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: '导航工作空间',
   NAVIGATION_MAP: '导航地图',
   NETWORK: '路网',
+  NETWORK_MODULE:'路网',
   NETMODEL: '网络模型',
   NETDATA: '选择路网数据',
   INDOORDATA: '室内数据源',
+  INDOOR_DATASOURCE: '室内数据源',
+  OUTDOOR_DATASETS: '室外数据集',
+  SWITCH_DATA:'导航数据切换',
   DATASET: '选择数据集',
   Traffic: '路况',
 

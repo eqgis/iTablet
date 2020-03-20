@@ -308,7 +308,6 @@ export default {
 
   //导航
   MAP_NAVIGATION_MODULE: 'MAP_NAVIGATION_MODULE',
-  MAP_NAVIGATION_ADD_UDB: 'MAP_NAVIGATION_ADD_UDB',
   // 工具视图高度级别
   HEIGHT: [
     scaleSize(100),

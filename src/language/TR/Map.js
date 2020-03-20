@@ -41,9 +41,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'Navigasyon Çalışma Alanı',
   NAVIGATION_MAP: 'NAVİGASYON_HARİTA',
   NETWORK: 'AĞ',
+  NETWORK_MODULE: 'Yol ağı',
   NETMODEL: 'NETMODEL',
   NETDATA: 'NETVERİ',
   INDOORDATA: 'İÇMEKANVERİLERİ',
+  INDOOR_DATASOURCE: 'İç mekan veri kaynakları',
+  OUTDOOR_DATASETS: 'Açık veri seti',
+  SWITCH_DATA:'Veri değiştirme',
   DATASET: 'VERİSETİ',
   Traffic: 'Trafik',
 

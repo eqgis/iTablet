@@ -41,9 +41,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'Navigation Workspace',
   NAVIGATION_MAP: 'NAVIGATION_MAP',
   NETWORK: 'NETWORK',
+  NETWORK_MODULE:'Network',
   NETMODEL: 'NETMODEL',
   NETDATA: 'NETDATA',
   INDOORDATA: 'INDOORDATA',
+  INDOOR_DATASOURCE: 'Indoor Datasources',
+  OUTDOOR_DATASETS: 'Outdoor Datasets',
+  SWITCH_DATA:'Data Switching',
   DATASET: 'DATASET',
   Traffic: 'Traffic',
 

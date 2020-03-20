@@ -46,9 +46,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'ナビワークスペース',
   NAVIGATION_MAP: 'ナビマップ',
   NETWORK: '道路ネットワーク',
+  NETWORK_MODULE:'道路網',
   NETMODEL: 'ネットワークモデル',
   NETDATA: '道路ネットワークデータの選択',
   INDOORDATA: '室内データソース',
+  INDOOR_DATASOURCE: '室内データソース',
+  OUTDOOR_DATASETS: '屋外データセット',
+  SWITCH_DATA:'データ切り替え',
   DATASET: 'データセットの選択',
   Traffic: '道路状況',
 

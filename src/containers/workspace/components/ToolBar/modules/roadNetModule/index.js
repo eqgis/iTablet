@@ -28,6 +28,12 @@ async function action(type) {
       }
     })
   })
+  if(selectedDatasets.length === 0 && selectedDatasources.length === 0){
+    mapDatasource.data[0].selected = true
+    mapDataset.data[0].selected = true
+    selectedDatasets = JSON.parse(JSON.stringify([mapDataset.data[0]]))
+    selectedDatasources = JSON.parse(JSON.stringify([mapDatasource.data[0]]))
+  }
   data = [mapDatasource,mapDataset]
   NavigationService.navigate('NavigationDataChangePage',{
     data,

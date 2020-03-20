@@ -112,10 +112,10 @@ export default class NavigationDataChangePage extends Component{
             </TouchableOpacity>
             <Image source={typeImg} resizeMode={'contain'} style={styles.icon}/>
             <Text style={[styles.name,extraTxt]}>{item.name}</Text>
-            <TouchableOpacity style={styles.imgWrap}>
-              {/*<Image source={img} resizeMode={'contain'} style={styles.image} />*/}
-              <View style={{width:scaleSize(40),height:scaleSize(40), backgroundColor:color.blue1}}/>
-            </TouchableOpacity>
+            {/*<TouchableOpacity style={styles.imgWrap}>*/}
+            {/*  /!*<Image source={img} resizeMode={'contain'} style={styles.image} />*!/*/}
+            {/*  <View style={{width:scaleSize(40),height:scaleSize(40), backgroundColor:color.blue1}}/>*/}
+            {/*</TouchableOpacity>*/}
           </View>
           {this.renderLine()}
         </View>

@@ -2695,6 +2695,7 @@ export default class MapView extends React.Component {
 
               GLOBAL.OverlayView.setVisible(true)
               GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP && GLOBAL.DATUMPOINTVIEW && GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP)
+              this.setState({ showScaleView: true })
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
@@ -2809,6 +2810,7 @@ export default class MapView extends React.Component {
             markerTag,
           )
    GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+   this.setState({ showScaleView: false })
   }
 
   _renderNavigationPoiView = () => {

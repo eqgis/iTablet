@@ -1,0 +1,3 @@
+import MapSelectPointLatitudeAndLongitude from './MapSelectPointLatitudeAndLongitude'
+
+export default MapSelectPointLatitudeAndLongitude

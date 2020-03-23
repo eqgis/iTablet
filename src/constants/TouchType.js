@@ -30,4 +30,7 @@ export default {
 
   //视频地图AR模式下点击
   AIMAPTOUCH: 'AIMAPTOUCH',
+
+  //地图选点监听
+  MAP_SELECT_POINT: 'MAP_SELECT_POINT',
 }

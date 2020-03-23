@@ -2580,6 +2580,44 @@ export default class MapView extends React.Component {
     return this.searchClickedInfo
   }
   _renderMapSelectPointHeaderRight = () => {
+    if (GLOBAL.MapSelectPointType==='selectPoint') {
+      return (
+        <TouchableOpacity
+          key={'search'}
+          onPress={async () => {
+            if(GLOBAL.MapSelectPointType==='selectPoint'){
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              NavigationService.navigate('EnterDatumPoint', {})
+              if(GLOBAL.MapXmlStr){
+                await SMap.mapFromXml(GLOBAL.MapXmlStr)
+                GLOBAL.MapXmlStr=undefined
+              }
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE && GLOBAL.DATUMPOINTVIEW && GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE)
+              GLOBAL.MapSelectPointType=undefined
+
+
+              GLOBAL.MapSelectPointType = undefined
+              GLOBAL.ToolBar.setVisible(true)
+              GLOBAL.toolBox.showFullMap(false)
+              GLOBAL.OverlayView.setVisible(true)
+
+              Toast.show(
+                getLanguage(global.language).Profile
+                  .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
+              )
+              return
+            }
+          }}
+        >
+          <Text
+            style={styles.textConfirm}
+            >
+            {getLanguage(this.props.language).Map_Settings.CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      )
+    }else
     if (!this.state.currentFloorID) {
       return (
         <TouchableOpacity
@@ -2625,12 +2663,34 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.MAPSELECTPOINT = ref)}
         headerProps={{
           title: getLanguage(this.props.language).Map_Main_Menu.SELECT_POINTS,
-          subTitle: getLanguage(this.props.language).Map_Main_Menu
+          subTitle: GLOBAL.MapSelectPointType==='selectPoint'?'':getLanguage(this.props.language).Map_Main_Menu
             .LONG_PRESS_SELECT_POINTS,
           navigation: this.props.navigation,
           type: 'fix',
           headerRight: this._renderMapSelectPointHeaderRight(),
-          backAction: () => {
+          openSelectPointMap: this._openSelectPointMap,
+          selectPointType: GLOBAL.MapSelectPointType,
+          backAction: async() => {
+            if(GLOBAL.MapSelectPointType==='selectPoint'){
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              NavigationService.navigate('EnterDatumPoint', {
+
+              })
+
+              if(GLOBAL.MapXmlStr){
+                await SMap.mapFromXml(GLOBAL.MapXmlStr)
+                GLOBAL.MapXmlStr=undefined
+              }
+
+              GLOBAL.MapSelectPointType = undefined
+              GLOBAL.ToolBar.setVisible(true)
+              GLOBAL.toolBox.showFullMap(false)
+
+              GLOBAL.OverlayView.setVisible(true)
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP && GLOBAL.DATUMPOINTVIEW && GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP)
+              return
+            }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
             GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
             NavigationService.navigate('NavigationView', {
@@ -2729,6 +2789,19 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.MAPSELECTPOINTBUTTON = ref)}
       />
     )
+  }
+
+  _openSelectPointMap = async(data,point) =>{
+    await this._openDatasource(
+      data,
+      data.layerIndex,
+    )
+    point &&SMap.showMarker(
+            point.x,
+            point.y,
+            markerTag,
+          )
+   GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
   }
 
   _renderNavigationPoiView = () => {

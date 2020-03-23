@@ -392,7 +392,7 @@ export default class ToolBar extends React.PureComponent {
       if (params.cb) {
         setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
       }
-      !isShow && this.props.existFullMap && this.props.existFullMap()
+      !isShow && GLOBAL.MapSelectPointType != 'selectPoint' && this.props.existFullMap && this.props.existFullMap()
       this.updateOverlayView()
     }
   }

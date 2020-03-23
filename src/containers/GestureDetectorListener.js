@@ -215,6 +215,12 @@ async function touchCallback(event) {
     case TouchType.ANIMATION_WAY:
       SMap.addAnimationWayPoint(event.screenPoint, true)
       break
+    case TouchType.MAP_SELECT_POINT:
+      let point=await SMap.getPixelPointToMap(event.screenPoint)
+      GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+      SMap.deleteMarker(118081)
+      SMap.showMarker(point.x,point.y,118081)
+      break
     case TouchType.ADD_NODES:
     case TouchType.NULL:
       break

@@ -300,7 +300,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           <TouchableOpacity
             onPress={() => {
               // this.deleteHistory(item)
-              this.setState({ moreType: 'DELETE', index: item.index })
+              this.setState({ moreType: 'DELETE', index: item.index ,reName: item.name})
               this.PopView.setVisible(true)
             }}
             style={styles.historyDelete}
@@ -358,11 +358,49 @@ export default class CollectSceneFormHistoryView extends React.Component {
   rename = async () => {
     NavigationService.navigate('InputPage', {
       headerTitle: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
-      value: '',
+      value: this.state.reName,
       placeholder: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       type: 'name',
       cb: async value => {
         await SCollectSceneFormView.reNameDataSource(this.state.reName, value)
+        NavigationService.goBack()
+        let data = await SCollectSceneFormView.getHistoryData()
+        if (data && data.history.length > 0) {
+          this.setState({
+            historyData: data.history,
+            chooseDataSource: false,
+          })
+        } else {
+          this.setState({
+            historyData: [],
+            chooseDataSource: false,
+          })
+        }
+      },
+    })
+  }
+
+  addRemark = async () => {
+    let description=await SCollectSceneFormView.getDescription(this.state.reName);
+    NavigationService.navigate('InputPage', {
+      headerTitle: getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK,
+      value: description,
+      placeholder: getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK,
+      type: 'name',
+      cb: async value => {
+        await SCollectSceneFormView.addDescription(this.state.reName, value)
+        let data = await SCollectSceneFormView.getHistoryData()
+        if (data && data.history.length > 0) {
+          this.setState({
+            historyData: data.history,
+            chooseDataSource: false,
+          })
+        } else {
+          this.setState({
+            historyData: [],
+            chooseDataSource: false,
+          })
+        }
         NavigationService.goBack()
       },
     })
@@ -510,6 +548,35 @@ export default class CollectSceneFormHistoryView extends React.Component {
       )
     } else if (this.state.moreType === 'DELETE') {
       return (
+        <View>
+          <Button
+          style={styles.item}
+          titleStyle={styles.btnTitle}
+          title={getLanguage(global.language).Prompt.RENAME}
+          key={getLanguage(global.language).Prompt.RENAME}
+          onPress={() => {
+            this.rename()
+            this.PopView.setVisible(false)
+          }}
+          activeOpacity={0.5}
+        />
+        
+        {this._renderSeparatorLine()}
+
+        <Button
+          style={styles.item}
+          titleStyle={styles.btnTitle}
+          title={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
+          key={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
+          onPress={() => {
+            this.addRemark()
+            this.PopView.setVisible(false)
+          }}
+          activeOpacity={0.5}
+        />
+        
+        {this._renderSeparatorLine()}
+
         <Button
           style={styles.item}
           titleStyle={styles.btnTitle}
@@ -521,6 +588,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           }}
           activeOpacity={0.5}
         />
+        </View>
       )
     } else {
       return (

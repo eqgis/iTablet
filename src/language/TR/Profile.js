@@ -266,5 +266,25 @@ const Profile = {
   SUGGESTION_SUBMIT: 'sunmak',
   SUGGESTION_SUBMIT_SUCCEED: 'Başarıyla gönder',
   SUGGESTION_SUBMIT_FAILED: 'İşlem başarısız oldu',
+
+  //ar地图校准
+  MAP_AR_DATUM_LONGITUDE:'boylam',
+  MAP_AR_DATUM_LATITUDE:'enlem',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION:'Lütfen geçerli konum koordinatlarını girin',
+  MAP_AR_DATUM_AUTO_LOCATION:'Otomatik konumlandırma',
+  MAP_AR_DATUM_MAP_SELECT_POINT:'Harita seçimi',
+  MAP_AR_DATUM_SURE:'belirlemek',
+  MAP_AR_DATUM_AUTO_LOCATIONING:'Konumlandırma',
+  MAP_AR_DATUM_POSITION:'Taban noktası koordinatları',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED:'Otomatik konumlandırma başarılı',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED:'Harita başarıyla seçildi',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:'Lütfen cep telefonunu güneye çevirin',
+  MAP_AR_DATUM_SETTING:'Kurulum',
+
+    //ar地图
+    COLLECT_SCENE_RENAME:'Yeniden adlandırma',
+    COLLECT_SCENE_RENAME_SUCCEED:'Başarıyla yeniden adlandırıldı',
+    COLLECT_SCENE_ADD_REMARK:'Not ekle',
+    COLLECT_SCENE_ADD_REMARK_SUCCEED:'Not başarıyla eklendi',
 }
 export { Profile }

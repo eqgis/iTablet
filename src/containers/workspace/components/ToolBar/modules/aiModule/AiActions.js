@@ -12,6 +12,7 @@ import { FileTools } from '../../../../../../native/index'
 import { ConstPath } from '../../../../../../constants/index'
 import FetchUtils from '../../../../../../utils/FetchUtils'
 import ToolbarModule from '../ToolbarModule'
+import { Container } from '../../../../../../components'
 
 //违章采集
 function illegallyParkCollect() {
@@ -219,17 +220,20 @@ function collectSceneForm() {
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
-    let time = await SCollectSceneFormView.getSystemTime()
-    GLOBAL.mapView.setState({ map: { height: 0 } })
-    GLOBAL.newcollectData = time
-    const datasourceAlias = time
-    const datasetName = 'CollectSceneForm'
-    const datasetPointName = 'CollectPointSceneForm'
-    NavigationService.navigate('CollectSceneFormView', {
-      datasourceAlias,
-      datasetName,
-      datasetPointName,
-    })
+    // let time = await SCollectSceneFormView.getSystemTime()
+    // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // GLOBAL.newcollectData = time
+    // const datasourceAlias = time
+    // const datasetName = 'CollectSceneForm'
+    // const datasetPointName = 'CollectPointSceneForm'
+    // NavigationService.navigate('CollectSceneFormView', {
+    //   datasourceAlias,
+    //   datasetName,
+    //   datasetPointName,
+    // })
+
+    NavigationService.navigate('EnterDatumPoint')
+
 
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(global.language).Map_Main_Menu

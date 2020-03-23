@@ -119,6 +119,8 @@ import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
 import CollectSceneFormView from './arCollectSceneFormView'
+import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
+import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AIDetecSettingsView from './AIDetecSettingsView'
@@ -763,6 +765,20 @@ export default function(appConfig) {
       },
       CollectSceneFormView: {
         screen: CollectSceneFormView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      EnterDatumPoint: {
+        screen: EnterDatumPoint,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      CollectSceneFormSet: {
+        screen: CollectSceneFormSet,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

@@ -264,5 +264,25 @@ const Profile = {
   SUGGESTION_SUBMIT: 'Submit',
   SUGGESTION_SUBMIT_SUCCEED: 'Submit Succeed',
   SUGGESTION_SUBMIT_FAILED: 'Submit Failed',
+
+  //ar地图校准
+  MAP_AR_DATUM_LONGITUDE:'Longitude',
+  MAP_AR_DATUM_LATITUDE:'Latitude',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION:'Please enter current position',
+  MAP_AR_DATUM_AUTO_LOCATION:'Auto location',
+  MAP_AR_DATUM_MAP_SELECT_POINT:'Map select point',
+  MAP_AR_DATUM_SURE:'Sure',
+  MAP_AR_DATUM_AUTO_LOCATIONING:'Locationing',
+  MAP_AR_DATUM_POSITION:'Datum position',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED:'Auto location succeed',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED:'Map select point succeed',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:'Please place your mobile phone facing south',
+  MAP_AR_DATUM_SETTING:'Setting',
+
+  //ar地图
+  COLLECT_SCENE_RENAME:'Rename',
+  COLLECT_SCENE_RENAME_SUCCEED:'Rename succeed',
+  COLLECT_SCENE_ADD_REMARK:'Add remark',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED:'Add remark succeed',
 }
 export { Profile }

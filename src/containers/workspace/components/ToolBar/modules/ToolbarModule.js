@@ -17,7 +17,7 @@ import {
   tool3DModule,
   legendModule,
   aiModule,
-  mapSettingModule,
+  mapSettingModule, markModule,
 } from '../modules'
 
 // 更新类中的数据
@@ -97,6 +97,8 @@ async function getTabBarData(type, params = {}) {
       type === ConstToolType.STYLE_TRANSFER)
   ) {
     tabBarData = toolModule().getData(type, params)
+  }else if( type === ConstToolType.MAP_MARKS){
+    tabBarData = markModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     tabBarData = shareModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {

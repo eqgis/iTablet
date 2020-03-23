@@ -88,7 +88,15 @@ function getToolbarHeight(type, currentHeight) {
       break
     case ConstToolType.MAP_TOOL:
     case ConstToolType.MAP_TOOLS:
-      height = ConstToolType.TOOLBAR_HEIGHT[6]
+      height = ConstToolType.TOOLBAR_HEIGHT[4]
+      if (orientation === 'PORTRAIT') {
+        column = 4
+      } else {
+        column = 5
+      }
+      break
+    case ConstToolType.MAP_MARKS:
+      height = ConstToolType.TOOLBAR_HEIGHT[3]
       if (orientation === 'PORTRAIT') {
         column = 4
       } else {

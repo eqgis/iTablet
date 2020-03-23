@@ -17,6 +17,7 @@ import legendModule from './legendModule'
 import aiModule from './aiModule'
 import mapSettingModule from './mapSettingModule'
 import roadNetModule from './roadNetModule'
+import markModule from './markModule'
 export {
   ToolbarModule,
   startModule,
@@ -36,4 +37,5 @@ export {
   aiModule,
   mapSettingModule,
   roadNetModule,
+  markModule,
 }

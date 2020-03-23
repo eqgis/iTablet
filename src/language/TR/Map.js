@@ -41,9 +41,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'Navigasyon Çalışma Alanı',
   NAVIGATION_MAP: 'NAVİGASYON_HARİTA',
   NETWORK: 'AĞ',
+  NETWORK_MODULE: 'Yol ağı',
   NETMODEL: 'NETMODEL',
   NETDATA: 'NETVERİ',
   INDOORDATA: 'İÇMEKANVERİLERİ',
+  INDOOR_DATASOURCE: 'İç mekan veri kaynakları',
+  OUTDOOR_DATASETS: 'Açık veri seti',
+  SWITCH_DATA:'Veri değiştirme',
   DATASET: 'VERİSETİ',
   Traffic: 'Trafik',
 
@@ -145,6 +149,7 @@ const Map_Main_Menu = {
   TOUR_NAME: 'Gezinti Adı',
 
   STYLE_TRANSFER: 'AI Kartografi',
+  OBJ_EDIT: 'Nesne düzenleme',
 
   TOOLS_SCENE_SELECT: 'Seç',
   TOOLS_PATH_ANALYSIS: 'Yol Analizi',
@@ -179,7 +184,7 @@ const Map_Main_Menu = {
   CUT_FIRST: 'Lütfen önce haritayı kesin',
   THEME: 'Oluştur',
   THEME_UNIFORM_MAP: 'Tek Tip Harita',
-  THEME_UNIQUE_VALUES_MAP: 'Benzersin Değerler\n Harita',
+  THEME_UNIQUE_VALUES_MAP: 'Benzersiz Değerler\n Harita',
   THEME_RANGES_MAP: 'Ranges Map',
   THEME_UNIFORM_LABLE: 'Harita Aralıkları',
   THEME_UNIQUE_VALUE_LABLE_MAP: 'Tek Tip\n Etiket Harita',
@@ -249,6 +254,10 @@ const Map_Main_Menu = {
 
   CREATE_WITH_SYMBOLS: 'Sembollerle Oluştur',
   CREATE_WITH_TEMPLATE: 'Şablonla Oluştur',
+  POINT_SYMBOL_LIBRARY: 'Nokta Sembol Grafiği',
+  LINE_SYMBOL_LIBRARY: 'Çizgi Sembol Grafiği',
+  REGION_SYMBOL_LIBRARY: 'Poligon Sembol Grafiği',
+
   COLLECTION: 'Toplama',
   COLLECTION_RECENT: 'Yeni Tarihli',
   COLLECTION_SYMBOL: 'Sembol',
@@ -487,6 +496,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: 'Maksimum Görünürlük Ölçeği',
   LAYERS_MINIMUM: 'Maksimum Görünürlük Ölçeği',
   LAYERS_UER_DEFINE: 'Kullanıcı tanımı',
+  LAYER_NONE: 'hayır',
   LAYERS_SET_AS_CURRENT_SCALE: 'Geçerli Ölçek Olarak Ayarla',
   LAYERS_CLEAR: 'Clear',
   LAYERS_LAYER_NAME: 'Katman Adı',
@@ -537,6 +547,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'Yinele',
   ATTRIBUTE_REVERT: 'Geri Dön',
   ATTRIBUTE_FIELD_ADD: 'Ekle',
+  ATTRIBUTE_ADD: 'Öznitelik Ekle',
+  ATTRIBUTE_DETAIL: 'Öznitelik Detay',
+  REQUIRED: 'Gereken',
+  NAME: 'Ad',
+  TYPE: 'Türü',
+  LENGTH: 'Uzunluk',
+  DEFAULT: 'Varsayılan',
+  CONFIRM_ADD: 'Ekle',
 
   DETAIL: 'Detay',
   // 统计模式

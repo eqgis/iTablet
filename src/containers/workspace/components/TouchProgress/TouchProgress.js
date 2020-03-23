@@ -6,10 +6,12 @@ import {
   Image,
   Text,
   Platform,
+  TextInput,
+  TouchableOpacity,
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import { screen, scaleSize } from '../../../../utils'
+import {screen, scaleSize, setSpText} from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -51,8 +53,10 @@ export default class TouchProgress extends Component {
         width: this._linewidth,
       },
     }
+    this.tempText = ''
     this.state = {
       tips: '',
+      previousTips:'',
     }
 
     this._panResponder = PanResponder.create({
@@ -583,6 +587,34 @@ export default class TouchProgress extends Component {
           }
           break
         }
+        case 7:
+          if(
+            this.props.selectName ===
+            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            let fontsize = await SCartography.getTextSizeOfLayer(this.props.currentLayer.name)
+            this._panBtnStyles.style.left =
+              (fontsize * progressWidth) / 20 + panBtnDevLeft
+            this._previousLeft = (fontsize * progressWidth) / 20
+            this._BackLine.style.width =
+              (fontsize * progressWidth) / 20
+            tips =
+              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+              '     ' +
+              parseInt(fontsize)
+          } else if(this.props.selectName === 'TEXT_ROTATION') {
+            let angle = await SCartography.getTextAngleOfLayer(this.props.currentLayer.name)
+            this._panBtnStyles.style.left =
+              (angle * progressWidth) / 360 + panBtnDevLeft
+            this._previousLeft = (angle * progressWidth) / 360
+            this._BackLine.style.width = (angle * progressWidth) / 360
+            tips =
+              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+              '     ' +
+              parseInt(angle) +
+              '°'
+          }
+          break
         case 83: {
           if (
             this.props.selectName ===
@@ -713,20 +745,26 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+      ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       if (
         this.props.selectName ===
@@ -818,8 +856,10 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if (tips !== this.state.tips) {
+    if( tips !== this.state.tips){
+      this.tempText = value ? ~~value : ''
       this.setState({
+        previousTips:tips,
         tips,
       })
     }
@@ -914,20 +954,26 @@ export default class TouchProgress extends Component {
         newValue = value * 200
       }
     } else if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1057,6 +1103,21 @@ export default class TouchProgress extends Component {
         case 5:
           newValue = value * 100
           break
+        case 7:
+          if (
+            this.props.selectName ===
+            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            newValue = value * 20
+            if (newValue <= 1) {
+              newValue = 1
+            } else if (newValue > 20) {
+              newValue = 20
+            }
+          } else if (this.props.selectName === 'TEXT_ROTATION'){
+            newValue = value * 360
+          }
+          break
         case 83:
           if (
             this.props.selectName ===
@@ -1092,20 +1153,26 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1568,6 +1635,35 @@ export default class TouchProgress extends Component {
 
           break
         }
+        case 7: {
+          if(
+            this.props.selectName ===
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
+            await SCartography.setTextSizeOfLayer(value, this.props.currentLayer.name)
+            if (value <= 1) {
+              value = 1
+            } else if (value > 20) {
+              value = 20
+            }
+            tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+                '     ' +
+                parseInt(value)
+          } else if(this.props.selectName === 'TEXT_ROTATION') {
+            await SCartography.setTextAngleOfLayer(value, this.props.currentLayer.name)
+            if (value < 0) {
+              value = 0
+            } else if (value > 360) {
+              value = 360
+            }
+            tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+                '     ' +
+                parseInt(value) +
+                '°'
+          }
+          break
+        }
         case 83: {
           if (
             this.props.selectName ===
@@ -1651,10 +1747,13 @@ export default class TouchProgress extends Component {
       }
     }
 
-    tips !== this.state.tips &&
+    if(tips !== this.state.tips){
+      this.tempText = ~~value
       this.setState({
+        previousTips:tips,
         tips,
       })
+    }
   }
 
   /**
@@ -1672,7 +1771,7 @@ export default class TouchProgress extends Component {
         this.props.selectName[this.props.selectName.length - 1] ===
           getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
         this.props.selectName[this.props.selectName.length - 1] ===
-          getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS
+          getLanguage(global.language).Map_Main_Menu.SATURATION
       ) {
         if (value < 0) {
           value = 0
@@ -1906,6 +2005,33 @@ export default class TouchProgress extends Component {
           }
           break
         }
+        case 7: {
+          if(
+            this.props.selectName ===
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
+            if (value <= 1) {
+              value = 1
+            } else if (value > 20) {
+              value = 20
+            }
+            tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+                '     ' +
+                parseInt(value)
+          } else if(this.props.selectName === 'TEXT_ROTATION') {
+            if (value < 0) {
+              value = 0
+            } else if (value > 360) {
+              value = 360
+            }
+            tips =
+                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+                '     ' +
+                parseInt(value) +
+                '°'
+          }
+          break
+        }
         case 83: {
           if (
             this.props.selectName ===
@@ -1968,7 +2094,7 @@ export default class TouchProgress extends Component {
           this.props.selectName[this.props.selectName.length - 1] ===
             getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
           this.props.selectName[this.props.selectName.length - 1] ===
-            getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS
+            getLanguage(global.language).Map_Main_Menu.SATURATION
         ) {
           if (value < 0) {
             value = 0
@@ -2053,20 +2179,26 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-      GLOBAL.MapToolType ===
-        ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-      GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      (
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
+      (
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+      )
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -2142,10 +2274,200 @@ export default class TouchProgress extends Component {
       }
     }
 
-    tips !== this.state.tips &&
+    if(tips !== this.state.tips){
+      this.tempText = ~~value
       this.setState({
+        previousTips:tips,
         tips,
       })
+    }
+  }
+
+  _caculateProgress = value => {
+    let layerType = this.props.currentLayer.type
+
+    let newValue
+
+    if (this.props.selectName instanceof Array) {
+      // 智能配图 selectName 为数组
+      if (
+        this.props.selectName[this.props.selectName.length - 1] ===
+          getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
+          this.props.selectName[this.props.selectName.length - 1] ===
+          getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST ||
+          this.props.selectName[this.props.selectName.length - 1] ===
+          getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION
+      ) {
+        newValue = (value + 100) / 200
+      }
+    } else if (
+      (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
+      ) &&
+        (
+          GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+            GLOBAL.MapToolType ===
+            ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+            GLOBAL.MapToolType ===
+            ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+            GLOBAL.MapToolType ===
+            ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+            GLOBAL.MapToolType ===
+            ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
+        )
+    ) {
+      switch (this.props.selectName) {
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+          newValue = value / 20
+          break
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+          newValue = value / 100
+          break
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION:
+        case 'TEXT_ROTATION':
+          newValue = value / 360
+          break
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+          newValue = value / 100
+          break
+        case getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE:
+          newValue = value / 20
+          break
+      }
+    } else if(
+      this.props.selectName === getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN){
+      newValue = value / 4
+    }else if (
+      this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH ||
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT ||
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON ||
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
+    ) {
+      newValue = value / 100
+    } else if (
+      (GLOBAL.Type === constants.MAP_THEME &&
+            this.props.currentLayer.themeType > 0) ||
+        this.props.currentLayer.isHeatmap
+    ) {
+      if (
+        this.props.selectName === 'range_parameter' ||
+          this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.RANGE_COUNT
+      ) {
+        newValue = (value - 2) / 30
+      } else if (
+        this.props.selectName === 'fontsize' ||
+          this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
+      ) {
+        newValue = value / 20
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.DOT_VALUE
+      ) {
+        newValue = value / 100
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
+      ) {
+        newValue = value / 100
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE
+      ) {
+        newValue = value / 20
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.THEME_HEATMAP_RADIUS
+      ) {
+        newValue = value / 50
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu
+            .THEME_HEATMAP_FUZZY_DEGREE
+      ) {
+        newValue = value / 100
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu
+            .THEME_HEATMAP_MAXCOLOR_WEIGHT
+      ) {
+        newValue = value / 100
+      } else if (
+        this.props.selectName ===
+          getLanguage(this.props.language).Map_Main_Menu.DATUM_VALUE
+      ) {
+        newValue = value / 10000
+      }
+    } else if (layerType !== undefined) {
+      switch (layerType) {
+        case 1:
+          if (
+            this.props.selectName ===
+              getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
+          ) {
+            newValue = value / 100
+          } else if (
+            this.props.selectName ===
+              getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY
+          ) {
+            newValue = value / 100
+          } else if (
+            this.props.selectName ===
+              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION
+          ) {
+            newValue = value / 360
+          }
+          break
+        case 3:
+          newValue = value / 20
+          break
+        case 5:
+          newValue = value / 100
+          break
+        case 7:
+          if (
+            this.props.selectName ===
+              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            newValue = value / 20
+          } else if (this.props.selectName === 'TEXT_ROTATION'){
+            newValue = value / 360
+          }
+          break
+        case 83:
+          if (
+            this.props.selectName ===
+              getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY
+          ) {
+            newValue = value / 100
+          } else if (
+            this.props.selectName ===
+              getLanguage(this.props.language).Map_Main_Menu.CONTRAST
+          ) {
+            newValue = value / 200
+          } else if (
+            this.props.selectName ===
+              getLanguage(this.props.language).Map_Main_Menu.STYLE_BRIGHTNESS
+          ) {
+            newValue = value / 200
+          }
+          break
+      }
+    }
+    let curValue = this.dealData(newValue > 1 ? 1 : (newValue < 0 ? 0 : newValue))
+    curValue !== undefined && this.setData(curValue)
+    this._initialization()
   }
 
   render() {
@@ -2163,6 +2485,17 @@ export default class TouchProgress extends Component {
       elevation: 20,
       // left: 0,
       // top: 0,
+    }
+    let num, strArray
+    if(this.state.tips !== ''){
+      let matchRel =  this.state.tips.match(/([-0-9][0-9]*)/)
+      matchRel && (num = matchRel[0])
+      if(num){
+        strArray = this.state.tips.split(num)
+      }else{
+        strArray = this.state.tips.split('     ')
+        strArray[0] += '     '
+      }
     }
     return (
       <View
@@ -2189,9 +2522,34 @@ export default class TouchProgress extends Component {
           </View>
         </View>
         {this.state.tips !== '' && (
-          <View style={styles.tips}>
-            <Text style={[styles.tipsText]}>{this.state.tips}</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.tips}
+            onPress={()=>{
+              this.input && this.input.focus()
+            }}
+            activeOpacity={1}
+          >
+            <Text style={styles.tipsText}>{strArray[0]}</Text>
+            <TextInput
+              ref={ref=>(this.input = ref)}
+              value={num !== undefined ? num + '' : ' '}
+              keyboardType={'numeric'}
+              returnKeyType={'done'}
+              onChangeText={text=>{
+                let matchRel =  text.match(/([-0-9][0-9]*)/)
+                text = matchRel ? matchRel[0] : ''
+                let tips = strArray[0] + text + strArray[1]
+                this.tempText = text
+                this.setState({
+                  tips,
+                })
+              }}
+              onBlur={()=>{
+                this._caculateProgress(~~this.tempText)
+              }}
+              style={styles.input}/>
+            <Text style={styles.tipsText}>{strArray[1]}</Text>
+          </TouchableOpacity>
         )}
       </View>
     )
@@ -2248,11 +2606,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(110,110,110,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection:'row',
   },
   tipsText: {
-    fontSize: scaleSize(22),
+    fontSize: setSpText(20),
     // fontFamily 字体
     fontWeight: 'bold',
     color: 'white',
+  },
+  input:{
+    fontSize: setSpText(24),
+    fontWeight: 'bold',
+    textAlign:'center',
+    color: 'white',
+    minWidth:scaleSize(40),
+    ...Platform.select({
+      android:{
+        padding:0,
+      },
+    }),
   },
 })

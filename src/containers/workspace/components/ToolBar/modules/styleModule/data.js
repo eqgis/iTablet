@@ -1,6 +1,8 @@
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import StyleAction from './StyleAction'
 
 const line = (param, orientation = 'PORTRAIT') => [
   {
@@ -454,6 +456,165 @@ const grid = param => [
   },
 ]
 
+const text = (param, orientation = 'PORTRAIT') => [
+  {
+    key: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+    action: () => {
+      GLOBAL.toolBox && GLOBAL.toolBox.menu()
+      let height, column
+      if (orientation === 'PORTRAIT') {
+        height = ConstToolType.THEME_HEIGHT[2]
+        column = 4
+      } else {
+        height = ConstToolType.TOOLBAR_HEIGHT_2[2]
+        column = 8
+      }
+      GLOBAL.toolBox &&
+        GLOBAL.toolBox.setVisible(
+          true,
+          ConstToolType.TEXTFONT,
+          {
+            isFullScreen: false,
+            column,
+            height,
+            buttons: [
+              ToolbarBtnType.CANCEL,
+              ToolbarBtnType.MENU,
+              ToolbarBtnType.MENU_FLEX,
+              ToolbarBtnType.TOOLBAR_COMMIT,
+            ],
+            selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+            selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+          },
+        )
+    },
+  },
+  {
+    key: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+    action: () => {
+      GLOBAL.toolBox &&
+        GLOBAL.toolBox.setState({
+          isTouchProgress: true,
+          showMenuDialog: false,
+          buttons: [
+            ToolbarBtnType.CANCEL,
+            ToolbarBtnType.MENU,
+            ToolbarBtnType.MENU_FLEX,
+            ToolbarBtnType.TOOLBAR_COMMIT,
+          ],
+          selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+          selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+        })
+    },
+  },
+  {
+    key: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+    selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+    action: () => {
+      GLOBAL.toolBox &&
+        GLOBAL.toolBox.setState({
+          isTouchProgress: true,
+          showMenuDialog: false,
+          buttons: [
+            ToolbarBtnType.CANCEL,
+            ToolbarBtnType.MENU,
+            ToolbarBtnType.MENU_FLEX,
+            ToolbarBtnType.TOOLBAR_COMMIT,
+          ],
+          selectName: 'TEXT_ROTATION',
+          selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+        })
+    },
+  },
+  {
+    key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+    action: () => {
+      GLOBAL.toolBox && GLOBAL.toolBox.menu()
+      let height, column
+      if (orientation === 'PORTRAIT') {
+        height = ConstToolType.THEME_HEIGHT[3]
+        column = 8
+      } else {
+        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+        column = 12
+      }
+      GLOBAL.toolBox &&
+        GLOBAL.toolBox.setVisible(
+          true,
+          ConstToolType.TEXTCOLOR_SET,
+          {
+            containerType: ToolbarType.colorTable,
+            column,
+            isFullScreen: false,
+            height,
+            buttons: [
+              ToolbarBtnType.CANCEL,
+              ToolbarBtnType.MENU,
+              ToolbarBtnType.MENU_FLEX,
+              ToolbarBtnType.TOOLBAR_COMMIT,
+            ],
+            selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+          },
+        )
+    },
+  },
+]
+
+const font = [
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
+    // action: StyleAction.setTextFont,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_bold.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_bold.png'),
+  },
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_italic.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_italic.png'),
+  },
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_underline.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_underline.png'),
+  },
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+  },
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+  },
+  {
+    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
+    action: StyleAction.setTextFont,
+    size: 'large',
+    image: require('../../../../../../assets/mapTools/style_font_outline.png'),
+    selectedImage: require('../../../../../../assets/mapTools/style_font_outline.png'),
+  },
+]
+
 const colors = [
   '#FFFFFF',
   '#000000',
@@ -578,4 +739,4 @@ const colorsWithNull = [
   },
 ].concat(colors)
 
-export { line, point, region, grid, colors, colorsWithNull }
+export { line, point, region, grid, text, font, colors, colorsWithNull }

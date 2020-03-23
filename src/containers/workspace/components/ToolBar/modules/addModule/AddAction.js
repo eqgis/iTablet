@@ -14,8 +14,7 @@ import NavigationService from '../../../../../NavigationService'
  */
 async function listAction(type, params = {}) {
   if (
-    type === ConstToolType.MAP_ADD ||
-    type === ConstToolType.MAP_NAVIGATION_ADD_UDB
+    type === ConstToolType.MAP_ADD
   ) {
     // 数据源和地图列表点击事件
     const _params = ToolbarModule.getParams()
@@ -99,25 +98,6 @@ async function listAction(type, params = {}) {
         }
         _params.setToolbarVisible(false)
       })
-    } else if (
-      params.section &&
-      params.section.title ===
-        getLanguage(_params.language).Map_Main_Menu.NETWORK_DATASET
-    ) {
-      let selectedItem = params.item
-      if (selectedItem) {
-        _params.setToolbarVisible(false)
-        _params.setNavigationDatas && _params.setNavigationDatas(selectedItem)
-        //await SMap.startNavigation(selectedItem)
-        NavigationService.navigate('NavigationView', {
-          changeNavPathInfo: _params.changeNavPathInfo,
-          getNavigationDatas: _params.getNavigationDatas,
-        })
-      } else {
-        Toast.show(
-          getLanguage(_params.language).Prompt.PLEASE_SELECT_NETWORKDATASET,
-        )
-      }
     }
   } else if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
     // 数据集列表点击事件

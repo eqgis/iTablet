@@ -28,6 +28,15 @@ function action(type) {
         column: 4,
         height: ConstToolType.THEME_HEIGHT[3],
       })
+    } else if(params.currentLayer.type === 7) {
+      params.showFullMap && params.showFullMap(true)
+      params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+        containerType: ToolbarType.list,
+        isFullScreen: true,
+        column: 4,
+        height: 0,
+        showMenuDialog: true,
+      })
     } else {
       NavigationService.navigate('LayerManager')
       Toast.show(

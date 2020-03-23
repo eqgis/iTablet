@@ -492,6 +492,34 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
+            let {px,py,width,height}  = this.PressViewPosition
+            if(layer.index > 0){
+              py = py - height
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+              layer.index -= 1
+              this.setState({
+                data:layer,
+              })
+              this.PressViewPosition = {px,py,width,height}
+            }else{
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+            }
           }.bind(this)())
         },
       },
@@ -506,6 +534,35 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
+            let {px,py,width,height}  = this.PressViewPosition
+            if(layer.index < layer.layerCount - 1){
+              py = py + height
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+              layer.index += 1
+              this.setState({
+                data:layer,
+              })
+              this.PressViewPosition = {px,py,width,height}
+            }else{
+              ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+            }
+
           }.bind(this)())
         },
       },
@@ -568,6 +625,12 @@ export default class LayerManager_item extends React.Component {
         },
         items,
       )
+      this.PressViewPosition = {
+        width,
+        height,
+        px,
+        py,
+      }
     })
   }
   renderItem = () => {

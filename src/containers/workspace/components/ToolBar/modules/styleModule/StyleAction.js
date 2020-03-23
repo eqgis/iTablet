@@ -64,6 +64,12 @@ async function tableAction(params) {
     case ConstToolType.REGIONBORDERCOLOR_SET:
       SCartography.setFillBorderColor(params.key, params.layerName)
       break
+    case ConstToolType.TEXTCOLOR_SET:
+      SCartography.setTextColorOfLayer(params.key, params.layerName)
+      break
+  }
+  if(!params.type && params.action) {
+    params.action(params)
   }
 }
 
@@ -91,11 +97,45 @@ function layerListAction(data) {
     })
     _params.showFullMap(true)
     _params.navigation.navigate('MapView')
+  } else if (data.type === 7) {
+    _params.showFullMap && _params.showFullMap(true)
+    _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+      containerType: ToolbarType.list,
+      isFullScreen: true,
+      column: 4,
+      height: 0,
+      showMenuDialog: true,
+    })
+    _params.navigation.navigate('MapView')
   } else {
     Toast.show(
       getLanguage(_params.language).Prompt.THE_CURRENT_LAYER_CANNOT_BE_STYLED,
     )
     //'当前图层无法设置风格')
+  }
+}
+
+function setTextFont(param) {
+  let layerName = ToolbarModule.getParams().currentLayer.name
+  switch (param.title) {
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
+      SCartography.setTextFontOfLayer('BOLD', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
+      SCartography.setTextFontOfLayer('ITALIC', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
+      SCartography.setTextFontOfLayer('UNDERLINE', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
+      SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
+      SCartography.setTextFontOfLayer('SHADOW', layerName)
+      break
+    case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
+      SCartography.setTextFontOfLayer('OUTLINE', layerName)
+      break
   }
 }
 
@@ -115,6 +155,8 @@ function menu(type, selectKey, params = {}) {
         type === ConstToolType.REGIONBEFORECOLOR_SET ||
         type === ConstToolType.REGIONAFTERCOLOR_SET ||
         type === ConstToolType.REGIONBORDERCOLOR_SET ||
+        type === ConstToolType.TEXTCOLOR_SET ||
+        type === ConstToolType.TEXTFONT ||
         type === ConstToolType.LEGEND ||
         type === ConstToolType.LEGEND_NOT_VISIBLE) &&
         isBoxShow)
@@ -136,6 +178,8 @@ function menu(type, selectKey, params = {}) {
       type === ConstToolType.REGIONBEFORECOLOR_SET ||
       type === ConstToolType.REGIONAFTERCOLOR_SET ||
       type === ConstToolType.REGIONBORDERCOLOR_SET ||
+      type === ConstToolType.TEXTCOLOR_SET ||
+      type === ConstToolType.TEXTFONT ||
       type === ConstToolType.LEGEND ||
       type === ConstToolType.LEGEND_NOT_VISIBLE
     ) {
@@ -202,4 +246,5 @@ export default {
   tableAction,
   layerListAction,
   menu,
+  setTextFont,
 }

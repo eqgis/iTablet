@@ -7,9 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <UIKit/UIKit.h>
 #import "React/RCTBridgeModule.h"
+#import "React/RCTEventEmitter.h"
 #import <ZipArchive/ZipArchive.h>
 #import "FileUtils.h"
+#import <SuperMap/Environment.h>
+#import <SuperMap/Workspace.h>
+#import <SuperMap/DatasourceConnectionInfo.h>
+#import <SuperMap/Datasource.h>
+#import <SuperMap/Datasources.h>
 
 NSString *USER_NAME;
 static BOOL hasImportedData = NO;
@@ -30,4 +38,6 @@ static BOOL hasImportedData = NO;
 + (NSDictionary *)readLocalFileWithPath:(NSString *)path;
 +(BOOL)getUriState:(NSURL *)url;
 +(void)sendShareResult;
++ (BOOL)copyFiles:(NSString *)from targetDictionary:(NSString *)to filterFileSuffix:(NSString *)filterFileSuffix
+filterFileDicName:(NSString*)filterFileDicName otherFileDicName:(NSString*)otherFileDicName isOnly:(BOOL)isOnly;
 @end

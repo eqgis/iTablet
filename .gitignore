@@ -119,3 +119,10 @@ ios/ZipArchive.framework/Modules/module.modulemap
 ios/SDKExport/libWeChatSDK.a
 ios/SDKExport/WXApiObject.h
 ios/SDKExport/WXApi.h
+.babelrc
+.buckconfig
+.eslintignore
+.eslintrc.js
+.flowconfig
+.gitattributes
+android/local.properties

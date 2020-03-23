@@ -46,9 +46,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: '导航工作空间',
   NAVIGATION_MAP: '导航地图',
   NETWORK: '路网',
+  NETWORK_MODULE:'路网',
   NETMODEL: '网络模型',
   NETDATA: '选择路网数据',
   INDOORDATA: '室内数据源',
+  INDOOR_DATASOURCE: '室内数据源',
+  OUTDOOR_DATASETS: '室外数据集',
+  SWITCH_DATA:'导航数据切换',
   DATASET: '选择数据集',
   Traffic: '路况',
 
@@ -152,6 +156,7 @@ const Map_Main_Menu = {
   TOUR_NAME: '旅行轨迹名称',
 
   STYLE_TRANSFER: 'AI配图',
+  OBJ_EDIT: '对象编辑',
 
   TOOLS_MAGNIFIER: '放大镜',
   TOOLS_SELECT_ALL: '全选',
@@ -274,6 +279,9 @@ const Map_Main_Menu = {
   //外业采集 采集
   CREATE_WITH_SYMBOLS: '普通创建',
   CREATE_WITH_TEMPLATE: '模板创建',
+  POINT_SYMBOL_LIBRARY: '点符号库',
+  LINE_SYMBOL_LIBRARY: '线型符号库',
+  REGION_SYMBOL_LIBRARY: '填充符号库',
 
   COLLECTION: '采集',
   COLLECTION_RECENT: '最近',
@@ -511,6 +519,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: '最大可见比例尺',
   LAYERS_MINIMUM: '最小可见比例尺',
   LAYERS_UER_DEFINE: '自定义',
+  LAYER_NONE:'无',
   LAYERS_SET_AS_CURRENT_SCALE: '设置为当前比例尺',
   LAYERS_CLEAR: '清除',
   LAYERS_LAYER_NAME: '图层标题',
@@ -561,6 +570,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: '恢复',
   ATTRIBUTE_REVERT: '还原',
   ATTRIBUTE_FIELD_ADD: '添加',
+  ATTRIBUTE_ADD: '添加属性',
+  ATTRIBUTE_DETAIL: '属性详情',
+  REQUIRED: '必填',
+  NAME: '名称',
+  TYPE: '类型',
+  ENGTH: '长度',
+  DEFAULT: '缺省值',
+  CONFIRM_ADD: '确认',
 
   DETAIL: '详情',
   // 统计模式

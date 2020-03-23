@@ -7,6 +7,7 @@ import { getLanguage } from '../../../../language'
 import { connect } from 'react-redux'
 import ExportList from '../component/ExportList'
 import { Platform } from 'react-native'
+import NavigationService from '../../../NavigationService'
 
 class MyDataset extends MyDataPage {
   constructor(props) {
@@ -116,6 +117,22 @@ class MyDataset extends MyDataPage {
 
     return result
   }
+
+  getCustomPagePopupData = () => [
+    {
+      title: getLanguage(global.language).Profile.NEW_DATASET,
+      action: () => {
+        this._closeModal()
+        NavigationService.navigate('NewDataset', {
+          title: this.state.title,
+          getDatasets: () => this.state.sectionData[0].data,
+          refreshCallback: async () => {
+            await this._getSectionData()
+          },
+        })
+      },
+    },
+  ]
 
   isExportable = itemInfo => {
     let datasetType = itemInfo.item.datasetType

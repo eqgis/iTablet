@@ -706,9 +706,9 @@ function showEditLabel() {
     cb: () => select(type),
   })
 
-  let layers = _params.layers.layers
+  // let layers = _params.layers.layers
   // 其他图层设置为不可选
-  _setMyLayersSelectable(layers, false)
+  // _setMyLayersSelectable(layers, false)
 
   Toast.show(
     global.language === 'CN'
@@ -720,7 +720,7 @@ function showEditLabel() {
 /**
  * 选择标注_编辑
  */
-function selectLabelToEdit() {
+function selectLabelToEdit(toolType = '') {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
@@ -732,7 +732,10 @@ function selectLabelToEdit() {
     containerType = ToolbarType.table,
     type = ''
 
-  switch (global.MapToolType) {
+  if(toolType === '') {
+    toolType = global.MapToolType
+  }
+  switch (toolType) {
     case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
       height = ConstToolType.HEIGHT[0]
@@ -761,10 +764,6 @@ function selectLabelToEdit() {
         cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
       })
   }
-
-  let layers = _params.layers.layers
-  // 其他图层设置为不可选
-  _setMyLayersSelectable(layers, false)
 }
 
 /**
@@ -811,16 +810,16 @@ function selectLabelToStyle() {
         height,
         showMenuDialog,
         cb: () => {
-          StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
-          SMap.setLayerEditable(event.layerInfo.path, false)
+          if(global.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT) {
+            SMap.appointEditGeometry(event.id, event.layerInfo.path)
+          } else {
+            StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
+            SMap.setLayerEditable(event.layerInfo.path, false)
+          }
           SMap.setAction(Action.PAN)
         },
       })
   }
-
-  let layers = _params.layers.layers
-  // 其他图层设置为不可选
-  _setMyLayersSelectable(layers, false)
 }
 
 //设置我的图层的可选择性
@@ -865,19 +864,23 @@ async function deleteLabel() {
 }
 
 function geometrySelected(event) {
-  const _params = ToolbarModule.getParams()
-  let geoType
-  for (let i = 0; i < event.fieldInfo.length; i++) {
-    if (event.fieldInfo[i].name === 'SmGeoType') {
-      geoType = event.fieldInfo[i].value
-      break
-    }
-  }
   if (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
     ToolbarModule.addData({
       event: event,
     })
+    const _params = ToolbarModule.getParams()
     let type = ''
+    let layerType = event.layerInfo.type
+    let geoType
+    for (let i = 0; i < event.fieldInfo.length; i++) {
+      if (event.fieldInfo[i].name === 'SmGeoType') {
+        geoType = event.fieldInfo[i].value
+        break
+      }
+    }
+    if(!geoType) {
+      geoType = layerType
+    }
     switch (geoType) {
       case DatasetType.POINT:
         type = ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT
@@ -890,6 +893,11 @@ function geometrySelected(event) {
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT
+        break
+    }
+    if(type !== '' && layerType !== DatasetType.CAD) {
+      this.selectLabelToEdit(type)
+      return
     }
 
     if (type !== '') {
@@ -1148,7 +1156,7 @@ function commit(type) {
     SMap.setAction(Action.PAN)
     let layers = _params.layers.layers
     // 还原其他图层的选择状态
-    _setMyLayersSelectable(layers, true)
+    // _setMyLayersSelectable(layers, true)
     for (let i = 0; i < layers.length; i++) {
       if (LayerUtils.getLayerType(layers[i]) === 'TAGGINGLAYER') {
         if (
@@ -1328,26 +1336,39 @@ function toolbarBack() {
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
     let type = ''
-    if (GLOBAL.MapToolType.indexOf('_POINT') !== -1) {
-      type = ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT
-    } else if (GLOBAL.MapToolType.indexOf('_LINE') !== -1) {
-      type = ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE
-    } else if (GLOBAL.MapToolType.indexOf('_REGION') !== -1) {
-      type = ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION
-    } else if (GLOBAL.MapToolType.indexOf('_TEXT') !== -1) {
-      type = ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT
-    }
-    if (type !== '') {
-      let event = ToolbarModule.getData().event
+    let layerType = ToolbarModule.getData().event.layerInfo.type
+    if(layerType === DatasetType.CAD) {
+      if (GLOBAL.MapToolType.indexOf('_POINT') !== -1) {
+        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT
+      } else if (GLOBAL.MapToolType.indexOf('_LINE') !== -1) {
+        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE
+      } else if (GLOBAL.MapToolType.indexOf('_REGION') !== -1) {
+        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION
+      } else if (GLOBAL.MapToolType.indexOf('_TEXT') !== -1) {
+        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT
+      }
+      if (type !== '') {
+        let event = ToolbarModule.getData().event
+        _params.setToolbarVisible(true, type, {
+          isFullScreen: false,
+          column: 5,
+          height: ConstToolType.HEIGHT[0],
+          cb: () => {
+            StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
+            SMap.setLayerEditable(event.layerInfo.path, false)
+            SMap.setAction(Action.PAN)
+          },
+        })
+      }
+    } else {
+      SMap.clearSelection()
+      _params.setSelection()
+      let type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
-        column: 5,
-        height: ConstToolType.HEIGHT[0],
-        cb: () => {
-          StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
-          SMap.setLayerEditable(event.layerInfo.path, false)
-          SMap.setAction(Action.PAN)
-        },
+        height: 0,
+        cb: () => select(type),
       })
     }
   }
@@ -1368,7 +1389,7 @@ function close(type) {
     SMap.setAction(Action.PAN)
     let layers = _params.layers.layers
     // 还原其他图层的选择状态
-    _setMyLayersSelectable(layers, true)
+    // _setMyLayersSelectable(layers, true)
     for (let i = 0; i < layers.length; i++) {
       if (LayerUtils.getLayerType(layers[i]) === 'TAGGINGLAYER') {
         if (

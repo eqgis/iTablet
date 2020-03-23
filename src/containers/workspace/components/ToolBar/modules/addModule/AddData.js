@@ -128,6 +128,8 @@ async function getUDBsAndMaps() {
         //Const.DATA_SOURCE,
         image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
         data: filterUDBs,
+        addDatasource: true,
+        getDatasource: getUDBsAndMaps,
       },
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
@@ -185,79 +187,12 @@ async function getDatasets(type, params = {}) {
   return { data, buttons }
 }
 
-//获取导航的addModule数据
-async function getAllDatas() {
-  const params = ToolbarModule.getParams()
-  let { data, buttons } = await getUDBsAndMaps()
-  let list
-  let userUDBPath, userUDBs
-  let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/
-  if (
-    params.user &&
-    params.user.currentUser.userName &&
-    params.user.currentUser.userType !== UserType.PROBATION_USER
-  ) {
-    let userPath =
-      (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
-      params.user.currentUser.userName +
-      '/'
-    userUDBPath = userPath + ConstPath.RelativePath.Datasource
-    userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
-      extension: 'udb',
-      type: 'file',
-    })
-  } else {
-    let customerUDBPath = await FileTools.appendingHomeDirectory(
-      ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
-    )
-    userUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
-      extension: 'udb',
-      type: 'file',
-    })
-  }
-
-  //过滤掉标注和标绘
-  userUDBs = userUDBs.filter(item => {
-    item.name = dataUtil.getNameByURL(item.path)
-    return !item.name.match(checkLabelAndPlot)
-  })
-
-  for (let item of userUDBs) {
-    let connectionInfo = {}
-    connectionInfo.server = await FileTools.appendingHomeDirectory(item.path)
-    connectionInfo.engineType = EngineType.UDB
-    connectionInfo.alias = item.name
-    await SMap.openNavDatasource(connectionInfo)
-  }
-  let datas = await SMap.getNetworkDataset()
-  datas.length > 0 && (list = datas)
-  if (list.length > 0) {
-    list.forEach(
-      item =>
-        (item.image = require('../../../../../../assets/Navigation/network.png')),
-    )
-    let networkData = [
-      {
-        title: getLanguage(params.language).Map_Main_Menu.NETWORK_DATASET,
-        image: require('../../../../../../assets/mapToolbar/dataset_type_network.png'),
-        data: list,
-      },
-    ]
-    data = data.concat(networkData)
-  }
-  return { data, buttons }
-}
-
-let navDatas
 async function getData(type, params = {}) {
   switch (type) {
     case ConstToolType.MAP_THEME_ADD_DATASET:
       return getDatasets(type, params)
     case ConstToolType.MAP_ADD:
       return await getUDBsAndMaps()
-    case ConstToolType.MAP_NAVIGATION_ADD_UDB:
-      if (!navDatas) navDatas = await getAllDatas()
-      return navDatas
   }
 }
 

@@ -5,6 +5,7 @@ import {
   layerManagerData,
   ConstPath,
   UserType,
+  TouchType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import {
@@ -75,6 +76,7 @@ export default class LayerManager_tolbar extends React.Component {
     user: Object,
     navigation: Object,
     curUserBaseMaps: Array,
+    currentScale:Number,
   }
 
   static defaultProps = {
@@ -106,6 +108,9 @@ export default class LayerManager_tolbar extends React.Component {
       // layerName: '',
       layerVisibleScaleData: [],
     }
+    this.selectScaleKey = undefined //图层可见范围选中key
+    this.selectedMinItem = undefined //自定义最小值
+    this.selectedMaxItem = undefined // 自定义最大值
     this.isShow = false
     this.isBoxShow = true
     this.refreshParentList = null // 当前选中图层如果是图层组中的子图层，则刷新该子图层的图层组列表
@@ -122,6 +127,22 @@ export default class LayerManager_tolbar extends React.Component {
   }
   componentDidUpdate() {
     this.getHeight()
+    if(this.props.currentScale && this.selectScaleKey !== undefined){
+      //update data
+      if(this.selectScaleKey === 'min'){
+        this.selectedMinItem = {
+          key:'自定义比例尺',
+          value:this.props.currentScale,
+          type:'min',
+        }
+      }else{
+        this.selectedMaxItem = {
+          key:'自定义比例尺',
+          value:this.props.currentScale,
+          type:'max',
+        }
+      }
+    }
   }
   getHeight = () => {
     let device = this.props.device
@@ -993,8 +1014,8 @@ export default class LayerManager_tolbar extends React.Component {
         ref={ref => (this.picker = ref)}
         language={GLOBAL.language}
         confirm={async item => {
-          let min = item[0].selectedItem.value
-          let max = item[1].selectedItem.value
+          let min = item[0].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMinItem.value : item[0].selectedItem.value
+          let max = item[1].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMaxItem.value : item[1].selectedItem.value
           if (min !== 0 && max !== 0 && min <= max) {
             //最大比例尺必须大于最小比例尺
             Toast.show(
@@ -1008,22 +1029,44 @@ export default class LayerManager_tolbar extends React.Component {
               if (item[i].value === '最大可见比例尺') {
                 await SMap.setMaxVisibleScale(
                   this.state.layerData.path,
-                  item[i].selectedItem.value,
+                  max,
                 )
               } else {
                 await SMap.setMinVisibleScale(
                   this.state.layerData.path,
-                  item[i].selectedItem.value,
+                  min,
                 )
               }
             }
           }
           this.setVisible(false)
+          this.selectScaleKey = undefined
+          this.selectedMinItem = undefined
+          this.selectedMaxItem = undefined
         }}
         cancel={() => {
           this.setVisible(false)
+          this.selectScaleKey = undefined
+          this.selectedMinItem = undefined
+          this.selectedMaxItem = undefined
         }}
         popData={this.state.layerVisibleScaleData}
+        onRightSelect={async item=>{
+          if(item.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE){
+            this.selectScaleKey = item.type
+            let currentScaleData
+            if(item === 'min'){
+              currentScaleData = this.selectedMinItem
+            }else{
+              currentScaleData = this.selectedMaxItem
+            }
+            let mapScale = currentScaleData !== undefined ? currentScaleData.value : (await SMap.getMapScale())
+            GLOBAL.TouchType = TouchType.NULL
+            this.props.navigation && this.props.navigation.navigate('MapView')
+            GLOBAL.ToolBar && GLOBAL.ToolBar.showFullMap()
+            GLOBAL.LayerVisibilityView && GLOBAL.LayerVisibilityView.setVisible(true,(mapScale - 0).toFixed(6))
+          }
+        }}
         viewableItems={3}
       />
     )

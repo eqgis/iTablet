@@ -339,7 +339,7 @@ function getData(type, params) {
         },
         {
           key: 'showEditLabel',
-          title: getLanguage(global.language).Map_Layer.PLOTS_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: ToolAction.showEditLabel,
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
@@ -403,7 +403,7 @@ function getData(type, params) {
         {
           key: 'tagging_edit',
           title: getLanguage(global.language).Map_Main_Menu.EDIT,
-          action: ToolAction.selectLabelToEdit,
+          action: () => ToolAction.selectLabelToEdit(),
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
         },
@@ -419,6 +419,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -439,13 +446,6 @@ function getData(type, params) {
           action: () => EditAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
-        },
-        {
-          key: constants.MOVE,
-          title: getLanguage(global.language).Map_Main_Menu.MOVE,
-          action: EditAction.move,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
       ]
       buttons = [
@@ -577,6 +577,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,

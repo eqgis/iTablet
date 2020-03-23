@@ -14,6 +14,7 @@ export default class MapSelectPointButton extends React.Component {
     setNavigationHistory: () => {},
     navigationhistory: Array,
     getNavigationDatas: () => {},
+    setNavigationDatas: () => {},
     setLoading: () => {},
   }
 
@@ -45,7 +46,6 @@ export default class MapSelectPointButton extends React.Component {
           GLOBAL.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
-            getNavigationDatas: this.props.getNavigationDatas,
           })
         } else {
           await SMap.getEndPoint(
@@ -68,7 +68,6 @@ export default class MapSelectPointButton extends React.Component {
           GLOBAL.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
-            getNavigationDatas: this.props.getNavigationDatas,
           })
         } else {
           await SMap.getStartPoint(
@@ -85,15 +84,15 @@ export default class MapSelectPointButton extends React.Component {
     }
   }
 
-  // [{datasourceName:'',datasetName:''}]
-  // [{datasourceName:''}]
+  // [{datasourceName:'',datasetName:'',name:''}]
+  // [{datasourceName:'',name:''}]
   //获取数组中相同的对象
   getSameInfoFromArray = (arr1, arr2) => {
     let result = []
-    if (arr1.length === 0 || arr2.length === 0) return result
+    if (!arr1 || !arr2 || arr1.length === 0 || arr2.length === 0) return result
     arr1.forEach(item => {
       arr2.forEach(item2 => {
-        if (JSON.stringify(item) === JSON.stringify(item2)) {
+        if (item.name === item2.name) {
           result.push(item)
         }
       })
@@ -133,6 +132,39 @@ export default class MapSelectPointButton extends React.Component {
         startOutdoorInfo,
         endOutdoorInfo,
       )
+      let selectedData = this.props.getNavigationDatas()
+      let datasources = selectedData.selectedDatasources
+      let datasets = selectedData.selectedDatasets
+      let currentDataset = {}
+      let currentDatasource = []
+      //这个界面导航数据必定已选择，即使用户没有手动选择，上个界面路径分析也选择了
+      //if(datasources.length > 0 || datasets.length > 0){
+      commonIndoorInfo = this.getSameInfoFromArray(commonIndoorInfo,datasources)
+      commonOutdoorInfo = this.getSameInfoFromArray(commonOutdoorInfo,datasets)
+      let selectedDatasources = datasources
+      let selectedDatasets = datasets
+      if(commonIndoorInfo.length > 0) {
+        currentDatasource = commonIndoorInfo
+        currentDataset = []
+      }else if(commonOutdoorInfo.length > 0){
+        currentDataset  = commonOutdoorInfo[0]
+        currentDatasource = []
+        if(datasources.length === 0){
+          startIndoorInfo = []
+          endIndoorInfo = []
+        }else{
+          startIndoorInfo.length > 0 && currentDatasource.push(startIndoorInfo[0])
+          endIndoorInfo.length > 0 && currentDatasource.push(endIndoorInfo[0])
+        }
+      }
+      // }
+
+      this.props.setNavigationDatas({
+        selectedDatasources,
+        selectedDatasets,
+        currentDataset,
+        currentDatasource,
+      })
       let path, pathLength
       if (commonIndoorInfo.length > 0) {
         // todo 室内点的问题 图标问题 最好统一js显示
@@ -151,7 +183,7 @@ export default class MapSelectPointButton extends React.Component {
             true,
             GLOBAL.ENDPOINTFLOOR,
           )
-          await SMap.startIndoorNavigation()
+          await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
           let rel = await SMap.beginIndoorNavigation()
           if (!rel) {
             this.props.setLoading(false)
@@ -219,7 +251,7 @@ export default class MapSelectPointButton extends React.Component {
                 true,
                 doorPoint.floorID,
               )
-              await SMap.startIndoorNavigation()
+              await SMap.startIndoorNavigation(startIndoorInfo[0].datasourceName)
               let rel = await SMap.beginIndoorNavigation()
               if (!rel) {
                 this.props.setLoading(false)
@@ -237,6 +269,7 @@ export default class MapSelectPointButton extends React.Component {
               Toast.show(
                 getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
               )
+              SMap.clearPoint()
               return
             }
 
@@ -246,7 +279,7 @@ export default class MapSelectPointButton extends React.Component {
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.props.setLoading(false)
-            this.dialog.setDialogVisible(true)
+            GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
           }
         } else if (endIndoorInfo.length > 0) {
           //终点室内数据源 两段室内外一体化导航 先室外
@@ -311,7 +344,7 @@ export default class MapSelectPointButton extends React.Component {
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.props.setLoading(false)
-            this.dialog.setDialogVisible(true)
+            GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
           }
         } else {
           //无室内数据源  室外导航
@@ -331,7 +364,7 @@ export default class MapSelectPointButton extends React.Component {
             } else {
               //分析失败(500m范围内找不到路网点的情况) 进行在线路径分析
               this.props.setLoading(false)
-              this.dialog.setDialogVisible(true)
+              GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
             }
           } catch (e) {
             this.props.setLoading(false)
@@ -342,7 +375,7 @@ export default class MapSelectPointButton extends React.Component {
       } else {
         //在线路径分析
         this.props.setLoading(false)
-        this.dialog.setDialogVisible(true)
+        GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
       }
       if (path && pathLength) {
         GLOBAL.TouchType = TouchType.NORMAL

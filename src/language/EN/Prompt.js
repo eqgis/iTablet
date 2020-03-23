@@ -184,7 +184,7 @@ const Prompt = {
   REDO_FAILED: 'Failed to Redo',
   RECOVER_FAILED: 'Failed to Recover',
 
-  SETTING_SUCCESS: 'Setted Successfully',
+  SETTING_SUCCESS: 'Set Successfully',
   SETTING_FAILED: 'Failed to Set',
 
   NETWORK_ERROR: 'Network Error',

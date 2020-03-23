@@ -46,9 +46,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'ナビワークスペース',
   NAVIGATION_MAP: 'ナビマップ',
   NETWORK: '道路ネットワーク',
+  NETWORK_MODULE:'道路網',
   NETMODEL: 'ネットワークモデル',
   NETDATA: '道路ネットワークデータの選択',
   INDOORDATA: '室内データソース',
+  INDOOR_DATASOURCE: '室内データソース',
+  OUTDOOR_DATASETS: '屋外データセット',
+  SWITCH_DATA:'データ切り替え',
   DATASET: 'データセットの選択',
   Traffic: '道路状況',
 
@@ -152,6 +156,7 @@ const Map_Main_Menu = {
   TOUR_NAME: '旅行軌跡名',
 
   STYLE_TRANSFER: 'AIマップ作成',
+  OBJ_EDIT: 'オブジェクト編集',
 
   TOOLS_MAGNIFIER: '拡大鏡',
   TOOLS_SELECT_ALL: 'すべて選択',
@@ -263,6 +268,9 @@ const Map_Main_Menu = {
   //外业コレクション コレクション
   CREATE_WITH_SYMBOLS: '通常作成',
   CREATE_WITH_TEMPLATE: 'テンプレートで作成',
+  POINT_SYMBOL_LIBRARY: 'ポイントシンボルライブラリ',
+  LINE_SYMBOL_LIBRARY: 'ラインシンボルライブラリ',
+  REGION_SYMBOL_LIBRARY: 'ポリゴンシンボルライブラリ',
 
   COLLECTION: 'コレクト',
   COLLECTION_RECENT: '最近',
@@ -501,6 +509,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: '最大表示スケール',
   LAYERS_MINIMUM: '最小表示スケール',
   LAYERS_UER_DEFINE: 'ユーザー定義',
+  LAYER_NONE: 'なし',
   LAYERS_SET_AS_CURRENT_SCALE: '現在スケールに設定',
   LAYERS_CLEAR: 'クリア',
   LAYERS_LAYER_NAME: 'レイヤータイトル',
@@ -552,6 +561,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'やり直す',
   ATTRIBUTE_REVERT: '復元',
   ATTRIBUTE_FIELD_ADD: '追加',
+  ATTRIBUTE_ADD: '属性追加',
+  ATTRIBUTE_DETAIL: '属性詳細',
+  REQUIRED: '必須',
+  NAME: '名前',
+  TYPE: 'タイプ',
+  LENGTH: '長さ',
+  DEFAULT: 'デフォルト',
+  CONFIRM_ADD: '追加',
 
   DETAIL: '詳細',
   // 統計モード

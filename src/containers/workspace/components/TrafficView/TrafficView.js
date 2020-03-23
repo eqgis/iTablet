@@ -86,7 +86,7 @@ export default class TrafficView extends React.Component {
     let trafficImg = this.state.hasAdded
       ? getPublicAssets().navigation.icon_traffic_on
       : getPublicAssets().navigation.icon_traffic_off
-    let networkImg = require('../../../../assets/Navigation/network.png')
+    let networkImg = require('../../../../assets/mapTool/Frenchgrey/icon_plus.png')
     return (
       <Animated.View style={[styles.container, { left: this.state.left }]}>
         {!this.state.isIndoor ? (

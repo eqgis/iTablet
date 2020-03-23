@@ -22,7 +22,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
-        {"key": "styleModule", "type": "MAP_STYLE"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "toolModule", "type": "MAP_TOOLS"},
         {"key": "shareModule", "type": "MAP_SHARE"}
       ],
@@ -50,6 +50,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "styleModule", "type": "MAP_STYLE"},
         {"key": "arAIAssistant", "type": "MAP_AR_AI_ASSISTANT"}
       ],
@@ -66,6 +67,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "navigationModule", "type": "MAP_NAVIGATION_MODULE"},
         {"key": "roadNetModule", "type": "MAP_ROAD_NET_MODULE"},
         {"key": "toolModule", "type": "MAP_TOOLS"},
@@ -85,6 +87,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "themeModule", "type": "MAP_THEME"},
         {"key": "styleModule", "type": "MAP_STYLE"},
         {"key": "toolModule", "type": "MAP_TOOLS"},
@@ -104,6 +107,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "collectionModule", "type": "MAP_SYMBOL"},
         {"key": "editModule", "type": "MAP_EDIT"},
         {"key": "toolModule", "type": "MAP_TOOLS"},
@@ -122,6 +126,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "plotModule", "type": "PLOTTING"},
         {"key": "editModule", "type": "MAP_EDIT"},
         {"key": "plotModule", "type": "PLOTTING_ANIMATION"},
@@ -141,6 +146,7 @@
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
         {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "analysisModule", "type": "MAP_ANALYSIS"},
         {"key": "styleModule", "type": "MAP_STYLE"},
         {"key": "toolModule", "type": "MAP_TOOLS"},

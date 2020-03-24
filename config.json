@@ -39,6 +39,7 @@
       },
       "functionModules": [
         {"key": "startModule", "type": "MAP_3D_START"},
+        {"key": "mark3DModule", "type": "MAP3D_MARK"},
         {"key": "fly3DModule", "type": "MAP3D_TOOL_FLYLIST"},
         {"key": "tool3DModule", "type": "MAP3D_TOOL"},
         {"key": "shareModule", "type": "MAP_SHARE_MAP3D"}

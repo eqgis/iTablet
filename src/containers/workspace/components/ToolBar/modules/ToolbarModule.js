@@ -17,7 +17,9 @@ import {
   tool3DModule,
   legendModule,
   aiModule,
-  mapSettingModule, markModule,
+  mapSettingModule,
+  markModule,
+  mark3DModule,
 } from '../modules'
 
 // 更新类中的数据
@@ -99,7 +101,15 @@ async function getTabBarData(type, params = {}) {
     tabBarData = toolModule().getData(type, params)
   }else if( type === ConstToolType.MAP_MARKS){
     tabBarData = markModule().getData(type, params)
-  } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
+  } else if(
+    type === ConstToolType.MAP3D_MARK ||
+    type === ConstToolType.MAP3D_SYMBOL_POINT ||
+    type === ConstToolType.MAP3D_SYMBOL_TEXT ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE
+  ){
+    tabBarData = mark3DModule().getData(type, params)
+  }else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     tabBarData = shareModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
     tabBarData = themeModule().getData(type, params)

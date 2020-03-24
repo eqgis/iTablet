@@ -1,6 +1,7 @@
 import { ConstToolType } from '../../../../../constants'
 import { SMCollectorType } from 'imobile_for_reactnative'
 import ToolbarModule from './ToolbarModule'
+import {constants} from "../../index"
 
 // TODO 分拆到各个模块下
 function getToolbarHeight(type, currentHeight) {
@@ -14,15 +15,6 @@ function getToolbarHeight(type, currentHeight) {
         column = 4
       } else {
         height = ConstToolType.HEIGHT[0]
-        column = 8
-      }
-      break
-    case ConstToolType.MAP3D_TOOL:
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 4
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[2]
         column = 8
       }
       break
@@ -88,15 +80,25 @@ function getToolbarHeight(type, currentHeight) {
       break
     case ConstToolType.MAP_TOOL:
     case ConstToolType.MAP_TOOLS:
-      height = ConstToolType.TOOLBAR_HEIGHT[4]
+      height = ConstToolType.TOOLBAR_HEIGHT[3]
       if (orientation === 'PORTRAIT') {
         column = 4
       } else {
         column = 5
       }
       break
+    case ConstToolType.MAP3D_TOOL:
+    case ConstToolType.MAP3D_MARK:
+      if (orientation === 'PORTRAIT') {
+        height = ConstToolType.TOOLBAR_HEIGHT[2]
+        column = 4
+      } else {
+        height = ConstToolType.TOOLBAR_HEIGHT[1]
+        column = 5
+      }
+      break
     case ConstToolType.MAP_MARKS:
-      height = ConstToolType.TOOLBAR_HEIGHT[3]
+      height = ConstToolType.TOOLBAR_HEIGHT[2]
       if (orientation === 'PORTRAIT') {
         column = 4
       } else {
@@ -109,8 +111,6 @@ function getToolbarHeight(type, currentHeight) {
     case ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION:
     case ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME:
     case ConstToolType.MAP_NAVIGATION_MODULE:
-    case ConstToolType.MAP_NAVIGATION_ADD_UDB:
-    case ConstToolType.MAP_NAVIGATION_SELECT_MODEL:
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[5]
         column = 4

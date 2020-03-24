@@ -39,7 +39,9 @@ import {
   tool3DModule,
   navigationModule,
   aiModule,
-  roadNetModule, markModule,
+  roadNetModule,
+  markModule,
+  mark3DModule,
 } from '../ToolBar/modules'
 
 const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -327,6 +329,15 @@ export default class FunctionToolbar extends React.Component {
         case 'markModule':
           data.push(
             markModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.PLOTS,
+              !isLicenseNotValid,
+            ),
+          )
+          break
+        case 'mark3DModule':
+          data.push(
+            mark3DModule(
               item.type,
               getLanguage(this.props.language).Map_Main_Menu.PLOTS,
               !isLicenseNotValid,

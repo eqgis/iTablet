@@ -18,6 +18,7 @@ import aiModule from './aiModule'
 import mapSettingModule from './mapSettingModule'
 import roadNetModule from './roadNetModule'
 import markModule from './markModule'
+import mark3DModule from './mark3DModule'
 export {
   ToolbarModule,
   startModule,
@@ -38,4 +39,5 @@ export {
   mapSettingModule,
   roadNetModule,
   markModule,
+  mark3DModule,
 }

@@ -54,11 +54,12 @@ export default class MapSelectPoint extends React.Component {
             position: 'absolute',
             top: 0,
             width: '100%',
-            // height: '100%',
-            justifyContent: 'space-between',
-            // flexDirection:'column',
-            // alignItems: 'flex-end',
+            height: '100%',
+            justifyContent: 'flex-end',
+            flexDirection:'column',
+            alignItems: 'flex-end',
           }}
+          pointerEvents={'box-none'}
         >
           <Header
             ref={ref => (this.containerHeader = ref)}
@@ -66,14 +67,13 @@ export default class MapSelectPoint extends React.Component {
           />
           <View
             style={{
-              position: 'absolute',
-              marginTop: '100%',
               width: '100%',
-              // height: '100%',
-              // justifyContent: 'flex-end',
-              // flexDirection:'column',
-              // alignItems: 'flex-end',
+              height: '100%',
+              justifyContent: 'flex-end',
+              flexDirection:'column',
+              alignItems: 'flex-end',
             }}
+            pointerEvents={'none'}
           >
          {this.renderBottom()}
           </View>

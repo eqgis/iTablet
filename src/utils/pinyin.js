@@ -1,4 +1,4 @@
-var PinYin = {
+const PinYin = {
   a: '\u554a\u963f\u9515',
   ai:
     '\u57c3\u6328\u54ce\u5509\u54c0\u7691\u764c\u853c\u77ee\u827e\u788d\u7231\u9698\u8bf6\u6371\u55f3\u55cc\u5ad2\u7477\u66a7\u7839\u953f\u972d',
@@ -633,7 +633,7 @@ var PinYin = {
  * @returns {boolean} 中文返回true，其他返回false
  */
 export function isChinese(str) {
-  var entryVal = str
+  const entryVal = str
   // eslint-disable-next-line
   var cnChar = entryVal.match(/[^\x00-\x80]/g)
   if (cnChar != null && cnChar.length > 0) return true
@@ -650,12 +650,12 @@ export function isChinese(str) {
 export function getPinYin(str, split, uppercase) {
   split = split || ' '
   uppercase = uppercase || false
-  var l2 = str.length
-  var result = ''
-  var reg = new RegExp('[a-zA-Z0-9- ]')
-  var val
-  var name
-  for (var i = 0; i < l2; i++) {
+  const l2 = str.length
+  let result = ''
+  const reg = new RegExp('[a-zA-Z0-9- ]')
+  let val
+  let name
+  for (let i = 0; i < l2; i++) {
     val = str.substr(i, 1)
     if (isChinese(val)) {
       name = arraySearch(val)
@@ -679,7 +679,7 @@ export function getPinYin(str, split, uppercase) {
  * @returns {*} 结果
  */
 export function arraySearch(str) {
-  for (var name in PinYin) {
+  for (const name in PinYin) {
     if (PinYin[name].indexOf(str) != -1) {
       return name
     }
@@ -697,12 +697,12 @@ export function arraySearch(str) {
 export function getPinYinFirstCharacter(str, split, uppercase) {
   split = split || ' '
   uppercase = uppercase || false
-  var len = str.length
-  var result = ''
-  var reg = new RegExp('[a-zA-Z0-9- ]')
-  var val
-  var name
-  for (var i = 0; i < len; i++) {
+  const len = str.length
+  let result = ''
+  const reg = new RegExp('[a-zA-Z0-9- ]')
+  let val
+  let name
+  for (let i = 0; i < len; i++) {
     val = str.substr(i, 1)
     if (isChinese(val)) {
       name = arraySearch(val)

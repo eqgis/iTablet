@@ -8,8 +8,8 @@ import ToolbarModule from '../ToolbarModule'
 import ShareAction from './ShareAction'
 
 function getData(type, params) {
-  let data = [],
-    buttons = []
+  let data = []
+  const buttons = []
   ToolbarModule.setParams(params)
   if (type.indexOf('MAP_SHARE') <= -1) return { data, buttons }
   switch (type) {

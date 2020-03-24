@@ -1,3 +1,4 @@
+import { SScene } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../../../native'
 import {
   ConstToolType,
@@ -5,7 +6,6 @@ import {
   ToolbarType,
 } from '../../../../../../constants'
 import { Toast, scaleSize } from '../../../../../../utils'
-import { SScene } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import Fly3DData from './Fly3DData'
@@ -15,11 +15,11 @@ async function listAction(type, params = {}) {
   if (type === ConstToolType.MAP3D_TOOL_FLYLIST) {
     SScene.setPosition(params.index)
     const type = ConstToolType.MAP3D_TOOL_FLY
-    let { data, buttons } = await Fly3DData.getData(type)
+    const { data, buttons } = await Fly3DData.getData(type)
     _params.showFullMap && _params.showFullMap(true)
     _params.setToolbarVisible(true, type, {
-      data: data,
-      buttons: buttons,
+      data,
+      buttons,
       containerType: ToolbarType.table,
       column: data.length,
       isFullScreen: false,
@@ -30,22 +30,22 @@ async function listAction(type, params = {}) {
 
 async function getWorkspaceList() {
   const params = ToolbarModule.getParams()
-  let buttons = []
-  let data = []
+  const buttons = []
+  const data = []
   try {
     // let buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.FLEX]
-    let userName = params.user.currentUser.userName || 'Customer'
-    let path = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath + userName + '/' + ConstPath.RelativeFilePath.Scene,
+    const userName = params.user.currentUser.userName || 'Customer'
+    const path = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + userName}/${ConstPath.RelativeFilePath.Scene}`,
     )
-    let result = await FileTools.fileIsExist(path)
+    const result = await FileTools.fileIsExist(path)
     if (result) {
-      let fileList = await FileTools.getPathListByFilter(path, {
+      const fileList = await FileTools.getPathListByFilter(path, {
         extension: 'pxp',
         type: 'file',
       })
       for (let index = 0; index < fileList.length; index++) {
-        let element = fileList[index]
+        const element = fileList[index]
         if (element.name.indexOf('.pxp') > -1) {
           fileList[index].name = element.name.substr(
             0,

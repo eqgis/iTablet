@@ -12,14 +12,15 @@ import {
 import { Toast } from '../../../utils'
 
 let mNodes = []
-let analystSetting, facilityAnalyst
-let mMapControl,
-  mMap,
-  mSelection,
-  mAnalystLayer,
-  mNodelLayer,
-  mTrackingLayer,
-  _setLoading = () => {}
+let analystSetting
+let facilityAnalyst
+let mMapControl
+let mMap
+let mSelection
+let mAnalystLayer
+let mNodelLayer
+let mTrackingLayer
+let _setLoading = () => {}
 function addNode(node) {
   mNodes.push(node)
 }
@@ -73,7 +74,8 @@ function check(checkNodes = true) {
   if (!analystSetting || !mMap || !mSelection || !mTrackingLayer) {
     Toast.show('请加载分析图层')
     return false
-  } else if (mNodes.length === 0 && checkNodes) {
+  }
+  if (mNodes.length === 0 && checkNodes) {
     Toast.show('请加选择节点')
     return false
   }
@@ -83,27 +85,27 @@ function check(checkNodes = true) {
 async function longPressHandler(event) {
   try {
     if (!check(false)) return
-    let pt = await new Point().createObj(event.x, event.y)
+    const pt = await new Point().createObj(event.x, event.y)
     // let layer = await mMap.getLayer(0)
-    let selection = await mNodelLayer.hitTestEx(pt, 20)
-    let selectionCount = await selection.getCount()
+    const selection = await mNodelLayer.hitTestEx(pt, 20)
+    const selectionCount = await selection.getCount()
     if (selection && selectionCount > 0) {
-      let recordset = selection.recordset
-      let geometry = await recordset.getGeometry()
-      let geoPoint = new GeoPoint()
+      const { recordset } = selection
+      const geometry = await recordset.getGeometry()
+      const geoPoint = new GeoPoint()
       geoPoint._SMGeoPointId = geometry._SMGeometryId
-      let records = await recordset.getFieldInfosArray()
+      const records = await recordset.getFieldInfosArray()
 
       for (let i = 0; i < records[0].length; i++) {
         if (records[0].name === 'SMNODEID') {
-          mNodes.push(records[0]['SMNODEID'].value)
+          mNodes.push(records[0].SMNODEID.value)
           break
         }
       }
 
       // TODO 显示分析按钮可选
 
-      let geoStyle = await getGeoStyle(10, 10, 255, 105, 0)
+      const geoStyle = await getGeoStyle(10, 10, 255, 105, 0)
       await geoStyle.setMarkerSymbolID(3614)
       // await geometry.setStyle(geoStyle)
       await geoPoint.setStyle(geoStyle)
@@ -125,7 +127,7 @@ async function longPressHandler(event) {
       await mMap.refresh()
     }
   } catch (e) {
-    () => {}
+    ;() => {}
   }
 }
 
@@ -184,7 +186,7 @@ async function loadModel(
 
 async function addGestureDetector() {
   await mMapControl.setGestureDetector({
-    longPressHandler: longPressHandler,
+    longPressHandler,
     // scrollHandler: scrollHandler,
   })
 }
@@ -196,15 +198,15 @@ async function deleteGestureDetector() {
 async function display(selection) {
   try {
     if (!check()) return
-    let recordSet = await selection.toRecordset()
+    const recordSet = await selection.toRecordset()
     // let recordSet = await mSelection.recordset
     await recordSet.moveFirst()
     // let bb = await recordSet.moveFirst()
     // let isEOFF = await recordSet0.isEOF()
     let isEOF = await recordSet.isEOF()
     while (!isEOF) {
-      let geometry = await recordSet.getGeometry()
-      let style = await getGeoStyle(10, 10, 255, 105, 0)
+      const geometry = await recordSet.getGeometry()
+      const style = await getGeoStyle(10, 10, 255, 105, 0)
       await geometry.setStyle(style)
       mTrackingLayer && (await mTrackingLayer.add(geometry, ''))
       await recordSet.moveNext()
@@ -225,12 +227,12 @@ async function startSelect() {
   try {
     if (!check()) return
     await mMapControl.setAction(Action.SELECT)
-    let geoStyle = await new GeoStyle().createObj()
+    const geoStyle = await new GeoStyle().createObj()
     await geoStyle.setLineColor(255, 0, 0)
     await geoStyle.setLineWidth(0.4)
     await mSelection.setStyle(geoStyle)
   } catch (e) {
-    () => {}
+    ;() => {}
   }
 }
 
@@ -245,8 +247,8 @@ async function startSelect() {
  */
 async function getGeoStyle(w, h, r, g, b) {
   try {
-    let geoStyle = await new GeoStyle().createObj()
-    let size2D = await new Size2D().createObj(w, h)
+    const geoStyle = await new GeoStyle().createObj()
+    const size2D = await new Size2D().createObj(w, h)
     await geoStyle.setMarkerSize(size2D)
     await geoStyle.setLineColor(r, g, b)
 
@@ -280,7 +282,7 @@ async function traceUp(
     await mSelection.clear()
     _setLoading(true, '分析中')
     for (let i = 0; i < mNodes.length; i++) {
-      let { edges } = await facilityAnalyst.traceUpFromNode(
+      const { edges } = await facilityAnalyst.traceUpFromNode(
         mNodes[i],
         weightName,
         isUncertainDirectionValid,
@@ -315,7 +317,7 @@ async function traceDown(
     await mSelection.clear()
     _setLoading(true, '分析中')
     for (let i = 0; i < mNodes.length; i++) {
-      let { edges } = await facilityAnalyst.traceDownFromNode(
+      const { edges } = await facilityAnalyst.traceDownFromNode(
         mNodes[i],
         weightName,
         isUncertainDirectionValid,
@@ -349,7 +351,7 @@ async function connectedAnalyst(
     await mSelection.clear()
     _setLoading(true, '分析中')
     for (let i = 0; i < mNodes.length - 1; i++) {
-      let { edges } = await facilityAnalyst.findPathFromNodes(
+      const { edges } = await facilityAnalyst.findPathFromNodes(
         mNodes[i],
         mNodes[i + 1],
         weightName,

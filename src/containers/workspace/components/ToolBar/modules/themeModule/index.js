@@ -1,13 +1,13 @@
+import { SMap } from 'imobile_for_reactnative'
 import ThemeAction from './ThemeAction'
 import ThemeData from './ThemeData'
 import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType } from '../../../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
 
 async function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   params.showFullMap && params.showFullMap(true)
   await setModuleData(type)
@@ -18,10 +18,10 @@ async function action(type) {
   })
 }
 
-async function setModuleData (type) {
-  let xml = await SMap.mapToXml()
+async function setModuleData(type) {
+  const xml = await SMap.mapToXml()
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: ThemeData.getData,
     actions: ThemeAction,
     mapXml: xml,
@@ -31,10 +31,9 @@ async function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -46,7 +45,7 @@ export default function(type, title, customAction) {
     getData: ThemeData.getData,
     getMenuData: ThemeData.getMenuData,
     actions: ThemeAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

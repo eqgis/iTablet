@@ -1,5 +1,6 @@
 import functiontoolbar from './functiontoolbar'
 import toolbar from './toolbar'
+
 const icon_ar = require('./icon_ar.png')
 const icon_ai_assistant = require('./icon_ai_assistant.png')
 const icon_ar_measure_cancel = require('./cancel.png')
@@ -22,6 +23,7 @@ const navi_model_pin_bowling = require('./navi_model_pin_bowling.png')
 const navi_model_red_flag = require('./navi_model_red_flag.png')
 const icon_ar_camera_circle_bg = require('./icon_ar_camera_circle_bg.png')
 const navi_object_classify_capture = require('./navi_object_classify_capture.png')
+
 export default {
   functiontoolbar,
   toolbar,

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
+
 export default StyleSheet.create({
   container: {
     backgroundColor: '#FBFBFB',

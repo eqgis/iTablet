@@ -1,5 +1,5 @@
-import NavigationView from './NavigationView'
 import { connect } from 'react-redux'
+import NavigationView from './NavigationView'
 import {
   setMapNavigation,
   setNavigationHistory,

@@ -1,4 +1,4 @@
-//友達
+// 友達
 const Friends = {
   LOCALE: 'ja-jp',
 
@@ -10,7 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'グループチャットを開始',
   RECOMMEND_FRIEND: '友達推奨',
   SELECT_MODULE: 'モジュールの選択',
-  //Friend
+  // Friend
   MSG_SERVICE_FAILED: 'メッセージサービスに接続のに失敗しました！',
   MSG_SERVICE_NOT_CONNECT: 'メッセージサービスに接続しません！',
   SEND_SUCCESS: 'シェア完了',
@@ -21,7 +21,7 @@ const Friends = {
     'ダウンロードに失敗しました。ファイルは期限切れる可能性があります。',
   RECEIVE_FAIL_NETWORK:
     'ダウンロードに失敗しました、ネットワークを確認してください',
-  //FriendMessage
+  // FriendMessage
   MARK_READ: '既読にする',
   MARK_UNREAD: '未読にする',
   DEL: '削除',
@@ -30,33 +30,33 @@ const Friends = {
   CONFIRM: 'OK',
   CANCEL: 'キャンセル',
   ALERT_DEL_HISTORY: '削除後で、チャットのレコードをクリアします',
-  //FriendList
+  // FriendList
   SET_MARK_NAME: '備考の設定',
   DEL_FRIEND: '友達の削除',
   ALERT_DEL_FRIEND: '当連絡先を削除すると、チャットレコードを削除します录',
   TEXT_CONTENT: 'テキスト内容',
   INPUT_MARK_NAME: '備考名を入力してください',
   INPUT_INVALID: '内容は無効です。再度入力してください',
-  //InformMessage
+  // InformMessage
   TITLE_NOTIFICATION: '通知メッセージ',
   FRIEND_RESPOND: '追加要求に同意します ？',
-  //CreateGroupChat
+  // CreateGroupChat
   CONFIRM2: 'OK',
   TITLE_CHOOSE_FRIEND: '友達の選択',
   TOAST_CHOOSE_2: '2人以下ではグループチャットを開始できません',
   NO_FRIEND: 'まだ友達を追加していません',
-  //AddFriend
+  // AddFriend
   ADD_FRIEND_PLACEHOLDER: 'メールアドレス/携帯電話/ニックネーム',
   SEARCHING: '検索中...',
   SEARCH: '検索',
   ADD_SELF: '自分は友達として追加できません',
   ADD_AS_FRIEND: '相手を友達に追加 ？',
-  //FriendGroup
+  // FriendGroup
   LOADING: '更新中...',
   DEL_GROUP: 'グループチャットの削除',
   DEL_GROUP_CONFIRM: 'メッセージをクリアして、閉じますか?',
   DEL_GROUP_CONFIRM2: 'メッセージをクリアして、解除ますか?',
-  //Chat
+  // Chat
   INPUT_MESSAGE: 'メッセージ入力...',
   SEND: '送信',
   LOAD_EARLIER: 'もっとメッセージを表示',
@@ -71,18 +71,18 @@ const Friends = {
   WAIT_DOWNLOADING: 'データダウンロード完了を待ってください',
   DATA_NOT_FOUND: 'ファイルを見つかりません。再度ダウンロードしますか?',
   LOAD_ORIGIN_PIC: '原図のロード',
-  //CustomActions
+  // CustomActions
   MAP: 'マップ',
   TEMPLATE: 'テンプレート',
   LOCATION: '位置',
   PICTURE: '画像',
   LOCATION_FAILED: '位置取得にに失敗',
-  //RecommendFriend
+  // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',
   PERMISSION_DENIED_CONTACT:
     '携帯の設定でiTabletのアドレス帳アクセス権限を設定してください',
-  //ManageFriend/Group
+  // ManageFriend/Group
   SEND_MESSAGE: 'メッセージを送信',
   SET_MARKNAME: '備考名の変更',
   SET_GROUPNAME: 'グループ名の変更',
@@ -101,7 +101,7 @@ const Friends = {
   GO_COWORK: 'コラボレーション',
   ALERT_EXIT_COWORK: '現在のコラボレーションマップを閉じますか?',
   SHARE_DATASET: '対応データセットを同時にシェア',
-  //system text
+  // system text
   SYS_MSG_PIC: '[画像]',
   SYS_MSG_MAP: '[マップ]',
   SYS_MSG_LAYER: '[レイヤー]',

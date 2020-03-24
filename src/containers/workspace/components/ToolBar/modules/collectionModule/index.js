@@ -9,7 +9,7 @@ import utils from './utils'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
@@ -21,9 +21,9 @@ function action(type) {
   })
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: CollectionData.getData,
     actions: CollectionAction,
   })
@@ -32,10 +32,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -47,6 +46,6 @@ export default function(type, title, customAction) {
     getData: CollectionData.getData,
     actions: CollectionAction,
     getLayout: utils.getLayout,
-    setModuleData: setModuleData,
+    setModuleData,
   }
 }

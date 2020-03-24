@@ -14,7 +14,9 @@ import navigationModule from './navigationModule'
 import legendModule from './legendModule'
 import aiModule from './aiModule'
 import mapSettingModule from './mapSettingModule'
-import mapModule from './mapModule'
+import roadNetModule from './roadNetModule'
+import markModule from './markModule'
+import mark3DModule from './mark3DModule'
 
 export {
   startModule,
@@ -33,5 +35,7 @@ export {
   legendModule,
   aiModule,
   mapSettingModule,
-  mapModule,
+  roadNetModule,
+  markModule,
+  mark3DModule,
 }

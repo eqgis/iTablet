@@ -11,7 +11,7 @@ export default StyleSheet.create({
   itemContainer: {
     height: scaleSize(100),
     width: '100%',
-    justifyContent:'center',
+    justifyContent: 'center',
     paddingHorizontal: scaleSize(30),
   },
   itemText: {

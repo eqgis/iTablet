@@ -4,6 +4,7 @@ import { color } from '../../../../styles'
 import { TreeList } from '../../../../components'
 import { scaleSize } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
+import { getLanguage } from '../../../../language'
 
 export default class GroupTab extends React.Component {
   props: {
@@ -25,15 +26,19 @@ export default class GroupTab extends React.Component {
 
   componentDidMount() {
     SMap.getSymbolGroups().then(result => {
-      if (global.language !== 'CN') {
-        for (let i = 0; i < result.length; i++) {
-          if (result[i].name === '点符号库') {
-            result[i].name = 'Marker Library'
-          } else if (result[i].name === '线型符号库') {
-            result[i].name = 'Line Library'
-          } else if (result[i].name === '填充符号库') {
-            result[i].name = 'Fill Library'
-          }
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].name === '点符号库') {
+          result[i].name = getLanguage(
+            global.language,
+          ).Map_Main_Menu.POINT_SYMBOL_LIBRARY
+        } else if (result[i].name === '线型符号库') {
+          result[i].name = getLanguage(
+            global.language,
+          ).Map_Main_Menu.LINE_SYMBOL_LIBRARY
+        } else if (result[i].name === '填充符号库') {
+          result[i].name = getLanguage(
+            global.language,
+          ).Map_Main_Menu.REGION_SYMBOL_LIBRARY
         }
       }
       this.setState({

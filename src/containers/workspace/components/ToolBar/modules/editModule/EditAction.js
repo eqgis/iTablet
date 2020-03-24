@@ -18,12 +18,12 @@ function commit(type) {
         SMap.setAction(Action.PAN)
       },
     })
-  } else
+  }
   //   if (
   //   type !== ConstToolType.MAP_TOOL_TAGGING &&
   //   type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
   // )
-    {
+  else {
     currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
     // 编辑完成关闭Toolbar
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
@@ -105,10 +105,10 @@ async function geometrySelected(event) {
     case ConstToolType.MAP_EDIT_REGION:
     case ConstToolType.MAP_EDIT_DEFAULT: {
       if (currentToolbarType === ConstToolType.MAP_EDIT_DEFAULT) {
-        let column = 4,
-          height = ConstToolType.HEIGHT[3],
-          containerType = ToolbarType.table,
-          type = ''
+        let column = 4
+        let height = ConstToolType.HEIGHT[3]
+        let containerType = ToolbarType.table
+        let type = ''
         switch (event.layerInfo.type) {
           case DatasetType.POINT:
             type = ConstToolType.MAP_EDIT_POINT
@@ -187,42 +187,42 @@ function deleteNode() {
   return SMap.setAction(Action.VERTEXDELETE)
 }
 
-/** 切割面 **/
+/** 切割面 * */
 function splitRegion() {
   return SMap.setAction(Action.SPLIT_BY_LINE)
 }
 
-/** 合并面 **/
+/** 合并面 * */
 function merge() {
   return SMap.setAction(Action.UNION_REGION)
 }
 
-/** 擦除面 **/
+/** 擦除面 * */
 function eraseRegion() {
   return SMap.setAction(Action.ERASE_REGION)
 }
 
-/** 手绘擦除面 **/
+/** 手绘擦除面 * */
 function drawRegionEraseRegion() {
   return SMap.setAction(Action.DRAWREGION_ERASE_REGION)
 }
 
-/** 生成岛洞 **/
+/** 生成岛洞 * */
 // function drawHollowRegion() {
 //   return SMap.setAction(Action.DRAW_HOLLOW_REGION)
 // }
 
-/** 手绘岛洞 **/
+/** 手绘岛洞 * */
 function drawRegionHollowRegion() {
   return SMap.setAction(Action.DRAWREGION_HOLLOW_REGION)
 }
 
-/** 填充岛洞 **/
+/** 填充岛洞 * */
 function fillHollowRegion() {
   return SMap.setAction(Action.FILL_HOLLOW_REGION)
 }
 
-/** 补充岛洞 **/
+/** 补充岛洞 * */
 function patchHollowRegion() {
   return SMap.setAction(Action.PATCH_HOLLOW_REGION)
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Container } from '../../../../components'
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +6,7 @@ import {
   View,
   SectionList,
 } from 'react-native'
+import { Container } from '../../../../components'
 
 export default class MapToolbarSetting extends Component {
   render() {

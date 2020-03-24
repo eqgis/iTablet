@@ -9,7 +9,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
-  let mapLegend = _params.mapLegend
+  const { mapLegend } = _params
   if (mapLegend[GLOBAL.Type].isShow) {
     mapLegend[GLOBAL.Type] = {
       isShow: true,
@@ -33,7 +33,7 @@ async function action(type) {
       legendPosition: 'topLeft',
     }
   }
-  const orientation = _params.device.orientation
+  const { orientation } = _params.device
   const layout = utils.getLayout(type, orientation)
   setModuleData(type)
   _params.setMapLegend(mapLegend)
@@ -47,9 +47,9 @@ async function action(type) {
   _params.navigation.navigate('MapView')
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: LegendData.getData,
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
@@ -59,10 +59,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -74,7 +73,7 @@ export default function(type, title, customAction) {
     getData: LegendData.getData,
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

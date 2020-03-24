@@ -1,5 +1,5 @@
-import constants from '../../../../constants'
 import { SThemeCartography, RangeMode } from 'imobile_for_reactnative'
+import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
   ConstToolType,
@@ -26,21 +26,21 @@ import NavigationService from '../../../../../NavigationService'
  * @returns {Promise.<void>}
  */
 async function showDatasetsList(type, filter = {}) {
-  let isAnyOpenedDS = await SThemeCartography.isAnyOpenedDS()
+  const isAnyOpenedDS = await SThemeCartography.isAnyOpenedDS()
   if (!isAnyOpenedDS) {
     Toast.show(
       getLanguage(global.language).Prompt.PLEASE_ADD_DATASOURCE_BY_UNIFORM,
     )
     return
   }
-  let data = []
-  let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
+  const data = []
+  const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
   SThemeCartography.getAllDatasetNames().then(getdata => {
     getdata.reverse()
     for (let i = 0; i < getdata.length; i++) {
-      let datalist = getdata[i]
+      const datalist = getdata[i]
       if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
-      let list = []
+      const list = []
       datalist.list.forEach(item => {
         let isExist = false
         if (filter.typeFilter && filter.typeFilter.length > 0) {
@@ -75,7 +75,7 @@ async function showDatasetsList(type, filter = {}) {
         ? ConstToolType.THEME_HEIGHT[3]
         : ConstToolType.THEME_HEIGHT[5]
     const _type = ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS
-    let _data = {
+    const _data = {
       type: _type,
       getData: ThemeData.getData,
       lastData: {
@@ -102,14 +102,14 @@ async function showDatasetsList(type, filter = {}) {
 }
 
 function showExpressionList(type, themeType) {
-  let listSelectable = type === 'ThemeGraph'
+  const listSelectable = type === 'ThemeGraph'
   if (!ToolbarModule.getData().currentLayer) return
   SThemeCartography.getThemeExpressionByLayerName(
     global.language,
     ToolbarModule.getData().currentLayer.name,
   ).then(getdata => {
-    let dataset = getdata.dataset
-    let allExpressions = []
+    const { dataset } = getdata
+    const allExpressions = []
     getdata.list.forEach(item => {
       if (isThemeFieldTypeAvailable(item.fieldTypeStr, themeType)) {
         item.info = {
@@ -119,7 +119,7 @@ function showExpressionList(type, themeType) {
         allExpressions.push(item)
       }
     })
-    let data = [
+    const data = [
       {
         title: dataset.datasetName,
         datasetType: dataset.datasetType,
@@ -134,8 +134,8 @@ function showExpressionList(type, themeType) {
       ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
         ? ConstToolType.THEME_HEIGHT[3]
         : ConstToolType.THEME_HEIGHT[5]
-    let _data = {
-      type: type,
+    const _data = {
+      type,
       getData: ThemeData.getData,
       lastData: {
         data,
@@ -166,7 +166,7 @@ function showExpressionList(type, themeType) {
   })
 }
 
-//通过数据集->创建栅格单值专题图
+// 通过数据集->创建栅格单值专题图
 async function createThemeGridUniqueMap(params) {
   let paramsTheme = {}
   let isSuccess = false
@@ -185,7 +185,7 @@ async function createThemeGridUniqueMap(params) {
   // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
-    //设置当前图层
+    // 设置当前图层
     ToolbarModule.getParams().getLayers(-1, layers => {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -195,7 +195,7 @@ async function createThemeGridUniqueMap(params) {
   }
 }
 
-//通过数据集->创建栅格分段专题图
+// 通过数据集->创建栅格分段专题图
 async function createThemeGridRangeMap(params) {
   let paramsTheme = {}
   let isSuccess = false
@@ -214,7 +214,7 @@ async function createThemeGridRangeMap(params) {
   // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
-    //设置当前图层
+    // 设置当前图层
     ToolbarModule.getParams().getLayers(-1, layers => {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -224,7 +224,7 @@ async function createThemeGridRangeMap(params) {
   }
 }
 
-//通过图层->创建栅格单值专题图
+// 通过图层->创建栅格单值专题图
 async function createThemeGridUniqueMapByLayer() {
   const _params = ToolbarModule.getParams()
   let paramsTheme = {}
@@ -245,7 +245,7 @@ async function createThemeGridUniqueMapByLayer() {
   // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
-    //设置当前图层
+    // 设置当前图层
     ToolbarModule.getParams().getLayers(-1, layers => {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -255,7 +255,7 @@ async function createThemeGridUniqueMapByLayer() {
   }
 }
 
-//通过图层->创建栅格分段专题图
+// 通过图层->创建栅格分段专题图
 async function createThemeGridRangeMapByLayer() {
   const _params = ToolbarModule.getParams()
   let paramsTheme = {}
@@ -276,7 +276,7 @@ async function createThemeGridRangeMapByLayer() {
   // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
-    //设置当前图层
+    // 设置当前图层
     ToolbarModule.getParams().getLayers(-1, layers => {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -292,8 +292,8 @@ async function createThemeGridRangeMapByLayer() {
  * @returns {{data: Array, buttons: Array}}
  */
 function getThemeMapCreate(type) {
-  let data = [],
-    buttons = []
+  let data = []
+  const buttons = []
   if (
     type !== ConstToolType.MAP_THEME_CREATE_BY_LAYER &&
     type !== ConstToolType.MAP_THEME_CREATE
@@ -311,10 +311,10 @@ function getThemeMapCreate(type) {
     //   selectedImage: getThemeAssets().themeType.theme_create_unify_style,
     // },
     {
-      //单值风格
+      // 单值风格
       key: constants.THEME_UNIQUE_STYLE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_UNIQUE_VALUES_MAP,
-      //constants.THEME_UNIQUE_STYLE,
+      // constants.THEME_UNIQUE_STYLE,
       size: 'large',
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
@@ -324,7 +324,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_create_unique_style,
     },
     {
-      //分段风格
+      // 分段风格
       key: constants.THEME_RANGE_STYLE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_RANGES_MAP,
       // constants.THEME_RANGE_STYLE,
@@ -355,7 +355,7 @@ function getThemeMapCreate(type) {
     //   selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_custom_label.png'),
     // },
     {
-      //统一标签
+      // 统一标签
       key: constants.THEME_UNIFY_LABEL,
       title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_LABLE,
       // constants.THEME_UNIFY_LABEL,
@@ -368,7 +368,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_create_unify_label,
     },
     {
-      //单值标签
+      // 单值标签
       key: constants.THEME_UNIQUE_LABEL,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_UNIQUE_VALUE_LABLE_MAP,
@@ -382,7 +382,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_create_unique_label,
     },
     {
-      //分段标签
+      // 分段标签
       key: constants.THEME_RANGE_LABEL,
       title: getLanguage(global.language).Map_Main_Menu.THEME_RANGES_LABLE_MAP,
       // constants.THEME_RANGE_LABEL,
@@ -395,7 +395,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_create_range_label,
     },
     {
-      //面积图
+      // 面积图
       key: constants.THEME_GRAPH_AREA,
       title: getLanguage(global.language).Map_Main_Menu.THEME_AREA,
       // constants.THEME_GRAPH_AREA,
@@ -408,7 +408,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_area,
     },
     {
-      //阶梯图
+      // 阶梯图
       key: constants.THEME_GRAPH_STEP,
       title: getLanguage(global.language).Map_Main_Menu.THEME_STEP,
       // constants.THEME_GRAPH_STEP,
@@ -421,7 +421,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_step,
     },
     {
-      //折线图
+      // 折线图
       key: constants.THEME_GRAPH_LINE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_LINE,
       // constants.THEME_GRAPH_LINE,
@@ -434,10 +434,10 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_line,
     },
     {
-      //点状图
+      // 点状图
       key: constants.THEME_GRAPH_POINT,
       title: getLanguage(global.language).Map_Main_Menu.THEME_POINT,
-      //constants.THEME_GRAPH_POINT,
+      // constants.THEME_GRAPH_POINT,
       size: 'large',
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
@@ -447,7 +447,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_point,
     },
     {
-      //柱状图
+      // 柱状图
       key: constants.THEME_GRAPH_BAR,
       title: getLanguage(global.language).Map_Main_Menu.THEME_COLUMN,
       // constants.THEME_GRAPH_BAR,
@@ -460,7 +460,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_bar,
     },
     {
-      //三维柱状图
+      // 三维柱状图
       key: constants.THEME_GRAPH_BAR3D,
       title: getLanguage(global.language).Map_Main_Menu.THEME_3D_COLUMN,
       // constants.THEME_GRAPH_BAR3D,
@@ -473,7 +473,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_bar3d,
     },
     {
-      //饼图
+      // 饼图
       key: constants.THEME_GRAPH_PIE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_PIE,
       // constants.THEME_GRAPH_PIE,
@@ -486,7 +486,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_pie,
     },
     {
-      //三维饼图
+      // 三维饼图
       key: constants.THEME_GRAPH_PIE3D,
       title: getLanguage(global.language).Map_Main_Menu.THEME_3D_PIE,
       // constants.THEME_GRAPH_PIE3D,
@@ -499,7 +499,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_pie3d,
     },
     {
-      //玫瑰图
+      // 玫瑰图
       key: constants.THEME_GRAPH_ROSE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_ROSE,
       // constants.THEME_GRAPH_ROSE,
@@ -512,7 +512,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_rose,
     },
     {
-      //三维玫瑰图
+      // 三维玫瑰图
       key: constants.THEME_GRAPH_ROSE3D,
       title: getLanguage(global.language).Map_Main_Menu.THEME_3D_ROSE,
       // constants.THEME_GRAPH_ROSE3D,
@@ -525,7 +525,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_rose3d,
     },
     {
-      //堆叠柱状图
+      // 堆叠柱状图
       key: constants.THEME_GRAPH_STACK_BAR,
       title: getLanguage(global.language).Map_Main_Menu.THEME_STACKED_BAR,
       // constants.THEME_GRAPH_STACK_BAR,
@@ -533,13 +533,13 @@ function getThemeMapCreate(type) {
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () =>
-            showExpressionList('ThemeGraph', constants.THEME_GRAPH_STACK_BAR)
+              showExpressionList('ThemeGraph', constants.THEME_GRAPH_STACK_BAR)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_stack_bar,
       selectedImage: getThemeAssets().themeType.theme_graph_stack_bar,
     },
     {
-      //三维堆叠柱状图
+      // 三维堆叠柱状图
       key: constants.THEME_GRAPH_STACK_BAR3D,
       title: getLanguage(global.language).Map_Main_Menu.THEME_3D_STACKED_BAR,
       // constants.THEME_GRAPH_STACK_BAR3D,
@@ -547,16 +547,16 @@ function getThemeMapCreate(type) {
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () =>
-            showExpressionList(
-              'ThemeGraph',
-              constants.THEME_GRAPH_STACK_BAR3D,
-            )
+              showExpressionList(
+                'ThemeGraph',
+                constants.THEME_GRAPH_STACK_BAR3D,
+              )
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_stack_bar3d,
       selectedImage: getThemeAssets().themeType.theme_graph_stack_bar3d,
     },
     {
-      //环状图
+      // 环状图
       key: constants.THEME_GRAPH_RING,
       title: getLanguage(global.language).Map_Main_Menu.THEME_RING,
       // constants.THEME_GRAPH_RING,
@@ -569,7 +569,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graph_ring,
     },
     {
-      //点密度专题图
+      // 点密度专题图
       key: constants.THEME_DOT_DENSITY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_DOT_DENSITY_MAP,
       size: 'large',
@@ -577,14 +577,14 @@ function getThemeMapCreate(type) {
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_DOT_DENSITY)
           : () =>
-            showDatasetsList(type, {
-              typeFilter: ['REGION'],
-            }),
+              showDatasetsList(type, {
+                typeFilter: ['REGION'],
+              }),
       image: getThemeAssets().themeType.theme_dot_density,
       selectedImage: getThemeAssets().themeType.theme_dot_density,
     },
     {
-      //等级符号专题图
+      // 等级符号专题图
       key: constants.THEME_GRADUATED_SYMBOL,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_GRADUATED_SYMBOLS_MAP,
@@ -597,7 +597,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_graduated_symbol,
     },
     {
-      //单值栅格专题图
+      // 单值栅格专题图
       key: constants.THEME_GRID_UNIQUE,
       title: global.language === 'CN' ? '栅格单值专题图' : 'Grid Unique',
       size: 'large',
@@ -609,7 +609,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_grid_unique,
     },
     {
-      //栅格分段专题图
+      // 栅格分段专题图
       key: constants.THEME_GRID_RANGE,
       title: global.language === 'CN' ? '栅格分段专题图' : 'Grid Range',
       size: 'large',
@@ -621,7 +621,7 @@ function getThemeMapCreate(type) {
       selectedImage: getThemeAssets().themeType.theme_grid_range,
     },
     {
-      //热力图
+      // 热力图
       key: constants.THEME_HEATMAP,
       title: getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP,
       // title: constants.THEME_HEATMAP,
@@ -911,10 +911,10 @@ function getThemeMapCreate(type) {
 
 async function showLocalDatasetsList() {
   let data = []
-  let customerUDBPath = await FileTools.appendingHomeDirectory(
+  const customerUDBPath = await FileTools.appendingHomeDirectory(
     ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
   )
-  let customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
+  const customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
     extension: 'udb',
     type: 'file',
   })
@@ -926,16 +926,17 @@ async function showLocalDatasetsList() {
     }
   })
 
-  let userUDBPath, userUDBs
+  let userUDBPath
+  let userUDBs
   if (
     ToolbarModule.getParams().user &&
     ToolbarModule.getParams().user.currentUser.userName
   ) {
-    userUDBPath =
-      (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
-      ToolbarModule.getParams().user.currentUser.userName +
-      '/' +
+    userUDBPath = `${(await FileTools.appendingHomeDirectory(
+      ConstPath.UserPath,
+    )) + ToolbarModule.getParams().user.currentUser.userName}/${
       ConstPath.RelativePath.Datasource
+    }`
     userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
       extension: 'udb',
       type: 'file',
@@ -995,12 +996,12 @@ async function showLocalDatasetsList() {
  * @returns {{data: Array, buttons: Array}}
  */
 function getThemeMapStartCreate(type) {
-  let data = [],
-    buttons = []
+  let data = []
+  const buttons = []
   if (type !== ConstToolType.MAP_THEME_START_CREATE) return { data, buttons }
   data = [
     {
-      //单值风格
+      // 单值风格
       key: constants.THEME_UNIQUE_STYLE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_UNIQUE_VALUES_MAP,
       // constants.THEME_UNIQUE_STYLE,
@@ -1010,20 +1011,20 @@ function getThemeMapStartCreate(type) {
       selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_unique_style_black.png'),
     },
     {
-      //分段风格
+      // 分段风格
       key: constants.THEME_RANGE_STYLE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_RANGES_MAP,
-      //constants.THEME_RANGE_STYLE,
+      // constants.THEME_RANGE_STYLE,
       size: 'large',
       action: showLocalDatasetsList,
       image: require('../../../../../../assets/mapTools/icon_function_theme_create_range_style_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_range_style_black.png'),
     },
     {
-      //统一标签
+      // 统一标签
       key: constants.THEME_UNIFY_LABEL,
       title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_LABLE,
-      //constants.THEME_UNIFY_LABEL,
+      // constants.THEME_UNIFY_LABEL,
       size: 'large',
       action: showLocalDatasetsList,
       image: require('../../../../../../assets/mapTools/icon_function_theme_create_unify_label_black.png'),
@@ -1039,8 +1040,8 @@ function getThemeMapStartCreate(type) {
  * @returns {{data: Array, buttons: Array}}
  */
 function getThemeMapParam(type) {
-  let data = [],
-    buttons = getThemeFiveMenu()
+  const data = []
+  let buttons = getThemeFiveMenu()
   if (type === ConstToolType.MAP_THEME_PARAM_GRAPH) return { data, buttons }
   if (type !== ConstToolType.MAP_THEME_PARAM) return { data: [], buttons: [] }
   buttons = getThemeFourMenu()
@@ -1057,7 +1058,7 @@ function getThemeMapParam(type) {
 //   return _params
 // }
 
-/** 设置分段模式 **/
+/** 设置分段模式 * */
 function setRangeMode(type, rangeMode) {
   const globalParams = ToolbarModule.getParams()
   const _params = ToolbarModule.getData().themeParams
@@ -1075,17 +1076,15 @@ function setRangeMode(type, rangeMode) {
     } else {
       SThemeCartography.modifyThemeLabelRangeMap(_params)
     }
+  } else if (rangeMode === RangeMode.CUSTOMINTERVAL) {
+    globalParams.setToolbarVisible(false, {
+      isTouchProgress: false,
+      showMenuDialog: false,
+      selectKey: '',
+    })
+    NavigationService.navigate('CustomModePage', { type })
   } else {
-    if (rangeMode === RangeMode.CUSTOMINTERVAL) {
-      globalParams.setToolbarVisible(false, {
-        isTouchProgress: false,
-        showMenuDialog: false,
-        selectKey: '',
-      })
-      NavigationService.navigate('CustomModePage', { type })
-    } else {
-      SThemeCartography.modifyThemeRangeMap(_params)
-    }
+    SThemeCartography.modifyThemeRangeMap(_params)
   }
 }
 
@@ -1095,12 +1094,12 @@ function setGridRangeMode() {
 }
 
 function getRangeMode(type) {
-  let data = [
+  const data = [
     {
       // 等距分段
       key: RangeMode.EQUALINTERVAL,
       title: getLanguage(global.language).Map_Main_Menu.THEME_EQUAL_INTERVAL,
-      //'等距分段',
+      // '等距分段',
       action: () => setRangeMode(type, RangeMode.EQUALINTERVAL),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_equalinterval_black.png'),
@@ -1111,7 +1110,7 @@ function getRangeMode(type) {
       key: RangeMode.SQUARE_ROOT_INTERVAL,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_SQURE_ROOT_INTERVAL,
-      //'平方根分段',
+      // '平方根分段',
       action: () => setRangeMode(type, RangeMode.SQUARE_ROOT_INTERVAL),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
@@ -1122,7 +1121,7 @@ function getRangeMode(type) {
       key: RangeMode.STDDEVIATION,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_STANDARD_DEVIATION_INTERVAL,
-      //'标准差分段',
+      // '标准差分段',
       action: () => setRangeMode(type, RangeMode.STDDEVIATION),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_stddeviation_black.png'),
@@ -1133,7 +1132,7 @@ function getRangeMode(type) {
       key: RangeMode.LOGARITHM,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_LOGARITHMIC_INTERVAL,
-      //'对数分段',
+      // '对数分段',
       action: () => setRangeMode(type, RangeMode.LOGARITHM),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_logarithm_black.png'),
@@ -1143,7 +1142,7 @@ function getRangeMode(type) {
       // 等计数分段
       key: RangeMode.QUANTILE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_QUANTILE_INTERVAL,
-      //'等计数分段',
+      // '等计数分段',
       action: () => setRangeMode(type, RangeMode.QUANTILE),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_quantile_black.png'),
@@ -1163,7 +1162,7 @@ function getRangeMode(type) {
 }
 
 function getGridRangeMode() {
-  let data = [
+  const data = [
     {
       // 等距分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_EQUALINTERVAL,
@@ -1204,17 +1203,17 @@ function getGridRangeMode() {
   return data
 }
 
-/**设置统一标签背景形状 */
+/** 设置统一标签背景形状 */
 function setLabelFont() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.setLabelFontName(_params)
 }
 function getLabelFont() {
-  let data = [
+  const data = [
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_bold.png'),
@@ -1223,7 +1222,7 @@ function getLabelFont() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_italic.png'),
@@ -1232,7 +1231,7 @@ function getLabelFont() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_underline.png'),
@@ -1241,7 +1240,7 @@ function getLabelFont() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
@@ -1250,7 +1249,7 @@ function getLabelFont() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
@@ -1259,7 +1258,7 @@ function getLabelFont() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
       title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
-      //'空背景',
+      // '空背景',
       action: setLabelFont,
       size: 'large',
       image: require('../../../../../../assets/mapTools/style_font_outline.png'),
@@ -1269,17 +1268,17 @@ function getLabelFont() {
   return data
 }
 
-/**设置统一标签背景形状 */
+/** 设置统一标签背景形状 */
 function setLabelBackShape() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.setUniformLabelBackShape(_params)
 }
 function getLabelBackShape() {
-  let data = [
+  const data = [
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_NONE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_DEFAULT,
-      //'空背景',
+      // '空背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_none_black.png'),
@@ -1288,7 +1287,7 @@ function getLabelBackShape() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_DIAMOND,
       title: getLanguage(global.language).Map_Main_Menu.THEME_DIAMOND,
-      //'菱形背景',
+      // '菱形背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_diamond_black.png'),
@@ -1297,7 +1296,7 @@ function getLabelBackShape() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_ROUNDRECT,
       title: getLanguage(global.language).Map_Main_Menu.THEME_ROUND_RECTANGLE,
-      //'圆角矩形背景',
+      // '圆角矩形背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_roundrect_black.png'),
@@ -1306,7 +1305,7 @@ function getLabelBackShape() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_RECT,
       title: getLanguage(global.language).Map_Main_Menu.THEME_RECTANGLE,
-      //'矩形背景',
+      // '矩形背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_rect_black.png'),
@@ -1315,7 +1314,7 @@ function getLabelBackShape() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_ELLIPSE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_ELLIPSE,
-      //'椭圆形背景',
+      // '椭圆形背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_ellipse_black.png'),
@@ -1324,7 +1323,7 @@ function getLabelBackShape() {
     {
       key: constants.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_TRIANGLE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_TRIANGLE,
-      //'三角形背景',
+      // '三角形背景',
       action: setLabelBackShape,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_backshape_triangle_black.png'),
@@ -1342,14 +1341,14 @@ function getLabelBackShape() {
   return data
 }
 
-/**设置统一标签字体 */
+/** 设置统一标签字体 */
 function setLabelFontName() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.setLabelFontName(_params)
 }
 
 function getLabelFontName() {
-  let data = [
+  const data = [
     {
       key: '微软雅黑',
       title: '微软雅黑',
@@ -1450,7 +1449,7 @@ function getLabelFontName() {
   return data
 }
 
-/**设置统一标签旋转角度 */
+/** 设置统一标签旋转角度 */
 function setLabelFontRotation() {
   const _params = ToolbarModule.getData().themeParams
   // return SThemeCartography.setUniformLabelRotaion(_params)
@@ -1458,11 +1457,11 @@ function setLabelFontRotation() {
 }
 
 function getLabelFontRotation() {
-  let data = [
+  const data = [
     {
       key: '90',
       title: getLanguage(global.language).Map_Main_Menu.ROTATE_LEFT,
-      //'左旋转90°',
+      // '左旋转90°',
       action: setLabelFontRotation,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_rotation_left_black.png'),
@@ -1471,7 +1470,7 @@ function getLabelFontRotation() {
     {
       key: '-90',
       title: getLanguage(global.language).Map_Main_Menu.ROTATE_RIGHT,
-      //'右旋转90°',
+      // '右旋转90°',
       action: setLabelFontRotation,
       size: 'large',
       image: require('../../../../../../assets/mapTools/uniformlabel_rotation_right_black.png'),
@@ -1499,22 +1498,25 @@ function getLabelFontRotation() {
   return data
 }
 
-/**设置颜色 */
+/** 设置颜色 */
 function setColor() {
   const _params = ToolbarModule.getData().themeParams
   if (_params.ColorType === 'UNIFORMLABEL_FORE_COLOR') {
     return SThemeCartography.setUniformLabelColor(_params)
-  } else if (_params.ColorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
+  }
+  if (_params.ColorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
     return SThemeCartography.setUniformLabelBackColor(_params)
-  } else if (_params.ColorType === 'DOT_DENSITY_COLOR') {
+  }
+  if (_params.ColorType === 'DOT_DENSITY_COLOR') {
     return SThemeCartography.modifyDotDensityThemeMap(_params)
-  } else if (_params.ColorType === 'GRADUATED_SYMBOL_COLOR') {
+  }
+  if (_params.ColorType === 'GRADUATED_SYMBOL_COLOR') {
     return SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
   }
 }
 
 function getColorTable() {
-  let data = [
+  const data = [
     {
       key: '#FFFFFF',
       action: setColor,
@@ -2204,7 +2206,7 @@ function getColorTable() {
 }
 
 function getThemeFiveMenu() {
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.MENU,
     ToolbarBtnType.MENU_FLEX,
@@ -2219,7 +2221,7 @@ function getThemeFiveMenu() {
 }
 
 function getThemeFourMenu() {
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.MENU,
     ToolbarBtnType.MENU_FLEX,
@@ -2229,7 +2231,7 @@ function getThemeFourMenu() {
 }
 
 function getThemeThreeMenu() {
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.MENU,
     ToolbarBtnType.TOOLBAR_COMMIT,
@@ -2242,7 +2244,7 @@ function getThemeThreeMenu() {
  */
 
 function getColorGradientType() {
-  let list = [
+  const list = [
     {
       key: 'BLACKWHITE',
       title: '黑白渐变色',
@@ -2359,7 +2361,7 @@ function getColorGradientType() {
  * 分段专题图颜色方案
  */
 function getRangeColorScheme() {
-  let list = [
+  const list = [
     {
       key: 'CA_Oranges',
       colorSchemeName: 'CA_Oranges',
@@ -2588,7 +2590,7 @@ function getRangeColorScheme() {
  * 单值专题图颜色方案
  */
 function getUniqueColorScheme() {
-  let list = [
+  const list = [
     {
       key: 'USER_DEFINE',
       colorSchemeName: getLanguage(GLOBAL.language).Map_Main_Menu.USER_DEFINE,
@@ -2738,18 +2740,18 @@ function getUniqueColorScheme() {
   return list
 }
 
-/**设置统计专题图类型 */
+/** 设置统计专题图类型 */
 function setThemeGraphType() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.setThemeGraphType(_params)
 }
 
 function getThemeGraphType() {
-  let data = [
+  const data = [
     {
       key: constants.THEME_GRAPH_AREA,
       title: getLanguage(global.language).Map_Main_Menu.THEME_AREA,
-      //constants.THEME_GRAPH_AREA,
+      // constants.THEME_GRAPH_AREA,
       action: setThemeGraphType,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_area,
@@ -2803,7 +2805,7 @@ function getThemeGraphType() {
     {
       key: constants.THEME_GRAPH_PIE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_PIE,
-      //constants.THEME_GRAPH_PIE,
+      // constants.THEME_GRAPH_PIE,
       action: setThemeGraphType,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_pie,
@@ -2812,7 +2814,7 @@ function getThemeGraphType() {
     {
       key: constants.THEME_GRAPH_PIE3D,
       title: getLanguage(global.language).Map_Main_Menu.THEME_3D_PIE,
-      //constants.THEME_GRAPH_PIE3D,
+      // constants.THEME_GRAPH_PIE3D,
       action: setThemeGraphType,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_pie3d,
@@ -2821,7 +2823,7 @@ function getThemeGraphType() {
     {
       key: constants.THEME_GRAPH_ROSE,
       title: getLanguage(global.language).Map_Main_Menu.THEME_ROSE,
-      //constants.THEME_GRAPH_ROSE,
+      // constants.THEME_GRAPH_ROSE,
       action: setThemeGraphType,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_rose,
@@ -2867,18 +2869,18 @@ function getThemeGraphType() {
   return data
 }
 
-/**设置统计专题图统计值计算方法 */
+/** 设置统计专题图统计值计算方法 */
 function setThemeGraphGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.setThemeGraphGraduatedMode(_params)
 }
 
 function getGraphThemeGradutedMode() {
-  let data = [
+  const data = [
     {
       key: constants.THEME_GRAPH_GRADUATEDMODE_CONS_KEY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_CONSTANT,
-      //constants.THEME_GRAPH_GRADUATEDMODE_CONS,
+      // constants.THEME_GRAPH_GRADUATEDMODE_CONS,
       action: setThemeGraphGraduatedMode,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_graduatedmode_cons,
@@ -2887,7 +2889,7 @@ function getGraphThemeGradutedMode() {
     {
       key: constants.THEME_GRAPH_GRADUATEDMODE_LOG_KEY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_LOGARITHM,
-      //constants.THEME_GRAPH_GRADUATEDMODE_LOG,
+      // constants.THEME_GRAPH_GRADUATEDMODE_LOG,
       action: setThemeGraphGraduatedMode,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_graduatedmode_log,
@@ -2896,7 +2898,7 @@ function getGraphThemeGradutedMode() {
     {
       key: constants.THEME_GRAPH_GRADUATEDMODE_SQUARE_KEY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_SQUARE_ROOT,
-      //constants.THEME_GRAPH_GRADUATEDMODE_SQUARE,
+      // constants.THEME_GRAPH_GRADUATEDMODE_SQUARE,
       action: setThemeGraphGraduatedMode,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_graduatedmode_square,
@@ -2907,18 +2909,18 @@ function getGraphThemeGradutedMode() {
   return data
 }
 
-/**设置等级符号专题图分级方式 */
+/** 设置等级符号专题图分级方式 */
 function setThemeGraduatedSymbolGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
   return SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
 }
 
 function getGraduatedSymbolGradutedMode() {
-  let data = [
+  const data = [
     {
       key: constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_CONS_KEY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_CONSTANT,
-      //constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_CONS,
+      // constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_CONS,
       action: setThemeGraduatedSymbolGraduatedMode,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_graduatedmode_cons,
@@ -2927,7 +2929,7 @@ function getGraduatedSymbolGradutedMode() {
     {
       key: constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_LOG_KEY,
       title: getLanguage(global.language).Map_Main_Menu.THEME_LOGARITHM,
-      //constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_LOG,
+      // constants.THEME_GRADUATED_SYMBOL_GRADUATEDMODE_LOG,
       action: setThemeGraduatedSymbolGraduatedMode,
       size: 'large',
       image: getThemeAssets().themeType.theme_graph_graduatedmode_log,
@@ -2951,7 +2953,7 @@ function getGraduatedSymbolGradutedMode() {
  * 统计专题图颜色方案
  */
 function getThemeGraphColorScheme() {
-  let list = [
+  const list = [
     {
       key: 'CA_Red Rose',
       colorSchemeName: 'CA_Red Rose',
@@ -3106,34 +3108,34 @@ function getThemeGraphColorScheme() {
   return list
 }
 
-//得到去掉文件扩展名的文件名称
+// 得到去掉文件扩展名的文件名称
 function basename(str) {
-  var idx = str.lastIndexOf('/')
+  let idx = str.lastIndexOf('/')
   idx = idx > -1 ? idx : str.lastIndexOf('\\')
   if (idx < 0) {
     return str
   }
-  let file = str.substring(idx + 1)
-  let arr = file.split('.')
+  const file = str.substring(idx + 1)
+  const arr = file.split('.')
   return arr[0]
 }
 
-/**专题图:添加 --> 统一风格 */
+/** 专题图:添加 --> 统一风格 */
 async function getUnifyStyleAdd() {
-  let data = [],
-    buttons = [
-      ToolbarBtnType.CANCEL,
-      // ToolbarBtnType.THEME_COMMIT,
-    ]
-  let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
-  let customerUDBPath = await FileTools.appendingHomeDirectory(
+  let data = []
+  const buttons = [
+    ToolbarBtnType.CANCEL,
+    // ToolbarBtnType.THEME_COMMIT,
+  ]
+  const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
+  const customerUDBPath = await FileTools.appendingHomeDirectory(
     ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
   )
-  let customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
+  const customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
     extension: 'udb',
     type: 'file',
   })
-  let customFilterUDBs = customerUDBs.filter(item => {
+  const customFilterUDBs = customerUDBs.filter(item => {
     item.name = basename(item.path)
     return !item.name.match(checkLabelAndPlot)
   })
@@ -3144,21 +3146,22 @@ async function getUnifyStyleAdd() {
       lastModifiedDate: item.mtime,
     }
   })
-  let userUDBPath, userUDBs
+  let userUDBPath
+  let userUDBs
   if (
     ToolbarModule.getParams().user &&
     ToolbarModule.getParams().user.currentUser.userName
   ) {
-    userUDBPath =
-      (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
-      ToolbarModule.getParams().user.currentUser.userName +
-      '/' +
+    userUDBPath = `${(await FileTools.appendingHomeDirectory(
+      ConstPath.UserPath,
+    )) + ToolbarModule.getParams().user.currentUser.userName}/${
       ConstPath.RelativePath.Datasource
+    }`
     userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
       extension: 'udb',
       type: 'file',
     })
-    let userFilterUDBs = userUDBs.filter(item => {
+    const userFilterUDBs = userUDBs.filter(item => {
       item.name = basename(item.path)
       return !item.name.match(checkLabelAndPlot)
     })
@@ -3199,7 +3202,7 @@ async function getUnifyStyleAdd() {
       ? ConstToolType.THEME_HEIGHT[3]
       : ConstToolType.THEME_HEIGHT[5]
   ToolbarModule.addData({
-    type: type,
+    type,
     getData: ThemeData.getData,
     data: {
       data,
@@ -3221,7 +3224,7 @@ async function getUnifyStyleAdd() {
       column:
         ToolbarModule.getParams().device.orientation === 'LANDSCAPE' ? 8 : 4,
       data,
-      buttons: buttons,
+      buttons,
     })
   ToolbarModule.getParams().scrollListToLocation &&
     ToolbarModule.getParams().scrollListToLocation()
@@ -3236,13 +3239,13 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
   // let errorInfo = ''
   switch (ToolbarParams.themeCreateType) {
     case constants.THEME_UNIQUE_STYLE:
-      //单值风格
+      // 单值风格
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
         UniqueExpression: item.expression,
         // ColorGradientType: 'CYANWHITE',
-        ColorScheme: 'BB_Green', //有ColorScheme，则ColorGradientType无效（ColorGradientType的颜色方案会被覆盖）
+        ColorScheme: 'BB_Green', // 有ColorScheme，则ColorGradientType无效（ColorGradientType的颜色方案会被覆盖）
       }
       await SThemeCartography.createThemeUniqueMap(paramsTheme).then(msg => {
         isSuccess = msg
@@ -3252,7 +3255,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_RANGE_STYLE:
-      //分段风格
+      // 分段风格
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
@@ -3269,7 +3272,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_DOT_DENSITY:
-      //点密度专题图
+      // 点密度专题图
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
@@ -3286,13 +3289,13 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_GRADUATED_SYMBOL:
-      //等级符号专题图
+      // 等级符号专题图
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
         GraSymbolExpression: item.expression,
         GraduatedMode: 'LOGARITHM',
-        //SymbolSize: '30',
+        // SymbolSize: '30',
       }
       await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
@@ -3304,7 +3307,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_UNIFY_LABEL:
-      //统一标签
+      // 统一标签
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
@@ -3324,13 +3327,13 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_UNIQUE_LABEL:
-      //单值标签
+      // 单值标签
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
         UniqueExpression: item.expression,
-        //RangeMode: RangeMode.EQUALINTERVAL,
-        //RangeParameter: '11.0',
+        // RangeMode: RangeMode.EQUALINTERVAL,
+        // RangeParameter: '11.0',
         ColorScheme: 'DA_Ragular',
       }
       await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
@@ -3343,7 +3346,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_RANGE_LABEL:
-      //分段标签
+      // 分段标签
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         DatasetName: ToolbarParams.themeDatasetName,
@@ -3364,7 +3367,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)
-    //设置当前图层
+    // 设置当前图层
     ToolbarParams.getLayers(-1, layers => {
       ToolbarParams.setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -3383,7 +3386,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
   // let errorInfo = ''
   switch (ToolbarParams.themeCreateType) {
     case constants.THEME_UNIQUE_STYLE:
-      //单值风格
+      // 单值风格
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
@@ -3398,7 +3401,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_RANGE_STYLE:
-      //分段风格
+      // 分段风格
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
@@ -3415,7 +3418,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_DOT_DENSITY:
-      //点密度专题图
+      // 点密度专题图
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
@@ -3432,13 +3435,13 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_GRADUATED_SYMBOL:
-      //等级符号专题图
+      // 等级符号专题图
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
         GraSymbolExpression: item.expression,
         GraduatedMode: 'LOGARITHM',
-        //SymbolSize: '30',
+        // SymbolSize: '30',
       }
       await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
@@ -3450,7 +3453,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_UNIFY_LABEL:
-      //统一标签
+      // 统一标签
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
@@ -3470,13 +3473,13 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_UNIQUE_LABEL:
-      //单值标签
+      // 单值标签
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
         UniqueExpression: item.expression,
-        //RangeMode: RangeMode.EQUALINTERVAL,
-        //RangeParameter: '11.0',
+        // RangeMode: RangeMode.EQUALINTERVAL,
+        // RangeParameter: '11.0',
         ColorScheme: 'DA_Ragular',
       }
       await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
@@ -3489,7 +3492,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // })
       break
     case constants.THEME_RANGE_LABEL:
-      //分段标签
+      // 分段标签
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
         DatasetName: item.datasetName,
@@ -3510,7 +3513,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)
-    //设置当前图层
+    // 设置当前图层
     ToolbarParams.getLayers(-1, layers => {
       ToolbarParams.setCurrentLayer(layers.length > 0 && layers[0])
     })
@@ -3524,7 +3527,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
  * 统计专题图颜色方案
  */
 function getAggregationColorScheme() {
-  let list = [
+  const list = [
     {
       key: 'ZA_Insights',
       colorSchemeName: 'ZA_Insights',
@@ -3600,7 +3603,7 @@ function getAggregationColorScheme() {
   return list
 }
 
-//通过数据集->创建热力图
+// 通过数据集->创建热力图
 async function createHeatMap(params) {
   let paramsTheme = {}
   let isSuccess = false
@@ -3623,38 +3626,35 @@ async function createHeatMap(params) {
     })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
-    //设置当前图层
+    // 设置当前图层
     ToolbarModule.getParams().getLayers(-1, layers => {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
     ToolbarModule.getParams().setToolbarVisible(false)
-  } else {
-    if ('TypeError' === errorInfo) {
-      Toast.show(
-        global.language === 'CN'
-          ? '只有点数据集可以创建'
-          : 'Only point dataset can be created',
-      )
-    }
+  } else if (errorInfo === 'TypeError') {
+    Toast.show(
+      global.language === 'CN'
+        ? '只有点数据集可以创建'
+        : 'Only point dataset can be created',
+    )
   }
 }
 
 function isThemeFieldTypeAvailable(fieldType, themeType) {
   if (themeType && themeType === constants.THEME_UNIFY_LABEL) {
     return true
-  } else {
-    return (
-      fieldType === 'DOUBLE' ||
-      fieldType === 'INT16' ||
-      fieldType === 'INT32' ||
-      fieldType === 'INT64' ||
-      fieldType === 'LONGBINARY' ||
-      fieldType === 'SINGLE'
-    )
   }
+  return (
+    fieldType === 'DOUBLE' ||
+    fieldType === 'INT16' ||
+    fieldType === 'INT32' ||
+    fieldType === 'INT64' ||
+    fieldType === 'LONGBINARY' ||
+    fieldType === 'SINGLE'
+  )
 }
 
-//单值
+// 单值
 const uniqueMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
@@ -3680,7 +3680,7 @@ const uniqueMenuInfo = param => [
   },
 ]
 
-//分段
+// 分段
 const rangeMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
@@ -3729,13 +3729,13 @@ const rangeMenuInfo = param => [
   },
 ]
 
-//统一标签
+// 统一标签
 const labelMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
         ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
@@ -3811,13 +3811,13 @@ const labelMenuInfo = param => [
   },
 ]
 
-//单值标签
+// 单值标签
 const uniqueLabelMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
         ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
@@ -3829,7 +3829,7 @@ const uniqueLabelMenuInfo = param => [
     key: getLanguage(param).Map_Main_Menu.THEME_UNIQUE_EXPRESSION,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_UNIQUE_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_UNIQUE_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
         ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION,
@@ -3883,13 +3883,13 @@ const uniqueLabelMenuInfo = param => [
   },
 ]
 
-//分段标签
+// 分段标签
 const rangeLabelMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
         ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
@@ -3901,7 +3901,7 @@ const rangeLabelMenuInfo = param => [
     key: getLanguage(param).Map_Main_Menu.THEME_RANGE_EXPRESSION,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_RANGE_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_RANGE_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
         ConstToolType.MAP_THEME_PARAM_RANGELABEL_EXPRESSION,
@@ -3978,7 +3978,7 @@ const rangeLabelMenuInfo = param => [
   },
 ]
 
-//统计专题图
+// 统计专题图
 const graphMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
@@ -4027,13 +4027,13 @@ const graphMenuInfo = param => [
   },
 ]
 
-//修改点密度专题图：设置点密度图的表达式，单点代表的值，点风格（大小和颜色）。
+// 修改点密度专题图：设置点密度图的表达式，单点代表的值，点风格（大小和颜色）。
 const dotDensityMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
-    //'',
+    // '',
     selectKey: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
-    //getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
+    // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
@@ -4057,7 +4057,7 @@ const dotDensityMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
-    //getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
+    // getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
@@ -4080,7 +4080,7 @@ const dotDensityMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
-    //getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
+    // getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
       ThemeAction.getDotDensityValueAndDotsize(
@@ -4105,7 +4105,7 @@ const dotDensityMenuInfo = param => [
   },
 ]
 
-//修改等级符号专题图：设置表达式，分级方式，基准值，正值基准值风格（大小和颜色）。
+// 修改等级符号专题图：设置表达式，分级方式，基准值，正值基准值风格（大小和颜色）。
 const graduatedSymbolMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
@@ -4120,11 +4120,11 @@ const graduatedSymbolMenuInfo = param => [
   },
   {
     key: getLanguage(param).Map_Main_Menu.GRADUATE_BY,
-    //'分级方式',
+    // '分级方式',
     selectKey: getLanguage(param).Map_Main_Menu.GRADUATE_BY,
-    //'分级方式',
+    // '分级方式',
     btnTitle: getLanguage(param).Map_Main_Menu.GRADUATE_BY,
-    //'分级方式',
+    // '分级方式',
     action: () => {
       ThemeAction.getGraduatedSymbolGradutedMode(
         ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE,
@@ -4134,11 +4134,11 @@ const graduatedSymbolMenuInfo = param => [
   },
   {
     key: getLanguage(param).Map_Main_Menu.DATUM_VALUE,
-    //'基准值',
+    // '基准值',
     selectKey: getLanguage(param).Map_Main_Menu.DATUM_VALUE,
-    //'基准值',
+    // '基准值',
     btnTitle: getLanguage(param).Map_Main_Menu.DATUM_VALUE,
-    //'基准值',
+    // '基准值',
     action: () => {
       ThemeAction.getGraduatedSymbolBaseValueAndSymbolSize(
         ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_VALUE,
@@ -4183,11 +4183,11 @@ const graduatedSymbolMenuInfo = param => [
   },
   {
     key: getLanguage(param).Map_Main_Menu.THEME_COLOR,
-    //'符号颜色',
+    // '符号颜色',
     selectKey: getLanguage(param).Map_Main_Menu.THEME_COLOR,
-    //'符号颜色',
+    // '符号颜色',
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR,
-    //'符号颜色',
+    // '符号颜色',
     action: () => {
       ThemeAction.getColorTable(
         ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR,
@@ -4198,7 +4198,7 @@ const graduatedSymbolMenuInfo = param => [
   },
 ]
 
-//栅格单值专题图
+// 栅格单值专题图
 const gridUniqueMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
@@ -4227,7 +4227,7 @@ const gridUniqueMenuInfo = param => [
   // },
 ]
 
-//栅格分段专题图（分段方法有缺陷，只有等距分段有用，先注释掉）
+// 栅格分段专题图（分段方法有缺陷，只有等距分段有用，先注释掉）
 const gridRangeMenuInfo = param => [
   // {
   //   key: '分段方法',
@@ -4268,7 +4268,7 @@ const gridRangeMenuInfo = param => [
   },
 ]
 
-//热力图
+// 热力图
 const heatmapMenuInfo = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_HEATMAP_RADIUS,
@@ -4323,33 +4323,33 @@ const heatmapMenuInfo = param => [
   },
 ]
 
-/** 统计专题图字段表达式列表（多选） **/
+/** 统计专题图字段表达式列表（多选） * */
 async function getGraphThemeExpressionsData() {
   const _params = ToolbarModule.getParams()
-  const themeCreateType = ToolbarModule.getData().themeCreateType
-  let expressionData = await SThemeCartography.getThemeExpressionByLayerName(
+  const { themeCreateType } = ToolbarModule.getData()
+  const expressionData = await SThemeCartography.getThemeExpressionByLayerName(
     _params.language,
     _params.currentLayer.name,
   )
-  let dataset = expressionData.dataset
-  let allExpressions = []
-  let param = {
+  const { dataset } = expressionData
+  const allExpressions = []
+  const param = {
     LayerName: _params.currentLayer.name,
   }
-  let expressions = await SThemeCartography.getGraphExpressions(param)
-  let selectedExpressions = expressions.list //已选择的字段列表
-  let listExpressionsArr = []
+  const expressions = await SThemeCartography.getGraphExpressions(param)
+  const selectedExpressions = expressions.list // 已选择的字段列表
+  const listExpressionsArr = []
 
   for (let i = 0; i < expressionData.list.length; i++) {
-    let item = expressionData.list[i]
+    const item = expressionData.list[i]
     if (isThemeFieldTypeAvailable(item.fieldTypeStr, themeCreateType)) {
       if (selectedExpressions) {
         for (let index = 0; index < selectedExpressions.length; index++) {
-          let temp = {}
+          const temp = {}
           temp[selectedExpressions[index]] = false
           item.isSelected = item.expression === selectedExpressions[index]
           if (item.isSelected === true) {
-            //add xiezhy
+            // add xiezhy
             listExpressionsArr.push(temp)
             break
           }
@@ -4366,7 +4366,7 @@ async function getGraphThemeExpressionsData() {
     }
   }
 
-  let listExpressionsObj = {}
+  const listExpressionsObj = {}
   listExpressionsObj[dataset.datasetName] = listExpressionsArr
   // return {
   //   data: [
@@ -4413,7 +4413,7 @@ export default {
   getUnifyStyleAdd,
   basename,
   getGraduatedSymbolGradutedMode,
-  //创建专题图
+  // 创建专题图
   createThemeByDataset,
   createThemeByLayer,
   createThemeGridUniqueMap,

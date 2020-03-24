@@ -2,10 +2,10 @@ import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { SMap, SScene } from 'imobile_for_reactnative'
+import fs from 'react-native-fs'
 import { FileTools } from '../native'
 import { Toast } from '../utils'
 import { ConstPath, ConstInfo } from '../constants'
-import fs from 'react-native-fs'
 import UserType from '../constants/UserType'
 import ConstOnline from '../constants/ConstOnline'
 import { getLanguage } from '../language'
@@ -24,7 +24,7 @@ let isExporting = false
 // 打开工作空间
 export const openWorkspace = (params, cb = () => {}) => async dispatch => {
   try {
-    let result = await SMap.openWorkspace(params)
+    const result = await SMap.openWorkspace(params)
     await dispatch({
       type: OPEN_WORKSPACE,
       payload: params || {},
@@ -45,7 +45,7 @@ export const openWorkspace = (params, cb = () => {}) => async dispatch => {
 export const closeWorkspace = (cb = () => {}) => async dispatch => {
   try {
     // await SMap.closeDatasource()
-    let result = await SMap.closeWorkspace()
+    const result = await SMap.closeWorkspace()
     await dispatch({
       type: OPEN_WORKSPACE,
       payload: {},
@@ -75,24 +75,26 @@ export const openMap = (params, cb = () => {}) => async (
       !params.path
     )
       return
-    let absolutePath = await FileTools.appendingHomeDirectory(params.path)
-    let userName = getState().user.toJS().currentUser.userName || 'Customer'
-    let moduleName = GLOBAL.Type
-    let module = params.module || ''
-    let fileName = params.name || params.title
-    let isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
-    let importResult = await SMap.openMapName(fileName, {
+    const absolutePath = await FileTools.appendingHomeDirectory(params.path)
+    const userName = getState().user.toJS().currentUser.userName || 'Customer'
+    const moduleName = GLOBAL.Type
+    const module = params.module || ''
+    const fileName = params.name || params.title
+    const isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
+    const importResult = await SMap.openMapName(fileName, {
       Module: module,
       IsPrivate: !isCustomerPath,
     })
-    let expFilePath =
-      absolutePath.substr(0, absolutePath.lastIndexOf('.')) + '.exp'
-    let openMapResult = importResult && (await SMap.openMap(fileName))
-    let mapInfo = await SMap.getMapInfo()
+    const expFilePath = `${absolutePath.substr(
+      0,
+      absolutePath.lastIndexOf('.'),
+    )}.exp`
+    const openMapResult = importResult && (await SMap.openMap(fileName))
+    const mapInfo = await SMap.getMapInfo()
     if (openMapResult) {
-      let expIsExist = await FileTools.fileIsExist(expFilePath)
+      const expIsExist = await FileTools.fileIsExist(expFilePath)
       if (expIsExist) {
-        let data = await fs.readFile(expFilePath)
+        const data = await fs.readFile(expFilePath)
         Object.assign(mapInfo, JSON.parse(data), { path: params.path })
         await SMap.resetMapFixColorsModeValue(true)
         await dispatch({
@@ -122,10 +124,10 @@ export const saveMap = (params = {}, cb = () => {}) => async (
   getState,
 ) => {
   try {
-    let mapName = params.mapName
-    let currentMap = getState().map.toJS().currentMap
-    let curMapName = currentMap.name
-    let userName = getState().user.toJS().currentUser.userName
+    let { mapName } = params
+    const { currentMap } = getState().map.toJS()
+    const curMapName = currentMap.name
+    const { userName } = getState().user.toJS().currentUser
     let path = ''
     if (!params.notSaveToXML) {
       mapName = await SMap.saveMapName(
@@ -134,18 +136,14 @@ export const saveMap = (params = {}, cb = () => {}) => async (
         params.addition,
         params.isNew,
       )
-      path =
-        ConstPath.UserPath +
-        userName +
-        '/' +
-        ConstPath.RelativePath.Map +
-        mapName +
-        '.xml'
+      path = `${ConstPath.UserPath + userName}/${
+        ConstPath.RelativePath.Map
+      }${mapName}.xml`
     }
 
     // 另存为 和 未打开一幅已命名的地图，则需要重新设置当前地图
     // 另存不需要重新设置当前地图
-    if (!params.isNew /*|| curMapName !== mapName*/) {
+    if (!params.isNew /* || curMapName !== mapName */) {
       let mapInfo = {}
       if (curMapName === mapName) {
         Object.assign(mapInfo, currentMap, { path, name: mapName })
@@ -189,7 +187,7 @@ export const closeMap = (cb = () => {}) => async dispatch => {
 // 获取当前工作空间的地图列表
 export const getMaps = (cb = () => {}) => async dispatch => {
   try {
-    let maps = await SMap.getMaps()
+    const maps = await SMap.getMaps()
     await dispatch({
       type: GET_MAPS,
       payload: maps || [],
@@ -236,41 +234,39 @@ export const exportWorkspace = (params, cb = () => {}) => async (
 ) => {
   if (isExporting) {
     Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
-    //''请稍后再试')
+    // ''请稍后再试')
     return false
   }
   isExporting = true
-  let exportResult = false
+  const exportResult = false
   let zipResult = false
   try {
-    let userName = getState().user.toJS().currentUser.userName || 'Customer'
-    let workspace = getState().map.toJS().workspace
-    let path = params.outPath,
-      fileName = '',
-      fileNameWithoutExtension = '',
-      parentPath = '',
-      zipPath = params.zipPath
+    const userName = getState().user.toJS().currentUser.userName || 'Customer'
+    const { workspace } = getState().map.toJS()
+    let path = params.outPath
+    let fileName = ''
+    let fileNameWithoutExtension = ''
+    let parentPath = ''
+    let { zipPath } = params
     let exportResult = false
     if (!path) {
       fileName = workspace.server.substr(workspace.server.lastIndexOf('/') + 1)
       fileNameWithoutExtension = fileName.substr(0, fileName.lastIndexOf('.'))
       parentPath = await FileTools.appendingHomeDirectory(
-        ConstPath.UserPath +
-          userName +
-          '/' +
-          ConstPath.RelativePath.Temp +
-          fileNameWithoutExtension,
+        `${ConstPath.UserPath + userName}/${
+          ConstPath.RelativePath.Temp
+        }${fileNameWithoutExtension}`,
       )
-      path = parentPath + '/' + fileName
+      path = `${parentPath}/${fileName}`
     } else {
       parentPath = path.substr(0, path.lastIndexOf('/'))
     }
     // 导出工作空间
     if (params.maps && params.maps.length > 0) {
-      let fileReplace =
+      const fileReplace =
         params.fileReplace === undefined ? true : params.fileReplace
       if (params.isOpenMap) {
-        let isLogin =
+        const isLogin =
           getState().user.toJS().currentUser.userType !==
           UserType.PROBATION_USER
         exportResult = await SMap.exportWorkspaceByMap(params.maps[0], path, {
@@ -289,7 +285,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
     // console.warn(exportResult)
     // 压缩工作空间
     if (exportResult) {
-      zipPath = zipPath ? zipPath : parentPath + '.zip'
+      zipPath = zipPath || `${parentPath}.zip`
       zipResult = await FileTools.zipFile(parentPath, zipPath)
     }
     // 删除导出的工作空间
@@ -300,7 +296,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
     isExporting = false
     if (!exportResult) {
       Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
-      //ConstInfo.EXPORT_WORKSPACE_FAILED)
+      // ConstInfo.EXPORT_WORKSPACE_FAILED)
     } else if (!zipResult) {
       Toast.show(ConstInfo.ZIP_FAILED)
     }
@@ -308,41 +304,39 @@ export const exportWorkspace = (params, cb = () => {}) => async (
   }
 }
 
-//导出工作空间
+// 导出工作空间
 export const exportmap3DWorkspace = (params, cb = () => {}) => async (
   dispatch,
   getState,
 ) => {
   // return
-  let userName = getState().user.toJS().currentUser.userName || 'Customer'
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   if (params.name) {
     if (isExporting) {
       Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
-      //'请稍后再试')
+      // '请稍后再试')
       return false
     }
     isExporting = true
-    let path = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath +
-        userName +
-        '/' +
-        ConstPath.RelativePath.Temp +
-        params.name,
+    const path = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Temp}${
+        params.name
+      }`,
     )
     let result = await SScene.export3DScenceName(params.name, path)
     if (result) {
-      let zipPath = path + '.zip'
+      const zipPath = `${path}.zip`
       result = await FileTools.zipFile(path, zipPath)
       if (result) {
         await FileTools.deleteFile(path)
         Toast.show(getLanguage(global.language).Prompt.SHARE_START)
-        //'导出成功,开始分享')
+        // '导出成功,开始分享')
         isExporting = false
         cb && cb(result, zipPath)
       }
     } else {
       Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
-      //'导出失败')
+      // '导出失败')
     }
     // let result = await SScene.is3DWorkspace({ server: params.server })
     // if (result) {
@@ -357,32 +351,30 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
     // }
   }
 }
-//导入三维工作空间
+// 导入三维工作空间
 export const importSceneWorkspace = params => async (dispatch, getState) => {
-  let userName = getState().user.toJS().currentUser.userName || 'Customer'
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   // return
   if (userName !== 'Customer') {
-    let path = await FileTools.appendingHomeDirectory(
+    const path = await FileTools.appendingHomeDirectory(
       ConstPath.UserPath + userName,
     )
     await SScene.setCustomerDirectory(path)
   }
   if (params.server) {
-    let result = await SScene.is3DWorkspace({ server: params.server })
+    const result = await SScene.is3DWorkspace({ server: params.server })
     if (result) {
-      let result2 = await SScene.import3DWorkspace({ server: params.server })
+      const result2 = await SScene.import3DWorkspace({ server: params.server })
       if (result2) {
         // Toast.show('导入成功')
         return result2
-      } else {
-        // Toast.show('导入失败')
-        return result2
       }
-    } else {
       // Toast.show('导入失败')
-      // return
-      return result
+      return result2
     }
+    // Toast.show('导入失败')
+    // return
+    return result
   }
 }
 
@@ -412,16 +404,15 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${OPEN_WORKSPACE}`]: (state, { payload }) => {
-      return state.setIn(['workspace'], fromJS(payload))
-    },
+    [`${OPEN_WORKSPACE}`]: (state, { payload }) =>
+      state.setIn(['workspace'], fromJS(payload)),
     [`${SET_LATEST_MAP}`]: (state, { payload }) => {
-      let newData = state.toJS().latestMap || []
+      const newData = state.toJS().latestMap || []
       let isExist = false
       for (let i = 0; i < newData.length; i++) {
         if (newData[i].path === payload.path) {
           newData[i] = payload
-          let temp = newData[0]
+          const temp = newData[0]
           newData[0] = newData[i]
           newData[i] = temp
           isExist = true
@@ -445,11 +436,10 @@ export default handleActions(
       }
       return state
     },
-    [`${GET_MAPS}`]: (state, { payload }) => {
-      return state.setIn(['maps'], fromJS(payload))
-    },
+    [`${GET_MAPS}`]: (state, { payload }) =>
+      state.setIn(['maps'], fromJS(payload)),
     [`${SET_CURRENT_MAP}`]: (state, { payload, extData }) => {
-      let newData = state.toJS().latestMap || {}
+      const newData = state.toJS().latestMap || {}
       if (extData) {
         if (!newData[extData.userName]) {
           newData[extData.userName] = {}
@@ -469,7 +459,7 @@ export default handleActions(
             payload.path
           ) {
             newData[extData.userName][extData.moduleName][i] = payload
-            let temp = newData[extData.userName][extData.moduleName][0]
+            const temp = newData[extData.userName][extData.moduleName][0]
             newData[extData.userName][extData.moduleName][0] =
               newData[extData.userName][extData.moduleName][i]
             newData[extData.userName][extData.moduleName][i] = temp
@@ -484,13 +474,12 @@ export default handleActions(
         return state
           .setIn(['currentMap'], fromJS(payload))
           .setIn(['latestMap'], fromJS(newData))
-      } else {
-        return state.setIn(['currentMap'], fromJS(payload))
       }
+      return state.setIn(['currentMap'], fromJS(payload))
     },
-    //payload {userId:id,baseMaps:[]}
+    // payload {userId:id,baseMaps:[]}
     [`${SET_BASEMAP}`]: (state, { payload }) => {
-      let allBaseMap = state.toJS()
+      const allBaseMap = state.toJS()
       if (allBaseMap.baseMaps.hasOwnProperty(payload.userId) === false) {
         allBaseMap.baseMaps[payload.userId] = []
       }
@@ -502,7 +491,7 @@ export default handleActions(
     },
     [REHYDRATE]: (state, { payload }) => {
       if (payload && payload.map) {
-        let data = payload.map
+        const data = payload.map
         data.maps = []
         data.currentMap = {}
         data.workspace = {}
@@ -510,9 +499,8 @@ export default handleActions(
           data.baseMaps = initialState.toJS().baseMaps
         }
         return fromJS(data)
-      } else {
-        return state
       }
+      return state
     },
   },
   initialState,

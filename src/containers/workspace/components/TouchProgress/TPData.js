@@ -58,29 +58,23 @@ function getMatchPictureTip(arr, value) {
     arr[arr.length - 1] ===
     getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST
   ) {
-    tips =
-      getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST +
-      '     ' +
-      parseInt(value) +
-      '%'
+    tips = `${
+      getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST
+    }     ${parseInt(value)}%`
   } else if (
     arr[arr.length - 1] ===
     getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS
   ) {
-    tips =
-      getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS +
-      '     ' +
-      parseInt(value) +
-      '%'
+    tips = `${
+      getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS
+    }     ${parseInt(value)}%`
   } else if (
     arr[arr.length - 1] ===
     getLanguage(global.language).Map_Main_Menu.SATURATION
   ) {
-    tips =
-      getLanguage(global.language).Map_Main_Menu.SATURATION +
-      '     ' +
-      parseInt(value) +
-      '%'
+    tips = `${
+      getLanguage(global.language).Map_Main_Menu.SATURATION
+    }     ${parseInt(value)}%`
   }
   return tips
 }

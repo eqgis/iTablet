@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
+
 export const itemWidth = '100%'
 export const itemHeight = 140
 export const imageWidth = 100
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     lineHeight: textHeight,
     fontSize: smallFontSize,
     color: color.font_color_white,
-    paddingLeft: paddingLeft,
+    paddingLeft,
     textAlign: 'left',
     backgroundColor: color.contentColorWhite,
   },
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: largeFontSize,
     fontWeight: 'bold',
     color: color.font_color_white,
-    paddingLeft: paddingLeft,
+    paddingLeft,
     textAlign: 'left',
   },
   separateViewStyle: {

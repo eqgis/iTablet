@@ -1,4 +1,4 @@
-//提示语
+// 提示语
 const Prompt = {
   YES: '是',
   NO: '否',
@@ -233,14 +233,14 @@ const Prompt = {
   ENTER_CORRECT_MOBILE: '请输入正确的手机号',
   ENTER_CORRECT_EMAIL: '请输入正确的邮箱号',
 
-  //设置菜单提示信息
+  // 设置菜单提示信息
   ROTATION_ANGLE_ERROR: '旋转角度应在-360°到360°之间',
   MAP_SCALE_ERROR: '比例输入错误!请输入一个数字',
   VIEW_BOUNDS_ERROR: '范围输入错误!请输入一个数字',
   VIEW_BOUNDS_RANGE_ERROR: '参数错误!窗口宽高不能小于0',
   MAP_CENTER_ERROR: '坐标输入错误!x,y都应该为数字',
   COPY_SUCCESS: '复制成功',
-  //复制坐标系
+  // 复制坐标系
   COPY_COORD_SYSTEM_SUCCESS: '坐标系复制成功',
   COPY_COORD_SYSTEM_FAIL: '坐标系复制失败',
   ILLEGAL_COORDSYS: '所选文件不是支持的坐标系文件',
@@ -276,7 +276,7 @@ const Prompt = {
   FAILED_TO_CREATE_LINE: '点绘线失败',
   FAILED_TO_CREATE_REGION: '点绘面失败',
   CLEAR_HISTORY: '清除搜索记录',
-  //导航相关
+  // 导航相关
   SEARCH_AROUND: '搜周边',
   GO_HERE: '到这去',
   SHOW_MORE_RESULT: '查看更多结果',
@@ -304,7 +304,7 @@ const Prompt = {
     '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
   NOT_SUPPORT_ONLINE_NAVIGATION: '在线导航暂不支持',
 
-  //自定义专题图
+  // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',
   PARAMS_ERROR: '参数错误，设置失败！',

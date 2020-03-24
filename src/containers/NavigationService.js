@@ -3,7 +3,7 @@
 import { StackActions, NavigationActions } from 'react-navigation'
 
 let _navigator
-let preRoute = undefined
+let preRoute
 
 function getTopLevelNavigator() {
   return _navigator
@@ -14,7 +14,7 @@ function setTopLevelNavigator(navigatorRef) {
 }
 
 function navigate(routeName, params) {
-  (async function() {
+  ;(async function() {
     if (routeName === preRoute) return
     preRoute = routeName
     await _navigator.dispatch(
@@ -36,10 +36,10 @@ function navigate(routeName, params) {
  * @param immediate
  */
 function goBack(routeName, immediate) {
-  (async function _goBack() {
+  ;(async function _goBack() {
     let key
     if (routeName) {
-      let routes = _navigator.state.nav.routes
+      const { routes } = _navigator.state.nav
       for (let i = routes.length - 1; i >= 0; i--) {
         if (routes[i].routeName === routeName) {
           key = routes[i].key
@@ -58,7 +58,7 @@ function goBack(routeName, immediate) {
 }
 
 function pop(index = 1) {
-  (async function _goBack() {
+  ;(async function _goBack() {
     await _navigator.dispatch(
       StackActions.pop({
         n: index,
@@ -68,7 +68,7 @@ function pop(index = 1) {
 }
 
 function reset(index, actions) {
-  let resetAction = NavigationActions.reset({
+  const resetAction = NavigationActions.reset({
     index,
     actions,
   })
@@ -76,7 +76,7 @@ function reset(index, actions) {
 }
 
 function replace(routeName, params) {
-  let resetAction = StackActions.replace({
+  const resetAction = StackActions.replace({
     routeName,
     params,
   })
@@ -84,7 +84,7 @@ function replace(routeName, params) {
 }
 
 function popToTop() {
-  let resetAction = StackActions.popToTop()
+  const resetAction = StackActions.popToTop()
   _navigator.dispatch(resetAction)
 }
 // add other navigation functions that you need and export them

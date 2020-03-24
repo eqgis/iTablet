@@ -51,15 +51,13 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SET_CURRENT_SYMBOLS}`]: (state, { payload }) => {
-      return state.setIn(['currentSymbols'], fromJS(payload))
-    },
-    [`${SET_SYMBOLS_MAXLENGTH}`]: (state, { payload }) => {
-      return state.setIn(['maxLength'], fromJS(payload))
-    },
+    [`${SET_CURRENT_SYMBOLS}`]: (state, { payload }) =>
+      state.setIn(['currentSymbols'], fromJS(payload)),
+    [`${SET_SYMBOLS_MAXLENGTH}`]: (state, { payload }) =>
+      state.setIn(['maxLength'], fromJS(payload)),
     [`${SET_CURRENT_SYMBOL}`]: (state, { payload }) => {
       let newData = state.toJS().latestSymbols || []
-      let maxLength = state.toJS().maxLength || initialState.toJS().maxLength
+      const maxLength = state.toJS().maxLength || initialState.toJS().maxLength
       if (payload.id) {
         let index = -1
         for (let i = 0; i < newData.length; i++) {
@@ -79,19 +77,17 @@ export default handleActions(
         return state
           .setIn(['currentSymbol'], fromJS(payload))
           .setIn(['latestSymbols'], fromJS(newData))
-      } else {
-        return state.setIn(['currentSymbol'], fromJS(payload))
       }
+      return state.setIn(['currentSymbol'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       if (payload && payload.symbol) {
-        let data = payload.symbol
+        const data = payload.symbol
         data.currentSymbols = []
         data.currentSymbol = {}
         return fromJS(data)
-      } else {
-        return state
       }
+      return state
     },
   },
   initialState,

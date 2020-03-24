@@ -22,9 +22,9 @@ export const setDownInformation = (
 export const downloadFile = (params = {}) => async (dispatch, getState) => {
   let value = 0
   let timer = setInterval(async () => {
-    let shouldUpdate = false,
-      isExist = false
-    let downloads = getState().down.toJS().downloads
+    let shouldUpdate = false
+    let isExist = false
+    const { downloads } = getState().down.toJS()
     for (let index = 0; index < downloads.length; index++) {
       const element = downloads[index]
       if (element.id === params.key) {
@@ -41,7 +41,7 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
       const data = {
         id: params.key,
         progress: value,
-        params: params,
+        params,
       }
       await dispatch({
         type: DOWNLOADING_FILE,
@@ -59,7 +59,7 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
       const data = {
         id: params.key,
         progress: value,
-        params: params,
+        params,
       }
       await dispatch({
         type: DOWNLOADING_FILE,
@@ -67,7 +67,7 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
       })
     }
   }
-  let result = RNFS.downloadFile(params)
+  const result = RNFS.downloadFile(params)
   return result.promise
 }
 
@@ -111,9 +111,9 @@ const initialState = fromJS({
 export default handleActions(
   {
     [`${DOWN_SET}`]: (state, { payload }) => {
-      let downList = state.toJS().downList
+      const { downList } = state.toJS()
       if (payload.index) {
-        let index = payload.index
+        const { index } = payload
         downList[index].index = payload.index
 
         if (payload.isShowProgressView) {
@@ -129,7 +129,7 @@ export default handleActions(
       return state.setIn(['downList'], fromJS(downList))
     },
     [`${DOWNLOADING_FILE}`]: (state, { payload }) => {
-      let downloads = state.toJS().downloads
+      const { downloads } = state.toJS()
       if (payload.id) {
         if (downloads.length > 0) {
           let isItem = false
@@ -154,7 +154,7 @@ export default handleActions(
       return state.setIn(['downloads'], fromJS(downloads))
     },
     [`${DOWNLOADED_FILE_DELETE}`]: (state, { payload }) => {
-      let downloads = state.toJS().downloads
+      const { downloads } = state.toJS()
       if (payload.id) {
         if (downloads.length > 0) {
           for (let index = 0; index < downloads.length; index++) {

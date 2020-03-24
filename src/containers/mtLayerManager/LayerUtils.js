@@ -1,5 +1,5 @@
-import { ConstOnline } from '../../constants'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { ConstOnline } from '../../constants'
 
 const baseMapsOrigin = [
   'roadmap@GoogleMaps',
@@ -45,9 +45,9 @@ function isBaseLayer(name) {
 }
 
 function getBaseLayers(layers = []) {
-  let arr = []
+  const arr = []
   for (let i = 0; i < layers.length; i++) {
-    let name = layers[i].name
+    const { name } = layers[i]
     for (let i = 0, n = baseMaps.length; i < n; i++) {
       if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
         arr.push(layers[i])
@@ -80,7 +80,7 @@ function setBaseMap(baseMap) {
 }
 async function addBaseMap(
   layers = [],
-  data = ConstOnline['Google'],
+  data = ConstOnline.Google,
   index,
   visible = true,
 ) {

@@ -17,6 +17,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog } from '../../../../components'
+import { ToolbarModule } from '../ToolBar/modules'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 
@@ -34,7 +35,8 @@ export default class NavigationView extends React.Component {
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
-    this.getNavgationDatas = params.getNavigationDatas
+    this.getNavigationDatas = ToolbarModule.getParams().getNavigationDatas
+    this.setNavigationDatas = ToolbarModule.getParams().setNavigationDatas
     this.changeNavPathInfo = params.changeNavPathInfo
     // this.PointType = null
     this.clickable = true
@@ -102,15 +104,15 @@ export default class NavigationView extends React.Component {
     NavigationService.navigate('MapView')
   }
 
-  // [{datasourceName:'',datasetName:''}]
-  // [{datasourceName:''}]
+  // [{datasourceName:'',datasetName:'',name:''}]
+  // [{datasourceName:'',name:''}]
   //获取数组中相同的对象
   getSameInfoFromArray = (arr1, arr2) => {
     let result = []
-    if (arr1.length === 0 || arr2.length === 0) return result
+    if (!arr1 || !arr2 || arr1.length === 0 || arr2.length === 0) return result
     arr1.forEach(item => {
       arr2.forEach(item2 => {
-        if (JSON.stringify(item) === JSON.stringify(item2)) {
+        if (item.name === item2.name) {
           result.push(item)
         }
       })
@@ -151,14 +153,69 @@ export default class NavigationView extends React.Component {
         endOutdoorInfo,
       )
 
-      let selectedData = this.getNavgationDatas()
-      if (selectedData.modelFileName) {
-        let newData = { ...selectedData }
-        newData.isIndoor = false
-        newData.datasetName = selectedData.name
-        commonOutdoorInfo[0] = newData
+      let selectedData = this.getNavigationDatas()
+      let datasources = selectedData.selectedDatasources
+      let datasets = selectedData.selectedDatasets
+      let selectedDatasets = []
+      let selectedDatasources = []
+      let currentDataset = {}
+      let currentDatasource = []
+      //用户选择了导航数据
+      if (datasources.length > 0 || datasets.length > 0) {
+        commonIndoorInfo = this.getSameInfoFromArray(
+          commonIndoorInfo,
+          datasources,
+        )
+        commonOutdoorInfo = this.getSameInfoFromArray(
+          commonOutdoorInfo,
+          datasets,
+        )
+        selectedDatasources = datasources
+        selectedDatasets = datasets
+        if (commonIndoorInfo.length > 0) {
+          currentDatasource = commonIndoorInfo
+          currentDataset = []
+        } else if (commonOutdoorInfo.length > 0) {
+          currentDataset = commonOutdoorInfo[0]
+          currentDatasource = []
+          if (datasources.length === 0) {
+            startIndoorInfo = []
+            endIndoorInfo = []
+          } else {
+            startIndoorInfo.length > 0 &&
+              currentDatasource.push(startIndoorInfo[0])
+            endIndoorInfo.length > 0 && currentDatasource.push(endIndoorInfo[0])
+          }
+        }
+      } else {
+        //用户没有选择导航数据
+        if (commonIndoorInfo.length > 0) {
+          selectedDatasources = commonIndoorInfo
+          currentDatasource = commonIndoorInfo
+          selectedDatasets = []
+          currentDataset = {}
+        } else if (commonOutdoorInfo.length > 0) {
+          selectedDatasets = commonOutdoorInfo
+          currentDataset = commonOutdoorInfo[0]
+          selectedDatasources = []
+          currentDatasource = []
+          if (startIndoorInfo.length > 0) {
+            selectedDatasources.push(startIndoorInfo[0])
+            currentDatasource.push(startIndoorInfo[0])
+          }
+          if (endIndoorInfo.length > 0) {
+            selectedDatasources.push(endIndoorInfo[0])
+            currentDatasource.push(endIndoorInfo[0])
+          }
+        }
       }
 
+      this.setNavigationDatas({
+        selectedDatasources,
+        selectedDatasets,
+        currentDataset,
+        currentDatasource,
+      })
       let path, pathLength
       if (commonIndoorInfo.length > 0) {
         // todo 室内点的问题 图标问题 最好统一js显示
@@ -177,7 +234,7 @@ export default class NavigationView extends React.Component {
             true,
             GLOBAL.ENDPOINTFLOOR,
           )
-          await SMap.startIndoorNavigation()
+          await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
           let rel = await SMap.beginIndoorNavigation()
           if (!rel) {
             this.loading.setLoading(false)
@@ -246,13 +303,16 @@ export default class NavigationView extends React.Component {
                 true,
                 doorPoint.floorID,
               )
-              await SMap.startIndoorNavigation()
+              await SMap.startIndoorNavigation(
+                startIndoorInfo[0].datasourceName,
+              )
               let rel = await SMap.beginIndoorNavigation()
               if (!rel) {
                 this.loading.setLoading(false)
                 Toast.show(
                   getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
                 )
+                SMap.clearPoint()
                 return
               }
               await SMap.addLineOnTrackingLayer(doorPoint, {

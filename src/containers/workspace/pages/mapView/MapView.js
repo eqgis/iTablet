@@ -45,7 +45,8 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker, LayerVisibilityView,
+  PreviewColorPicker,
+  LayerVisibilityView,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import {
@@ -272,7 +273,13 @@ export default class MapView extends React.Component {
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = GLOBAL.Type === constants.MAP_AR
 
-    this.selectedDataset = {}
+    //  导航选中的数据
+    this.selectedData = {
+      selectedDatasources: [], //选中的数据源
+      selectedDatasets: [], //选中的数据集
+      currentDatasource: [], //当前使用的数据源
+      currentDataset: {}, //当前使用的数据集
+    }
     this.floorHiddenListener = null
   }
 
@@ -508,7 +515,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-      (async function() {
+      ;(async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -552,7 +559,7 @@ export default class MapView extends React.Component {
       global.isPad && Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-      (async function() {
+      ;(async function() {
         await SMap.destroySpeakPlugin()
       })()
     }
@@ -609,7 +616,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                (async function() {
+                ;(async function() {
                   if (GLOBAL.Type === constants.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
@@ -651,12 +658,20 @@ export default class MapView extends React.Component {
     await SMap.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
-    let { startX, startY, endX, endY, startFloor, endFloor } = params
+    let {
+      startX,
+      startY,
+      endX,
+      endY,
+      startFloor,
+      endFloor,
+      datasourceName,
+    } = params
     try {
       if (params.isIndoor) {
         await SMap.getStartPoint(startX, startY, true, startFloor)
         await SMap.getEndPoint(endX, endY, true, endFloor)
-        await SMap.startIndoorNavigation()
+        await SMap.startIndoorNavigation(datasourceName)
         let rel = await SMap.beginIndoorNavigation()
         if (!rel) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1007,7 +1022,7 @@ export default class MapView extends React.Component {
                   break
                 }
               }
-              (async function() {
+              ;(async function() {
                 await jsonUtil.updateMapInfo(config)
               }.bind(this)())
             })
@@ -1024,7 +1039,7 @@ export default class MapView extends React.Component {
   // 地图保存为xml(fileName, cb)
   saveMapToXMLWithDialog = ({ mapTitle }) => {
     // this.setLoading(true, '正在保存')
-    (async function() {
+    ;(async function() {
       try {
         const filePath =
           (await FileTools.appendingHomeDirectory(ConstPath.CustomerPath)) +
@@ -1071,7 +1086,7 @@ export default class MapView extends React.Component {
           this.saveXMLDialog.setDialogVisible(true)
         } else {
           try {
-            (async function() {
+            ;(async function() {
               let mapTitle = await SMap.getMapName()
               await this.saveMapToXML(mapTitle)
             }.bind(this)())
@@ -1086,7 +1101,7 @@ export default class MapView extends React.Component {
   // 地图保存为xml 同时 关闭地图
   saveMapToXMLAndClose = () => {
     // this.setLoading(true, '正在保存')
-    (async function() {
+    ;(async function() {
       try {
         let mapTitle = await SMap.getMapName()
         const filePath =
@@ -1181,7 +1196,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    (async function() {
+    ;(async function() {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1339,7 +1354,7 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    (async function() {
+    ;(async function() {
       try {
         // if (this.wsData === null || this.wsData === undefined) {
         //   this.setLoading(false)
@@ -1490,7 +1505,35 @@ export default class MapView extends React.Component {
         GLOBAL.TaggingDatasetName = await SMap.getDefaultTaggingDataset(
           this.props.user.currentUser.userName,
         )
-
+        //todo 检测默认标注是否存在 新建默认标注 设为当前图层
+        let currentLayer = this.props.layers.layers[0]
+        let hasDefaultTagging = await SMap.hasDefaultTagging(
+          this.props.user.currentUser.userName,
+        )
+        let defaultTaggingName = `Default_Tagging@Label_${
+          this.props.user.currentUser.userName
+        }#`
+        if (hasDefaultTagging) {
+          if (currentLayer.datasetName !== defaultTaggingName) {
+            await SMap.addLayer({
+              datasourceName: `Label_${this.props.user.currentUser.userName}#`,
+              datasetName: 'Default_Tagging',
+            })
+            await SMap.setLayerVisible(defaultTaggingName, true)
+            let layers = await this.props.getLayers()
+            currentLayer = layers[0]
+          }
+        } else {
+          await SMap.setLabelColor()
+          let data = await SMap.newTaggingDataset(
+            'Default_Tagging',
+            this.props.user.currentUser.userName,
+          )
+          GLOBAL.TaggingDatasetName = data && data.datasetName
+          let layers = await this.props.getLayers()
+          currentLayer = layers[0]
+        }
+        this.props.setCurrentLayer(currentLayer)
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
@@ -1890,7 +1933,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    (async function() {
+    ;(async function() {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -1904,7 +1947,7 @@ export default class MapView extends React.Component {
   //多媒体采集
   captureImage = params => {
     //保存数据->跳转
-    (async function() {
+    ;(async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -1992,13 +2035,13 @@ export default class MapView extends React.Component {
     this.mapType = mapType
   }
 
-  //设置室外导航数据集和模型文件
+  //设置已选中的和当前正在试用的导航数据
   setNavigationDatas = params => {
-    this.selectedDataset = params
+    this.selectedData = params
   }
 
   getNavigationDatas = () => {
-    return this.selectedDataset
+    return this.selectedData
   }
 
   //楼层控件
@@ -2037,7 +2080,7 @@ export default class MapView extends React.Component {
   }
 
   confirm = () => {
-    (async function() {
+    ;(async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.dialog.setDialogVisible(false)
@@ -2580,7 +2623,45 @@ export default class MapView extends React.Component {
     return this.searchClickedInfo
   }
   _renderMapSelectPointHeaderRight = () => {
-    if (!this.state.currentFloorID) {
+    if (GLOBAL.MapSelectPointType === 'selectPoint') {
+      return (
+        <TouchableOpacity
+          key={'search'}
+          onPress={async () => {
+            if (GLOBAL.MapSelectPointType === 'selectPoint') {
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              NavigationService.navigate('EnterDatumPoint', {})
+              if (GLOBAL.MapXmlStr) {
+                await SMap.mapFromXml(GLOBAL.MapXmlStr)
+                GLOBAL.MapXmlStr = undefined
+              }
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE &&
+                GLOBAL.DATUMPOINTVIEW &&
+                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
+                )
+              GLOBAL.MapSelectPointType = undefined
+
+              GLOBAL.MapSelectPointType = undefined
+              GLOBAL.ToolBar.setVisible(true)
+              GLOBAL.toolBox.showFullMap(false)
+              GLOBAL.OverlayView.setVisible(true)
+
+              Toast.show(
+                getLanguage(global.language).Profile
+                  .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
+              )
+              return
+            }
+          }}
+        >
+          <Text style={styles.textConfirm}>
+            {getLanguage(this.props.language).Map_Settings.CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      )
+    } else if (!this.state.currentFloorID) {
       return (
         <TouchableOpacity
           key={'search'}
@@ -2625,12 +2706,40 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.MAPSELECTPOINT = ref)}
         headerProps={{
           title: getLanguage(this.props.language).Map_Main_Menu.SELECT_POINTS,
-          subTitle: getLanguage(this.props.language).Map_Main_Menu
-            .LONG_PRESS_SELECT_POINTS,
+          subTitle:
+            GLOBAL.MapSelectPointType === 'selectPoint'
+              ? ''
+              : getLanguage(this.props.language).Map_Main_Menu
+                  .LONG_PRESS_SELECT_POINTS,
           navigation: this.props.navigation,
           type: 'fix',
           headerRight: this._renderMapSelectPointHeaderRight(),
-          backAction: () => {
+          openSelectPointMap: this._openSelectPointMap,
+          selectPointType: GLOBAL.MapSelectPointType,
+          backAction: async () => {
+            if (GLOBAL.MapSelectPointType === 'selectPoint') {
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              NavigationService.navigate('EnterDatumPoint', {})
+
+              if (GLOBAL.MapXmlStr) {
+                await SMap.mapFromXml(GLOBAL.MapXmlStr)
+                GLOBAL.MapXmlStr = undefined
+              }
+
+              GLOBAL.MapSelectPointType = undefined
+              GLOBAL.ToolBar.setVisible(true)
+              GLOBAL.toolBox.showFullMap(false)
+
+              GLOBAL.OverlayView.setVisible(true)
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
+                GLOBAL.DATUMPOINTVIEW &&
+                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
+                )
+              this.setState({ showScaleView: true })
+              return
+            }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
             GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
             NavigationService.navigate('NavigationView', {
@@ -2723,12 +2832,20 @@ export default class MapView extends React.Component {
       <MapSelectPointButton
         setLoading={this.setLoading}
         getNavigationDatas={this.getNavigationDatas}
+        setNavigationDatas={this.setNavigationDatas}
         navigationhistory={this.props.navigationhistory}
         setNavigationHistory={this.props.setNavigationHistory}
         changeNavPathInfo={this.changeNavPathInfo}
         ref={ref => (GLOBAL.MAPSELECTPOINTBUTTON = ref)}
       />
     )
+  }
+
+  _openSelectPointMap = async (data, point) => {
+    await this._openDatasource(data, data.layerIndex)
+    point && SMap.showMarker(point.x, point.y, markerTag)
+    GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+    this.setState({ showScaleView: false })
   }
 
   _renderNavigationPoiView = () => {
@@ -2765,14 +2882,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-          <RNLegendView
-            setMapLegend={this.props.setMapLegend}
-            legendSettings={this.props.mapLegend}
-            device={this.props.device}
-            language={this.props.language}
-            ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
+            <RNLegendView
+              setMapLegend={this.props.setMapLegend}
+              legendSettings={this.props.mapLegend}
+              device={this.props.device}
+              language={this.props.language}
+              ref={ref => (GLOBAL.legend = ref)}
+            />
+          )}
         {this.state.showMap && (
           <SMMapView
             ref={ref => (GLOBAL.mapView = ref)}
@@ -2978,7 +3095,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
-        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)}/>
+        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)} />
       </Container>
     )
   }

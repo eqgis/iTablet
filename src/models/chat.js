@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import MSGConstant from '../../src/containers/tabs/Friend/MsgConstant'
+import MSGConstant from '../containers/tabs/Friend/MsgConstant'
 import { ModelUtils } from '../utils'
 // Constants
 // --------------------------------------------------
@@ -70,7 +70,7 @@ const initialState = fromJS({})
 export default handleActions(
   {
     [`${ADD_CHAT}`]: (state, { payload }) => {
-      let allChat = state.toJS() || {}
+      const allChat = state.toJS() || {}
 
       // userId: this.props.user.currentUser.userId,
       //   messageUsr: messageObj.messageUsr,
@@ -86,28 +86,28 @@ export default handleActions(
       let chats
 
       if (payload.type === MSGConstant.MSG_ADD_FRIEND) {
-        //inform
+        // inform
         if (currentUser.hasOwnProperty(1) === false) {
           currentUser[1] = { unReadMsg: 0, history: [] }
         }
         chats = currentUser[1]
       } else {
-        //normal
+        // normal
         if (currentUser.hasOwnProperty(payload.talkId) === false) {
-          //currentUser[payload.talkId] = []
+          // currentUser[payload.talkId] = []
           currentUser[payload.talkId] = { unReadMsg: 0, history: [] }
         }
         chats = currentUser[payload.talkId]
       }
 
       if (payload.operate === 'unRead') {
-        chats.unReadMsg = 1 //设置未读
+        chats.unReadMsg = 1 // 设置未读
       } else if (payload.operate === 'read') {
-        chats.unReadMsg = 0 //清除未读信息
+        chats.unReadMsg = 0 // 清除未读信息
       } else if (payload.operate === 'del') {
         delete currentUser[payload.talkId]
       } else if (payload.operate === 'add') {
-        let pushMsg = {
+        const pushMsg = {
           msgId: payload.msgId,
           type: payload.type,
           originMsg: payload.originMsg,
@@ -121,7 +121,7 @@ export default handleActions(
           chats.unReadMsg++
         }
       } else if (payload.operate === 'edit') {
-        let message = chats.history[payload.msgId]
+        const message = chats.history[payload.msgId]
         Object.assign(message, payload.editItem)
       }
 
@@ -134,21 +134,21 @@ export default handleActions(
       return fromJS(allChat)
     },
     [`${EDIT_CHAT}`]: (state, { payload }) => {
-      let allChat = state.toJS() || {}
+      const allChat = state.toJS() || {}
       // console.log(allChat)
-      let message =
+      const message =
         allChat[payload.userId][payload.talkId].history[payload.msgId]
       Object.assign(message, payload.editItem)
       return fromJS(allChat)
     },
     [`${SET_CONSUMER}`]: (state, { payload }) => {
-      let allChat = state.toJS() || {}
+      const allChat = state.toJS() || {}
       // console.log(allChat)
       allChat.consumer = payload
       return fromJS(allChat)
     },
     [REHYDRATE]: (state, { payload }) => {
-      let _data = ModelUtils.checkModel(state, payload && payload.chat)
+      const _data = ModelUtils.checkModel(state, payload && payload.chat)
       return _data
       // return payload && payload.chat ? fromJS(payload.chat) : state
     },

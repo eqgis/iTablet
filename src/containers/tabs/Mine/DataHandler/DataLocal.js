@@ -1,6 +1,6 @@
+import { SMap, EngineType } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
-import { SMap, EngineType } from 'imobile_for_reactnative'
 
 async function getLocalData(user, type) {
   let dataList = []
@@ -29,17 +29,18 @@ async function getLocalData(user, type) {
 }
 
 async function _getListByFilter(user, type) {
-  let homePath = await FileTools.appendingHomeDirectory()
-  let userPath = homePath + ConstPath.UserPath + user.userName + '/'
+  const homePath = await FileTools.appendingHomeDirectory()
+  const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
-  let path, filter
+  let path
+  let filter
   switch (type) {
     case 'DATA':
       path = userPath + ConstPath.RelativePath.Datasource
       filter = {
         extension: 'udb',
         type: 'file',
-        exclued: 'Label_' + user.userName + '#.udb',
+        exclued: `Label_${user.userName}#.udb`,
       }
       break
     case 'MAP':
@@ -69,43 +70,41 @@ async function _getListByFilter(user, type) {
       }
       break
   }
-  let list = await FileTools.getPathListByFilter(path, filter)
+  const list = await FileTools.getPathListByFilter(path, filter)
   return list
 }
 
 async function _getLabelDataList(user) {
-  let homePath = await FileTools.appendingHomeDirectory()
-  let userPath = homePath + ConstPath.UserPath + user.userName + '/'
+  const homePath = await FileTools.appendingHomeDirectory()
+  const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
-  let path =
-    userPath +
-    ConstPath.RelativePath.Datasource +
-    'Label_' +
-    user.userName +
-    '#.udb'
-  let result = await FileTools.fileIsExist(path)
+  const path = `${userPath + ConstPath.RelativePath.Datasource}Label_${
+    user.userName
+  }#.udb`
+  const result = await FileTools.fileIsExist(path)
   if (!result) {
     creatLabelDatasource(user, path)
   }
-  let list = await SMap.getUDBNameOfLabel(path)
+  const list = await SMap.getUDBNameOfLabel(path)
   return list
 }
 
 async function _getPlotDataList(user) {
-  let homePath = await FileTools.appendingHomeDirectory()
-  let userPath = homePath + ConstPath.UserPath + user.userName + '/'
-  let plotPath = userPath + ConstPath.RelativePath.Plotting
+  const homePath = await FileTools.appendingHomeDirectory()
+  const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
+  const plotPath = userPath + ConstPath.RelativePath.Plotting
 
-  let list = []
-  let arrDirContent = await FileTools.getDirectoryContent(plotPath)
+  const list = []
+  const arrDirContent = await FileTools.getDirectoryContent(plotPath)
   if (arrDirContent.length > 0) {
-    for (let key in arrDirContent) {
+    for (const key in arrDirContent) {
       if (arrDirContent[key].type === 'directory') {
-        let dirPath = plotPath + arrDirContent[key].name
-        let dirContent = await FileTools.getDirectoryContent(dirPath)
-        let hasSymbol, hasSymbolIcon
+        const dirPath = plotPath + arrDirContent[key].name
+        const dirContent = await FileTools.getDirectoryContent(dirPath)
+        let hasSymbol
+        let hasSymbolIcon
         if (dirContent.length === 0) continue
-        for (let index in dirContent) {
+        for (const index in dirContent) {
           if (dirContent[index].type === 'directory') {
             if (dirContent[index].name === 'Symbol') {
               hasSymbol = true
@@ -127,10 +126,10 @@ async function _getPlotDataList(user) {
 }
 
 async function creatLabelDatasource(user, datasourcePath) {
-  let result = await SMap.createDatasourceOfLabel({
+  const result = await SMap.createDatasourceOfLabel({
     server: datasourcePath,
     engineType: EngineType.UDB,
-    alias: 'Label_' + user.userName + '#',
+    alias: `Label_${user.userName}#`,
     description: 'Label',
   })
   return result

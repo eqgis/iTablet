@@ -1,7 +1,8 @@
 import { ConstToolType } from '../../../../../../constants'
 
-function getLayout (type, orientation) {
-  let height, column
+function getLayout(type, orientation) {
+  let height
+  let column
   switch (type) {
     case ConstToolType.MAP3D_SYMBOL:
       if (orientation === 'PORTRAIT') {

@@ -1,5 +1,5 @@
-import MapToolbar from './MapToolbar'
 import { connect } from 'react-redux'
+import MapToolbar from './MapToolbar'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -10,4 +10,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(MapToolbar)
-//export default MapToolbar
+// export default MapToolbar

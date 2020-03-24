@@ -13,8 +13,8 @@ import ToolbarModule from '../ToolbarModule'
  * @returns {*}
  */
 function getData(type) {
-  let data = [],
-    buttons = []
+  const data = []
+  let buttons = []
   let isCollection = false
 
   if (
@@ -50,7 +50,7 @@ function getData(type) {
     data.push({
       key: 'addGPSPoint',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
-      //'打点',
+      // '打点',
       action: () => SCollector.addGPSPoint(type),
       size: 'large',
       image: require('../../../../../../assets/mapTools/icon_collection_point_collect.png'),
@@ -63,7 +63,7 @@ function getData(type) {
     data.push({
       key: 'start',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-      //'开始',
+      // '开始',
       action: () => SCollector.startCollect(type),
       size: 'large',
       image: require('../../../../../../assets/mapTools/icon_collection_path_start.png'),
@@ -71,7 +71,7 @@ function getData(type) {
     data.push({
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
-      //'停止',
+      // '停止',
       action: () => SCollector.pauseCollect(type),
       size: 'large',
       image: require('../../../../../../assets/mapTools/icon_pause.png'),
@@ -93,7 +93,7 @@ function getData(type) {
     data.push({
       key: constants.REDO,
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-      //constants.REDO,
+      // constants.REDO,
       action: () => CollectionAction.redo(type),
       size: 'large',
       image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -110,7 +110,7 @@ function getData(type) {
   data.push({
     key: constants.SUBMIT,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
-    //constants.SUBMIT,
+    // constants.SUBMIT,
     action: () => CollectionAction.collectionSubmit(type),
     size: 'large',
     image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
@@ -140,9 +140,9 @@ function getData(type) {
  * @returns {{data: Array, buttons: Array}}
  */
 function getOperationData(type) {
-  let data = [],
-    buttons = []
-  let _params = ToolbarModule.getParams()
+  const data = []
+  let buttons = []
+  const _params = ToolbarModule.getParams()
   // 判断是否是采集操作功能
   if (
     type !== ConstToolType.MAP_COLLECTION_POINT &&
@@ -151,30 +151,30 @@ function getOperationData(type) {
   )
     return { data, buttons }
 
-  let gpsPointType =
+  const gpsPointType =
     type === ConstToolType.MAP_COLLECTION_POINT
       ? SMCollectorType.POINT_GPS
       : type === ConstToolType.MAP_COLLECTION_LINE
-        ? SMCollectorType.LINE_GPS_POINT
-        : SMCollectorType.REGION_GPS_POINT
+      ? SMCollectorType.LINE_GPS_POINT
+      : SMCollectorType.REGION_GPS_POINT
   data.push({
     key: 'gpsPoint',
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
-    //'GPS打点',
+    // 'GPS打点',
     action: () =>
       CollectionAction.showCollection(gpsPointType, _params.currentLayer.path),
     size: 'large',
     image: require('../../../../../../assets/mapTools/icon_collection_point_collect.png'),
   })
   if (type !== ConstToolType.MAP_COLLECTION_POINT) {
-    let gpsPathType =
+    const gpsPathType =
       type === ConstToolType.MAP_COLLECTION_LINE
         ? SMCollectorType.LINE_GPS_PATH
         : SMCollectorType.REGION_GPS_PATH
     data.push({
       key: 'gpsPath',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
-      //'GPS轨迹',
+      // 'GPS轨迹',
       action: () =>
         CollectionAction.showCollection(gpsPathType, _params.currentLayer.path),
       size: 'large',
@@ -189,7 +189,7 @@ function getOperationData(type) {
           key: 'pointDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
-          //'点绘式',
+          // '点绘式',
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.POINT_HAND,
@@ -213,7 +213,7 @@ function getOperationData(type) {
           key: 'pointDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
-          //'点绘式',
+          // '点绘式',
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_POINT,
@@ -226,7 +226,7 @@ function getOperationData(type) {
           key: 'freeDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
-          //'自由式',
+          // '自由式',
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_PATH,
@@ -243,7 +243,7 @@ function getOperationData(type) {
           key: 'pointDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
-          //'点绘式',
+          // '点绘式',
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.REGION_HAND_POINT,
@@ -256,7 +256,7 @@ function getOperationData(type) {
           key: 'freeDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
-          //'自由式',
+          // '自由式',
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.REGION_HAND_PATH,

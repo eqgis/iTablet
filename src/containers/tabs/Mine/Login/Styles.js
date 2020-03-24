@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 // import { scaleSize } from '../../../../utils'
-let itemWidth = '70%'
+const itemWidth = '70%'
 const itemHeight = 60
 const fontSize = 23
 const titleOnFocusBackgroundColor = color.itemColorBlack
 const titleOnBlurBackgroundColor = color.itemColorWhite
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: color.contentColorWhite,
   },
@@ -66,7 +66,7 @@ let styles = StyleSheet.create({
     justifyContent: 'space-between',
     // borderBottomColor: '#ff00aa',
   },
-  //iPortalLogin
+  // iPortalLogin
   loginSectionView: {
     flexDirection: 'row',
     width: '200%',

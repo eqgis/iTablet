@@ -24,6 +24,7 @@ const line_3d = require('./layer_type_3dline.png')
 const point = require('./layer_point.png')
 const line = require('./layer_line.png')
 const region = require('./layer_region.png')
+
 export default {
   icon_save_line,
   icon_new,

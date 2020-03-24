@@ -10,7 +10,7 @@ import { ToolbarType } from '../../../../../../constants'
 export async function action(type) {
   const _data = await AddData.getData(type)
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const data = utils.getLayout(type, orientation)
   await setModuleData(type, _data)
   params.showFullMap && params.showFullMap(true)
@@ -26,13 +26,13 @@ export async function action(type) {
   })
 }
 
-async function setModuleData (type, data) {
+async function setModuleData(type, data) {
   let _data = data
   if (!_data) {
     _data = await AddData.getData(type)
   }
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: AddData.getData,
     data: _data,
     actions: AddAction,
@@ -42,10 +42,9 @@ async function setModuleData (type, data) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -57,6 +56,6 @@ export default function(type, title, customAction) {
     getData: AddData.getData,
     actions: AddAction,
     getLayout: utils.getLayout,
-    setModuleData: setModuleData,
+    setModuleData,
   }
 }

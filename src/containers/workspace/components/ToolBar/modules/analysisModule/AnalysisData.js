@@ -1,6 +1,7 @@
 /**
  * 分析工具
  */
+import { STransportationAnalyst } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
@@ -9,10 +10,10 @@ import ToolbarModule from '../ToolbarModule'
 import AnalysisAction from './AnalysisAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 // import { Analyst_Types } from '../../../../../analystView/AnalystType'
-import { STransportationAnalyst } from 'imobile_for_reactnative'
 
 function getData(type) {
-  let buttons, data
+  let buttons
+  let data
   let temp = { buttons: [], data: [] }
   switch (type) {
     case ConstToolType.MAP_ANALYSIS:
@@ -33,11 +34,11 @@ function getData(type) {
   return { data, buttons }
 }
 
-/** 工具栏数据 **/
+/** 工具栏数据 * */
 function getToolData() {
   const _params = ToolbarModule.getParams()
-  let buttons = []
-  let data = [
+  const buttons = []
+  const data = [
     {
       key: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
       title: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
@@ -174,10 +175,10 @@ function getToolData() {
   return { data, buttons }
 }
 
-/** 路径分析数据 **/
+/** 路径分析数据 * */
 function getOptimalPathData() {
   const _params = ToolbarModule.getParams()
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.ANALYST,
@@ -187,7 +188,7 @@ function getOptimalPathData() {
     },
     ToolbarBtnType.TOOLBAR_DONE,
   ]
-  let data = [
+  const data = [
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
       title: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
@@ -230,10 +231,10 @@ function getOptimalPathData() {
   return { data, buttons }
 }
 
-/** 连通性分析数据 **/
+/** 连通性分析数据 * */
 function getConnectivityData() {
   const _params = ToolbarModule.getParams()
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.ANALYST,
@@ -245,7 +246,7 @@ function getConnectivityData() {
     },
     ToolbarBtnType.TOOLBAR_DONE,
   ]
-  let data = [
+  const data = [
     {
       key: getLanguage(_params.language).Analyst_Labels.SET_AS_START_STATION,
       title: getLanguage(_params.language).Analyst_Labels.SET_AS_START_STATION,
@@ -288,10 +289,10 @@ function getConnectivityData() {
   return { data, buttons }
 }
 
-/** 商旅分析数据 **/
+/** 商旅分析数据 * */
 function getTSPData() {
   const _params = ToolbarModule.getParams()
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.ANALYST,
@@ -301,7 +302,7 @@ function getTSPData() {
     },
     ToolbarBtnType.TOOLBAR_DONE,
   ]
-  let data = [
+  const data = [
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
       title: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,

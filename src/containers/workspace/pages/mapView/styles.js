@@ -2,6 +2,7 @@ import { StyleSheet, Platform } from 'react-native'
 // import * as Util from '../../../../utils/constUtil'
 import { scaleSize, constUtil as Util } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
+
 const FUNCTIONHEIGHT = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
 export default StyleSheet.create({
   container: {
@@ -217,5 +218,36 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: scaleSize(30),
+  },
+
+  item: {
+    width: '100%',
+    height: scaleSize(80),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: color.white,
+  },
+  itemtitle: {
+    fontSize: scaleSize(20),
+    color: color.black,
+    paddingLeft: scaleSize(15),
+    paddingRight: scaleSize(15),
+    backgroundColor: color.white,
+  },
+  itemInput: {
+    width: '100%',
+    // height: scaleSize(120),
+    fontSize: scaleSize(22),
+    padding: scaleSize(15),
+
+    // textAlignVertical: 'center',
+
+    backgroundColor: color.white,
+  },
+  textConfirm: {
+    fontSize: scaleSize(22),
+    color: color.white,
+    padding: scaleSize(10),
   },
 })

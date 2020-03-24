@@ -66,13 +66,16 @@ async function geometrySelected(event) {
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
     case ConstToolType.PLOTTING_ANIMATION: {
-      let type = await SMap.getGeometryTypeById(event.layerInfo.name, event.id)
+      const type = await SMap.getGeometryTypeById(
+        event.layerInfo.name,
+        event.id,
+      )
       if (type === -1) {
         Toast.show(
           getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
         )
         SMap.setAction(Action.PAN)
-      }else{
+      } else {
         params.setToolbarVisible(
           true,
           ConstToolType.PLOT_ANIMATION_NODE_CREATE,
@@ -80,13 +83,17 @@ async function geometrySelected(event) {
             isFullScreen: true,
             height: ConstToolType.TOOLBAR_HEIGHT[5],
             // containerType: ToolbarType.createPlotAnimation,
-            customView: (props, state) =>
+            customView: (props, state) => (
               <PlotAnimationView
                 ref={ref => (this.plotAnimationView = ref)}
                 saveAndContinue={() => {
-                  let createInfo =
-                    this.plotAnimationView && this.plotAnimationView.getCreateInfo()
-                  if (props.selection.length > 0 && props.selection[0].ids > 0) {
+                  const createInfo =
+                    this.plotAnimationView &&
+                    this.plotAnimationView.getCreateInfo()
+                  if (
+                    props.selection.length > 0 &&
+                    props.selection[0].ids > 0
+                  ) {
                     createInfo.geoId = props.selection[0].ids[0]
                     createInfo.layerName = props.selection[0].layerInfo.name
                   }
@@ -95,9 +102,13 @@ async function geometrySelected(event) {
                   }
                 }}
                 savePlotAnimationNode={() => {
-                  let createInfo =
-                    this.plotAnimationView && this.plotAnimationView.getCreateInfo()
-                  if (props.selection.length > 0 && props.selection[0].ids > 0) {
+                  const createInfo =
+                    this.plotAnimationView &&
+                    this.plotAnimationView.getCreateInfo()
+                  if (
+                    props.selection.length > 0 &&
+                    props.selection[0].ids > 0
+                  ) {
                     createInfo.geoId = props.selection[0].ids[0]
                     createInfo.layerName = props.selection[0].layerInfo.name
                   }
@@ -106,10 +117,10 @@ async function geometrySelected(event) {
                   }
                   GLOBAL.TouchType = TouchType.NULL
                   GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
-    
-                  let height = 0
+
+                  const height = 0
                   params.showFullMap && params.showFullMap(true)
-                  let type = ConstToolType.PLOT_ANIMATION_START
+                  const type = ConstToolType.PLOT_ANIMATION_START
                   params.setToolbarVisible(true, type, {
                     isFullScreen: false,
                     height,
@@ -123,6 +134,7 @@ async function geometrySelected(event) {
                 device={params.device}
                 showToolbar={params.setToolbarVisible}
               />
+            ),
           },
         )
       }
@@ -145,20 +157,20 @@ function showSymbol() {
   })
 }
 
-/** 标绘分类点击事件 **/
+/** 标绘分类点击事件 * */
 async function showCollection(libId, symbolCode, type) {
   // await SMap.addCadLayer('PlotEdit')
   StyleUtils.setDefaultMapControlStyle().then(() => {})
   await SMap.setPlotSymbol(libId, symbolCode)
-  let { data, buttons } = PlotData.getCollectionData(
+  const { data, buttons } = PlotData.getCollectionData(
     libId,
     symbolCode,
     ToolbarModule.getParams(),
   )
   if (!ToolbarModule.getParams().setToolbarVisible) return
   // ToolbarModule.getParams().setLastState()
-  let column = 4
-  let rows = Math.ceil(data.length / column) - 1 + 1
+  const column = 4
+  const rows = Math.ceil(data.length / column) - 1 + 1
   let height
   switch (rows) {
     case 2:
@@ -173,8 +185,8 @@ async function showCollection(libId, symbolCode, type) {
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
     height,
-    data: data,
-    buttons: buttons,
+    data,
+    buttons,
     column,
     cb: () => {
       ToolbarModule.getParams().setLastState()
@@ -188,7 +200,7 @@ function cancelAnimationWay() {
   // SMap.endAnimationWayPoint(false)
   const params = ToolbarModule.getParams()
   SMap.refreshAnimationWayPoint()
-  let type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
+  const type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
     isFullScreen: true,
     height: ConstToolType.TOOLBAR_HEIGHT[5],
@@ -199,10 +211,10 @@ function cancelAnimationWay() {
 
 async function endAnimationWayPoint() {
   const params = ToolbarModule.getParams()
-  let wayPoints = await SMap.endAnimationWayPoint(true)
+  const wayPoints = await SMap.endAnimationWayPoint(true)
   GLOBAL.animationWayData && (GLOBAL.animationWayData.wayPoints = wayPoints)
 
-  let type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
+  const type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
     isFullScreen: true,
     height: ConstToolType.TOOLBAR_HEIGHT[5],
@@ -222,11 +234,12 @@ async function collectionSubmit(libId, symbolCode) {
 
   ToolbarModule.getParams().getLayers(-1, async layers => {
     let plotLayer
-    for (let i = 0; i < layers.length; i++)
+    for (let i = 0; i < layers.length; i++) {
       if (layers[i].name.indexOf('PlotEdit_') !== -1) {
         plotLayer = layers[i]
         break
       }
+    }
     if (plotLayer) {
       ToolbarModule.getParams().setCurrentLayer(plotLayer)
     }
@@ -251,10 +264,10 @@ function redo() {
 function reset() {
   // SMap.animationStop()
   SMap.animationReset()
-  let height = 0
+  const height = 0
   ToolbarModule.getParams().showFullMap &&
     ToolbarModule.getParams().showFullMap(true)
-  let type = ConstToolType.PLOT_ANIMATION_START
+  const type = ConstToolType.PLOT_ANIMATION_START
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
     height,
@@ -262,20 +275,20 @@ function reset() {
   })
 }
 
-/** 切换标绘库 **/
+/** 切换标绘库 * */
 async function changePlotLib(item) {
   const params = ToolbarModule.getParams()
   try {
     ToolbarModule.getParams().setContainerLoading(
       true,
       getLanguage(params.language).Prompt.SWITCHING_PLOT_LIB,
-      //ConstInfo.MAP_CHANGING
+      // ConstInfo.MAP_CHANGING
     )
-    let libIds = params.template.plotLibIds
+    const libIds = params.template.plotLibIds
     if (libIds !== undefined) {
-      let result = await SMap.removePlotSymbolLibraryArr(libIds)
+      const result = await SMap.removePlotSymbolLibraryArr(libIds)
       if (result) {
-        let plotPath = await FileTools.appendingHomeDirectory(
+        const plotPath = await FileTools.appendingHomeDirectory(
           // ConstPath.UserPath + ConstPath.RelativeFilePath.Plotting,
           item.path,
         )
@@ -287,7 +300,7 @@ async function changePlotLib(item) {
     }
     Toast.show(
       getLanguage(params.language).Prompt.SWITCHING_SUCCESS,
-      //ConstInfo.CHANGE_MAP_TO + mapInfo.name
+      // ConstInfo.CHANGE_MAP_TO + mapInfo.name
     )
     ToolbarModule.getParams().setContainerLoading(false)
     ToolbarModule.getParams().setToolbarVisible(false)
@@ -299,20 +312,17 @@ async function changePlotLib(item) {
 
 async function animationSave() {
   const params = ToolbarModule.getParams()
-  let mapName = await SMap.getMapName()
-  let userName = params.user.currentUser.userName || 'Customer'
-  let savePath = await FileTools.appendingHomeDirectory(
-    ConstPath.UserPath +
-      userName +
-      '/' +
-      ConstPath.RelativeFilePath.Animation +
-      '/' +
-      mapName,
+  const mapName = await SMap.getMapName()
+  const userName = params.user.currentUser.userName || 'Customer'
+  const savePath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + userName}/${
+      ConstPath.RelativeFilePath.Animation
+    }/${mapName}`,
   )
-  let defaultAnimationName = mapName
+  const defaultAnimationName = mapName
   NavigationService.navigate('InputPage', {
     headerTitle: getLanguage(global.language).Map_Main_Menu.PLOT_SAVE_ANIMATION,
-    //'保存推演动画',
+    // '保存推演动画',
     value: defaultAnimationName,
     placeholder: getLanguage(global.language).Prompt.ENTER_ANIMATION_NAME,
     type: 'name',
@@ -339,19 +349,20 @@ function showAnimationNodeList() {
     height: ConstToolType.TOOLBAR_HEIGHT[5],
     containerType: ToolbarType.animationNode,
     // cb: () => {},
-    customView: (props, state) =>
+    customView: (props, state) => (
       <AnimationNodeListView
         data={props.data}
         type={props.type}
         device={props.device}
       />
+    ),
   })
 }
 
 async function showAnimationXmlList() {
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
-  let _data = await PlotData.getAnimationList()
+  const _data = await PlotData.getAnimationList()
   params.setToolbarVisible(true, ConstToolType.PLOT_ANIMATION_XML_LIST, {
     data: _data.data,
     buttons: _data.buttons,
@@ -366,9 +377,9 @@ async function showAnimationXmlList() {
 
 async function animationPlay() {
   const params = ToolbarModule.getParams()
-  let height = ConstToolType.HEIGHT[0]
+  const height = ConstToolType.HEIGHT[0]
   params.showFullMap && params.showFullMap(true)
-  let type = ConstToolType.PLOT_ANIMATION_PLAY
+  const type = ConstToolType.PLOT_ANIMATION_PLAY
   params.setToolbarVisible(true, type, {
     isFullScreen: false,
     height,
@@ -401,9 +412,7 @@ function close() {
   ToolbarModule.setData() // 关闭Toolbar清除临时数据
 }
 
-function overlayOnPress () {
-
-}
+function overlayOnPress() {}
 
 const actions = {
   // commit,

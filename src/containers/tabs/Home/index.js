@@ -14,6 +14,7 @@ import { setBackAction, removeBackAction } from '../../../models/backActions'
 import { setCurrentMapModule } from '../../../models/appConfig'
 import AboutITablet from './AboutITablet'
 import Setting from './Setting'
+
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   latestMap: state.map.toJS().latestMap,

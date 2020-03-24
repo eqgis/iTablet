@@ -2,7 +2,7 @@
  * 自定义Map实例方法
  */
 export default (function() {
-  /** 克隆一个新的Map，并且内部所有键值对都是新的 **/
+  /** 克隆一个新的Map，并且内部所有键值对都是新的 * */
   Map.prototype.clone = function(data) {
     this.clear()
     const iterator = data.keys()
@@ -22,14 +22,14 @@ export default (function() {
     return this
   }
 
-  /** 相同则返回true **/
+  /** 相同则返回true * */
   Map.prototype.compare = function(data) {
     let isSame = true
     if (this.size !== data.size) {
       return false
     }
     const iterator = data.keys()
-    let key = iterator.next().value
+    const key = iterator.next().value
     while (key !== undefined) {
       isSame =
         isSame &&

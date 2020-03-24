@@ -12,10 +12,8 @@ import {
 import { getLanguage } from '../../../../language'
 import styles from './styles'
 import { UserType } from '../../../../constants'
-import { OnlineServicesUtils, Toast } from '../../../../utils'
+import { OnlineServicesUtils } from '../../../../utils'
 import DataItem from './DataItem'
-import CatagoryMenu from './CatagoryMenu'
-import MoreMenu from './MoreMenu'
 import SearchMenu from './SearchMenu'
 import { getThemeAssets } from '../../../../assets'
 
@@ -40,11 +38,10 @@ export default class PublicData extends React.Component {
       loadError: false,
       loadMore: false,
       isRefresh: false,
-      isShowCloseCatagory: false,
     }
-    this.currentPage = 1
+    ;(this.count = 0), (this.currentPage = 1)
     this.totalPage = 0
-    this.dataTypes = [] //查询数据类型
+    this.dataTypes = this.getAllDataTypes() //查询数据类型
     this.searchParams = undefined //其他查询参数
   }
 
@@ -60,12 +57,14 @@ export default class PublicData extends React.Component {
         loadError: false,
       })
       this.currentPage = 1
-      let data
+      let data = {}
       let searchParams = { currentPage: this.currentPage }
       if (this.searchParams) {
         Object.assign(searchParams, this.searchParams)
       }
-      if (!UserType.isIPortalUser(this.props.user.currentUser)) {
+      if (this.dataTypes.length === 0) {
+        data.total = 0
+      } else if (!UserType.isIPortalUser(this.props.user.currentUser)) {
         if (!JSOnlineService) {
           JSOnlineService = new OnlineServicesUtils('online')
         }
@@ -96,78 +95,20 @@ export default class PublicData extends React.Component {
     }
   }
 
-  setDataTypes = value => {
-    switch (value) {
-      case 'workspace':
-        this.dataTypes = ['WORKSPACE']
-        break
-      case 'color':
-        this.dataTypes = ['COLORSCHEME']
-        break
-      case 'symbol':
-        this.dataTypes = ['MARKERSYMBOL', 'LINESYMBOL', 'FILLSYMBOL']
-        break
-      case 'resource':
-        this.dataTypes = [
-          'MARKERSYMBOL',
-          'LINESYMBOL',
-          'FILLSYMBOL',
-          'COLORSCHEME',
-        ]
-        break
-      case 'udb':
-        this.dataTypes = ['UDB']
-        break
-      default:
-        break
-    }
-  }
+  getAllDataTypes = () => [
+    'WORKSPACE',
+    'UDB',
+    'MARKERSYMBOL',
+    'LINESYMBOL',
+    'FILLSYMBOL',
+    'COLORSCHEME',
+  ]
 
-  setSearchParams = value => {
-    switch (value) {
-      case 'selectDataTypes':
-        this.searchParams = undefined
-        break
-      case 'sortByTime':
-        if (this.searchParams) {
-          if (this.searchParams.orderBy === 'LASTMODIFIEDTIME') {
-            if (this.searchParams.orderType === 'ASC') {
-              this.searchParams.orderType = 'DESC'
-            } else {
-              this.searchParams.orderType = 'ASC'
-            }
-          } else {
-            this.searchParams.orderBy = 'LASTMODIFIEDTIME'
-            this.searchParams.orderType = 'DESC'
-          }
-        } else {
-          this.searchParams = {
-            orderBy: 'LASTMODIFIEDTIME',
-            orderType: 'ASC',
-          }
-        }
-        break
-      case 'sortByName':
-        if (this.searchParams) {
-          if (this.searchParams.orderBy === 'fileName') {
-            if (this.searchParams.orderType === 'ASC') {
-              this.searchParams.orderType = 'DESC'
-            } else {
-              this.searchParams.orderType = 'ASC'
-            }
-          } else {
-            this.searchParams.orderBy = 'fileName'
-            this.searchParams.orderType = 'ASC'
-          }
-        } else {
-          this.searchParams = {
-            orderBy: 'fileName',
-            orderType: 'ASC',
-          }
-        }
-        break
-      default:
-        break
+  setSearchParams = params => {
+    if (this.searchParams) {
+      Object.assign(this.searchParams, params)
+    } else {
+      this.searchParams = params
     }
   }
 
@@ -206,59 +147,26 @@ export default class PublicData extends React.Component {
     }
   }
 
-  renderMoreMenu = () => {
-    return (
-      <MoreMenu
-        ref={ref => (this.MoreMenu = ref)}
-        onPress={item => {
-          this.MoreMenu.setVisible(false)
-          this.setSearchParams(item.value)
-          if (item.value === 'selectDataTypes') {
-            this.CatagoryMenu.setVisible(true)
-            this.setState({ isShowCloseCatagory: true })
-          } else {
-            if (this.dataTypes.length === 0) {
-              Toast.show(
-                getLanguage(global.language).Find.SELECT_DATATYPES_FIRST,
-              )
-            } else {
-              this.getData()
-            }
-          }
-        }}
-      />
-    )
-  }
-
-  renderCatagoryMenu = () => {
-    return (
-      <CatagoryMenu
-        ref={ref => (this.CatagoryMenu = ref)}
-        onPress={item => {
-          this.CatagoryMenu.setVisible(false)
-          this.setDataTypes(item.value)
-          this.getData()
-          this.setState({
-            title: item.key,
-            isShowCloseCatagory: false,
-          })
-        }}
-      />
-    )
+  onParamsChanged = () => {
+    let count = ++this.count
+    setTimeout(() => {
+      if (count === this.count) {
+        this.getData()
+        this.count = 0
+      }
+    }, 1000)
   }
 
   renderSearchMenu = () => {
     return (
       <SearchMenu
         ref={ref => (this.SearchMenu = ref)}
-        onPress={item => {
-          this.SearchMenu.setVisible(false)
-          this.dataTypes = item.selectTypes
-          this.searchParams = { keywords: item.keywords }
-          this.getData()
-          this.setState({
-            title: getLanguage(global.language).Find.SEARCH_RESULT,
-          })
+        setParams={item => {
+          if (item.selectTypes) {
+            this.dataTypes = item.selectTypes
+          }
+          this.setSearchParams(item)
+          this.onParamsChanged()
         }}
       />
     )
@@ -332,7 +240,10 @@ export default class PublicData extends React.Component {
   }
 
   renderFoot = () => {
-    if (this.currentPage === this.totalPage) {
+    if (
+      this.currentPage === this.totalPage &&
+      (!this.state.loadError || !this.state.noData)
+    ) {
       return (
         <View>
           <Text
@@ -385,43 +296,17 @@ export default class PublicData extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.state.isShowCloseCatagory) {
-      let img = require('../../../../assets/mapTools/icon_close.png')
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            this.CatagoryMenu.setVisible(false)
-            this.setState({ isShowCloseCatagory: false })
-          }}
-        >
-          <Image resizeMode={'contain'} source={img} style={styles.moreImg} />
-        </TouchableOpacity>
-      )
-    }
     return (
       <View style={styles.HeaderRightContainer}>
         <TouchableOpacity
           onPress={() => {
             this.SearchMenu.setVisible(true)
-            this.MoreMenu.setVisible(false)
           }}
         >
           <Image
             resizeMode={'contain'}
             source={getThemeAssets().find.filter}
             style={styles.searchImg}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.MoreMenu.setVisible(true)
-            this.SearchMenu.setVisible(false)
-          }}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={require('../../../../assets/home/Frenchgrey/icon_else_selected.png')}
-            style={styles.moreImg}
           />
         </TouchableOpacity>
       </View>
@@ -441,8 +326,6 @@ export default class PublicData extends React.Component {
         {this.renderProgress()}
         {this.renderStatus()}
         {this.renderDataList()}
-        {this.renderCatagoryMenu()}
-        {this.renderMoreMenu()}
         {this.renderSearchMenu()}
       </Container>
     )

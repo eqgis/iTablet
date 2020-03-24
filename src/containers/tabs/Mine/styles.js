@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
+
 export { screen, color }
 export default StyleSheet.create({
   container: {
@@ -41,13 +42,13 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  //new
+  // new
   mineContainer: {
     flex: 1,
     backgroundColor: '#EEEEEE',
     justifyContent: 'space-between',
   },
-  //profile
+  // profile
   profileContainer: {
     backgroundColor: '#303030',
     width: '100%',
@@ -55,7 +56,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: scaleSize(30),
   },
-  //Myprofile
+  // Myprofile
   MyProfileStyle: {
     marginVertical: scaleSize(20),
     alignItems: 'center',
@@ -125,7 +126,7 @@ export default StyleSheet.create({
     fontSize: scaleSize(24),
     color: '#C2C2C2',
   },
-  //search
+  // search
   searchViewStyle: {
     width: scaleSize(460),
     height: scaleSize(48),
@@ -145,7 +146,7 @@ export default StyleSheet.create({
     fontSize: scaleSize(20),
     color: '#A7A7A7',
   },
-  //side
+  // side
   sideItemStyle: {
     position: 'absolute',
     right: 0,
@@ -161,7 +162,7 @@ export default StyleSheet.create({
     color: '#FFFFFF',
   },
 
-  //datas
+  // datas
   datasContainer: {
     backgroundColor: color.contentWhite,
     height: '53%',

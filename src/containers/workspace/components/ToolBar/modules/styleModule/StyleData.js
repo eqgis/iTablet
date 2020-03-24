@@ -4,7 +4,16 @@ import StyleData from './StyleData'
 import * as StyleAction from './StyleAction'
 import { ConstToolType } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { line, point, region, grid, text, font, colors, colorsWithNull } from './data'
+import {
+  line,
+  point,
+  region,
+  grid,
+  text,
+  font,
+  colors,
+  colorsWithNull,
+} from './data'
 
 function getData(type, params) {
   let data = []
@@ -19,7 +28,7 @@ function getData(type, params) {
           ToolbarModule.getParams().currentLayer.name,
         ).then(value => {
           ToolbarModule.addData({
-            type: type,
+            type,
             getData: StyleData.getData,
             actions: StyleAction.default,
             currentLayerStyle: value,
@@ -37,12 +46,12 @@ function getData(type, params) {
     case ConstToolType.REGIONBORDERCOLOR_SET:
       data = colorsWithNull
       break
-    case  ConstToolType.TEXTFONT:
+    case ConstToolType.TEXTFONT:
       data = font
       break
   }
   ToolbarModule.setParams(params)
-  let buttons = [
+  const buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.MENU,
     ToolbarBtnType.MENU_FLEX,

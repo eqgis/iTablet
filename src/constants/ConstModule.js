@@ -1,14 +1,14 @@
-import NavigationService from '../containers/NavigationService'
 import { Platform } from 'react-native'
+import Orientation from 'react-native-orientation'
+import { SAIDetectView } from 'imobile_for_reactnative'
+import NavigationService from '../containers/NavigationService'
 import constants from '../containers/workspace/constants'
 import { FileTools } from '../native'
 import ConstOnline from './ConstOnline'
-import { ConstPath } from '../constants'
+import { ConstPath } from '.'
 import { scaleSize } from '../utils'
 import { getLanguage } from '../language/index'
 import { getThemeAssets } from '../assets'
-import Orientation from 'react-native-orientation'
-import { SAIDetectView } from 'imobile_for_reactnative'
 import Toast from '../utils/Toast'
 
 function getHeaderTitle(type) {
@@ -54,26 +54,26 @@ function mapEdit(language) {
       left: 0,
     },
     action: async (user, lastMap) => {
-      let data = ConstOnline['Google']
+      let data = ConstOnline.Google
       data.layerIndex = 3
       GLOBAL.Type = constants.MAP_EDIT
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
       GLOBAL.showMenu = true
       // GLOBAL.showFlex = true
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -85,10 +85,10 @@ function mapEdit(language) {
           ...lastMap,
         }
       } else {
-        let moduleMapName = language === 'CN' ? '湖南' : 'LosAngeles'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapName = language === 'CN' ? '湖南' : 'LosAngeles'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图用相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
           data = {
@@ -109,7 +109,7 @@ function mapEdit(language) {
 
       NavigationService.navigate('MapTabs', {
         operationType: constants.MAP_EDIT,
-        wsData: wsData,
+        wsData,
         mapName: getLanguage(language).Map_Module.MAP_EDIT,
         isExample: false,
       })
@@ -150,18 +150,18 @@ function map3D(language) {
       } else {
         fileName = 'OlympicGreen_ios'
       }
-      let homePath = await FileTools.appendingHomeDirectory()
-      let cachePath = homePath + ConstPath.CachePath
-      let fileDirPath = cachePath + fileName
-      let arrFile = await FileTools.getFilterFiles(fileDirPath)
+      const homePath = await FileTools.appendingHomeDirectory()
+      const cachePath = homePath + ConstPath.CachePath
+      const fileDirPath = cachePath + fileName
+      const arrFile = await FileTools.getFilterFiles(fileDirPath)
       if (arrFile.length === 0) {
         NavigationService.navigate('Map3D', {})
       } else {
-        let name =
+        const name =
           Platform.OS === 'android'
             ? 'OlympicGreen_android'
             : 'OlympicGreen_ios'
-        NavigationService.navigate('Map3D', { name: name })
+        NavigationService.navigate('Map3D', { name })
       }
     },
   }
@@ -206,26 +206,26 @@ function mapAR(language) {
         return
       }
 
-      let data = ConstOnline['Google']
+      let data = ConstOnline.Google
       data.layerIndex = 1
       GLOBAL.Type = constants.MAP_AR
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
       GLOBAL.showMenu = true
       // GLOBAL.showFlex = true
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -274,24 +274,24 @@ function mapNavigation(language) {
     },
     action: async (user, lastMap) => {
       GLOBAL.INCREMENTDATASETNAME = ''
-      let data = Object.assign({}, ConstOnline['Google'])
+      let data = { ...ConstOnline.Google }
       data.layerIndex = 1
       GLOBAL.Type = constants.MAP_NAVIGATION
 
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -303,10 +303,10 @@ function mapNavigation(language) {
           ...lastMap,
         }
       } else {
-        let moduleMapName = 'beijing'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapName = 'beijing'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图用相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
           data = {
@@ -351,24 +351,24 @@ function mapTheme(language) {
       left: 0,
     },
     action: async (user, lastMap) => {
-      let data = ConstOnline['Google']
+      let data = ConstOnline.Google
       data.layerIndex = 3
       GLOBAL.Type = constants.MAP_THEME
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -380,11 +380,11 @@ function mapTheme(language) {
           ...lastMap,
         }
       } else {
-        let moduleMapName =
+        const moduleMapName =
           language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图用相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
           data = {
@@ -428,25 +428,25 @@ function mapPlotting(language) {
       bottom: 0,
     },
     action: async (user, lastMap) => {
-      let data = Object.assign({}, ConstOnline['Google'])
+      let data = { ...ConstOnline.Google }
       data.layerIndex = 1
       GLOBAL.Type = constants.MAP_PLOTTING
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
 
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -459,10 +459,10 @@ function mapPlotting(language) {
         }
       } else {
         // let moduleMapName = '福建'
-        let moduleMapName = 'TourLine'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapName = 'TourLine'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图用相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
           data = {
@@ -508,24 +508,24 @@ function mapCollection(language) {
       bottom: 0,
     },
     action: async (user, lastMap) => {
-      let data = Object.assign({}, ConstOnline['Google'])
+      let data = { ...ConstOnline.Google }
       data.layerIndex = 1
       GLOBAL.Type = constants.MAP_COLLECTION
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -537,10 +537,10 @@ function mapCollection(language) {
           ...lastMap,
         }
       } else {
-        let moduleMapName = '国情普查_示范数据'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapName = '国情普查_示范数据'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
 
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
@@ -586,25 +586,25 @@ function mapAnalyst(language) {
       bottom: 0,
     },
     action: async (user, lastMap) => {
-      let data = Object.assign({}, ConstOnline['Google'])
+      let data = { ...ConstOnline.Google }
       data.layerIndex = 1
       GLOBAL.Type = constants.MAP_ANALYST
       GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
 
-      let homePath = await FileTools.appendingHomeDirectory()
+      const homePath = await FileTools.appendingHomeDirectory()
       let userPath = ConstPath.CustomerPath
       if (user && user.userName) {
-        userPath = ConstPath.UserPath + user.userName + '/'
+        userPath = `${ConstPath.UserPath + user.userName}/`
       }
-      let wsPath =
+      const wsPath =
         homePath +
         userPath +
         ConstPath.RelativeFilePath.Workspace[
           global.language === 'CN' ? 'CN' : 'EN'
         ]
 
-      let wsData,
-        isOpenLastMap = false
+      let wsData
+      let isOpenLastMap = false
 
       if (lastMap) {
         isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
@@ -616,10 +616,10 @@ function mapAnalyst(language) {
           ...lastMap,
         }
       } else {
-        let moduleMapName = 'TracingAnalysis'
-        let moduleMapFullName = moduleMapName + '.xml'
+        const moduleMapName = 'TracingAnalysis'
+        const moduleMapFullName = `${moduleMapName}.xml`
         // 地图用相对路径
-        let moduleMapPath =
+        const moduleMapPath =
           userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
         if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
           data = {
@@ -657,7 +657,7 @@ function mapAnalyst(language) {
  * @constructor
  */
 function SetMap(mapModules, language) {
-  let moduleDatas = []
+  const moduleDatas = []
   for (let i = 0; i < mapModules.length; i++) {
     switch (mapModules[i].key) {
       case 'MAP_EDIT':

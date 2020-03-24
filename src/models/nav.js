@@ -18,9 +18,7 @@ const initialState = fromJS({})
 
 export default handleActions(
   {
-    [`${NAV_SET}`]: (state, { payload }) => {
-      return fromJS(payload)
-    },
+    [`${NAV_SET}`]: (state, { payload }) => fromJS(payload),
     // [REHYDRATE]: state => {
     //   // return payload && payload.nav ? fromJS(payload.nav) : state
     //   return state

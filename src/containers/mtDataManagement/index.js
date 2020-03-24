@@ -1,6 +1,6 @@
+import { connect } from 'react-redux'
 import MTDataCollection from './MTDataManagement'
 
-import { connect } from 'react-redux'
 import { setMapView } from '../../models/map'
 
 const mapStateToProps = state => ({
@@ -14,4 +14,7 @@ const mapDispatchToProps = {
   setMapView,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MTDataCollection)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MTDataCollection)

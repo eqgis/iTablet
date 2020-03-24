@@ -20,8 +20,8 @@ import { line, point, region, text, colors, colorsWithNull } from './data'
  * @returns {{data: Array, buttons: Array}}
  */
 function getData(type, params) {
-  let data = [],
-    buttons = []
+  let data = []
+  let buttons = []
   ToolbarModule.setParams(params)
   GLOBAL.MapToolType = type
   let layerType = ''
@@ -38,26 +38,26 @@ function getData(type, params) {
       data = [
         {
           title: getLanguage(global.language).Map_Label.ATTRIBUTE,
-          //'属性记录',
+          // '属性记录',
           data: [
             {
               title: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
-              //'名称',
+              // '名称',
               value: '',
-              //action: name,
+              // action: name,
             },
             {
               title: getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS,
-              //'备注',
+              // '备注',
               value: '',
-              //action: remark,
+              // action: remark,
             },
             // { title: '风格', action: remark },
             {
               title: getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP,
-              //'http地址',
+              // 'http地址',
               value: '',
-              //action: address,
+              // action: address,
             },
             // { title: '图片', action: address },
           ],
@@ -80,7 +80,7 @@ function getData(type, params) {
           key: 'distanceComput',
           title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_DISTANCE_MEASUREMENT,
-          //'距离量算',
+          // '距离量算',
           action: ToolAction.measureLength,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_measure_length_black.png'),
@@ -89,7 +89,7 @@ function getData(type, params) {
           key: 'coverComput',
           title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_AREA_MEASUREMENT,
-          //'面积量算',
+          // '面积量算',
           action: ToolAction.measureArea,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_measure_area_black.png'),
@@ -98,7 +98,7 @@ function getData(type, params) {
           key: 'azimuthComput',
           title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_AZIMUTH_MEASUREMENT,
-          //'方位角量算',
+          // '方位角量算',
           action: ToolAction.measureAngle,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_measure_angle_black.png'),
@@ -106,7 +106,7 @@ function getData(type, params) {
         {
           key: 'pointSelect',
           title: getLanguage(global.language).Map_Main_Menu.TOOLS_SELECT,
-          //'点选',
+          // '点选',
           action: ToolAction.pointSelect,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_free_point_select_black.png'),
@@ -115,7 +115,7 @@ function getData(type, params) {
           key: 'selectByRectangle',
           title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_RECTANGLE_SELECT,
-          //'框选',
+          // '框选',
           action: ToolAction.selectByRectangle,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
@@ -123,122 +123,12 @@ function getData(type, params) {
         {
           key: 'pointSelect',
           title: getLanguage(global.language).Map_Main_Menu.FULL_SCREEN,
-          //'全幅',
-          //getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
-          //'全幅',
+          // '全幅',
+          // getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
+          // '全幅',
           action: ToolAction.viewEntire,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_full_screen.png'),
-        },
-        {
-          key: constants.POINT,
-          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_POINT,
-          //constants.POINT,
-          action: ToolAction.point,
-          disable:
-            (layerType !== 'TAGGINGLAYER' &&
-              layerType !== 'CADLAYER' &&
-              layerType !== 'POINTLAYER') ||
-            ToolbarModule.getParams().currentLayer.isHeatmap,
-          size: 'large',
-          image:
-            (layerType !== 'TAGGINGLAYER' &&
-              layerType !== 'CADLAYER' &&
-              layerType !== 'POINTLAYER') ||
-            ToolbarModule.getParams().currentLayer.isHeatmap
-              ? getThemeAssets().mapTools.icon_point_disable
-              : require('../../../../../../assets/mapTools/icon_point_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_black.png'),
-        },
-        {
-          key: constants.WORDS,
-          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
-          //constants.WORDS,
-          size: 'large',
-          action: ToolAction.words,
-          disable:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'TEXTLAYER',
-          image:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'TEXTLAYER'
-              ? getThemeAssets().mapTools.icon_text_disable
-              : require('../../../../../../assets/mapTools/icon_words_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_words_black.png'),
-        },
-        {
-          key: constants.POINTLINE,
-          title: getLanguage(global.language).Map_Main_Menu.DOT_LINE,
-          //constants.POINTLINE,
-          size: 'large',
-          action: ToolAction.pointline,
-          disable:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER',
-          image:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER'
-              ? getThemeAssets().mapTools.icon_point_line_disable
-              : require('../../../../../../assets/mapTools/icon_point_line_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_line_black.png'),
-        },
-        {
-          key: constants.FREELINE,
-          title: getLanguage(global.language).Map_Main_Menu.FREE_LINE,
-          //constants.FREELINE,
-          size: 'large',
-          action: ToolAction.freeline,
-          disable:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER',
-          image:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER'
-              ? getThemeAssets().mapTools.icon_free_line_disable
-              : require('../../../../../../assets/mapTools/icon_free_line_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_free_line_black.png'),
-        },
-        {
-          key: constants.POINTCOVER,
-          title: getLanguage(global.language).Map_Main_Menu.DOT_REGION,
-          //constants.POINTCOVER,
-          size: 'large',
-          action: ToolAction.pointcover,
-          disable:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER',
-          image:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER'
-              ? getThemeAssets().mapTools.icon_region_disable
-              : require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
-        },
-        {
-          key: constants.FREECOVER,
-          title: getLanguage(global.language).Map_Main_Menu.FREE_REGION,
-          //constants.FREECOVER,
-          size: 'large',
-          action: ToolAction.freecover,
-          disable:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER',
-          image:
-            layerType !== 'TAGGINGLAYER' &&
-            layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER'
-              ? getThemeAssets().mapTools.icon_free_region_disable
-              : require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
         },
         // {
         //   key: 'boxSelect',
@@ -258,7 +148,7 @@ function getData(type, params) {
           key: 'rectangularCut',
           title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_RECTANGLE_CLIP,
-          //'矩形裁剪',
+          // '矩形裁剪',
           action: ToolAction.rectangleCut,
           size: 'large',
           image: getPublicAssets().mapTools.tools_rectangle_cut,
@@ -422,6 +312,13 @@ function getData(type, params) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       data = [
         {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: ToolAction.deleteLabel,
@@ -441,13 +338,6 @@ function getData(type, params) {
           action: () => EditAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
-        },
-        {
-          key: constants.MOVE,
-          title: getLanguage(global.language).Map_Main_Menu.MOVE,
-          action: EditAction.move,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
       ]
       buttons = [
@@ -529,7 +419,7 @@ function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          //constants.DELETE,
+          // constants.DELETE,
           size: 'large',
           action: ToolAction.deleteLabel,
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -565,7 +455,7 @@ function getData(type, params) {
         {
           key: constants.ADD_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
-          //constants.ADD_NODE,
+          // constants.ADD_NODE,
           size: 'large',
           action: EditAction.addNode,
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
@@ -712,7 +602,7 @@ function getData(type, params) {
         {
           key: constants.CANCEL_SELECT,
           title: getLanguage(global.language).Prompt.CANCEL,
-          //constants.CANCEL_SELECT,
+          // constants.CANCEL_SELECT,
           action: ToolAction.cancelSelect,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
@@ -753,7 +643,7 @@ function getData(type, params) {
         {
           key: constants.CANCEL,
           title: getLanguage(global.language).Prompt.CANCEL,
-          //constants.CANCEL_SELECT,
+          // constants.CANCEL_SELECT,
           action: () => {
             SMap.setAction(Action.PAN)
             SMap.setAction(Action.DRAWLINE)
@@ -764,7 +654,7 @@ function getData(type, params) {
         {
           key: constants.COMMIT,
           title: getLanguage(global.language).Prompt.COMMIT,
-          //constants.CANCEL_SELECT,
+          // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
@@ -791,7 +681,7 @@ function getData(type, params) {
         {
           key: constants.CANCEL,
           title: getLanguage(global.language).Prompt.CANCEL,
-          //constants.CANCEL_SELECT,
+          // constants.CANCEL_SELECT,
           action: ToolAction.close,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
@@ -799,7 +689,7 @@ function getData(type, params) {
         {
           key: constants.COMMIT,
           title: getLanguage(global.language).Prompt.COMMIT,
-          //constants.CANCEL_SELECT,
+          // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),

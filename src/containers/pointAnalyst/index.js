@@ -1,5 +1,5 @@
-import PointAnalyst from './pointAnalyst'
 import { connect } from 'react-redux'
+import PointAnalyst from './pointAnalyst'
 import { setMapNavigation, setNavigationChangeAR } from '../../models/setting'
 import { setMapSearchHistory } from '../../models/histories'
 

@@ -82,7 +82,7 @@ export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
       currentLayerIndex: params.currentLayerIndex || -1,
     }
   }
-  let layers = await SMap.getLayersByType(params.type)
+  const layers = await SMap.getLayersByType(params.type)
   await dispatch({
     type: GET_LAYERS,
     payload:
@@ -210,19 +210,21 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
   }
   try {
     // if (!params || !params.mapName || !params.layerPath)
-    if (!params || !params.layerPath)
+    if (!params || !params.layerPath) {
       return {
         msg: getLanguage(global.language).Prompt[`${_type}_FAILED`],
         result: false,
       }
-    let attributesHistory = getState().layers.toJS().attributesHistory
+    }
+    const { attributesHistory } = getState().layers.toJS()
     let layerHistory = {}
 
-    if (attributesHistory.length === 0)
+    if (attributesHistory.length === 0) {
       return {
         msg: getLanguage(global.language).Prompt[`${_type}_FAILED`],
         result: false,
       }
+    }
 
     for (let i = 0; i < attributesHistory.length; i++) {
       if (attributesHistory[i].mapName === params.mapName) {
@@ -241,8 +243,8 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
     if (!layerHistory.layerPath)
       return { msg: ConstInfo[`${_type}_UNABLE`], result: false }
 
-    let currentHistory = [],
-      currentIndex = layerHistory.currentIndex
+    let currentHistory = []
+    let { currentIndex } = layerHistory
 
     switch (params.type) {
       case 'undo':
@@ -336,7 +338,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
         if (!(layerHistory.history[0] instanceof Array)) {
           // 还原到最初状态，并把本次操作记录到新的历史记录中
           currentIndex = 0
-          let latestHistory = [] // 存放还原前最新数据
+          const latestHistory = [] // 存放还原前最新数据
 
           for (let x = 0; x < layerHistory.history.length; x++) {
             let exist = false
@@ -429,14 +431,14 @@ export const setCurrentLayer3d = (
 }
 
 export const refreshLayer3dList = (cb = () => {}) => async dispatch => {
-  let result = await SScene.getLayerList()
-  let basemaplist = [],
-    layerlist = [],
-    lablelist = [],
-    terrainList = []
+  const result = await SScene.getLayerList()
+  const basemaplist = []
+  const layerlist = []
+  const lablelist = []
+  const terrainList = []
   for (let index = 0; index < result.length; index++) {
     const element = result[index]
-    let item = { ...element, isShow: true }
+    const item = { ...element, isShow: true }
     if (item.type === 'IMAGEFILE') {
       basemaplist.push(item)
     } else if (item.name === 'NodeAnimation') {
@@ -446,15 +448,15 @@ export const refreshLayer3dList = (cb = () => {}) => async dispatch => {
     }
   }
 
-  let Terrains = await SScene.getTerrainLayerList()
+  const Terrains = await SScene.getTerrainLayerList()
   for (let index = 0; index < Terrains.length; index++) {
     const element = Terrains[index]
-    let item = { ...element, isShow: true }
+    const item = { ...element, isShow: true }
     terrainList.push(item)
   }
 
-  //map = @{@"name":name,@"visible": @(visible),@"selectable": @(0),@"basemap":@(0),@"type":@"Terrain"};
-  //默认显示个不存在地形
+  // map = @{@"name":name,@"visible": @(visible),@"selectable": @(0),@"basemap":@(0),@"type":@"Terrain"};
+  // 默认显示个不存在地形
   if (terrainList.length === 0) {
     terrainList.push({
       name: 'cache',
@@ -477,31 +479,31 @@ export const refreshLayer3dList = (cb = () => {}) => async dispatch => {
     })
   }
 
-  let data = [
+  const data = [
     {
       title: getLanguage(global.language).Map_Layer.PLOTS,
-      //'我的标注',
+      // '我的标注',
       data: lablelist,
       visible: true,
       index: 0,
     },
     {
       title: getLanguage(global.language).Map_Layer.LAYERS,
-      //'我的图层',
+      // '我的图层',
       data: layerlist,
       visible: true,
       index: 1,
     },
     {
       title: getLanguage(global.language).Map_Layer.BASEMAP,
-      //'我的底图',
+      // '我的底图',
       data: basemaplist,
       visible: true,
       index: 2,
     },
     {
       title: getLanguage(global.language).Map_Layer.MY_TERRAIN,
-      //'我的地形',
+      // '我的地形',
       data: terrainList,
       visible: true,
       index: 3,
@@ -527,7 +529,7 @@ const initialState = fromJS({
    * ]
    */
   selection: [],
-  /** 当前选中的对象 **/
+  /** 当前选中的对象 * */
   currentAttribute: {},
   attributes: {
     head: [],
@@ -573,24 +575,19 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SET_EDIT_LAYER}`]: (state, { payload }) => {
-      return state.setIn(['editLayer'], fromJS(payload))
-    },
-    [`${SET_SELECTION}`]: (state, { payload }) => {
-      return state.setIn(['selection'], fromJS(payload))
-    },
-    [`${SET_CURRENT_ATTRIBUTE}`]: (state, { payload }) => {
-      return state.setIn(['currentAttribute'], fromJS(payload))
-    },
-    [`${SET_CURRENT_LAYER}`]: (state, { payload }) => {
-      return state.setIn(['currentLayer'], fromJS(payload))
-    },
-    [`${SET_ANALYST_LAYER}`]: (state, { payload }) => {
-      return state.setIn(['analystLayer'], fromJS(payload))
-    },
+    [`${SET_EDIT_LAYER}`]: (state, { payload }) =>
+      state.setIn(['editLayer'], fromJS(payload)),
+    [`${SET_SELECTION}`]: (state, { payload }) =>
+      state.setIn(['selection'], fromJS(payload)),
+    [`${SET_CURRENT_ATTRIBUTE}`]: (state, { payload }) =>
+      state.setIn(['currentAttribute'], fromJS(payload)),
+    [`${SET_CURRENT_LAYER}`]: (state, { payload }) =>
+      state.setIn(['currentLayer'], fromJS(payload)),
+    [`${SET_ANALYST_LAYER}`]: (state, { payload }) =>
+      state.setIn(['analystLayer'], fromJS(payload)),
     [`${GET_LAYERS}`]: (state, { payload }) => {
-      let currentLayer,
-        currentLayerIndex = payload.currentLayerIndex || -1
+      let currentLayer
+      const currentLayerIndex = payload.currentLayerIndex || -1
       if (currentLayerIndex >= 0 && payload.layers.length > currentLayerIndex) {
         currentLayer = payload.layers[currentLayerIndex]
       }
@@ -661,15 +658,15 @@ export default handleActions(
     //     .setIn(['currentAttribute'], fromJS(currentAttribute))
     // },
     [`${SET_ATTRIBUTES}`]: (state, { payload }) => {
-      let currentAttribute = {},
-        attributes = state.toJS().attributes
+      let currentAttribute = {}
+      const { attributes } = state.toJS()
       if (
         JSON.stringify(state.toJS().currentAttribute) === '{}' &&
         payload.length > 0
       ) {
         currentAttribute = payload[0]
       }
-      let tableHead = []
+      const tableHead = []
       if (payload && payload.length > 0) {
         payload[0].forEach(item => {
           if (item.fieldInfo.caption.toString().toLowerCase() === 'id') {
@@ -686,28 +683,28 @@ export default handleActions(
         .setIn(['currentAttribute'], fromJS(currentAttribute))
     },
     [`${GET_LAYER3DLIST}`]: (state, { payload }) => {
-      let layer3dList = state.toJS().layer3dList
+      let { layer3dList } = state.toJS()
       if (payload.length > 0) {
         layer3dList = payload
       }
       return state.setIn(['layer3dList'], fromJS(layer3dList))
     },
     [`${SET_CURRENTLAYER3D}`]: (state, { payload }) => {
-      let currentLayer3d = state.toJS().currentLayer3d
+      let { currentLayer3d } = state.toJS()
       if (JSON.stringify(payload) !== '{}') {
         currentLayer3d = payload
         Toast.show(
-          //'当前图层为 '
-          getLanguage(global.language).Prompt.THE_CURRENT_LAYER +
-            '  ' +
-            currentLayer3d.name,
+          // '当前图层为 '
+          `${getLanguage(global.language).Prompt.THE_CURRENT_LAYER}  ${
+            currentLayer3d.name
+          }`,
         )
       }
       return state.setIn(['currentLayer3d'], fromJS(currentLayer3d))
     },
     [`${ADD_ATTRIBUTE_HISTORY}`]: (state, { payload }) => {
-      let attributesHistory = state.toJS().attributesHistory
-      let attributesHistoryKey = state.toJS().attributesHistoryKey
+      let { attributesHistory } = state.toJS()
+      const { attributesHistoryKey } = state.toJS()
 
       // let checkIsIncludeKey = function(data) {
       //   for (let i = 0; i < attributesHistoryKey.length; i++) {
@@ -727,7 +724,7 @@ export default handleActions(
         for (let i = 0; i < attributesHistory.length; i++) {
           if (attributesHistory[i].mapName === item.mapName) {
             mapExist = true
-            let layers = attributesHistory[i].layers
+            let { layers } = attributesHistory[i]
             let layerExist = false // 判断历史记录是否包含该地图中的图层
             for (let j = 0; j < layers.length; j++) {
               if (layers[j].layerPath === item.layerPath) {
@@ -755,7 +752,7 @@ export default handleActions(
                   layers[j].history[0].fieldInfo.length !==
                     item.fieldInfo.length ||
                   layers[j].history[0].fieldInfo[0].name !==
-                    item.fieldInfo[0].name //判断是否是同一条数据不同属性
+                    item.fieldInfo[0].name // 判断是否是同一条数据不同属性
                 ) {
                   layers[j].history.unshift({
                     fieldInfo: item.prevData,
@@ -810,7 +807,7 @@ export default handleActions(
         }
 
         if (!mapExist) {
-          let history = [
+          const history = [
             {
               fieldInfo: item.fieldInfo,
               params: item.params,
@@ -846,14 +843,12 @@ export default handleActions(
         .setIn(['attributesHistory'], fromJS(attributesHistory))
         .setIn(['attributesHistoryKey'], fromJS(attributesHistoryKey))
     },
-    [`${SET_ATTRIBUTE_HISTORY}`]: (state, { payload }) => {
-      return state.setIn(['attributesHistory'], fromJS(payload))
-    },
-    [`${CLEAR_ATTRIBUTE_HISTORY}`]: state => {
-      return state
+    [`${SET_ATTRIBUTE_HISTORY}`]: (state, { payload }) =>
+      state.setIn(['attributesHistory'], fromJS(payload)),
+    [`${CLEAR_ATTRIBUTE_HISTORY}`]: state =>
+      state
         .setIn(['attributesHistory'], fromJS([]))
-        .setIn(['attributesHistoryKey'], fromJS([]))
-    },
+        .setIn(['attributesHistoryKey'], fromJS([])),
     // [REHYDRATE]: () => {
     //   // return payload && payload.layers ? fromJS(payload.layers) : state
     //   return initialState

@@ -33,7 +33,7 @@ const initialState = fromJS({
 export default handleActions(
   {
     [`${USER_SET}`]: (state, { payload }) => {
-      let users = state.toJS().users
+      const { users } = state.toJS()
       let userExist = false
       for (let i = 0; i < users.length; i++) {
         if (users[i].userName === payload.userName) {
@@ -49,8 +49,8 @@ export default handleActions(
         .setIn(['users'], fromJS(users))
     },
     [`${USER_DELETE}`]: (state, { payload }) => {
-      let payloadString = JSON.stringify(payload)
-      let users = state.toJS().users
+      const payloadString = JSON.stringify(payload)
+      const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
         if (JSON.stringify(users[i]) === payloadString) {
           users.splice(i, 1)
@@ -60,7 +60,7 @@ export default handleActions(
       return state.setIn(['users'], fromJS(users))
     },
     [REHYDRATE]: (state, { payload }) => {
-      let _data = ModelUtils.checkModel(state, payload && payload.user)
+      const _data = ModelUtils.checkModel(state, payload && payload.user)
       // return payload && payload.user ? fromJS(payload.user) : state
       return _data
     },

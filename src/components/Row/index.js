@@ -4,10 +4,4 @@ import RadioGroup from './RadioGroup'
 import ChooseNumber from './ChooseNumber'
 import LabelBtn from './LabelBtn'
 
-export {
-  Row,
-  Radio,
-  RadioGroup,
-  ChooseNumber,
-  LabelBtn,
-}
+export { Row, Radio, RadioGroup, ChooseNumber, LabelBtn }

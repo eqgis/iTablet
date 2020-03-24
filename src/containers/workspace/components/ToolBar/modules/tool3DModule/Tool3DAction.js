@@ -1,7 +1,7 @@
+import { SScene } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
-import { SScene } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
@@ -9,12 +9,12 @@ import ToolBarHeight from '../ToolBarHeight'
 import utils from './utils'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
-/** 距离量算 **/
+/** 距离量算 * */
 function measureDistance() {
   const _params = ToolbarModule.getParams()
   if (!GLOBAL.openWorkspace) {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
+    // '请打开场景')
     return
   }
   SScene.checkoutListener('startMeasure')
@@ -24,12 +24,12 @@ function measureDistance() {
         isClickMeasurePoint = true
         ToolbarModule.addData({ isFinished: true })
       }
-      let pointArr = ToolbarModule.getData().pointArr || []
-      let redoArr = ToolbarModule.getData().redoArr || []
+      const pointArr = ToolbarModule.getData().pointArr || []
+      const redoArr = ToolbarModule.getData().redoArr || []
       pointArr.indexOf(JSON.stringify(result)) === -1 &&
         result.x !== 0 &&
         pointArr.push(JSON.stringify(result))
-      let newState = {}
+      const newState = {}
       if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
         newState.canUndo = true
       if (_params.toolbarStatus.canRedo) newState.canRedo = false
@@ -37,18 +37,18 @@ function measureDistance() {
       ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
       result.length = Number(result.length)
       result.length = result.length > 0 ? result.length.toFixed(6) : 0
-      _params.measureShow(true, result.length + 'm')
+      _params.measureShow(true, `${result.length}m`)
     },
   })
   showAnalystResult(ConstToolType.MAP3D_TOOL_DISTANCEMEASURE)
 }
 
-/** 面积量算 **/
+/** 面积量算 * */
 function measureArea() {
   const _params = ToolbarModule.getParams()
   if (!GLOBAL.openWorkspace) {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
+    // '请打开场景')
     return
   }
   SScene.checkoutListener('startMeasure')
@@ -58,12 +58,12 @@ function measureArea() {
         isClickMeasurePoint = true
         ToolbarModule.addData({ isFinished: true })
       }
-      let pointArr = ToolbarModule.getData().pointArr || []
-      let redoArr = ToolbarModule.getData().redoArr || []
+      const pointArr = ToolbarModule.getData().pointArr || []
+      const redoArr = ToolbarModule.getData().redoArr || []
       pointArr.indexOf(JSON.stringify(result)) === -1 &&
         result.x !== 0 &&
         pointArr.push(JSON.stringify(result))
-      let newState = {}
+      const newState = {}
       if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
         newState.canUndo = true
       if (_params.toolbarStatus.canRedo) newState.canRedo = false
@@ -71,121 +71,13 @@ function measureArea() {
       ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
       result.totalArea = Number(result.totalArea)
       result.totalArea = result.totalArea > 0 ? result.totalArea.toFixed(6) : 0
-      _params.measureShow(true, result.totalArea + '㎡')
+      _params.measureShow(true, `${result.totalArea}㎡`)
     },
   })
   showAnalystResult(ConstToolType.MAP3D_TOOL_SUERFACEMEASURE)
 }
 
-/** 兴趣点 **/
-function createPoint() {
-  const params = ToolbarModule.getParams()
-  try {
-    if (!GLOBAL.openWorkspace) {
-      Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
-      return
-    }
-    SScene.checkoutListener('startLabelOperate')
-    GLOBAL.Map3DSymbol = true
-    SScene.startDrawFavorite(getLanguage(params.language).Prompt.POI)
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINT)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINT, {
-      isFullScreen: false,
-      height: 0,
-    })
-  } catch (error) {
-    Toast.show(getLanguage(params.language).Prompt.FAILED_TO_CREATE_POINT)
-  }
-}
-
-/** 文字 **/
-function createText() {
-  const params = ToolbarModule.getParams()
-  try {
-    if (!GLOBAL.openWorkspace) {
-      Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
-      return
-    }
-    SScene.checkoutListener('startLabelOperate')
-    GLOBAL.Map3DSymbol = true
-    SScene.startDrawText({
-      callback: result => {
-        let dialog = params.dialog()
-        dialog.setDialogVisible(true)
-        ToolbarModule.addData({ point: result })
-      },
-    })
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_TEXT)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_TEXT, {
-      isFullScreen: false,
-      height: 0,
-    })
-  } catch (error) {
-    Toast.show(getLanguage(params.language).Prompt.FAILED_TO_CREATE_TEXT)
-  }
-}
-
-/** 点绘线 **/
-function createLine() {
-  const params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
-    Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
-    return
-  }
-  SScene.checkoutListener('startLabelOperate')
-  GLOBAL.Map3DSymbol = true
-  try {
-    SScene.startDrawLine()
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINTLINE)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINTLINE, {
-      isFullScreen: false,
-      height: 0,
-    })
-  } catch (error) {
-    Toast.show(getLanguage(params.language).Prompt.FAILED_TO_CREATE_LINE)
-  }
-}
-
-/** 点绘面 **/
-function createRegion() {
-  const params = ToolbarModule.getParams()
-  try {
-    if (!GLOBAL.openWorkspace) {
-      Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
-      return
-    }
-    SScene.checkoutListener('startLabelOperate')
-    GLOBAL.Map3DSymbol = true
-    SScene.startDrawArea()
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINTSURFACE)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINTSURFACE, {
-      isFullScreen: false,
-      height: 0,
-    })
-  } catch (error) {
-    Toast.show(getLanguage(params.language).Prompt.FAILED_TO_CREATE_REGION)
-  }
-}
-
-/** 清除标注 **/
-function clearPlotting() {
-  const params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
-    Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
-    return
-  }
-  GLOBAL.Map3DSymbol = true
-  SScene.closeAllLabel()
-  params.existFullMap && params.existFullMap()
-  params.setToolbarVisible(false)
-}
-
-/** 路径分析 **/
+/** 路径分析 * */
 function pathAnalyst() {
   const params = ToolbarModule.getParams()
   NavigationService.navigate('PointAnalyst', {
@@ -196,7 +88,7 @@ function pathAnalyst() {
   params.setToolbarVisible(false)
 }
 
-/** 点选 **/
+/** 点选 * */
 function select() {
   const params = ToolbarModule.getParams()
   SScene.setAction('PANSELECT3D')
@@ -213,13 +105,13 @@ function select() {
   })
 }
 
-/** box裁剪 **/
+/** box裁剪 * */
 function boxClip() {
   const params = ToolbarModule.getParams()
   GLOBAL.action3d = 'PAN3D_FIX'
   if (!GLOBAL.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
+    // '请打开场景')
     return
   }
   GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
@@ -229,12 +121,12 @@ function boxClip() {
   })
 }
 
-/** 三维裁剪参数获取 **/
+/** 三维裁剪参数获取 * */
 async function map3dCut() {
   const params = ToolbarModule.getParams()
-  let data = GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.getResult()
+  const data = GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.getResult()
   if (data[0].x !== data[0].y) {
-    let clipSetting = {
+    const clipSetting = {
       startX: ~~data[0].x,
       startY: ~~data[0].y,
       endX: ~~data[2].x,
@@ -243,9 +135,9 @@ async function map3dCut() {
       layers: [],
       isCliped: false,
     }
-    let rel = await cut3d(clipSetting)
+    const rel = await cut3d(clipSetting)
     rel.isCliped = true
-    let layers = params.layerList
+    const layers = params.layerList
     layers.map(layer => {
       layer.selected = true
     })
@@ -290,10 +182,10 @@ async function map3dCut() {
   }
 }
 
-//三维裁剪
+// 三维裁剪
 async function cut3d(data) {
-  //todo 三维裁剪 分this.state.type
-  let rel = await SScene.clipByBox(data)
+  // todo 三维裁剪 分this.state.type
+  const rel = await SScene.clipByBox(data)
   let num
   Object.keys(rel).map(key => {
     switch (key) {
@@ -356,15 +248,15 @@ function showAnalystResult(type) {
   })
 }
 
-/** 量算功能 撤销事件 **/
+/** 量算功能 撤销事件 * */
 function undo() {
   if (ToolbarModule.getData().isFinished === false) return
   isClickMeasurePoint = false
-  let pointArr = ToolbarModule.getData().pointArr || []
-  let redoArr = ToolbarModule.getData().redoArr || []
+  const pointArr = ToolbarModule.getData().pointArr || []
+  const redoArr = ToolbarModule.getData().redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canUndo) return
-  let newState = {}
+  const newState = {}
   if (pointArr.length > 0) {
     redoArr.push(pointArr.pop())
   }
@@ -375,15 +267,15 @@ function undo() {
   SScene.displayDistanceOrArea(pointArr)
 }
 
-/** 量算功能 重做事件 **/
+/** 量算功能 重做事件 * */
 function redo() {
   if (ToolbarModule.getData().isFinished === false) return
   isClickMeasurePoint = false
-  let pointArr = ToolbarModule.getData().pointArr || []
-  let redoArr = ToolbarModule.getData().redoArr || []
+  const pointArr = ToolbarModule.getData().pointArr || []
+  const redoArr = ToolbarModule.getData().redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canRedo || redoArr.length === 0) return
-  let newState = {}
+  const newState = {}
   if (redoArr.length > 0) {
     pointArr.push(redoArr.pop())
   }
@@ -396,7 +288,7 @@ function redo() {
   SScene.displayDistanceOrArea(pointArr)
 }
 
-/** 清除三维量算 **/
+/** 清除三维量算 * */
 function clearMeasure(type) {
   const _params = ToolbarModule.getParams()
   switch (type) {
@@ -429,7 +321,7 @@ function clearMeasure(type) {
     case ConstToolType.MAP3D_CLIP_HIDDEN:
     case ConstToolType.MAP3D_BOX_CLIP_IN:
     case ConstToolType.MAP3D_BOX_CLIP_OUT:
-      //清除裁剪面 返回上个界面
+      // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
       ToolbarModule.setData()
       SScene.clipSenceClear()
@@ -515,8 +407,8 @@ function circleFly() {
 }
 function showMenuDialog() {
   const _params = ToolbarModule.getParams()
-  let _data = ToolbarModule.getData()
-  let configs = JSON.parse(JSON.stringify(_data))
+  const _data = ToolbarModule.getData()
+  const configs = JSON.parse(JSON.stringify(_data))
   if (configs.showBox) {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
       isFullScreen: false,
@@ -529,8 +421,8 @@ function showMenuDialog() {
 
 function showLayerList() {
   const _params = ToolbarModule.getParams()
-  let data = ToolbarModule.getData()
-  let showBox = data.showBox
+  const data = ToolbarModule.getData()
+  let { showBox } = data
   _params.showMenuDialog &&
     _params.showMenuDialog({
       showMenuDialog: false,
@@ -552,16 +444,16 @@ function showLayerList() {
 
 function changeClip() {
   const _params = ToolbarModule.getParams()
-  let _data = _params.getClipSetting()
+  const _data = _params.getClipSetting()
 
-  let clipSetting = JSON.parse(JSON.stringify(_data))
+  const clipSetting = JSON.parse(JSON.stringify(_data))
   clipSetting.clipInner = !clipSetting.clipInner
   if (!clipSetting.layers) {
     clipSetting.layers = _params.layerList || []
   }
   SScene.clipByBox(clipSetting)
   _params.setClipSetting && _params.setClipSetting(clipSetting)
-  let type = clipSetting.clipInner
+  const type = clipSetting.clipInner
     ? ConstToolType.MAP3D_BOX_CLIP_IN
     : ConstToolType.MAP3D_BOX_CLIP_OUT
   _params.setToolbarVisible(true, type, {
@@ -571,9 +463,9 @@ function changeClip() {
 }
 function layerChange(layers) {
   const _params = ToolbarModule.getParams()
-  let _data = _params.getClipSetting()
+  const _data = _params.getClipSetting()
 
-  let clipSetting = JSON.parse(JSON.stringify(_data))
+  const clipSetting = JSON.parse(JSON.stringify(_data))
   clipSetting.layers = layers
   SScene.clipByBox(clipSetting)
   _params.setClipSetting && _params.setClipSetting(clipSetting)
@@ -594,11 +486,6 @@ export default {
 
   measureDistance,
   measureArea,
-  createPoint,
-  createText,
-  createLine,
-  createRegion,
-  clearPlotting,
   select,
   pathAnalyst,
   boxClip,

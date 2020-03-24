@@ -5,7 +5,7 @@ import { ConstToolType } from '../../../../constants'
 // import { Analyst_Types } from '../../AnalystType'
 
 function getData(language) {
-  let data = [
+  const data = [
     {
       key: getLanguage(language).Analyst_Modules.OPTIMAL_PATH,
       title: getLanguage(language).Analyst_Modules.OPTIMAL_PATH,

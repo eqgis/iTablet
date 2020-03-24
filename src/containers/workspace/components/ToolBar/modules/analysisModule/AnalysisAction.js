@@ -6,7 +6,7 @@ import ToolbarModule from '../ToolbarModule'
 
 function close(type) {
   const _params = ToolbarModule.getParams()
-  let action = ToolbarModule.getData().backAction || null
+  const action = ToolbarModule.getData().backAction || null
   action && action()
   AnalystTools.clear(type)
   _params.setToolbarVisible(true, ConstToolType.MAP_ANALYSIS, {

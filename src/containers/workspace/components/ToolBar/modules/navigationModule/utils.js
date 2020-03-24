@@ -1,11 +1,10 @@
 import { ConstToolType } from '../../../../../../constants'
 
-function getLayout (type, orientation, currentHeight) {
-  let height, column
+function getLayout(type, orientation, currentHeight) {
+  let height
+  let column
   switch (type) {
     case ConstToolType.MAP_NAVIGATION_MODULE:
-    case ConstToolType.MAP_NAVIGATION_ADD_UDB:
-    case ConstToolType.MAP_NAVIGATION_SELECT_MODEL:
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[5]
         column = 4

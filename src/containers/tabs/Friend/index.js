@@ -1,6 +1,7 @@
 /**
  * Created by imobile-xzy on 2019/3/4.
  */
+import { connect } from 'react-redux'
 import Friend from './Friend'
 import Chat from './Chat'
 import ManageFriend from './Chat/ManageFriend'
@@ -15,7 +16,6 @@ import MsgConstant from './MsgConstant'
 import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
 import { openWorkspace, closeWorkspace } from '../../../models/map'
-import { connect } from 'react-redux'
 import { setUser } from '../../../models/user'
 import { addChat, editChat, setConsumer } from '../../../models/chat'
 
@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setUser,
   addChat,
-  //addUnreadMessage,
+  // addUnreadMessage,
   editChat,
   setConsumer,
   openWorkspace,

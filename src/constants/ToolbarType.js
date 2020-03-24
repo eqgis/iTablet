@@ -1,6 +1,6 @@
-/** 工具栏容器类型 **/
+/** 工具栏容器类型 * */
 const list = 'list' // 列表
-const selectableList = 'selectableList' //可选择列表，每行左方多选框
+const selectableList = 'selectableList' // 可选择列表，每行左方多选框
 const table = 'table' // 固定表格
 const scrollTable = 'scrollTable' // 纵向滚动表格
 const tabs = 'tabs' // 卡片式符号库容器

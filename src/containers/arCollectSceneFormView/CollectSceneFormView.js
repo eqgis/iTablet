@@ -45,6 +45,7 @@ export default class CollectSceneFormView extends React.Component {
     super(props)
     const { params } = this.props.navigation.state || {}
     this.datasourceAlias = params.datasourceAlias || ''
+    this.datumPoint = params.point
     this.datasetName = params.datasetName
     this.datasetPointName = params.datasetPointName
     this.SceneViewVisible = true
@@ -77,7 +78,15 @@ export default class CollectSceneFormView extends React.Component {
     //安排任务在交互和动画完成之后执行
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
+        //设置基点
+        SCollectSceneFormView.fixedPosition(
+          false,
+          this.datumPoint.x,
+          this.datumPoint.y,
+          0,
+        )
+
         let udbPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +
@@ -113,7 +122,7 @@ export default class CollectSceneFormView extends React.Component {
 
   componentWillUnmount() {
     // Orientation.unlockAllOrientations()
-    SCollectSceneFormView.onDestroy
+    SCollectSceneFormView.onDestroy()
     //移除监听
     if (Platform.OS === 'ios') {
       nativeEvt.removeListener(
@@ -177,6 +186,16 @@ export default class CollectSceneFormView extends React.Component {
         history,
       })
     }
+  }
+
+  /** 设置 */
+  setting = () => {
+    NavigationService.navigate('CollectSceneFormSet', {
+      fixedPositions: point => {
+        NavigationService.goBack()
+        SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+      },
+    })
   }
 
   /** 清除 **/
@@ -707,7 +726,12 @@ export default class CollectSceneFormView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={styles.iconView}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setting()
+            }}
+            style={styles.iconView}
+          >
             <Image
               resizeMode={'contain'}
               source={getThemeAssets().ar.toolbar.ai_setting}

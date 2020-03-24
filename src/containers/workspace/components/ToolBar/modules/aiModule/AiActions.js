@@ -1,4 +1,3 @@
-import { getLanguage } from '../../../../../../language/index'
 import {
   SMeasureView,
   // DatasetType,
@@ -6,18 +5,20 @@ import {
   SMap,
   SCollectSceneFormView,
 } from 'imobile_for_reactnative'
+import { getLanguage } from '../../../../../../language/index'
 import NavigationService from '../../../../../NavigationService'
 import { Toast } from '../../../../../../utils/index'
 import { FileTools } from '../../../../../../native/index'
 import { ConstPath } from '../../../../../../constants/index'
 import FetchUtils from '../../../../../../utils/FetchUtils'
 import ToolbarModule from '../ToolbarModule'
+import { Container } from '../../../../../../components'
 
-//违章采集
+// 违章采集
 function illegallyParkCollect() {
-  (async function() {
-    let _params = ToolbarModule.getParams()
-    let dataList = await SMap.getTaggingLayers(
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
+    const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
     if (dataList.length > 0) {
@@ -37,20 +38,20 @@ function illegallyParkCollect() {
     //   Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
     //   return
     // }
-  }.bind(this)())
+  })()
 }
 
-//户型图采集
+// 户型图采集
 function arMeasureCollect() {
-  (async function() {
-    let _params = ToolbarModule.getParams()
-    let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
       return
     }
 
-    let dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
     if (dataList.length > 0) {
@@ -64,27 +65,25 @@ function arMeasureCollect() {
       Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
       _params.navigation.navigate('LayerManager')
     }
-  }.bind(this)())
+  })()
 }
 
-//AI分类
+// AI分类
 function aiClassify() {
-  (async function() {
-    let _params = ToolbarModule.getParams()
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
-      let dustbinPath =
-        this.homePath +
-        ConstPath.Common_AIClassifyModel +
-        'mobilenet_quant_224' +
-        '/'
-      this.dustbin_model = dustbinPath + 'mobilenet_quant_224' + '.tflite'
-      this.dustbin_txt = dustbinPath + 'mobilenet_quant_224' + '.txt'
-      let isDustbin =
+      const dustbinPath =
+        `${this.homePath +
+          ConstPath.Common_AIClassifyModel}mobilenet_quant_224` + '/'
+      this.dustbin_model = `${dustbinPath}mobilenet_quant_224` + '.tflite'
+      this.dustbin_txt = `${dustbinPath}mobilenet_quant_224` + '.txt'
+      const isDustbin =
         (await FileTools.fileIsExist(this.dustbin_model)) &&
         (await FileTools.fileIsExist(this.dustbin_txt))
       if (isDustbin) {
-        let dataList = await SMap.getTaggingLayers(
+        const dataList = await SMap.getTaggingLayers(
           _params.user.currentUser.userName,
         )
         if (dataList.length > 0) {
@@ -100,7 +99,7 @@ function aiClassify() {
         }
       } else {
         GLOBAL.isDownload = false
-        let downloadData = getDownloadData(
+        const downloadData = getDownloadData(
           'mobilenet_quant_224',
           'mobilenet_quant_224',
         )
@@ -114,31 +113,31 @@ function aiClassify() {
 }
 
 function getDownloadData(key, fileName) {
-  let cachePath = this.homePath + ConstPath.CachePath
-  let toPath = this.homePath + ConstPath.Common_AIClassifyModel + fileName
+  const cachePath = this.homePath + ConstPath.CachePath
+  const toPath = this.homePath + ConstPath.Common_AIClassifyModel + fileName
   return {
-    key: key,
-    fileName: fileName,
-    cachePath: cachePath,
+    key,
+    fileName,
+    cachePath,
     copyFilePath: toPath,
   }
 }
 
 function _downloadData(downloadData) {
-  (async function() {
-    let _params = ToolbarModule.getParams()
-    let keyword = downloadData.fileName
-    let dataUrl = await FetchUtils.getFindUserDataUrl(
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
+    const keyword = downloadData.fileName
+    const dataUrl = await FetchUtils.getFindUserDataUrl(
       'xiezhiyan123',
       keyword,
       '.zip',
     )
-    let cachePath = downloadData.cachePath
-    let fileDirPath = downloadData.copyFilePath
-    let fileCachePath = cachePath + downloadData.fileName + '.zip'
+    const { cachePath } = downloadData
+    const fileDirPath = downloadData.copyFilePath
+    const fileCachePath = `${cachePath + downloadData.fileName}.zip`
     await FileTools.deleteFile(fileCachePath)
     try {
-      let downloadOptions = {
+      const downloadOptions = {
         fromUrl: dataUrl,
         toFile: fileCachePath,
         background: true,
@@ -161,17 +160,17 @@ function _downloadData(downloadData) {
         })
     } catch (e) {
       Toast.show(getLanguage(_params.language).Prompt.NETWORK_ERROR)
-      //'网络错误，下载失败'
+      // '网络错误，下载失败'
       FileTools.deleteFile(fileCachePath)
     }
-  }.bind(this)())
+  })()
 }
 
-//目标采集
+// 目标采集
 function aiDetect() {
-  (async function() {
-    let _params = ToolbarModule.getParams()
-    let dataList = await SMap.getTaggingLayers(
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
+    const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
     if (dataList.length > 0) {
@@ -186,29 +185,29 @@ function aiDetect() {
       _params.navigation.navigate('LayerManager')
     }
     // await SAIDetectView.startCountTrackedObjs(true)
-  }.bind(this)())
+  })()
 }
 
-//态势采集(聚合模式)
+// 态势采集(聚合模式)
 function polymerizeCollect() {
-  (async function() {
+  ;(async function() {
     // await SAIDetectView.setProjectionModeEnable(true)
     // await SAIDetectView.setDrawTileEnable(false)
     await SAIDetectView.setIsPolymerize(true)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
     if (!GLOBAL.showAIDetect) {
-      (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     // await SAIDetectView.startCountTrackedObjs(true)
-  }.bind(this)())
+  })()
 }
 
-//高精度采集
+// 高精度采集
 function collectSceneForm() {
-  (async function() {
-    let _params = ToolbarModule.getParams()
-    let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
       return
@@ -219,17 +218,19 @@ function collectSceneForm() {
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
-    let time = await SCollectSceneFormView.getSystemTime()
-    GLOBAL.mapView.setState({ map: { height: 0 } })
-    GLOBAL.newcollectData = time
-    const datasourceAlias = time
-    const datasetName = 'CollectSceneForm'
-    const datasetPointName = 'CollectPointSceneForm'
-    NavigationService.navigate('CollectSceneFormView', {
-      datasourceAlias,
-      datasetName,
-      datasetPointName,
-    })
+    // let time = await SCollectSceneFormView.getSystemTime()
+    // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // GLOBAL.newcollectData = time
+    // const datasourceAlias = time
+    // const datasetName = 'CollectSceneForm'
+    // const datasetPointName = 'CollectPointSceneForm'
+    // NavigationService.navigate('CollectSceneFormView', {
+    //   datasourceAlias,
+    //   datasetName,
+    //   datasetPointName,
+    // })
+
+    NavigationService.navigate('EnterDatumPoint')
 
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(global.language).Map_Main_Menu
@@ -249,7 +250,7 @@ function collectSceneForm() {
     //     }
     //   },
     // })
-  }.bind(this)())
+  })()
 }
 
 export default {

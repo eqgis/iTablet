@@ -313,7 +313,7 @@ export default class ToolBar extends React.PureComponent {
       params.isTouchProgress !== this.state.isTouchProgress
       // params.listSelectable !== this.state.listSelectable
     ) {
-      (async function() {
+      ;(async function() {
         let data = params.data
         let buttons = params.buttons
         let customView = params.customView
@@ -348,13 +348,14 @@ export default class ToolBar extends React.PureComponent {
               params && params.isFullScreen !== undefined
                 ? params.isFullScreen
                 : DEFAULT_FULL_SCREEN,
-            containerType: params && params.containerType || ToolbarType.table,
+            containerType:
+              (params && params.containerType) || ToolbarType.table,
             themeType:
               params && params.themeType
                 ? params.themeType
                 : isShow
-                  ? this.state.themeType
-                  : '',
+                ? this.state.themeType
+                : '',
             selectKey: params && params.selectKey ? params.selectKey : '',
             selectName: params && params.selectName ? params.selectName : '',
           },
@@ -377,7 +378,10 @@ export default class ToolBar extends React.PureComponent {
       if (params.cb) {
         setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
       }
-      !isShow && this.props.existFullMap && this.props.existFullMap()
+      !isShow &&
+        GLOBAL.MapSelectPointType != 'selectPoint' &&
+        this.props.existFullMap &&
+        this.props.existFullMap()
       this.updateOverlayView()
     }
   }
@@ -409,8 +413,8 @@ export default class ToolBar extends React.PureComponent {
           toValue: isShow
             ? 0
             : -(this.props.device.height >= this.props.device.width
-              ? this.props.device.height
-              : this.props.device.width),
+                ? this.props.device.height
+                : this.props.device.width),
           duration: Const.ANIMATED_DURATION,
         }),
       )
@@ -508,12 +512,12 @@ export default class ToolBar extends React.PureComponent {
 
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
-    let newState = {data: []}
+    let newState = { data: [] }
     if (GLOBAL.Type === constants.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''
     }
-  
+
     this.showToolbar(false)
     if (
       this.state.isTouchProgress === true ||
@@ -528,7 +532,7 @@ export default class ToolBar extends React.PureComponent {
     })
     this.height = 0
     SMap.setAction(Action.PAN)
-  
+
     this.updateOverlayView()
     GLOBAL.TouchType = TouchType.NORMAL
   }
@@ -674,8 +678,10 @@ export default class ToolBar extends React.PureComponent {
       if (GLOBAL.Type === constants.MAP_EDIT) {
         if (
           GLOBAL.MapToolType &&
-            (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_EDIT) !== -1 ||
-          GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_STYLE) !== -1)
+          (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_EDIT) !==
+            -1 ||
+            GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_STYLE) !==
+              -1)
         ) {
           return
         }
@@ -851,14 +857,14 @@ export default class ToolBar extends React.PureComponent {
           this.state.type !== ConstToolType.STYLE_TRANSFER &&
           !this.state.isTouchProgress &&
           !this.state.showMenuDialog && (
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              this.overlayOnPress()
-            }}
-            style={styles.themeoverlay}
-          />
-        )}
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                this.overlayOnPress()
+              }}
+              style={styles.themeoverlay}
+            />
+          )}
         {this.state.isTouchProgress && this.state.isFullScreen && (
           <TouchProgress
             selectName={this.state.selectName}

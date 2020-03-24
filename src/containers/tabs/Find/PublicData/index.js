@@ -1,6 +1,6 @@
+import { connect } from 'react-redux'
 import PublicData from './PublicData'
 import { updateDownList, removeItemOfDownList } from '../../../../models/online'
-import { connect } from 'react-redux'
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),

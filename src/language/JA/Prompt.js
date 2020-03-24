@@ -1,4 +1,4 @@
-//ヒント语
+// ヒント语
 const Prompt = {
   YES: 'はい',
   NO: 'いいえ',
@@ -241,7 +241,7 @@ const Prompt = {
   ENTER_CORRECT_MOBILE: '正しい携帯番号を入力してください',
   ENTER_CORRECT_EMAIL: '正しいメールアドレスを入力してください',
 
-  //設定菜单ヒント情報
+  // 設定菜单ヒント情報
   ROTATION_ANGLE_ERROR: '回転角度を-360°～360°に設定してください',
   MAP_SCALE_ERROR: 'スケールの入力は不正です。1つの数字を入力してください',
   VIEW_BOUNDS_ERROR: '範囲の入力は不正です。1つの数字を入力してください',
@@ -249,7 +249,7 @@ const Prompt = {
     'パラメータは不正です。ウィンドウの幅、高さを0以上に設定してください',
   MAP_CENTER_ERROR: '座標の入力は不正です。x,yを数字に設定してください',
   COPY_SUCCESS: 'コピーに成功',
-  //コピー座標系
+  // コピー座標系
   COPY_COORD_SYSTEM_SUCCESS: '座標系のコピーに成功',
   COPY_COORD_SYSTEM_FAIL: '座標系のコピーに失敗',
   ILLEGAL_COORDSYS: '選択ファイルはサポートする座標系ファイルではありません',
@@ -290,7 +290,7 @@ const Prompt = {
   FAILED_TO_CREATE_LINE: 'ライン追加に失敗',
   FAILED_TO_CREATE_REGION: 'ポリゴン追加に失敗',
   CLEAR_HISTORY: '検索歴史のクリア',
-  //ナビ相关
+  // ナビ相关
   SEARCH_AROUND: '周囲を検索',
   GO_HERE: 'ここへ行く',
   SHOW_MORE_RESULT: 'もっと結果を確認',
@@ -324,7 +324,7 @@ const Prompt = {
     '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
 
-  //自定义专题图
+  // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',
   PARAMS_ERROR: 'パラメタエラー、設定に失敗しました！',

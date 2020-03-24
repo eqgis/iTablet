@@ -314,7 +314,7 @@ export default class Map3DToolBar extends React.Component {
   }
 
   importWorkspace = async item => {
-    (await this.props.importSceneWorkspace) &&
+    ;(await this.props.importSceneWorkspace) &&
       this.props.importSceneWorkspace({ server: item.path })(
         await this.props.existFullMap,
       ) &&

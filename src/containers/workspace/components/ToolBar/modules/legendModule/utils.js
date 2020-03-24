@@ -1,7 +1,8 @@
 import { ConstToolType } from '../../../../../../constants'
 
-function getLayout (type, orientation, currentHeight) {
-  let height, column
+function getLayout(type, orientation, currentHeight) {
+  let height
+  let column
   switch (type) {
     case ConstToolType.LEGEND:
     case ConstToolType.LEGEND_NOT_VISIBLE:

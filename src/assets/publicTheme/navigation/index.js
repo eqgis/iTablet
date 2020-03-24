@@ -21,16 +21,17 @@ const icon_stairs_down = require('./icon_stairs_down.png')
 const icon_turn_left = require('./icon_turn_left.png')
 const icon_turn_right = require('./icon_turn_right.png')
 const icon_U_turn = require('./icon_U-turn.png')
+
 export default {
-  //导航起点终点
+  // 导航起点终点
   icon_nav_start,
   icon_nav_end,
-  //增量路网 线数据集选中
+  // 增量路网 线数据集选中
   icon_checked,
-  //路况开关
+  // 路况开关
   icon_traffic_on,
   icon_traffic_off,
-  //导航指引图标
+  // 导航指引图标
   icon_arrive_destination,
   icon_back_left_turn,
   icon_back_right_turn,

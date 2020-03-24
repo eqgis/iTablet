@@ -1,16 +1,16 @@
 /**
  * 飞行轨迹
  */
+import { SScene } from 'imobile_for_reactnative'
 import Fly3DData from './Fly3DData'
 import Fly3DAction from './Fly3DAction'
 import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
-import { SScene } from 'imobile_for_reactnative'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const data = utils.getLayout(type, orientation)
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
@@ -22,9 +22,9 @@ function action(type) {
   })
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: Fly3DData.getData,
     actions: Fly3DAction,
   })
@@ -33,10 +33,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -47,7 +46,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png'),
     getData: Fly3DData.getData,
     actions: Fly3DAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

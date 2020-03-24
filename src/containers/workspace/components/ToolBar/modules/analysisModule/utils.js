@@ -1,8 +1,9 @@
-import { ConstToolType } from '../../../../../../constants'
 import { SMCollectorType } from 'imobile_for_reactnative'
+import { ConstToolType } from '../../../../../../constants'
 
-function getLayout (type, orientation) {
-  let height, column
+function getLayout(type, orientation) {
+  let height
+  let column
   switch (type) {
     case ConstToolType.MAP_ANALYSIS:
       if (orientation === 'PORTRAIT') {

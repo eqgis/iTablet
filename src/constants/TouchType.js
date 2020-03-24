@@ -2,7 +2,7 @@
  * 地图触摸事件类型
  */
 export default {
-  //点击监听类型
+  // 点击监听类型
   NORMAL: 'NORMAL',
   NULL: 'NULL',
   MAP_TOOL_TAGGING: 'MAP_TOOL_TAGGING',
@@ -21,13 +21,16 @@ export default {
   // 邻近分析
   REFERENCE: 'REFERENCE',
 
-  //创建动画路径
+  // 创建动画路径
   ANIMATION_WAY: 'ANIMATION_WAY',
 
-  //导航点击监听
+  // 导航点击监听
   NAVIGATION_TOUCH_BEGIN: 'NAVIGATION_TOUCH_BEGIN',
   NAVIGATION_TOUCH_END: 'NAVIGATION_TOUCH_END',
 
-  //视频地图AR模式下点击
+  // 视频地图AR模式下点击
   AIMAPTOUCH: 'AIMAPTOUCH',
+
+  // 地图选点监听
+  MAP_SELECT_POINT: 'MAP_SELECT_POINT',
 }

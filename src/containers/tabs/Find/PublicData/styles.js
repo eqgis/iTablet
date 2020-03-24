@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet, Platform } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
+
 export const itemWidth = Dimensions.get('window').width
 export const itemHeight = 140
 export const imageWidth = 90
@@ -10,10 +11,12 @@ const smallFontSize = 12
 const largeFontSize = 18
 const paddingLeft = 15
 const styles = StyleSheet.create({
-  //PublicData
+  // PublicData
   stateView: {
     height: scaleSize(40),
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: color.content_white,
   },
   HeaderRightContainer: {
     flexDirection: 'row',
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.content_white,
   },
 
-  //DataItem
+  // DataItem
   itemViewStyle: {
     width: '100%',
     height: itemHeight,
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     fontSize: largeFontSize,
     fontWeight: 'bold',
     // color: 'white',
-    paddingLeft: paddingLeft,
+    paddingLeft,
     textAlign: 'left',
     flexWrap: 'wrap',
     marginRight: 100,
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 20,
     flexDirection: 'row',
-    paddingLeft: paddingLeft,
+    paddingLeft,
     marginTop: 10,
     marginRight: 100,
   },
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A0A0A0',
   },
 
-  //DrowdownView
+  // DrowdownView
   backgroudViewStyle: {
     flex: 1,
     position: 'absolute',
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.3)',
   },
 
-  //CatagoryMenu
+  // CatagoryMenu
   listContainerStyle: {
     width: '100%',
   },
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     height: scaleSize(40),
   },
 
-  //MoreMenu
+  // MoreMenu
   MoreMenuContainer: {
     width: '40%',
     borderRadius: scaleSize(20),
@@ -161,10 +164,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#A0A0A0',
   },
 
-  //SearchMenu
+  // SearchMenu
   SearchMenuContainer: {
     width: '100%',
-    maxHeight: '60%',
+    maxHeight: '65%',
     backgroundColor: '#EEEEEE',
     justifyContent: 'center',
   },
@@ -209,6 +212,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchButtonText: {
+    fontSize: scaleSize(26),
+  },
+
+  // orderBar
+  orderView: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: scaleSize(20),
+    justifyContent: 'space-between',
+  },
+  orderItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orderImg: {
+    width: scaleSize(50),
+    height: scaleSize(50),
+    marginHorizontal: scaleSize(10),
+  },
+  orderText: {
+    width: scaleSize(40),
     fontSize: scaleSize(26),
   },
 })

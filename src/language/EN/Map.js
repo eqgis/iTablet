@@ -1,4 +1,4 @@
-//制图
+// 制图
 const Map_Label = {
   MAP: 'Map',
   LAYER: 'Layer',
@@ -13,7 +13,7 @@ const Map_Label = {
   ENCLOSURE: 'Enclosure',
 }
 
-//地图、场景主菜单
+// 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
   START: 'Start',
@@ -41,9 +41,13 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'Navigation Workspace',
   NAVIGATION_MAP: 'NAVIGATION_MAP',
   NETWORK: 'NETWORK',
+  NETWORK_MODULE: 'Network',
   NETMODEL: 'NETMODEL',
   NETDATA: 'NETDATA',
   INDOORDATA: 'INDOORDATA',
+  INDOOR_DATASOURCE: 'Indoor Datasources',
+  OUTDOOR_DATASETS: 'Outdoor Datasets',
+  SWITCH_DATA: 'Data Switching',
   DATASET: 'DATASET',
   Traffic: 'Traffic',
 
@@ -160,7 +164,7 @@ const Map_Main_Menu = {
   FLY_ADD_STOPS: 'Add Stops',
   FLY_AROUND_POINT: ' Fly around point',
 
-  //三维裁剪
+  // 三维裁剪
   CLIP_LAYER: 'Layers',
   CLIP_AREA_SETTINGS: 'Settings',
   CLIP_AREA_SETTINGS_WIDTH: 'Bottom width',
@@ -243,7 +247,7 @@ const Map_Main_Menu = {
   THEME_MAX_VISIBLE_SIZE: 'Max Visible Size',
   THEME_MIN_VISIBLE_SIZE: 'Min Visible Size',
 
-  //自定义专题图设置
+  // 自定义专题图设置
   THEME_RANGES_LABEL_MAP_TITLE: 'Ranges Label Map',
   THEME_RANGES_MAP_TITLE: 'Ranges Map',
   THEME_UNIQUE_VALUES_MAP_TITLE: 'Unique Values Map',
@@ -261,6 +265,10 @@ const Map_Main_Menu = {
 
   CREATE_WITH_SYMBOLS: 'Create with Symbols',
   CREATE_WITH_TEMPLATE: 'Create with Template',
+  POINT_SYMBOL_LIBRARY: 'Marker Libarary',
+  LINE_SYMBOL_LIBRARY: 'Line Libarary',
+  REGION_SYMBOL_LIBRARY: 'Fill Libarary',
+
   COLLECTION: 'Collect',
   COLLECTION_RECENT: 'Recent',
   COLLECTION_SYMBOL: 'Symbol',
@@ -363,13 +371,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_CANCEL: 'cancel',
   MAP_AR_AI_CONFIRM: 'confirm',
 
-  //智能配图
+  // 智能配图
   FILL: 'Fill',
   BORDER: 'Border',
   LINE: 'Line',
   MARK: 'Mark',
 
-  //地图导航
+  // 地图导航
   START_POINT: 'Start Point',
   END_POINT: 'Destination',
   DRAW: 'Draw',
@@ -400,7 +408,7 @@ const Map_Main_Menu = {
   MY_LOCATION: 'My location',
 }
 
-//推演动画
+// 推演动画
 const Map_Plotting = {
   PLOTTING_ANIMATION_MODE: 'Animation Mode',
   PLOTTING_ANIMATION_OPERATION: 'Result Operation',
@@ -467,7 +475,7 @@ const Map_Plotting = {
   ANIMATION_NODE_EDIT: 'Animation Edit',
 }
 
-//图层
+// 图层
 const Map_Layer = {
   PLOTS: 'My Marks',
   PLOTS_IMPORT: 'Import Marks',
@@ -529,7 +537,7 @@ const Map_Layer = {
   NOT_SNAPABLE: 'Not Snapable',
 }
 
-//属性
+// 属性
 const Map_Attribute = {
   ATTRIBUTE_SORT: 'Sort',
   ATTRIBUTE_LOCATION: 'Location',
@@ -576,16 +584,16 @@ const Map_Setting = {
   PITCH_GESTURE: 'Pitch Gesture',
   THEME_LEGEND: 'Theme Legend',
 
-  //效果设置
+  // 效果设置
   EFFECT_SETTINGS: 'Effect Settings',
   ANTI_ALIASING_MAP: 'Anti-aliasing Map',
   SHOW_OVERLAYS: 'Show Overlays',
 
-  //范围设置
+  // 范围设置
   BOUNDS_SETTING: 'Bounds settings',
   FIX_SCALE: 'Fixed Scale',
 
-  //三维场景设置
+  // 三维场景设置
   SCENE_NAME: 'Scene Name',
   FOV: 'FOV',
   SCENE_OPERATION_STATUS: 'Scene Operation Status',
@@ -594,10 +602,10 @@ const Map_Setting = {
   SPHERICAL: 'Spherical',
 }
 
-//地图设置菜单
+// 地图设置菜单
 const Map_Settings = {
   THEME_LEGEND: 'Theme Legend',
-  //一级菜单
+  // 一级菜单
   BASIC_SETTING: 'Basic Settings',
   RANGE_SETTING: 'Bounds Settings',
   COORDINATE_SYSTEM_SETTING: 'Coordinate System Settings',
@@ -609,7 +617,7 @@ const Map_Settings = {
   REMARKS: 'Remarks',
   DRAWING_RANGE: 'Drawing Range',
 
-  //视频地图设置:一级菜单
+  // 视频地图设置:一级菜单
   POI_SETTING: 'POI Settings',
   DETECT_TYPE: 'Detect Types',
   DETECT_STYLE: 'Detect Style',
@@ -647,7 +655,7 @@ const Map_Settings = {
   DETECT_STYLE_STROKE_WIDTH: 'Stroke Width',
   COUNTRACKED: 'Count Track ',
 
-  //二级菜单 基本设置
+  // 二级菜单 基本设置
   MAP_NAME: 'Map Name',
   SHOW_SCALE: 'Show Scale',
   ROTATION_GESTURE: 'Rotation Gesture',
@@ -662,19 +670,19 @@ const Map_Settings = {
   SHOW_OVERLAYS: 'Show overlays',
   ENABLE_MAP_MAGNIFER: 'Enable map magnifer',
 
-  //二级菜单 范围设置
+  // 二级菜单 范围设置
   MAP_CENTER: 'Map Center',
   MAP_SCALE: 'Map Scale',
   FIX_SCALE_LEVEL: 'Fix Scale Level',
   CURRENT_VIEW_BOUNDS: 'Current View Bounds',
 
-  //二级菜单 坐标系设置
+  // 二级菜单 坐标系设置
   COORDINATE_SYSTEM: 'Coordinate System',
   COPY_COORDINATE_SYSTEM: 'Copy Coordinate System',
   DYNAMIC_PROJECTION: 'Enable Dynamic Projection',
   TRANSFER_METHOD: 'Transfer Method',
 
-  //二级菜单 高级设置
+  // 二级菜单 高级设置
   FLOW_VISIUALIZATION: 'Flow Visiualization',
   SHOW_NEGATIVE_DATA: 'Show Negative Data',
   AUTOMATIC_AVOIDANCE: 'Automatic Avoidance',
@@ -686,36 +694,36 @@ const Map_Settings = {
   HISTOGRAM_STYLE: 'Histogram Style',
   ROSE_AND_PIE_CHART_STYLE: 'Rose & Pie Chart Style',
 
-  //三级菜单 颜色模式
+  // 三级菜单 颜色模式
   DEFAULT_COLOR_MODE: 'Default Color Mode',
   BLACK_AND_WHITE: 'Black And White',
   GRAY_SCALE_MODE: 'Gray-Scale Mode',
   ANTI_BLACK_AND_WHITE: 'Anti Black And White',
   ANTI_BLACK_AND_WHITE_2: 'Anti Black And White,Other Colors Unchanged',
 
-  //三级菜单 窗口四至范围
+  // 三级菜单 窗口四至范围
   LEFT: 'Left',
   RIGHT: 'Right',
   TOP: 'Top',
   BOTTOM: 'Bottom',
 
-  //三级菜单 坐标系设置
+  // 三级菜单 坐标系设置
   PLAN_COORDINATE_SYSTEM: 'Plan Coordinate System',
   GEOGRAPHIC_COORDINATE_SYSTEM: 'Geographic Coordinate System',
   PROJECTED_COORDINATE_SYSTEM: 'Projected Coordinate System',
 
-  //三级菜单 复制坐标系
+  // 三级菜单 复制坐标系
   FROM_DATASOURCE: 'From Datasource',
   FROM_DATASET: 'From Dataset',
   FROM_FILE: 'From File',
 
-  //四级菜单 转换方法参数设置
+  // 四级菜单 转换方法参数设置
   BASIC_PARAMS: 'Basic Params',
   OFFSET: 'Offset',
   PROPORTIONAL_DIFFERENCE: 'Proportional Difference',
   ROTATION_ANGLE_SECONDS: 'Rotation Angle(Seconds)',
 
-  //四级菜单 和复制提示
+  // 四级菜单 和复制提示
   TYPE: 'Type',
   FORMAT: 'Format',
   DATASOURCES: 'Datasources',
@@ -727,7 +735,7 @@ const Map_Settings = {
   IMG_COORD_FILE: 'Image Coordinate System File',
   COORD_FILE: 'Coordinate System File',
 
-  //设置的一些参数
+  // 设置的一些参数
   PERCENT: 'Percent',
   OFF: 'OFF',
   CONFIRM: 'Confirm',
@@ -735,7 +743,7 @@ const Map_Settings = {
   COPY: 'Copy',
 }
 
-//地图工具
+// 地图工具
 const Map_Tools = {
   VIDEO: 'Video',
   PHOTO: 'Photo',
@@ -745,7 +753,7 @@ const Map_Tools = {
   FROM_ALBUM: 'Choose from album',
   VIEW: 'View',
 }
-//POI title
+// POI title
 const Map_PoiTitle = {
   FOOD: 'Food',
   SCENE: 'Scenic',

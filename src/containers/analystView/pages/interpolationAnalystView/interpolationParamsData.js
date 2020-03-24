@@ -1,5 +1,5 @@
-import { getLanguage } from '../../../../language'
 import { SAnalyst } from 'imobile_for_reactnative'
+import { getLanguage } from '../../../../language'
 
 /**
  * 插值方法

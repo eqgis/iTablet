@@ -38,6 +38,9 @@ import {
   tool3DModule,
   navigationModule,
   aiModule,
+  roadNetModule,
+  markModule,
+  mark3DModule,
 } from '../ToolBar/modules'
 
 const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -321,6 +324,24 @@ export default class FunctionToolbar extends React.Component {
             ),
           )
           break
+        case 'markModule':
+          data.push(
+            markModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.PLOTS,
+              !isLicenseNotValid,
+            ),
+          )
+          break
+        case 'mark3DModule':
+          data.push(
+            mark3DModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.PLOTS,
+              !isLicenseNotValid,
+            ),
+          )
+          break
         case 'shareModule':
           data.push(
             shareModule(
@@ -367,6 +388,15 @@ export default class FunctionToolbar extends React.Component {
             ),
           )
           break
+        case 'roadNetModule':
+          data.push(
+            roadNetModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.NETWORK_MODULE,
+              !isLicenseNotValid,
+            ),
+          )
+          break
         case 'themeModule':
           data.push(
             themeModule(
@@ -401,7 +431,7 @@ export default class FunctionToolbar extends React.Component {
               item.type,
               item.type === ConstToolType.PLOTTING_ANIMATION
                 ? getLanguage(this.props.language).Map_Main_Menu
-                  .PLOTTING_ANIMATION
+                    .PLOTTING_ANIMATION
                 : getLanguage(this.props.language).Map_Main_Menu.PLOT,
               !isLicenseNotValid,
             ),
@@ -466,16 +496,16 @@ export default class FunctionToolbar extends React.Component {
           this.props.online.share[0] &&
           GLOBAL.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
-          <Bar
-            style={styles.progress}
-            // indeterminate={true}
-            progress={
-              this.props.online.share[this.props.online.share.length - 1]
-                .progress
-            }
-            width={scaleSize(60)}
-          />
-        )}
+            <Bar
+              style={styles.progress}
+              // indeterminate={true}
+              progress={
+                this.props.online.share[this.props.online.share.length - 1]
+                  .progress
+              }
+              width={scaleSize(60)}
+            />
+          )}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
         {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}

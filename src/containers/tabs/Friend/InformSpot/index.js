@@ -1,7 +1,7 @@
-import InformSpot from './InformSpot'
-//import { setUser } from '../../../../models/user'
-//import { addChat } from '../../../../models/chat'
 import { connect } from 'react-redux'
+import InformSpot from './InformSpot'
+// import { setUser } from '../../../../models/user'
+// import { addChat } from '../../../../models/chat'
 const mapStateToProps = state => ({
   user: state.user.toJS(),
   chat: state.chat.toJS(),

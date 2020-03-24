@@ -1,4 +1,4 @@
-//提示语
+// 提示语
 const Prompt = {
   YES: 'Evet',
   NO: 'Hayır',
@@ -239,7 +239,7 @@ const Prompt = {
   ENTER_CORRECT_MOBILE: 'Lütfen geçerli bir cep telefonu numarası girin',
   ENTER_CORRECT_EMAIL: 'Lütfen geçerli bir e-posta adresi girin',
 
-  //设置菜单提示信息
+  // 设置菜单提示信息
   ROTATION_ANGLE_ERROR: 'Dönme açısı -360 ° ile 360 ° arasında olmalıdır',
   MAP_SCALE_ERROR: 'Giriş hatası! Lütfen bir numara girin',
   VIEW_BOUNDS_ERROR: 'Aralık hatası! Lütfen bir numara girin',
@@ -247,7 +247,7 @@ const Prompt = {
     'Parametre hatası! Görüşün hem yüksekliği hem de genişliği sıfırdan büyük olmalıdır',
   MAP_CENTER_ERROR: 'Koordinat hatası! Hem X hem de Y sayı olmalıdır',
   COPY_SUCCESS: 'Kopyalama Başarılı!',
-  //复制坐标系
+  // 复制坐标系
   COPY_COORD_SYSTEM_SUCCESS: 'Koordinat sistemi çoğaltması başarılı',
   COPY_COORD_SYSTEM_FAIL: 'Koordinat sistemi çoğaltması başarısız',
   ILLEGAL_COORDSYS: 'Desteklenen bir koordinat sistemi dosyası değil',
@@ -285,7 +285,7 @@ const Prompt = {
   FAILED_TO_CREATE_LINE: 'Çizgi oluşturma başarısız',
   FAILED_TO_CREATE_REGION: 'Poligon oluşturma başarısız',
   CLEAR_HISTORY: 'Geçmişi temizle',
-  //导航相关
+  // 导航相关
   SEARCH_AROUND: 'Etrafında ara',
   GO_HERE: 'Buraya git',
   SHOW_MORE_RESULT: 'Daha fazla sonuç göster',
@@ -317,7 +317,7 @@ const Prompt = {
     'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
 
-  //自定义专题图
+  // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: 'Parametre hatası, ayar başarısız!',

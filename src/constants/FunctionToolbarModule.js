@@ -1,12 +1,12 @@
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
-import { ConstToolType, ToolbarType } from '../constants'
+import { ConstToolType, ToolbarType } from '.'
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils } from '../utils'
 
 async function OpenData(data, index) {
-  let layers = await SMap.getLayersByType()
+  const layers = await SMap.getLayersByType()
   let isOpen
   if (data instanceof Array) {
     for (let i = data.length - 1; i >= 0; i--) {
@@ -177,9 +177,7 @@ const layerAdd = [
 const layerManagerData = [
   {
     title: 'Google RoadMap',
-    action: () => {
-      return OpenData(ConstOnline.Google, 0)
-    },
+    action: () => OpenData(ConstOnline.Google, 0),
     data: [],
     image: require('../assets/map/icon-shallow-image_black.png'),
     type: DatasetType.IMAGE,
@@ -187,9 +185,7 @@ const layerManagerData = [
   },
   {
     title: 'Google Satellite',
-    action: () => {
-      return OpenData(ConstOnline.Google, 1)
-    },
+    action: () => OpenData(ConstOnline.Google, 1),
     data: [],
     image: require('../assets/map/icon-shallow-image_black.png'),
     type: DatasetType.IMAGE,
@@ -197,9 +193,7 @@ const layerManagerData = [
   },
   {
     title: 'Google Terrain',
-    action: () => {
-      return OpenData(ConstOnline.Google, 2)
-    },
+    action: () => OpenData(ConstOnline.Google, 2),
     data: [],
     image: require('../assets/map/icon-shallow-image_black.png'),
     type: DatasetType.IMAGE,
@@ -207,9 +201,7 @@ const layerManagerData = [
   },
   {
     title: 'Google Hybrid',
-    action: () => {
-      return OpenData(ConstOnline.Google, 3)
-    },
+    action: () => OpenData(ConstOnline.Google, 3),
     data: [],
     image: require('../assets/map/icon-shallow-image_black.png'),
     type: DatasetType.IMAGE,
@@ -217,9 +209,7 @@ const layerManagerData = [
   },
   {
     title: 'BingMap',
-    action: () => {
-      return OpenData(ConstOnline.BingMap, 0)
-    },
+    action: () => OpenData(ConstOnline.BingMap, 0),
     data: [],
     image: require('../assets/map/icon-shallow-image_black.png'),
     type: DatasetType.IMAGE,
@@ -308,12 +298,13 @@ const layerManagerData = [
 //   },
 // ]
 
-//图例菜单 可见
+// 图例菜单 可见
 const legendMenuInfo = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_COLOR,
     action: () => {
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -407,12 +398,13 @@ const legendMenuInfo = (param, orientation) => [
   },
 ]
 
-//图例菜单 不可见
+// 图例菜单 不可见
 const legendMenuInfoNotVisible = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_COLOR,
     action: () => {
-      let column, height
+      let column
+      let height
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -506,7 +498,7 @@ const legendMenuInfoNotVisible = (param, orientation) => [
   },
 ]
 
-//智能配图
+// 智能配图
 // const smartCartography = param => [
 //   {
 //     key: getLanguage(param).Map_Main_Menu.STYLE_BRIGHTNESS,

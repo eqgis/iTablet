@@ -6,7 +6,7 @@ import { ConstToolType } from '../../../../../../constants'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
@@ -24,9 +24,9 @@ function action(type) {
   }
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: ToolData.getData,
     actions: ToolAction,
   })
@@ -35,10 +35,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -50,7 +49,7 @@ export default function(type, title, customAction) {
     getData: ToolData.getData,
     getMenuData: ToolData.getMenuData,
     actions: ToolAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

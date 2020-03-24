@@ -4,6 +4,7 @@
 
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils/screen'
+
 const styles = StyleSheet.create({
   ItemViewStyle: {
     paddingLeft: scaleSize(20),

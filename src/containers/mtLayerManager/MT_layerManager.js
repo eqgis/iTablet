@@ -81,7 +81,7 @@ export default class MT_layerManager extends React.Component {
       data: [],
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
       allLayersVisible: false,
-      currentScale:0,
+      currentScale: 0,
     }
     this.itemRefs = {} // 记录列表items
     this.currentItemRef = {} // 当前被选中的item
@@ -94,10 +94,14 @@ export default class MT_layerManager extends React.Component {
     ) {
       this.getData()
     }
-    let {params} = this.props.navigation.state
-    if(params && params.currentScale && params.currentScale !== this.state.currentScale){
+    let { params } = this.props.navigation.state
+    if (
+      params &&
+      params.currentScale &&
+      params.currentScale !== this.state.currentScale
+    ) {
       this.setState({
-        currentScale:params.currentScale,
+        currentScale: params.currentScale,
       })
     }
   }
@@ -294,7 +298,7 @@ export default class MT_layerManager extends React.Component {
 
   onPressRow = async ({ data, parentData, section }) => {
     // this.props.setMapLegend(false)
-
+    if (GLOBAL.Type === constants.MAP_EDIT) return
     this.props.setCurrentLayer &&
       this.props.setCurrentLayer(data, () => {
         // 切换地图，清除历史记录
@@ -634,7 +638,7 @@ export default class MT_layerManager extends React.Component {
       type: 'name',
       cb: async value => {
         if (value !== '') {
-          (async function() {
+          ;(async function() {
             await SMap.setLabelColor()
             let data = await SMap.newTaggingDataset(
               value,
@@ -665,7 +669,7 @@ export default class MT_layerManager extends React.Component {
   _renderItem = ({ item, section, index, parentData }) => {
     // sectionID = sectionID || 0
     item.index = index //记录位置用于上下移动
-    item.layerCount = section.data.length//记录数目上下移动
+    item.layerCount = section.data.length //记录数目上下移动
     if (section.visible) {
       if (item) {
         let action

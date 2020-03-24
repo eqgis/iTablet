@@ -1,8 +1,8 @@
 /**
  * 插值分析 具体插值方法实施界面
  */
-import InterpolationAnalystDetailView from './InterpolationAnalystDetailView'
 import { connect } from 'react-redux'
+import InterpolationAnalystDetailView from './InterpolationAnalystDetailView'
 import { getLayers } from '../../../../models/layers'
 
 const mapStateToProps = state => ({

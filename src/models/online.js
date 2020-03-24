@@ -34,11 +34,11 @@ export const uploading = (params = {}, cb = () => {}) => async dispatch => {
   ) {
     return false
   }
-  let zipResult = await FileTools.zipFiles(
+  const zipResult = await FileTools.zipFiles(
     params.archivePaths,
     params.targetPath,
   )
-  let uploadResult =
+  const uploadResult =
     zipResult &&
     (await SOnlineService.uploadFilebyType(
       params.targetPath,
@@ -101,12 +101,8 @@ export const removeItemOfDownList = (
 }
 
 export const loginIServer = (params, cb = () => {}) => async dispatch => {
-  let response = await request(
-    'http://' +
-      params.ip +
-      ':' +
-      params.port +
-      '/iserver/services/security/login.json',
+  const response = await request(
+    `http://${params.ip}:${params.port}/iserver/services/security/login.json`,
     'POST',
     {
       body: {
@@ -133,14 +129,11 @@ export const loginIServer = (params, cb = () => {}) => async dispatch => {
 }
 
 export const getDatasetInfoFromIServer = params => async () => {
-  let url =
-    'http://' +
-    params.ip +
-    ':' +
-    params.port +
-    '/iserver/services/datacatalog/rest/datacatalog/sharefile/' +
-    params.dataset +
-    '/fields.json'
+  const url = `http://${params.ip}:${
+    params.port
+  }/iserver/services/datacatalog/rest/datacatalog/sharefile/${
+    params.dataset
+  }/fields.json`
   return request(url, 'GET', {
     headers: {
       Cookie: global.cookie,
@@ -163,7 +156,7 @@ const initialState = fromJS({
 export default handleActions(
   {
     [`${SHARING}`]: (state, { payload }) => {
-      let shareList = state.toJS().share
+      const shareList = state.toJS().share
       let exist = false
       for (let i = 0; i < shareList.length; i++) {
         if (
@@ -185,7 +178,7 @@ export default handleActions(
       return state.setIn(['share'], fromJS(shareList))
     },
     [`${UPLOADING}`]: (state, { payload }) => {
-      let list = state.toJS().share
+      const list = state.toJS().share
       let exist = false
       for (let i = 0; i < list.length; i++) {
         if (
@@ -208,7 +201,7 @@ export default handleActions(
       return state.setIn(['upload'], fromJS(list))
     },
     [`${UPDATEDOWNLIST}`]: (state, { payload }) => {
-      let down = state.toJS().down
+      const { down } = state.toJS()
       if (payload.id) {
         if (down.length > 0) {
           let isItem = false
@@ -232,7 +225,7 @@ export default handleActions(
       return state.setIn(['down'], fromJS(down))
     },
     [`${REMOVEITEMPFDOWNLIST}`]: (state, { payload }) => {
-      let down = state.toJS().down
+      const { down } = state.toJS()
       if (payload.id) {
         for (let index = 0; index < down.length; index++) {
           const element = down[index]
@@ -245,9 +238,9 @@ export default handleActions(
       return state.setIn(['down'], fromJS(down))
     },
     [`${ISERVER_LOGIN}`]: (state, { payload }) => {
-      let iServerData = state.toJS().iServerData
+      let { iServerData } = state.toJS()
       if (payload) {
-        for (let key in payload) {
+        for (const key in payload) {
           iServerData[key] = payload[key]
         }
       } else {

@@ -18,7 +18,7 @@ function colorAction(item) {
 
 function close() {
   const params = ToolbarModule.getParams()
-  let mapXML = ToolbarModule.getData().mapXML
+  const { mapXML } = ToolbarModule.getData()
   SMap.mapFromXml(mapXML)
   params.setToolbarVisible(false)
   ToolbarModule.setData()

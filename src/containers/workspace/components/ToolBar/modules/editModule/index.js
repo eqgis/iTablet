@@ -1,18 +1,18 @@
 /**
  * 编辑
  */
+import { SMap, Action } from 'imobile_for_reactnative'
 import EditData from './EditData'
 import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
-import { SMap, Action } from 'imobile_for_reactnative'
 import utils from './utils'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
@@ -25,9 +25,9 @@ export async function action(type) {
   Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: EditData.getData,
     actions: EditAction,
   })
@@ -36,10 +36,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -50,7 +49,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_edit.png'),
     getData: EditData.getData,
     actions: EditAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

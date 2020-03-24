@@ -6,7 +6,7 @@ import { ToolbarType } from '../../../../../../constants'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   params.showFullMap && params.showFullMap(true)
   // const _data = StartData.getData(type)
@@ -20,9 +20,9 @@ function action(type) {
   })
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: StartData.getData,
     actions: StartAction,
   })
@@ -31,10 +31,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -45,7 +44,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_function_start.png'),
     getData: StartData.getData,
     actions: StartAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

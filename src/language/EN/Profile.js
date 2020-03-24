@@ -1,4 +1,4 @@
-//我的、发现
+// 我的、发现
 const Profile = {
   LOGIN_NOW: 'Login',
   IMPORT: 'Import',
@@ -17,7 +17,7 @@ const Profile = {
   INCREMENT: 'Increment',
   ENCLOSURE: 'Enclosure',
 
-  //我的——登录
+  // 我的——登录
   LOGIN: 'Login',
   LOGIN_TIMEOUT: 'Login timeout, please try again later',
   LOGIN_CURRENT: 'Current user is already logged in',
@@ -94,19 +94,19 @@ const Profile = {
   SWITCHING: 'Switching...',
   SWITCH_FAIL: 'Switch failed, please try to login with this user again',
 
-  //地图服务地址
+  // 地图服务地址
   SERVICE_ADDRESS: 'Service Address',
   MAP_NAME: 'Map Name',
   ENTER_SERVICE_ADDRESS: 'Please enter the Service Address',
   SAVE: 'Save',
 
-  //我的服务
+  // 我的服务
   SERVICE: 'Service',
   MY_SERVICE: 'Service',
   PRIVATE_SERVICE: 'Private Service',
   PUBLIC_SERVICE: 'Public Service',
   DELETE: 'Delete',
-  //个人主页
+  // 个人主页
   MY_ACCOUNT: 'My Account',
   PROFILE_PHOTO: 'Profile Photo',
   USERNAME: 'Username',
@@ -137,7 +137,7 @@ const Profile = {
 
   GET_DATA_FAILED: 'Failed to get data',
 
-  //创建数据集
+  // 创建数据集
   PLEASE_ADD_DATASET: 'Please add dataset',
   ADD_DATASET: 'Add Dataset',
   ENTER_DATASET_NAME: 'Please enter dataset name',
@@ -151,7 +151,7 @@ const Profile = {
   CLEAR: 'Clear',
   CREATE: 'Create',
 
-  //创建数据源
+  // 创建数据源
   NEW_DATASOURCE: 'Create Datasource',
   SET_DATASOURCE_NAME: 'Set Datasource Name',
   ENTER_DATASOURCE_NAME: 'Please enter datasource name',
@@ -160,11 +160,11 @@ const Profile = {
   SELECT_DATASET_EXPORT_TYPE: 'Select format for export',
   DATASET_EXPORT_NOT_SUPPORTED: 'Export of this dataset is not supported yet',
 
-  //搜索
+  // 搜索
   SEARCH: 'Search',
   NO_SEARCH_RESULT: 'No search result',
 
-  //设置
+  // 设置
   STATUSBAR_HIDE: 'StatusBar Hide',
   SETTING_LICENSE: 'License Center',
   SETTING_ABOUT_ITABLET: 'About iTablet',
@@ -176,7 +176,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'Auto',
   SETTING_LOCATION_DEVICE: 'Location Device',
   SETTING_LOCATION_LOCAL: 'This device',
-  //许可
+  // 许可
   LICENSE_CURRENT: 'License Current',
   LICENSE_TYPE: 'License Type',
   LICENSE_TRIAL: 'License Trial',
@@ -222,11 +222,11 @@ const Profile = {
   LICENSE_CLOUD: 'License Cloud',
   LICENSE_EDITION: 'License Edition',
   LICENSE_EDITION_CURRENT: 'Current Edition',
-  //itablet许可版本
+  // itablet许可版本
   LICENSE_EDITION_STANDARD: 'Standard Edition',
   LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
   LICENSE_EDITION_ADVANCED: 'ADVANCED Edition',
-  //imobile许可模块
+  // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: 'Core Runtime',
   Navigation_Dev: 'Navigation Dev',
@@ -245,13 +245,13 @@ const Profile = {
   Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
   Realspace_Effect_Dev: 'Realspace Effect Dev',
   Realspace_Effect_Runtime: 'Realspace Effect Runtime',
-  //itablet许可模块
+  // itablet许可模块
   ITABLET_ARMAP: 'Ar Map',
   ITABLET_NAVIGATIONMAP: 'Navigation Map',
   ITABLET_DATAANALYSIS: 'Data Analysis',
   ITABLET_PLOTTING: 'Plotting',
 
-  //意见反馈
+  // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL:
     'Function Abnormal : Function abnormal or not can use',
   SUGGESTION_PRODUCT_ADVICE: 'Product Suggestion : I have a suggestion',
@@ -264,5 +264,26 @@ const Profile = {
   SUGGESTION_SUBMIT: 'Submit',
   SUGGESTION_SUBMIT_SUCCEED: 'Submit Succeed',
   SUGGESTION_SUBMIT_FAILED: 'Submit Failed',
+
+  // ar地图校准
+  MAP_AR_DATUM_LONGITUDE: 'Longitude',
+  MAP_AR_DATUM_LATITUDE: 'Latitude',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'Please enter current position',
+  MAP_AR_DATUM_AUTO_LOCATION: 'Auto location',
+  MAP_AR_DATUM_MAP_SELECT_POINT: 'Map select point',
+  MAP_AR_DATUM_SURE: 'Sure',
+  MAP_AR_DATUM_AUTO_LOCATIONING: 'Locationing',
+  MAP_AR_DATUM_POSITION: 'Datum position',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Auto location succeed',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Map select point succeed',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:
+    'Please place your mobile phone facing south',
+  MAP_AR_DATUM_SETTING: 'Setting',
+
+  // ar地图
+  COLLECT_SCENE_RENAME: 'Rename',
+  COLLECT_SCENE_RENAME_SUCCEED: 'Rename succeed',
+  COLLECT_SCENE_ADD_REMARK: 'Add remark',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
 }
 export { Profile }

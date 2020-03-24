@@ -13,7 +13,7 @@ import { ToolbarType } from '../../../../../../constants'
 async function action(type) {
   const _params = ToolbarModule.getParams()
   // let _data = MapSettingData.getData(type)
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const layout = utils.getLayout(type, orientation)
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
@@ -26,7 +26,7 @@ async function action(type) {
   //   mapXML,
   // })
   await setModuleData(type)
-  
+
   _params.setToolbarVisible(true, type, {
     containerType: ToolbarType.colorTable,
     column: layout.column,
@@ -35,8 +35,8 @@ async function action(type) {
   })
 }
 
-async function setModuleData (type) {
-  let mapXML = await SMap.mapToXml()
+async function setModuleData(type) {
+  const mapXML = await SMap.mapToXml()
   ToolbarModule.setData({
     type,
     getData: MapSettingData.getData,
@@ -48,12 +48,12 @@ async function setModuleData (type) {
 export default function(title) {
   return {
     key: title,
-    title: title,
+    title,
     action: type => action(type),
     size: 'large',
     getData: MapSettingData.getData,
     actions: MapSettingAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

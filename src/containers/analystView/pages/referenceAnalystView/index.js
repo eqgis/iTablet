@@ -1,5 +1,5 @@
-import RefrenceAnalystView from './ReferenceAnalystView'
 import { connect } from 'react-redux'
+import RefrenceAnalystView from './ReferenceAnalystView'
 import { getLayers, setSelection } from '../../../../models/layers'
 import { setAnalystParams } from '../../../../models/analyst'
 import { setBackAction } from '../../../../models/backActions'

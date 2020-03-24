@@ -4,7 +4,7 @@ import { getLanguage } from '../../../../language'
 // import { ARMap_Types } from '../../ARMapType'
 
 function getData(language) {
-  let data = [
+  const data = [
     {
       key: getLanguage(language).Analyst_Modules.BUFFER_ANALYSIS,
       title: getLanguage(language).Analyst_Modules.BUFFER_ANALYSIS,

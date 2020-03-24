@@ -18,8 +18,9 @@ const tab_attribute = require('./tab_attribute.png')
 const tab_attribute_selected = require('./tab_attribute_selected.png')
 const tab_setting = require('./tab_setting.png')
 const tab_setting_selected = require('./tab_setting_selected.png')
+
 export default {
-  //Tabs
+  // Tabs
   tab_home,
   tab_home_selected,
   tab_friend,
@@ -30,7 +31,7 @@ export default {
   tab_mine_selected,
   icon_home_photo,
 
-  //Maptool
+  // Maptool
   tab_map,
   tab_map_selected,
   tab_layer,

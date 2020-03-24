@@ -1,10 +1,10 @@
 import { createStackNavigator } from 'react-navigation'
 // eslint-disable-next-line
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
-//主页
+// 主页
 import MapLoad from './mapLoad'
 
-//我的
+// 我的
 import {
   Tabs,
   MyService,
@@ -45,9 +45,9 @@ import {
 } from './tabs'
 
 import GetBack from './register&getBack/GetBack'
-//地图二级设置菜单
+// 地图二级设置菜单
 import SecondMapSettings from './mapSetting/secondMapSettings'
-//地图功能页面
+// 地图功能页面
 import MTDataCollection from './mtDataCollection'
 import MTDataManagement from './mtDataManagement'
 import NewDSource from './newDSource'
@@ -119,6 +119,8 @@ import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
 import CollectSceneFormView from './arCollectSceneFormView'
+import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
+import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AIDetecSettingsView from './AIDetecSettingsView'
@@ -126,6 +128,7 @@ import CastModelOperateView from './arCastModelOperateView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
+import NavigationDataChangePage from './NavigationDataChangePage'
 import ChooseTaggingLayer from './ChooseTaggingLayer'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
@@ -391,8 +394,8 @@ export default function(appConfig) {
           header: null,
         },
       },
-      /******************************** Friend **********************/
-      //onechat
+      /** ****************************** Friend ********************* */
+      // onechat
       // Chat: {
       //   screen: Chat,
       //   navigationOptions: {
@@ -463,7 +466,7 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
-      /******************************** Mine **********************/
+      /** ****************************** Mine ********************* */
       Register: {
         screen: Register,
         navigationOptions: {
@@ -604,7 +607,7 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
-      /**************************** Home ***************************/
+      /** ************************** Home ************************** */
       AboutITablet: {
         screen: AboutITablet,
         navigationOptions: {
@@ -717,7 +720,7 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
-      /** 多媒体编辑 **/
+      /** 多媒体编辑 * */
       MediaEdit: {
         screen: MediaEdit,
         navigationOptions: {
@@ -725,7 +728,7 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
-      /** 相机界面 **/
+      /** 相机界面 * */
       Camera: {
         screen: Camera,
         navigationOptions: {
@@ -763,6 +766,20 @@ export default function(appConfig) {
       },
       CollectSceneFormView: {
         screen: CollectSceneFormView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      EnterDatumPoint: {
+        screen: EnterDatumPoint,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      CollectSceneFormSet: {
+        screen: CollectSceneFormSet,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,
@@ -810,7 +827,7 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
-      /**************************** Analyst ***************************/
+      /** ************************** Analyst ************************** */
       // AnalystTools: {
       //   screen: AnalystTools,
       //   navigationOptions: {
@@ -965,6 +982,12 @@ export default function(appConfig) {
       },
       NavigationView: {
         screen: NavigationView,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      NavigationDataChangePage: {
+        screen: NavigationDataChangePage,
         navigationOptions: {
           header: null,
         },

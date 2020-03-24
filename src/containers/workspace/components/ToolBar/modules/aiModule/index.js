@@ -10,7 +10,7 @@ import utils from './utils'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
+  const { orientation } = params.device
   const data = utils.getLayout(type, orientation)
   setModuleData(type, data)
   params.showFullMap && params.showFullMap(true)
@@ -22,9 +22,9 @@ export async function action(type) {
   })
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: AiData.getData,
     actions: AiActions,
   })
@@ -33,10 +33,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -48,6 +47,6 @@ export default function(type, title, customAction) {
     getData: AiData.getData,
     // actions: AnalysisAction,
     getLayout: utils.getLayout,
-    setModuleData: setModuleData,
+    setModuleData,
   }
 }

@@ -27,7 +27,7 @@ const analysis_traveling = require('./analysis_traveling_light.png')
 const analysis_measure = require('./analysis_measure_light.png')
 const analysis_thiessen = require('./analysis_thiessen_light.png')
 
-/** 在线分析图标 **/
+/** 在线分析图标 * */
 const analysis_online = require('./analysis_online_light.png')
 const analysis_online_aggregate = require('./analysis_online_aggregate_light.png')
 const analysis_online_density = require('./analysis_online_density_light.png')
@@ -41,7 +41,7 @@ const analysis_online_odline = require('./analysis_online_odline_light.png')
 const analysis_online_topology = require('./analysis_online_topology_light.png')
 const analysis_online_features = require('./analysis_online_features_light.png')
 
-/**路径｜商旅分析**/
+/** 路径｜商旅分析* */
 const analysis_stop = require('./analysis_stop_light.png')
 const analysis_barrier = require('./analysis_barrier_light.png')
 const analysis_startpoint = require('./analysis_startpoint_light.png')

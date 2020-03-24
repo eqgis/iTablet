@@ -2,11 +2,12 @@ import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { DatasetType, SMap, SLanguage } from 'imobile_for_reactnative'
+import { NativeModules } from 'react-native'
 import { getMapSettings } from '../containers/mapSetting/settingData'
 import { ModelUtils } from '../utils'
 import constants from '../containers/workspace/constants'
-import { NativeModules } from 'react-native'
-let AppUtils = NativeModules.AppUtils
+
+const { AppUtils } = NativeModules
 // Constants
 // --------------------------------------------------
 export const BUFFER_SETTING_SET = 'BUFFER_SETTING_SET'
@@ -82,7 +83,7 @@ export const setMapSetting = (cb = () => {}) => async dispatch => {
 
 export const setLanguage = (params, cb = () => {}) => async dispatch => {
   if (params === 'AUTO') {
-    let locale = await AppUtils.getLocale()
+    const locale = await AppUtils.getLocale()
     let language
     if (locale === 'zh-CN') {
       language = 'CN'
@@ -175,11 +176,11 @@ export const setMapScaleView = (params = {}) => async dispatch => {
 }
 export const getMapSetting = (params = {}, cb = () => {}) => async dispatch => {
   try {
-    let isAntialias = await SMap.isAntialias()
-    let isOverlapDisplayed = await SMap.isOverlapDisplayed()
-    let isVisibleScalesEnabled = await SMap.isVisibleScalesEnabled()
+    const isAntialias = await SMap.isAntialias()
+    const isOverlapDisplayed = await SMap.isOverlapDisplayed()
+    const isVisibleScalesEnabled = await SMap.isVisibleScalesEnabled()
 
-    let newData = getMapSettings()
+    const newData = getMapSettings()
     newData[0].data[0].value = isAntialias
     newData[0].data[1].value = isOverlapDisplayed
     newData[1].data[0].value = isVisibleScalesEnabled
@@ -314,22 +315,18 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SETTING_LANGUAGE}`]: (state, { payload }) => {
-      return state
+    [`${SETTING_LANGUAGE}`]: (state, { payload }) =>
+      state
         .setIn(['language'], fromJS(payload))
-        .setIn(['autoLanguage'], fromJS(false))
-    },
-    [`${SETTING_LANGUAGE_AUTO}`]: (state, { payload }) => {
-      return state
+        .setIn(['autoLanguage'], fromJS(false)),
+    [`${SETTING_LANGUAGE_AUTO}`]: (state, { payload }) =>
+      state
         .setIn(['language'], fromJS(payload))
-        .setIn(['autoLanguage'], fromJS(true))
-    },
-    [`${SETTING_DEVICE}`]: (state, { payload }) => {
-      return state.setIn(['peripheralDevice'], fromJS(payload))
-    },
-    [`${BUFFER_SETTING_SET}`]: (state, { payload }) => {
-      return state.setIn(['buffer'], fromJS(payload))
-    },
+        .setIn(['autoLanguage'], fromJS(true)),
+    [`${SETTING_DEVICE}`]: (state, { payload }) =>
+      state.setIn(['peripheralDevice'], fromJS(payload)),
+    [`${BUFFER_SETTING_SET}`]: (state, { payload }) =>
+      state.setIn(['buffer'], fromJS(payload)),
     [`${OVERLAY_SETTING_SET}`]: (state, { payload }) => {
       let data = state.toJS().overlay
       if (payload) {
@@ -531,16 +528,15 @@ export default handleActions(
       return state.setIn(['navigationhistory'], fromJS(data))
     },
     [`${AGREE_TO_PROTOCOL}`]: (state, { payload }) => {
-      let data = payload || false
+      const data = payload || false
       return state.setIn(['isAgreeToProtocol'], fromJS(data))
     },
-    [REHYDRATE]: (state, { payload }) => {
+    [REHYDRATE]: (state, { payload }) =>
       // if (payload && payload.setting) {
       //   payload.setting.language = payload.setting.language === undefined ? 'CN' : payload.setting.language
       // }
       // return payload && payload.setting ? fromJS(payload.setting) : state
-      return ModelUtils.checkModel(state, payload && payload.setting)
-    },
+      ModelUtils.checkModel(state, payload && payload.setting),
   },
   initialState,
 )

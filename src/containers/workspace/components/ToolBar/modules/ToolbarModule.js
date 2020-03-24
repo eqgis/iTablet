@@ -1,7 +1,7 @@
-import { ConstToolType } from '../../../../../constants/index'
+import SMap from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ConstToolType } from '../../../../../constants'
 import ToolbarBtnType from '../ToolbarBtnType'
 import { getLanguage } from '../../../../../language'
-import SMap from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   startModule,
   styleModule,
@@ -17,8 +17,9 @@ import {
   legendModule,
   aiModule,
   mapSettingModule,
-  mapModule,
-} from '../modules'
+  markModule,
+  mark3DModule,
+} from '.'
 
 let _params = {} // 外部数据和方法 Toolbar props
 let _data = {} // 临时数据
@@ -119,8 +120,7 @@ async function getToolBarData(type, params = {}) {
     toolBarData = await tool3DModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
     toolBarData = legendModule().getData(type, params)
-  }
-  else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
+  } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
     toolBarData = getPlotAnimationData(type)
   } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
     toolBarData = await aiModule().getData(type, params)
@@ -129,16 +129,17 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.MAP_COLOR_MODE
   ) {
     toolBarData = mapSettingModule().getData(type)
+  } else if (type === ConstToolType.MAP_MARKS) {
+    tabBarData = markModule().getData(type, params)
+  } else if (
+    type === ConstToolType.MAP3D_MARK ||
+    type === ConstToolType.MAP3D_SYMBOL_POINT ||
+    type === ConstToolType.MAP3D_SYMBOL_TEXT ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE
+  ) {
+    tabBarData = mark3DModule().getData(type, params)
   }
-  // else {
-  //   toolBarData = mapModule().getData(type)
-  //
-  //   setData({
-  //     type: type,
-  //     getData: mapModule().getData,
-  //     actions: mapModule().actions,
-  //   })
-  // }
   return toolBarData
 }
 
@@ -168,7 +169,7 @@ async function setToolBarData(type, params = {}) {
   } else if (
     typeof type === 'string' &&
     (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
-    type === ConstToolType.STYLE_TRANSFER)
+      type === ConstToolType.STYLE_TRANSFER)
   ) {
     toolBarData = toolModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
@@ -204,8 +205,7 @@ async function setToolBarData(type, params = {}) {
     toolBarData = await tool3DModule()
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
     toolBarData = legendModule().getData(type, params)
-  }
-  else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
+  } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
     toolBarData = getPlotAnimationData(type)
   } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
     toolBarData = await aiModule()
@@ -264,6 +264,7 @@ function getMenuDialogData(type, ...others) {
       break
     case ConstToolType.LEGEND:
     case ConstToolType.LEGEND_NOT_VISIBLE:
+    case ConstToolType.LEGEND_POSITION:
       data = legendModule().getMenuData(type)
       break
     case ConstToolType.MAP_COLOR_MODE:
@@ -277,8 +278,8 @@ function getMenuDialogData(type, ...others) {
 }
 
 function getPlotAnimationData(type) {
-  let data = [],
-    buttons = []
+  let data = []
+  let buttons = []
   // if (type.indexOf('MAP3D_') === -1) return { data, buttons }
   switch (type) {
     case ConstToolType.MAP_PLOTTING_ANIMATION_ITEM:
@@ -286,7 +287,7 @@ function getPlotAnimationData(type) {
         {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-          //'开始飞行',
+          // '开始飞行',
           action: () => {
             SMap.animationPlay()
           },
@@ -297,7 +298,7 @@ function getPlotAnimationData(type) {
         {
           key: 'stop',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
-          //'暂停',
+          // '暂停',
           action: () => {
             SMap.animationPause()
           },

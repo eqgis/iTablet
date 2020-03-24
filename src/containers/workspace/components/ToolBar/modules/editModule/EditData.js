@@ -10,10 +10,11 @@ import EditAction from './EditAction'
  * @returns {{data: Array, buttons: Array}}
  */
 function getData(type) {
-  let data = [],
-    buttons = []
-  if (typeof type === 'string' && type.indexOf('MAP_EDIT_') === -1)
+  let data = []
+  let buttons = []
+  if (typeof type === 'string' && type.indexOf('MAP_EDIT_') === -1) {
     return { data, buttons }
+  }
   switch (type) {
     case ConstToolType.MAP_EDIT_POINT:
       data = [
@@ -21,7 +22,7 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          //constants.DELETE,
+          // constants.DELETE,
           action: EditAction.remove,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -29,7 +30,7 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          //constants.UNDO,
+          // constants.UNDO,
           action: () => EditAction.undo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -37,7 +38,7 @@ function getData(type) {
         {
           key: 'redo',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          //'重做',
+          // '重做',
           action: () => EditAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -71,7 +72,7 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          //constants.DELETE,
+          // constants.DELETE,
           action: EditAction.remove,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -80,7 +81,7 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          //constants.UNDO,
+          // constants.UNDO,
           action: EditAction.undo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -89,7 +90,7 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          //cconstants.REDO,
+          // cconstants.REDO,
           action: EditAction.redo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -98,7 +99,7 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
-          //constants.EDIT_NODE,
+          // constants.EDIT_NODE,
           action: EditAction.editNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
@@ -106,7 +107,7 @@ function getData(type) {
         {
           key: constants.DELETE_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
-          //constants.DELETE_NODE,
+          // constants.DELETE_NODE,
           action: EditAction.deleteNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
@@ -114,7 +115,7 @@ function getData(type) {
         {
           key: constants.ADD_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
-          //constants.ADD_NODE,
+          // constants.ADD_NODE,
           action: EditAction.addNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
@@ -133,7 +134,7 @@ function getData(type) {
         {
           key: constants.MOVE,
           title: getLanguage(global.language).Map_Main_Menu.MOVE,
-          //constants.MOVE,
+          // constants.MOVE,
           action: EditAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
@@ -141,7 +142,7 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          //constants.DELETE,
+          // constants.DELETE,
           size: 'large',
           action: EditAction.remove,
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -149,7 +150,7 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          //constants.UNDO,
+          // constants.UNDO,
           size: 'large',
           action: EditAction.undo,
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -157,7 +158,7 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          //constants.REDO,
+          // constants.REDO,
           size: 'large',
           action: EditAction.redo,
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -165,7 +166,7 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
-          //constants.EDIT_NODE,
+          // constants.EDIT_NODE,
           size: 'large',
           action: EditAction.editNode,
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
@@ -181,7 +182,7 @@ function getData(type) {
         {
           key: constants.ADD_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
-          //constants.ADD_NODE,
+          // constants.ADD_NODE,
           size: 'large',
           action: EditAction.addNode,
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
@@ -197,7 +198,7 @@ function getData(type) {
         {
           key: constants.SPLIT_REGION,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_SPLIT,
-          //constants.SPLIT_REGION,
+          // constants.SPLIT_REGION,
           size: 'large',
           action: EditAction.splitRegion,
           image: require('../../../../../../assets/mapTools/icon_cut_black.png'),
@@ -213,7 +214,7 @@ function getData(type) {
         {
           key: constants.DRAWREGION_ERASE_REGION,
           title: getLanguage(global.language).Map_Main_Menu.FREE_DRAW_ERASE,
-          //constants.DRAWREGION_ERASE_REGION,
+          // constants.DRAWREGION_ERASE_REGION,
           size: 'large',
           action: EditAction.drawRegionEraseRegion,
           image: require('../../../../../../assets/mapTools/icon_drawErasure_black.png'),
@@ -221,7 +222,7 @@ function getData(type) {
         {
           key: constants.DRAWREGION_HOLLOW_REGION,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DRAW_HOLLOW,
-          //constants.DRAWREGION_HOLLOW_REGION,
+          // constants.DRAWREGION_HOLLOW_REGION,
           size: 'large',
           action: EditAction.drawRegionHollowRegion,
           image: require('../../../../../../assets/mapTools/icon_drawingisland_black.png'),
@@ -229,7 +230,7 @@ function getData(type) {
         {
           key: constants.FILL_HOLLOW_REGION,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_FILL_HOLLOW,
-          //constants.FILL_HOLLOW_REGION,
+          // constants.FILL_HOLLOW_REGION,
           size: 'large',
           action: EditAction.fillHollowRegion,
           image: require('../../../../../../assets/mapTools/icon_fillingisland_black.png'),
@@ -237,7 +238,7 @@ function getData(type) {
         {
           key: constants.PATCH_HOLLOW_REGION,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_PATCH_HOLLOW,
-          //constants.PATCH_HOLLOW_REGION,
+          // constants.PATCH_HOLLOW_REGION,
           size: 'large',
           action: EditAction.patchHollowRegion,
           image: require('../../../../../../assets/mapTools/icon_addisland_black.png'),
@@ -256,7 +257,7 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
-          //constants.EDIT_NODE,
+          // constants.EDIT_NODE,
           size: 'large',
           action: EditAction.editNode,
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
@@ -264,7 +265,7 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          //constants.DELETE,
+          // constants.DELETE,
           action: EditAction.remove,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -272,7 +273,7 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          //constants.UNDO,
+          // constants.UNDO,
           size: 'large',
           action: EditAction.undo,
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -280,7 +281,7 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          //constants.REDO,
+          // constants.REDO,
           size: 'large',
           action: EditAction.redo,
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),

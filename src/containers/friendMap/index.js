@@ -1,5 +1,5 @@
-import FriendMap from './FriendMap'
 import { connect } from 'react-redux'
+import FriendMap from './FriendMap'
 import { setUser } from '../../models/user'
 
 const mapStateToProps = state => ({

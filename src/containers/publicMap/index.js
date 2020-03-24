@@ -1,5 +1,5 @@
-import PublicMap from './PublicMap'
 import { connect } from 'react-redux'
+import PublicMap from './PublicMap'
 import { setUser } from '../../models/user'
 
 const mapStateToProps = state => ({

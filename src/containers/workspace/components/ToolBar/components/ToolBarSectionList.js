@@ -330,7 +330,7 @@ export default class ToolBarSectionList extends React.Component {
                 {this.state.allSelected
                   ? getLanguage(global.language).Map_Main_Menu.THEME_ALL_CANCEL
                   : getLanguage(global.language).Map_Main_Menu
-                    .THEME_ALL_SELECTED}
+                      .THEME_ALL_SELECTED}
                 {/* 全部选中 */}
               </Text>
             </TouchableOpacity>
@@ -340,30 +340,32 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.addDatasource && (
             <TouchableOpacity
-            style={
-              (styles.selectImgView,
-              {
-                flexDirection: 'row',
-                alignItems: 'center',
-                position: 'absolute',
-                right: scaleSize(30),
-                height: scaleSize(80),
-              })
-            }
-            onPress={() =>  NavigationService.navigate('MyDatasource', {
-              title: getLanguage(global.language).Profile.DATA,
-              exitCallback: async () => {
-                let data = await section.getDatasource()
-                this.setState({ sections: data.data})
-              },
-            })}
-          >
-            <Image
-              source={require('../../../../../assets/mapTools/icon_add_white.png')}
-              resizeMode={'contain'}
-              style={styles.selectImg}
-            />
-          </TouchableOpacity>
+              style={
+                (styles.selectImgView,
+                {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  right: scaleSize(30),
+                  height: scaleSize(80),
+                })
+              }
+              onPress={() =>
+                NavigationService.navigate('MyDatasource', {
+                  title: getLanguage(global.language).Profile.DATA,
+                  exitCallback: async () => {
+                    let data = await section.getDatasource()
+                    this.setState({ sections: data.data })
+                  },
+                })
+              }
+            >
+              <Image
+                source={require('../../../../../assets/mapTools/icon_add_white.png')}
+                resizeMode={'contain'}
+                style={styles.selectImg}
+              />
+            </TouchableOpacity>
           )}
         </View>
       </TouchableHighlight>

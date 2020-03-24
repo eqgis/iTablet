@@ -7,9 +7,10 @@ import StyleAction from './StyleAction'
 const line = (param, orientation = 'PORTRAIT') => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    //'符号线',
+    // '符号线',
     action: () => {
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 4
@@ -35,9 +36,9 @@ const line = (param, orientation = 'PORTRAIT') => [
         })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    //'符号线',
+    // '符号线',
     selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    //'符号线',
+    // '符号线',
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
@@ -56,7 +57,7 @@ const line = (param, orientation = 'PORTRAIT') => [
           selectKey: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
         })
     },
-    //线宽
+    // 线宽
     selectName: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
   },
@@ -64,7 +65,8 @@ const line = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -97,7 +99,8 @@ const point = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 4
@@ -149,7 +152,8 @@ const point = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -221,10 +225,11 @@ const point = (param, orientation = 'PORTRAIT') => [
 const region = (param, orientation = 'PORTRAIT') => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    //'面符号',
+    // '面符号',
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 4
@@ -248,13 +253,14 @@ const region = (param, orientation = 'PORTRAIT') => [
         })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    //'面符号',
+    // '面符号',
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -312,7 +318,8 @@ const region = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -462,7 +469,8 @@ const text = (param, orientation = 'PORTRAIT') => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[2]
         column = 4
@@ -471,23 +479,19 @@ const text = (param, orientation = 'PORTRAIT') => [
         column = 8
       }
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.TEXTFONT,
-          {
-            isFullScreen: false,
-            column,
-            height,
-            buttons: [
-              ToolbarBtnType.CANCEL,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
-          },
-        )
+        GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTFONT, {
+          isFullScreen: false,
+          column,
+          height,
+          buttons: [
+            ToolbarBtnType.CANCEL,
+            ToolbarBtnType.MENU,
+            ToolbarBtnType.MENU_FLEX,
+            ToolbarBtnType.TOOLBAR_COMMIT,
+          ],
+          selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+          selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+        })
     },
   },
   {
@@ -533,7 +537,8 @@ const text = (param, orientation = 'PORTRAIT') => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height, column
+      let height
+      let column
       if (orientation === 'PORTRAIT') {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
@@ -542,23 +547,19 @@ const text = (param, orientation = 'PORTRAIT') => [
         column = 12
       }
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.TEXTCOLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            column,
-            isFullScreen: false,
-            height,
-            buttons: [
-              ToolbarBtnType.CANCEL,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-          },
-        )
+        GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTCOLOR_SET, {
+          containerType: ToolbarType.colorTable,
+          column,
+          isFullScreen: false,
+          height,
+          buttons: [
+            ToolbarBtnType.CANCEL,
+            ToolbarBtnType.MENU,
+            ToolbarBtnType.MENU_FLEX,
+            ToolbarBtnType.TOOLBAR_COMMIT,
+          ],
+          selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+        })
     },
   },
 ]

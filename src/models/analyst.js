@@ -10,16 +10,15 @@ export const BACK_ACTION_REMOVE = 'BACK_ACTION_REMOVE'
 
 // Actions
 // --------------------------------------------------
-export const setAnalystParams = (params = {}) => async dispatch => {
-  return dispatch({
+export const setAnalystParams = (params = {}) => async dispatch =>
+  dispatch({
     type: SET_ANALYST_PARAMS,
     payload: params,
   })
-}
 
 export const removeBackAction = (params = {}) => async (dispatch, getState) => {
   if (!params.key) {
-    let nav = getState().nav.toJS()
+    const nav = getState().nav.toJS()
     let current = nav.routes[nav.index]
     while (current.routes) {
       current = current.routes[current.index]
@@ -39,9 +38,8 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SET_ANALYST_PARAMS}`]: (state, { payload }) => {
-      return state.setIn(['params'], fromJS(payload))
-    },
+    [`${SET_ANALYST_PARAMS}`]: (state, { payload }) =>
+      state.setIn(['params'], fromJS(payload)),
   },
   initialState,
 )

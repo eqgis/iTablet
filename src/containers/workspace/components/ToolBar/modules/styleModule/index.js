@@ -30,7 +30,7 @@ function action(type) {
         column: 4,
         height: ConstToolType.THEME_HEIGHT[3],
       })
-    } else if(params.currentLayer.type === 7) {
+    } else if (params.currentLayer.type === 7) {
       params.showFullMap && params.showFullMap(true)
       params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
         containerType: ToolbarType.list,
@@ -53,9 +53,9 @@ function action(type) {
   }
 }
 
-function setModuleData (type) {
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: StyleData.getData,
     actions: StyleAction,
   })
@@ -64,10 +64,9 @@ function setModuleData (type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
-        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -79,7 +78,7 @@ export default function(type, title, customAction) {
     getData: StyleData.getData,
     getMenuData: StyleData.getMenuData,
     actions: StyleAction,
-    setModuleData: setModuleData,
+    setModuleData,
     getLayout: utils.getLayout,
   }
 }

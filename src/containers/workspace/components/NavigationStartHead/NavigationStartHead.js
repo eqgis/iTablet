@@ -71,6 +71,7 @@ export default class NavigationStartHead extends React.Component {
     GLOBAL.TouchType = isStart
       ? TouchType.NAVIGATION_TOUCH_BEGIN
       : TouchType.NAVIGATION_TOUCH_END
+    GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
     GLOBAL.MAPSELECTPOINT.setVisible(true)
     GLOBAL.MAPSELECTPOINTBUTTON.setVisible(
       true,

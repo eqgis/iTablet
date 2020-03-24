@@ -20,7 +20,7 @@ async function getLayerAttribute(
   params,
   type = 'loadMore',
 ) {
-  let data = await SMap.getLayerAttribute(path, page, size, params)
+  const data = await SMap.getLayerAttribute(path, page, size, params)
 
   return dealData(attributes, data, page, type)
 }
@@ -44,7 +44,7 @@ async function searchLayerAttribute(
   type = 'loadMore',
 ) {
   // let data = await SMap.getLayerAttribute(path, page, size)
-  let data = await SMap.searchLayerAttribute(path, params, page, size)
+  const data = await SMap.searchLayerAttribute(path, params, page, size)
 
   return dealData(attributes, data, page, type)
 }
@@ -67,7 +67,7 @@ async function searchSelectionAttribute(
   size,
   type = 'loadMore',
 ) {
-  let data = await SMap.searchSelectionAttribute(path, searchKey, page, size)
+  const data = await SMap.searchSelectionAttribute(path, searchKey, page, size)
 
   return dealData(attributes, data, page, type)
 }
@@ -79,14 +79,14 @@ async function getSelectionAttributeByLayer(
   size,
   type = 'loadMore',
 ) {
-  let data = await SMap.getSelectionAttributeByLayer(path, page, size)
+  const data = await SMap.getSelectionAttributeByLayer(path, page, size)
 
   return dealData(attributes, data, page, type)
 }
 
 function dealData(attributes, result = {}, page, type) {
-  let tableHead = []
-  let resLength = (result.data && result.data.length) || 0
+  const tableHead = []
+  const resLength = (result.data && result.data.length) || 0
   if (resLength > 0) {
     result.data[0].forEach(item => {
       item.selected = false
@@ -240,9 +240,9 @@ function isBaseLayer(name) {
 }
 
 function getBaseLayers(layers = []) {
-  let arr = []
+  const arr = []
   for (let i = 0; i < layers.length; i++) {
-    let name = layers[i].name
+    const { name } = layers[i]
     for (let i = 0, n = baseMaps.length; i < n; i++) {
       if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
         arr.push(layers[i])
@@ -275,7 +275,7 @@ function setBaseMap(baseMap) {
 }
 async function addBaseMap(
   layers = [],
-  data = ConstOnline['Google'],
+  data = ConstOnline.Google,
   index,
   visible = true,
 ) {

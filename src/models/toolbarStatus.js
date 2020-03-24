@@ -24,12 +24,11 @@ const initialState = fromJS({
 export default handleActions(
   {
     [`${TOOLBAR_STATUS}`]: (state, { payload }) => {
-      let oldState = state.toJS()
+      const oldState = state.toJS()
       if (payload === null) {
         return initialState
-      } else {
-        return fromJS(Object.assign(oldState, payload))
       }
+      return fromJS(Object.assign(oldState, payload))
     },
   },
   initialState,

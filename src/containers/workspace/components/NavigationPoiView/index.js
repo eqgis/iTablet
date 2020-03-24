@@ -1,5 +1,5 @@
-import NavigationPoiView from './NavigationPoiView'
 import { connect } from 'react-redux'
+import NavigationPoiView from './NavigationPoiView'
 import {
   setMapNavigation,
   setNavigationPoiView,

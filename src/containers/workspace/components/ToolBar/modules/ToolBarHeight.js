@@ -9,8 +9,9 @@ import * as modules from './index'
  */
 function getToolbarHeight(type, currentHeight) {
   const params = ToolbarModule.getParams()
-  const orientation = params.device.orientation
-  let height = 0, column
+  const { orientation } = params.device
+  let height = 0
+  let column
   const keys = Object.keys(modules)
   let i = 0
   if (type === undefined) {
@@ -18,10 +19,10 @@ function getToolbarHeight(type, currentHeight) {
     return { height, column }
   }
   while (keys[i] && keys[i] !== 'default' && modules[keys[i]]) {
-    let moduleFunc = modules[keys[i]]
-    let module = moduleFunc()
+    const moduleFunc = modules[keys[i]]
+    const module = moduleFunc()
     if (module.getLayout) {
-      let layout = module.getLayout(type, orientation, currentHeight)
+      const layout = module.getLayout(type, orientation, currentHeight)
       if (layout.height !== undefined && layout.column !== undefined) {
         height = layout.height
         column = layout.column
@@ -30,7 +31,7 @@ function getToolbarHeight(type, currentHeight) {
     }
     i++
   }
-  
+
   return { height, column }
 }
 

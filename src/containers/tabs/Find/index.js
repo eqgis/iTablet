@@ -1,5 +1,5 @@
-import Find from './Find'
 import { connect } from 'react-redux'
+import Find from './Find'
 import { setUser } from '../../../models/user'
 
 const mapStateToProps = state => ({

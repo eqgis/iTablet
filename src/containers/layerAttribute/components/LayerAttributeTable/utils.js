@@ -25,10 +25,9 @@ function getInt16(value, defaultValue) {
   if (value === '' || value === undefined || isNaN(value)) {
     if (defaultValue === '' || defaultValue === undefined) {
       return ''
-    } else {
-      _value =
-        defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
     }
+    _value =
+      defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
   } else {
     _value = parseInt(value)
   }
@@ -45,10 +44,9 @@ function getInt32(value, defaultValue) {
   if (value === '' || value === undefined || isNaN(value)) {
     if (defaultValue === '' || defaultValue === undefined) {
       return ''
-    } else {
-      _value =
-        defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
     }
+    _value =
+      defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
   } else {
     _value = parseInt(value)
   }
@@ -65,10 +63,9 @@ function getInt64(value, defaultValue) {
   if (value === '' || value === undefined || isNaN(value)) {
     if (defaultValue === '' || defaultValue === undefined) {
       return ''
-    } else {
-      _value =
-        defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
     }
+    _value =
+      defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
   } else {
     _value = parseInt(value)
   }
@@ -85,10 +82,9 @@ function getSingle(value, defaultValue) {
   if (value === '' || value === undefined || isNaN(value)) {
     if (defaultValue === '' || defaultValue === undefined) {
       return ''
-    } else {
-      _value =
-        defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
     }
+    _value =
+      defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
   } else {
     _value = parseFloat(value)
   }
@@ -105,10 +101,9 @@ function getDouble(value, defaultValue) {
   if (value === '' || value === undefined || isNaN(value)) {
     if (defaultValue === '' || defaultValue === undefined) {
       return ''
-    } else {
-      _value =
-        defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
     }
+    _value =
+      defaultValue !== undefined && defaultValue !== '' ? defaultValue : 0
   } else {
     _value = parseFloat(value)
   }
@@ -162,7 +157,7 @@ function getValueWithDefault(value, defaultValue, type) {
 }
 
 function getValue(value, type) {
-  let _value = getValueWithDefault(value, undefined, type)
+  const _value = getValueWithDefault(value, undefined, type)
   return _value
 }
 

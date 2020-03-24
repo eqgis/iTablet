@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
+
 const itemWidth = '70%'
 const itemHeight = 60
 const fontSize = 23
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   verifyCodeLTextStyle: {
     flex: 1,
-    fontSize: fontSize,
+    fontSize,
     color: color.fontColorBlack,
     height: scaleSize(itemHeight),
   },

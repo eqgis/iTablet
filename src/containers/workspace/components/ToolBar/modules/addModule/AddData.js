@@ -15,7 +15,7 @@ import ToolbarModule from '../ToolbarModule'
  */
 async function getUDBsAndMaps() {
   let data = [],
-    buttons = [ToolbarBtnType.THEME_CANCEL]
+    buttons = [ToolbarBtnType.CANCEL]
   let userUDBPath, userUDBs
   //过滤掉标注和标绘匹配正则
   let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/

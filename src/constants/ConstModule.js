@@ -11,17 +11,6 @@ import Orientation from 'react-native-orientation'
 import { SAIDetectView } from 'imobile_for_reactnative'
 import Toast from '../utils/Toast'
 
-const MAP_MODULE = {
-  MAP_EDIT: '地图制图',
-  MAP_3D: '三维场景',
-  MAP_THEME: '专题制图',
-  MAP_COLLECTION: '外业采集',
-  MAP_PLOTTING: '应急标绘',
-  MAP_ANALYST: '数据分析',
-  MAP_AR: 'AR地图',
-  MAP_NAVIGATION: '导航地图',
-}
-
 function getHeaderTitle(type) {
   if (!type) return ''
   switch (type) {
@@ -44,7 +33,7 @@ function getHeaderTitle(type) {
   }
 }
 
-export { MAP_MODULE, getHeaderTitle }
+export { getHeaderTitle }
 
 function mapEdit(language) {
   return {

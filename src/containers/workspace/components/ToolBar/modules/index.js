@@ -1,5 +1,3 @@
-import ToolbarModule from './ToolbarModule'
-
 import startModule from './startModule'
 import fly3DModule from './fly3DModule'
 import addModule from './addModule'
@@ -16,8 +14,9 @@ import navigationModule from './navigationModule'
 import legendModule from './legendModule'
 import aiModule from './aiModule'
 import mapSettingModule from './mapSettingModule'
+import mapModule from './mapModule'
+
 export {
-  ToolbarModule,
   startModule,
   fly3DModule,
   addModule,
@@ -34,4 +33,5 @@ export {
   legendModule,
   aiModule,
   mapSettingModule,
+  mapModule,
 }

@@ -1,5 +1,9 @@
+/**
+ * 图例
+ */
 import LegendData from './LegendData'
 import LegendAction from './LegendAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 
@@ -29,18 +33,21 @@ async function action(type) {
       legendPosition: 'topLeft',
     }
   }
+  const orientation = _params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   _params.setMapLegend(mapLegend)
   _params.setToolbarVisible(true, ConstToolType.LEGEND, {
     containerType: ToolbarType.colorTable,
-    column: _params.device.orientation === 'LANDSCAPE' ? 16 : 8,
+    column: layout.column,
     isFullScreen: false,
-    height:
-      _params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[2]
-        : ConstToolType.THEME_HEIGHT[3],
+    height: layout.height,
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
+}
+
+function setModuleData (type) {
   ToolbarModule.setData({
     type: type,
     getData: LegendData.getData,
@@ -67,5 +74,7 @@ export default function(type, title, customAction) {
     getData: LegendData.getData,
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

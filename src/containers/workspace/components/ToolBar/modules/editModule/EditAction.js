@@ -18,10 +18,12 @@ function commit(type) {
         SMap.setAction(Action.PAN)
       },
     })
-  } else if (
-    type !== ConstToolType.MAP_TOOL_TAGGING &&
-    type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
-  ) {
+  } else
+  //   if (
+  //   type !== ConstToolType.MAP_TOOL_TAGGING &&
+  //   type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
+  // )
+    {
     currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
     // 编辑完成关闭Toolbar
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态

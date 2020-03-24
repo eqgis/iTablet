@@ -1,15 +1,17 @@
 import PlotData from './PlotData'
 import PlotAction from './PlotAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { SMap, Action } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language/index'
 
 export async function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const orientation = params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   switch (type) {
     case ConstToolType.PLOTTING:
       if (!GLOBAL.isInitSymbolPlotsEnd) {
@@ -19,8 +21,9 @@ export async function action(type) {
       params.showFullMap && params.showFullMap(true)
       params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
         isFullScreen: true,
-        column: data.column,
-        height: data.height,
+        containerType: ToolbarType.tabs,
+        column: layout.column,
+        height: layout.height,
       })
       break
     case ConstToolType.PLOTTING_ANIMATION:
@@ -32,6 +35,9 @@ export async function action(type) {
       })
       break
   }
+}
+
+function setModuleData (type) {
   ToolbarModule.setData({
     type: type,
     getData: PlotData.getData,
@@ -62,5 +68,7 @@ export default function(type, title, customAction) {
     image: image,
     getData: PlotData.getData,
     actions: PlotAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

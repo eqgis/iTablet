@@ -1002,7 +1002,7 @@ async function listAction(type, params = {}) {
               : ConstToolType.THEME_HEIGHT[3],
           buttons: listSelectable
             ? [
-              //ToolbarBtnType.THEME_CANCEL,
+              //ToolbarBtnType.CANCEL,
               ToolbarBtnType.TOOLBAR_BACK,
               ToolbarBtnType.TOOLBAR_COMMIT,
             ]

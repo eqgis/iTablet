@@ -17,6 +17,7 @@ import { SMap, SScene, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolBarHeight from '../ToolBarHeight'
+import utils from './utils'
 
 /** 切换工作空间 **/
 function openWorkspace(cb) {
@@ -1120,7 +1121,8 @@ async function getSceneData() {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
   let type = ConstToolType.MAP3D_WORKSPACE_LIST
-  let { height, column } = ToolBarHeight.getToolbarHeight(type)
+  const orientation = params.device.orientation
+  let { height, column } = utils.getLayout(type, orientation)
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     containerType: ToolbarType.list,
     isFullScreen: true,

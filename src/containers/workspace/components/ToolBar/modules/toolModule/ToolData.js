@@ -393,6 +393,8 @@ function getData(type, params) {
       ]
       break
     case ConstToolType.MAP_TOOL_TAGGING_SELECT:
+    case ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE:
+    case ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE:
       buttons = [ToolbarBtnType.CANCEL]
       break
     case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:

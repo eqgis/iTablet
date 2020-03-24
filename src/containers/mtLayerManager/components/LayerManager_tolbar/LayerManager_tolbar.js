@@ -47,7 +47,7 @@ import { screen, Toast, scaleSize, setSpText } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
-import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
+import ToolbarModule from '../../../workspace/components/ToolBar/modules'
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
 import { MultiPicker } from '../../../../components'
 

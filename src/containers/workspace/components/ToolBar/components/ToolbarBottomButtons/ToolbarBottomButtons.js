@@ -62,14 +62,14 @@ export default class ToolbarBottomButtons extends React.Component {
 
   /******************************** 新功能分割线 ********************************/
   /** 提交 **/
-  commit = () => {
+  commit = async () => {
     let isFinished = false
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.commit
     ) {
       // 返回false表示没有找到对应type的方法，返回undefined表示没有返回值，不作为判断
-      isFinished = ToolbarModule.getData().actions.commit(this.props.type)
+      isFinished = await ToolbarModule.getData().actions.commit(this.props.type)
     }
     if (isFinished === false) {
       this.props.close && this.props.close(this.props.type)
@@ -78,13 +78,13 @@ export default class ToolbarBottomButtons extends React.Component {
   }
 
   /** 关闭 **/
-  close = () => {
+  close = async () => {
     let isFinished = false
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.close
     ) {
-      isFinished = ToolbarModule.getData().actions.close(this.props.type)
+      isFinished = await ToolbarModule.getData().actions.close(this.props.type)
     }
     if (isFinished === false) {
       this.props.close && this.props.close(this.props.type)
@@ -178,7 +178,6 @@ export default class ToolbarBottomButtons extends React.Component {
           action = action || this.showMenuBox
           break
         case ToolbarBtnType.CANCEL:
-        case ToolbarBtnType.THEME_CANCEL: // TODO 待删除
           image =
             image ||
             require('../../../../../../assets/mapEdit/icon_function_cancel.png')

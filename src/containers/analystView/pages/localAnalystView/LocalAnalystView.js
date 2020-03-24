@@ -12,7 +12,7 @@ import { Toast, AnalystTools, scaleSize } from '../../../../utils'
 import { FileTools } from '../../../../native'
 // import { Analyst_Types } from '../../AnalystType'
 import NavigationService from '../../../NavigationService'
-import { ToolbarModule } from '../../../workspace/components/ToolBar/modules'
+import ToolbarModule from '../../../workspace/components/ToolBar/modules'
 // import TabNavigationService from '../../../TabNavigationService'
 import {
   SMap,

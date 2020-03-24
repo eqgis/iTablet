@@ -1,13 +1,18 @@
+/**
+ * 飞行轨迹
+ */
 import Fly3DData from './Fly3DData'
 import Fly3DAction from './Fly3DAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { SScene } from 'imobile_for_reactnative'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const data = ToolBarHeight.getToolbarHeight(type)
+  const orientation = params.device.orientation
+  const data = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   SScene.checkoutListener('startMeasure')
   params.setToolbarVisible(true, type, {
@@ -15,6 +20,9 @@ function action(type) {
     column: data.column,
     height: data.height,
   })
+}
+
+function setModuleData (type) {
   ToolbarModule.setData({
     type: type,
     getData: Fly3DData.getData,
@@ -39,5 +47,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png'),
     getData: Fly3DData.getData,
     actions: Fly3DAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

@@ -24,7 +24,6 @@ const EDIT = 'EDIT'
 export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language'
 import {
-  ToolbarModule,
   startModule,
   addModule,
   styleModule,
@@ -291,7 +290,6 @@ export default class FunctionToolbar extends React.Component {
           let styleAction = !isLicenseNotValid
           if (type === constants.MAP_THEME && styleAction) {
             styleAction = () => {
-              ToolbarModule.getParams()
               let currentLayer = this.props.currentLayer
               if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
                 styleModule().action(ConstToolType.MAP_STYLE)
@@ -390,7 +388,8 @@ export default class FunctionToolbar extends React.Component {
         case 'editModule':
           data.push(
             editModule(
-              item.type,
+              // item.type,
+              ConstToolType.MAP_EDIT_DEFAULT,
               getLanguage(this.props.language).Map_Main_Menu.EDIT,
               !isLicenseNotValid,
             ),

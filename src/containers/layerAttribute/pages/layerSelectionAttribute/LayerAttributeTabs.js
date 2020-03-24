@@ -416,7 +416,7 @@ export default class LayerAttributeTabs extends React.Component {
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(
             true,
-            ConstToolType.ATTRIBUTE_SELECTION_RELATE,
+            ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
             {
               isFullScreen: false,
               height: 0,

@@ -47,7 +47,7 @@ import {
   PreviewHeader,
   PreviewColorPicker, LayerVisibilityView,
 } from '../../components'
-import { ToolbarModule } from '../../components/ToolBar/modules'
+import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import {
   Container,
   MTBtn,

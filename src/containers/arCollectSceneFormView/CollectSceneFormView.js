@@ -24,7 +24,7 @@ import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { Toast, dataUtil, scaleSize } from '../../utils'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import ToolbarModule from '../workspace/components/ToolBar/modules'
 import { ConstPath, UserType } from '../../constants'
 
 let nativeSCollectSceneFormView = NativeModules.SCollectSceneFormView

@@ -46,7 +46,6 @@ export default {
   PLOT_ANIMATION_SAVE: 'plot_animation_save', //保存推演动画成xml文件
 
   //专题制图
-  THEME_CANCEL: 'theme_cancel',
   THEME_MENU: 'theme_menu',
   THEME_FLEX: 'theme_flex',
   THEME_COMMIT: 'theme_commit',

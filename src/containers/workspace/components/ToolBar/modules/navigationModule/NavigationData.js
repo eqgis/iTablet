@@ -13,7 +13,7 @@ import { dataUtil } from '../../../../../../utils'
 async function getDataset() {
   const params = ToolbarModule.getParams()
   let data = [],
-    buttons = [ToolbarBtnType.THEME_CANCEL]
+    buttons = [ToolbarBtnType.CANCEL]
   let list
   let userUDBPath, userUDBs
   let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/

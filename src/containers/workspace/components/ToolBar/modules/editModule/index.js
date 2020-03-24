@@ -1,3 +1,6 @@
+/**
+ * 编辑
+ */
 import EditData from './EditData'
 import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
@@ -5,26 +8,29 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import { SMap, Action } from 'imobile_for_reactnative'
+import utils from './utils'
 
 export async function action(type) {
-  const _data = await EditData.getData(type)
   const params = ToolbarModule.getParams()
+  const orientation = params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+  params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    // height: ConstToolType.HEIGHT[3],
-    height: 0,
-    column: params.device.orientation === 'LANDSCAPE' ? 5 : 4,
+    height: layout.height,
+    column: layout.column,
     cb: () => SMap.setAction(Action.SELECT),
   })
   Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)
-  let data = {
-    type: ConstToolType.MAP_EDIT_DEFAULT,
+}
+
+function setModuleData (type) {
+  ToolbarModule.setData({
+    type: type,
     getData: EditData.getData,
-    data: _data,
     actions: EditAction,
-  }
-  ToolbarModule.setData(data)
+  })
 }
 
 export default function(type, title, customAction) {
@@ -44,5 +50,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_edit.png'),
     getData: EditData.getData,
     actions: EditAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

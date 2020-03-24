@@ -1,18 +1,27 @@
+/**
+ * 采集
+ */
 import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import utils from './utils'
 
 function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const orientation = params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    containerType: ToolbarType.tabs,
+    column: layout.column,
+    height: layout.height,
   })
+}
+
+function setModuleData (type) {
   ToolbarModule.setData({
     type: type,
     getData: CollectionData.getData,
@@ -37,5 +46,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_function_symbol.png'),
     getData: CollectionData.getData,
     actions: CollectionAction,
+    getLayout: utils.getLayout,
+    setModuleData: setModuleData,
   }
 }

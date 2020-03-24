@@ -6,7 +6,7 @@ import {
   GeoStyle,
   Action,
 } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath } from '../../../../../../constants'
+import { ConstToolType, ConstPath, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
@@ -86,6 +86,7 @@ function showSymbol() {
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
+    containerType: ToolbarType.tabs,
     height:
       params.device.orientation === 'PORTRAIT'
         ? ConstToolType.HEIGHT[3]
@@ -269,9 +270,11 @@ function redo(type) {
 
 async function close(type) {
   const params = ToolbarModule.getParams()
-  let actionType = Action.PAN
   // 当前为采集状态
-  if (typeof type === 'number') {
+  if (
+    typeof type === 'number' ||
+    (typeof type === 'string' && type.indexOf('MAP_COLLECTION_') >= 0)
+  ) {
     await SCollector.stopCollect()
   }
   params.existFullMap && params.existFullMap()
@@ -280,7 +283,7 @@ async function close(type) {
   params.setCurrentTemplateInfo()
   params.setCurrentSymbol()
   ToolbarModule.setData() // 关闭Toolbar清除临时数据
-  SMap.setAction(actionType)
+  SMap.setAction(Action.PAN)
 }
 
 export default {

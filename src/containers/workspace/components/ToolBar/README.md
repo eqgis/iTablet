@@ -23,3 +23,4 @@ isTouchProgress |  是否显示顶部指滑进度条                 |  Boolean 
 isFullScreen    |  是否是全屏，地图和Toolbar之间透明的遮罩 |  Boolean | | 否
 selectKey       |  data中被选择数据的key                 |  String | | 否
 selectName      |  data中被选择数据的Name                |  String | | 否
+customView      |  自定义内容界面                        |  Object | | 否

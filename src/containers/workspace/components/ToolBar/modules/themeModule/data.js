@@ -69,7 +69,7 @@ async function showDatasetsList(type, filter = {}) {
         data: list,
       })
     }
-    const buttons = [ToolbarBtnType.THEME_CANCEL]
+    const buttons = [ToolbarBtnType.CANCEL]
     const height =
       ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
         ? ConstToolType.THEME_HEIGHT[3]
@@ -128,8 +128,8 @@ function showExpressionList(type, themeType) {
       },
     ]
     const buttons = listSelectable
-      ? [ToolbarBtnType.THEME_CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
-      : [ToolbarBtnType.THEME_CANCEL]
+      ? [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
+      : [ToolbarBtnType.CANCEL]
     const height =
       ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
         ? ConstToolType.THEME_HEIGHT[3]
@@ -984,7 +984,7 @@ async function showLocalDatasetsList() {
             ? ConstToolType.THEME_HEIGHT[3]
             : ConstToolType.THEME_HEIGHT[5],
         data,
-        buttons: [ToolbarBtnType.THEME_CANCEL],
+        buttons: [ToolbarBtnType.CANCEL],
       },
     )
 }
@@ -3122,7 +3122,7 @@ function basename(str) {
 async function getUnifyStyleAdd() {
   let data = [],
     buttons = [
-      ToolbarBtnType.THEME_CANCEL,
+      ToolbarBtnType.CANCEL,
       // ToolbarBtnType.THEME_COMMIT,
     ]
   let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/

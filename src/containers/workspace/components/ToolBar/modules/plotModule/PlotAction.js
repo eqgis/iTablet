@@ -1,3 +1,4 @@
+import React from 'react'
 import { SMap, Action } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -11,38 +12,39 @@ import { getLanguage } from '../../../../../../language'
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import PlotData from './PlotData'
+import { PlotAnimationView, AnimationNodeListView } from './customView'
 import NavigationService from '../../../../../NavigationService'
 
-function commit(type) {
-  const params = ToolbarModule.getParams()
-  let currentToolbarType = ''
-  if (type === ConstToolType.MAP_EDIT_DEFAULT) {
-    // 编辑完成关闭Toolbar
-    params.setToolbarVisible(false, '', {
-      cb: () => {
-        SMap.setAction(Action.PAN)
-      },
-    })
-  } else if (
-    type !== ConstToolType.MAP_TOOL_TAGGING &&
-    type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
-  ) {
-    currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
-    // 编辑完成关闭Toolbar
-    // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-    params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
-      isFullScreen: false,
-      height: 0,
-      cb: () => {
-        SMap.submit()
-        SMap.setAction(Action.SELECT)
-      },
-    })
-  }
-  ToolbarModule.addData({
-    type: currentToolbarType,
-  })
-}
+// function commit(type) {
+//   const params = ToolbarModule.getParams()
+//   let currentToolbarType = ''
+//   if (type === ConstToolType.MAP_EDIT_DEFAULT) {
+//     // 编辑完成关闭Toolbar
+//     params.setToolbarVisible(false, '', {
+//       cb: () => {
+//         SMap.setAction(Action.PAN)
+//       },
+//     })
+//   } else if (
+//     type !== ConstToolType.MAP_TOOL_TAGGING &&
+//     type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
+//   ) {
+//     currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
+//     // 编辑完成关闭Toolbar
+//     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
+//     params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+//       isFullScreen: false,
+//       height: 0,
+//       cb: () => {
+//         SMap.submit()
+//         SMap.setAction(Action.SELECT)
+//       },
+//     })
+//   }
+//   ToolbarModule.addData({
+//     type: currentToolbarType,
+//   })
+// }
 
 function listAction(type, params = {}) {
   switch (type) {
@@ -77,7 +79,50 @@ async function geometrySelected(event) {
           {
             isFullScreen: true,
             height: ConstToolType.TOOLBAR_HEIGHT[5],
-            containerType: ToolbarType.createPlotAnimation,
+            // containerType: ToolbarType.createPlotAnimation,
+            customView: (props, state) =>
+              <PlotAnimationView
+                ref={ref => (this.plotAnimationView = ref)}
+                saveAndContinue={() => {
+                  let createInfo =
+                    this.plotAnimationView && this.plotAnimationView.getCreateInfo()
+                  if (props.selection.length > 0 && props.selection[0].ids > 0) {
+                    createInfo.geoId = props.selection[0].ids[0]
+                    createInfo.layerName = props.selection[0].layerInfo.name
+                  }
+                  if (createInfo.animationMode !== -1) {
+                    SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
+                  }
+                }}
+                savePlotAnimationNode={() => {
+                  let createInfo =
+                    this.plotAnimationView && this.plotAnimationView.getCreateInfo()
+                  if (props.selection.length > 0 && props.selection[0].ids > 0) {
+                    createInfo.geoId = props.selection[0].ids[0]
+                    createInfo.layerName = props.selection[0].layerInfo.name
+                  }
+                  if (createInfo.animationMode !== -1) {
+                    SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
+                  }
+                  GLOBAL.TouchType = TouchType.NULL
+                  GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
+    
+                  let height = 0
+                  params.showFullMap && params.showFullMap(true)
+                  let type = ConstToolType.PLOT_ANIMATION_START
+                  params.setToolbarVisible(true, type, {
+                    isFullScreen: false,
+                    height,
+                    cb: () => SMap.setAction(Action.SELECT),
+                  })
+                }}
+                layerName={
+                  props.selection[0] && props.selection[0].layerInfo.name
+                }
+                geoId={props.selection[0] && props.selection[0].ids[0]}
+                device={params.device}
+                showToolbar={params.setToolbarVisible}
+              />
           },
         )
       }
@@ -91,6 +136,7 @@ function showSymbol() {
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
+    containerType: ToolbarType.tabs,
     height:
       params.device.orientation === 'PORTRAIT'
         ? ConstToolType.HEIGHT[3]
@@ -177,7 +223,7 @@ async function collectionSubmit(libId, symbolCode) {
   ToolbarModule.getParams().getLayers(-1, async layers => {
     let plotLayer
     for (let i = 0; i < layers.length; i++)
-      if (layers[i].name.indexOf('PlotEdit_') != -1) {
+      if (layers[i].name.indexOf('PlotEdit_') !== -1) {
         plotLayer = layers[i]
         break
       }
@@ -244,7 +290,7 @@ async function changePlotLib(item) {
       //ConstInfo.CHANGE_MAP_TO + mapInfo.name
     )
     ToolbarModule.getParams().setContainerLoading(false)
-    ToolbarModule.getParams().setVisible(false)
+    ToolbarModule.getParams().setToolbarVisible(false)
   } catch (e) {
     Toast.show(ConstInfo.CHANGE_PLOT_LIB_FAILED)
     params.setContainerLoading(false)
@@ -293,6 +339,12 @@ function showAnimationNodeList() {
     height: ConstToolType.TOOLBAR_HEIGHT[5],
     containerType: ToolbarType.animationNode,
     // cb: () => {},
+    customView: (props, state) =>
+      <AnimationNodeListView
+        data={props.data}
+        type={props.type}
+        device={props.device}
+      />
   })
 }
 
@@ -336,6 +388,12 @@ function close() {
     GLOBAL.TouchType = TouchType.NULL
     GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
     params.setToolbarVisible(false)
+  } else if (
+    data.type === ConstToolType.PLOT_ANIMATION_PLAY ||
+    data.type === ConstToolType.PLOT_ANIMATION_START
+  ) {
+    SMap.animationClose()
+    params.setToolbarVisible(false)
   } else {
     SMap.setAction(Action.PAN)
     params.setToolbarVisible(false)
@@ -343,10 +401,15 @@ function close() {
   ToolbarModule.setData() // 关闭Toolbar清除临时数据
 }
 
+function overlayOnPress () {
+
+}
+
 const actions = {
-  commit,
+  // commit,
   listAction,
   close,
+  overlayOnPress,
 
   geometrySelected,
   showSymbol,

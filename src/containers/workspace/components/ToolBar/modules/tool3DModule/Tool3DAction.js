@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarHeight from '../ToolBarHeight'
+import utils from './utils'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
 /** 距离量算 **/
@@ -203,7 +204,7 @@ function select() {
   GLOBAL.Map3DSymbol = true
   // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_SELECT)
   const type = ConstToolType.MAP3D_SYMBOL_SELECT
-  const _data = ToolBarHeight.getToolbarHeight(type)
+  const _data = utils.getLayout(type)
   params.setToolbarVisible(true, type, {
     containerType: 'table',
     isFullScreen: false,
@@ -444,7 +445,7 @@ function clearMeasure(type) {
   }
 }
 
-function close(type) {
+async function close(type) {
   const _params = ToolbarModule.getParams()
   if (
     type === ConstToolType.MAP3D_TOOL_DISTANCEMEASURE ||
@@ -479,6 +480,14 @@ function close(type) {
     SScene.clearCirclePoint()
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
+  } else if (
+    type === ConstToolType.MAP3D_BOX_CLIPPING ||
+    type === ConstToolType.MAP3D_BOX_CLIP ||
+    type === ConstToolType.MAP3D_CROSS_CLIP ||
+    type === ConstToolType.MAP3D_PLANE_CLIP
+  ) {
+    await SScene.clipSenceClear()
+    GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
   } else {
     SScene.checkoutListener('startTouchAttribute')
     SScene.setAction('PAN3D')
@@ -496,6 +505,7 @@ function circleFly() {
   const _params = ToolbarModule.getParams()
   _params.showFullMap && _params.showFullMap(true)
   GLOBAL.action3d = 'PAN3D_FIX'
+  SScene.stopCircleFly()
   _params.setToolbarVisible(true, ConstToolType.MAP3D_CIRCLEFLY, {
     containerType: ToolbarType.table,
     isFullScreen: false,

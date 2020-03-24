@@ -1,18 +1,23 @@
 import ShareData from './ShareData'
 import ShareAction from './ShareAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
 
 function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const orientation = params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType: 'table',
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    column: layout.column,
+    height: layout.height,
   })
+}
+
+function setModuleData (type) {
   ToolbarModule.setData({
     type: type,
     getData: ShareData.getData,
@@ -38,5 +43,7 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_function_share.png'),
     getData: ShareData.getData,
     actions: ShareAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

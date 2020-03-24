@@ -1,28 +1,33 @@
+/**
+ * 分析
+ */
 import AnalysisData from './AnalysisData'
 import AnalysisAction from './AnalysisAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
+import utils from './utils'
 
 export async function action(type) {
-  const _data = await AnalysisData.getData(type)
   const params = ToolbarModule.getParams()
+  const orientation = params.device.orientation
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_ANALYSIS, {
+  params.setToolbarVisible(true, type, {
     isFullScreen: true,
-    height:
-      params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.TOOLBAR_HEIGHT[2]
-        : ConstToolType.TOOLBAR_HEIGHT[3],
-    column: params.device.orientation === 'LANDSCAPE' ? 5 : 4,
+    height: layout.height,
+    column: layout.column,
   })
-  let data = {
-    type: ConstToolType.MAP_ANALYSIS,
+}
+
+function setModuleData (type) {
+  ToolbarModule.setData({
+    type: type,
     getData: AnalysisData.getData,
-    data: _data,
+    // data: _data,
     actions: AnalysisAction,
-  }
-  ToolbarModule.setData(data)
+  })
 }
 
 export default function(type, title, customAction) {
@@ -42,5 +47,7 @@ export default function(type, title, customAction) {
     image: getThemeAssets().functionBar.rightbar_analysis,
     getData: AnalysisData.getData,
     // actions: AnalysisAction,
+    getLayout: utils.getLayout,
+    setModuleData: setModuleData,
   }
 }

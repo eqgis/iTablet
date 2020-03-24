@@ -2,7 +2,6 @@ import { ConstToolType } from '../../../../../constants/index'
 import ToolbarBtnType from '../ToolbarBtnType'
 import { getLanguage } from '../../../../../language'
 import SMap from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { MoreData, MapData } from '../data'
 import {
   startModule,
   styleModule,
@@ -18,18 +17,8 @@ import {
   legendModule,
   aiModule,
   mapSettingModule,
+  mapModule,
 } from '../modules'
-
-// 更新类中的数据
-// function setParams(params) {
-//   // _params = params
-//   CollectionData.setParams(params)
-//   PlotData.setParams(params)
-//   StartData.setParams(params)
-//   ShareData.setParams(params)
-//   MoreData.setParams(params)
-//   Map3DData.setParams(params)
-// }
 
 let _params = {} // 外部数据和方法 Toolbar props
 let _data = {} // 临时数据
@@ -64,8 +53,8 @@ function getData() {
  * @param params
  * @returns {Promise.<{data, buttons}>}
  */
-async function getTabBarData(type, params = {}) {
-  let tabBarData = {
+async function getToolBarData(type, params = {}) {
+  let toolBarData = {
     data: [],
     buttons: [],
   }
@@ -76,9 +65,9 @@ async function getTabBarData(type, params = {}) {
     type === ConstToolType.MAP_COLLECTION_LINE ||
     type === ConstToolType.MAP_COLLECTION_REGION
   ) {
-    tabBarData = collectionModule().getData(type, params)
+    toolBarData = collectionModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('_START') > -1) {
-    tabBarData = startModule().getData(type, params)
+    toolBarData = startModule().getData(type, params)
   } else if (
     type === ConstToolType.MAP_STYLE ||
     type === ConstToolType.GRID_STYLE ||
@@ -90,61 +79,154 @@ async function getTabBarData(type, params = {}) {
     type === ConstToolType.REGIONAFTERCOLOR_SET ||
     type === ConstToolType.TEXTFONT
   ) {
-    tabBarData = styleModule().getData(type, params)
+    toolBarData = styleModule().getData(type, params)
   } else if (
     typeof type === 'string' &&
     (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
       type === ConstToolType.STYLE_TRANSFER)
   ) {
-    tabBarData = toolModule().getData(type, params)
+    toolBarData = toolModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
-    tabBarData = shareModule().getData(type, params)
+    toolBarData = shareModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
-    tabBarData = themeModule().getData(type, params)
+    toolBarData = themeModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
-    tabBarData = editModule().getData(type, params)
+    toolBarData = editModule().getData(type, params)
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
   ) {
-    tabBarData = analysisModule().getData(type, params)
+    toolBarData = analysisModule().getData(type, params)
   } else if (
     type === ConstToolType.PLOT_ANIMATION_START ||
     type === ConstToolType.PLOT_ANIMATION_NODE_CREATE ||
     type === ConstToolType.PLOT_ANIMATION_PLAY ||
     type === ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST ||
-    type === ConstToolType.PLOT_ANIMATION_WAY
-    // ||type === ConstToolType.PLOT_ANIMATION_XML_LIST
+    type === ConstToolType.PLOT_ANIMATION_WAY ||
+    type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
-    tabBarData = plotModule().getData(type, params)
+    toolBarData = plotModule().getData(type, params)
   } else if (
     type === ConstToolType.MAP3D_TOOL_FLYLIST ||
     type === ConstToolType.MAP3D_TOOL_NEWFLY
   ) {
-    tabBarData = await fly3DModule().getData(type, params)
+    toolBarData = await fly3DModule().getData(type, params)
   } else if (
     (typeof type === 'string' && type.indexOf('MAP3D_') > -1) ||
     type === ConstToolType.MAP3D_BOX_CLIPPING ||
     type === ConstToolType.MAP3D_BOX_CLIP
   ) {
-    tabBarData = await tool3DModule().getData(type, params)
+    toolBarData = await tool3DModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
-    tabBarData = legendModule().getData(type, params)
-  } else if (typeof type === 'string' && type.indexOf('MAP_MORE') > -1) {
-    tabBarData = MoreData.getMapMore(type, params)
-  } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
-    tabBarData = getPlotAnimationData(type)
-  } else if (type === ConstToolType.MAP_AR_AIASSISTANT) {
-    tabBarData = await aiModule().getData(type, params)
+    toolBarData = legendModule().getData(type, params)
+  }
+  else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
+    toolBarData = getPlotAnimationData(type)
+  } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
+    toolBarData = await aiModule().getData(type, params)
   } else if (
     type === ConstToolType.MAP_BACKGROUND_COLOR ||
     type === ConstToolType.MAP_COLOR_MODE
   ) {
-    tabBarData = mapSettingModule().getData(type)
-  } else {
-    tabBarData = MapData.getMapData(type)
+    toolBarData = mapSettingModule().getData(type)
   }
-  return tabBarData
+  // else {
+  //   toolBarData = mapModule().getData(type)
+  //
+  //   setData({
+  //     type: type,
+  //     getData: mapModule().getData,
+  //     actions: mapModule().actions,
+  //   })
+  // }
+  return toolBarData
+}
+
+async function setToolBarData(type, params = {}) {
+  let toolBarData
+  if (
+    type === ConstToolType.MAP_SYMBOL ||
+    type === ConstToolType.MAP_COLLECTION_POINT ||
+    type === ConstToolType.MAP_COLLECTION_LINE ||
+    type === ConstToolType.MAP_COLLECTION_REGION
+  ) {
+    toolBarData = collectionModule()
+  } else if (typeof type === 'string' && type.indexOf('_START') > -1) {
+    toolBarData = startModule()
+  } else if (
+    type === ConstToolType.MAP_STYLE ||
+    type === ConstToolType.GRID_STYLE ||
+    type === ConstToolType.LINECOLOR_SET ||
+    type === ConstToolType.POINTCOLOR_SET ||
+    type === ConstToolType.TEXTCOLOR_SET ||
+    type === ConstToolType.REGIONBEFORECOLOR_SET ||
+    type === ConstToolType.REGIONBORDERCOLOR_SET ||
+    type === ConstToolType.REGIONAFTERCOLOR_SET ||
+    type === ConstToolType.TEXTFONT
+  ) {
+    toolBarData = styleModule()
+  } else if (
+    typeof type === 'string' &&
+    (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
+    type === ConstToolType.STYLE_TRANSFER)
+  ) {
+    toolBarData = toolModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
+    toolBarData = shareModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
+    toolBarData = themeModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
+    toolBarData = editModule()
+  } else if (
+    typeof type === 'string' &&
+    type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
+  ) {
+    toolBarData = analysisModule()
+  } else if (
+    type === ConstToolType.PLOT_ANIMATION_START ||
+    type === ConstToolType.PLOT_ANIMATION_NODE_CREATE ||
+    type === ConstToolType.PLOT_ANIMATION_PLAY ||
+    type === ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST ||
+    type === ConstToolType.PLOT_ANIMATION_WAY ||
+    type === ConstToolType.PLOT_ANIMATION_XML_LIST
+  ) {
+    toolBarData = plotModule()
+  } else if (
+    type === ConstToolType.MAP3D_TOOL_FLYLIST ||
+    type === ConstToolType.MAP3D_TOOL_NEWFLY
+  ) {
+    toolBarData = await fly3DModule()
+  } else if (
+    (typeof type === 'string' && type.indexOf('MAP3D_') > -1) ||
+    type === ConstToolType.MAP3D_BOX_CLIPPING ||
+    type === ConstToolType.MAP3D_BOX_CLIP
+  ) {
+    toolBarData = await tool3DModule()
+  } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
+    toolBarData = legendModule().getData(type, params)
+  }
+  else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
+    toolBarData = getPlotAnimationData(type)
+  } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
+    toolBarData = await aiModule()
+  } else if (
+    type === ConstToolType.MAP_BACKGROUND_COLOR ||
+    type === ConstToolType.MAP_COLOR_MODE
+  ) {
+    toolBarData = mapSettingModule()
+  }
+  // else {
+  //   toolBarData = mapModule().getData(type)
+  //
+  //   setData({
+  //     type: type,
+  //     getData: mapModule().getData,
+  //     actions: mapModule().actions,
+  //   })
+  // }
+  if (toolBarData && toolBarData.setModuleData) {
+    toolBarData.setModuleData(type)
+  }
 }
 
 /**
@@ -240,6 +322,7 @@ export default {
   addData,
   getData,
 
-  getTabBarData,
+  getToolBarData,
+  setToolBarData,
   getMenuDialogData,
 }

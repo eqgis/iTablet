@@ -294,7 +294,7 @@ export default class MT_layerManager extends React.Component {
 
   onPressRow = async ({ data, parentData, section }) => {
     // this.props.setMapLegend(false)
-
+    if(GLOBAL.Type === constants.MAP_EDIT) return
     this.props.setCurrentLayer &&
       this.props.setCurrentLayer(data, () => {
         // 切换地图，清除历史记录

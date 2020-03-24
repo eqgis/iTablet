@@ -96,6 +96,9 @@ function layersetting(language, isGroup = false) {
       // },
     ]
   }
+  if(GLOBAL.Type === constants.MAP_EDIT){
+    data.splice(3,1)
+  }
   return [
     {
       title: '',

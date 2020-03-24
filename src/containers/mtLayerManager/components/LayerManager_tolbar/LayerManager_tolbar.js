@@ -53,6 +53,7 @@ import { MultiPicker } from '../../../../components'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
 import DataHandler from '../../../tabs/Mine/DataHandler'
+import constants from "../../../workspace/constants"
 /** 工具栏类型 **/
 const list = 'list'
 
@@ -157,7 +158,9 @@ export default class LayerManager_tolbar extends React.Component {
           if (device.orientation === 'LANDSCAPE') {
             boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
           } else {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[7]
+            boxHeight = GLOBAL.Type === constants.MAP_EDIT
+              ? ConstToolType.TOOLBAR_HEIGHT[6]
+              : ConstToolType.TOOLBAR_HEIGHT[7]
           }
           break
         case ConstToolType.PLOTTING:

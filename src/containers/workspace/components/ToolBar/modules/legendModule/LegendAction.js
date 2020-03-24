@@ -38,7 +38,8 @@ function menu(type, selectKey, params = {}) {
   let showBox = function() {
     if (
       (type === ConstToolType.LEGEND ||
-        type === ConstToolType.LEGEND_NOT_VISIBLE) &&
+        type === ConstToolType.LEGEND_NOT_VISIBLE ||
+        type === ConstToolType.LEGEND_POSITION) &&
       isBoxShow
     ) {
       params.showBox && params.showBox()

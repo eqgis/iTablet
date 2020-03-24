@@ -194,6 +194,7 @@ function getMenuDialogData(type, ...others) {
       break
     case ConstToolType.LEGEND:
     case ConstToolType.LEGEND_NOT_VISIBLE:
+    case ConstToolType.LEGEND_POSITION:
       data = legendModule().getMenuData(type)
       break
     case ConstToolType.MAP_COLOR_MODE:

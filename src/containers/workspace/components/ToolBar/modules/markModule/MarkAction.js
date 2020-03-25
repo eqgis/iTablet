@@ -99,7 +99,7 @@ async function freeline() {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
-    SMap.setAction(Action.DRAWLINE)
+    SMap.setAction(Action.FREEDRAW)
   } else {
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }

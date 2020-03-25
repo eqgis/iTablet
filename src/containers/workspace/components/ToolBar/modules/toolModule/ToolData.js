@@ -27,49 +27,6 @@ function getData(type, params) {
   let layerType = ''
   // if (type.indexOf(ConstToolType.MAP_TOOL) === -1) return { data, buttons }
   switch (type) {
-    case ConstToolType.MAP_TOOL_TAGGING:
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        ToolbarBtnType.PLACEHOLDER,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
-      break
-    case ConstToolType.MAP_TOOL_TAGGING_SETTING:
-      data = [
-        {
-          title: getLanguage(global.language).Map_Label.ATTRIBUTE,
-          //'属性记录',
-          data: [
-            {
-              title: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
-              //'名称',
-              value: '',
-              //action: name,
-            },
-            {
-              title: getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS,
-              //'备注',
-              value: '',
-              //action: remark,
-            },
-            // { title: '风格', action: remark },
-            {
-              title: getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP,
-              //'http地址',
-              value: '',
-              //action: address,
-            },
-            // { title: '图片', action: address },
-          ],
-        },
-      ]
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        ToolbarBtnType.PLACEHOLDER,
-        ToolbarBtnType.PLACEHOLDER,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
-      break
     case ConstToolType.MAP_TOOLS:
     case ConstToolType.MAP_TOOL:
       layerType = LayerUtils.getLayerType(

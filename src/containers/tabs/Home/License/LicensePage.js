@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   AsyncStorage,
+  Platform,
 } from 'react-native'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
@@ -183,6 +184,22 @@ export default class LicensePage extends Component {
   }
   //申请试用许可
   applyTrialLicense = async () => {
+    if(Platform.OS === 'ios'){
+      SMap.applyTrialLicense().then(async value => {
+        if(value){
+          this.getLicense()
+          Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
+        }else{
+          // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
+          Toast.show(
+            global.language === 'CN'
+              ? '您已经申请过试用许可,请接入正式许可'
+              : 'You have applied for trial license, please access the formal license',
+          )
+        }
+      })
+      return
+    }
     GLOBAL.Loading.setLoading(
       true,
       global.language === 'CN' ? '许可申请中...' : 'Applying',

@@ -80,9 +80,6 @@ export default class CollectSceneFormView extends React.Component {
       // 初始化数据
       (async function() {
 
-        //设置基点
-        SCollectSceneFormView.fixedPosition(false,this.datumPoint.x,this.datumPoint.y,0)
-
         let udbPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +
@@ -96,6 +93,13 @@ export default class CollectSceneFormView extends React.Component {
           this.props.language,
           udbPath,
         )
+
+        let point=this.datumPoint
+        setTimeout(function() {
+          //设置基点
+          SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
+        }, 500)
+
         //注册监听
         if (Platform.OS === 'ios') {
           nativeEvt.addListener(

@@ -632,10 +632,10 @@ class AppRoot extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle}
-          onPress={this.exitApp}
+          onPress={()=>GLOBAL.LicenseValidDialog.setDialogVisible(false)}
         >
           <Text style={styles.btnTextStyle}>
-            {getLanguage(this.props.language).Profile.LICENSE_EXIT}
+            {getLanguage(this.props.language).Profile.LICENSE_CLEAN_CANCLE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -709,7 +709,27 @@ class AppRoot extends Component {
   }
   //申请试用许可
   applyTrialLicense =async () => {
+
     GLOBAL.LicenseValidDialog.setDialogVisible(false)
+    if(Platform.OS === 'ios'){
+      SMap.applyTrialLicense().then(async value => {
+        if(value){
+          Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
+        }else{
+          // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
+          Toast.show(
+            global.language === 'CN'
+              ? '您已经申请过试用许可,请接入正式许可'
+              : 'You have applied for trial license, please access the formal license',
+          )
+        }
+
+        GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
+      })
+      return
+    }
+
+
     GLOBAL.Loading.setLoading(
       true,
       this.props.language==='CN'?"许可申请中...":"Applying"

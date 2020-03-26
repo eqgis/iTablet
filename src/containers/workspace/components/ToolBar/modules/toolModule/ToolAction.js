@@ -596,21 +596,21 @@ function selectLabelToEdit(toolType = '') {
     toolType = global.MapToolType
   }
   switch (toolType) {
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE
       height = ConstToolType.HEIGHT[0]
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE
       height = ConstToolType.HEIGHT[2]
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
       height = ConstToolType.HEIGHT[2]
       containerType = ToolbarType.scrollTable
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
       height = ConstToolType.HEIGHT[0]
       break
   }

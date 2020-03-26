@@ -184,7 +184,8 @@ export default class LicensePage extends Component {
   }
   //申请试用许可
   applyTrialLicense = async () => {
-    if(Platform.OS === 'ios'){
+    // if(Platform.OS === 'ios')
+    {
       SMap.applyTrialLicense().then(async value => {
         if(value){
           this.getLicense()

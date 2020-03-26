@@ -294,6 +294,13 @@ function getData(type, params) {
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          action: ToolAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
       ]
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -355,6 +362,13 @@ function getData(type, params) {
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
         },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          action: ToolAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
       ]
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -415,6 +429,13 @@ function getData(type, params) {
           action: EditAction.addNode,
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
         },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          action: ToolAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
       ]
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -437,6 +458,13 @@ function getData(type, params) {
           action: ToolAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          action: ToolAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
         },
       ]
       buttons = [

@@ -83,7 +83,7 @@ async function geometrySelected(event) {
             isFullScreen: true,
             height: ConstToolType.TOOLBAR_HEIGHT[5],
             // containerType: ToolbarType.createPlotAnimation,
-            customView: (props, state) => (
+            customView: _props => (
               <PlotAnimationView
                 ref={ref => (this.plotAnimationView = ref)}
                 saveAndContinue={() => {
@@ -91,11 +91,11 @@ async function geometrySelected(event) {
                     this.plotAnimationView &&
                     this.plotAnimationView.getCreateInfo()
                   if (
-                    props.selection.length > 0 &&
-                    props.selection[0].ids > 0
+                    _props.selection.length > 0 &&
+                    _props.selection[0].ids > 0
                   ) {
-                    createInfo.geoId = props.selection[0].ids[0]
-                    createInfo.layerName = props.selection[0].layerInfo.name
+                    createInfo.geoId = _props.selection[0].ids[0]
+                    createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
                     SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
@@ -106,11 +106,11 @@ async function geometrySelected(event) {
                     this.plotAnimationView &&
                     this.plotAnimationView.getCreateInfo()
                   if (
-                    props.selection.length > 0 &&
-                    props.selection[0].ids > 0
+                    _props.selection.length > 0 &&
+                    _props.selection[0].ids > 0
                   ) {
-                    createInfo.geoId = props.selection[0].ids[0]
-                    createInfo.layerName = props.selection[0].layerInfo.name
+                    createInfo.geoId = _props.selection[0].ids[0]
+                    createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
                     SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
@@ -128,9 +128,9 @@ async function geometrySelected(event) {
                   })
                 }}
                 layerName={
-                  props.selection[0] && props.selection[0].layerInfo.name
+                  _props.selection[0] && _props.selection[0].layerInfo.name
                 }
-                geoId={props.selection[0] && props.selection[0].ids[0]}
+                geoId={_props.selection[0] && _props.selection[0].ids[0]}
                 device={params.device}
                 showToolbar={params.setToolbarVisible}
               />
@@ -349,11 +349,11 @@ function showAnimationNodeList() {
     height: ConstToolType.TOOLBAR_HEIGHT[5],
     containerType: ToolbarType.animationNode,
     // cb: () => {},
-    customView: (props, state) => (
+    customView: _props => (
       <AnimationNodeListView
-        data={props.data}
-        type={props.type}
-        device={props.device}
+        data={_props.data}
+        type={_props.type}
+        device={_props.device}
       />
     ),
   })

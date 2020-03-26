@@ -8,18 +8,19 @@
 import MarkData from './MarkData'
 import MarkAction from './MarkAction'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
+import utils from './utils'
 import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 
 function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const { orientation } = params.device
+  const layout = utils.getLayout(type, orientation)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    column: layout.column,
+    height: layout.height,
   })
   // 重置canUndo和canRedo
   if (params.toolbarStatus.canUndo || params.toolbarStatus.canRedo) {
@@ -28,6 +29,10 @@ function action(type) {
       canRedo: false,
     })
   }
+  setModuleData(type)
+}
+
+function setModuleData(type) {
   ToolbarModule.setData({
     type,
     getData: MarkData.getData,
@@ -41,6 +46,7 @@ export default function(type, title, customAction) {
     title,
     action: () => {
       if (customAction === false) {
+        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {
@@ -52,5 +58,7 @@ export default function(type, title, customAction) {
     getData: MarkData.getData,
     getMenuData: MarkData.getMenuData,
     actions: MarkAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

@@ -12,19 +12,10 @@ import { ToolbarType } from '../../../../../../constants'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
-  // let _data = MapSettingData.getData(type)
-  const { orientation } = params.device
+  const { orientation } = _params.device
   const layout = utils.getLayout(type, orientation)
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
-  // let mapXML = await SMap.mapToXml()
-  // ToolbarModule.setData({
-  //   type,
-  //   data: _data,
-  //   getData: MapSettingData.getData,
-  //   actions: MapSettingAction,
-  //   mapXML,
-  // })
   await setModuleData(type)
 
   _params.setToolbarVisible(true, type, {

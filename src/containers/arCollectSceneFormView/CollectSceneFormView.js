@@ -24,7 +24,7 @@ import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { Toast, dataUtil, scaleSize } from '../../utils'
-import ToolbarModule from '../workspace/components/ToolBar/modules'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
 
 let nativeSCollectSceneFormView = NativeModules.SCollectSceneFormView
@@ -79,7 +79,7 @@ export default class CollectSceneFormView extends React.Component {
     //安排任务在交互和动画完成之后执行
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      ;(async function() {
+      (async function() {
         let udbPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +

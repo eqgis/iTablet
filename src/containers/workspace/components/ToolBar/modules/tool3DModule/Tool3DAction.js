@@ -5,7 +5,6 @@ import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import ToolBarHeight from '../ToolBarHeight'
 import utils from './utils'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退

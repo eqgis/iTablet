@@ -161,6 +161,9 @@ function commit(type) {
     SMap.refreshMap()
     //提交标注后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
+    _params.setToolbarVisible(false)
+  } else {
+    return false
   }
 }
 

@@ -1,10 +1,4 @@
-import {
-  SMeasureView,
-  // DatasetType,
-  SAIDetectView,
-  SMap,
-  SCollectSceneFormView,
-} from 'imobile_for_reactnative'
+import { SMeasureView, SAIDetectView, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language/index'
 import NavigationService from '../../../../../NavigationService'
 import { Toast } from '../../../../../../utils/index'
@@ -12,11 +6,10 @@ import { FileTools } from '../../../../../../native/index'
 import { ConstPath } from '../../../../../../constants/index'
 import FetchUtils from '../../../../../../utils/FetchUtils'
 import ToolbarModule from '../ToolbarModule'
-import { Container } from '../../../../../../components'
 
 // 违章采集
 function illegallyParkCollect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -43,7 +36,7 @@ function illegallyParkCollect() {
 
 // 户型图采集
 function arMeasureCollect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -70,7 +63,7 @@ function arMeasureCollect() {
 
 // AI分类
 function aiClassify() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
@@ -124,7 +117,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -168,7 +161,7 @@ function _downloadData(downloadData) {
 
 // 目标采集
 function aiDetect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -190,13 +183,13 @@ function aiDetect() {
 
 // 态势采集(聚合模式)
 function polymerizeCollect() {
-  ;(async function() {
+  (async function() {
     // await SAIDetectView.setProjectionModeEnable(true)
     // await SAIDetectView.setDrawTileEnable(false)
     await SAIDetectView.setIsPolymerize(true)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
     if (!GLOBAL.showAIDetect) {
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     // await SAIDetectView.startCountTrackedObjs(true)
@@ -205,7 +198,7 @@ function polymerizeCollect() {
 
 // 高精度采集
 function collectSceneForm() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {

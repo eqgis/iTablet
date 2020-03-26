@@ -358,6 +358,7 @@ export default class MT_layerManager extends React.Component {
     this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_STYLE, {
       height: ConstToolType.TOOLBAR_HEIGHT[1],
       layerData: data,
+      resetToolModuleData: true,
     })
   }
 
@@ -366,6 +367,7 @@ export default class MT_layerManager extends React.Component {
       height: ConstToolType.TOOLBAR_HEIGHT[0],
       layerData: data,
       index: index,
+      resetToolModuleData: true,
     })
   }
 
@@ -411,6 +413,7 @@ export default class MT_layerManager extends React.Component {
           : ConstToolType.TOOLBAR_HEIGHT[6],
         layerData: data,
         refreshParentList: refreshParentList,
+        resetToolModuleData: true,
       })
     } else if (
       GLOBAL.Type === constants.MAP_EDIT ||
@@ -422,6 +425,7 @@ export default class MT_layerManager extends React.Component {
           : ConstToolType.TOOLBAR_HEIGHT[6],
         layerData: data,
         refreshParentList: refreshParentList,
+        resetToolModuleData: true,
       })
     } else if (
       GLOBAL.Type === constants.MAP_PLOTTING &&
@@ -433,6 +437,7 @@ export default class MT_layerManager extends React.Component {
           : ConstToolType.TOOLBAR_HEIGHT[4],
         layerData: data,
         refreshParentList: refreshParentList,
+        resetToolModuleData: true,
       })
     } else if (GLOBAL.Type === constants.MAP_NAVIGATION) {
       this.toolBox.setVisible(true, ConstToolType.MAP_NAVIGATION, {
@@ -441,6 +446,7 @@ export default class MT_layerManager extends React.Component {
           : ConstToolType.TOOLBAR_HEIGHT[4],
         layerData: data,
         refreshParentList: refreshParentList,
+        resetToolModuleData: true,
       })
     } else {
       this.toolBox.setVisible(true, ConstToolType.COLLECTION, {
@@ -449,6 +455,7 @@ export default class MT_layerManager extends React.Component {
           : ConstToolType.TOOLBAR_HEIGHT[5],
         layerData: data,
         refreshParentList: refreshParentList,
+        resetToolModuleData: true,
       })
     }
   }
@@ -638,7 +645,7 @@ export default class MT_layerManager extends React.Component {
       type: 'name',
       cb: async value => {
         if (value !== '') {
-          ;(async function() {
+          (async function() {
             await SMap.setLabelColor()
             let data = await SMap.newTaggingDataset(
               value,

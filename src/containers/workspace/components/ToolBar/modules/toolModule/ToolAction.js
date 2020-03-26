@@ -8,7 +8,6 @@ import {
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
-  TouchType,
   ConstPath,
   ToolbarType,
   Const,
@@ -39,7 +38,7 @@ function stop() {
 }
 
 function submit() {
-  ;(async function() {
+  (async function() {
     if (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_GPSINCREMENT) {
       await SMap.addGPSRecordset()
     }
@@ -410,7 +409,7 @@ async function setting() {
 
 // 多媒体采集
 function captureImage() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
     // let reg = /^Label_(.*)#$/
@@ -442,7 +441,7 @@ function captureImage() {
 }
 
 function tour() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     // let {isTaggingLayer, layerInfo} = await SMap.getCurrentTaggingLayer(
     //   ToolbarModule.getParams().user.currentUser.userName,
@@ -473,7 +472,7 @@ function tour() {
       cb = () => {},
     ) => {
       if (value !== '') {
-        ;(async function() {
+        (async function() {
           await SMap.setLabelColor()
           const tagginData = await SMap.newTaggingDataset(
             value,
@@ -684,18 +683,18 @@ function selectLabelToStyle() {
 }
 
 // 设置我的图层的可选择性
-function _setMyLayersSelectable(layers, selectable) {
-  for (let i = 0; i < layers.length; i++) {
-    if (layers[i].type === 'layerGroup') {
-      _setMyLayersSelectable(layers[i].child, selectable)
-    } else if (
-      LayerUtils.getLayerType(layers[i]) !== 'TAGGINGLAYER' &&
-      layers[i].isSelectable
-    ) {
-      SMap.setLayerSelectable(layers[i].path, selectable)
-    }
-  }
-}
+// function _setMyLayersSelectable(layers, selectable) {
+//   for (let i = 0; i < layers.length; i++) {
+//     if (layers[i].type === 'layerGroup') {
+//       _setMyLayersSelectable(layers[i].child, selectable)
+//     } else if (
+//       LayerUtils.getLayerType(layers[i]) !== 'TAGGINGLAYER' &&
+//       layers[i].isSelectable
+//     ) {
+//       SMap.setLayerSelectable(layers[i].path, selectable)
+//     }
+//   }
+// }
 
 /**
  * 删除标注

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { View } from 'react-native'
 import Header from '../../../../components/Header'
-import { color } from '../../../../styles'
 import MapSelectPointLatitudeAndLongitude from '../MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
 
 export default class MapSelectPoint extends React.Component {
@@ -32,16 +31,16 @@ export default class MapSelectPoint extends React.Component {
   renderBottom() {
     return this.props.headerProps.selectPointType &&
       this.props.headerProps.selectPointType === 'selectPoint' ? (
-      <MapSelectPointLatitudeAndLongitude
-        style={{
-          alignItems: 'flex-end',
-        }}
-        ref={ref => (this.pointLatitudeAndLongitude = ref)}
-        isEdit={false}
-      />
-    ) : (
-      <View />
-    )
+        <MapSelectPointLatitudeAndLongitude
+          style={{
+            alignItems: 'flex-end',
+          }}
+          ref={ref => (this.pointLatitudeAndLongitude = ref)}
+          isEdit={false}
+        />
+      ) : (
+        <View />
+      )
   }
 
   render() {

@@ -4,7 +4,6 @@
 import AnalysisData from './AnalysisData'
 import AnalysisAction from './AnalysisAction'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import utils from './utils'
 
@@ -36,6 +35,7 @@ export default function(type, title, customAction) {
     title,
     action: () => {
       if (customAction === false) {
+        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {

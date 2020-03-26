@@ -6,7 +6,7 @@ import Fly3DData from './Fly3DData'
 import Fly3DAction from './Fly3DAction'
 import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { ToolbarType } from '../../../../../../constants'
 
 function action(type) {
   const params = ToolbarModule.getParams()
@@ -36,6 +36,7 @@ export default function(type, title, customAction) {
     title,
     action: () => {
       if (customAction === false) {
+        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {

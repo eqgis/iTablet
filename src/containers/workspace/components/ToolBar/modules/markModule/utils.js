@@ -4,13 +4,12 @@ function getLayout(type, orientation) {
   let height
   let column
   switch (type) {
-    case ConstToolType.MAP_NAVIGATION_MODULE:
+    case ConstToolType.MAP_MARKS:
+      height = ConstToolType.TOOLBAR_HEIGHT[2]
       if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[5]
         column = 4
       } else {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
+        column = 5
       }
       break
   }

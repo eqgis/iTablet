@@ -1,10 +1,6 @@
 import React from 'react'
 import { View, Animated, Text, FlatList } from 'react-native'
-import {
-  ToolbarType,
-  ConstToolType,
-  Const,
-} from '../../../../../../constants'
+import { ToolbarType, ConstToolType, Const } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -12,7 +8,6 @@ import { ColorTable } from '../../../../../mapSetting/secondMapSettings/componen
 import { Row, HorizontalTableList, MTBtn } from '../../../../../../components'
 import SymbolTabs from '../../../SymbolTabs'
 import SymbolList from '../../../SymbolList'
-import AnimationNodeListView from '../../modules/plotModule/customView/AnimationNodeListView'
 import ToolbarPicker from '../ToolbarPicker'
 import ToolList from '../ToolList'
 import ToolbarTableList from '../ToolbarTableList'

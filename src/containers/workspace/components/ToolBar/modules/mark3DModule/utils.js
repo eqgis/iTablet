@@ -1,6 +1,6 @@
 import { ConstToolType } from '../../../../../../constants'
 
-function getLayout(type, orientation, currentHeight) {
+function getLayout(type, orientation) {
   let height
   let column
   switch (type) {
@@ -13,13 +13,11 @@ function getLayout(type, orientation, currentHeight) {
         column = 5
       }
       break
-    case ConstToolType.MAP_MARKS:
-      height = ConstToolType.TOOLBAR_HEIGHT[2]
-      if (orientation === 'PORTRAIT') {
-        column = 4
-      } else {
-        column = 5
-      }
+    case ConstToolType.MAP3D_SYMBOL_POINT:
+    case ConstToolType.MAP3D_SYMBOL_TEXT:
+    case ConstToolType.MAP3D_SYMBOL_POINTLINE:
+    case ConstToolType.MAP3D_SYMBOL_POINTSURFACE:
+      height = 0
       break
   }
   return { height, column }

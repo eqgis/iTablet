@@ -108,15 +108,19 @@ async function getToolBarData(type, params = {}) {
   ) {
     toolBarData = plotModule().getData(type, params)
   } else if (
+    type === ConstToolType.MAP3D_MARK ||
+    type === ConstToolType.MAP3D_SYMBOL_POINT ||
+    type === ConstToolType.MAP3D_SYMBOL_TEXT ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE
+  ) {
+    toolBarData = mark3DModule().getData(type, params)
+  } else if (
     type === ConstToolType.MAP3D_TOOL_FLYLIST ||
     type === ConstToolType.MAP3D_TOOL_NEWFLY
   ) {
     toolBarData = await fly3DModule().getData(type, params)
-  } else if (
-    (typeof type === 'string' && type.indexOf('MAP3D_') > -1) ||
-    type === ConstToolType.MAP3D_BOX_CLIPPING ||
-    type === ConstToolType.MAP3D_BOX_CLIP
-  ) {
+  } else if (typeof type === 'string' && type.indexOf('MAP3D_') > -1) {
     toolBarData = await tool3DModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
     toolBarData = legendModule().getData(type, params)
@@ -134,14 +138,6 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.MAP_MARKS_DRAW
   ) {
     toolBarData = markModule().getData(type, params)
-  } else if (
-    type === ConstToolType.MAP3D_MARK ||
-    type === ConstToolType.MAP3D_SYMBOL_POINT ||
-    type === ConstToolType.MAP3D_SYMBOL_TEXT ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE
-  ) {
-    toolBarData = mark3DModule().getData(type, params)
   }
   return toolBarData
 }

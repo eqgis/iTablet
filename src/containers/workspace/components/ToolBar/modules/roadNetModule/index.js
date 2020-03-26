@@ -6,7 +6,7 @@
  */
 import NavigationService from '../../../../../NavigationService'
 import RoadNetData from './RoadNetData'
-import { ToolbarModule } from '../index'
+import ToolbarModule from '../ToolbarModule'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
@@ -58,6 +58,7 @@ export default function(type, title, customAction) {
     title,
     action: () => {
       if (customAction === false) {
+        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {

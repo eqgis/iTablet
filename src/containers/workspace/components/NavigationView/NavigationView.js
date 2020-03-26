@@ -17,7 +17,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog } from '../../../../components'
-import { ToolbarModule } from '../ToolBar/modules'
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 

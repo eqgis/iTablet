@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography, SMap, EngineType } from 'imobile_for_reactnative'
+import { SThemeCartography } from 'imobile_for_reactnative'
 import { ConstToolType, ConstPath, UserType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil } from '../../../../../../utils'

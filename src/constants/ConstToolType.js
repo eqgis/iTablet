@@ -2,7 +2,6 @@
  * 地图功能列表/工具栏 对应的标识符
  */
 import { scaleSize } from '../utils'
-import { ConstToolType } from './index'
 
 const TOOLBAR_HEIGHT_1 = 88
 const TOOLBAR_HEIGHT_2 = 80

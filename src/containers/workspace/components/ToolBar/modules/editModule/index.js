@@ -5,7 +5,6 @@ import { SMap, Action } from 'imobile_for_reactnative'
 import EditData from './EditData'
 import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import utils from './utils'
@@ -39,6 +38,7 @@ export default function(type, title, customAction) {
     title,
     action: () => {
       if (customAction === false) {
+        return
       } else if (typeof customAction === 'function') {
         customAction(type)
       } else {

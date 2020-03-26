@@ -1,6 +1,6 @@
 import { ConstToolType } from '../../../../../../constants'
 
-function getLayout(type, orientation) {
+function getLayout(type) {
   let height
   let column
   switch (type) {
@@ -9,8 +9,6 @@ function getLayout(type, orientation) {
       height = ConstToolType.HEIGHT[0]
       column = 4
       break
-    // default:
-    //   height = 0
   }
   return { height, column }
 }

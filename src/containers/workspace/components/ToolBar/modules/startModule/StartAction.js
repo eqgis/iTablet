@@ -16,7 +16,6 @@ import NavigationService from '../../../../../NavigationService'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
 import utils from './utils'
 
 /** 切换工作空间 * */
@@ -622,7 +621,7 @@ function saveMap() {
   // GLOBAL.isBackHome = false
   // ToolbarModule.getParams().setSaveViewVisible(true)
 
-  ;(async function() {
+  (async function() {
     try {
       if (GLOBAL.Type === constants.MAP_3D) {
         GLOBAL.openWorkspace && Toast.show(ConstInfo.SAVE_SCENE_SUCCESS)
@@ -695,7 +694,7 @@ function saveMap() {
 
 /** 另存地图 * */
 function saveMapAs() {
-  ;(async function() {
+  (async function() {
     // if (!ToolbarModule.getParams().setSaveMapDialogVisible) return
     // ToolbarModule.getParams().setSaveMapDialogVisible(true)
     const userPath =

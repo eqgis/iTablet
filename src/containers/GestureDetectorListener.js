@@ -12,7 +12,7 @@ import { Toast } from '../utils'
 let _params = {}
 let isDoubleTouchCome = false
 function setGestureDetectorListener(params) {
-  ;(async function() {
+  (async function() {
     await SMap.setGestureDetector({
       singleTapHandler: touchCallback,
       longPressHandler: longtouchCallback,
@@ -41,7 +41,7 @@ async function longtouchCallback(event) {
     case TouchType.NORMAL:
       break
     case TouchType.NAVIGATION_TOUCH_BEGIN:
-      ;(async function() {
+      (async function() {
         await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
         GLOBAL.STARTX = event.LLPoint.x
         GLOBAL.STARTY = event.LLPoint.y
@@ -77,7 +77,7 @@ async function longtouchCallback(event) {
       })()
       break
     case TouchType.NAVIGATION_TOUCH_END:
-      ;(async function() {
+      (async function() {
         await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
         GLOBAL.ENDX = event.LLPoint.x
         GLOBAL.ENDY = event.LLPoint.y
@@ -215,12 +215,13 @@ async function touchCallback(event) {
     case TouchType.ANIMATION_WAY:
       SMap.addAnimationWayPoint(event.screenPoint, true)
       break
-    case TouchType.MAP_SELECT_POINT:
+    case TouchType.MAP_SELECT_POINT: {
       const point = await SMap.getPixelPointToMap(event.screenPoint)
       GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
       SMap.deleteMarker(118081)
       SMap.showMarker(point.x, point.y, 118081)
       break
+    }
     case TouchType.ADD_NODES:
     case TouchType.NULL:
       break

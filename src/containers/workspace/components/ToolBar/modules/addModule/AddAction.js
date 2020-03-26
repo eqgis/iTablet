@@ -4,7 +4,6 @@ import { Toast, LayerUtils } from '../../../../../../utils'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import AddData from './AddData'
-import NavigationService from '../../../../../NavigationService'
 
 /**
  * containerType为list时，listAction为列表行点击事件

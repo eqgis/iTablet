@@ -11,7 +11,7 @@ import {
 import NavigationService from '../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../language'
-import ToolbarModule from '../workspace/components/ToolBar/modules'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
 import { FileTools } from '../../native'
 import { Toast, dataUtil, scaleSize } from '../../utils'

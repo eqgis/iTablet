@@ -18,7 +18,9 @@ function getToolbarHeight(type, currentHeight) {
     column = 0
     return { height, column }
   }
+  // eslint-disable-next-line
   while (keys[i] && keys[i] !== 'default' && modules[keys[i]]) {
+    // eslint-disable-next-line
     const moduleFunc = modules[keys[i]]
     const module = moduleFunc()
     if (module.getLayout) {

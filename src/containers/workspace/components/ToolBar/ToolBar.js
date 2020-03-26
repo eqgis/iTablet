@@ -17,7 +17,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import { SMap, SScene, Action, SCollector } from 'imobile_for_reactnative'
+import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import constants from '../../constants'
 import styles from './styles'
@@ -292,6 +292,7 @@ export default class ToolBar extends React.PureComponent {
    *   height:          工具栏高度
    *   column:          表格列数（仅table可用）
    *   containerType:   容器的类型, list | table
+   *   resetToolModuleData: 是否重置ToolbarModule中的data
    * }
    **/
   setVisible = (isShow, type = this.state.type, params = {}) => {
@@ -313,7 +314,7 @@ export default class ToolBar extends React.PureComponent {
       params.isTouchProgress !== this.state.isTouchProgress
       // params.listSelectable !== this.state.listSelectable
     ) {
-      ;(async function() {
+      (async function() {
         let data = params.data
         let buttons = params.buttons
         let customView = params.customView
@@ -324,7 +325,7 @@ export default class ToolBar extends React.PureComponent {
           customView = customView || _data.customView
         }
         // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
-        if (this.state.type !== type) {
+        if (this.state.type !== type && params.resetToolModuleData) {
           await ToolbarModule.setToolBarData(type)
         }
         this.originType = type
@@ -354,8 +355,8 @@ export default class ToolBar extends React.PureComponent {
               params && params.themeType
                 ? params.themeType
                 : isShow
-                ? this.state.themeType
-                : '',
+                  ? this.state.themeType
+                  : '',
             selectKey: params && params.selectKey ? params.selectKey : '',
             selectName: params && params.selectName ? params.selectName : '',
           },
@@ -413,8 +414,8 @@ export default class ToolBar extends React.PureComponent {
           toValue: isShow
             ? 0
             : -(this.props.device.height >= this.props.device.width
-                ? this.props.device.height
-                : this.props.device.width),
+              ? this.props.device.height
+              : this.props.device.width),
           duration: Const.ANIMATED_DURATION,
         }),
       )
@@ -857,14 +858,14 @@ export default class ToolBar extends React.PureComponent {
           this.state.type !== ConstToolType.STYLE_TRANSFER &&
           !this.state.isTouchProgress &&
           !this.state.showMenuDialog && (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => {
-                this.overlayOnPress()
-              }}
-              style={styles.themeoverlay}
-            />
-          )}
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              this.overlayOnPress()
+            }}
+            style={styles.themeoverlay}
+          />
+        )}
         {this.state.isTouchProgress && this.state.isFullScreen && (
           <TouchProgress
             selectName={this.state.selectName}

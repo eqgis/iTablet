@@ -184,7 +184,6 @@ export default class EnterDatumPoint extends Component {
           datasourceAlias,
         )
 
-        let time = await SCollectSceneFormView.getSystemTime()
         GLOBAL.mapView.setState({ map: { height: 0 } })
         // GLOBAL.newcollectData = time
         GLOBAL.newcollectData = datasourceAlias

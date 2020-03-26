@@ -19,7 +19,20 @@ import {
   mapSettingModule,
   markModule,
   mark3DModule,
-} from '.'
+  incrementModule,
+} from '../modules'
+
+// 更新类中的数据
+// function setParams(params) {
+//   // _params = params
+//   CollectionData.setParams(params)
+//   PlotData.setParams(params)
+//   StartData.setParams(params)
+//   ShareData.setParams(params)
+//   MoreData.setParams(params)
+//   Map3DData.setParams(params)
+// }
+
 
 let _params = {} // 外部数据和方法 Toolbar props
 let _data = {} // 临时数据
@@ -107,6 +120,12 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
     toolBarData = plotModule().getData(type, params)
+  } else if(
+    type === ConstToolType.MAP_INCREMENT_OUTTER ||
+    type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
+    type === ConstToolType.MAP_INCREMENT_EDIT
+  ){
+    toolBarData = incrementModule().getData(type,params)
   } else if (
     type === ConstToolType.MAP3D_MARK ||
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
@@ -171,8 +190,15 @@ async function setToolBarData(type, params = {}) {
       type === ConstToolType.STYLE_TRANSFER)
   ) {
     toolBarData = toolModule()
+  }else if(
+    type === ConstToolType.MAP_INCREMENT_OUTTER ||
+    type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
+    type === ConstToolType.MAP_INCREMENT_EDIT
+  ){
+    toolBarData = incrementModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     toolBarData = shareModule()
+
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
     toolBarData = themeModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {

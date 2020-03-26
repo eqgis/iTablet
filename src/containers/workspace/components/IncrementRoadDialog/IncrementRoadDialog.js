@@ -1,0 +1,54 @@
+/**
+ * @description
+ * @author: Asort
+ * Copyright © SuperMap. All rights reserved.
+ * https://github.com/AsortKeven
+ */
+
+import React,{Component} from 'react'
+import {View,TouchableOpacity,StyleSheet} from 'react-native'
+import {color} from "../../../../styles"
+
+export default class IncrementRoadDialog extends Component{
+  constructor(props){
+    super(props)
+    this.state={
+      visible:false,
+    }
+  }
+
+  setVisible = visible => {
+    visible = visible === undefined ? !this.state.visible : visible
+    if (visible === this.state.visible) return
+    this.setState({
+      visible,
+    })
+  }
+
+  render(){
+    if(!this.state.visible) return <View/>
+    return (
+      <TouchableOpacity
+        style={styles.container}
+        onPress={()=>{
+          this.setVisible(false)
+        }
+        }>
+        {this.props.children}
+      </TouchableOpacity>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container:{
+    position:'absolute',
+    left:0,
+    right:0,
+    top:0,
+    bottom:0,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:color.overlay,
+  },
+})

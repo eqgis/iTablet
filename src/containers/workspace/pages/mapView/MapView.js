@@ -45,8 +45,7 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
-  LayerVisibilityView,
+  PreviewColorPicker, LayerVisibilityView, IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import {
@@ -80,7 +79,7 @@ import {
   ConstToolType,
   TouchType,
   ConstInfo,
-  getHeaderTitle,
+  getHeaderTitle, ToolbarType,
 } from '../../../../constants'
 import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
@@ -97,6 +96,7 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
+import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight";
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -2582,6 +2582,87 @@ export default class MapView extends React.Component {
     }
   }
 
+  _pressRoad = type => {
+    const params = ToolbarModule.getParams()
+    let data = ToolBarHeight.getToolbarHeight(type)
+    this.showFullMap(true)
+    switch (type) {
+      case ConstToolType.MAP_INCREMENT_OUTTER:
+        params.setToolbarVisible(true, type, {
+          containerType:ToolbarType.table,
+          isFullScreen: false,
+          resetToolModuleData:true,
+          height:data.height,
+          column:data.column,
+        })
+        break
+      case ConstToolType.MAP_INCREMENT_INNER:
+        break
+    }
+    GLOBAL.IncrementRoadDialog.setVisible(false)
+  }
+  renderIncrementDialog = () => {
+    return(
+      <IncrementRoadDialog ref={ref=>(GLOBAL.IncrementRoadDialog = ref)}>
+        <View style={{
+          width:scaleSize(500),
+          height:scaleSize(300),
+          backgroundColor:color.background,
+          borderRadius:5,
+          flexDirection:'row',
+          justifyContent: 'space-around',
+          paddingTop:scaleSize(20),
+        }}>
+          <TouchableOpacity
+            style={{
+              width:scaleSize(200),
+              height:scaleSize(260),
+              flexDirection:'column',
+              justifyContent: 'space-around',
+              alignItems:'center',
+            }}
+            onPress={()=>{
+              this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
+            }}
+          >
+            <Image
+              style={{
+                width:scaleSize(200),
+                height:scaleSize(200),
+              }}
+              resizeMode={'contain'}
+            />
+            <Text style={{
+              fontSize:scaleSize(20),
+            }}>室内路网</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width:scaleSize(200),
+              height:scaleSize(260),
+              flexDirection:'column',
+              justifyContent: 'space-around',
+              alignItems:'center',
+            }}
+            onPress={()=>{
+              this._pressRoad(ConstToolType.MAP_INCREMENT_OUTTER)
+            }}
+          >
+            <Image
+              style={{
+                width:scaleSize(200),
+                height:scaleSize(200),
+              }}
+              resizeMode={'contain'}
+            />
+            <Text style={{
+              fontSize:scaleSize(20),
+            }}>室外路网</Text>
+          </TouchableOpacity>
+        </View>
+      </IncrementRoadDialog>
+    )
+  }
   _renderAIDetectChange = () => {
     return (
       <MapSelectPoint
@@ -3107,6 +3188,7 @@ export default class MapView extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this.renderIncrementDialog()}
       </View>
     )
   }

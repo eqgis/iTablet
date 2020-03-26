@@ -5,6 +5,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native'
 import { Container, Button } from '../../components'
 
@@ -13,6 +14,7 @@ import { getLanguage } from '../../language'
 import { SMap, SCollectSceneFormView, Action } from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
+import constants from '../../containers/workspace/constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
 
@@ -163,18 +165,53 @@ export default class EnterDatumPoint extends Component {
       )
       return
     }
-    let time = await SCollectSceneFormView.getSystemTime()
-    GLOBAL.mapView.setState({ map: { height: 0 } })
-    GLOBAL.newcollectData = time
-    const datasourceAlias = time
-    const datasetName = 'CollectSceneForm'
-    const datasetPointName = 'CollectPointSceneForm'
-    NavigationService.navigate('CollectSceneFormView', {
-      datasourceAlias,
-      datasetName,
-      datasetPointName,
-      point,
-    })
+    //查看历史数据源
+    AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
+      .then(async value => {
+        let datasourceAlias
+        if (value !== null) {
+          let alias = SMap.isAvilableAlias(value)
+          if (alias === value) {
+            datasourceAlias = await SCollectSceneFormView.getSystemTime()
+          } else {
+            datasourceAlias = value
+          }
+        } else {
+          datasourceAlias = await SCollectSceneFormView.getSystemTime()
+        }
+        AsyncStorage.setItem(
+          constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY,
+          datasourceAlias,
+        )
+
+        let time = await SCollectSceneFormView.getSystemTime()
+        GLOBAL.mapView.setState({ map: { height: 0 } })
+        // GLOBAL.newcollectData = time
+        GLOBAL.newcollectData = datasourceAlias
+        // const datasourceAlias = time
+        const datasetName = 'CollectSceneForm'
+        const datasetPointName = 'CollectPointSceneForm'
+        NavigationService.replace('CollectSceneFormView', {
+          datasourceAlias,
+          datasetName,
+          datasetPointName,
+          point,
+        })
+      })
+      .catch(() => {})
+
+    // let time = await SCollectSceneFormView.getSystemTime()
+    // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // GLOBAL.newcollectData = time
+    // const datasourceAlias = time
+    // const datasetName = 'CollectSceneForm'
+    // const datasetPointName = 'CollectPointSceneForm'
+    // NavigationService.navigate('CollectSceneFormView', {
+    //   datasourceAlias,
+    //   datasetName,
+    //   datasetPointName,
+    //   point,
+    // })
   }
 
   //提交按钮

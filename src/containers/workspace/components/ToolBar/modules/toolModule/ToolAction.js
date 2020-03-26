@@ -595,21 +595,21 @@ function selectLabelToEdit(toolType = '') {
     toolType = global.MapToolType
   }
   switch (toolType) {
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE
       height = ConstToolType.HEIGHT[0]
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE
       height = ConstToolType.HEIGHT[2]
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
       height = ConstToolType.HEIGHT[2]
       containerType = ToolbarType.scrollTable
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT:
-      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
+      type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
       height = ConstToolType.HEIGHT[0]
       break
   }
@@ -1110,7 +1110,8 @@ function toolbarBack() {
   const _params = ToolbarModule.getParams()
   if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
-    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
     SMap.clearSelection()
     _params.setSelection()
@@ -1121,7 +1122,9 @@ function toolbarBack() {
       height: 0,
       cb: () => select(type),
     })
-  } else if (GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1) {
+  } /*else if (
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
+  ) {
     let type = ''
     let layerType = ToolbarModule.getData().event.layerInfo.type
     let height = ConstToolType.THEME_HEIGHT[3]
@@ -1166,7 +1169,7 @@ function toolbarBack() {
         cb: () => select(type),
       })
     }
-  }
+  }*/
 }
 
 async function close(type) {

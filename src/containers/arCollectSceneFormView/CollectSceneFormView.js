@@ -50,6 +50,7 @@ export default class CollectSceneFormView extends React.Component {
     this.datasetPointName = params.datasetPointName
     this.SceneViewVisible = true
     this.isRecording = true
+    this.isNewCreate = false
     this.state = {
       totalLength: 0,
       showHistory: false,
@@ -97,6 +98,7 @@ export default class CollectSceneFormView extends React.Component {
         setTimeout(function() {
           //设置基点
           SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+          SCollectSceneFormView.startRecording()
         }, 500)
 
         //注册监听
@@ -163,6 +165,7 @@ export default class CollectSceneFormView extends React.Component {
     )
     await SCollectSceneFormView.startRecording()
     this.setState({ isnew: true })
+    this.isNewCreate = true
     // }
   }
 

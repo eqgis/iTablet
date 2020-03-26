@@ -171,8 +171,8 @@ async function createCollector(type, layerName) {
   } else {
     const datasetName = ToolbarModule.getParams().symbol.currentSymbol.type
       ? `${ToolbarModule.getParams().symbol.currentSymbol.type}_${
-          ToolbarModule.getParams().symbol.currentSymbol.id
-        }`
+        ToolbarModule.getParams().symbol.currentSymbol.id
+      }`
       : ''
     const datasourcePath =
       ToolbarModule.getParams().collection.datasourceParentPath ||
@@ -182,8 +182,8 @@ async function createCollector(type, layerName) {
           ToolbarModule.getParams().user.currentUser.name
           ? `${ConstPath.UserPath +
               ToolbarModule.getParams().user.currentUser.name}/${
-              ConstPath.RelativePath.Datasource
-            }`
+            ConstPath.RelativePath.Datasource
+          }`
           : ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
       ))
 

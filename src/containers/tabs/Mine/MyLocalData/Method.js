@@ -314,11 +314,11 @@ async function downFileAction(
                   result => {
                     result.length > 0
                       ? Toast.show(
-                          getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
-                        ) // '数据导入成功')
+                        getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
+                      ) // '数据导入成功')
                       : Toast.show(
-                          getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
-                        ) // '数据导入失败')
+                        getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                      ) // '数据导入失败')
                   },
                   () => {
                     Toast.show(

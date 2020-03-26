@@ -330,7 +330,7 @@ export default class ToolBarSectionList extends React.Component {
                 {this.state.allSelected
                   ? getLanguage(global.language).Map_Main_Menu.THEME_ALL_CANCEL
                   : getLanguage(global.language).Map_Main_Menu
-                      .THEME_ALL_SELECTED}
+                    .THEME_ALL_SELECTED}
                 {/* 全部选中 */}
               </Text>
             </TouchableOpacity>

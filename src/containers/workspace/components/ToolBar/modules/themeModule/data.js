@@ -533,7 +533,7 @@ function getThemeMapCreate(type) {
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () =>
-              showExpressionList('ThemeGraph', constants.THEME_GRAPH_STACK_BAR)
+            showExpressionList('ThemeGraph', constants.THEME_GRAPH_STACK_BAR)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_stack_bar,
       selectedImage: getThemeAssets().themeType.theme_graph_stack_bar,
@@ -547,10 +547,10 @@ function getThemeMapCreate(type) {
       action:
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () =>
-              showExpressionList(
-                'ThemeGraph',
-                constants.THEME_GRAPH_STACK_BAR3D,
-              )
+            showExpressionList(
+              'ThemeGraph',
+              constants.THEME_GRAPH_STACK_BAR3D,
+            )
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_stack_bar3d,
       selectedImage: getThemeAssets().themeType.theme_graph_stack_bar3d,
@@ -577,9 +577,9 @@ function getThemeMapCreate(type) {
         type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_DOT_DENSITY)
           : () =>
-              showDatasetsList(type, {
-                typeFilter: ['REGION'],
-              }),
+            showDatasetsList(type, {
+              typeFilter: ['REGION'],
+            }),
       image: getThemeAssets().themeType.theme_dot_density,
       selectedImage: getThemeAssets().themeType.theme_dot_density,
     },

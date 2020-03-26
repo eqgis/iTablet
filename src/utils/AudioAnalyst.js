@@ -118,7 +118,7 @@ function getThmeType(content) {
  * @param type
  */
 function goToMapView(type) {
-  ;(async function() {
+  (async function() {
     let key = ''
     let exist = false
     const { routes } = nav
@@ -201,7 +201,7 @@ function setThemeByIndex(index, type = '') {
     Toast.show('请先打开地图工作区')
     return
   }
-  ;(async function() {
+  (async function() {
     const layer = await map.getLayer(index)
     switch (type) {
       case themeType.UNIQUE:
@@ -232,7 +232,7 @@ function setThemeByIndex(index, type = '') {
  * @param layer
  */
 function setUniqueTheme(layer) {
-  ;(async function() {
+  (async function() {
     try {
       const dataset = await layer.getDataset()
       const datasetVector = await dataset.toDatasetVector()
@@ -256,7 +256,7 @@ function setUniqueTheme(layer) {
  * @param layer
  */
 function setRangeTheme(layer) {
-  ;(async function() {
+  (async function() {
     try {
       const dataset = await layer.getDataset()
       const datasetVector = await dataset.toDatasetVector()
@@ -282,7 +282,7 @@ function setRangeTheme(layer) {
  * @param layer
  */
 function setLabelTheme(layer) {
-  ;(async function() {
+  (async function() {
     try {
       const dataset = await layer.getDataset()
       const themeLabel = await new ThemeLabel().createObj()

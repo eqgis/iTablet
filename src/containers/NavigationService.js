@@ -14,7 +14,7 @@ function setTopLevelNavigator(navigatorRef) {
 }
 
 function navigate(routeName, params) {
-  ;(async function() {
+  (async function() {
     if (routeName === preRoute) return
     preRoute = routeName
     await _navigator.dispatch(
@@ -36,7 +36,7 @@ function navigate(routeName, params) {
  * @param immediate
  */
 function goBack(routeName, immediate) {
-  ;(async function _goBack() {
+  (async function _goBack() {
     let key
     if (routeName) {
       const { routes } = _navigator.state.nav
@@ -58,7 +58,7 @@ function goBack(routeName, immediate) {
 }
 
 function pop(index = 1) {
-  ;(async function _goBack() {
+  (async function _goBack() {
     await _navigator.dispatch(
       StackActions.pop({
         n: index,

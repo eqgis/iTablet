@@ -157,8 +157,8 @@ export default class TouchProgress extends Component {
             value !== undefined
               ? value
               : await SThemeCartography.getHeatMapRadius({
-                  LayerName: this.props.currentLayer.name,
-                })
+                LayerName: this.props.currentLayer.name,
+              })
           this._panBtnStyles.style.left =
             (this.nuclearRadius * progressWidth) / 50 + panBtnDevLeft
           this._previousLeft = (this.nuclearRadius * progressWidth) / 50
@@ -176,8 +176,8 @@ export default class TouchProgress extends Component {
             value !== undefined
               ? value
               : await SThemeCartography.getHeatMapFuzzyDegree({
-                  LayerName: this.props.currentLayer.name,
-                })
+                LayerName: this.props.currentLayer.name,
+              })
           this._panBtnStyles.style.left =
             (this.fuzzyDegree * progressWidth) / 100 + panBtnDevLeft
           this._previousLeft = (this.fuzzyDegree * progressWidth) / 100
@@ -197,8 +197,8 @@ export default class TouchProgress extends Component {
             value !== undefined
               ? value
               : await SThemeCartography.getHeatMapMaxColorWeight({
-                  LayerName: this.props.currentLayer.name,
-                })
+                LayerName: this.props.currentLayer.name,
+              })
           this._panBtnStyles.style.left =
             (this.maxColorWeight * progressWidth) / 100 + panBtnDevLeft
           this._previousLeft = (this.maxColorWeight * progressWidth) / 100
@@ -221,8 +221,8 @@ export default class TouchProgress extends Component {
                 value !== undefined
                   ? value
                   : await SThemeCartography.getRangeCount({
-                      LayerName: this.props.currentLayer.name,
-                    })
+                    LayerName: this.props.currentLayer.name,
+                  })
               this._panBtnStyles.style.left =
                 (this.ragngeCount * progressWidth) / 32 + panBtnDevLeft
               this._previousLeft = (this.ragngeCount * progressWidth) / 32
@@ -240,8 +240,8 @@ export default class TouchProgress extends Component {
                 value !== undefined
                   ? value
                   : await SThemeCartography.getGridRangeCount({
-                      LayerName: this.props.currentLayer.name,
-                    })
+                    LayerName: this.props.currentLayer.name,
+                  })
               this._panBtnStyles.style.left =
                 (this.ragngeCount * progressWidth) / 32 + panBtnDevLeft
               this._previousLeft = (this.ragngeCount * progressWidth) / 32
@@ -278,8 +278,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getDotDensityValue({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.dotValue * progressWidth) / 100 + panBtnDevLeft
                 this._previousLeft = (this.dotValue * progressWidth) / 100
@@ -297,8 +297,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getDotDensityDotSize({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.dotSize * progressWidth) / 100 + panBtnDevLeft
                 this._previousLeft = (this.dotSize * progressWidth) / 100
@@ -322,8 +322,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getGraduatedSymbolValue({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.baseValue * progressWidth) / 10000 + panBtnDevLeft
                 this._previousLeft = (this.baseValue * progressWidth) / 10000
@@ -341,8 +341,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getGraduatedSymbolSize({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.graSymbolSize * progressWidth) / 100 + panBtnDevLeft
                 this._previousLeft = (this.graSymbolSize * progressWidth) / 100
@@ -370,8 +370,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getLabelFontSize({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.fontsize * progressWidth) / 20 + panBtnDevLeft
                 this._previousLeft = (this.fontsize * progressWidth) / 20
@@ -397,9 +397,9 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getLabelFontSize({
-                        LayerName: this.props.currentLayer.name,
-                        type: 'range',
-                      })
+                      LayerName: this.props.currentLayer.name,
+                      type: 'range',
+                    })
                 this._panBtnStyles.style.left =
                   (this.fontsize * progressWidth) / 20 + panBtnDevLeft
                 this._previousLeft = (this.fontsize * progressWidth) / 20
@@ -417,8 +417,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getRangeCount({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
                 this._panBtnStyles.style.left =
                   (this.ragngeCount * progressWidth) / 32 + panBtnDevLeft
                 this._previousLeft = (this.ragngeCount * progressWidth) / 32
@@ -442,8 +442,8 @@ export default class TouchProgress extends Component {
                   value !== undefined
                     ? value
                     : await SThemeCartography.getGraphMaxValue({
-                        LayerName: this.props.currentLayer.name,
-                      })
+                      LayerName: this.props.currentLayer.name,
+                    })
 
                 if (newValue <= 1) {
                   newValue = 1
@@ -494,8 +494,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : await SCartography.getMarkerAlpha(
-                    this.props.currentLayer.name,
-                  )
+                  this.props.currentLayer.name,
+                )
             this._panBtnStyles.style.left =
               (pointAlpha * progressWidth) / 100 + panBtnDevLeft
             this._previousLeft = (pointAlpha * progressWidth) / 100
@@ -513,8 +513,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : await SCartography.getMarkerAngle(
-                    this.props.currentLayer.name,
-                  )
+                  this.props.currentLayer.name,
+                )
             this._panBtnStyles.style.left =
               (pointAngle * progressWidth) / 360 + panBtnDevLeft
             this._previousLeft = (pointAngle * progressWidth) / 360
@@ -573,8 +573,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : await SCartography.getFillOpaqueRate(
-                    this.props.currentLayer.name,
-                  )
+                  this.props.currentLayer.name,
+                )
             this._panBtnStyles.style.left =
               (fillOpaque * progressWidth) / 100 + panBtnDevLeft
             this._previousLeft = (fillOpaque * progressWidth) / 100
@@ -627,8 +627,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : await SCartography.getGridOpaqueRate(
-                    this.props.currentLayer.name,
-                  )
+                  this.props.currentLayer.name,
+                )
             this._panBtnStyles.style.left =
               (gridOpaque * progressWidth) / 100 + panBtnDevLeft
             this._previousLeft = (gridOpaque * progressWidth) / 100
@@ -645,8 +645,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : (await SCartography.getGridBrightness(
-                    this.props.currentLayer.name,
-                  )) + 100
+                  this.props.currentLayer.name,
+                )) + 100
             this._panBtnStyles.style.left =
               (gridBright * progressWidth) / 200 + panBtnDevLeft
             this._previousLeft = (gridBright * progressWidth) / 200
@@ -664,8 +664,8 @@ export default class TouchProgress extends Component {
               value !== undefined
                 ? value
                 : (await SCartography.getGridContrast(
-                    this.props.currentLayer.name,
-                  )) + 100
+                  this.props.currentLayer.name,
+                )) + 100
             this._panBtnStyles.style.left =
               (gridContrast * progressWidth) / 200 + panBtnDevLeft
             this._previousLeft = (gridContrast * progressWidth) / 200

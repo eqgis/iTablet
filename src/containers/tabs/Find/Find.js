@@ -254,12 +254,12 @@ export default class Find extends Component {
                 type: 'SuperMapGroup',
                 callback: this.state.superMapGroup
                   ? () => {
-                      this.setState({ superMapGroup: false })
-                      AsyncStorage.setItem(
-                        SUPERMAPGROUP_UPDATE_TIME,
-                        superMapGroupTime,
-                      )
-                    }
+                    this.setState({ superMapGroup: false })
+                    AsyncStorage.setItem(
+                      SUPERMAPGROUP_UPDATE_TIME,
+                      superMapGroupTime,
+                    )
+                  }
                   : null,
               })
             },
@@ -275,12 +275,12 @@ export default class Find extends Component {
                 type: 'SuperMapKnow',
                 callback: this.state.superMapKnown
                   ? () => {
-                      this.setState({ superMapKnown: false })
-                      AsyncStorage.setItem(
-                        SUPERMAPKNOWN_UPDATE_TIME,
-                        superMapKnownTime,
-                      )
-                    }
+                    this.setState({ superMapKnown: false })
+                    AsyncStorage.setItem(
+                      SUPERMAPKNOWN_UPDATE_TIME,
+                      superMapKnownTime,
+                    )
+                  }
                   : null,
               })
             },

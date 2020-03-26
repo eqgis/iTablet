@@ -1112,6 +1112,7 @@ function toolbarBack() {
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
+    SMap.cancel()
     SMap.clearSelection()
     _params.setSelection()
     const type = ConstToolType.MAP_TOOL_TAGGING_SELECT

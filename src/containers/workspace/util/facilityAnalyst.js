@@ -127,7 +127,7 @@ async function longPressHandler(event) {
       await mMap.refresh()
     }
   } catch (e) {
-    ;() => {}
+    () => {}
   }
 }
 
@@ -232,7 +232,7 @@ async function startSelect() {
     await geoStyle.setLineWidth(0.4)
     await mSelection.setStyle(geoStyle)
   } catch (e) {
-    ;() => {}
+    () => {}
   }
 }
 

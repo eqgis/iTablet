@@ -155,8 +155,8 @@ function getOperationData(type) {
     type === ConstToolType.MAP_COLLECTION_POINT
       ? SMCollectorType.POINT_GPS
       : type === ConstToolType.MAP_COLLECTION_LINE
-      ? SMCollectorType.LINE_GPS_POINT
-      : SMCollectorType.REGION_GPS_POINT
+        ? SMCollectorType.LINE_GPS_POINT
+        : SMCollectorType.REGION_GPS_POINT
   data.push({
     key: 'gpsPoint',
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,

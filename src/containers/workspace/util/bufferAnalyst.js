@@ -38,7 +38,7 @@ async function analyst(data) {
 }
 
 function clear() {
-  ;(async function() {
+  (async function() {
     await SAnalyst.clear()
   })()
 }

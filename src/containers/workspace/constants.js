@@ -193,4 +193,7 @@ export default {
 
   //==================许可==============
   LICENSE_OFFICIAL_STORAGE_KEY: 'LICENSE_OFFICIAL_STORAGE_KEY',
+
+  //================高精采集历史数据源=============
+  COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY: 'COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY',
 }

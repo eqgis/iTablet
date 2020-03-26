@@ -10,7 +10,7 @@ import MarkAction from './MarkAction'
 import ToolbarModule from '../ToolbarModule'
 import ToolBarHeight from '../ToolBarHeight'
 import { ConstToolType } from '../../../../../../constants'
-import {getThemeAssets} from "../../../../../../assets";
+import {getThemeAssets} from "../../../../../../assets"
 
 function action(type) {
   const data = ToolBarHeight.getToolbarHeight(type)

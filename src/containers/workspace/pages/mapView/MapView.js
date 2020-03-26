@@ -1496,7 +1496,7 @@ export default class MapView extends React.Component {
         GLOBAL.TaggingDatasetName = await SMap.getDefaultTaggingDataset(
           this.props.user.currentUser.userName,
         )
-        //todo 检测默认标注是否存在 新建默认标注 设为当前图层
+        // 检测默认标注是否存在 新建默认标注 设为当前图层
         let currentLayer = this.props.layers.layers[0]
         let hasDefaultTagging = await SMap.hasDefaultTagging(this.props.user.currentUser.userName)
         let defaultTaggingName = `Default_Tagging@Label_${this.props.user.currentUser.userName}#`
@@ -1510,6 +1510,7 @@ export default class MapView extends React.Component {
             let layers = await this.props.getLayers()
             currentLayer = layers[0]
           }
+          GLOBAL.TaggingDatasetName = defaultTaggingName
         }else{
           await SMap.setLabelColor()
           let data = await SMap.newTaggingDataset(
@@ -1520,6 +1521,7 @@ export default class MapView extends React.Component {
           let layers = await this.props.getLayers()
           currentLayer = layers[0]
         }
+        await SMap.setLayerEditable(defaultTaggingName,true)
         this.props.setCurrentLayer(currentLayer)
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })

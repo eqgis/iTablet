@@ -10,7 +10,6 @@ import {getLanguage} from "../../../../../../language"
  * https://github.com/AsortKeven
  */
 import {SMap, Action} from 'imobile_for_reactnative'
-import NavigationService from "../../../../../NavigationService"
 
 async function point() {
   const _params = ToolbarModule.getParams()
@@ -28,7 +27,7 @@ async function point() {
         layerType === 'POINTLAYER'
   ) {
     SMap.setAction(Action.CREATEPOINT)
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -49,7 +48,7 @@ async function words() {
         layerType === 'CADLAYER' ||
         layerType === 'TEXTLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -72,7 +71,7 @@ async function pointline() {
         layerType === 'CADLAYER' ||
         layerType === 'LINELAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -95,11 +94,11 @@ async function freeline() {
         layerType === 'CADLAYER' ||
         layerType === 'LINELAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
-    SMap.setAction(Action.DRAWLINE)
+    SMap.setAction(Action.FREEDRAW)
   } else {
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
@@ -118,7 +117,7 @@ async function pointcover() {
         layerType === 'CADLAYER' ||
         layerType === 'REGIONLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -141,7 +140,7 @@ async function freecover() {
         layerType === 'CADLAYER' ||
         layerType === 'REGIONLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_TAGGING, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -152,94 +151,31 @@ async function freecover() {
 }
 function commit(type) {
   const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP_TOOL_TAGGING) {
-    (async function() {
-      let currentLayer = _params.currentLayer
-      // let reg = /^Label_(.*)#$/
-      let layerType
-      if (currentLayer && !currentLayer.themeType) {
-        layerType = LayerUtils.getLayerType(currentLayer)
-      }
-      // if (
-      //   isTaggingLayer||
-      //   isPointLayer ||
-      //   isLineLayer ||
-      //   isRegionLayer ||
-      //   isTextLayer
-      // ) {
-      layerType === 'TAGGINGLAYER' &&
-            SMap.setTaggingGrid(
-              currentLayer.datasetName,
-              _params.user.currentUser.userName,
-            )
-      SMap.submit()
-      SMap.refreshMap()
-      SMap.setAction(Action.PAN)
-      if (type === ConstToolType.MAP_TOOL_TAGGING) {
-        _params.setToolbarVisible(
-          true,
-          ConstToolType.MAP_TOOL_TAGGING_SETTING,
-          {
-            isFullScreen: false,
-            containerType: 'list',
-            height:
-                            _params.device.orientation === 'LANDSCAPE'
-                              ? ConstToolType.TOOLBAR_HEIGHT[3]
-                              : ConstToolType.TOOLBAR_HEIGHT[3],
-            column: _params.device.orientation === 'LANDSCAPE' ? 8 : 4,
-          },
-        )
-      }
-      // } else {
-      //   Toast.show(
-      //     getLanguage(_params.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
-      //   )
-      // }
-    }.bind(this)())
-  } else if (type === ConstToolType.MAP_TOOL_TAGGING_SETTING) {
-    let datasourceName = GLOBAL.currentLayer.datasourceAlias
-    let datasetName = GLOBAL.currentLayer.datasetName
-    let name = ToolbarModule.getData().tools_name || ''
-    let remark = ToolbarModule.getData().tools_remarks || ''
-    let address = ToolbarModule.getData().tools_http || ''
-        ;(async function() {
-      name !== '' &&
-            (await SMap.addRecordset(
-              datasourceName,
-              datasetName,
-              'name',
-              name,
-              _params.user.currentUser.userName,
-            ))
-      remark !== '' &&
-            (await SMap.addRecordset(
-              datasourceName,
-              datasetName,
-              'remark',
-              remark,
-              _params.user.currentUser.userName,
-            ))
-      address !== '' &&
-            (await SMap.addRecordset(
-              datasourceName,
-              datasetName,
-              'address',
-              address,
-              _params.user.currentUser.userName,
-            ))
-    }.bind(this)())
-    // getParams.taggingBack()
-    _params.setToolbarVisible(false, type, {
-      height: 0,
-    })
-    ToolbarModule.setData()
+  if (type === ConstToolType.MAP_MARKS_DRAW) {
+    let currentLayer = _params.currentLayer
+    SMap.setTaggingGrid(
+      currentLayer.datasetName,
+      _params.user.currentUser.userName,
+    )
+    SMap.submit()
+    SMap.refreshMap()
     //提交标注后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
   }
 }
+
+function back() {
+  const _params = ToolbarModule.getParams()
+  SMap.setAction(Action.PAN)
+  _params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
+    isFullScreen:true,
+  })
+}
+
 export default {
   commit,
 
+  back,
   point,
   words,
   pointline,

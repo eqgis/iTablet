@@ -99,7 +99,10 @@ async function getTabBarData(type, params = {}) {
       type === ConstToolType.STYLE_TRANSFER)
   ) {
     tabBarData = toolModule().getData(type, params)
-  }else if( type === ConstToolType.MAP_MARKS){
+  }else if(
+    type === ConstToolType.MAP_MARKS ||
+    type === ConstToolType.MAP_MARKS_DRAW
+  ){
     tabBarData = markModule().getData(type, params)
   } else if(
     type === ConstToolType.MAP3D_MARK ||

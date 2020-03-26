@@ -1109,7 +1109,8 @@ function toolbarBack() {
   const _params = ToolbarModule.getParams()
   if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
-      GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1
+      GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
+      GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
     SMap.clearSelection()
     _params.setSelection()
@@ -1120,7 +1121,7 @@ function toolbarBack() {
       height: 0,
       cb: () => select(type),
     })
-  } else if (
+  } /*else if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
     let type = ''
@@ -1167,7 +1168,7 @@ function toolbarBack() {
         cb: () => select(type),
       })
     }
-  }
+  }*/
 }
 
 function close(type) {

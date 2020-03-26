@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Platform,
+  AsyncStorage,
 } from 'react-native'
 import NavigationService from '../NavigationService'
 import styles from './styles'
@@ -19,6 +20,7 @@ import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
 import { PopView, Button } from '../../components'
 import { BatchHeadBar } from '../../containers/tabs/Mine/component'
+import constants from '../../containers/workspace/constants'
 
 const HEADER_PADDINGTOP = Platform.OS === 'ios' ? 20 : 0
 const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -70,6 +72,46 @@ export default class CollectSceneFormHistoryView extends React.Component {
       />
     )
   }
+
+  componentDidMount = async () =>{
+    //过滤掉标注和标绘匹配正则
+    let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/
+    let customerUDBPath = await FileTools.appendingHomeDirectory(
+      ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
+    )
+    let customerUDBs = await FileTools.getPathListByFilter(
+      customerUDBPath,
+      {
+        extension: 'udb',
+        type: 'file',
+      },
+    )
+    //过滤掉标注和标绘
+    let filterUDBs = customerUDBs.filter(item => {
+      item.name = dataUtil.getNameByURL(item.path)
+      return !item.name.match(checkLabelAndPlot)
+    })
+    filterUDBs.map(item => {
+      item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+      item.info = {
+        infoType: 'mtime',
+        lastModifiedDate: item.mtime,
+      }
+    })
+
+    let data =undefined
+    if(filterUDBs){
+      for(let i=0;i<filterUDBs.length;i++){
+        if(filterUDBs[i].name === this.state.collectData){
+          data=filterUDBs[i]
+          break
+        }
+      }
+    }
+    data && this.onChooseDataSource(data)
+  }
+
+  
 
   getDatasource = async () => {
     if (!this.state.chooseDataSource) {
@@ -236,6 +278,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
             style={styles.historyItem}
             onPress={() => {
               this.onChooseDataSource(item)
+              SCollectSceneFormView.startRecording()
             }}
           >
             <Text style={styles.historyItemText}>{item.name}</Text>
@@ -332,6 +375,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
         chooseDataSource: false,
       })
     }
+    GLOBAL.newcollectData = item.name
+    AsyncStorage.setItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY, item.name)
   }
 
   deleteHistory = async item => {

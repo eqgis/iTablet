@@ -77,17 +77,16 @@ export default class CollectSceneFormView extends React.Component {
 
   componentDidMount() {
     //安排任务在交互和动画完成之后执行
-    InteractionManager.runAfterInteractions(() => {
-      // 初始化数据
-      (async function() {
-
+    
+    setTimeout(async()=>{
+        // 初始化数据
         let udbPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +
             '/' +
             ConstPath.RelativeFilePath.AR,
         )
-        SCollectSceneFormView.initSceneFormView(
+        await SCollectSceneFormView.initSceneFormView(
           this.datasourceAlias,
           this.datasetName,
           this.datasetPointName,
@@ -96,30 +95,24 @@ export default class CollectSceneFormView extends React.Component {
         )
 
         let point=this.datumPoint
-        setTimeout(function() {
-          //设置基点
-          SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
-          SCollectSceneFormView.startRecording()
-        }, 500)
 
-        //注册监听
-        if (Platform.OS === 'ios') {
-          nativeEvt.addListener(
-            'onTotalLengthChanged',
-            this.onTotalLengthChanged,
-          )
-        } else {
-          DeviceEventEmitter.addListener(
-            'onTotalLengthChanged',
-            this.onTotalLengthChanged,
-          )
-        }
-        // DeviceEventEmitter.addListener(
-        //   'onTotalLengthChanged',
-        //   this.onTotalLengthChanged,
-        // )
-      }.bind(this)())
-    })
+        //设置基点
+        SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
+        SCollectSceneFormView.startRecording()
+    },500)
+     
+      //注册监听
+      if (Platform.OS === 'ios') {
+        nativeEvt.addListener(
+          'onTotalLengthChanged',
+          this.onTotalLengthChanged,
+        )
+      } else {
+        DeviceEventEmitter.addListener(
+          'onTotalLengthChanged',
+          this.onTotalLengthChanged,
+        )
+      }
   }
 
   componentWillUnmount() {
@@ -137,11 +130,6 @@ export default class CollectSceneFormView extends React.Component {
         this.onTotalLengthChanged,
       )
     }
-
-    // DeviceEventEmitter.removeListener(
-    //   'onTotalLengthChanged',
-    //   this.onTotalLengthChanged,
-    // )
   }
 
   onTotalLengthChanged = params => {

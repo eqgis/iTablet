@@ -198,7 +198,7 @@ export default class EnterDatumPoint extends Component {
         // const datasourceAlias = time
         const datasetName = 'CollectSceneForm'
         const datasetPointName = 'CollectPointSceneForm'
-        NavigationService.navigate('CollectSceneFormView', {
+        NavigationService.replace('CollectSceneFormView', {
           datasourceAlias,
           datasetName,
           datasetPointName,

@@ -246,7 +246,7 @@ export default class LayerManager_tolbar extends React.Component {
         data = layereditsetting(global.language)
         break
       case ConstToolType.MAP_EDIT_MORE_STYLE: {
-        let layerManagerDataArr = [...layerManagerData]
+        let layerManagerDataArr = [...layerManagerData()]
         for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
           let baseMap = this.props.curUserBaseMaps[i]
           if (

@@ -640,19 +640,19 @@ function selectLabelToStyle() {
   let height = ConstToolType.THEME_HEIGHT[3]
   let type = ''
   switch (global.MapToolType) {
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       containerType = ToolbarType.symbol
       type = ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE:
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
       containerType = ToolbarType.symbol
       type = ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION:
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       containerType = ToolbarType.symbol
       type = ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT:
+    case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       showMenuDialog = true
       height = 0
       isFullScreen = true
@@ -742,18 +742,25 @@ function geometrySelected(event) {
     if (!geoType) {
       geoType = layerType
     }
+    let containerType = ''
+    let height = ConstToolType.THEME_HEIGHT[3]
     switch (geoType) {
       case DatasetType.POINT:
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
+        height = ConstToolType.HEIGHT[0]
         break
       case DatasetType.LINE:
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
+        height = ConstToolType.HEIGHT[2]
         break
       case DatasetType.REGION:
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
+        height = ConstToolType.HEIGHT[2]
+        containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
+        height = ConstToolType.HEIGHT[0]
         break
     }
     if (type !== '' && layerType !== DatasetType.CAD) {
@@ -762,14 +769,16 @@ function geometrySelected(event) {
     }
 
     if (type !== '') {
+      StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
         column: 5,
-        height: ConstToolType.HEIGHT[0],
+        containerType,
+        height,
         cb: () => {
-          StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
-          SMap.setLayerEditable(event.layerInfo.path, false)
-          SMap.setAction(Action.PAN)
+          SMap.appointEditGeometry(event.id, event.layerInfo.path)
+          // SMap.setLayerEditable(event.layerInfo.path, false)
+          // SMap.setAction(Action.PAN)
         },
       })
     }
@@ -1099,7 +1108,10 @@ async function listSelectableAction({ selectList }) {
 
 function toolbarBack() {
   const _params = ToolbarModule.getParams()
-  if (GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1) {
+  if (
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1
+  ) {
     SMap.clearSelection()
     _params.setSelection()
     const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
@@ -1109,32 +1121,37 @@ function toolbarBack() {
       height: 0,
       cb: () => select(type),
     })
-  } else if (
-    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT') !== -1 ||
-    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
-  ) {
+  } else if (GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1) {
     let type = ''
-    const layerType = ToolbarModule.getData().event.layerInfo.type
+    let layerType = ToolbarModule.getData().event.layerInfo.type
+    let height = ConstToolType.THEME_HEIGHT[3]
+    let containerType = ''
     if (layerType === DatasetType.CAD) {
       if (GLOBAL.MapToolType.indexOf('_POINT') !== -1) {
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
+        height = ConstToolType.HEIGHT[0]
       } else if (GLOBAL.MapToolType.indexOf('_LINE') !== -1) {
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
+        height = ConstToolType.HEIGHT[2]
       } else if (GLOBAL.MapToolType.indexOf('_REGION') !== -1) {
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
+        height = ConstToolType.HEIGHT[2]
+        containerType = ToolbarType.scrollTable
       } else if (GLOBAL.MapToolType.indexOf('_TEXT') !== -1) {
-        type = ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT
+        type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
+        height = ConstToolType.HEIGHT[0]
       }
       if (type !== '') {
         const { event } = ToolbarModule.getData()
         _params.setToolbarVisible(true, type, {
           isFullScreen: false,
           column: 5,
-          height: ConstToolType.HEIGHT[0],
+          height,
+          containerType,
           cb: () => {
             StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
-            SMap.setLayerEditable(event.layerInfo.path, false)
-            SMap.setAction(Action.PAN)
+            // SMap.setLayerEditable(event.layerInfo.path, false)
+            // SMap.setAction(Action.PAN)
           },
         })
       }

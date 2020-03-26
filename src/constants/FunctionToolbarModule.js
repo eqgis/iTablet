@@ -174,118 +174,120 @@ const layerAdd = [
 //   },
 // ]
 
-const layerManagerData = [
-  {
-    title: 'Google RoadMap',
-    action: () => OpenData(ConstOnline.Google, 0),
-    data: [],
-    image: require('../assets/map/icon-shallow-image_black.png'),
-    type: DatasetType.IMAGE,
-    themeType: -1,
-  },
-  {
-    title: 'Google Satellite',
-    action: () => OpenData(ConstOnline.Google, 1),
-    data: [],
-    image: require('../assets/map/icon-shallow-image_black.png'),
-    type: DatasetType.IMAGE,
-    themeType: -1,
-  },
-  {
-    title: 'Google Terrain',
-    action: () => OpenData(ConstOnline.Google, 2),
-    data: [],
-    image: require('../assets/map/icon-shallow-image_black.png'),
-    type: DatasetType.IMAGE,
-    themeType: -1,
-  },
-  {
-    title: 'Google Hybrid',
-    action: () => OpenData(ConstOnline.Google, 3),
-    data: [],
-    image: require('../assets/map/icon-shallow-image_black.png'),
-    type: DatasetType.IMAGE,
-    themeType: -1,
-  },
-  {
-    title: 'BingMap',
-    action: () => OpenData(ConstOnline.BingMap, 0),
-    data: [],
-    image: require('../assets/map/icon-shallow-image_black.png'),
-    type: DatasetType.IMAGE,
-    themeType: -1,
-  },
-  // {
-  //   title: '全球矢量地图',
-  //   action: () => {
-  //     return OpenData(ConstOnline.TD, 0)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: '全球影像地图服务',
-  //   action: () => {
-  //     return OpenData(ConstOnline.TDYXM, 0)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: 'Baidu Map',
-  //   action: () => {
-  //     return OpenData(ConstOnline.Baidu, 0)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: 'Standard',
-  //   action: () => {
-  //     return OpenData(ConstOnline.OSM, 0)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: 'CycleMap',
-  //   action: () => {
-  //     return OpenData(ConstOnline.OSM, 1)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: 'Transport',
-  //   action: () => {
-  //     return OpenData(ConstOnline.OSM, 2)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-  // {
-  //   title: 'quanguo',
-  //   action: () => {
-  //     return OpenData(ConstOnline.SuperMapCloud, 0)
-  //   },
-  //   data: [],
-  //   image: require('../assets/map/icon-shallow-image_black.png'),
-  //   type: DatasetType.IMAGE,
-  //   themeType: -1,
-  // },
-]
+function layerManagerData() {
+  return [
+    {
+      title: 'Google RoadMap',
+      action: () => OpenData(ConstOnline.Google, 0),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Google Satellite',
+      action: () => OpenData(ConstOnline.Google, 1),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Google Terrain',
+      action: () => OpenData(ConstOnline.Google, 2),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Google Hybrid',
+      action: () => OpenData(ConstOnline.Google, 3),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'BingMap',
+      action: () => OpenData(ConstOnline.BingMap, 0),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    // {
+    //   title: '全球矢量地图',
+    //   action: () => {
+    //     return OpenData(ConstOnline.TD, 0)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: '全球影像地图服务',
+    //   action: () => {
+    //     return OpenData(ConstOnline.TDYXM, 0)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'Baidu Map',
+    //   action: () => {
+    //     return OpenData(ConstOnline.Baidu, 0)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'Standard',
+    //   action: () => {
+    //     return OpenData(ConstOnline.OSM, 0)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'CycleMap',
+    //   action: () => {
+    //     return OpenData(ConstOnline.OSM, 1)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'Transport',
+    //   action: () => {
+    //     return OpenData(ConstOnline.OSM, 2)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'quanguo',
+    //   action: () => {
+    //     return OpenData(ConstOnline.SuperMapCloud, 0)
+    //   },
+    //   data: [],
+    //   image: require('../assets/map/icon-shallow-image_black.png'),
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+  ]
+}
 
 // const openData = [
 //   {

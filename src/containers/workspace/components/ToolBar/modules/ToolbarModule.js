@@ -129,8 +129,11 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.MAP_COLOR_MODE
   ) {
     toolBarData = mapSettingModule().getData(type)
-  } else if (type === ConstToolType.MAP_MARKS) {
-    tabBarData = markModule().getData(type, params)
+  } else if (
+    type === ConstToolType.MAP_MARKS ||
+    type === ConstToolType.MAP_MARKS_DRAW
+  ) {
+    toolBarData = markModule().getData(type, params)
   } else if (
     type === ConstToolType.MAP3D_MARK ||
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
@@ -138,7 +141,7 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
     type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE
   ) {
-    tabBarData = mark3DModule().getData(type, params)
+    toolBarData = mark3DModule().getData(type, params)
   }
   return toolBarData
 }

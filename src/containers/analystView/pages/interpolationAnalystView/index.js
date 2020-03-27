@@ -1,5 +1,5 @@
-import InterpolationAnalystView from './InterpolationAnalystView'
 import { connect } from 'react-redux'
+import InterpolationAnalystView from './InterpolationAnalystView'
 import { getLayers } from '../../../../models/layers'
 
 const mapStateToProps = state => ({

@@ -1,5 +1,3 @@
-import ToolbarModule from './ToolbarModule'
-
 import startModule from './startModule'
 import fly3DModule from './fly3DModule'
 import addModule from './addModule'
@@ -19,8 +17,8 @@ import mapSettingModule from './mapSettingModule'
 import roadNetModule from './roadNetModule'
 import markModule from './markModule'
 import mark3DModule from './mark3DModule'
+import incrementModule from './incrementModule'
 export {
-  ToolbarModule,
   startModule,
   fly3DModule,
   addModule,
@@ -40,4 +38,5 @@ export {
   roadNetModule,
   markModule,
   mark3DModule,
+  incrementModule,
 }

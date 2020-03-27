@@ -1,11 +1,13 @@
-import NewDSet from './NewDSet'
 import { connect } from 'react-redux'
+import NewDSet from './NewDSet'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),
 })
 
-const mapDispatchToProps = {
-}
+const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDSet)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewDSet)

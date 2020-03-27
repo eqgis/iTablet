@@ -17,7 +17,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog } from '../../../../components'
-import {ToolbarModule} from "../ToolBar/modules"
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 
@@ -161,42 +161,49 @@ export default class NavigationView extends React.Component {
       let currentDataset = {}
       let currentDatasource = []
       //用户选择了导航数据
-      if(datasources.length > 0 || datasets.length > 0){
-        commonIndoorInfo = this.getSameInfoFromArray(commonIndoorInfo,datasources)
-        commonOutdoorInfo = this.getSameInfoFromArray(commonOutdoorInfo,datasets)
+      if (datasources.length > 0 || datasets.length > 0) {
+        commonIndoorInfo = this.getSameInfoFromArray(
+          commonIndoorInfo,
+          datasources,
+        )
+        commonOutdoorInfo = this.getSameInfoFromArray(
+          commonOutdoorInfo,
+          datasets,
+        )
         selectedDatasources = datasources
         selectedDatasets = datasets
-        if(commonIndoorInfo.length > 0) {
+        if (commonIndoorInfo.length > 0) {
           currentDatasource = commonIndoorInfo
           currentDataset = []
-        }else if(commonOutdoorInfo.length > 0){
-          currentDataset  = commonOutdoorInfo[0]
+        } else if (commonOutdoorInfo.length > 0) {
+          currentDataset = commonOutdoorInfo[0]
           currentDatasource = []
-          if(datasources.length === 0){
+          if (datasources.length === 0) {
             startIndoorInfo = []
             endIndoorInfo = []
-          }else{
-            startIndoorInfo.length > 0 && currentDatasource.push(startIndoorInfo[0])
+          } else {
+            startIndoorInfo.length > 0 &&
+              currentDatasource.push(startIndoorInfo[0])
             endIndoorInfo.length > 0 && currentDatasource.push(endIndoorInfo[0])
           }
         }
-      }else{
+      } else {
         //用户没有选择导航数据
-        if(commonIndoorInfo.length > 0){
+        if (commonIndoorInfo.length > 0) {
           selectedDatasources = commonIndoorInfo
           currentDatasource = commonIndoorInfo
           selectedDatasets = []
           currentDataset = {}
-        }else if(commonOutdoorInfo.length > 0){
+        } else if (commonOutdoorInfo.length > 0) {
           selectedDatasets = commonOutdoorInfo
           currentDataset = commonOutdoorInfo[0]
           selectedDatasources = []
           currentDatasource = []
-          if(startIndoorInfo.length > 0){
+          if (startIndoorInfo.length > 0) {
             selectedDatasources.push(startIndoorInfo[0])
             currentDatasource.push(startIndoorInfo[0])
           }
-          if(endIndoorInfo.length > 0){
+          if (endIndoorInfo.length > 0) {
             selectedDatasources.push(endIndoorInfo[0])
             currentDatasource.push(endIndoorInfo[0])
           }
@@ -296,7 +303,9 @@ export default class NavigationView extends React.Component {
                 true,
                 doorPoint.floorID,
               )
-              await SMap.startIndoorNavigation(startIndoorInfo[0].datasourceName)
+              await SMap.startIndoorNavigation(
+                startIndoorInfo[0].datasourceName,
+              )
               let rel = await SMap.beginIndoorNavigation()
               if (!rel) {
                 this.loading.setLoading(false)

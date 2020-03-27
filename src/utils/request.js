@@ -4,7 +4,7 @@ export default function request(url, method = 'GET', { body, headers }) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    method: method,
+    method,
   }
 
   if (headers) {
@@ -21,15 +21,13 @@ export default function request(url, method = 'GET', { body, headers }) {
 
   return fetch(url, extraData)
     .then(response => {
-      let map = response.headers.map
+      const { map } = response.headers
       if (map['set-cookie']) {
         global.cookie = map['set-cookie']
       }
       return response.json()
     })
-    .then(responseJson => {
-      return responseJson
-    })
+    .then(responseJson => responseJson)
     .catch(() => {
       global.cookie = ''
     })

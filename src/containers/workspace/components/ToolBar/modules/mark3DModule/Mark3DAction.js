@@ -3,19 +3,19 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import ToolbarModule from "../ToolbarModule"
-import {Toast} from "../../../../../../utils"
-import {getLanguage} from "../../../../../../language"
-import {ConstToolType} from "../../../../../../constants"
-import {SScene} from 'imobile_for_reactnative'
+import { SScene } from 'imobile_for_reactnative'
+import ToolbarModule from '../ToolbarModule'
+import { Toast } from '../../../../../../utils'
+import { getLanguage } from '../../../../../../language'
+import { ConstToolType } from '../../../../../../constants'
 
-/** 兴趣点 **/
+/** 兴趣点 * */
 function createPoint() {
   const params = ToolbarModule.getParams()
   try {
     if (!GLOBAL.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
+      // '请打开场景')
       return
     }
     SScene.checkoutListener('startLabelOperate')
@@ -31,20 +31,20 @@ function createPoint() {
   }
 }
 
-/** 文字 **/
+/** 文字 * */
 function createText() {
   const params = ToolbarModule.getParams()
   try {
     if (!GLOBAL.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
+      // '请打开场景')
       return
     }
     SScene.checkoutListener('startLabelOperate')
     GLOBAL.Map3DSymbol = true
     SScene.startDrawText({
       callback: result => {
-        let dialog = params.dialog()
+        const dialog = params.dialog()
         dialog.setDialogVisible(true)
         ToolbarModule.addData({ point: result })
       },
@@ -59,12 +59,12 @@ function createText() {
   }
 }
 
-/** 点绘线 **/
+/** 点绘线 * */
 function createLine() {
   const params = ToolbarModule.getParams()
   if (!GLOBAL.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
+    // '请打开场景')
     return
   }
   SScene.checkoutListener('startLabelOperate')
@@ -81,13 +81,13 @@ function createLine() {
   }
 }
 
-/** 点绘面 **/
+/** 点绘面 * */
 function createRegion() {
   const params = ToolbarModule.getParams()
   try {
     if (!GLOBAL.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-      //'请打开场景')
+      // '请打开场景')
       return
     }
     SScene.checkoutListener('startLabelOperate')
@@ -103,12 +103,12 @@ function createRegion() {
   }
 }
 
-/** 清除标注 **/
+/** 清除标注 * */
 function clearPlotting() {
   const params = ToolbarModule.getParams()
   if (!GLOBAL.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
-    //'请打开场景')
+    // '请打开场景')
     return
   }
   GLOBAL.Map3DSymbol = true
@@ -121,9 +121,9 @@ function close(type) {
   const _params = ToolbarModule.getParams()
   if (
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
-        type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
-        type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE ||
-        type === ConstToolType.MAP3D_SYMBOL_TEXT
+    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
+    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE ||
+    type === ConstToolType.MAP3D_SYMBOL_TEXT
   ) {
     SScene.clearAllLabel()
     GLOBAL.Map3DSymbol = false

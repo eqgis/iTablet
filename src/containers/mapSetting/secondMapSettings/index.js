@@ -4,8 +4,8 @@
  * https://github.com/AsortKeven
  */
 
-import SecondMapSettings from './SecondMapSettings'
 import { connect } from 'react-redux'
+import SecondMapSettings from './SecondMapSettings'
 import { setMapScaleView } from '../../../models/setting'
 
 const mapStateToProps = state => ({

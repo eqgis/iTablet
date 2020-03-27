@@ -1,5 +1,5 @@
-import BufferAnalystView from './BufferAnalystView'
 import { connect } from 'react-redux'
+import BufferAnalystView from './BufferAnalystView'
 import { getLayers } from '../../../../models/layers'
 
 const mapStateToProps = state => ({

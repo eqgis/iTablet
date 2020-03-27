@@ -37,7 +37,7 @@ function isProbationUser(user) {
   if (user.userType === undefined) {
     return false
   }
-  let type = user.userType
+  const type = user.userType
   if (type === PROBATION_USER) {
     return true
   }
@@ -51,7 +51,7 @@ function isOnlineUser(user) {
   if (user.userType === undefined) {
     return false
   }
-  let type = user.userType
+  const type = user.userType
   if (
     type === COMMON_USER ||
     type === ALL_MODULE_VIP_USER ||
@@ -70,7 +70,7 @@ function isIPortalUser(user) {
   if (user.userType === undefined) {
     return false
   }
-  let type = user.userType
+  const type = user.userType
   if (type === IPORTAL_COMMON_USER) {
     return true
   }

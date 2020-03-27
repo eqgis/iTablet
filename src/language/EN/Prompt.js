@@ -1,4 +1,4 @@
-//提示语
+// 提示语
 const Prompt = {
   YES: 'Yes',
   NO: 'No',
@@ -238,7 +238,7 @@ const Prompt = {
   ENTER_CORRECT_MOBILE: 'Please enter the correct mobile phone number',
   ENTER_CORRECT_EMAIL: 'Please enter the correct email address',
 
-  //设置菜单提示信息
+  // 设置菜单提示信息
   ROTATION_ANGLE_ERROR: 'Rotation angle should be between -360° and 360°',
   MAP_SCALE_ERROR: 'Input error! Please enter a number',
   VIEW_BOUNDS_ERROR: 'Range error! Please enter a number',
@@ -246,7 +246,7 @@ const Prompt = {
     'Parameter error! Both height and width of the view should be greater than zero',
   MAP_CENTER_ERROR: 'Coordinate error! Both X and Y should be numbers',
   COPY_SUCCESS: 'Coping success!',
-  //复制坐标系
+  // 复制坐标系
   COPY_COORD_SYSTEM_SUCCESS: 'Coordinate system replication successfully',
   COPY_COORD_SYSTEM_FAIL: 'Coordinate system replication failed',
   ILLEGAL_COORDSYS: 'Not a supported coordinate system file',
@@ -283,7 +283,7 @@ const Prompt = {
   FAILED_TO_CREATE_LINE: 'Failed to create line',
   FAILED_TO_CREATE_REGION: 'Failed to create region',
   CLEAR_HISTORY: 'Clear history',
-  //导航相关
+  // 导航相关
   SEARCH_AROUND: 'Search around',
   GO_HERE: 'Go here',
   SHOW_MORE_RESULT: 'Show more results',
@@ -318,7 +318,7 @@ const Prompt = {
     "Points are out of dataset's bounds or there are no dataset around points, do you want to use online route analyst?",
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Online navigation is not support yet.',
 
-  //自定义专题图
+  // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',
   PARAMS_ERROR: 'Params error! Failed to set!',

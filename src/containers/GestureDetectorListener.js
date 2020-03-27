@@ -6,9 +6,9 @@ import {
 import NavigationService from './NavigationService'
 import { getLanguage } from '../language'
 import { TouchType } from '../constants'
-//eslint-disable-next-line
+// eslint-disable-next-line
 import { Toast } from '../utils'
-//eslint-disable-next-line
+// eslint-disable-next-line
 let _params = {}
 let isDoubleTouchCome = false
 function setGestureDetectorListener(params) {
@@ -18,7 +18,7 @@ function setGestureDetectorListener(params) {
       longPressHandler: longtouchCallback,
       doubleTapHandler: doubleTouchCallback,
     })
-  }.bind(this)())
+  })()
   _params = params
 }
 
@@ -45,7 +45,7 @@ async function longtouchCallback(event) {
         await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
         GLOBAL.STARTX = event.LLPoint.x
         GLOBAL.STARTY = event.LLPoint.y
-        //室内地图只允许在室内标注点
+        // 室内地图只允许在室内标注点
         // if (!GLOBAL.ISOUTDOORMAP) {
         //   let isindoor = await SMap.isIndoorPoint(
         //     event.LLPoint.x,
@@ -74,14 +74,14 @@ async function longtouchCallback(event) {
         //   GLOBAL.STARTY = event.LLPoint.y
         //   await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
         // }
-      }.bind(this)())
+      })()
       break
     case TouchType.NAVIGATION_TOUCH_END:
       (async function() {
         await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
         GLOBAL.ENDX = event.LLPoint.x
         GLOBAL.ENDY = event.LLPoint.y
-        //室内地图只允许在室内标注点
+        // 室内地图只允许在室内标注点
         // if (!GLOBAL.ISOUTDOORMAP) {
         //   let isindoor = await SMap.isIndoorPoint(
         //     event.LLPoint.x,
@@ -110,7 +110,7 @@ async function longtouchCallback(event) {
         //   GLOBAL.ENDY = event.LLPoint.y
         //   await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
         // }
-      }.bind(this)())
+      })()
       break
   }
 }
@@ -150,8 +150,8 @@ async function touchCallback(event) {
         type: 'name',
         cb: async value => {
           if (value !== '') {
-            let datasourceName = GLOBAL.currentLayer.datasourceAlias
-            let datasetName = GLOBAL.currentLayer.datasetName
+            const datasourceName = GLOBAL.currentLayer.datasourceAlias
+            const { datasetName } = GLOBAL.currentLayer
             await SMap.addTextRecordset(
               datasourceName,
               datasetName,
@@ -160,7 +160,7 @@ async function touchCallback(event) {
               event.screenPoint.y,
             )
             NavigationService.goBack()
-            GLOBAL.TouchType = TouchType.NORMAL
+            //GLOBAL.TouchType = TouchType.NORMAL
           }
         },
         backcb: async () => {
@@ -215,12 +215,13 @@ async function touchCallback(event) {
     case TouchType.ANIMATION_WAY:
       SMap.addAnimationWayPoint(event.screenPoint, true)
       break
-    case TouchType.MAP_SELECT_POINT:
-      let point=await SMap.getPixelPointToMap(event.screenPoint)
+    case TouchType.MAP_SELECT_POINT: {
+      const point = await SMap.getPixelPointToMap(event.screenPoint)
       GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
       SMap.deleteMarker(118081)
-      SMap.showMarker(point.x,point.y,118081)
+      SMap.showMarker(point.x, point.y, 118081)
       break
+    }
     case TouchType.ADD_NODES:
     case TouchType.NULL:
       break

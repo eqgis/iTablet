@@ -24,7 +24,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  /** Radio **/
+  /** Radio * */
   radioContainer: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -132,7 +132,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
 
-  /** RadioGroup **/
+  /** RadioGroup * */
   radioGroupContainer: {
     flex: 2,
     flexDirection: 'column',
@@ -148,7 +148,7 @@ export default StyleSheet.create({
     height: scaleSize(60),
   },
 
-  /** ChooseNumber **/
+  /** ChooseNumber * */
   chooseNumberContainer: {
     flex: 2,
     flexDirection: 'row',
@@ -186,7 +186,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
 
-  /** LabelBtn **/
+  /** LabelBtn * */
   textBtnContainer: {
     flex: 2,
     backgroundColor: color.grayLight,
@@ -201,7 +201,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  /** ChooseColor **/
+  /** ChooseColor * */
   chooseColorContainer: {
     flex: 2,
     minHeight: scaleSize(60),

@@ -1,7 +1,8 @@
-import ToolbarModule from "../ToolbarModule"
-import {LayerUtils, Toast} from "../../../../../../utils"
-import {ConstToolType, TouchType} from "../../../../../../constants"
-import {getLanguage} from "../../../../../../language"
+import { SMap, Action } from 'imobile_for_reactnative'
+import ToolbarModule from '../ToolbarModule'
+import { LayerUtils, Toast } from '../../../../../../utils'
+import { ConstToolType, TouchType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
 
 /**
  * @description
@@ -9,13 +10,12 @@ import {getLanguage} from "../../../../../../language"
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import {SMap, Action} from 'imobile_for_reactnative'
 
 async function point() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -23,8 +23,8 @@ async function point() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'POINTLAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'POINTLAYER'
   ) {
     SMap.setAction(Action.CREATEPOINT)
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
@@ -37,7 +37,7 @@ async function point() {
 }
 async function words() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -45,10 +45,10 @@ async function words() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'TEXTLAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'TEXTLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW_TEXT, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })
@@ -60,7 +60,7 @@ async function words() {
 
 async function pointline() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -68,8 +68,8 @@ async function pointline() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'LINELAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'LINELAYER'
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
@@ -83,7 +83,7 @@ async function pointline() {
 
 async function freeline() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -91,8 +91,8 @@ async function freeline() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'LINELAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'LINELAYER'
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
@@ -106,7 +106,7 @@ async function freeline() {
 
 async function pointcover() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -114,8 +114,8 @@ async function pointcover() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'REGIONLAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'REGIONLAYER'
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
@@ -129,7 +129,7 @@ async function pointcover() {
 
 async function freecover() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = _params.currentLayer
+  const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
   let layerType
   if (currentLayer) {
@@ -137,8 +137,8 @@ async function freecover() {
   }
   if (
     layerType === 'TAGGINGLAYER' ||
-        layerType === 'CADLAYER' ||
-        layerType === 'REGIONLAYER'
+    layerType === 'CADLAYER' ||
+    layerType === 'REGIONLAYER'
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
@@ -161,6 +161,8 @@ function commit(type) {
     SMap.refreshMap()
     //提交标注后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
+  } else {
+    return false
   }
 }
 
@@ -168,7 +170,7 @@ function back() {
   const _params = ToolbarModule.getParams()
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
-    isFullScreen:true,
+    isFullScreen: true,
   })
 }
 

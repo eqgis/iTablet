@@ -1,5 +1,5 @@
-import { ThemeType as AppThemeType } from '../constants'
 import { DatasetType, ThemeType } from 'imobile_for_reactnative'
+import { ThemeType as AppThemeType } from '../constants'
 
 function getThemeAssets() {
   let asset = {}
@@ -19,7 +19,7 @@ function getPublicAssets() {
   return require('./publicTheme').default
 }
 
-/** 获取专题类型Icon **/
+/** 获取专题类型Icon * */
 function getThemeIconByType(type) {
   let icon
   switch (type) {
@@ -101,7 +101,7 @@ function getThemeWhiteIconByType(type) {
 }
 
 const LAYER_GROUP = 'layerGroup'
-/** 获取图层类型Icon **/
+/** 获取图层类型Icon * */
 function getLayerIconByType(type) {
   let icon
   switch (type) {

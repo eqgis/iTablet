@@ -6,6 +6,7 @@
 import { Platform, StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../../../../../utils'
 import { color } from '../../../../../../../../styles'
+
 export default StyleSheet.create({
   titleImage: {
     width: scaleSize(40),

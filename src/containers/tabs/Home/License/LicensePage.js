@@ -6,18 +6,17 @@ import {
   Image,
   Text,
   AsyncStorage,
-  Platform,
 } from 'react-native'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
-import { FileTools } from '../../../../native'
-import RNFS from 'react-native-fs'
+// import { FileTools } from '../../../../native'
+// import RNFS from 'react-native-fs'
 import NavigationService from '../../../NavigationService'
 import constants from '../../../../../src/containers/workspace/constants'
-import FetchUtils from '../../../../../src/utils/FetchUtils'
+// import FetchUtils from '../../../../../src/utils/FetchUtils'
 import { Dialog } from '../../../../components'
 
 export default class LicensePage extends Component {
@@ -184,12 +183,13 @@ export default class LicensePage extends Component {
   }
   //申请试用许可
   applyTrialLicense = async () => {
-    if(Platform.OS === 'ios'){
+    // if(Platform.OS === 'ios')
+    {
       SMap.applyTrialLicense().then(async value => {
-        if(value){
+        if (value) {
           this.getLicense()
           Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
-        }else{
+        } else {
           // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
           Toast.show(
             global.language === 'CN'
@@ -200,66 +200,66 @@ export default class LicensePage extends Component {
       })
       return
     }
-    GLOBAL.Loading.setLoading(
-      true,
-      global.language === 'CN' ? '许可申请中...' : 'Applying',
-    )
-    try {
-      let fileCachePath = await FileTools.appendingHomeDirectory(
-        '/iTablet/license/Trial_License.slm',
-      )
-      let bRes = await RNFS.exists(fileCachePath)
-      if (bRes) {
-        await RNFS.unlink(fileCachePath)
-      }
-      let dataUrl = undefined
-      setTimeout(() => {
-        if (dataUrl === undefined) {
-          GLOBAL.Loading.setLoading(
-            false,
-            global.language === 'CN' ? '许可申请中...' : 'Applying...',
-          )
-          Toast.show(
-            global.language === 'CN'
-              ? '许可申请失败,请检查网络连接'
-              : 'License application failed.Please check the network connection',
-          )
-        }
-      }, 10000)
-      dataUrl = await FetchUtils.getFindUserDataUrl(
-        'xiezhiyan123',
-        'Trial_License',
-        '.geojson',
-      )
-      let downloadOptions = {
-        fromUrl: dataUrl,
-        toFile: fileCachePath,
-        background: true,
-        fileName: 'Trial_License.slm',
-        progressDivider: 1,
-      }
-
-      const ret = RNFS.downloadFile(downloadOptions)
-
-      ret.promise.then(async () => {
-        GLOBAL.Loading.setLoading(
-          false,
-          global.language === 'CN' ? '许可申请中...' : 'Applying',
-        )
-        this.getLicense()
-        Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
-      })
-    } catch (e) {
-      GLOBAL.Loading.setLoading(
-        false,
-        global.language === 'CN' ? '许可申请中...' : 'Applying',
-      )
-      Toast.show(
-        global.language === 'CN'
-          ? '许可申请失败,请检查网络连接'
-          : 'License application failed.Please check the network connection',
-      )
-    }
+    // GLOBAL.Loading.setLoading(
+    //   true,
+    //   global.language === 'CN' ? '许可申请中...' : 'Applying',
+    // )
+    // try {
+    //   let fileCachePath = await FileTools.appendingHomeDirectory(
+    //     '/iTablet/license/Trial_License.slm',
+    //   )
+    //   let bRes = await RNFS.exists(fileCachePath)
+    //   if (bRes) {
+    //     await RNFS.unlink(fileCachePath)
+    //   }
+    //   let dataUrl = undefined
+    //   setTimeout(() => {
+    //     if (dataUrl === undefined) {
+    //       GLOBAL.Loading.setLoading(
+    //         false,
+    //         global.language === 'CN' ? '许可申请中...' : 'Applying...',
+    //       )
+    //       Toast.show(
+    //         global.language === 'CN'
+    //           ? '许可申请失败,请检查网络连接'
+    //           : 'License application failed.Please check the network connection',
+    //       )
+    //     }
+    //   }, 10000)
+    //   dataUrl = await FetchUtils.getFindUserDataUrl(
+    //     'xiezhiyan123',
+    //     'Trial_License',
+    //     '.geojson',
+    //   )
+    //   let downloadOptions = {
+    //     fromUrl: dataUrl,
+    //     toFile: fileCachePath,
+    //     background: true,
+    //     fileName: 'Trial_License.slm',
+    //     progressDivider: 1,
+    //   }
+    //
+    //   const ret = RNFS.downloadFile(downloadOptions)
+    //
+    //   ret.promise.then(async () => {
+    //     GLOBAL.Loading.setLoading(
+    //       false,
+    //       global.language === 'CN' ? '许可申请中...' : 'Applying',
+    //     )
+    //     this.getLicense()
+    //     Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
+    //   })
+    // } catch (e) {
+    //   GLOBAL.Loading.setLoading(
+    //     false,
+    //     global.language === 'CN' ? '许可申请中...' : 'Applying',
+    //   )
+    //   Toast.show(
+    //     global.language === 'CN'
+    //       ? '许可申请失败,请检查网络连接'
+    //       : 'License application failed.Please check the network connection',
+    //   )
+    // }
   }
 
   renderItemView(label, isText, action) {

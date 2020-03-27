@@ -1,5 +1,5 @@
-import LocalAnalystView from './LocalAnalystView'
 import { connect } from 'react-redux'
+import LocalAnalystView from './LocalAnalystView'
 import { getLayers } from '../../../../models/layers'
 import { setAnalystParams } from '../../../../models/analyst'
 import { getUdbAndDs } from '../../../../models/localData'

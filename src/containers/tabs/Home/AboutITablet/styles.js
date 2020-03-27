@@ -90,7 +90,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    left:scaleSize(10),
+    left: scaleSize(10),
     // textAlign: 'center',
     // width: scaleSize(90),
     // height: scaleSize(30),

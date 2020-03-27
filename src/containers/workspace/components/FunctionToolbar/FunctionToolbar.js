@@ -24,7 +24,6 @@ const EDIT = 'EDIT'
 export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language'
 import {
-  ToolbarModule,
   startModule,
   addModule,
   styleModule,
@@ -42,6 +41,7 @@ import {
   roadNetModule,
   markModule,
   mark3DModule,
+  incrementModule,
 } from '../ToolBar/modules'
 
 const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -294,7 +294,6 @@ export default class FunctionToolbar extends React.Component {
           let styleAction = !isLicenseNotValid
           if (type === constants.MAP_THEME && styleAction) {
             styleAction = () => {
-              ToolbarModule.getParams()
               let currentLayer = this.props.currentLayer
               if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
                 styleModule().action(ConstToolType.MAP_STYLE)
@@ -391,9 +390,18 @@ export default class FunctionToolbar extends React.Component {
           )
           break
         case 'roadNetModule':
-          data.push(roadNetModule(
+          data.push(
+            roadNetModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.NETWORK_MODULE,
+              !isLicenseNotValid,
+            ),
+          )
+          break
+        case 'incrementModule':
+          data.push(incrementModule(
             item.type,
-            getLanguage(this.props.language).Map_Main_Menu.NETWORK_MODULE,
+            getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
             !isLicenseNotValid,
           ))
           break
@@ -418,7 +426,8 @@ export default class FunctionToolbar extends React.Component {
         case 'editModule':
           data.push(
             editModule(
-              item.type,
+              // item.type,
+              ConstToolType.MAP_EDIT_DEFAULT,
               getLanguage(this.props.language).Map_Main_Menu.EDIT,
               !isLicenseNotValid,
             ),

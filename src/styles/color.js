@@ -117,20 +117,20 @@ export default {
 
   green1: '#1afa29',
 
-  /** 深色版*/
+  /** 深色版 */
   content: '#555555',
-  /** 浅色版*/
-  item_separate_white: '#A0A0A0', //分割线
-  content_white: '#FBFBFB', //列表项目背景
-  font_color_white: '#303030', //列表项目文字颜色
+  /** 浅色版 */
+  item_separate_white: '#A0A0A0', // 分割线
+  content_white: '#FBFBFB', // 列表项目背景
+  font_color_white: '#303030', // 列表项目文字颜色
   image_bg_white: '#727272',
   theme_white: '#303030',
-  section_bg: '#505050', //列表一级标题背景
-  section_text: '#FBFBFB', //列表一级标题文字
-  bottomz: '#303030', //底部工具栏背景
-  overlay_tint: 'rgba(48,48,48,0.85)', //遮罩颜色为#303030,85%不透明度
-  item_selected_bg: '#4680DF', //列表选中背景
-  item_text_selected: '#FBFBFB', //列表文字选中颜色
+  section_bg: '#505050', // 列表一级标题背景
+  section_text: '#FBFBFB', // 列表一级标题文字
+  bottomz: '#303030', // 底部工具栏背景
+  overlay_tint: 'rgba(48,48,48,0.85)', // 遮罩颜色为#303030,85%不透明度
+  item_selected_bg: '#4680DF', // 列表选中背景
+  item_text_selected: '#FBFBFB', // 列表文字选中颜色
 
   // 提示消息颜色
   infoBg: '#EDF1FB',

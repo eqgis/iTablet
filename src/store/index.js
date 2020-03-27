@@ -33,11 +33,11 @@ const persistConfig = {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default () => {
-  let reducer = persistCombineReducers(persistConfig, reducers)
-  let store = createStore(
+  const reducer = persistCombineReducers(persistConfig, reducers)
+  const store = createStore(
     reducer,
     composeEnhancers(applyMiddleware(...middlewares)),
   )
-  let persistor = persistStore(store)
+  const persistor = persistStore(store)
   return { persistor, store }
 }

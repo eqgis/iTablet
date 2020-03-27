@@ -1,12 +1,12 @@
-var Orientation = require('react-native').NativeModules.Orientation
-var DeviceEventEmitter = require('react-native').DeviceEventEmitter
+const { Orientation } = require('react-native').NativeModules
+const { DeviceEventEmitter } = require('react-native')
 
-var listeners = {}
-var orientationDidChangeEvent = 'orientationDidChange'
-var specificOrientationDidChangeEvent = 'specificOrientationDidChange'
+const listeners = {}
+const orientationDidChangeEvent = 'orientationDidChange'
+const specificOrientationDidChangeEvent = 'specificOrientationDidChange'
 
-var id = 0
-var META = '__listener_id'
+let id = 0
+const META = '__listener_id'
 
 function getKey(listener) {
   if (!listener.hasOwnProperty(META)) {
@@ -15,7 +15,7 @@ function getKey(listener) {
     }
 
     Object.defineProperty(listener, META, {
-      value: 'L' + ++id,
+      value: `L${++id}`,
     })
   }
 
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   addOrientationListener(cb) {
-    var key = getKey(cb)
+    const key = getKey(cb)
     listeners[key] = DeviceEventEmitter.addListener(
       orientationDidChangeEvent,
       body => {
@@ -66,7 +66,7 @@ module.exports = {
   },
 
   removeOrientationListener(cb) {
-    var key = getKey(cb)
+    const key = getKey(cb)
 
     if (!listeners[key]) {
       return
@@ -77,7 +77,7 @@ module.exports = {
   },
 
   addSpecificOrientationListener(cb) {
-    var key = getKey(cb)
+    const key = getKey(cb)
 
     listeners[key] = DeviceEventEmitter.addListener(
       specificOrientationDidChangeEvent,
@@ -88,7 +88,7 @@ module.exports = {
   },
 
   removeSpecificOrientationListener(cb) {
-    var key = getKey(cb)
+    const key = getKey(cb)
 
     if (!listeners[key]) {
       return

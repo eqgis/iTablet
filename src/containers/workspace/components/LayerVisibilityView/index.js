@@ -4,5 +4,6 @@
  * https://github.com/AsortKeven
  */
 
-import LayerVisibilityView from "./LayerVisibilityView"
+import LayerVisibilityView from './LayerVisibilityView'
+
 export default LayerVisibilityView

@@ -1,5 +1,5 @@
-import SearchMine from './SearchMine'
 import { connect } from 'react-redux'
+import SearchMine from './SearchMine'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

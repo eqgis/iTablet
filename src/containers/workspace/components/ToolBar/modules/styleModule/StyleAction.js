@@ -1,3 +1,4 @@
+import { SCartography, SMap } from 'imobile_for_reactnative'
 import {
   ConstToolType,
   TouchType,
@@ -7,7 +8,6 @@ import {
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import constants from '../../../../constants'
-import { SCartography, SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Utils from '../../utils'
@@ -68,14 +68,14 @@ async function tableAction(params) {
       SCartography.setTextColorOfLayer(params.key, params.layerName)
       break
   }
-  if(!params.type && params.action) {
+  if (!params.type && params.action) {
     params.action(params)
   }
 }
 
 function layerListAction(data) {
   const _params = ToolbarModule.getParams()
-  let orientation = _params.device.orientation
+  const { orientation } = _params.device
   SMap.setLayerEditable(data.path, true)
   if (data.type === 83) {
     _params.setToolbarVisible(true, ConstToolType.GRID_STYLE, {
@@ -111,12 +111,12 @@ function layerListAction(data) {
     Toast.show(
       getLanguage(_params.language).Prompt.THE_CURRENT_LAYER_CANNOT_BE_STYLED,
     )
-    //'当前图层无法设置风格')
+    // '当前图层无法设置风格')
   }
 }
 
 function setTextFont(param) {
-  let layerName = ToolbarModule.getParams().currentLayer.name
+  const layerName = ToolbarModule.getParams().currentLayer.name
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       SCartography.setTextFontOfLayer('BOLD', layerName)
@@ -141,9 +141,11 @@ function setTextFont(param) {
 
 function menu(type, selectKey, params = {}) {
   const _params = ToolbarModule.getParams()
-  let isFullScreen, showMenuDialog, isTouchProgress
-  let isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
-  let showBox = function() {
+  let isFullScreen
+  let showMenuDialog
+  let isTouchProgress
+  const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  const showBox = function() {
     if (
       GLOBAL.Type === constants.MAP_EDIT ||
       type === ConstToolType.GRID_STYLE ||
@@ -163,9 +165,9 @@ function menu(type, selectKey, params = {}) {
     ) {
       params.showBox && params.showBox()
     }
-  }.bind(this)
+  }
 
-  let setData = function() {
+  const setData = function() {
     let buttons
     if (
       GLOBAL.Type === constants.MAP_EDIT ||
@@ -217,7 +219,7 @@ function menu(type, selectKey, params = {}) {
         isTouchProgress,
         buttons,
       })
-  }.bind(this)
+  }
 
   if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true

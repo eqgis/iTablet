@@ -1,4 +1,4 @@
-//好友
+// 好友
 const Friends = {
   LOCALE: 'tr',
 
@@ -10,7 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'Yeni Grup Sohbeti',
   RECOMMEND_FRIEND: 'Arkadaş Ekle',
   SELECT_MODULE: 'Modül Seç',
-  //Friend
+  // Friend
   MSG_SERVICE_FAILED: 'Mesaj servisine bağlanılamadı',
   MSG_SERVICE_NOT_CONNECT: 'Mesaj servisine bağlanılamıyor',
   SEND_SUCCESS: 'Başarıyla gönderildi',
@@ -19,7 +19,7 @@ const Friends = {
   RECEIVE_SUCCESS: 'Başarılıyla alındı',
   RECEIVE_FAIL_EXPIRE: 'Alma başarısız, dosyanın süresi dolmuş olabilir',
   RECEIVE_FAIL_NETWORK: 'Alma başarısız, lütfen ağınızı kontrol edin',
-  //FriendMessage
+  // FriendMessage
   MARK_READ: 'Okundu olarak işaretle', //*
   MARK_UNREAD: 'Okunmadı olarak işaretle', //*
   DEL: 'Delete', //*
@@ -28,7 +28,7 @@ const Friends = {
   CONFIRM: 'Evet', //*
   CANCEL: 'İptal', //*
   ALERT_DEL_HISTORY: 'Bu konuşma geçmişini sil?', //*
-  //FriendList
+  // FriendList
   SET_MARK_NAME: 'İşaret Adı Ayarla',
   DEL_FRIEND: 'Arkadaş Sil',
   ALERT_DEL_FRIEND:
@@ -36,28 +36,28 @@ const Friends = {
   TEXT_CONTENT: 'Metin İçeriği',
   INPUT_MARK_NAME: 'Lütfen işaret adını girin',
   INPUT_INVALID: 'Geçersiz giriş, lütfen tekrar giriş yapın',
-  //InformMessage
+  // InformMessage
   TITLE_NOTIFICATION: 'Bildirim',
   FRIEND_RESPOND: 'Bu arkadaşlık isteğini kabul et?',
-  //CreateGroupChat
+  // CreateGroupChat
   CONFIRM2: 'Tamam',
   TITLE_CHOOSE_FRIEND: 'Arkadaş Seç',
   TOAST_CHOOSE_2: 'Grupta sohbet etmek için ikiden fazla arkadaş ekle',
   NO_FRIEND: 'Hay aksi! Henüz arkadaş yok',
-  //AddFriend
+  // AddFriend
   ADD_FRIEND_PLACEHOLDER: 'E-posta / Telefon / Takma İsim',
   SEARCHING: 'Aranıyor...',
   SEARCH: 'Arama',
   ADD_SELF: 'Kendinizi arkadaş olarak ekleyemezsiniz',
   ADD_AS_FRIEND: 'Arkadaş olarak ekle?',
-  //FriendGroup
+  // FriendGroup
   LOADING: 'Yükleniyor...',
   DEL_GROUP: 'Grubu Sil',
   DEL_GROUP_CONFIRM:
     'Sohbet geçmişini silmek ve bu gruptan ayrılmak ister misiniz?',
   DEL_GROUP_CONFIRM2:
     'Sohbet geçmişini temizlemek ve bu grubu dağıtmak ister misiniz?',
-  //Chat
+  // Chat
   INPUT_MESSAGE: 'Giriş mesajı ...',
   SEND: 'Gönder',
   LOAD_EARLIER: 'Önceki mesajları yükle',
@@ -73,18 +73,18 @@ const Friends = {
   WAIT_DOWNLOADING: 'Lütfen indirme tamamlanana kadar bekleyin',
   DATA_NOT_FOUND: 'Veri bulunamadı, tekrar indirmek ister misiniz?',
   LOAD_ORIGIN_PIC: 'Başlangıcı Yükle',
-  //CustomActions
+  // CustomActions
   MAP: 'Map',
   TEMPLATE: 'Taslak',
   LOCATION: 'Konum',
   PICTURE: 'Resim',
   LOCATION_FAILED: 'Konumlandırma Başarısız',
-  //RecommendFriend
+  // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',
   PERMISSION_DENIED_CONTACT:
     'Kişileri görüntülemek için lütfen iTablete izin verin',
-  //ManageFriend/Group
+  // ManageFriend/Group
   SEND_MESSAGE: 'Mesaj gönder',
   SET_MARKNAME: 'Takma İsim Ayarla',
   SET_GROUPNAME: 'Grup adı ayarla',
@@ -104,7 +104,7 @@ const Friends = {
   ALERT_EXIT_COWORK:
     'Mevcut ortak çalışma haritasını kapatmak istiyor musunuz?',
   SHARE_DATASET: 'Veri kümesini aynı anda paylaşın',
-  //system text
+  // system text
   SYS_MSG_PIC: '[RESİM]',
   SYS_MSG_MAP: '[HARİTA]',
   SYS_MSG_LAYER: '[KATMAN]',

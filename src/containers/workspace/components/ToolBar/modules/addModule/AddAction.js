@@ -1,10 +1,9 @@
+import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
 import AddData from './AddData'
-import NavigationService from '../../../../../NavigationService'
 
 /**
  * containerType为list时，listAction为列表行点击事件
@@ -13,9 +12,7 @@ import NavigationService from '../../../../../NavigationService'
  * @returns {Promise.<void>}
  */
 async function listAction(type, params = {}) {
-  if (
-    type === ConstToolType.MAP_ADD
-  ) {
+  if (type === ConstToolType.MAP_ADD) {
     // 数据源和地图列表点击事件
     const _params = ToolbarModule.getParams()
     if (
@@ -33,14 +30,14 @@ async function listAction(type, params = {}) {
         _params.device.orientation === 'LANDSCAPE'
           ? ConstToolType.THEME_HEIGHT[3]
           : ConstToolType.THEME_HEIGHT[5]
-      let data = {
-        type: type,
+      const data = {
+        type,
         getData: AddData.getData,
         lastData: ToolbarModule.getData().data,
         actions,
         height,
       }
-      let selectList = ToolbarModule.getData().selectList
+      const { selectList } = ToolbarModule.getData()
       _data.data[0].allSelectType = true
       if (
         selectList &&
@@ -48,7 +45,7 @@ async function listAction(type, params = {}) {
         _data.data.length > 0 &&
         selectList[_data.data[0].title]
       ) {
-        for (let item of _data.data[0].data) {
+        for (const item of _data.data[0].data) {
           item.isSelected =
             selectList[_data.data[0].title].indexOf(item.datasetName) >= 0
         }
@@ -125,7 +122,7 @@ function toolbarBack() {
   if (!_params) return
   const _data = ToolbarModule.getData()
   const lastData = _data.lastData || {}
-  let selectList = _data.selectList
+  const { selectList } = _data
   _params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
     isFullScreen: true,
     isTouchProgress: false,
@@ -154,13 +151,13 @@ async function commit() {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
     return
   }
-  let result = {}
-  for (let key of Object.keys(selectList)) {
-    let resultArr = await SMap.addLayers(selectList[key], key)
+  const result = {}
+  for (const key of Object.keys(selectList)) {
+    const resultArr = await SMap.addLayers(selectList[key], key)
 
     // 找出有默认样式的数据集，并给对应图层设置
     for (let i = 0; i < resultArr.length; i++) {
-      let description =
+      const description =
         resultArr[i].description &&
         resultArr[i].description !== 'NULL' &&
         JSON.parse(resultArr[i].description)

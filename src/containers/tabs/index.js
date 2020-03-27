@@ -47,99 +47,78 @@ import InformSpot from './Friend/InformSpot'
 import TabItem from './TabItem'
 
 const Tabs = function(arr) {
-  let tabs = {}
+  const tabs = {}
   for (let i = 0; i < arr.length; i++) {
     switch (arr[i]) {
       case 'Home':
         tabs.Home = {
           screen: Home,
-          navigationOptions: () => {
-            return {
-              tabBarLabel: data => {
-                return (
-                  <TabItem
-                    data={data}
-                    title={'Home'}
-                    selectedImage={getThemeAssets().tabBar.tab_home_selected}
-                    image={getThemeAssets().tabBar.tab_home}
-                  />
-                )
-              },
-              header: null,
-            }
-          },
+          navigationOptions: () => ({
+            tabBarLabel: data => (
+              <TabItem
+                data={data}
+                title="Home"
+                selectedImage={getThemeAssets().tabBar.tab_home_selected}
+                image={getThemeAssets().tabBar.tab_home}
+              />
+            ),
+            header: null,
+          }),
         }
         break
       case 'Friend':
         tabs.Friend = {
           screen: Friend,
-          navigationOptions: () => {
-            return {
-              tabBarLabel: data => {
-                return (
-                  <TabItem
-                    data={data}
-                    title={'Friend'}
-                    selectedImage={getThemeAssets().tabBar.tab_friend_selected}
-                    image={getThemeAssets().tabBar.tab_friend}
-                    renderExtra={() => {
-                      return (
-                        <InformSpot
-                          style={{
-                            right:
-                              Platform.OS === 'android' ? scaleSize(50) : 0,
-                          }}
-                        />
-                      )
+          navigationOptions: () => ({
+            tabBarLabel: data => (
+              <TabItem
+                data={data}
+                title="Friend"
+                selectedImage={getThemeAssets().tabBar.tab_friend_selected}
+                image={getThemeAssets().tabBar.tab_friend}
+                renderExtra={() => (
+                  <InformSpot
+                    style={{
+                      right: Platform.OS === 'android' ? scaleSize(50) : 0,
                     }}
                   />
-                )
-              },
-              header: null,
-            }
-          },
+                )}
+              />
+            ),
+            header: null,
+          }),
         }
         break
       case 'Find':
         tabs.Find = {
           screen: Find,
-          navigationOptions: () => {
-            return {
-              tabBarLabel: data => {
-                return (
-                  <TabItem
-                    data={data}
-                    title={'Find'}
-                    selectedImage={
-                      getThemeAssets().tabBar.tab_discover_selected
-                    }
-                    image={getThemeAssets().tabBar.tab_discover}
-                  />
-                )
-              },
-              header: null,
-            }
-          },
+          navigationOptions: () => ({
+            tabBarLabel: data => (
+              <TabItem
+                data={data}
+                title="Find"
+                selectedImage={getThemeAssets().tabBar.tab_discover_selected}
+                image={getThemeAssets().tabBar.tab_discover}
+              />
+            ),
+            header: null,
+          }),
         }
         break
       case 'Mine':
         tabs.Mine = {
           screen: Mine,
-          navigationOptions: () => {
-            return {
-              tabBarLabel: data => {
-                return (
-                  <TabItem
-                    data={data}
-                    title={'Mine'}
-                    selectedImage={getThemeAssets().tabBar.tab_mine_selected}
-                    image={getThemeAssets().tabBar.tab_mine}
-                  />
-                )
-              },
-              header: null,
-            }
-          },
+          navigationOptions: () => ({
+            tabBarLabel: data => (
+              <TabItem
+                data={data}
+                title="Mine"
+                selectedImage={getThemeAssets().tabBar.tab_mine_selected}
+                image={getThemeAssets().tabBar.tab_mine}
+              />
+            ),
+            header: null,
+          }),
         }
         break
     }
@@ -186,7 +165,7 @@ const Tabs = function(arr) {
 
 export {
   Tabs,
-  /**Mine*/
+  /** Mine */
   MyService,
   MyLocalData,
   MyMap,
@@ -203,13 +182,13 @@ export {
   MyDataset,
   NewDataset,
   SearchMine,
-  /**Home*/
+  /** Home */
   Setting,
   AboutITablet,
   SelectLogin,
   Login,
   IPortalLogin,
-  /**friend*/
+  /** friend */
   Chat,
   InformMessage,
   AddFriend,

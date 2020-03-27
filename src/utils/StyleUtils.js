@@ -25,7 +25,7 @@ async function setSelectionStyle(layerPath = '', geoStyle) {
 
 /** 点选（单选）选择集样式 */
 async function setSingleSelectionStyle(layerPath = '') {
-  let geoStyle = new GeoStyle()
+  const geoStyle = new GeoStyle()
   geoStyle.setFillOpaqueRate(0)
   geoStyle.setLineWidth(0.1)
   geoStyle.setLineColor(0, 0, 255)
@@ -34,7 +34,7 @@ async function setSingleSelectionStyle(layerPath = '') {
 }
 
 async function setDefaultMapControlStyle() {
-  let nodeStyle = new GeoStyle()
+  const nodeStyle = new GeoStyle()
   // nodeStyle.setFillForeColor(250, 20, 20, 1)
   // nodeStyle.setLineWidth(1)
   // nodeStyle.setLineColor(70, 128, 223)
@@ -43,7 +43,7 @@ async function setDefaultMapControlStyle() {
   // nodeStyle.setMarkerSize(5)
   // geoStyle.setMarkerColor(255, 0, 0)
 
-  let style = {
+  const style = {
     nodeStyle: JSON.stringify(nodeStyle),
     nodeColor: [250, 20, 20, 1],
     nodeSize: 1,

@@ -1,23 +1,21 @@
 import { getLanguage } from '../language'
 
 function sortByPinYin(arr) {
-  arr.sort(function compareFunction(param1, param2) {
-    return param1.localeCompare(param2)
-  })
+  arr.sort((param1, param2) => param1.localeCompare(param2))
   return arr
 }
 
 function pySegSort(arr) {
   if (!String.prototype.localeCompare) return null
 
-  let letters = '*abcdefghjklmnopqrstwxyz'.split('')
-  let zh = '阿八嚓哒妸发旮哈讥咔垃麻拏噢妑七呥扨它穵夕丫帀'.split('')
+  const letters = '*abcdefghjklmnopqrstwxyz'.split('')
+  const zh = '阿八嚓哒妸发旮哈讥咔垃麻拏噢妑七呥扨它穵夕丫帀'.split('')
 
-  let segs = []
+  const segs = []
   let curr
-  letters.forEach(function(item, i) {
+  letters.forEach((item, i) => {
     curr = { letter: item, data: [] }
-    arr.forEach(function(item2) {
+    arr.forEach(item2 => {
       if (
         (!zh[i - 1] || zh[i - 1].localeCompare(item2) <= 0) &&
         item2.localeCompare(zh[i]) === -1
@@ -27,9 +25,7 @@ function pySegSort(arr) {
     })
     if (curr.data.length) {
       segs.push(curr)
-      curr.data.sort(function(a, b) {
-        return a.localeCompare(b)
-      })
+      curr.data.sort((a, b) => a.localeCompare(b))
     }
   })
   return segs
@@ -47,8 +43,8 @@ function checkMobile(value) {
 }
 
 function CheckTel(value) {
-  //电话验证
-  let reg = /^([0-9]|[-])+$/g
+  // 电话验证
+  const reg = /^([0-9]|[-])+$/g
   let isValid
   isValid = reg.exec(value)
   if (!isValid) {
@@ -73,44 +69,42 @@ const DataType = {
 }
 
 function getType(data) {
-  let type = Object.prototype.toString.call(data)
+  const type = Object.prototype.toString.call(data)
   return DataType[type]
 }
 
 function colorRgba(str, n = 1) {
-  let reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
+  const reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
   let sColor = str.toLowerCase()
   if (sColor && reg.test(sColor)) {
     if (sColor.length === 4) {
       let sColorNew = '#'
       for (let i = 1; i < 4; i += 1) {
-        //例如：#eee,#fff等
+        // 例如：#eee,#fff等
         sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1))
       }
       sColor = sColorNew
     }
-    let sColorChange = {}
+    const sColorChange = {}
     for (let i = 1; i < 7; i += 2) {
-      let key = i === 1 ? 'r' : i === 3 ? 'g' : 'b'
-      sColorChange[key] = parseInt('0x' + sColor.slice(i, i + 2))
+      const key = i === 1 ? 'r' : i === 3 ? 'g' : 'b'
+      sColorChange[key] = parseInt(`0x${sColor.slice(i, i + 2)}`)
     }
-    sColorChange['a'] = n
+    sColorChange.a = n
     return sColorChange
-  } else {
-    return sColor
   }
+  return sColor
 }
 
 function checkColor(str) {
-  let reg = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
+  const reg = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
   return reg.test(str)
 }
 
 function colorHex(obj) {
-  return (
-    '#' +
-    ((1 << 24) + (obj.r << 16) + (obj.g << 8) + obj.b).toString(16).slice(1)
-  )
+  return `#${((1 << 24) + (obj.r << 16) + (obj.g << 8) + obj.b)
+    .toString(16)
+    .slice(1)}`
 }
 
 const chnNumChar = {
@@ -137,16 +131,16 @@ function ChineseToNumber(chnStr) {
   let section = 0
   let number = 0
   let secUnit = false
-  let str = chnStr.split('')
+  const str = chnStr.split('')
   for (let i = 0; i < str.length; i++) {
-    let num = chnNumChar[str[i]]
+    const num = chnNumChar[str[i]]
     if (typeof num !== 'undefined') {
       number = num
       if (i === str.length - 1) {
         section += number
       }
     } else {
-      let unit = chnNameValue[str[i]].value
+      const unit = chnNameValue[str[i]].value
       secUnit = chnNameValue[str[i]].secUnit
       if (secUnit) {
         section = (section + number) * unit
@@ -161,7 +155,7 @@ function ChineseToNumber(chnStr) {
   return rtn + section
 }
 
-//数字加上千分位符号
+// 数字加上千分位符号
 function NumberWithThousandSep(nummber, fix = 2, ellipsisZero = true) {
   let num = (nummber || 0).toString()
   if (fix >= 0 && num.indexOf('.') !== -1) {
@@ -179,23 +173,23 @@ function NumberWithThousandSep(nummber, fix = 2, ellipsisZero = true) {
   }
   let result = ''
   while (int.length > 3) {
-    result = ',' + int.slice(-3) + result
+    result = `,${int.slice(-3)}${result}`
     int = int.slice(0, int.length - 3)
   }
   if (int) {
     result = int + result
   }
   if (fix !== 0 && decimal !== '') {
-    result = result + '.' + decimal
+    result = `${result}.${decimal}`
   }
   return result
 }
 
 function angleTransfer(value = 0, decimals = -1) {
-  let degrees,
-    minutes,
-    seconds,
-    temp = value
+  let degrees
+  let minutes
+  let seconds
+  let temp = value
   degrees = Math.floor(temp)
 
   temp = (temp - degrees) * 60
@@ -206,7 +200,7 @@ function angleTransfer(value = 0, decimals = -1) {
   if (decimals >= 0) {
     seconds = seconds.toFixed(decimals)
   }
-  return degrees + '°' + minutes + "'" + seconds + '"'
+  return `${degrees}°${minutes}'${seconds}"`
 }
 
 /**
@@ -231,35 +225,36 @@ function cloneObj(obj) {
   if (obj instanceof Array) {
     newObj = []
   }
-  for (let key in obj) {
-    let val = obj[key]
+  for (const key in obj) {
+    const val = obj[key]
     newObj[key] = typeof val === 'object' ? cloneObj(val) : val
   }
   return newObj
 }
 
-//获取不带后缀的文件名
+// 获取不带后缀的文件名
 function getFileNameWithOutExt(text) {
-  let json = text.split('.')
-  return text.replace('.' + json[json.length - 1], '')
+  const json = text.split('.')
+  return text.replace(`.${json[json.length - 1]}`, '')
 }
 
-//检查ip+port是否合法
+// 检查ip+port是否合法
 function checkIpPort(ip) {
-  let re = /^(\d+)\.(\d+)\.(\d+)\.(\d+):(\d{3,4})$/ //正则表达式
+  const re = /^(\d+)\.(\d+)\.(\d+)\.(\d+):(\d{3,4})$/ // 正则表达式
   if (re.test(ip)) {
     if (
       RegExp.$1 < 256 &&
       RegExp.$2 < 256 &&
       RegExp.$3 < 256 &&
       RegExp.$4 < 256
-    )
+    ) {
       return true
+    }
   }
   return false
 }
 
-//获取合法命名
+// 获取合法命名
 function getLegalName(text = '', re = '') {
   if (text.length === 0) return text
   let res = text.trim()
@@ -276,15 +271,16 @@ function getLegalName(text = '', re = '') {
   return res
 }
 
-//检查命名是否合法
+// 检查命名是否合法
 function isLegalName(text = '', language = 'CN') {
-  if (text.length === 0)
+  if (text.length === 0) {
     return {
       result: false,
       error: getLanguage(language).Prompt.ERROR_INFO_EMPTY,
     }
-  let re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
-  let re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
+  }
+  const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
+  const re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
   if (!re1.test(text)) {
     return {
       result: false,
@@ -303,9 +299,9 @@ function isLegalName(text = '', language = 'CN') {
 }
 
 function isLegalURL(URL, language = 'CN') {
-  let str = URL
-  let Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
-  let objExp = new RegExp(Expression)
+  const str = URL
+  const Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
+  const objExp = new RegExp(Expression)
 
   if (!objExp.test(str)) {
     return {
@@ -320,13 +316,13 @@ function isLegalURL(URL, language = 'CN') {
 }
 
 function getNameByURL(str) {
-  var idx = str.lastIndexOf('/')
+  let idx = str.lastIndexOf('/')
   idx = idx > -1 ? idx : str.lastIndexOf('\\')
   if (idx < 0) {
     return str
   }
-  let file = str.substring(idx + 1)
-  let arr = file.split('.')
+  const file = str.substring(idx + 1)
+  const arr = file.split('.')
   return arr[0]
 }
 

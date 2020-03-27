@@ -1,5 +1,6 @@
 import { NativeModules } from 'react-native'
-const SPUtils = NativeModules.SPUtils
+
+const { SPUtils } = NativeModules
 
 function createFile(fileName) {
   return SPUtils.createFile(fileName)

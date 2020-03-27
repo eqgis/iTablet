@@ -1,5 +1,5 @@
-import OverlayAnalystView from './OverlayAnalystView'
 import { connect } from 'react-redux'
+import OverlayAnalystView from './OverlayAnalystView'
 import { getLayers } from '../../../../models/layers'
 
 const mapStateToProps = state => ({

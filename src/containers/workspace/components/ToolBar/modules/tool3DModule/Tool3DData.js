@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { Platform } from 'react-native'
+import { SScene } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
-import { Toast } from '../../../../../../utils'
-import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Tool3DAction from './Tool3DAction'
 import { SelectList } from './CustomViews'
-import { SScene } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../../../assets'
 
 async function getData(type, params) {
@@ -17,9 +15,9 @@ async function getData(type, params) {
   } else {
     params = ToolbarModule.getParams()
   }
-  let data = [],
-    buttons = [],
-    customView = null
+  let data = []
+  let buttons = []
+  let customView = null
   switch (type) {
     case ConstToolType.MAP3D_TOOL:
       data = [
@@ -27,7 +25,7 @@ async function getData(type, params) {
           key: 'distanceMeasure',
           title: getLanguage(params.language).Map_Main_Menu
             .TOOLS_DISTANCE_MEASUREMENT,
-          //'距离量算',
+          // '距离量算',
           action: Tool3DAction.measureDistance,
           size: 'large',
           image: require('../../../../../../assets/function/Frenchgrey/icon_analystLien.png'),
@@ -36,7 +34,7 @@ async function getData(type, params) {
           key: 'suerfaceMeasure',
           title: getLanguage(params.language).Map_Main_Menu
             .TOOLS_AREA_MEASUREMENT,
-          //''面积量算',
+          // ''面积量算',
           action: Tool3DAction.measureArea,
           size: 'large',
           image: require('../../../../../../assets/function/Frenchgrey/icon_analystSuerface.png'),
@@ -44,7 +42,7 @@ async function getData(type, params) {
         {
           key: 'action3d',
           title: getLanguage(params.language).Map_Main_Menu.TOOLS_SELECT,
-          //''点选',
+          // ''点选',
           action: Tool3DAction.select,
           size: 'large',
           image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_action3d.png'),
@@ -116,7 +114,7 @@ async function getData(type, params) {
         {
           key: 'cancel',
           title: getLanguage(global.language).Prompt.CANCEL,
-          //'取消',
+          // '取消',
           action: () => {
             SScene.clearSelection()
             params.setAttributes && params.setAttributes({})
@@ -155,7 +153,7 @@ async function getData(type, params) {
         {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.FLY_AROUND_POINT,
-          //'绕点飞行',
+          // '绕点飞行',
           action: () => {
             GLOBAL.isCircleFlying = true
             SScene.startCircleFly()
@@ -171,13 +169,13 @@ async function getData(type, params) {
   return { data, buttons, customView }
 }
 
-/** 获取裁剪数据 **/
+/** 获取裁剪数据 * */
 async function getClipData(type) {
-  let params = ToolbarModule.getParams()
-  let clipSetting = params.getClipSetting && params.getClipSetting()
-  let isClipInner = clipSetting.clipInner
+  const params = ToolbarModule.getParams()
+  const clipSetting = params.getClipSetting && params.getClipSetting()
+  const isClipInner = clipSetting.clipInner
   let customView
-  let data = clipSetting.layers
+  const data = clipSetting.layers
   switch (type) {
     case ConstToolType.MAP3D_CLIP_SHOW:
       if (data[0].selected === undefined) {

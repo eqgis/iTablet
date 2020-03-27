@@ -3,7 +3,7 @@ import { scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 
 const styles = StyleSheet.create({
-  //MineItem
+  // MineItem
   moreImgBtn: {
     marginRight: 10,
   },
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
-  //batchbar
+  // batchbar
   batchHeadStyle: {
     width: '100%',
     flexDirection: 'row',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(30),
     fontSize: scaleSize(20),
   },
-  //MyDataPage
+  // MyDataPage
   sectionView: {
     flexDirection: 'row',
     alignItems: 'center',

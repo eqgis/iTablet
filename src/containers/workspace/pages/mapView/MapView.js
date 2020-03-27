@@ -45,9 +45,9 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker, LayerVisibilityView,
+  PreviewColorPicker, LayerVisibilityView, IncrementRoadDialog,
 } from '../../components'
-import { ToolbarModule } from '../../components/ToolBar/modules'
+import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import {
   Container,
   MTBtn,
@@ -79,7 +79,7 @@ import {
   ConstToolType,
   TouchType,
   ConstInfo,
-  getHeaderTitle,
+  getHeaderTitle, ToolbarType,
 } from '../../../../constants'
 import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
@@ -96,6 +96,7 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
+import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight";
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -274,10 +275,10 @@ export default class MapView extends React.Component {
 
     //  导航选中的数据
     this.selectedData = {
-      selectedDatasources:[], //选中的数据源
-      selectedDatasets:[],  //选中的数据集
-      currentDatasource:[], //当前使用的数据源
-      currentDataset:{},  //当前使用的数据集
+      selectedDatasources: [], //选中的数据源
+      selectedDatasets: [], //选中的数据集
+      currentDatasource: [], //当前使用的数据源
+      currentDataset: {}, //当前使用的数据集
     }
     this.floorHiddenListener = null
   }
@@ -657,7 +658,15 @@ export default class MapView extends React.Component {
     await SMap.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
-    let { startX, startY, endX, endY, startFloor, endFloor, datasourceName} = params
+    let {
+      startX,
+      startY,
+      endX,
+      endY,
+      startFloor,
+      endFloor,
+      datasourceName,
+    } = params
     try {
       if (params.isIndoor) {
         await SMap.getStartPoint(startX, startY, true, startFloor)
@@ -1498,20 +1507,24 @@ export default class MapView extends React.Component {
         )
         // 检测默认标注是否存在 新建默认标注 设为当前图层
         let currentLayer = this.props.layers.layers[0]
-        let hasDefaultTagging = await SMap.hasDefaultTagging(this.props.user.currentUser.userName)
-        let defaultTaggingName = `Default_Tagging@Label_${this.props.user.currentUser.userName}#`
-        if(hasDefaultTagging) {
-          if(currentLayer.datasetName !== defaultTaggingName){
+        let hasDefaultTagging = await SMap.hasDefaultTagging(
+          this.props.user.currentUser.userName,
+        )
+        let defaultTaggingName = `Default_Tagging@Label_${
+          this.props.user.currentUser.userName
+        }#`
+        if (hasDefaultTagging) {
+          if (currentLayer.datasetName !== defaultTaggingName) {
             await SMap.addLayer({
-              datasourceName:`Label_${this.props.user.currentUser.userName}#`,
-              datasetName:'Default_Tagging',
+              datasourceName: `Label_${this.props.user.currentUser.userName}#`,
+              datasetName: 'Default_Tagging',
             })
-            await SMap.setLayerVisible(defaultTaggingName,true)
+            await SMap.setLayerVisible(defaultTaggingName, true)
             let layers = await this.props.getLayers()
             currentLayer = layers[0]
           }
           GLOBAL.TaggingDatasetName = defaultTaggingName
-        }else{
+        } else {
           await SMap.setLabelColor()
           let data = await SMap.newTaggingDataset(
             'Default_Tagging',
@@ -1521,7 +1534,7 @@ export default class MapView extends React.Component {
           let layers = await this.props.getLayers()
           currentLayer = layers[0]
         }
-        await SMap.setLayerEditable(defaultTaggingName,true)
+        await SMap.setLayerEditable(defaultTaggingName, true)
         this.props.setCurrentLayer(currentLayer)
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
@@ -2569,6 +2582,87 @@ export default class MapView extends React.Component {
     }
   }
 
+  _pressRoad = type => {
+    const params = ToolbarModule.getParams()
+    let data = ToolBarHeight.getToolbarHeight(type)
+    this.showFullMap(true)
+    switch (type) {
+      case ConstToolType.MAP_INCREMENT_OUTTER:
+        params.setToolbarVisible(true, type, {
+          containerType:ToolbarType.table,
+          isFullScreen: false,
+          resetToolModuleData:true,
+          height:data.height,
+          column:data.column,
+        })
+        break
+      case ConstToolType.MAP_INCREMENT_INNER:
+        break
+    }
+    GLOBAL.IncrementRoadDialog.setVisible(false)
+  }
+  renderIncrementDialog = () => {
+    return(
+      <IncrementRoadDialog ref={ref=>(GLOBAL.IncrementRoadDialog = ref)}>
+        <View style={{
+          width:scaleSize(500),
+          height:scaleSize(300),
+          backgroundColor:color.background,
+          borderRadius:5,
+          flexDirection:'row',
+          justifyContent: 'space-around',
+          paddingTop:scaleSize(20),
+        }}>
+          <TouchableOpacity
+            style={{
+              width:scaleSize(200),
+              height:scaleSize(260),
+              flexDirection:'column',
+              justifyContent: 'space-around',
+              alignItems:'center',
+            }}
+            onPress={()=>{
+              this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
+            }}
+          >
+            <Image
+              style={{
+                width:scaleSize(200),
+                height:scaleSize(200),
+              }}
+              resizeMode={'contain'}
+            />
+            <Text style={{
+              fontSize:scaleSize(20),
+            }}>室内路网</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width:scaleSize(200),
+              height:scaleSize(260),
+              flexDirection:'column',
+              justifyContent: 'space-around',
+              alignItems:'center',
+            }}
+            onPress={()=>{
+              this._pressRoad(ConstToolType.MAP_INCREMENT_OUTTER)
+            }}
+          >
+            <Image
+              style={{
+                width:scaleSize(200),
+                height:scaleSize(200),
+              }}
+              resizeMode={'contain'}
+            />
+            <Text style={{
+              fontSize:scaleSize(20),
+            }}>室外路网</Text>
+          </TouchableOpacity>
+        </View>
+      </IncrementRoadDialog>
+    )
+  }
   _renderAIDetectChange = () => {
     return (
       <MapSelectPoint
@@ -2612,22 +2706,25 @@ export default class MapView extends React.Component {
     return this.searchClickedInfo
   }
   _renderMapSelectPointHeaderRight = () => {
-    if (GLOBAL.MapSelectPointType==='selectPoint') {
+    if (GLOBAL.MapSelectPointType === 'selectPoint') {
       return (
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            if(GLOBAL.MapSelectPointType==='selectPoint'){
+            if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
-              if(GLOBAL.MapXmlStr){
+              if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
-                GLOBAL.MapXmlStr=undefined
+                GLOBAL.MapXmlStr = undefined
               }
-              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE && GLOBAL.DATUMPOINTVIEW && GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE)
-              GLOBAL.MapSelectPointType=undefined
-
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE &&
+                GLOBAL.DATUMPOINTVIEW &&
+                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
+                )
+              GLOBAL.MapSelectPointType = undefined
 
               GLOBAL.MapSelectPointType = undefined
               GLOBAL.ToolBar.setVisible(true)
@@ -2642,15 +2739,12 @@ export default class MapView extends React.Component {
             }
           }}
         >
-          <Text
-            style={styles.textConfirm}
-          >
+          <Text style={styles.textConfirm}>
             {getLanguage(this.props.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
       )
-    }else
-    if (!this.state.currentFloorID) {
+    } else if (!this.state.currentFloorID) {
       return (
         <TouchableOpacity
           key={'search'}
@@ -2695,24 +2789,25 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.MAPSELECTPOINT = ref)}
         headerProps={{
           title: getLanguage(this.props.language).Map_Main_Menu.SELECT_POINTS,
-          subTitle: GLOBAL.MapSelectPointType==='selectPoint'?'':getLanguage(this.props.language).Map_Main_Menu
-            .LONG_PRESS_SELECT_POINTS,
+          subTitle:
+            GLOBAL.MapSelectPointType === 'selectPoint'
+              ? ''
+              : getLanguage(this.props.language).Map_Main_Menu
+                .LONG_PRESS_SELECT_POINTS,
           navigation: this.props.navigation,
           type: 'fix',
           headerRight: this._renderMapSelectPointHeaderRight(),
           openSelectPointMap: this._openSelectPointMap,
           selectPointType: GLOBAL.MapSelectPointType,
-          backAction: async() => {
-            if(GLOBAL.MapSelectPointType==='selectPoint'){
+          backAction: async () => {
+            if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-              NavigationService.navigate('EnterDatumPoint', {
+              NavigationService.navigate('EnterDatumPoint', {})
 
-              })
-
-              if(GLOBAL.MapXmlStr){
+              if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
-                GLOBAL.MapXmlStr=undefined
+                GLOBAL.MapXmlStr = undefined
               }
 
               GLOBAL.MapSelectPointType = undefined
@@ -2720,7 +2815,11 @@ export default class MapView extends React.Component {
               GLOBAL.toolBox.showFullMap(false)
 
               GLOBAL.OverlayView.setVisible(true)
-              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP && GLOBAL.DATUMPOINTVIEW && GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP)
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
+                GLOBAL.DATUMPOINTVIEW &&
+                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
+                )
               this.setState({ showScaleView: true })
               return
             }
@@ -2825,16 +2924,9 @@ export default class MapView extends React.Component {
     )
   }
 
-  _openSelectPointMap = async(data,point) =>{
-    await this._openDatasource(
-      data,
-      data.layerIndex,
-    )
-    point &&SMap.showMarker(
-      point.x,
-      point.y,
-      markerTag,
-    )
+  _openSelectPointMap = async (data, point) => {
+    await this._openDatasource(data, data.layerIndex)
+    point && SMap.showMarker(point.x, point.y, markerTag)
     GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
     this.setState({ showScaleView: false })
   }
@@ -3086,7 +3178,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
-        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)}/>
+        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)} />
       </Container>
     )
   }
@@ -3096,6 +3188,7 @@ export default class MapView extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this.renderIncrementDialog()}
       </View>
     )
   }

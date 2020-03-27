@@ -6,8 +6,8 @@ import StartAction from './StartAction'
 
 function getData(type, params) {
   ToolbarModule.setParams(params)
-  let data = [],
-    buttons = []
+  let data = []
+  const buttons = []
   switch (type) {
     case ConstToolType.MAP_3D_START:
       data = [
@@ -32,7 +32,7 @@ function getData(type, params) {
         {
           key: constants.OPEN,
           title: getLanguage(global.language).Map_Main_Menu.START_OPEN_SENCE,
-          //'打开场景',
+          // '打开场景',
           action: StartAction.getSceneData,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_open_black.png'),
@@ -66,7 +66,7 @@ function getData(type, params) {
         {
           key: constants.OPEN,
           title: getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
-          //constants.OPEN,
+          // constants.OPEN,
           action: StartAction.openMap,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_open_black.png'),
@@ -74,7 +74,7 @@ function getData(type, params) {
         {
           key: constants.CREATE,
           title: getLanguage(global.language).Map_Main_Menu.START_NEW_MAP,
-          //constants.CREATE,
+          // constants.CREATE,
           size: 'large',
           action: () => StartAction.isNeedToSave(StartAction.create),
           image: require('../../../../../../assets/mapTools/icon_create_black.png'),
@@ -82,7 +82,7 @@ function getData(type, params) {
         {
           key: constants.HISTORY,
           title: getLanguage(global.language).Map_Main_Menu.START_RECENT,
-          //constants.HISTORY,
+          // constants.HISTORY,
           size: 'large',
           action: StartAction.showHistory,
           image: require('../../../../../../assets/mapTools/icon_history_black.png'),
@@ -104,7 +104,7 @@ function getData(type, params) {
         {
           key: constants.SAVE,
           title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
-          //constants.SAVE,
+          // constants.SAVE,
           size: 'large',
           // TODO 保存地图
           action: () => StartAction.saveMap('TempMap'),
@@ -113,7 +113,7 @@ function getData(type, params) {
         {
           key: constants.SAVE_AS,
           title: getLanguage(global.language).Map_Main_Menu.START_SAVE_AS_MAP,
-          //constants.SAVE_AS,
+          // constants.SAVE_AS,
           size: 'large',
           action: StartAction.saveMapAs,
           image: require('../../../../../../assets/mapTools/icon_save_as_black.png'),

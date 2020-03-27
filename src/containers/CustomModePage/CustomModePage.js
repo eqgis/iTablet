@@ -19,7 +19,7 @@ import { SThemeCartography, SMap } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { color } from '../../styles'
 import { scaleSize, setSpText, Toast } from '../../utils'
-import { ToolbarModule } from '../workspace/components/ToolBar/modules'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstToolType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
 

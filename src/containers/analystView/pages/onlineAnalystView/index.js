@@ -1,5 +1,5 @@
-import OnlineAnalystView from './OnlineAnalystView'
 import { connect } from 'react-redux'
+import OnlineAnalystView from './OnlineAnalystView'
 import { getLayers } from '../../../../models/layers'
 import { getDatasetInfoFromIServer } from '../../../../models/online'
 

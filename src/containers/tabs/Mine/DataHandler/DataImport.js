@@ -1,15 +1,15 @@
+import { SMap, EngineType } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import { SMap, EngineType } from 'imobile_for_reactnative'
 
 async function importWorkspace(item) {
-  let filePath = item.filePath
-  let index = filePath.lastIndexOf('/')
-  let path = filePath.substring(0, index)
-  let snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
+  const { filePath } = item
+  const index = filePath.lastIndexOf('/')
+  const path = filePath.substring(0, index)
+  const snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
   await SMap.copyNaviSnmFile(snmFiles)
-  let type = _getWorkspaceType(filePath)
-  let data = {
+  const type = _getWorkspaceType(filePath)
+  const data = {
     server: filePath,
     type,
   }
@@ -22,80 +22,85 @@ async function importWorkspace(item) {
  * 3.复制工作空间和相关文件
  */
 async function importWorkspace3D(user, item) {
-  let userPath = await FileTools.appendingHomeDirectory(
-    ConstPath.UserPath + user.userName + '/Data/Scene',
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/Data/Scene`,
   )
 
-  let contentList = await FileTools.getDirectoryContent(userPath)
+  const contentList = await FileTools.getDirectoryContent(userPath)
 
-  let workspaceName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
-  let workspaceFolder = _getAvailableName(
+  const workspaceName = item.fileName.substring(
+    0,
+    item.fileName.lastIndexOf('.'),
+  )
+  const workspaceFolder = _getAvailableName(
     workspaceName,
     contentList,
     'directory',
   )
-  let workspaceInfo = {
-    type: _getWorkspaceType(item.fileName) + '',
-    server: workspaceFolder + '/' + item.fileName,
+  const workspaceInfo = {
+    type: `${_getWorkspaceType(item.fileName)}`,
+    server: `${workspaceFolder}/${item.fileName}`,
   }
 
   for (let i = 0; i < item.wsInfo.scenes.length; i++) {
-    let scene = item.wsInfo.scenes[i]
-    let pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
-    let pxpInfo = {
+    const scene = item.wsInfo.scenes[i]
+    const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
+    const pxpInfo = {
       Name: scene,
       Workspace: workspaceInfo,
     }
-    await FileTools.writeFile(userPath + '/' + pxp, JSON.stringify(pxpInfo))
+    await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
 
-    let absoluteWorkspacePath = userPath + '/' + workspaceFolder
+    const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
     await FileTools.createDirectory(absoluteWorkspacePath)
     await FileTools.copyFile(
       item.filePath,
-      absoluteWorkspacePath + '/' + item.fileName,
+      `${absoluteWorkspacePath}/${item.fileName}`,
     )
 
     for (let i = 0; i < item.relatedFiles.length; i++) {
-      let filePath = item.relatedFiles[i]
-      let fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
-      await FileTools.copyFile(filePath, absoluteWorkspacePath + '/' + fileName)
+      const filePath = item.relatedFiles[i]
+      const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
+      await FileTools.copyFile(filePath, `${absoluteWorkspacePath}/${fileName}`)
     }
   }
 }
 
 async function importDatasource(user, item) {
-  let userPath = await FileTools.appendingHomeDirectory(
-    ConstPath.UserPath + user.userName + '/Data/Datasource',
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/Data/Datasource`,
   )
 
-  let contentList = await FileTools.getDirectoryContent(userPath)
+  const contentList = await FileTools.getDirectoryContent(userPath)
 
-  let sourceUdb = item.filePath
-  let sourceUdd =
-    item.filePath.substring(0, item.filePath.lastIndexOf('.')) + '.udd'
+  const sourceUdb = item.filePath
+  const sourceUdd = `${item.filePath.substring(
+    0,
+    item.filePath.lastIndexOf('.'),
+  )}.udd`
 
-  let datasourceName = item.fileName.substring(
+  const datasourceName = item.fileName.substring(
     0,
     item.fileName.lastIndexOf('.'),
   )
-  let udbName = _getAvailableName(datasourceName, contentList, 'file', 'udb')
-  let uddName = _getAvailableName(datasourceName, contentList, 'file', 'udd')
+  const udbName = _getAvailableName(datasourceName, contentList, 'file', 'udb')
+  const uddName = _getAvailableName(datasourceName, contentList, 'file', 'udd')
 
-  await FileTools.copyFile(sourceUdb, userPath + '/' + udbName)
-  await FileTools.copyFile(sourceUdd, userPath + '/' + uddName)
+  await FileTools.copyFile(sourceUdb, `${userPath}/${udbName}`)
+  await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
 }
 
 async function importColor(user, item) {
-  let userPath = await FileTools.appendingHomeDirectory(
-    ConstPath.UserPath + user.userName + '/Data/Color',
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/Data/Color`,
   )
 
   return await _copyFile(item, userPath)
 }
 
 async function importSymbol(user, item) {
-  let userPath = await FileTools.appendingHomeDirectory(
-    ConstPath.UserPath + user.userName + '/Data/Symbol',
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/Data/Symbol`,
   )
 
   return await _copyFile(item, userPath)
@@ -164,18 +169,18 @@ async function _importDataset(
   importParams = {},
 ) {
   try {
-    let homePath = await FileTools.appendingHomeDirectory()
+    const homePath = await FileTools.appendingHomeDirectory()
     let alias = datasourceItem.name
-    let index = alias.lastIndexOf('.')
+    const index = alias.lastIndexOf('.')
     if (index > 0) {
       alias = alias.substring(0, index)
     }
-    let result = await SMap.importDataset(
+    const result = await SMap.importDataset(
       type,
       filePath,
       {
         server: homePath + datasourceItem.path,
-        alias: alias,
+        alias,
         engineType: EngineType.UDB,
       },
       importParams,
@@ -188,23 +193,23 @@ async function _importDataset(
 }
 
 async function _copyFile(item, desDir) {
-  let fileName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
-  let fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
-  let contentList = await FileTools.getDirectoryContent(desDir)
-  let name = _getAvailableName(fileName, contentList, 'file', fileType)
-  return await FileTools.copyFile(item.filePath, desDir + '/' + name)
+  const fileName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
+  const fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
+  const contentList = await FileTools.getDirectoryContent(desDir)
+  const name = _getAvailableName(fileName, contentList, 'file', fileType)
+  return await FileTools.copyFile(item.filePath, `${desDir}/${name}`)
 }
 
 function _getAvailableName(name, fileList, type, ext = '') {
   let AvailabeName = name
   if (type === 'file' && ext !== '') {
-    AvailabeName = name + '.' + ext
+    AvailabeName = `${name}.${ext}`
   }
   if (_isInlList(AvailabeName, fileList, type)) {
     for (let i = 1; ; i++) {
-      AvailabeName = name + '_' + i
+      AvailabeName = `${name}_${i}`
       if (type === 'file' && ext !== '') {
-        AvailabeName = name + '_' + i + '.' + ext
+        AvailabeName = `${name}_${i}.${ext}`
       }
       if (!_isInlList(AvailabeName, fileList, type)) {
         return AvailabeName
@@ -225,15 +230,15 @@ function _isInlList(name, fileList, type) {
 }
 
 function _getWorkspaceType(path) {
-  let index = path.lastIndexOf('.')
+  const index = path.lastIndexOf('.')
   let type
   if (index < 1) {
     return 1
-  } else {
-    type = path.substr(index + 1)
   }
+  type = path.substr(index + 1)
+
   type = type.toUpperCase()
-  var value
+  let value
   switch (type) {
     case 'SMWU':
       value = 9

@@ -1,6 +1,7 @@
 import { StyleSheet, Platform } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
+
 const FUNCTIONHEIGHT = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
 export default StyleSheet.create({
   container: {

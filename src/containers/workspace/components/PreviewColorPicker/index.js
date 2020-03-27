@@ -4,4 +4,5 @@
  * https://github.com/AsortKeven
  */
 import PreviewColorPicker from './PreviewColorPicker'
+
 export default PreviewColorPicker

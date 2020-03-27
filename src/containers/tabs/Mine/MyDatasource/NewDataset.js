@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Container, Input } from '../../../../components'
-import { SMap, EngineType, DatasetType } from 'imobile_for_reactnative'
-import { FileTools } from '../../../../native'
+import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast, dataUtil } from '../../../../utils'
 import { color, size } from '../../../../styles'
@@ -40,19 +39,23 @@ class NewDataset extends Component {
   }
 
   componentDidMount() {
-    this.setState({ datasets: [{
-      key: new Date().getTime(),
-      datasetName: this._getAvailableName('New_Point'),
-      datasetType: DatasetType.POINT,
-    }]})
+    this.setState({
+      datasets: [
+        {
+          key: new Date().getTime(),
+          datasetName: this._getAvailableName('New_Point'),
+          datasetType: DatasetType.POINT,
+        },
+      ],
+    })
   }
 
   _getAvailableName = (name, checkCurrent = true) => {
     let i = 1
     let datasetName = name
     let result = false
-    while(!result) {
-      if(this._isAvailableName(datasetName, checkCurrent)){
+    while (!result) {
+      if (this._isAvailableName(datasetName, checkCurrent)) {
         result = true
       } else {
         datasetName = name + '_' + i++
@@ -64,17 +67,17 @@ class NewDataset extends Component {
   _isAvailableName = (name, checkCurrent) => {
     let list = []
     let datasets = this.getDatasets()
-    for(let i = 0; i < datasets.length; i++) {
+    for (let i = 0; i < datasets.length; i++) {
       list.push(datasets[i].datasetName)
     }
-    if(checkCurrent) {
-      for(let i = 0; i < this.state.datasets.length; i++) {
+    if (checkCurrent) {
+      for (let i = 0; i < this.state.datasets.length; i++) {
         list.push(this.state.datasets[i].datasetName)
       }
     }
     let result = true
-    for(let i = 0; i < list.length; i++) {
-      if(list.includes(name)) {
+    for (let i = 0; i < list.length; i++) {
+      if (list.includes(name)) {
         result = false
         break
       }
@@ -104,11 +107,10 @@ class NewDataset extends Component {
     return datasetName
   }
 
-
   _addDataset = () => {
     let lastDatasetType
     let length = this.state.datasets.length
-    if(length > 0) {
+    if (length > 0) {
       lastDatasetType = this.state.datasets[length - 1].datasetType
     }
     let datasetType = lastDatasetType || DatasetType.POINT
@@ -214,7 +216,7 @@ class NewDataset extends Component {
           }
           setTimeout(async () => {
             Toast.show(getLanguage(global.language).Prompt.CREATE_SUCCESSFULLY)
-            this.refreshCallback && await this.refreshCallback()
+            this.refreshCallback && (await this.refreshCallback())
             this._clearDatasets()
             this.container && this.container.setLoading(false)
           }, 1000)
@@ -284,7 +286,7 @@ class NewDataset extends Component {
             defaultValue={item.datasetName || ''}
             onChangeText={text => {
               item.datasetName = text
-              item.nameChanged =true
+              item.nameChanged = true
               let { error } = dataUtil.isLegalName(text, GLOBAL.language)
               this.setErrorMap(item.key, error)
             }}
@@ -344,12 +346,14 @@ class NewDataset extends Component {
             item.datasetType === type ? { backgroundColor: '#4680DF' } : {},
           ]}
           onPress={() => {
-            if(item.datasetType === type) {
+            if (item.datasetType === type) {
               return
             }
             item.datasetType = type
-            if(!item.nameChanged) {
-              item.datasetName = this._getAvailableName(this._getDefaultDatasetNameByType(type))
+            if (!item.nameChanged) {
+              item.datasetName = this._getAvailableName(
+                this._getDefaultDatasetNameByType(type),
+              )
             }
             let datasets = this.state.datasets.clone()
             this.setState({ datasets })

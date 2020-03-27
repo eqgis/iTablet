@@ -11,7 +11,7 @@ import {
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import {screen, scaleSize, setSpText} from '../../../../utils'
+import { screen, scaleSize, setSpText } from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -56,7 +56,7 @@ export default class TouchProgress extends Component {
     this.tempText = ''
     this.state = {
       tips: '',
-      previousTips:'',
+      previousTips: '',
     }
 
     this._panResponder = PanResponder.create({
@@ -588,22 +588,25 @@ export default class TouchProgress extends Component {
           break
         }
         case 7:
-          if(
+          if (
             this.props.selectName ===
             getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
           ) {
-            let fontsize = await SCartography.getTextSizeOfLayer(this.props.currentLayer.name)
+            let fontsize = await SCartography.getTextSizeOfLayer(
+              this.props.currentLayer.name,
+            )
             this._panBtnStyles.style.left =
               (fontsize * progressWidth) / 20 + panBtnDevLeft
             this._previousLeft = (fontsize * progressWidth) / 20
-            this._BackLine.style.width =
-              (fontsize * progressWidth) / 20
+            this._BackLine.style.width = (fontsize * progressWidth) / 20
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
               '     ' +
               parseInt(fontsize)
-          } else if(this.props.selectName === 'TEXT_ROTATION') {
-            let angle = await SCartography.getTextAngleOfLayer(this.props.currentLayer.name)
+          } else if (this.props.selectName === 'TEXT_ROTATION') {
+            let angle = await SCartography.getTextAngleOfLayer(
+              this.props.currentLayer.name,
+            )
             this._panBtnStyles.style.left =
               (angle * progressWidth) / 360 + panBtnDevLeft
             this._previousLeft = (angle * progressWidth) / 360
@@ -745,12 +748,9 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      (
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
-      ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
-      ) &&
-      (
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+      (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS) &&
+      (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
@@ -763,8 +763,8 @@ export default class TouchProgress extends Component {
         GLOBAL.MapToolType ===
           ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
-      )
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET)
     ) {
       if (
         this.props.selectName ===
@@ -772,7 +772,10 @@ export default class TouchProgress extends Component {
         this.props.selectName ===
           getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH
       ) {
-        let lineWidth = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
+        let lineWidth = await SMap.getTaggingLineWidth(
+          event.layerInfo.path,
+          event.id,
+        )
         this._panBtnStyles.style.left =
           (lineWidth * progressWidth) / 20 + panBtnDevLeft
         this._previousLeft = (lineWidth * progressWidth) / 20
@@ -786,7 +789,10 @@ export default class TouchProgress extends Component {
         this.props.selectName ===
         getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
       ) {
-        let pointSize = await SMap.getTaggingMarkerSize(event.layerInfo.path, event.id)
+        let pointSize = await SMap.getTaggingMarkerSize(
+          event.layerInfo.path,
+          event.id,
+        )
         this._panBtnStyles.style.left =
           (pointSize * progressWidth) / 100 + panBtnDevLeft
         this._previousLeft = (pointSize * progressWidth) / 100
@@ -800,7 +806,10 @@ export default class TouchProgress extends Component {
         this.props.selectName ===
         getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION
       ) {
-        let pointAngle = await SMap.getTaggingAngle(event.layerInfo.path, event.id)
+        let pointAngle = await SMap.getTaggingAngle(
+          event.layerInfo.path,
+          event.id,
+        )
         this._panBtnStyles.style.left =
           (pointAngle * progressWidth) / 360 + panBtnDevLeft
         this._previousLeft = (pointAngle * progressWidth) / 360
@@ -814,7 +823,10 @@ export default class TouchProgress extends Component {
         this.props.selectName ===
         getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY
       ) {
-        let pointAlpha = await SMap.getTaggingAlpha(event.layerInfo.path, event.id)
+        let pointAlpha = await SMap.getTaggingAlpha(
+          event.layerInfo.path,
+          event.id,
+        )
         this._panBtnStyles.style.left =
           (pointAlpha * progressWidth) / 100 + panBtnDevLeft
         this._previousLeft = (pointAlpha * progressWidth) / 100
@@ -828,7 +840,10 @@ export default class TouchProgress extends Component {
         this.props.selectName ===
         getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
       ) {
-        let value = await SMap.getTaggingTextSize(event.layerInfo.path, event.id)
+        let value = await SMap.getTaggingTextSize(
+          event.layerInfo.path,
+          event.id,
+        )
         if (value <= 1) {
           value = 1
         } else if (value > 20) {
@@ -843,7 +858,10 @@ export default class TouchProgress extends Component {
           '     ' +
           parseInt(value)
       } else if (this.props.selectName === 'TEXT_ROTATION') {
-        let angle = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
+        let angle = await SMap.getTaggingTextAngle(
+          event.layerInfo.path,
+          event.id,
+        )
         this._panBtnStyles.style.left =
           (angle * progressWidth) / 360 + panBtnDevLeft
         this._previousLeft = (angle * progressWidth) / 360
@@ -856,10 +874,10 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if( tips !== this.state.tips){
+    if (tips !== this.state.tips) {
       this.tempText = value ? ~~value : ''
       this.setState({
-        previousTips:tips,
+        previousTips: tips,
         tips,
       })
     }
@@ -954,12 +972,9 @@ export default class TouchProgress extends Component {
         newValue = value * 200
       }
     } else if (
-      (
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
-      ) &&
-      (
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+      (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS) &&
+      (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
@@ -972,8 +987,8 @@ export default class TouchProgress extends Component {
         GLOBAL.MapToolType ===
           ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
-      )
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET)
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1114,7 +1129,7 @@ export default class TouchProgress extends Component {
             } else if (newValue > 20) {
               newValue = 20
             }
-          } else if (this.props.selectName === 'TEXT_ROTATION'){
+          } else if (this.props.selectName === 'TEXT_ROTATION') {
             newValue = value * 360
           }
           break
@@ -1153,12 +1168,9 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
-      (
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
-      ) &&
-      (
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+      (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS) &&
+      (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
@@ -1171,8 +1183,8 @@ export default class TouchProgress extends Component {
         GLOBAL.MapToolType ===
           ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
-      )
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET)
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -1636,31 +1648,38 @@ export default class TouchProgress extends Component {
           break
         }
         case 7: {
-          if(
+          if (
             this.props.selectName ===
-            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
-            await SCartography.setTextSizeOfLayer(value, this.props.currentLayer.name)
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
+            await SCartography.setTextSizeOfLayer(
+              value,
+              this.props.currentLayer.name,
+            )
             if (value <= 1) {
               value = 1
             } else if (value > 20) {
               value = 20
             }
             tips =
-                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-                '     ' +
-                parseInt(value)
-          } else if(this.props.selectName === 'TEXT_ROTATION') {
-            await SCartography.setTextAngleOfLayer(value, this.props.currentLayer.name)
+              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+              '     ' +
+              parseInt(value)
+          } else if (this.props.selectName === 'TEXT_ROTATION') {
+            await SCartography.setTextAngleOfLayer(
+              value,
+              this.props.currentLayer.name,
+            )
             if (value < 0) {
               value = 0
             } else if (value > 360) {
               value = 360
             }
             tips =
-                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-                '     ' +
-                parseInt(value) +
-                '°'
+              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+              '     ' +
+              parseInt(value) +
+              '°'
           }
           break
         }
@@ -1747,10 +1766,10 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if(tips !== this.state.tips){
+    if (tips !== this.state.tips) {
       this.tempText = ~~value
       this.setState({
-        previousTips:tips,
+        previousTips: tips,
         tips,
       })
     }
@@ -2006,29 +2025,30 @@ export default class TouchProgress extends Component {
           break
         }
         case 7: {
-          if(
+          if (
             this.props.selectName ===
-            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE) {
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
+          ) {
             if (value <= 1) {
               value = 1
             } else if (value > 20) {
               value = 20
             }
             tips =
-                getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-                '     ' +
-                parseInt(value)
-          } else if(this.props.selectName === 'TEXT_ROTATION') {
+              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
+              '     ' +
+              parseInt(value)
+          } else if (this.props.selectName === 'TEXT_ROTATION') {
             if (value < 0) {
               value = 0
             } else if (value > 360) {
               value = 360
             }
             tips =
-                getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-                '     ' +
-                parseInt(value) +
-                '°'
+              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
+              '     ' +
+              parseInt(value) +
+              '°'
           }
           break
         }
@@ -2179,12 +2199,9 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      (
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
-      ) &&
-      (
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+      (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS) &&
+      (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
@@ -2197,8 +2214,8 @@ export default class TouchProgress extends Component {
         GLOBAL.MapToolType ===
           ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
-      )
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET)
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -2274,10 +2291,10 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if(tips !== this.state.tips){
+    if (tips !== this.state.tips) {
       this.tempText = ~~value
       this.setState({
-        previousTips:tips,
+        previousTips: tips,
         tips,
       })
     }
@@ -2293,33 +2310,31 @@ export default class TouchProgress extends Component {
       if (
         this.props.selectName[this.props.selectName.length - 1] ===
           getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
-          this.props.selectName[this.props.selectName.length - 1] ===
+        this.props.selectName[this.props.selectName.length - 1] ===
           getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST ||
-          this.props.selectName[this.props.selectName.length - 1] ===
+        this.props.selectName[this.props.selectName.length - 1] ===
           getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION
       ) {
         newValue = (value + 100) / 200
       }
     } else if (
       (ToolbarModule.getData().type === ConstToolType.MAP_TOOL ||
-        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS
-      ) &&
-        (
-          GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
-            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
-            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
-            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
-            GLOBAL.MapToolType ===
-            ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
-            GLOBAL.MapToolType ===
-            ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
-            GLOBAL.MapToolType ===
-            ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-            GLOBAL.MapToolType ===
-            ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
-            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
-            GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET
-        )
+        ToolbarModule.getData().type === ConstToolType.MAP_TOOLS) &&
+      (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET ||
+        GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT ||
+        GLOBAL.MapToolType ===
+          ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET)
     ) {
       switch (this.props.selectName) {
         case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -2340,72 +2355,74 @@ export default class TouchProgress extends Component {
           newValue = value / 20
           break
       }
-    } else if(
-      this.props.selectName === getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN){
+    } else if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
+    ) {
       newValue = value / 4
-    }else if (
+    } else if (
       this.props.selectName ===
         getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH ||
-        this.props.selectName ===
+      this.props.selectName ===
         getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT ||
-        this.props.selectName ===
+      this.props.selectName ===
         getLanguage(global.language).Map_Main_Menu.LEGEND_ICON ||
-        this.props.selectName ===
+      this.props.selectName ===
         getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
     ) {
       newValue = value / 100
     } else if (
       (GLOBAL.Type === constants.MAP_THEME &&
-            this.props.currentLayer.themeType > 0) ||
-        this.props.currentLayer.isHeatmap
+        this.props.currentLayer.themeType > 0) ||
+      this.props.currentLayer.isHeatmap
     ) {
       if (
         this.props.selectName === 'range_parameter' ||
-          this.props.selectName ===
+        this.props.selectName ===
           getLanguage(this.props.language).Map_Main_Menu.RANGE_COUNT
       ) {
         newValue = (value - 2) / 30
       } else if (
         this.props.selectName === 'fontsize' ||
-          this.props.selectName ===
+        this.props.selectName ===
           getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
       ) {
         newValue = value / 20
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.DOT_VALUE
+        getLanguage(this.props.language).Map_Main_Menu.DOT_VALUE
       ) {
         newValue = value / 100
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
+        getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
       ) {
         newValue = value / 100
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE
+        getLanguage(this.props.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE
       ) {
         newValue = value / 20
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.THEME_HEATMAP_RADIUS
+        getLanguage(this.props.language).Map_Main_Menu.THEME_HEATMAP_RADIUS
       ) {
         newValue = value / 50
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu
-            .THEME_HEATMAP_FUZZY_DEGREE
+        getLanguage(this.props.language).Map_Main_Menu
+          .THEME_HEATMAP_FUZZY_DEGREE
       ) {
         newValue = value / 100
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu
-            .THEME_HEATMAP_MAXCOLOR_WEIGHT
+        getLanguage(this.props.language).Map_Main_Menu
+          .THEME_HEATMAP_MAXCOLOR_WEIGHT
       ) {
         newValue = value / 100
       } else if (
         this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.DATUM_VALUE
+        getLanguage(this.props.language).Map_Main_Menu.DATUM_VALUE
       ) {
         newValue = value / 10000
       }
@@ -2414,17 +2431,17 @@ export default class TouchProgress extends Component {
         case 1:
           if (
             this.props.selectName ===
-              getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
+            getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
           ) {
             newValue = value / 100
           } else if (
             this.props.selectName ===
-              getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY
+            getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY
           ) {
             newValue = value / 100
           } else if (
             this.props.selectName ===
-              getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION
+            getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION
           ) {
             newValue = value / 360
           }
@@ -2438,34 +2455,34 @@ export default class TouchProgress extends Component {
         case 7:
           if (
             this.props.selectName ===
-              getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
+            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE
           ) {
             newValue = value / 20
-          } else if (this.props.selectName === 'TEXT_ROTATION'){
+          } else if (this.props.selectName === 'TEXT_ROTATION') {
             newValue = value / 360
           }
           break
         case 83:
           if (
             this.props.selectName ===
-              getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY
           ) {
             newValue = value / 100
           } else if (
             this.props.selectName ===
-              getLanguage(this.props.language).Map_Main_Menu.CONTRAST
+            getLanguage(this.props.language).Map_Main_Menu.CONTRAST
           ) {
             newValue = value / 200
           } else if (
             this.props.selectName ===
-              getLanguage(this.props.language).Map_Main_Menu.STYLE_BRIGHTNESS
+            getLanguage(this.props.language).Map_Main_Menu.STYLE_BRIGHTNESS
           ) {
             newValue = value / 200
           }
           break
       }
     }
-    let curValue = this.dealData(newValue > 1 ? 1 : (newValue < 0 ? 0 : newValue))
+    let curValue = this.dealData(newValue > 1 ? 1 : newValue < 0 ? 0 : newValue)
     curValue !== undefined && this.setData(curValue)
     this._initialization()
   }
@@ -2487,12 +2504,12 @@ export default class TouchProgress extends Component {
       // top: 0,
     }
     let num, strArray
-    if(this.state.tips !== ''){
-      let matchRel =  this.state.tips.match(/([-0-9][0-9]*)/)
+    if (this.state.tips !== '') {
+      let matchRel = this.state.tips.match(/([-0-9][0-9]*)/)
       matchRel && (num = matchRel[0])
-      if(num){
+      if (num) {
         strArray = this.state.tips.split(num)
-      }else{
+      } else {
         strArray = this.state.tips.split('     ')
         strArray[0] += '     '
       }
@@ -2524,19 +2541,19 @@ export default class TouchProgress extends Component {
         {this.state.tips !== '' && (
           <TouchableOpacity
             style={styles.tips}
-            onPress={()=>{
+            onPress={() => {
               this.input && this.input.focus()
             }}
             activeOpacity={1}
           >
             <Text style={styles.tipsText}>{strArray[0]}</Text>
             <TextInput
-              ref={ref=>(this.input = ref)}
+              ref={ref => (this.input = ref)}
               value={num !== undefined ? num + '' : ' '}
               keyboardType={'numeric'}
               returnKeyType={'done'}
-              onChangeText={text=>{
-                let matchRel =  text.match(/([-0-9][0-9]*)/)
+              onChangeText={text => {
+                let matchRel = text.match(/([-0-9][0-9]*)/)
                 text = matchRel ? matchRel[0] : ''
                 let tips = strArray[0] + text + strArray[1]
                 this.tempText = text
@@ -2544,10 +2561,11 @@ export default class TouchProgress extends Component {
                   tips,
                 })
               }}
-              onBlur={()=>{
+              onBlur={() => {
                 this._caculateProgress(~~this.tempText)
               }}
-              style={styles.input}/>
+              style={styles.input}
+            />
             <Text style={styles.tipsText}>{strArray[1]}</Text>
           </TouchableOpacity>
         )}
@@ -2606,7 +2624,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(110,110,110,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   tipsText: {
     fontSize: setSpText(20),
@@ -2614,15 +2632,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  input:{
+  input: {
     fontSize: setSpText(24),
     fontWeight: 'bold',
-    textAlign:'center',
+    textAlign: 'center',
     color: 'white',
-    minWidth:scaleSize(40),
+    minWidth: scaleSize(40),
     ...Platform.select({
-      android:{
-        padding:0,
+      android: {
+        padding: 0,
       },
     }),
   },

@@ -1,7 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native'
 import { scaleSize } from '../../utils'
 import { color } from '../../styles'
-const width = Dimensions.get('window').width
+
+const { width } = Dimensions.get('window')
 
 export default StyleSheet.create({
   container: {
@@ -10,7 +11,7 @@ export default StyleSheet.create({
   },
   btnTabContainer: {
     backgroundColor: 'white',
-    width: width,
+    width,
     paddingVertical: scaleSize(15),
     alignSelf: 'center',
     marginTop: scaleSize(20),

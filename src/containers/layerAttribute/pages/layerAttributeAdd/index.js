@@ -9,4 +9,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setCurrentAttribute,
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LayerAttributeAdd)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LayerAttributeAdd)

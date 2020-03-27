@@ -20,7 +20,7 @@ async function shareMap(type, list = [], name = '') {
     // GLOBAL.Loading && GLOBAL.Loading.setLoading(true, '分享中')
     if (ToolbarModule.getData().isSharing) {
       Toast.show(getLanguage(global.language).Prompt.SHARING)
-      //ConstInfo.SHARE_WAIT)
+      // ConstInfo.SHARE_WAIT)
       return
     }
     ToolbarModule.getParams().setToolbarVisible &&
@@ -30,18 +30,18 @@ async function shareMap(type, list = [], name = '') {
     setTimeout(async () => {
       ToolbarModule.getParams().setSharing({
         module: GLOBAL.Type,
-        name: name,
+        name,
         progress: 0,
       })
 
-      let layers = await SMap.getLayersByType()
-      let notExportMapIndexes = []
+      const layers = await SMap.getLayersByType()
+      const notExportMapIndexes = []
       for (let i = 1; i <= GLOBAL.BaseMapSize; i++) {
         if (LayerUtils.isBaseLayer(layers[layers.length - i].name)) {
           notExportMapIndexes.push(layers.length - i)
         }
       }
-      let notExport = {
+      const notExport = {
         [ToolbarModule.getParams().map.currentMap.name]: notExportMapIndexes,
       }
 
@@ -55,12 +55,12 @@ async function shareMap(type, list = [], name = '') {
         async (result, path) => {
           !result && Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
           // 分享
-          let fileName = path.substr(path.lastIndexOf('/') + 1)
-          let dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
+          const fileName = path.substr(path.lastIndexOf('/') + 1)
+          const dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
 
           // SOnlineService.deleteData(dataName).then(async () => {
           Toast.show(getLanguage(global.language).Prompt.SHARE_START)
-          let onProgeress = progress => {
+          const onProgeress = progress => {
             progress = parseInt(progress)
             let currentSharingProgress = 0
             for (
@@ -88,7 +88,7 @@ async function shareMap(type, list = [], name = '') {
               })
             }
           }
-          let onResult = async result => {
+          const onResult = async result => {
             if (typeof result === 'boolean' && result) {
               ToolbarModule.getParams().setSharing({
                 module: GLOBAL.Type,
@@ -121,11 +121,11 @@ async function shareMap(type, list = [], name = '') {
               },
             })
           } else if (type === constants.SUPERMAP_IPORTAL) {
-            await SIPortalService.uploadData(path, dataName + '.zip', {
+            await SIPortalService.uploadData(path, `${dataName}.zip`, {
               onProgress: onProgeress,
               onResult: async () => {
-                let JSIPortalService = new OnlineServicesUtils('iportal')
-                JSIPortalService.publishServiceByName(dataName + '.zip')
+                const JSIPortalService = new OnlineServicesUtils('iportal')
+                JSIPortalService.publishServiceByName(`${dataName}.zip`)
                 onResult(true)
               },
             })
@@ -145,12 +145,12 @@ async function share3DMap(type, list = []) {
   try {
     if (ToolbarModule.getParams().user.users.length <= 1) {
       Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN_AND_SHARE)
-      //'请登陆后再分享')
+      // '请登陆后再分享')
       return
     }
     if (ToolbarModule.getData().isSharing) {
       Toast.show(getLanguage(global.language).Prompt.SHARING)
-      //'分享中，请稍后')
+      // '分享中，请稍后')
       return
     }
     ToolbarModule.getParams().setToolbarVisible &&
@@ -158,7 +158,7 @@ async function share3DMap(type, list = []) {
     if (list.length > 0) {
       ToolbarModule.addData({ isSharing: true })
       for (let index = 0; index < list.length; index++) {
-        let dataName = list[index]
+        const dataName = list[index]
         ToolbarModule.getParams().setSharing({
           module: GLOBAL.Type,
           name: dataName,
@@ -193,7 +193,7 @@ async function share3DMap(type, list = []) {
                   },
                 })
               } else if (type === constants.SUPERMAP_IPORTAL) {
-                await SIPortalService.uploadData(zipPath, dataName + '.zip', {
+                await SIPortalService.uploadData(zipPath, `${dataName}.zip`, {
                   // onProgress:onProgeress,
                   onResult: async () => {
                     GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
@@ -231,7 +231,7 @@ function showSaveDialog(type) {
       !UserType.isIPortalUser(ToolbarModule.getParams().user.currentUser))
   ) {
     Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN_AND_SHARE)
-    //'请登陆后再分享')
+    // '请登陆后再分享')
     return
   }
   if (
@@ -243,17 +243,17 @@ function showSaveDialog(type) {
   }
   if (ToolbarModule.getData().isSharing) {
     Toast.show(getLanguage(global.language).Prompt.SHARING)
-    //'分享中，请稍后')
+    // '分享中，请稍后')
     return
   }
   NavigationService.navigate('InputPage', {
     headerTitle: getLanguage(global.language).Map_Main_Menu.SHARE,
-    //'分享',
+    // '分享',
     value: ToolbarModule.getParams().map.currentMap.name,
     placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
     type: 'name',
     cb: async value => {
-      let list = [ToolbarModule.getParams().map.currentMap.name]
+      const list = [ToolbarModule.getParams().map.currentMap.name]
       shareMap(type, list, value)
       NavigationService.goBack()
     },
@@ -262,7 +262,7 @@ function showSaveDialog(type) {
 
 function show3DSaveDialog(type) {
   SScene.getMapList().then(list => {
-    let data = [list[0].name]
+    const data = [list[0].name]
     ToolbarModule.getParams().map = {
       ...ToolbarModule.getParams().map,
       currentMap: { name: data },
@@ -274,23 +274,23 @@ function show3DSaveDialog(type) {
         !UserType.isIPortalUser(ToolbarModule.getParams().user.currentUser))
     ) {
       Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN_AND_SHARE)
-      //'请登陆后再分享')
+      // '请登陆后再分享')
       return
     }
     if (ToolbarModule.getData().isSharing) {
       Toast.show(getLanguage(global.language).Prompt.SHARING)
-      //'分享中，请稍后')
+      // '分享中，请稍后')
       return
     }
     NavigationService.navigate('InputPage', {
       headerTitle: getLanguage(global.language).Map_Main_Menu.SHARE,
-      //'分享',
+      // '分享',
       value: ToolbarModule.getParams().map.currentMap.name,
       placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
-        let list = await SScene.getMapList()
-        let data = [list[0].name]
+        const list = await SScene.getMapList()
+        const data = [list[0].name]
         share3DMap(type, data, value)
         NavigationService.goBack()
       },

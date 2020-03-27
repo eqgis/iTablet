@@ -6,7 +6,11 @@ import {
   GeoStyle,
   Action,
 } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath } from '../../../../../../constants'
+import {
+  ConstToolType,
+  ConstPath,
+  ToolbarType,
+} from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
@@ -49,12 +53,12 @@ function changeCollection() {
   })
 }
 
-/** 采集分类点击事件 **/
+/** 采集分类点击事件 * */
 function showCollection(type, layerName) {
-  let { data, buttons } = CollectionData.getData(type)
+  const { data, buttons } = CollectionData.getData(type)
   if (!ToolbarModule.getParams().setToolbarVisible) return
-  let column = 4
-  let rows = Math.ceil(data.length / column) - 1 + 1
+  const column = 4
+  const rows = Math.ceil(data.length / column) - 1 + 1
   let height
   switch (rows) {
     case 2:
@@ -69,8 +73,8 @@ function showCollection(type, layerName) {
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
     height,
-    data: data,
-    buttons: buttons,
+    data,
+    buttons,
     column,
     cb: () => {
       ToolbarModule.addData({
@@ -86,6 +90,7 @@ function showSymbol() {
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
+    containerType: ToolbarType.tabs,
     height:
       params.device.orientation === 'PORTRAIT'
         ? ConstToolType.HEIGHT[3]
@@ -94,15 +99,15 @@ function showSymbol() {
   })
 }
 
-/** 创建采集 **/
+/** 创建采集 * */
 async function createCollector(type, layerName) {
   // 风格
-  let geoStyle = new GeoStyle()
-  let collectorStyle = new GeoStyle()
+  const geoStyle = new GeoStyle()
+  const collectorStyle = new GeoStyle()
   collectorStyle.setPointColor(0, 255, 0)
-  //线颜色
+  // 线颜色
   collectorStyle.setLineColor(0, 255, 0)
-  //面颜色
+  // 面颜色
   collectorStyle.setFillForeColor(255, 0, 0)
 
   // let style = await SCollector.getStyle()
@@ -164,37 +169,37 @@ async function createCollector(type, layerName) {
   } else if (layerName !== undefined) {
     params = { layerPath: layerName }
   } else {
-    let datasetName = ToolbarModule.getParams().symbol.currentSymbol.type
-      ? ToolbarModule.getParams().symbol.currentSymbol.type +
-        '_' +
+    const datasetName = ToolbarModule.getParams().symbol.currentSymbol.type
+      ? `${ToolbarModule.getParams().symbol.currentSymbol.type}_${
         ToolbarModule.getParams().symbol.currentSymbol.id
+      }`
       : ''
-    let datasourcePath =
+    const datasourcePath =
       ToolbarModule.getParams().collection.datasourceParentPath ||
       (await FileTools.appendingHomeDirectory(
         ToolbarModule.getParams().user &&
           ToolbarModule.getParams().user.currentUser &&
           ToolbarModule.getParams().user.currentUser.name
-          ? ConstPath.UserPath +
-              ToolbarModule.getParams().user.currentUser.name +
-              '/' +
-              ConstPath.RelativePath.Datasource
+          ? `${ConstPath.UserPath +
+              ToolbarModule.getParams().user.currentUser.name}/${
+            ConstPath.RelativePath.Datasource
+          }`
           : ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
       ))
 
-    let mapInfo = await SMap.getMapInfo()
+    const mapInfo = await SMap.getMapInfo()
 
-    let datasourceName =
+    const datasourceName =
       ToolbarModule.getParams().collection.datasourceName ||
       (ToolbarModule.getParams().map &&
         ToolbarModule.getParams().map.currentMap.name &&
-        ToolbarModule.getParams().map.currentMap.name + '_collection') ||
-      mapInfo.name + '_collection' ||
-      'Collection-' + new Date().getTime()
+        `${ToolbarModule.getParams().map.currentMap.name}_collection`) ||
+      `${mapInfo.name}_collection` ||
+      `Collection-${new Date().getTime()}`
 
     params = {
-      datasourcePath: datasourcePath,
-      datasourceName: datasourceName,
+      datasourcePath,
+      datasourceName,
       datasetName,
       datasetType: mType,
       style: geoStyle,
@@ -203,7 +208,7 @@ async function createCollector(type, layerName) {
 
   SCollector.setDataset(params).then(async layerInfo => {
     if (!layerInfo) return
-    //设置绘制风格
+    // 设置绘制风格
     await SCollector.setStyle(collectorStyle)
     await SCollector.initCollect(type)
     ToolbarModule.getParams().getLayers(-1, () => {
@@ -213,7 +218,7 @@ async function createCollector(type, layerName) {
 }
 
 async function collectionSubmit(type) {
-  let result = await SCollector.submit(type)
+  const result = await SCollector.submit(type)
   switch (type) {
     case SMCollectorType.LINE_GPS_PATH:
     case SMCollectorType.REGION_GPS_PATH:
@@ -226,7 +231,7 @@ async function collectionSubmit(type) {
       ToolbarModule.getParams().template.currentTemplateInfo.field,
     )
   }
-  //采集后 需要刷新属性表
+  // 采集后 需要刷新属性表
   GLOBAL.NEEDREFRESHTABLE = true
   return result
 }
@@ -269,9 +274,11 @@ function redo(type) {
 
 async function close(type) {
   const params = ToolbarModule.getParams()
-  let actionType = Action.PAN
   // 当前为采集状态
-  if (typeof type === 'number') {
+  if (
+    typeof type === 'number' ||
+    (typeof type === 'string' && type.indexOf('MAP_COLLECTION_') >= 0)
+  ) {
     await SCollector.stopCollect()
   }
   params.existFullMap && params.existFullMap()
@@ -280,7 +287,7 @@ async function close(type) {
   params.setCurrentTemplateInfo()
   params.setCurrentSymbol()
   ToolbarModule.setData() // 关闭Toolbar清除临时数据
-  SMap.setAction(actionType)
+  SMap.setAction(Action.PAN)
 }
 
 export default {

@@ -1,5 +1,5 @@
-import ChooseTaggingLayer from './ChooseTaggingLayer'
 import { connect } from 'react-redux'
+import ChooseTaggingLayer from './ChooseTaggingLayer'
 import { setCurrentLayer } from '../../models/layers'
 
 const mapDispatchToProps = {

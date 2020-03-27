@@ -1,6 +1,6 @@
+import { connect } from 'react-redux'
 import NewDSource from './NewDSource'
 
-import { connect } from 'react-redux'
 import { setMapView } from '../../models/map'
 
 const mapStateToProps = state => ({
@@ -14,4 +14,7 @@ const mapDispatchToProps = {
   setMapView,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDSource)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewDSource)

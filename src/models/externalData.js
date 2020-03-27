@@ -21,9 +21,8 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SET_IMPORT_ITEM}`]: (state, { payload }) => {
-      return state.setIn(['importItem'], fromJS(payload))
-    },
+    [`${SET_IMPORT_ITEM}`]: (state, { payload }) =>
+      state.setIn(['importItem'], fromJS(payload)),
   },
   initialState,
 )

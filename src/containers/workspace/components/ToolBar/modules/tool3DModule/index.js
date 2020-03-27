@@ -1,12 +1,14 @@
 import Tool3DData from './Tool3DData'
 import Tool3DAction from './Tool3DAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
 function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const { orientation } = params.device
+  const data = utils.getLayout(type, orientation)
+  setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType: ToolbarType.table,
@@ -14,22 +16,20 @@ function action(type) {
     column: data.column,
     height: data.height,
   })
+}
+
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: Tool3DData.getData,
     actions: Tool3DAction,
   })
 }
 
 export default function(type, title, customAction) {
-  ToolbarModule.setData({
-    type: type,
-    getData: Tool3DData.getData,
-    actions: Tool3DAction,
-  })
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
         return
@@ -44,5 +44,6 @@ export default function(type, title, customAction) {
     getData: Tool3DData.getData,
     // getMenuData: Tool3DData.getMenuData,
     actions: Tool3DAction,
+    getLayout: utils.getLayout,
   }
 }

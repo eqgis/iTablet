@@ -1,11 +1,6 @@
 import React from 'react'
 import { View, Animated, Text, FlatList } from 'react-native'
-import {
-  ToolbarType,
-  ConstToolType,
-  Const,
-  TouchType,
-} from '../../../../../../constants'
+import { ToolbarType, ConstToolType, Const } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -13,14 +8,11 @@ import { ColorTable } from '../../../../../mapSetting/secondMapSettings/componen
 import { Row, HorizontalTableList, MTBtn } from '../../../../../../components'
 import SymbolTabs from '../../../SymbolTabs'
 import SymbolList from '../../../SymbolList'
-import AnimationNodeListView from '../../../AnimationNodeListView'
-import PlotAnimationView from '../../../PlotAnimationView'
 import ToolbarPicker from '../ToolbarPicker'
 import ToolList from '../ToolList'
 import ToolbarTableList from '../ToolbarTableList'
 import ToolbarHeight from '../../modules/ToolBarHeight'
 import ToolbarModule from '../../modules/ToolbarModule'
-import { SMap, Action } from 'imobile_for_reactnative'
 import styles from './styles'
 
 export default class ToolbarContentView extends React.Component {
@@ -247,73 +239,6 @@ export default class ToolbarContentView extends React.Component {
     )
   }
 
-  /***************************************** PlotAnimation ***************************************/
-  saveAnimationAndContinue = () => {
-    let createInfo =
-      this.plotAnimationView && this.plotAnimationView.getCreateInfo()
-    if (this.props.selection.length > 0 && this.props.selection[0].ids > 0) {
-      createInfo.geoId = this.props.selection[0].ids[0]
-      createInfo.layerName = this.props.selection[0].layerInfo.name
-    }
-    if (createInfo.animationMode !== -1) {
-      SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
-    }
-  }
-
-  //保存推演动画节点
-  savePlotAnimationNode = () => {
-    let createInfo =
-      this.plotAnimationView && this.plotAnimationView.getCreateInfo()
-    if (this.props.selection.length > 0 && this.props.selection[0].ids > 0) {
-      createInfo.geoId = this.props.selection[0].ids[0]
-      createInfo.layerName = this.props.selection[0].layerInfo.name
-    }
-    if (createInfo.animationMode !== -1) {
-      SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
-    }
-    GLOBAL.TouchType = TouchType.NULL
-    GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
-
-    let height = 0
-    this.props.showFullMap && this.props.showFullMap(true)
-    let type = ConstToolType.PLOT_ANIMATION_START
-    this.props.setVisible(true, type, {
-      isFullScreen: false,
-      height,
-      cb: () => SMap.setAction(Action.SELECT),
-    })
-  }
-
-  renderPlotAnimation = () => {
-    return (
-      <PlotAnimationView
-        ref={ref => (this.plotAnimationView = ref)}
-        data={this.props.data}
-        saveAndContinue={this.saveAnimationAndContinue}
-        savePlotAnimationNode={this.savePlotAnimationNode}
-        layerName={
-          this.props.selection[0] && this.props.selection[0].layerInfo.name
-        }
-        geoId={this.props.selection[0] && this.props.selection[0].ids[0]}
-        Heighttype={this.props.type}
-        device={this.props.device}
-        showToolbar={this.props.setVisible}
-      />
-    )
-  }
-
-  /***************************************** AnimationNodeList ***************************************/
-  renderAnimationNodeList = () => {
-    return (
-      <AnimationNodeListView
-        ref={ref => (this.AnimationNodeListView = ref)}
-        data={this.props.data}
-        type={this.props.type}
-        device={this.props.device}
-      />
-    )
-  }
-
   /***************************************** HorizontalTable ***************************************/
   renderHorizontalTable = () => {
     return (
@@ -455,12 +380,6 @@ export default class ToolbarContentView extends React.Component {
           break
         case ToolbarType.horizontalTable:
           box = this.renderHorizontalTable()
-          break
-        case ToolbarType.createPlotAnimation:
-          box = this.renderPlotAnimation()
-          break
-        case ToolbarType.animationNode:
-          box = this.renderAnimationNodeList()
           break
         case ToolbarType.picker:
           box = this.renderPicker()

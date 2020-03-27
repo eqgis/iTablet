@@ -39,8 +39,7 @@ export default class PublicData extends React.Component {
       loadMore: false,
       isRefresh: false,
     }
-    this.count = 0,
-    this.currentPage = 1
+    ;(this.count = 0), (this.currentPage = 1)
     this.totalPage = 0
     this.dataTypes = this.getAllDataTypes() //查询数据类型
     this.searchParams = undefined //其他查询参数
@@ -63,7 +62,7 @@ export default class PublicData extends React.Component {
       if (this.searchParams) {
         Object.assign(searchParams, this.searchParams)
       }
-      if(this.dataTypes.length === 0) {
+      if (this.dataTypes.length === 0) {
         data.total = 0
       } else if (!UserType.isIPortalUser(this.props.user.currentUser)) {
         if (!JSOnlineService) {
@@ -151,7 +150,7 @@ export default class PublicData extends React.Component {
   onParamsChanged = () => {
     let count = ++this.count
     setTimeout(() => {
-      if(count === this.count) {
+      if (count === this.count) {
         this.getData()
         this.count = 0
       }
@@ -163,7 +162,7 @@ export default class PublicData extends React.Component {
       <SearchMenu
         ref={ref => (this.SearchMenu = ref)}
         setParams={item => {
-          if(item.selectTypes) {
+          if (item.selectTypes) {
             this.dataTypes = item.selectTypes
           }
           this.setSearchParams(item)
@@ -241,8 +240,9 @@ export default class PublicData extends React.Component {
   }
 
   renderFoot = () => {
-    if (this.currentPage === this.totalPage &&
-         (!this.state.loadError || !this.state.noData)
+    if (
+      this.currentPage === this.totalPage &&
+      (!this.state.loadError || !this.state.noData)
     ) {
       return (
         <View>

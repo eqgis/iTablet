@@ -1,7 +1,7 @@
-//制图
+// 制图
 
 const Map_Label = {
-  //地图底部导航
+  // 地图底部导航
   MAP: '地图',
   LAYER: '图层',
   ATTRIBUTE: '属性',
@@ -15,10 +15,10 @@ const Map_Label = {
   ENCLOSURE: '围栏',
 }
 
-//地图、场景主菜单
+// 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: '当前地图',
-  //地图制图及公共 开始
+  // 地图制图及公共 开始
   START: '开始',
   START_OPEN_MAP: '打开地图',
   START_NEW_MAP: '新建地图',
@@ -34,7 +34,7 @@ const Map_Main_Menu = {
 
   PLOT: '标绘',
 
-  //地图制图及公共 添加
+  // 地图制图及公共 添加
   OPEN: '添加',
   OPEN_DATASOURCE: '数据源',
   OPEN_MAP: '地图',
@@ -46,20 +46,20 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: '导航工作空间',
   NAVIGATION_MAP: '导航地图',
   NETWORK: '路网',
-  NETWORK_MODULE:'路网',
+  NETWORK_MODULE: '路网',
   NETMODEL: '网络模型',
   NETDATA: '选择路网数据',
   INDOORDATA: '室内数据源',
   INDOOR_DATASOURCE: '室内数据源',
   OUTDOOR_DATASETS: '室外数据集',
-  SWITCH_DATA:'导航数据切换',
+  SWITCH_DATA: '导航数据切换',
   DATASET: '选择数据集',
   Traffic: '路况',
 
   ANALYSIS: '分析',
 
   NEW_DATASOURCE: '新建数据源',
-  //图例设置
+  // 图例设置
   LEGEND_COLUMN: '列数',
   LEGEND_WIDTH: '宽度',
   LEGEND_HEIGHT: '高度',
@@ -72,7 +72,7 @@ const Map_Main_Menu = {
   LEFT_BOTTOM: '左下对齐',
   RIGHT_BOTTOM: '右下对齐',
 
-  //地图制图及公共 风格
+  // 地图制图及公共 风格
   STYLE: '风格',
   STYLE_SYMBOL: '符号',
   STYLE_SIZE: '大小',
@@ -108,7 +108,7 @@ const Map_Main_Menu = {
   VERTICAL_FLIP: '上下旋转',
   HORIZONTAL_FLIP: '左右旋转',
 
-  //地图制图及公共 工具
+  // 地图制图及公共 工具
   TOOLS: '工具',
   TOOLS_DISTANCE_MEASUREMENT: '距离量算',
   TOOLS_AREA_MEASUREMENT: '面积量算',
@@ -118,7 +118,7 @@ const Map_Main_Menu = {
   TOOLS_ROUND_SELECT: '圆选',
   FULL_SCREEN: '全幅',
 
-  //标注
+  // 标注
   PLOTS: '标注',
   DOT_LINE: '点绘线',
   FREE_LINE: '自由线',
@@ -138,7 +138,7 @@ const Map_Main_Menu = {
   COLLECT_TIME: '采集时间',
   COORDINATE: '经纬度',
 
-  //裁剪
+  // 裁剪
   TOOLS_RECTANGLE_CLIP: '矩形裁剪',
   TOOLS_CIRCLE_CLIP: '圆形裁剪',
   TOOLS_POLYGON_CLIP: '多边形裁剪',
@@ -162,7 +162,7 @@ const Map_Main_Menu = {
   TOOLS_SELECT_ALL: '全选',
   TOOLS_SELECT_REVERSE: '反选',
 
-  //三维 工具
+  // 三维 工具
   TOOLS_SCENE_SELECT: '选择',
   TOOLS_PATH_ANALYSIS: '路径分析',
   TOOLS_VISIBILITY_ANALYSIS: '通视分析',
@@ -170,13 +170,13 @@ const Map_Main_Menu = {
   TOOLS_BOX_CLIP: 'Box裁剪',
   TOOLS_PLANE_CLIP: '平面裁剪',
   TOOLS_CROSS_CLIP: 'Cross裁剪',
-  //三维 飞行
+  // 三维 飞行
   FLY: '飞行',
   FLY_ROUTE: '飞行轨迹',
   FLY_ADD_STOPS: '添加站点',
   FLY_AROUND_POINT: '绕点飞行',
 
-  //三维裁剪
+  // 三维裁剪
   CLIP_LAYER: '裁剪图层',
   CLIP_AREA_SETTINGS: '裁剪区域参数设置',
   CLIP_AREA_SETTINGS_WIDTH: '底面宽',
@@ -194,7 +194,7 @@ const Map_Main_Menu = {
   ROTATE_SETTINGS: '旋转参数',
   CLIP_SURFACE_SETTING: '裁剪面设置',
   CUT_FIRST: '请先裁剪',
-  //专题制图 专题图
+  // 专题制图 专题图
   THEME: '专题图',
   THEME_UNIFORM_MAP: '统一风格',
   THEME_UNIQUE_VALUES_MAP: '单值风格',
@@ -260,7 +260,7 @@ const Map_Main_Menu = {
   THEME_MAX_VISIBLE_SIZE: '最大显示值',
   THEME_MIN_VISIBLE_SIZE: '最小显示值',
 
-  //自定义专题图设置
+  // 自定义专题图设置
   THEME_RANGES_LABEL_MAP_TITLE: '分段标签专题图',
   THEME_RANGES_MAP_TITLE: '分段风格专题图',
   THEME_UNIQUE_VALUES_MAP_TITLE: '单值风格专题图',
@@ -276,7 +276,7 @@ const Map_Main_Menu = {
   DATUM_VALUE: '基准值',
   RANGE_COUNT: '分段个数',
 
-  //外业采集 采集
+  // 外业采集 采集
   CREATE_WITH_SYMBOLS: '普通创建',
   CREATE_WITH_TEMPLATE: '模板创建',
   POINT_SYMBOL_LIBRARY: '点符号库',
@@ -301,7 +301,7 @@ const Map_Main_Menu = {
   COLLECTION_PAUSE: '暂停',
   COLLECTION_STOP: '停止',
 
-  //外业采集 编辑
+  // 外业采集 编辑
   EDIT: '编辑',
   EDIT_ADD_NODES: '添加节点',
   EDIT_NODES: '编辑节点',
@@ -318,7 +318,7 @@ const Map_Main_Menu = {
   MOVE: '平移',
   FREE_DRAW_ERASE: '手绘擦除',
 
-  //标绘
+  // 标绘
   PLOTTING: '标绘',
   PLOTTING_LIB_CHANGE: '切换标绘库',
   PLOTTING_LIB: '标绘库',
@@ -326,7 +326,7 @@ const Map_Main_Menu = {
   PLOTTING_ANIMATION_DEDUCTION: '态势推演',
   PLOTTING_ANIMATION_RESET: '复位',
 
-  //分享
+  // 分享
   SHARE: '分享',
   SHARE_WECHAT: '微信',
   SHARE_FRIENDS: '好友',
@@ -387,13 +387,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_CANCEL: '取消',
   MAP_AR_AI_CONFIRM: '确认',
 
-  //智能配图
+  // 智能配图
   FILL: '填充',
   BORDER: '轮廓',
   LINE: '线',
   MARK: '标注',
 
-  //地图导航
+  // 地图导航
   START_POINT: '起点',
   END_POINT: '终点',
   DRAW: '绘制',
@@ -422,9 +422,26 @@ const Map_Main_Menu = {
   NETWORK_DATASET: '路网数据集',
   MODEL_FILE: '导航模型文件',
   MY_LOCATION: '我的位置',
+  //导航采集
+  MAP_INCREMENT_START:'开始',
+  MAP_INCREMENT_STOP:'停止',
+  MAP_INCREMENT_ADD_POINT:'添加点',
+  MAP_INCREMENT_CANCEL:'取消',
+  MAP_INCREMENT_COMMIT:'提交',
+
+  MAP_INCREMENT_GPS_POINT:'GPS打点式',
+  MAP_INCREMENT_GPS_TRACK:'GPS轨迹式',
+  MAP_INCREMENT_POINTLINE:'点绘式',
+  MAP_INCREMENT_FREELINE:'自由式',
+
+  MAP_INCREMENT_ADD_NODE:'添加节点',
+  MAP_INCREMENT_EDIT_NODE:'编辑节点',
+  MAP_INCREMENT_DELETE_NODE:'删除节点',
+  MAP_INCREMENT_DELETE_OBJECT:'删除对象',
+  MAP_INCREMENT_ADD_ATTRIBUTE:'添加属性',
 }
 
-//推演动画
+// 推演动画
 const Map_Plotting = {
   PLOTTING_ANIMATION_MODE: '动画类型',
   PLOTTING_ANIMATION_OPERATION: '效果选项',
@@ -491,7 +508,7 @@ const Map_Plotting = {
   ANIMATION_NODE_EDIT: '编辑动画',
 }
 
-//图层
+// 图层
 const Map_Layer = {
   PLOTS: '我的标注',
   PLOTS_IMPORT: '导入标注',
@@ -519,7 +536,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: '最大可见比例尺',
   LAYERS_MINIMUM: '最小可见比例尺',
   LAYERS_UER_DEFINE: '自定义',
-  LAYER_NONE:'无',
+  LAYER_NONE: '无',
   LAYERS_SET_AS_CURRENT_SCALE: '设置为当前比例尺',
   LAYERS_CLEAR: '清除',
   LAYERS_LAYER_NAME: '图层标题',
@@ -543,7 +560,7 @@ const Map_Layer = {
   NOT_EDITABLE: '设置图层不可编辑',
   SNAPABLE: '设置图层可捕获',
   NOT_SNAPABLE: '设置图层不可捕获',
-  //专题图图层
+  // 专题图图层
   LAYERS_CREATE_THEMATIC_MAP: '制作专题图',
   LAYERS_MODIFY_THEMATIC_MAP: '修改专题图',
 
@@ -552,7 +569,7 @@ const Map_Layer = {
   MY_TERRAIN: '我的地形',
 }
 
-//属性
+// 属性
 const Map_Attribute = {
   ATTRIBUTE_SORT: '排序',
   ATTRIBUTE_LOCATION: '定位',
@@ -594,23 +611,23 @@ const Map_Attribute = {
   DESCENDING: '降序',
 }
 
-//地图设置
+// 地图设置
 const Map_Setting = {
   BASIC_SETTING: '基本设置',
   ROTATION_GESTURE: '手势旋转',
   PITCH_GESTURE: '手势俯仰',
   THEME_LEGEND: '专题图图例',
 
-  //效果设置
+  // 效果设置
   EFFECT_SETTINGS: '效果设置',
   ANTI_ALIASING_MAP: '反走样地图',
   SHOW_OVERLAYS: '显示压盖对象',
 
-  //范围设置
+  // 范围设置
   BOUNDS_SETTING: '范围设置',
   FIX_SCALE: '固定比例尺',
 
-  //三维场景设置
+  // 三维场景设置
   SCENE_NAME: '场景名称',
   FOV: '相机角度',
   SCENE_OPERATION_STATUS: '场景操作状态',
@@ -619,10 +636,10 @@ const Map_Setting = {
   SPHERICAL: '球面',
 }
 
-//地图设置菜单
+// 地图设置菜单
 const Map_Settings = {
   THEME_LEGEND: '图例',
-  //一级菜单
+  // 一级菜单
   BASIC_SETTING: '基本设置',
   RANGE_SETTING: '范围设置',
   COORDINATE_SYSTEM_SETTING: '坐标系设置',
@@ -634,7 +651,7 @@ const Map_Settings = {
   REMARKS: '备注',
   DRAWING_RANGE: '绘制范围',
 
-  //视频地图设置:一级菜单
+  // 视频地图设置:一级菜单
   POI_SETTING: 'POI设置',
   DETECT_TYPE: '检测类型',
   DETECT_STYLE: '检测框风格',
@@ -672,7 +689,7 @@ const Map_Settings = {
   DETECT_STYLE_STROKE_WIDTH: '检测目标绘制框线宽',
   COUNTRACKED: '跟踪计数',
 
-  //二级菜单 基本设置
+  // 二级菜单 基本设置
   MAP_NAME: '地图名称',
   SHOW_SCALE: '显示比例尺',
   ROTATION_GESTURE: '手势旋转',
@@ -687,19 +704,19 @@ const Map_Settings = {
   SHOW_OVERLAYS: '显示压盖对象',
   ENABLE_MAP_MAGNIFER: '开启地图放大镜',
 
-  //二级菜单 范围设置
+  // 二级菜单 范围设置
   MAP_CENTER: '中心点',
   MAP_SCALE: '比例尺',
   FIX_SCALE_LEVEL: '固定比例尺级别',
   CURRENT_VIEW_BOUNDS: '当前窗口四至范围',
 
-  //二级菜单 坐标系设置
+  // 二级菜单 坐标系设置
   COORDINATE_SYSTEM: '坐标系',
   COPY_COORDINATE_SYSTEM: '复制坐标系',
   DYNAMIC_PROJECTION: '动态投影',
   TRANSFER_METHOD: '转换方法',
 
-  //二级菜单 高级设置
+  // 二级菜单 高级设置
   FLOW_VISIUALIZATION: '流动显示',
   SHOW_NEGATIVE_DATA: '显示负值数据',
   AUTOMATIC_AVOIDANCE: '自动避让',
@@ -711,36 +728,36 @@ const Map_Settings = {
   HISTOGRAM_STYLE: '柱状图风格',
   ROSE_AND_PIE_CHART_STYLE: '玫瑰图、饼图风格',
 
-  //三级菜单 颜色模式
+  // 三级菜单 颜色模式
   DEFAULT_COLOR_MODE: '默认色彩模式',
   BLACK_AND_WHITE: '黑白模式',
   GRAY_SCALE_MODE: '灰度模式',
   ANTI_BLACK_AND_WHITE: '黑白反色模式',
   ANTI_BLACK_AND_WHITE_2: '黑白反色，其他颜色不变',
 
-  //三级菜单 窗口四至范围
+  // 三级菜单 窗口四至范围
   LEFT: '左',
   RIGHT: '右',
   TOP: '上',
   BOTTOM: '下',
 
-  //三级菜单 坐标系设置
+  // 三级菜单 坐标系设置
   PLAN_COORDINATE_SYSTEM: '平面坐标系',
   GEOGRAPHIC_COORDINATE_SYSTEM: '地理坐标系',
   PROJECTED_COORDINATE_SYSTEM: '投影坐标系',
 
-  //三级菜单 复制坐标系
+  // 三级菜单 复制坐标系
   FROM_DATASOURCE: '从数据源',
   FROM_DATASET: '从数据集',
   FROM_FILE: '从文件',
 
-  //四级菜单 转换方法参数设置
+  // 四级菜单 转换方法参数设置
   BASIC_PARAMS: '基本参数',
   OFFSET: '偏移量',
   PROPORTIONAL_DIFFERENCE: '比例差',
   ROTATION_ANGLE_SECONDS: '旋转角度(秒)',
 
-  //四级菜单 和复制提示
+  // 四级菜单 和复制提示
   DATASOURCES: '数据源',
   DATASETS: '数据集',
   TYPE: '类型',
@@ -752,7 +769,7 @@ const Map_Settings = {
   IMG_COORD_FILE: '影像格式坐标系文件',
   COORD_FILE: '坐标系文件',
 
-  //设置的一些参数
+  // 设置的一些参数
   PERCENT: '百分比',
   OFF: '关',
   CONFIRM: '确定',
@@ -760,7 +777,7 @@ const Map_Settings = {
   COPY: '复制',
 }
 
-//地图工具
+// 地图工具
 const Map_Tools = {
   VIDEO: '视频',
   PHOTO: '照片',
@@ -771,7 +788,7 @@ const Map_Tools = {
   VIEW: '查看',
 }
 
-//POI title
+// POI title
 const Map_PoiTitle = {
   FOOD: '美食',
   SCENE: '景点',

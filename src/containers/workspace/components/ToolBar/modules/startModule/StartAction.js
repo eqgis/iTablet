@@ -1,6 +1,7 @@
 import React from 'react'
-import { color, size } from '../../../../../../styles'
 import { Text, View } from 'react-native'
+import { SMap, SScene, SMediaCollector } from 'imobile_for_reactnative'
+import { color, size } from '../../../../../../styles'
 import { FileTools, NativeMethod } from '../../../../../../native'
 import {
   ConstToolType,
@@ -13,12 +14,11 @@ import {
 import { Toast, LayerUtils, scaleSize } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import constants from '../../../../constants'
-import { SMap, SScene, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
+import utils from './utils'
 
-/** 切换工作空间 **/
+/** 切换工作空间 * */
 function openWorkspace(cb) {
   // return SMap.setAction(Action.PATCH_HOLLOW_REGION)
   NavigationService.navigate('WorkspaceFileList', {
@@ -37,8 +37,8 @@ function openWorkspace(cb) {
                   true,
                   ConstInfo.WORKSPACE_OPENING,
                 )
-              let data = { server: path }
-              let result = await ToolbarModule.getParams().openWorkspace(data)
+              const data = { server: path }
+              const result = await ToolbarModule.getParams().openWorkspace(data)
               Toast.show(
                 result
                   ? ConstInfo.WORKSPACE_OPEN_SUCCESS
@@ -58,7 +58,7 @@ function openWorkspace(cb) {
   })
 }
 
-/** 打开导航工作空间 **/
+/** 打开导航工作空间 * */
 // function naviWorkSpace() {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
 //   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
@@ -98,7 +98,7 @@ function openWorkspace(cb) {
 //   })()
 // }
 
-/** 切换标绘库 **/
+/** 切换标绘库 * */
 // function changePlotLib() {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
 //   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
@@ -111,25 +111,25 @@ function openWorkspace(cb) {
 //             : ConstPath.CustomerPath,
 //         )) + ConstPath.RelativePath.Plotting
 
-/** 打开地图 **/
+/** 打开地图 * */
 function openMap() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
   ;(async function() {
-    let data = [],
-      path =
-        (await FileTools.appendingHomeDirectory(
-          _params.user && _params.user.currentUser.userName
-            ? ConstPath.UserPath + _params.user.currentUser.userName + '/'
-            : ConstPath.CustomerPath,
-        )) + ConstPath.RelativeFilePath.Map
+    const data = []
+    const path =
+      (await FileTools.appendingHomeDirectory(
+        _params.user && _params.user.currentUser.userName
+          ? `${ConstPath.UserPath + _params.user.currentUser.userName}/`
+          : ConstPath.CustomerPath,
+      )) + ConstPath.RelativeFilePath.Map
     let userFileList
     userFileList = await FileTools.getMaps(path)
     if (userFileList && userFileList.length > 0) {
-      let userList = []
+      const userList = []
       userFileList.forEach(item => {
-        let name = item.name
+        const { name } = item
         item.title = name
         item.name = name.split('.')[0]
         item.image = item.isTemplate
@@ -170,7 +170,7 @@ function openMap() {
     }
     data.push({
       title: getLanguage(global.language).Map_Main_Menu.OPEN_MAP,
-      //'我的地图',
+      // '我的地图',
       image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
       data: userFileList || [],
     })
@@ -185,7 +185,7 @@ function openMap() {
   })()
 }
 
-/**地图制图，专题制图：导入模块（暂用） */
+/** 地图制图，专题制图：导入模块（暂用） */
 // function importTemplate() {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
 //   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
@@ -251,9 +251,9 @@ function openMap() {
 //   // )
 // }
 
-/** 判断是否保存 **/
+/** 判断是否保存 * */
 function isNeedToSave(cb = () => {}) {
-  let isAnyMapOpened = true //是否有打开的地图
+  let isAnyMapOpened = true // 是否有打开的地图
   SMap.mapIsModified().then(async result => {
     isAnyMapOpened = await SMap.isAnyMapOpened()
     if (isAnyMapOpened && result) {
@@ -264,7 +264,7 @@ function isNeedToSave(cb = () => {}) {
   })
 }
 
-/** 打开模板 **/
+/** 打开模板 * */
 function openTemplateList() {
   if (!ToolbarModule.getParams().setToolbarVisible) return
   ToolbarModule.getParams().showFullMap &&
@@ -316,24 +316,24 @@ function openTemplateList() {
     ToolbarModule.getParams().user.currentUser.userName,
     ConstPath.Module.Collection,
   ).then(async templateList => {
-    let tpList = []
+    const tpList = []
     for (let i = 0; i < templateList.length; i++) {
-      let item = templateList[i]
-      let path = await FileTools.appendingHomeDirectory(item.path)
-      let is3D = await SScene.is3DWorkspace({ server: path })
+      const item = templateList[i]
+      const path = await FileTools.appendingHomeDirectory(item.path)
+      const is3D = await SScene.is3DWorkspace({ server: path })
       if (!is3D) {
         tpList.push(item)
       }
     }
-    let data = [
+    const data = [
       {
         title: getLanguage(global.language).Map_Main_Menu.CREATE_WITH_SYMBOLS,
-        //Const.CREATE_SYMBOL_COLLECTION,
+        // Const.CREATE_SYMBOL_COLLECTION,
         data: [],
       },
       {
         title: getLanguage(global.language).Map_Main_Menu.CREATE_WITH_TEMPLATE,
-        //Const.CREATE_MODULE,
+        // Const.CREATE_MODULE,
         data: tpList,
       },
     ]
@@ -349,7 +349,7 @@ function openTemplateList() {
   })
 }
 
-/** 导入 **/
+/** 导入 * */
 // function importWorkspace() {
 //   if (GLOBAL.Type === constants.MAP_COLLECTION) {
 //     openWorkspace(async path => {
@@ -391,7 +391,7 @@ function openTemplateList() {
 //   }
 // }
 
-/** 新建 **/
+/** 新建 * */
 async function create() {
   if (GLOBAL.Type === constants.MAP_COLLECTION) {
     openTemplateList()
@@ -406,21 +406,20 @@ async function create() {
     GLOBAL.Type === constants.MAP_AR
   ) {
     GLOBAL.FUNCTIONTOOLBAR.isMapIndoorNavigation()
-    let userPath =
+    const userPath =
       ToolbarModule.getParams().user.currentUser.userName &&
       ToolbarModule.getParams().user.currentUser.userType !==
         UserType.PROBATION_USER
-        ? ConstPath.UserPath +
-          ToolbarModule.getParams().user.currentUser.userName +
-          '/'
+        ? `${ConstPath.UserPath +
+            ToolbarModule.getParams().user.currentUser.userName}/`
         : ConstPath.CustomerPath
-    let mapPath = await FileTools.appendingHomeDirectory(
+    const mapPath = await FileTools.appendingHomeDirectory(
       userPath + ConstPath.RelativePath.Map,
     )
-    let newName = await FileTools.getAvailableMapName(mapPath, 'DefaultMap')
+    const newName = await FileTools.getAvailableMapName(mapPath, 'DefaultMap')
     NavigationService.navigate('InputPage', {
       headerTitle: getLanguage(global.language).Map_Main_Menu.START_NEW_MAP,
-      //'新建地图',
+      // '新建地图',
       value: newName,
       placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
@@ -435,24 +434,19 @@ async function create() {
         // 移除多媒体采集Callout
         SMediaCollector.removeMedias()
         await ToolbarModule.getParams().closeMap()
-        let userPath =
-          ConstPath.UserPath +
-          (ToolbarModule.getParams().user.currentUser.userName || 'Customer') +
-          '/'
-        let fillLibPath = await FileTools.appendingHomeDirectory(
-          userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir +
-            'Workspace.bru',
+        const userPath = `${ConstPath.UserPath +
+          (ToolbarModule.getParams().user.currentUser.userName || 'Customer')}/`
+        const fillLibPath = await FileTools.appendingHomeDirectory(
+          `${userPath +
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
         )
-        let lineLibPath = await FileTools.appendingHomeDirectory(
-          userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir +
-            'Workspace.lsl',
+        const lineLibPath = await FileTools.appendingHomeDirectory(
+          `${userPath +
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
         )
-        let markerLibPath = await FileTools.appendingHomeDirectory(
-          userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir +
-            'Workspace.sym',
+        const markerLibPath = await FileTools.appendingHomeDirectory(
+          `${userPath +
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
         )
         await SMap.importSymbolLibrary(fillLibPath) // 导入面符号库
         await SMap.importSymbolLibrary(lineLibPath) // 导入线符号库
@@ -462,7 +456,7 @@ async function create() {
         // await SMap.closeDatasource(-1) // 关闭所有数据源
 
         await SMap.openDatasource(
-          ConstOnline['Google'].DSParams,
+          ConstOnline.Google.DSParams,
           // ConstOnline['Google'].layerIndex,
           1,
         )
@@ -473,10 +467,10 @@ async function create() {
         ToolbarModule.getParams().getLayers &&
           (await ToolbarModule.getParams().getLayers())
 
-        //如果是标绘模块则加载标绘数据
+        // 如果是标绘模块则加载标绘数据
         if (GLOBAL.Type === constants.MAP_PLOTTING) {
-          let plotIconPath = await FileTools.appendingHomeDirectory(
-            userPath + ConstPath.RelativePath.Plotting + 'PlotLibData',
+          const plotIconPath = await FileTools.appendingHomeDirectory(
+            `${userPath + ConstPath.RelativePath.Plotting}PlotLibData`,
           )
           await ToolbarModule.getParams().getSymbolPlots({
             path: plotIconPath,
@@ -508,9 +502,9 @@ async function create() {
   }
 }
 
-/** 历史 **/
+/** 历史 * */
 function showHistory() {
-  let userName =
+  const userName =
     ToolbarModule.getParams().user.currentUser.userName || 'Customer'
   let latestMap = []
   if (
@@ -523,10 +517,10 @@ function showHistory() {
   latestMap.forEach(item => {
     item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
   })
-  let data = [
+  const data = [
     {
       title: getLanguage(global.language).Map_Main_Menu.START_RECENT,
-      //Const.HISTORY,
+      // Const.HISTORY,
       data: latestMap,
     },
   ]
@@ -540,12 +534,12 @@ function showHistory() {
   })
 }
 
-/** 切换底图 **/
+/** 切换底图 * */
 // function changeBaseLayer(type) {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
 //   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
 
-/** 导出成图片 **/
+/** 导出成图片 * */
 // function outPutMap() {
 //
 // }
@@ -557,7 +551,7 @@ function setSaveViewVisible(visible, cb) {
   GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
 }
 
-/**新建专题图 **/
+/** 新建专题图 * */
 // function createThemeMap() {
 //   let isAnyMapOpened = true //是否有打开的地图
 //   SMap.mapIsModified().then(async result => {
@@ -597,7 +591,7 @@ function setSaveViewVisible(visible, cb) {
 //   })
 // }
 
-/** 添加 **/
+/** 添加 * */
 // function add(type) {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
 //   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
@@ -621,7 +615,7 @@ function setSaveViewVisible(visible, cb) {
 //   }
 // }
 
-/** 保存地图 **/
+/** 保存地图 * */
 function saveMap() {
   // if (!ToolbarModule.getParams().setSaveViewVisible) return
   // GLOBAL.isBackHome = false
@@ -641,7 +635,7 @@ function saveMap() {
           true,
           getLanguage(global.language).Prompt.SAVING,
         )
-      //'正在保存地图')
+      // '正在保存地图')
       let mapName = ''
       if (ToolbarModule.getParams().map.currentMap.name) {
         // 获取当前打开的地图xml的名称
@@ -650,7 +644,7 @@ function saveMap() {
           mapName.substr(0, mapName.lastIndexOf('.')) ||
           ToolbarModule.getParams().map.currentMap.name
       } else {
-        let mapInfo = await SMap.getMapInfo()
+        const mapInfo = await SMap.getMapInfo()
         if (mapInfo && mapInfo.name) {
           // 获取MapControl中的地图名称
           mapName = mapInfo.name
@@ -659,12 +653,12 @@ function saveMap() {
           mapName = ToolbarModule.getParams().collection.datasourceName
         }
       }
-      let addition = {}
-      let prefix = `@Label_${
+      const addition = {}
+      const prefix = `@Label_${
         ToolbarModule.getParams().user.currentUser.userName
       }#`
-      let regexp = new RegExp(prefix)
-      let layers = await ToolbarModule.getParams().getLayers()
+      const regexp = new RegExp(prefix)
+      const layers = await ToolbarModule.getParams().getLayers()
       addition.filterLayers = layers
         .filter(item => item.name.match(regexp))
         .map(val => val.name)
@@ -676,7 +670,7 @@ function saveMap() {
         addition.Template = ToolbarModule.getParams().map.currentMap.Template
       }
 
-      let result = await ToolbarModule.getParams().saveMap({
+      const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,
       })
@@ -698,39 +692,38 @@ function saveMap() {
   })()
 }
 
-/** 另存地图 **/
+/** 另存地图 * */
 function saveMapAs() {
   (async function() {
     // if (!ToolbarModule.getParams().setSaveMapDialogVisible) return
     // ToolbarModule.getParams().setSaveMapDialogVisible(true)
-    let userPath =
+    const userPath =
       ToolbarModule.getParams().user.currentUser.userName &&
       ToolbarModule.getParams().user.currentUser.userType !==
         UserType.PROBATION_USER
-        ? ConstPath.UserPath +
-          ToolbarModule.getParams().user.currentUser.userName +
-          '/'
+        ? `${ConstPath.UserPath +
+            ToolbarModule.getParams().user.currentUser.userName}/`
         : ConstPath.CustomerPath
-    let mapPath = await FileTools.appendingHomeDirectory(
+    const mapPath = await FileTools.appendingHomeDirectory(
       userPath + ConstPath.RelativePath.Map,
     )
-    let newName = await FileTools.getAvailableMapName(
+    const newName = await FileTools.getAvailableMapName(
       mapPath,
       ToolbarModule.getParams().map.currentMap.name || 'DefaultMap',
     )
     NavigationService.navigate('InputPage', {
       value: newName,
       headerTitle: getLanguage(global.language).Map_Main_Menu.START_SAVE_AS_MAP,
-      //'地图另存',
+      // '地图另存',
       placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
-        let addition = {}
-        let prefix = `@Label_${
+        const addition = {}
+        const prefix = `@Label_${
           ToolbarModule.getParams().user.currentUser.userName
         }#`
-        let regexp = new RegExp(prefix)
-        let layers = await ToolbarModule.getParams().getLayers()
+        const regexp = new RegExp(prefix)
+        const layers = await ToolbarModule.getParams().getLayers()
         addition.filterLayers = layers
           .filter(item => item.name.match(regexp))
           .map(val => val.name)
@@ -774,13 +767,13 @@ function saveMapAs() {
   })()
 }
 
-/** 切换地图 **/
+/** 切换地图 * */
 async function changeMap(item) {
   const params = ToolbarModule.getParams()
   try {
     if (params.map.currentMap && params.map.currentMap.path === item.path) {
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_OPENED)
-      //ConstInfo.MAP_ALREADY_OPENED)
+      // ConstInfo.MAP_ALREADY_OPENED)
       return
     }
     params.setMap2Dto3D(false)
@@ -788,7 +781,7 @@ async function changeMap(item) {
     params.setContainerLoading(
       true,
       getLanguage(params.language).Prompt.SWITCHING,
-      //ConstInfo.MAP_CHANGING
+      // ConstInfo.MAP_CHANGING
     )
     if (params.map.currentMap.name) {
       await SMap.removeLegendListener()
@@ -800,17 +793,17 @@ async function changeMap(item) {
     // 清除属性历史记录
     await params.clearAttributeHistory()
     await params.setCurrentSymbols()
-    let mapInfo = await params.openMap({ ...item })
+    const mapInfo = await params.openMap({ ...item })
     if (mapInfo) {
       Toast.show(
         getLanguage(params.language).Prompt.SWITCHING_SUCCESS,
-        //ConstInfo.CHANGE_MAP_TO + mapInfo.name
+        // ConstInfo.CHANGE_MAP_TO + mapInfo.name
       )
       if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-        let floorListView = params.getFloorListView()
-        let datas = await SMap.getFloorData()
+        const floorListView = params.getFloorListView()
+        const datas = await SMap.getFloorData()
         if (datas.data && datas.data.length > 0) {
-          let { data, datasource, currentFloorID } = datas
+          const { data, datasource, currentFloorID } = datas
           floorListView.setState(
             {
               data,
@@ -823,7 +816,7 @@ async function changeMap(item) {
         }
       }
 
-      //切换地图后重新添加图例事件
+      // 切换地图后重新添加图例事件
       if (GLOBAL.legend) {
         await SMap.addLegendListener({
           legendContentChange: GLOBAL.legend._contentChange,
@@ -833,10 +826,10 @@ async function changeMap(item) {
       if (mapInfo.Template) {
         params.setContainerLoading(
           true,
-          //ConstInfo.TEMPLATE_READING
+          // ConstInfo.TEMPLATE_READING
           getLanguage(params.language).Prompt.READING_TEMPLATE,
         )
-        let templatePath = await FileTools.appendingHomeDirectory(
+        const templatePath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath + mapInfo.Template,
         )
         await params.getSymbolTemplates({
@@ -876,14 +869,12 @@ async function changeMap(item) {
           }
         })
       })
-      //如果是标绘模块则加载标绘数据
+      // 如果是标绘模块则加载标绘数据
       if (GLOBAL.Type === constants.MAP_PLOTTING) {
-        let plotIconPath = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            params.user.currentUser.userName +
-            '/' +
-            ConstPath.RelativePath.Plotting +
-            'PlotLibData',
+        const plotIconPath = await FileTools.appendingHomeDirectory(
+          `${ConstPath.UserPath + params.user.currentUser.userName}/${
+            ConstPath.RelativePath.Plotting
+          }PlotLibData`,
         )
         await params.getSymbolPlots({
           path: plotIconPath,
@@ -929,18 +920,18 @@ async function headerAction(type, section = {}) {
   const params = ToolbarModule.getParams()
   switch (section.title) {
     case getLanguage(params.language).Map_Main_Menu.CREATE_WITH_SYMBOLS: {
-      let userPath =
+      const userPath =
         params.user.currentUser.userName &&
         params.user.currentUser.userType !== UserType.PROBATION_USER
-          ? ConstPath.UserPath + params.user.currentUser.userName + '/'
+          ? `${ConstPath.UserPath + params.user.currentUser.userName}/`
           : ConstPath.CustomerPath
-      let mapPath = await FileTools.appendingHomeDirectory(
+      const mapPath = await FileTools.appendingHomeDirectory(
         userPath + ConstPath.RelativePath.Map,
       )
-      let newName = await FileTools.getAvailableMapName(mapPath, 'DefaultMap')
+      const newName = await FileTools.getAvailableMapName(mapPath, 'DefaultMap')
       NavigationService.navigate('InputPage', {
         headerTitle: getLanguage(params.language).Map_Main_Menu.START_NEW_MAP,
-        //'新建地图',
+        // '新建地图',
         value: newName,
         placeholder: getLanguage(params.language).Prompt.ENTER_MAP_NAME,
         type: 'name',
@@ -949,14 +940,14 @@ async function headerAction(type, section = {}) {
             GLOBAL.Loading.setLoading(
               true,
               getLanguage(params.language).Prompt.CREATING,
-              //ConstInfo.MAP_SYMBOL_COLLECTION_CREATING,
+              // ConstInfo.MAP_SYMBOL_COLLECTION_CREATING,
             )
           // 移除地图上所有callout
           SMediaCollector.removeMedias()
           await params.closeMap()
           params.setCollectionInfo() // 清空当前模板
           params.setCurrentTemplateInfo() // 清空当前模板
-          params.setCurrentPlotInfo() //清空模板
+          params.setCurrentPlotInfo() // 清空模板
           params.setTemplate() // 清空模板
 
           // 重新打开工作空间，防止Resource被删除或破坏
@@ -967,25 +958,24 @@ async function headerAction(type, section = {}) {
             ]
           let wsPath
           if (params.user.currentUser.userName) {
-            const userWSPath =
-              ConstPath.UserPath +
-              params.user.currentUser.userName +
-              '/' +
+            const userWSPath = `${ConstPath.UserPath +
+              params.user.currentUser.userName}/${
               ConstPath.RelativeFilePath.Workspace[
                 global.language === 'CN' ? 'CN' : 'EN'
               ]
+            }`
             wsPath = await FileTools.appendingHomeDirectory(userWSPath)
           } else {
             wsPath = await FileTools.appendingHomeDirectory(customerPath)
           }
           await params.openWorkspace({ server: wsPath })
           await SMap.openDatasource(
-            ConstOnline['Google'].DSParams,
+            ConstOnline.Google.DSParams,
             // ConstOnline['Google'].layerIndex,
             1,
           )
 
-          let layers = await params.getLayers()
+          const layers = await params.getLayers()
           await SMap.openTaggingDataset(params.user.currentUser.userName)
           // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
           await SMap.getTaggingLayers(params.user.currentUser.userName).then(
@@ -1000,7 +990,7 @@ async function headerAction(type, section = {}) {
           // 隐藏底图
           await SMap.setLayerVisible(layers[layers.length - 1].path, true)
 
-          let moveToCurrentResult = await SMap.moveToCurrent()
+          const moveToCurrentResult = await SMap.moveToCurrent()
           if (!moveToCurrentResult) {
             await SMap.moveToPoint({ x: 116.21, y: 39.42 })
           }
@@ -1035,7 +1025,7 @@ function openScene(item) {
   const _params = ToolbarModule.getParams()
   if (item.name === GLOBAL.sceneName) {
     Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
-    //'场景已打开,请勿重复打开场景')
+    // '场景已打开,请勿重复打开场景')
     return
   }
   SScene.openScence(item.name).then(() => {
@@ -1068,41 +1058,36 @@ function openScene(item) {
 
 async function getSceneData() {
   const params = ToolbarModule.getParams()
-  let buttons = []
-  let data = []
+  const buttons = []
+  const data = []
   try {
     // let buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.FLEX]
-    let userName = params.user.currentUser.userName || 'Customer'
-    let path = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath + userName + '/' + ConstPath.RelativeFilePath.Scene,
+    const userName = params.user.currentUser.userName || 'Customer'
+    const path = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + userName}/${ConstPath.RelativeFilePath.Scene}`,
     )
-    let result = await FileTools.fileIsExist(path)
+    const result = await FileTools.fileIsExist(path)
     if (result) {
-      let fileList = await FileTools.getPathListByFilter(path, {
+      const fileList = await FileTools.getPathListByFilter(path, {
         extension: 'pxp',
         type: 'file',
       })
-      let _data = []
+      const _data = []
       for (let index = 0; index < fileList.length; index++) {
-        let element = fileList[index]
+        const element = fileList[index]
         if (element.name.indexOf('.pxp') > -1) {
           fileList[index].name = element.name.substr(
             0,
             element.name.lastIndexOf('.'),
           )
           if (params.language === 'EN') {
-            let day = element.mtime
+            const day = element.mtime
               .replace(/年|月|日/g, '/')
               .split('  ')[0]
               .split('/')
-            const info =
-              day[2] +
-              '/' +
-              day[1] +
-              '/' +
-              day[0] +
-              '  ' +
+            const info = `${day[2]}/${day[1]}/${day[0]}  ${
               element.mtime.split('  ')[1]
+            }`
             element.mtime = info
           }
           element.subTitle = element.mtime
@@ -1119,13 +1104,14 @@ async function getSceneData() {
   } catch (error) {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
-  let type = ConstToolType.MAP3D_WORKSPACE_LIST
-  let { height, column } = ToolBarHeight.getToolbarHeight(type)
+  const type = ConstToolType.MAP3D_WORKSPACE_LIST
+  const { orientation } = params.device
+  const { height, column } = utils.getLayout(type, orientation)
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     containerType: ToolbarType.list,
     isFullScreen: true,
-    data: data,
-    buttons: buttons,
+    data,
+    buttons,
     height,
     column,
   })
@@ -1133,22 +1119,22 @@ async function getSceneData() {
 
 async function openTemplate(item) {
   const params = ToolbarModule.getParams()
-  let userPath =
+  const userPath =
     params.user.currentUser.userName &&
     params.user.currentUser.userType !== UserType.PROBATION_USER
-      ? ConstPath.UserPath + params.user.currentUser.userName + '/'
+      ? `${ConstPath.UserPath + params.user.currentUser.userName}/`
       : ConstPath.CustomerPath
-  let mapPath = await FileTools.appendingHomeDirectory(
+  const mapPath = await FileTools.appendingHomeDirectory(
     userPath + ConstPath.RelativePath.Map,
   )
-  let newName = await FileTools.getAvailableMapName(
+  const newName = await FileTools.getAvailableMapName(
     mapPath,
     item.name || 'DefaultName',
   )
   NavigationService.navigate('InputPage', {
     value: newName,
     headerTitle: getLanguage(params.language).Map_Main_Menu.START_NEW_MAP,
-    //'新建地图',
+    // '新建地图',
     placeholder: getLanguage(params.language).Prompt.ENTER_MAP_NAME,
     type: 'name',
     cb: async (value = '') => {
@@ -1156,11 +1142,11 @@ async function openTemplate(item) {
         params.setContainerLoading &&
           params.setContainerLoading(
             true,
-            //ConstInfo.MAP_CREATING
+            // ConstInfo.MAP_CREATING
             getLanguage(params.language).Prompt.CREATING,
           )
         // 打开模板工作空间
-        let moduleName = ''
+        const moduleName = ''
         if (params.map.currentMap.name) {
           await params.closeMap()
         }
@@ -1186,12 +1172,12 @@ async function openTemplate(item) {
               }
               GLOBAL.clearMapData && GLOBAL.clearMapData()
               // 打开地图
-              let mapPath =
+              const mapPath =
                 (params.user && params.user.currentUser.userName
-                  ? ConstPath.UserPath + params.user.currentUser.userName + '/'
+                  ? `${ConstPath.UserPath + params.user.currentUser.userName}/`
                   : ConstPath.CustomerPath) + ConstPath.RelativeFilePath.Map
-              let mapInfo = await params.openMap({
-                path: mapPath + mapsInfo[0] + '.xml',
+              const mapInfo = await params.openMap({
+                path: `${mapPath + mapsInfo[0]}.xml`,
                 name: mapsInfo[0],
               })
               if (mapInfo) {
@@ -1199,9 +1185,9 @@ async function openTemplate(item) {
                   params.setContainerLoading(
                     true,
                     getLanguage(params.language).Prompt.READING_TEMPLATE,
-                    //ConstInfo.TEMPLATE_READING,
+                    // ConstInfo.TEMPLATE_READING,
                   )
-                  let templatePath = await FileTools.appendingHomeDirectory(
+                  const templatePath = await FileTools.appendingHomeDirectory(
                     ConstPath.UserPath + mapInfo.Template,
                   )
                   await params.getSymbolTemplates({
@@ -1219,7 +1205,7 @@ async function openTemplate(item) {
                 Toast.show(
                   getLanguage(params.language).Prompt.THE_MAP_IS_OPENED,
                 )
-                //ConstInfo.MAP_ALREADY_OPENED)
+                // ConstInfo.MAP_ALREADY_OPENED)
                 // params.setContainerLoading(false)
               }
 
@@ -1231,10 +1217,10 @@ async function openTemplate(item) {
                 ) {
                   await LayerUtils.addBaseMap(
                     layers,
-                    ConstOnline['Google'],
+                    ConstOnline.Google,
                     GLOBAL.Type === constants.MAP_COLLECTION
                       ? 1
-                      : ConstOnline['Google'].layerIndex,
+                      : ConstOnline.Google.layerIndex,
                     false,
                   )
                 }
@@ -1265,7 +1251,7 @@ async function openTemplate(item) {
               params.mapMoveToCurrent()
               params.setContainerLoading(
                 true,
-                //ConstInfo.TEMPLATE_READING
+                // ConstInfo.TEMPLATE_READING
                 getLanguage(params.language).Prompt.READING_TEMPLATE,
               )
               params.getSymbolTemplates(null, () => {
@@ -1274,7 +1260,7 @@ async function openTemplate(item) {
                 Toast.show(
                   getLanguage(params.language).Prompt.SWITCHED_TEMPLATE,
                 )
-                //ConstInfo.TEMPLATE_CHANGE_SUCCESS
+                // ConstInfo.TEMPLATE_CHANGE_SUCCESS
               })
             } else {
               params.setContainerLoading && params.setContainerLoading(false)
@@ -1294,7 +1280,7 @@ async function openTemplate(item) {
           })
         }
         Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
-        //ConstInfo.MAP_SYMBOL_COLLECTION_CREATED)
+        // ConstInfo.MAP_SYMBOL_COLLECTION_CREATED)
       }, 1000)
     },
   })

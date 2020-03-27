@@ -1,4 +1,4 @@
-//好友
+// 好友
 const Friends = {
   LOCALE: 'zh-cn',
 
@@ -10,7 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: '发起群聊',
   RECOMMEND_FRIEND: '好友推荐',
   SELECT_MODULE: '选择模块',
-  //Friend
+  // Friend
   MSG_SERVICE_FAILED: '连接消息服务失败！',
   MSG_SERVICE_NOT_CONNECT: '未能连接消息服务！',
   SEND_SUCCESS: '分享完成',
@@ -19,7 +19,7 @@ const Friends = {
   RECEIVE_SUCCESS: '接收完成',
   RECEIVE_FAIL_EXPIRE: '下载失败，文件可能已经过期',
   RECEIVE_FAIL_NETWORK: '下载失败，请检查网络',
-  //FriendMessage
+  // FriendMessage
   MARK_READ: '标记已读',
   MARK_UNREAD: '标记未读',
   DEL: '删除',
@@ -28,33 +28,33 @@ const Friends = {
   CONFIRM: '确定',
   CANCEL: '取消',
   ALERT_DEL_HISTORY: '删除后,将清空该聊天的消息记录',
-  //FriendList
+  // FriendList
   SET_MARK_NAME: '设置备注',
   DEL_FRIEND: '删除好友',
   ALERT_DEL_FRIEND: '将该联系人删除,将同时删除与该联系人的聊天记录',
   TEXT_CONTENT: '文本内容',
   INPUT_MARK_NAME: '请输入备注名',
   INPUT_INVALID: '内容不符合规范请重新输入',
-  //InformMessage
+  // InformMessage
   TITLE_NOTIFICATION: '通知消息',
   FRIEND_RESPOND: '同意对方添加请求 ？',
-  //CreateGroupChat
+  // CreateGroupChat
   CONFIRM2: '确定',
   TITLE_CHOOSE_FRIEND: '选择好友',
   TOAST_CHOOSE_2: '少于两人不能发起群聊',
   NO_FRIEND: '您还未添加好友哦',
-  //AddFriend
+  // AddFriend
   ADD_FRIEND_PLACEHOLDER: '邮箱/手机/昵称',
   SEARCHING: '查询中...',
   SEARCH: '搜索',
   ADD_SELF: '不能添加自己为好友哦',
   ADD_AS_FRIEND: '添加对方为好友 ？',
-  //FriendGroup
+  // FriendGroup
   LOADING: '刷新中...',
   DEL_GROUP: '删除群聊',
   DEL_GROUP_CONFIRM: '清空消息并退出群聊?',
   DEL_GROUP_CONFIRM2: '清空消息并解散群聊?',
-  //Chat
+  // Chat
   INPUT_MESSAGE: '输入消息...',
   SEND: '发送',
   LOAD_EARLIER: '显示更多消息',
@@ -69,17 +69,17 @@ const Friends = {
   WAIT_DOWNLOADING: '请等待数据下载完成',
   DATA_NOT_FOUND: '找不到文件，是否重新下载?',
   LOAD_ORIGIN_PIC: '加载原图',
-  //CustomActions
+  // CustomActions
   MAP: '地图',
   TEMPLATE: '模板',
   LOCATION: '位置',
   PICTURE: '图片',
   LOCATION_FAILED: '获取位置失败',
-  //RecommendFriend
+  // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',
   PERMISSION_DENIED_CONTACT: '请在手机的设置中打开iTablet访问通讯录的权限',
-  //ManageFriend/Group
+  // ManageFriend/Group
   SEND_MESSAGE: '发消息',
   SET_MARKNAME: '修改备注名',
   SET_GROUPNAME: '修改群名称',
@@ -98,7 +98,7 @@ const Friends = {
   GO_COWORK: '协作',
   ALERT_EXIT_COWORK: '是否关闭当前协作地图?',
   SHARE_DATASET: '同时分享对应数据集',
-  //system text
+  // system text
   SYS_MSG_PIC: '[图片]',
   SYS_MSG_MAP: '[地图]',
   SYS_MSG_LAYER: '[图层]',

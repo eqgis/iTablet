@@ -24,6 +24,7 @@ const my_import_gpx = require('./mine_import_gpx_light.png')
 const my_import_img = require('./mine_import_img_light.png')
 
 const my_local_data = require('./mine_my_local_data_light.png')
+
 export default {
   mine_my_plot_new,
   my_import,

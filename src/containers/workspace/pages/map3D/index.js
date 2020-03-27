@@ -1,5 +1,5 @@
-import Map3D from './Map3D'
 import { connect } from 'react-redux'
+import Map3D from './Map3D'
 import {
   setEditLayer,
   setCurrentAttribute,
@@ -14,6 +14,7 @@ import {
 import { setSharing } from '../../../../models/online'
 import { setBackAction, removeBackAction } from '../../../../models/backActions'
 import { setToolbarStatus } from '../../../../models/toolbarStatus'
+
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   editLayer: state.layers.toJS().editLayer,

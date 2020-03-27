@@ -1,4 +1,4 @@
-//地图类型
+// 地图类型
 const Map_Module = {
   MAP_EDIT: 'Cartography',
   MAP_3D: 'Scene',

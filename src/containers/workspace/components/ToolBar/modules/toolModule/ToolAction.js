@@ -8,7 +8,6 @@ import {
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
-  TouchType,
   ConstPath,
   ToolbarType,
   Const,
@@ -45,7 +44,7 @@ function submit() {
     }
     await SMap.submit()
     await SMap.buildNetwork()
-  }.bind(this)())
+  })()
 }
 
 function select(type) {
@@ -77,12 +76,12 @@ function viewEntire() {
   SMap.viewEntire().then(async () => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible && params.setToolbarVisible(false)
-    let currentFloorID = await SMap.getCurrentFloorID()
+    const currentFloorID = await SMap.getCurrentFloorID()
     params.changeFloorID && params.changeFloorID(currentFloorID || '')
   })
 }
 
-/** 单选 **/
+/** 单选 * */
 function pointSelect() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -104,7 +103,7 @@ function pointSelect() {
   })
 }
 
-/** 框选 **/
+/** 框选 * */
 function selectByRectangle() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -126,7 +125,7 @@ function selectByRectangle() {
   })
 }
 
-/** 矩形裁剪 **/
+/** 矩形裁剪 * */
 function rectangleCut() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -140,7 +139,7 @@ function rectangleCut() {
   })
 }
 
-/** 距离量算 **/
+/** 距离量算 * */
 function measureLength() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -148,12 +147,12 @@ function measureLength() {
   _params.showMeasureResult(true, 0)
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureLength(obj => {
-      let pointArr = ToolbarModule.getData().pointArr || []
-      let redoArr = []
+      const pointArr = ToolbarModule.getData().pointArr || []
+      const redoArr = []
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
         pointArr.push(JSON.stringify(obj.curPoint))
-        let newState = {}
+        const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
           newState.canUndo = true
         if (_params.toolbarStatus.canRedo) newState.canRedo = false
@@ -162,8 +161,8 @@ function measureLength() {
       } else {
         ToolbarModule.addData({ isFinished: true })
       }
-      let rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
-      _params.showMeasureResult(true, rel + 'm')
+      const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
+      _params.showMeasureResult(true, `${rel}m`)
     })
   })
 
@@ -175,7 +174,7 @@ function measureLength() {
   })
 }
 
-/**  面积量算  **/
+/**  面积量算  * */
 function measureArea() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -183,12 +182,12 @@ function measureArea() {
   _params.showMeasureResult(true, 0)
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureArea(obj => {
-      let pointArr = ToolbarModule.getData().pointArr || []
-      let redoArr = []
+      const pointArr = ToolbarModule.getData().pointArr || []
+      const redoArr = []
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
         pointArr.push(JSON.stringify(obj.curPoint))
-        let newState = {}
+        const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
           newState.canUndo = true
         if (_params.toolbarStatus.canRedo) newState.canRedo = false
@@ -197,8 +196,8 @@ function measureArea() {
       } else {
         ToolbarModule.addData({ isFinished: true })
       }
-      let rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
-      _params.showMeasureResult(true, rel + '㎡')
+      const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
+      _params.showMeasureResult(true, `${rel}㎡`)
     })
   })
 
@@ -210,7 +209,7 @@ function measureArea() {
   })
 }
 
-/**  角度量算  **/
+/**  角度量算  * */
 function measureAngle() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
@@ -218,15 +217,15 @@ function measureAngle() {
   _params.showMeasureResult(true, 0)
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureAngle(obj => {
-      let pointArr = ToolbarModule.getData().pointArr || []
-      let redoArr = []
+      const pointArr = ToolbarModule.getData().pointArr || []
+      const redoArr = []
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
-        //角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
+        // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
         pointArr.indexOf('startLine') === -1 && pointArr.push('startLine')
         pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1 &&
           pointArr.push(JSON.stringify(obj.curPoint))
-        let newState = {}
+        const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
           newState.canUndo = true
         if (_params.toolbarStatus.canRedo) newState.canRedo = false
@@ -251,7 +250,7 @@ function measureAngle() {
   })
 }
 
-/** 清除量算结果 **/
+/** 清除量算结果 * */
 function clearMeasure(type) {
   const _params = ToolbarModule.getParams()
   type = _params.type
@@ -281,7 +280,7 @@ function clearMeasure(type) {
   }
 }
 
-/** 量算功能 撤销事件 **/
+/** 量算功能 撤销事件 * */
 async function undo(type) {
   if (ToolbarModule.getData().isFinished === false) return
   if (type === ConstToolType.MAP_TOOL_INCREMENT) {
@@ -292,7 +291,7 @@ async function undo(type) {
   let redoArr = ToolbarModule.getData().redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canUndo) return
-  let newState = {}
+  const newState = {}
   if (pointArr.length > 0) {
     redoArr.push(pointArr.pop())
   }
@@ -320,18 +319,18 @@ async function undo(type) {
   })
 }
 
-/** 量算功能 重做事件 **/
+/** 量算功能 重做事件 * */
 async function redo(type = null) {
   if (ToolbarModule.getData().isFinished === false) return
   if (type === ConstToolType.MAP_TOOL_INCREMENT) {
     await SMap.redo()
     return
   }
-  let pointArr = ToolbarModule.getData().pointArr || []
-  let redoArr = ToolbarModule.getData().redoArr || []
+  const pointArr = ToolbarModule.getData().pointArr || []
+  const redoArr = ToolbarModule.getData().redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canRedo || redoArr.length === 0) return
-  let newState = {}
+  const newState = {}
   if (redoArr.length > 0) {
     pointArr.push(redoArr.pop())
   }
@@ -408,15 +407,15 @@ async function setting() {
 //   })
 // }
 
-//多媒体采集
+// 多媒体采集
 function captureImage() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    let currentLayer = _params.currentLayer
+    const { currentLayer } = _params
     // let reg = /^Label_(.*)#$/
     if (currentLayer) {
-      let layerType = LayerUtils.getLayerType(currentLayer)
-      let isTaggingLayer = layerType === 'TAGGINGLAYER'
+      const layerType = LayerUtils.getLayerType(currentLayer)
+      const isTaggingLayer = layerType === 'TAGGINGLAYER'
       // let isTaggingLayer = currentLayer.type === DatasetType.CAD
       // && currentLayer.datasourceAlias.match(reg)
       if (isTaggingLayer) {
@@ -424,8 +423,8 @@ function captureImage() {
         //   currentLayer.datasetName,
         //   ToolbarModule.getParams().user.currentUser.userName,
         // )
-        const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-        const datasetName = currentLayer.datasetName // 标注图层名称
+        const { datasourceAlias } = currentLayer // 标注数据源名称
+        const { datasetName } = currentLayer // 标注图层名称
         NavigationService.navigate('Camera', {
           datasourceAlias,
           datasetName,
@@ -438,7 +437,7 @@ function captureImage() {
       )
       ToolbarModule.getParams().navigation.navigate('LayerManager')
     }
-  }.bind(this)())
+  })()
 }
 
 function tour() {
@@ -459,11 +458,10 @@ function tour() {
     //   ImagePicker.AlbumListView.defaultProps.showDialog = false
     //   ImagePicker.AlbumListView.defaultProps.dialogConfirm = null
     // } else {
-    let targetPath = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath +
-        _params.user.currentUser.userName +
-        '/' +
-        ConstPath.RelativeFilePath.Media,
+    const targetPath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + _params.user.currentUser.userName}/${
+        ConstPath.RelativeFilePath.Media
+      }`,
     )
     SMediaCollector.initMediaCollector(targetPath)
 
@@ -476,7 +474,7 @@ function tour() {
       if (value !== '') {
         (async function() {
           await SMap.setLabelColor()
-          let tagginData = await SMap.newTaggingDataset(
+          const tagginData = await SMap.newTaggingDataset(
             value,
             _params.user.currentUser.userName,
             false, // 轨迹图层都设置为不可编辑
@@ -484,7 +482,7 @@ function tour() {
           )
           tourLayer = tagginData.layerName
           cb && cb()
-        }.bind(this)())
+        })()
       }
       Toast.show(value)
     }
@@ -503,12 +501,12 @@ function tour() {
           return
         }
         if (tourLayer) {
-          let res = await SMediaCollector.addTour(tourLayer, data)
+          const res = await SMediaCollector.addTour(tourLayer, data)
           res.result && (await SMap.setLayerFullView(tourLayer))
         }
       },
     })
-  }.bind(this)())
+  })()
 }
 
 /**
@@ -558,7 +556,7 @@ function showEditLabel() {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
 
-  let type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+  const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
@@ -585,14 +583,14 @@ function selectLabelToEdit(toolType = '') {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
 
-  let event = ToolbarModule.getData().event
+  const { event } = ToolbarModule.getData()
 
-  let column = 4,
-    height = ConstToolType.HEIGHT[3],
-    containerType = ToolbarType.table,
-    type = ''
+  const column = 4
+  let height = ConstToolType.HEIGHT[3]
+  let containerType = ToolbarType.table
+  let type = ''
 
-  if(toolType === '') {
+  if (toolType === '') {
     toolType = global.MapToolType
   }
   switch (toolType) {
@@ -634,7 +632,7 @@ function selectLabelToStyle() {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
 
-  let event = ToolbarModule.getData().event
+  const { event } = ToolbarModule.getData()
   let showMenuDialog = false
   let isFullScreen = false
   let containerType = ''
@@ -670,7 +668,9 @@ function selectLabelToStyle() {
         height,
         showMenuDialog,
         cb: () => {
-          if(global.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT) {
+          if (
+            global.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT
+          ) {
             SMap.appointEditGeometry(event.id, event.layerInfo.path)
           } else {
             StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
@@ -682,26 +682,26 @@ function selectLabelToStyle() {
   }
 }
 
-//设置我的图层的可选择性
-function _setMyLayersSelectable(layers, selectable) {
-  for (let i = 0; i < layers.length; i++) {
-    if (layers[i].type === 'layerGroup') {
-      _setMyLayersSelectable(layers[i].child, selectable)
-    } else if (
-      LayerUtils.getLayerType(layers[i]) !== 'TAGGINGLAYER' &&
-      layers[i].isSelectable
-    ) {
-      SMap.setLayerSelectable(layers[i].path, selectable)
-    }
-  }
-}
+// 设置我的图层的可选择性
+// function _setMyLayersSelectable(layers, selectable) {
+//   for (let i = 0; i < layers.length; i++) {
+//     if (layers[i].type === 'layerGroup') {
+//       _setMyLayersSelectable(layers[i].child, selectable)
+//     } else if (
+//       LayerUtils.getLayerType(layers[i]) !== 'TAGGINGLAYER' &&
+//       layers[i].isSelectable
+//     ) {
+//       SMap.setLayerSelectable(layers[i].path, selectable)
+//     }
+//   }
+// }
 
 /**
  * 删除标注
  */
 async function deleteLabel() {
   const _params = ToolbarModule.getParams()
-  let _selection = _params.selection
+  const _selection = _params.selection
   if (_selection.length === 0) {
     Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
     return
@@ -714,7 +714,7 @@ async function deleteLabel() {
     }
   })
   _params.setSelection()
-  let type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+  const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
@@ -726,11 +726,11 @@ async function deleteLabel() {
 function geometrySelected(event) {
   if (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
     ToolbarModule.addData({
-      event: event,
+      event,
     })
     const _params = ToolbarModule.getParams()
     let type = ''
-    let layerType = event.layerInfo.type
+    const layerType = event.layerInfo.type
     let geoType
     for (let i = 0; i < event.fieldInfo.length; i++) {
       if (event.fieldInfo[i].name === 'SmGeoType') {
@@ -738,7 +738,7 @@ function geometrySelected(event) {
         break
       }
     }
-    if(!geoType) {
+    if (!geoType) {
       geoType = layerType
     }
     let containerType = ''
@@ -762,7 +762,7 @@ function geometrySelected(event) {
         height = ConstToolType.HEIGHT[0]
         break
     }
-    if(type !== '' && layerType !== DatasetType.CAD) {
+    if (type !== '' && layerType !== DatasetType.CAD) {
       this.selectLabelToEdit(type)
       return
     }
@@ -785,7 +785,7 @@ function geometrySelected(event) {
 }
 
 function colorAction(params) {
-  let event = ToolbarModule.getData().event
+  const { event } = ToolbarModule.getData()
   switch (params.type) {
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET:
       SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
@@ -806,7 +806,7 @@ function colorAction(params) {
 }
 
 function setTaggingTextFont(param) {
-  let event = ToolbarModule.getData().event
+  const { event } = ToolbarModule.getData()
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       SMap.setTaggingTextFont('BOLD', event.layerInfo.path, event.id)
@@ -851,7 +851,7 @@ function setTaggingTextFont(param) {
 //   })
 // }
 
-/********** 裁剪手势监听 ************/
+/** ******** 裁剪手势监听 *********** */
 // async function addMapCutListener() {
 //   await SMap.setGestureDetector({
 //     touchBeganHandler: touchBeganHandler,
@@ -940,7 +940,7 @@ function commit(type) {
   ) {
     SMap.clearSelection()
     SMap.setAction(Action.PAN)
-    let layers = _params.layers.layers
+    const { layers } = _params.layers
     // 还原其他图层的选择状态
     // _setMyLayersSelectable(layers, true)
     for (let i = 0; i < layers.length; i++) {
@@ -962,13 +962,13 @@ function commit(type) {
 
 async function showAttribute() {
   const _params = ToolbarModule.getParams()
-  let _selection = _params.selection
+  const _selection = _params.selection
   if (_selection.length === 0) {
     Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
     return
   }
 
-  let attributes = await SMap.getSelectionAttributeByLayer(
+  const attributes = await SMap.getSelectionAttributeByLayer(
     _selection[0].layerInfo.path,
     0,
     1,
@@ -994,21 +994,23 @@ async function showAttribute() {
 }
 
 function menu(type, selectKey, params = {}) {
-  let isFullScreen, showMenuDialog, isTouchProgress
-  let showBox = function() {
+  let isFullScreen
+  let showMenuDialog
+  let isTouchProgress
+  const showBox = function() {
     if (type.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1) {
       params.showBox && params.showBox()
     }
-  }.bind(this)
+  }
 
-  let setData = function() {
+  const setData = function() {
     params.setData &&
       params.setData({
         isFullScreen,
         showMenuDialog,
         isTouchProgress,
       })
-  }.bind(this)
+  }
 
   if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true
@@ -1040,17 +1042,15 @@ function showMenuBox(type, selectKey, params = {}) {
           showMenuDialog: !GLOBAL.ToolBar.state.showMenuDialog,
           isFullScreen: true,
         })
+    } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
+      params.showBox && params.showBox()
     } else {
-      if (!GLOBAL.ToolBar.state.showMenuDialog) {
-        params.showBox && params.showBox()
-      } else {
-        params.setData &&
-          params.setData({
-            showMenuDialog: false,
-            isFullScreen: false,
-          })
-        params.showBox && params.showBox()
-      }
+      params.setData &&
+        params.setData({
+          showMenuDialog: false,
+          isFullScreen: false,
+        })
+      params.showBox && params.showBox()
     }
     return
   }
@@ -1109,25 +1109,27 @@ function toolbarBack() {
   const _params = ToolbarModule.getParams()
   if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
-      GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
+    SMap.cancel()
     SMap.clearSelection()
     _params.setSelection()
-    let type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+    const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
       height: 0,
       cb: () => select(type),
     })
-  } else if (
+  } /*else if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
     let type = ''
     let layerType = ToolbarModule.getData().event.layerInfo.type
     let height = ConstToolType.THEME_HEIGHT[3]
     let containerType = ''
-    if(layerType === DatasetType.CAD) {
+    if (layerType === DatasetType.CAD) {
       if (GLOBAL.MapToolType.indexOf('_POINT') !== -1) {
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
         height = ConstToolType.HEIGHT[0]
@@ -1143,7 +1145,7 @@ function toolbarBack() {
         height = ConstToolType.HEIGHT[0]
       }
       if (type !== '') {
-        let event = ToolbarModule.getData().event
+        const { event } = ToolbarModule.getData()
         _params.setToolbarVisible(true, type, {
           isFullScreen: false,
           column: 5,
@@ -1159,7 +1161,7 @@ function toolbarBack() {
     } else {
       SMap.clearSelection()
       _params.setSelection()
-      let type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+      const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
@@ -1167,12 +1169,28 @@ function toolbarBack() {
         cb: () => select(type),
       })
     }
-  }
+  }*/
 }
 
-function close(type) {
+async function close(type) {
   const _params = ToolbarModule.getParams()
-  if (
+  if (type === ConstToolType.MAP_TOOL_TAGGING_SETTING) {
+    await SMap.undo()
+    _params.setToolbarVisible(false)
+  } else if (
+    type === ConstToolType.MAP_TOOL_INCREMENT ||
+    type === ConstToolType.MAP_TOOL_GPSINCREMENT
+  ) {
+    GLOBAL.FloorListView.setVisible(true)
+    await SMap.removeNetworkDataset()
+    SMap.setAction(Action.PAN)
+    SMap.setIsMagnifierEnabled(false)
+    _params.setToolbarVisible(false)
+  } else if (type === ConstToolType.STYLE_TRANSFER) {
+    await SMap.resetMapFixColorsModeValue(true)
+    // _params.setToolbarVisible(false)
+    return false
+  } else if (
     type === ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE ||
     type === ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE ||
     type === ConstToolType.MAP_TOOL_TAGGING_POINT_SELECT ||
@@ -1183,7 +1201,7 @@ function close(type) {
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
     SMap.setAction(Action.PAN)
-    let layers = _params.layers.layers
+    const { layers } = _params.layers
     // 还原其他图层的选择状态
     // _setMyLayersSelectable(layers, true)
     for (let i = 0; i < layers.length; i++) {
@@ -1210,6 +1228,33 @@ function close(type) {
     SMap.setAction(Action.PAN)
     _params.showMeasureResult(false)
     _params.setToolbarVisible(false)
+  } else if (type === ConstToolType.MAP_TOOL_RECTANGLE_CUT) {
+    GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+    _params.setToolbarVisible(false)
+  } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE) {
+    // 返回图层属性界面，并清除属性关联选中的对象
+    NavigationService.navigate('LayerAttribute')
+    await SMap.clearTrackingLayer()
+    _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
+    _params.setToolbarVisible(false)
+  } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+    // 返回框选/点选属性界面，并清除属性关联选中的对象
+    NavigationService.navigate('LayerSelectionAttribute', {
+      selectionAttribute: GLOBAL.SelectedSelectionAttribute,
+      preAction: async () => {
+        const selection = []
+        for (let i = 0; i < _params.selection.length; i++) {
+          selection.push({
+            layerPath: _params.selection[i].layerInfo.path,
+            ids: _params.selection[i].ids,
+          })
+        }
+        await SMap.clearTrackingLayer()
+        await SMap.selectObjs(selection)
+        _params.setToolbarVisible(false)
+      },
+    })
+    // NavigationService.goBack()
   } else {
     return false
   }

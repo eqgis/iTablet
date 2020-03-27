@@ -5,6 +5,7 @@ const plot_animation_shrink = require('./plot_animation_shrink_light.png')
 const plot_animation_fade_in = require('./plot_animation_fade_in_light.png')
 const plot_animation_fade_out = require('./plot_animation_fade_out_light.png')
 const plot_animation_flash = require('./plot_animation_flash_light.png')
+
 export default {
   plot_animation_appear,
   plot_animation_grow,

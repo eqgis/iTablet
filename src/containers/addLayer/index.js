@@ -5,4 +5,7 @@ const mapStateToProps = state => ({
   nav: state.nav.toJS(),
 })
 
-export default connect(mapStateToProps,[])(AddLayer)
+export default connect(
+  mapStateToProps,
+  [],
+)(AddLayer)

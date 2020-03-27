@@ -53,7 +53,7 @@ import { MultiPicker } from '../../../../components'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
 import DataHandler from '../../../tabs/Mine/DataHandler'
-import constants from "../../../workspace/constants"
+import constants from '../../../workspace/constants'
 /** 工具栏类型 **/
 const list = 'list'
 
@@ -77,7 +77,7 @@ export default class LayerManager_tolbar extends React.Component {
     user: Object,
     navigation: Object,
     curUserBaseMaps: Array,
-    currentScale:Number,
+    currentScale: Number,
   }
 
   static defaultProps = {
@@ -128,19 +128,19 @@ export default class LayerManager_tolbar extends React.Component {
   }
   componentDidUpdate() {
     this.getHeight()
-    if(this.props.currentScale && this.selectScaleKey !== undefined){
+    if (this.props.currentScale && this.selectScaleKey !== undefined) {
       //update data
-      if(this.selectScaleKey === 'min'){
+      if (this.selectScaleKey === 'min') {
         this.selectedMinItem = {
-          key:'自定义比例尺',
-          value:this.props.currentScale,
-          type:'min',
+          key: '自定义比例尺',
+          value: this.props.currentScale,
+          type: 'min',
         }
-      }else{
+      } else {
         this.selectedMaxItem = {
-          key:'自定义比例尺',
-          value:this.props.currentScale,
-          type:'max',
+          key: '自定义比例尺',
+          value: this.props.currentScale,
+          type: 'max',
         }
       }
     }
@@ -158,9 +158,10 @@ export default class LayerManager_tolbar extends React.Component {
           if (device.orientation === 'LANDSCAPE') {
             boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
           } else {
-            boxHeight = GLOBAL.Type === constants.MAP_EDIT
-              ? ConstToolType.TOOLBAR_HEIGHT[6]
-              : ConstToolType.TOOLBAR_HEIGHT[7]
+            boxHeight =
+              GLOBAL.Type === constants.MAP_EDIT
+                ? ConstToolType.TOOLBAR_HEIGHT[6]
+                : ConstToolType.TOOLBAR_HEIGHT[7]
           }
           break
         case ConstToolType.PLOTTING:
@@ -245,7 +246,7 @@ export default class LayerManager_tolbar extends React.Component {
         data = layereditsetting(global.language)
         break
       case ConstToolType.MAP_EDIT_MORE_STYLE: {
-        let layerManagerDataArr = [...layerManagerData]
+        let layerManagerDataArr = [...layerManagerData()]
         for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
           let baseMap = this.props.curUserBaseMaps[i]
           if (
@@ -1017,8 +1018,16 @@ export default class LayerManager_tolbar extends React.Component {
         ref={ref => (this.picker = ref)}
         language={GLOBAL.language}
         confirm={async item => {
-          let min = item[0].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMinItem.value : item[0].selectedItem.value
-          let max = item[1].selectedItem.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE ? this.selectedMaxItem.value : item[1].selectedItem.value
+          let min =
+            item[0].selectedItem.key ===
+            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
+              ? this.selectedMinItem.value
+              : item[0].selectedItem.value
+          let max =
+            item[1].selectedItem.key ===
+            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
+              ? this.selectedMaxItem.value
+              : item[1].selectedItem.value
           if (min !== 0 && max !== 0 && min <= max) {
             //最大比例尺必须大于最小比例尺
             Toast.show(
@@ -1030,15 +1039,9 @@ export default class LayerManager_tolbar extends React.Component {
           for (let i = 0; i < item.length; i++) {
             if (item[i].selectedItem.key !== item[i].initItem.key) {
               if (item[i].value === '最大可见比例尺') {
-                await SMap.setMaxVisibleScale(
-                  this.state.layerData.path,
-                  max,
-                )
+                await SMap.setMaxVisibleScale(this.state.layerData.path, max)
               } else {
-                await SMap.setMinVisibleScale(
-                  this.state.layerData.path,
-                  min,
-                )
+                await SMap.setMinVisibleScale(this.state.layerData.path, min)
               }
             }
           }
@@ -1054,20 +1057,30 @@ export default class LayerManager_tolbar extends React.Component {
           this.selectedMaxItem = undefined
         }}
         popData={this.state.layerVisibleScaleData}
-        onRightSelect={async item=>{
-          if(item.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE){
+        onRightSelect={async item => {
+          if (
+            item.key ===
+            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
+          ) {
             this.selectScaleKey = item.type
             let currentScaleData
-            if(item === 'min'){
+            if (item === 'min') {
               currentScaleData = this.selectedMinItem
-            }else{
+            } else {
               currentScaleData = this.selectedMaxItem
             }
-            let mapScale = currentScaleData !== undefined ? currentScaleData.value : (await SMap.getMapScale())
+            let mapScale =
+              currentScaleData !== undefined
+                ? currentScaleData.value
+                : await SMap.getMapScale()
             GLOBAL.TouchType = TouchType.NULL
             this.props.navigation && this.props.navigation.navigate('MapView')
             GLOBAL.ToolBar && GLOBAL.ToolBar.showFullMap()
-            GLOBAL.LayerVisibilityView && GLOBAL.LayerVisibilityView.setVisible(true,(mapScale - 0).toFixed(6))
+            GLOBAL.LayerVisibilityView &&
+              GLOBAL.LayerVisibilityView.setVisible(
+                true,
+                (mapScale - 0).toFixed(6),
+              )
           }
         }}
         viewableItems={3}

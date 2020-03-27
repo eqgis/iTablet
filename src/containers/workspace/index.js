@@ -4,9 +4,8 @@
  */
 
 import React from 'react'
-import { MapView, Map3D } from './pages'
-
 import { createBottomTabNavigator } from 'react-navigation'
+import { MapView, Map3D } from './pages'
 
 import { color } from '../../styles'
 import LayerManager from '../mtLayerManager'
@@ -83,7 +82,7 @@ const MapTabs = compose(
 
 const CoworkTabs = createBottomTabNavigator(
   {
-    //onechat
+    // onechat
     Chat: {
       screen: Chat,
     },

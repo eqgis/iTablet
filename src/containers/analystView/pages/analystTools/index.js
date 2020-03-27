@@ -1,5 +1,5 @@
-import AnalystTools from './AnalystTools'
 import { connect } from 'react-redux'
+import AnalystTools from './AnalystTools'
 import { setBackAction, removeBackAction } from '../../../../models/backActions'
 import { setMapLegend } from '../../../../models/setting'
 import { closeMap } from '../../../../models/map'

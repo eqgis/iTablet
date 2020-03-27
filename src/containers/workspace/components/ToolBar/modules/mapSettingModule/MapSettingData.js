@@ -11,8 +11,8 @@ import { colorMode } from '../../../../../mapSetting/settingData'
 import SelectList from './customView'
 
 function getData(type) {
-  let data = [],
-    customView = null
+  let data = []
+  let customView = null
   switch (type) {
     case ConstToolType.MAP_BACKGROUND_COLOR:
       data = mapBackGroundColor

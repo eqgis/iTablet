@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
 import { getPublicAssets } from '../../../../../../assets'
-import ToolbarModule from '../../modules/ToolbarModule'
+import ToolbarModule from '../ToolbarModule'
 import PlotAction from './PlotAction'
 
 function getData(type, params) {
@@ -30,34 +30,34 @@ function getData(type, params) {
  */
 function getPlotOperationData(type, params) {
   ToolbarModule.setParams(params)
-  let data = [],
-    buttons = [
-      // ToolbarBtnType.END_ANIMATION,
-      ToolbarBtnType.CANCEL,
-      // ToolbarBtnType.PLOT_ANIMATION_XML_LIST,
-      {
-        type: ToolbarBtnType.SHOW_LIST,
-        image: getPublicAssets().plot.plot_animation_list,
-        action: PlotAction.showAnimationXmlList,
-      },
-      // ToolbarBtnType.PLOT_ANIMATION_PLAY,
-      {
-        type: ToolbarBtnType.PLAY,
-        image: getPublicAssets().plot.plot_play,
-        action: PlotAction.animationPlay,
-      },
-      // ToolbarBtnType.PLOT_ANIMATION_GO_OBJECT_LIST,
-      {
-        type: ToolbarBtnType.SHOW_NODE_LIST,
-        image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
-        action: PlotAction.showAnimationNodeList,
-      },
-      {
-        type: ToolbarBtnType.SAVE,
-        image: require('../../../../../../assets/mapTools/icon_save.png'),
-        action: PlotAction.animationSave,
-      },
-    ]
+  let data = []
+  let buttons = [
+    // ToolbarBtnType.END_ANIMATION,
+    ToolbarBtnType.CANCEL,
+    // ToolbarBtnType.PLOT_ANIMATION_XML_LIST,
+    {
+      type: ToolbarBtnType.SHOW_LIST,
+      image: getPublicAssets().plot.plot_animation_list,
+      action: PlotAction.showAnimationXmlList,
+    },
+    // ToolbarBtnType.PLOT_ANIMATION_PLAY,
+    {
+      type: ToolbarBtnType.PLAY,
+      image: getPublicAssets().plot.plot_play,
+      action: PlotAction.animationPlay,
+    },
+    // ToolbarBtnType.PLOT_ANIMATION_GO_OBJECT_LIST,
+    {
+      type: ToolbarBtnType.SHOW_NODE_LIST,
+      image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+      action: PlotAction.showAnimationNodeList,
+    },
+    {
+      type: ToolbarBtnType.SAVE,
+      image: require('../../../../../../assets/mapTools/icon_save.png'),
+      action: PlotAction.animationSave,
+    },
+  ]
   switch (type) {
     case ConstToolType.PLOT_ANIMATION_START:
       data = []
@@ -77,7 +77,7 @@ function getPlotOperationData(type, params) {
         {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-          //'开始播放',
+          // '开始播放',
           action: () => {
             SMap.initAnimation()
             SMap.animationPlay()
@@ -89,7 +89,7 @@ function getPlotOperationData(type, params) {
         {
           key: 'stop',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
-          //'暂停',
+          // '暂停',
           action: () => {
             SMap.animationPause()
           },
@@ -102,7 +102,7 @@ function getPlotOperationData(type, params) {
           key: 'reset',
           title: getLanguage(global.language).Map_Main_Menu
             .PLOTTING_ANIMATION_RESET,
-          //'复原',
+          // '复原',
           action: () => PlotAction.reset(),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
@@ -116,8 +116,8 @@ function getPlotOperationData(type, params) {
 }
 
 function getAnimationNodeListData() {
-  let animationNodeList = []
-  let data = [
+  const animationNodeList = []
+  const data = [
     {
       title: getLanguage(global.language).Map_Main_Menu
         .PLOTTING_ANIMATION_DEDUCTION,
@@ -133,8 +133,8 @@ function getAnimationNodeListData() {
  */
 function getAnimationWayData(type, params) {
   ToolbarModule.setParams(params)
-  let data = [],
-    buttons = []
+  const data = []
+  let buttons = []
   switch (type) {
     case ConstToolType.PLOT_ANIMATION_WAY:
       data.push({
@@ -176,8 +176,8 @@ function getAnimationWayData(type, params) {
  */
 function getCollectionData(libId, symbolCode, params) {
   ToolbarModule.setParams(params)
-  let data = [],
-    buttons = []
+  const data = []
+  let buttons = []
   data.push({
     key: constants.UNDO,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
@@ -189,7 +189,7 @@ function getCollectionData(libId, symbolCode, params) {
   data.push({
     key: constants.REDO,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-    //constants.REDO,
+    // constants.REDO,
     action: PlotAction.redo,
     size: 'large',
     image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -206,7 +206,7 @@ function getCollectionData(libId, symbolCode, params) {
   data.push({
     key: constants.SUBMIT,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
-    //constants.SUBMIT,
+    // constants.SUBMIT,
     action: () => PlotAction.collectionSubmit(libId, symbolCode),
     size: 'large',
     image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
@@ -228,24 +228,21 @@ function getCollectionData(libId, symbolCode, params) {
 async function getAnimationList() {
   const params = ToolbarModule.getParams()
   try {
-    let mapName = await SMap.getMapName()
+    const mapName = await SMap.getMapName()
 
-    let userName = params.user.currentUser.userName || 'Customer'
-    let path = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath +
-        userName +
-        '/' +
-        ConstPath.RelativeFilePath.Animation +
-        mapName +
-        '/',
+    const userName = params.user.currentUser.userName || 'Customer'
+    const path = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + userName}/${
+        ConstPath.RelativeFilePath.Animation
+      }${mapName}/`,
     )
-    let animationXmlList = []
-    let arrDirContent = await FileTools.getDirectoryContent(path)
+    const animationXmlList = []
+    const arrDirContent = await FileTools.getDirectoryContent(path)
     if (arrDirContent.length > 0) {
       let i = 0
-      for (let key in arrDirContent) {
+      for (const key in arrDirContent) {
         if (arrDirContent[key].type === 'file') {
-          let item = {}
+          const item = {}
           item.title = arrDirContent[key].name.split('.')[0]
           item.index = i
           item.path = path + arrDirContent[key].name
@@ -258,13 +255,13 @@ async function getAnimationList() {
     if (animationXmlList.length === 0) {
       Toast.show(
         getLanguage(params.language).Prompt.NO_PLOTTING_DEDUCTION,
-        //'当前场景无态势推演'
+        // '当前场景无态势推演'
       )
     } else {
       SMap.initAnimation()
     }
 
-    let data = [
+    const data = [
       {
         title: getLanguage(params.language).Map_Main_Menu
           .PLOTTING_ANIMATION_DEDUCTION,
@@ -272,11 +269,11 @@ async function getAnimationList() {
         data: animationXmlList,
       },
     ]
-    let buttons = []
+    const buttons = []
     return { data, buttons }
   } catch (error) {
-    let buttons = []
-    let data = [
+    const buttons = []
+    const data = [
       {
         title: getLanguage(params.language).Map_Main_Menu
           .PLOTTING_ANIMATION_DEDUCTION,
@@ -286,7 +283,7 @@ async function getAnimationList() {
     ]
     Toast.show(
       getLanguage(params.language).Prompt.NO_PLOTTING_DEDUCTION,
-      //'当前场景无态势推演'
+      // '当前场景无态势推演'
     )
     return { data, buttons }
   }

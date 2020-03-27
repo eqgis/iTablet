@@ -8,22 +8,27 @@
 import Mark3DData from './Mark3DData'
 import Mark3DAction from './Mark3DAction'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
-import { ToolbarType} from '../../../../../../constants'
-import {getThemeAssets} from "../../../../../../assets"
+import utils from './utils'
+import { ToolbarType } from '../../../../../../constants'
+import { getThemeAssets } from '../../../../../../assets'
 
 function action(type) {
-  const data = ToolBarHeight.getToolbarHeight(type)
   const params = ToolbarModule.getParams()
+  const { orientation } = params.device
+  const layout = utils.getLayout(type, orientation)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType: ToolbarType.table,
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    column: layout.column,
+    height: layout.height,
   })
+  setModuleData(type)
+}
+
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: Mark3DData.getData,
     actions: Mark3DAction,
   })
@@ -32,7 +37,7 @@ function action(type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
         return
@@ -46,5 +51,7 @@ export default function(type, title, customAction) {
     image: getThemeAssets().functionBar.rightbar_mark,
     getData: Mark3DData.getData,
     actions: Mark3DAction,
+    setModuleData: setModuleData,
+    getLayout: utils.getLayout,
   }
 }

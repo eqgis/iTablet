@@ -39,9 +39,9 @@ const theme_grid_unique_selected = require('./theme_grid_unique_selected.png')
 const heatmap = require('./heatmap.png')
 const heatmap_selected = require('./heatmap_selected.png')
 
-//专题图类型图标
+// 专题图类型图标
 export default {
-  //统计专题图
+  // 统计专题图
   theme_graph_area,
   theme_graph_step,
   theme_graph_line,
@@ -59,38 +59,38 @@ export default {
   theme_graph_graduatedmode_cons,
   theme_graph_graduatedmode_log,
   theme_graph_graduatedmode_square,
-  //统一风格
+  // 统一风格
   theme_create_unify_style,
-  //单值风格
+  // 单值风格
   theme_create_unique_style,
   theme_create_unique_style_selected,
-  //分段风格
+  // 分段风格
   theme_create_range_style,
   theme_create_range_style_selected,
-  //统一标签
+  // 统一标签
   theme_create_unify_label,
   theme_create_unify_label_selected,
-  //单值标签
+  // 单值标签
   theme_create_unique_label,
   theme_create_unique_label_selected,
-  //分段标签
+  // 分段标签
   theme_create_range_label,
   theme_create_range_label_selected,
-  //点密度专题图
+  // 点密度专题图
   theme_dot_density,
   theme_dot_density_selected,
-  //等级符号专题图
+  // 等级符号专题图
   theme_graduated_symbol,
   theme_graduated_symbol_selected,
-  //统计专题图类型图标
+  // 统计专题图类型图标
   theme_graphmap,
   theme_graphmap_selected,
-  //栅格分段和单值专题图
+  // 栅格分段和单值专题图
   theme_grid_range,
   theme_grid_range_selected,
   theme_grid_unique,
   theme_grid_unique_selected,
-  //热力图
+  // 热力图
   heatmap,
   heatmap_selected,
 }

@@ -10,11 +10,12 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
 import LegendAction from './LegendAction'
 import { MultiPicker } from '../../../../../../components'
+
 function getData(type) {
   const _params = ToolbarModule.getParams()
-  let data = [],
-    buttons = getButtons(type),
-    customView = null
+  let data = []
+  const buttons = getButtons(type)
+  let customView = null
   switch (type) {
     case ConstToolType.LEGEND_POSITION:
       data = getPickerData(_params.mapLegend[GLOBAL.Type].legendPosition)
@@ -41,7 +42,7 @@ function getData(type) {
 }
 
 function getPickerData(selectKey) {
-  let options = [
+  const options = [
     {
       key: getLanguage(GLOBAL.language).Map_Main_Menu.TOP_LEFT,
       value: 'topLeft',
@@ -59,7 +60,7 @@ function getPickerData(selectKey) {
       value: 'rightBottom',
     },
   ]
-  let selectedItem = options.filter(item => item.value === selectKey)[0]
+  const selectedItem = options.filter(item => item.value === selectKey)[0]
   return [
     {
       key: getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_POSITION,
@@ -73,11 +74,12 @@ function getPickerData(selectKey) {
 
 function getMenuData(type) {
   const _params = ToolbarModule.getParams()
-  let data = [
+  const data = [
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR,
       action: () => {
-        let height, column
+        let height
+        let column
         if (_params.device.orientation === 'PORTRAIT') {
           height = ConstToolType.THEME_HEIGHT[3]
           column = 8

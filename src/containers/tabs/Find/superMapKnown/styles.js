@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
+
 export const itemHeight = scaleSize(200)
 export const imageWidth = scaleSize(240)
 export const imageHeight = scaleSize(160)

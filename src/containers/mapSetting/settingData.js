@@ -1,8 +1,9 @@
-import { getLanguage } from '../../language/index'
 import { SMap } from 'imobile_for_reactnative'
+import { getLanguage } from '../../language/index'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
+
 function getMapSettings() {
-  let data = [
+  const data = [
     {
       title: getLanguage(global.language).Map_Setting.BASIC_SETTING,
       // '基本设置',
@@ -10,12 +11,12 @@ function getMapSettings() {
       data: [
         {
           name: getLanguage(global.language).Map_Setting.ROTATION_GESTURE,
-          //'手势旋转',
+          // '手势旋转',
           value: false,
         },
         {
           name: getLanguage(global.language).Map_Setting.PITCH_GESTURE,
-          //'手势俯仰',
+          // '手势俯仰',
           value: false,
         },
         {
@@ -26,7 +27,7 @@ function getMapSettings() {
     },
     {
       title: getLanguage(global.language).Map_Setting.EFFECT_SETTINGS,
-      //'效果设置',
+      // '效果设置',
       visible: true,
       data: [
         // {
@@ -63,19 +64,19 @@ function getMapSettings() {
         // },
         {
           name: getLanguage(global.language).Map_Setting.ANTI_ALIASING_MAP,
-          //'反走样地图',
+          // '反走样地图',
           value: false,
         },
         {
           name: getLanguage(global.language).Map_Setting.SHOW_OVERLAYS,
-          //'显示压盖对象',
+          // '显示压盖对象',
           value: false,
         },
       ],
     },
     {
       title: getLanguage(global.language).Map_Setting.BOUNDS_SETTING,
-      //'范围设置',
+      // '范围设置',
       visible: true,
       data: [
         // {
@@ -96,7 +97,7 @@ function getMapSettings() {
         // },
         {
           name: getLanguage(global.language).Map_Setting.FIX_SCALE,
-          //'固定比例尺',
+          // '固定比例尺',
           value: false,
         },
       ],
@@ -133,7 +134,7 @@ const getThematicMapSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
   },
-  //高级设置 暂时屏蔽
+  // 高级设置 暂时屏蔽
   // {
   //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
   // },
@@ -360,7 +361,7 @@ const getDetectStyleSettings = () => [
 /*
  * 二级 三级地图菜单 设置
  * */
-//基本设置
+// 基本设置
 const basicSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.MAP_NAME,
@@ -428,20 +429,20 @@ const basicSettings = () => [
     iconType: 'switch',
   },
 ]
-//范围设置
+// 范围设置
 const rangeSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.MAP_CENTER,
     value: '',
-    //当前是文字显示状态还是Input输入框状态
+    // 当前是文字显示状态还是Input输入框状态
     state: false,
-    //两个输入框
+    // 两个输入框
     iconType: 'doubleInput',
   },
   {
     title: getLanguage(global.language).Map_Settings.MAP_SCALE,
     value: '',
-    //当前是文字显示状态还是Input输入框状态
+    // 当前是文字显示状态还是Input输入框状态
     state: false,
     iconType: 'input',
   },
@@ -457,7 +458,7 @@ const rangeSettings = () => [
   },
 ]
 
-//四至范围
+// 四至范围
 const fourRanges = () => [
   {
     title: getLanguage(global.language).Map_Settings.LEFT,
@@ -484,7 +485,7 @@ const fourRanges = () => [
     iconType: 'input',
   },
 ]
-//坐标系设置
+// 坐标系设置
 const coordinateSystemSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM,
@@ -509,7 +510,7 @@ const coordinateSystemSettings = () => [
   },
 ]
 
-//复制坐标系
+// 复制坐标系
 const copyCoordinate = () => [
   {
     title: getLanguage(global.language).Map_Settings.FROM_DATASOURCE,
@@ -527,7 +528,7 @@ const copyCoordinate = () => [
     iconType: 'arrow',
   },
 ]
-//从文件复制坐标系类型列表
+// 从文件复制坐标系类型列表
 const coordMenuData = () => [
   [
     getLanguage(global.language).Map_Settings.ALL_COORD_FILE,
@@ -543,7 +544,7 @@ const coordMenuTitle = () => [
   getLanguage(global.language).Map_Settings.TYPE,
   getLanguage(global.language).Map_Settings.FORMAT,
 ]
-//坐标系数据
+// 坐标系数据
 const coordinateData = () => [
   // {
   //   title: getLanguage(global.language).Map_Settings.PLAN_COORDINATE_SYSTEM,
@@ -586,7 +587,7 @@ const coordinateData = () => [
   },
 ]
 
-//转换方法
+// 转换方法
 const transferData = () => [
   {
     title: 'Geocentric Transalation(3-para)',
@@ -620,7 +621,7 @@ const transferData = () => [
   },
 ]
 
-//转换方法3参数设置
+// 转换方法3参数设置
 const transfer3ParamsSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.BASIC_PARAMS,
@@ -660,7 +661,7 @@ const transfer3ParamsSetting = () => [
   },
 ]
 
-//转换方法7参数设置
+// 转换方法7参数设置
 const transfer7ParamsSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.BASIC_PARAMS,
@@ -734,7 +735,7 @@ const transfer7ParamsSetting = () => [
   },
 ]
 
-//高级设置
+// 高级设置
 // const advancedSettings = () => [
 //   {
 //     title: getLanguage(global.language).Map_Settings.FLOW_VISIUALIZATION,
@@ -801,33 +802,23 @@ const transfer7ParamsSetting = () => [
 const colorMode = () => [
   {
     value: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
-    action: () => {
-      return SMap.setMapColorMode(0)
-    },
+    action: () => SMap.setMapColorMode(0),
   },
   {
     value: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
-    action: () => {
-      return SMap.setMapColorMode(1)
-    },
+    action: () => SMap.setMapColorMode(1),
   },
   {
     value: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
-    action: () => {
-      return SMap.setMapColorMode(2)
-    },
+    action: () => SMap.setMapColorMode(2),
   },
   {
     value: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE,
-    action: () => {
-      return SMap.setMapColorMode(3)
-    },
+    action: () => SMap.setMapColorMode(3),
   },
   {
     value: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE_2,
-    action: () => {
-      return SMap.setMapColorMode(4)
-    },
+    action: () => SMap.setMapColorMode(4),
   },
 ]
 export {

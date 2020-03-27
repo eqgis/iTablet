@@ -13,8 +13,8 @@ function checkModel(state, payload) {
   let _data = state
   if (payload) {
     _data = fromJS(payload)
-    let setting = state.toJS()
-    for (let key of Object.keys(setting)) {
+    const setting = state.toJS()
+    for (const key of Object.keys(setting)) {
       if (
         payload[key] === undefined ||
         typeof payload[key] !== typeof setting[key]

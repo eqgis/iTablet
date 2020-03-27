@@ -8,14 +8,14 @@ async function action() {
       changeNavPathInfo: _params.changeNavPathInfo,
     })
   } catch (e) {
-    //console.warn(e)
+    // console.warn(e)
   }
 }
 
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
         return

@@ -340,30 +340,32 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.addDatasource && (
             <TouchableOpacity
-            style={
-              (styles.selectImgView,
-              {
-                flexDirection: 'row',
-                alignItems: 'center',
-                position: 'absolute',
-                right: scaleSize(30),
-                height: scaleSize(80),
-              })
-            }
-            onPress={() =>  NavigationService.navigate('MyDatasource', {
-              title: getLanguage(global.language).Profile.DATA,
-              exitCallback: async () => {
-                let data = await section.getDatasource()
-                this.setState({ sections: data.data})
-              },
-            })}
-          >
-            <Image
-              source={require('../../../../../assets/mapTools/icon_add_white.png')}
-              resizeMode={'contain'}
-              style={styles.selectImg}
-            />
-          </TouchableOpacity>
+              style={
+                (styles.selectImgView,
+                {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  right: scaleSize(30),
+                  height: scaleSize(80),
+                })
+              }
+              onPress={() =>
+                NavigationService.navigate('MyDatasource', {
+                  title: getLanguage(global.language).Profile.DATA,
+                  exitCallback: async () => {
+                    let data = await section.getDatasource()
+                    this.setState({ sections: data.data })
+                  },
+                })
+              }
+            >
+              <Image
+                source={require('../../../../../assets/mapTools/icon_add_white.png')}
+                resizeMode={'contain'}
+                style={styles.selectImg}
+              />
+            </TouchableOpacity>
           )}
         </View>
       </TouchableHighlight>

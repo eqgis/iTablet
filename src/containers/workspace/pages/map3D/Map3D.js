@@ -37,7 +37,9 @@ import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import SurfaceView from '../../../../components/SurfaceView'
-import { tool3DModule, ToolbarModule } from '../../components/ToolBar/modules'
+import { tool3DModule } from '../../components/ToolBar/modules'
+import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
   props: {

@@ -4,6 +4,7 @@ import {
   OverlayAnalyst,
 } from 'imobile_for_reactnative'
 import { Toast } from '../../../utils'
+
 const METHOD_CLIP = 'clip'
 const METHOD_ERASE = 'erase'
 const METHOD_UNION = 'union'
@@ -47,17 +48,19 @@ async function analyst({
     await overlayParameter.setOperationRetainedFields(['ClassID'])
     await overlayParameter.setSourceRetainedFields(['Name'])
 
-    let datasource = await workspace.getDatasource(0)
-    let datasourceName = await datasource.getAlias()
+    const datasource = await workspace.getDatasource(0)
+    const datasourceName = await datasource.getAlias()
 
-    let dtname = await datasource.getAvailableDatasetName(method)
-    let datasetVectorInfo = await new DatasetVectorInfo().createObjByNameType(
+    const dtname = await datasource.getAvailableDatasetName(method)
+    const datasetVectorInfo = await new DatasetVectorInfo().createObjByNameType(
       dtname,
       dataset.type,
     )
-    let resultDataset = await datasource.createDatasetVector(datasetVectorInfo)
+    const resultDataset = await datasource.createDatasetVector(
+      datasetVectorInfo,
+    )
 
-    let overlay = new OverlayAnalyst()
+    const overlay = new OverlayAnalyst()
 
     let result = false
     switch (method) {
@@ -121,7 +124,7 @@ async function analyst({
     return {
       result,
       resultDatasetName: dtname,
-      resultLayerName: dtname + '@' + datasourceName,
+      resultLayerName: `${dtname}@${datasourceName}`,
     }
   } catch (e) {
     Toast.show('分析失败')

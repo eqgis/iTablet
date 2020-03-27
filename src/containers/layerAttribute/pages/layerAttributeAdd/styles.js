@@ -1,6 +1,7 @@
 import { StyleSheet, Platform } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { color, size } from '../../../../styles'
+
 export default StyleSheet.create({
   container: {
     // flex: 1,

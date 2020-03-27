@@ -17,18 +17,19 @@ import {
 import { Toast } from '../../../utils'
 import { Const } from '../../../constants'
 
-let point2Ds = [], // 目标坐标数组
-  centerPoints = [] // 配送中心坐标数组
-let analystSetting, transportationAnalyst
-let mMapControl,
-  mMap,
-  mTrackingLayer,
-  _setLoading = () => {}
+let point2Ds = [] // 目标坐标数组
+let centerPoints = [] // 配送中心坐标数组
+let analystSetting
+let transportationAnalyst
+let mMapControl
+let mMap
+let mTrackingLayer
+let _setLoading = () => {}
 let longPressEnable = true
-let taType = '', // 设置旅行商/最佳路径 类型
-  addPointType = '' // 设置旅行商 配送中心，目的地 标示   center | dist
-const CENTER = 'center', // 配送中心
-  DIST = 'dist' // 目的地
+let taType = '' // 设置旅行商/最佳路径 类型
+let addPointType = '' // 设置旅行商 配送中心，目的地 标示   center | dist
+const CENTER = 'center' // 配送中心
+const DIST = 'dist' // 目的地
 
 export function setCenter() {
   Toast.show('请添加配送中心')
@@ -86,14 +87,12 @@ function check(checkNodes = true) {
   if (!analystSetting || !mMap || !mTrackingLayer) {
     Toast.show('请加载分析图层')
     return false
-  } else if (
-    addPointType === CENTER &&
-    centerPoints.length === 0 &&
-    checkNodes
-  ) {
+  }
+  if (addPointType === CENTER && centerPoints.length === 0 && checkNodes) {
     Toast.show('请添加配送中心')
     return false
-  } else if (point2Ds.length === 0 && checkNodes) {
+  }
+  if (point2Ds.length === 0 && checkNodes) {
     Toast.show('请添加目的地')
     return false
   }
@@ -110,7 +109,7 @@ async function longPressHandler(event) {
       Toast.show('请选择添加目标类型')
       return
     }
-    let pt = await new Point().createObj(event.x, event.y)
+    const pt = await new Point().createObj(event.x, event.y)
     let pt2D = await mMap.pixelToMap(pt)
     // let callOut = await new Callout().createObj(mMapView)
     // callOut.setStyle()
@@ -119,18 +118,18 @@ async function longPressHandler(event) {
     // await callOut.setLocation(pt2D.x, pt2D.y)
 
     // 判断是否是经纬坐标
-    let prjCoordSys = await mMap.getPrjCoordSys()
-    let isLongitudeLatitude =
+    const prjCoordSys = await mMap.getPrjCoordSys()
+    const isLongitudeLatitude =
       (await prjCoordSys.getType()) ===
       PrjCoordSysType.PCS_EARTH_LONGITUDE_LATITUDE
     if (!isLongitudeLatitude) {
-      let points = []
+      const points = []
       points.push(pt2D)
 
-      let desPrjCoorSys = await new PrjCoordSys().createObj()
+      const desPrjCoorSys = await new PrjCoordSys().createObj()
       await desPrjCoorSys.setType(PrjCoordSysType.PCS_EARTH_LONGITUDE_LATITUDE)
 
-      let coordSysTransParameter = await new CoordSysTransParameter().createObj()
+      const coordSysTransParameter = await new CoordSysTransParameter().createObj()
       await CoordSysTranslator.convertByPoint2Ds(
         points,
         prjCoordSys,
@@ -142,7 +141,7 @@ async function longPressHandler(event) {
       pt2D = points[0]
     }
 
-    let geoPoint = await new GeoPoint().createObj(pt2D.x, pt2D.y)
+    const geoPoint = await new GeoPoint().createObj(pt2D.x, pt2D.y)
 
     // if (!endPointEnable) {
     //   // await callOut.setContentView(Callout.Image.STARTPOINT)
@@ -234,7 +233,7 @@ async function loadRouteModel(mapView, mapControl, datasetVector) {
     transportationAnalyst = await new TransportationAnalyst().createObj()
     await transportationAnalyst.setAnalystSetting(analystSetting)
 
-    let result = await transportationAnalyst.load()
+    const result = await transportationAnalyst.load()
     return result
   } catch (e) {
     // Toast.show('加载失败')
@@ -258,7 +257,7 @@ async function loadTSPPathModel(mapView, mapControl, datasetVector) {
     await analystSetting.setNetworkDataset(datasetVector)
     transportationAnalyst = await new TransportationAnalyst().createObj()
     await transportationAnalyst.setAnalystSetting(analystSetting)
-    let result = await transportationAnalyst.load()
+    const result = await transportationAnalyst.load()
     return result
   } catch (e) {
     // Toast.show('加载失败' + e)
@@ -268,7 +267,7 @@ async function loadTSPPathModel(mapView, mapControl, datasetVector) {
 
 async function addGestureDetector() {
   await mMapControl.setGestureDetector({
-    longPressHandler: longPressHandler,
+    longPressHandler,
     // scrollHandler: scrollHandler,
   })
 }
@@ -282,12 +281,12 @@ async function display(result) {
     if (!result) return
     mTrackingLayer && (await mTrackingLayer.clear())
 
-    let routes = result.routes
+    const { routes } = result
     if (!routes || routes.length <= 0) {
       return
     }
     for (let i = 0; i < routes.length; i++) {
-      let style = await getGeoLineStyle(1, 255, 80, 0)
+      const style = await getGeoLineStyle(1, 255, 80, 0)
       await routes[i].setStyle(style)
       mTrackingLayer && (await mTrackingLayer.add(routes[i], 'result'))
       // await mTrackingLayer.add(routes[i], routes[i]._SMGeometryId)
@@ -308,9 +307,9 @@ async function findPath() {
     addPointType = DIST
     if (!check()) return
     _setLoading && _setLoading(true, '分析中')
-    let parameter = await new TransportationAnalystParameter().createObj()
+    const parameter = await new TransportationAnalystParameter().createObj()
     await parameter.setWeightName('length')
-    //设置最佳路径分析的返回对象
+    // 设置最佳路径分析的返回对象
 
     await parameter.setPoints(point2Ds)
     await parameter.setNodesReturn(true)
@@ -318,7 +317,7 @@ async function findPath() {
     await parameter.setPathGuidesReturn(true)
     await parameter.setRoutesReturn(true)
 
-    let result = await transportationAnalyst.findPath(parameter, false)
+    const result = await transportationAnalyst.findPath(parameter, false)
     this.display(result)
   } catch (e) {
     _setLoading(false)
@@ -331,7 +330,7 @@ async function findMTSPPath() {
     addPointType = CENTER
     if (!check()) return
     _setLoading(true, '分析中')
-    let parameter = await new TransportationAnalystParameter().createObj()
+    const parameter = await new TransportationAnalystParameter().createObj()
 
     await parameter.setPoints(point2Ds)
     await parameter.setRoutesReturn(true)
@@ -339,7 +338,7 @@ async function findMTSPPath() {
     await parameter.setStopIndexesReturn(true)
     await parameter.setWeightName('length')
 
-    let result = await transportationAnalyst.findMTSPPathByPoint2Ds(
+    const result = await transportationAnalyst.findMTSPPathByPoint2Ds(
       parameter,
       centerPoints,
       false,
@@ -362,8 +361,8 @@ async function findMTSPPath() {
  */
 async function getGeoStyle(w, h, r, g, b) {
   try {
-    let geoStyle = await new GeoStyle().createObj()
-    let size2D = await new Size2D().createObj(w, h)
+    const geoStyle = await new GeoStyle().createObj()
+    const size2D = await new Size2D().createObj(w, h)
     await geoStyle.setMarkerSize(size2D)
     await geoStyle.setLineColor(r, g, b)
 
@@ -375,7 +374,7 @@ async function getGeoStyle(w, h, r, g, b) {
 
 async function getGeoLineStyle(w, r, g, b) {
   try {
-    let geoStyle = await new GeoStyle().createObj()
+    const geoStyle = await new GeoStyle().createObj()
     await geoStyle.setLineWidth(w)
     await geoStyle.setLineColor(r, g, b)
 

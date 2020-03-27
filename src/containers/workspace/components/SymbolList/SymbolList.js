@@ -10,7 +10,7 @@ import {
 } from 'imobile_for_reactnative'
 import constants from '../../constants'
 import { ConstToolType } from '../../../../constants'
-import { ToolbarModule } from '../ToolBar/modules'
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
 export default class SymbolList extends React.Component {
   props: {

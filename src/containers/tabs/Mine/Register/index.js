@@ -1,5 +1,5 @@
-import Register from './Register'
 import { connect } from 'react-redux'
+import Register from './Register'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

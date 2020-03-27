@@ -16,7 +16,7 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeXXl,
   },
 
-  /** Check按钮 **/
+  /** Check按钮 * */
   select: {
     flex: 1,
     alignItems: 'center',
@@ -41,7 +41,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  /** 顶部视图 **/
+  /** 顶部视图 * */
   topView: {
     flexDirection: 'row',
     height: ROW_HEIGHT,
@@ -81,7 +81,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  /** 底部视图 **/
+  /** 底部视图 * */
   bottomView: {
     // flex: 1,
     // height: '100%',
@@ -163,7 +163,7 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeMd,
   },
 
-  /** 列表item **/
+  /** 列表item * */
   content: {
     fontSize: size.fontSize.fontSizeMd,
     color: color.fontColorBlack,
@@ -175,7 +175,7 @@ export default StyleSheet.create({
     height: scaleSize(30),
   },
 
-  /** 选择数据源弹窗 **/
+  /** 选择数据源弹窗 * */
   popView: {
     backgroundColor: color.bgW,
   },
@@ -229,7 +229,7 @@ export default StyleSheet.create({
     borderBottomColor: color.fontColorBlack,
   },
 
-  /** 设置 **/
+  /** 设置 * */
   settingTopView: {
     flexDirection: 'row',
     height: ROW_HEIGHT,
@@ -264,7 +264,7 @@ export default StyleSheet.create({
     // width: scaleSize(120),
   },
 
-  /** 选择数据源page **/
+  /** 选择数据源page * */
   dsListView: {
     flex: 1,
     backgroundColor: color.bgW,

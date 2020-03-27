@@ -1,6 +1,6 @@
-//我的、发现
+// 我的、发现
 const Profile = {
-  //我的  主页ポリゴン
+  // 我的  主页ポリゴン
   LOGIN_NOW: 'ログイン',
   IMPORT: 'インポート',
   DATA: 'データ',
@@ -18,7 +18,7 @@ const Profile = {
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',
 
-  //我的——登录
+  // 我的——登录
   LOGIN: 'ログイン',
   LOGIN_TIMEOUT: 'ログインタイムアウト、後で再度試してださい。',
   LOGIN_CURRENT: '現在ユーザーはログインしました。',
@@ -56,19 +56,19 @@ const Profile = {
   SWITCHING: '切替中...',
   SWITCH_FAIL: '切替に失敗しました。当ユーザーを再度ログインしてください。',
 
-  //マップサービスアドレス
+  // マップサービスアドレス
   SERVICE_ADDRESS: 'サービスアドレス',
   MAP_NAME: 'マップ名',
   ENTER_SERVICE_ADDRESS: 'サービスアドレスを入力してください',
   SAVE: '保存',
 
-  //我的サービス
+  // 我的サービス
   SERVICE: 'サービス',
   MY_SERVICE: 'サービス',
   PRIVATE_SERVICE: 'プライベートサービス',
   PUBLIC_SERVICE: 'パブリックサービス',
 
-  //个人主页
+  // 个人主页
   MY_ACCOUNT: '個人ホームページ',
   PROFILE_PHOTO: 'プロフィール写真',
   USERNAME: 'ユーザー名',
@@ -84,7 +84,7 @@ const Profile = {
   SELECT_ALL: 'すべて選択',
   DESELECT_ALL: '選択の反転',
 
-  //データ削除エクスポート
+  // データ削除エクスポート
   SHARE: 'シェア',
   PATH: 'パス',
 
@@ -126,7 +126,7 @@ const Profile = {
 
   GET_DATA_FAILED: 'データの取得に失敗しました',
 
-  //关于
+  // 关于
   ABOUT: 'About',
   SERVICE_HOTLINE: 'サポートサービス',
   SALES_CONSULTATION: 'お問い合わせ',
@@ -140,7 +140,7 @@ const Profile = {
   MAP_3D: '3Dシーン',
   BROWSE_MAP: 'マップの表示',
 
-  //作成データセット
+  // 作成データセット
   PLEASE_ADD_DATASET: 'データセットを追加してください',
   ADD_DATASET: 'データセットの追加',
   ENTER_DATASET_NAME: 'データセット名を入力してください',
@@ -154,7 +154,7 @@ const Profile = {
   CLEAR: 'クリア',
   CREATE: '作成',
 
-  //作成データソース
+  // 作成データソース
   NEW_DATASOURCE: '新規データソース',
   SET_DATASOURCE_NAME: 'データソース名の設定',
   ENTER_DATASOURCE_NAME: 'データソース名の入力',
@@ -164,11 +164,11 @@ const Profile = {
   DATASET_EXPORT_NOT_SUPPORTED:
     '当タイプのデータセットのエクスポートをサポートしません',
 
-  //検索
+  // 検索
   SEARCH: '検索',
   NO_SEARCH_RESULT: '関連データを検索しません',
 
-  //設定
+  // 設定
   STATUSBAR_HIDE: 'ステータスバーの非表示',
   SETTING_LICENSE: 'ライセンス',
   SETTING_ABOUT_ITABLET: 'iTabletについて',
@@ -181,7 +181,7 @@ const Profile = {
   SETTING_LOCATION_DEVICE: 'ロケーション デバイス',
   SETTING_LOCATION_LOCAL: 'このデバイス',
 
-  //ライセンス
+  // ライセンス
   LICENSE_CURRENT: '現在ライセンス',
   LICENSE_TYPE: 'ライセンスタイプ',
   LICENSE_TRIAL: 'トライアルライセンス',
@@ -228,11 +228,11 @@ const Profile = {
   LICENSE_CLOUD: 'クラウド　ライセンス',
   LICENSE_EDITION: 'ライセンス　エディション',
   LICENSE_EDITION_CURRENT: 'カレント　ライセンス　エディション',
-  //itablet许可版本
+  // itablet许可版本
   LICENSE_EDITION_STANDARD: 'スタンダド　エディション',
   LICENSE_EDITION_PROFESSIONAL: 'プロフェッショナル　エディション',
   LICENSE_EDITION_ADVANCED: 'アドバンス　エディション',
-  //imobile许可模块
+  // imobile许可模块
   Core_Dev: 'コア開発モジュール',
   Core_Runtime: 'コアランタイムモジュール',
   Navigation_Dev: '通常ナビ開発モジュール',
@@ -251,17 +251,18 @@ const Profile = {
   Realspace_Analyst_Runtime: '3D解析ランタイムモジュール',
   Realspace_Effect_Dev: '3D特殊効果開発モジュール',
   Realspace_Effect_Runtime: '3D特殊効果ランタイムモジュール',
-  //itablet许可模块
+  // itablet许可模块
   ITABLET_ARMAP: 'ARマップ',
   ITABLET_NAVIGATIONMAP: 'ナビマップ',
   ITABLET_DATAANALYSIS: 'データ解析',
   ITABLET_PLOTTING: 'アニメシンボル',
 
-  //意见反馈
+  // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: '機能異常:機能障害や使用不可',
   SUGGESTION_PRODUCT_ADVICE: '制品提案:使用するのが嫌で、私は提案があります',
   SUGGESTION_OTHER_PROBLEMS: 'その他の問題',
-  SUGGESTION_SELECT_PROBLEMS: 'あなたがフィードバックしたい問題点を選んでください',
+  SUGGESTION_SELECT_PROBLEMS:
+    'あなたがフィードバックしたい問題点を選んでください',
   SUGGESTION_PROBLEMS_DETAIL: '詳しい問題や意見を補充してください',
   SUGGESTION_PROBLEMS_DESCRIPTION: '問題記述を入力してください',
   SUGGESTION_CONTACT_WAY: '連絡先',
@@ -270,25 +271,25 @@ const Profile = {
   SUGGESTION_SUBMIT_SUCCEED: '提出成功',
   SUGGESTION_SUBMIT_FAILED: '提出失敗',
 
-  //ar地图校准
-  MAP_AR_DATUM_LONGITUDE:'経度',
-  MAP_AR_DATUM_LATITUDE:'緯度',
-  MAP_AR_DATUM_ENTER_CURRENT_POSITION:'現在位置座標を入力してください',
-  MAP_AR_DATUM_AUTO_LOCATION:'自動測位',
-  MAP_AR_DATUM_MAP_SELECT_POINT:'地図選点',
-  MAP_AR_DATUM_SURE:'確定',
-  MAP_AR_DATUM_AUTO_LOCATIONING:'位置に',
-  MAP_AR_DATUM_POSITION:'基点座標',
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED:'自動測位に成功',
-  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED:'マップ選択に成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:'電話を南に向けてください',
-  MAP_AR_DATUM_SETTING:'設定する',
+  // ar地图校准
+  MAP_AR_DATUM_LONGITUDE: '経度',
+  MAP_AR_DATUM_LATITUDE: '緯度',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION: '現在位置座標を入力してください',
+  MAP_AR_DATUM_AUTO_LOCATION: '自動測位',
+  MAP_AR_DATUM_MAP_SELECT_POINT: '地図選点',
+  MAP_AR_DATUM_SURE: '確定',
+  MAP_AR_DATUM_AUTO_LOCATIONING: '位置に',
+  MAP_AR_DATUM_POSITION: '基点座標',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自動測位に成功',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'マップ選択に成功',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '電話を南に向けてください',
+  MAP_AR_DATUM_SETTING: '設定する',
 
-  //ar地图
-  COLLECT_SCENE_RENAME:'名前を変更',
-  COLLECT_SCENE_RENAME_SUCCEED:'名前を変更しました',
-  COLLECT_SCENE_ADD_REMARK:'メモを追加',
-  COLLECT_SCENE_ADD_REMARK_SUCCEED:'メモを追加しました',
+  // ar地图
+  COLLECT_SCENE_RENAME: '名前を変更',
+  COLLECT_SCENE_RENAME_SUCCEED: '名前を変更しました',
+  COLLECT_SCENE_ADD_REMARK: 'メモを追加',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'メモを追加しました',
 }
 
 export { Profile }

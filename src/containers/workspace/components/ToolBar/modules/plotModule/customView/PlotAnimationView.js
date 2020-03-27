@@ -8,13 +8,12 @@ import {
   Image,
   Text,
 } from 'react-native'
-import { ConstToolType, TouchType } from '../../../../constants'
-import { TableList } from '../../../../components'
-import { color } from '../../../../styles'
-import { scaleSize, setSpText } from '../../../../utils'
-import { getLanguage } from '../../../../language/index'
-// import { getPublicAssets } from '../../../../assets'
-import { getThemeAssets } from '../../../../assets'
+import { ConstToolType, TouchType } from '../../../../../../../constants'
+import { TableList } from '../../../../../../../components'
+import { color } from '../../../../../../../styles'
+import { scaleSize, setSpText } from '../../../../../../../utils'
+import { getLanguage } from '../../../../../../../language'
+import { getThemeAssets } from '../../../../../../../assets'
 // import { TextInput } from 'react-native-gesture-handler';
 import { SMap, Action } from 'imobile_for_reactnative'
 
@@ -34,8 +33,6 @@ var AnimationMode = {
 }
 export default class PlotAnimationView extends React.Component {
   props: {
-    setCurrentSymbol?: () => {},
-    layerData: Object,
     layerName: string,
     geoId: number,
     device: Object,
@@ -276,7 +273,7 @@ export default class PlotAnimationView extends React.Component {
               onPress={this.subStartTime}
             >
               <Image
-                source={require('../../../../assets/publicTheme/plot/plot_reduce.png')}
+                source={require('../../../../../../../assets/publicTheme/plot/plot_reduce.png')}
                 style={styles.tableItemImg}
               />
             </TouchableOpacity>
@@ -295,7 +292,7 @@ export default class PlotAnimationView extends React.Component {
               onPress={this.addStartTime}
             >
               <Image
-                source={require('../../../../assets/publicTheme/plot/plot_add.png')}
+                source={require('../../../../../../../assets/publicTheme/plot/plot_add.png')}
                 style={styles.tableItemImg}
               />
             </TouchableOpacity>
@@ -316,7 +313,7 @@ export default class PlotAnimationView extends React.Component {
               onPress={this.subDurationTime}
             >
               <Image
-                source={require('../../../../assets/publicTheme/plot/plot_reduce.png')}
+                source={require('../../../../../../../assets/publicTheme/plot/plot_reduce.png')}
                 style={styles.tableItemImg}
               />
             </TouchableOpacity>
@@ -335,7 +332,7 @@ export default class PlotAnimationView extends React.Component {
               onPress={this.addDurationTime}
             >
               <Image
-                source={require('../../../../assets/publicTheme/plot/plot_add.png')}
+                source={require('../../../../../../../assets/publicTheme/plot/plot_add.png')}
                 style={styles.tableItemImg}
               />
             </TouchableOpacity>
@@ -362,7 +359,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.START_FOLLOW_LAST
-                    ? require('../../../../assets/mapTools/icon_submit_black.png')
+                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
                     : null
                 }
                 style={styles.startModeImage}
@@ -383,7 +380,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.POINT_START
-                    ? require('../../../../assets/mapTools/icon_submit_black.png')
+                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
                     : null
                 }
                 style={styles.startModeImage}
@@ -404,7 +401,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.START_TOGETHER_LAST
-                    ? require('../../../../assets/mapTools/icon_submit_black.png')
+                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
                     : null
                 }
                 style={styles.startModeImage}
@@ -431,7 +428,7 @@ export default class PlotAnimationView extends React.Component {
               </Text>
               <View style={styles.startTimeView}>
                 <Image
-                  source={require('../../../../assets/Mine/mine_my_arrow.png')}
+                  source={require('../../../../../../../assets/Mine/mine_my_arrow.png')}
                   style={styles.startModeImage}
                 />
               </View>
@@ -444,7 +441,7 @@ export default class PlotAnimationView extends React.Component {
           <TouchableOpacity onPress={this.saveAndContinue}>
             <View style={styles.saveAndContinueView2}>
               <Image
-                source={require('../../../../assets/publicTheme/plot/plot_add.png')}
+                source={require('../../../../../../../assets/publicTheme/plot/plot_add.png')}
                 style={styles.saveAndContinueImage}
               />
               <Text style={styles.saveAndContinueText}>

@@ -1,6 +1,3 @@
-import NavigationService from '../containers/NavigationService'
-import { ConstOnline, AudioKeywords } from '../constants'
-import { Toast, dataUtil } from '../utils'
 import {
   Action,
   Point2D,
@@ -12,11 +9,15 @@ import {
   TextStyle,
   TextAlignment,
 } from 'imobile_for_reactnative'
+import NavigationService from '../containers/NavigationService'
+import { ConstOnline, AudioKeywords } from '../constants'
+import { Toast, dataUtil } from '.'
+
 const { keywords, chineseNumber, themeType } = AudioKeywords
-let workspace,
-  mapControl,
-  map,
-  nav = {}
+let workspace
+let mapControl
+let map
+let nav = {}
 
 /**
  * 地图相关必须设置
@@ -39,10 +40,10 @@ function setConfig(data) {
 
 function analyst(content = '', obj = {}) {
   if (!content) return
-  let value = '',
-    index = -1,
-    type = ''
-  let values = Object.values(keywords)
+  let value = ''
+  let index = -1
+  let type = ''
+  const values = Object.values(keywords)
   for (let i = 0; i < values.length; i++) {
     if (content.indexOf(values[i]) >= 0) {
       value = values[i]
@@ -80,10 +81,10 @@ function analyst(content = '', obj = {}) {
 
 function getIndex(content) {
   let num = -1
-  let cNum = '',
-    numStr = ''
-  let startKey = '第'
-  let startKeyIndex = content.indexOf(startKey)
+  let cNum = ''
+  let numStr = ''
+  const startKey = '第'
+  const startKeyIndex = content.indexOf(startKey)
   if (startKeyIndex < 0) return -1
   for (let i = startKeyIndex + 1; i < content.length; i++) {
     if (!isNaN(parseInt(content[i]))) {
@@ -104,7 +105,7 @@ function getIndex(content) {
 }
 
 function getThmeType(content) {
-  let values = Object.values(themeType)
+  const values = Object.values(themeType)
   for (let i = 0; i < values.length; i++) {
     if (content.indexOf(values[i]) >= 0) {
       return values[i]
@@ -118,9 +119,9 @@ function getThmeType(content) {
  */
 function goToMapView(type) {
   (async function() {
-    let key = '',
-      exist = false
-    let routes = nav.routes
+    let key = ''
+    let exist = false
+    const { routes } = nav
     if (routes && routes.length > 0) {
       for (let index = 0; index < routes.length; index++) {
         if (routes[index].routeName === 'MapView') {
@@ -138,34 +139,34 @@ function goToMapView(type) {
 
       await map.setScale(0.0001)
       navigator.geolocation.getCurrentPosition(position => {
-        let lat = position.coords.latitude
-        let lon = position.coords.longitude
+        const lat = position.coords.latitude
+        const lon = position.coords.longitude
         ;(async () => {
-          let centerPoint = await point2dModule.createObj(lon, lat)
+          const centerPoint = await point2dModule.createObj(lon, lat)
           await map.setCenter(centerPoint)
           await map.viewEntire()
           await mapControl.setAction(Action.PAN)
           await map.refresh()
           key && NavigationService.goBack(key)
-        }).bind(this)()
+        })()
       })
-      let DSParams = ConstOnline[type].DSParams
-      let labelDSParams = ConstOnline[type].labelDSParams
-      let layerIndex = ConstOnline[type].layerIndex
+      const { DSParams } = ConstOnline[type]
+      const { labelDSParams } = ConstOnline[type]
+      const { layerIndex } = ConstOnline[type]
 
-      let dsBaseMap = await workspace.openDatasource(DSParams)
+      const dsBaseMap = await workspace.openDatasource(DSParams)
 
-      let dataset = await dsBaseMap.getDataset(layerIndex)
+      const dataset = await dsBaseMap.getDataset(layerIndex)
       await map.addLayer(dataset, true)
 
       if (ConstOnline[type].labelDSParams) {
-        let dsLabel = await workspace.openDatasource(labelDSParams)
+        const dsLabel = await workspace.openDatasource(labelDSParams)
         await map.addLayer(await dsLabel.getDataset(layerIndex), true)
       }
     } else {
       NavigationService.navigate('MapView', { wsData: ConstOnline[type] })
     }
-  }.bind(this)())
+  })()
 }
 
 /**
@@ -185,8 +186,8 @@ function openThemeByLayer(data) {
   GLOBAL.AudioDialog.setVisible(false)
   NavigationService.navigate('ThemeEntry', {
     layer: data.layer,
-    map: map,
-    mapControl: mapControl,
+    map,
+    mapControl,
   })
 }
 
@@ -201,7 +202,7 @@ function setThemeByIndex(index, type = '') {
     return
   }
   (async function() {
-    let layer = await map.getLayer(index)
+    const layer = await map.getLayer(index)
     switch (type) {
       case themeType.UNIQUE:
         setUniqueTheme(layer)
@@ -216,14 +217,14 @@ function setThemeByIndex(index, type = '') {
         // 若不指定专题图类型，则跳转到选择专题图类型界面
         NavigationService.navigate('ThemeEntry', {
           // title: Const.UNIQUE,
-          layer: layer,
-          map: map,
-          mapControl: mapControl,
+          layer,
+          map,
+          mapControl,
         })
         GLOBAL.AudioDialog.setVisible(false)
         break
     }
-  }.bind(this)())
+  })()
 }
 
 /**
@@ -233,9 +234,9 @@ function setThemeByIndex(index, type = '') {
 function setUniqueTheme(layer) {
   (async function() {
     try {
-      let dataset = await layer.getDataset()
-      let datasetVector = await dataset.toDatasetVector()
-      let themeUnique = await new ThemeUnique().makeDefault(
+      const dataset = await layer.getDataset()
+      const datasetVector = await dataset.toDatasetVector()
+      const themeUnique = await new ThemeUnique().makeDefault(
         datasetVector,
         'SmID',
         ColorGradientType.YELLOWRED,
@@ -247,7 +248,7 @@ function setUniqueTheme(layer) {
     } catch (e) {
       Toast.show('设置单值专题图失败')
     }
-  }.bind(this)())
+  })()
 }
 
 /**
@@ -257,9 +258,9 @@ function setUniqueTheme(layer) {
 function setRangeTheme(layer) {
   (async function() {
     try {
-      let dataset = await layer.getDataset()
-      let datasetVector = await dataset.toDatasetVector()
-      let themeRange = await new ThemeRange().makeDefault(
+      const dataset = await layer.getDataset()
+      const datasetVector = await dataset.toDatasetVector()
+      const themeRange = await new ThemeRange().makeDefault(
         datasetVector,
         'SmID',
         RangeMode.EQUALINTERVAL,
@@ -273,7 +274,7 @@ function setRangeTheme(layer) {
     } catch (e) {
       Toast.show('设置分段专题图失败')
     }
-  }.bind(this)())
+  })()
 }
 
 /**
@@ -283,9 +284,9 @@ function setRangeTheme(layer) {
 function setLabelTheme(layer) {
   (async function() {
     try {
-      let dataset = await layer.getDataset()
-      let themeLabel = await new ThemeLabel().createObj()
-      let textStyle = await new TextStyle().createObj()
+      const dataset = await layer.getDataset()
+      const themeLabel = await new ThemeLabel().createObj()
+      const textStyle = await new TextStyle().createObj()
       await textStyle.setForeColor(0, 255, 0, 1)
       await textStyle.setFontName('微软雅黑')
       await textStyle.setAlignment(TextAlignment.MIDDLECENTER)
@@ -297,7 +298,7 @@ function setLabelTheme(layer) {
     } catch (e) {
       Toast.show('设置标签专题图失败')
     }
-  }.bind(this)())
+  })()
 }
 
 export default {

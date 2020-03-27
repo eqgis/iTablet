@@ -74,19 +74,16 @@ export default class CollectSceneFormHistoryView extends React.Component {
     )
   }
 
-  componentDidMount = async () =>{
+  componentDidMount = async () => {
     //过滤掉标注和标绘匹配正则
     let checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/
     let customerUDBPath = await FileTools.appendingHomeDirectory(
       ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
     )
-    let customerUDBs = await FileTools.getPathListByFilter(
-      customerUDBPath,
-      {
-        extension: 'udb',
-        type: 'file',
-      },
-    )
+    let customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
+      extension: 'udb',
+      type: 'file',
+    })
     //过滤掉标注和标绘
     let filterUDBs = customerUDBs.filter(item => {
       item.name = dataUtil.getNameByURL(item.path)
@@ -100,19 +97,17 @@ export default class CollectSceneFormHistoryView extends React.Component {
       }
     })
 
-    let data =undefined
-    if(filterUDBs){
-      for(let i=0;i<filterUDBs.length;i++){
-        if(filterUDBs[i].name === this.state.collectData){
-          data=filterUDBs[i]
+    let data = undefined
+    if (filterUDBs) {
+      for (let i = 0; i < filterUDBs.length; i++) {
+        if (filterUDBs[i].name === this.state.collectData) {
+          data = filterUDBs[i]
           break
         }
       }
     }
     data && this.onChooseDataSource(data)
   }
-
-  
 
   getDatasource = async () => {
     if (!this.state.chooseDataSource) {
@@ -358,7 +353,11 @@ export default class CollectSceneFormHistoryView extends React.Component {
           <TouchableOpacity
             onPress={() => {
               // this.deleteHistory(item)
-              this.setState({ moreType: 'DELETE', index: item.index ,reName: item.name})
+              this.setState({
+                moreType: 'DELETE',
+                index: item.index,
+                reName: item.name,
+              })
               this.PopView.setVisible(true)
             }}
             style={styles.historyDelete}
@@ -391,7 +390,10 @@ export default class CollectSceneFormHistoryView extends React.Component {
       })
     }
     GLOBAL.newcollectData = item.name
-    AsyncStorage.setItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY, item.name)
+    AsyncStorage.setItem(
+      constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY,
+      item.name,
+    )
   }
 
   deleteHistory = async item => {
@@ -462,11 +464,15 @@ export default class CollectSceneFormHistoryView extends React.Component {
   }
 
   addRemark = async () => {
-    let description=await SCollectSceneFormView.getDescription(this.state.reName);
+    let description = await SCollectSceneFormView.getDescription(
+      this.state.reName,
+    )
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK,
+      headerTitle: getLanguage(global.language).Profile
+        .COLLECT_SCENE_ADD_REMARK,
       value: description,
-      placeholder: getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK,
+      placeholder: getLanguage(global.language).Profile
+        .COLLECT_SCENE_ADD_REMARK,
       type: 'name',
       cb: async value => {
         await SCollectSceneFormView.addDescription(this.state.reName, value)
@@ -647,44 +653,46 @@ export default class CollectSceneFormHistoryView extends React.Component {
       return (
         <View>
           <Button
-          style={styles.item}
-          titleStyle={styles.btnTitle}
-          title={getLanguage(global.language).Prompt.RENAME}
-          key={getLanguage(global.language).Prompt.RENAME}
-          onPress={() => {
-            this.rename()
-            this.PopView.setVisible(false)
-          }}
-          activeOpacity={0.5}
-        />
-        
-        {this._renderSeparatorLine()}
+            style={styles.item}
+            titleStyle={styles.btnTitle}
+            title={getLanguage(global.language).Prompt.RENAME}
+            key={getLanguage(global.language).Prompt.RENAME}
+            onPress={() => {
+              this.rename()
+              this.PopView.setVisible(false)
+            }}
+            activeOpacity={0.5}
+          />
 
-        <Button
-          style={styles.item}
-          titleStyle={styles.btnTitle}
-          title={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
-          key={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
-          onPress={() => {
-            this.addRemark()
-            this.PopView.setVisible(false)
-          }}
-          activeOpacity={0.5}
-        />
-        
-        {this._renderSeparatorLine()}
+          {this._renderSeparatorLine()}
 
-        <Button
-          style={styles.item}
-          titleStyle={styles.btnTitle}
-          title={getLanguage(global.language).Prompt.DELETE}
-          key={getLanguage(global.language).Prompt.DELETE}
-          onPress={() => {
-            this.deleteHistory(this.state.historyData[this.state.index])
-            this.PopView.setVisible(false)
-          }}
-          activeOpacity={0.5}
-        />
+          <Button
+            style={styles.item}
+            titleStyle={styles.btnTitle}
+            title={
+              getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK
+            }
+            key={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
+            onPress={() => {
+              this.addRemark()
+              this.PopView.setVisible(false)
+            }}
+            activeOpacity={0.5}
+          />
+
+          {this._renderSeparatorLine()}
+
+          <Button
+            style={styles.item}
+            titleStyle={styles.btnTitle}
+            title={getLanguage(global.language).Prompt.DELETE}
+            key={getLanguage(global.language).Prompt.DELETE}
+            onPress={() => {
+              this.deleteHistory(this.state.historyData[this.state.index])
+              this.PopView.setVisible(false)
+            }}
+            activeOpacity={0.5}
+          />
         </View>
       )
     } else {

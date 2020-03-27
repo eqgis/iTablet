@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { TouchableOpacity, Image } from 'react-native'
+import { SScene } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { Toast, scaleSize } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Fly3DAction from './Fly3DAction'
-import { SScene } from 'imobile_for_reactnative'
 
 async function getData(type, params) {
   if (params) {
@@ -25,7 +25,7 @@ async function getData(type, params) {
 
 async function getFlyList() {
   const params = ToolbarModule.getParams()
-  let buttons = []
+  const buttons = []
   let data = [
     {
       title: getLanguage(params.language).Map_Main_Menu.FLY_ROUTE,
@@ -33,15 +33,15 @@ async function getFlyList() {
     },
   ]
   try {
-    let flyData = await SScene.getFlyRouteNames()
+    const flyData = await SScene.getFlyRouteNames()
     flyData.forEach(
       item =>
         (item.image = require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png')),
     )
-    let buttons = []
+    const buttons = []
     buttons.push(
       <TouchableOpacity
-        key={'newButton'}
+        key="newButton"
         style={{
           height: scaleSize(80),
           width: scaleSize(80),
@@ -105,18 +105,18 @@ function getNewFly() {
     {
       key: 'startFly',
       title: getLanguage(global.language).Map_Main_Menu.FLY_ADD_STOPS,
-      //'添加站点',
+      // '添加站点',
       action: () => {
         try {
           SScene.saveCurrentRoutStop().then(result => {
             if (result) {
               Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
-              //'添加站点成功')
+              // '添加站点成功')
             }
           })
         } catch (error) {
           Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
-          //Toast.show('添加站点失败')
+          // Toast.show('添加站点失败')
         }
       },
       size: 'large',
@@ -126,7 +126,7 @@ function getNewFly() {
     {
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.FLY,
-      //'飞行',
+      // '飞行',
       action: () => {
         try {
           SScene.saveRoutStop()
@@ -142,7 +142,7 @@ function getNewFly() {
     {
       key: 'pause',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
-      //'暂停',
+      // '暂停',
       action: () => {
         try {
           SScene.pauseRoutStop()

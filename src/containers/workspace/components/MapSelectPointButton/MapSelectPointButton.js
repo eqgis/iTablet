@@ -139,21 +139,25 @@ export default class MapSelectPointButton extends React.Component {
       let currentDatasource = []
       //这个界面导航数据必定已选择，即使用户没有手动选择，上个界面路径分析也选择了
       //if(datasources.length > 0 || datasets.length > 0){
-      commonIndoorInfo = this.getSameInfoFromArray(commonIndoorInfo,datasources)
-      commonOutdoorInfo = this.getSameInfoFromArray(commonOutdoorInfo,datasets)
+      commonIndoorInfo = this.getSameInfoFromArray(
+        commonIndoorInfo,
+        datasources,
+      )
+      commonOutdoorInfo = this.getSameInfoFromArray(commonOutdoorInfo, datasets)
       let selectedDatasources = datasources
       let selectedDatasets = datasets
-      if(commonIndoorInfo.length > 0) {
+      if (commonIndoorInfo.length > 0) {
         currentDatasource = commonIndoorInfo
         currentDataset = []
-      }else if(commonOutdoorInfo.length > 0){
-        currentDataset  = commonOutdoorInfo[0]
+      } else if (commonOutdoorInfo.length > 0) {
+        currentDataset = commonOutdoorInfo[0]
         currentDatasource = []
-        if(datasources.length === 0){
+        if (datasources.length === 0) {
           startIndoorInfo = []
           endIndoorInfo = []
-        }else{
-          startIndoorInfo.length > 0 && currentDatasource.push(startIndoorInfo[0])
+        } else {
+          startIndoorInfo.length > 0 &&
+            currentDatasource.push(startIndoorInfo[0])
           endIndoorInfo.length > 0 && currentDatasource.push(endIndoorInfo[0])
         }
       }
@@ -251,7 +255,9 @@ export default class MapSelectPointButton extends React.Component {
                 true,
                 doorPoint.floorID,
               )
-              await SMap.startIndoorNavigation(startIndoorInfo[0].datasourceName)
+              await SMap.startIndoorNavigation(
+                startIndoorInfo[0].datasourceName,
+              )
               let rel = await SMap.beginIndoorNavigation()
               if (!rel) {
                 this.props.setLoading(false)

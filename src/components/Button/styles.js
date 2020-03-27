@@ -34,7 +34,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
 
-  /** RecordButton **/
+  /** RecordButton * */
   circleButton: {
     width: 80,
     height: 80,

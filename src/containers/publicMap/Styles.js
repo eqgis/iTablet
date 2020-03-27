@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native'
 import { color } from '../../styles'
+
 export const itemWidth = Dimensions.get('window').width
 export const itemHeight = 140
 export const imageWidth = 90
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: largeFontSize,
     fontWeight: 'bold',
     // color: 'white',
-    paddingLeft: paddingLeft,
+    paddingLeft,
     textAlign: 'left',
     flexWrap: 'wrap',
     marginRight: 100,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 20,
     flexDirection: 'row',
-    paddingLeft: paddingLeft,
+    paddingLeft,
     marginTop: 10,
     marginRight: 100,
   },

@@ -1,9 +1,9 @@
-import { Toast } from '../../../utils'
 import { SAnalyst } from 'imobile_for_reactnative'
+import { Toast } from '../../../utils'
 
 async function analyst(data) {
   try {
-    let { layer, bufferSetting, map } = data
+    const { layer, bufferSetting, map } = data
     if (!layer) {
       Toast.show('请选择分析对象')
       return
@@ -14,7 +14,7 @@ async function analyst(data) {
       return
     }
 
-    let params = {
+    const params = {
       parameter: {
         endType: bufferSetting.endType,
         leftDistance: bufferSetting.distance,
@@ -40,7 +40,7 @@ async function analyst(data) {
 function clear() {
   (async function() {
     await SAnalyst.clear()
-  }.bind(this)())
+  })()
 }
 
 export default {

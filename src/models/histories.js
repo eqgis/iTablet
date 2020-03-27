@@ -23,7 +23,7 @@ export const setMapSearchHistory = (
 }
 
 const initialState = fromJS({
-  //二维搜索历史
+  // 二维搜索历史
   mapSearchHistory: [],
 })
 
@@ -38,9 +38,8 @@ export default handleActions(
       }
       return state.setIn(['mapSearchHistory'], fromJS(data))
     },
-    [REHYDRATE]: (state, { payload }) => {
-      return ModelUtils.checkModel(state, payload && payload.histories)
-    },
+    [REHYDRATE]: (state, { payload }) =>
+      ModelUtils.checkModel(state, payload && payload.histories),
   },
   initialState,
 )

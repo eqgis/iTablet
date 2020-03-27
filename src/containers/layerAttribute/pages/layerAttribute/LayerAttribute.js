@@ -754,7 +754,11 @@ export default class LayerAttribute extends React.Component {
       [
         {
           layerPath: this.props.currentLayer.path,
-          ids: [this.state.currentFieldInfo[0].value],
+          ids: [
+            this.state.currentFieldInfo[0].name === 'SmID'
+              ? this.state.currentFieldInfo[0].value
+              : this.state.currentFieldInfo[1].value,
+          ],
           style: JSON.stringify(geoStyle),
         },
       ],
@@ -765,10 +769,10 @@ export default class LayerAttribute extends React.Component {
           hideMapController: true,
         })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.ATTRIBUTE_RELATE, {
-          isFullScreen: false,
-          height: 0,
-        })
+      GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE, {
+        isFullScreen: false,
+        height: 0,
+      })
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
       if (GLOBAL.Type === constants.MAP_AR && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
@@ -787,7 +791,7 @@ export default class LayerAttribute extends React.Component {
     // ]).then(data => {
     //   this.props.navigation && this.props.navigation.navigate('MapView')
     //   GLOBAL.toolBox &&
-    //     GLOBAL.toolBox.setVisible(true, ConstToolType.ATTRIBUTE_RELATE, {
+    //     GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE, {
     //       isFullScreen: false,
     //       height: 0,
     //     })

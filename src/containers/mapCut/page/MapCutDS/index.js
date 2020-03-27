@@ -1,5 +1,5 @@
-import MapCutDS from './MapCutDS'
 import { connect } from 'react-redux'
+import MapCutDS from './MapCutDS'
 import { getLayers } from '../../../../models/layers'
 
 const mapStateToProps = state => ({

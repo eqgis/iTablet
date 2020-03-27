@@ -19,41 +19,42 @@ const range_mode_custom = require('./range_mode_customer.png')
 const tab_layer = require('./tab-layer.png')
 const scene_tool_clip_in = require('./scene_tool_clip_in.png')
 const scene_tool_clip_out = require('./scene_tool_clip_out.png')
+
 export default {
   tools_rectangle_cut,
-  /*多媒体采集*/
+  /* 多媒体采集 */
   tools_camera,
   tools_camera_disable,
-  /*图例开关*/
+  /* 图例开关 */
   tools_legend_on,
   tools_legend_off,
   tour,
-  /*修改专题图*/
+  /* 修改专题图 */
   tools_modify_thematic_map,
-  /*新建专题图*/
+  /* 新建专题图 */
   tools_new_thematic_map,
-  /*可见比例尺范围*/
+  /* 可见比例尺范围 */
   tools_visible_scale_range,
-  /*设置为当前图层*/
+  /* 设置为当前图层 */
   tools_set_current_layer,
-  /*重命名图层*/
+  /* 重命名图层 */
   tools_layer_rename,
-  /*图层信息*/
+  /* 图层信息 */
   tools_layer_info,
-  /*复制图层*/
+  /* 复制图层 */
   tools_layer_copy,
-  /*粘贴图层*/
+  /* 粘贴图层 */
   tools_layer_paste,
-  /*移除图层*/
+  /* 移除图层 */
   tools_layer_delete,
-  //三维box裁剪专用箭头
+  // 三维box裁剪专用箭头
   icon_arrow_up,
   icon_arrow_down,
-  //分段专题图自定义分段
+  // 分段专题图自定义分段
   range_mode_custom,
-  //三维box裁剪图层
+  // 三维box裁剪图层
   tab_layer,
-  /*三维裁剪区域内外*/
+  /* 三维裁剪区域内外 */
   scene_tool_clip_in,
   scene_tool_clip_out,
 }

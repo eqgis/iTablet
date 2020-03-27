@@ -711,7 +711,8 @@ class AppRoot extends Component {
   applyTrialLicense =async () => {
 
     GLOBAL.LicenseValidDialog.setDialogVisible(false)
-    if(Platform.OS === 'ios'){
+    //if(Platform.OS === 'ios')
+    {
       SMap.applyTrialLicense().then(async value => {
         if(value){
           Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')

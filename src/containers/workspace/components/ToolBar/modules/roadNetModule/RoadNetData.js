@@ -4,8 +4,9 @@
  * https://github.com/AsortKeven
  */
 import { SMap } from 'imobile_for_reactnative'
+
 async function getData() {
-  let data = await SMap.getAllNavData()
+  const data = await SMap.getAllNavData()
   return data
 }
 

@@ -2,11 +2,12 @@ import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { SMap, WorkspaceType } from 'imobile_for_reactnative'
-import { FileTools } from '../native'
-import { ConstInfo } from '../constants'
 import fs from 'react-native-fs'
 import xml2js from 'react-native-xml2js'
-let parser = new xml2js.Parser()
+import { FileTools } from '../native'
+import { ConstInfo } from '../constants'
+
+const parser = new xml2js.Parser()
 // Constants
 // --------------------------------------------------
 export const SET_TEMPLATE = 'SET_TEMPLATE'
@@ -104,15 +105,15 @@ export const importWorkspace = (params, cb = () => {}) => async (
   dispatch,
   getState,
 ) => {
-  let workspace = getState().map.toJS().workspace
+  const { workspace } = getState().map.toJS()
   let payload = {}
   let mapsInfo = []
   try {
     // 查看模板工作空间是否存在
     // 拷贝模板文件
-    let paths = params.path.split('/')
-    let fileName = paths[paths.length - 1]
-    let fileType = fileName
+    const paths = params.path.split('/')
+    const fileName = paths[paths.length - 1]
+    const fileType = fileName
       .split('.')[1]
       .toString()
       .toUpperCase()
@@ -164,10 +165,10 @@ export const importWorkspace = (params, cb = () => {}) => async (
   }
 }
 
-//导入标绘库
+// 导入标绘库
 // export const importPlotLib= async (params) => {
 export const importPlotLib = (params, cb = () => {}) => async () => {
-  let result = await SMap.importPlotLibData(params.path)
+  const result = await SMap.importPlotLibData(params.path)
   cb && cb({ result })
   return { result }
 }
@@ -177,7 +178,7 @@ export const importTemplate = (params, cb = () => {}) => async dispatch => {
   // 关闭所有地图
   await SMap.closeMap()
   // 导入工作空间
-  let result = await SMap.importWorkspace(params)
+  const result = await SMap.importWorkspace(params)
   // // 默认打开第一幅地图
   // let mapList = (await SMap.getMaps(0)) || []
   // mapList.length > 0 && (await SMap.openMap(mapList.length - 1))
@@ -187,7 +188,7 @@ export const importTemplate = (params, cb = () => {}) => async dispatch => {
   //   templateInfo: params,
   //   mapInfo,
   // }
-  let payload = params
+  const payload = params
   await dispatch({
     type: SET_TEMPLATE,
     payload: payload || {},
@@ -203,7 +204,6 @@ export const setTemplate = (params, cb = () => {}) => async dispatch => {
     payload: params || {},
   })
   cb && cb()
-  return
 }
 
 // 设置当前选中的模板符号
@@ -213,8 +213,8 @@ export const setCurrentTemplateInfo = (
 ) => async dispatch => {
   let data = {}
   if (params && params.field) {
-    let tempInfo = params.field,
-      fieldInfo = []
+    const tempInfo = params.field
+    const fieldInfo = []
     tempInfo.forEach(item => {
       fieldInfo.push(item.$)
     })
@@ -230,15 +230,14 @@ export const setCurrentTemplateInfo = (
     payload: data || {},
   })
   cb && cb(params)
-  return
 }
 
 // 设置当前选中的模板符号
 export const setCurrentPlotInfo = (params, cb = () => {}) => async dispatch => {
   let data = {}
   if (params && params.field) {
-    let tempInfo = params.field,
-      fieldInfo = []
+    const tempInfo = params.field
+    const fieldInfo = []
     tempInfo.forEach(item => {
       fieldInfo.push(item.$)
     })
@@ -254,17 +253,16 @@ export const setCurrentPlotInfo = (params, cb = () => {}) => async dispatch => {
     payload: data || {},
   })
   cb && cb(params)
-  return
 }
 export const getPlotLibs = async (path, dispatch) => {
   try {
-    let data = []
-    let plotLibPaths = await FileTools.getPathList(path)
+    const data = []
+    const plotLibPaths = await FileTools.getPathList(path)
 
     if (plotLibPaths && plotLibPaths.length > 0) {
       plotLibPaths.forEach(item => {
         if (item.isDirectory) {
-          let name = item.name
+          const { name } = item
           item.title = name
           item.name = name
           item.path = item.path
@@ -281,7 +279,6 @@ export const getPlotLibs = async (path, dispatch) => {
     // cb && cb()
   } catch (e) {
     // cb && cb()
-    return
   }
 }
 
@@ -290,12 +287,12 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
   getState,
 ) => {
   try {
-    let templateData = getState().template.toJS()
-    let template = templateData.template
-    let path = (params && params.path) || template.path
-    let isFirst = params && params.isFirst
-    let newName = params && params.newName
-    let isDefaultNew = params.hasOwnProperty('newName')
+    const templateData = getState().template.toJS()
+    const { template } = templateData
+    const path = (params && params.path) || template.path
+    const isFirst = params && params.isFirst
+    const newName = params && params.newName
+    const isDefaultNew = params.hasOwnProperty('newName')
     // if (
     //   path === templateData.template.path &&
     //   templateData.template.symbols.length > 0
@@ -303,30 +300,30 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
     //   cb && cb(params)
     //   return
     // }
-    let plotLibPath = path + '/Symbol'
-    let plotIconPath = path + '/SymbolIcon'
+    const plotLibPath = `${path}/Symbol`
+    const plotIconPath = `${path}/SymbolIcon`
 
-    let plotLibIds = []
-    let plotlibIdAndNameArr = []
+    const plotLibIds = []
+    const plotlibIdAndNameArr = []
 
     if (isFirst) {
-      let libPath = path.substring(0, path.lastIndexOf('/'))
+      const libPath = path.substring(0, path.lastIndexOf('/'))
       await getPlotLibs(libPath, dispatch)
     }
 
     await fs.readDir(plotLibPath).then(async data => {
-      let plotLibPaths = []
+      const plotLibPaths = []
       for (let i = 0; i < data.length; i++) {
         plotLibPaths.push(data[i].path)
       }
       // await SMap.addCadLayer('PlotEdit')
-      let resultArr = await SMap.initPlotSymbolLibrary(
+      const resultArr = await SMap.initPlotSymbolLibrary(
         plotLibPaths,
         isFirst,
         newName,
         isDefaultNew,
       )
-      Object.keys(resultArr).forEach(function(key) {
+      Object.keys(resultArr).forEach(key => {
         plotLibIds.push(resultArr[key])
         plotlibIdAndNameArr.push([key, resultArr[key]])
       })
@@ -342,25 +339,24 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
       //   plotlibIdAndNameArr.push([plotLibName, plotLibIds[libIndex]])
       // }
       await fs.readDir(plotIconPath).then(async data => {
-        let rootFeature = []
-        data = data.filter(function(item) {
-          return item.isDirectory()
-        })
-        data.sort(function(a, b) {
+        const rootFeature = []
+        data = data.filter(item => item.isDirectory())
+        data.sort((a, b) => {
           if (a.name < b.name) {
             return -1
-          } else if (a.name > b.name) {
+          }
+          if (a.name > b.name) {
             return 1
           }
           return 0
         })
         for (let i = 0; i < data.length; i++) {
-          let subData = {}
-          let obj = {}
+          const subData = {}
+          const obj = {}
           obj.name = data[i].name
           obj.code = (i + 1).toString()
           obj.type = data[i].name
-          let getID = function(name) {
+          const getID = function(name) {
             let id
             for (
               let libIndex = 0;
@@ -378,27 +374,28 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
           if (lib === undefined) {
             continue
           }
-          let dealData = async function(path) {
-            let mList = []
+          const dealData = async function(path) {
+            const mList = []
             await fs.readDir(path).then(async children => {
-              children.sort(function(a, b) {
+              children.sort((a, b) => {
                 if (a.name < b.name) {
                   return -1
-                } else if (a.name > b.name) {
+                }
+                if (a.name > b.name) {
                   return 1
                 }
                 return 0
               })
               for (let j = 0; j < children.length; j++) {
-                let childData = {}
-                let obj1 = {}
+                const childData = {}
+                const obj1 = {}
                 obj1.name = children[j].name
                 // obj1.code = plotLibIds[i]
                 obj1.code = lib
                 obj1.type = children[j].type
                 obj1.path = children[j].path
-                let endWith = function(str, endStr) {
-                  var d = str.length - endStr.length
+                const endWith = function(str, endStr) {
+                  const d = str.length - endStr.length
                   return d >= 0 && str.lastIndexOf(endStr) == d
                 }
                 if (!endWith(children[j].name, '.png')) {
@@ -436,7 +433,6 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
     })
   } catch (e) {
     cb && cb(params)
-    return
   }
 }
 
@@ -446,9 +442,9 @@ export const getSymbolTemplates = (params, cb = () => {}) => async (
   getState,
 ) => {
   try {
-    let templateData = getState().template.toJS()
-    let template = templateData.template
-    let path = (params && params.path) || template.path
+    const templateData = getState().template.toJS()
+    const { template } = templateData
+    const path = (params && params.path) || template.path
     if (
       path === templateData.template.path &&
       templateData.template.symbols.length > 0
@@ -470,13 +466,13 @@ export const getSymbolTemplates = (params, cb = () => {}) => async (
         })
       })
     } else if (path) {
-      let tempPath = path.substr(0, path.lastIndexOf('/') + 1)
+      const tempPath = path.substr(0, path.lastIndexOf('/') + 1)
       FileTools.getPathListByFilter(tempPath, {
         extension: 'xml',
         type: 'file',
       }).then(xmlList => {
         if (xmlList && xmlList.length > 0 && !xmlList[0].isDirectory) {
-          let xmlInfo = xmlList[0]
+          const xmlInfo = xmlList[0]
           FileTools.appendingHomeDirectory(xmlInfo.path).then(xmlPath => {
             fs.readFile(xmlPath).then(data => {
               parser.parseString(data, async (err, result) => {
@@ -499,21 +495,20 @@ export const getSymbolTemplates = (params, cb = () => {}) => async (
     return
   } catch (e) {
     cb && cb(params)
-    return
   }
 }
 
-//设置当前标绘库
+// 设置当前标绘库
 export const setCurrentPlotList = (params, cb = () => {}) => async dispatch => {
   try {
-    let list = []
+    const list = []
     // if (params.$.datasetName && params.$.type !== 'Unknown') {
     //   list = [{ ...params.$, field: params.fields[0].field }]
     // }
-    let getData = function(data) {
+    const getData = function(data) {
       if (!data.feature || data.feature.length === 0) return
       for (let i = 0; i < data.feature.length; i++) {
-        let item = data.feature[i]
+        const item = data.feature[i]
         // list.push({ ...item.$, field: item.fields[0].field })
         if (item.feature && item.feature.length > 0) {
           getData(item)
@@ -531,7 +526,6 @@ export const setCurrentPlotList = (params, cb = () => {}) => async dispatch => {
     return
   } catch (e) {
     cb && cb(params)
-    return
   }
 }
 
@@ -546,10 +540,10 @@ export const setCurrentTemplateList = (
       if (params.$.datasetName && params.$.type !== 'Unknown') {
         list = [{ ...params.$, field: params.fields[0].field }]
       }
-      let getData = function(data) {
+      const getData = function(data) {
         if (!data.feature || data.feature.length === 0) return
         for (let i = 0; i < data.feature.length; i++) {
-          let item = data.feature[i]
+          const item = data.feature[i]
           list.push({ ...item.$, field: item.fields[0].field })
           if (item.feature && item.feature.length > 0) {
             getData(item)
@@ -566,7 +560,6 @@ export const setCurrentTemplateList = (
     return
   } catch (e) {
     cb && cb(params)
-    return
   }
 }
 
@@ -593,11 +586,11 @@ export default handleActions(
     [`${SET_CURRENT_TEMPLATE_INFO}`]: (state, { payload }) => {
       let newData = state.toJS().latestTemplateSymbols || []
       let isExist = false
-      let originData = payload.originData
+      const { originData } = payload
       for (let i = 0; i < newData.length; i++) {
         if (originData && newData[i].code === originData.code) {
           newData[i] = originData
-          let temp = newData[0]
+          const temp = newData[0]
           newData[0] = newData[i]
           newData[i] = temp
           isExist = true
@@ -615,23 +608,20 @@ export default handleActions(
         .setIn(['currentTemplateInfo'], fromJS(payload))
         .setIn(['latestTemplateSymbols'], fromJS(newData))
     },
-    [`${SET_CURRENT_TEMPLATE_SYMBOL_LIST}`]: (state, { payload }) => {
-      return state.setIn(['currentTemplateList'], fromJS(payload))
-    },
-    [`${SET_PLOT_LIBIDS}`]: (state, { payload }) => {
-      return state.setIn(['plotLibIds'], fromJS(payload))
-    },
-    [`${SET_PLOT_LIB_PATHS}`]: (state, { payload }) => {
-      return state.setIn(['plotLibPaths'], fromJS(payload))
-    },
+    [`${SET_CURRENT_TEMPLATE_SYMBOL_LIST}`]: (state, { payload }) =>
+      state.setIn(['currentTemplateList'], fromJS(payload)),
+    [`${SET_PLOT_LIBIDS}`]: (state, { payload }) =>
+      state.setIn(['plotLibIds'], fromJS(payload)),
+    [`${SET_PLOT_LIB_PATHS}`]: (state, { payload }) =>
+      state.setIn(['plotLibPaths'], fromJS(payload)),
     [`${SET_TEMPLATE}`]: (state, { payload }) => {
-      let newData = state.toJS().templates || []
+      const newData = state.toJS().templates || []
       let isExist = false
       if (payload.path) {
         for (let i = 0; i < newData.length; i++) {
           if (newData[i].path === payload.path) {
             newData[i] = payload
-            let temp = newData[0]
+            const temp = newData[0]
             newData[0] = newData[i]
             newData[i] = temp
             isExist = true
@@ -643,10 +633,7 @@ export default handleActions(
         newData.unshift(payload)
       }
       return state
-        .setIn(
-          ['template'],
-          fromJS(Object.assign({}, payload, { symbols: [] })),
-        )
+        .setIn(['template'], fromJS({ ...payload, symbols: [] }))
         .setIn(['templates'], fromJS(newData))
       // .setIn(['currentMap'], fromJS(payload.currentMap))
       // .setIn(['workspace'], fromJS({ server: payload.templateInfo.path }))
@@ -655,7 +642,7 @@ export default handleActions(
     //   return state.setIn(['template'], fromJS(payload))
     // },
     [`${GET_SYMBOL_TEMPLATES}`]: (state, { payload }) => {
-      let newData = state.toJS().templates || []
+      const newData = state.toJS().templates || []
       if (newData.length > 0) {
         for (let i = 0; i < newData.length; i++) {
           if (!newData[i].path || newData[i].path === payload.path) {
@@ -675,7 +662,7 @@ export default handleActions(
     [`${SET_CURRENT_PLOT_INFO}`]: (state, { payload }) => {
       let newData = state.toJS().latestPlotSymbols || []
       let isExist = false
-      let originData = payload.originData
+      const { originData } = payload
       for (let i = 0; i < newData.length; i++) {
         if (
           originData &&
@@ -683,7 +670,7 @@ export default handleActions(
           newData[i].name === originData.name
         ) {
           newData[i] = originData
-          let temp = newData[0]
+          const temp = newData[0]
           newData[0] = newData[i]
           newData[i] = temp
           isExist = true
@@ -701,13 +688,12 @@ export default handleActions(
         .setIn(['currentPlotInfo'], fromJS(payload))
         .setIn(['latestPlotSymbols'], fromJS(newData))
     },
-    [`${SET_CURRENT_PLOT_SYMBOL_LIST}`]: (state, { payload }) => {
-      return state.setIn(['currentPlotList'], fromJS(payload))
-    },
+    [`${SET_CURRENT_PLOT_SYMBOL_LIST}`]: (state, { payload }) =>
+      state.setIn(['currentPlotList'], fromJS(payload)),
 
     [REHYDRATE]: (state, { payload }) => {
       if (payload && payload.template) {
-        let data = payload.template
+        const data = payload.template
         data.template = {
           symbols: [],
           path: '',
@@ -721,9 +707,8 @@ export default handleActions(
         data.currentPlotList = []
         if (data.latestPlotSymbols === undefined) data.latestPlotSymbols = []
         return fromJS(data)
-      } else {
-        return state
       }
+      return state
     },
   },
   initialState,

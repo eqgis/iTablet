@@ -5,4 +5,5 @@
  */
 import ColorTable from './ColorTable'
 import FilterList from './FilterList'
+
 export { ColorTable, FilterList }

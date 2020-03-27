@@ -6,6 +6,7 @@ import theme from './theme'
 import mapTools from './mapTools'
 import plot from './plot'
 import navigation from './navigation'
+
 export default {
   // publicAssets,
   // tabBar,

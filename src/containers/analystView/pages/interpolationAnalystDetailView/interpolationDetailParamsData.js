@@ -1,5 +1,5 @@
-import { getLanguage } from '../../../../language'
 import { SAnalyst } from 'imobile_for_reactnative'
+import { getLanguage } from '../../../../language'
 
 /**
  * 半变异函数
@@ -7,7 +7,7 @@ import { SAnalyst } from 'imobile_for_reactnative'
  * @returns {[*,*]}
  */
 function getSearchMethod(language, type) {
-  let method = [
+  const method = [
     {
       key: getLanguage(language).Analyst_Params.SEARCH_VARIABLE_LENGTH,
       value: SAnalyst.SearchMode.KDTREE_FIXED_COUNT,

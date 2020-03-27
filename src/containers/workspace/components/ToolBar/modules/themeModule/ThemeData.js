@@ -1,6 +1,7 @@
 /**
  * 获取地图专题图数据
  */
+import { SThemeCartography } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
@@ -8,7 +9,6 @@ import ThemeMenuData from './data'
 import ThemeAction from './ThemeAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import constants from '../../../../constants'
-import { SThemeCartography } from 'imobile_for_reactnative'
 
 /**
  * 获取专题图操作
@@ -17,9 +17,9 @@ import { SThemeCartography } from 'imobile_for_reactnative'
  * @returns {{data: Array, buttons: Array}}
  */
 function getData(type, params) {
-  let data = [],
-    buttons = [],
-    temp = {}
+  let data = []
+  let buttons = []
+  let temp = {}
   ToolbarModule.setParams(params)
   // GLOBAL.MapToolType = type
   switch (type) {
@@ -41,7 +41,7 @@ function getData(type, params) {
       buttons = temp.buttons
       break
     default:
-      if (type.indexOf(ConstToolType.MAP_THEME_PARAM_GRAPH + '_') > 0) {
+      if (type.indexOf(`${ConstToolType.MAP_THEME_PARAM_GRAPH}_`) > 0) {
         buttons = ThemeMenuData.getThemeFiveMenu()
       }
       break
@@ -54,10 +54,10 @@ async function getDatasets(type, params = {}) {
   let data = []
 
   if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
-    let selectList =
+    const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
-    let path = await FileTools.appendingHomeDirectory(params.path)
-    let list = await SThemeCartography.getUDBName(path)
+    const path = await FileTools.appendingHomeDirectory(params.path)
+    const list = await SThemeCartography.getUDBName(path)
 
     list.forEach(_params => {
       if (_params.geoCoordSysType && _params.prjCoordSysType) {
@@ -78,8 +78,8 @@ async function getDatasets(type, params = {}) {
         _params.isSelected = selectList[params.name][_params.datasetName]
       }
     })
-    let arr = params.name.split('.')
-    let alias = arr[0]
+    const arr = params.name.split('.')
+    const alias = arr[0]
     data = [
       {
         title: alias,
@@ -97,11 +97,11 @@ async function getDatasets(type, params = {}) {
 function getMenuData(type, themeType) {
   let data = []
   if (type.indexOf('MAP_THEME_PARAM') === -1) return data
-  let themeParams = ToolbarModule.getData().themeParams // 切换到menu，保留themeParams，用于保存专题参数
-  let mapXml = ToolbarModule.getData().mapXml // 切换到menu，保留mapXml，用于还原专题图
-  let moduleData = {
-    type: type,
-    getData: getData,
+  const { themeParams } = ToolbarModule.getData() // 切换到menu，保留themeParams，用于保存专题参数
+  const { mapXml } = ToolbarModule.getData() // 切换到menu，保留mapXml，用于还原专题图
+  const moduleData = {
+    type,
+    getData,
     actions: ThemeAction,
     themeParams,
   }

@@ -1,5 +1,6 @@
 import StyleAction from './StyleAction'
 import StyleData from './StyleData'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
@@ -8,6 +9,7 @@ import NavigationService from '../../../../../NavigationService'
 
 function action(type) {
   const params = ToolbarModule.getParams()
+  setModuleData(type)
   if (params.currentLayer.themeType <= 0 && !params.currentLayer.isHeatmap) {
     if (params.currentLayer.type === 83) {
       params.showFullMap && params.showFullMap(true)
@@ -28,7 +30,7 @@ function action(type) {
         column: 4,
         height: ConstToolType.THEME_HEIGHT[3],
       })
-    } else if(params.currentLayer.type === 7) {
+    } else if (params.currentLayer.type === 7) {
       params.showFullMap && params.showFullMap(true)
       params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
         containerType: ToolbarType.list,
@@ -49,8 +51,11 @@ function action(type) {
       getLanguage(params.language).Prompt.THE_CURRENT_LAYER_CANNOT_BE_STYLED,
     )
   }
+}
+
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: StyleData.getData,
     actions: StyleAction,
   })
@@ -59,7 +64,7 @@ function action(type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
         return
@@ -74,5 +79,7 @@ export default function(type, title, customAction) {
     getData: StyleData.getData,
     getMenuData: StyleData.getMenuData,
     actions: StyleAction,
+    setModuleData,
+    getLayout: utils.getLayout,
   }
 }

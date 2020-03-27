@@ -87,7 +87,7 @@ export default class SearchMenu extends React.Component {
   }
 
   reset = () => {
-    if(this.state.searchText !== '') {
+    if (this.state.searchText !== '') {
       this.setSearchText('')
       this.searchBar && this.searchBar.clear()
     }
@@ -100,10 +100,13 @@ export default class SearchMenu extends React.Component {
   setParams = () => {
     let selectTypes = []
     for (let i = 0; i < this.state.selectList.length; i++) {
-      selectTypes = selectTypes.concat(this.getValueByKey(this.state.selectList[i]))
+      selectTypes = selectTypes.concat(
+        this.getValueByKey(this.state.selectList[i]),
+      )
     }
     this.props.setParams({
-      keywords: this.state.searchText === '' ? undefined : this.state.searchText,
+      keywords:
+        this.state.searchText === '' ? undefined : this.state.searchText,
       selectTypes: selectTypes,
       orderBy: this.state.orderBy,
       orderType: this.state.orderType,
@@ -111,7 +114,7 @@ export default class SearchMenu extends React.Component {
   }
 
   setSearchText = text => {
-    this.setState({searchText: text})
+    this.setState({ searchText: text })
     this.props.setParams({
       keywords: text === '' ? undefined : text,
     })
@@ -140,10 +143,10 @@ export default class SearchMenu extends React.Component {
   }
 
   _getOrder = orderBy => {
-    let  _orderBy, _orderType
+    let _orderBy, _orderType
     _orderBy = orderBy
-    if(this.state.orderBy === orderBy) {
-      if(this.state.orderType === orderType.ASC) {
+    if (this.state.orderBy === orderBy) {
+      if (this.state.orderType === orderType.ASC) {
         _orderType = orderType.DESC
       } else {
         _orderType = orderType.ASC
@@ -160,22 +163,34 @@ export default class SearchMenu extends React.Component {
       <View style={styles.orderView}>
         <TouchableOpacity
           style={styles.orderItem}
-          onPress={()=>{this.setOrder(orderBy.fileName)}}
+          onPress={() => {
+            this.setOrder(orderBy.fileName)
+          }}
         >
-          <Image source={getThemeAssets().find.sort_name}
-            style={styles.orderImg} />
-          <Text style={styles.textStyle}>{getLanguage(global.language).Find.SORT_BY_NAME}</Text>
+          <Image
+            source={getThemeAssets().find.sort_name}
+            style={styles.orderImg}
+          />
+          <Text style={styles.textStyle}>
+            {getLanguage(global.language).Find.SORT_BY_NAME}
+          </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.fileName ? indicator : ''}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.orderItem}
-          onPress={()=>{this.setOrder(orderBy.lastModifiedTime)}}
+          onPress={() => {
+            this.setOrder(orderBy.lastModifiedTime)
+          }}
         >
-          <Image source={getThemeAssets().find.sort_time}
-            style={styles.orderImg} />
-          <Text style={styles.textStyle}>{getLanguage(global.language).Find.SORT_BY_TIME}</Text>
+          <Image
+            source={getThemeAssets().find.sort_time}
+            style={styles.orderImg}
+          />
+          <Text style={styles.textStyle}>
+            {getLanguage(global.language).Find.SORT_BY_TIME}
+          </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.lastModifiedTime ? indicator : ''}
           </Text>

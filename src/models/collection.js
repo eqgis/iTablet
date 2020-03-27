@@ -23,8 +23,8 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SET_COLLECTION_INFO}`]: (state, { payload }) => {
-      return state
+    [`${SET_COLLECTION_INFO}`]: (state, { payload }) =>
+      state
         .setIn(
           ['datasourceName'],
           fromJS((payload && payload.datasourceName) || ''),
@@ -40,8 +40,7 @@ export default handleActions(
         .setIn(
           ['datasourceServer'],
           fromJS((payload && payload.datasourceServer) || ''),
-        )
-    },
+        ),
     // [REHYDRATE]: () => {
     //   return initialState
     // },

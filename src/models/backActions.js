@@ -33,7 +33,7 @@ export const setBackAction = (params = {}) => async (dispatch, getState) => {
 }
 export const removeBackAction = (params = {}) => async (dispatch, getState) => {
   if (!params.key) {
-    let nav = getState().nav.toJS()
+    const nav = getState().nav.toJS()
     let current = nav.routes[nav.index]
     while (current.routes) {
       current = current.routes[current.index]
@@ -51,12 +51,10 @@ const initialState = fromJS({})
 
 export default handleActions(
   {
-    [`${BACK_ACTION_SET}`]: (state, { payload }) => {
-      return state.setIn([payload.key], fromJS(payload.action))
-    },
-    [`${BACK_ACTION_REMOVE}`]: (state, { payload }) => {
-      return state.removeIn([payload.key])
-    },
+    [`${BACK_ACTION_SET}`]: (state, { payload }) =>
+      state.setIn([payload.key], fromJS(payload.action)),
+    [`${BACK_ACTION_REMOVE}`]: (state, { payload }) =>
+      state.removeIn([payload.key]),
   },
   initialState,
 )

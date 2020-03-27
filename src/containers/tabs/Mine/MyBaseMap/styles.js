@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
+
 const textHeight = 40
 export default StyleSheet.create({
   rowView: {

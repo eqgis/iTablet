@@ -1,5 +1,5 @@
-import MapSetting from './MapSetting'
 import { connect } from 'react-redux'
+import MapSetting from './MapSetting'
 import { setSettingData, setMapLegend } from '../../models/setting'
 import { closeMap } from '../../models/map'
 

@@ -1,5 +1,6 @@
-import Setting from './Setting'
 import { connect } from 'react-redux'
+import Setting from './Setting'
+
 const mapStateToProps = state => ({
   appConfig: state.appConfig.toJS(),
 })

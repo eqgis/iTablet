@@ -1,5 +1,5 @@
-import MT_layerManager from './MT_layerManager'
 import { connect } from 'react-redux'
+import MT_layerManager from './MT_layerManager'
 import {
   setEditLayer,
   setCurrentLayer,

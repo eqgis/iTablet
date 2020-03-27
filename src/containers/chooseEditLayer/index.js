@@ -1,5 +1,5 @@
-import ChooseEditLayer from './ChooseEditLayer'
 import { connect } from 'react-redux'
+import ChooseEditLayer from './ChooseEditLayer'
 import { setEditLayer } from '../../models/layers'
 
 const mapStateToProps = state => ({

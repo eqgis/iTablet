@@ -1,6 +1,6 @@
-//我的、发现
+// 我的、发现
 const Profile = {
-  //我的  主页面
+  // 我的  主页面
   LOGIN_NOW: '立即登录',
   IMPORT: '导入',
   DATA: '数据',
@@ -18,7 +18,7 @@ const Profile = {
   INCREMENT: '增量',
   ENCLOSURE: '围栏',
 
-  //我的——登录
+  // 我的——登录
   LOGIN: '登录',
   LOGIN_TIMEOUT: '登录超时，请稍后再试',
   LOGIN_CURRENT: '当前用户已经登录',
@@ -55,19 +55,19 @@ const Profile = {
   SWITCHING: '切换中...',
   SWITCH_FAIL: '切换失败，请尝试重新登录此用户',
 
-  //地图服务地址
+  // 地图服务地址
   SERVICE_ADDRESS: '服务地址',
   MAP_NAME: '地图名称',
   ENTER_SERVICE_ADDRESS: '请输入服务地址',
   SAVE: '保存',
 
-  //我的服务
+  // 我的服务
   SERVICE: '服务',
   MY_SERVICE: '服务',
   PRIVATE_SERVICE: '私有服务',
   PUBLIC_SERVICE: '公有服务',
 
-  //个人主页
+  // 个人主页
   MY_ACCOUNT: '个人主页',
   PROFILE_PHOTO: '头像',
   USERNAME: '用户名',
@@ -83,7 +83,7 @@ const Profile = {
   SELECT_ALL: '全选',
   DESELECT_ALL: '全不选',
 
-  //数据删除导出
+  // 数据删除导出
   SHARE: '分享',
   PATH: '路径',
 
@@ -125,7 +125,7 @@ const Profile = {
 
   GET_DATA_FAILED: '数据获取失败',
 
-  //关于
+  // 关于
   ABOUT: '关于',
   SERVICE_HOTLINE: '技术支持与服务',
   SALES_CONSULTATION: '咨询',
@@ -139,7 +139,7 @@ const Profile = {
   MAP_3D: '三维场景',
   BROWSE_MAP: '浏览地图',
 
-  //创建数据集
+  // 创建数据集
   PLEASE_ADD_DATASET: '请添加数据集',
   ADD_DATASET: '添加数据集',
   ENTER_DATASET_NAME: '请填写数据集名称',
@@ -153,7 +153,7 @@ const Profile = {
   CLEAR: '清空',
   CREATE: '创建',
 
-  //创建数据源
+  // 创建数据源
   NEW_DATASOURCE: '新建数据源',
   SET_DATASOURCE_NAME: '设置数据源名称',
   ENTER_DATASOURCE_NAME: '请输入数据源名称',
@@ -162,11 +162,11 @@ const Profile = {
   SELECT_DATASET_EXPORT_TYPE: '请选择导出类型',
   DATASET_EXPORT_NOT_SUPPORTED: '暂不支持此数据集的导出',
 
-  //搜索
+  // 搜索
   SEARCH: '搜索',
   NO_SEARCH_RESULT: '没有搜索到相关数据',
 
-  //设置
+  // 设置
   STATUSBAR_HIDE: '隐藏状态栏',
   SETTING_LICENSE: '许可中心',
   SETTING_ABOUT_ITABLET: '关于iTablet',
@@ -179,7 +179,7 @@ const Profile = {
   SETTING_LOCATION_DEVICE: '定位设备',
   SETTING_LOCATION_LOCAL: '此设备',
 
-  //许可
+  // 许可
   LICENSE_CURRENT: '当前许可',
   LICENSE_TYPE: '许可类型',
   LICENSE_TRIAL: '试用许可',
@@ -224,11 +224,11 @@ const Profile = {
   LICENSE_CLOUD: '云许可',
   LICENSE_EDITION: '许可版本',
   LICENSE_EDITION_CURRENT: '当前版本',
-  //itablet许可版本
+  // itablet许可版本
   LICENSE_EDITION_STANDARD: '标准版',
   LICENSE_EDITION_PROFESSIONAL: '专业版',
   LICENSE_EDITION_ADVANCED: '高级版',
-  //imobile许可模块
+  // imobile许可模块
   Core_Dev: '核心开发模块',
   Core_Runtime: '核心运行模块',
   Navigation_Dev: '传统导航开发模块',
@@ -247,13 +247,13 @@ const Profile = {
   Realspace_Analyst_Runtime: '三维分析运行模块',
   Realspace_Effect_Dev: '三维特效开发模块',
   Realspace_Effect_Runtime: '三维特效运行模块',
-  //itablet许可模块
+  // itablet许可模块
   ITABLET_ARMAP: 'AR地图',
   ITABLET_NAVIGATIONMAP: '导航地图',
   ITABLET_DATAANALYSIS: '数据分析',
   ITABLET_PLOTTING: '应急标绘',
 
-  //意见反馈
+  // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: '功能异常：功能故障或不可用',
   SUGGESTION_PRODUCT_ADVICE: '产品建议：用得不爽，我有建议',
   SUGGESTION_OTHER_PROBLEMS: '其他问题',
@@ -266,27 +266,25 @@ const Profile = {
   SUGGESTION_SUBMIT_SUCCEED: '提交成功',
   SUGGESTION_SUBMIT_FAILED: '提交失败',
 
-  //ar地图校准
-  MAP_AR_DATUM_LONGITUDE:'经度',
-  MAP_AR_DATUM_LATITUDE:'纬度',
-  MAP_AR_DATUM_ENTER_CURRENT_POSITION:'请输入当前位置坐标',
-  MAP_AR_DATUM_AUTO_LOCATION:'自动定位',
-  MAP_AR_DATUM_MAP_SELECT_POINT:'地图选点',
-  MAP_AR_DATUM_SURE:'确定',
-  MAP_AR_DATUM_AUTO_LOCATIONING:'定位中',
-  MAP_AR_DATUM_POSITION:'基点坐标',
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED:'自动定位成功',
-  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED:'地图选点成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:'请把手机垂直于地面面向正南',
-  MAP_AR_DATUM_SETTING:'设置',
+  // ar地图校准
+  MAP_AR_DATUM_LONGITUDE: '经度',
+  MAP_AR_DATUM_LATITUDE: '纬度',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION: '请输入当前位置坐标',
+  MAP_AR_DATUM_AUTO_LOCATION: '自动定位',
+  MAP_AR_DATUM_MAP_SELECT_POINT: '地图选点',
+  MAP_AR_DATUM_SURE: '确定',
+  MAP_AR_DATUM_AUTO_LOCATIONING: '定位中',
+  MAP_AR_DATUM_POSITION: '基点坐标',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自动定位成功',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: '地图选点成功',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '请把手机垂直于地面面向正南',
+  MAP_AR_DATUM_SETTING: '设置',
 
-  //ar地图
-  COLLECT_SCENE_RENAME:'重命名',
-  COLLECT_SCENE_RENAME_SUCCEED:'重命名成功',
-  COLLECT_SCENE_ADD_REMARK:'添加备注',
-  COLLECT_SCENE_ADD_REMARK_SUCCEED:'添加备注成功',
-
-
+  // ar地图
+  COLLECT_SCENE_RENAME: '重命名',
+  COLLECT_SCENE_RENAME_SUCCEED: '重命名成功',
+  COLLECT_SCENE_ADD_REMARK: '添加备注',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: '添加备注成功',
 }
 
 export { Profile }

@@ -2,6 +2,7 @@ import { StyleSheet, Platform } from 'react-native'
 // import * as Util from '../../../../utils/constUtil'
 import { scaleSize, constUtil as Util } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
+
 const FUNCTIONHEIGHT = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
 export default StyleSheet.create({
   container: {
@@ -248,5 +249,5 @@ export default StyleSheet.create({
     fontSize: scaleSize(22),
     color: color.white,
     padding: scaleSize(10),
-  }
+  },
 })

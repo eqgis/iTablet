@@ -14,8 +14,8 @@ const onlineAnalysisTypes = {
  */
 function overlayCallback(title, cb) {
   NavigationService.navigate('OverlayAnalystView', {
-    title: title,
-    cb: cb,
+    title,
+    cb,
   })
 }
 
@@ -25,7 +25,7 @@ function overlayCallback(title, cb) {
  * @returns {[*,*,*,*,*,*,*]}
  */
 function getOverlayAnalystData(language) {
-  let data = [
+  const data = [
     {
       key: getLanguage(language).Analyst_Methods.CLIP,
       title: getLanguage(language).Analyst_Methods.CLIP,
@@ -87,9 +87,9 @@ function getOverlayAnalystData(language) {
  */
 function onlineCallback(title, type, cb) {
   NavigationService.navigate('OnlineAnalystView', {
-    title: title,
-    type: type,
-    cb: cb,
+    title,
+    type,
+    cb,
   })
 }
 
@@ -99,7 +99,7 @@ function onlineCallback(title, type, cb) {
  * @returns {[*,*]}
  */
 function getOnlineAnalystData(language) {
-  let data = [
+  const data = [
     {
       key: getLanguage(language).Analyst_Methods.DENSITY,
       title: getLanguage(language).Analyst_Methods.DENSITY,
@@ -127,15 +127,15 @@ function getOnlineAnalystData(language) {
 }
 
 function getLocalAnalystEntryData(language, type) {
-  let data = [
+  const data = [
     {
       key: getLanguage(language).Analyst_Labels.USE_AN_EXISTING_NETWORK_DATASET,
       title: getLanguage(language).Analyst_Labels
         .USE_AN_EXISTING_NETWORK_DATASET,
       action: (cb = () => {}) => {
         NavigationService.navigate('LocalAnalystView', {
-          type: type,
-          cb: cb,
+          type,
+          cb,
         })
       },
     },

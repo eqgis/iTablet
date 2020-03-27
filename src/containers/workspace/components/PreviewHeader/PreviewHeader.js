@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { color } from '../../../../styles'
-import { ToolbarModule } from '../ToolBar/modules'
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { TouchType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 

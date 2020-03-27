@@ -41,6 +41,7 @@ import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
 import PreviewColorPicker from './PreviewColorPicker'
 import LayerVisibilityView from "./LayerVisibilityView"
+import IncrementRoadDialog from "./IncrementRoadDialog"
 export {
   ScaleView,
   RNLegendView,
@@ -83,4 +84,5 @@ export {
   PreviewHeader,
   PreviewColorPicker,
   LayerVisibilityView,
+  IncrementRoadDialog,
 }

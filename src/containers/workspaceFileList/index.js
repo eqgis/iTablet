@@ -1,5 +1,5 @@
-import WorkspaceFileList from './WorkspaceFileList'
 import { connect } from 'react-redux'
+import WorkspaceFileList from './WorkspaceFileList'
 import {
   setEditLayer,
   setSelection,

@@ -1,4 +1,4 @@
-//我的、发现
+// 我的、发现
 const Profile = {
   LOGIN_NOW: 'Giriş',
   IMPORT: 'İçeri Aktar',
@@ -17,7 +17,7 @@ const Profile = {
   INCREMENT: 'Arttırım',
   ENCLOSURE: 'Çevreleme',
 
-  //我的——登录
+  // 我的——登录
   LOGIN: 'Giriş',
   LOGIN_TIMEOUT: 'Giriş zaman aşımı lütfen daha sonra tekrar deneyin',
   LOGIN_CURRENT: 'Mevcut kullanıcı zaten giriş yaptı',
@@ -95,19 +95,19 @@ const Profile = {
   SWITCH_FAIL:
     'Geçiş başarısız, lütfen bu kullanıcıyla tekrar giriş yapmayı deneyin',
 
-  //地图服务地址
+  // 地图服务地址
   SERVICE_ADDRESS: 'Servis Adresi',
   MAP_NAME: 'Harita Adı',
   ENTER_SERVICE_ADDRESS: 'Lütfen Servis Adresini girin',
   SAVE: 'Kaydet',
 
-  //我的服务
+  // 我的服务
   SERVICE: 'Servis',
   MY_SERVICE: 'Servis',
   PRIVATE_SERVICE: 'Özel Servis',
   PUBLIC_SERVICE: 'Halka Açık Servis',
   DELETE: 'Sil',
-  //个人主页
+  // 个人主页
   MY_ACCOUNT: 'Hesabım',
   PROFILE_PHOTO: 'Profil Fotoğrafı',
   USERNAME: 'Kullanıcı Adı',
@@ -138,7 +138,7 @@ const Profile = {
 
   GET_DATA_FAILED: 'Veri alınamadı',
 
-  //创建数据集
+  // 创建数据集
   PLEASE_ADD_DATASET: 'Lütfen verikümesi ekleyin',
   ADD_DATASET: 'Verikümesi ekle',
   ENTER_DATASET_NAME: 'Lütfen verikümesi adı girin',
@@ -152,7 +152,7 @@ const Profile = {
   CLEAR: 'Temizle',
   CREATE: 'Oluştur',
 
-  //创建数据源
+  // 创建数据源
   NEW_DATASOURCE: 'Verikaynağı Oluştur',
   SET_DATASOURCE_NAME: 'Verikaynağı Adı Ayarla',
   ENTER_DATASOURCE_NAME: 'Lütfen verikaynağı adı girin',
@@ -162,11 +162,11 @@ const Profile = {
   DATASET_EXPORT_NOT_SUPPORTED:
     'Bu verikümesinin dışa aktarımı henüz desteklenmiyor',
 
-  //搜索
+  // 搜索
   SEARCH: 'Ara',
   NO_SEARCH_RESULT: 'Arama sonucu yok',
 
-  //设置
+  // 设置
   STATUSBAR_HIDE: 'Durum Çubuğu Gizle',
   SETTING_LICENSE: 'Lisans',
   SETTING_ABOUT_ITABLET: 'iTablet Hakkında',
@@ -179,7 +179,7 @@ const Profile = {
   SETTING_LOCATION_DEVICE: 'Konumlandır',
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
 
-  //许可
+  // 许可
   LICENSE_CURRENT: 'Mevcut Lisans',
   LICENSE_TYPE: 'Lisans Tipi',
   LICENSE_TRIAL: 'Deneme Lisansı',
@@ -225,11 +225,11 @@ const Profile = {
   LICENSE_CLOUD: 'Bulut Lisans',
   LICENSE_EDITION: 'Lisans Baskı',
   LICENSE_EDITION_CURRENT: 'şimdiki　Baskı',
-  //itablet许可版本
+  // itablet许可版本
   LICENSE_EDITION_STANDARD: 'Standart Baskı',
   LICENSE_EDITION_PROFESSIONAL: 'Profesyonel Baskı',
   LICENSE_EDITION_ADVANCED: 'Ileri Baskı',
-  //imobile许可模块
+  // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: 'Core Runtime',
   Navigation_Dev: 'Navigation Dev',
@@ -248,17 +248,19 @@ const Profile = {
   Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
   Realspace_Effect_Dev: 'Realspace Effect Dev',
   Realspace_Effect_Runtime: 'Realspace Effect Runtime',
-  //itablet许可模块
+  // itablet许可模块
   ITABLET_ARMAP: 'AR Harita',
   ITABLET_NAVIGATIONMAP: 'Navigasyon',
   ITABLET_DATAANALYSIS: 'Veri Analizi',
   ITABLET_PLOTTING: 'Çizim',
 
-  //意见反馈
+  // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: 'Anormal fonksiyon: arıza veya mevcut değil',
-  SUGGESTION_PRODUCT_ADVICE: 'Ürün önerisi: rahatsız edici kullanım, önerilerim var',
+  SUGGESTION_PRODUCT_ADVICE:
+    'Ürün önerisi: rahatsız edici kullanım, önerilerim var',
   SUGGESTION_OTHER_PROBLEMS: 'Diğer konular',
-  SUGGESTION_SELECT_PROBLEMS: 'Lütfen geri bildirimde bulunmak istediğiniz soruyu seçin',
+  SUGGESTION_SELECT_PROBLEMS:
+    'Lütfen geri bildirimde bulunmak istediğiniz soruyu seçin',
   SUGGESTION_PROBLEMS_DETAIL: 'Lütfen ayrıntılı sorular ve yorumlar ekleyin',
   SUGGESTION_PROBLEMS_DESCRIPTION: 'Lütfen sorunun bir açıklamasını girin',
   SUGGESTION_CONTACT_WAY: 'İletişim bilgileri',
@@ -267,24 +269,25 @@ const Profile = {
   SUGGESTION_SUBMIT_SUCCEED: 'Başarıyla gönder',
   SUGGESTION_SUBMIT_FAILED: 'İşlem başarısız oldu',
 
-  //ar地图校准
-  MAP_AR_DATUM_LONGITUDE:'boylam',
-  MAP_AR_DATUM_LATITUDE:'enlem',
-  MAP_AR_DATUM_ENTER_CURRENT_POSITION:'Lütfen geçerli konum koordinatlarını girin',
-  MAP_AR_DATUM_AUTO_LOCATION:'Otomatik konumlandırma',
-  MAP_AR_DATUM_MAP_SELECT_POINT:'Harita seçimi',
-  MAP_AR_DATUM_SURE:'belirlemek',
-  MAP_AR_DATUM_AUTO_LOCATIONING:'Konumlandırma',
-  MAP_AR_DATUM_POSITION:'Taban noktası koordinatları',
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED:'Otomatik konumlandırma başarılı',
-  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED:'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:'Lütfen cep telefonunu güneye çevirin',
-  MAP_AR_DATUM_SETTING:'Kurulum',
+  // ar地图校准
+  MAP_AR_DATUM_LONGITUDE: 'boylam',
+  MAP_AR_DATUM_LATITUDE: 'enlem',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION:
+    'Lütfen geçerli konum koordinatlarını girin',
+  MAP_AR_DATUM_AUTO_LOCATION: 'Otomatik konumlandırma',
+  MAP_AR_DATUM_MAP_SELECT_POINT: 'Harita seçimi',
+  MAP_AR_DATUM_SURE: 'belirlemek',
+  MAP_AR_DATUM_AUTO_LOCATIONING: 'Konumlandırma',
+  MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen cep telefonunu güneye çevirin',
+  MAP_AR_DATUM_SETTING: 'Kurulum',
 
-    //ar地图
-    COLLECT_SCENE_RENAME:'Yeniden adlandırma',
-    COLLECT_SCENE_RENAME_SUCCEED:'Başarıyla yeniden adlandırıldı',
-    COLLECT_SCENE_ADD_REMARK:'Not ekle',
-    COLLECT_SCENE_ADD_REMARK_SUCCEED:'Not başarıyla eklendi',
+  // ar地图
+  COLLECT_SCENE_RENAME: 'Yeniden adlandırma',
+  COLLECT_SCENE_RENAME_SUCCEED: 'Başarıyla yeniden adlandırıldı',
+  COLLECT_SCENE_ADD_REMARK: 'Not ekle',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Not başarıyla eklendi',
 }
 export { Profile }

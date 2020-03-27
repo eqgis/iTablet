@@ -1,5 +1,5 @@
-import Setting from './setting'
 import { connect } from 'react-redux'
+import Setting from './setting'
 import { setSettingData } from '../../models/setting'
 
 const mapStateToProps = state => ({

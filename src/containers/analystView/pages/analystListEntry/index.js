@@ -1,5 +1,6 @@
-import AnalystListEntry from './AnalystListEntry'
 import { connect } from 'react-redux'
+import AnalystListEntry from './AnalystListEntry'
+
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),
   currentUser: state.user.toJS().currentUser,

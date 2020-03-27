@@ -54,7 +54,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
 
-  /** ChooseLayer **/
+  /** ChooseLayer * */
   chooseLayerContainer: {
     position: 'absolute',
     left: 0,

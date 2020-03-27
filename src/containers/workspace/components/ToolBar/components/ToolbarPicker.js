@@ -4,7 +4,7 @@ import { getLanguage } from '../../../../../language'
 import { Picker as LinkPicker } from '../../../../../components'
 
 function getData() {
-  let option = [
+  const option = [
     {
       key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST,
       value: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST,
@@ -18,7 +18,7 @@ function getData() {
       value: getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION,
     },
   ]
-  let pickerData = [
+  const pickerData = [
     {
       key: getLanguage(GLOBAL.language).Map_Main_Menu.FILL,
       value: getLanguage(GLOBAL.language).Map_Main_Menu.FILL,

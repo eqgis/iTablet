@@ -1,4 +1,4 @@
-//制图
+// 制图
 const Map_Label = {
   MAP: 'Harita',
   LAYER: 'Katman',
@@ -13,7 +13,7 @@ const Map_Label = {
   ENCLOSURE: 'İlişik',
 }
 
-//地图、场景主菜单
+// 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
   START: 'Başla',
@@ -47,7 +47,7 @@ const Map_Main_Menu = {
   INDOORDATA: 'İÇMEKANVERİLERİ',
   INDOOR_DATASOURCE: 'İç mekan veri kaynakları',
   OUTDOOR_DATASETS: 'Açık veri seti',
-  SWITCH_DATA:'Veri değiştirme',
+  SWITCH_DATA: 'Veri değiştirme',
   DATASET: 'VERİSETİ',
   Traffic: 'Trafik',
 
@@ -164,7 +164,7 @@ const Map_Main_Menu = {
   FLY_ADD_STOPS: 'Durak Ekle',
   FLY_AROUND_POINT: ' Nokta çevresinde uçuş',
 
-  //三维裁剪
+  // 三维裁剪
   CLIP_LAYER: 'Katmanlar',
   CLIP_AREA_SETTINGS: 'Ayarlar',
   CLIP_AREA_SETTINGS_WIDTH: 'Alt Genişlik',
@@ -361,13 +361,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_CANCEL: 'İptal',
   MAP_AR_AI_CONFIRM: 'Onayla',
 
-  //智能配图
+  // 智能配图
   FILL: 'Doldur',
   BORDER: 'Kenar',
   LINE: 'Çizgi',
   MARK: 'İşaret',
 
-  //地图导航
+  // 地图导航
   START_POINT: 'Başlangıç Noktası',
   END_POINT: 'Hedef',
   DRAW: 'Çiz',
@@ -398,7 +398,7 @@ const Map_Main_Menu = {
   MY_LOCATION: 'Konumum',
 }
 
-//推演动画
+// 推演动画
 const Map_Plotting = {
   PLOTTING_ANIMATION_MODE: 'Animasyon Modu',
   PLOTTING_ANIMATION_OPERATION: 'Sonuç İşlemi',
@@ -468,7 +468,7 @@ const Map_Plotting = {
   ANIMATION_NODE_EDIT: 'Animasyon Düzenleme',
 }
 
-//图层
+// 图层
 const Map_Layer = {
   PLOTS: 'İşaretlediklerim',
   PLOTS_IMPORT: 'İşaretlileri içe aktarma',
@@ -530,7 +530,7 @@ const Map_Layer = {
   NOT_SNAPABLE: 'Yakalama Kullanılamaz',
 }
 
-//属性
+// 属性
 const Map_Attribute = {
   ATTRIBUTE_SORT: 'Sınıflandırma',
   ATTRIBUTE_LOCATION: 'Konum',
@@ -577,16 +577,16 @@ const Map_Setting = {
   PITCH_GESTURE: 'Dönme Hareketi',
   THEME_LEGEND: 'Tema Lejantı',
 
-  //效果设置
+  // 效果设置
   EFFECT_SETTINGS: 'Efekt Ayarları',
   ANTI_ALIASING_MAP: 'Düzgünleştirme Haritası',
   SHOW_OVERLAYS: 'Çakışmaları Göster',
 
-  //范围设置
+  // 范围设置
   BOUNDS_SETTING: 'Sınır Ayarları',
   FIX_SCALE: 'Sabit Ölçek',
 
-  //三维场景设置
+  // 三维场景设置
   SCENE_NAME: 'Sahne Adı',
   FOV: 'FOV',
   SCENE_OPERATION_STATUS: 'Sahne Çalışma Durumu',
@@ -595,10 +595,10 @@ const Map_Setting = {
   SPHERICAL: 'Küresel',
 }
 
-//地图设置菜单
+// 地图设置菜单
 const Map_Settings = {
   THEME_LEGEND: 'Tema Lejantı',
-  //一级菜单
+  // 一级菜单
   BASIC_SETTING: 'Temel Ayarlar',
   RANGE_SETTING: 'Sınır Ayarları',
   COORDINATE_SYSTEM_SETTING: 'Koordinat Sistemi Ayarları',
@@ -610,7 +610,7 @@ const Map_Settings = {
   REMARKS: 'Uyarılar',
   DRAWING_RANGE: 'Çizim Aralığı',
 
-  //视频地图设置:一级菜单
+  // 视频地图设置:一级菜单
   POI_SETTING: 'POI Ayarları',
   DETECT_TYPE: 'Türleri Belirle',
   DETECT_STYLE: 'Stilleri Belirle',
@@ -648,7 +648,7 @@ const Map_Settings = {
   DETECT_STYLE_STROKE_WIDTH: 'Vuruş Genişliği',
   COUNTRACKED: 'İzlenen Sayı ',
 
-  //二级菜单 基本设置
+  // 二级菜单 基本设置
   MAP_NAME: 'Harita Adı',
   SHOW_SCALE: 'Ölçeği Göster',
   ROTATION_GESTURE: 'Dönme Hareketi',
@@ -663,19 +663,19 @@ const Map_Settings = {
   SHOW_OVERLAYS: 'Çakışmaları Göster',
   ENABLE_MAP_MAGNIFER: 'Harita Büyütecini Etkinleştir',
 
-  //二级菜单 范围设置
+  // 二级菜单 范围设置
   MAP_CENTER: 'Harita Merkezi',
   MAP_SCALE: 'Harita Ölçeği',
   FIX_SCALE_LEVEL: 'Ölçek Zeminini Düzelt',
   CURRENT_VIEW_BOUNDS: 'Mevcut Görüntüleme Sınırları',
 
-  //二级菜单 坐标系设置
+  // 二级菜单 坐标系设置
   COORDINATE_SYSTEM: 'Koordinat Sistemi',
   COPY_COORDINATE_SYSTEM: 'Koordinat Sistemini Kopyala',
   DYNAMIC_PROJECTION: 'Dinamik Projeksiyonu Etkinleştir',
   TRANSFER_METHOD: 'Transfer Yöntemi',
 
-  //二级菜单 高级设置
+  // 二级菜单 高级设置
   FLOW_VISIUALIZATION: 'Akış Görselleştirme',
   SHOW_NEGATIVE_DATA: 'Olumsuz Verileri Göster',
   AUTOMATIC_AVOIDANCE: 'Otomatik Kaçınma',
@@ -687,36 +687,36 @@ const Map_Settings = {
   HISTOGRAM_STYLE: 'Histogram Stili',
   ROSE_AND_PIE_CHART_STYLE: 'Daire & Dilim Grafik Stili',
 
-  //三级菜单 颜色模式
+  // 三级菜单 颜色模式
   DEFAULT_COLOR_MODE: 'Varsayılan Renk Modu',
   BLACK_AND_WHITE: 'Siyah ve Beyaz',
   GRAY_SCALE_MODE: 'Gri Tonlama Modu',
   ANTI_BLACK_AND_WHITE: 'Siyah Beyaz Karşıtı',
   ANTI_BLACK_AND_WHITE_2: 'Siyah Beyaz Karşıtı, Diğer Renkler Değişmedi',
 
-  //三级菜单 窗口四至范围
+  // 三级菜单 窗口四至范围
   LEFT: 'Sol',
   RIGHT: 'Sağ',
   TOP: 'Üst',
   BOTTOM: 'Alt',
 
-  //三级菜单 坐标系设置
+  // 三级菜单 坐标系设置
   PLAN_COORDINATE_SYSTEM: 'Plan Koordinat Sistemi',
   GEOGRAPHIC_COORDINATE_SYSTEM: 'Coğrafi Koordinat Sistemi',
   PROJECTED_COORDINATE_SYSTEM: 'Yansıtılmış (Projected) Koordinat Sistemi',
 
-  //三级菜单 复制坐标系
+  // 三级菜单 复制坐标系
   FROM_DATASOURCE: 'Veri Kaynağından',
   FROM_DATASET: 'Veri Kümesinden',
   FROM_FILE: 'Dosyadan',
 
-  //四级菜单 转换方法参数设置
+  // 四级菜单 转换方法参数设置
   BASIC_PARAMS: 'Temel Parametreler',
   OFFSET: 'Kaydırma (Offset)',
   PROPORTIONAL_DIFFERENCE: 'Oransal Fark',
   ROTATION_ANGLE_SECONDS: 'Dönme Açısı (Saniye)',
 
-  //四级菜单 和复制提示
+  // 四级菜单 和复制提示
   TYPE: 'Tür',
   FORMAT: 'Format',
   DATASOURCES: 'Veri Kaynağı',
@@ -728,7 +728,7 @@ const Map_Settings = {
   IMG_COORD_FILE: 'Görüntü Koordinat Sistemi Dosyası',
   COORD_FILE: 'Koordinat Sistemi Dosyası',
 
-  //设置的一些参数
+  // 设置的一些参数
   PERCENT: 'Yüzde',
   OFF: 'Kapalı',
   CONFIRM: 'Onay',
@@ -736,7 +736,7 @@ const Map_Settings = {
   COPY: 'Kopyala',
 }
 
-//地图工具
+// 地图工具
 const Map_Tools = {
   VIDEO: 'Video',
   PHOTO: 'Fotoğraf',
@@ -746,7 +746,7 @@ const Map_Tools = {
   FROM_ALBUM: 'Albümden Seç',
   VIEW: 'Görüntüle',
 }
-//POI title
+// POI title
 const Map_PoiTitle = {
   FOOD: 'Yemek',
   SCENE: 'Manzara',

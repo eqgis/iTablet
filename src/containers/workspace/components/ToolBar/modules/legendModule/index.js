@@ -1,11 +1,15 @@
+/**
+ * 图例
+ */
 import LegendData from './LegendData'
 import LegendAction from './LegendAction'
+import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
-  let mapLegend = _params.mapLegend
+  const { mapLegend } = _params
   if (mapLegend[GLOBAL.Type].isShow) {
     mapLegend[GLOBAL.Type] = {
       isShow: true,
@@ -29,20 +33,23 @@ async function action(type) {
       legendPosition: 'topLeft',
     }
   }
+  const { orientation } = _params.device
+  const layout = utils.getLayout(type, orientation)
+  setModuleData(type)
   _params.setMapLegend(mapLegend)
   _params.setToolbarVisible(true, ConstToolType.LEGEND, {
     containerType: ToolbarType.colorTable,
-    column: _params.device.orientation === 'LANDSCAPE' ? 16 : 8,
+    column: layout.column,
     isFullScreen: false,
-    height:
-      _params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[2]
-        : ConstToolType.THEME_HEIGHT[3],
+    height: layout.height,
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
+}
+
+function setModuleData(type) {
   ToolbarModule.setData({
-    type: type,
+    type,
     getData: LegendData.getData,
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
@@ -52,7 +59,7 @@ async function action(type) {
 export default function(type, title, customAction) {
   return {
     key: title,
-    title: title,
+    title,
     action: () => {
       if (customAction === false) {
         return
@@ -67,5 +74,7 @@ export default function(type, title, customAction) {
     getData: LegendData.getData,
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
+    setModuleData,
+    getLayout: utils.getLayout,
   }
 }

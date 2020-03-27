@@ -109,7 +109,7 @@ export default StyleSheet.create({
     // borderColor:color.bgG,
   },
   checkView: {
-    //position: 'absolute',
+    // position: 'absolute',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -117,9 +117,9 @@ export default StyleSheet.create({
     //  backgroundColor:"red",
     // marginTop:scaleSize(60),
     // bottom:scaleSize(120),
-    //top: scaleSize(140),
-    //left: scaleSize(0),
-    //paddingLeft: scaleSize(40),
+    // top: scaleSize(140),
+    // left: scaleSize(0),
+    // paddingLeft: scaleSize(40),
   },
   checkImg: {
     width: scaleSize(60),

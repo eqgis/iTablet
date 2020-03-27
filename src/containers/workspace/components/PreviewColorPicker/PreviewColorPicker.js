@@ -6,7 +6,7 @@
 import React, { Component } from 'react'
 import { View, Image, TouchableOpacity, Text, Animated } from 'react-native'
 import Slider from 'react-native-slider'
-import { ToolbarModule } from '../ToolBar/modules'
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { SThemeCartography } from 'imobile_for_reactnative'
 import styles from './styles'
 import { color } from '../../../../styles'

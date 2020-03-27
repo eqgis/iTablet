@@ -5,17 +5,16 @@ import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 
-
 export default class MapSelectPointLatitudeAndLongitude extends React.Component {
   props: {
-    isEdit : Boolean,
+    isEdit: Boolean,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       show: true,
-    //   isEdit: false,
+      //   isEdit: false,
       isEdit: this.props.isEdit,
       latitude: '',
       longitude: '',
@@ -26,17 +25,17 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
     this.setState({ show: iShow })
   }
 
-  updateLatitudeAndLongitude(point){
+  updateLatitudeAndLongitude(point) {
     this.setState({
-      longitude:point.x,
-      latitude:point.y,
+      longitude: point.x,
+      latitude: point.y,
     })
   }
 
-  getLatitudeAndLongitude(){
+  getLatitudeAndLongitude() {
     return {
-      x:Number(this.state.longitude),
-      y:Number(this.state.latitude)
+      x: Number(this.state.longitude),
+      y: Number(this.state.latitude),
     }
   }
 
@@ -62,53 +61,52 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
       return (
         <View
           style={{
-          //   position: 'absolute',
-          //   top: 0,
+            //   position: 'absolute',
+            //   top: 0,
             width: '100%',
           }}
         >
-        <View 
-        style={{ backgroundColor: color.background }}>
-          <View style={styles.item}>
-            <Text style={styles.itemtitle}>
-              {getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}
-            </Text>
-            <TextInput
-            editable ={this.state.isEdit}
-            style={styles.itemInput}
-            keyboardType = 'numeric'
-            onChangeText={text => {
-              // let longitude=Number(text)
-              let longitude=this.clearNoNum(text)
-                this.setState({
-                    longitude:longitude
-                })
-            }}
-            value = {this.state.longitude+''}
-            />
-          </View>
+          <View style={{ backgroundColor: color.background }}>
+            <View style={styles.item}>
+              <Text style={styles.itemtitle}>
+                {getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}
+              </Text>
+              <TextInput
+                editable={this.state.isEdit}
+                style={styles.itemInput}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  // let longitude=Number(text)
+                  let longitude = this.clearNoNum(text)
+                  this.setState({
+                    longitude: longitude,
+                  })
+                }}
+                value={this.state.longitude + ''}
+              />
+            </View>
 
-          <View style={styles.separateLine} />
+            <View style={styles.separateLine} />
 
-          <View style={styles.item}>
-            <Text style={styles.itemtitle}>
-              {getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}
-            </Text>
-            <TextInput
-            editable ={this.state.isEdit}
-            style={styles.itemInput}
-            keyboardType = 'numeric'
-            onChangeText={text => {
-                let latitude=this.clearNoNum(text)
-                this.setState({
-                    latitude:latitude
-                })
-            }}
-            value = {this.state.latitude+''}
-            />
+            <View style={styles.item}>
+              <Text style={styles.itemtitle}>
+                {getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}
+              </Text>
+              <TextInput
+                editable={this.state.isEdit}
+                style={styles.itemInput}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  let latitude = this.clearNoNum(text)
+                  this.setState({
+                    latitude: latitude,
+                  })
+                }}
+                value={this.state.latitude + ''}
+              />
+            </View>
+            <View style={styles.separateLine} />
           </View>
-          <View style={styles.separateLine} />
-        </View>
         </View>
       )
     } else {
@@ -118,93 +116,91 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 }
 
 const styles = StyleSheet.create({
-    
-    container: {
-        flex: 1,
-        backgroundColor: color.bgW,
-      },
-    
-      item: {
-        width: '100%',
-        height: scaleSize(80),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: color.white,
-      },
-      title: {
-        fontSize: scaleSize(18),
-        color: color.gray,
-        marginLeft: 15,
-      },
-      subTitle: {
-        fontSize: scaleSize(20),
-        marginLeft: 15,
-      },
-      separateLine: {
-        width: '100%',
-        height: scaleSize(1),
-        backgroundColor: color.item_separate_white,
-      },
-      input: {
-        width: '100%',
-        height: scaleSize(120),
-        fontSize: scaleSize(22),
-        padding: scaleSize(15),
-    
-        // textAlignVertical: 'center',
-    
-        backgroundColor: color.white,
-      },
-  
+  container: {
+    flex: 1,
+    backgroundColor: color.bgW,
+  },
 
-    titleHeader: {
-      fontSize: scaleSize(24),
-      color: color.gray,
-    },
-    itemHeader: {
-      width: '100%',
-      height: scaleSize(240),
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      // backgroundColor: color.content_white,
-    },
-  
-    itemtitle: {
-      fontSize: scaleSize(20),
-      color: color.black,
-      paddingLeft: scaleSize(15),
-      paddingRight: scaleSize(15),
-      backgroundColor: color.white,
-    },
-    itemInput: {
-      width: '100%',
-      // height: scaleSize(120),
-      fontSize: scaleSize(22),
-      padding: scaleSize(15),
-  
-      // textAlignVertical: 'center',
-  
-      backgroundColor: color.white,
-    },
-    itemButton: {
-      fontSize: scaleSize(20),
-      padding: scaleSize(15),
-      color: color.blue1,
-      paddingLeft: scaleSize(15),
-      paddingRight: scaleSize(15),
-    },
-    buttonTouable: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
-    buttonItem: {
-      width: '100%',
-      height: scaleSize(80),
-      paddingRight: scaleSize(15),
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-  })
+  item: {
+    width: '100%',
+    height: scaleSize(80),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: color.white,
+  },
+  title: {
+    fontSize: scaleSize(18),
+    color: color.gray,
+    marginLeft: 15,
+  },
+  subTitle: {
+    fontSize: scaleSize(20),
+    marginLeft: 15,
+  },
+  separateLine: {
+    width: '100%',
+    height: scaleSize(1),
+    backgroundColor: color.item_separate_white,
+  },
+  input: {
+    width: '100%',
+    height: scaleSize(120),
+    fontSize: scaleSize(22),
+    padding: scaleSize(15),
+
+    // textAlignVertical: 'center',
+
+    backgroundColor: color.white,
+  },
+
+  titleHeader: {
+    fontSize: scaleSize(24),
+    color: color.gray,
+  },
+  itemHeader: {
+    width: '100%',
+    height: scaleSize(240),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: color.content_white,
+  },
+
+  itemtitle: {
+    fontSize: scaleSize(20),
+    color: color.black,
+    paddingLeft: scaleSize(15),
+    paddingRight: scaleSize(15),
+    backgroundColor: color.white,
+  },
+  itemInput: {
+    width: '100%',
+    // height: scaleSize(120),
+    fontSize: scaleSize(22),
+    padding: scaleSize(15),
+
+    // textAlignVertical: 'center',
+
+    backgroundColor: color.white,
+  },
+  itemButton: {
+    fontSize: scaleSize(20),
+    padding: scaleSize(15),
+    color: color.blue1,
+    paddingLeft: scaleSize(15),
+    paddingRight: scaleSize(15),
+  },
+  buttonTouable: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonItem: {
+    width: '100%',
+    height: scaleSize(80),
+    paddingRight: scaleSize(15),
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+})

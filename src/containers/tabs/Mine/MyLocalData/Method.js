@@ -1,8 +1,4 @@
 import { NetInfo } from 'react-native'
-import { ConstPath, UserType } from '../../../../constants'
-import { FileTools } from '../../../../native'
-import Toast from '../../../../utils/Toast'
-import { getLanguage } from '../../../../language/index'
 import { downloadFile } from 'react-native-fs'
 import {
   SOnlineService,
@@ -10,18 +6,23 @@ import {
   SScene,
   SIPortalService,
 } from 'imobile_for_reactnative'
+import { ConstPath, UserType } from '../../../../constants'
+import { FileTools } from '../../../../native'
+import Toast from '../../../../utils/Toast'
+import { getLanguage } from '../../../../language/index'
 import DataHandler from '../DataHandler'
+
 async function _setFilterDatas(fullFileDir, fileType, arrFilterFile) {
   try {
     let isRecordFile = false
     let udb = null
     let isWorkspace = false
-    let arrDirContent = await FileTools.getDirectoryContent(fullFileDir)
+    const arrDirContent = await FileTools.getDirectoryContent(fullFileDir)
     for (let i = 0; i < arrDirContent.length; i++) {
-      let fileContent = arrDirContent[i]
-      let isFile = fileContent.type
+      const fileContent = arrDirContent[i]
+      const isFile = fileContent.type
       let fileName = fileContent.name
-      let newPath = fullFileDir + '/' + fileName
+      const newPath = `${fullFileDir}/${fileName}`
 
       if (isFile === 'file' && !isRecordFile) {
         // (fileType.udb && fileName.indexOf(fileType.udb) !== -1)
@@ -41,7 +42,7 @@ async function _setFilterDatas(fullFileDir, fileType, arrFilterFile) {
             fileName = fileName.substring(0, fileName.length - 5)
             arrFilterFile.push({
               filePath: newPath,
-              fileName: fileName,
+              fileName,
               directory: fullFileDir,
               fileType: 'workspace',
             })
@@ -52,7 +53,7 @@ async function _setFilterDatas(fullFileDir, fileType, arrFilterFile) {
           fileName = fileName.substring(0, fileName.length - 4)
           udb = {
             filePath: newPath,
-            fileName: fileName,
+            fileName,
             directory: fullFileDir,
             fileType: 'datasource',
           }
@@ -74,18 +75,18 @@ async function _setFilterDatas(fullFileDir, fileType, arrFilterFile) {
   return arrFilterFile
 }
 
-/**获取标绘库数据列表 */
+/** 获取标绘库数据列表 */
 async function _getPlotingLibDataList(fileDir, arrFile) {
-  let arrPlotDirContent = await FileTools.getDirectoryContent(fileDir)
+  const arrPlotDirContent = await FileTools.getDirectoryContent(fileDir)
   for (let i = 0; i < arrPlotDirContent.length; i++) {
-    let fileContent = arrPlotDirContent[i]
-    let isFile = fileContent.type
-    let fileName = fileContent.name
-    let newPath = fileDir + '/' + fileName
+    const fileContent = arrPlotDirContent[i]
+    const isFile = fileContent.type
+    const fileName = fileContent.name
+    const newPath = `${fileDir}/${fileName}`
     if (isFile === 'directory') {
       arrFile.push({
         filePath: newPath,
-        fileName: fileName,
+        fileName,
         directory: newPath,
         fileType: 'plotting',
       })
@@ -93,14 +94,14 @@ async function _getPlotingLibDataList(fileDir, arrFile) {
   }
 }
 
-/** 构造样例数据数据*/
+/** 构造样例数据数据 */
 async function _constructCacheSectionData(language) {
-  let homePath = await _getHomePath()
-  let path = homePath + ConstPath.CachePath2
+  const homePath = await _getHomePath()
+  const path = homePath + ConstPath.CachePath2
   let newData = []
   newData = await DataHandler.getExternalData(path)
-  //'样例数据'
-  let titleWorkspace = getLanguage(language).Profile.SAMPLEDATA
+  // '样例数据'
+  const titleWorkspace = getLanguage(language).Profile.SAMPLEDATA
   let sectionData
   if (newData.length === 0) {
     sectionData = []
@@ -116,15 +117,12 @@ async function _constructCacheSectionData(language) {
   return sectionData
 }
 
-/** 构造当前用户数据*/
+/** 构造当前用户数据 */
 async function _constructUserSectionData(userName) {
-  let homePath = await _getHomePath()
-  let path =
-    homePath +
-    ConstPath.UserPath +
-    userName +
-    '/' +
+  const homePath = await _getHomePath()
+  const path = `${homePath + ConstPath.UserPath + userName}/${
     ConstPath.RelativeFilePath.ExternalData
+  }`
   let newData = []
   newData = await DataHandler.getExternalData(path)
   return newData
@@ -139,7 +137,7 @@ async function getOnlineData(
   pageSize,
   cb = () => {},
 ) {
-  let newData = []
+  const newData = []
   try {
     let strDataList
     if (UserType.isOnlineUser(currentUser)) {
@@ -147,9 +145,9 @@ async function getOnlineData(
     } else if (UserType.isIPortalUser(currentUser)) {
       strDataList = await SIPortalService.getMyDatas(currentPage, pageSize)
     }
-    let objDataList = JSON.parse(strDataList)
+    const objDataList = JSON.parse(strDataList)
     if (objDataList.content) {
-      //过滤friendlist
+      // 过滤friendlist
       for (let i = objDataList.content.length - 1; i > -1; i--) {
         if (objDataList.content[i].fileName.indexOf('friend.list') != -1) {
           objDataList.content.splice(i, 1)
@@ -162,20 +160,20 @@ async function getOnlineData(
     }
     if (objDataList.content && objDataList.content.length > 0) {
       cb && cb(objDataList.total)
-      let arrDataContent = objDataList.content
-      let contentLength = arrDataContent.length
+      const arrDataContent = objDataList.content
+      const contentLength = arrDataContent.length
       for (let i = 0; i < contentLength; i++) {
-        let objContent = arrDataContent[i]
+        const objContent = arrDataContent[i]
         objContent.fileName = objContent.fileName.substring(
           0,
           objContent.fileName.length - 4,
         )
-        objContent.id = objContent.id + ''
+        objContent.id += ''
         newData.push(objContent)
       }
     }
   } catch (e) {
-    let result = await NetInfo.getConnectionInfo()
+    const result = await NetInfo.getConnectionInfo()
     if (result.type === 'unknown' || result.type === 'none') {
       Toast.show('网络错误')
     } else {
@@ -205,14 +203,11 @@ async function downFileAction(
       }
     }
     if (itemInfo.id) {
-      let path =
-        ConstPath.UserPath +
-        currentUser.userName +
-        '/' +
-        ConstPath.RelativePath.ExternalData +
-        itemInfo.fileName
-      let filePath = await FileTools.appendingHomeDirectory(path + '.zip')
-      let toPath = await FileTools.appendingHomeDirectory(path)
+      const path = `${ConstPath.UserPath + currentUser.userName}/${
+        ConstPath.RelativePath.ExternalData
+      }${itemInfo.fileName}`
+      const filePath = await FileTools.appendingHomeDirectory(`${path}.zip`)
+      const toPath = await FileTools.appendingHomeDirectory(path)
       // await SOnlineService.downloadFileWithDataId(filePath, this.itemInfo.id+"")
       let dataUrl = `https://www.supermapol.com/web/datas/${
         itemInfo.id
@@ -220,7 +215,7 @@ async function downFileAction(
       if (UserType.isIPortalUser(currentUser)) {
         let url = currentUser.serverUrl
         if (url.indexOf('http') !== 0) {
-          url = 'http://' + currentUser.serverUrl
+          url = `http://${currentUser.serverUrl}`
         }
         dataUrl = `${url}/datas/${itemInfo.id}/download`
       }
@@ -231,18 +226,18 @@ async function downFileAction(
           'Cache-Control': 'no-cache',
         }
       }
-      let downloadOptions = {
+      const downloadOptions = {
         fromUrl: dataUrl,
         toFile: filePath,
         background: true,
-        headers: headers,
+        headers,
         progressDivider: 2,
         begin: () => {
           Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
-          //'开始导入')
+          // '开始导入')
         },
         progress: res => {
-          let value = ~~res.progress.toFixed(0)
+          const value = ~~res.progress.toFixed(0)
           updateDownList({
             id: itemInfo.id,
             progress: value,
@@ -250,10 +245,10 @@ async function downFileAction(
           })
         },
       }
-      let result = downloadFile(downloadOptions)
+      const result = downloadFile(downloadOptions)
       result.promise.then(
         async () => {
-          let unzipRes = await FileTools.unZipFile(filePath, toPath)
+          const unzipRes = await FileTools.unZipFile(filePath, toPath)
           if (unzipRes === false) {
             await FileTools.deleteFile(filePath)
             Toast.show('网络数据已损坏，无法正常使用')
@@ -264,7 +259,7 @@ async function downFileAction(
               downed: true,
             })
             await FileTools.deleteFile(filePath)
-            let newData = []
+            const newData = []
             await _setFilterDatas(
               toPath,
               {
@@ -274,10 +269,10 @@ async function downFileAction(
               },
               newData,
             )
-            for (let i in newData) {
+            for (const i in newData) {
               if (newData[i].fileType === 'workspace') {
-                let filePath = newData[i].filePath
-                let is3D = await SScene.is3DWorkspace({ server: filePath })
+                const { filePath } = newData[i]
+                const is3D = await SScene.is3DWorkspace({ server: filePath })
                 if (is3D === true) {
                   let result = await importSceneWorkspace({
                     server: filePath,
@@ -303,7 +298,7 @@ async function downFileAction(
                   //   )
                   // }
                 } else {
-                  let result = await importWorkspace({ path: filePath })
+                  const result = await importWorkspace({ path: filePath })
                   if (result.msg !== undefined) {
                     Toast.show(
                       getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
@@ -320,15 +315,15 @@ async function downFileAction(
                     result.length > 0
                       ? Toast.show(
                         getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
-                      ) //'数据导入成功')
+                      ) // '数据导入成功')
                       : Toast.show(
                         getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
-                      ) //'数据导入失败')
+                      ) // '数据导入失败')
                   },
                   () => {
                     Toast.show(
                       getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
-                    ) //'数据导入失败')
+                    ) // '数据导入失败')
                   },
                 )
               }
@@ -342,13 +337,13 @@ async function downFileAction(
             downed: false,
           })
           Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
-          //'请求异常，导入失败')
+          // '请求异常，导入失败')
         },
       )
     }
   } catch (error) {
     Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
-    //'导入失败')
+    // '导入失败')
   }
 }
 

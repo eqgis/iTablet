@@ -35,15 +35,13 @@ const initialState = fromJS({})
 export default handleActions(
   {
     [`${MODULES_SET}`]: (state, { payload }) => {
-      let appConfig = payload
+      const appConfig = payload
       return fromJS(appConfig)
     },
-    [`${MODULES_SET_CUT_MAP_MODULE}`]: (state, { payload }) => {
-      return state.setIn(['currentMapModule'], fromJS(payload))
-    },
-    [REHYDRATE]: (state, payload) => {
-      return payload && payload.appConfig ? fromJS(payload.appConfig) : state
-    },
+    [`${MODULES_SET_CUT_MAP_MODULE}`]: (state, { payload }) =>
+      state.setIn(['currentMapModule'], fromJS(payload)),
+    [REHYDRATE]: (state, payload) =>
+      payload && payload.appConfig ? fromJS(payload.appConfig) : state,
   },
   initialState,
 )

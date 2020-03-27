@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, Text ,TouchableOpacity} from 'react-native'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 import { Container } from '../../components'
 
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap ,SCollectSceneFormView} from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView } from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
-import { ConstOnline ,TouchType} from '../../constants'
+import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
-import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude';
-
+import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
 
 export default class CollectSceneFormSet extends Component {
   props: {
     navigation: Object,
-    fixedPositions:Function,
+    fixedPositions: Function,
   }
 
   constructor(props) {
@@ -46,20 +51,19 @@ export default class CollectSceneFormSet extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getFixedPosition()
   }
 
-  getFixedPosition =async()=>{
-    let fiexdPoint=await SCollectSceneFormView.getFixedPosition()
+  getFixedPosition = async () => {
+    let fiexdPoint = await SCollectSceneFormView.getFixedPosition()
     GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(fiexdPoint)
   }
 
-  getCurrentPosition =async() =>{
+  getCurrentPosition = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(global.language).Profile
-        .MAP_AR_DATUM_AUTO_LOCATIONING,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
     let map = await SMap.getCurrentPosition()
 
@@ -67,73 +71,67 @@ export default class CollectSceneFormSet extends Component {
 
     GLOBAL.Loading.setLoading(false)
     Toast.show(
-      getLanguage(global.language).Profile
-        .MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
     )
   }
 
-  mapSelectPoint =async() =>{
+  mapSelectPoint = async () => {
     GLOBAL.MapSelectPointType = 'selectPoint'
     GLOBAL.OverlayView.setVisible(false)
 
     GLOBAL.ToolBar.setVisible(false)
-    GLOBAL.MapXmlStr=await SMap.mapToXml()
-    
+    GLOBAL.MapXmlStr = await SMap.mapToXml()
+
     GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
     GLOBAL.MAPSELECTPOINT.setVisible(true)
     // GLOBAL.SelectPointLatitudeAndLongitude.setVisible(true)
-    
+
     //导航选点 全屏时保留mapController
     GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
 
     GLOBAL.toolBox.showFullMap(true)
     GLOBAL.toolBox.showFullMap(false)
     GLOBAL.toolBox.showFullMap(true)
-    
+
     //考虑搜索界面跳转，不能直接goBack
     let map = await SMap.getCurrentPosition()
     let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
-      wsData.layerIndex = 3
-      let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      NavigationService.navigate('MapView', {
-        wsData,
-        isExample: true,
-        noLegend: true,
-        showMarker: {
-          x:map.x,
-          y:map.y,
-        },
-      })
-      GLOBAL.toolBox.showFullMap(true)
-      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-      let point={
-        x:map.x,
-        y:map.y,
-      }
-      GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData,point)
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE=point
-    
+    wsData.layerIndex = 3
+    let licenseStatus = await SMap.getEnvironmentStatus()
+    global.isLicenseValid = licenseStatus.isLicenseValid
+    NavigationService.navigate('MapView', {
+      wsData,
+      isExample: true,
+      noLegend: true,
+      showMarker: {
+        x: map.x,
+        y: map.y,
+      },
+    })
+    GLOBAL.toolBox.showFullMap(true)
+    GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+    let point = {
+      x: map.x,
+      y: map.y,
+    }
+    GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
   }
 
-  renderButtons () {
-    return(
-    <View style={styles.buttonItem}>
-    
-    <TouchableOpacity
-    style={styles.buttonTouable}
-    onPress={
-        this.getCurrentPosition
-    }>
-    <Text style={styles.itemButton}>
-      {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
-    </Text>
+  renderButtons() {
+    return (
+      <View style={styles.buttonItem}>
+        <TouchableOpacity
+          style={styles.buttonTouable}
+          onPress={this.getCurrentPosition}
+        >
+          <Text style={styles.itemButton}>
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+          </Text>
+        </TouchableOpacity>
 
-    </TouchableOpacity>
-
-
-    {/** 暂时屏蔽掉地图选点 */}
-    {/* <TouchableOpacity
+        {/** 暂时屏蔽掉地图选点 */}
+        {/* <TouchableOpacity
     style={styles.buttonTouable}
     onPress={
       this.mapSelectPoint
@@ -143,68 +141,62 @@ export default class CollectSceneFormSet extends Component {
     </Text>
 
     </TouchableOpacity> */}
-
-
-    
-    
-    </View>
+      </View>
     )
   }
 
-  renderTitle(){
+  renderTitle() {
     return (
-        <View style={{ backgroundColor: color.background }}>
-
-          <View style={styles.item}>
-            <Text style={styles.itemtitle}>
-              {getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION}
-            </Text>
-            <Text style={styles.itemSubTitle}>
-              {'('+getLanguage(global.language).Profile.MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH+')'}
-            </Text>
-          </View>
-          <View style={styles.separateLine} />
-          <MapSelectPointLatitudeAndLongitude
-              // style={{
-              //   alignItems: 'flex-end'
-              // }}
-              ref={ref => (GLOBAL.DATUMPOINTVIEWSET = ref)}
-                isEdit={true}
-            ></MapSelectPointLatitudeAndLongitude>
-
-          {/* <View style={styles.separateLine} /> */}
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION}
+          </Text>
+          <Text style={styles.itemSubTitle}>
+            {'(' +
+              getLanguage(global.language).Profile
+                .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH +
+              ')'}
+          </Text>
         </View>
-      )
+        <View style={styles.separateLine} />
+        <MapSelectPointLatitudeAndLongitude
+          // style={{
+          //   alignItems: 'flex-end'
+          // }}
+          ref={ref => (GLOBAL.DATUMPOINTVIEWSET = ref)}
+          isEdit={true}
+        />
+
+        {/* <View style={styles.separateLine} /> */}
+      </View>
+    )
   }
 
   _renderHeaderRight = () => {
-      return (
-        <TouchableOpacity
-          key={'search'}
-          onPress={async () => {
-            let point=GLOBAL.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
-            this.fixedPositions(point)
-          }}
-        >
-          <Text
-            style={styles.textConfirm}
-            >
-            {getLanguage(global.language).Map_Settings.CONFIRM}
-          </Text>
-        </TouchableOpacity>
-      )
-    
+    return (
+      <TouchableOpacity
+        key={'search'}
+        onPress={async () => {
+          let point = GLOBAL.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
+          this.fixedPositions(point)
+        }}
+      >
+        <Text style={styles.textConfirm}>
+          {getLanguage(global.language).Map_Settings.CONFIRM}
+        </Text>
+      </TouchableOpacity>
+    )
   }
-  
+
   renderContent() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.background }}>
         <View style={{ flex: 1, backgroundColor: color.background }}>
           <View style={{ height: 10 }} />
 
-            {this.renderTitle()}
-            {this.renderButtons()}
-
+          {this.renderTitle()}
+          {this.renderButtons()}
         </View>
       </ScrollView>
     )
@@ -214,11 +206,10 @@ export default class CollectSceneFormSet extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile
-            .MAP_AR_DATUM_SETTING,
+          title: getLanguage(global.language).Profile.MAP_AR_DATUM_SETTING,
           //'设置',
           navigation: this.props.navigation,
-          headerRight:this._renderHeaderRight(),
+          headerRight: this._renderHeaderRight(),
         }}
       >
         {this.renderContent()}
@@ -265,7 +256,6 @@ const styles = StyleSheet.create({
 
     backgroundColor: color.white,
   },
-
 
   titleHeader: {
     fontSize: scaleSize(24),
@@ -325,6 +315,5 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(22),
     color: color.white,
     padding: scaleSize(10),
-  }
+  },
 })
-

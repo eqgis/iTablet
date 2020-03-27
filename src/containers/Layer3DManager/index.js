@@ -1,5 +1,5 @@
-import Layer3DManager from './Layer3DManager'
 import { connect } from 'react-redux'
+import Layer3DManager from './Layer3DManager'
 import { refreshLayer3dList, setCurrentLayer3d } from '../../models/layers'
 
 const mapStateToProps = state => ({

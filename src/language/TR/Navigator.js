@@ -1,4 +1,4 @@
-//底部导航、首页弹出框选项
+// 底部导航、首页弹出框选项
 const Navigator_Label = {
   HOME: 'Anasayfa',
   FRIENDS: 'Rehber',

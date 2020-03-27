@@ -81,26 +81,26 @@ export default class CollectSceneFormView extends React.Component {
       // 初始化数据
       (async function() {
 
-        let udbPath = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            this.props.user.currentUser.userName +
-            '/' +
-            ConstPath.RelativeFilePath.AR,
-        )
-        SCollectSceneFormView.initSceneFormView(
-          this.datasourceAlias,
-          this.datasetName,
-          this.datasetPointName,
-          this.props.language,
-          udbPath,
-        )
+        // let udbPath = await FileTools.appendingHomeDirectory(
+        //   ConstPath.UserPath +
+        //     this.props.user.currentUser.userName +
+        //     '/' +
+        //     ConstPath.RelativeFilePath.AR,
+        // )
+        // SCollectSceneFormView.initSceneFormView(
+        //   this.datasourceAlias,
+        //   this.datasetName,
+        //   this.datasetPointName,
+        //   this.props.language,
+        //   udbPath,
+        // )
 
-        let point=this.datumPoint
-        setTimeout(function() {
-          //设置基点
-          SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
-          SCollectSceneFormView.startRecording()
-        }, 500)
+        // let point=this.datumPoint
+        // setTimeout(function() {
+        //   //设置基点
+        //   SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
+        //   SCollectSceneFormView.startRecording()
+        // }, 500)
 
         //注册监听
         if (Platform.OS === 'ios') {
@@ -143,6 +143,37 @@ export default class CollectSceneFormView extends React.Component {
     //   this.onTotalLengthChanged,
     // )
   }
+
+  _initData =async()=>{
+
+    let udbPath = await FileTools.appendingHomeDirectory(
+      ConstPath.UserPath +
+        this.props.user.currentUser.userName +
+        '/' +
+        ConstPath.RelativeFilePath.AR,
+    )
+
+    await SCollectSceneFormView.initSceneFormView(
+      this.datasourceAlias,
+      this.datasetName,
+      this.datasetPointName,
+      this.props.language,
+      udbPath,
+    )
+
+    let point=this.datumPoint
+    setTimeout(function() {
+      //设置基点
+      SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
+      SCollectSceneFormView.startRecording()
+    }, 500)
+  }
+
+  _onGetInstance = async view => {
+    this.view = view
+    this._initData()
+  }
+
 
   onTotalLengthChanged = params => {
     this.setState({
@@ -769,6 +800,7 @@ export default class CollectSceneFormView extends React.Component {
       >
         <SMCollectSceneFormView
           ref={ref => (this.SMCollectSceneFormView = ref)}
+          onGetInstance={this._onGetInstance}
         />
         {/*{this.state.showHistory && this.renderHistoryView()}*/}
         {this.state.showbuttons && this.renderBottomBtns()}

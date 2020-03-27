@@ -32,6 +32,14 @@ function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
+    case ConstToolType.MAP_MARKS_DRAW_TEXT:
+      buttons = [
+        {
+          type: ToolbarBtnType.CANCEL,
+          action: MarkAction.back,
+        },
+      ]
+      break
     case ConstToolType.MAP_MARKS:
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,

@@ -160,7 +160,7 @@ async function touchCallback(event) {
               event.screenPoint.y,
             )
             NavigationService.goBack()
-            GLOBAL.TouchType = TouchType.NORMAL
+            //GLOBAL.TouchType = TouchType.NORMAL
           }
         },
         backcb: async () => {

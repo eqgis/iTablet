@@ -48,7 +48,7 @@ async function words() {
     layerType === 'CADLAYER' ||
     layerType === 'TEXTLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW_TEXT, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
     })

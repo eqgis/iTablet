@@ -154,7 +154,8 @@ async function getToolBarData(type, params = {}) {
     toolBarData = mapSettingModule().getData(type)
   } else if (
     type === ConstToolType.MAP_MARKS ||
-    type === ConstToolType.MAP_MARKS_DRAW
+    type === ConstToolType.MAP_MARKS_DRAW ||
+    type === ConstToolType.MAP_MARKS_DRAW_TEXT
   ) {
     toolBarData = markModule().getData(type, params)
   }
@@ -239,6 +240,12 @@ async function setToolBarData(type, params = {}) {
     type === ConstToolType.MAP_COLOR_MODE
   ) {
     toolBarData = mapSettingModule()
+  } else if (
+    type === ConstToolType.MAP_MARKS ||
+    type === ConstToolType.MAP_MARKS_DRAW ||
+    type === ConstToolType.MAP_MARKS_DRAW_TEXT
+  ) {
+    toolBarData = markModule()
   }
   // else {
   //   toolBarData = mapModule().getData(type)

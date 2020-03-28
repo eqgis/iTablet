@@ -2727,9 +2727,19 @@ export default class MapView extends React.Component {
               GLOBAL.MapSelectPointType = undefined
 
               GLOBAL.MapSelectPointType = undefined
-              GLOBAL.ToolBar.setVisible(true)
-              GLOBAL.toolBox.showFullMap(false)
-              GLOBAL.OverlayView.setVisible(true)
+              // GLOBAL.ToolBar.setVisible(true)
+              // GLOBAL.toolBox.showFullMap(false)
+              // GLOBAL.OverlayView.setVisible(true)
+
+              GLOBAL.AIDETECTCHANGE.setVisible(false)
+              this.showFullMap(false)
+              GLOBAL.toolBox.setVisible(false)
+            
+              if (GLOBAL.isswitch) {
+                GLOBAL.isswitch = false
+                this.switchAr()
+              }
+
 
               Toast.show(
                 getLanguage(global.language).Profile
@@ -2811,16 +2821,26 @@ export default class MapView extends React.Component {
               }
 
               GLOBAL.MapSelectPointType = undefined
-              GLOBAL.ToolBar.setVisible(true)
-              GLOBAL.toolBox.showFullMap(false)
+              // GLOBAL.ToolBar.setVisible(true)
+              // GLOBAL.toolBox.showFullMap(false)
 
-              GLOBAL.OverlayView.setVisible(true)
+              // GLOBAL.OverlayView.setVisible(true)
               GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
                 GLOBAL.DATUMPOINTVIEW &&
                 GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
                 )
               this.setState({ showScaleView: true })
+
+
+              GLOBAL.AIDETECTCHANGE.setVisible(false)
+              this.showFullMap(false)
+              GLOBAL.toolBox.setVisible(false)
+            
+              if (GLOBAL.isswitch) {
+                GLOBAL.isswitch = false
+                this.switchAr()
+              }
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)

@@ -76,28 +76,28 @@ export default class CollectSceneFormView extends React.Component {
 
   componentDidMount() {
     //安排任务在交互和动画完成之后执行
-    setTimeout(async () => {
-      // 初始化数据
-      let udbPath = await FileTools.appendingHomeDirectory(
-        ConstPath.UserPath +
-          this.props.user.currentUser.userName +
-          '/' +
-          ConstPath.RelativeFilePath.AR,
-      )
-      await SCollectSceneFormView.initSceneFormView(
-        this.datasourceAlias,
-        this.datasetName,
-        this.datasetPointName,
-        this.props.language,
-        udbPath,
-      )
+    // setTimeout(async () => {
+    //   // 初始化数据
+    //   let udbPath = await FileTools.appendingHomeDirectory(
+    //     ConstPath.UserPath +
+    //       this.props.user.currentUser.userName +
+    //       '/' +
+    //       ConstPath.RelativeFilePath.AR,
+    //   )
+    //   await SCollectSceneFormView.initSceneFormView(
+    //     this.datasourceAlias,
+    //     this.datasetName,
+    //     this.datasetPointName,
+    //     this.props.language,
+    //     udbPath,
+    //   )
 
-      let point = this.datumPoint
+    //   let point = this.datumPoint
 
-      //设置基点
-      SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
-      SCollectSceneFormView.startRecording()
-    }, 500)
+    //   //设置基点
+    //   SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+    //   SCollectSceneFormView.startRecording()
+    // }, 500)
 
     //注册监听
     if (Platform.OS === 'ios') {

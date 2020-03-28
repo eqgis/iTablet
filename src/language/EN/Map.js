@@ -68,6 +68,7 @@ const Map_Main_Menu = {
   RIGHT_BOTTOM: 'Right Bottom Alignment',
 
   STYLE: 'Styles',
+  STYLE_EDIT: 'Styles Edit',
   STYLE_SYMBOL: 'Symbol',
   STYLE_SYMBOL_SIZE: 'Symbol Size',
   STYLE_COLOR: 'Color',
@@ -301,6 +302,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'Fill Hollow',
   EDIT_CANCEL_SELECTION: 'Cancel Selection',
   MOVE: 'Move',
+  OBJMOVE: 'Move',
   FREE_DRAW_ERASE: 'Free-draw Erase',
 
   PLOTTING: 'Plotting',

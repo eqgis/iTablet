@@ -74,6 +74,7 @@ const Map_Main_Menu = {
 
   // 地图制图及公共 风格
   STYLE: '风格',
+  STYLE_EDIT: '风格编辑',
   STYLE_SYMBOL: '符号',
   STYLE_SIZE: '大小',
   STYLE_SYMBOL_SIZE: '符号大小',
@@ -316,6 +317,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: '填补岛洞',
   EDIT_CANCEL_SELECTION: '取消选择',
   MOVE: '平移',
+  OBJMOVE: '对象平移',
   FREE_DRAW_ERASE: '手绘擦除',
 
   // 标绘

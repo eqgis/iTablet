@@ -86,7 +86,7 @@ async function pointline() {
 async function freeline() {
   const _params = ToolbarModule.getParams()
   const { currentLayer } = _params
-  // let reg = /^Label_(.*)#$/
+  let showMenuDialog = true
   let layerType
   if (currentLayer) {
     layerType = LayerUtils.getLayerType(currentLayer)
@@ -99,6 +99,7 @@ async function freeline() {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
       height: ConstToolType.HEIGHT[4],
+      showMenuDialog,
     })
     SMap.setAction(Action.FREEDRAW)
   } else {
@@ -168,10 +169,12 @@ function commit(type) {
       currentLayer.datasetName,
       _params.user.currentUser.userName,
     )
-    SMap.submit()
-    SMap.refreshMap()
-    //提交标注后 需要刷新属性表
-    GLOBAL.NEEDREFRESHTABLE = true
+    SMap.setLayerEditable(currentLayer.name,true).then(()=>{
+      SMap.submit()
+      SMap.refreshMap()
+      //提交标注后 需要刷新属性表
+      GLOBAL.NEEDREFRESHTABLE = true
+    })
   } else {
     return false
   }

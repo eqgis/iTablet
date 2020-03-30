@@ -3,19 +3,19 @@
  */
 import AddData from './AddData'
 import AddAction from './AddAction'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
+import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
 export async function action(type) {
-  const _data = await AddData.getData(type)
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const data = utils.getLayout(type, orientation)
+  const _data = await AddData.getData(type, params)
+  const containerType = ToolbarType.list
+  const data = ToolBarHeight.getToolbarSize(containerType, {})
   await setModuleData(type, _data)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
-    containerType: ToolbarType.list,
+    containerType,
     isFullScreen: true,
     isTouchProgress: false,
     showMenuDialog: false,
@@ -56,7 +56,6 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_function_add.png'),
     getData: AddData.getData,
     actions: AddAction,
-    getLayout: utils.getLayout,
     setModuleData,
   }
 }

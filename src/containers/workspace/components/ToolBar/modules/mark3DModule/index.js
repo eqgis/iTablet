@@ -8,20 +8,23 @@
 import Mark3DData from './Mark3DData'
 import Mark3DAction from './Mark3DAction'
 import ToolbarModule from '../ToolbarModule'
-import utils from './utils'
 import { ToolbarType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
+import ToolBarHeight from '../ToolBarHeight'
 
-function action(type) {
+async function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = await Mark3DData.getData(type, params)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
-    containerType: ToolbarType.table,
+    containerType,
     isFullScreen: true,
-    column: layout.column,
-    height: layout.height,
+    column: data.column,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
   setModuleData(type)
 }
@@ -52,6 +55,5 @@ export default function(type, title, customAction) {
     getData: Mark3DData.getData,
     actions: Mark3DAction,
     setModuleData: setModuleData,
-    getLayout: utils.getLayout,
   }
 }

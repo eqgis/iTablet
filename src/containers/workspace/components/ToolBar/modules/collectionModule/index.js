@@ -5,19 +5,20 @@ import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import utils from './utils'
+import ToolBarHeight from '../ToolBarHeight'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = CollectionData.getData(type)
+  const containerType = ToolbarType.tabs
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
-    column: layout.column,
-    height: layout.height,
+    column: data.column,
+    height: data.height,
   })
 }
 
@@ -46,7 +47,6 @@ export default function(type, title, customAction) {
     image: require('../../../../../../assets/function/icon_function_symbol.png'),
     getData: CollectionData.getData,
     actions: CollectionAction,
-    getLayout: utils.getLayout,
     setModuleData,
   }
 }

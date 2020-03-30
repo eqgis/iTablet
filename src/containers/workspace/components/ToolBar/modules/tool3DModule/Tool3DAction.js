@@ -5,7 +5,6 @@ import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import utils from './utils'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
 /** 距离量算 * */
@@ -95,12 +94,9 @@ function select() {
   GLOBAL.Map3DSymbol = true
   // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_SELECT)
   const type = ConstToolType.MAP3D_SYMBOL_SELECT
-  const _data = utils.getLayout(type)
   params.setToolbarVisible(true, type, {
-    containerType: 'table',
+    containerType: ToolbarType.table,
     isFullScreen: false,
-    column: _data.column,
-    height: _data.height,
   })
 }
 

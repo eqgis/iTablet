@@ -54,13 +54,6 @@ async function getData(type, params) {
           size: 'large',
           image: require('../../../../../../assets/mapToolbar/icon_scene_pointAnalyst.png'),
         },
-        Platform.OS === 'android' && {
-          key: 'boxClip',
-          title: getLanguage(params.language).Map_Main_Menu.TOOLS_BOX_CLIP,
-          action: Tool3DAction.boxClip,
-          size: 'large',
-          image: require('../../../../../../assets/mapToolbar/icon_sence_box_clip.png'),
-        },
         // {
         //   key: 'planeClip',
         //   title: getLanguage(params.language).Map_Main_Menu
@@ -108,6 +101,15 @@ async function getData(type, params) {
         //   image: require('../../../../assets/mapToolbar/icon_sence_cross_clip.png'),
         // },
       ]
+      if (Platform.OS === 'android') {
+        data.push({
+          key: 'boxClip',
+          title: getLanguage(params.language).Map_Main_Menu.TOOLS_BOX_CLIP,
+          action: Tool3DAction.boxClip,
+          size: 'large',
+          image: require('../../../../../../assets/mapToolbar/icon_sence_box_clip.png'),
+        })
+      }
       break
     case ConstToolType.MAP3D_SYMBOL_SELECT:
       data = [

@@ -1,6 +1,5 @@
 import StyleAction from './StyleAction'
 import StyleData from './StyleData'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
@@ -10,41 +9,46 @@ import NavigationService from '../../../../../NavigationService'
 function action(type) {
   const params = ToolbarModule.getParams()
   setModuleData(type)
+  let _type,
+    _params = {}
   if (params.currentLayer.themeType <= 0 && !params.currentLayer.isHeatmap) {
     if (params.currentLayer.type === 83) {
-      params.showFullMap && params.showFullMap(true)
-      params.setToolbarVisible(true, ConstToolType.GRID_STYLE, {
+      _type = ConstToolType.GRID_STYLE
+      _params = {
         containerType: ToolbarType.list,
         isFullScreen: false,
         height: ConstToolType.HEIGHT[4],
-      })
+      }
     } else if (
       params.currentLayer.type === 1 ||
       params.currentLayer.type === 3 ||
       params.currentLayer.type === 5
     ) {
-      params.showFullMap && params.showFullMap(true)
-      params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+      _type = ConstToolType.MAP_STYLE
+      _params = {
         containerType: ToolbarType.symbol,
         isFullScreen: false,
         column: 4,
         height: ConstToolType.THEME_HEIGHT[3],
-      })
+      }
     } else if (params.currentLayer.type === 7) {
-      params.showFullMap && params.showFullMap(true)
-      params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+      _type = ConstToolType.MAP_STYLE
+      _params = {
         containerType: ToolbarType.list,
         isFullScreen: true,
         column: 4,
         height: 0,
         showMenuDialog: true,
-      })
+      }
     } else {
       NavigationService.navigate('LayerManager')
       Toast.show(
         getLanguage(params.language).Prompt.THE_CURRENT_LAYER_CANNOT_BE_STYLED,
       )
+      return
     }
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, _type, _params)
   } else {
     NavigationService.navigate('LayerManager')
     Toast.show(
@@ -80,6 +84,5 @@ export default function(type, title, customAction) {
     getMenuData: StyleData.getMenuData,
     actions: StyleAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

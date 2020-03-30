@@ -74,6 +74,7 @@ const Map_Main_Menu = {
 
   // 地图制图及公共 风格
   STYLE: '风格',
+  STYLE_EDIT: '风格编辑',
   STYLE_SYMBOL: '符号',
   STYLE_SIZE: '大小',
   STYLE_SYMBOL_SIZE: '符号大小',
@@ -316,6 +317,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: '填补岛洞',
   EDIT_CANCEL_SELECTION: '取消选择',
   MOVE: '平移',
+  OBJMOVE: '对象平移',
   FREE_DRAW_ERASE: '手绘擦除',
 
   // 标绘
@@ -422,6 +424,23 @@ const Map_Main_Menu = {
   NETWORK_DATASET: '路网数据集',
   MODEL_FILE: '导航模型文件',
   MY_LOCATION: '我的位置',
+  //导航采集
+  MAP_INCREMENT_START:'开始',
+  MAP_INCREMENT_STOP:'停止',
+  MAP_INCREMENT_ADD_POINT:'添加点',
+  MAP_INCREMENT_CANCEL:'取消',
+  MAP_INCREMENT_COMMIT:'提交',
+
+  MAP_INCREMENT_GPS_POINT:'GPS打点式',
+  MAP_INCREMENT_GPS_TRACK:'GPS轨迹式',
+  MAP_INCREMENT_POINTLINE:'点绘式',
+  MAP_INCREMENT_FREELINE:'自由式',
+
+  MAP_INCREMENT_ADD_NODE:'添加节点',
+  MAP_INCREMENT_EDIT_NODE:'编辑节点',
+  MAP_INCREMENT_DELETE_NODE:'删除节点',
+  MAP_INCREMENT_DELETE_OBJECT:'删除对象',
+  MAP_INCREMENT_ADD_ATTRIBUTE:'添加属性',
 }
 
 // 推演动画

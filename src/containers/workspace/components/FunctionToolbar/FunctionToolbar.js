@@ -41,6 +41,7 @@ import {
   roadNetModule,
   markModule,
   mark3DModule,
+  incrementModule,
 } from '../ToolBar/modules'
 
 const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -396,6 +397,13 @@ export default class FunctionToolbar extends React.Component {
               !isLicenseNotValid,
             ),
           )
+          break
+        case 'incrementModule':
+          data.push(incrementModule(
+            item.type,
+            getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
+            !isLicenseNotValid,
+          ))
           break
         case 'themeModule':
           data.push(

@@ -235,6 +235,15 @@ export default class EnterDatumPoint extends Component {
     )
   }
 
+  back = () => {
+      if (GLOBAL.isswitch) {
+        GLOBAL.isswitch = false
+        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+      }
+      NavigationService.goBack()
+      return true
+  }
+
   renderHintText() {
     return (
       <View>
@@ -270,6 +279,7 @@ export default class EnterDatumPoint extends Component {
           title: getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION,
           //'请选择当前位置坐标',
           navigation: this.props.navigation,
+          backAction: this.back,
         }}
       >
         {this.renderContent()}

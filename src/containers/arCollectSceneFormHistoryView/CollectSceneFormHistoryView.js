@@ -46,6 +46,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
       reName: '',
       BATCH_DELETE: false,
       selectedNum: 0,
+      udbPath: '',
     }
   }
 
@@ -278,6 +279,20 @@ export default class CollectSceneFormHistoryView extends React.Component {
           >
             <Text style={styles.historyItemText}>{item.name}</Text>
           </TouchableOpacity>
+          {/* <TouchableOpacity
+            onPress={() => {
+              // this.deleteHistory(item)
+              this.setState({ moreType: 'DATASOURCE_RENAME', index: item.index ,reName: item.name,udbPath: item.path})
+              this.PopView.setVisible(true)
+            }}
+            style={styles.historyDelete}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().ar.toolbar.icon_more}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity> */}
           {/*<TouchableOpacity*/}
           {/*style={styles.historyDelete}*/}
           {/*onPress={() => {*/}
@@ -400,6 +415,27 @@ export default class CollectSceneFormHistoryView extends React.Component {
           .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY,
       )
     }
+  }
+
+  datasourceRename = async () => {
+    let updata = this.getDatasource
+    NavigationService.navigate('InputPage', {
+      headerTitle: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
+      value: this.state.reName,
+      placeholder: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
+      type: 'name',
+      cb: async value => {
+        let result=await SCollectSceneFormView.dataSourceReName(this.state.reName, value,this.state.udbPath)
+        if(result && (this.state.collectData === this.state.reName)){
+          this.setState({
+            collectData: value,
+            chooseDataSource: false,
+          })
+        }
+        NavigationService.goBack()
+        updata()
+      },
+    })
   }
 
   rename = async () => {
@@ -597,7 +633,23 @@ export default class CollectSceneFormHistoryView extends React.Component {
           activeOpacity={0.5}
         />
       )
-    } else if (this.state.moreType === 'DELETE') {
+    } 
+    else if (this.state.moreType === 'DATASOURCE_RENAME') {
+      return (
+        <Button
+          style={styles.item}
+          titleStyle={styles.btnTitle}
+          title={getLanguage(global.language).Prompt.RENAME}
+          key={getLanguage(global.language).Prompt.RENAME}
+          onPress={() => {
+            this.datasourceRename()
+            this.PopView.setVisible(false)
+          }}
+          activeOpacity={0.5}
+        />
+      )
+    } 
+    else if (this.state.moreType === 'DELETE') {
       return (
         <View>
           <Button

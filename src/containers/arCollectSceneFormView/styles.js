@@ -195,7 +195,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    top: scaleSize(100),
+    top: scaleSize(150),
     left: scaleSize(20),
   },
   titleTotal: {

@@ -74,6 +74,7 @@ const Map_Main_Menu = {
 
   // マップ制图及公共 スタイル
   STYLE: 'スタイル',
+  STYLE_EDIT: 'スタイル 編集',
   STYLE_SYMBOL: 'シンボル',
   STYLE_SIZE: 'サイズ',
   STYLE_SYMBOL_SIZE: 'シンボルサイズ',
@@ -305,6 +306,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'ドーナツの補填',
   EDIT_CANCEL_SELECTION: '選択のキャンセル',
   MOVE: '移動',
+  OBJMOVE: '対象移動',
   FREE_DRAW_ERASE: '手動描画でイレース',
 
   // アニメシンボル

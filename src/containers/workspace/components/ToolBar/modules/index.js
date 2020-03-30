@@ -17,7 +17,7 @@ import mapSettingModule from './mapSettingModule'
 import roadNetModule from './roadNetModule'
 import markModule from './markModule'
 import mark3DModule from './mark3DModule'
-
+import incrementModule from './incrementModule'
 export {
   startModule,
   fly3DModule,
@@ -38,4 +38,5 @@ export {
   roadNetModule,
   markModule,
   mark3DModule,
+  incrementModule,
 }

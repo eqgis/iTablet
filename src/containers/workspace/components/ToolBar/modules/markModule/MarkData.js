@@ -11,6 +11,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import { LayerUtils } from '../../../../../../utils'
 import MarkAction from './MarkAction'
+// import EditAction from '../editModule/EditAction'
 import constants from '../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 
@@ -30,6 +31,14 @@ function getData(type, params) {
         },
         ToolbarBtnType.PLACEHOLDER,
         ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_DRAW_TEXT:
+      buttons = [
+        {
+          type: ToolbarBtnType.CANCEL,
+          action: MarkAction.back,
+        },
       ]
       break
     case ConstToolType.MAP_MARKS:
@@ -146,6 +155,20 @@ function getData(type, params) {
               ? getThemeAssets().mapTools.icon_free_region_disable
               : require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
+        },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.OBJMOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: 'showEditLabel',
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
+          action: MarkAction.showEditLabel,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_edit.png'),
         },
       ]
       break

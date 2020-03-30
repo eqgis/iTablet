@@ -203,15 +203,17 @@ export default class ToolBar extends React.PureComponent {
     })
   }
 
-  changeHeight = async (orientation, type) => {
+  changeHeight = async () => {
     if (this.height === 0) return
     if (!(this.isShow && this.isBoxShow)) {
       this.showToolbar()
       return
     }
-    let data = ToolbarHeight.getToolbarHeight(type)
-    this.height = data.height
-    this.column = data.column
+    let _data = ToolbarHeight.getToolbarSize(this.state.containerType, {
+      data: this.state.data,
+    })
+    this.height = _data.height
+    this.column = _data.column
     this.showToolbar()
   }
 
@@ -252,7 +254,7 @@ export default class ToolBar extends React.PureComponent {
     })
     // let data = toolbarModule.data
     // let buttons = toolbarModule.buttons
-    this.lastUdbList = toolbarModule.data //保存上次的数据源数据
+    // this.lastUdbList = toolbarModule.data //保存上次的数据源数据
 
     return toolbarModule
   }
@@ -478,23 +480,27 @@ export default class ToolBar extends React.PureComponent {
     }
     // Box内容框的显示和隐藏
     let bottom = parseFloat(JSON.stringify(this.state.bottom))
-    if (
-      JSON.stringify(this.contentView.getContentHeight()) !==
-      this.height.toString()
-    ) {
-      let boxAnimated = await this.contentView.changeHeight({
-        height: this.height,
-        column: this.column > -1 ? this.column : undefined,
-        wait: true,
-      })
-      boxAnimated && this.height === 0 && bottom >= 0
+    // if (
+    //   JSON.stringify(this.contentView.getContentHeight()) !==
+    //   this.height.toString()
+    // ) {
+    let boxAnimated = await this.contentView.changeHeight({
+      height: this.height,
+      column: this.column > -1 ? this.column : undefined,
+      wait: true,
+    })
+    if (boxAnimated) {
+      this.height === 0 && bottom >= 0
         ? animatedList.unshift(boxAnimated)
         : animatedList.push(boxAnimated)
     }
-    if (bottom < 0) {
-      animatedList.forEach(animated => animated && animated.start())
-    } else {
-      Animated.sequence(animatedList).start()
+    // }
+    if (animatedList.length > 0) {
+      if (bottom < 0) {
+        animatedList.forEach(animated => animated && animated.start())
+      } else {
+        Animated.sequence(animatedList).start()
+      }
     }
     if (cb) {
       setTimeout(() => cb(), Const.ANIMATED_DURATION_2)

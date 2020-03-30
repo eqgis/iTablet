@@ -4,18 +4,19 @@
 import AiData from './AiData'
 import AiActions from './AiActions'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
-import utils from './utils'
+import ToolBarHeight from '../ToolBarHeight'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const data = utils.getLayout(type, orientation)
+  const _data = AiData.getData()
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type, data)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_AR_AI_ASSISTANT, {
-    containerType: 'table',
+    containerType,
     isFullScreen: true,
     height: data.height,
     column: data.column,
@@ -46,8 +47,6 @@ export default function(type, title, customAction) {
     size: 'large',
     image: getThemeAssets().ar.icon_ai_assistant,
     getData: AiData.getData,
-    // actions: AnalysisAction,
-    getLayout: utils.getLayout,
     setModuleData,
   }
 }

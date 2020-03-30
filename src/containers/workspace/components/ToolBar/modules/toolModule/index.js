@@ -1,19 +1,23 @@
 import ToolAction from './ToolAction'
 import ToolData from './ToolData'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import ToolBarHeight from '../ToolBarHeight'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = ToolData.getData(type, params)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_TOOLS, {
+    containerType,
     isFullScreen: true,
-    column: layout.column,
-    height: layout.height,
+    column: data.column,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
   // 重置canUndo和canRedo
   if (params.toolbarStatus.canUndo || params.toolbarStatus.canRedo) {
@@ -51,6 +55,5 @@ export default function(type, title, customAction) {
     getMenuData: ToolData.getMenuData,
     actions: ToolAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

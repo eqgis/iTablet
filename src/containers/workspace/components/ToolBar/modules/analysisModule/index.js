@@ -5,18 +5,23 @@ import AnalysisData from './AnalysisData'
 import AnalysisAction from './AnalysisAction'
 import ToolbarModule from '../ToolbarModule'
 import { getThemeAssets } from '../../../../../../assets'
-import utils from './utils'
+import { ToolbarType } from '../../../../../../constants'
+import ToolBarHeight from '../ToolBarHeight'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = AnalysisData.getData(type)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
+    containerType,
     isFullScreen: true,
-    height: layout.height,
-    column: layout.column,
+    height: data.height,
+    column: data.column,
+    data: _data.data,
+    buttons: _data.buttons,
   })
 }
 
@@ -45,8 +50,6 @@ export default function(type, title, customAction) {
     size: 'large',
     image: getThemeAssets().functionBar.rightbar_analysis,
     getData: AnalysisData.getData,
-    // actions: AnalysisAction,
-    getLayout: utils.getLayout,
     setModuleData,
   }
 }

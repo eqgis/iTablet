@@ -1,20 +1,25 @@
 import { SMap } from 'imobile_for_reactnative'
 import ThemeAction from './ThemeAction'
 import ThemeData from './ThemeData'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import ToolBarHeight from '../ToolBarHeight'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 
 async function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
+  const _type = ConstToolType.MAP_THEME_CREATE
+  const _data = ThemeData.getData(_type, params)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   params.showFullMap && params.showFullMap(true)
   await setModuleData(type)
-  params.setToolbarVisible(true, ConstToolType.MAP_THEME_CREATE, {
+  params.setToolbarVisible(true, _type, {
+    containerType,
     isFullScreen: true,
-    column: layout.column,
-    height: layout.height,
+    column: data.column,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
 }
 
@@ -47,6 +52,5 @@ export default function(type, title, customAction) {
     getMenuData: ThemeData.getMenuData,
     actions: ThemeAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

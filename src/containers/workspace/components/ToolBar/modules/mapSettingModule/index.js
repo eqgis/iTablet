@@ -6,23 +6,26 @@
 import { SMap } from 'imobile_for_reactnative'
 import MapSettingData from './MapSettingData'
 import MapSettingAction from './MapSettingAction'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType } from '../../../../../../constants'
+import ToolBarHeight from '../ToolBarHeight'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
-  const { orientation } = _params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = MapSettingData.getData(type)
+  const containerType = ToolbarType.colorTable
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
   await setModuleData(type)
 
   _params.setToolbarVisible(true, type, {
-    containerType: ToolbarType.colorTable,
-    column: layout.column,
+    containerType,
+    column: data.column,
     isFullScreen: false,
-    height: layout.height,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
 }
 
@@ -45,6 +48,5 @@ export default function(title) {
     getData: MapSettingData.getData,
     actions: MapSettingAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

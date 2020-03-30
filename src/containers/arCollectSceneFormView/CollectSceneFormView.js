@@ -145,11 +145,11 @@ export default class CollectSceneFormView extends React.Component {
     )
 
     let point=this.datumPoint
-    setTimeout(function() {
+    // setTimeout(function() {
       //设置基点
       SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
       SCollectSceneFormView.startRecording()
-    }, 500)
+    // }, 500)
   }
 
   _onGetInstance = async view => {

@@ -268,13 +268,13 @@ function getData(type, params) {
     //   break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -312,13 +312,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -380,13 +380,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -447,13 +447,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -477,13 +477,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -514,13 +514,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -575,13 +575,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -635,13 +635,13 @@ function getData(type, params) {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE:
       data = [
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
-        //   action: EditAction.move,
-        //   size: 'large',
-        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        // },
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,

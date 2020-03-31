@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, InteractionManager, Text } from 'react-native'
+import { View, InteractionManager, Text, TouchableOpacity } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
@@ -69,6 +69,7 @@ export default class LayerAttribute extends React.Component {
     setLayerAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
+    device: Object,
   }
 
   constructor(props) {
@@ -1388,6 +1389,7 @@ export default class LayerAttribute extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
         headerProps={{
           title: getHeaderTitle(this.type),
           navigation: this.props.navigation,
@@ -1400,7 +1402,7 @@ export default class LayerAttribute extends React.Component {
           withoutBack: true,
           headerRight,
         }}
-        // bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
+        bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
         style={styles.container}
       >
         {this.type !== 'MAP_3D' && (
@@ -1433,7 +1435,7 @@ export default class LayerAttribute extends React.Component {
               title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
               //'暂无属性',
             })}
-          {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
+          {/* {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()} */}
           <LocationView
             ref={ref => (this.locationView = ref)}
             style={styles.locationView}

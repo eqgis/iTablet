@@ -194,7 +194,7 @@ export default class setting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(this.props.language).Map_Module.MAP_3D,
+          title: this.props.device.orientation !== 'LANDSCAPE' && getLanguage(this.props.language).Map_Module.MAP_3D,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
@@ -203,7 +203,6 @@ export default class setting extends Component {
           withoutBack: true,
         }}
         bottomBar={this.renderToolBar()}
-        bottomProps={{ type: 'fix' }}
       >
         {this.renderSelection()}
       </Container>

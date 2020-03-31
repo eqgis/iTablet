@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   backgroudViewStyle: {
     flex: 1,
     position: 'absolute',
-    marginTop: scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0),
     width: '100%',
     height: '100%',
   },

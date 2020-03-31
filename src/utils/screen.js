@@ -46,6 +46,11 @@ if (deviceWidth > deviceHeight) {
  * return number dp
  */
 export function scaleSize(size) {
+  size = size / (defaultPixel < 1.5 ? 1.5 : 2)
+  return size
+}
+
+export function fixedSize(size) {
   size = (size * scale) / defaultPixel
   return size
 }

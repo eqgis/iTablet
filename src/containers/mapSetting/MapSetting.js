@@ -329,7 +329,7 @@ export default class MapSetting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getHeaderTitle(GLOBAL.Type),
+          title: this.props.device.orientation !== 'LANDSCAPE' && getHeaderTitle(GLOBAL.Type),
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

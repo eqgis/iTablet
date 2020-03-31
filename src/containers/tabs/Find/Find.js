@@ -19,6 +19,7 @@ import Toast from '../../../utils/Toast'
 import { scaleSize, OnlineServicesUtils } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
+import TabBar from '../TabBar'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
@@ -316,15 +317,24 @@ export default class Find extends Component {
     )
   }
 
+  renderTabBar = () => {
+    return <TabBar navigation={this.props.navigation}/>
+  }
+
   render() {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        hideInBackground={false}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
           withoutBack: true,
           navigation: this.props.navigation,
         }}
+        bottomBar={
+          this.renderTabBar()
+        }
+
       >
         {this._selectionRender()}
       </Container>

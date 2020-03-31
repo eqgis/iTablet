@@ -23,6 +23,7 @@ import { scaleSize } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
 import styles from './styles'
+import TabBar from '../TabBar'
 const Customer = 'Customer'
 import logos from '../../../assets/custom/logo'
 
@@ -478,11 +479,25 @@ export default class Mine extends Component {
     return true
   }
 
+  renderTabBar = () => {
+    return <TabBar navigation={this.props.navigation}/>
+  }
+
   render() {
     this.screenWidth = Dimensions.get('window').width
     this.screenHeight = Dimensions.get('window').height
     return (
-      <Container ref={ref => (this.container = ref)} withoutHeader>
+      <Container
+        ref={ref => (this.container = ref)}
+        hideInBackground={false}
+        withoutHeader={this.props.device.orientation !== 'LANDSCAPE'}
+        headerProps={{
+          title: getLanguage(this.props.language).Navigator_Label.PROFILE,
+          withoutBack: true,
+        }}
+        bottomBar={
+          this.renderTabBar()
+        }>
         <View style={styles.mineContainer}>
           {this._renderProfile()}
           {this._renderDatas()}

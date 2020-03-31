@@ -23,11 +23,13 @@ import {
   FunctionToolbar,
   AIFunctionToolbar,
   MapToolbar,
+  MapNavMenu,
   MapController,
   ToolBar,
   MenuAlertDialog,
   AlertDialog,
   OverlayView,
+  BackgroundOverlay,
   AnalystMapButtons,
   AnalystMapToolbar,
   PoiInfoContainer,
@@ -373,6 +375,14 @@ export default class MapView extends React.Component {
       }
       // })
 
+      this.unsubscribeFocus = this.props.navigation.addListener('willFocus', ()=>{
+        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+      })
+
+      this.unsubscribeBlur = this.props.navigation.addListener('willBlur', ()=>{
+        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+      })
+
       this.addSpeechRecognizeListener()
       if (GLOBAL.language === 'CN') {
         SSpeechRecognizer.setParameter('language', 'zh_cn')
@@ -584,7 +594,8 @@ export default class MapView extends React.Component {
     if (GLOBAL.MapTabNavigator) {
       GLOBAL.MapTabNavigator = null
     }
-
+    this.unsubscribeFocus && this.unsubscribeFocus.remove()
+    this.unsubscribeFocus && this.unsubscribeBlur.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
   }
@@ -1722,6 +1733,21 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 横屏时的导航栏
+   */
+  renderMapNavMenu = () => {
+    return (
+      <MapNavMenu
+        ref={ref => this.NavMenu = ref}
+        navigation={this.props.navigation}
+        appConfig={this.props.appConfig}
+        initIndex={0}
+        type={this.type}
+      />
+    )
+  }
+
   /** 地图分析模式左侧按钮 **/
   renderAnalystMapButtons = () => {
     if (
@@ -1819,9 +1845,9 @@ export default class MapView extends React.Component {
       <FunctionToolbar
         language={this.props.language}
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
-        style={styles.functionToolbar}
         type={this.type}
         getToolRef={() => this.toolBox}
+        getNavMenuRef={() =>  this.NavMenu}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -1883,6 +1909,15 @@ export default class MapView extends React.Component {
     return <OverlayView ref={ref => (GLOBAL.OverlayView = ref)} />
   }
 
+  renderBackgroundOverlay = () => {
+    return (
+      <BackgroundOverlay
+        ref={ref => (this.backgroundOverlay = ref)}
+        device={this.props.device}
+      />
+    )
+  }
+
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
     if (this.state.currentFloorID) return null
@@ -1890,6 +1925,7 @@ export default class MapView extends React.Component {
       <MapController
         ref={ref => (GLOBAL.mapController = this.mapController = ref)}
         type={GLOBAL.Type}
+        device={this.props.device}
       />
     )
   }
@@ -2749,7 +2785,9 @@ export default class MapView extends React.Component {
             }
           }}
         >
-          <Text style={styles.textConfirm}>
+          <Text
+            style={styles.textConfirm}
+          >
             {getLanguage(this.props.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
@@ -2944,9 +2982,16 @@ export default class MapView extends React.Component {
     )
   }
 
-  _openSelectPointMap = async (data, point) => {
-    await this._openDatasource(data, data.layerIndex)
-    point && SMap.showMarker(point.x, point.y, markerTag)
+  _openSelectPointMap = async(data,point) =>{
+    await this._openDatasource(
+      data,
+      data.layerIndex,
+    )
+    point &&SMap.showMarker(
+      point.x,
+      point.y,
+      markerTag,
+    )
     GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
     this.setState({ showScaleView: false })
   }
@@ -2963,6 +3008,8 @@ export default class MapView extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
+        hideInBackground={false}
         headerProps={{
           title: this.state.mapTitle,
           navigation: this.props.navigation,
@@ -2977,10 +3024,12 @@ export default class MapView extends React.Component {
           headerRight: this.renderHeaderRight(),
         }}
         bottomBar={
+          this.props.device.orientation !== 'LANDSCAPE' &&
           !this.isExample && !this.props.analyst.params && this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
       >
+        {this.renderBackgroundOverlay()}
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3017,6 +3066,7 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
+        {this.props.device.orientation === 'LANDSCAPE' && this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}

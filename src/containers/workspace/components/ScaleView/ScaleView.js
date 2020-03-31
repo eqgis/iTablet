@@ -16,12 +16,15 @@ export default class ScaleView extends React.Component {
     language: String,
     isShow: boolean,
     mapNavigation: Object,
+    device: Object,
   }
 
   constructor(props) {
     super(props)
     this.left = new Animated.Value(scaleSize(120))
-    this.bottom = new Animated.Value(scaleSize(120))
+    this.bottom = this.props.device.orientation === 'LANDSCAPE'
+      ? new Animated.Value(scaleSize(30))
+      : new Animated.Value(scaleSize(120))
     this.state = {
       width: scaleSize(65),
       title: '',
@@ -52,6 +55,9 @@ export default class ScaleView extends React.Component {
         this.scaleViewChange(data)
       })
     }
+    if(this.props.device.orientation !== prevProps.device.orientation) {
+      this.onOrientationChange()
+    }
   }
 
   componentWillUnmount() {
@@ -62,18 +68,40 @@ export default class ScaleView extends React.Component {
     }
   }
 
+  onOrientationChange = () => {
+    if(this.state.visible) {
+      let newBottom
+      if( this.props.device.orientation === 'LANDSCAPE') {
+        newBottom = scaleSize(30)
+      } else {
+        newBottom = scaleSize(120)
+      }
+      Animated.timing(this.bottom, {
+        toValue: newBottom,
+        duration: 300,
+      }).start()
+    }
+  }
+
   showFullMap = (visible, immediately = false) => {
     if (this.state.visible === visible) return
-    Animated.parallel([
+    if(this.props.device.orientation !== 'LANDSCAPE') {
+      Animated.parallel([
+        Animated.timing(this.left, {
+          toValue: visible ? scaleSize(120) : scaleSize(30),
+          duration: immediately ? 0 : 300,
+        }),
+        Animated.timing(this.bottom, {
+          toValue: visible ? scaleSize(120) : scaleSize(30),
+          duration: immediately ? 0 : 300,
+        }),
+      ]).start()
+    } else {
       Animated.timing(this.left, {
         toValue: visible ? scaleSize(120) : scaleSize(30),
         duration: immediately ? 0 : 300,
-      }),
-      Animated.timing(this.bottom, {
-        toValue: visible ? scaleSize(120) : scaleSize(30),
-        duration: immediately ? 0 : 300,
-      }),
-    ]).start()
+      }).start()
+    }
     this.setState({
       visible,
     })

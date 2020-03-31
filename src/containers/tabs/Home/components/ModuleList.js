@@ -11,7 +11,7 @@ import {
 import { ConstPath } from '../../../../constants'
 import constants from '../../../../containers/workspace/constants'
 import ConstModule from '../../../../constants/ConstModule'
-import { scaleSize, screen } from '../../../../utils'
+import { fixedSize, screen } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
 import FetchUtils from '../../../../utils/FetchUtils'
@@ -395,6 +395,7 @@ class ModuleList extends Component {
     return (
       <ModuleItem
         item={item}
+        device={this.props.device}
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}
         importWorkspace={this.props.importWorkspace}
@@ -407,13 +408,16 @@ class ModuleList extends Component {
 
   _renderScrollView = data => {
     return (
-      <View style={styles.flatListView}>
+      <View style={{ width: '100%'}}>
         <FlatList
           key={'landscapeList'}
           data={data}
-          horizontal={true}
+          contentContainerStyle={{
+            justifyContent: 'center',
+          }}
           downloads={this.props.downloads}
           renderItem={this._renderItem}
+          numColumns={4}
           keyboardShouldPersistTaps={'always'}
           showsHorizontalScrollIndicator={false}
         />
@@ -429,13 +433,13 @@ class ModuleList extends Component {
     let data = ConstModule(this.props.mapModules, this.props.language)
     //模块个数为单数时高度处理
     let heightNum = data.length % 2 === 0 ? data.length : data.length + 1
-    let height = (scaleSize(220) * heightNum) / 2
+    let height = (fixedSize(220) * heightNum) / 2
     let dOffset = 37
     let contentH =
       screen.getScreenHeight() -
-      scaleSize(88) -
-      scaleSize(96) -
-      scaleSize(dOffset)
+      fixedSize(88) -
+      fixedSize(96) -
+      fixedSize(dOffset)
     let scrollEnabled = false
     if (height >= contentH) {
       height = contentH
@@ -492,6 +496,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flatListView: {
-    height: scaleSize(220),
+    height: fixedSize(220),
   },
 })

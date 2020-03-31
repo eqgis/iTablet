@@ -2982,16 +2982,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  _openSelectPointMap = async(data,point) =>{
-    await this._openDatasource(
-      data,
-      data.layerIndex,
-    )
-    point &&SMap.showMarker(
-      point.x,
-      point.y,
-      markerTag,
-    )
+  _openSelectPointMap = async (data, point) => {
+    await SMap.removeAllLayer() // 移除所有图层
+    await this._openDatasource(data, data.layerIndex)
+    point && SMap.showMarker(point.x, point.y, markerTag)
     GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
     this.setState({ showScaleView: false })
   }

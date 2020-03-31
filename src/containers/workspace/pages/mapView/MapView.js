@@ -96,7 +96,7 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
-import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight";
+import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -2582,18 +2582,24 @@ export default class MapView extends React.Component {
     }
   }
 
-  _pressRoad = type => {
+  _pressRoad =async type => {
     const params = ToolbarModule.getParams()
     let data = ToolBarHeight.getToolbarHeight(type)
     this.showFullMap(true)
     switch (type) {
-      case ConstToolType.MAP_INCREMENT_OUTTER:
-        params.setToolbarVisible(true, type, {
-          containerType:ToolbarType.table,
-          isFullScreen: false,
-          resetToolModuleData:true,
-          height:data.height,
-          column:data.column,
+      case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+        SMap.createDefaultDataset().then(async datasetName => {
+          if(datasetName){
+            // await SMap.initTrackingLayer()
+            params.setToolbarVisible(true, type, {
+              containerType:ToolbarType.table,
+              isFullScreen: false,
+              resetToolModuleData:true,
+              height:data.height,
+              column:data.column,
+            })
+            GLOBAL.INCREMENT_DATASETNAME = datasetName
+          }
         })
         break
       case ConstToolType.MAP_INCREMENT_INNER:
@@ -2645,7 +2651,7 @@ export default class MapView extends React.Component {
               alignItems:'center',
             }}
             onPress={()=>{
-              this._pressRoad(ConstToolType.MAP_INCREMENT_OUTTER)
+              this._pressRoad(ConstToolType.MAP_INCREMENT_GPS_TRACK)
             }}
           >
             <Image

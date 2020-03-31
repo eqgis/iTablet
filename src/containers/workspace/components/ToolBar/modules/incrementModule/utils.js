@@ -11,12 +11,15 @@ function getLayout(type) {
   let height
   let column
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_OUTTER:
+    case ConstToolType.MAP_INCREMENT_GPS_POINT:
     case ConstToolType.MAP_INCREMENT_EDIT:
       height = ConstToolType.TOOLBAR_HEIGHT[0]
       column = 5
       break
     case ConstToolType.MAP_INCREMENT_CHANGE_METHOD:
+    case ConstToolType.MAP_INCREMENT_POINTLINE:
+    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       height = ConstToolType.TOOLBAR_HEIGHT[0]
       column = 4
       break

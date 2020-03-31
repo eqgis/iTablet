@@ -22,7 +22,6 @@ const icon_turn_left = require('./icon_turn_left.png')
 const icon_turn_right = require('./icon_turn_right.png')
 const icon_U_turn = require('./icon_U-turn.png')
 //导航路网相关
-const increment_switch_network = require('./increament_switch_network.png')
 const increment_start = require('./increament_start.png')
 const increment_stop = require('./increament_stop.png')
 const increment_add_point = require('./increament_add_point.png')
@@ -36,6 +35,12 @@ const increment_edit_node = require('./increament_edit_node.png')
 const increment_delete_node = require('./increament_delete_node.png')
 const increment_delete_object = require('./increament_delete_object.png')
 const increment_add_attribute = require('./increament_add_attribute.png')
+
+const increment_switch_network = require('./increament_switch_network.png')
+const btn_increment_gps_point = require('./btn_increment_gps_point.png')
+const btn_increment_gps_track = require('./btn_increment_gps_track.png')
+const btn_increment_point_line = require('./btn_increment_point_line.png')
+const btn_increment_freeline = require('./btn_increment_freeline.png')
 export default {
   // 导航起点终点
   icon_nav_start,
@@ -77,4 +82,9 @@ export default {
   increment_delete_node,
   increment_delete_object,
   increment_add_attribute,
+
+  btn_increment_gps_point,
+  btn_increment_gps_track,
+  btn_increment_point_line,
+  btn_increment_freeline,
 }

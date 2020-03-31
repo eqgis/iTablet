@@ -71,4 +71,6 @@ export default {
   SETTIING: 'setting',
   COLLECTTARGET: 'collecttarget',
   ANALYST: 'analyst', // 分析
+
+  CHANGE_INCREMENT_METHOD: 'change_increment_method', //导航采集 切换采集方式
 }

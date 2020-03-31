@@ -3,9 +3,9 @@
  */
 import LegendData from './LegendData'
 import LegendAction from './LegendAction'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import ToolBarHeight from '../ToolBarHeight'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
@@ -33,15 +33,18 @@ async function action(type) {
       legendPosition: 'topLeft',
     }
   }
-  const { orientation } = _params.device
-  const layout = utils.getLayout(type, orientation)
+  const _data = LegendData.getData(type)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   _params.setMapLegend(mapLegend)
   _params.setToolbarVisible(true, ConstToolType.LEGEND, {
     containerType: ToolbarType.colorTable,
-    column: layout.column,
+    column: data.column,
     isFullScreen: false,
-    height: layout.height,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
@@ -75,6 +78,5 @@ export default function(type, title, customAction) {
     getMenuData: LegendData.getMenuData,
     actions: LegendAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

@@ -68,6 +68,7 @@ const Map_Main_Menu = {
   RIGHT_BOTTOM: 'Sağ alt hizalama',
 
   STYLE: 'Stiller',
+  STYLE_EDIT: 'Stiller düzenleme',
   STYLE_SYMBOL: 'Sembol',
   STYLE_SYMBOL_SIZE: 'Sembol Boyutu',
   STYLE_COLOR: 'Renk',
@@ -290,6 +291,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'Boşluğu Doldur',
   EDIT_CANCEL_SELECTION: 'Seçimi İptal Et',
   MOVE: 'Taşıma',
+  OBJMOVE: 'Taşıma',
   FREE_DRAW_ERASE: 'Serbest Çizim Silme',
 
   PLOTTING: 'Çizim',

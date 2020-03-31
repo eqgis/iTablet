@@ -3,9 +3,17 @@ import { color, zIndexLevel } from '../../styles'
 import { scaleSize } from '../../utils'
 
 export default StyleSheet.create({
+  view: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#rgba(240, 240, 240 ,0)',
+    backgroundColor: color.content_white,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'black',
   },
   header: {
     flex: 1,
@@ -47,6 +55,28 @@ export default StyleSheet.create({
   flexBottomBar: {
     height: scaleSize(96),
     width: '100%',
+    alignSelf: 'center',
+    zIndex: 100,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  fixRightBar: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    width: scaleSize(96),
+    backgroundColor: color.theme,
+    alignSelf: 'center',
+    zIndex: zIndexLevel.TWO,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  flexRightBar: {
+    width: scaleSize(96),
+    height: '100%',
     alignSelf: 'center',
     zIndex: 100,
     flexDirection: 'row',

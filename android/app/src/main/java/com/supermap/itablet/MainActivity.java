@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
@@ -12,15 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactFragmentActivity;
 import com.rnfs.RNFSManager;
 import com.supermap.RN.FileTools;
 import com.supermap.RN.appManager;
 import com.supermap.data.Environment;
-import com.supermap.data.LicenseStatus;
-import com.supermap.data.LicenseType;
-import com.supermap.file.Utils;
-import com.supermap.smNative.collector.SMCollector;
+import com.supermap.data.ITabletLicenseManager;
+import com.supermap.data.Toolkit;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -48,11 +44,11 @@ public class MainActivity extends ReactActivity {
         requestPermissions();
         initEnvironment();
         initDefaultData();
-        if (!isTablet(this)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
-        }
+//        if (!isTablet(this)) {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        } else {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+//        }
         appManager.getAppManager().addActivity(this);
         IWXAPI iwxapi=appManager.getAppManager().registerWechat(this);
         FileTools.getUriState(this);
@@ -88,23 +84,26 @@ public class MainActivity extends ReactActivity {
 
 
     private void initEnvironment() {
-        String licensePath = SDCARD + "/iTablet/license/";
-        String licenseName = "Trial_License.slm";
-        if (!Utils.fileIsExit(licensePath + licenseName)) {
-            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-        }
+//        String licensePath = SDCARD + "/iTablet/license/";
+//        String licenseName = "Trial_License.slm";
+//        if (!Utils.fileIsExit(licensePath + licenseName)) {
+//            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
+//        }
 //        Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-        Environment.setLicensePath(SDCARD + "/iTablet/license");
+//        Environment.setLicensePath(SDCARD + "/iTablet/license");
 
         Environment.initialization(this);
 
-        LicenseStatus status = Environment.getLicenseStatus();
-        if (status.isTrailLicense() && !status.isLicenseValid()) {
-            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-            Environment.initialization(this);
-
-            status = Environment.getLicenseStatus();
-        }
+        //init itablet license
+        ITabletLicenseManager.getInstance(this);
+        Toolkit.ReCheackLic();
+//        LicenseStatus status = Environment.getLicenseStatus();
+//        if (status.isTrailLicense() && !status.isLicenseValid()) {
+//            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
+//            Environment.initialization(this);
+//
+//            status = Environment.getLicenseStatus();
+//        }
     }
 
     private void initDefaultData() {

@@ -6,7 +6,7 @@ const Map_Module = {
   MAP_NAVIGATION: 'ナビコレクション',
   MAP_THEME: '主題図',
   MAP_COLLECTION: 'フィールドコレクション',
-  MAP_PLOTTING: 'アニメシンボルコレクション',
+  MAP_PLOTTING: 'アニメシンボル',
   MAP_ANALYST: 'データ処理',
 }
 export { Map_Module }

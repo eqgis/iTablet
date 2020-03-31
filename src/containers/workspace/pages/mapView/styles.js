@@ -1,9 +1,7 @@
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 // import * as Util from '../../../../utils/constUtil'
 import { scaleSize, constUtil as Util } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
-
-const FUNCTIONHEIGHT = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -90,12 +88,6 @@ export default StyleSheet.create({
     bottom: scaleSize(100),
     width: scaleSize(100),
     backgroundColor: color.theme,
-  },
-  functionToolbar: {
-    position: 'absolute',
-    top: FUNCTIONHEIGHT,
-    right: scaleSize(0),
-    backgroundColor: color.white,
   },
   headerBtnSeparator: {
     marginLeft: scaleSize(40),

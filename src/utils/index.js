@@ -1,4 +1,4 @@
-import screen, { scaleSize, setSpText } from './screen'
+import screen, { scaleSize, fixedSize, setSpText } from './screen'
 import dataUtil from './dataUtil'
 import Toast from './Toast'
 import * as constUtil from './constUtil'
@@ -16,6 +16,7 @@ import OnlineServicesUtils from './OnlineServicesUtils'
 export {
   screen,
   scaleSize,
+  fixedSize,
   dataUtil,
   constUtil,
   Toast,

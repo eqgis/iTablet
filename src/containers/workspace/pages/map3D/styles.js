@@ -1,8 +1,6 @@
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
-
-const FUNCTIONHEIGHT = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -24,12 +22,6 @@ export default StyleSheet.create({
     position: 'absolute',
     left: scaleSize(20),
     bottom: scaleSize(120),
-  },
-  functionToolbar: {
-    position: 'absolute',
-    top: FUNCTIONHEIGHT,
-    right: scaleSize(20),
-    backgroundColor: color.white,
   },
   item: {
     flexDirection: 'row',

@@ -1,17 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Image, StyleSheet, View, Text } from 'react-native'
+import { Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { color } from '../../styles'
 import { scaleSize, setSpText } from '../../utils'
 import { getLanguage } from '../../language/index'
 
 class TabItem extends React.Component {
   props: {
-    data: Object,
-    title: String,
+    item: Object,
     language: String,
-    selectedImage: Object,
-    image: Object,
+    selected: boolean,
     onPress: () => {},
     renderExtra: () => {},
   }
@@ -22,7 +20,7 @@ class TabItem extends React.Component {
 
   getTitle = () => {
     let t = ''
-    switch (this.props.title) {
+    switch (this.props.item.key) {
       case 'Home':
         t = getLanguage(this.props.language).Navigator_Label.HOME
         break
@@ -41,19 +39,25 @@ class TabItem extends React.Component {
 
   render() {
     return (
-      <View style={styles.labelView}>
-        <Image
-          resizeMode="contain"
-          source={
-            this.props.data.focused
-              ? this.props.selectedImage
-              : this.props.image
-          }
-          style={styles.icon}
-        />
-        <Text style={styles.tabText}>{this.getTitle()}</Text>
-        {this.props.renderExtra && this.props.renderExtra()}
-      </View>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={this.props.onPress}
+        style={styles.touchView}
+      >
+        <View style={styles.labelView}>
+          <Image
+            resizeMode="contain"
+            source={
+              this.props.selected
+                ? this.props.item.selectedImage
+                : this.props.item.image
+            }
+            style={styles.icon}
+          />
+          <Text style={styles.tabText}>{this.getTitle()}</Text>
+          {this.props.renderExtra && this.props.renderExtra()}
+        </View>
+      </TouchableOpacity>
     )
   }
 }

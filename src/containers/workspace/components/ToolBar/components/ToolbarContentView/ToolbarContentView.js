@@ -43,7 +43,9 @@ export default class ToolbarContentView extends React.Component {
 
   constructor(props) {
     super(props)
-    const data = ToolbarHeight.getToolbarHeight(props.type)
+    const data = ToolbarHeight.getToolbarSize(props.containerType, {
+      data: props.data,
+    })
     this.height = data.height
     this.state = {
       column: data.column,
@@ -81,15 +83,17 @@ export default class ToolbarContentView extends React.Component {
   }
 
   // TODO 每次更改高度和列数的方式可能会两次次setState，需要优化
-  onChangeHeight = async (orientation, type) => {
-    let data = ToolbarHeight.getToolbarHeight(type, this.height)
+  onChangeHeight = async () => {
+    let _data = ToolbarHeight.getToolbarSize(this.props.containerType, {
+      data: this.props.data,
+    })
     if (
-      data.column !== undefined &&
-      data.height !== undefined &&
-      (this.height !== data.height || this.state.column !== data.column)
+      _data.column !== undefined &&
+      _data.height !== undefined &&
+      (this.height !== _data.height || this.state.column !== _data.column)
     ) {
-      this.height = data.height
-      this.changeHeight(data)
+      this.height = _data.height
+      this.changeHeight(_data)
     }
   }
 

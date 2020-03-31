@@ -306,11 +306,12 @@ void initCrash(){
 //    //竖屏
 //    return UIInterfaceOrientationMaskPortrait;
 //  }
-  NSString* strDevice = [[UIDevice currentDevice].model substringToIndex:4];
-  if ([strDevice isEqualToString:@"iPad"]){
-    return [Orientation getOrientation];
-  } else {
-    return UIInterfaceOrientationMaskPortrait;
-  }
+//  NSString* strDevice = [[UIDevice currentDevice].model substringToIndex:4];
+//  if ([strDevice isEqualToString:@"iPad"]){
+//    return [Orientation getOrientation];
+//  } else {
+//    return UIInterfaceOrientationMaskPortrait;
+//  }
+  return [Orientation getOrientation];
 }
 @end

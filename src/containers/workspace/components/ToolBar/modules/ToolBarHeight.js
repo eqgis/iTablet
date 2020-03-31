@@ -1,42 +1,82 @@
 import ToolbarModule from './ToolbarModule'
-import * as modules from './index'
+import { ToolbarType, Height } from '../../../../../constants'
 
 /**
- * 根据类型查找对应ToolbarContentView高度和内容列数
+ * 统一ToolbarContentView高度（table类型自适应大小）
  * @param type
- * @param currentHeight (option，当前高度，用于部分逻辑判断)
- * @returns {*}
+ * @param additional
+   {
+     data: Array | 建议table类型必传，以便计算列数，默认3列,
+     height: number | option,
+     column: number | option,
+   }
+ *    自定义高度，table列数
+ * @returns {{height: number, column: number}}
  */
-function getToolbarHeight(type, currentHeight) {
+function getToolbarSize(type, additional = {}) {
   const params = ToolbarModule.getParams()
   const { orientation } = params.device
-  let height = 0
-  let column
-  const keys = Object.keys(modules)
-  let i = 0
-  if (type === undefined) {
+  let height = 0,
     column = 0
-    return { height, column }
-  }
-  // eslint-disable-next-line
-  while (keys[i] && keys[i] !== 'default' && modules[keys[i]]) {
-    // eslint-disable-next-line
-    const moduleFunc = modules[keys[i]]
-    const module = moduleFunc()
-    if (module.getLayout) {
-      const layout = module.getLayout(type, orientation, currentHeight)
-      if (layout.height !== undefined && layout.column !== undefined) {
-        height = layout.height
-        column = layout.column
-        break
+  switch (type) {
+    case ToolbarType.list: // 列表
+    case ToolbarType.selectableList: // 可选择列表，每行左方多选框
+    case ToolbarType.symbol: // 符号库容器
+      height =
+        orientation === 'LANDSCAPE'
+          ? Height.LIST_HEIGHT_L
+          : Height.LIST_HEIGHT_P
+      break
+    case ToolbarType.table: {
+      // 固定表格
+      if (additional.column !== undefined) {
+        column = additional.column
+      } else {
+        column = orientation === 'LANDSCAPE' ? 5 : 4
       }
+      if (additional.data === undefined) additional.data = []
+      let row = Math.ceil(additional.data.length / column)
+      height = Height.TABLE_ROW_HEIGHT_4 * row
+      break
     }
-    i++
+    case ToolbarType.scrollTable: // 纵向滚动表格
+      if (additional.column !== undefined) {
+        column = additional.column
+      } else {
+        column = orientation === 'LANDSCAPE' ? 5 : 4
+      }
+      height = Height.COLOR_TABLE_HEIGHT_L
+      break
+    case ToolbarType.colorTable: // 颜色表格
+      height =
+        orientation === 'LANDSCAPE'
+          ? Height.COLOR_TABLE_HEIGHT_L
+          : Height.COLOR_TABLE_HEIGHT_P
+      break
+    case ToolbarType.horizontalTable: // 横向滚动表格
+      height = Height.TABLE_ROW_HEIGHT_2
+      break
+    case ToolbarType.createPlotAnimation: // 创建标绘推演
+    case ToolbarType.animationNode: // 态势推演
+      height = Height.TABLE_ROW_HEIGHT_2 * 5
+      break
+    case ToolbarType.picker: // 选择器
+      height = Height.TABLE_ROW_HEIGHT_1 * 2
+      break
+    case ToolbarType.tabs: // 符号标签栏
+      height =
+        params.device.orientation === 'PORTRAIT'
+          ? Height.TABLE_ROW_HEIGHT_2 * 8
+          : Height.TABLE_ROW_HEIGHT_2 * 5
+      break
   }
-
+  if (additional.height !== undefined) {
+    height = additional.height
+  }
   return { height, column }
 }
 
 export default {
-  getToolbarHeight,
+  // getToolbarHeight,
+  getToolbarSize,
 }

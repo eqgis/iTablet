@@ -47,25 +47,35 @@ export default class SymbolList extends React.Component {
       }
       return
     }
-    if (this.props.layerData.type === 3) {
+    let event = ToolbarModule.getData().event
+    
+    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE)
+     {
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+    }
+    else if (this.props.layerData.type === 3)
+    {
       SCartography.setLineSymbolID(data.id, this.props.layerData.name)
     }
-    if (this.props.layerData.type === 1) {
+
+
+   
+    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) 
+    {
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+    }
+    else  if (this.props.layerData.type === 1) 
+    {
       SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
     }
-    if (this.props.layerData.type === 5) {
+
+   if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION)
+   {
+      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+   }
+   else  if (this.props.layerData.type === 5) {
       SCartography.setFillSymbolID(data.id, this.props.layerData.name)
-    }
-    let event = ToolbarModule.getData().event
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-    }
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-    }
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-    }
+   }
   }
 
   componentDidUpdate(prevProps) {

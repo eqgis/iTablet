@@ -14,24 +14,27 @@
 // 
 async function action(type) {
   const params = ToolbarModule.getParams()             // Toolbar中的属性和方法
-  const orientation = params.device.orientation        // 获取设备横竖屏
-  const layout = utils.getLayout(type, orientation)    // 获取底部内容框中高度和列数
-  params.showFullMap && params.showFullMap(true)       // 显示全屏（option，根据弹出底部后，地图是否出现透明遮罩）
-  ToolbarModule.setData({                              // 设置当前被选中侧边栏模块的数据，可在外部调用该模块方法和数据
-    type: type,
+  const _data = StartData.getData(type, params)        // 获取指定类型的数据
+  const containerType = ToolbarType.table              // Toolbar内容界面类型
+  const data = ToolBarHeight.getToolbarSize(containerType, {data: _data.data})
+                                                       // Toolbar内容高度和列数
+  setModuleData(type)
+  params.setToolbarVisible(true, type, {               // 弹出底部界面
+    containerType,                                     // 底部内容界面类型
+    column: data.column,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
+  })
+}
+// 设置ToolbarModule临时数据
+function setModuleData(type) {
+  ToolbarModule.setData({
+    type,
     getData: StartData.getData,
     actions: StartAction,
   })
-  params.setToolbarVisible(true, type, {               // 弹出底部界面
-    containerType: ToolbarType.table,                  // 底部内容界面类型
-    column: layout.column,
-    height: layout.height,
-    // data: _data.data,                               // 其余内容可参照Toolbar setVisible中的参数进行设置
-    // buttons: _data.buttons,
-    // customView: customView,                         // 自定义内容界面
-  })
 }
-
 
 // 侧边栏设置
 export default function(type, title, customAction) {
@@ -52,7 +55,7 @@ export default function(type, title, customAction) {
                                      // 自定义图片（option）
     getData: StartData.getData,      // 自定义点击右侧工具栏后，底部弹出对应弹窗的界面（含内容data，底部按钮）
     actions: StartAction,            // 底部内容中的点击事件
-    getLayout: utils.getLayout,      // 底部内容高度及列数
+    setModuleData,
   }
 }
 ```

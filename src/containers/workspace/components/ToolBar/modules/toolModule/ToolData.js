@@ -184,13 +184,13 @@ function getData(type, params) {
           size: 'large',
           image: getThemeAssets().mapTools.rightbar_tool_style,
         },
-        {
-          key: 'showEditLabel',
-          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
-          action: ToolAction.showEditLabel,
-          size: 'large',
-          image: require('../../../../../../assets/function/icon_edit.png'),
-        },
+        // {
+        //   key: 'showEditLabel',
+        //   title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
+        //   action: ToolAction.showEditLabel,
+        //   size: 'large',
+        //   image: require('../../../../../../assets/function/icon_edit.png'),
+        // },
         // {
         //   key: 'captureVideo',
         //   title: '视频',
@@ -298,7 +298,7 @@ function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: ToolAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -366,7 +366,7 @@ function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: ToolAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -433,7 +433,7 @@ function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: ToolAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -463,7 +463,7 @@ function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: ToolAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),

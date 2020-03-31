@@ -1,22 +1,21 @@
 import StartData from './StartData'
 import StartAction from './StartAction'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
+import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
 function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const layout = utils.getLayout(type, orientation)
-  params.showFullMap && params.showFullMap(true)
-  // const _data = StartData.getData(type)
+  const _data = StartData.getData(type, params)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.setToolbarVisible(true, type, {
-    containerType: ToolbarType.table,
-    column: layout.column,
-    height: layout.height,
-    // data: _data.data,
-    // buttons: _data.buttons,
+    containerType,
+    column: data.column,
+    height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
 }
 
@@ -46,6 +45,5 @@ export default function(type, title, customAction) {
     getData: StartData.getData,
     actions: StartAction,
     setModuleData,
-    getLayout: utils.getLayout,
   }
 }

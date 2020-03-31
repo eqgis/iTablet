@@ -14,6 +14,7 @@ import CheckStatus from './CheckStatus'
 import ConstAnalyst from './ConstAnalyst'
 import TouchType from './TouchType'
 import ToolbarType from './ToolbarType'
+import Height from './Height'
 
 import {
   layerAdd,
@@ -62,4 +63,5 @@ export {
   legendMenuInfo,
   legendMenuInfoNotVisible,
   ToolbarType,
+  Height,
 }

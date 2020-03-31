@@ -16,7 +16,6 @@ import NavigationService from '../../../../../NavigationService'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import utils from './utils'
 
 /** 切换工作空间 * */
 function openWorkspace(cb) {
@@ -1105,15 +1104,11 @@ async function getSceneData() {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
   const type = ConstToolType.MAP3D_WORKSPACE_LIST
-  const { orientation } = params.device
-  const { height, column } = utils.getLayout(type, orientation)
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     containerType: ToolbarType.list,
     isFullScreen: true,
     data,
     buttons,
-    height,
-    column,
   })
 }
 

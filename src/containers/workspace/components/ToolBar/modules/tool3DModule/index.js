@@ -1,13 +1,14 @@
 import Tool3DData from './Tool3DData'
 import Tool3DAction from './Tool3DAction'
-import utils from './utils'
 import ToolbarModule from '../ToolbarModule'
+import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
-function action(type) {
+async function action(type) {
   const params = ToolbarModule.getParams()
-  const { orientation } = params.device
-  const data = utils.getLayout(type, orientation)
+  const _data = await Tool3DData.getData(type, params)
+  const containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
@@ -15,6 +16,8 @@ function action(type) {
     isFullScreen: true,
     column: data.column,
     height: data.height,
+    data: _data.data,
+    buttons: _data.buttons,
   })
 }
 
@@ -42,8 +45,6 @@ export default function(type, title, customAction) {
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_tool.png'),
     getData: Tool3DData.getData,
-    // getMenuData: Tool3DData.getMenuData,
     actions: Tool3DAction,
-    getLayout: utils.getLayout,
   }
 }

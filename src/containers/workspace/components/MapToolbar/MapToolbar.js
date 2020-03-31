@@ -15,6 +15,7 @@ import { getThemeAssets } from '../../../../assets'
 export default class MapToolbar extends React.Component {
   static propTypes = {
     language: PropTypes.string,
+    device: PropTypes.object,
     type: PropTypes.string,
     navigation: PropTypes.object,
     initIndex: PropTypes.number,
@@ -434,8 +435,10 @@ export default class MapToolbar extends React.Component {
   }
 
   render() {
+    let isLandscape = this.props.device.orientation === 'LANDSCAPE'
+    let style = isLandscape ? styles.containerL : styles.containerP
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={[style, this.props.style]}>
         {/*<FlatList*/}
         {/*data={this.state.data}*/}
         {/*renderItem={this._renderItem}*/}
@@ -450,13 +453,23 @@ export default class MapToolbar extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: scaleSize(96),
+  containerP: {
     width: '100%',
+    height: scaleSize(96),
     backgroundColor: '#EEEEEE',
     alignSelf: 'center',
     borderStyle: 'solid',
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  containerL: {
+    width: scaleSize(96),
+    height: '100%',
+    backgroundColor: '#EEEEEE',
+    alignSelf: 'center',
+    borderStyle: 'solid',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
   },

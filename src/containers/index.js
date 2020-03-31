@@ -77,6 +77,8 @@ import UpLoadList from './uploadList'
 import {
   MapTabs,
   Map3DTabs,
+  MapStack,
+  Map3DStack,
   // MapAnalystTabs,
   CoworkTabs,
   MapView,
@@ -152,6 +154,20 @@ export default function(appConfig) {
       },
       MapTabs: {
         screen: MapTabs,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: false,
+        },
+      },
+      MapStack: {
+        screen: MapStack,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: false,
+        },
+      },
+      Map3DStack: {
+        screen: Map3DStack,
         navigationOptions: {
           header: null,
           gesturesEnabled: false,
@@ -1019,9 +1035,35 @@ export default function(appConfig) {
         headerTitleStyle: { alignSelf: 'center' },
       },
       lazy: true,
-      mode: 'card',
+      // mode: 'card',
+      // transitionConfig: () => ({
+      // screenInterpolator: StackViewStyleInterpolator.forHorizontal,
+      // }),
+      mode: 'modal',
+      headerMode: 'none',
+      transparentCard: true,
+      cardStyle: {
+        backgroundColor: 'transparent',
+        opacity: 1,
+      },
       transitionConfig: () => ({
-        screenInterpolator: StackViewStyleInterpolator.forHorizontal,
+        screenInterpolator: sceneProps => {
+          const {layout, position, scene} = sceneProps
+          const {index} = scene
+
+          const width = layout.initWidth
+          const translateX = position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [width, 0, 0],
+          })
+
+          const opacity = position.interpolate({
+            inputRange: [index - 1, index - 0.99, index],
+            outputRange: [0, 1, 1],
+          })
+
+          return {opacity, transform: [{translateX: translateX}]}
+        },
       }),
     },
   )

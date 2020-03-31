@@ -225,9 +225,11 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存 **/
   save = async () => {
+    GLOBAL.Loading.setLoading(true)
     await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveData('line')
     await SCollectSceneFormView.routeAdd()
+    GLOBAL.Loading.setLoading(false)
     this.setState({ isnew: false })
     Toast.show(
       getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
@@ -249,8 +251,10 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存点 **/
   savepoint = async () => {
+    GLOBAL.Loading.setLoading(true)
     // await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveGPSData('point')
+    GLOBAL.Loading.setLoading(false)
     this.setState({ isnew: false })
     Toast.show(
       getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,

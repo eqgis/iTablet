@@ -15,10 +15,8 @@ import { Toast } from "../../../../../../utils"
 let POINT_ARRAY = []
 
 async function start() {
-  //开启放大镜
-  SMap.setIsMagnifierEnabled(true)
   BackgroundTimer.runBackgroundTimer(async () => {
-    await SMap.startGpsIncrement()
+    SMap.startGpsIncrement()
   }, 2000)
 }
 function stop() {
@@ -200,6 +198,7 @@ function close() {
   SMap.clearTrackingLayer()
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
+  SMap.setIsMagnifierEnabled(false)
   //todo 重新设置当前图层可编辑
 }
 

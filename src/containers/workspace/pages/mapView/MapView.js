@@ -99,6 +99,7 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
+import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData";
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -2620,7 +2621,9 @@ export default class MapView extends React.Component {
 
   _pressRoad =async type => {
     const params = ToolbarModule.getParams()
-    let data = ToolBarHeight.getToolbarHeight(type)
+    const containerType = ToolbarType.table
+    const _data = IncrementData.getData(type)
+    const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
@@ -2634,6 +2637,8 @@ export default class MapView extends React.Component {
               height:data.height,
               column:data.column,
             })
+            //开启放大镜
+            SMap.setIsMagnifierEnabled(true)
             GLOBAL.INCREMENT_DATASETNAME = datasetName
           }
         })

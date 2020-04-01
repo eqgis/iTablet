@@ -201,7 +201,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-device-info')
     compile project(':react-native-cookies')
     compile project(':react-native-image-resizer')
     compile project(':react-native-photo-view')

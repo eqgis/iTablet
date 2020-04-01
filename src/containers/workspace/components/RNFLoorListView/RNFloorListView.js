@@ -11,7 +11,6 @@ import { scaleSize, setSpText } from '../../../../utils'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
-import { isTablet } from 'react-native-device-info'
 
 const DEFAULT_BOTTOM = scaleSize(135)
 const DEFAULT_LEFT = scaleSize(34)
@@ -49,7 +48,7 @@ export default class RNFloorListView extends React.Component {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       let height,bottom
       if (this.props.device.orientation === 'LANDSCAPE') {
-        height = isTablet() ? scaleSize(360) : scaleSize(240)
+        height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
         bottom = scaleSize(45)
       } else {
         height = scaleSize(360)

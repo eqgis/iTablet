@@ -4,7 +4,6 @@ import android.support.multidex.MultiDexApplication;
 
 import com.supermap.file.CrashHandler;
 import com.facebook.react.ReactApplication;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnative.photoview.PhotoViewPackage;
@@ -44,7 +43,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNDeviceInfo(),
             new CookieManagerPackage(),
             new ImageResizerPackage(),
             new PhotoViewPackage(),

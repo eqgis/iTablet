@@ -17,7 +17,7 @@ import { constUtil, scaleSize, LayerUtils, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
 import { SMap } from 'imobile_for_reactnative'
-import { getPublicAssets } from '../../../../assets'
+import {getPublicAssets, getThemeAssets} from '../../../../assets'
 import { getLanguage } from '../../../../language'
 
 export default class TrafficView extends React.Component {
@@ -86,7 +86,7 @@ export default class TrafficView extends React.Component {
     let trafficImg = this.state.hasAdded
       ? getPublicAssets().navigation.icon_traffic_on
       : getPublicAssets().navigation.icon_traffic_off
-    let networkImg = require('../../../../assets/mapTool/Frenchgrey/icon_plus.png')
+    let networkImg = getThemeAssets().mine.mine_my_plot_new
     return (
       <Animated.View style={[styles.container, { left: this.state.left }]}>
         {!this.state.isIndoor ? (

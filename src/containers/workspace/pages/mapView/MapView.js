@@ -99,7 +99,7 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
-import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData";
+import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData"
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -2641,6 +2641,7 @@ export default class MapView extends React.Component {
               resetToolModuleData:true,
               height:data.height,
               column:data.column,
+              ..._data,
             })
             //开启放大镜
             SMap.setIsMagnifierEnabled(true)
@@ -2786,7 +2787,7 @@ export default class MapView extends React.Component {
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
               GLOBAL.toolBox.setVisible(false)
-            
+
               if (GLOBAL.isswitch) {
                 GLOBAL.isswitch = false
                 this.switchAr()
@@ -2890,7 +2891,7 @@ export default class MapView extends React.Component {
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
               GLOBAL.toolBox.setVisible(false)
-            
+
               if (GLOBAL.isswitch) {
                 GLOBAL.isswitch = false
                 this.switchAr()

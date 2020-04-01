@@ -318,7 +318,12 @@ export default class MapView extends React.Component {
     })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    if (!global.isLicenseValid){
+      let licenseStatus = await SMap.getEnvironmentStatus()
+      global.isLicenseValid = licenseStatus.isLicenseValid
+    }
+  
     if (global.isLicenseValid) {
       if (GLOBAL.Type === constants.MAP_NAVIGATION) {
         this.addFloorHiddenListener()

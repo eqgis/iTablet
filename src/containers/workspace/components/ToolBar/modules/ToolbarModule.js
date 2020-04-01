@@ -121,7 +121,10 @@ async function getToolBarData(type, params = {}) {
   ) {
     toolBarData = plotModule().getData(type, params)
   } else if(
-    type === ConstToolType.MAP_INCREMENT_OUTTER ||
+    type === ConstToolType.MAP_INCREMENT_GPS_POINT ||
+    type === ConstToolType.MAP_INCREMENT_GPS_TRACK ||
+    type === ConstToolType.MAP_INCREMENT_FREELINE ||
+    type === ConstToolType.MAP_INCREMENT_POINTLINE ||
     type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
     type === ConstToolType.MAP_INCREMENT_EDIT
   ){
@@ -192,7 +195,10 @@ async function setToolBarData(type, params = {}) {
   ) {
     toolBarData = toolModule()
   }else if(
-    type === ConstToolType.MAP_INCREMENT_OUTTER ||
+    type === ConstToolType.MAP_INCREMENT_GPS_POINT ||
+    type === ConstToolType.MAP_INCREMENT_GPS_TRACK ||
+    type === ConstToolType.MAP_INCREMENT_FREELINE ||
+    type === ConstToolType.MAP_INCREMENT_POINTLINE ||
     type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
     type === ConstToolType.MAP_INCREMENT_EDIT
   ){

@@ -139,7 +139,7 @@ export default class Container extends PureComponent {
   setPageVisible = visible => {
     //todo 处理返回时没有动画
     let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
-    if(NavigationService.isInStack('MapStack') && NavigationService.isInStack('Map3DStack')) {
+    if(NavigationService.isInStack('MapStack') || NavigationService.isInStack('Map3DStack')) {
       if(this.props.hideInBackground && isLandscape) {
         let x = visible ? 0 : GLOBAL.getDevice().width
         let duration = isLandscape ? 300 : 0

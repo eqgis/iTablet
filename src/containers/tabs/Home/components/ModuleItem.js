@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { fixedSize, setSpText } from '../../../../utils'
+import { fixedSize, fixedText } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 
 export default class ModuleItem extends Component {
@@ -80,7 +80,7 @@ export default class ModuleItem extends Component {
       >
         <Text
           style={{
-            fontSize: setSpText(25),
+            fontSize: fixedText(25),
             fontWeight: 'bold',
             color: 'white',
           }}
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   title: {
     width: fixedSize(200),
     height: fixedSize(37),
-    fontSize: setSpText(25),
+    fontSize: fixedText(25),
     color: '#5E5E5E',
     textAlign: 'center',
     marginTop: fixedSize(13),

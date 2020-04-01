@@ -225,7 +225,7 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存 **/
   save = async () => {
-    GLOBAL.Loading.setLoading(true)
+    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE)
     await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveData('line')
     await SCollectSceneFormView.routeAdd()
@@ -251,7 +251,7 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存点 **/
   savepoint = async () => {
-    GLOBAL.Loading.setLoading(true)
+    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT)
     // await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveGPSData('point')
     GLOBAL.Loading.setLoading(false)
@@ -295,6 +295,7 @@ export default class CollectSceneFormView extends React.Component {
           flexDirection: 'column',
         },
       })
+      SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack()
       return true
     }

@@ -295,6 +295,7 @@ export default class CollectSceneFormView extends React.Component {
           flexDirection: 'column',
         },
       })
+      SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack()
       return true
     }

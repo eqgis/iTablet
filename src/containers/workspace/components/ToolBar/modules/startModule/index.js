@@ -10,8 +10,10 @@ function action(type) {
   const containerType = ToolbarType.table
   const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
+  params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType,
+    isFullScreen: true,
     column: data.column,
     height: data.height,
     data: _data.data,

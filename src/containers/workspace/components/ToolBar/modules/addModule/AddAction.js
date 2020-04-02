@@ -26,16 +26,16 @@ async function listAction(type, params = {}) {
         params.item,
       )
 
-      const height =
-        _params.device.orientation === 'LANDSCAPE'
-          ? ConstToolType.THEME_HEIGHT[3]
-          : ConstToolType.THEME_HEIGHT[5]
+      // const height =
+      //   _params.device.orientation === 'LANDSCAPE'
+      //     ? ConstToolType.THEME_HEIGHT[3]
+      //     : ConstToolType.THEME_HEIGHT[5]
       const data = {
         type,
         getData: AddData.getData,
         lastData: ToolbarModule.getData().data,
         actions,
-        height,
+        // height,
       }
       const { selectList } = ToolbarModule.getData()
       _data.data[0].allSelectType = true
@@ -58,7 +58,7 @@ async function listAction(type, params = {}) {
         isFullScreen: true,
         isTouchProgress: false,
         showMenuDialog: false,
-        height,
+        // height,
         data: _data.data,
         buttons: _data.buttons,
       })
@@ -130,7 +130,7 @@ function toolbarBack() {
     containerType: ToolbarType.list,
     data: lastData.data,
     buttons: lastData.buttons,
-    height: _data.height,
+    // height: _data.height,
   })
 
   ToolbarModule.setData({

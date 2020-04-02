@@ -1,9 +1,4 @@
-import {
-  SMap,
-  Action,
-  DatasetType,
-  SMediaCollector,
-} from 'imobile_for_reactnative'
+import { SMap, Action, SMediaCollector } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
@@ -29,7 +24,7 @@ function commit(type) {
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
     params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
       cb: async () => {
         await SMap.submit()
         await SMap.setAction(Action.SELECT)
@@ -72,7 +67,7 @@ function close(type) {
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
     params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
     })
   } else {
     params.existFullMap && params.existFullMap()
@@ -105,35 +100,35 @@ async function geometrySelected(event) {
     case ConstToolType.MAP_EDIT_REGION:
     case ConstToolType.MAP_EDIT_DEFAULT: {
       if (currentToolbarType === ConstToolType.MAP_EDIT_DEFAULT) {
-        let column = 4
-        let height = ConstToolType.HEIGHT[3]
+        // let column = 4
+        // let height = ConstToolType.HEIGHT[3]
         let containerType = ToolbarType.table
         let type = ''
-        switch (event.layerInfo.type) {
-          case DatasetType.POINT:
-            type = ConstToolType.MAP_EDIT_POINT
-            height = ConstToolType.HEIGHT[0]
-            break
-          case DatasetType.LINE:
-            type = ConstToolType.MAP_EDIT_LINE
-            height = ConstToolType.HEIGHT[2]
-            break
-          case DatasetType.REGION:
-            type = ConstToolType.MAP_EDIT_REGION
-            height = ConstToolType.HEIGHT[2]
-            containerType = ToolbarType.scrollTable
-            break
-          case DatasetType.CAD:
-            type = ConstToolType.MAP_EDIT_CAD
-            height = ConstToolType.HEIGHT[0]
-            column = 5
-            break
-        }
+        // switch (event.layerInfo.type) {
+        //   case DatasetType.POINT:
+        //     type = ConstToolType.MAP_EDIT_POINT
+        //     height = ConstToolType.HEIGHT[0]
+        //     break
+        //   case DatasetType.LINE:
+        //     type = ConstToolType.MAP_EDIT_LINE
+        //     height = ConstToolType.HEIGHT[2]
+        //     break
+        //   case DatasetType.REGION:
+        //     type = ConstToolType.MAP_EDIT_REGION
+        //     height = ConstToolType.HEIGHT[2]
+        //     containerType = ToolbarType.scrollTable
+        //     break
+        //   case DatasetType.CAD:
+        //     type = ConstToolType.MAP_EDIT_CAD
+        //     height = ConstToolType.HEIGHT[0]
+        //     column = 5
+        //     break
+        // }
         params.setToolbarVisible &&
           params.setToolbarVisible(true, type, {
             isFullScreen: false,
-            column,
-            height,
+            // column,
+            // height,
             containerType,
             cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
           })

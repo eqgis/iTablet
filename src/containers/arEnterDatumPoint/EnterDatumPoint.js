@@ -236,12 +236,12 @@ export default class EnterDatumPoint extends Component {
   }
 
   back = () => {
-      if (GLOBAL.isswitch) {
-        GLOBAL.isswitch = false
-        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
-      }
-      NavigationService.goBack()
-      return true
+    if (GLOBAL.isswitch) {
+      GLOBAL.isswitch = false
+      GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.goBack()
+    return true
   }
 
   renderHintText() {

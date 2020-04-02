@@ -278,7 +278,7 @@ export default class MediaEdit extends React.Component {
         cellStyle={styles.tableCellView}
         rowStyle={styles.tableRowStyle}
         lineSeparator={20}
-        numColumns={3}
+        limit={3}
         data={data}
         renderCell={this.renderImage}
       />

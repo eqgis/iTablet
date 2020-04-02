@@ -383,7 +383,14 @@ export default class Map3D extends React.Component {
 
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.OverlayView = ref)} />
+    return (
+      <OverlayView
+        ref={ref => (GLOBAL.OverlayView = ref)}
+        onPress={() => {
+          this.toolBox && this.toolBox.overlayOnPress()
+        }}
+      />
+    )
   }
 
   _onKeySelect = item => {

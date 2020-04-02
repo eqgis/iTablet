@@ -1,7 +1,7 @@
 import React from 'react'
 import { color } from '../../../../../styles'
 import { setSpText } from '../../../../../utils'
-import { ToolbarType } from '../../../../../constants'
+import { ToolbarType, Height } from '../../../../../constants'
 import ToolbarModule from '../modules/ToolbarModule'
 import { MTBtn, ColorBtn, TableList } from '../../../../../components'
 
@@ -10,7 +10,7 @@ export default class ToolbarTableList extends React.Component {
     type: string,
     containerType: string,
     language: string,
-    column?: number,
+    limit?: number,
     device: Object,
     data: Array,
     getMenuAlertDialogRef: () => {},
@@ -36,16 +36,16 @@ export default class ToolbarTableList extends React.Component {
           this.itemAction(item)
         }}
         device={this.props.device}
-        numColumns={this.props.column}
+        numColumns={this.props.limit}
       />
     )
   }
 
   _renderItem = ({ item, rowIndex, cellIndex }) => {
-    let column = this.props.column
+    // let column = this.props.column
     return (
       <MTBtn
-        style={{ width: this.props.device.width / column }}
+        // style={{ width: this.props.device.width / column }}
         key={rowIndex + '-' + cellIndex}
         title={item.title}
         textColor={item.disable ? '#A0A0A0' : color.font_color_white}
@@ -64,7 +64,8 @@ export default class ToolbarTableList extends React.Component {
     return (
       <TableList
         data={this.props.data}
-        numColumns={this.props.column}
+        limit={this.props.limit}
+        // numRows={this.props.row}
         type={this.props.containerType}
         renderCell={
           this.props.containerType === '' ||
@@ -74,6 +75,12 @@ export default class ToolbarTableList extends React.Component {
             : this._renderColorItem
         }
         device={this.props.device}
+        cellStyle={
+          this.props.device.orientation === 'LANDSCAPE' && {
+            width: Height.TABLE_ROW_HEIGHT_4,
+          }
+        }
+        orientation={this.props.device.orientation}
       />
     )
   }

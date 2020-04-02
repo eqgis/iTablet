@@ -10,13 +10,7 @@ import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModule from './modules/ToolbarModule'
 import ToolbarHeight from './modules/ToolBarHeight'
-import {
-  View,
-  TouchableOpacity,
-  Animated,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native'
+import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import constants from '../../constants'
@@ -135,7 +129,6 @@ export default class ToolBar extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this.originType = props.type // 初次传入的类型
     this.shareTo = ''
     this.state = {
       // isShow: false,
@@ -148,6 +141,7 @@ export default class ToolBar extends React.PureComponent {
       data: [],
       buttons: [],
       bottom: new Animated.Value(-props.device.height),
+      right: new Animated.Value(-props.device.width),
       showMenuDialog: false,
       isTouch: true,
       isTouchProgress: false,
@@ -204,7 +198,19 @@ export default class ToolBar extends React.PureComponent {
   }
 
   changeHeight = async () => {
-    if (this.height === 0) return
+    if (this.height === 0) {
+      let position =
+        this.props.device.orientation === 'LANDSCAPE'
+          ? this.state.right
+          : this.state.bottom
+      Animated.timing(position, {
+        toValue: this.isShow
+          ? 0
+          : -Math.max(this.props.device.height, this.props.device.width),
+        duration: Const.ANIMATED_DURATION,
+      }).start()
+      return
+    }
     if (!(this.isShow && this.isBoxShow)) {
       this.showToolbar()
       return
@@ -212,17 +218,11 @@ export default class ToolBar extends React.PureComponent {
     let _data = ToolbarHeight.getToolbarSize(this.state.containerType, {
       data: this.state.data,
     })
-    this.height = _data.height
-    this.column = _data.column
-    this.showToolbar()
-  }
-
-  getOriginType = () => {
-    return this.originType
-  }
-
-  getType = () => {
-    return this.type
+    if (this.height !== _data.height || this.column !== _data.column) {
+      this.height = _data.height
+      this.column = _data.column
+      this.showToolbar()
+    }
   }
 
   showFullMap = () => {
@@ -304,7 +304,6 @@ export default class ToolBar extends React.PureComponent {
     } else if (!isShow) {
       GLOBAL.TouchType = TouchType.NORMAL
     }
-    this.setOverlayViewVisible(isShow)
     if (
       this.isShow !== isShow ||
       this.state.type !== type ||
@@ -330,12 +329,16 @@ export default class ToolBar extends React.PureComponent {
         if (this.state.type !== type && params.resetToolModuleData) {
           await ToolbarModule.setToolBarData(type)
         }
-        this.originType = type
         let newHeight = this.height
         if (!isShow) {
           newHeight = 0
         } else if (params && typeof params.height === 'number') {
           newHeight = params.height
+        } else if (!params || params.height === undefined) {
+          let _size = ToolbarHeight.getToolbarSize(this.state.containerType, {
+            data: this.state.data,
+          })
+          newHeight = _size.height
         }
         this.shareTo = params.shareTo || ''
 
@@ -382,7 +385,7 @@ export default class ToolBar extends React.PureComponent {
         setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
       }
       !isShow &&
-        GLOBAL.MapSelectPointType != 'selectPoint' &&
+        GLOBAL.MapSelectPointType !== 'selectPoint' &&
         this.props.existFullMap &&
         this.props.existFullMap()
       this.updateOverlayView()
@@ -408,6 +411,10 @@ export default class ToolBar extends React.PureComponent {
     // ) {
     //   keyboardHeight -= Const.BOTTOM_HEIGHT
     // }
+    let position =
+      this.props.device.orientation === 'LANDSCAPE'
+        ? this.state.right
+        : this.state.bottom
     // Toolbar的显示和隐藏
     if (this.isShow !== isShow) {
       isShow = isShow === undefined ? true : isShow
@@ -415,9 +422,15 @@ export default class ToolBar extends React.PureComponent {
         Animated.timing(this.state.bottom, {
           toValue: isShow
             ? 0
-            : -(this.props.device.height >= this.props.device.width
-              ? this.props.device.height
-              : this.props.device.width),
+            : -Math.max(this.props.device.height, this.props.device.width),
+          duration: Const.ANIMATED_DURATION,
+        }),
+      )
+      animatedList.push(
+        Animated.timing(this.state.right, {
+          toValue: isShow
+            ? 0
+            : -Math.max(this.props.device.height, this.props.device.width),
           duration: Const.ANIMATED_DURATION,
         }),
       )
@@ -425,7 +438,7 @@ export default class ToolBar extends React.PureComponent {
     }
     if (!this.contentView) return
     // Box内容框的显示和隐藏
-    let bottom = parseFloat(JSON.stringify(this.state.bottom))
+    let positionNumber = parseFloat(JSON.stringify(position))
     if (
       type === ConstToolType.MAP_THEME_PARAM ||
       type === ConstToolType.MAP_THEME_PARAM_GRAPH
@@ -449,14 +462,14 @@ export default class ToolBar extends React.PureComponent {
         })
         if (boxAnimated) {
           JSON.stringify(this.contentView.getContentHeight()) === '0' &&
-          bottom >= 0
+          positionNumber >= 0
             ? animatedList.unshift(boxAnimated)
             : animatedList.push(boxAnimated)
         }
       }
       this.isBoxShow = true
     }
-    if (bottom < 0) {
+    if (positionNumber < 0) {
       animatedList.forEach(animated => animated && animated.start())
     } else if (animatedList.length > 0) {
       Animated.sequence(animatedList).start()
@@ -465,6 +478,10 @@ export default class ToolBar extends React.PureComponent {
 
   showToolbar = async (isShow, cb = () => {}) => {
     let animatedList = []
+    let position =
+      this.props.device.orientation === 'LANDSCAPE'
+        ? this.state.right
+        : this.state.bottom
     // Toolbar的显示和隐藏
     if (this.isShow !== isShow) {
       isShow = isShow === undefined ? true : isShow
@@ -476,10 +493,18 @@ export default class ToolBar extends React.PureComponent {
           duration: Const.ANIMATED_DURATION,
         }),
       )
+      animatedList.push(
+        Animated.timing(this.state.right, {
+          toValue: isShow
+            ? 0
+            : -Math.max(this.props.device.height, this.props.device.width),
+          duration: Const.ANIMATED_DURATION,
+        }),
+      )
       this.isShow = isShow
     }
     // Box内容框的显示和隐藏
-    let bottom = parseFloat(JSON.stringify(this.state.bottom))
+    let boxPosition = parseFloat(JSON.stringify(position))
     // if (
     //   JSON.stringify(this.contentView.getContentHeight()) !==
     //   this.height.toString()
@@ -490,13 +515,13 @@ export default class ToolBar extends React.PureComponent {
       wait: true,
     })
     if (boxAnimated) {
-      this.height === 0 && bottom >= 0
+      this.height === 0 && boxPosition >= 0
         ? animatedList.unshift(boxAnimated)
         : animatedList.push(boxAnimated)
     }
     // }
     if (animatedList.length > 0) {
-      if (bottom < 0) {
+      if (boxPosition < 0) {
         animatedList.forEach(animated => animated && animated.start())
       } else {
         Animated.sequence(animatedList).start()
@@ -724,6 +749,13 @@ export default class ToolBar extends React.PureComponent {
   }
 
   overlayOnPress = () => {
+    if (
+      !this.state.isFullScreen ||
+      this.state.type === ConstToolType.STYLE_TRANSFER ||
+      this.state.isTouchProgress ||
+      this.state.showMenuDialog
+    )
+      return
     GLOBAL.TouchType = TouchType.NORMAL
     if (
       ToolbarModule.getData().actions &&
@@ -818,6 +850,7 @@ export default class ToolBar extends React.PureComponent {
         showBox={this.showBox}
         showMenuBox={this.showMenuBox}
         menu={this.menu}
+        device={this.props.device}
       />
     )
   }
@@ -837,16 +870,20 @@ export default class ToolBar extends React.PureComponent {
 
   render() {
     let containerStyle = this.state.isFullScreen
-      ? styles.fullContainer
-      : styles.wrapContainer
-    let height = this.state.isFullScreen
+      ? this.props.device.orientation === 'LANDSCAPE'
+        ? styles.fullContainerLandscape
+        : styles.fullContainer
+      : this.props.device.orientation === 'LANDSCAPE'
+        ? styles.wrapContainerLandscape
+        : styles.wrapContainer
+    let size = this.state.isFullScreen
       ? { height: this.props.device.height }
       : {}
     if (this.state.isFullScreen && this.state.isTouchProgress) {
       let softBarHeight = this.state.hasSoftMenuBottom
         ? ExtraDimensions.getSoftMenuBarHeight()
         : 0
-      height = { height: screen.getScreenSafeHeight() - softBarHeight }
+      size = { height: screen.getScreenSafeHeight() - softBarHeight }
     }
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
@@ -858,22 +895,18 @@ export default class ToolBar extends React.PureComponent {
     }
     return (
       <Animated.View
-        style={[containerStyle, { bottom: this.state.bottom }, height]}
+        style={[
+          containerStyle,
+          this.props.device.orientation === 'LANDSCAPE'
+            ? { right: this.state.right }
+            : { bottom: this.state.bottom },
+          size,
+        ]}
+        pointerEvents={'box-none'}
       >
-        {this.state.isFullScreen &&
-          this.state.type !== ConstToolType.STYLE_TRANSFER &&
-          !this.state.isTouchProgress &&
-          !this.state.showMenuDialog && (
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              this.overlayOnPress()
-            }}
-            style={styles.themeoverlay}
-          />
-        )}
         {this.state.isTouchProgress && this.state.isFullScreen && (
           <TouchProgress
+            device={this.props.device}
             selectName={this.state.selectName}
             showMenu={() => {
               // 智能配图选择器，唤起选择器菜单
@@ -894,12 +927,9 @@ export default class ToolBar extends React.PureComponent {
           >
             <View
               style={[
-                styles.containers,
-                !(
-                  this.state.isFullScreen &&
-                  !this.state.isTouchProgress &&
-                  !this.state.showMenuDialog
-                ) && styles.containers_border,
+                this.props.device.orientation === 'LANDSCAPE'
+                  ? styles.containersLandscape
+                  : styles.containers,
               ]}
             >
               {this.renderView()}
@@ -909,12 +939,9 @@ export default class ToolBar extends React.PureComponent {
         ) : (
           <View
             style={[
-              styles.containers,
-              !(
-                this.state.isFullScreen &&
-                !this.state.isTouchProgress &&
-                !this.state.showMenuDialog
-              ) && styles.containers_border,
+              this.props.device.orientation === 'LANDSCAPE'
+                ? styles.containersLandscape
+                : styles.containers,
             ]}
           >
             {this.renderView()}

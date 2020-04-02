@@ -21,11 +21,13 @@ function getToolbarSize(type, additional = {}) {
   switch (type) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
-    case ToolbarType.symbol: // 符号库容器
       height =
         orientation === 'LANDSCAPE'
           ? Height.LIST_HEIGHT_L
           : Height.LIST_HEIGHT_P
+      break
+    case ToolbarType.symbol: // 符号库容器
+      height = Height.LIST_HEIGHT_L
       break
     case ToolbarType.table: {
       // 固定表格
@@ -33,9 +35,12 @@ function getToolbarSize(type, additional = {}) {
         column = additional.column
       } else {
         column = orientation === 'LANDSCAPE' ? 5 : 4
+        // column = 4
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)
+      let maxRow = orientation === 'LANDSCAPE' ? 4 : 6
+      row = row > maxRow ? maxRow : row // 限制最大高度/宽度
       height = Height.TABLE_ROW_HEIGHT_4 * row
       break
     }
@@ -44,6 +49,7 @@ function getToolbarSize(type, additional = {}) {
         column = additional.column
       } else {
         column = orientation === 'LANDSCAPE' ? 5 : 4
+        // column = 4
       }
       height = Height.COLOR_TABLE_HEIGHT_L
       break

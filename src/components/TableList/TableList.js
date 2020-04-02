@@ -8,23 +8,29 @@ import * as React from 'react'
 import { ScrollView, View } from 'react-native'
 import styles from './styles'
 
+/**
+ * 表格列表
+ * 根据orientation来限制行或列，PORTRAIT时列固定，行自适应；LANDSCAPE时行固定，列自适应
+ */
 export default class TableList extends React.PureComponent {
   props: {
     type: string,
     data: Array,
-    numColumns?: number,
+    // numColumns?: number,
     lineSeparator?: number,
     style?: Object,
     cellStyle?: Object,
     rowStyle?: Object,
-    rowStyle?: Object,
     renderCell: () => {},
     type?: string,
+    device: string,
+    limit?: number,
   }
 
   static defaultProps = {
     data: [],
-    numColumns: 2,
+    // numColumns: 2,
+    limit: 2,
     type: 'normal', // normal | scroll
     lineSeparator: 10,
   }
@@ -35,7 +41,10 @@ export default class TableList extends React.PureComponent {
     let rows = [],
       rowsView = []
     this.props.data.forEach((item, index) => {
-      let column = this.props.numColumns
+      let column = this.props.limit
+      if (this.props.device.orientation === 'LANDSCAPE') {
+        column = Math.ceil(this.props.data.length / this.props.limit)
+      }
       let rowIndex = Math.floor(index / column)
       let cellIndex = index % column
       if (!rows[rowIndex]) {
@@ -55,7 +64,9 @@ export default class TableList extends React.PureComponent {
       <View
         key={'row-' + rowIndex}
         style={[
-          styles.row,
+          this.props.device.orientation === 'LANDSCAPE'
+            ? styles.rowL
+            : styles.rowP,
           this.props.rowStyle,
           rowIndex &&
             this.props.lineSeparator >= 0 && {
@@ -70,11 +81,19 @@ export default class TableList extends React.PureComponent {
 
   renderCell = (item, rowIndex, cellIndex) => {
     if (!this.props.renderCell) throw new Error('Please render cell')
-    let column = this.props.numColumns
-    let width = 100 / column + '%'
+    let limit = this.props.limit
+    let size = {
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      size.height = this.props.device.height / limit
+    } else {
+      size.width = this.props.device.width / limit
+    }
     return (
       <View
-        style={[{ width }, this.props.cellStyle]}
+        style={[size, this.props.cellStyle]}
         key={rowIndex + '-' + cellIndex}
       >
         {this.props.renderCell({ item, rowIndex, cellIndex })}

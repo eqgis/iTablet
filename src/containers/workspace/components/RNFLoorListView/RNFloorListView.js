@@ -12,6 +12,8 @@ import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
 
+const DEFAULT_BOTTOM = scaleSize(135)
+const DEFAULT_LEFT = scaleSize(34)
 export default class RNFloorListView extends React.Component {
   props: {
     device: Object,
@@ -29,13 +31,8 @@ export default class RNFloorListView extends React.Component {
         props.device.orientation === 'LANDSCAPE'
           ? scaleSize(240)
           : scaleSize(360),
-      left: new Animated.Value(scaleSize(20)),
-      bottom:
-        (props.device.height -
-          (props.device.orientation === 'LANDSCAPE'
-            ? scaleSize(240)
-            : scaleSize(360))) /
-        2,
+      left: new Animated.Value(DEFAULT_LEFT),
+      bottom: new Animated.Value(DEFAULT_BOTTOM),
       currentFloorID: props.currentFloorID,
     }
   }
@@ -49,19 +46,23 @@ export default class RNFloorListView extends React.Component {
   }
   async componentDidUpdate(prevProps, prevState) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
-      let height = prevState.height
+      let height,bottom
       if (this.props.device.orientation === 'LANDSCAPE') {
-        height = scaleSize(240)
+        height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
+        bottom = scaleSize(45)
       } else {
         height = scaleSize(360)
+        bottom = DEFAULT_BOTTOM
       }
-      let bottom = (this.props.device.height - height) / 2
       this.setState(
         {
           height,
-          bottom,
         },
         () => {
+          Animated.timing(this.state.bottom,{
+            toValue:bottom,
+            duration:Const.ANIMATED_DURATION,
+          }).start()
           if (height < prevState.height) {
             this.list &&
               this.list.scrollToIndex({
@@ -90,7 +91,7 @@ export default class RNFloorListView extends React.Component {
   setVisible = (visible, immediately = false) => {
     if (visible) {
       Animated.timing(this.state.left, {
-        toValue: scaleSize(20),
+        toValue: DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
       }).start()
     } else {

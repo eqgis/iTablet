@@ -282,7 +282,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: '基点座標',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自動測位に成功',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'マップ選択に成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '電話を南に向けてください',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'スマートフォンを南に向けて[OK]をクリックしてください',
   MAP_AR_DATUM_SETTING: '設定する',
 
   // ar地图

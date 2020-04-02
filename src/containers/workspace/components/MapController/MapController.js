@@ -13,7 +13,8 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 
 const DEFAULT_BOTTOM = scaleSize(135)
-const DEFAULT_LEFT = scaleSize(20)
+const DEFAULT_BOTTOM_LAND = scaleSize(45)
+const DEFAULT_LEFT = scaleSize(34)
 
 export default class MapController extends React.Component {
   props: {
@@ -21,13 +22,14 @@ export default class MapController extends React.Component {
     type?: any,
     compassStyle?: any,
     type: any,
+    device: any,
   }
 
   constructor(props) {
     super(props)
     this.deg = 0
     this.state = {
-      left: new Animated.Value(scaleSize(28)),
+      left: new Animated.Value(DEFAULT_LEFT),
       //在导航界面缩放时，bottom高度为scaleSize(240)避免mapController被遮盖
       bottom:
         (GLOBAL.NAV_PARAMS && GLOBAL.NAV_PARAMS.length > 0) ||
@@ -35,9 +37,12 @@ export default class MapController extends React.Component {
         (GLOBAL.NAVIGATIONSTARTBUTTON &&
           GLOBAL.NAVIGATIONSTARTBUTTON.state.show)
           ? new Animated.Value(scaleSize(240))
-          : new Animated.Value(DEFAULT_BOTTOM),
+          : this.props.device.orientation === 'LANDSCAPE'
+            ? new Animated.Value(DEFAULT_BOTTOM_LAND)
+            : new Animated.Value(DEFAULT_BOTTOM),
       compass: new Animated.Value(0),
     }
+    this.visible = true
   }
 
   componentDidMount() {
@@ -49,6 +54,25 @@ export default class MapController extends React.Component {
     } else {
       return
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      this.onOrientationChange()
+    }
+  }
+
+  onOrientationChange = () => {
+    let newBottom
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      newBottom = DEFAULT_BOTTOM_LAND
+    } else {
+      newBottom = DEFAULT_BOTTOM
+    }
+    Animated.timing(this.state.bottom, {
+      toValue: newBottom,
+      duration: 300,
+    }).start()
   }
 
   /**

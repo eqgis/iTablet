@@ -222,6 +222,7 @@ export default class LayerAttributeEdit extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         initWithLoading
+        showFullInMap={true}
         headerProps={{
           title: '属性',
           navigation: this.props.navigation,

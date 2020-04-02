@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Platform } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   backgroudViewStyle: {
     flex: 1,
     position: 'absolute',
-    marginTop: scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0),
     width: '100%',
     height: '100%',
   },

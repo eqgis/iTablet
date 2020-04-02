@@ -47,6 +47,25 @@
       "tabModules": ["Scene", "Layer3D", "Attribute3D", "Settings3D"]
     },
     {
+      "key": "MAP_COLLECTION",
+      "example": {
+        "checkUrl": "https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=",
+        "name": "地理国情普查_示范数据",
+        "nickname": "xiezhiyan123",
+        "type": "zip"
+      },
+      "functionModules": [
+        {"key": "startModule", "type": "MAP_START"},
+        {"key": "addModule", "type": "MAP_ADD"},
+        {"key": "markModule", "type": "MAP_MARKS"},
+        {"key": "collectionModule", "type": "MAP_SYMBOL"},
+        {"key": "editModule", "type": "MAP_EDIT"},
+        {"key": "toolModule", "type": "MAP_TOOLS"},
+        {"key": "shareModule", "type": "MAP_SHARE"}
+      ],
+      "tabModules": ["Map", "Layer", "Attribute", "Settings"]
+    },
+    {
       "key": "MAP_AR",
       "functionModules": [
         {"key": "startModule", "type": "MAP_START"},
@@ -96,25 +115,6 @@
       ],
       "tabModules": ["Map", "Layer", "Attribute", "Settings"
       ]
-    },
-    {
-      "key": "MAP_COLLECTION",
-      "example": {
-        "checkUrl": "https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=",
-        "name": "地理国情普查_示范数据",
-        "nickname": "xiezhiyan123",
-        "type": "zip"
-      },
-      "functionModules": [
-        {"key": "startModule", "type": "MAP_START"},
-        {"key": "addModule", "type": "MAP_ADD"},
-        {"key": "markModule", "type": "MAP_MARKS"},
-        {"key": "collectionModule", "type": "MAP_SYMBOL"},
-        {"key": "editModule", "type": "MAP_EDIT"},
-        {"key": "toolModule", "type": "MAP_TOOLS"},
-        {"key": "shareModule", "type": "MAP_SHARE"}
-      ],
-      "tabModules": ["Map", "Layer", "Attribute", "Settings"]
     },
     {
       "key": "MAP_PLOTTING",

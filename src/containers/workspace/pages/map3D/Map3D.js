@@ -29,6 +29,8 @@ import {
   MapController,
   ToolBar,
   OverlayView,
+  MapNavMenu,
+  BackgroundOverlay,
 } from '../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
@@ -114,6 +116,19 @@ export default class Map3D extends React.Component {
         this.addCircleFlyListen()
         this.getLayers()
       })
+      this.unsubscribeFocus = this.props.navigation.addListener(
+        'willFocus',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
+
+      this.unsubscribeBlur = this.props.navigation.addListener(
+        'willBlur',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+        },
+      )
     } else {
       global.SimpleDialog.set({
         text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
@@ -151,6 +166,8 @@ export default class Map3D extends React.Component {
     }
     this.attributeListener && this.attributeListener.remove()
     this.circleFlyListen && this.circleFlyListen.remove()
+    this.unsubscribeFocus && this.unsubscribeFocus.remove()
+    this.unsubscribeFocus && this.unsubscribeBlur.remove()
   }
 
   getLayers = async () => {
@@ -585,11 +602,11 @@ export default class Map3D extends React.Component {
     return (
       <FunctionToolbar
         language={this.props.language}
-        style={styles.functionToolbar}
-        ref={ref => (this.functionToolbar = ref)}
+        ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         getToolRef={() => {
           return this.toolBox
         }}
+        getNavMenuRef={() => this.NavMenu}
         type={this.type}
         showFullMap={this.showFullMap}
         device={this.props.device}
@@ -600,7 +617,11 @@ export default class Map3D extends React.Component {
   }
   renderMapController = () => {
     return (
-      <MapController ref={ref => (this.mapController = ref)} type={'MAP_3D'} />
+      <MapController
+        ref={ref => (this.mapController = ref)}
+        type={'MAP_3D'}
+        device={this.props.device}
+      />
     )
   }
 
@@ -671,6 +692,30 @@ export default class Map3D extends React.Component {
         initIndex={0}
         type={this.operationType}
         layerManager={this._layer_manager}
+      />
+    )
+  }
+
+  /**
+   * 横屏时的导航栏
+   */
+  renderMapNavMenu = () => {
+    return (
+      <MapNavMenu
+        ref={ref => (this.NavMenu = ref)}
+        navigation={this.props.navigation}
+        appConfig={this.props.appConfig}
+        initIndex={0}
+        type={this.type}
+      />
+    )
+  }
+
+  renderBackgroundOverlay = () => {
+    return (
+      <BackgroundOverlay
+        ref={ref => (this.backgroundOverlay = ref)}
+        device={this.props.device}
       />
     )
   }
@@ -793,6 +838,8 @@ export default class Map3D extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
+        hideInBackground={false}
         headerProps={{
           title: getLanguage(this.props.language).Map_Module.MAP_3D,
           //'三维场景',
@@ -820,7 +867,9 @@ export default class Map3D extends React.Component {
           ),
           type: 'fix',
         }}
-        bottomBar={this.renderToolBar()}
+        bottomBar={
+          this.props.device.orientation !== 'LANDSCAPE' && this.renderToolBar()
+        }
         bottomProps={{ type: 'fix' }}
       >
         {global.isLicenseValid && (
@@ -836,6 +885,9 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
+        {this.props.device.orientation === 'LANDSCAPE' &&
+          this.renderMapNavMenu()}
+        {this.renderBackgroundOverlay()}
       </Container>
     )
   }

@@ -758,7 +758,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: color.white }}>
         <View
           style={{
             paddingTop: HEADER_PADDINGTOP,

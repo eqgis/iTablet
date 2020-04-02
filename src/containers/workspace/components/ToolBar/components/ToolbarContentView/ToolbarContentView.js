@@ -398,9 +398,9 @@ export default class ToolbarContentView extends React.Component {
     }
     let style
     if (this.props.device.orientation === 'LANDSCAPE') {
-      style = { width: this.state.boxHeight, height: '100%' }
+      style = { width: this.state.boxHeight, height: this.props.device.height }
     } else {
-      style = { height: this.state.boxHeight, width: '100%' }
+      style = { height: this.state.boxHeight, width: this.props.device.width }
     }
     return (
       <Animated.View style={[style, { backgroundColor: color.content_white }]}>

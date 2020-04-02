@@ -80,7 +80,6 @@ export default class ToolbarTableList extends React.Component {
             width: Height.TABLE_ROW_HEIGHT_4,
           }
         }
-        orientation={this.props.device.orientation}
       />
     )
   }

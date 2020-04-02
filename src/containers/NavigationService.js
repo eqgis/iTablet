@@ -30,6 +30,19 @@ function navigate(routeName, params) {
   })()
 }
 
+function isInStack(routeName) {
+  if (_navigator) {
+    let routes = _navigator.state.nav.routes
+    for (let i = routes.length - 1; i >= 0; i--) {
+      if (routes[i].routeName === routeName) {
+        return true
+      }
+    }
+    return false
+  }
+  return false
+}
+
 /**
  *
  * @param routeName 从该页面返回
@@ -98,4 +111,5 @@ export default {
   replace,
   pop,
   popToTop,
+  isInStack,
 }

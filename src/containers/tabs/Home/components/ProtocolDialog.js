@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native'
 import { Dialog, CheckBox, MTBtn } from '../../../../components'
-import { scaleSize, setSpText, Toast } from '../../../../utils'
+import { setSpText, Toast, fixedSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 
@@ -124,19 +124,19 @@ export default class ProtocolDialog extends Component {
   }
 
   render() {
-    let height = this.props.device.height - scaleSize(120)
-    let width = this.props.device.width - scaleSize(60)
+    let height = this.props.device.height - fixedSize(120)
+    let width = this.props.device.width - fixedSize(60)
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
         title={getLanguage(this.props.language).Protocol.PROTOCOL}
         style={{
-          height: scaleSize(700),
-          width: scaleSize(500),
+          height: fixedSize(700),
+          width: fixedSize(500),
           maxHeight: height,
           maxWidth: width,
         }}
-        opacityStyle={{ height: scaleSize(700) }}
+        opacityStyle={{ height: fixedSize(700) }}
         confirmAction={this.confirm}
         confirmBtnTitle={getLanguage(this.props.language).Protocol.AGREE}
         cancelBtnVisible={false}
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: scaleSize(10),
+    paddingVertical: fixedSize(10),
     backgroundColor: color.bgW,
   },
   checkView: {
@@ -173,15 +173,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // paddingVertical: scaleSize(10),
-    height: scaleSize(40),
+    height: fixedSize(40),
     backgroundColor: color.bgW,
   },
   checkBox: {
-    height: scaleSize(40),
-    width: scaleSize(40),
+    height: fixedSize(40),
+    width: fixedSize(40),
   },
   tipBtn: {
-    height: scaleSize(40),
+    height: fixedSize(40),
     alignItems: 'center',
     justifyContent: 'center',
   },

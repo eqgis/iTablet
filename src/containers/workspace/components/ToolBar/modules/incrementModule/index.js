@@ -6,8 +6,7 @@
  */
 import IncrementData from './IncrementData'
 import IncrementAction from './IncrementAction'
-import ToolbarModule from "../ToolbarModule"
-import utils from "./utils"
+import ToolbarModule from '../ToolbarModule'
 
 function action() {
   GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
@@ -30,6 +29,5 @@ export default function(type, title) {
     setModuleData,
     getData: IncrementData.getData,
     actions: IncrementAction,
-    getLayout: utils.getLayout,
   }
 }

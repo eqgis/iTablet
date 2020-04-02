@@ -41,6 +41,19 @@ export default class PreviewColorPicker extends Component {
     this.selectedIndex = -1
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      this.containerHeight =
+        this.props.device.orientation === 'LANDSCAPE'
+          ? scaleSize(280)
+          : scaleSize(400)
+      Animated.timing(this.bottom, {
+        toValue: this.visible ? 0 : -this.containerHeight,
+        time: 300,
+      }).start()
+    }
+  }
+
   setVisible = (visible, index = -1) => {
     if (visible === this.visible) {
       return
@@ -243,7 +256,6 @@ export default class PreviewColorPicker extends Component {
     if (this.props.device.orientation === 'LANDSCAPE') {
       extraStyle = { marginLeft: scaleSize(140) }
       extraTxtStyle = { marginRight: scaleSize(140) }
-      colorWheelStyle = { width: scaleSize(180), height: scaleSize(180) }
       colorPickerTextStyle = {
         fontSize: setSpText(16),
         paddingLeft: scaleSize(10),

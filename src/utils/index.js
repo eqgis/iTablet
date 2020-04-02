@@ -1,4 +1,4 @@
-import screen, { scaleSize, setSpText } from './screen'
+import screen, { scaleSize, fixedSize, setSpText, fixedText } from './screen'
 import dataUtil from './dataUtil'
 import Toast from './Toast'
 import * as constUtil from './constUtil'
@@ -16,6 +16,7 @@ import OnlineServicesUtils from './OnlineServicesUtils'
 export {
   screen,
   scaleSize,
+  fixedSize,
   dataUtil,
   constUtil,
   Toast,
@@ -24,6 +25,7 @@ export {
   jsonUtil,
   FetchUtils,
   setSpText,
+  fixedText,
   request,
   /** 地图公共方法 * */
   LayerUtils,

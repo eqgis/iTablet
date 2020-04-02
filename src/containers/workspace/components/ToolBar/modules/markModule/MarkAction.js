@@ -186,7 +186,14 @@ function commit(type) {
       GLOBAL.NEEDREFRESHTABLE = true
     })
   } else {
-    return false
+    const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+
+    _params.setToolbarVisible(true, type, {
+      isFullScreen: false,
+      height: 0,
+      cb: () => select(type),
+    })
+    // return false
   }
 }
 

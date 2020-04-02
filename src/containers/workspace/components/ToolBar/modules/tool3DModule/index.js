@@ -16,8 +16,7 @@ async function action(type) {
     isFullScreen: true,
     column: data.column,
     height: data.height,
-    data: _data.data,
-    buttons: _data.buttons,
+    ..._data,
   })
 }
 

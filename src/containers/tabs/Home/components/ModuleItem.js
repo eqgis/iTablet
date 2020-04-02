@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { fixedSize, fixedText } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 
 export default class ModuleItem extends Component {
   props: {
     downloadData: Object,
     item: Object,
+    device: Object,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
@@ -68,8 +69,8 @@ export default class ModuleItem extends Component {
         style={[
           {
             position: 'absolute',
-            width: scaleSize(200),
-            height: scaleSize(200),
+            width: fixedSize(200),
+            height: fixedSize(200),
             backgroundColor: '#rgba(112, 128, 144,0.9)',
             alignItems: 'center',
             justifyContent: 'center',
@@ -79,7 +80,7 @@ export default class ModuleItem extends Component {
       >
         <Text
           style={{
-            fontSize: setSpText(25),
+            fontSize: fixedText(25),
             fontWeight: 'bold',
             color: 'white',
           }}
@@ -94,8 +95,9 @@ export default class ModuleItem extends Component {
     let item = this.props.item
     let image = this.state.touch ? item.moduleImageTouch : item.moduleImage
     let textColor = this.state.touch ? { color: '#4680DF' } : {}
+    let isLandscape = this.props.device.orientation === 'LANDSCAPE'
     return (
-      <View style={styles.moduleView}>
+      <View style={isLandscape ? styles.moduleViewL : styles.moduleViewP}>
         <TouchableOpacity
           activeOpacity={1}
           disabled={this.state.disabled}
@@ -135,20 +137,27 @@ export default class ModuleItem extends Component {
 
 const styles = StyleSheet.create({
   module: {
-    width: scaleSize(200),
-    height: scaleSize(200),
+    width: fixedSize(200),
+    height: fixedSize(200),
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: scaleSize(4),
+    borderRadius: fixedSize(4),
   },
   moduleImage: {
-    width: scaleSize(120),
-    height: scaleSize(120),
+    width: fixedSize(120),
+    height: fixedSize(120),
   },
-  moduleView: {
-    width: scaleSize(300),
-    height: scaleSize(220),
+  moduleViewP: {
+    width: fixedSize(300),
+    height: fixedSize(220),
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moduleViewL: {
+    width: fixedSize(220),
+    height: fixedSize(220),
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -159,11 +168,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    width: scaleSize(200),
-    height: scaleSize(37),
-    fontSize: setSpText(25),
+    width: fixedSize(200),
+    height: fixedSize(37),
+    fontSize: fixedText(25),
     color: '#5E5E5E',
     textAlign: 'center',
-    marginTop: scaleSize(13),
+    marginTop: fixedSize(13),
   },
 })

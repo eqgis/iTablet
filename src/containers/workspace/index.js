@@ -4,8 +4,14 @@
  */
 
 import React from 'react'
-import { createBottomTabNavigator } from 'react-navigation'
 import { MapView, Map3D } from './pages'
+
+import {
+  createBottomTabNavigator,
+  createStackNavigator,
+} from 'react-navigation'
+// eslint-disable-next-line import/no-unresolved
+import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
 
 import { color } from '../../styles'
 import LayerManager from '../mtLayerManager'
@@ -60,12 +66,48 @@ const options = {
   },
 }
 
+const stackOption = {
+  mode: 'modal',
+  headerMode: 'none',
+  transparentCard: true,
+  cardStyle: {
+    backgroundColor: 'transparent',
+    opacity: 1,
+  },
+  transitionConfig: () => ({
+    screenInterpolator: sceneProps => {
+      if (global.getDevice().orientation !== 'LANDSCAPE') {
+        return StackViewStyleInterpolator.forFade(sceneProps)
+      }
+      return forHorizontal(sceneProps)
+    },
+  }),
+}
+
+const forHorizontal = sceneProps => {
+  const { layout, position, scene } = sceneProps
+  const { index } = scene
+
+  const width = layout.initWidth
+  const translateX = position.interpolate({
+    inputRange: [index - 1, index, index + 1],
+    outputRange: [width, 0, 0],
+  })
+
+  const opacity = position.interpolate({
+    inputRange: [index - 1, index - 0.99, index],
+    outputRange: [0, 1, 1],
+  })
+
+  return { opacity, transform: [{ translateX: translateX }] }
+}
+
 const MapTabs = compose(
   createBottomTabNavigator(
     {
-      MapView: {
-        screen: MapView,
-      },
+      // MapView: {
+      //   screen: MapView,
+      // },
       LayerManager: {
         screen: LayerManager,
       },
@@ -80,14 +122,34 @@ const MapTabs = compose(
   ),
 )
 
+const MapStack = compose(
+  createStackNavigator(
+    {
+      MapView: {
+        screen: MapView,
+      },
+      LayerManager: {
+        screen: LayerManager,
+      },
+      LayerAttribute: {
+        screen: LayerAttribute,
+      },
+      MapSetting: {
+        screen: MapSetting,
+      },
+    },
+    stackOption,
+  ),
+)
+
 const CoworkTabs = createBottomTabNavigator(
   {
     // onechat
     Chat: {
       screen: Chat,
     },
-    CoworkMapTabs: {
-      screen: MapTabs,
+    CoworkMapStack: {
+      screen: MapStack,
     },
   },
   options,
@@ -117,9 +179,9 @@ const CoworkTabs = createBottomTabNavigator(
 
 const Map3DTabs = createBottomTabNavigator(
   {
-    Map3D: {
-      screen: Map3D,
-    },
+    // Map3D: {
+    //   screen: Map3D,
+    // },
     Layer3DManager: {
       screen: Layer3DManager,
     },
@@ -133,4 +195,22 @@ const Map3DTabs = createBottomTabNavigator(
   options,
 )
 
-export { MapTabs, Map3DTabs, CoworkTabs, MapView }
+const Map3DStack = createStackNavigator(
+  {
+    Map3D: {
+      screen: Map3D,
+    },
+    Layer3DManager: {
+      screen: Layer3DManager,
+    },
+    LayerAttribute3D: {
+      screen: LayerAttribute,
+    },
+    Map3DSetting: {
+      screen: Setting,
+    },
+  },
+  stackOption,
+)
+
+export { MapTabs, Map3DTabs, CoworkTabs, MapView, MapStack, Map3DStack }

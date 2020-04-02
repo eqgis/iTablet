@@ -31,6 +31,7 @@ import { getThemeAssets } from '../../../assets'
 import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
+import TabBar from '../TabBar'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {
@@ -426,6 +427,10 @@ export default class Home extends Component {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
 
+  renderTabBar = () => {
+    return <TabBar navigation={this.props.navigation} />
+  }
+
   render() {
     let userImg =
       this.props.user.currentUser.userType === UserType.PROBATION_USER ||
@@ -436,9 +441,17 @@ export default class Home extends Component {
               'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
         }
     let moreImg = require('../../../assets/home/Frenchgrey/icon_else_selected.png')
+    let imgSize = scaleSize(60)
+    if (this.props.device) {
+      imgSize =
+        this.props.device.orientation === 'LANDSCAPE'
+          ? scaleSize(40)
+          : scaleSize(60)
+    }
     return (
       <Container
         ref={ref => (this.container = ref)}
+        hideInBackground={false}
         headerProps={{
           title: this.props.appConfig.name,
           headerLeft: (
@@ -446,7 +459,10 @@ export default class Home extends Component {
               style={styles.userView}
               onPress={() => this.showUserPop()}
             >
-              <Image source={userImg} style={styles.userImg} />
+              <Image
+                source={userImg}
+                style={[styles.userImg, { width: imgSize, height: imgSize }]}
+              />
             </TouchableOpacity>
           ),
           headerRight: (
@@ -457,12 +473,13 @@ export default class Home extends Component {
               <Image
                 resizeMode={'contain'}
                 source={moreImg}
-                style={styles.moreImg}
+                style={[styles.moreImg, { width: imgSize, height: imgSize }]}
               />
             </TouchableOpacity>
           ),
         }}
         style={styles.container}
+        bottomBar={this.renderTabBar()}
       >
         <View
           style={{

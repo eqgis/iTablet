@@ -917,6 +917,7 @@ export default class MT_layerManager extends React.Component {
       <MapToolbar
         navigation={this.props.navigation}
         type={this.state.type}
+        initIndex={1}
         appConfig={this.props.appConfig}
       />
     )
@@ -1023,7 +1024,9 @@ export default class MT_layerManager extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getHeaderTitle(GLOBAL.Type),
+          title:
+            this.props.device.orientation !== 'LANDSCAPE' &&
+            getHeaderTitle(GLOBAL.Type),
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

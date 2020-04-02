@@ -109,12 +109,15 @@ function getLayerIconByType(type) {
       icon = getThemeAssets().layerType.layer_group
       break
     case DatasetType.POINT: // 点数据集
+    case DatasetType.PointZ: // 三维点数据集
       icon = require('./map/icon-shallow-dot_black.png')
       break
     case DatasetType.LINE: // 线数据集
+    case DatasetType.LineZ: // 三维线数据集
       icon = require('./map/icon-shallow-line_black.png')
       break
     case DatasetType.REGION: // 多边形数据集
+    case DatasetType.RegionZ: // 三维多边形数据集
       icon = require('./map/icon-shallow-polygon_black.png')
       break
     case DatasetType.TEXT: // 文本数据集

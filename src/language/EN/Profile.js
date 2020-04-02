@@ -277,7 +277,7 @@ const Profile = {
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Auto location succeed',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Map select point succeed',
   MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:
-    'Please place your mobile phone facing south',
+    'Please place your mobile phone facing south click sure',
   MAP_AR_DATUM_SETTING: 'Setting',
 
   // ar地图

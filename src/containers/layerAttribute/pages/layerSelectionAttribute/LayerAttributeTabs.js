@@ -746,6 +746,7 @@ export default class LayerAttributeTabs extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
         headerProps={{
           title: getLanguage(this.props.language).Map_Label.ATTRIBUTE,
           navigation: this.props.navigation,

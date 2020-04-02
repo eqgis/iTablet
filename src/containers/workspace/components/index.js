@@ -8,6 +8,8 @@ import LeftToolbar from './LeftToolbar'
 import FunctionToolbar from './FunctionToolbar'
 import constants from '../constants'
 import MapToolbar from './MapToolbar'
+import MapNavMenu from './MapNavMenu'
+import BackgroundOverlay from './BackgroundOverlay'
 import MapController from './MapController'
 import ToolBar from './ToolBar'
 import SymbolTabs from './SymbolTabs'
@@ -40,9 +42,11 @@ import TrafficView from './TrafficView'
 import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
 import PreviewColorPicker from './PreviewColorPicker'
-import LayerVisibilityView from "./LayerVisibilityView"
-import IncrementRoadDialog from "./IncrementRoadDialog"
+import LayerVisibilityView from './LayerVisibilityView'
+import IncrementRoadDialog from './IncrementRoadDialog'
 export {
+  MapNavMenu,
+  BackgroundOverlay,
   ScaleView,
   RNLegendView,
   SimpleSelectList,

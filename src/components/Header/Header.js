@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import { Text, View, Image, TouchableOpacity, Animated } from 'react-native'
 import styles, * as stylesConst from './styles'
+import { scaleSize, setSpText } from '../../utils'
 
 class NavigationHeader extends Component {
   props: {
@@ -58,9 +59,28 @@ class NavigationHeader extends Component {
     super(props)
     this.state = {
       headerTop: new Animated.Value(0),
+      headerHeight:
+        global.getDevice().orientation === 'LANDSCAPE'
+          ? new Animated.Value(stylesConst.HEADER_HEIGHT_LANDSCAPE)
+          : new Animated.Value(stylesConst.HEADER_HEIGHT),
     }
     this.visible = true
     this.clickable = true
+  }
+
+  componentDidUpdate() {
+    this.onOrientationChange()
+  }
+
+  onOrientationChange = () => {
+    let height =
+      global.getDevice().orientation === 'LANDSCAPE'
+        ? stylesConst.HEADER_HEIGHT_LANDSCAPE
+        : stylesConst.HEADER_HEIGHT
+    Animated.timing(this.state.headerHeight, {
+      toValue: height,
+      duration: 300,
+    }).start()
   }
 
   setVisible = visible => {
@@ -105,6 +125,15 @@ class NavigationHeader extends Component {
       backImg,
     } = this.props
 
+    let fontSize =
+      global.getDevice().orientation === 'LANDSCAPE'
+        ? setSpText(26)
+        : setSpText(36)
+    let imgSize =
+      global.getDevice().orientation === 'LANDSCAPE'
+        ? scaleSize(40)
+        : scaleSize(60)
+
     let backBtnSource =
       backImg || require('../../assets/public/Frenchgrey/icon-back-white.png')
     // backBtnType === 'white'
@@ -124,7 +153,10 @@ class NavigationHeader extends Component {
         <View
           style={[styles.iconBtnBg, darkBackBtn && styles.iconBtnBgDarkColor]}
         >
-          <Image source={backBtnSource} style={styles.backIcon} />
+          <Image
+            source={backBtnSource}
+            style={[styles.backIcon, { width: imgSize, height: imgSize }]}
+          />
         </View>
       </TouchableOpacity>
     )
@@ -137,7 +169,7 @@ class NavigationHeader extends Component {
           ) : (
             <View>
               <Text
-                style={headerTitleStyle}
+                style={[headerTitleStyle, { fontSize: fontSize }]}
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
@@ -200,6 +232,7 @@ class NavigationHeader extends Component {
       <Animated.View
         style={[
           currentHeaderStyle,
+          { height: this.state.headerHeight },
           headerStyle,
           { opacity: opacity, top: this.state.headerTop },
         ]}

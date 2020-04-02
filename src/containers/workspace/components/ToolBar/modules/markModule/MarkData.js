@@ -156,13 +156,13 @@ function getData(type, params) {
               : require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
         },
-        {
-          key: constants.MOVE,
-          title: getLanguage(global.language).Map_Main_Menu.OBJMOVE,
-          action: MarkAction.move,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
-        },
+        // {
+        //   key: constants.MOVE,
+        //   title: getLanguage(global.language).Map_Main_Menu.OBJMOVE,
+        //   action: MarkAction.move,
+        //   size: 'large',
+        //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        // },
         {
           key: 'showEditLabel',
           title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,

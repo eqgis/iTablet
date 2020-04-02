@@ -48,6 +48,7 @@ import JPushService from './JPushService'
 import { Buffer } from 'buffer'
 import SMessageServiceHTTP from './SMessageServiceHTTP'
 import RNFS from 'react-native-fs'
+import TabBar from '../TabBar'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -1352,11 +1353,17 @@ export default class Friend extends Component {
       })
     }
   }
+
+  renderTabBar = () => {
+    return <TabBar navigation={this.props.navigation} />
+  }
+
   render() {
     this.screenWidth = Dimensions.get('window').width
     return (
       <Container
         ref={ref => (this.container = ref)}
+        hideInBackground={false}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
           headerLeft:
@@ -1390,6 +1397,7 @@ export default class Friend extends Component {
           withoutBack: true,
           navigation: this.props.navigation,
         }}
+        bottomBar={this.renderTabBar()}
       >
         {this.props.user.currentUser.userType === UserType.COMMON_USER
           ? this.renderTab()

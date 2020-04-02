@@ -28,6 +28,18 @@ function getScreenSafeHeight() {
   return deviceSafeHeight
 }
 
+function getRatio() {
+  let height = Math.max(deviceHeight, deviceWidth)
+  let ratio
+  if (height < 700) {
+    ratio = 0.75
+  } else if (height < 1000) {
+    ratio = Math.max(deviceHeight, deviceWidth) / 1000
+  } else {
+    ratio = 1
+  }
+  return ratio
+}
 // px转换成dp
 // let w2 = deviceWidth > 320 ? 720 / defaultPixel : 640 / defaultPixel
 // let h2 = deviceWidth > 320 ? 1080 / defaultPixel : 1136 / defaultPixel
@@ -46,11 +58,21 @@ if (deviceWidth > deviceHeight) {
  * return number dp
  */
 export function scaleSize(size) {
+  size = size * 0.7 * getRatio()
+  return size
+}
+
+export function fixedSize(size) {
   size = (size * scale) / defaultPixel
   return size
 }
 
 export function setSpText(size) {
+  size = size * (Platform.OS === 'ios' ? 0.8 : 0.7) * getRatio()
+  return size
+}
+
+export function fixedText(size) {
   // size = Math.round(((size * scale + 0.5) * pixelRatio) / fontScale)
   size = Math.round(size * scale + 0.5)
   // if (Platform.OS === 'ios') {

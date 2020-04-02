@@ -50,6 +50,11 @@ export default class EnterDatumPoint extends Component {
     }
   }
 
+  componentDidMount = async () => {
+    let map = await SMap.getCurrentPosition()
+    GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(map)
+  }
+
   getCurrentPosition = async () => {
     GLOBAL.Loading.setLoading(
       true,
@@ -217,7 +222,7 @@ export default class EnterDatumPoint extends Component {
   renderButton() {
     return (
       <View style={{ alignItems: 'center' }}>
-        {this.renderHintText()}
+        {/* {this.renderHintText()} */}
         {
           <Button
             title={getLanguage(global.language).Profile.MAP_AR_DATUM_SURE}

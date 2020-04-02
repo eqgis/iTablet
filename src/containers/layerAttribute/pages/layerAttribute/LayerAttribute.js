@@ -69,6 +69,7 @@ export default class LayerAttribute extends React.Component {
     setLayerAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
+    device: Object,
   }
 
   constructor(props) {
@@ -769,10 +770,14 @@ export default class LayerAttribute extends React.Component {
           hideMapController: true,
         })
       GLOBAL.toolBox &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE, {
-        isFullScreen: false,
-        height: 0,
-      })
+        GLOBAL.toolBox.setVisible(
+          true,
+          ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+          {
+            isFullScreen: false,
+            height: 0,
+          },
+        )
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
       if (GLOBAL.Type === constants.MAP_AR && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
@@ -1388,6 +1393,7 @@ export default class LayerAttribute extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
         headerProps={{
           title: getHeaderTitle(this.type),
           navigation: this.props.navigation,
@@ -1400,7 +1406,7 @@ export default class LayerAttribute extends React.Component {
           withoutBack: true,
           headerRight,
         }}
-        // bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
+        bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
         style={styles.container}
       >
         {this.type !== 'MAP_3D' && (
@@ -1433,7 +1439,7 @@ export default class LayerAttribute extends React.Component {
               title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
               //'暂无属性',
             })}
-          {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
+          {/* {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()} */}
           <LocationView
             ref={ref => (this.locationView = ref)}
             style={styles.locationView}

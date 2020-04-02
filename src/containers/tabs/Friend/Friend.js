@@ -63,6 +63,7 @@ export default class Friend extends Component {
     user: Object,
     appConfig: Object,
     chat: Array,
+    device: Object,
     addChat: () => {},
     editChat: () => {},
     setConsumer: () => {},
@@ -111,7 +112,7 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
       JSON.stringify(prevState) !== JSON.stringify(this.state) ||
       prevProps.language !== this.props.language ||
-      Dimensions.get('window').width !== this.screenWidth
+      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
     ) {
       return true
     }

@@ -127,7 +127,7 @@ class NavigationHeader extends Component {
       ? setSpText(26)
       : setSpText(36)
     let imgSize = global.getDevice().orientation === 'LANDSCAPE'
-      ? scaleSize(40)
+      ? scaleSize(50)
       : scaleSize(60)
 
     let backBtnSource =

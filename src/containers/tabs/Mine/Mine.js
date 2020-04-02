@@ -484,8 +484,13 @@ export default class Mine extends Component {
   }
 
   render() {
-    this.screenWidth = Dimensions.get('window').width
-    this.screenHeight = Dimensions.get('window').height
+    if(this.props.device.orientation === 'LANDSCAPE') {
+      this.screenWidth = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
+      this.screenHeight = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+    } else {
+      this.screenWidth = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+      this.screenHeight = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
+    }
     return (
       <Container
         ref={ref => (this.container = ref)}

@@ -183,11 +183,9 @@ export default class Container extends PureComponent {
     )
   }
 
-  renderBottom = () => {
+  renderBottom = fixBottom => {
     if (!this.props.bottomBar) return null
     let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
-    let fixBottom =
-      this.props.bottomProps && this.props.bottomProps.type === 'fix'
     let style = []
     if(fixBottom) {
       if(isLandscape) {
@@ -222,6 +220,8 @@ export default class Container extends PureComponent {
     // 是否为flex布局的header
     let fixHeader =
       this.props.headerProps && this.props.headerProps.type === 'fix'
+    let fixBottom =
+      this.props.bottomProps && this.props.bottomProps.type === 'fix'
     let direction =  {flexDirection: GLOBAL.getDevice().orientation === 'LANDSCAPE' ? 'row' : 'column'}
     let width
     width = this.overlayWidth.interpolate({
@@ -260,8 +260,9 @@ export default class Container extends PureComponent {
             <ContainerView style={[styles.container, this.props.style]}>
               {this.props.children}
               {fixHeader && this.renderHeader(fixHeader)}
+              {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>
-            {this.renderBottom()}
+            {!fixBottom && this.renderBottom(fixBottom)}
           </View>
           <Loading
             ref={ref => (this.loading = ref)}

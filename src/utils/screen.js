@@ -31,7 +31,7 @@ function getScreenSafeHeight() {
 function getRatio() {
   let height = Math.max(deviceHeight, deviceWidth)
   let ratio
-  if(height < 700){
+  if(height < 750){
     ratio = 0.75
   } else if (height < 1000) {
     ratio = (Math.max(deviceHeight, deviceWidth) / 1000)

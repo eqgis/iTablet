@@ -904,6 +904,7 @@ export default class ToolBar extends React.PureComponent {
         ]}
         pointerEvents={'box-none'}
       >
+        <View style={styles.themeoverlay} pointerEvents={'box-none'} />
         {this.state.isTouchProgress && this.state.isFullScreen && (
           <TouchProgress
             device={this.props.device}

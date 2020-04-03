@@ -41,7 +41,7 @@ async function point() {
     SMap.setAction(Action.CREATEPOINT)
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
@@ -62,7 +62,7 @@ async function words() {
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW_TEXT, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
     GLOBAL.TouchType = TouchType.MAP_TOOL_TAGGING
   } else {
@@ -85,7 +85,7 @@ async function pointline() {
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.CREATEPOLYLINE)
   } else {
@@ -96,7 +96,6 @@ async function pointline() {
 async function freeline() {
   const _params = ToolbarModule.getParams()
   const { currentLayer } = _params
-  let showMenuDialog = true
   let layerType
   if (currentLayer) {
     layerType = LayerUtils.getLayerType(currentLayer)
@@ -108,8 +107,7 @@ async function freeline() {
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
-      showMenuDialog,
+      // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.FREEDRAW)
   } else {
@@ -132,7 +130,7 @@ async function pointcover() {
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.CREATEPOLYGON)
   } else {
@@ -164,7 +162,7 @@ async function freecover() {
   ) {
     _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.DRAWPLOYGON)
   } else {
@@ -190,7 +188,7 @@ function commit(type) {
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
       cb: () => select(type),
     })
     // return false
@@ -210,7 +208,7 @@ function back() {
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
       cb: () => select(type),
     })
   }
@@ -234,7 +232,7 @@ function showEditLabel() {
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
     cb: () => select(type),
   })
 
@@ -410,7 +408,7 @@ async function deleteLabel() {
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
     cb: () => select(type),
   })
 }
@@ -620,7 +618,7 @@ function toolbarBack() {
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
       cb: () => select(type),
     })
   } /*else if (

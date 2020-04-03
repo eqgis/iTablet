@@ -101,7 +101,7 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
-import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData"
+import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
@@ -2330,7 +2330,8 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.isExample || this.props.analyst.params || this.state.showAIDetect) return null
+    if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
+      return null
     // if (this.props.analyst.params) {
     //   return [
     //     <TextBtn
@@ -2357,12 +2358,14 @@ export default class MapView extends React.Component {
     let width = this.props.device.orientation === 'LANDSCAPE' ? 250 : 200
     let size = this.props.device.orientation === 'LANDSCAPE' ? 50 : 60
     return (
-      <View style={{
-        width: scaleSize(width),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
+      <View
+        style={{
+          width: scaleSize(width),
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <TouchableOpacity
           key={'audio'}
           onPress={() => {
@@ -2373,17 +2376,14 @@ export default class MapView extends React.Component {
           <Image
             resizeMode={'contain'}
             source={getPublicAssets().common.icon_audio}
-            style={{ width: scaleSize(size), height: scaleSize(size)}}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          key={'undo'}
-          onPress={this.showUndoView}
-        >
+        <TouchableOpacity key={'undo'} onPress={this.showUndoView}>
           <Image
             resizeMode={'contain'}
             source={getPublicAssets().common.icon_undo}
-            style={{ width: scaleSize(size), height: scaleSize(size)}}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -2416,7 +2416,7 @@ export default class MapView extends React.Component {
           <Image
             resizeMode={'contain'}
             source={getPublicAssets().common.icon_search}
-            style={{width: scaleSize(size), height: scaleSize(size)}}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
           />
         </TouchableOpacity>
       </View>
@@ -2468,15 +2468,21 @@ export default class MapView extends React.Component {
 
   _renderArModeIcon = () => {
     let right
-    if(this.props.device.orientation === 'LANDSCAPE' && !this.state.showAIDetect) {
-      right = { right: scaleSize(100)}
+    if (
+      this.props.device.orientation === 'LANDSCAPE' &&
+      !this.state.showAIDetect
+    ) {
+      right = { right: scaleSize(100) }
     } else {
-      right = { right: scaleSize(20)}
+      right = { right: scaleSize(20) }
     }
     return (
-      <View style={[styles.iconAr, right]} ref={ref => (GLOBAL.ArModeIcon = ref)}>
+      <View
+        style={[styles.iconAr, right]}
+        ref={ref => (GLOBAL.ArModeIcon = ref)}
+      >
         <MTBtn
-          style={{padding: scaleSize(5)}}
+          style={{ padding: scaleSize(5) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
           onPress={this.switchAr}
@@ -3073,7 +3079,9 @@ export default class MapView extends React.Component {
         bottomBar={
           this.props.device.orientation !== 'LANDSCAPE' &&
           !this.state.showAIDetect &&
-          !this.isExample && !this.props.analyst.params && this.renderToolBar()
+          !this.isExample &&
+          !this.props.analyst.params &&
+          this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
       >

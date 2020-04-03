@@ -22,6 +22,8 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import { SimpleDialog } from '../../Friend/Component'
+import { HEADER_HEIGHT, HEADER_HEIGHT_LANDSCAPE } from '../../../../../src/components/Header/styles'
+import { TAB_BAR_HEIGHT_P } from '../../TabBar'
 // let AppUtils = NativeModules.AppUtils
 
 let isWaiting = false // 防止重复点击
@@ -406,25 +408,6 @@ class ModuleList extends Component {
     )
   }
 
-  _renderScrollView = data => {
-    return (
-      <View style={{ width: '100%' }}>
-        <FlatList
-          key={'landscapeList'}
-          data={data}
-          contentContainerStyle={{
-            justifyContent: 'center',
-          }}
-          downloads={this.props.downloads}
-          renderItem={this._renderItem}
-          numColumns={4}
-          keyboardShouldPersistTaps={'always'}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-    )
-  }
-
   renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
@@ -434,21 +417,45 @@ class ModuleList extends Component {
     //模块个数为单数时高度处理
     let heightNum = data.length % 2 === 0 ? data.length : data.length + 1
     let height = (fixedSize(220) * heightNum) / 2
-    let dOffset = 37
+    let windowHeight
+    if(this.props.device.orientation === 'LANDSCAPE') {
+      windowHeight = Math.min(screen.getScreenHeight(), screen.getScreenWidth())
+    } else {
+      windowHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth())
+    }
     let contentH =
-      screen.getScreenHeight() -
-      fixedSize(88) -
-      fixedSize(96) -
-      fixedSize(dOffset)
+      windowHeight -
+      HEADER_HEIGHT -
+      TAB_BAR_HEIGHT_P
     let scrollEnabled = false
     if (height >= contentH) {
       height = contentH
       scrollEnabled = true
     }
+    let spaceHeight = (windowHeight - fixedSize(157) * 2 - HEADER_HEIGHT_LANDSCAPE) / 3 - fixedSize(70)
+    if(spaceHeight < 0) {
+      spaceHeight = 0
+    }
     return (
       <View style={styles.container}>
         {this.props.device.orientation === 'LANDSCAPE' ? (
-          this._renderScrollView(data)
+          <View style={{ width: '100%'}}>
+            <FlatList
+              key={'landscapeList'}
+              data={data}
+              ItemSeparatorComponent={()=>{
+                return <View style={{height: spaceHeight}}/>
+              }}
+              contentContainerStyle={{
+                justifyContent: 'center',
+              }}
+              downloads={this.props.downloads}
+              renderItem={this._renderItem}
+              numColumns={4}
+              keyboardShouldPersistTaps={'always'}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
         ) : (
           <View style={{ width: '100%', height: height }}>
             <FlatList

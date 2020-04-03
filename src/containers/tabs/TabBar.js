@@ -137,10 +137,12 @@ export default connect(
   mapDispatchToProps,
 )(TabBar)
 
+export const TAB_BAR_HEIGHT_P = scaleSize(96)
+export const TAB_BAR_WIDTH_L = scaleSize(96)
 const styles = StyleSheet.create({
   containerP: {
     width: '100%',
-    height: scaleSize(96),
+    height: TAB_BAR_HEIGHT_P,
     backgroundColor: '#EEEEEE',
     alignSelf: 'center',
     borderStyle: 'solid',
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerL: {
-    width: scaleSize(96),
+    width: TAB_BAR_WIDTH_L,
     height: '100%',
     backgroundColor: '#EEEEEE',
     alignSelf: 'center',

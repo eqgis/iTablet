@@ -4,7 +4,7 @@ import { color, zIndexLevel } from '../../styles'
 
 export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
 export const HEADER_HEIGHT_LANDSCAPE =
-  scaleSize(50) + (Platform.OS === 'ios' ? 20 : 0)
+  scaleSize(60) + (Platform.OS === 'ios' ? 20 : 0)
 export const HEADER_PADDINGTOP = Platform.OS === 'ios' ? 20 : 0
 
 export default StyleSheet.create({

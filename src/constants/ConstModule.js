@@ -246,7 +246,6 @@ function mapAR(language) {
         data,
       ]
 
-      global.isPad && Orientation.lockToPortrait()
       NavigationService.navigate('MapStack', {
         operationType: constants.MAP_AR,
         wsData,

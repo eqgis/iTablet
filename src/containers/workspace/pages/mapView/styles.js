@@ -135,7 +135,6 @@ export default StyleSheet.create({
   iconAr: {
     position: 'absolute',
     right: scaleSize(20),
-    padding: scaleSize(5),
     borderRadius: scaleSize(4),
     elevation: 20,
     shadowOffset: { width: 0, height: 0 },

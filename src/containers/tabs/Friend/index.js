@@ -24,6 +24,7 @@ const mapStateToProps = state => ({
   user: state.user.toJS(),
   chat: state.chat.toJS(),
   appConfig: state.appConfig.toJS(),
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {

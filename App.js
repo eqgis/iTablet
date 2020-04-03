@@ -1,5 +1,19 @@
 import React, { Component } from 'react'
-import { View, AppState, StyleSheet, Platform, Image, Text, BackHandler, NativeModules,AsyncStorage,TouchableOpacity} from 'react-native'
+import {
+  PixelRatio,
+  Dimensions,
+  View,
+  AppState,
+  StyleSheet,
+  Platform,
+  Image,
+  Text,
+  BackHandler,
+  NativeModules,
+  AsyncStorage,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native'
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
@@ -344,10 +358,13 @@ class AppRoot extends Component {
   }
 
   handleStateChange = appState => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      if (appState === 'active') {
+    if (appState === 'active') {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.reCircleLogin()
       }
+      Orientation.getOrientation((e, orientation) => {
+        this.props.setShow({orientation: orientation})
+      })
     }
 
   }
@@ -388,7 +405,18 @@ class AppRoot extends Component {
 
   }
 
+  showStatusBar = async orientation => {
+    let result = await AsyncStorage.getItem('StatusBarVisible')
+    let visible = result === 'true'
+    if(orientation === 'LANDSCAPE') {
+      StatusBar.setHidden(true, 'slide')
+    } else {
+      StatusBar.setHidden(visible, 'slide')
+    }
+  }
+
   orientation = o=> {
+    this.showStatusBar(o)
     this.props.setShow({
       orientation: o,
     })

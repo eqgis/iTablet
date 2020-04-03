@@ -1,4 +1,9 @@
-import { SMap, Action, SMediaCollector } from 'imobile_for_reactnative'
+import {
+  SMap,
+  Action,
+  SMediaCollector,
+  DatasetType,
+} from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
@@ -104,26 +109,27 @@ async function geometrySelected(event) {
         // let height = ConstToolType.HEIGHT[3]
         let containerType = ToolbarType.table
         let type = ''
-        // switch (event.layerInfo.type) {
-        //   case DatasetType.POINT:
-        //     type = ConstToolType.MAP_EDIT_POINT
-        //     height = ConstToolType.HEIGHT[0]
-        //     break
-        //   case DatasetType.LINE:
-        //     type = ConstToolType.MAP_EDIT_LINE
-        //     height = ConstToolType.HEIGHT[2]
-        //     break
-        //   case DatasetType.REGION:
-        //     type = ConstToolType.MAP_EDIT_REGION
-        //     height = ConstToolType.HEIGHT[2]
-        //     containerType = ToolbarType.scrollTable
-        //     break
-        //   case DatasetType.CAD:
-        //     type = ConstToolType.MAP_EDIT_CAD
-        //     height = ConstToolType.HEIGHT[0]
-        //     column = 5
-        //     break
-        // }
+        switch (event.layerInfo.type) {
+          case DatasetType.POINT:
+            type = ConstToolType.MAP_EDIT_POINT
+            // height = ConstToolType.HEIGHT[0]
+            break
+          case DatasetType.LINE:
+            type = ConstToolType.MAP_EDIT_LINE
+            // height = ConstToolType.HEIGHT[2]
+            break
+          case DatasetType.REGION:
+            type = ConstToolType.MAP_EDIT_REGION
+            // height = ConstToolType.HEIGHT[2]
+            containerType = ToolbarType.scrollTable
+            break
+          case DatasetType.CAD:
+            type = ConstToolType.MAP_EDIT_CAD
+            // height = ConstToolType.HEIGHT[0]
+            // column = 5
+            break
+        }
+        params.showFullMap && params.showFullMap(true)
         params.setToolbarVisible &&
           params.setToolbarVisible(true, type, {
             isFullScreen: false,

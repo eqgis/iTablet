@@ -265,5 +265,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderTopLeftRadius: scaleSize(10),
   },
 })

@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Platform } from 'react-native'
+import { View, Animated, FlatList, Platform, TouchableOpacity, Dimensions } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const } from '../../../../constants'
 import { scaleSize, Toast, setSpText } from '../../../../utils'
@@ -13,6 +13,7 @@ import { SMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import constants from '../../constants'
 import { Bar } from 'react-native-progress'
+import { getPublicAssets } from '../../../../assets'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'
@@ -114,6 +115,15 @@ export default class FunctionToolbar extends React.Component {
     this.rotate = new Animated.Value(0)
     this.visible = true
     this.menuVisible = false
+    this.offset = 0
+    this.onTop = true,
+    this.onBottom = true,
+    this.topOpacity =  new Animated.Value(0)
+    this.bottomOpacity = new Animated.Value(0)
+  }
+
+  componentDidMount() {
+    setTimeout(this.handlePosition, 2000)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -135,9 +145,9 @@ export default class FunctionToolbar extends React.Component {
   }
 
   onOrientationChange = () => {
-    if (this.visible) {
-      let top, right
-      if (this.props.device.orientation === 'LANDSCAPE') {
+    let top, right
+    if(this.visible) {
+      if(this.props.device.orientation === 'LANDSCAPE') {
         top = TOP_LANDSCAPE
         right = RIGHT_LANDSCAPE
       } else {
@@ -154,6 +164,67 @@ export default class FunctionToolbar extends React.Component {
           duration: 300,
         }),
       ]).start()
+    } else {
+      if(this.props.device.orientation === 'LANDSCAPE') {
+        top = TOP_LANDSCAPE
+      } else {
+        top = TOP
+      }
+      Animated.timing(this.state.top, {
+        toValue: top,
+        duration: 300,
+      }).start()
+    }
+    this.handlePosition()
+  }
+
+  handlePosition = () => {
+    let contentHeight = this.list._listRef._totalCellLength
+    let offset = this.offset
+    let visibleHeight
+    if(this.props.device.orientation === 'LANDSCAPE') {
+      let indicatorHeight = scaleSize(15) * 2
+      let windowHeight = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+      let headerHeight = HEADER_HEIGHT_LANDSCAPE
+      let moreHeight = scaleSize(80) + 1
+      visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
+    } else {
+      let maxHeight =
+      this.props.device.height -
+      HeaderHeight -
+      BottomHeight -
+      scaleSize(300)
+      visibleHeight = maxHeight
+    }
+    let onTop, onBottom
+    if(visibleHeight < contentHeight) {
+      if(offset === 0) {
+        onTop = true
+        onBottom = false
+      } else if(offset + visibleHeight + 3 > contentHeight) {
+        onTop = false
+        onBottom = true
+      } else {
+        onTop = false
+        onBottom = false
+      }
+    } else {
+      onTop = true
+      onBottom = true
+    }
+    if(onTop !== this.onTop) {
+      this.onTop = onTop
+      Animated.timing(this.topOpacity, {
+        toValue: onTop ? 0 : 1,
+        duration: 150,
+      }).start()
+    }
+    if(onBottom !== this.onBottom) {
+      this.onBottom = onBottom
+      Animated.timing(this.bottomOpacity, {
+        toValue: onBottom ? 0 : 1,
+        duration: 150,
+      }).start()
     }
   }
 
@@ -616,10 +687,16 @@ export default class FunctionToolbar extends React.Component {
         }
     return (
       <FlatList
+        ref={ref => this.list = ref}
         style={style}
         data={this.state.data}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
+        onScroll={ event => {
+          this.offset = event.nativeEvent.contentOffset.y
+          this.handlePosition()
+        }}
+        showsVerticalScrollIndicator={false}
       />
     )
   }
@@ -638,25 +715,49 @@ export default class FunctionToolbar extends React.Component {
     })
     return (
       <View>
-        <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
-        <Animated.View
-          style={{
-            height: scaleSize(96),
-            justifyContent: 'center',
-            transform: [{ rotateY: rotateX }],
+        <View style={{height: 1, backgroundColor: '#EEEEEE'}}/>
+        <TouchableOpacity
+          style={styles.moreImageView}
+          onPress={()=> {
+            this.setMenuVisible(!this.menuVisible)
           }}
         >
-          <MTBtn
-            style={styles.btn}
-            key={99}
-            size={MTBtn.Size.NORMAL}
-            image={require('../../../../assets/public/left_arrow.png')}
-            onPress={() => {
-              this.setMenuVisible(!this.menuVisible)
-            }}
-            activeOpacity={1}
-          />
-        </Animated.View>
+          <Animated.Image
+            style={[
+              styles.moreImage,
+              {
+                transform: [{rotateY: rotateX}],
+              },
+            ]}
+            source={require('../../../../assets/public/left_arrow.png')}
+          >
+          </Animated.Image>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  renderIndicator = location => {
+    let style
+    if(location === 'top') {
+      style = {
+        opacity: this.topOpacity,
+        transform:[{rotateX: '180deg'}],
+      }
+    } else {
+      style = {
+        opacity: this.bottomOpacity,
+      }
+    }
+    return (
+      <View style={styles.indicatorView}>
+        <Animated.Image
+          style={[
+            styles.indicatorImage,
+            style,
+          ]}
+          source={getPublicAssets().common.icon_arrow_down}
+        />
       </View>
     )
   }
@@ -683,7 +784,9 @@ export default class FunctionToolbar extends React.Component {
           },
         ]}
       >
+        {this.renderIndicator('top')}
         {this.renderList()}
+        {this.renderIndicator('bottom')}
         {this.props.device.orientation === 'LANDSCAPE' && this.renderMore()}
       </Animated.View>
     )

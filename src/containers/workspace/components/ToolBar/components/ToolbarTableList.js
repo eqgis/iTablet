@@ -53,7 +53,11 @@ export default class ToolbarTableList extends React.Component {
         // size={MTBtn.Size.NORMAL}
         image={item.image}
         background={item.background}
-        onPress={() => {
+        onPress={e => {
+          GLOBAL.toolbarTouchPosition = {
+            x: e.nativeEvent.pageX,
+            y: e.nativeEvent.pageY,
+          }
           !item.disable && this.itemAction(item)
         }}
       />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import { scaleSize } from '../../../utils/screen'
+import { scaleSize, px } from '../../../utils/screen'
 
 export default class TouchableItemView extends Component {
   props: {
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
     color: '#505050',
   },
   seperator: {
-    height: scaleSize(1),
+    height: px(1),
     marginLeft: scaleSize(118),
-    backgroundColor: '#A0A0A0',
+    backgroundColor: '#EEEEEE',
   },
 })

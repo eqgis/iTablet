@@ -547,7 +547,15 @@ function setSaveViewVisible(visible, cb) {
   if (!ToolbarModule.getParams().setSaveViewVisible) return
   GLOBAL.isBackHome = false
   // ToolbarModule.getParams().setSaveViewVisible(visible)
-  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
+  let position
+  if (GLOBAL.toolbarTouchPosition) {
+    position = {
+      x: GLOBAL.toolbarTouchPosition.x,
+      y: GLOBAL.toolbarTouchPosition.y,
+    }
+  }
+  GLOBAL.SaveMapView &&
+    GLOBAL.SaveMapView.setVisible(visible, null, cb, position)
 }
 
 /** 新建专题图 * */

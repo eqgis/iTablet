@@ -31,7 +31,7 @@ function getScreenSafeHeight() {
 function getRatio() {
   let height = Math.max(deviceHeight, deviceWidth)
   let ratio
-  if(height < 750){
+  if (height < 750) {
     ratio = 0.75
   } else if (height < 1000) {
     ratio = Math.max(deviceHeight, deviceWidth) / 1000
@@ -78,6 +78,10 @@ export function fixedText(size) {
   // if (Platform.OS === 'ios') {
   //   return (size * 1.25) / defaultPixel
   // }
+  return size / defaultPixel
+}
+
+export function px(size) {
   return size / defaultPixel
 }
 

@@ -25,9 +25,6 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: 'transparent',
   },
   topContainer: {
@@ -60,11 +57,18 @@ const styles = StyleSheet.create({
   },
 })
 
+const bottomStyle = {
+  bottom: 0,
+  left: 0,
+  right: 0,
+}
+
 export default class SaveView extends React.Component {
   props: {
     save?: () => {},
     notSave?: () => {},
     cancel?: () => {},
+    device?: Object,
     backHide?: boolean,
     animated?: boolean,
   }
@@ -82,8 +86,17 @@ export default class SaveView extends React.Component {
       save_yes: '保存',
       save_no: '不保存',
       cancel: '取消',
+      position: {},
     }
     this.cb = () => {}
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
+    ) {
+      this.cancel()
+    }
   }
 
   setTitle = (title, save_yes, save_no, cancel) => {
@@ -121,13 +134,58 @@ export default class SaveView extends React.Component {
     this.cb = null
   }
 
-  setVisible = (visible, setLoading, cb) => {
+  getPosition = position => {
+    let positonStyle
+    if (
+      !position ||
+      (!global.isPad && this.props.device.orientation !== 'LANDSCAPE')
+    ) {
+      positonStyle = bottomStyle
+    } else {
+      let screenWidth = this.props.device.width
+      let screenHeight = this.props.device.height
+      let width, height
+      if (position.width) {
+        width = position.width
+      } else {
+        width = scaleSize(300)
+      }
+      if (position.height) {
+        height = position.height
+      } else {
+        height = scaleSize(320)
+      }
+      let x = position.x + 2
+      let y = position.y + 2
+      let left, top
+      if (x + width < screenWidth) {
+        left = x
+      } else {
+        left = x - width
+      }
+      if (y + height < screenHeight) {
+        top = y
+      } else {
+        top = y - height
+      }
+      positonStyle = {
+        left: left,
+        top: top,
+        width: width,
+      }
+    }
+    return positonStyle
+  }
+
+  setVisible = (visible, setLoading, cb, position) => {
     // if (this.state.visible === visible) return
     if (setLoading && typeof setLoading === 'function') {
       this._setLoading = setLoading
     }
+    let positonStyle = this.getPosition(position)
     this.setState({
       visible,
+      position: positonStyle,
     })
     this.cb = cb || this.cb
   }
@@ -166,7 +224,10 @@ export default class SaveView extends React.Component {
           activeOpacity={1}
           onPress={this.cancel}
         >
-          <View style={styles.container}>
+          <View
+            ref={ref => (this.view = ref)}
+            style={[styles.container, this.state.position]}
+          >
             <View style={styles.topContainer}>
               <View style={styles.item}>
                 <Text style={styles.title}>{this.state.title}</Text>

@@ -353,6 +353,7 @@ export default class ToolBarSectionList extends React.Component {
               onPress={() =>
                 NavigationService.navigate('MyDatasource', {
                   title: getLanguage(global.language).Profile.DATA,
+                  from: 'MapView',
                   exitCallback: async () => {
                     let data = await section.getDatasource()
                     this.setState({ sections: data.data })

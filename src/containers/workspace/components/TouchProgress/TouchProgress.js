@@ -11,7 +11,7 @@ import {
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import { screen, scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText } from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -19,7 +19,7 @@ import {
   SMap,
 } from 'imobile_for_reactnative'
 import constants from '../../constants'
-import { ConstToolType } from '../../../../constants'
+import { ConstToolType, Height } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import TPData from './TPData'
@@ -30,6 +30,7 @@ export default class TouchProgress extends Component {
   props: {
     language: string,
     currentLayer: Object,
+    device: Object,
     selectName: any, // 智能配图 selectName 为Array；其余为String
     value: '',
     mapLegend?: Object,
@@ -39,7 +40,7 @@ export default class TouchProgress extends Component {
 
   constructor(props) {
     super(props)
-    this.screenWidth = screen.getScreenWidth()
+    this.screenWidth = this.getWidthByOrientation()
     this._previousLeft = MARGIN - IMAGE_SIZE / 2
     this._panBtnStyles = {
       style: {
@@ -78,14 +79,22 @@ export default class TouchProgress extends Component {
   // }
 
   componentDidUpdate() {
-    if (this.screenWidth !== screen.getScreenWidth()) {
+    if (this.screenWidth !== this.getWidthByOrientation()) {
       this._initialization()
-      this.screenWidth = screen.getScreenWidth()
+      this.screenWidth = this.getWidthByOrientation()
     }
   }
 
   componentDidMount() {
     this._initialization(this.props.value)
+  }
+
+  getWidthByOrientation = () => {
+    let width = this.props.device.width
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      width -= Height.TOOLBAR_BUTTONS
+    }
+    return width
   }
 
   debounce = fn => {
@@ -126,7 +135,7 @@ export default class TouchProgress extends Component {
     let isHeatmap = this.props.currentLayer.isHeatmap
     let event = ToolbarModule.getData().event
 
-    let progressWidth = screen.getScreenWidth() - MARGIN * 2
+    let progressWidth = this.getWidthByOrientation() - MARGIN * 2
     let panBtnDevLeft = MARGIN - IMAGE_SIZE / 2 // 图片相对左边偏差
 
     let tips = ''
@@ -900,7 +909,7 @@ export default class TouchProgress extends Component {
         this.showMenu()
       }
     } else {
-      let progressWidth = screen.getScreenWidth() - MARGIN * 2
+      let progressWidth = this.getWidthByOrientation() - MARGIN * 2
       let x = this._previousLeft + gestureState.dx
       this._panBtnStyles.style.left = x + MARGIN - IMAGE_SIZE / 2
       if (this._panBtnStyles.style.left <= -IMAGE_SIZE / 2)
@@ -925,7 +934,7 @@ export default class TouchProgress extends Component {
   }
 
   _handlePanResponderEnd = (evt, gestureState) => {
-    let progressWidth = screen.getScreenWidth() - MARGIN * 2
+    let progressWidth = this.getWidthByOrientation() - MARGIN * 2
     let x = this._previousLeft + gestureState.dx
     if (x <= 0) x = 0
     if (x >= progressWidth + MARGIN - IMAGE_SIZE / 2)
@@ -2511,14 +2520,14 @@ export default class TouchProgress extends Component {
     }
     return (
       <View
-        style={[styles.box, { width: '100%' }]}
+        style={[styles.box, { width: this.getWidthByOrientation() }]}
         {...this._panResponder.panHandlers}
       >
-        <View style={[container, { width: '100%' }]}>
+        <View style={[container, { width: this.getWidthByOrientation() }]}>
           <View
             style={[
               styles.line,
-              { width: screen.getScreenWidth() - MARGIN * 2 },
+              { width: this.getWidthByOrientation() - MARGIN * 2 },
             ]}
           >
             <View

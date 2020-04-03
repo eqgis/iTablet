@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Platform } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 

@@ -43,8 +43,7 @@ async function action(type) {
     column: data.column,
     isFullScreen: false,
     height: data.height,
-    data: _data.data,
-    buttons: _data.buttons,
+    ..._data,
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')

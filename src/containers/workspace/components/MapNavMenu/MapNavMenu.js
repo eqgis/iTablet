@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import { StyleSheet, Animated } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
 import constants from '../../constants'
@@ -60,7 +60,7 @@ export default class MapNavMenu extends React.Component {
   }
 
   setVisible = (visible, immediately) => {
-    if(this.visible === visible) return
+    if (this.visible === visible) return
     Animated.timing(this.state.right, {
       toValue: visible ? scaleSize(80) : scaleSize(-600),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
@@ -216,7 +216,8 @@ export default class MapNavMenu extends React.Component {
           }
           if (current !== index) {
             item.btnClick && item.btnClick()
-            GLOBAL.FUNCTIONTOOLBAR && GLOBAL.FUNCTIONTOOLBAR.setMenuVisible(false)
+            GLOBAL.FUNCTIONTOOLBAR &&
+              GLOBAL.FUNCTIONTOOLBAR.setMenuVisible(false)
           }
         }}
       />
@@ -239,7 +240,13 @@ export default class MapNavMenu extends React.Component {
 
   render() {
     return (
-      <Animated.View style={[styles.container, this.props.style, {right: this.state.right}]}>
+      <Animated.View
+        style={[
+          styles.container,
+          this.props.style,
+          { right: this.state.right },
+        ]}
+      >
         {this.renderItems(this.state.data)}
       </Animated.View>
     )

@@ -1,8 +1,18 @@
-import { SMap, Action,  
-  DatasetType, } from 'imobile_for_reactnative'
+import {
+  SMap,
+  Action,
+  DatasetType,
+  SCollector,
+  SMediaCollector,
+} from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
-import { LayerUtils, Toast,StyleUtils } from '../../../../../../utils'
-import { ConstToolType, TouchType,ToolbarType,Const } from '../../../../../../constants'
+import { LayerUtils, Toast, StyleUtils } from '../../../../../../utils'
+import {
+  ConstToolType,
+  TouchType,
+  ToolbarType,
+  Const,
+} from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import Utils from '../../utils'
 
@@ -131,13 +141,13 @@ async function pointcover() {
 }
 async function move() {
   const _params = ToolbarModule.getParams()
-  const { currentLayer } = _params
+  // const { currentLayer } = _params
   // let reg = /^Label_(.*)#$/
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
-      isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
-    })
-   SMap.setAction(Action.MOVE_GEOMETRY)
+  _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    isFullScreen: false,
+    // height: ConstToolType.HEIGHT[4],
+  })
+  SMap.setAction(Action.MOVE_GEOMETRY)
 }
 async function freecover() {
   const _params = ToolbarModule.getParams()
@@ -169,7 +179,7 @@ function commit(type) {
       currentLayer.datasetName,
       _params.user.currentUser.userName,
     )
-    SMap.setLayerEditable(currentLayer.name,true).then(()=>{
+    SMap.setLayerEditable(currentLayer.name, true).then(() => {
       SMap.submit()
       SMap.refreshMap()
       //提交标注后 需要刷新属性表
@@ -514,8 +524,7 @@ async function close(type) {
   if (type === ConstToolType.MAP_TOOL_TAGGING_SETTING) {
     await SMap.undo()
     _params.setToolbarVisible(false)
-  } 
-  else if (type === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
+  } else if (type === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
     SMap.setAction(Action.PAN)
     const { layers } = _params.layers
     // 还原其他图层的选择状态
@@ -532,7 +541,7 @@ async function close(type) {
       }
     }
     _params.setToolbarVisible(false)
-  }  else {
+  } else {
     return false
   }
 }
@@ -664,11 +673,11 @@ function toolbarBack() {
   }*/
 }
 export default {
-  close,
   menu,
   showMenuBox,
   toolbarBack,
   commit,
+  close,
 
   move,
   back,
@@ -685,5 +694,4 @@ export default {
   geometrySelected,
   colorAction,
   setTaggingTextFont,
-  
 }

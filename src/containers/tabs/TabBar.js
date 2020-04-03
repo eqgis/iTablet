@@ -88,12 +88,13 @@ class TabBar extends React.Component {
         }}
         renderExtra={() => {
           if (item.key === 'Friend') {
-            return <InformSpot
-              style={{
-                right:
-                    Platform.OS === 'android' ? scaleSize(50) : 0,
-              }}
-            />
+            return (
+              <InformSpot
+                style={{
+                  right: Platform.OS === 'android' ? scaleSize(50) : 0,
+                }}
+              />
+            )
           }
         }}
       />

@@ -6,7 +6,10 @@
 import React from 'react'
 import { MapView, Map3D } from './pages'
 
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import {
+  createBottomTabNavigator,
+  createStackNavigator,
+} from 'react-navigation'
 // eslint-disable-next-line import/no-unresolved
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
 
@@ -73,7 +76,7 @@ const stackOption = {
   },
   transitionConfig: () => ({
     screenInterpolator: sceneProps => {
-      if(global.getDevice().orientation !== 'LANDSCAPE') {
+      if (global.getDevice().orientation !== 'LANDSCAPE') {
         return StackViewStyleInterpolator.forFade(sceneProps)
       }
       return forHorizontal(sceneProps)
@@ -82,8 +85,8 @@ const stackOption = {
 }
 
 const forHorizontal = sceneProps => {
-  const {layout, position, scene} = sceneProps
-  const {index} = scene
+  const { layout, position, scene } = sceneProps
+  const { index } = scene
 
   const width = layout.initWidth
   const translateX = position.interpolate({
@@ -96,7 +99,7 @@ const forHorizontal = sceneProps => {
     outputRange: [0, 1, 1],
   })
 
-  return {opacity, transform: [{translateX: translateX}]}
+  return { opacity, transform: [{ translateX: translateX }] }
 }
 
 const MapTabs = compose(
@@ -135,10 +138,9 @@ const MapStack = compose(
         screen: MapSetting,
       },
     },
-    stackOption
-  )
+    stackOption,
+  ),
 )
-
 
 const CoworkTabs = createBottomTabNavigator(
   {
@@ -208,7 +210,7 @@ const Map3DStack = createStackNavigator(
       screen: Setting,
     },
   },
-  stackOption
+  stackOption,
 )
 
 export { MapTabs, Map3DTabs, CoworkTabs, MapView, MapStack, Map3DStack }

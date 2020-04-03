@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -816,6 +815,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				896D51ABFDF6442E9DC02E3D /* libRNGestureHandler-tvOS.a in Frameworks */,
+				8BE6AE2FCD084A8F917871E8 /* libRNDeviceInfo-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +979,8 @@
 				1D41562D4EC2400BA51E4DFA /* libRCTImageResizer.a */,
 				3DC98EA12C9B40A19AB95463 /* libRNPhotoView.a */,
 				49560BBB1D5344A9B91E51D1 /* libRNCookieManagerIOS.a */,
+				A6E41A4386C84E58893E5747 /* libRNDeviceInfo.a */,
+				3E7A1B5D661D40DAA6679071 /* libRNDeviceInfo-tvOS.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1988,6 +1990,13 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B788A9A624347AAE00681552 /* libRNDeviceInfo-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDeviceInfo-tvOS.a";
+			remoteRef = B788A9A524347AAE00681552 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2171,13 +2180,6 @@
 					"values>",
 					"$(PROJECT_DIR)/SDKExport",
 					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
 					"$(PROJECT_DIR)/AI",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = (
@@ -2279,13 +2281,6 @@
 					"/Users/imobile-xzy/Documents/RNWorkSpace/iTablet2.0/iTablet/ios/SDKExport/",
 					"$(PROJECT_DIR)/SDKExport",
 					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
-					"\"$(SRCROOT)/iTablet\"",
 					"$(PROJECT_DIR)/AI",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = (

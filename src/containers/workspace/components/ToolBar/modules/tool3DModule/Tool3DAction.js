@@ -112,7 +112,7 @@ function boxClip() {
   GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
   params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -169,7 +169,7 @@ async function map3dCut() {
     // this.props.showMap3DTool(ConstToolType.MAP3D_BOX_CLIP)
     params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIP, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
     })
     params.setClipSetting && params.setClipSetting(rel)
   } else {
@@ -323,7 +323,7 @@ function clearMeasure(type) {
       GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
         isFullScreen: false,
-        height: 0,
+        // height: 0,
       })
       break
     default:
@@ -396,8 +396,8 @@ function circleFly() {
   _params.setToolbarVisible(true, ConstToolType.MAP3D_CIRCLEFLY, {
     containerType: ToolbarType.table,
     isFullScreen: false,
-    column: 1,
-    height: ConstToolType.HEIGHT[0],
+    // column: 1,
+    // height: ConstToolType.HEIGHT[0],
   })
 }
 function showMenuDialog() {
@@ -407,7 +407,7 @@ function showMenuDialog() {
   if (configs.showBox) {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
     })
     ToolbarModule.addData({ showBox: false })
   }
@@ -425,12 +425,12 @@ function showLayerList() {
   if (!showBox) {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_SHOW, {
       isFullScreen: false,
-      height: ConstToolType.TOOLBAR_HEIGHT[3],
+      // height: ConstToolType.TOOLBAR_HEIGHT[3],
     })
   } else {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
     })
   }
   showBox = !showBox
@@ -453,7 +453,7 @@ function changeClip() {
     : ConstToolType.MAP3D_BOX_CLIP_OUT
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 function layerChange(layers) {

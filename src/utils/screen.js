@@ -34,8 +34,8 @@ function getRatio() {
   if(height < 750){
     ratio = 0.75
   } else if (height < 1000) {
-    ratio = (Math.max(deviceHeight, deviceWidth) / 1000)
-  }else {
+    ratio = Math.max(deviceHeight, deviceWidth) / 1000
+  } else {
     ratio = 1
   }
   return ratio

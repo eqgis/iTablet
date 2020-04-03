@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize, screen } from '../../../../utils'
 import { color, zIndexLevel, size } from '../../../../styles'
-import { ConstToolType, Const } from '../../../../constants'
+import { ConstToolType, Height } from '../../../../constants'
 
 export default StyleSheet.create({
   fullContainer: {
@@ -11,7 +11,6 @@ export default StyleSheet.create({
     right: 0,
     height: screen.deviceHeight,
     backgroundColor: '#rgba(0, 0, 0, 0)',
-    // backgroundColor:"pink",
     zIndex: zIndexLevel.FOUR,
   },
   wrapContainer: {
@@ -19,6 +18,23 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
+    backgroundColor: '#rgba(0, 0, 0, 0)',
+    zIndex: zIndexLevel.FOUR,
+  },
+  fullContainerLandscape: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: screen.deviceWidth,
+    backgroundColor: '#rgba(0, 0, 0, 0)',
+    zIndex: zIndexLevel.FOUR,
+  },
+  wrapContainerLandscape: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
     backgroundColor: '#rgba(0, 0, 0, 0)',
     zIndex: zIndexLevel.FOUR,
   },
@@ -33,34 +49,33 @@ export default StyleSheet.create({
     // zIndex: zIndexLevel.FOUR,
   },
   containers: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: 'column',
     width: '100%',
-    maxHeight: ConstToolType.HEIGHT[3] + Const.BOTTOM_HEIGHT,
-    minHeight: Const.BOTTOM_HEIGHT,
+    maxHeight: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
+    minHeight: Height.TOOLBAR_BUTTONS,
     backgroundColor: color.theme,
-    // backgroundColor:"red",
     // zIndex: zIndexLevel.FOUR,
   },
-  containers_border: {
-    flexDirection: 'column',
-    width: '100%',
-    maxHeight: ConstToolType.HEIGHT[3] + Const.BOTTOM_HEIGHT,
-    minHeight: Const.BOTTOM_HEIGHT,
+  containersLandscape: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    height: '100%',
+    // width: '100%',
+    maxWidth: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
+    // minWidth: Height.TOOLBAR_BUTTONS,
     backgroundColor: color.theme,
-    borderTopColor: color.item_separate_white,
-    borderTopWidth: scaleSize(2),
-    // backgroundColor:"red",
     // zIndex: zIndexLevel.FOUR,
   },
-  // box: {
-  //   position: 'absolute',
-  //   left: 0,
-  //   right: 0,
-  //   bottom: Const.BOTTOM_HEIGHT,
-  // },
   buttonz: {
     flexDirection: 'row',
-    height: Const.BOTTOM_HEIGHT,
+    height: Height.TOOLBAR_BUTTONS,
     paddingHorizontal: scaleSize(20),
     backgroundColor: color.theme,
     justifyContent: 'space-between',
@@ -106,7 +121,7 @@ export default StyleSheet.create({
     // flex: 1,
   },
   tabsView: {
-    height: ConstToolType.HEIGHT[3] - Const.BOTTOM_HEIGHT,
+    height: ConstToolType.HEIGHT[3] - Height.TOOLBAR_BUTTONS,
   },
   table: {
     flex: 1,

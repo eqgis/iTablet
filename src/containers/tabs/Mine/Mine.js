@@ -480,7 +480,7 @@ export default class Mine extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
@@ -500,9 +500,8 @@ export default class Mine extends Component {
           title: getLanguage(this.props.language).Navigator_Label.PROFILE,
           withoutBack: true,
         }}
-        bottomBar={
-          this.renderTabBar()
-        }>
+        bottomBar={this.renderTabBar()}
+      >
         <View style={styles.mineContainer}>
           {this._renderProfile()}
           {this._renderDatas()}

@@ -194,11 +194,6 @@ export default class MeasureView extends React.Component {
     if (result) {
       await SMeasureView.clearAll()
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY)
-      //保存后回到地图
-      NavigationService.goBack()
-      NavigationService.goBack()
-      GLOBAL.toolBox.setVisible(false)(await GLOBAL.toolBox) &&
-        GLOBAL.toolBox.switchAr()
     }
   }
 

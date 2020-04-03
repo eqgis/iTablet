@@ -5,7 +5,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
 import { scaleSize } from '../../../../../../utils'
 import { color } from '../../../../../../styles'
-import { Const, TouchType } from '../../../../../../constants'
+import { Height, TouchType } from '../../../../../../constants'
 import ToolbarModule from '../../modules/ToolbarModule'
 
 export default class ToolbarBottomButtons extends React.Component {
@@ -14,7 +14,9 @@ export default class ToolbarBottomButtons extends React.Component {
     buttons: Array,
     type: string,
     language: string,
+    orientation: string,
     toolbarStatus: Object,
+    device: Object,
     close: () => {},
     back: () => {}, // 返回上一个Toolbar状态
     showBox: () => {},
@@ -47,6 +49,7 @@ export default class ToolbarBottomButtons extends React.Component {
         JSON.stringify(nextProps.buttons) ||
       JSON.stringify(this.props.toolbarStatus) !==
         JSON.stringify(nextProps.toolbarStatus) ||
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
       this.props.type !== nextProps.type ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     ) {
@@ -112,16 +115,6 @@ export default class ToolbarBottomButtons extends React.Component {
       ToolbarModule.getData().actions.showAttribute
     ) {
       ToolbarModule.getData().actions.showAttribute(this.props.selection)
-    }
-  }
-
-  /** 显示属性 **/
-  matchPictureStyle = () => {
-    if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.matchPictureStyle
-    ) {
-      ToolbarModule.getData().actions.matchPictureStyle()
     }
   }
 
@@ -252,30 +245,68 @@ export default class ToolbarBottomButtons extends React.Component {
           break
       }
 
-      if (type === ToolbarBtnType.PLACEHOLDER) {
-        btns.push(<View style={styles.button} key={type + '-' + index} />)
-      } else if (image) {
-        btns.push(
-          this.renderBottomBtn(
-            {
-              key: type,
-              image: image,
-              action: () => action && action(this.props.type),
-            },
-            index,
-          ),
-        )
+      if (this.props.device.orientation === 'LANDSCAPE') {
+        if (type === ToolbarBtnType.PLACEHOLDER) {
+          btns.unshift(<View style={styles.button} key={type + '-' + index} />)
+        } else if (image) {
+          btns.unshift(
+            this.renderBottomBtn(
+              {
+                key: type,
+                image: image,
+                action: () => action && action(this.props.type),
+              },
+              index,
+            ),
+          )
+        }
+      } else {
+        if (type === ToolbarBtnType.PLACEHOLDER) {
+          btns.push(<View style={styles.button} key={type + '-' + index} />)
+        } else if (image) {
+          btns.push(
+            this.renderBottomBtn(
+              {
+                key: type,
+                image: image,
+                action: () => action && action(this.props.type),
+              },
+              index,
+            ),
+          )
+        }
       }
     })
-    return <View style={styles.buttonz}>{btns}</View>
+    return (
+      <View
+        style={[
+          this.props.device.orientation === 'LANDSCAPE'
+            ? styles.buttonzLandscape
+            : styles.buttonz,
+          this.props.device.orientation === 'LANDSCAPE' &&
+            btns.length === 1 && { justifyContent: 'flex-end' }, // 只有一个按钮，从底部排列
+        ]}
+      >
+        {btns}
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   buttonz: {
     flexDirection: 'row',
-    height: Const.BOTTOM_HEIGHT,
+    height: Height.TOOLBAR_BUTTONS,
     paddingHorizontal: scaleSize(20),
+    backgroundColor: color.theme,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  buttonzLandscape: {
+    flexDirection: 'column',
+    width: Height.TOOLBAR_BUTTONS,
+    height: '100%',
+    paddingVertical: scaleSize(20),
     backgroundColor: color.theme,
     justifyContent: 'space-between',
     alignItems: 'center',

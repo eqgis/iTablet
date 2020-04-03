@@ -87,7 +87,7 @@ export default class FunctionToolbar extends React.Component {
     //弹出模型、路网弹窗
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
-    getNavMenuRef: ()=>{},
+    getNavMenuRef: () => {},
   }
 
   static defaultProps = {
@@ -103,12 +103,14 @@ export default class FunctionToolbar extends React.Component {
     this.state = {
       type: props.type,
       data: data,
-      top: this.props.device.orientation === 'LANDSCAPE'
-        ? new Animated.Value(TOP_LANDSCAPE)
-        : new Animated.Value(TOP),
-      right: this.props.device.orientation === 'LANDSCAPE'
-        ? new Animated.Value(RIGHT_LANDSCAPE)
-        : new Animated.Value(RIGHT),
+      top:
+        this.props.device.orientation === 'LANDSCAPE'
+          ? new Animated.Value(TOP_LANDSCAPE)
+          : new Animated.Value(TOP),
+      right:
+        this.props.device.orientation === 'LANDSCAPE'
+          ? new Animated.Value(RIGHT_LANDSCAPE)
+          : new Animated.Value(RIGHT),
     }
     this.rotate = new Animated.Value(0)
     this.visible = true
@@ -137,7 +139,7 @@ export default class FunctionToolbar extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.device.orientation !== prevProps.device.orientation) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
   }
@@ -228,15 +230,14 @@ export default class FunctionToolbar extends React.Component {
 
   setVisible = (visible, immediately = false) => {
     if (this.visible === visible) return
-    let right = this.props.device.orientation === 'LANDSCAPE'
-      ? RIGHT_LANDSCAPE
-      : RIGHT
+    let right =
+      this.props.device.orientation === 'LANDSCAPE' ? RIGHT_LANDSCAPE : RIGHT
     Animated.timing(this.state.right, {
       toValue: visible ? right : scaleSize(-200),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
     this.visible = visible
-    if(!visible) {
+    if (!visible) {
       this.setMenuVisible(visible)
     }
   }
@@ -526,11 +527,13 @@ export default class FunctionToolbar extends React.Component {
           )
           break
         case 'incrementModule':
-          data.push(incrementModule(
-            item.type,
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
-            !isLicenseNotValid,
-          ))
+          data.push(
+            incrementModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
+              !isLicenseNotValid,
+            ),
+          )
           break
         case 'themeModule':
           data.push(
@@ -672,15 +675,16 @@ export default class FunctionToolbar extends React.Component {
     //   arr.push(this._renderItem({ item, index }))
     // })
     // return <View style={{ flexDirection: 'column' }}>{arr}</View>
-    let style = this.props.device.orientation === 'LANDSCAPE'
-      ? {}
-      : {
-        maxHeight:
-          this.props.device.height -
-          HeaderHeight -
-          BottomHeight -
-          scaleSize(300),
-      }
+    let style =
+      this.props.device.orientation === 'LANDSCAPE'
+        ? {}
+        : {
+          maxHeight:
+              this.props.device.height -
+              HeaderHeight -
+              BottomHeight -
+              scaleSize(300),
+        }
     return (
       <FlatList
         ref={ref => this.list = ref}
@@ -763,7 +767,7 @@ export default class FunctionToolbar extends React.Component {
       return null
     }
     let bottom
-    if(this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation === 'LANDSCAPE') {
       bottom = {
         bottom: BOTTOM_LANDSCAPE,
       }
@@ -783,7 +787,7 @@ export default class FunctionToolbar extends React.Component {
         {this.renderIndicator('top')}
         {this.renderList()}
         {this.renderIndicator('bottom')}
-        { this.props.device.orientation === 'LANDSCAPE' && this.renderMore()}
+        {this.props.device.orientation === 'LANDSCAPE' && this.renderMore()}
       </Animated.View>
     )
   }

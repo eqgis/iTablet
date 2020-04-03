@@ -19,10 +19,11 @@ export default class BackgroundOverlay extends React.Component {
 
   constructor(props) {
     super(props)
-    this.width = Math.max(this.props.device.width, this.props.device.height) + 100,
-    this.state = {
+    ;(this.width =
+      Math.max(this.props.device.width, this.props.device.height) + 100),
+    (this.state = {
       left: new Animated.Value(this.width),
-    }
+    })
     this.visible = false
   }
 
@@ -35,9 +36,11 @@ export default class BackgroundOverlay extends React.Component {
     this.visible = visible
   }
 
-
-
   render() {
-    return <Animated.View style={[styles.overlay, {width: this.width, left: this.state.left}]}/>
+    return (
+      <Animated.View
+        style={[styles.overlay, { width: this.width, left: this.state.left }]}
+      />
+    )
   }
 }

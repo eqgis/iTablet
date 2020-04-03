@@ -1356,7 +1356,7 @@ export default class Friend extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
@@ -1398,9 +1398,7 @@ export default class Friend extends Component {
           withoutBack: true,
           navigation: this.props.navigation,
         }}
-        bottomBar={
-          this.renderTabBar()
-        }
+        bottomBar={this.renderTabBar()}
       >
         {this.props.user.currentUser.userType === UserType.COMMON_USER
           ? this.renderTab()

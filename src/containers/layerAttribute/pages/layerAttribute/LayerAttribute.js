@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, InteractionManager, Text, TouchableOpacity } from 'react-native'
+import { View, InteractionManager, Text } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
@@ -770,10 +770,14 @@ export default class LayerAttribute extends React.Component {
           hideMapController: true,
         })
       GLOBAL.toolBox &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE, {
-        isFullScreen: false,
-        height: 0,
-      })
+        GLOBAL.toolBox.setVisible(
+          true,
+          ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+          {
+            isFullScreen: false,
+            height: 0,
+          },
+        )
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
       if (GLOBAL.Type === constants.MAP_AR && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()

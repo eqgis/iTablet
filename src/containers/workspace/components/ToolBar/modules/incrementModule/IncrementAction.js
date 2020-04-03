@@ -4,12 +4,12 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import ToolbarModule from "../ToolbarModule"
-import {ConstToolType, ToolbarType} from "../../../../../../constants"
-import {getPublicAssets, getThemeAssets} from "../../../../../../assets"
+import ToolbarModule from '../ToolbarModule'
+import { ConstToolType } from '../../../../../../constants'
+import { getPublicAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
-import { SMap, Action} from 'imobile_for_reactnative'
-import { Toast } from "../../../../../../utils"
+import { SMap, Action } from 'imobile_for_reactnative'
+import { Toast } from '../../../../../../utils'
 
 //撤销过的点数组，用于undo redo
 let POINT_ARRAY = []
@@ -23,10 +23,10 @@ function stop() {
   BackgroundTimer.stopBackgroundTimer()
 }
 
-async function cancel(){
+async function cancel() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  switch(type){
+  switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       BackgroundTimer.stopBackgroundTimer()
       SMap.clearTrackingLayer()
@@ -45,8 +45,7 @@ async function cancel(){
   }
 }
 
-
-async function addPoint(){
+async function addPoint() {
   await SMap.startGpsIncrement()
 }
 
@@ -56,7 +55,7 @@ async function addPoint(){
 async function submit() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  switch(type){
+  switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
     case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       SMap.clearTrackingLayer()
@@ -85,11 +84,11 @@ async function submit() {
 async function redo() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  switch(type){
+  switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      if(POINT_ARRAY.length === 0){
+      if (POINT_ARRAY.length === 0) {
         Toast.show('无法重做')
-      }else{
+      } else {
         let point = POINT_ARRAY.pop()
         await SMap.redoIncrement(point)
       }
@@ -113,9 +112,9 @@ async function undo() {
       {
         await SMap.clearTrackingLayer()
         let point = await SMap.undoIncrement()
-        if(point.x && point.y){
+        if (point.x && point.y) {
           POINT_ARRAY.push(point)
-        }else{
+        } else {
           Toast.show('无法撤销')
         }
       }
@@ -125,34 +124,30 @@ async function undo() {
       await SMap.undo()
       break
   }
-
-
 }
 /**
  * 切换采集方式
  */
 function changeMethod(type) {
   const _params = ToolbarModule.getParams()
-  if(type === undefined){
+  if (type === undefined) {
     type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD
   }
-  _params.setToolbarVisible && _params.setToolbarVisible(true,type,{
-    isFullScreen: false,
-  })
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, type, {
+      isFullScreen: false,
+    })
 }
 
-function changeNetwork() {
-
-}
+function changeNetwork() {}
 
 let image
 /**
  * 获取当前增量方式图片
  */
 function getTypeImage(type) {
-  if(type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD)
-    return image
-  switch(type){
+  if (type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD) return image
+  switch (type) {
     case ConstToolType.MAP_INCREMENT_POINTLINE:
       image = getPublicAssets().navigation.btn_increment_point_line
       break
@@ -202,25 +197,15 @@ function close() {
   //todo 重新设置当前图层可编辑
 }
 
-function addNode() {
+function addNode() {}
 
-}
+function editNode() {}
 
-function editNode() {
+function deleteNode() {}
 
-}
+function deleteObject() {}
 
-function deleteNode() {
-
-}
-
-function deleteObject() {
-
-}
-
-function addAttribute() {
-
-}
+function addAttribute() {}
 export default {
   close,
 

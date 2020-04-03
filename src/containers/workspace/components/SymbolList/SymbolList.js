@@ -17,14 +17,15 @@ export default class SymbolList extends React.Component {
     setCurrentSymbol?: () => {},
     layerData: Object,
     device: Object,
-    type: '',
+    type: String,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       data: [],
-      column: props.device.orientation === 'LANDSCAPE' ? 8 : 4,
+      // column: props.device.orientation === 'LANDSCAPE' ? 8 : 4,
+      column: 4,
     }
   }
 
@@ -48,40 +49,31 @@ export default class SymbolList extends React.Component {
       return
     }
     let event = ToolbarModule.getData().event
-    
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE)
-     {
+
+    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-    }
-    else if (this.props.layerData.type === 3)
-    {
+    } else if (this.props.layerData.type === 3) {
       SCartography.setLineSymbolID(data.id, this.props.layerData.name)
     }
 
-
-   
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) 
-    {
+    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-    }
-    else  if (this.props.layerData.type === 1) 
-    {
+    } else if (this.props.layerData.type === 1) {
       SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
     }
 
-   if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION)
-   {
+    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
-   }
-   else  if (this.props.layerData.type === 5) {
+    } else if (this.props.layerData.type === 5) {
       SCartography.setFillSymbolID(data.id, this.props.layerData.name)
-   }
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.setState({
-        column: this.props.device.orientation === 'LANDSCAPE' ? 8 : 4,
+        // column: this.props.device.orientation === 'LANDSCAPE' ? 8 : 4,
+        column: 4,
       })
     }
     if (

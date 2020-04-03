@@ -47,7 +47,9 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker, LayerVisibilityView, IncrementRoadDialog,
+  PreviewColorPicker,
+  LayerVisibilityView,
+  IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import {
@@ -81,7 +83,8 @@ import {
   ConstToolType,
   TouchType,
   ConstInfo,
-  getHeaderTitle, ToolbarType,
+  getHeaderTitle,
+  ToolbarType,
 } from '../../../../constants'
 import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
@@ -98,7 +101,6 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
-import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
 import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData"
 
 const markerTag = 118081
@@ -318,10 +320,15 @@ export default class MapView extends React.Component {
     })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (GLOBAL.Type === constants.MAP_AR) {
       Orientation.lockToPortrait()
     }
+    if (!global.isLicenseValid) {
+      let licenseStatus = await SMap.getEnvironmentStatus()
+      global.isLicenseValid = licenseStatus.isLicenseValid
+    }
+
     if (global.isLicenseValid) {
       if (GLOBAL.Type === constants.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
@@ -379,13 +386,19 @@ export default class MapView extends React.Component {
       }
       // })
 
-      this.unsubscribeFocus = this.props.navigation.addListener('willFocus', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      })
+      this.unsubscribeFocus = this.props.navigation.addListener(
+        'willFocus',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
 
-      this.unsubscribeBlur = this.props.navigation.addListener('willBlur', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      })
+      this.unsubscribeBlur = this.props.navigation.addListener(
+        'willBlur',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+        },
+      )
 
       this.addSpeechRecognizeListener()
       if (GLOBAL.language === 'CN') {
@@ -1743,7 +1756,7 @@ export default class MapView extends React.Component {
   renderMapNavMenu = () => {
     return (
       <MapNavMenu
-        ref={ref => this.NavMenu = ref}
+        ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
         appConfig={this.props.appConfig}
         initIndex={0}
@@ -1851,7 +1864,7 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
-        getNavMenuRef={() =>  this.NavMenu}
+        getNavMenuRef={() => this.NavMenu}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -1910,7 +1923,14 @@ export default class MapView extends React.Component {
   }
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.OverlayView = ref)} />
+    return (
+      <OverlayView
+        ref={ref => (GLOBAL.OverlayView = ref)}
+        onPress={() => {
+          this.toolBox && this.toolBox.overlayOnPress()
+        }}
+      />
+    )
   }
 
   renderBackgroundOverlay = () => {
@@ -2634,23 +2654,24 @@ export default class MapView extends React.Component {
     }
   }
 
-  _pressRoad =async type => {
+  _pressRoad = async type => {
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = IncrementData.getData(type)
-    const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+    // const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
         SMap.createDefaultDataset().then(async datasetName => {
-          if(datasetName){
+          if (datasetName) {
             // await SMap.initTrackingLayer()
             params.setToolbarVisible(true, type, {
-              containerType:ToolbarType.table,
+              containerType,
               isFullScreen: false,
-              resetToolModuleData:true,
-              height:data.height,
-              column:data.column,
+              resetToolModuleData: true,
+              // height:data.height,
+              // column:data.column,
+              ..._data,
             })
             //开启放大镜
             SMap.setIsMagnifierEnabled(true)
@@ -2664,62 +2685,72 @@ export default class MapView extends React.Component {
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
   renderIncrementDialog = () => {
-    return(
-      <IncrementRoadDialog ref={ref=>(GLOBAL.IncrementRoadDialog = ref)}>
-        <View style={{
-          width:scaleSize(500),
-          height:scaleSize(300),
-          backgroundColor:color.background,
-          borderRadius:5,
-          flexDirection:'row',
-          justifyContent: 'space-around',
-          paddingTop:scaleSize(20),
-        }}>
+    return (
+      <IncrementRoadDialog ref={ref => (GLOBAL.IncrementRoadDialog = ref)}>
+        <View
+          style={{
+            width: scaleSize(500),
+            height: scaleSize(300),
+            backgroundColor: color.background,
+            borderRadius: 5,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            paddingTop: scaleSize(20),
+          }}
+        >
           <TouchableOpacity
             style={{
-              width:scaleSize(200),
-              height:scaleSize(260),
-              flexDirection:'column',
+              width: scaleSize(200),
+              height: scaleSize(260),
+              flexDirection: 'column',
               justifyContent: 'space-around',
-              alignItems:'center',
+              alignItems: 'center',
             }}
-            onPress={()=>{
+            onPress={() => {
               this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
             }}
           >
             <Image
               style={{
-                width:scaleSize(200),
-                height:scaleSize(200),
+                width: scaleSize(200),
+                height: scaleSize(200),
               }}
               resizeMode={'contain'}
             />
-            <Text style={{
-              fontSize:scaleSize(20),
-            }}>室内路网</Text>
+            <Text
+              style={{
+                fontSize: scaleSize(20),
+              }}
+            >
+              室内路网
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              width:scaleSize(200),
-              height:scaleSize(260),
-              flexDirection:'column',
+              width: scaleSize(200),
+              height: scaleSize(260),
+              flexDirection: 'column',
               justifyContent: 'space-around',
-              alignItems:'center',
+              alignItems: 'center',
             }}
-            onPress={()=>{
+            onPress={() => {
               this._pressRoad(ConstToolType.MAP_INCREMENT_GPS_TRACK)
             }}
           >
             <Image
               style={{
-                width:scaleSize(200),
-                height:scaleSize(200),
+                width: scaleSize(200),
+                height: scaleSize(200),
               }}
               resizeMode={'contain'}
             />
-            <Text style={{
-              fontSize:scaleSize(20),
-            }}>室外路网</Text>
+            <Text
+              style={{
+                fontSize: scaleSize(20),
+              }}
+            >
+              室外路网
+            </Text>
           </TouchableOpacity>
         </View>
       </IncrementRoadDialog>
@@ -2802,7 +2833,6 @@ export default class MapView extends React.Component {
                 this.switchAr()
               }
 
-
               Toast.show(
                 getLanguage(global.language).Profile
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
@@ -2811,9 +2841,7 @@ export default class MapView extends React.Component {
             }
           }}
         >
-          <Text
-            style={styles.textConfirm}
-          >
+          <Text style={styles.textConfirm}>
             {getLanguage(this.props.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
@@ -2895,7 +2923,6 @@ export default class MapView extends React.Component {
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
                 )
               this.setState({ showScaleView: true })
-
 
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
@@ -3086,7 +3113,8 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
-        {this.props.device.orientation === 'LANDSCAPE' && this.renderMapNavMenu()}
+        {this.props.device.orientation === 'LANDSCAPE' &&
+          this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}
@@ -3280,7 +3308,8 @@ export default class MapView extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this.renderIncrementDialog()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this.renderIncrementDialog()}
       </View>
     )
   }

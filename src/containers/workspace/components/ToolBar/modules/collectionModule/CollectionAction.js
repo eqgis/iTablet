@@ -57,25 +57,25 @@ function changeCollection() {
 function showCollection(type, layerName) {
   const { data, buttons } = CollectionData.getData(type)
   if (!ToolbarModule.getParams().setToolbarVisible) return
-  const column = 4
-  const rows = Math.ceil(data.length / column) - 1 + 1
-  let height
-  switch (rows) {
-    case 2:
-      height = ConstToolType.HEIGHT[2]
-      break
-    case 1:
-    default:
-      height = ConstToolType.HEIGHT[0]
-      break
-  }
+  // const column = 4
+  // const rows = Math.ceil(data.length / column) - 1 + 1
+  // let height
+  // switch (rows) {
+  //   case 2:
+  //     height = ConstToolType.HEIGHT[2]
+  //     break
+  //   case 1:
+  //   default:
+  //     height = ConstToolType.HEIGHT[0]
+  //     break
+  // }
   ToolbarModule.getParams().showFullMap(true)
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
-    height,
+    // height,
     data,
     buttons,
-    column,
+    // column,
     cb: () => {
       ToolbarModule.addData({
         lastType: type,
@@ -91,10 +91,10 @@ function showSymbol() {
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
-    height:
-      params.device.orientation === 'PORTRAIT'
-        ? ConstToolType.HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[4],
+    // height:
+    //   params.device.orientation === 'PORTRAIT'
+    //     ? ConstToolType.HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[4],
     cb: () => SCollector.stopCollect(),
   })
 }

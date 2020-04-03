@@ -57,14 +57,14 @@ export default class MapController extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.device.orientation !== prevProps.device.orientation) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
   }
 
   onOrientationChange = () => {
     let newBottom
-    if( this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation === 'LANDSCAPE') {
       newBottom = DEFAULT_BOTTOM_LAND
     } else {
       newBottom = DEFAULT_BOTTOM

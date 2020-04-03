@@ -43,6 +43,7 @@ import { color, size } from '../../../../styles'
 import constants from '../../../workspace/constants'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
+import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30
@@ -391,8 +392,11 @@ export default class LayerAttribute extends React.Component {
           currentIndex: 0,
         },
         () => {
-          this.table.setSelected(0, false)
+          let item = this.table.setSelected(0, false)
           this.locationView && this.locationView.show(false)
+          this.setState({
+            currentFieldInfo: item.data,
+          })
           this.table &&
             this.table.scrollToLocation({
               animated: false,
@@ -765,19 +769,24 @@ export default class LayerAttribute extends React.Component {
       ],
       true,
     ).then(data => {
-      this.props.navigation &&
-        this.props.navigation.navigate('MapView', {
-          hideMapController: true,
-        })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
-          {
-            isFullScreen: false,
-            height: 0,
-          },
-        )
+      ToolbarModule.setToolBarData(
+        ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+      ).then(() => {
+        this.props.navigation &&
+          this.props.navigation.navigate('MapView', {
+            hideMapController: true,
+          })
+        GLOBAL.toolBox &&
+          GLOBAL.toolBox.setVisible(
+            true,
+            ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+            {
+              isFullScreen: false,
+              // height: 0,
+            },
+          )
+      })
+
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
       if (GLOBAL.Type === constants.MAP_AR && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()

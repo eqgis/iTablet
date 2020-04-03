@@ -1,5 +1,4 @@
 import { Platform } from 'react-native'
-import Orientation from 'react-native-orientation'
 import { SAIDetectView } from 'imobile_for_reactnative'
 import NavigationService from '../containers/NavigationService'
 import constants from '../containers/workspace/constants'

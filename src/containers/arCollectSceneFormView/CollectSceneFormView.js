@@ -18,14 +18,13 @@ import {
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-import { Container } from '../../components'
+import { Container, Dialog } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { Toast, dataUtil, scaleSize } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
-import { Dialog } from '../../components'
 
 let nativeSCollectSceneFormView = NativeModules.SCollectSceneFormView
 const nativeEvt = new NativeEventEmitter(nativeSCollectSceneFormView)

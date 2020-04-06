@@ -4,10 +4,10 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Platform } from 'react-native'
+import { View, Animated, FlatList } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const } from '../../../../constants'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText, screen } from '../../../../utils'
 import styles from './styles'
 import PropTypes from 'prop-types'
 import constants from '../../constants'
@@ -22,7 +22,7 @@ const EDIT = 'EDIT'
 export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language/index'
 
-const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
+const HeaderHeight = scaleSize(88) + screen.getIphonePaddingTop()
 const BottomHeight = scaleSize(100)
 
 export default class AIFunctionToolbar extends React.Component {

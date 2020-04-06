@@ -81,6 +81,46 @@ export function fixedText(size) {
   return size / defaultPixel
 }
 
+// iPhoneX
+const X_WIDTH = 375
+const X_HEIGHT = 812
+
+function isIphoneX() {
+  return (
+    Platform.OS === 'ios' &&
+    ((getScreenHeight() === X_HEIGHT && getScreenWidth() === X_WIDTH) ||
+      (getScreenHeight() === X_WIDTH && getScreenWidth() === X_HEIGHT))
+  )
+}
+
+/**
+ * 获取iphone和iphone X顶部距离
+ * @returns {number}
+ */
+function getIphonePaddingTop() {
+  let paddingTop = 0
+  if (isIphoneX()) {
+    paddingTop = 44
+  } else if (Platform.OS === 'ios') {
+    paddingTop = 20
+  }
+  return paddingTop
+}
+
+/**
+ * 获取iphone和iphone X底部距离
+ * @returns {number}
+ */
+function getIphonePaddingBottom() {
+  let paddingTop = 0
+  if (isIphoneX()) {
+    paddingTop = 44
+  } else if (Platform.OS === 'ios') {
+    paddingTop = 20
+  }
+  return paddingTop
+}
+
 export function px(size) {
   return size / defaultPixel
 }
@@ -93,4 +133,7 @@ export default {
   deviceHeight,
   px2dp,
   dp2px,
+  isIphoneX,
+  getIphonePaddingTop,
+  getIphonePaddingBottom,
 }

@@ -1,5 +1,5 @@
-import { StyleSheet, Platform } from 'react-native'
-import { scaleSize } from '../../../../utils'
+import { StyleSheet } from 'react-native'
+import { scaleSize, screen } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
 
 export default StyleSheet.create({
@@ -7,7 +7,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 0,
     bottom: 0,
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    paddingTop: screen.getIphonePaddingTop(),
     width: scaleSize(400),
     flexDirection: 'row',
     backgroundColor: color.bgW,

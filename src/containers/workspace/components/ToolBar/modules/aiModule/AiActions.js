@@ -46,14 +46,14 @@ function arMeasureCollect() {
     let hasDefaultTagging = await SMap.hasDefaultTagging(
       _params.user.currentUser.userName,
     )
-    if(!hasDefaultTagging){
+    if (!hasDefaultTagging) {
       let data = await SMap.newTaggingDataset(
         'Default_Tagging',
         _params.user.currentUser.userName,
       )
       GLOBAL.TaggingDatasetName = data && data.datasetName
     }
-    let datasourceAlias = 'Label_'+ _params.user.currentUser.userName +'#'
+    let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
     let datasetName = 'Default_Tagging'
     GLOBAL.MeasureCollectData = {
       datasourceAlias,
@@ -68,7 +68,6 @@ function arMeasureCollect() {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
-
   })()
 }
 

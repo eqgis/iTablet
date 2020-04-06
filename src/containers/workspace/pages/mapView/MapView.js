@@ -75,6 +75,7 @@ import {
   setSpText,
   LayerUtils,
   FetchUtils,
+  screen,
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -105,6 +106,9 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
+export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
+export const FOOTER_HEIGHT = scaleSize(88)
+
 export default class MapView extends React.Component {
   static propTypes = {
     language: PropTypes.string,
@@ -1831,11 +1835,11 @@ export default class MapView extends React.Component {
           // TODO 不同类型高度修改
           this.toolBox.setVisible(true, ConstToolType.MAP_ANALYSIS, {
             isFullScreen: true,
-            height:
-              this.props.device.orientation === 'LANDSCAPE'
-                ? ConstToolType.TOOLBAR_HEIGHT[2]
-                : ConstToolType.TOOLBAR_HEIGHT[3],
-            column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
+            // height:
+            //   this.props.device.orientation === 'LANDSCAPE'
+            //     ? ConstToolType.TOOLBAR_HEIGHT[2]
+            //     : ConstToolType.TOOLBAR_HEIGHT[3],
+            // column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
           })
         }}
         setAnalystParams={this.props.setAnalystParams}
@@ -2549,9 +2553,9 @@ export default class MapView extends React.Component {
       if (!this.state.isRight) {
         this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_GPSINCREMENT, {
           containerType: 'table',
-          column: 4,
+          // column: 4,
           isFullScreen: false,
-          height: ConstToolType.HEIGHT[0],
+          // height: ConstToolType.HEIGHT[0],
         })
       } else {
         await SMap.setLabelColor()
@@ -2559,9 +2563,9 @@ export default class MapView extends React.Component {
         await SMap.setIsMagnifierEnabled(true)
         this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_INCREMENT, {
           containerType: 'table',
-          column: 4,
+          // column: 4,
           isFullScreen: false,
-          height: ConstToolType.HEIGHT[0],
+          // height: ConstToolType.HEIGHT[0],
         })
       }
     } else {

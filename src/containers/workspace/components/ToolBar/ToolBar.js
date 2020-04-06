@@ -166,14 +166,18 @@ export default class ToolBar extends React.PureComponent {
     })
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     let tempPrev = Object.assign({}, prevProps)
     let tempthis = Object.assign({}, this.props)
     tempPrev.nav && delete tempPrev.nav
     tempthis.nav && delete tempthis.nav
     this.setToolbarParams()
-    this.props.device.orientation !== prevProps.device.orientation &&
+    if (
+      this.props.device.orientation !== prevProps.device.orientation ||
+      this.state.type !== prevState.type
+    ) {
       this.changeHeight(this.props.device.orientation, this.state.type)
+    }
   }
 
   componentWillUnmount() {
@@ -329,13 +333,15 @@ export default class ToolBar extends React.PureComponent {
         if (this.state.type !== type && params.resetToolModuleData) {
           await ToolbarModule.setToolBarData(type)
         }
+        let containerType =
+          (params && params.containerType) || ToolbarType.table
         let newHeight = this.height
         if (!isShow) {
           newHeight = 0
         } else if (params && typeof params.height === 'number') {
           newHeight = params.height
         } else if (!params || params.height === undefined) {
-          let _size = ToolbarHeight.getToolbarSize(this.state.containerType, {
+          let _size = ToolbarHeight.getToolbarSize(containerType, {
             data: this.state.data,
           })
           newHeight = _size.height
@@ -354,8 +360,7 @@ export default class ToolBar extends React.PureComponent {
               params && params.isFullScreen !== undefined
                 ? params.isFullScreen
                 : DEFAULT_FULL_SCREEN,
-            containerType:
-              (params && params.containerType) || ToolbarType.table,
+            containerType,
             themeType:
               params && params.themeType
                 ? params.themeType
@@ -509,11 +514,13 @@ export default class ToolBar extends React.PureComponent {
     //   JSON.stringify(this.contentView.getContentHeight()) !==
     //   this.height.toString()
     // ) {
-    let boxAnimated = await this.contentView.changeHeight({
-      height: this.height,
-      column: this.column > -1 ? this.column : undefined,
-      wait: true,
-    })
+    let boxAnimated =
+      this.isBoxShow &&
+      (await this.contentView.changeHeight({
+        height: this.height,
+        column: this.column > -1 ? this.column : undefined,
+        wait: true,
+      }))
     if (boxAnimated) {
       this.height === 0 && boxPosition >= 0
         ? animatedList.unshift(boxAnimated)
@@ -863,6 +870,7 @@ export default class ToolBar extends React.PureComponent {
         themeType={this.state.themeType}
         selectKey={this.state.selectKey}
         mapLegend={this.props.mapLegend}
+        device={this.props.device}
         mapMoveToCurrent={this.mapMoveToCurrent}
       />
     )
@@ -885,6 +893,7 @@ export default class ToolBar extends React.PureComponent {
         : 0
       size = { height: screen.getScreenSafeHeight() - softBarHeight }
     }
+    size.width = this.props.device.width
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =
@@ -904,7 +913,9 @@ export default class ToolBar extends React.PureComponent {
         ]}
         pointerEvents={'box-none'}
       >
-        <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+        {!this.state.isTouchProgress && !this.state.showMenuDialog && (
+          <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+        )}
         {this.state.isTouchProgress && this.state.isFullScreen && (
           <TouchProgress
             device={this.props.device}

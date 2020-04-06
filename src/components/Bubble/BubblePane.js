@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Platform } from 'react-native'
-import { scaleSize } from '../../utils'
+import { StyleSheet, View } from 'react-native'
+import { scaleSize, screen } from '../../utils'
 import Bubble from './Bubble'
 
 const DEFAULT_POSITION = {
   left: 20,
-  top: scaleSize((Platform.OS === 'ios' ? 20 : 0) + 108),
+  top: scaleSize(screen.getIphonePaddingTop() + 108),
 }
 
 export default class BubblePane extends React.Component {

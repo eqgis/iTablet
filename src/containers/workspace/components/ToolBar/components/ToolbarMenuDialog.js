@@ -10,6 +10,7 @@ export default class ToolbarMenuDialog extends React.Component {
     selectKey: string,
     device: Object,
     mapLegend: Object,
+    device: Object,
   }
 
   constructor(props) {
@@ -22,7 +23,8 @@ export default class ToolbarMenuDialog extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (
       this.props.type !== nextProps.type ||
-      JSON.stringify(this.state.data) !== JSON.stringify(nextState.data)
+      JSON.stringify(this.state.data) !== JSON.stringify(nextState.data) ||
+      JSON.stringify(this.state.device) !== JSON.stringify(nextState.device)
     ) {
       return true
     }

@@ -54,7 +54,8 @@ export default class CollectSceneFormSet extends Component {
 
   componentDidMount() {
     // this.getFixedPosition()
-    this.point && GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
+    this.point &&
+      GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
   }
 
   getFixedPosition = async () => {

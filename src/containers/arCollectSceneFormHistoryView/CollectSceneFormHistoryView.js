@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Platform,
   AsyncStorage,
 } from 'react-native'
 import NavigationService from '../NavigationService'
@@ -14,7 +13,7 @@ import { getLanguage } from '../../language'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
 import { FileTools } from '../../native'
-import { Toast, dataUtil, scaleSize } from '../../utils'
+import { Toast, dataUtil, scaleSize, screen } from '../../utils'
 import { SCollectSceneFormView } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
@@ -22,8 +21,8 @@ import { PopView, Button } from '../../components'
 import { BatchHeadBar } from '../../containers/tabs/Mine/component'
 import constants from '../../containers/workspace/constants'
 
-const HEADER_PADDINGTOP = Platform.OS === 'ios' ? 20 : 0
-const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
+const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
+const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
 
 export default class CollectSceneFormHistoryView extends React.Component {
   props: {

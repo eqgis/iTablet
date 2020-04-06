@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
@@ -262,7 +262,11 @@ export default class Container extends PureComponent {
     })
     return (
       <AnimatedView
-        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
+        style={[
+          styles.view,
+          screen.isIphoneX() && { paddingTop: 44 },
+          { transform: [{ translateX: this.viewX }] },
+        ]}
       >
         <AnimatedView style={{ width: width }}>
           <TouchableOpacity

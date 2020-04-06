@@ -208,7 +208,7 @@ export default class CollectSceneFormView extends React.Component {
   /** 设置 */
   setting = () => {
     NavigationService.navigate('CollectSceneFormSet', {
-      point : this.datumPoint,
+      point: this.datumPoint,
       fixedPositions: point => {
         NavigationService.goBack()
         SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
@@ -281,7 +281,7 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
-  back = async() => {
+  back = async () => {
     if (this.clickAble) {
       this.clickAble = false
       setTimeout(() => {
@@ -650,9 +650,9 @@ export default class CollectSceneFormView extends React.Component {
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
           <TouchableOpacity
-              onPress={() => this.switchStatus()}
-              style={styles.iconView}
-            >
+            onPress={() => this.switchStatus()}
+            style={styles.iconView}
+          >
             <View
               style={{
                 justifyContent: 'center',
@@ -664,7 +664,7 @@ export default class CollectSceneFormView extends React.Component {
                 source={getThemeAssets().ar.toolbar.icon_new}
                 style={styles.smallIcon}
               />
-            
+
               <Text style={styles.buttonname}>
                 {
                   getLanguage(global.language).Map_Main_Menu
@@ -674,12 +674,12 @@ export default class CollectSceneFormView extends React.Component {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-              onPress={() => this.clearAll()}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            onPress={() => this.clearAll()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <View
               style={{
                 justifyContent: 'center',
@@ -697,12 +697,12 @@ export default class CollectSceneFormView extends React.Component {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-              onPress={() => this.save()}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            onPress={() => this.save()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <View
               style={{
                 justifyContent: 'center',
@@ -720,12 +720,12 @@ export default class CollectSceneFormView extends React.Component {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-              onPress={() => this.savepoint()}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            onPress={() => this.savepoint()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <View
               style={{
                 justifyContent: 'center',
@@ -738,7 +738,10 @@ export default class CollectSceneFormView extends React.Component {
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
-                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT}
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_SAVE_POINT
+                }
               </Text>
             </View>
           </TouchableOpacity>
@@ -755,13 +758,13 @@ export default class CollectSceneFormView extends React.Component {
                 alignItems: 'center',
               }}
             >
-            
+
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.ar_view_mode}
                 style={styles.smallIcon}
               />
-            
+
               <Text style={styles.buttonname}>
                 {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
               </Text>

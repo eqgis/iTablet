@@ -326,7 +326,7 @@ function selectLabelToStyle() {
   let showMenuDialog = false
   let isFullScreen = false
   let containerType = ''
-  let height = ConstToolType.THEME_HEIGHT[3]
+  // let height = ConstToolType.THEME_HEIGHT[3]
   let type = ''
   switch (global.MapToolType) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
@@ -343,7 +343,7 @@ function selectLabelToStyle() {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       showMenuDialog = true
-      height = 0
+      // height = 0
       isFullScreen = true
       type = ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT
       break
@@ -354,8 +354,8 @@ function selectLabelToStyle() {
       _params.setToolbarVisible(true, type, {
         containerType,
         isFullScreen,
-        column: 4,
-        height,
+        // column: 4,
+        // height,
         showMenuDialog,
         cb: () => {
           if (
@@ -504,7 +504,7 @@ function geometrySelected(event) {
       StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
-        column: 5,
+        // column: 5,
         containerType,
         height,
         cb: () => {

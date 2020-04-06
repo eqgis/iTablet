@@ -5,15 +5,15 @@
  */
 
 import * as React from 'react'
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Animated,
-  Platform,
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
 
-import { constUtil, scaleSize, LayerUtils, Toast } from '../../../../utils'
+import {
+  constUtil,
+  scaleSize,
+  LayerUtils,
+  Toast,
+  screen,
+} from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
 import { SMap } from 'imobile_for_reactnative'
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: scaleSize(60),
     height: scaleSize(60),
-    top: scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0),
+    top: scaleSize(143) + screen.getIphonePaddingTop(),
     backgroundColor: color.content_white,
     borderRadius: scaleSize(4),
     elevation: 20,

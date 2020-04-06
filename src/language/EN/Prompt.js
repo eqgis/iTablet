@@ -318,6 +318,12 @@ const Prompt = {
     "Points are out of dataset's bounds or there are no dataset around points, do you want to use online route analyst?",
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Online navigation is not support yet.',
 
+  //导航增量路网
+  SELECT_LINE_DATASET:'Please select a line dataset first',
+  CANT_UNDO:'Irrevocable',
+  CANT_REDO:'Can\'t redo',
+  DATASET_RENAME_FAILED:'The dataset name can only contain letters, numbers and "_", "@", "#"',
+  SWITCH_LINE: 'Switch dataset',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',

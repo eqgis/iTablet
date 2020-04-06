@@ -398,6 +398,19 @@ const Map_Main_Menu = {
   NETWORK_DATASET: 'Ağ Veri Kümeleri',
   MODEL_FILE: 'Gezinme Modeli Dosyaları',
   MY_LOCATION: 'Konumum',
+
+  //导航采集
+  MAP_INDOOR_NETWORK:'Kapalı',
+  MAP_OUTDOOR_NETWORK: 'Açık',
+  MAP_INCREMENT_START:'Başla',
+  MAP_INCREMENT_STOP:'Dur',
+  MAP_INCREMENT_ADD_POINT:'Nokta Ekle',
+  MAP_INCREMENT_CANCEL:'İptal Edildi',
+  MAP_INCREMENT_COMMIT:'Sunmak',
+  MAP_INCREMENT_GPS_POINT:'GPS ile noktaları toplama',
+  MAP_INCREMENT_GPS_TRACK:'GPS ile çizgileri toplama',
+  MAP_INCREMENT_POINTLINE:'Nokta Çizim',
+  MAP_INCREMENT_FREELINE:'Serbest Çizim',
 }
 
 // 推演动画

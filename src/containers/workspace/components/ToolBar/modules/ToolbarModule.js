@@ -120,15 +120,8 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
     toolBarData = plotModule().getData(type, params)
-  } else if(
-    type === ConstToolType.MAP_INCREMENT_GPS_POINT ||
-    type === ConstToolType.MAP_INCREMENT_GPS_TRACK ||
-    type === ConstToolType.MAP_INCREMENT_FREELINE ||
-    type === ConstToolType.MAP_INCREMENT_POINTLINE ||
-    type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
-    type === ConstToolType.MAP_INCREMENT_EDIT
-  ){
-    toolBarData = incrementModule().getData(type,params)
+  } else if(typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
+    toolBarData = incrementModule().getData(type)
   } else if (
     type === ConstToolType.MAP3D_MARK ||
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
@@ -194,14 +187,7 @@ async function setToolBarData(type, params = {}) {
       type === ConstToolType.STYLE_TRANSFER)
   ) {
     toolBarData = toolModule()
-  }else if(
-    type === ConstToolType.MAP_INCREMENT_GPS_POINT ||
-    type === ConstToolType.MAP_INCREMENT_GPS_TRACK ||
-    type === ConstToolType.MAP_INCREMENT_FREELINE ||
-    type === ConstToolType.MAP_INCREMENT_POINTLINE ||
-    type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD ||
-    type === ConstToolType.MAP_INCREMENT_EDIT
-  ){
+  }else if(typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1){
     toolBarData = incrementModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     toolBarData = shareModule()

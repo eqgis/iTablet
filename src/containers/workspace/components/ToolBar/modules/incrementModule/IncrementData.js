@@ -5,15 +5,39 @@
  * https://github.com/AsortKeven
  */
 
+import React from 'react'
 import ToolbarBtnType from "../../ToolbarBtnType"
 import {getPublicAssets} from "../../../../../../assets"
 import constants from "../../../../constants"
 import {getLanguage} from "../../../../../../language"
 import {ConstToolType} from "../../../../../../constants"
 import IncrementAction from "./IncrementAction"
+import {SMap} from 'imobile_for_reactnative'
+import LineList from "./customView/LineList"
 
-function getData(type) {
+async function getData(type) {
   let data = []
+  let buttons = [
+    ToolbarBtnType.CANCEL,
+    {
+      type: ToolbarBtnType.MENU,
+      image: getPublicAssets().navigation.increment_switch_network,
+      action: IncrementAction.changeNetwork,
+    },
+    {
+      type: ConstToolType.MAP_INCREMENT_CHANGE_METHOD,
+      image: IncrementAction.getTypeImage(type),
+      //toolbarBottomButtons里面默认传了type，此处不传type
+      action: () => IncrementAction.changeMethod(),
+    },
+    ToolbarBtnType.MENU_FLEX,
+    {
+      type: ToolbarBtnType.MAP_SYMBOL,
+      image: getPublicAssets().navigation.btn_increment_topo_edit,
+      action: IncrementAction.topoEdit,
+    },
+  ]
+  let customView
 
   switch(type) {
     case ConstToolType.MAP_INCREMENT_POINTLINE:
@@ -206,31 +230,17 @@ function getData(type) {
         },
       ]
       break
+    case ConstToolType.MAP_INCREMENT_CHANGE_NETWORK:
+      data = await SMap.getLineDataset()
+      //eslint-disable-next-line
+      customView = props => <LineList data={data} device={props.device} selectedItem={GLOBAL.INCREMENT_DATA}/>
+      buttons = []
+      break
   }
-  const buttons = [
-    ToolbarBtnType.CANCEL,
-    {
-      type: ToolbarBtnType.MENU,
-      image: getPublicAssets().navigation.increment_switch_network,
-      action: IncrementAction.changeNetwork,
-    },
-    {
-      type: ToolbarBtnType.CHANGE_INCREMENT_METHOD,
-      image: IncrementAction.getTypeImage(type),
-      //toolbarBottomButoons里面默认传了type，此处不要type做区分
-      action: () => IncrementAction.changeMethod(),
-    },
-    ToolbarBtnType.MENU_FLEX,
-    {
-      type: ToolbarBtnType.MAP_SYMBOL,
-      image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
-      // action: IncrementAction.showSymbol,
-    },
-  ]
   if(type === ConstToolType.MAP_INCREMENT_EDIT){
     buttons.splice(2,1)
   }
-  return {data, buttons}
+  return {data, buttons, customView}
 }
 export default {
   getData,

@@ -5,19 +5,27 @@
  * https://github.com/AsortKeven
  */
 import ToolbarModule from "../ToolbarModule"
-import {ConstToolType, ToolbarType} from "../../../../../../constants"
-import {getPublicAssets, getThemeAssets} from "../../../../../../assets"
+import {ConstToolType, Height, ToolbarType} from "../../../../../../constants"
+import {getPublicAssets} from "../../../../../../assets"
 import BackgroundTimer from 'react-native-background-timer'
 import { SMap, Action} from 'imobile_for_reactnative'
-import { Toast } from "../../../../../../utils"
+import {Toast} from "../../../../../../utils"
+import IncrementData from "./IncrementData"
+import ToolBarHeight from "../ToolBarHeight"
+import {getLanguage} from "../../../../../../language"
 
 //撤销过的点数组，用于undo redo
 let POINT_ARRAY = []
 
 async function start() {
-  BackgroundTimer.runBackgroundTimer(async () => {
-    SMap.startGpsIncrement()
-  }, 2000)
+  if(GLOBAL.INCREMENT_DATA.datasetName){
+    BackgroundTimer.runBackgroundTimer(async () => {
+      SMap.startGpsIncrement()
+    }, 2000)
+  }else{
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+  }
+
 }
 function stop() {
   BackgroundTimer.stopBackgroundTimer()
@@ -29,10 +37,10 @@ async function cancel(){
   switch(type){
     case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       BackgroundTimer.stopBackgroundTimer()
-      SMap.clearTrackingLayer()
+      SMap.clearIncrementPoints()
       break
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      SMap.clearTrackingLayer()
+      SMap.clearIncrementPoints()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
       await SMap.cancel()
@@ -47,31 +55,38 @@ async function cancel(){
 
 
 async function addPoint(){
-  await SMap.startGpsIncrement()
+  if(GLOBAL.INCREMENT_DATA.datasetName){
+    await SMap.startGpsIncrement()
+  }else{
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+  }
 }
 
 /**
  * 提交
  */
 async function submit() {
-  const _params = ToolbarModule.getParams()
-  let type = _params.type
-  switch(type){
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
-    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
-      SMap.clearTrackingLayer()
-      await SMap.submitIncrement(GLOBAL.INCREMENT_DATASETNAME)
-      break
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
-      await SMap.submit()
-      SMap.setAction(Action.CREATEPOLYLINE)
-      break
-    case ConstToolType.MAP_INCREMENT_FREELINE:
-      await SMap.submit()
-      SMap.setAction(Action.FREEDRAW)
-      break
+  if(GLOBAL.INCREMENT_DATA.datasetName){
+    const _params = ToolbarModule.getParams()
+    let type = _params.type
+    switch(type) {
+      case ConstToolType.MAP_INCREMENT_GPS_POINT:
+      case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+        SMap.clearTrackingLayer()
+        await SMap.submitIncrement(GLOBAL.INCREMENT_DATA)
+        break
+      case ConstToolType.MAP_INCREMENT_POINTLINE:
+        await SMap.submit()
+        SMap.setAction(Action.CREATEPOLYLINE)
+        break
+      case ConstToolType.MAP_INCREMENT_FREELINE:
+        await SMap.submit()
+        SMap.setAction(Action.FREEDRAW)
+        break
+    }
+  }else{
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
   }
-
   // let showType = ConstToolType.MAP_INCREMENT_EDIT
   // _params.setToolbarVisible && _params.setToolbarVisible(true,showType,{
   //   isFullScreen: false,
@@ -88,7 +103,7 @@ async function redo() {
   switch(type){
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
       if(POINT_ARRAY.length === 0){
-        Toast.show('无法重做')
+        Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_REDO)
       }else{
         let point = POINT_ARRAY.pop()
         await SMap.redoIncrement(point)
@@ -116,7 +131,7 @@ async function undo() {
         if(point.x && point.y){
           POINT_ARRAY.push(point)
         }else{
-          Toast.show('无法撤销')
+          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_UNDO)
         }
       }
       break
@@ -128,23 +143,37 @@ async function undo() {
 
 
 }
+
 /**
  * 切换采集方式
  */
-function changeMethod(type) {
+async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
   const _params = ToolbarModule.getParams()
-  if(type === undefined){
-    type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD
-  }
+  const _data = await IncrementData.getData(type)
+  let containerType = ToolbarType.table
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   _params.setToolbarVisible && _params.setToolbarVisible(true,type,{
+    containerType,
     isFullScreen: false,
+    height:data.height,
+    column:data.column,
+    ..._data,
   })
 }
 
 function changeNetwork() {
-
+  const _params = ToolbarModule.getParams()
+  let type = _params.type
+  _params.setToolbarVisible && _params.setToolbarVisible(true,ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,{
+    isFullScreen: false,
+    containerType:ToolbarType.symbol,
+    height:_params.device.orientation === "PORTRAIT"
+      ? Height.LIST_HEIGHT_P
+      : Height.LIST_HEIGHT_L,
+  })
+  ToolbarModule.addData({preType:type})
 }
-
+//底部增量方式图片
 let image
 /**
  * 获取当前增量方式图片
@@ -176,7 +205,10 @@ function getTypeImage(type) {
  * 选择采集方式
  * @param type
  */
-function methodSelected(type) {
+async function methodSelected(type) {
+  //切换方式 清除上次增量的数据
+  await SMap.clearIncrementPoints()
+  SMap.setAction(Action.PAN)
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
       break
@@ -189,37 +221,35 @@ function methodSelected(type) {
       SMap.setAction(Action.FREEDRAW)
       break
   }
-  this.changeMethod(type)
+  changeMethod(type)
 }
 
 function close() {
   const _params = ToolbarModule.getParams()
-  SMap.cancelIncrement(GLOBAL.INCREMENT_DATASETNAME)
-  SMap.clearTrackingLayer()
+  if(GLOBAL.INCREMENT_DATA.datasetName){
+    SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
+    SMap.clearTrackingLayer()
+  }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   SMap.setIsMagnifierEnabled(false)
-  //todo 重新设置当前图层可编辑
+  GLOBAL.currentLayer && _params.setCurrentLayer(GLOBAL.currentLayer)
 }
 
-function addNode() {
-
-}
-
-function editNode() {
-
-}
-
-function deleteNode() {
-
-}
-
-function deleteObject() {
-
-}
-
-function addAttribute() {
-
+/**
+ * 拓扑编辑
+ */
+async function topoEdit() {
+  //const _params = ToolbarModule.getParams()
+  //切换方式 清除上次增量的数据
+  await SMap.clearIncrementPoints()
+  SMap.submit()
+  SMap.setAction(Action.PAN)
+  Toast.show('提交 进行拓扑编辑')
+  // _params.setToolbarVisible && _params.setToolbarVisible(true,ConstToolType.MAP_TOPO_EDIT,{
+  //   isFullScreen: false,
+  //   height:0,
+  // })
 }
 export default {
   close,
@@ -234,10 +264,6 @@ export default {
   changeMethod,
   changeNetwork,
   methodSelected,
-  addNode,
-  editNode,
-  deleteNode,
-  deleteObject,
-  addAttribute,
   getTypeImage,
+  topoEdit,
 }

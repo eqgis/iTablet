@@ -414,6 +414,18 @@ const Map_Main_Menu = {
   NETWORK_DATASET: '道路ネットワークデータセット',
   MODEL_FILE: 'ナビモデルファイル',
   MY_LOCATION: '私の位置',
+  //导航采集
+  MAP_INDOOR_NETWORK:'屋内',
+  MAP_OUTDOOR_NETWORK: 'アウトドア',
+  MAP_INCREMENT_START:'開始',
+  MAP_INCREMENT_STOP:'停止',
+  MAP_INCREMENT_ADD_POINT:'プロット',
+  MAP_INCREMENT_CANCEL:'キャンセルする',
+  MAP_INCREMENT_COMMIT:'提出する',
+  MAP_INCREMENT_GPS_POINT:'GPSプロット方式',
+  MAP_INCREMENT_GPS_TRACK:'GPS軌跡式',
+  MAP_INCREMENT_POINTLINE:'ポイント描画式',
+  MAP_INCREMENT_FREELINE:'自由式',
 }
 
 // 展開アニメーション

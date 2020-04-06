@@ -10,7 +10,8 @@ import styles from './styles'
 
 /**
  * 表格列表
- * 根据orientation来限制行或列，PORTRAIT时列固定，行自适应；LANDSCAPE时行固定，列自适应
+ * table类型根据orientation来限制行或列，PORTRAIT时列固定，行自适应；LANDSCAPE时行固定，列自适应
+ * scrollTable类型始终固定列数
  */
 export default class TableList extends React.Component {
   props: {
@@ -24,7 +25,7 @@ export default class TableList extends React.Component {
     renderCell: () => {},
     type?: string,
     device?: string,
-    limit?: number,
+    limit?: number, // scrollTable limit始终表示列数
   }
 
   static defaultProps = {
@@ -50,7 +51,7 @@ export default class TableList extends React.Component {
     this.props.data.forEach((item, index) => {
       let column = this.props.limit
       let orientation = this.getOrientation()
-      if (orientation === 'LANDSCAPE') {
+      if (orientation === 'LANDSCAPE' && this.props.type !== 'scrollTable') {
         column = Math.ceil(this.props.data.length / this.props.limit)
       }
       let rowIndex = Math.floor(index / column)

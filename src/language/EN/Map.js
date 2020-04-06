@@ -408,6 +408,19 @@ const Map_Main_Menu = {
   NETWORK_DATASET: 'Network Datasets',
   MODEL_FILE: 'Navigation Model Files',
   MY_LOCATION: 'My location',
+
+  //导航采集
+  MAP_INDOOR_NETWORK:'Indoor',
+  MAP_OUTDOOR_NETWORK: 'Outdoor',
+  MAP_INCREMENT_START:'Start',
+  MAP_INCREMENT_STOP:'Stop',
+  MAP_INCREMENT_ADD_POINT:'Add point',
+  MAP_INCREMENT_CANCEL:'Cancel',
+  MAP_INCREMENT_COMMIT:'Commit',
+  MAP_INCREMENT_GPS_POINT:'Collect Points by GPS',
+  MAP_INCREMENT_GPS_TRACK:'Collect Line by GPS',
+  MAP_INCREMENT_POINTLINE:'Point Draw',
+  MAP_INCREMENT_FREELINE:'Free Draw',
 }
 
 // 推演动画

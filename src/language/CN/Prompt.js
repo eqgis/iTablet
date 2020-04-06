@@ -304,6 +304,12 @@ const Prompt = {
     '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
   NOT_SUPPORT_ONLINE_NAVIGATION: '在线导航暂不支持',
 
+  //导航增量路网
+  SELECT_LINE_DATASET:'请先选择一个线数据集',
+  CANT_UNDO:'无法撤销',
+  CANT_REDO:'无法重做',
+  DATASET_RENAME_FAILED:'数据集名称只能包含字母、数字和"_"、"@"、"#"',
+  SWITCH_LINE: '切换数据',
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

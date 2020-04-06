@@ -424,7 +424,10 @@ const Map_Main_Menu = {
   NETWORK_DATASET: '路网数据集',
   MODEL_FILE: '导航模型文件',
   MY_LOCATION: '我的位置',
+
   //导航采集
+  MAP_INDOOR_NETWORK:'室内路网',
+  MAP_OUTDOOR_NETWORK: '室外路网',
   MAP_INCREMENT_START:'开始',
   MAP_INCREMENT_STOP:'停止',
   MAP_INCREMENT_ADD_POINT:'添加点',
@@ -435,12 +438,6 @@ const Map_Main_Menu = {
   MAP_INCREMENT_GPS_TRACK:'GPS轨迹式',
   MAP_INCREMENT_POINTLINE:'点绘式',
   MAP_INCREMENT_FREELINE:'自由式',
-
-  MAP_INCREMENT_ADD_NODE:'添加节点',
-  MAP_INCREMENT_EDIT_NODE:'编辑节点',
-  MAP_INCREMENT_DELETE_NODE:'删除节点',
-  MAP_INCREMENT_DELETE_OBJECT:'删除对象',
-  MAP_INCREMENT_ADD_ATTRIBUTE:'添加属性',
 }
 
 // 推演动画

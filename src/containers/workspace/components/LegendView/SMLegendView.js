@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { View, Text, Platform } from 'react-native'
+import { View, Text } from 'react-native'
 import LegendView from './'
-import { scaleSize, setSpText } from '../../../../utils'
-export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
+import { scaleSize, setSpText, screen } from '../../../../utils'
+export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
 
 export default class SMLegendView extends React.Component {
   props: {

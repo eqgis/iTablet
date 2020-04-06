@@ -90,6 +90,7 @@
         {"key": "markModule", "type": "MAP_MARKS"},
         {"key": "navigationModule", "type": "MAP_NAVIGATION_MODULE"},
         {"key": "roadNetModule", "type": "MAP_ROAD_NET_MODULE"},
+        {"key": "incrementModule", "type": "MAP_INCREAMENT"},
         {"key": "toolModule", "type": "MAP_TOOLS"},
         {"key": "shareModule", "type": "MAP_SHARE"}
       ],

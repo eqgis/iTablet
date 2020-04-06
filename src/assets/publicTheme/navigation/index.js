@@ -41,6 +41,14 @@ const btn_increment_gps_point = require('./btn_increment_gps_point.png')
 const btn_increment_gps_track = require('./btn_increment_gps_track.png')
 const btn_increment_point_line = require('./btn_increment_point_line.png')
 const btn_increment_freeline = require('./btn_increment_freeline.png')
+const btn_increment_topo_edit = require('./btn_increment_topo_edit.png')
+const btn_increment_merge_dataset = require('./btn_increment_merge_dataset.png')
+
+const increment_indoor = require('./increment_indoor.png')
+const increment_outdoor = require('./increment_outdoor.png')
+//customView btns
+const icon_increment_delete = require('./icon_increment_delete.png')
+const icon_increment_rename = require('./icon_increment_rename.png')
 export default {
   // 导航起点终点
   icon_nav_start,
@@ -87,4 +95,11 @@ export default {
   btn_increment_gps_track,
   btn_increment_point_line,
   btn_increment_freeline,
+  btn_increment_topo_edit,
+  btn_increment_merge_dataset,
+
+  icon_increment_delete,
+  icon_increment_rename,
+  increment_indoor,
+  increment_outdoor,
 }

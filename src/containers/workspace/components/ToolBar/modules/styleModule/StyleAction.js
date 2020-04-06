@@ -75,13 +75,13 @@ async function tableAction(params) {
 
 function layerListAction(data) {
   const _params = ToolbarModule.getParams()
-  const { orientation } = _params.device
+  // const { orientation } = _params.device
   SMap.setLayerEditable(data.path, true)
   if (data.type === 83) {
     _params.setToolbarVisible(true, ConstToolType.GRID_STYLE, {
       containerType: ToolbarType.list,
       isFullScreen: false,
-      height: ConstToolType.HEIGHT[4],
+      // height: ConstToolType.HEIGHT[4],
     })
     _params.showFullMap(true)
     _params.navigation.navigate('MapView')
@@ -89,11 +89,11 @@ function layerListAction(data) {
     _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
       containerType: ToolbarType.symbol,
       isFullScreen: false,
-      column: orientation === 'PORTRAIT' ? 4 : 8,
-      height:
-        orientation === 'PORTRAIT'
-          ? ConstToolType.THEME_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT_2[3],
+      // column: orientation === 'PORTRAIT' ? 4 : 8,
+      // height:
+      //   orientation === 'PORTRAIT'
+      //     ? ConstToolType.THEME_HEIGHT[3]
+      //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
     })
     _params.showFullMap(true)
     _params.navigation.navigate('MapView')
@@ -102,8 +102,8 @@ function layerListAction(data) {
     _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
       containerType: ToolbarType.list,
       isFullScreen: true,
-      column: 4,
-      height: 0,
+      // column: 4,
+      // height: 0,
       showMenuDialog: true,
     })
     _params.navigation.navigate('MapView')

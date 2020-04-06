@@ -5,7 +5,7 @@ import {
   ConstPath,
   ToolbarType,
 } from '../../../../../../constants'
-import { Toast, scaleSize } from '../../../../../../utils'
+import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import Fly3DData from './Fly3DData'
@@ -61,11 +61,11 @@ async function getWorkspaceList() {
   params.setToolbarVisible(true, ConstToolType.MAP3D_TOOL, {
     containerType: ToolbarType.table,
     isFullScreen: true,
-    height:
-      params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.HEIGHT[2]
-        : scaleSize(350),
-    column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
+    // height:
+    //   params.device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.HEIGHT[2]
+    //     : scaleSize(350),
+    // column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
     data,
     buttons,
   })
@@ -97,8 +97,8 @@ function newFly() {
   const params = ToolbarModule.getParams()
   const _data = Fly3DData.getNewFly()
   params.setToolbarVisible(true, ConstToolType.MAP3D_TOOL_NEWFLY, {
-    height: ConstToolType.HEIGHT[0],
-    column: _data.data.length,
+    // height: ConstToolType.HEIGHT[0],
+    // column: _data.data.length,
     containerType: ToolbarType.table,
     isFullScreen: false,
     ..._data,

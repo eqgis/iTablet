@@ -324,6 +324,12 @@ const Prompt = {
     '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
 
+  //导航增量路网
+  SELECT_LINE_DATASET:'最初にラインデータセットを選択してください',
+  CANT_UNDO:'元に戻すことはできません',
+  CANT_REDO:'ないやり直し',
+  DATASET_RENAME_FAILED:'データセット名には、文字、数字、「_」、「@」、「＃」のみを含めることができます',
+  SWITCH_LINE: 'データを切り替える',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',

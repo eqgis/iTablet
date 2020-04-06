@@ -171,46 +171,46 @@ export default class EnterDatumPoint extends Component {
       return
     }
 
-    if(GLOBAL.EnterDatumPointType === 'arMeasureCollect'){
-      GLOBAL.MeasureCollectData.point=point
+    if (GLOBAL.EnterDatumPointType === 'arMeasureCollect') {
+      GLOBAL.MeasureCollectData.point = point
       NavigationService.replace('MeasureView', GLOBAL.MeasureCollectData)
       GLOBAL.EnterDatumPointType = undefined
       return
-    }else if(GLOBAL.EnterDatumPointType === 'arCollectSceneForm'){
+    } else if (GLOBAL.EnterDatumPointType === 'arCollectSceneForm') {
       GLOBAL.EnterDatumPointType = undefined
-        //查看历史数据源
+      //查看历史数据源
       AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
-      .then(async value => {
-        let datasourceAlias
-        if (value !== null) {
-          let alias = SMap.isAvilableAlias(value)
-          if (alias === value) {
-            datasourceAlias = await SCollectSceneFormView.getSystemTime()
+        .then(async value => {
+          let datasourceAlias
+          if (value !== null) {
+            let alias = SMap.isAvilableAlias(value)
+            if (alias === value) {
+              datasourceAlias = await SCollectSceneFormView.getSystemTime()
+            } else {
+              datasourceAlias = value
+            }
           } else {
-            datasourceAlias = value
+            datasourceAlias = await SCollectSceneFormView.getSystemTime()
           }
-        } else {
-          datasourceAlias = await SCollectSceneFormView.getSystemTime()
-        }
-        AsyncStorage.setItem(
-          constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY,
-          datasourceAlias,
-        )
+          AsyncStorage.setItem(
+            constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY,
+            datasourceAlias,
+          )
 
-        GLOBAL.mapView.setState({ map: { height: 0 } })
-        // GLOBAL.newcollectData = time
-        GLOBAL.newcollectData = datasourceAlias
-        // const datasourceAlias = time
-        const datasetName = 'CollectSceneForm'
-        const datasetPointName = 'CollectPointSceneForm'
-        NavigationService.replace('CollectSceneFormView', {
-          datasourceAlias,
-          datasetName,
-          datasetPointName,
-          point,
+          GLOBAL.mapView.setState({ map: { height: 0 } })
+          // GLOBAL.newcollectData = time
+          GLOBAL.newcollectData = datasourceAlias
+          // const datasourceAlias = time
+          const datasetName = 'CollectSceneForm'
+          const datasetPointName = 'CollectPointSceneForm'
+          NavigationService.replace('CollectSceneFormView', {
+            datasourceAlias,
+            datasetName,
+            datasetPointName,
+            point,
+          })
         })
-      })
-      .catch(() => {})
+        .catch(() => {})
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()

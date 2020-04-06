@@ -4,27 +4,27 @@ import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import StyleAction from './StyleAction'
 
-const line = (param, orientation = 'PORTRAIT') => [
+const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '符号线',
     action: () => {
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 4
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 8
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 4
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 8
+      // }
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.STYLE_SYMBOL, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
-          column,
-          height,
+          // column,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -65,21 +65,21 @@ const line = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
-      } else {
-        height = ConstToolType.HEIGHT[2]
-        column = 12
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 8
+      // } else {
+      //   height = ConstToolType.HEIGHT[2]
+      //   column = 12
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.LINECOLOR_SET, {
           containerType: ToolbarType.colorTable,
-          column,
+          // column,
           isFullScreen: false,
-          height,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -94,26 +94,26 @@ const line = (param, orientation = 'PORTRAIT') => [
   },
 ]
 
-const point = (param, orientation = 'PORTRAIT') => [
+const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 4
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 8
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 4
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 8
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
-          column,
-          height,
+          // column,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -152,21 +152,21 @@ const point = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
-      } else {
-        height = ConstToolType.HEIGHT[2]
-        column = 12
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 8
+      // } else {
+      //   height = ConstToolType.HEIGHT[2]
+      //   column = 12
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.POINTCOLOR_SET, {
           containerType: ToolbarType.colorTable,
-          column,
+          // column,
           isFullScreen: false,
-          height,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -222,27 +222,27 @@ const point = (param, orientation = 'PORTRAIT') => [
   },
 ]
 
-const region = (param, orientation = 'PORTRAIT') => [
+const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '面符号',
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 4
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 8
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 4
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 8
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
-          column,
-          height,
+          // column,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -259,21 +259,21 @@ const region = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 12
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 8
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 12
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.REGIONBEFORECOLOR_SET, {
           containerType: ToolbarType.colorTable,
-          column,
+          // column,
           isFullScreen: false,
-          height,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -318,21 +318,21 @@ const region = (param, orientation = 'PORTRAIT') => [
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 12
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 8
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 12
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.REGIONBORDERCOLOR_SET, {
           containerType: ToolbarType.colorTable,
-          column,
+          // column,
           isFullScreen: false,
-          height,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -463,26 +463,26 @@ const grid = param => [
   },
 ]
 
-const text = (param, orientation = 'PORTRAIT') => [
+const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[2]
-        column = 4
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[2]
-        column = 8
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[2]
+      //   column = 4
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[2]
+      //   column = 8
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTFONT, {
           isFullScreen: false,
-          column,
-          height,
+          // column,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,
@@ -537,21 +537,21 @@ const text = (param, orientation = 'PORTRAIT') => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      let height
-      let column
-      if (orientation === 'PORTRAIT') {
-        height = ConstToolType.THEME_HEIGHT[3]
-        column = 8
-      } else {
-        height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-        column = 12
-      }
+      // let height
+      // let column
+      // if (orientation === 'PORTRAIT') {
+      //   height = ConstToolType.THEME_HEIGHT[3]
+      //   column = 8
+      // } else {
+      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
+      //   column = 12
+      // }
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTCOLOR_SET, {
           containerType: ToolbarType.colorTable,
-          column,
+          // column,
           isFullScreen: false,
-          height,
+          // height,
           buttons: [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.MENU,

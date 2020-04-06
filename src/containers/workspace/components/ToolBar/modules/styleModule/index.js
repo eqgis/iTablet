@@ -28,16 +28,16 @@ function action(type) {
       _params = {
         containerType: ToolbarType.symbol,
         isFullScreen: false,
-        column: 4,
-        height: ConstToolType.THEME_HEIGHT[3],
+        // column: 4,
+        // height: ConstToolType.THEME_HEIGHT[3],
       }
     } else if (params.currentLayer.type === 7) {
       _type = ConstToolType.MAP_STYLE
       _params = {
         containerType: ToolbarType.list,
         isFullScreen: true,
-        column: 4,
-        height: 0,
+        // column: 4,
+        // height: 0,
         showMenuDialog: true,
       }
     } else {

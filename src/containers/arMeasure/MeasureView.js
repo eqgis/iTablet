@@ -69,7 +69,7 @@ export default class MeasureView extends React.Component {
         let fixedPoint = this.point
         setTimeout(function() {
           //设置基点
-          SMeasureView.fixedPosition(false,fixedPoint.x,fixedPoint.y,0)
+          SMeasureView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
         }, 1000)
         //注册监听
         if (Platform.OS === 'ios') {
@@ -256,7 +256,7 @@ export default class MeasureView extends React.Component {
         confirmAction={async () => {
           let fixedPoint = this.point
           //设置基点
-          SMeasureView.fixedPosition(false,fixedPoint.x,fixedPoint.y,0)
+          SMeasureView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
           this.DatumPointDialog.setDialogVisible(false)
         }}
         opacity={1}
@@ -276,12 +276,14 @@ export default class MeasureView extends React.Component {
           style={styles.dialogHeaderImg}
         />
         <Text style={styles.promptTtile}>
-          {getLanguage(global.language).Profile.MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH}
+          {
+            getLanguage(global.language).Profile
+              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+          }
         </Text>
       </View>
     )
   }
-
 
   renderBottomBtns = () => {
     return (

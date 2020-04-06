@@ -48,16 +48,13 @@ function getToolbarSize(type, additional = {}) {
       if (additional.column !== undefined) {
         column = additional.column
       } else {
-        column = orientation === 'LANDSCAPE' ? 5 : 4
+        column = orientation === 'LANDSCAPE' ? 2 : 4
         // column = 4
       }
       height = Height.COLOR_TABLE_HEIGHT_L
       break
     case ToolbarType.colorTable: // 颜色表格
-      height =
-        orientation === 'LANDSCAPE'
-          ? Height.COLOR_TABLE_HEIGHT_L
-          : Height.COLOR_TABLE_HEIGHT_P
+      height = Height.LIST_HEIGHT_L
       break
     case ToolbarType.horizontalTable: // 横向滚动表格
       height = Height.TABLE_ROW_HEIGHT_2

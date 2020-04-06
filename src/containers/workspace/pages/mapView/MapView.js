@@ -52,6 +52,7 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
 import {
   Container,
   MTBtn,
@@ -74,6 +75,7 @@ import {
   setSpText,
   LayerUtils,
   FetchUtils,
+  screen,
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -104,6 +106,9 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
+export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
+export const FOOTER_HEIGHT = scaleSize(88)
+
 export default class MapView extends React.Component {
   static propTypes = {
     language: PropTypes.string,
@@ -1827,11 +1832,11 @@ export default class MapView extends React.Component {
           // TODO 不同类型高度修改
           this.toolBox.setVisible(true, ConstToolType.MAP_ANALYSIS, {
             isFullScreen: true,
-            height:
-              this.props.device.orientation === 'LANDSCAPE'
-                ? ConstToolType.TOOLBAR_HEIGHT[2]
-                : ConstToolType.TOOLBAR_HEIGHT[3],
-            column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
+            // height:
+            //   this.props.device.orientation === 'LANDSCAPE'
+            //     ? ConstToolType.TOOLBAR_HEIGHT[2]
+            //     : ConstToolType.TOOLBAR_HEIGHT[3],
+            // column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
           })
         }}
         setAnalystParams={this.props.setAnalystParams}
@@ -2545,9 +2550,9 @@ export default class MapView extends React.Component {
       if (!this.state.isRight) {
         this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_GPSINCREMENT, {
           containerType: 'table',
-          column: 4,
+          // column: 4,
           isFullScreen: false,
-          height: ConstToolType.HEIGHT[0],
+          // height: ConstToolType.HEIGHT[0],
         })
       } else {
         await SMap.setLabelColor()
@@ -2555,9 +2560,9 @@ export default class MapView extends React.Component {
         await SMap.setIsMagnifierEnabled(true)
         this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_INCREMENT, {
           containerType: 'table',
-          column: 4,
+          // column: 4,
           isFullScreen: false,
-          height: ConstToolType.HEIGHT[0],
+          // height: ConstToolType.HEIGHT[0],
         })
       }
     } else {
@@ -2663,25 +2668,24 @@ export default class MapView extends React.Component {
   _pressRoad = async type => {
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
-    const _data = IncrementData.getData(type)
-    // const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+    const _data = await IncrementData.getData(type)
+    const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
-        SMap.createDefaultDataset().then(async datasetName => {
-          if (datasetName) {
-            // await SMap.initTrackingLayer()
+        SMap.createDefaultDataset().then(async returnData => {
+          if(returnData.datasetName){
             params.setToolbarVisible(true, type, {
               containerType,
               isFullScreen: false,
               resetToolModuleData: true,
               // height:data.height,
               // column:data.column,
-              ..._data,
+              ...data,
             })
             //开启放大镜
             SMap.setIsMagnifierEnabled(true)
-            GLOBAL.INCREMENT_DATASETNAME = datasetName
+            GLOBAL.INCREMENT_DATA = returnData
           }
         })
         break
@@ -2690,73 +2694,38 @@ export default class MapView extends React.Component {
     }
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
+
   renderIncrementDialog = () => {
-    return (
-      <IncrementRoadDialog ref={ref => (GLOBAL.IncrementRoadDialog = ref)}>
-        <View
-          style={{
-            width: scaleSize(500),
-            height: scaleSize(300),
-            backgroundColor: color.background,
-            borderRadius: 5,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingTop: scaleSize(20),
-          }}
-        >
+    const increment_indoor = getPublicAssets().navigation.increment_indoor
+    const increment_outdoor = getPublicAssets().navigation.increment_outdoor
+    return(
+      <IncrementRoadDialog ref={ref=>(GLOBAL.IncrementRoadDialog = ref)}>
+        <View style={styles.incrementContent}>
           <TouchableOpacity
-            style={{
-              width: scaleSize(200),
-              height: scaleSize(260),
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-            onPress={() => {
+            style={styles.incrementButton}
+            onPress={()=>{
               this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
             }}
           >
             <Image
-              style={{
-                width: scaleSize(200),
-                height: scaleSize(200),
-              }}
+              style={styles.incrementImage}
+              source={increment_indoor}
               resizeMode={'contain'}
             />
-            <Text
-              style={{
-                fontSize: scaleSize(20),
-              }}
-            >
-              室内路网
-            </Text>
+            <Text style={styles.incrementText}>{getLanguage(this.props.language).Map_Main_Menu.MAP_INDOOR_NETWORK}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              width: scaleSize(200),
-              height: scaleSize(260),
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-            onPress={() => {
+            style={styles.incrementButton}
+            onPress={()=>{
               this._pressRoad(ConstToolType.MAP_INCREMENT_GPS_TRACK)
             }}
           >
             <Image
-              style={{
-                width: scaleSize(200),
-                height: scaleSize(200),
-              }}
+              style={styles.incrementImage}
+              source={increment_outdoor}
               resizeMode={'contain'}
             />
-            <Text
-              style={{
-                fontSize: scaleSize(20),
-              }}
-            >
-              室外路网
-            </Text>
+            <Text style={styles.incrementText}>{getLanguage(this.props.language).Map_Main_Menu.MAP_OUTDOOR_NETWORK}</Text>
           </TouchableOpacity>
         </View>
       </IncrementRoadDialog>

@@ -26,6 +26,7 @@ export default class CollectSceneFormSet extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.fixedPositions = params && params.fixedPositions
+    this.point = params && params.point
 
     let problemItems = []
     problemItems.push({
@@ -52,7 +53,8 @@ export default class CollectSceneFormSet extends Component {
   }
 
   componentDidMount() {
-    this.getFixedPosition()
+    // this.getFixedPosition()
+    this.point && GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
   }
 
   getFixedPosition = async () => {

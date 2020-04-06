@@ -211,6 +211,7 @@ export default class CollectSceneFormView extends React.Component {
   /** 设置 */
   setting = () => {
     NavigationService.navigate('CollectSceneFormSet', {
+      point : this.datumPoint,
       fixedPositions: point => {
         NavigationService.goBack()
         SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)

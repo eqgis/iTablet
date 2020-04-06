@@ -295,4 +295,31 @@ export default StyleSheet.create({
     right: 0,
     backgroundColor: '#rgba(0, 0, 0, 0.3)',
   },
+  opacityView: {
+    height: scaleSize(300),
+    backgroundColor: color.content_white,
+  },
+  dialogHeaderImg: {
+    width: scaleSize(80),
+    height: scaleSize(80),
+    opacity: 1,
+  },
+  dialogBackground: {
+    height: scaleSize(300),
+    backgroundColor: color.content_white,
+  },
+  dialogHeaderView: {
+    paddingTop: scaleSize(30),
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  promptTtile: {
+    fontSize: scaleSize(24),
+    color: color.theme_white,
+    marginTop: scaleSize(5),
+    marginLeft: scaleSize(10),
+    marginRight: scaleSize(10),
+    textAlign: 'center',
+  },
 })

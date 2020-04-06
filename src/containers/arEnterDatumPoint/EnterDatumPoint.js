@@ -170,8 +170,16 @@ export default class EnterDatumPoint extends Component {
       )
       return
     }
-    //查看历史数据源
-    AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
+
+    if(GLOBAL.EnterDatumPointType === 'arMeasureCollect'){
+      GLOBAL.MeasureCollectData.point=point
+      NavigationService.replace('MeasureView', GLOBAL.MeasureCollectData)
+      GLOBAL.EnterDatumPointType = undefined
+      return
+    }else if(GLOBAL.EnterDatumPointType === 'arCollectSceneForm'){
+      GLOBAL.EnterDatumPointType = undefined
+        //查看历史数据源
+      AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
       .then(async value => {
         let datasourceAlias
         if (value !== null) {
@@ -203,6 +211,7 @@ export default class EnterDatumPoint extends Component {
         })
       })
       .catch(() => {})
+    }
 
     // let time = await SCollectSceneFormView.getSystemTime()
     // GLOBAL.mapView.setState({ map: { height: 0 } })

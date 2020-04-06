@@ -55,11 +55,14 @@ function arMeasureCollect() {
     }
     let datasourceAlias = 'Label_'+ _params.user.currentUser.userName +'#'
     let datasetName = 'Default_Tagging'
-
-    NavigationService.navigate('MeasureView', {
+    GLOBAL.MeasureCollectData = {
       datasourceAlias,
       datasetName,
-    })
+    }
+
+    // NavigationService.navigate('MeasureView', GLOBAL.MeasureCollectData)
+    GLOBAL.EnterDatumPointType = 'arMeasureCollect'
+    NavigationService.navigate('EnterDatumPoint')
 
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -231,6 +234,7 @@ function collectSceneForm() {
     //   datasetPointName,
     // })
 
+    GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
     NavigationService.navigate('EnterDatumPoint')
 
     // NavigationService.navigate('InputPage', {

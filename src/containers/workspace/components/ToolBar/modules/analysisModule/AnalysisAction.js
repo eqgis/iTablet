@@ -11,11 +11,11 @@ function close(type) {
   AnalystTools.clear(type)
   _params.setToolbarVisible(true, ConstToolType.MAP_ANALYSIS, {
     isFullScreen: true,
-    height:
-      _params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.TOOLBAR_HEIGHT[2]
-        : ConstToolType.TOOLBAR_HEIGHT[3],
-    column: _params.device.orientation === 'LANDSCAPE' ? 5 : 4,
+    // height:
+    //   _params.device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.TOOLBAR_HEIGHT[2]
+    //     : ConstToolType.TOOLBAR_HEIGHT[3],
+    // column: _params.device.orientation === 'LANDSCAPE' ? 5 : 4,
   })
 }
 

@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#rgba(0, 0, 0, 0)',
-    zIndex: zIndexLevel.FOUR,
+    zIndex: zIndexLevel.FIVE,
+    elevation: 20,
   },
   themeoverlay: {
     flex: 1,

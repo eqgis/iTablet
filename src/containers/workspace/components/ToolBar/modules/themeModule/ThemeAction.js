@@ -35,21 +35,21 @@ async function dealData(params = {}, loading = true) {
       getLanguage(_params.language).Prompt.READING_DATA,
     )
   const data = (params.getData && (await params.getData())) || []
-  let height
-  if (params.heights && params.heights.length === 1) {
-    height = params.heights[0]
-  } else {
-    height =
-      _params.device.orientation === 'LANDSCAPE'
-        ? params.heights[0]
-        : params.heights[1]
-  }
+  // let height
+  // if (params.heights && params.heights.length === 1) {
+  //   height = params.heights[0]
+  // } else {
+  //   height =
+  //     _params.device.orientation === 'LANDSCAPE'
+  //       ? params.heights[0]
+  //       : params.heights[1]
+  // }
 
   params.heights && delete params.heights
   _params.setToolbarVisible(true, params.state.type, {
     data,
     ...params.state,
-    height,
+    // height,
     cb: () => {
       loading &&
         _params.setContainerLoading &&
@@ -135,10 +135,10 @@ async function getThemeExpress(type, key = '', name = '') {
     containerType: ToolbarType.list,
     isFullScreen: false,
     data,
-    height:
-      _params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[5],
+    // height:
+    //   _params.device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.THEME_HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[5],
     buttons: [
       ToolbarBtnType.CANCEL,
       ToolbarBtnType.MENU,
@@ -157,7 +157,7 @@ async function getGraphThemeExpressions(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       type,
@@ -179,7 +179,7 @@ async function getGraphThemeGradutedMode(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0]],
+    // heights: [ConstToolType.THEME_HEIGHT[0]],
     getData,
     state: {
       type,
@@ -203,7 +203,7 @@ async function getGraduatedSymbolGradutedMode(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0]],
+    // heights: [ConstToolType.THEME_HEIGHT[0]],
     getData,
     state: {
       type,
@@ -233,7 +233,7 @@ async function getGraphThemeColorScheme(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       isFullScreen: false,
@@ -284,7 +284,7 @@ async function getUniqueColorScheme(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       isFullScreen: false,
@@ -313,7 +313,7 @@ async function getRangeColorScheme(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       isFullScreen: false,
@@ -342,7 +342,7 @@ async function getAggregationColorScheme(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       isFullScreen: false,
@@ -370,7 +370,7 @@ async function getColorGradientType(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
     getData,
     state: {
       isFullScreen: false,
@@ -393,7 +393,7 @@ async function getRangeMode(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
+    // heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
     getData,
     state: {
       isFullScreen: false,
@@ -415,7 +415,7 @@ async function getGridRangeMode(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
+    // heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
     getData,
     state: {
       isFullScreen: false,
@@ -433,7 +433,7 @@ async function getGridRangeMode(type, key = '', name = '') {
 
 async function getRangeParameter(type, key = '', name = '') {
   dealData({
-    heights: [0],
+    // heights: [0],
     // getData: getData,
     state: {
       isFullScreen: true,
@@ -451,7 +451,7 @@ async function getRangeParameter(type, key = '', name = '') {
 // 专题图中统计符号显示的最大值(倍数)
 async function getGraphMaxValue(type, key = '', name = '') {
   dealData({
-    heights: [0],
+    // heights: [0],
     state: {
       isFullScreen: true,
       selectName: name || key,
@@ -468,7 +468,7 @@ async function getGraphMaxValue(type, key = '', name = '') {
 // 点密度基础值，点大小
 async function getDotDensityValueAndDotsize(type, key = '', name = '') {
   dealData({
-    heights: [0],
+    // heights: [0],
     state: {
       isFullScreen: true,
       selectName: name || key, // '单点代表值' ，'符号大小'
@@ -485,7 +485,7 @@ async function getDotDensityValueAndDotsize(type, key = '', name = '') {
 // 热力图参数
 async function getHeatmapParams(type, key = '', name = '') {
   dealData({
-    heights: [0],
+    // heights: [0],
     state: {
       isFullScreen: true,
       selectName: name || key, // '核半径' ，'颜色渐变模糊度', '最大颜色权重'
@@ -506,7 +506,7 @@ async function getGraduatedSymbolBaseValueAndSymbolSize(
   name = '',
 ) {
   dealData({
-    heights: [0],
+    // heights: [0],
     state: {
       isFullScreen: true,
       selectName: name || key, // 基准值，符号大小
@@ -528,7 +528,7 @@ async function getLabelBackShape(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
+    // heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
     getData,
     state: {
       isFullScreen: false,
@@ -553,7 +553,7 @@ async function getColorTable(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[7], ConstToolType.THEME_HEIGHT[3]],
+    // heights: [ConstToolType.THEME_HEIGHT[7], ConstToolType.THEME_HEIGHT[3]],
     getData,
     state: {
       isFullScreen: false,
@@ -575,7 +575,7 @@ async function getLabelFontName(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[2], ConstToolType.THEME_HEIGHT[3]],
+    // heights: [ConstToolType.THEME_HEIGHT[2], ConstToolType.THEME_HEIGHT[3]],
     getData,
     state: {
       isFullScreen: false,
@@ -597,7 +597,7 @@ async function getLabelFontRotation(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0]],
+    // heights: [ConstToolType.THEME_HEIGHT[0]],
     getData,
     state: {
       isFullScreen: false,
@@ -619,7 +619,7 @@ async function getLabelFont(type, key = '', name = '') {
   }
 
   dealData({
-    heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
+    // heights: [ConstToolType.THEME_HEIGHT[0], ConstToolType.THEME_HEIGHT[2]],
     getData,
     state: {
       isFullScreen: false,
@@ -637,7 +637,7 @@ async function getLabelFont(type, key = '', name = '') {
 
 async function getLabelFontSize(type, key = '', name = '') {
   dealData({
-    heights: [0],
+    // heights: [0],
     state: {
       isFullScreen: true,
       isTouchProgress: true,
@@ -697,16 +697,16 @@ async function listAction(type, params = {}) {
       item,
     )
     const alias = _data.data[0].title
-    const height =
-      _params.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[5]
+    // const height =
+    //   _params.device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.THEME_HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[5]
     const data = {
       type,
       getData: ThemeData.getData,
       lastData: ToolbarModule.getData().data,
       actions,
-      height,
+      // height,
       themeDatasourceAlias: alias,
     }
     const { selectList } = ToolbarModule.getData()
@@ -729,7 +729,7 @@ async function listAction(type, params = {}) {
       isFullScreen: true,
       isTouchProgress: false,
       showMenuDialog: false,
-      height,
+      // height,
       data: _data.data,
       buttons: _data.buttons,
       // cb: () => {
@@ -998,10 +998,10 @@ async function listAction(type, params = {}) {
             ? ToolbarType.selectableList
             : ToolbarType.list,
           data: datalist,
-          height:
-            _params.device.orientation === 'PORTRAIT'
-              ? ConstToolType.THEME_HEIGHT[5]
-              : ConstToolType.THEME_HEIGHT[3],
+          // height:
+          //   _params.device.orientation === 'PORTRAIT'
+          //     ? ConstToolType.THEME_HEIGHT[5]
+          //     : ConstToolType.THEME_HEIGHT[3],
           buttons: listSelectable
             ? [
               // ToolbarBtnType.CANCEL,
@@ -1317,7 +1317,7 @@ function toolbarBack() {
     showMenuDialog: false,
     data: lastData.data,
     buttons: lastData.buttons,
-    height: _data.height,
+    // height: _data.height,
   })
   ToolbarModule.addData({
     // type: ConstToolType.MAP_THEME,
@@ -1379,7 +1379,7 @@ async function layerListAction(data) {
         ? ConstToolType.MAP_THEME_PARAM_GRAPH
         : ConstToolType.MAP_THEME_PARAM
     _params.showFullMap(true)
-    const { orientation } = _params.device
+    // const { orientation } = _params.device
     const xml = await SMap.mapToXml()
     ToolbarModule.setData({
       type: _type,
@@ -1392,11 +1392,11 @@ async function layerListAction(data) {
     _params.setToolbarVisible(true, _type, {
       containerType: ToolbarType.list,
       isFullScreen: true,
-      height:
-        orientation === 'PORTRAIT'
-          ? ConstToolType.THEME_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT_2[3],
-      column: orientation === 'PORTRAIT' ? 8 : 4,
+      // height:
+      //   orientation === 'PORTRAIT'
+      //     ? ConstToolType.THEME_HEIGHT[3]
+      //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
+      // column: orientation === 'PORTRAIT' ? 8 : 4,
       themeType: curThemeType,
       isTouchProgress: false,
       showMenuDialog: true,

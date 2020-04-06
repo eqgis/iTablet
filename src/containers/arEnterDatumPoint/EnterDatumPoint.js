@@ -50,6 +50,11 @@ export default class EnterDatumPoint extends Component {
     }
   }
 
+  componentDidMount = async () => {
+    let map = await SMap.getCurrentPosition()
+    GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(map)
+  }
+
   getCurrentPosition = async () => {
     GLOBAL.Loading.setLoading(
       true,
@@ -165,8 +170,16 @@ export default class EnterDatumPoint extends Component {
       )
       return
     }
-    //查看历史数据源
-    AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
+
+    if(GLOBAL.EnterDatumPointType === 'arMeasureCollect'){
+      GLOBAL.MeasureCollectData.point=point
+      NavigationService.replace('MeasureView', GLOBAL.MeasureCollectData)
+      GLOBAL.EnterDatumPointType = undefined
+      return
+    }else if(GLOBAL.EnterDatumPointType === 'arCollectSceneForm'){
+      GLOBAL.EnterDatumPointType = undefined
+        //查看历史数据源
+      AsyncStorage.getItem(constants.COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY)
       .then(async value => {
         let datasourceAlias
         if (value !== null) {
@@ -198,6 +211,7 @@ export default class EnterDatumPoint extends Component {
         })
       })
       .catch(() => {})
+    }
 
     // let time = await SCollectSceneFormView.getSystemTime()
     // GLOBAL.mapView.setState({ map: { height: 0 } })
@@ -217,7 +231,7 @@ export default class EnterDatumPoint extends Component {
   renderButton() {
     return (
       <View style={{ alignItems: 'center' }}>
-        {this.renderHintText()}
+        {/* {this.renderHintText()} */}
         {
           <Button
             title={getLanguage(global.language).Profile.MAP_AR_DATUM_SURE}
@@ -236,12 +250,12 @@ export default class EnterDatumPoint extends Component {
   }
 
   back = () => {
-      if (GLOBAL.isswitch) {
-        GLOBAL.isswitch = false
-        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
-      }
-      NavigationService.goBack()
-      return true
+    if (GLOBAL.isswitch) {
+      GLOBAL.isswitch = false
+      GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.goBack()
+    return true
   }
 
   renderHintText() {

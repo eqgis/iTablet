@@ -39,7 +39,7 @@ async function getData(type) {
   ]
   let customView
 
-  switch(type) {
+  switch (type) {
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:
       data = [
@@ -61,7 +61,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_CANCEL,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_CANCEL,
           // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -69,7 +70,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_COMMIT,
           //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -97,7 +99,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_ADD_POINT,
-          title: getLanguage(global.language).Map_Main_Menu.MAP_INCREMENT_ADD_POINT,
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_INCREMENT_ADD_POINT,
           // constants.UNDO,
           action: IncrementAction.addPoint,
           size: 'large',
@@ -105,7 +108,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_CANCEL,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_CANCEL,
           // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -113,7 +117,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_COMMIT,
           //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -141,7 +146,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_CANCEL,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_CANCEL,
           // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -149,7 +155,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_COMMIT,
           //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -161,72 +168,47 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_INCREMENT_GPS_POINT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_GPS_POINT,
-          action: () => IncrementAction.methodSelected(ConstToolType.MAP_INCREMENT_GPS_POINT),
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_GPS_POINT,
+          action: () =>
+            IncrementAction.methodSelected(
+              ConstToolType.MAP_INCREMENT_GPS_POINT,
+            ),
           size: 'large',
           image: getPublicAssets().navigation.increment_add_point,
         },
         {
           key: constants.MAP_INCREMENT_GPS_TRACK,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_GPS_TRACK,
-          action: () => IncrementAction.methodSelected(ConstToolType.MAP_INCREMENT_GPS_TRACK),
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_GPS_TRACK,
+          action: () =>
+            IncrementAction.methodSelected(
+              ConstToolType.MAP_INCREMENT_GPS_TRACK,
+            ),
           size: 'large',
           image: getPublicAssets().navigation.increment_gps_track,
         },
         {
           key: constants.MAP_INCREMENT_POINTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_POINTLINE,
-          action: () => IncrementAction.methodSelected(ConstToolType.MAP_INCREMENT_POINTLINE),
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_POINTLINE,
+          action: () =>
+            IncrementAction.methodSelected(
+              ConstToolType.MAP_INCREMENT_POINTLINE,
+            ),
           size: 'large',
           image: getPublicAssets().navigation.increment_pointline,
         },
         {
           key: constants.MAP_INCREMENT_FREELINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_FREELINE,
-          action: () => IncrementAction.methodSelected(ConstToolType.MAP_INCREMENT_FREELINE),
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_FREELINE,
+          action: () =>
+            IncrementAction.methodSelected(
+              ConstToolType.MAP_INCREMENT_FREELINE,
+            ),
           size: 'large',
           image: getPublicAssets().navigation.increment_freeline,
-        },
-      ]
-      break
-    case ConstToolType.MAP_INCREMENT_EDIT:
-      data = [
-        {
-          key: constants.MAP_INCREMENT_ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_ADD_NODE,
-          action: IncrementAction.addNode,
-          size: 'large',
-          image: getPublicAssets().navigation.increment_add_node,
-        },
-        {
-          key: constants.MAP_INCREMENT_EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_EDIT_NODE,
-          action: IncrementAction.editNode,
-          size: 'large',
-          image: getPublicAssets().navigation.increment_edit_node,
-        },
-        {
-          key: constants.MAP_INCREMENT_DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_DELETE_NODE,
-          action: IncrementAction.deleteNode,
-          size: 'large',
-          image: getPublicAssets().navigation.increment_delete_node,
-        },
-        {
-          key: constants.MAP_INCREMENT_DELETE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_DELETE_OBJECT,
-          // constants.CANCEL,
-          action: IncrementAction.deleteObject,
-          size: 'large',
-          image: getPublicAssets().navigation.increment_delete_object,
-        },
-        {
-          key: constants.MAP_INCREMENT_ADD_ATTRIBUTE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_ADD_ATTRIBUTE,
-          //constants.SUBMIT,
-          action: IncrementAction.addAttribute,
-          size: 'large',
-          image: getPublicAssets().navigation.increment_add_attribute,
         },
       ]
       break

@@ -18,7 +18,7 @@ import {
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-import { Container } from '../../components'
+import { Container, Dialog } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
@@ -99,6 +99,8 @@ export default class CollectSceneFormView extends React.Component {
     //   SCollectSceneFormView.startRecording()
     // }, 500)
 
+    this.DatumPointDialog.setDialogVisible(true)
+
     //注册监听
     if (Platform.OS === 'ios') {
       nativeEvt.addListener('onTotalLengthChanged', this.onTotalLengthChanged)
@@ -127,8 +129,7 @@ export default class CollectSceneFormView extends React.Component {
     }
   }
 
-  _initData =async()=>{
-
+  _initData = async () => {
     let udbPath = await FileTools.appendingHomeDirectory(
       ConstPath.UserPath +
         this.props.user.currentUser.userName +
@@ -144,11 +145,11 @@ export default class CollectSceneFormView extends React.Component {
       udbPath,
     )
 
-    let point=this.datumPoint
+    let point = this.datumPoint
     // setTimeout(function() {
-      //设置基点
-      SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
-      SCollectSceneFormView.startRecording()
+    //设置基点
+    SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+    SCollectSceneFormView.startRecording()
     // }, 500)
   }
 
@@ -156,7 +157,6 @@ export default class CollectSceneFormView extends React.Component {
     this.view = view
     this._initData()
   }
-
 
   onTotalLengthChanged = params => {
     this.setState({
@@ -208,6 +208,7 @@ export default class CollectSceneFormView extends React.Component {
   /** 设置 */
   setting = () => {
     NavigationService.navigate('CollectSceneFormSet', {
+      point : this.datumPoint,
       fixedPositions: point => {
         NavigationService.goBack()
         SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
@@ -225,7 +226,10 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存 **/
   save = async () => {
-    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE)
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+    )
     await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveData('line')
     await SCollectSceneFormView.routeAdd()
@@ -251,7 +255,10 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存点 **/
   savepoint = async () => {
-    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT)
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
+    )
     // await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveGPSData('point')
     GLOBAL.Loading.setLoading(false)
@@ -274,7 +281,7 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
-  back = () => {
+  back = async() => {
     if (this.clickAble) {
       this.clickAble = false
       setTimeout(() => {
@@ -295,7 +302,7 @@ export default class CollectSceneFormView extends React.Component {
           flexDirection: 'column',
         },
       })
-      SCollectSceneFormView.closeCurrentDatasource()
+      await SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack()
       return true
     }
@@ -331,6 +338,45 @@ export default class CollectSceneFormView extends React.Component {
         showbuttons: true,
       })
     }
+  }
+
+  renderDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.DatumPointDialog = ref)}
+        type={'modal'}
+        cancelBtnVisible={false}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        confirmAction={async () => {
+          let point = this.datumPoint
+          //设置基点
+          SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+          this.DatumPointDialog.setDialogVisible(false)
+        }}
+        opacity={1}
+        opacityStyle={styles.opacityView}
+        style={styles.dialogBackground}
+      >
+        {this.renderLicenseDialogChildren()}
+      </Dialog>
+    )
+  }
+
+  renderLicenseDialogChildren = () => {
+    return (
+      <View style={styles.dialogHeaderView}>
+        <Image
+          source={require('../../assets/home/Frenchgrey/icon_prompt.png')}
+          style={styles.dialogHeaderImg}
+        />
+        <Text style={styles.promptTtile}>
+          {
+            getLanguage(global.language).Profile
+              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+          }
+        </Text>
+      </View>
+    )
   }
 
   getDatasource = async () => {
@@ -603,109 +649,124 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+          <TouchableOpacity
               onPress={() => this.switchStatus()}
               style={styles.iconView}
+            >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_new}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {
-                getLanguage(global.language).Map_Main_Menu
-                  .MAP_AR_AI_ASSISTANT_NEWDATA
-              }
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+            
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_ASSISTANT_NEWDATA
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
               onPress={() => this.clearAll()}
-              style={styles.iconView}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
               onPress={() => this.save()}
-              style={styles.iconView}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_save_line}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
               onPress={() => this.savepoint()}
-              style={styles.iconView}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
               onPress={() => this.switchViewMode()}
-              style={styles.iconView}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+            
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.ar_view_mode}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
-            </Text>
-          </View>
+            
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
+              </Text>
+            </View>
+          </TouchableOpacity> */}
         </View>
       </View>
     )
@@ -799,6 +860,7 @@ export default class CollectSceneFormView extends React.Component {
         {this.state.showbuttons && this.renderBottomBtns()}
         {this.renderBottomBtn()}
         {this.renderLengthChangeView()}
+        {this.renderDialog()}
       </Container>
     )
   }

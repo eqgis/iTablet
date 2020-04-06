@@ -6,7 +6,7 @@
  */
 import IncrementData from './IncrementData'
 import IncrementAction from './IncrementAction'
-import ToolbarModule from "../ToolbarModule"
+import ToolbarModule from '../ToolbarModule'
 
 function action() {
   GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)

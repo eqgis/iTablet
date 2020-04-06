@@ -127,7 +127,7 @@ export default class TemplateTab extends React.Component {
         style={styles.container}
         data={this.props.data}
         type={ToolbarType.scrollTable}
-        numColumns={3}
+        limit={3}
         renderCell={this._renderItem}
         device={this.props.device}
       />

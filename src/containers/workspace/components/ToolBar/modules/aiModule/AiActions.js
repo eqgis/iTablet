@@ -43,21 +43,32 @@ function arMeasureCollect() {
       Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
       return
     }
-
-    const dataList = await SMap.getTaggingLayers(
+    let hasDefaultTagging = await SMap.hasDefaultTagging(
       _params.user.currentUser.userName,
     )
-    if (dataList.length > 0) {
-      if (GLOBAL.showAIDetect) {
-        GLOBAL.isswitch = true
-        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-      }
-      const type = 'arMeasureCollect'
-      _params.navigation.navigate('ChooseTaggingLayer', { type })
-    } else {
-      Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
-      _params.navigation.navigate('LayerManager')
+    if(!hasDefaultTagging){
+      let data = await SMap.newTaggingDataset(
+        'Default_Tagging',
+        _params.user.currentUser.userName,
+      )
+      GLOBAL.TaggingDatasetName = data && data.datasetName
     }
+    let datasourceAlias = 'Label_'+ _params.user.currentUser.userName +'#'
+    let datasetName = 'Default_Tagging'
+    GLOBAL.MeasureCollectData = {
+      datasourceAlias,
+      datasetName,
+    }
+
+    // NavigationService.navigate('MeasureView', GLOBAL.MeasureCollectData)
+    GLOBAL.EnterDatumPointType = 'arMeasureCollect'
+    NavigationService.navigate('EnterDatumPoint')
+
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
   })()
 }
 
@@ -223,6 +234,7 @@ function collectSceneForm() {
     //   datasetPointName,
     // })
 
+    GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
     NavigationService.navigate('EnterDatumPoint')
 
     // NavigationService.navigate('InputPage', {

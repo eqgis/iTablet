@@ -175,12 +175,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // backgroundColor:"pink",
   },
-  inner: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-  },
   largeImage: {
     height: scaleSize(65),
     width: scaleSize(65),

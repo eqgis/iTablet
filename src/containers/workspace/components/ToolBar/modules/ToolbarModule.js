@@ -33,7 +33,6 @@ import {
 //   Map3DData.setParams(params)
 // }
 
-
 let _params = {} // 外部数据和方法 Toolbar props
 let _data = {} // 临时数据
 
@@ -191,7 +190,6 @@ async function setToolBarData(type, params = {}) {
     toolBarData = incrementModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     toolBarData = shareModule()
-
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
     toolBarData = themeModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {

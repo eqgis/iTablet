@@ -10,6 +10,7 @@ class MyDatasource extends MyDataPage {
   constructor(props) {
     super(props)
     this.type = this.types.data
+    const { params } = this.props.navigation.state
     this.state = {
       ...this.state,
       shareToLocal: true,
@@ -17,6 +18,8 @@ class MyDatasource extends MyDataPage {
       shareToIPortal: true,
       shareToWechat: true,
     }
+    this.from = params.from
+    this.showMore = this.from === 'MapView' ? false : undefined
   }
 
   getData = async () => {
@@ -80,6 +83,13 @@ class MyDatasource extends MyDataPage {
     return result
   }
 
+  getPagePopupData = () => {
+    if (this.from === 'MapView') {
+      return this.getCustomPagePopupData()
+    }
+    return []
+  }
+
   getCustomPagePopupData = () => [
     {
       title: getLanguage(global.language).Profile.NEW_DATASOURCE,
@@ -98,7 +108,20 @@ class MyDatasource extends MyDataPage {
               this.props.user.currentUser.userName +
               '/' +
               ConstPath.RelativePath.Datasource
-            await this.createDatasource(datasourcePath, name, name)
+            let availableName = await this._getAvailableFileName(
+              datasourcePath,
+              name,
+              'udb',
+            )
+            availableName = availableName.substring(
+              0,
+              availableName.lastIndexOf('.'),
+            )
+            await this.createDatasource(
+              datasourcePath,
+              availableName,
+              availableName,
+            )
             this._getSectionData()
             NavigationService.goBack()
           },
@@ -115,6 +138,7 @@ class MyDatasource extends MyDataPage {
   _openDatasource = () => {
     NavigationService.navigate('MyDataset', {
       data: this.itemInfo.item,
+      from: this.from,
     })
   }
 

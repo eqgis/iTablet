@@ -480,12 +480,17 @@ export default class Mine extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
-    this.screenWidth = Dimensions.get('window').width
-    this.screenHeight = Dimensions.get('window').height
+    if(this.props.device.orientation === 'LANDSCAPE') {
+      this.screenWidth = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
+      this.screenHeight = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+    } else {
+      this.screenWidth = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+      this.screenHeight = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
+    }
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -495,9 +500,8 @@ export default class Mine extends Component {
           title: getLanguage(this.props.language).Navigator_Label.PROFILE,
           withoutBack: true,
         }}
-        bottomBar={
-          this.renderTabBar()
-        }>
+        bottomBar={this.renderTabBar()}
+      >
         <View style={styles.mineContainer}>
           {this._renderProfile()}
           {this._renderDatas()}

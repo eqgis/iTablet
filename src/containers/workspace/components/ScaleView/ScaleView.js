@@ -22,9 +22,10 @@ export default class ScaleView extends React.Component {
   constructor(props) {
     super(props)
     this.left = new Animated.Value(scaleSize(120))
-    this.bottom = this.props.device.orientation === 'LANDSCAPE'
-      ? new Animated.Value(scaleSize(30))
-      : new Animated.Value(scaleSize(120))
+    this.bottom =
+      this.props.device.orientation === 'LANDSCAPE'
+        ? new Animated.Value(scaleSize(30))
+        : new Animated.Value(scaleSize(120))
     this.state = {
       width: scaleSize(65),
       title: '',
@@ -55,7 +56,7 @@ export default class ScaleView extends React.Component {
         this.scaleViewChange(data)
       })
     }
-    if(this.props.device.orientation !== prevProps.device.orientation) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
   }
@@ -69,9 +70,9 @@ export default class ScaleView extends React.Component {
   }
 
   onOrientationChange = () => {
-    if(this.state.visible) {
+    if (this.state.visible) {
       let newBottom
-      if( this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation === 'LANDSCAPE') {
         newBottom = scaleSize(30)
       } else {
         newBottom = scaleSize(120)
@@ -85,7 +86,7 @@ export default class ScaleView extends React.Component {
 
   showFullMap = (visible, immediately = false) => {
     if (this.state.visible === visible) return
-    if(this.props.device.orientation !== 'LANDSCAPE') {
+    if (this.props.device.orientation !== 'LANDSCAPE') {
       Animated.parallel([
         Animated.timing(this.left, {
           toValue: visible ? scaleSize(120) : scaleSize(30),

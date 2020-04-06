@@ -25,6 +25,26 @@ export default StyleSheet.create({
     paddingBottom: scaleSize(10),
     width: scaleSize(80),
   },
+  indicatorView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: scaleSize(15),
+  },
+  indicatorImage: {
+    height: scaleSize(20),
+    width: scaleSize(20),
+  },
+  moreImageView: {
+    width: scaleSize(80),
+    height: scaleSize(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moreImage: {
+    height: scaleSize(60),
+    width: scaleSize(60),
+  },
   progress: {
     width: scaleSize(60),
     // width: scaleSize(18),

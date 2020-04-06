@@ -4,7 +4,15 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { View, ScrollView, Animated, StatusBar, Platform, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Animated,
+  StatusBar,
+  Platform,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
 import { scaleSize } from '../../utils'
@@ -104,28 +112,38 @@ export default class Container extends PureComponent {
 
   getCurrentOverlayWidth = () => {
     let width
-    if(GLOBAL.getDevice().orientation === 'LANDSCAPE') {
+    if (GLOBAL.getDevice().orientation === 'LANDSCAPE') {
       width = 55
-      if(!GLOBAL.isPad && this.getAspectRation() < 1.8 ) {
+      if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
         width = 40
       }
     } else {
       width = 0
     }
-    if(!(NavigationService.isInStack('MapStack') || NavigationService.isInStack('Map3DStack')) || this.props.showFullInMap) {
+    if (
+      !(
+        NavigationService.isInStack('MapStack') ||
+        NavigationService.isInStack('Map3DStack')
+      ) ||
+      this.props.showFullInMap
+    ) {
       width = 0
     }
     return width
   }
 
   addNavigationListener = () => {
-    if(this.props.navigation || (this.props.headerProps && this.props.headerProps.navigation)) {
-      let navigation = this.props.navigation || this.props.headerProps.navigation
-      this.unsubscribeFocus = navigation.addListener('willFocus', ()=>{
+    if (
+      this.props.navigation ||
+      (this.props.headerProps && this.props.headerProps.navigation)
+    ) {
+      let navigation =
+        this.props.navigation || this.props.headerProps.navigation
+      this.unsubscribeFocus = navigation.addListener('willFocus', () => {
         this.setPageVisible(true)
       })
 
-      this.unsubscribeBlur = navigation.addListener('willBlur', ()=>{
+      this.unsubscribeBlur = navigation.addListener('willBlur', () => {
         this.setPageVisible(false)
       })
     }
@@ -139,8 +157,11 @@ export default class Container extends PureComponent {
   setPageVisible = visible => {
     //todo 处理返回时没有动画
     let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
-    if(NavigationService.isInStack('MapStack') || NavigationService.isInStack('Map3DStack')) {
-      if(this.props.hideInBackground && isLandscape) {
+    if (
+      NavigationService.isInStack('MapStack') ||
+      NavigationService.isInStack('Map3DStack')
+    ) {
+      if (this.props.hideInBackground && isLandscape) {
         let x = visible ? 0 : GLOBAL.getDevice().width
         let duration = isLandscape ? 300 : 0
         Animated.timing(this.viewX, {
@@ -156,9 +177,15 @@ export default class Container extends PureComponent {
   }
 
   getAspectRation = () => {
-    let height = Math.max(Dimensions.get('screen').height, Dimensions.get('screen').width)
-    let width = Math.min(Dimensions.get('screen').height, Dimensions.get('screen').width)
-    return height/width
+    let height = Math.max(
+      Dimensions.get('screen').height,
+      Dimensions.get('screen').width,
+    )
+    let width = Math.min(
+      Dimensions.get('screen').height,
+      Dimensions.get('screen').width,
+    )
+    return height / width
   }
 
   renderHeader = fixHeader => {
@@ -183,32 +210,32 @@ export default class Container extends PureComponent {
     )
   }
 
-  renderBottom = () => {
+  renderBottom = fixBottom => {
     if (!this.props.bottomBar) return null
     let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
-    let fixBottom =
-      this.props.bottomProps && this.props.bottomProps.type === 'fix'
     let style = []
-    if(fixBottom) {
-      if(isLandscape) {
+    if (fixBottom) {
+      if (isLandscape) {
         style.push(styles.fixRightBar)
       } else {
         style.push(styles.fixBottomBar)
       }
     } else {
-      if(isLandscape) {
+      if (isLandscape) {
         style.push(styles.flexRightBar)
       } else {
         style.push(styles.flexBottomBar)
       }
     }
-    if(isLandscape && fixBottom) {
-      style.push({top: HEADER_HEIGHT_LANDSCAPE})
+    if (isLandscape && fixBottom) {
+      style.push({ top: HEADER_HEIGHT_LANDSCAPE })
     }
     if (this.props.bottomProps && this.props.bottomProps.style) {
       style.push(this.props.bottomProps.style)
     }
-    let bottom = isLandscape ? { right: this.state.bottom } : { bottom: this.state.bottom }
+    let bottom = isLandscape
+      ? { right: this.state.bottom }
+      : { bottom: this.state.bottom }
     return (
       <AnimatedView style={[style, bottom]}>
         {this.props.bottomBar}
@@ -222,7 +249,12 @@ export default class Container extends PureComponent {
     // 是否为flex布局的header
     let fixHeader =
       this.props.headerProps && this.props.headerProps.type === 'fix'
-    let direction =  {flexDirection: GLOBAL.getDevice().orientation === 'LANDSCAPE' ? 'row' : 'column'}
+    let fixBottom =
+      this.props.bottomProps && this.props.bottomProps.type === 'fix'
+    let direction = {
+      flexDirection:
+        GLOBAL.getDevice().orientation === 'LANDSCAPE' ? 'row' : 'column',
+    }
     let width
     width = this.overlayWidth.interpolate({
       inputRange: [0, 1],
@@ -230,38 +262,36 @@ export default class Container extends PureComponent {
     })
     return (
       <AnimatedView
-        style={[
-          styles.view,
-          {transform: [{translateX: this.viewX}]},
-        ]}
+        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
-        <AnimatedView style={{width: width}}>
+        <AnimatedView style={{ width: width }}>
           <TouchableOpacity
-            onPress={()=>{
-              if(this.props.onOverlayPress) {
+            onPress={() => {
+              if (this.props.onOverlayPress) {
                 this.props.onOverlayPress()
               } else {
-                if(NavigationService.isInStack('MapStack')) {
+                if (NavigationService.isInStack('MapStack')) {
                   NavigationService.navigate('MapView')
                 }
-                if(NavigationService.isInStack('Map3DStack')) {
+                if (NavigationService.isInStack('Map3DStack')) {
                   NavigationService.navigate('Map3D')
                 }
               }
             }}
             activeOpacity={this.props.blankOpacity}
-            style={[styles.overlay, {opacity: this.props.blankOpacity}]}
+            style={[styles.overlay, { opacity: this.props.blankOpacity }]}
           />
         </AnimatedView>
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
           {!fixHeader && this.renderHeader(fixHeader)}
-          <View  style={[{ flex: 1}, direction]}>
+          <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
               {this.props.children}
               {fixHeader && this.renderHeader(fixHeader)}
+              {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>
-            {this.renderBottom()}
+            {!fixBottom && this.renderBottom(fixBottom)}
           </View>
           <Loading
             ref={ref => (this.loading = ref)}

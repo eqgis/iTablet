@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { color, zIndexLevel } from '../../../../styles'
 
 const styles = StyleSheet.create({
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 export default class OverlayView extends React.Component {
   props: {
     isFullScreen?: boolean,
+    onPress?: () => {},
   }
 
   static defaultProps = {
@@ -51,6 +52,14 @@ export default class OverlayView extends React.Component {
     if (!this.state.visible) {
       return null
     }
-    return <View style={styles.overlay} />
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.overlay}
+        onPress={() => {
+          this.props.onPress && this.props.onPress()
+        }}
+      />
+    )
   }
 }

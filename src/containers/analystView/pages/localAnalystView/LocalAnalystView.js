@@ -177,7 +177,7 @@ export default class LocalAnalystView extends Component {
             ToolbarModule.getParams().setToolbarVisible(true, this.type, {
               containerType: ToolbarType.table,
               isFullScreen: false,
-              height: ConstToolType.HEIGHT[0],
+              // height: ConstToolType.HEIGHT[0],
             })
             await AnalystTools.clear(this.type)
             await this.props.getLayers()

@@ -277,7 +277,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: '基点坐标',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自动定位成功',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: '地图选点成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '请把手机垂直于地面面向正南',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '请把手机垂直于地面面向正南点击确定',
   MAP_AR_DATUM_SETTING: '设置',
 
   // ar地图

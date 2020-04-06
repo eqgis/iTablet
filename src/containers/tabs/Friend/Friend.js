@@ -63,6 +63,7 @@ export default class Friend extends Component {
     user: Object,
     appConfig: Object,
     chat: Array,
+    device: Object,
     addChat: () => {},
     editChat: () => {},
     setConsumer: () => {},
@@ -111,7 +112,7 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
       JSON.stringify(prevState) !== JSON.stringify(this.state) ||
       prevProps.language !== this.props.language ||
-      Dimensions.get('window').width !== this.screenWidth
+      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
     ) {
       return true
     }
@@ -1355,7 +1356,7 @@ export default class Friend extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
@@ -1397,9 +1398,7 @@ export default class Friend extends Component {
           withoutBack: true,
           navigation: this.props.navigation,
         }}
-        bottomBar={
-          this.renderTabBar()
-        }
+        bottomBar={this.renderTabBar()}
       >
         {this.props.user.currentUser.userType === UserType.COMMON_USER
           ? this.renderTab()

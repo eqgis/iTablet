@@ -1048,8 +1048,8 @@ export default function(appConfig) {
       },
       transitionConfig: () => ({
         screenInterpolator: sceneProps => {
-          const {layout, position, scene} = sceneProps
-          const {index} = scene
+          const { layout, position, scene } = sceneProps
+          const { index } = scene
 
           const width = layout.initWidth
           const translateX = position.interpolate({
@@ -1062,7 +1062,7 @@ export default function(appConfig) {
             outputRange: [0, 1, 1],
           })
 
-          return {opacity, transform: [{translateX: translateX}]}
+          return { opacity, transform: [{ translateX: translateX }] }
         },
       }),
     },

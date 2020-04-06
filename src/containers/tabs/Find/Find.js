@@ -318,7 +318,7 @@ export default class Find extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
@@ -331,10 +331,7 @@ export default class Find extends Component {
           withoutBack: true,
           navigation: this.props.navigation,
         }}
-        bottomBar={
-          this.renderTabBar()
-        }
-
+        bottomBar={this.renderTabBar()}
       >
         {this._selectionRender()}
       </Container>

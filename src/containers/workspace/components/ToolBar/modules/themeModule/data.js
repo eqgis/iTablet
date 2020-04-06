@@ -70,10 +70,10 @@ async function showDatasetsList(type, filter = {}) {
       })
     }
     const buttons = [ToolbarBtnType.CANCEL]
-    const height =
-      ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[5]
+    // const height =
+    //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.THEME_HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[5]
     const _type = ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS
     const _data = {
       type: _type,
@@ -81,7 +81,7 @@ async function showDatasetsList(type, filter = {}) {
       lastData: {
         data,
         buttons,
-        height,
+        // height,
       },
       actions: ThemeAction,
     }
@@ -92,7 +92,7 @@ async function showDatasetsList(type, filter = {}) {
         isFullScreen: true,
         isTouchProgress: false,
         showMenuDialog: false,
-        height,
+        // height,
         data,
         buttons,
       })
@@ -130,17 +130,17 @@ function showExpressionList(type, themeType) {
     const buttons = listSelectable
       ? [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
       : [ToolbarBtnType.CANCEL]
-    const height =
-      ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[5]
+    // const height =
+    //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+    //     ? ConstToolType.THEME_HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[5]
     const _data = {
       type,
       getData: ThemeData.getData,
       lastData: {
         data,
         buttons,
-        height,
+        // height,
       },
       actions: ThemeAction,
     }
@@ -156,7 +156,7 @@ function showExpressionList(type, themeType) {
           isFullScreen: true,
           isTouchProgress: false,
           showMenuDialog: false,
-          height,
+          // height,
           data,
           buttons,
         },
@@ -980,10 +980,10 @@ async function showLocalDatasetsList() {
         isFullScreen: true,
         isTouchProgress: false,
         showMenuDialog: false,
-        height:
-          ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
-            ? ConstToolType.THEME_HEIGHT[3]
-            : ConstToolType.THEME_HEIGHT[5],
+        // height:
+        //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+        //     ? ConstToolType.THEME_HEIGHT[3]
+        //     : ConstToolType.THEME_HEIGHT[5],
         data,
         buttons: [ToolbarBtnType.CANCEL],
       },
@@ -3197,17 +3197,17 @@ async function getUnifyStyleAdd() {
   }
 
   const type = ConstToolType.MAP_ADD
-  const height =
-    ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
-      ? ConstToolType.THEME_HEIGHT[3]
-      : ConstToolType.THEME_HEIGHT[5]
+  // const height =
+  //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+  //     ? ConstToolType.THEME_HEIGHT[3]
+  //     : ConstToolType.THEME_HEIGHT[5]
   ToolbarModule.addData({
     type,
     getData: ThemeData.getData,
     data: {
       data,
       buttons,
-      height,
+      // height,
     },
     actions: ThemeAction,
   })
@@ -3220,9 +3220,9 @@ async function getUnifyStyleAdd() {
       isFullScreen: true,
       isTouchProgress: false,
       showMenuDialog: false,
-      height,
-      column:
-        ToolbarModule.getParams().device.orientation === 'LANDSCAPE' ? 8 : 4,
+      // height,
+      // column:
+      //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE' ? 8 : 4,
       data,
       buttons,
     })
@@ -4067,8 +4067,8 @@ const dotDensityMenuInfo = param => [
         {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
-          column: 4,
-          height: ConstToolType.THEME_HEIGHT[3],
+          // column: 4,
+          // height: ConstToolType.THEME_HEIGHT[3],
           buttons: getThemeFourMenu(),
           selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
           selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
@@ -4159,8 +4159,8 @@ const graduatedSymbolMenuInfo = param => [
         {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
-          column: 4,
-          height: ConstToolType.THEME_HEIGHT[3],
+          // column: 4,
+          // height: ConstToolType.THEME_HEIGHT[3],
           buttons: getThemeFourMenu(),
           selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
           selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,

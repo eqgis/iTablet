@@ -47,9 +47,12 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker, LayerVisibilityView, IncrementRoadDialog,
+  PreviewColorPicker,
+  LayerVisibilityView,
+  IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
 import {
   Container,
   MTBtn,
@@ -81,7 +84,8 @@ import {
   ConstToolType,
   TouchType,
   ConstInfo,
-  getHeaderTitle, ToolbarType,
+  getHeaderTitle,
+  ToolbarType,
 } from '../../../../constants'
 import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
@@ -98,12 +102,9 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
-import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
-import IncrementData from "../../components/ToolBar/modules/incrementModule/IncrementData"
+import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
-export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
-export const FOOTER_HEIGHT = scaleSize(88)
 export default class MapView extends React.Component {
   static propTypes = {
     language: PropTypes.string,
@@ -319,7 +320,10 @@ export default class MapView extends React.Component {
   }
 
   async componentDidMount() {
-    if (!global.isLicenseValid){
+    if (GLOBAL.Type === constants.MAP_AR) {
+      Orientation.lockToPortrait()
+    }
+    if (!global.isLicenseValid) {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
@@ -381,13 +385,19 @@ export default class MapView extends React.Component {
       }
       // })
 
-      this.unsubscribeFocus = this.props.navigation.addListener('willFocus', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      })
+      this.unsubscribeFocus = this.props.navigation.addListener(
+        'willFocus',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
 
-      this.unsubscribeBlur = this.props.navigation.addListener('willBlur', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      })
+      this.unsubscribeBlur = this.props.navigation.addListener(
+        'willBlur',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+        },
+      )
 
       this.addSpeechRecognizeListener()
       if (GLOBAL.language === 'CN') {
@@ -572,7 +582,7 @@ export default class MapView extends React.Component {
 
   componentWillUnmount() {
     if (GLOBAL.Type === constants.MAP_AR) {
-      global.isPad && Orientation.unlockAllOrientations()
+      Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === constants.MAP_NAVIGATION) {
       (async function() {
@@ -1705,7 +1715,12 @@ export default class MapView extends React.Component {
       loadingAction = setLoading
     }
     GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, loadingAction, cb)
+      GLOBAL.SaveMapView.setVisible(
+        visible,
+        loadingAction,
+        cb,
+        this.backPositon,
+      )
   }
 
   /**
@@ -1745,7 +1760,7 @@ export default class MapView extends React.Component {
   renderMapNavMenu = () => {
     return (
       <MapNavMenu
-        ref={ref => this.NavMenu = ref}
+        ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
         appConfig={this.props.appConfig}
         initIndex={0}
@@ -1853,7 +1868,7 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
-        getNavMenuRef={() =>  this.NavMenu}
+        getNavMenuRef={() => this.NavMenu}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -1912,7 +1927,14 @@ export default class MapView extends React.Component {
   }
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.OverlayView = ref)} />
+    return (
+      <OverlayView
+        ref={ref => (GLOBAL.OverlayView = ref)}
+        onPress={() => {
+          this.toolBox && this.toolBox.overlayOnPress()
+        }}
+      />
+    )
   }
 
   renderBackgroundOverlay = () => {
@@ -2312,7 +2334,8 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.isExample || this.props.analyst.params) return null
+    if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
+      return null
     // if (this.props.analyst.params) {
     //   return [
     //     <TextBtn
@@ -2336,34 +2359,37 @@ export default class MapView extends React.Component {
     //     />,
     //   ]
     // }
+    let width = this.props.device.orientation === 'LANDSCAPE' ? 250 : 200
+    let size = this.props.device.orientation === 'LANDSCAPE' ? 50 : 60
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {this.state.showAIDetect ? (
-          <View />
-        ) : (
-          <TouchableOpacity
-            key={'audio'}
-            onPress={() => {
-              SSpeechRecognizer.start()
-              this.AudioDialog.setVisible(true)
-            }}
-          >
-            <Image
-              resizeMode={'contain'}
-              source={require('../../../../assets/header/icon_audio.png')}
-              style={[
-                { width: scaleSize(50), height: scaleSize(50) },
-                { marginRight: scaleSize(15) },
-              ]}
-            />
-          </TouchableOpacity>
-        )}
-        <MTBtn
-          key={'undo'}
-          image={getPublicAssets().common.icon_undo}
-          imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
-          onPress={this.showUndoView}
-        />
+      <View
+        style={{
+          width: scaleSize(width),
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity
+          key={'audio'}
+          onPress={() => {
+            SSpeechRecognizer.start()
+            this.AudioDialog.setVisible(true)
+          }}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getPublicAssets().common.icon_audio}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity key={'undo'} onPress={this.showUndoView}>
+          <Image
+            resizeMode={'contain'}
+            source={getPublicAssets().common.icon_undo}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
@@ -2393,8 +2419,8 @@ export default class MapView extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={require('../../../../assets/header/icon_search.png')}
-            style={styles.search}
+            source={getPublicAssets().common.icon_search}
+            style={{ width: scaleSize(size), height: scaleSize(size) }}
           />
         </TouchableOpacity>
       </View>
@@ -2434,19 +2460,33 @@ export default class MapView extends React.Component {
         showAIDetect: false,
       })
       GLOBAL.showAIDetect = false
+      Orientation.unlockAllOrientations()
     } else {
       this.setState({
         showAIDetect: true,
       })
       GLOBAL.showAIDetect = true
+      Orientation.lockToPortrait()
     }
   }
 
   _renderArModeIcon = () => {
+    let right
+    if (
+      this.props.device.orientation === 'LANDSCAPE' &&
+      !this.state.showAIDetect
+    ) {
+      right = { right: scaleSize(100) }
+    } else {
+      right = { right: scaleSize(20) }
+    }
     return (
-      <View style={styles.btnView} ref={ref => (GLOBAL.ArModeIcon = ref)}>
+      <View
+        style={[styles.iconAr, right]}
+        ref={ref => (GLOBAL.ArModeIcon = ref)}
+      >
         <MTBtn
-          style={styles.iconAr}
+          style={{ padding: scaleSize(5) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
           onPress={this.switchAr}
@@ -2624,7 +2664,7 @@ export default class MapView extends React.Component {
     }
   }
 
-  _pressRoad =async type => {
+  _pressRoad = async type => {
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
@@ -2635,12 +2675,12 @@ export default class MapView extends React.Component {
         SMap.createDefaultDataset().then(async returnData => {
           if(returnData.datasetName){
             params.setToolbarVisible(true, type, {
-              containerType:ToolbarType.table,
+              containerType,
               isFullScreen: false,
-              resetToolModuleData:true,
-              height:data.height,
-              column:data.column,
-              ..._data,
+              resetToolModuleData: true,
+              // height:data.height,
+              // column:data.column,
+              ...data,
             })
             //开启放大镜
             SMap.setIsMagnifierEnabled(true)
@@ -2767,7 +2807,6 @@ export default class MapView extends React.Component {
                 this.switchAr()
               }
 
-
               Toast.show(
                 getLanguage(global.language).Profile
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
@@ -2776,9 +2815,7 @@ export default class MapView extends React.Component {
             }
           }}
         >
-          <Text
-            style={styles.textConfirm}
-          >
+          <Text style={styles.textConfirm}>
             {getLanguage(this.props.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
@@ -2860,7 +2897,6 @@ export default class MapView extends React.Component {
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
                 )
               this.setState({ showScaleView: true })
-
 
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
@@ -3003,18 +3039,26 @@ export default class MapView extends React.Component {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
-          backAction: this.back,
+          backAction: event => {
+            this.backPositon = {
+              x: event.nativeEvent.pageX,
+              y: event.nativeEvent.pageY,
+            }
+            this.back()
+          },
           type: 'fix',
           headerCenter: this.renderSearchBar(),
           headerRight: this.renderHeaderRight(),
         }}
         bottomBar={
           this.props.device.orientation !== 'LANDSCAPE' &&
-          !this.isExample && !this.props.analyst.params && this.renderToolBar()
+          !this.state.showAIDetect &&
+          !this.isExample &&
+          !this.props.analyst.params &&
+          this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
       >
-        {this.renderBackgroundOverlay()}
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3051,7 +3095,8 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
-        {this.props.device.orientation === 'LANDSCAPE' && this.renderMapNavMenu()}
+        {this.props.device.orientation === 'LANDSCAPE' &&
+          this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}
@@ -3087,6 +3132,7 @@ export default class MapView extends React.Component {
         {/*{!this.isExample && this.props.analyst.params && this.renderAnalystMapRecommend()}*/}
         {!this.isExample &&
           !this.props.analyst.params &&
+          !this.state.showAIDetect &&
           this.renderFunctionToolbar()}
         {!this.isExample &&
           !this.props.analyst.params &&
@@ -3233,6 +3279,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
+        {this.renderBackgroundOverlay()}
         <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)} />
       </Container>
     )
@@ -3243,7 +3290,8 @@ export default class MapView extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this.renderIncrementDialog()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this.renderIncrementDialog()}
       </View>
     )
   }

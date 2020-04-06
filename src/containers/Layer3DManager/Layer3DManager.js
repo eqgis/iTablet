@@ -204,7 +204,9 @@ export default class Layer3DManager extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.device.orientation !== 'LANDSCAPE' && getLanguage(this.props.language).Map_Module.MAP_3D,
+          title:
+            this.props.device.orientation !== 'LANDSCAPE' &&
+            getLanguage(this.props.language).Map_Module.MAP_3D,
           //MAP_MODULE.MAP_3D,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',

@@ -116,13 +116,19 @@ export default class Map3D extends React.Component {
         this.addCircleFlyListen()
         this.getLayers()
       })
-      this.unsubscribeFocus = this.props.navigation.addListener('willFocus', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      })
+      this.unsubscribeFocus = this.props.navigation.addListener(
+        'willFocus',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
 
-      this.unsubscribeBlur = this.props.navigation.addListener('willBlur', ()=>{
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      })
+      this.unsubscribeBlur = this.props.navigation.addListener(
+        'willBlur',
+        () => {
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+        },
+      )
     } else {
       global.SimpleDialog.set({
         text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
@@ -394,7 +400,14 @@ export default class Map3D extends React.Component {
 
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.OverlayView = ref)} />
+    return (
+      <OverlayView
+        ref={ref => (GLOBAL.OverlayView = ref)}
+        onPress={() => {
+          this.toolBox && this.toolBox.overlayOnPress()
+        }}
+      />
+    )
   }
 
   _onKeySelect = item => {
@@ -593,7 +606,7 @@ export default class Map3D extends React.Component {
         getToolRef={() => {
           return this.toolBox
         }}
-        getNavMenuRef={() =>  this.NavMenu}
+        getNavMenuRef={() => this.NavMenu}
         type={this.type}
         showFullMap={this.showFullMap}
         device={this.props.device}
@@ -689,7 +702,7 @@ export default class Map3D extends React.Component {
   renderMapNavMenu = () => {
     return (
       <MapNavMenu
-        ref={ref => this.NavMenu = ref}
+        ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
         appConfig={this.props.appConfig}
         initIndex={0}
@@ -706,7 +719,6 @@ export default class Map3D extends React.Component {
       />
     )
   }
-
 
   setLoading = async (value, content) => {
     this.container.setLoading(value, content)
@@ -855,7 +867,9 @@ export default class Map3D extends React.Component {
           ),
           type: 'fix',
         }}
-        bottomBar={this.props.device.orientation !== 'LANDSCAPE' && this.renderToolBar()}
+        bottomBar={
+          this.props.device.orientation !== 'LANDSCAPE' && this.renderToolBar()
+        }
         bottomProps={{ type: 'fix' }}
       >
         {global.isLicenseValid && (
@@ -871,7 +885,8 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
-        {this.props.device.orientation === 'LANDSCAPE' && this.renderMapNavMenu()}
+        {this.props.device.orientation === 'LANDSCAPE' &&
+          this.renderMapNavMenu()}
         {this.renderBackgroundOverlay()}
       </Container>
     )

@@ -5,15 +5,19 @@
  * https://github.com/AsortKeven
  */
 
-import React,{Component} from 'react'
-import {View,TouchableOpacity,StyleSheet} from 'react-native'
-import {color} from "../../../../styles"
+import React, { Component } from 'react'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { color } from '../../../../styles'
 
-export default class IncrementRoadDialog extends Component{
-  constructor(props){
+export default class IncrementRoadDialog extends Component {
+  props: {
+    children: Object,
+  }
+
+  constructor(props) {
     super(props)
-    this.state={
-      visible:false,
+    this.state = {
+      visible: false,
     }
   }
 
@@ -25,15 +29,15 @@ export default class IncrementRoadDialog extends Component{
     })
   }
 
-  render(){
-    if(!this.state.visible) return <View/>
+  render() {
+    if (!this.state.visible) return <View />
     return (
       <TouchableOpacity
         style={styles.container}
-        onPress={()=>{
+        onPress={() => {
           this.setVisible(false)
-        }
-        }>
+        }}
+      >
         {this.props.children}
       </TouchableOpacity>
     )
@@ -41,14 +45,14 @@ export default class IncrementRoadDialog extends Component{
 }
 
 const styles = StyleSheet.create({
-  container:{
-    position:'absolute',
-    left:0,
-    right:0,
-    top:0,
-    bottom:0,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:color.overlay,
+  container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.overlay,
   },
 })

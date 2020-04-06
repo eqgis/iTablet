@@ -13,6 +13,7 @@ function action(type) {
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType,
+    isFullScreen: true,
     column: data.column,
     height: data.height,
     data: _data.data,

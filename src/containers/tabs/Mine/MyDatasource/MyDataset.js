@@ -22,6 +22,8 @@ class MyDataset extends MyDataPage {
         params.data.name.substr(0, params.data.name.lastIndexOf('.')),
       data: params.data,
     }
+    this.from = params.from
+    this.showMore = this.from === 'MapView' ? false : undefined
   }
 
   exportTypes = {
@@ -41,18 +43,32 @@ class MyDataset extends MyDataPage {
   }
 
   componentWillUnmount() {
-    SMap.closeDatasource(this.state.title)
+    if (!this.isAlreadyOpen) {
+      SMap.closeDatasource(this.state.title)
+    }
     this.container && this.container.setLoading(false)
   }
 
   _openDatasource = async () => {
     try {
-      let homePath = await FileTools.appendingHomeDirectory()
-      let datasourceParams = {}
-      datasourceParams.server = homePath + this.state.data.path
-      datasourceParams.engineType = EngineType.UDB
-      datasourceParams.alias = this.state.title
-      await SMap.openDatasource2(datasourceParams)
+      let datasources = await SMap.getDatasources()
+      this.isAlreadyOpen = false
+      if (datasources.length !== 0) {
+        for (let i = 0; i < datasources.length; i++) {
+          if (datasources[i].alias === this.state.title) {
+            this.isAlreadyOpen = true
+            break
+          }
+        }
+      }
+      if (!this.isAlreadyOpen) {
+        let homePath = await FileTools.appendingHomeDirectory()
+        let datasourceParams = {}
+        datasourceParams.server = homePath + this.state.data.path
+        datasourceParams.engineType = EngineType.UDB
+        datasourceParams.alias = this.state.title
+        await SMap.openDatasource2(datasourceParams)
+      }
     } catch (error) {
       Toast.show(getLanguage(global.language).Profile.OPEN_DATASROUCE_FAILED)
     }
@@ -116,6 +132,13 @@ class MyDataset extends MyDataPage {
     )
 
     return result
+  }
+
+  getPagePopupData = () => {
+    if (this.from === 'MapView') {
+      return this.getCustomPagePopupData()
+    }
+    return []
   }
 
   getCustomPagePopupData = () => [

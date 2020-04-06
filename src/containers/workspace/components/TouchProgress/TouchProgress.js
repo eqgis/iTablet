@@ -748,7 +748,7 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      (ToolbarModule.getData().type === ConstToolType.MAP_MARKS) &&
+      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
@@ -971,7 +971,7 @@ export default class TouchProgress extends Component {
         newValue = value * 200
       }
     } else if (
-      (ToolbarModule.getData().type === ConstToolType.MAP_MARKS ) &&
+      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
@@ -1166,7 +1166,7 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
-      (ToolbarModule.getData().type === ConstToolType.MAP_MARKS ) &&
+      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
@@ -2196,7 +2196,7 @@ export default class TouchProgress extends Component {
     }
 
     if (
-      (ToolbarModule.getData().type === ConstToolType.MAP_MARKS) &&
+      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||
@@ -2314,8 +2314,7 @@ export default class TouchProgress extends Component {
         newValue = (value + 100) / 200
       }
     } else if (
-      (ToolbarModule.getData().type === ConstToolType.MAP_MARKS
-        ) &&
+      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION ||

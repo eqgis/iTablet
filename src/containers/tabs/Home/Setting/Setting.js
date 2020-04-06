@@ -8,13 +8,12 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, Toast } from '../../../../utils'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
 import RenderSettingItem from './RenderSettingItem'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
-import Toast from 'react-native-root-toast'
 import FetchUtils from '../../../../../src/utils/FetchUtils'
 import { FileTools } from '../../../../native'
 import RNFS from 'react-native-fs'

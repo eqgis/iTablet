@@ -14,7 +14,16 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: color.content_white,
   },
-  row: {
+  rowP: {
+    flex: 1,
+    // width: '100%',
+    flexDirection: 'row',
+    height: scaleSize(120),
+    // justifyContent: 'space-around',
+    alignItems: 'center',
+    // backgroundColor:"blue"
+  },
+  rowL: {
     flex: 1,
     // width: '100%',
     flexDirection: 'row',

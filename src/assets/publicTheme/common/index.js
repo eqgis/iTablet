@@ -27,6 +27,8 @@ const icon_take_camera = require('./icon_take_camera.png')
 const icon_plus_gray = require('./icon_plus_gray.png')
 const icon_circle_dot = require('./icon_circle_dot.png')
 const icon_drag = require('./icon_drag.png')
+const icon_audio = require('./icon_audio.png')
+const icon_arrow_down = require('./arrow_down.png')
 
 export default {
   icon_undo,
@@ -58,4 +60,6 @@ export default {
   icon_take_camera,
   icon_circle_dot,
   icon_drag,
+  icon_audio,
+  icon_arrow_down,
 }

@@ -42,11 +42,11 @@ export default class PreviewColorPicker extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.device.orientation !== this.props.device.orientation){
+    if (prevProps.device.orientation !== this.props.device.orientation) {
       this.containerHeight =
-          this.props.device.orientation === 'LANDSCAPE'
-            ? scaleSize(280)
-            : scaleSize(400)
+        this.props.device.orientation === 'LANDSCAPE'
+          ? scaleSize(280)
+          : scaleSize(400)
       Animated.timing(this.bottom, {
         toValue: this.visible ? 0 : -this.containerHeight,
         time: 300,

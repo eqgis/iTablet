@@ -236,7 +236,7 @@ export default class ToolbarContentView extends React.Component {
         data={this.props.data}
         type={this.props.type}
         containerType={this.props.containerType}
-        column={this.state.column}
+        limit={this.state.column}
         device={this.props.device}
         language={this.props.language}
       />
@@ -396,13 +396,14 @@ export default class ToolbarContentView extends React.Component {
           box = this.renderTable()
       }
     }
+    let style
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      style = { width: this.state.boxHeight, height: this.props.device.height }
+    } else {
+      style = { height: this.state.boxHeight, width: this.props.device.width }
+    }
     return (
-      <Animated.View
-        style={{
-          height: this.state.boxHeight,
-          backgroundColor: color.content_white,
-        }}
-      >
+      <Animated.View style={[style, { backgroundColor: color.content_white }]}>
         {box}
       </Animated.View>
     )

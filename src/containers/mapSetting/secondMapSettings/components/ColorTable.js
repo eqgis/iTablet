@@ -4,7 +4,7 @@
  * https://github.com/AsortKeven
  */
 import React from 'react'
-import { ConstToolType } from '../../../../constants/index'
+import { Height } from '../../../../constants/index'
 import { TouchableOpacity, View, FlatList, Text } from 'react-native'
 import { scaleSize } from '../../../../utils/index'
 import { color } from '../../../tabs/Mine/MyService/Styles'
@@ -20,11 +20,8 @@ export default class ColorTable extends React.Component {
 
   constructor(props) {
     super(props)
-    this.height =
-      this.props.device.orientation === 'LANDSCAPE'
-        ? ConstToolType.THEME_HEIGHT[7]
-        : ConstToolType.THEME_HEIGHT[3]
-    this.ColumnNums = this.props.device.orientation === 'LANDSCAPE' ? 12 : 8
+    this.height = Height.TABLE_ROW_HEIGHT_4 * 5
+    this.ColumnNums = 8
 
     this.state = {
       data: this.dealData(this.props.data),
@@ -69,11 +66,8 @@ export default class ColorTable extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.device.orientation !== this.props.device.orientation) {
-      this.height =
-        nextProps.device.orientation === 'LANDSCAPE'
-          ? ConstToolType.THEME_HEIGHT[7]
-          : ConstToolType.THEME_HEIGHT[3]
-      this.ColumnNums = nextProps.device.orientation === 'LANDSCAPE' ? 12 : 8
+      this.height = Height.TABLE_ROW_HEIGHT_4 * 5
+      this.ColumnNums = 8
     }
   }
 
@@ -87,12 +81,18 @@ export default class ColorTable extends React.Component {
   }
 
   renderItem = ({ item }) => {
+    let height =
+      (this.props.device.orientation === 'LANDSCAPE'
+        ? this.height
+        : this.props.device.width) /
+        this.ColumnNums -
+      scaleSize(4)
     if (typeof item === 'object' && item.useSpace)
       return (
         <View
           style={{
             flex: 1,
-            height: this.props.device.width / this.ColumnNums - scaleSize(4),
+            height,
             backgroundColor: color.white,
             borderWidth: scaleSize(2),
             borderColor: color.white,
@@ -108,7 +108,7 @@ export default class ColorTable extends React.Component {
         }}
         style={{
           flex: 1,
-          height: this.props.device.width / this.ColumnNums - scaleSize(4),
+          height,
           backgroundColor: typeof item === 'string' ? item : item.key,
           borderWidth: scaleSize(2),
           borderColor: color.gray,

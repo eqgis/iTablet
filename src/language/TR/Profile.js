@@ -281,7 +281,8 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:
+    'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
   MAP_AR_DATUM_SETTING: 'Kurulum',
 
   // ar地图

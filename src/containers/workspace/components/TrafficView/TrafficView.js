@@ -17,7 +17,7 @@ import { constUtil, scaleSize, LayerUtils, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
 import { SMap } from 'imobile_for_reactnative'
-import {getPublicAssets, getThemeAssets} from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 
 export default class TrafficView extends React.Component {

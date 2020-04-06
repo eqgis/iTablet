@@ -425,8 +425,12 @@ export default class CollectSceneFormHistoryView extends React.Component {
       placeholder: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       type: 'name',
       cb: async value => {
-        let result=await SCollectSceneFormView.dataSourceReName(this.state.reName, value,this.state.udbPath)
-        if(result && (this.state.collectData === this.state.reName)){
+        let result = await SCollectSceneFormView.dataSourceReName(
+          this.state.reName,
+          value,
+          this.state.udbPath,
+        )
+        if (result && this.state.collectData === this.state.reName) {
           this.setState({
             collectData: value,
             chooseDataSource: false,
@@ -633,8 +637,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           activeOpacity={0.5}
         />
       )
-    } 
-    else if (this.state.moreType === 'DATASOURCE_RENAME') {
+    } else if (this.state.moreType === 'DATASOURCE_RENAME') {
       return (
         <Button
           style={styles.item}
@@ -648,8 +651,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           activeOpacity={0.5}
         />
       )
-    } 
-    else if (this.state.moreType === 'DELETE') {
+    } else if (this.state.moreType === 'DELETE') {
       return (
         <View>
           <Button
@@ -756,7 +758,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 ,backgroundColor: color.white}}>
+      <View style={{ flex: 1, backgroundColor: color.white }}>
         <View
           style={{
             paddingTop: HEADER_PADDINGTOP,

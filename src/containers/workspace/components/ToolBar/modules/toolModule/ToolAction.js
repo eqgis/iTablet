@@ -96,9 +96,9 @@ function pointSelect() {
 
   _params.setToolbarVisible(true, type, {
     containerType: 'table',
-    column: 3,
+    // column: 3,
     isFullScreen: false,
-    height: ConstToolType.HEIGHT[0],
+    // height: ConstToolType.HEIGHT[0],
     cb: () => select(type),
   })
 }
@@ -118,9 +118,9 @@ function selectByRectangle() {
 
   _params.setToolbarVisible(true, type, {
     containerType: 'table',
-    column: 3,
+    // column: 3,
     isFullScreen: false,
-    height: ConstToolType.HEIGHT[0],
+    // height: ConstToolType.HEIGHT[0],
     cb: () => select(type),
   })
 }
@@ -135,7 +135,7 @@ function rectangleCut() {
 
   _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_RECTANGLE_CUT, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -168,9 +168,9 @@ function measureLength() {
 
   _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_LENGTH, {
     containerType: 'table',
-    column: 4,
+    // column: 4,
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -203,9 +203,9 @@ function measureArea() {
 
   _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_AREA, {
     containerType: 'table',
-    column: 4,
+    // column: 4,
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -244,9 +244,9 @@ function measureAngle() {
 
   _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_ANGLE, {
     containerType: 'table',
-    column: 4,
+    // column: 4,
     isFullScreen: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -541,7 +541,7 @@ function matchPictureStyle() {
         ToolbarModule.getParams().showFullMap(true)
       _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER, {
         isFullScreen: false,
-        height: 0,
+        // height: 0,
       })
     },
   })
@@ -560,7 +560,7 @@ function showEditLabel() {
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
     cb: () => select(type),
   })
 
@@ -585,8 +585,8 @@ function selectLabelToEdit(toolType = '') {
 
   const { event } = ToolbarModule.getData()
 
-  const column = 4
-  let height = ConstToolType.HEIGHT[3]
+  // const column = 4
+  // let height = ConstToolType.HEIGHT[3]
   let containerType = ToolbarType.table
   let type = ''
 
@@ -596,28 +596,28 @@ function selectLabelToEdit(toolType = '') {
   switch (toolType) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
   }
   if (type !== '') {
     _params.setToolbarVisible &&
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
-        column,
-        height,
+        // column,
+        // height,
         containerType,
         cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
       })
@@ -636,7 +636,7 @@ function selectLabelToStyle() {
   let showMenuDialog = false
   let isFullScreen = false
   let containerType = ''
-  let height = ConstToolType.THEME_HEIGHT[3]
+  // let height = ConstToolType.THEME_HEIGHT[3]
   let type = ''
   switch (global.MapToolType) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
@@ -653,7 +653,7 @@ function selectLabelToStyle() {
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       showMenuDialog = true
-      height = 0
+      // height = 0
       isFullScreen = true
       type = ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT
       break
@@ -664,8 +664,8 @@ function selectLabelToStyle() {
       _params.setToolbarVisible(true, type, {
         containerType,
         isFullScreen,
-        column: 4,
-        height,
+        // column: 4,
+        // height,
         showMenuDialog,
         cb: () => {
           if (
@@ -718,7 +718,7 @@ async function deleteLabel() {
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height: 0,
+    // height: 0,
     cb: () => select(type),
   })
 }
@@ -742,24 +742,24 @@ function geometrySelected(event) {
       geoType = layerType
     }
     let containerType = ''
-    let height = ConstToolType.THEME_HEIGHT[3]
+    // let height = ConstToolType.THEME_HEIGHT[3]
     switch (geoType) {
       case DatasetType.POINT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
-        height = ConstToolType.HEIGHT[0]
+        // height = ConstToolType.HEIGHT[0]
         break
       case DatasetType.LINE:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
-        height = ConstToolType.HEIGHT[2]
+        // height = ConstToolType.HEIGHT[2]
         break
       case DatasetType.REGION:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
-        height = ConstToolType.HEIGHT[2]
+        // height = ConstToolType.HEIGHT[2]
         containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
-        height = ConstToolType.HEIGHT[0]
+        // height = ConstToolType.HEIGHT[0]
         break
     }
     if (type !== '' && layerType !== DatasetType.CAD) {
@@ -773,7 +773,7 @@ function geometrySelected(event) {
         isFullScreen: false,
         column: 5,
         containerType,
-        height,
+        // height,
         cb: () => {
           SMap.appointEditGeometry(event.id, event.layerInfo.path)
           // SMap.setLayerEditable(event.layerInfo.path, false)
@@ -915,7 +915,7 @@ function commit(type) {
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
       _params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
         isFullScreen: false,
-        height: 0,
+        // height: 0,
         cb: () => {
           SMap.submit()
           SMap.setAction(Action.SELECT)
@@ -1059,7 +1059,7 @@ function showMenuBox(type, selectKey, params = {}) {
   _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER_PICKER, {
     containerType: ToolbarType.picker,
     isFullScreen: false,
-    height: ConstToolType.TOOLBAR_HEIGHT_2[3],
+    // height: ConstToolType.TOOLBAR_HEIGHT_2[3],
     // cb: () => SCollector.stopCollect(),
   })
 }
@@ -1078,7 +1078,7 @@ function pickerConfirm(params) {
     isFullScreen: true,
     showMenuDialog: false,
     isTouchProgress: true,
-    height: 0,
+    // height: 0,
     ...params,
   })
 }
@@ -1092,7 +1092,7 @@ function pickerCancel() {
     isFullScreen: false,
     showMenuDialog: false,
     isTouchProgress: false,
-    height: 0,
+    // height: 0,
   })
 }
 
@@ -1119,7 +1119,7 @@ function toolbarBack() {
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
-      height: 0,
+      // height: 0,
       cb: () => select(type),
     })
   } /*else if (

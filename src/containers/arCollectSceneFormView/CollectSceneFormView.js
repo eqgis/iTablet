@@ -18,14 +18,13 @@ import {
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-import { Container } from '../../components'
+import { Container, Dialog } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { Toast, dataUtil, scaleSize } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
-import { Dialog } from '../../components'
 
 let nativeSCollectSceneFormView = NativeModules.SCollectSceneFormView
 const nativeEvt = new NativeEventEmitter(nativeSCollectSceneFormView)
@@ -130,8 +129,7 @@ export default class CollectSceneFormView extends React.Component {
     }
   }
 
-  _initData =async()=>{
-
+  _initData = async () => {
     let udbPath = await FileTools.appendingHomeDirectory(
       ConstPath.UserPath +
         this.props.user.currentUser.userName +
@@ -147,11 +145,11 @@ export default class CollectSceneFormView extends React.Component {
       udbPath,
     )
 
-    let point=this.datumPoint
+    let point = this.datumPoint
     // setTimeout(function() {
-      //设置基点
-      SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
-      SCollectSceneFormView.startRecording()
+    //设置基点
+    SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+    SCollectSceneFormView.startRecording()
     // }, 500)
   }
 
@@ -159,7 +157,6 @@ export default class CollectSceneFormView extends React.Component {
     this.view = view
     this._initData()
   }
-
 
   onTotalLengthChanged = params => {
     this.setState({
@@ -229,7 +226,10 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存 **/
   save = async () => {
-    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE)
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+    )
     await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveData('line')
     await SCollectSceneFormView.routeAdd()
@@ -255,7 +255,10 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存点 **/
   savepoint = async () => {
-    GLOBAL.Loading.setLoading(true,getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT)
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
+    )
     // await SCollectSceneFormView.stopRecording()
     await SCollectSceneFormView.saveGPSData('point')
     GLOBAL.Loading.setLoading(false)
@@ -345,9 +348,9 @@ export default class CollectSceneFormView extends React.Component {
         cancelBtnVisible={false}
         confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
         confirmAction={async () => {
-          let point=this.datumPoint
+          let point = this.datumPoint
           //设置基点
-          SCollectSceneFormView.fixedPosition(false,point.x,point.y,0)
+          SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
           this.DatumPointDialog.setDialogVisible(false)
         }}
         opacity={1}
@@ -367,7 +370,10 @@ export default class CollectSceneFormView extends React.Component {
           style={styles.dialogHeaderImg}
         />
         <Text style={styles.promptTtile}>
-          {getLanguage(global.language).Profile.MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH}
+          {
+            getLanguage(global.language).Profile
+              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+          }
         </Text>
       </View>
     )

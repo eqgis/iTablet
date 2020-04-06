@@ -78,7 +78,7 @@ export default class PlotTab extends React.Component {
         data={this.props.data}
         // data={this.state.data}
         type={ToolbarType.scrollTable}
-        numColumns={3}
+        limit={3}
         renderCell={this._renderItem}
         device={this.props.device}
       />

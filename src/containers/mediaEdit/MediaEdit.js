@@ -30,6 +30,7 @@ export default class MediaEdit extends React.Component {
     navigation: Object,
     user: Object,
     language: String,
+    device: Object,
   }
 
   constructor(props) {
@@ -68,7 +69,8 @@ export default class MediaEdit extends React.Component {
     let shouldUpdate =
       JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user) ||
       nextProps.language !== this.props.language ||
-      JSON.stringify(nextState) !== JSON.stringify(this.state)
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
     return shouldUpdate
   }
 
@@ -278,7 +280,7 @@ export default class MediaEdit extends React.Component {
         cellStyle={styles.tableCellView}
         rowStyle={styles.tableRowStyle}
         lineSeparator={20}
-        numColumns={3}
+        limit={3}
         data={data}
         renderCell={this.renderImage}
       />

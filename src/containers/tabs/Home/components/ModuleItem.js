@@ -97,7 +97,7 @@ export default class ModuleItem extends Component {
     let textColor = this.state.touch ? { color: '#4680DF' } : {}
     let isLandscape = this.props.device.orientation === 'LANDSCAPE'
     return (
-      <View style={isLandscape ? styles.moduleViewL : styles.moduleViewP }>
+      <View style={isLandscape ? styles.moduleViewL : styles.moduleViewP}>
         <TouchableOpacity
           activeOpacity={1}
           disabled={this.state.disabled}

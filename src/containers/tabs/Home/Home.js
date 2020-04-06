@@ -428,7 +428,7 @@ export default class Home extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation}/>
+    return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
@@ -441,11 +441,12 @@ export default class Home extends Component {
               'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
         }
     let moreImg = require('../../../assets/home/Frenchgrey/icon_else_selected.png')
-    let imgSize  = scaleSize(60)
-    if(this.props.device) {
-      imgSize = this.props.device.orientation === 'LANDSCAPE'
-        ? scaleSize(40)
-        : scaleSize(60)
+    let imgSize = scaleSize(60)
+    if (this.props.device) {
+      imgSize =
+        this.props.device.orientation === 'LANDSCAPE'
+          ? scaleSize(40)
+          : scaleSize(60)
     }
     return (
       <Container
@@ -458,7 +459,10 @@ export default class Home extends Component {
               style={styles.userView}
               onPress={() => this.showUserPop()}
             >
-              <Image source={userImg} style={[styles.userImg, { width: imgSize, height: imgSize}]} />
+              <Image
+                source={userImg}
+                style={[styles.userImg, { width: imgSize, height: imgSize }]}
+              />
             </TouchableOpacity>
           ),
           headerRight: (
@@ -469,7 +473,7 @@ export default class Home extends Component {
               <Image
                 resizeMode={'contain'}
                 source={moreImg}
-                style={[styles.moreImg, { width: imgSize, height: imgSize}]}
+                style={[styles.moreImg, { width: imgSize, height: imgSize }]}
               />
             </TouchableOpacity>
           ),

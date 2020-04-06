@@ -319,9 +319,6 @@ export default class MapView extends React.Component {
   }
 
   async componentDidMount() {
-    if (GLOBAL.Type === constants.MAP_AR) {
-      Orientation.lockToPortrait()
-    }
     if (!global.isLicenseValid) {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid

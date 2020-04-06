@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize, screen } from '../../../utils'
+import { scaleSize, screen, fixedSize } from '../../../utils'
 import { size, color } from '../../../styles'
 
 export { screen, color }
@@ -54,11 +54,11 @@ export default StyleSheet.create({
     width: '100%',
     height: '43%',
     alignItems: 'center',
-    paddingTop: scaleSize(30),
+    paddingTop: fixedSize(30),
   },
   // Myprofile
   MyProfileStyle: {
-    marginVertical: scaleSize(20),
+    marginVertical: fixedSize(20),
     alignItems: 'center',
   },
   profileImages: {
@@ -69,27 +69,27 @@ export default StyleSheet.create({
   },
   profileHeadStyle: {
     alignItems: 'center',
-    marginBottom: -scaleSize(30),
+    marginBottom: -fixedSize(30),
   },
   profileAvatarStyle: {
-    height: scaleSize(140),
-    width: scaleSize(140),
+    height: fixedSize(140),
+    width: fixedSize(140),
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scaleSize(70),
+    borderRadius: fixedSize(70),
   },
   headImgStyle: {
-    height: scaleSize(130),
-    width: scaleSize(130),
-    borderRadius: scaleSize(65),
+    height: fixedSize(130),
+    width: fixedSize(130),
+    borderRadius: fixedSize(65),
   },
   moreViewStyle: {
-    height: scaleSize(50),
-    width: scaleSize(50),
-    borderRadius: scaleSize(50),
+    height: fixedSize(50),
+    width: fixedSize(50),
+    borderRadius: fixedSize(50),
     backgroundColor: '#4680DF',
-    top: -scaleSize(30),
+    top: -fixedSize(30),
     borderColor: '#FFFFFF',
     borderWidth: 1,
     justifyContent: 'center',
@@ -97,16 +97,16 @@ export default StyleSheet.create({
   },
   moreX: {
     backgroundColor: '#FFFFFF',
-    width: scaleSize(30),
-    height: scaleSize(3),
+    width: fixedSize(30),
+    height: fixedSize(3),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 1,
   },
   moreY: {
     backgroundColor: '#FFFFFF',
-    width: scaleSize(3),
-    height: scaleSize(30),
+    width: fixedSize(3),
+    height: fixedSize(30),
     borderRadius: 1,
   },
   profileTextStyle: {
@@ -114,51 +114,51 @@ export default StyleSheet.create({
   },
   profileTextLandscapeStyle: {
     alignItems: 'flex-start',
-    width: scaleSize(300),
-    top: -scaleSize(130),
-    right: -scaleSize(250),
+    width: fixedSize(300),
+    top: -fixedSize(130),
+    right: -fixedSize(250),
   },
   userNameStyle: {
-    fontSize: scaleSize(40),
+    fontSize: fixedSize(40),
     color: '#FFFFFF',
   },
   statusTextStyle: {
-    fontSize: scaleSize(24),
+    fontSize: fixedSize(24),
     color: '#C2C2C2',
   },
   // search
   searchViewStyle: {
-    width: scaleSize(460),
-    height: scaleSize(48),
+    width: fixedSize(460),
+    height: fixedSize(48),
     backgroundColor: '#505050',
-    borderRadius: scaleSize(24),
-    paddingHorizontal: scaleSize(20),
+    borderRadius: fixedSize(24),
+    paddingHorizontal: fixedSize(20),
     flexDirection: 'row',
     alignItems: 'center',
   },
   searchImgStyle: {
-    width: scaleSize(40),
-    height: scaleSize(40),
+    width: fixedSize(40),
+    height: fixedSize(40),
   },
   searchInputStyle: {
-    width: scaleSize(380),
+    width: fixedSize(380),
     paddingVertical: 0,
-    fontSize: scaleSize(20),
+    fontSize: fixedSize(20),
     color: '#A7A7A7',
   },
   // side
   sideItemStyle: {
     position: 'absolute',
     right: 0,
-    top: scaleSize(20),
+    top: fixedSize(20),
     backgroundColor: '#ED372E',
-    paddingVertical: scaleSize(10),
-    paddingHorizontal: scaleSize(20),
-    borderTopLeftRadius: scaleSize(20),
-    borderBottomLeftRadius: scaleSize(20),
+    paddingVertical: fixedSize(10),
+    paddingHorizontal: fixedSize(20),
+    borderTopLeftRadius: fixedSize(20),
+    borderBottomLeftRadius: fixedSize(20),
   },
   SideTextStyle: {
-    fontSize: scaleSize(20),
+    fontSize: fixedSize(20),
     color: '#FFFFFF',
   },
 
@@ -199,9 +199,9 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   logoImagStyle: {
-    width: scaleSize(100),
-    height: scaleSize(100),
-    marginBottom: scaleSize(30),
-    marginHorizontal: scaleSize(10),
+    width: fixedSize(100),
+    height: fixedSize(100),
+    marginBottom: fixedSize(30),
+    marginHorizontal: fixedSize(10),
   },
 })

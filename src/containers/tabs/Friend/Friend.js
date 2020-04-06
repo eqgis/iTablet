@@ -23,7 +23,7 @@ import ScrollableTabView, {
 // eslint-disable-next-line
 import { SMessageService, SOnlineService } from 'imobile_for_reactnative'
 import NavigationService from '../../NavigationService'
-import { scaleSize } from '../../../utils/screen'
+import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
 import { styles } from './Styles'
 
@@ -74,7 +74,6 @@ export default class Friend extends Component {
 
   constructor(props) {
     super(props)
-    this.screenWidth = Dimensions.get('window').width
     this.friendMessage = {}
     this.friendList = {}
     this.friendGroup = {}
@@ -86,8 +85,6 @@ export default class Friend extends Component {
     this.state = {
       data: [{}],
       bHasUserInfo: false,
-      progressWidth: this.screenWidth * 0.4,
-      isLoadingData: false,
       showPop: false,
     }
     this.messageQueue = []
@@ -132,6 +129,14 @@ export default class Friend extends Component {
     this.removeFileListener()
     AppState.removeEventListener('change', this.handleStateChange)
     NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+  }
+
+  _getWidth = () => {
+    let width = screen.getScreenWidth(this.props.device.orientation)
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      width = width - scaleSize(96)
+    }
+    return width
   }
 
   refreshMsg = () => {
@@ -1360,11 +1365,11 @@ export default class Friend extends Component {
   }
 
   render() {
-    this.screenWidth = Dimensions.get('window').width
     return (
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
+        showFullInMap={true}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
           headerLeft:
@@ -1480,7 +1485,7 @@ export default class Friend extends Component {
             backgroundColor: 'rgba(70,128,223,1.0)',
             height: scaleSize(3),
             width: scaleSize(30),
-            marginLeft: this.screenWidth / 3 / 2 - 10,
+            marginLeft: this._getWidth() / 3 / 2 - 10,
           }}
         >
           <FriendMessage

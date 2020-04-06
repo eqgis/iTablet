@@ -50,6 +50,7 @@ export default class extends React.PureComponent {
     return (
       <Container
         style={styles.view}
+        showFullInMap={true}
         ref={ref => (this.container = ref)}
         headerProps={{
           title: this.props.groupName,

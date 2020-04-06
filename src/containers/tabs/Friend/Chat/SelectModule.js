@@ -6,11 +6,14 @@ import ConstModule from '../../../../constants/ConstModule'
 import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
 import { SMap } from 'imobile_for_reactnative'
+import { setCurrentMapModule } from '../../../../models/appConfig'
 
 class SelectModule extends Component {
   props: {
     latestMap: Object,
     navigation: Object,
+    appConfig: Object,
+    setCurrentMapModule: () => {},
   }
 
   constructor(props) {
@@ -18,7 +21,7 @@ class SelectModule extends Component {
     this.callBack = this.props.navigation.getParam('callBack')
   }
 
-  navigateToModule = async module => {
+  navigateToModule = async (module, index) => {
     let licenseStatus = await SMap.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     if (!global.isLicenseValid) {
@@ -42,6 +45,9 @@ class SelectModule extends Component {
       latestMap = this.props.latestMap[currentUserName][module.key][0]
     }
     global.getFriend().setCurMod(module)
+    this.props.setCurrentMapModule(index).then(() => {
+      module.action(tmpCurrentUser, latestMap)
+    })
     module.action(tmpCurrentUser, latestMap)
     global.getFriend().curChat.setCoworkMode(true)
     global.coworkMode = true
@@ -59,9 +65,9 @@ class SelectModule extends Component {
       >
         <ScrollView>
           <FlatList
-            data={ConstModule(global.language)}
+            data={ConstModule(this.props.appConfig.mapModules, global.language)}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               if (
                 item.title === getLanguage(global.language).Map_Module.MAP_3D
               ) {
@@ -75,7 +81,7 @@ class SelectModule extends Component {
                     if (this.callBack) {
                       this.callBack(item)
                     } else {
-                      this.navigateToModule(item)
+                      this.navigateToModule(item, index)
                     }
                   }}
                 />
@@ -90,8 +96,11 @@ class SelectModule extends Component {
 
 const mapStateToProps = state => ({
   latestMap: state.map.toJS().latestMap,
+  appConfig: state.appConfig.toJS(),
 })
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setCurrentMapModule,
+}
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

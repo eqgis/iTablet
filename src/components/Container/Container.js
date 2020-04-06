@@ -121,10 +121,7 @@ export default class Container extends PureComponent {
       width = 0
     }
     if (
-      !(
-        NavigationService.isInStack('MapStack') ||
-        NavigationService.isInStack('Map3DStack')
-      ) ||
+      !(NavigationService.isInMap() || NavigationService.isInMap3D()) ||
       this.props.showFullInMap
     ) {
       width = 0
@@ -157,10 +154,7 @@ export default class Container extends PureComponent {
   setPageVisible = visible => {
     //todo 处理返回时没有动画
     let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
-    if (
-      NavigationService.isInStack('MapStack') ||
-      NavigationService.isInStack('Map3DStack')
-    ) {
+    if (NavigationService.isInMap() || NavigationService.isInMap3D()) {
       if (this.props.hideInBackground && isLandscape) {
         let x = visible ? 0 : GLOBAL.getDevice().width
         let duration = isLandscape ? 300 : 0
@@ -270,10 +264,10 @@ export default class Container extends PureComponent {
               if (this.props.onOverlayPress) {
                 this.props.onOverlayPress()
               } else {
-                if (NavigationService.isInStack('MapStack')) {
+                if (NavigationService.isInMap()) {
                   NavigationService.navigate('MapView')
                 }
-                if (NavigationService.isInStack('Map3DStack')) {
+                if (NavigationService.isInMap3D()) {
                   NavigationService.navigate('Map3D')
                 }
               }

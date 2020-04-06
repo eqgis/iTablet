@@ -281,7 +281,7 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
-  back = () => {
+  back = async() => {
     if (this.clickAble) {
       this.clickAble = false
       setTimeout(() => {
@@ -302,7 +302,7 @@ export default class CollectSceneFormView extends React.Component {
           flexDirection: 'column',
         },
       })
-      SCollectSceneFormView.closeCurrentDatasource()
+      await SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack()
       return true
     }

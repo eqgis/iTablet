@@ -121,6 +121,10 @@ function getIphonePaddingBottom() {
   return paddingTop
 }
 
+export function px(size) {
+  return size / defaultPixel
+}
+
 export default {
   getScreenWidth,
   getScreenHeight,

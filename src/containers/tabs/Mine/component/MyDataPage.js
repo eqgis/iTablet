@@ -841,7 +841,7 @@ export default class MyDataPage extends Component {
       txtType,
       img,
       isShowMore = true
-    if (this.getItemCallback || this.chatCallback) {
+    if (this.getItemCallback || this.chatCallback || this.showMore === false) {
       isShowMore = false
     }
 

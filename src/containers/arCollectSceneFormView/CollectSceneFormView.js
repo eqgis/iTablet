@@ -208,6 +208,7 @@ export default class CollectSceneFormView extends React.Component {
   /** 设置 */
   setting = () => {
     NavigationService.navigate('CollectSceneFormSet', {
+      point: this.datumPoint,
       fixedPositions: point => {
         NavigationService.goBack()
         SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
@@ -280,7 +281,7 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
-  back = () => {
+  back = async () => {
     if (this.clickAble) {
       this.clickAble = false
       setTimeout(() => {
@@ -301,7 +302,7 @@ export default class CollectSceneFormView extends React.Component {
           flexDirection: 'column',
         },
       })
-      SCollectSceneFormView.closeCurrentDatasource()
+      await SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack()
       return true
     }
@@ -648,109 +649,127 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+          <TouchableOpacity
+            onPress={() => this.switchStatus()}
+            style={styles.iconView}
           >
-            <TouchableOpacity
-              onPress={() => this.switchStatus()}
-              style={styles.iconView}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_new}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {
-                getLanguage(global.language).Map_Main_Menu
-                  .MAP_AR_AI_ASSISTANT_NEWDATA
-              }
-            </Text>
-          </View>
-          <View
+
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_ASSISTANT_NEWDATA
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.clearAll()}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <TouchableOpacity
-              onPress={() => this.clearAll()}
-              style={styles.iconView}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
-            </Text>
-          </View>
-          <View
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.save()}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <TouchableOpacity
-              onPress={() => this.save()}
-              style={styles.iconView}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_save_line}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
-            </Text>
-          </View>
-          <View
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.savepoint()}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <TouchableOpacity
-              onPress={() => this.savepoint()}
-              style={styles.iconView}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_SAVE_POINT
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
               onPress={() => this.switchViewMode()}
-              style={styles.iconView}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+
               <Image
                 resizeMode={'contain'}
                 source={getThemeAssets().ar.toolbar.ar_view_mode}
                 style={styles.smallIcon}
               />
-            </TouchableOpacity>
-            <Text style={styles.buttonname}>
-              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
-            </Text>
-          </View>
+
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
+              </Text>
+            </View>
+          </TouchableOpacity> */}
         </View>
       </View>
     )

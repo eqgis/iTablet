@@ -92,9 +92,9 @@ class NavigationHeader extends Component {
     this.visible = visible
   }
 
-  handleBack = navigation => {
+  handleBack = (navigation, event) => {
     if (this.props.backAction && typeof this.props.backAction === 'function') {
-      this.props.backAction()
+      this.props.backAction(event)
     } else if (!this.props.backAction && navigation) {
       if (this.clickable) {
         this.clickable = false
@@ -145,8 +145,8 @@ class NavigationHeader extends Component {
         accessibilityLabel={'返回'}
         style={styles.backBtn}
         activeOpacity={activeOpacity}
-        onPress={() => {
-          this.handleBack(navigation)
+        onPress={event => {
+          this.handleBack(navigation, event)
         }}
       >
         {count ? <Text style={styles.count}>({count})</Text> : null}
@@ -227,13 +227,17 @@ class NavigationHeader extends Component {
         currentHeaderStyle = styles.defaultHeaderView
         break
     }
-
+    let padding = {}
+    if (global.getDevice().orientation === 'LANDSCAPE') {
+      padding = { paddingTop: 0 }
+    }
     return (
       <Animated.View
         style={[
           currentHeaderStyle,
           { height: this.state.headerHeight },
           headerStyle,
+          padding,
           { opacity: opacity, top: this.state.headerTop },
         ]}
       >

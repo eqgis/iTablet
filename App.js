@@ -424,6 +424,7 @@ class AppRoot extends Component {
   //初始化横竖屏显示方式
   initOrientation = async () => {
     Orientation.getOrientation((e, orientation) => {
+      this.showStatusBar(orientation)
       this.props.setShow({orientation: orientation})
     })
     Orientation.removeOrientationListener(this.orientation)
@@ -1054,6 +1055,7 @@ class AppRoot extends Component {
         <SaveView
           ref={ref => GLOBAL.SaveMapView = ref}
           save={this.saveMap}
+          device={this.props.device}
           notSave={this.closeMapHandler}
           cancel={() => {
             // this.backAction = null

@@ -20,6 +20,7 @@ import ImageButton from '../../components/ImageButton'
 import { Container } from '../../components'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
+import { Dialog } from '../../components'
 // import Button from '../../components/Button/Button'
 const SMeasureViewiOS = NativeModules.SMeasureView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
@@ -39,6 +40,7 @@ export default class MeasureView extends React.Component {
     const { params } = this.props.navigation.state || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName
+    this.point = params.point
 
     this.state = {
       currentLength: 0,
@@ -55,6 +57,8 @@ export default class MeasureView extends React.Component {
   }
 
   componentDidMount() {
+    this.DatumPointDialog.setDialogVisible(true)
+
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
       (async function() {
@@ -62,6 +66,11 @@ export default class MeasureView extends React.Component {
           this.datasourceAlias,
           this.datasetName,
         )
+        let fixedPoint = this.point
+        setTimeout(function() {
+          //设置基点
+          SMeasureView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
+        }, 1000)
         //注册监听
         if (Platform.OS === 'ios') {
           iOSEventEmi.addListener(
@@ -226,6 +235,56 @@ export default class MeasureView extends React.Component {
     await SMeasureView.setFlagType(type)
   }
 
+  /** 设置 */
+  setting = () => {
+    NavigationService.navigate('CollectSceneFormSet', {
+      point: this.point,
+      fixedPositions: point => {
+        NavigationService.goBack()
+        SMeasureView.fixedPosition(false, point.x, point.y, 0)
+      },
+    })
+  }
+
+  renderDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.DatumPointDialog = ref)}
+        type={'modal'}
+        cancelBtnVisible={false}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        confirmAction={async () => {
+          let fixedPoint = this.point
+          //设置基点
+          SMeasureView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
+          this.DatumPointDialog.setDialogVisible(false)
+        }}
+        opacity={1}
+        opacityStyle={styles.opacityView}
+        style={styles.dialogBackground}
+      >
+        {this.renderLicenseDialogChildren()}
+      </Dialog>
+    )
+  }
+
+  renderLicenseDialogChildren = () => {
+    return (
+      <View style={styles.dialogHeaderView}>
+        <Image
+          source={require('../../assets/home/Frenchgrey/icon_prompt.png')}
+          style={styles.dialogHeaderImg}
+        />
+        <Text style={styles.promptTtile}>
+          {
+            getLanguage(global.language).Profile
+              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+          }
+        </Text>
+      </View>
+    )
+  }
+
   renderBottomBtns = () => {
     return (
       <View style={styles.toolbar}>
@@ -261,6 +320,18 @@ export default class MeasureView extends React.Component {
             <Image
               resizeMode={'contain'}
               source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setting()
+            }}
+            style={styles.iconView}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().ar.toolbar.ai_setting}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -474,6 +545,7 @@ export default class MeasureView extends React.Component {
         {this.state.SearchingSurfacesSucceed &&
           this.renderToLastLengthChangeView()}
         {!this.state.SearchingSurfacesSucceed && this.renderSearchingView()}
+        {this.renderDialog()}
       </Container>
     )
   }

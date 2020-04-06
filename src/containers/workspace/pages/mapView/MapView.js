@@ -107,6 +107,7 @@ import IncrementData from '../../components/ToolBar/modules/incrementModule/Incr
 const markerTag = 118081
 export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
 export const FOOTER_HEIGHT = scaleSize(88)
+
 export default class MapView extends React.Component {
   static propTypes = {
     language: PropTypes.string,
@@ -1717,7 +1718,12 @@ export default class MapView extends React.Component {
       loadingAction = setLoading
     }
     GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, loadingAction, cb)
+      GLOBAL.SaveMapView.setVisible(
+        visible,
+        loadingAction,
+        cb,
+        this.backPositon,
+      )
   }
 
   /**
@@ -3072,7 +3078,13 @@ export default class MapView extends React.Component {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
-          backAction: this.back,
+          backAction: event => {
+            this.backPositon = {
+              x: event.nativeEvent.pageX,
+              y: event.nativeEvent.pageY,
+            }
+            this.back()
+          },
           type: 'fix',
           headerCenter: this.renderSearchBar(),
           headerRight: this.renderHeaderRight(),

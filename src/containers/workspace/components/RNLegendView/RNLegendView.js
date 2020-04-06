@@ -4,21 +4,14 @@
  * https://github.com/AsortKeven
  */
 import * as React from 'react'
-import {
-  View,
-  Text,
-  Platform,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
+import { scaleSize, setSpText, screen } from '../../../../utils'
 import { FOOTER_HEIGHT } from '../../pages/mapView/MapView'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import color from '../../../../styles/color'
 
-export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
+export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
 
 export default class RNLegendView extends React.Component {
   props: {

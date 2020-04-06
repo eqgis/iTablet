@@ -4,10 +4,16 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Platform, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  View,
+  Animated,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const } from '../../../../constants'
-import { scaleSize, Toast, setSpText } from '../../../../utils'
+import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
 import styles from './styles'
 import { SMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
@@ -46,12 +52,12 @@ import {
 } from '../ToolBar/modules'
 import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 
-const HeaderHeight = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
+const HeaderHeight = scaleSize(88) + screen.getIphonePaddingTop()
 const BottomHeight = scaleSize(100)
 
 const RIGHT = scaleSize(20)
 const RIGHT_LANDSCAPE = 0
-const TOP = scaleSize(143) + (Platform.OS === 'ios' ? 20 : 0)
+const TOP = scaleSize(143) + screen.getIphonePaddingTop()
 const TOP_LANDSCAPE = HEADER_HEIGHT_LANDSCAPE
 const BOTTOM_LANDSCAPE = 0
 export default class FunctionToolbar extends React.Component {
@@ -116,9 +122,9 @@ export default class FunctionToolbar extends React.Component {
     this.visible = true
     this.menuVisible = false
     this.offset = 0
-    this.onTop = true,
-    this.onBottom = true,
-    this.topOpacity =  new Animated.Value(0)
+    ;(this.onTop = true),
+    (this.onBottom = true),
+    (this.topOpacity = new Animated.Value(0))
     this.bottomOpacity = new Animated.Value(0)
   }
 
@@ -146,8 +152,8 @@ export default class FunctionToolbar extends React.Component {
 
   onOrientationChange = () => {
     let top, right
-    if(this.visible) {
-      if(this.props.device.orientation === 'LANDSCAPE') {
+    if (this.visible) {
+      if (this.props.device.orientation === 'LANDSCAPE') {
         top = TOP_LANDSCAPE
         right = RIGHT_LANDSCAPE
       } else {
@@ -165,7 +171,7 @@ export default class FunctionToolbar extends React.Component {
         }),
       ]).start()
     } else {
-      if(this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation === 'LANDSCAPE') {
         top = TOP_LANDSCAPE
       } else {
         top = TOP
@@ -182,26 +188,26 @@ export default class FunctionToolbar extends React.Component {
     let contentHeight = this.list._listRef._totalCellLength
     let offset = this.offset
     let visibleHeight
-    if(this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation === 'LANDSCAPE') {
       let indicatorHeight = scaleSize(15) * 2
-      let windowHeight = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
+      let windowHeight = Math.min(
+        Dimensions.get('window').height,
+        Dimensions.get('window').width,
+      )
       let headerHeight = HEADER_HEIGHT_LANDSCAPE
       let moreHeight = scaleSize(80) + 1
       visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
     } else {
       let maxHeight =
-      this.props.device.height -
-      HeaderHeight -
-      BottomHeight -
-      scaleSize(300)
+        this.props.device.height - HeaderHeight - BottomHeight - scaleSize(300)
       visibleHeight = maxHeight
     }
     let onTop, onBottom
-    if(visibleHeight < contentHeight) {
-      if(offset === 0) {
+    if (visibleHeight < contentHeight) {
+      if (offset === 0) {
         onTop = true
         onBottom = false
-      } else if(offset + visibleHeight + 3 > contentHeight) {
+      } else if (offset + visibleHeight + 3 > contentHeight) {
         onTop = false
         onBottom = true
       } else {
@@ -212,14 +218,14 @@ export default class FunctionToolbar extends React.Component {
       onTop = true
       onBottom = true
     }
-    if(onTop !== this.onTop) {
+    if (onTop !== this.onTop) {
       this.onTop = onTop
       Animated.timing(this.topOpacity, {
         toValue: onTop ? 0 : 1,
         duration: 150,
       }).start()
     }
-    if(onBottom !== this.onBottom) {
+    if (onBottom !== this.onBottom) {
       this.onBottom = onBottom
       Animated.timing(this.bottomOpacity, {
         toValue: onBottom ? 0 : 1,
@@ -687,12 +693,12 @@ export default class FunctionToolbar extends React.Component {
         }
     return (
       <FlatList
-        ref={ref => this.list = ref}
+        ref={ref => (this.list = ref)}
         style={style}
         data={this.state.data}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
-        onScroll={ event => {
+        onScroll={event => {
           this.offset = event.nativeEvent.contentOffset.y
           this.handlePosition()
         }}
@@ -715,10 +721,10 @@ export default class FunctionToolbar extends React.Component {
     })
     return (
       <View>
-        <View style={{height: 1, backgroundColor: '#EEEEEE'}}/>
+        <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
         <TouchableOpacity
           style={styles.moreImageView}
-          onPress={()=> {
+          onPress={() => {
             this.setMenuVisible(!this.menuVisible)
           }}
         >
@@ -726,12 +732,11 @@ export default class FunctionToolbar extends React.Component {
             style={[
               styles.moreImage,
               {
-                transform: [{rotateY: rotateX}],
+                transform: [{ rotateY: rotateX }],
               },
             ]}
             source={require('../../../../assets/public/left_arrow.png')}
-          >
-          </Animated.Image>
+          />
         </TouchableOpacity>
       </View>
     )
@@ -739,10 +744,10 @@ export default class FunctionToolbar extends React.Component {
 
   renderIndicator = location => {
     let style
-    if(location === 'top') {
+    if (location === 'top') {
       style = {
         opacity: this.topOpacity,
-        transform:[{rotateX: '180deg'}],
+        transform: [{ rotateX: '180deg' }],
       }
     } else {
       style = {
@@ -752,10 +757,7 @@ export default class FunctionToolbar extends React.Component {
     return (
       <View style={styles.indicatorView}>
         <Animated.Image
-          style={[
-            styles.indicatorImage,
-            style,
-          ]}
+          style={[styles.indicatorImage, style]}
           source={getPublicAssets().common.icon_arrow_down}
         />
       </View>

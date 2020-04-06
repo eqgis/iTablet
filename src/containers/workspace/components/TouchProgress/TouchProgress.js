@@ -11,7 +11,7 @@ import {
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText, screen } from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -118,7 +118,7 @@ export default class TouchProgress extends Component {
     // let invisible = result === 'true'
     // let android_statusHeight = invisible ? 0 : StatusBar.currentHeight
     //安卓进度条ToolBar直接扣除了状态栏和软键盘高度
-    this.statusBarHeight = Platform.OS === 'ios' ? 20 : 0 //获取状态栏高度
+    this.statusBarHeight = screen.getIphonePaddingTop() //获取状态栏高度
   }
 
   _updateNativeStyles = () => {
@@ -2585,7 +2585,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    // marginTop: Platform.OS === 'ios' ? 20 : 0,
     // backgroundColor: '#rgba(110, 110, 110, 1)',
     marginTop: 20,
     backgroundColor: '#rgba(0, 0, 0, 0)',

@@ -166,7 +166,7 @@ export default class ToolBar extends React.PureComponent {
     })
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     let tempPrev = Object.assign({}, prevProps)
     let tempthis = Object.assign({}, this.props)
     tempPrev.nav && delete tempPrev.nav
@@ -174,7 +174,7 @@ export default class ToolBar extends React.PureComponent {
     this.setToolbarParams()
     if (
       this.props.device.orientation !== prevProps.device.orientation ||
-      this.state.type !== prevProps.type
+      this.state.type !== prevState.type
     ) {
       this.changeHeight(this.props.device.orientation, this.state.type)
     }
@@ -514,11 +514,13 @@ export default class ToolBar extends React.PureComponent {
     //   JSON.stringify(this.contentView.getContentHeight()) !==
     //   this.height.toString()
     // ) {
-    let boxAnimated = await this.contentView.changeHeight({
-      height: this.height,
-      column: this.column > -1 ? this.column : undefined,
-      wait: true,
-    })
+    let boxAnimated =
+      this.isBoxShow &&
+      (await this.contentView.changeHeight({
+        height: this.height,
+        column: this.column > -1 ? this.column : undefined,
+        wait: true,
+      }))
     if (boxAnimated) {
       this.height === 0 && boxPosition >= 0
         ? animatedList.unshift(boxAnimated)

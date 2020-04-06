@@ -4,7 +4,6 @@
  * https://github.com/AsortKeven
  */
 import React from 'react'
-import { Height } from '../../../../constants/index'
 import { TouchableOpacity, View, FlatList, Text } from 'react-native'
 import { scaleSize } from '../../../../utils/index'
 import { color } from '../../../tabs/Mine/MyService/Styles'
@@ -12,16 +11,21 @@ import { color } from '../../../tabs/Mine/MyService/Styles'
 export default class ColorTable extends React.Component {
   props: {
     language: string,
+    column: number,
+    // height: number,
     data: Array,
     device: Object,
     itemAction?: () => {},
     callback?: () => {},
   }
 
+  static defaultProps = {
+    column: 8,
+    // height: Height.TABLE_ROW_HEIGHT_4 * 5,
+  }
+
   constructor(props) {
     super(props)
-    this.height = Height.TABLE_ROW_HEIGHT_4 * 5
-    this.ColumnNums = 8
 
     this.state = {
       data: this.dealData(this.props.data),
@@ -54,9 +58,17 @@ export default class ColorTable extends React.Component {
     }
   }
 
+  getColumn = () => {
+    return this.props.device.orientation === 'LANDSCAPE' ? 4 : 8
+  }
+
+  getRow = () => {
+    return this.props.device.orientation === 'LANDSCAPE' ? 8 : 4
+  }
+
   dealData = data => {
     let newData = data.clone()
-    while (newData.length % this.ColumnNums !== 0) {
+    while (newData.length % this.getColumn() !== 0) {
       newData.push({
         useSpace: true,
       })
@@ -64,12 +76,12 @@ export default class ColorTable extends React.Component {
     return newData
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.device.orientation !== this.props.device.orientation) {
-      this.height = Height.TABLE_ROW_HEIGHT_4 * 5
-      this.ColumnNums = 8
-    }
-  }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (nextProps.device.orientation !== this.props.device.orientation) {
+  //     this.height = Height.TABLE_ROW_HEIGHT_4 * 5
+  //     this.ColumnNums = 8
+  //   }
+  // }
 
   itemAction = async item => {
     if (this.props.itemAction) {
@@ -81,18 +93,22 @@ export default class ColorTable extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    let height =
-      (this.props.device.orientation === 'LANDSCAPE'
-        ? this.height
-        : this.props.device.width) /
-        this.ColumnNums -
+    let size =
+      Math.min(this.props.device.height, this.props.device.width) / 8 -
       scaleSize(4)
+    // (this.props.device.orientation === 'LANDSCAPE'
+    //   ? this.props.device.height
+    //   : this.props.device.width) /
+    // this.getColumn() -
+    // scaleSize(4)
+    // let height = 100 / this.getRow() + '%'
     if (typeof item === 'object' && item.useSpace)
       return (
         <View
           style={{
             flex: 1,
-            height,
+            maxHeight: size,
+            maxWidth: size,
             backgroundColor: color.white,
             borderWidth: scaleSize(2),
             borderColor: color.white,
@@ -108,7 +124,8 @@ export default class ColorTable extends React.Component {
         }}
         style={{
           flex: 1,
-          height,
+          maxHeight: size,
+          maxWidth: size,
           backgroundColor: typeof item === 'string' ? item : item.key,
           borderWidth: scaleSize(2),
           borderColor: color.gray,
@@ -145,19 +162,13 @@ export default class ColorTable extends React.Component {
   render() {
     return (
       <FlatList
-        key={'list_' + this.ColumnNums}
-        style={{
-          height: this.height,
-          width: '100%',
-          // justifyContent: 'flex-end',
-          backgroundColor: color.white,
-        }}
+        key={'color_list_' + this.props.device.orientation}
         renderItem={this.renderItem}
         data={this.state.data}
         keyExtractor={(item, index) =>
           (typeof item === 'string' ? item : item.key) + index
         }
-        numColumns={this.ColumnNums}
+        numColumns={this.getColumn()}
       />
     )
   }

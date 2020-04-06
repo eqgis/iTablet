@@ -1,10 +1,10 @@
-import { Dimensions, Platform } from 'react-native'
-import { setSpText } from '../utils'
+import { Dimensions } from 'react-native'
+import { setSpText, screen as s } from '../utils'
 
 const screen = {
   width: Dimensions.get('window').width,
   height: Dimensions.get('window').height,
-  statusBarHeight: Platform.OS === 'ios' ? 20 : 0,
+  statusBarHeight: s.getIphonePaddingTop(),
 }
 const fontSize = {
   fontSizeXXXl: setSpText(30),

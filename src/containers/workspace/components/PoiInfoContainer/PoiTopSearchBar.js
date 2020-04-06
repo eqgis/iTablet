@@ -10,16 +10,15 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Platform,
 } from 'react-native'
 import SearchBar from '../../../../components/SearchBar'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
 
-const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
-const HEADER_PADDINGTOP = Platform.OS === 'ios' ? 20 : 0
+const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
+const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
 
 export default class PoiTopSearchBar extends React.Component {
   props: {

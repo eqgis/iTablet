@@ -1,11 +1,10 @@
-import { StyleSheet, Platform } from 'react-native'
-import { scaleSize, setSpText } from '../../utils'
+import { StyleSheet } from 'react-native'
+import { scaleSize, setSpText, screen } from '../../utils'
 import { color, zIndexLevel } from '../../styles'
 
-export const HEADER_HEIGHT = scaleSize(88) + (Platform.OS === 'ios' ? 20 : 0)
-export const HEADER_HEIGHT_LANDSCAPE =
-  scaleSize(60) + (Platform.OS === 'ios' ? 20 : 0)
-export const HEADER_PADDINGTOP = Platform.OS === 'ios' ? 20 : 0
+export const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
+export const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
+export const HEADER_HEIGHT_LANDSCAPE = scaleSize(60) + HEADER_PADDINGTOP
 
 export default StyleSheet.create({
   defaultHeaderView: {

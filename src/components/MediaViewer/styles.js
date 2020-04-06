@@ -1,6 +1,6 @@
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Const } from '../../constants'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { size, color } from '../../styles'
 
 export default StyleSheet.create({
@@ -124,7 +124,7 @@ export default StyleSheet.create({
   },
   backBtn: {
     position: 'absolute',
-    top: scaleSize(9) + (Platform.OS === 'ios' ? 20 : 0),
+    top: scaleSize(9) + screen.getIphonePaddingTop(),
     left: scaleSize(10),
     width: 60,
     padding: 5,

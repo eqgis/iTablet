@@ -6,7 +6,6 @@ import {
   View,
   Image,
   PanResponder,
-  Dimensions,
 } from 'react-native'
 import { scaleSize, screen } from '../utils'
 import { size, color } from '../styles'
@@ -23,6 +22,7 @@ export default class MenuDialog extends React.PureComponent {
     viewableItems?: number, // 可见范围item的数量
     autoSelect?: boolean, // 松手自动选择
     onSelect?: () => {}, // 选中item的回调
+    device: Object,
   }
 
   static defaultProps = {
@@ -41,7 +41,7 @@ export default class MenuDialog extends React.PureComponent {
     }
 
     this.selectedViewTop =
-      (Dimensions.get('window').height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
+      (props.device.height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
     this.moveViewHeight =
       ITEM_HEIGHT * this.state.data.length + ARROW_HEIGHT * 2
 
@@ -110,7 +110,7 @@ export default class MenuDialog extends React.PureComponent {
       curIndex = index
     }
     this.selectedViewTop =
-      (Dimensions.get('window').height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
+      (this.props.device.height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
     this.moveViewHeight =
       ITEM_HEIGHT * this.state.data.length + ARROW_HEIGHT * 2
 
@@ -281,9 +281,18 @@ export default class MenuDialog extends React.PureComponent {
 
   render() {
     this.selectedViewTop =
-      (Dimensions.get('window').height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
+      (this.props.device.height - Const.BOTTOM_HEIGHT - ITEM_HEIGHT) / 2
     return (
-      <View style={styles.overlay} {...this._panResponder.panHandlers}>
+      <View
+        style={[
+          styles.overlay,
+          {
+            width: this.props.device.width,
+            height: this.props.device.height,
+          },
+        ]}
+        {...this._panResponder.panHandlers}
+      >
         <View style={styles.dialogView}>
           <View
             ref={ref => (this.moveViewBg = ref)}

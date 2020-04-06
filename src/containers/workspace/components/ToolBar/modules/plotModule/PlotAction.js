@@ -149,11 +149,11 @@ function showSymbol() {
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
-    height:
-      params.device.orientation === 'PORTRAIT'
-        ? ConstToolType.HEIGHT[3]
-        : ConstToolType.THEME_HEIGHT[4],
-    column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
+    // height:
+    //   params.device.orientation === 'PORTRAIT'
+    //     ? ConstToolType.HEIGHT[3]
+    //     : ConstToolType.THEME_HEIGHT[4],
+    // column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
   })
 }
 
@@ -377,13 +377,13 @@ async function showAnimationXmlList() {
 
 async function animationPlay() {
   const params = ToolbarModule.getParams()
-  const height = ConstToolType.HEIGHT[0]
+  // const height = ConstToolType.HEIGHT[0]
   params.showFullMap && params.showFullMap(true)
   const type = ConstToolType.PLOT_ANIMATION_PLAY
   params.setToolbarVisible(true, type, {
     isFullScreen: false,
-    height,
-    column: 4,
+    // height,
+    // column: 4,
     containerType: ToolbarType.table,
     // cb: () => SMap.setAction(Action.SELECT),
   })

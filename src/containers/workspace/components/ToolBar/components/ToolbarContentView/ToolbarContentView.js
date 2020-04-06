@@ -87,11 +87,7 @@ export default class ToolbarContentView extends React.Component {
     let _data = ToolbarHeight.getToolbarSize(this.props.containerType, {
       data: this.props.data,
     })
-    if (
-      _data.column !== undefined &&
-      _data.height !== undefined &&
-      (this.height !== _data.height || this.state.column !== _data.column)
-    ) {
+    if (this.height !== _data.height || this.state.column !== _data.column) {
       this.height = _data.height
       this.changeHeight(_data)
     }
@@ -289,6 +285,7 @@ export default class ToolbarContentView extends React.Component {
         language={this.props.language}
         data={this.props.data}
         device={this.props.device}
+        column={this.state.column}
         itemAction={async item => {
           if (
             ToolbarModule.getData().actions &&

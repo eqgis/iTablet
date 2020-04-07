@@ -148,9 +148,8 @@ async function getToolBarData(type, params = {}) {
   ) {
     toolBarData = mapSettingModule().getData(type)
   } else if (
-    type === ConstToolType.MAP_MARKS ||
-    type === ConstToolType.MAP_MARKS_DRAW ||
-    type === ConstToolType.MAP_MARKS_DRAW_TEXT
+    typeof type === 'string' &&
+    type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule().getData(type, params)
   }
@@ -231,9 +230,8 @@ async function setToolBarData(type, params = {}) {
   ) {
     toolBarData = mapSettingModule()
   } else if (
-    type === ConstToolType.MAP_MARKS ||
-    type === ConstToolType.MAP_MARKS_DRAW ||
-    type === ConstToolType.MAP_MARKS_DRAW_TEXT
+    typeof type === 'string' &&
+    type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule()
   }

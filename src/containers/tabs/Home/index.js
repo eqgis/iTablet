@@ -41,15 +41,4 @@ export default connect(
   mapDispatchToProps,
 )(Home)
 
-// const languageStateToProps = state => ({
-//   language: state.setting.toJS().language
-// })
-// const languageDispatchToProps = {
-//   setLanguage
-// }
-// // export default connect(
-//   languageStateToProps,
-//   languageDispatchToProps,
-// )(HomePopupModal)
-
 export { AboutITablet, Setting }

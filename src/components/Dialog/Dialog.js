@@ -181,6 +181,13 @@ export default class Dialog extends PureComponent {
         animationType="none"
         transparent={true}
         visible={this.state.visible}
+        supportedOrientations={[
+          'portrait',
+          'portrait-upside-down',
+          'landscape',
+          'landscape-left',
+          'landscape-right',
+        ]}
         onRequestClose={() => {
           //点击物理按键需要隐藏对话框
           if (this.props.backHide) {

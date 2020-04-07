@@ -14,14 +14,13 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-import { Container } from '../../../../components'
+import { Container, PopMenu } from '../../../../components'
 import RenderServiceItem from './RenderServiceItem'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './Styles'
 import { color, size } from '../../../../styles'
-import PopupModal from './PopupModal'
 import Toast from '../../../../utils/Toast'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { UserType } from '../../../../constants'
 
@@ -34,10 +33,14 @@ let _arrPublishServiceList = []
 /** 当前页加载多少条服务数据*/
 let _iServicePageSize = 9
 let _loadCount = 1
+
+var JSIPortalService
+var JSOnlineService
 export default class MyService extends Component {
   props: {
     navigation: Object,
     user: Object,
+    device: Object,
     setUser: () => {},
   }
   constructor(props) {
@@ -58,10 +61,11 @@ export default class MyService extends Component {
         { title: this.privateServiceTitle, data: _arrPrivateServiceList },
         { title: this.publishServiceTitle, data: _arrPublishServiceList },
       ],
-      modalIsVisible: false,
       isRefreshing: false,
       progressWidth: this.screenWidth * 0.6,
     })
+    JSIPortalService = new OnlineServicesUtils('iportal')
+    JSOnlineService = new OnlineServicesUtils('online')
 
     this.serviceListTotal = -1
     this._renderItem = this._renderItem.bind(this)
@@ -194,6 +198,98 @@ export default class MyService extends Component {
     }
   }
 
+  _publishService = async () => {
+    this._onCloseModal()
+    let isPublish = !this.onClickItemIsPublish
+    let result
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      result = await SOnlineService.changeServiceVisibilityWithServiceId(
+        this.onClickItemId,
+        isPublish,
+      )
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      result = await JSIPortalService.setServicesShareConfig(
+        this.onClickItemId,
+        isPublish,
+      )
+    }
+    if (typeof result === 'boolean' && result) {
+      Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
+      this._onModalRefresh2(
+        null,
+        this.onClickItemIsPublish,
+        false,
+        this.onClickItemIndex,
+      )
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
+    }
+  }
+
+  _deleteService = async () => {
+    try {
+      this._onCloseModal()
+      global.Loading.setLoading(
+        true,
+        getLanguage(global.language).Prompt.DELETING_SERVICE,
+      )
+
+      let deletPromise
+      let requestPromise
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        deletPromise = SOnlineService.deleteServiceWithServiceId(
+          this.onClickItemId,
+        )
+        await new Promise(resolve => {
+          setTimeout(() => resolve(true), 2000)
+        })
+        requestPromise = JSOnlineService.getService(this.onClickItemId)
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        deletPromise = SIPortalService.deleteMyService(this.onClickItemId)
+        await new Promise(resolve => {
+          setTimeout(() => resolve(true), 2000)
+        })
+        requestPromise = JSIPortalService.getService(this.onClickItemId)
+      }
+      let result = await requestPromise
+      if (result === false) {
+        result = true
+      } else {
+        result = await deletPromise
+      }
+
+      if (typeof result === 'boolean' && result) {
+        this.deleteService = true
+        this._onModalRefresh2(
+          null,
+          this.onClickItemIsPublish,
+          true,
+          this.onClickItemIndex,
+        )
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
+        //'删除成功')
+      } else if (typeof result === 'boolean' && !result) {
+        this.deleteService = true
+        this._onModalRefresh2(
+          null,
+          this.onClickItemIsPublish,
+          true,
+          this.onClickItemIndex,
+        )
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
+        //'删除成功')
+      } else {
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+        //'删除失败')
+      }
+      global.Loading.setLoading(false)
+    } catch (error) {
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+      //'删除失败')
+    }
+  }
+
   _isShowRenderItem = (isShow: boolean, title: string) => {
     if (title === this.publishServiceTitle) {
       this.setState({ bPublishServiceShow: !isShow })
@@ -294,41 +390,46 @@ export default class MyService extends Component {
     return item.id
   }
 
-  _onItemPress = (isPublish, itemId, restTitle, index) => {
+  _onItemPress = (isPublish, itemId, restTitle, index, event) => {
     this.onClickItemId = itemId
     this.onClickItemRestTitle = restTitle
     this.onClickItemIsPublish = isPublish
     this.onClickItemIndex = index
-    this.setState({ modalIsVisible: true })
+    this.popMenu.setVisible(true, {
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY,
+    })
   }
 
   _onCloseModal = () => {
-    this.setState({ modalIsVisible: false })
+    this.popMenu.setVisible(false)
   }
 
-  _renderModal = () => {
-    if (this.state.modalIsVisible) {
-      return (
-        <PopupModal
-          user={this.props.user}
-          onRefresh={this._onModalRefresh2}
-          onCloseModal={this._onCloseModal}
-          modalVisible={this.state.modalIsVisible}
-          title={this.onClickItemRestTitle}
-          isPublish={this.onClickItemIsPublish}
-          itemId={this.onClickItemId}
-          index={this.onClickItemIndex}
-        />
-      )
-    }
+  _getPopMenuData = () => {
+    let data = [
+      {
+        title: this.onClickItemIsPublish
+          ? getLanguage(global.language).Profile.SET_AS_PRIVATE_SERVICE
+          : getLanguage(global.language).Profile.SET_AS_PUBLIC_SERVICE,
+        action: this._publishService,
+      },
+      {
+        title: getLanguage(global.language).Profile.DELETE,
+        action: this._deleteService,
+      },
+    ]
+    return data
   }
 
-  _onModalRefresh = async () => {
-    if (!this.state.isRefreshing) {
-      this.setState({ isRefreshing: true })
-      await this._initSectionsData(_loadCount, _iServicePageSize)
-      this.setState({ isRefreshing: false })
-    }
+  _renderPopMenu = () => {
+    return (
+      <PopMenu
+        ref={ref => (this.popMenu = ref)}
+        getData={this._getPopMenuData}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
   }
 
   _onModalRefresh2 = async (itemId, isPublish, isDelete, index) => {
@@ -585,7 +686,6 @@ export default class MyService extends Component {
             onEndReached={this._loadData}
             ListFooterComponent={this._footView}
           />
-          {this._renderModal()}
         </View>
       )
     }
@@ -604,6 +704,7 @@ export default class MyService extends Component {
         }}
       >
         {this._render()}
+        {this._renderPopMenu()}
       </Container>
     )
   }

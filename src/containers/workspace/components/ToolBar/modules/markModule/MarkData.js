@@ -29,7 +29,16 @@ function getData(type, params) {
           type: ToolbarBtnType.CANCEL,
           action: MarkAction.back,
         },
-        ToolbarBtnType.PLACEHOLDER,
+        {
+          type: constants.UNDO,
+          action: MarkAction.undo,
+          image: require('../../../../../../assets/mapTools/icon_undo_white.png'),
+        },
+        {
+          type: constants.REDO,
+          action: MarkAction.redo,
+          image: require('../../../../../../assets/mapTools/icon_recover_white.png'),
+        },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break

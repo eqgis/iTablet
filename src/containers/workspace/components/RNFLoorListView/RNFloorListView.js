@@ -49,10 +49,10 @@ export default class RNFloorListView extends React.Component {
       let height, bottom
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
-        bottom = scaleSize(45)
+        bottom = prevState.bottom === DEFAULT_BOTTOM ? scaleSize(45) : prevState.bottom
       } else {
         height = scaleSize(360)
-        bottom = DEFAULT_BOTTOM
+        bottom = prevState.bottom === DEFAULT_BOTTOM ? DEFAULT_BOTTOM : prevState.bottom
       }
       this.setState(
         {
@@ -100,6 +100,18 @@ export default class RNFloorListView extends React.Component {
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
       }).start()
     }
+  }
+
+  /**
+   * 改变bottom位置 导航路径界面使用
+   * @param isBottom
+   */
+  changeBottom = isBottom => {
+    let value = isBottom ? scaleSize(240) : DEFAULT_BOTTOM
+    Animated.timing(this.state.bottom, {
+      toValue: value,
+      duration: Const.ANIMATED_DURATION,
+    }).start()
   }
 
   _onFloorPress = async item => {

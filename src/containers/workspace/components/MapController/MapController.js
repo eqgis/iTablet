@@ -150,6 +150,7 @@ export default class MapController extends React.Component {
         }),
       )
     }
+    Animated.sequence(animatedList).start()
   }
 
   // 移动

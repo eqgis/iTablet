@@ -302,12 +302,12 @@ export default class ClassifyView extends React.Component {
             mediaName,
             classifyTime,
             cb: async () => {
-              NavigationService.goBack()
+              // NavigationService.goBack()
               // await this.clear()
               // await this.startPreview()
               //保存后回到地图
-              NavigationService.goBack()
-              NavigationService.goBack()
+              // NavigationService.goBack()
+              // NavigationService.goBack()
               GLOBAL.toolBox.setVisible(false)(await GLOBAL.toolBox) &&
                 GLOBAL.toolBox.switchAr()
             },

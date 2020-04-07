@@ -218,7 +218,6 @@ export default class NavigationView extends React.Component {
       })
       let path, pathLength
       if (commonIndoorInfo.length > 0) {
-        // todo 室内点的问题 图标问题 最好统一js显示
         //有公共室内数据源，室内导航
         // await SMap.clearPoint
         try {
@@ -478,6 +477,7 @@ export default class NavigationView extends React.Component {
           //考虑搜索界面跳转，不能直接goBack
           NavigationService.navigate('MapView')
           GLOBAL.mapController && GLOBAL.mapController.changeBottom(true)
+          GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(true)
         }
       }
     }
@@ -542,6 +542,7 @@ export default class NavigationView extends React.Component {
         //考虑搜索界面跳转，不能直接goBack
         NavigationService.navigate('MapView')
         GLOBAL.mapController && GLOBAL.mapController.changeBottom(true)
+        GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(true)
       }
     }
   }

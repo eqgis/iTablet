@@ -768,6 +768,7 @@ export default class MapView extends React.Component {
       GLOBAL.language,
     ).Map_Main_Menu.SELECT_DESTINATION
     GLOBAL.mapController && GLOBAL.mapController.changeBottom(false)
+    GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(false)
   }
 
   /** 检测MapView在router中是否唯一 **/
@@ -3264,7 +3265,7 @@ export default class MapView extends React.Component {
                 source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
                 style={styles.dialogHeaderImg}
               />
-              <Text style={styles.promptTitle}>
+              <Text style={styles.promptTitleSmallText}>
                 {getLanguage(GLOBAL.language).Prompt.USE_ONLINE_ROUTE_ANALYST}
               </Text>
             </View>

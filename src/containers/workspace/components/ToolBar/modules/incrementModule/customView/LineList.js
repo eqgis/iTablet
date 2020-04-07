@@ -202,6 +202,8 @@ export default class LineList extends Component{
       let removeLayer = false
       if(selectedItem.datasourceName === datasourceName && selectedItem.datasetName === datasetName){
         selectedItem = data[currentIndex].data[index] || {}
+      }
+      if(GLOBAL.INCREMENT_DATA.datasourceName === datasourceName && GLOBAL.INCREMENT_DATA.datasetName === datasetName){
         removeLayer = true
       }
       SMap.deleteDatasetAndLayer({datasourceName,datasetName,removeLayer})

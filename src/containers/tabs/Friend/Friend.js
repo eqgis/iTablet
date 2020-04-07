@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Container from '../../../components/Container'
 import {
-  Dimensions,
   TouchableOpacity,
   Image,
   View,
@@ -133,7 +132,7 @@ export default class Friend extends Component {
 
   _getWidth = () => {
     let width = screen.getScreenWidth(this.props.device.orientation)
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       width = width - scaleSize(96)
     }
     return width

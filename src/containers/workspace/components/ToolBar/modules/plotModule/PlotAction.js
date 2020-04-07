@@ -150,10 +150,10 @@ function showSymbol() {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
     // height:
-    //   params.device.orientation === 'PORTRAIT'
+    //   params.device.orientation.indexOf('PORTRAIT') >= 0
     //     ? ConstToolType.HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[4],
-    // column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
+    // column: params.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
   })
 }
 
@@ -369,7 +369,7 @@ async function showAnimationXmlList() {
     containerType: ToolbarType.list,
     isFullScreen: true,
     height:
-      params.device.orientation === 'LANDSCAPE'
+      params.device.orientation.indexOf('LANDSCAPE') === 0
         ? ConstToolType.THEME_HEIGHT[4]
         : ConstToolType.HEIGHT[3],
   })

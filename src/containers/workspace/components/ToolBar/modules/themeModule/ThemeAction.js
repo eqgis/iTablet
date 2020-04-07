@@ -40,7 +40,7 @@ async function dealData(params = {}, loading = true) {
   //   height = params.heights[0]
   // } else {
   //   height =
-  //     _params.device.orientation === 'LANDSCAPE'
+  //     _params.device.orientation.indexOf('LANDSCAPE') === 0
   //       ? params.heights[0]
   //       : params.heights[1]
   // }
@@ -136,7 +136,7 @@ async function getThemeExpress(type, key = '', name = '') {
     isFullScreen: false,
     data,
     // height:
-    //   _params.device.orientation === 'LANDSCAPE'
+    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5],
     buttons: [
@@ -387,7 +387,9 @@ async function getColorGradientType(type, key = '', name = '') {
 
 async function getRangeMode(type, key = '', name = '') {
   const column =
-    ToolbarModule.getParams().device.orientation === 'PORTRAIT' ? 4 : 8
+    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+      ? 4
+      : 8
   const getData = async function() {
     return await ThemeMenuData.getRangeMode(type)
   }
@@ -522,7 +524,9 @@ async function getGraduatedSymbolBaseValueAndSymbolSize(
 
 async function getLabelBackShape(type, key = '', name = '') {
   const column =
-    ToolbarModule.getParams().device.orientation === 'PORTRAIT' ? 4 : 8
+    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+      ? 4
+      : 8
   const getData = async function() {
     return await ThemeMenuData.getLabelBackShape()
   }
@@ -547,7 +551,9 @@ async function getLabelBackShape(type, key = '', name = '') {
 // 各种专题图的颜色值选择
 async function getColorTable(type, key = '', name = '') {
   const column =
-    ToolbarModule.getParams().device.orientation === 'PORTRAIT' ? 8 : 12
+    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+      ? 8
+      : 12
   const getData = async function() {
     return await ThemeMenuData.getColorTable()
   }
@@ -698,7 +704,7 @@ async function listAction(type, params = {}) {
     )
     const alias = _data.data[0].title
     // const height =
-    //   _params.device.orientation === 'LANDSCAPE'
+    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5]
     const data = {
@@ -999,7 +1005,7 @@ async function listAction(type, params = {}) {
             : ToolbarType.list,
           data: datalist,
           // height:
-          //   _params.device.orientation === 'PORTRAIT'
+          //   _params.device.orientation.indexOf('PORTRAIT') >= 0
           //     ? ConstToolType.THEME_HEIGHT[5]
           //     : ConstToolType.THEME_HEIGHT[3],
           buttons: listSelectable
@@ -1393,10 +1399,10 @@ async function layerListAction(data) {
       containerType: ToolbarType.list,
       isFullScreen: true,
       // height:
-      //   orientation === 'PORTRAIT'
+      //   orientation.indexOf('PORTRAIT') >= 0
       //     ? ConstToolType.THEME_HEIGHT[3]
       //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
-      // column: orientation === 'PORTRAIT' ? 8 : 4,
+      // column: orientation.indexOf('PORTRAIT') >= 0 ? 8 : 4,
       themeType: curThemeType,
       isTouchProgress: false,
       showMenuDialog: true,

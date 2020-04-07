@@ -91,7 +91,7 @@ export default class TouchProgress extends Component {
 
   getWidthByOrientation = () => {
     let width = this.props.device.width
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       width -= Height.TOOLBAR_BUTTONS
     }
     return width

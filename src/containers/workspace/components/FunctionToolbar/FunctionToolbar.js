@@ -110,12 +110,17 @@ export default class FunctionToolbar extends React.Component {
       type: props.type,
       data: data,
       top:
-        this.props.device.orientation === 'LANDSCAPE'
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(TOP_LANDSCAPE)
           : new Animated.Value(TOP),
       right:
-        this.props.device.orientation === 'LANDSCAPE'
-          ? new Animated.Value(RIGHT_LANDSCAPE)
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(
+            screen.isIphoneX() &&
+              this.props.device.orientation === 'LANDSCAPE-RIGHT'
+              ? screen.X_TOP
+              : RIGHT_LANDSCAPE,
+          )
           : new Animated.Value(RIGHT),
     }
     this.rotate = new Animated.Value(0)
@@ -153,9 +158,13 @@ export default class FunctionToolbar extends React.Component {
   onOrientationChange = () => {
     let top, right
     if (this.visible) {
-      if (this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         top = TOP_LANDSCAPE
-        right = RIGHT_LANDSCAPE
+        right =
+          screen.isIphoneX() &&
+          this.props.device.orientation === 'LANDSCAPE-RIGHT'
+            ? screen.X_TOP
+            : RIGHT_LANDSCAPE
       } else {
         top = TOP
         right = RIGHT
@@ -171,7 +180,7 @@ export default class FunctionToolbar extends React.Component {
         }),
       ]).start()
     } else {
-      if (this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         top = TOP_LANDSCAPE
       } else {
         top = TOP
@@ -188,7 +197,7 @@ export default class FunctionToolbar extends React.Component {
     let contentHeight = this.list._listRef._totalCellLength
     let offset = this.offset
     let visibleHeight
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       let indicatorHeight = scaleSize(15) * 2
       let windowHeight = Math.min(
         Dimensions.get('window').height,
@@ -237,7 +246,12 @@ export default class FunctionToolbar extends React.Component {
   setVisible = (visible, immediately = false) => {
     if (this.visible === visible) return
     let right =
-      this.props.device.orientation === 'LANDSCAPE' ? RIGHT_LANDSCAPE : RIGHT
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? screen.isIphoneX() &&
+          this.props.device.orientation === 'LANDSCAPE-RIGHT'
+          ? screen.X_TOP
+          : RIGHT_LANDSCAPE
+        : RIGHT
     Animated.timing(this.state.right, {
       toValue: visible ? right : scaleSize(-200),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
@@ -682,7 +696,7 @@ export default class FunctionToolbar extends React.Component {
     // })
     // return <View style={{ flexDirection: 'column' }}>{arr}</View>
     let style =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? {}
         : {
           maxHeight:
@@ -769,7 +783,7 @@ export default class FunctionToolbar extends React.Component {
       return null
     }
     let bottom
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       bottom = {
         bottom: BOTTOM_LANDSCAPE,
       }
@@ -789,7 +803,8 @@ export default class FunctionToolbar extends React.Component {
         {this.renderIndicator('top')}
         {this.renderList()}
         {this.renderIndicator('bottom')}
-        {this.props.device.orientation === 'LANDSCAPE' && this.renderMore()}
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
+          this.renderMore()}
       </Animated.View>
     )
   }

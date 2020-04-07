@@ -46,10 +46,10 @@ export default class ColorTable extends React.Component {
   componentDidUpdate(prevProps) {
     // if (prevProps.device.orientation !== this.props.device.orientation) {
     //   this.height =
-    //     prevProps.device.orientation === 'LANDSCAPE'
+    //     prevProps.device.orientation.indexOf('LANDSCAPE') === 0
     //       ? ConstToolType.THEME_HEIGHT[7]
     //       : ConstToolType.THEME_HEIGHT[3]
-    //   this.ColumnNums = prevProps.device.orientation === 'LANDSCAPE' ? 12 : 8
+    //   this.ColumnNums = prevProps.device.orientation.indexOf('LANDSCAPE') === 0 ? 12 : 8
     // }
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({
@@ -59,11 +59,11 @@ export default class ColorTable extends React.Component {
   }
 
   getColumn = () => {
-    return this.props.device.orientation === 'LANDSCAPE' ? 4 : 8
+    return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 8
   }
 
   getRow = () => {
-    return this.props.device.orientation === 'LANDSCAPE' ? 8 : 4
+    return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4
   }
 
   dealData = data => {
@@ -96,7 +96,7 @@ export default class ColorTable extends React.Component {
     let size =
       Math.min(this.props.device.height, this.props.device.width) / 8 -
       scaleSize(4)
-    // (this.props.device.orientation === 'LANDSCAPE'
+    // (this.props.device.orientation.indexOf('LANDSCAPE') === 0
     //   ? this.props.device.height
     //   : this.props.device.width) /
     // this.getColumn() -

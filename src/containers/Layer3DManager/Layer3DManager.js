@@ -205,7 +205,7 @@ export default class Layer3DManager extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title:
-            this.props.device.orientation !== 'LANDSCAPE' &&
+            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
             getLanguage(this.props.language).Map_Module.MAP_3D,
           //MAP_MODULE.MAP_3D,
           headerTitleViewStyle: {

@@ -89,9 +89,9 @@ function layerListAction(data) {
     _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
       containerType: ToolbarType.symbol,
       isFullScreen: false,
-      // column: orientation === 'PORTRAIT' ? 4 : 8,
+      // column: orientation.indexOf('PORTRAIT') >= 0 ? 4 : 8,
       // height:
-      //   orientation === 'PORTRAIT'
+      //   orientation.indexOf('PORTRAIT') >= 0
       //     ? ConstToolType.THEME_HEIGHT[3]
       //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
     })

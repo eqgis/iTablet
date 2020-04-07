@@ -22,7 +22,10 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import { SimpleDialog } from '../../Friend/Component'
-import { HEADER_HEIGHT, HEADER_HEIGHT_LANDSCAPE } from '../../../../../src/components/Header/styles'
+import {
+  HEADER_HEIGHT,
+  HEADER_HEIGHT_LANDSCAPE,
+} from '../../../../../src/components/Header/styles'
 import { TAB_BAR_HEIGHT_P } from '../../TabBar'
 // let AppUtils = NativeModules.AppUtils
 
@@ -418,33 +421,32 @@ class ModuleList extends Component {
     let heightNum = data.length % 2 === 0 ? data.length : data.length + 1
     let height = (fixedSize(220) * heightNum) / 2
     let windowHeight
-    if(this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       windowHeight = Math.min(screen.getScreenHeight(), screen.getScreenWidth())
     } else {
       windowHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth())
     }
-    let contentH =
-      windowHeight -
-      HEADER_HEIGHT -
-      TAB_BAR_HEIGHT_P
+    let contentH = windowHeight - HEADER_HEIGHT - TAB_BAR_HEIGHT_P
     let scrollEnabled = false
     if (height >= contentH) {
       height = contentH
       scrollEnabled = true
     }
-    let spaceHeight = (windowHeight - fixedSize(157) * 2 - HEADER_HEIGHT_LANDSCAPE) / 3 - fixedSize(70)
-    if(spaceHeight < 0) {
+    let spaceHeight =
+      (windowHeight - fixedSize(157) * 2 - HEADER_HEIGHT_LANDSCAPE) / 3 -
+      fixedSize(70)
+    if (spaceHeight < 0) {
       spaceHeight = 0
     }
     return (
       <View style={styles.container}>
-        {this.props.device.orientation === 'LANDSCAPE' ? (
-          <View style={{ width: '100%'}}>
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
+          <View style={{ width: '100%' }}>
             <FlatList
               key={'landscapeList'}
               data={data}
-              ItemSeparatorComponent={()=>{
-                return <View style={{height: spaceHeight}}/>
+              ItemSeparatorComponent={() => {
+                return <View style={{ height: spaceHeight }} />
               }}
               contentContainerStyle={{
                 justifyContent: 'center',

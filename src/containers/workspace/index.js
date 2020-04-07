@@ -76,7 +76,10 @@ const stackOption = {
   },
   transitionConfig: () => ({
     screenInterpolator: sceneProps => {
-      if (global.getDevice().orientation !== 'LANDSCAPE') {
+      if (
+        !global.getDevice().orientation ||
+        global.getDevice().orientation.indexOf('LANDSCAPE') < 0
+      ) {
         return StackViewStyleInterpolator.forFade(sceneProps)
       }
       return forHorizontal(sceneProps)

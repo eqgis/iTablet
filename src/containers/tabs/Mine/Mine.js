@@ -5,7 +5,6 @@
 */
 import React, { Component } from 'react'
 import {
-  Dimensions,
   View,
   Text,
   TouchableOpacity,
@@ -355,7 +354,7 @@ export default class Mine extends Component {
         <View
           style={[
             styles.profileTextStyle,
-            this.props.device.orientation === 'LANDSCAPE'
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0
               ? styles.profileTextLandscapeStyle
               : null,
           ]}
@@ -370,7 +369,7 @@ export default class Mine extends Component {
   }
 
   _renderSearch = () => {
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       return null
     }
     return (
@@ -431,7 +430,8 @@ export default class Mine extends Component {
   }
 
   _renderItems = () => {
-    let colNum = this.props.device.orientation === 'LANDSCAPE' ? 5 : 4
+    let colNum =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
     let items = this._getItems()
     let renderItems = []
     let key = 0
@@ -452,7 +452,7 @@ export default class Mine extends Component {
         style={[
           styles.itemView,
           { width: (this.width - scaleSize(50)) / colNum },
-          this.props.device.orientation === 'LANDSCAPE'
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? styles.itemLandscapeView
             : null,
         ]}
@@ -485,7 +485,7 @@ export default class Mine extends Component {
 
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation)
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       this.width = this.width - scaleSize(96)
     }
     return (
@@ -493,7 +493,7 @@ export default class Mine extends Component {
         ref={ref => (this.container = ref)}
         hideInBackground={false}
         showFullInMap={true}
-        withoutHeader={this.props.device.orientation !== 'LANDSCAPE'}
+        withoutHeader={this.props.device.orientation.indexOf('LANDSCAPE') < 0}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.PROFILE,
           withoutBack: true,

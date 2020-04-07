@@ -33,7 +33,8 @@ export default handleActions(
       const deviceHeight = screen.getScreenHeight()
       if (payload.orientation) {
         device.orientation = payload.orientation
-        if (payload.orientation === 'LANDSCAPE') {
+        // if (payload.orientation.indexOf('LANDSCAPE') === 0) {
+        if (payload.orientation.indexOf('LANDSCAPE') === 0) {
           device.width = deviceWidth > deviceHeight ? deviceWidth : deviceHeight
           device.height =
             deviceWidth < deviceHeight ? deviceWidth : deviceHeight

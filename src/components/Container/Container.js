@@ -264,7 +264,11 @@ export default class Container extends PureComponent {
       <AnimatedView
         style={[
           styles.view,
-          screen.isIphoneX() && { paddingTop: 44 },
+          {
+            // TODO 统一在这里处理，去掉其他的paddingTop
+            // paddingTop: screen.getIphonePaddingTop(),
+            paddingBottom: screen.getIphonePaddingBottom(),
+          },
           { transform: [{ translateX: this.viewX }] },
         ]}
       >

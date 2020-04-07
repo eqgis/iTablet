@@ -112,13 +112,11 @@ function getIphonePaddingTop() {
  * @returns {number}
  */
 function getIphonePaddingBottom() {
-  let paddingTop = 0
+  let paddingBottom = 0
   if (isIphoneX()) {
-    paddingTop = 44
-  } else if (Platform.OS === 'ios') {
-    paddingTop = 20
+    paddingBottom = 34
   }
-  return paddingTop
+  return paddingBottom
 }
 
 export function px(size) {

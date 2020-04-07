@@ -26,6 +26,8 @@ export default class NavigationStartButton extends React.Component {
 
   constructor(props) {
     super(props)
+    //路径详情只支持中英文
+    this.language = GLOBAL.language === 'CN' ? 'CN' : 'EN'
     this.state = {
       show: false,
       isroad: true,
@@ -33,7 +35,6 @@ export default class NavigationStartButton extends React.Component {
       height: new Animated.Value(scaleSize(200)),
       length: '',
     }
-
     this.directions =
       GLOBAL.language === 'CN'
         ? [
@@ -59,7 +60,7 @@ export default class NavigationStartButton extends React.Component {
           '到达途径点',
         ]
         : [
-          'go straight',
+          'Going straight',
           'front-left turn',
           'front-right turn',
           'turn left',
@@ -240,26 +241,26 @@ export default class NavigationStartButton extends React.Component {
     if (roadLength > 1000)
       roadLength =
         (roadLength / 1000).toFixed(1) +
-        getLanguage(GLOBAL.language).Map_Main_Menu.KILOMETERS
+        getLanguage(this.language).Map_Main_Menu.KILOMETERS
     else
       roadLength =
-        (roadLength || 1) + getLanguage(GLOBAL.language).Map_Main_Menu.METERS
+        (roadLength || 1) + getLanguage(this.language).Map_Main_Menu.METERS
     let str = ''
-    let thenInfo = GLOBAL.language === 'CN' ? '然后' : 'and then'
+    let thenInfo = this.language === 'CN' ? '然后' : 'and then'
     if (turnType === 'start' || turnType === 'end') {
       str = item.text
     } else if (turnType === 0) {
       str = `${this.directions[turnType]} ${roadLength}`
     } else if (turnType === 12) {
       str = `${
-        getLanguage(GLOBAL.language).Map_Main_Menu.GO_STRAIGHT
-      }${roadLength}`
+        getLanguage(this.language).Map_Main_Menu.GO_STRAIGHT
+      } ${roadLength}`
     } else {
       str = `${
-        getLanguage(GLOBAL.language).Map_Main_Menu.GO_STRAIGHT
+        getLanguage(this.language).Map_Main_Menu.GO_STRAIGHT
       } ${roadLength} ${thenInfo} ${this.directions[turnType]}`
     }
-    if (item.routeName && GLOBAL.language === 'CN') {
+    if (item.routeName && this.language === 'CN') {
       str = `沿${item.routeName}${str}`
     }
     let icon = this.getIconByType(turnType)
@@ -317,12 +318,12 @@ export default class NavigationStartButton extends React.Component {
   renderRoad = () => {
     let data = [
       {
-        text: getLanguage(GLOBAL.language).Map_Main_Menu.START_FROM_START_POINT,
+        text: getLanguage(this.language).Map_Main_Menu.START_FROM_START_POINT,
         turnType: 'start',
       },
       ...this.props.path,
       {
-        text: getLanguage(GLOBAL.language).Map_Main_Menu
+        text: getLanguage(this.language).Map_Main_Menu
           .ARRIVE_AT_THE_DESTINATION,
         turnType: 'end',
       },

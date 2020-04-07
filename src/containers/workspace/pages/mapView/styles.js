@@ -241,4 +241,27 @@ export default StyleSheet.create({
     color: color.white,
     padding: scaleSize(10),
   },
+  incrementContent:{
+    width:scaleSize(500),
+    height:scaleSize(300),
+    backgroundColor:color.background,
+    borderRadius:5,
+    flexDirection:'row',
+    justifyContent: 'space-around',
+    paddingTop:scaleSize(20),
+  },
+  incrementButton:{
+    width:scaleSize(200),
+    height:scaleSize(260),
+    flexDirection:'column',
+    justifyContent: 'space-around',
+    alignItems:'center',
+  },
+  incrementImage:{
+    width:scaleSize(200),
+    height:scaleSize(200),
+  },
+  incrementText: {
+    fontSize: scaleSize(20),
+  },
 })

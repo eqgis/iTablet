@@ -326,6 +326,7 @@ export default class Find extends Component {
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
+        showFullInMap={true}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
           withoutBack: true,

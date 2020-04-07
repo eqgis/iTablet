@@ -12,6 +12,7 @@ import {
   Image,
   View,
 } from 'react-native'
+import ToolbarModule from '../modules/ToolbarModule'
 
 export default class ToolBarSectionList extends React.Component {
   props: {
@@ -357,6 +358,9 @@ export default class ToolBarSectionList extends React.Component {
                   exitCallback: async () => {
                     let data = await section.getDatasource()
                     this.setState({ sections: data.data })
+                    ToolbarModule.addData({
+                      data: data,
+                    })
                   },
                 })
               }

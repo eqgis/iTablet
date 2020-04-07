@@ -452,6 +452,7 @@ export default class Home extends Component {
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
+        showFullInMap={true}
         headerProps={{
           title: this.props.appConfig.name,
           headerLeft: (

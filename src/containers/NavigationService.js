@@ -30,11 +30,29 @@ function navigate(routeName, params) {
   })()
 }
 
-function isInStack(routeName) {
+function isInMap() {
   if (_navigator) {
     let routes = _navigator.state.nav.routes
     for (let i = routes.length - 1; i >= 0; i--) {
-      if (routes[i].routeName === routeName) {
+      if (routes[i].routeName === 'MapStack') {
+        return true
+      } else if (
+        routes[i].routeName === 'CoworkTabs' &&
+        routes[i].index === 1
+      ) {
+        return true
+      }
+    }
+    return false
+  }
+  return false
+}
+
+function isInMap3D() {
+  if (_navigator) {
+    let routes = _navigator.state.nav.routes
+    for (let i = routes.length - 1; i >= 0; i--) {
+      if (routes[i].routeName === 'Map3DStack') {
         return true
       }
     }
@@ -111,5 +129,6 @@ export default {
   replace,
   pop,
   popToTop,
-  isInStack,
+  isInMap,
+  isInMap3D,
 }

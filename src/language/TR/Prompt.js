@@ -317,6 +317,12 @@ const Prompt = {
     'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
 
+  //导航增量路网
+  SELECT_LINE_DATASET:'Lütfen önce bir satır veri kümesi seçin',
+  CANT_UNDO:'Cayılamaz',
+  CANT_REDO:'Yeniden yapamıyorum',
+  DATASET_RENAME_FAILED:'Veri kümesi adı yalnızca harf, rakam, "_", "@", "#" içerebilir',
+  SWITCH_LINE: 'Veri değiştirme',
   // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",

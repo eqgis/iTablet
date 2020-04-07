@@ -203,7 +203,11 @@ class NewDataset extends Component {
         )
         if (!(await this._isAvailableDatasetName(newDatasets))) {
           setTimeout(() => {
-            Toast.show(getLanguage(global.language).Prompt.INVALID_DATASET_NAME)
+            Toast.show(
+              getLanguage(global.language).Prompt.INVALID_DATASET_NAME +
+                ': ' +
+                this.badName,
+            )
             this.container && this.container.setLoading(false)
           }, 1000)
         } else {
@@ -241,6 +245,7 @@ class NewDataset extends Component {
             datasets[i].datasetName,
           ))
         ) {
+          this.badName = datasets[i].datasetName
           return false
         }
       }

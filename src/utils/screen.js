@@ -10,12 +10,34 @@ let deviceSafeHeight // 设备安全高度
 // const defaultPixel = 2.25
 // const fontScale = PixelRatio.getFontScale()
 
-function getScreenWidth() {
+function getScreenWidth(orientation) {
   deviceWidth = Dimensions.get('window').width
+  if (orientation === 'LANDSCAPE') {
+    deviceWidth = Math.max(
+      Dimensions.get('window').height,
+      Dimensions.get('window').width,
+    )
+  } else if (orientation === 'PORTRAIT') {
+    deviceWidth = Math.min(
+      Dimensions.get('window').height,
+      Dimensions.get('window').width,
+    )
+  }
   return deviceWidth
 }
-function getScreenHeight() {
+function getScreenHeight(orientation) {
   deviceHeight = Dimensions.get('window').height
+  if (orientation === 'LANDSCAPE') {
+    deviceHeight = Math.min(
+      Dimensions.get('window').height,
+      Dimensions.get('window').width,
+    )
+  } else if (orientation === 'PORTRAIT') {
+    deviceHeight = Math.max(
+      Dimensions.get('window').height,
+      Dimensions.get('window').width,
+    )
+  }
   return deviceHeight
 }
 function getScreenSafeHeight() {

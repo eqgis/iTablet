@@ -19,7 +19,7 @@ import NavigationService from '../../NavigationService'
 import ConstPath from '../../../constants/ConstPath'
 import { SOnlineService } from 'imobile_for_reactnative'
 import { UserType } from '../../../constants'
-import { scaleSize } from '../../../utils'
+import { screen, scaleSize, fixedSize } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
 import styles from './styles'
@@ -296,7 +296,7 @@ export default class Mine extends Component {
           <Image
             style={[
               styles.logoImagStyle,
-              { width: scaleSize(190), height: scaleSize(70) },
+              { width: fixedSize(190), height: fixedSize(70) },
             ]}
             source={logos.logo1}
           />
@@ -308,7 +308,7 @@ export default class Mine extends Component {
         />
         {logos.logo3 && (
           <Image
-            style={[styles.logoImagStyle, { width: scaleSize(190) }]}
+            style={[styles.logoImagStyle, { width: fixedSize(190) }]}
             source={logos.logo3}
           />
         )}
@@ -411,7 +411,7 @@ export default class Mine extends Component {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={this._onPressSwitch}
-        style={[styles.sideItemStyle, logos.logo1 && { top: scaleSize(150) }]} // 判断是否包含定制logo
+        style={[styles.sideItemStyle, logos.logo1 && { top: fixedSize(150) }]} // 判断是否包含定制logo
       >
         <Text style={styles.SideTextStyle}>
           {getLanguage(this.props.language).Profile.SWITCH_ACCOUNT}
@@ -451,7 +451,7 @@ export default class Mine extends Component {
         onPress={item.onClick}
         style={[
           styles.itemView,
-          { width: (this.screenWidth - scaleSize(50)) / colNum },
+          { width: (this.width - scaleSize(50)) / colNum },
           this.props.device.orientation === 'LANDSCAPE'
             ? styles.itemLandscapeView
             : null,
@@ -484,17 +484,15 @@ export default class Mine extends Component {
   }
 
   render() {
-    if(this.props.device.orientation === 'LANDSCAPE') {
-      this.screenWidth = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
-      this.screenHeight = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
-    } else {
-      this.screenWidth = Math.min(Dimensions.get('window').height, Dimensions.get('window').width)
-      this.screenHeight = Math.max(Dimensions.get('window').height, Dimensions.get('window').width)
+    this.width = screen.getScreenWidth(this.props.device.orientation)
+    if (this.props.device.orientation === 'LANDSCAPE') {
+      this.width = this.width - scaleSize(96)
     }
     return (
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
+        showFullInMap={true}
         withoutHeader={this.props.device.orientation !== 'LANDSCAPE'}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.PROFILE,

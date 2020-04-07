@@ -204,6 +204,14 @@ export default StyleSheet.create({
     marginRight: scaleSize(10),
     textAlign: 'center',
   },
+  promptTitleSmallText:{
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.theme_white,
+    marginTop: scaleSize(5),
+    marginLeft: scaleSize(10),
+    marginRight: scaleSize(10),
+    textAlign: 'center',
+  },
   dialogHeaderView: {
     flex: 1,
     flexDirection: 'column',

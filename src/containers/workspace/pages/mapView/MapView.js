@@ -3251,7 +3251,7 @@ export default class MapView extends React.Component {
                 source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
                 style={styles.dialogHeaderImg}
               />
-              <Text style={styles.promptTitle}>
+              <Text style={styles.promptTitleSmallText}>
                 {getLanguage(GLOBAL.language).Prompt.USE_ONLINE_ROUTE_ANALYST}
               </Text>
             </View>

@@ -7,7 +7,7 @@ import * as React from 'react'
 import { View, Animated } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { Const } from '../../../../constants'
-import { scaleSize, Toast } from '../../../../utils'
+import { scaleSize, Toast, screen } from '../../../../utils'
 import { SMap, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -29,7 +29,12 @@ export default class MapController extends React.Component {
     super(props)
     this.deg = 0
     this.state = {
-      left: new Animated.Value(DEFAULT_LEFT),
+      left: new Animated.Value(
+        (screen.isIphoneX() &&
+        this.props.device.orientation === 'LANDSCAPE-LEFT'
+          ? screen.X_TOP
+          : 0) + DEFAULT_LEFT,
+      ),
       //在导航界面缩放时，bottom高度为scaleSize(240)避免mapController被遮盖
       bottom:
         (GLOBAL.NAV_PARAMS && GLOBAL.NAV_PARAMS.length > 0) ||
@@ -37,7 +42,7 @@ export default class MapController extends React.Component {
         (GLOBAL.NAVIGATIONSTARTBUTTON &&
           GLOBAL.NAVIGATIONSTARTBUTTON.state.show)
           ? new Animated.Value(scaleSize(240))
-          : this.props.device.orientation === 'LANDSCAPE'
+          : this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? new Animated.Value(DEFAULT_BOTTOM_LAND)
             : new Animated.Value(DEFAULT_BOTTOM),
       compass: new Animated.Value(0),
@@ -63,16 +68,33 @@ export default class MapController extends React.Component {
   }
 
   onOrientationChange = () => {
-    let newBottom
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    let animatedList = []
+    let newBottom, newLeft
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       newBottom = DEFAULT_BOTTOM_LAND
     } else {
       newBottom = DEFAULT_BOTTOM
     }
-    Animated.timing(this.state.bottom, {
-      toValue: newBottom,
-      duration: 300,
-    }).start()
+    if (
+      screen.isIphoneX() &&
+      this.props.device.orientation === 'LANDSCAPE-LEFT'
+    ) {
+      newLeft = screen + DEFAULT_LEFT
+    }
+    animatedList.push(
+      Animated.timing(this.state.bottom, {
+        toValue: newBottom,
+        duration: 300,
+      }),
+    )
+    newLeft !== undefined &&
+      animatedList.push(
+        Animated.timing(this.state.left, {
+          toValue: newLeft,
+          duration: 300,
+        }),
+      )
+    Animated.sequence(animatedList).start()
   }
 
   /**
@@ -90,7 +112,11 @@ export default class MapController extends React.Component {
   setVisible = (visible, immediately = false) => {
     if (visible) {
       Animated.timing(this.state.left, {
-        toValue: DEFAULT_LEFT,
+        toValue:
+          (screen.isIphoneX() &&
+          this.props.device.orientation === 'LANDSCAPE-LEFT'
+            ? screen.X_TOP
+            : 0) + DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
       }).start()
     } else {
@@ -115,7 +141,11 @@ export default class MapController extends React.Component {
     if (this.state.left._value !== DEFAULT_LEFT) {
       animatedList.push(
         Animated.timing(this.state.left, {
-          toValue: DEFAULT_LEFT,
+          toValue:
+            (screen.isIphoneX() &&
+            this.props.device.orientation === 'LANDSCAPE-LEFT'
+              ? screen.X_TOP
+              : 0) + DEFAULT_LEFT,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
         }),
       )

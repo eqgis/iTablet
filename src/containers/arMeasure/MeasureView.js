@@ -17,10 +17,9 @@ import { SMMeasureView, SMeasureView } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
-import { Container } from '../../components'
+import { Container, Dialog } from '../../components'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
-import { Dialog } from '../../components'
 // import Button from '../../components/Button/Button'
 const SMeasureViewiOS = NativeModules.SMeasureView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)

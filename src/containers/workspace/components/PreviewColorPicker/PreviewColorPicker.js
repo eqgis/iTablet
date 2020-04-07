@@ -33,7 +33,7 @@ export default class PreviewColorPicker extends Component {
       b: 0,
     }
     this.containerHeight =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? scaleSize(280)
         : scaleSize(400)
     this.bottom = new Animated.Value(-this.containerHeight)
@@ -44,7 +44,7 @@ export default class PreviewColorPicker extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.device.orientation !== this.props.device.orientation) {
       this.containerHeight =
-        this.props.device.orientation === 'LANDSCAPE'
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? scaleSize(280)
           : scaleSize(400)
       Animated.timing(this.bottom, {
@@ -167,7 +167,7 @@ export default class PreviewColorPicker extends Component {
       backgroundColor: `rgb(${r},${g},${b})`,
     }
     let marginStyle =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? { marginTop: scaleSize(10) }
         : { marginTop: scaleSize(40) }
     return (
@@ -186,7 +186,7 @@ export default class PreviewColorPicker extends Component {
     const minus = require('../../../../assets/mapTool/icon_minus.png')
     const plus = require('../../../../assets/mapTool/icon_plus.png')
     let sliderStyle =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? { height: scaleSize(40) }
         : { height: scaleSize(60) }
     return (
@@ -253,7 +253,7 @@ export default class PreviewColorPicker extends Component {
         paddingLeft: scaleSize(10),
         paddingVertical: scaleSize(30),
       }
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       extraStyle = { marginLeft: scaleSize(140) }
       extraTxtStyle = { marginRight: scaleSize(140) }
       colorPickerTextStyle = {
@@ -317,7 +317,7 @@ export default class PreviewColorPicker extends Component {
       leftText = styles.headerTxt
     }
     let height =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? scaleSize(280)
         : scaleSize(400)
     return (

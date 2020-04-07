@@ -62,10 +62,10 @@ async function getWorkspaceList() {
     containerType: ToolbarType.table,
     isFullScreen: true,
     // height:
-    //   params.device.orientation === 'LANDSCAPE'
+    //   params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.HEIGHT[2]
     //     : scaleSize(350),
-    // column: params.device.orientation === 'LANDSCAPE' ? 8 : 4,
+    // column: params.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
     data,
     buttons,
   })

@@ -25,10 +25,10 @@ export default class RNFloorListView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      column: props.device.orientation === 'LANDSCAPE' ? 8 : 4,
+      column: props.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
       data: [],
       height:
-        props.device.orientation === 'LANDSCAPE'
+        props.device.orientation.indexOf('LANDSCAPE') === 0
           ? scaleSize(240)
           : scaleSize(360),
       left: new Animated.Value(DEFAULT_LEFT),
@@ -47,7 +47,7 @@ export default class RNFloorListView extends React.Component {
   async componentDidUpdate(prevProps, prevState) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       let height, bottom
-      if (this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
         bottom = scaleSize(45)
       } else {

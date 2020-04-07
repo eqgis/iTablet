@@ -394,7 +394,7 @@ export default class ToolbarContentView extends React.Component {
       }
     }
     let style
-    if (this.props.device.orientation === 'LANDSCAPE') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       style = { width: this.state.boxHeight, height: this.props.device.height }
     } else {
       style = { height: this.state.boxHeight, width: this.props.device.width }

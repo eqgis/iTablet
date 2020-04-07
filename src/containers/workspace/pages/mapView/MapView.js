@@ -52,7 +52,7 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import ToolBarHeight from "../../components/ToolBar/modules/ToolBarHeight"
+import ToolBarHeight from '../../components/ToolBar/modules/ToolBarHeight'
 import {
   Container,
   MTBtn,
@@ -493,7 +493,7 @@ export default class MapView extends React.Component {
       // 网络分析模式下，地图控制器 横竖屏切换位置变化
       if (this.props.device.orientation !== prevProps.device.orientation) {
         if (this.analystRecommendVisible) {
-          if (this.props.device.orientation === 'LANDSCAPE') {
+          if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
             this.mapController.reset()
           } else {
             this.mapController.move({ bottom: 200 })
@@ -514,7 +514,7 @@ export default class MapView extends React.Component {
       this.props.analyst.params
     ) {
       if (this.analystRecommendVisible) {
-        if (this.props.device.orientation === 'LANDSCAPE') {
+        if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
           this.mapController.reset()
         } else {
           this.mapController.move({ bottom: 200 })
@@ -1833,10 +1833,10 @@ export default class MapView extends React.Component {
           this.toolBox.setVisible(true, ConstToolType.MAP_ANALYSIS, {
             isFullScreen: true,
             // height:
-            //   this.props.device.orientation === 'LANDSCAPE'
+            //   this.props.device.orientation.indexOf('LANDSCAPE') === 0
             //     ? ConstToolType.TOOLBAR_HEIGHT[2]
             //     : ConstToolType.TOOLBAR_HEIGHT[3],
-            // column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
+            // column: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4,
           })
         }}
         setAnalystParams={this.props.setAnalystParams}
@@ -2347,7 +2347,7 @@ export default class MapView extends React.Component {
     //         if (this.props.analyst.params) {
     //           // this.analystRecommendVisible = !this.analystRecommendVisible
     //           // this.analystRecommend.setVisible(this.analystRecommendVisible)
-    //           // if (this.props.device.orientation !== 'LANDSCAPE') {
+    //           // if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
     //           //   if (this.analystRecommendVisible) {
     //           //     this.mapController.move({ bottom: 200 })
     //           //   } else {
@@ -2360,8 +2360,10 @@ export default class MapView extends React.Component {
     //     />,
     //   ]
     // }
-    let width = this.props.device.orientation === 'LANDSCAPE' ? 250 : 200
-    let size = this.props.device.orientation === 'LANDSCAPE' ? 50 : 60
+    let width =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 250 : 200
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 50 : 60
     return (
       <View
         style={{
@@ -2474,7 +2476,7 @@ export default class MapView extends React.Component {
   _renderArModeIcon = () => {
     let right
     if (
-      this.props.device.orientation === 'LANDSCAPE' &&
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
       !this.state.showAIDetect
     ) {
       right = { right: scaleSize(100) }
@@ -2669,12 +2671,14 @@ export default class MapView extends React.Component {
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
-    const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+    const data = ToolBarHeight.getToolbarSize(containerType, {
+      data: _data.data,
+    })
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
         SMap.createDefaultDataset().then(async returnData => {
-          if(returnData.datasetName){
+          if (returnData.datasetName) {
             params.setToolbarVisible(true, type, {
               containerType,
               isFullScreen: false,
@@ -2698,12 +2702,12 @@ export default class MapView extends React.Component {
   renderIncrementDialog = () => {
     const increment_indoor = getPublicAssets().navigation.increment_indoor
     const increment_outdoor = getPublicAssets().navigation.increment_outdoor
-    return(
-      <IncrementRoadDialog ref={ref=>(GLOBAL.IncrementRoadDialog = ref)}>
+    return (
+      <IncrementRoadDialog ref={ref => (GLOBAL.IncrementRoadDialog = ref)}>
         <View style={styles.incrementContent}>
           <TouchableOpacity
             style={styles.incrementButton}
-            onPress={()=>{
+            onPress={() => {
               this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
             }}
           >
@@ -2712,11 +2716,16 @@ export default class MapView extends React.Component {
               source={increment_indoor}
               resizeMode={'contain'}
             />
-            <Text style={styles.incrementText}>{getLanguage(this.props.language).Map_Main_Menu.MAP_INDOOR_NETWORK}</Text>
+            <Text style={styles.incrementText}>
+              {
+                getLanguage(this.props.language).Map_Main_Menu
+                  .MAP_INDOOR_NETWORK
+              }
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.incrementButton}
-            onPress={()=>{
+            onPress={() => {
               this._pressRoad(ConstToolType.MAP_INCREMENT_GPS_TRACK)
             }}
           >
@@ -2725,7 +2734,12 @@ export default class MapView extends React.Component {
               source={increment_outdoor}
               resizeMode={'contain'}
             />
-            <Text style={styles.incrementText}>{getLanguage(this.props.language).Map_Main_Menu.MAP_OUTDOOR_NETWORK}</Text>
+            <Text style={styles.incrementText}>
+              {
+                getLanguage(this.props.language).Map_Main_Menu
+                  .MAP_OUTDOOR_NETWORK
+              }
+            </Text>
           </TouchableOpacity>
         </View>
       </IncrementRoadDialog>
@@ -3052,7 +3066,7 @@ export default class MapView extends React.Component {
           headerRight: this.renderHeaderRight(),
         }}
         bottomBar={
-          this.props.device.orientation !== 'LANDSCAPE' &&
+          this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
           !this.state.showAIDetect &&
           !this.isExample &&
           !this.props.analyst.params &&
@@ -3096,7 +3110,7 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
-        {this.props.device.orientation === 'LANDSCAPE' &&
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
           this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}

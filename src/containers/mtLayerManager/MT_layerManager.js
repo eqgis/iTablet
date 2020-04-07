@@ -1025,7 +1025,7 @@ export default class MT_layerManager extends React.Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title:
-            this.props.device.orientation !== 'LANDSCAPE' &&
+            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
             getHeaderTitle(GLOBAL.Type),
           navigation: this.props.navigation,
           // backAction: this.back,

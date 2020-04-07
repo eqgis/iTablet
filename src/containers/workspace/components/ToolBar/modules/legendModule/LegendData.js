@@ -80,7 +80,7 @@ function getMenuData(type) {
       action: () => {
         let height
         let column
-        if (_params.device.orientation === 'PORTRAIT') {
+        if (_params.device.orientation.indexOf('PORTRAIT') >= 0) {
           height = ConstToolType.THEME_HEIGHT[3]
           column = 8
         } else {

@@ -100,7 +100,7 @@ export default class AnalystMapRecommend extends React.Component {
 
   setVisible = visible => {
     this.visible = visible
-    if (this.props.orientation === 'LANDSCAPE') {
+    if (this.props.orientation.indexOf('LANDSCAPE') === 0) {
       Animated.timing(this.state.right, {
         toValue: visible ? 0 : -WIDTH,
         duration: Const.ANIMATED_DURATION,
@@ -126,11 +126,11 @@ export default class AnalystMapRecommend extends React.Component {
   render() {
     let height = Math.max(this.props.data.length, 3) * HEIGHT
     let containerStyle =
-      this.props.orientation === 'LANDSCAPE'
+      this.props.orientation.indexOf('LANDSCAPE') === 0
         ? styles.container2
         : styles.container
     let moveStyle =
-      this.props.orientation === 'LANDSCAPE'
+      this.props.orientation.indexOf('LANDSCAPE') === 0
         ? { right: this.state.right, width: WIDTH }
         : { bottom: this.state.bottom, height }
     return (

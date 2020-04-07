@@ -138,7 +138,7 @@ export default class SaveView extends React.Component {
     let positonStyle
     if (
       !position ||
-      (!global.isPad && this.props.device.orientation !== 'LANDSCAPE')
+      (!global.isPad && this.props.device.orientation.indexOf('LANDSCAPE') < 0)
     ) {
       positonStyle = bottomStyle
     } else {

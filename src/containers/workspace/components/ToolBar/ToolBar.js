@@ -204,7 +204,7 @@ export default class ToolBar extends React.PureComponent {
   changeHeight = async () => {
     if (this.height === 0) {
       let position =
-        this.props.device.orientation === 'LANDSCAPE'
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? this.state.right
           : this.state.bottom
       Animated.timing(position, {
@@ -417,7 +417,7 @@ export default class ToolBar extends React.PureComponent {
     //   keyboardHeight -= Const.BOTTOM_HEIGHT
     // }
     let position =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? this.state.right
         : this.state.bottom
     // Toolbar的显示和隐藏
@@ -484,7 +484,7 @@ export default class ToolBar extends React.PureComponent {
   showToolbar = async (isShow, cb = () => {}) => {
     let animatedList = []
     let position =
-      this.props.device.orientation === 'LANDSCAPE'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? this.state.right
         : this.state.bottom
     // Toolbar的显示和隐藏
@@ -878,10 +878,10 @@ export default class ToolBar extends React.PureComponent {
 
   render() {
     let containerStyle = this.state.isFullScreen
-      ? this.props.device.orientation === 'LANDSCAPE'
+      ? this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.fullContainerLandscape
         : styles.fullContainer
-      : this.props.device.orientation === 'LANDSCAPE'
+      : this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.wrapContainerLandscape
         : styles.wrapContainer
     let size = this.state.isFullScreen
@@ -897,16 +897,16 @@ export default class ToolBar extends React.PureComponent {
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =
-        this.props.device.orientation === 'LANDSCAPE' ? 0 : 200
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 0 : 200
     } else {
       keyboardVerticalOffset =
-        this.props.device.orientation === 'LANDSCAPE' ? 250 : 500
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 250 : 500
     }
     return (
       <Animated.View
         style={[
           containerStyle,
-          this.props.device.orientation === 'LANDSCAPE'
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? { right: this.state.right }
             : { bottom: this.state.bottom },
           size,
@@ -939,7 +939,7 @@ export default class ToolBar extends React.PureComponent {
           >
             <View
               style={[
-                this.props.device.orientation === 'LANDSCAPE'
+                this.props.device.orientation.indexOf('LANDSCAPE') === 0
                   ? styles.containersLandscape
                   : styles.containers,
               ]}
@@ -951,7 +951,7 @@ export default class ToolBar extends React.PureComponent {
         ) : (
           <View
             style={[
-              this.props.device.orientation === 'LANDSCAPE'
+              this.props.device.orientation.indexOf('LANDSCAPE') === 0
                 ? styles.containersLandscape
                 : styles.containers,
             ]}

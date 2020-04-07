@@ -176,7 +176,7 @@ function openMap() {
     _params.setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
       containerType: ToolbarType.list,
       height:
-        _params.device.orientation === 'LANDSCAPE'
+        _params.device.orientation.indexOf('LANDSCAPE') === 0
           ? ConstToolType.THEME_HEIGHT[4]
           : ConstToolType.HEIGHT[3],
       data,
@@ -526,7 +526,7 @@ function showHistory() {
   ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
     containerType: ToolbarType.list,
     height:
-      ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+      ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
         ? ConstToolType.THEME_HEIGHT[4]
         : ConstToolType.HEIGHT[3],
     data,
@@ -579,9 +579,9 @@ function setSaveViewVisible(visible, cb) {
 //       ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
 //
 //       Orientation.getOrientation((e, orientation) => {
-//         let column = orientation === 'PORTRAIT' ? 3 : 8
+//         let column = orientation.indexOf('PORTRAIT') >= 0 ? 3 : 8
 //         let height =
-//           orientation === 'PORTRAIT'
+//           orientation.indexOf('PORTRAIT') >= 0
 //             ? ConstToolType.HEIGHT[0]
 //             : ConstToolType.HEIGHT[0]
 //

@@ -12,10 +12,10 @@ function close(type) {
   _params.setToolbarVisible(true, ConstToolType.MAP_ANALYSIS, {
     isFullScreen: true,
     // height:
-    //   _params.device.orientation === 'LANDSCAPE'
+    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.TOOLBAR_HEIGHT[2]
     //     : ConstToolType.TOOLBAR_HEIGHT[3],
-    // column: _params.device.orientation === 'LANDSCAPE' ? 5 : 4,
+    // column: _params.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4,
   })
 }
 

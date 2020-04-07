@@ -868,7 +868,8 @@ export default class Map3D extends React.Component {
           type: 'fix',
         }}
         bottomBar={
-          this.props.device.orientation !== 'LANDSCAPE' && this.renderToolBar()
+          this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
+          this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
       >
@@ -885,7 +886,7 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
-        {this.props.device.orientation === 'LANDSCAPE' &&
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
           this.renderMapNavMenu()}
         {this.renderBackgroundOverlay()}
       </Container>

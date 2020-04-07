@@ -220,10 +220,10 @@ export default class MapSetting extends Component {
       // GLOBAL.toolBox &&
       //   GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
       //     containerType: 'colorTable',
-      //     column: this.props.device.orientation === 'LANDSCAPE' ? 16 : 8,
+      //     column: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 16 : 8,
       //     isFullScreen: false,
       //     height:
-      //       this.props.device.orientation === 'LANDSCAPE'
+      //       this.props.device.orientation.indexOf('LANDSCAPE') === 0
       //         ? ConstToolType.THEME_HEIGHT[2]
       //         : ConstToolType.THEME_HEIGHT[3],
       //   })
@@ -330,7 +330,7 @@ export default class MapSetting extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title:
-            this.props.device.orientation !== 'LANDSCAPE' &&
+            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
             getHeaderTitle(GLOBAL.Type),
           navigation: this.props.navigation,
           // backAction: this.back,

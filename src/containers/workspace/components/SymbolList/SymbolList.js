@@ -24,7 +24,7 @@ export default class SymbolList extends React.Component {
     super(props)
     this.state = {
       data: [],
-      column: props.device.orientation === 'LANDSCAPE' ? 3 : 4,
+      column: props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
       // column: 4,
     }
   }
@@ -72,7 +72,8 @@ export default class SymbolList extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.setState({
-        column: this.props.device.orientation === 'LANDSCAPE' ? 3 : 4,
+        column:
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
         // column: 4,
       })
     }

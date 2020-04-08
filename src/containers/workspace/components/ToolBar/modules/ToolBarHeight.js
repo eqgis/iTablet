@@ -22,7 +22,7 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
       height =
-        orientation === 'LANDSCAPE'
+        orientation.indexOf('LANDSCAPE') === 0
           ? Height.LIST_HEIGHT_L
           : Height.LIST_HEIGHT_P
       break
@@ -34,12 +34,12 @@ function getToolbarSize(type, additional = {}) {
       if (additional.column !== undefined) {
         column = additional.column
       } else {
-        column = orientation === 'LANDSCAPE' ? 5 : 4
+        column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
         // column = 4
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)
-      let maxRow = orientation === 'LANDSCAPE' ? 4 : 6
+      let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
       row = row > maxRow ? maxRow : row // 限制最大高度/宽度
       height = Height.TABLE_ROW_HEIGHT_4 * row
       break
@@ -48,7 +48,7 @@ function getToolbarSize(type, additional = {}) {
       if (additional.column !== undefined) {
         column = additional.column
       } else {
-        column = orientation === 'LANDSCAPE' ? 2 : 4
+        column = orientation.indexOf('LANDSCAPE') === 0 ? 2 : 4
         // column = 4
       }
       height = Height.COLOR_TABLE_HEIGHT_L
@@ -68,7 +68,7 @@ function getToolbarSize(type, additional = {}) {
       break
     case ToolbarType.tabs: // 符号标签栏
       height =
-        params.device.orientation === 'PORTRAIT'
+        params.device.orientation.indexOf('PORTRAIT') >= 0
           ? Height.TABLE_ROW_HEIGHT_2 * 8
           : Height.TABLE_ROW_HEIGHT_2 * 5
       break

@@ -71,7 +71,7 @@ async function showDatasetsList(type, filter = {}) {
     }
     const buttons = [ToolbarBtnType.CANCEL]
     // const height =
-    //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+    //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5]
     const _type = ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS
@@ -131,7 +131,7 @@ function showExpressionList(type, themeType) {
       ? [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
       : [ToolbarBtnType.CANCEL]
     // const height =
-    //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+    //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5]
     const _data = {
@@ -981,7 +981,7 @@ async function showLocalDatasetsList() {
         isTouchProgress: false,
         showMenuDialog: false,
         // height:
-        //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+        //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
         //     ? ConstToolType.THEME_HEIGHT[3]
         //     : ConstToolType.THEME_HEIGHT[5],
         data,
@@ -3198,7 +3198,7 @@ async function getUnifyStyleAdd() {
 
   const type = ConstToolType.MAP_ADD
   // const height =
-  //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE'
+  //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
   //     ? ConstToolType.THEME_HEIGHT[3]
   //     : ConstToolType.THEME_HEIGHT[5]
   ToolbarModule.addData({
@@ -3222,7 +3222,7 @@ async function getUnifyStyleAdd() {
       showMenuDialog: false,
       // height,
       // column:
-      //   ToolbarModule.getParams().device.orientation === 'LANDSCAPE' ? 8 : 4,
+      //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
       data,
       buttons,
     })

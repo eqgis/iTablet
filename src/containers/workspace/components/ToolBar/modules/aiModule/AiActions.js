@@ -1,11 +1,14 @@
 import { SMeasureView, SAIDetectView, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language/index'
 import NavigationService from '../../../../../NavigationService'
-import { Toast } from '../../../../../../utils/index'
+import { Toast, LayerUtils } from '../../../../../../utils/index'
 import { FileTools } from '../../../../../../native/index'
 import { ConstPath } from '../../../../../../constants/index'
 import FetchUtils from '../../../../../../utils/FetchUtils'
 import ToolbarModule from '../ToolbarModule'
+import { ConstToolType } from '../../../../../../constants'
+import ToolbarBtnType from '../../../../../../containers/workspace/components/ToolBar/ToolbarBtnType'
+import ToolAction from '../../../../../../containers/workspace/components/ToolBar/modules/toolModule/ToolAction'
 
 // 违章采集
 function illegallyParkCollect() {
@@ -19,8 +22,22 @@ function illegallyParkCollect() {
         GLOBAL.isswitch = true
         ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
       }
-      const type = 'illegallyParkCollect'
-      _params.navigation.navigate('ChooseTaggingLayer', { type })
+      let taggingLayerData = await getTaggingLayerData()
+      const dataList = await SMap.getTaggingLayers(
+        _params.user.currentUser.userName,
+      )
+      for(let i=0;i<dataList.length;i++){
+        if(taggingLayerData.datasourceAlias === dataList[i].datasourceAlias && taggingLayerData.datasetName === dataList[i].datasetName){
+          GLOBAL.currentLayer = dataList[i]
+          break
+        }
+      }
+      const datasourceAlias = taggingLayerData.datasourceAlias // 标注数据源名称
+      const datasetName = taggingLayerData.datasetName // 标注图层名称
+      NavigationService.navigate('IllegallyParkView', {
+        datasourceAlias,
+        datasetName,
+      })
     } else {
       Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
       _params.navigation.navigate('LayerManager')
@@ -43,21 +60,36 @@ function arMeasureCollect() {
       Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
       return
     }
-    let hasDefaultTagging = await SMap.hasDefaultTagging(
-      _params.user.currentUser.userName,
-    )
-    if (!hasDefaultTagging) {
-      let data = await SMap.newTaggingDataset(
-        'Default_Tagging',
+    let currentLayer = GLOBAL.currentLayer
+    let isTaggingLayer = false
+    if (currentLayer) {
+      let layerType = LayerUtils.getLayerType(currentLayer)
+      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    }
+    if (!isTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
         _params.user.currentUser.userName,
       )
-      GLOBAL.TaggingDatasetName = data && data.datasetName
-    }
-    let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-    let datasetName = 'Default_Tagging'
-    GLOBAL.MeasureCollectData = {
-      datasourceAlias,
-      datasetName,
+      if (!hasDefaultTagging) {
+        let data = await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }else {
+      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+      const datasetName = currentLayer.datasetName // 标注图层名称
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
     }
 
     // NavigationService.navigate('MeasureView', GLOBAL.MeasureCollectData)
@@ -69,6 +101,42 @@ function arMeasureCollect() {
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
   })()
+}
+
+async function getTaggingLayerData () {
+  const _params = ToolbarModule.getParams()
+  let currentLayer = GLOBAL.currentLayer
+    let isTaggingLayer = false
+    if (currentLayer) {
+      let layerType = LayerUtils.getLayerType(currentLayer)
+      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    }
+    let taggingLayerData
+    if (!isTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        let data = await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      taggingLayerData= {
+        datasourceAlias,
+        datasetName,
+      }
+    }else {
+      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+      const datasetName = currentLayer.datasetName // 标注图层名称
+      taggingLayerData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+    return taggingLayerData
 }
 
 // AI分类
@@ -86,20 +154,26 @@ function aiClassify() {
         (await FileTools.fileIsExist(this.dustbin_model)) &&
         (await FileTools.fileIsExist(this.dustbin_txt))
       if (isDustbin) {
-        const dataList = await SMap.getTaggingLayers(
-          _params.user.currentUser.userName,
-        )
-        if (dataList.length > 0) {
           if (GLOBAL.showAIDetect) {
             GLOBAL.isswitch = true
             ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
           }
-          const type = 'aiClassify'
-          _params.navigation.navigate('ChooseTaggingLayer', { type })
-        } else {
-          Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
-          _params.navigation.navigate('LayerManager')
-        }
+          let taggingLayerData = await getTaggingLayerData()
+          const dataList = await SMap.getTaggingLayers(
+            _params.user.currentUser.userName,
+          )
+          for(let i=0;i<dataList.length;i++){
+            if(taggingLayerData.datasourceAlias === dataList[i].datasourceAlias && taggingLayerData.datasetName === dataList[i].datasetName){
+              GLOBAL.currentLayer = dataList[i]
+              break
+            }
+          }
+          const datasourceAlias = taggingLayerData.datasourceAlias // 标注数据源名称
+          const datasetName = taggingLayerData.datasetName // 标注图层名称
+          NavigationService.navigate('ClassifyView', {
+            datasourceAlias,
+            datasetName,
+          })
       } else {
         GLOBAL.isDownload = false
         const downloadData = getDownloadData(
@@ -173,21 +247,40 @@ function _downloadData(downloadData) {
 function aiDetect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const dataList = await SMap.getTaggingLayers(
-      _params.user.currentUser.userName,
-    )
-    if (dataList.length > 0) {
       if (GLOBAL.showAIDetect) {
         GLOBAL.isswitch = true
         ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
       }
-      const type = 'aiDetect'
-      _params.navigation.navigate('ChooseTaggingLayer', { type })
-    } else {
-      Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
-      _params.navigation.navigate('LayerManager')
-    }
-    // await SAIDetectView.startCountTrackedObjs(true)
+      let taggingLayerData = await getTaggingLayerData()
+      const dataList = await SMap.getTaggingLayers(
+        _params.user.currentUser.userName,
+      )
+      for(let i=0;i<dataList.length;i++){
+        if(taggingLayerData.datasourceAlias === dataList[i].datasourceAlias && taggingLayerData.datasetName === dataList[i].datasetName){
+          GLOBAL.currentLayer = dataList[i]
+          break
+        }
+      }
+
+      await SAIDetectView.setProjectionModeEnable(true)
+      await SAIDetectView.setIsPolymerize(false)
+      let buttons = [
+        ToolbarBtnType.PLACEHOLDER,
+        ToolbarBtnType.PLACEHOLDER,
+        {
+          type: ToolbarBtnType.SETTIING,
+          action: ToolAction.setting,
+          image: require('../../../../../../assets/mapTools/ai_setting.png'),
+        },
+      ]
+      ;(await GLOBAL.toolBox) &&
+        GLOBAL.toolBox.setVisible(true, ConstToolType.AIDETECT, {
+          buttons: buttons,
+          isFullScreen: false,
+          height: 0,
+        })
+      GLOBAL.AIDETECTCHANGE.setVisible(true)
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   })()
 }
 

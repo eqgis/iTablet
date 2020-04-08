@@ -51,7 +51,10 @@ export default class TableList extends React.Component {
     this.props.data.forEach((item, index) => {
       let column = this.props.limit
       let orientation = this.getOrientation()
-      if (orientation === 'LANDSCAPE' && this.props.type !== 'scrollTable') {
+      if (
+        orientation.indexOf('LANDSCAPE') === 0 &&
+        this.props.type !== 'scrollTable'
+      ) {
         column = Math.ceil(this.props.data.length / this.props.limit)
       }
       let rowIndex = Math.floor(index / column)
@@ -74,7 +77,7 @@ export default class TableList extends React.Component {
       <View
         key={'row-' + rowIndex}
         style={[
-          orientation === 'LANDSCAPE' ? styles.rowL : styles.rowP,
+          orientation.indexOf('LANDSCAPE') === 0 ? styles.rowL : styles.rowP,
           this.props.rowStyle,
           rowIndex &&
             this.props.lineSeparator >= 0 && {
@@ -95,7 +98,7 @@ export default class TableList extends React.Component {
       alignItems: 'center',
     }
     let orientation = this.getOrientation()
-    if (orientation === 'LANDSCAPE') {
+    if (orientation.indexOf('LANDSCAPE') === 0) {
       size.height = 100 / limit + '%'
     } else {
       size.width = 100 / limit + '%'

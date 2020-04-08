@@ -60,7 +60,8 @@ class NavigationHeader extends Component {
     this.state = {
       headerTop: new Animated.Value(0),
       headerHeight:
-        global.getDevice().orientation === 'LANDSCAPE'
+        global.getDevice().orientation &&
+        global.getDevice().orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(stylesConst.HEADER_HEIGHT_LANDSCAPE)
           : new Animated.Value(stylesConst.HEADER_HEIGHT),
     }
@@ -74,7 +75,8 @@ class NavigationHeader extends Component {
 
   onOrientationChange = () => {
     let height =
-      global.getDevice().orientation === 'LANDSCAPE'
+      global.getDevice().orientation &&
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? stylesConst.HEADER_HEIGHT_LANDSCAPE
         : stylesConst.HEADER_HEIGHT
     Animated.timing(this.state.headerHeight, {
@@ -126,11 +128,13 @@ class NavigationHeader extends Component {
     } = this.props
 
     let fontSize =
-      global.getDevice().orientation === 'LANDSCAPE'
+      global.getDevice().orientation &&
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? setSpText(26)
         : setSpText(36)
     let imgSize =
-      global.getDevice().orientation === 'LANDSCAPE'
+      global.getDevice().orientation &&
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? scaleSize(40)
         : scaleSize(60)
 
@@ -228,7 +232,10 @@ class NavigationHeader extends Component {
         break
     }
     let padding = {}
-    if (global.getDevice().orientation === 'LANDSCAPE') {
+    if (
+      global.getDevice().orientation &&
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
+    ) {
       padding = { paddingTop: 0 }
     }
     return (

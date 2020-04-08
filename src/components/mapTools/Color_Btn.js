@@ -26,7 +26,9 @@ export default class Color_Btn extends React.Component {
 
   render() {
     let column =
-      this.props.device.orientation === 'LANDSCAPE' ? 12 : this.props.numColumns
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? 12
+        : this.props.numColumns
     return (
       <TouchableHighlight
         ref={ref => (this.mtBtn = ref)}

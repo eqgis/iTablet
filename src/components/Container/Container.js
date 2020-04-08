@@ -153,7 +153,9 @@ export default class Container extends PureComponent {
 
   setPageVisible = visible => {
     //todo 处理返回时没有动画
-    let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
+    let isLandscape =
+      GLOBAL.getDevice() &&
+      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
     if (NavigationService.isInMap() || NavigationService.isInMap3D()) {
       if (this.props.hideInBackground && isLandscape) {
         let x = visible ? 0 : GLOBAL.getDevice().width
@@ -206,7 +208,9 @@ export default class Container extends PureComponent {
 
   renderBottom = fixBottom => {
     if (!this.props.bottomBar) return null
-    let isLandscape = GLOBAL.getDevice().orientation === 'LANDSCAPE'
+    let isLandscape =
+      GLOBAL.getDevice() &&
+      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
     let style = []
     if (fixBottom) {
       if (isLandscape) {
@@ -247,7 +251,10 @@ export default class Container extends PureComponent {
       this.props.bottomProps && this.props.bottomProps.type === 'fix'
     let direction = {
       flexDirection:
-        GLOBAL.getDevice().orientation === 'LANDSCAPE' ? 'row' : 'column',
+        GLOBAL.getDevice() &&
+        GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+          ? 'row'
+          : 'column',
     }
     let width
     width = this.overlayWidth.interpolate({
@@ -258,7 +265,11 @@ export default class Container extends PureComponent {
       <AnimatedView
         style={[
           styles.view,
-          screen.isIphoneX() && { paddingTop: 44 },
+          {
+            // TODO 统一在这里处理，去掉其他的paddingTop
+            // paddingTop: screen.getIphonePaddingTop(),
+            paddingBottom: screen.getIphonePaddingBottom(),
+          },
           { transform: [{ translateX: this.viewX }] },
         ]}
       >

@@ -92,7 +92,7 @@ function showSymbol() {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
     // height:
-    //   params.device.orientation === 'PORTRAIT'
+    //   params.device.orientation.indexOf('PORTRAIT') >= 0
     //     ? ConstToolType.HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[4],
     cb: () => SCollector.stopCollect(),

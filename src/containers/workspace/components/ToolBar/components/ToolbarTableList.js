@@ -80,7 +80,7 @@ export default class ToolbarTableList extends React.Component {
         }
         device={this.props.device}
         cellStyle={
-          this.props.device.orientation === 'LANDSCAPE' && {
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
             width: Height.TABLE_ROW_HEIGHT_4,
           }
         }

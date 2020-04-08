@@ -12,12 +12,13 @@ let deviceSafeHeight // 设备安全高度
 
 function getScreenWidth(orientation) {
   deviceWidth = Dimensions.get('window').width
-  if (orientation === 'LANDSCAPE') {
+  if (!orientation) return deviceWidth
+  if (orientation.indexOf('LANDSCAPE') === 0) {
     deviceWidth = Math.max(
       Dimensions.get('window').height,
       Dimensions.get('window').width,
     )
-  } else if (orientation === 'PORTRAIT') {
+  } else if (orientation.indexOf('PORTRAIT') >= 0) {
     deviceWidth = Math.min(
       Dimensions.get('window').height,
       Dimensions.get('window').width,
@@ -27,12 +28,13 @@ function getScreenWidth(orientation) {
 }
 function getScreenHeight(orientation) {
   deviceHeight = Dimensions.get('window').height
-  if (orientation === 'LANDSCAPE') {
+  if (!orientation) return deviceHeight
+  if (orientation.indexOf('LANDSCAPE') === 0) {
     deviceHeight = Math.min(
       Dimensions.get('window').height,
       Dimensions.get('window').width,
     )
-  } else if (orientation === 'PORTRAIT') {
+  } else if (orientation.indexOf('PORTRAIT') >= 0) {
     deviceHeight = Math.max(
       Dimensions.get('window').height,
       Dimensions.get('window').width,
@@ -65,8 +67,8 @@ function getRatio() {
   return ratio
 }
 // px转换成dp
-// let w2 = deviceWidth > 320 ? 720 / defaultPixel : 640 / defaultPixel
-// let h2 = deviceWidth > 320 ? 1080 / defaultPixel : 1136 / defaultPixel
+// let w2 = deviceWidth > 320 ? 720 / defaultPixel : 634 / defaultPixel
+// let h2 = deviceWidth > 320 ? 1080 / defaultPixel : 1134 / defaultPixel
 const w2 = 610 / defaultPixel
 const h2 = 1080 / defaultPixel
 let scale // 获取缩放比例
@@ -108,6 +110,8 @@ export function fixedText(size) {
 // iPhoneX
 const X_WIDTH = 375
 const X_HEIGHT = 812
+const X_TOP = 44
+const X_BOTTOM = 34
 
 function isIphoneX() {
   return (
@@ -117,14 +121,18 @@ function isIphoneX() {
   )
 }
 
+function getOrientation() {
+  return deviceHeight > deviceWidth ? 'PORTRAIT' : 'LANDSCAPE'
+}
+
 /**
  * 获取iphone和iphone X顶部距离
  * @returns {number}
  */
 function getIphonePaddingTop() {
   let paddingTop = 0
-  if (isIphoneX()) {
-    paddingTop = 44
+  if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
+    paddingTop = 34
   } else if (Platform.OS === 'ios') {
     paddingTop = 20
   }
@@ -136,13 +144,32 @@ function getIphonePaddingTop() {
  * @returns {number}
  */
 function getIphonePaddingBottom() {
-  let paddingTop = 0
-  if (isIphoneX()) {
-    paddingTop = 44
-  } else if (Platform.OS === 'ios') {
-    paddingTop = 20
+  let paddingBottom = 0
+  if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
+    paddingBottom = 34
   }
-  return paddingTop
+  return paddingBottom
+}
+
+/**
+ * 获取iphone和iphone X左右距离
+ * @returns {object}
+ */
+function getIphonePaddingHorizontal(orientation) {
+  let paddingHorizontal = {
+    paddingLeft: 0,
+    paddingRight: 0,
+  }
+  if (!orientation || Platform.OS !== 'ios') return paddingHorizontal
+  // if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
+  //   // paddingHorizontal.paddingLeft = 34
+  //   // paddingHorizontal.paddingRight = 34
+  // } else
+  if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
+    // paddingHorizontal.paddingLeft = 34
+    paddingHorizontal.paddingRight = 34
+  }
+  return paddingHorizontal
 }
 
 export function px(size) {
@@ -157,7 +184,11 @@ export default {
   deviceHeight,
   px2dp,
   dp2px,
+
+  X_TOP,
+  X_BOTTOM,
   isIphoneX,
   getIphonePaddingTop,
   getIphonePaddingBottom,
+  getIphonePaddingHorizontal,
 }

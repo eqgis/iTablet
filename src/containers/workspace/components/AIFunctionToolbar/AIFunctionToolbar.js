@@ -84,7 +84,7 @@ export default class AIFunctionToolbar extends React.Component {
     let height
     if (ConstToolType.AIMapSuspension === type) {
       height =
-        this.props.device.orientation === 'LANDSCAPE'
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? ConstToolType.HEIGHT[0]
           : ConstToolType.HEIGHT[1]
     } else {
@@ -95,7 +95,8 @@ export default class AIFunctionToolbar extends React.Component {
       this.props.showFullMap && this.props.showFullMap(true)
       toolRef.setVisible(true, type, {
         containerType: 'table',
-        column: this.props.device.orientation === 'LANDSCAPE' ? 5 : 4,
+        column:
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4,
         height: height,
       })
     }

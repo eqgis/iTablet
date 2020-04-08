@@ -21,7 +21,7 @@ export default class SymbolTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      column: props.device.orientation === 'LANDSCAPE' ? 3 : 4,
+      column: props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
       // column: 4,
     }
   }
@@ -29,7 +29,8 @@ export default class SymbolTab extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.setState({
-        column: this.props.device.orientation === 'LANDSCAPE' ? 3 : 4,
+        column:
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
         // column: 4,
       })
     }

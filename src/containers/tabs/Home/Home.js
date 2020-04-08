@@ -483,7 +483,7 @@ export default class Home extends Component {
     let imgSize = scaleSize(60)
     if (this.props.device) {
       imgSize =
-        this.props.device.orientation === 'LANDSCAPE'
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? scaleSize(40)
           : scaleSize(60)
     }

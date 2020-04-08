@@ -194,7 +194,12 @@ function commit(type) {
     // return false
   }
 }
-
+function undo() {
+  SMap.undo()
+}
+function redo() {
+  SMap.redo()
+}
 function back() {
   if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
@@ -677,6 +682,8 @@ export default {
   commit,
   close,
 
+  undo,
+  redo,
   move,
   back,
   point,

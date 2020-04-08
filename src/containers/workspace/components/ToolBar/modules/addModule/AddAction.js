@@ -27,7 +27,7 @@ async function listAction(type, params = {}) {
       )
 
       // const height =
-      //   _params.device.orientation === 'LANDSCAPE'
+      //   _params.device.orientation.indexOf('LANDSCAPE') === 0
       //     ? ConstToolType.THEME_HEIGHT[3]
       //     : ConstToolType.THEME_HEIGHT[5]
       const data = {

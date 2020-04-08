@@ -307,7 +307,7 @@ const legendMenuInfo = (param, orientation) => [
     action: () => {
       let height
       let column
-      if (orientation === 'PORTRAIT') {
+      if (orientation.indexOf('PORTRAIT') >= 0) {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
       } else {
@@ -407,7 +407,7 @@ const legendMenuInfoNotVisible = (param, orientation) => [
     action: () => {
       let column
       let height
-      if (orientation === 'PORTRAIT') {
+      if (orientation.indexOf('PORTRAIT') >= 0) {
         height = ConstToolType.THEME_HEIGHT[3]
         column = 8
       } else {

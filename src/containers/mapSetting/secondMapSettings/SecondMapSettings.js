@@ -1277,7 +1277,7 @@ export default class SecondMapSettings extends Component {
     }
     if (/^[\w\s-]+(\(\d{1,2}-para\))$/.test(this.state.title)) {
       let keyboardVerticalOffset
-      if (this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         if (Platform.OS === 'ios') {
           keyboardVerticalOffset =
             (this.itemPos - 3) * 120 + this.clickedIndex * 40

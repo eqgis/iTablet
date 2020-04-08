@@ -9,7 +9,7 @@ const line = param => [
     action: () => {
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 4
       // } else {
@@ -69,7 +69,7 @@ const line = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 8
       // } else {
@@ -107,7 +107,7 @@ const point = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 4
       // } else {
@@ -163,7 +163,7 @@ const point = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 8
       // } else {
@@ -241,7 +241,7 @@ const region = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 4
       // } else {
@@ -276,7 +276,7 @@ const region = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 8
       // } else {
@@ -310,7 +310,7 @@ const region = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 8
       // } else {
@@ -386,7 +386,7 @@ const text = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[2]
       //   column = 4
       // } else {
@@ -458,7 +458,7 @@ const text = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       // let height
       // let column
-      // if (orientation === 'PORTRAIT') {
+      // if (orientation.indexOf('PORTRAIT') >= 0) {
       //   height = ConstToolType.THEME_HEIGHT[3]
       //   column = 8
       // } else {

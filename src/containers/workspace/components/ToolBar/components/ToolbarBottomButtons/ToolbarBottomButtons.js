@@ -245,7 +245,7 @@ export default class ToolbarBottomButtons extends React.Component {
           break
       }
 
-      if (this.props.device.orientation === 'LANDSCAPE') {
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         if (type === ToolbarBtnType.PLACEHOLDER) {
           btns.unshift(<View style={styles.button} key={type + '-' + index} />)
         } else if (image) {
@@ -280,10 +280,10 @@ export default class ToolbarBottomButtons extends React.Component {
     return (
       <View
         style={[
-          this.props.device.orientation === 'LANDSCAPE'
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? styles.buttonzLandscape
             : styles.buttonz,
-          this.props.device.orientation === 'LANDSCAPE' &&
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
             btns.length === 1 && { justifyContent: 'flex-end' }, // 只有一个按钮，从底部排列
         ]}
       >

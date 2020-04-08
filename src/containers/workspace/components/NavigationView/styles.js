@@ -118,7 +118,7 @@ export default StyleSheet.create({
     height: scaleSize(350),
   },
   promptTitle: {
-    fontSize: size.fontSize.fontSizeXXl,
+    fontSize: size.fontSize.fontSizeLg,
     color: color.theme_white,
     marginTop: scaleSize(5),
     marginLeft: scaleSize(10),

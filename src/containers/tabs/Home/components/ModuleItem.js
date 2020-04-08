@@ -95,7 +95,7 @@ export default class ModuleItem extends Component {
     let item = this.props.item
     let image = this.state.touch ? item.moduleImageTouch : item.moduleImage
     let textColor = this.state.touch ? { color: '#4680DF' } : {}
-    let isLandscape = this.props.device.orientation === 'LANDSCAPE'
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     return (
       <View style={isLandscape ? styles.moduleViewL : styles.moduleViewP}>
         <TouchableOpacity

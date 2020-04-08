@@ -189,6 +189,7 @@ class AppRoot extends Component {
 
   UNSAFE_componentWillMount(){
     SOnlineService.init()
+    this.initOrientation()
   }
 
   initGlobal = () => {
@@ -290,7 +291,7 @@ class AppRoot extends Component {
       SOnlineService.init()
       // SOnlineService.removeCookie()
       SIPortalService.init()
-      await this.initOrientation()
+      // await this.initOrientation()
       await this.getImportState()
       await this.addImportExternalDataListener()
       await this.addGetShareResultListener()
@@ -408,27 +409,39 @@ class AppRoot extends Component {
   showStatusBar = async orientation => {
     let result = await AsyncStorage.getItem('StatusBarVisible')
     let visible = result === 'true'
-    if(orientation === 'LANDSCAPE') {
+    if(orientation.indexOf('LANDSCAPE') === 0) {
       StatusBar.setHidden(true, 'slide')
     } else {
       StatusBar.setHidden(visible, 'slide')
     }
   }
 
-  orientation = o=> {
+  orientation = o => {
     this.showStatusBar(o)
-    this.props.setShow({
-      orientation: o,
-    })
+    // iOS横屏时为LANDSCAPE-LEFT 或 LANDSCAPE-RIGHT，此时平放，o为LANDSCAPE，此时不做处理
+    if (Platform.OS === 'ios' && o !== 'LANDSCAPE' || Platform.OS === 'android') {
+      this.props.setShow({
+        orientation: o,
+      })
+    }
   }
   //初始化横竖屏显示方式
   initOrientation = async () => {
-    Orientation.getOrientation((e, orientation) => {
-      this.showStatusBar(orientation)
-      this.props.setShow({orientation: orientation})
-    })
-    Orientation.removeOrientationListener(this.orientation)
-    Orientation.addOrientationListener(this.orientation)
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.showStatusBar(orientation)
+        this.props.setShow({orientation: orientation})
+      })
+      Orientation.removeSpecificOrientationListener(this.orientation)
+      Orientation.addSpecificOrientationListener(this.orientation)
+    } else {
+      Orientation.getOrientation((e, orientation) => {
+        this.showStatusBar(orientation)
+        this.props.setShow({orientation: orientation})
+      })
+      Orientation.removeOrientationListener(this.orientation)
+      Orientation.addOrientationListener(this.orientation)
+    }
   }
 
   // 初始化文件目录

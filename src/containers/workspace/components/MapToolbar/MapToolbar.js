@@ -435,7 +435,7 @@ export default class MapToolbar extends React.Component {
   }
 
   render() {
-    let isLandscape = this.props.device.orientation === 'LANDSCAPE'
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
     return (
       <View style={[style, this.props.style]}>

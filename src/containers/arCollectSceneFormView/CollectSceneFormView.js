@@ -149,7 +149,7 @@ export default class CollectSceneFormView extends React.Component {
     // setTimeout(function() {
     //设置基点
     SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
-    SCollectSceneFormView.startRecording()
+    // SCollectSceneFormView.startRecording()
     // }, 500)
   }
 
@@ -350,6 +350,7 @@ export default class CollectSceneFormView extends React.Component {
         confirmAction={async () => {
           let point = this.datumPoint
           //设置基点
+          SCollectSceneFormView.startRecording()
           SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
           this.DatumPointDialog.setDialogVisible(false)
         }}

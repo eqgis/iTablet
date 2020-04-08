@@ -146,11 +146,11 @@ export default class CollectSceneFormView extends React.Component {
     )
 
     let point = this.datumPoint
-    // setTimeout(function() {
+    setTimeout(function() {
     //设置基点
-    SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
-    // SCollectSceneFormView.startRecording()
-    // }, 500)
+    // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+    SCollectSceneFormView.startRecording()
+    }, 500)
   }
 
   _onGetInstance = async view => {
@@ -350,7 +350,8 @@ export default class CollectSceneFormView extends React.Component {
         confirmAction={async () => {
           let point = this.datumPoint
           //设置基点
-          SCollectSceneFormView.startRecording()
+          // SCollectSceneFormView.startRecording()
+          await SCollectSceneFormView.clearData()
           SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
           this.DatumPointDialog.setDialogVisible(false)
         }}

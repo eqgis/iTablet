@@ -112,7 +112,7 @@ export default class Container extends PureComponent {
 
   getCurrentOverlayWidth = () => {
     let width
-    if (GLOBAL.getDevice().orientation === 'LANDSCAPE') {
+    if (GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
       width = 55
       if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
         width = 40

@@ -53,11 +53,19 @@ export default class MT_Btn extends React.Component {
     this.state = {
       selected: props.selected,
     }
+    this.clickAble = true // 防止重复点击
   }
 
   action = e => {
     if (this.props.selectMode === 'flash') return
-    this.props.onPress && this.props.onPress(e)
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+      this.props.onPress && this.props.onPress(e)
+    }
+    
   }
 
   _onPressOut = e => {

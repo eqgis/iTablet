@@ -115,12 +115,7 @@ export default class FunctionToolbar extends React.Component {
           : new Animated.Value(TOP),
       right:
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? new Animated.Value(
-            screen.isIphoneX() &&
-              this.props.device.orientation === 'LANDSCAPE-RIGHT'
-              ? screen.X_TOP
-              : RIGHT_LANDSCAPE,
-          )
+          ? new Animated.Value(RIGHT_LANDSCAPE)
           : new Animated.Value(RIGHT),
     }
     this.rotate = new Animated.Value(0)
@@ -160,11 +155,7 @@ export default class FunctionToolbar extends React.Component {
     if (this.visible) {
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         top = TOP_LANDSCAPE
-        right =
-          screen.isIphoneX() &&
-          this.props.device.orientation === 'LANDSCAPE-RIGHT'
-            ? screen.X_TOP
-            : RIGHT_LANDSCAPE
+        right = RIGHT_LANDSCAPE
       } else {
         top = TOP
         right = RIGHT
@@ -247,10 +238,7 @@ export default class FunctionToolbar extends React.Component {
     if (this.visible === visible) return
     let right =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? screen.isIphoneX() &&
-          this.props.device.orientation === 'LANDSCAPE-RIGHT'
-          ? screen.X_TOP
-          : RIGHT_LANDSCAPE
+        ? RIGHT_LANDSCAPE
         : RIGHT
     Animated.timing(this.state.right, {
       toValue: visible ? right : scaleSize(-200),

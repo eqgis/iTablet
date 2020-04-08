@@ -88,7 +88,7 @@ class NavigationHeader extends Component {
   setVisible = visible => {
     if (this.visible === visible) return
     Animated.timing(this.state.headerTop, {
-      toValue: visible ? 0 : -stylesConst.HEADER_HEIGHT,
+      toValue: visible ? 0 : -300,
       duration: 300,
     }).start()
     this.visible = visible

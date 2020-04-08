@@ -3,7 +3,7 @@
  Author: Yang Shanglong
  E-mail: yangshanglong@supermap.com
  */
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
   View,
   ScrollView,
@@ -24,7 +24,7 @@ import NavigationService from '../../containers/NavigationService'
 
 const AnimatedView = Animated.View
 
-export default class Container extends PureComponent {
+export default class Container extends Component {
   props: {
     style?: StyleSheet,
     titleStyle?: StyleSheet,
@@ -42,10 +42,15 @@ export default class Container extends PureComponent {
     showFullInMap: boolean,
     blankOpacity: Number,
     hideInBackground: boolean,
+    orientation: String,
     onOverlayPress: () => {},
   }
 
   static defaultProps = {
+    orientation:
+      Dimensions.get('screen').height > Dimensions.get('screen').width
+        ? 'PORTRAIT'
+        : 'LANDSCAPE',
     withoutHeader: false,
     sideMenu: false,
     initWithLoading: false,
@@ -112,7 +117,7 @@ export default class Container extends PureComponent {
 
   getCurrentOverlayWidth = () => {
     let width
-    if (GLOBAL.getDevice().orientation === 'LANDSCAPE') {
+    if (GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
       width = 55
       if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
         width = 40
@@ -265,10 +270,23 @@ export default class Container extends PureComponent {
       <AnimatedView
         style={[
           styles.view,
+          screen.isIphoneX() &&
+            GLOBAL.getDevice() &&
+            GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && {
+            backgroundColor: '#201F20',
+          },
           {
             // TODO 统一在这里处理，去掉其他的paddingTop
-            // paddingTop: screen.getIphonePaddingTop(),
+            paddingTop:
+              screen.isIphoneX() &&
+              GLOBAL.getDevice() &&
+              GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
             paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              GLOBAL.getDevice().orientation,
+            ),
           },
           { transform: [{ translateX: this.viewX }] },
         ]}
@@ -296,7 +314,13 @@ export default class Container extends PureComponent {
           {!fixHeader && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
-              {this.props.children}
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                {this.props.children}
+              </View>
               {fixHeader && this.renderHeader(fixHeader)}
               {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     borderRadius: scaleSize(4),
     elevation: 20,
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: 'black',
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOpacity: 1,
     shadowRadius: 2,
   },

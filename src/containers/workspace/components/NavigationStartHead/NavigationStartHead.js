@@ -62,7 +62,7 @@ export default class NavigationStartHead extends React.Component {
     GLOBAL.TouchType = TouchType.NORMAL
     await SMap.clearPoint()
     GLOBAL.mapController && GLOBAL.mapController.changeBottom(false)
-      GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(false)
+    GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(false)
   }
 
   _onSelectPointPress = async isStart => {

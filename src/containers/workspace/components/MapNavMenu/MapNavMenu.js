@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { StyleSheet, Animated } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText, screen } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
 import constants from '../../constants'
 import { Const } from '../../../../constants'
@@ -54,15 +54,16 @@ export default class MapNavMenu extends React.Component {
     this.state = {
       data: data,
       currentIndex: current,
-      right: new Animated.Value(-600),
+      right: new Animated.Value(-this.props.device.width),
     }
     this.visible = false
   }
 
   setVisible = (visible, immediately) => {
     if (this.visible === visible) return
+    // iphone X适配向右侧横屏
     Animated.timing(this.state.right, {
-      toValue: visible ? scaleSize(80) : scaleSize(-600),
+      toValue: visible ? scaleSize(80) : scaleSize(-this.props.device.width),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
     this.visible = visible
@@ -245,6 +246,9 @@ export default class MapNavMenu extends React.Component {
           styles.container,
           this.props.style,
           { right: this.state.right },
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+            bottom: screen.X_BOTTOM,
+          },
         ]}
       >
         {this.renderItems(this.state.data)}

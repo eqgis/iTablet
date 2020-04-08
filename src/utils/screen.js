@@ -108,8 +108,8 @@ export function fixedText(size) {
 // iPhoneX
 const X_WIDTH = 375
 const X_HEIGHT = 812
-const X_TOP = 44
-const X_BOTTOM = 34
+const X_TOP = 30
+const X_BOTTOM = 24
 
 function isIphoneX() {
   return (
@@ -130,7 +130,7 @@ function getOrientation() {
 function getIphonePaddingTop() {
   let paddingTop = 0
   if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
-    paddingTop = 34
+    // paddingTop = X_TOP
   } else if (Platform.OS === 'ios') {
     paddingTop = 20
   }
@@ -159,13 +159,12 @@ function getIphonePaddingHorizontal(orientation) {
     paddingRight: 0,
   }
   if (!orientation || Platform.OS !== 'ios') return paddingHorizontal
-  // if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
-  //   // paddingHorizontal.paddingLeft = 34
-  //   // paddingHorizontal.paddingRight = 34
-  // } else
-  if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
+  if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
+    paddingHorizontal.paddingLeft = X_TOP
+    // paddingHorizontal.paddingRight = 34
+  } else if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
     // paddingHorizontal.paddingLeft = 34
-    paddingHorizontal.paddingRight = 34
+    paddingHorizontal.paddingRight = X_TOP
   }
   return paddingHorizontal
 }

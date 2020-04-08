@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
 import styles from './style'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
 import Toast from '../../../../utils/Toast'
 import { getLanguage } from '../../../../language'
@@ -53,7 +53,7 @@ export default class PoiInfoContainer extends React.PureComponent {
       name: '',
       tempList: [],
     } //暂存搜索结果，用于返回事件
-    this.bottom = new Animated.Value(scaleSize(-200))
+    this.bottom = new Animated.Value(scaleSize(-screen.getScreenHeight()))
     this.boxHeight = new Animated.Value(scaleSize(200))
     this.height = new Animated.Value(scaleSize(200))
   }
@@ -63,7 +63,7 @@ export default class PoiInfoContainer extends React.PureComponent {
     if (visible === this.state.visible) {
       return
     }
-    let value = visible ? 0 : scaleSize(-200)
+    let value = visible ? 0 : scaleSize(-screen.getScreenHeight())
     Animated.timing(this.bottom, {
       toValue: value,
       duration: 400,
@@ -347,7 +347,7 @@ export default class PoiInfoContainer extends React.PureComponent {
     await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
     GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
     Animated.timing(this.bottom, {
-      toValue: scaleSize(-200),
+      toValue: scaleSize(-screen.getScreenHeight()),
       duration: 400,
     }).start()
     //重置为初始状态

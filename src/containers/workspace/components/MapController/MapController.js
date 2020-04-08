@@ -107,11 +107,7 @@ export default class MapController extends React.Component {
   setVisible = (visible, immediately = false) => {
     if (visible) {
       Animated.timing(this.state.left, {
-        toValue:
-          (screen.isIphoneX() &&
-          this.props.device.orientation === 'LANDSCAPE-LEFT'
-            ? 20
-            : 0) + DEFAULT_LEFT,
+        toValue: DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
       }).start()
     } else {

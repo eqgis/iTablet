@@ -88,7 +88,7 @@ export default class PopMenu extends PureComponent {
     let container
     if (
       !position ||
-      (!global.isPad && this.props.device.orientation !== 'LANDSCAPE')
+      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
     ) {
       container = {}
     } else {
@@ -108,7 +108,7 @@ export default class PopMenu extends PureComponent {
     let overlay
     if (
       !position ||
-      (!global.isPad && this.props.device.orientation !== 'LANDSCAPE')
+      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
     ) {
       overlay = {}
     } else {
@@ -123,7 +123,7 @@ export default class PopMenu extends PureComponent {
     let positonStyle
     if (
       !position ||
-      (!global.isPad && this.props.device.orientation !== 'LANDSCAPE')
+      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
     ) {
       positonStyle = bottomStyle
     } else {

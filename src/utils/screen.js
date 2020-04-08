@@ -110,15 +110,20 @@ export function fixedText(size) {
 // iPhoneX
 const X_WIDTH = 375
 const X_HEIGHT = 812
-const X_TOP = 30
-const X_BOTTOM = 24
+const X_TOP = 35
+const X_BOTTOM = 14
 
 function isIphoneX() {
-  return (
-    Platform.OS === 'ios' &&
-    ((getScreenHeight() === X_HEIGHT && getScreenWidth() === X_WIDTH) ||
-      (getScreenHeight() === X_WIDTH && getScreenWidth() === X_HEIGHT))
-  )
+  
+    if(Platform.OS === 'ios'){
+      let h = getScreenHeight()
+      let w = getScreenWidth()
+      if( (Math.min(w, h) >= X_WIDTH && Math.max(w, h) >= X_HEIGHT) ){
+        return true
+      }
+    }
+   
+  return false
 }
 
 function getOrientation() {

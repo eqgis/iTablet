@@ -48,6 +48,7 @@ export default class PoiTopSearchBar extends React.Component {
   }
 
   render() {
+    if(!this.state.visible) return <View/>
     const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
     return (
       <Animated.View style={[styles.container, { top: this.top }]}>

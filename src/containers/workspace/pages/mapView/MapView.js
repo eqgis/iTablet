@@ -3138,11 +3138,11 @@ export default class MapView extends React.Component {
         {/*GLOBAL.Type === constants.MAP_NAVIGATION &&*/}
         {/*this.props.mapNavigation.isPointShow &&*/}
         {/*this._renderNavigationView()}*/}
-        {this._renderIncrementRoad()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
-        {this._renderNavigationStartButton()}
-        {this._renderNavigationStartHead()}
-        {this._renderMapSelectPointButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderNavigationStartButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderNavigationStartHead()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderMapSelectPointButton()}
         {!this.isExample &&
           GLOBAL.Type === constants.MAP_NAVIGATION &&
           this._renderNavigationPoiView()}

@@ -101,8 +101,9 @@ export default class LocalDataItem extends Component {
           display: display,
           width: '100%',
         }}
-        onPress={() => {
-          this.props.itemOnpress && this.props.itemOnpress(this.props.info)
+        onPress={event => {
+          this.props.itemOnpress &&
+            this.props.itemOnpress(this.props.info, event)
         }}
       >
         <View

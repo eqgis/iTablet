@@ -74,13 +74,14 @@ export default class RenderServiceItem extends PureComponent {
             />
           </View>
           <TouchableOpacity
-            onPress={() => {
+            onPress={event => {
               if (this.props.onItemPress) {
                 this.props.onItemPress(
                   this.props.isPublish,
                   this.props.itemId,
                   this.props.restTitle,
                   this.props.index,
+                  event,
                 )
               }
             }}

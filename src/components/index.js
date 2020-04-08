@@ -59,6 +59,7 @@ import NumberCounter from './NumberCounter'
 import Picker from './Picker'
 import MenuDialog from './MenuDialog'
 import MultiPicker from './MultiPicker'
+import PopMenu from './PopMenu'
 
 export {
   Container,
@@ -128,4 +129,5 @@ export {
   MenuDialog,
   MultiPicker,
   PanResponderView,
+  PopMenu,
 }

@@ -202,6 +202,13 @@ export default class CustomActions extends React.Component {
           transparent={true}
           visible={this.state.modalVisible}
           animationType={'fade'}
+          supportedOrientations={[
+            'portrait',
+            'portrait-upside-down',
+            'landscape',
+            'landscape-left',
+            'landscape-right',
+          ]}
           onRequestClose={() => this.setModalVisible()}
         >
           <View style={{ flex: 1 }}>

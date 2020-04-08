@@ -7,11 +7,10 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native'
-import { Container } from '../../../../components'
+import { Container, PopMenu } from '../../../../components'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
-import LocalDataPopupModal from './LocalDataPopupModal'
 import { color } from '../../../../styles'
 import { UserType, ConstPath } from '../../../../constants'
 import { getLanguage } from '../../../../language/index'
@@ -32,6 +31,7 @@ export default class MyLocalData extends Component {
     navigation: Object,
     down: Object,
     importItem: Object,
+    device: Object,
     setImportItem: () => {},
     importPlotLib: () => {},
     importWorkspace: () => {},
@@ -151,16 +151,22 @@ export default class MyLocalData extends Component {
     this.setState({ sectionData: sectionData })
   }
 
-  itemOnpress = info => {
+  itemOnpress = (info, event) => {
     this.itemInfo = info
-    this.LocalDataPopupModal && this.LocalDataPopupModal.setData(info)
-    this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(true)
+    this.LocalDataPopupModal &&
+      this.LocalDataPopupModal.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
   }
 
-  onlineItemOnPress = (item = {}) => {
+  onlineItemOnPress = (item = {}, event) => {
     this.itemInfo = item
-    this.LocalDataPopupModal && this.LocalDataPopupModal.setData(item)
-    this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(true)
+    this.LocalDataPopupModal &&
+      this.LocalDataPopupModal.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
   }
 
   _renderSectionHeader = info => {
@@ -689,20 +695,6 @@ export default class MyLocalData extends Component {
     }
   }
 
-  _showLocalDataPopupModal = () => {
-    return (
-      <LocalDataPopupModal
-        ref={ref => (this.LocalDataPopupModal = ref)}
-        language={this.props.language}
-        onDeleteData={this.deleteData}
-        onPublishService={this._onPublishService}
-        onDeleteService={this._onDeleteService}
-        onImportWorkspace={this.importData}
-        onChangeDataVisibility={this._onChangeDataVisibility}
-      />
-    )
-  }
-
   setLoading = (visible, info) => {
     this.container && this.container.setLoading(visible, info)
   }
@@ -790,6 +782,70 @@ export default class MyLocalData extends Component {
     }
   }
 
+  getPopMenuData = () => {
+    let data = []
+    let item = this.itemInfo
+    if (item) {
+      data = [
+        {
+          title: getLanguage(this.props.language).Profile.IMPORT_DATA,
+          action: this.importData,
+        },
+      ]
+
+      if (item.dataItemServices) {
+        if (
+          item.serviceStatus !== 'PUBLISHED' &&
+          item.serviceStatus !== 'PUBLISHING'
+        ) {
+          data.push({
+            title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,
+            action: this._onPublishService,
+          })
+        }
+      }
+
+      data.push({
+        title: getLanguage(this.props.language).Profile.DELETE_DATA,
+        action: this.deleteData,
+      })
+
+      if (item.authorizeSetting) {
+        let isPublish = false
+        let authorizeSetting = item.authorizeSetting
+        for (let i = 0; i < authorizeSetting.length; i++) {
+          let dataPermissionType = authorizeSetting[i].dataPermissionType
+          if (dataPermissionType === 'DOWNLOAD') {
+            isPublish = true
+            break
+          }
+        }
+        let title
+        if (isPublish) {
+          title = getLanguage(global.language).Profile.SET_AS_PRIVATE_DATA
+        } else {
+          title = getLanguage(global.language).Profile.SET_AS_PUBLIC_DATA
+        }
+        data.push({
+          title: title,
+          action: this._onChangeDataVisibility,
+        })
+      }
+    }
+    return data
+  }
+
+  renderPopupMenu = () => {
+    return (
+      <PopMenu
+        ref={ref => (this.LocalDataPopupModal = ref)}
+        getData={this.getPopMenuData}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
+  }
+
   render() {
     // console.log(this.state.sectionData)
     let sectionData = this.state.sectionData
@@ -827,7 +883,7 @@ export default class MyLocalData extends Component {
           onEndReachedThreshold={0.5}
           ListFooterComponent={this.renderActivityIndicator()}
         />
-        {this._showLocalDataPopupModal()}
+        {this.renderPopupMenu()}
       </Container>
     )
   }

@@ -118,6 +118,13 @@ export default class ChatImageViewer extends React.Component {
           onRequestClose={this.close}
           visible={this.state.visible}
           transparent={true}
+          supportedOrientations={[
+            'portrait',
+            'portrait-upside-down',
+            'landscape',
+            'landscape-left',
+            'landscape-right',
+          ]}
         >
           <ImageViewer
             ref={ref => (this.ImageViewer = ref)}

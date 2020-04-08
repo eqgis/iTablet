@@ -55,8 +55,10 @@ function getScreenSafeHeight() {
 function getRatio() {
   let height = Math.max(deviceHeight, deviceWidth)
   let ratio
-  if (height < 750) {
+  if (height < 700) {
     ratio = 0.75
+  } else if (height < 800) {
+    ratio = 0.8
   } else if (height < 1000) {
     ratio = Math.max(deviceHeight, deviceWidth) / 1000
   } else {
@@ -129,7 +131,8 @@ function getOrientation() {
  */
 function getIphonePaddingTop() {
   let paddingTop = 0
-  if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
+  if (getOrientation().indexOf('PORTRAIT') < 0) return paddingTop
+  if (isIphoneX()) {
     // paddingTop = X_TOP
   } else if (Platform.OS === 'ios') {
     paddingTop = 20

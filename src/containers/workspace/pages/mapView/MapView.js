@@ -2494,7 +2494,19 @@ export default class MapView extends React.Component {
           style={{ padding: scaleSize(5) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
-          onPress={this.switchAr}
+          onPress={() => {
+            this.container.setLoading(
+              true,
+              getLanguage(this.props.language).Prompt.LOADING,
+            )
+            setTimeout(() => {
+              this.container.setLoading(
+                false,
+                getLanguage(this.props.language).Prompt.LOADING,
+              )
+            }, 3000)
+            this.switchAr()
+          }}
           activeOpacity={0.5}
           // separator={scaleSize(2)}
         />
@@ -2761,8 +2773,6 @@ export default class MapView extends React.Component {
             GLOBAL.AIDETECTCHANGE.setVisible(false)
             this.showFullMap(false)
             GLOBAL.toolBox.setVisible(false)
-            const type = 'aiDetect'
-            this.props.navigation.navigate('ChooseTaggingLayer', { type })
             this.switchAr()
           },
         }}
@@ -3129,11 +3139,15 @@ export default class MapView extends React.Component {
         {/*GLOBAL.Type === constants.MAP_NAVIGATION &&*/}
         {/*this.props.mapNavigation.isPointShow &&*/}
         {/*this._renderNavigationView()}*/}
-        {this._renderIncrementRoad()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
-        {this._renderNavigationStartButton()}
-        {this._renderNavigationStartHead()}
-        {this._renderMapSelectPointButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderNavigationStartButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderNavigationStartHead()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderMapSelectPointButton()}
         {!this.isExample &&
           GLOBAL.Type === constants.MAP_NAVIGATION &&
           this._renderNavigationPoiView()}

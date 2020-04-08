@@ -4,7 +4,7 @@ import { color, zIndexLevel } from '../../styles'
 
 export const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
 export const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
-export const HEADER_HEIGHT_LANDSCAPE = scaleSize(60) + HEADER_PADDINGTOP
+export const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
 export default StyleSheet.create({
   defaultHeaderView: {
     width: '100%',

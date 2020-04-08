@@ -79,6 +79,13 @@ export default class AddMore extends React.Component {
         transparent={true}
         visible={this.state.isVisible}
         animationType={'fade'}
+        supportedOrientations={[
+          'portrait',
+          'portrait-upside-down',
+          'landscape',
+          'landscape-left',
+          'landscape-right',
+        ]}
         onRequestClose={() => this.closeModal()}
       >
         <View style={{ flex: 1 }}>

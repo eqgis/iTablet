@@ -67,12 +67,15 @@ export default class OnlineDataItem extends Component {
           flex: 1,
           flexDirection: 'column',
         }}
-        onPress={() => {
+        onPress={event => {
           this.props.itemOnPress &&
-            this.props.itemOnPress({
-              ...this.props.item,
-              index: this.props.index,
-            })
+            this.props.itemOnPress(
+              {
+                ...this.props.item,
+                index: this.props.index,
+              },
+              event,
+            )
         }}
       >
         <View

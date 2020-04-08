@@ -344,7 +344,7 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <Dialog
         ref={ref => (this.DatumPointDialog = ref)}
-        type={'modal'}
+        // type={'modal'}
         cancelBtnVisible={false}
         confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
         confirmAction={async () => {

@@ -116,10 +116,13 @@ const X_BOTTOM = 14
 function isIphoneX() {
   
     if(Platform.OS === 'ios'){
-      let h = getScreenHeight()
-      let w = getScreenWidth()
-      if( (Math.min(w, h) >= X_WIDTH && Math.max(w, h) >= X_HEIGHT) ){
-        return true
+      isPad = Platform.isPad
+      if(!isPad){
+        let h = getScreenHeight()
+        let w = getScreenWidth()
+        if( (Math.min(w, h) >= X_WIDTH && Math.max(w, h) >= X_HEIGHT) ){
+          return true
+        }
       }
     }
    

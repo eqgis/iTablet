@@ -5,63 +5,7 @@
  */
 
 import * as React from 'react'
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from 'react-native'
-import { Button } from '../../../../components'
-import { scaleSize, screen } from '../../../../utils'
-import { color, zIndexLevel, size } from '../../../../styles'
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    zIndex: zIndexLevel.FOUR,
-    backgroundColor: '#rgba(0, 0, 0, 0.3)',
-  },
-  container: {
-    position: 'absolute',
-    backgroundColor: 'transparent',
-  },
-  topContainer: {
-    flexDirection: 'column',
-    backgroundColor: color.contentColorWhite,
-  },
-  item: {
-    flex: 1,
-    backgroundColor: color.contentColorWhite,
-    height: scaleSize(80),
-    borderRadius: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  separator: {
-    // flex: 1,
-    // marginHorizontal: scaleSize(16),
-    height: 1,
-    backgroundColor: color.separateColorGray,
-  },
-  title: {
-    // fontSize: size.fontSize.fontSizeLg,
-    fontSize: size.fontSize.fontSizeSm,
-    color: color.bgG,
-  },
-  btnTitle: {
-    // fontSize: size.fontSize.fontSizeLg,
-    fontSize: size.fontSize.fontSizeXl,
-    color: color.contentColorBlack,
-  },
-})
-
-const bottomStyle = {
-  bottom: 0,
-  left: 0,
-  right: 0,
-}
+import { PopMenu } from '../../../../components'
 
 export default class SaveView extends React.Component {
   props: {
@@ -89,14 +33,6 @@ export default class SaveView extends React.Component {
       position: {},
     }
     this.cb = () => {}
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
-    ) {
-      this.cancel()
-    }
   }
 
   setTitle = (title, save_yes, save_no, cancel) => {
@@ -134,59 +70,12 @@ export default class SaveView extends React.Component {
     this.cb = null
   }
 
-  getPosition = position => {
-    let positonStyle
-    if (
-      !position ||
-      (!global.isPad && this.props.device.orientation.indexOf('LANDSCAPE') < 0)
-    ) {
-      positonStyle = bottomStyle
-    } else {
-      let screenWidth = this.props.device.width
-      let screenHeight = this.props.device.height
-      let width, height
-      if (position.width) {
-        width = position.width
-      } else {
-        width = scaleSize(300)
-      }
-      if (position.height) {
-        height = position.height
-      } else {
-        height = scaleSize(320)
-      }
-      let x = position.x + 2
-      let y = position.y + 2
-      let left, top
-      if (x + width < screenWidth) {
-        left = x
-      } else {
-        left = x - width
-      }
-      if (y + height < screenHeight) {
-        top = y
-      } else {
-        top = y - height
-      }
-      positonStyle = {
-        left: left,
-        top: top,
-        width: width,
-      }
-    }
-    return positonStyle
-  }
-
   setVisible = (visible, setLoading, cb, position) => {
     // if (this.state.visible === visible) return
     if (setLoading && typeof setLoading === 'function') {
       this._setLoading = setLoading
     }
-    let positonStyle = this.getPosition(position)
-    this.setState({
-      visible,
-      position: positonStyle,
-    })
+    this.menu.setVisible(visible, position)
     this.cb = cb || this.cb
   }
 
@@ -198,75 +87,27 @@ export default class SaveView extends React.Component {
     return this.state.visible
   }
 
+  getData = () => {
+    return [
+      {
+        title: this.state.save_yes,
+        action: this.save,
+      },
+      {
+        title: this.state.save_no,
+        action: this.notSave,
+      },
+    ]
+  }
+
   render() {
-    let animationType = this.props.animated ? 'fade' : 'none'
-    const deviceHeight = screen.getScreenSafeHeight()
     return (
-      <Modal
-        animationType={animationType}
-        transparent={true}
-        visible={this.state.visible}
-        onRequestClose={() => {
-          //点击物理按键需要隐藏对话框
-          if (this.props.backHide) {
-            this.setVisible(false)
-            this.cb = null
-          }
-        }}
-      >
-        <TouchableOpacity
-          style={[
-            styles.overlay,
-            Platform.OS === 'android' && {
-              height: deviceHeight,
-            },
-          ]}
-          activeOpacity={1}
-          onPress={this.cancel}
-        >
-          <View
-            ref={ref => (this.view = ref)}
-            style={[styles.container, this.state.position]}
-          >
-            <View style={styles.topContainer}>
-              <View style={styles.item}>
-                <Text style={styles.title}>{this.state.title}</Text>
-              </View>
-              <View style={styles.separator} />
-              <Button
-                style={styles.item}
-                titleStyle={styles.btnTitle}
-                title={this.state.save_yes}
-                onPress={this.save}
-                activeOpacity={0.5}
-              />
-              <View style={styles.separator} />
-              <Button
-                style={[styles.item, { marginTop: 1 }]}
-                titleStyle={styles.btnTitle}
-                title={this.state.save_no}
-                onPress={this.notSave}
-                activeOpacity={0.5}
-              />
-              <View style={styles.separator} />
-              <Button
-                style={[styles.item, { marginTop: 1 }]}
-                titleStyle={styles.btnTitle}
-                title={this.state.cancel}
-                onPress={this.cancel}
-                activeOpacity={0.5}
-              />
-            </View>
-            {/*<Button*/}
-            {/*style={[styles.item, { marginTop: scaleSize(15) }]}*/}
-            {/*titleStyle={styles.btnTitle}*/}
-            {/*title="取消"*/}
-            {/*onPress={this.cancel}*/}
-            {/*activeOpacity={0.5}*/}
-            {/*/>*/}
-          </View>
-        </TouchableOpacity>
-      </Modal>
+      <PopMenu
+        ref={ref => (this.menu = ref)}
+        title={this.state.title}
+        getData={this.getData}
+        device={this.props.device}
+      />
     )
   }
 }

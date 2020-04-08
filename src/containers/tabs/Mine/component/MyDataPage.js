@@ -10,11 +10,15 @@ import {
   ScrollView,
   Platform,
 } from 'react-native'
-import { Container, ListSeparator, InputDialog } from '../../../../components'
+import {
+  Container,
+  ListSeparator,
+  InputDialog,
+  PopMenu,
+} from '../../../../components'
 import { ConstPath, ConstInfo } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
-import MyDataPopupModal from './MyDataPopupModal'
 import { color } from '../../../../styles'
 import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
@@ -47,6 +51,7 @@ export default class MyDataPage extends Component {
     user: Object,
     navigation: Object,
     upload: Object,
+    device: Object,
     uploading: () => {},
     exportWorkspace: () => {},
   }
@@ -718,10 +723,10 @@ export default class MyDataPage extends Component {
   _renderPagePopup = () => {
     let data = this._getPagePopupData()
     return (
-      <MyDataPopupModal
+      <PopMenu
         ref={ref => (this.PagePopModal = ref)}
         data={data}
-        onCloseModal={this._closeModal}
+        device={this.props.device}
       />
     )
   }
@@ -729,10 +734,10 @@ export default class MyDataPage extends Component {
   _renderItemPopup = () => {
     let data = this._getItemPopupData()
     return (
-      <MyDataPopupModal
+      <PopMenu
         ref={ref => (this.ItemPopModal = ref)}
         data={data}
-        onCloseModal={this._closeModal}
+        device={this.props.device}
       />
     )
   }
@@ -925,9 +930,13 @@ export default class MyDataPage extends Component {
             this.onItemPress(info)
           }
         }}
-        onPressMore={() => {
+        onPressMore={event => {
           this.itemInfo = info
-          this.ItemPopModal && this.ItemPopModal.setVisible(true)
+          this.ItemPopModal &&
+            this.ItemPopModal.setVisible(true, {
+              x: event.nativeEvent.pageX,
+              y: event.nativeEvent.pageY,
+            })
         }}
         onPressCheck={item => {
           let selectedNum = this.state.selectedNum
@@ -979,8 +988,11 @@ export default class MyDataPage extends Component {
     let moreImg = require('../../../../assets/home/Frenchgrey/icon_else_selected.png')
     return (
       <TouchableOpacity
-        onPress={() => {
-          this.PagePopModal.setVisible(true)
+        onPress={event => {
+          this.PagePopModal.setVisible(true, {
+            x: event.nativeEvent.pageX,
+            y: event.nativeEvent.pageY,
+          })
         }}
         style={styles.moreView}
       >

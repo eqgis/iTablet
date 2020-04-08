@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
-import Container from '../../../../components/Container'
+import { Container, PopMenu } from '../../../../components'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
@@ -8,7 +8,7 @@ import Toast from '../../../../utils/Toast'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import UserType from '../../../../constants/UserType'
-import { MineItem, MyDataPopupModal } from '../component'
+import { MineItem } from '../component'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 
 export default class ToggleAccount extends Component {
@@ -17,6 +17,7 @@ export default class ToggleAccount extends Component {
     user: Object,
     setUser: () => {},
     deleteUser: () => {},
+    device: Object,
   }
 
   constructor(props) {
@@ -108,9 +109,12 @@ export default class ToggleAccount extends Component {
           image={imageSource}
           text={userName}
           onPress={this.toggleAccount}
-          onPressMore={() => {
+          onPressMore={event => {
             this.item = info.item
-            this.ItemPopup.setVisible(true)
+            this.ItemPopup.setVisible(true, {
+              x: event.nativeEvent.PageX,
+              y: event.nativeEvent.PageY,
+            })
           }}
           showSeperator={false}
           contentStyle={{ paddingLeft: scaleSize(30) }}
@@ -129,12 +133,10 @@ export default class ToggleAccount extends Component {
       },
     ]
     return (
-      <MyDataPopupModal
+      <PopMenu
         ref={ref => (this.ItemPopup = ref)}
         data={data}
-        onCloseModal={() => {
-          this.ItemPopup.setVisible(false)
-        }}
+        device={this.props.device}
       />
     )
   }

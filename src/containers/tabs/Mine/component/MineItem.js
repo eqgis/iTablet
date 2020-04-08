@@ -84,8 +84,9 @@ export default class MineItem extends Component {
     return (
       <TouchableOpacity
         style={styles.moreImgBtn}
-        onPress={() => {
-          this.props.onPressMore && this.props.onPressMore(this.props.item)
+        onPress={event => {
+          this.props.onPressMore &&
+            this.props.onPressMore(event, this.props.item)
         }}
       >
         <Image source={moreImg} style={styles.moreImg} />

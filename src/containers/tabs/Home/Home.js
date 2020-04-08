@@ -11,7 +11,7 @@ import {
   Platform,
   NetInfo,
 } from 'react-native'
-import { Container, Dialog } from '../../../components'
+import { Container, Dialog, PopMenu } from '../../../components'
 import { ModuleList } from './components'
 import styles from './styles'
 import Toast from '../../../utils/Toast'
@@ -23,7 +23,6 @@ import {
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
-import HomePopupModal from './HomePopupModal'
 import NavigationService from '../../NavigationService'
 import UserType from '../../../constants/UserType'
 import { getLanguage } from '../../../language'
@@ -61,7 +60,6 @@ export default class Home extends Component {
     super(props)
     this.state = {
       isDownloaded: false,
-      modalIsVisible: false,
       dialogCheck: false,
       downloadData: null,
     }
@@ -162,7 +160,7 @@ export default class Home extends Component {
     )
   }
   _closeModal = () => {
-    this.setState({ modalIsVisible: false })
+    this.popup.setVisible(false)
   }
 
   _onLogin = () => {
@@ -265,10 +263,6 @@ export default class Home extends Component {
     this.setState({ dialogCheck: dialogCheck, downloadData: downloadData })
   }
 
-  getExit = () => {
-    return this.exit
-  }
-
   exitConfirm = async () => {
     try {
       // await this._onLogout()
@@ -296,14 +290,20 @@ export default class Home extends Component {
     cancel && cancel(this.moduleItemRef, this.state.dialogCheck)
   }
 
-  showUserPop = () => {
-    this.topNavigatorBarImageId = 'left'
-    this.setState({ modalIsVisible: true })
+  showUserPop = event => {
+    this.side = 'left'
+    this.popup.setVisible(true, {
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY,
+    })
   }
 
-  showMorePop = () => {
-    this.topNavigatorBarImageId = 'right'
-    this.setState({ modalIsVisible: true })
+  showMorePop = event => {
+    this.side = 'right'
+    this.popup.setVisible(true, {
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY,
+    })
   }
 
   renderDialogChildren = () => {
@@ -399,26 +399,65 @@ export default class Home extends Component {
     )
   }
 
-  _renderModal = () => {
-    let isLogin =
-      this.props.currentUser.password !== undefined &&
-      this.props.currentUser.password !== ''
+  _getMenuData = () => {
+    let data = []
+    if (this.side === 'left') {
+      if (UserType.isProbationUser(this.props.user.currentUser)) {
+        data = [
+          {
+            title: getLanguage(this.props.language).Navigator_Label
+              .LEFT_TOP_LOG,
+            action: this._onLogin,
+          },
+          {
+            title: getLanguage(this.props.language).Navigator_Label
+              .LEFT_TOP_REG,
+            action: this._onRegister,
+          },
+        ]
+      } else {
+        data = [
+          {
+            title: getLanguage(this.props.language).Profile.SWITCH_ACCOUNT,
+            action: this._onToggleAccount,
+          },
+          {
+            title: getLanguage(this.props.language).Profile.LOG_OUT,
+            action: this._logoutConfirm,
+          },
+        ]
+      }
+    } else {
+      data = [
+        {
+          title: getLanguage(this.props.language).Navigator_Label
+            .RIGHT_TOP_SETTING,
+          action: this._onSetting,
+        },
+        {
+          title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE,
+          action: this._onSettingLanguage,
+        },
+        {
+          title: getLanguage(this.props.language).Navigator_Label
+            .RIGHT_TOP_EXIT,
+          action: () => {
+            this._closeModal()
+            this.exit.setDialogVisible(true)
+          },
+        },
+      ]
+    }
+    return data
+  }
+
+  renderPopMenu = () => {
     return (
-      <HomePopupModal
-        language={this.props.language}
-        setLanguage={this.props.setLanguage}
-        isLogin={isLogin}
-        onLogin={this._onLogin}
-        onRegister={this._onRegister}
-        onToggleAccount={this._onToggleAccount}
-        onLogout={this._logoutConfirm}
-        onSetting={this._onSetting}
-        onSettingLanguage={this._onSettingLanguage}
-        onAbout={this._onAbout}
-        modalVisible={this.state.modalIsVisible}
-        onCloseModal={this._closeModal}
-        topNavigatorBarImageId={this.topNavigatorBarImageId}
-        getExit={this.getExit}
+      <PopMenu
+        ref={ref => (this.popup = ref)}
+        getData={this._getMenuData}
+        device={this.props.device}
+        hasCancel={false}
       />
     )
   }
@@ -458,7 +497,7 @@ export default class Home extends Component {
           headerLeft: (
             <TouchableOpacity
               style={styles.userView}
-              onPress={() => this.showUserPop()}
+              onPress={event => this.showUserPop(event)}
             >
               <Image
                 source={userImg}
@@ -468,7 +507,7 @@ export default class Home extends Component {
           ),
           headerRight: (
             <TouchableOpacity
-              onPress={() => this.showMorePop()}
+              onPress={event => this.showMorePop(event)}
               style={styles.moreView}
             >
               <Image
@@ -505,7 +544,7 @@ export default class Home extends Component {
             mapModules={this.props.appConfig.mapModules}
             setCurrentMapModule={this.props.setCurrentMapModule}
           />
-          {this._renderModal()}
+          {this.renderPopMenu()}
           {this.renderDialog()}
           {this.renderExitDialog()}
           {this._renderSimpleDialog()}

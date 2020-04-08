@@ -4,6 +4,7 @@ import { setUser, deleteUser } from '../../../../models/user'
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {

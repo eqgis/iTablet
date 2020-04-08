@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   user: state.user.toJS(),
   down: state.online.toJS().down,
+  device: state.device.toJS().device,
   importItem: state.externalData.toJS().importItem,
 })
 

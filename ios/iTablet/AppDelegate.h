@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UINavigationController *nav;
-@property (nonatomic, assign) BOOL allowRotation;
+@property (nonatomic, assign) UIInterfaceOrientationMask allowRotation;
 @property (nonatomic, unsafe_unretained) UIBackgroundTaskIdentifier taskId;
 +(void)SetSampleCodeName:(NSString*)name;
 @end

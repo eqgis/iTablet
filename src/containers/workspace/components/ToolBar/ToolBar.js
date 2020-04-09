@@ -342,7 +342,7 @@ export default class ToolBar extends React.PureComponent {
           newHeight = params.height
         } else if (!params || params.height === undefined) {
           let _size = ToolbarHeight.getToolbarSize(containerType, {
-            data: this.state.data,
+            data,
           })
           newHeight = _size.height
         }

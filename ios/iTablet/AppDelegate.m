@@ -93,7 +93,7 @@ static NSString* g_sampleCodeName = @"#";;
   
 #if DEBUG
 
-  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.43.32"];
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
 
 #endif
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -121,8 +121,8 @@ static NSString* g_sampleCodeName = @"#";;
   
   [self initDefaultData];
   [self initEnvironment];
-  self.allowRotation = NO;
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doSampleCodeNotification:) name:@"RNOpenVC" object:nil];
+  self.allowRotation = UIInterfaceOrientationMaskAll;
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];
   
   [NSThread sleepForTimeInterval:1];
   //  [RNSplashScreen show];
@@ -155,7 +155,10 @@ static NSString* g_sampleCodeName = @"#";;
      });
   return YES;
 }
-
+- (void)deviceOrientationChange:(NSNotification*)info{
+  NSNumber* mask = info.object;
+  self.allowRotation = (UIInterfaceOrientationMask)mask.intValue;
+}
 #pragma mark - 微信打开压缩包
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
@@ -312,6 +315,7 @@ void initCrash(){
 //  } else {
 //    return UIInterfaceOrientationMaskPortrait;
 //  }
-  return UIInterfaceOrientationMaskAll;
+  return self.allowRotation;
+//  return UIInterfaceOrientationMaskPortrait;
 }
 @end

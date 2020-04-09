@@ -1,4 +1,5 @@
 import ToolbarModule from './ToolbarModule'
+import { Platform } from 'react-native'
 import { ToolbarType, Height } from '../../../../../constants'
 
 /**
@@ -34,8 +35,13 @@ function getToolbarSize(type, additional = {}) {
       if (additional.column !== undefined) {
         column = additional.column
       } else {
-        column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+        // column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
         // column = 4
+        if (Platform.isPad) {
+          column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+        } else {
+          column = 4
+        }
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)

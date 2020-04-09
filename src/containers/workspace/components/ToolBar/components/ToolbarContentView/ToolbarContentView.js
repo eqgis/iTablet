@@ -351,19 +351,6 @@ export default class ToolbarContentView extends React.Component {
         case ToolbarType.selectableList:
           if (this.props.data.length === 0) return <View /> // 若当前无数据，则不显示
           switch (this.props.type) {
-            // case ConstToolType.MAP3D_BASE:
-            // case ConstToolType.MAP3D_ATTRIBUTE:
-            // case ConstToolType.MAP3D_WORKSPACE_LIST:
-            // case ConstToolType.MAP3D_IMPORTWORKSPACE:
-            // case ConstToolType.MAP3D_TOOL_DISTANCEMEASURE:
-            // case ConstToolType.MAP3D_TOOL_SUERFACEMEASURE:
-            //   box = this.renderMap3DList()
-            //   break
-            // case ConstToolType.MAP3D_BOX_CLIP:
-            // case ConstToolType.MAP3D_PLANE_CLIP:
-            // case ConstToolType.MAP3D_CROSS_CLIP:
-            //   box = this.renderMap3DClip()
-            //   break
             case ConstToolType.MAP_TOOL_TAGGING_SETTING:
               box = this.renderInputView()
               break

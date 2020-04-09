@@ -13,6 +13,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
 
 const DEFAULT_BOTTOM = scaleSize(135)
+const DEFAULT_BOTTOM_LOW = scaleSize(45)
 const DEFAULT_LEFT = scaleSize(34)
 export default class RNFloorListView extends React.Component {
   props: {
@@ -29,10 +30,16 @@ export default class RNFloorListView extends React.Component {
       data: [],
       height:
         props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? scaleSize(240)
+          ? (
+            GLOBAL.isPad
+              ? scaleSize(360)
+              : scaleSize(240)
+          )
           : scaleSize(360),
       left: new Animated.Value(DEFAULT_LEFT),
-      bottom: new Animated.Value(DEFAULT_BOTTOM),
+      bottom: props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(DEFAULT_BOTTOM_LOW)
+        : new Animated.Value(DEFAULT_BOTTOM),
       currentFloorID: props.currentFloorID,
     }
   }
@@ -49,10 +56,10 @@ export default class RNFloorListView extends React.Component {
       let height, bottom
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
-        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM) ? scaleSize(45) : prevState.bottom._value
+        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM) ? DEFAULT_BOTTOM_LOW : prevState.bottom._value
       } else {
         height = scaleSize(360)
-        bottom = this.isSimilar(prevState.bottom._value, scaleSize(45))? DEFAULT_BOTTOM : prevState.bottom._value
+        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM_LOW)? DEFAULT_BOTTOM : prevState.bottom._value
       }
       this.setState(
         {

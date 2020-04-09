@@ -1067,13 +1067,12 @@ class AppRoot extends Component {
           {
             paddingTop:
               screen.isIphoneX() &&
-              GLOBAL.getDevice() &&
-              GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+              this.props.device.orientation.indexOf('PORTRAIT') >= 0
                 ? screen.X_TOP
                 : 0,
             paddingBottom: screen.getIphonePaddingBottom(),
             ...screen.getIphonePaddingHorizontal(
-              GLOBAL.getDevice().orientation,
+              this.props.device.orientation,
             ),
           },
         ]}>

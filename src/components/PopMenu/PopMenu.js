@@ -302,7 +302,7 @@ export default class PopMenu extends PureComponent {
 
   _renderHeader = () => {
     return (
-      <View style={styles.item}>
+      <View key={this.props.title} style={styles.item}>
         <Text style={styles.title}>{this.props.title}</Text>
       </View>
     )

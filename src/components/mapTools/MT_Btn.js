@@ -65,7 +65,6 @@ export default class MT_Btn extends React.Component {
       }, 1500)
       this.props.onPress && this.props.onPress(e)
     }
-    
   }
 
   _onPressOut = e => {

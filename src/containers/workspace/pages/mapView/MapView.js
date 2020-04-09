@@ -3118,6 +3118,11 @@ export default class MapView extends React.Component {
         {global.isLicenseValid && this.state.showAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
+              }
+            }
             onArObjectClick={this._onArObjectClick}
             language={this.props.language}
           />

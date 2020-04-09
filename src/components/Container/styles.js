@@ -6,7 +6,6 @@ export default StyleSheet.create({
   view: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: color.theme,
   },
   container: {
     flex: 1,

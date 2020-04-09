@@ -111,12 +111,12 @@ export function fixedText(size) {
 const X_WIDTH = 375
 const X_HEIGHT = 812
 const X_TOP = 35
-const X_BOTTOM = 14
+let X_BOTTOM = 14
 
 function isIphoneX() {
   
     if(Platform.OS === 'ios'){
-      isPad = Platform.isPad
+      let isPad = Platform.isPad
       if(!isPad){
         let h = getScreenHeight()
         let w = getScreenWidth()

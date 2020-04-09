@@ -39,7 +39,8 @@ function getToolbarSize(type, additional = {}) {
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)
-      let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
+      // let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
+      let maxRow = 6
       row = row > maxRow ? maxRow : row // 限制最大高度/宽度
       height = Height.TABLE_ROW_HEIGHT_4 * row
       break

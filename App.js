@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import {
-  PixelRatio,
-  Dimensions,
   View,
   AppState,
   StyleSheet,
@@ -44,7 +42,7 @@ import { setShow }  from './src/models/device'
 import { FileTools }  from './src/native'
 import ConfigStore from './src/store'
 import { SaveView } from './src/containers/workspace/components'
-import { scaleSize, Toast } from './src/utils'
+import { scaleSize, Toast, screen } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ConstInfo, ConstToolType, ThemeType} from './src/constants'
@@ -1060,11 +1058,31 @@ class AppRoot extends Component {
   render () {
     return (
       <View style={{flex: 1}}>
-        <RootNavigator
-          appConfig={this.props.appConfig}
-          setModules={this.props.setModules}
-          setNav={this.props.setNav}
-        />
+        <View style={[
+          {flex: 1},
+          screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+          {
+            backgroundColor: '#201F20',
+          },
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+              GLOBAL.getDevice() &&
+              GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              GLOBAL.getDevice().orientation,
+            ),
+          },
+        ]}>
+          <RootNavigator
+            appConfig={this.props.appConfig}
+            setModules={this.props.setModules}
+            setNav={this.props.setNav}
+          />
+        </View>
         <SaveView
           ref={ref => GLOBAL.SaveMapView = ref}
           save={this.saveMap}

@@ -76,8 +76,8 @@ export default class CustomModePage extends Component {
     this.props.navigation.goBack()
     GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
     GLOBAL.PreviewColorPicker && GLOBAL.PreviewColorPicker.setVisible(false)
+    GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
     GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
-    ToolbarModule.setData({})
   }
 
   _changeItemVisible = index => {
@@ -321,7 +321,7 @@ export default class CustomModePage extends Component {
                       data,
                     })
                   }}
-                  onBlur={evt => {
+                  onEndEditing={evt => {
                     this._changeItemValue(index, evt.nativeEvent.text)
                   }}
                 />

@@ -268,28 +268,7 @@ export default class Container extends Component {
     })
     return (
       <AnimatedView
-        style={[
-          styles.view,
-          screen.isIphoneX() &&
-            GLOBAL.getDevice() &&
-            GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && {
-            backgroundColor: '#201F20',
-          },
-          {
-            // TODO 统一在这里处理，去掉其他的paddingTop
-            paddingTop:
-              screen.isIphoneX() &&
-              GLOBAL.getDevice() &&
-              GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
-                ? screen.X_TOP
-                : 0,
-            paddingBottom: screen.getIphonePaddingBottom(),
-            ...screen.getIphonePaddingHorizontal(
-              GLOBAL.getDevice().orientation,
-            ),
-          },
-          { transform: [{ translateX: this.viewX }] },
-        ]}
+        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
         <AnimatedView style={{ width: width }}>
           <TouchableOpacity
@@ -309,7 +288,28 @@ export default class Container extends Component {
             style={[styles.overlay, { opacity: this.props.blankOpacity }]}
           />
         </AnimatedView>
-        <View style={{ flex: 1 }}>
+        <View
+          style={[
+            { flex: 1 },
+            screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+            {
+              backgroundColor: '#201F20',
+            },
+            {
+              // TODO 统一在这里处理，去掉其他的paddingTop
+              paddingTop:
+                screen.isIphoneX() &&
+                GLOBAL.getDevice() &&
+                GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+                  ? screen.X_TOP
+                  : 0,
+              paddingBottom: screen.getIphonePaddingBottom(),
+              ...screen.getIphonePaddingHorizontal(
+                GLOBAL.getDevice().orientation,
+              ),
+            },
+          ]}
+        >
           <StatusBar animated={true} hidden={false} />
           {!fixHeader && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1 }, direction]}>
@@ -332,6 +332,20 @@ export default class Container extends Component {
             initLoading={this.props.initWithLoading}
           />
         </View>
+        {screen.isIphoneX() &&
+          GLOBAL.getDevice() &&
+          GLOBAL.getDevice().orientation === 'LANDSCAPE-RIGHT' && (
+          <View
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: screen.X_TOP,
+              backgroundColor: '#201F20',
+            }}
+          />
+        )}
       </AnimatedView>
     )
   }

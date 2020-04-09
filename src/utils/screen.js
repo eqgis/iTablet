@@ -111,7 +111,7 @@ export function fixedText(size) {
 const X_WIDTH = 375
 const X_HEIGHT = 812
 const X_TOP = 35
-let X_BOTTOM = 14
+const X_BOTTOM = 14
 
 function isIphoneX() {
   

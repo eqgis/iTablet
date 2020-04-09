@@ -246,7 +246,8 @@ export default class MapNavMenu extends React.Component {
           styles.container,
           this.props.style,
           { right: this.state.right },
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+          screen.isIphoneX() &&
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
             bottom: screen.X_BOTTOM,
           },
         ]}

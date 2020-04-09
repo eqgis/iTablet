@@ -83,6 +83,7 @@ const mapStateToProps = state => ({
   navigationhistory: state.setting.toJS().navigationhistory,
   toolbarStatus: state.toolbarStatus.toJS(),
   appConfig: state.appConfig.toJS(),
+  mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
 })
 
 const mapDispatchToProps = {

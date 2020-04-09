@@ -9,6 +9,7 @@ import FunctionToolbar from './FunctionToolbar'
 import constants from '../constants'
 import MapToolbar from './MapToolbar'
 import MapNavMenu from './MapNavMenu'
+import MapNavIcon from './MapNavIcon'
 import BackgroundOverlay from './BackgroundOverlay'
 import MapController from './MapController'
 import ToolBar from './ToolBar'
@@ -46,6 +47,7 @@ import LayerVisibilityView from './LayerVisibilityView'
 import IncrementRoadDialog from './IncrementRoadDialog'
 export {
   MapNavMenu,
+  MapNavIcon,
   BackgroundOverlay,
   ScaleView,
   RNLegendView,

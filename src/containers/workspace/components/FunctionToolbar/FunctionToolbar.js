@@ -94,6 +94,7 @@ export default class FunctionToolbar extends React.Component {
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
     getNavMenuRef: () => {},
+    mapColumnNavBar: boolean,
   }
 
   static defaultProps = {
@@ -246,7 +247,7 @@ export default class FunctionToolbar extends React.Component {
     }).start()
     this.visible = visible
     if (!visible) {
-      this.setMenuVisible(visible)
+      !this.props.mapColumnNavBar && this.setMenuVisible(visible)
     }
   }
 
@@ -721,9 +722,11 @@ export default class FunctionToolbar extends React.Component {
       inputRange: [0, 1],
       outputRange: ['0deg', '180deg'],
     })
+    if (this.props.mapColumnNavBar) {
+      return <View style={styles.moreImageView} />
+    }
     return (
       <View>
-        <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
         <TouchableOpacity
           style={styles.moreImageView}
           onPress={() => {
@@ -791,6 +794,9 @@ export default class FunctionToolbar extends React.Component {
         {this.renderIndicator('top')}
         {this.renderList()}
         {this.renderIndicator('bottom')}
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (
+          <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
+        )}
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
           this.renderMore()}
       </Animated.View>

@@ -4,8 +4,6 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  AsyncStorage,
-  StatusBar,
   NativeModules,
   InteractionManager,
   Platform,
@@ -70,7 +68,6 @@ export default class Home extends Component {
       if (Platform.OS === 'android') {
         this.props.setBackAction({ action: () => this.showMorePop() })
       }
-      this._initStatusBarVisible()
     })
   }
 
@@ -82,12 +79,6 @@ export default class Home extends Component {
     }
   }
 
-  _initStatusBarVisible = async () => {
-    let result = await AsyncStorage.getItem('StatusBarVisible')
-    let statusBarVisible = result === 'true'
-    // this.setState({ statusBarVisible:statusBarVisible }) /** 初始化状态栏可不可见*/
-    StatusBar.setHidden(statusBarVisible)
-  }
   _onImportWorkspace = async filePath => {
     try {
       if (filePath !== undefined) {

@@ -149,7 +149,6 @@ export default class MapCut extends React.Component {
           )
           let newDatasourcePath = filePath + newDatasourceName + '.udb'
           let newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
-
           //另存地图
           let addition = {}
           if (this.props.map.currentMap.Template) {
@@ -202,7 +201,8 @@ export default class MapCut extends React.Component {
               let datasourceParams = {}
               datasourceParams.server = newDatasourcePath
               datasourceParams.engineType = EngineType.UDB
-              datasourceParams.alias = info.datasourceName
+              let returnName = await SMap.isAvilableAlias(info.datasourceName)
+              datasourceParams.alias = returnName
               let rel = await SMap.createDatasource(datasourceParams)
               if (rel === true) {
                 await SMap.openDatasource(datasourceParams)

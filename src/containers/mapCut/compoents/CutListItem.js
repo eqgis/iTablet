@@ -4,14 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { ImageButton } from '../../../components'
 import { scaleSize } from '../../../utils'
 import { CheckStatus } from '../../../constants'
@@ -213,7 +206,8 @@ export default class CutListItem extends PureComponent {
               numberOfLines={2}
               style={[
                 styles.content,
-                { width: Dimensions.get('window').width - scaleSize(500) },
+                // { width: Dimensions.get('window').width - scaleSize(500) },
+                { width: '80%' },
               ]}
             >
               {this.props.caption || this.props.data.caption}

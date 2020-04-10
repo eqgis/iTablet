@@ -78,22 +78,22 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR,
       action: () => {
-        let height
-        let column
-        if (_params.device.orientation.indexOf('PORTRAIT') >= 0) {
-          height = ConstToolType.THEME_HEIGHT[3]
-          column = 8
-        } else {
-          height = ConstToolType.THEME_HEIGHT[2]
-          column = 16
-        }
+        // let height
+        // let column
+        // if (_params.device.orientation.indexOf('PORTRAIT') >= 0) {
+        //   height = ConstToolType.THEME_HEIGHT[3]
+        //   column = 8
+        // } else {
+        //   height = ConstToolType.THEME_HEIGHT[2]
+        //   column = 16
+        // }
         GLOBAL.toolBox && GLOBAL.toolBox.menu()
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
             containerType: ToolbarType.colorTable,
-            column,
+            // column,
             isFullScreen: false,
-            height,
+            // height,
             buttons: getButtons(type),
             selectName: getLanguage(_params.language).Map_Main_Menu
               .LEGEND_COLOR,

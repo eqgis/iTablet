@@ -909,6 +909,10 @@ export default class ToolBar extends React.PureComponent {
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? { right: this.state.right }
             : { bottom: this.state.bottom },
+          this.props.device.orientation.indexOf('LANDSCAPE') !== 0 &&
+            screen.isIphoneX() && {
+            paddingTop: screen.X_TOP + screen.X_BOTTOM,
+          },
           size,
         ]}
         pointerEvents={'box-none'}

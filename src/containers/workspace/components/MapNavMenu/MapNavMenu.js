@@ -61,6 +61,15 @@ export default class MapNavMenu extends React.Component {
     this.visible = false
   }
 
+  componentDidUpdate(preProps) {
+    if (
+      this.props.mapColumnNavBar !== preProps.mapColumnNavBar &&
+      !this.props.mapColumnNavBar
+    ) {
+      this.setVisible(false)
+    }
+  }
+
   setVisible = (visible, immediately) => {
     if (this.visible === visible) return
     // iphone X适配向右侧横屏

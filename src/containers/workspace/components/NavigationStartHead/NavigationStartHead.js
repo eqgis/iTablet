@@ -118,7 +118,7 @@ export default class NavigationStartHead extends React.Component {
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
             width:this.state.width,
-            backgroundColor: '#303030',
+            backgroundColor: '#ebebeb',
             flexDirection: 'row',
             position: 'absolute',
             top: 0,
@@ -137,7 +137,7 @@ export default class NavigationStartHead extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={require('../../../../assets/public/Frenchgrey/icon-back-white.png')}
+              source={require('../../../../assets/public/left_arrow.png')}
               style={styles.backbtn}
             />
           </TouchableOpacity>
@@ -186,7 +186,7 @@ export default class NavigationStartHead extends React.Component {
                 style={{
                   width: '100%',
                   height: 2,
-                  backgroundColor: color.gray,
+                  backgroundColor: color.separateColorGray,
                 }}
               />
               <View

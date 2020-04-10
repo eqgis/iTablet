@@ -47,6 +47,12 @@ export default class MapSelectPointButton extends React.Component {
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
+          this.setState({
+            show:false,
+          })
+          GLOBAL.MAPSELECTPOINT?.setState({
+            show:false,
+          })
         } else {
           await SMap.getEndPoint(
             GLOBAL.ENDX,
@@ -68,6 +74,12 @@ export default class MapSelectPointButton extends React.Component {
           GLOBAL.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
+          })
+          this.setState({
+            show:false,
+          })
+          GLOBAL.MAPSELECTPOINT?.setState({
+            show:false,
           })
         } else {
           await SMap.getStartPoint(

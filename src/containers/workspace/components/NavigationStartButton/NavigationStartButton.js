@@ -376,6 +376,9 @@ export default class NavigationStartButton extends React.Component {
   }
 
   renderRoad = () => {
+    let maxHeight = this.state.isLandScape
+      ? scaleSize(600)
+      : scaleSize(400)
     let data = [
       {
         text: getLanguage(this.language).Map_Main_Menu.START_FROM_START_POINT,
@@ -395,7 +398,7 @@ export default class NavigationStartButton extends React.Component {
             style={{
               flexDirection: 'column',
               width: '100%',
-              height: scaleSize(400),
+              height: maxHeight,
             }}
           >
             <FlatList
@@ -434,7 +437,7 @@ export default class NavigationStartButton extends React.Component {
             left: 0,
             elevation: 100,
             padding: scaleSize(20),
-            backgroundColor: color.contentWhite,
+            backgroundColor: '#ebebeb',
             height: this.state.height,
           }}
         >

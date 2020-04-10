@@ -4,6 +4,7 @@ import NavigationService from '../../../../../NavigationService'
 async function action() {
   try {
     const _params = ToolbarModule.getParams()
+    _params.showFullMap(true)
     NavigationService.navigate('NavigationView', {
       changeNavPathInfo: _params.changeNavPathInfo,
     })

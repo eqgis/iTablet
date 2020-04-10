@@ -138,7 +138,8 @@ export default class FunctionToolbar extends React.Component {
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
-      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
+      this.props.mapColumnNavBar !== nextProps.mapColumnNavBar
     ) {
       return true
     }
@@ -222,14 +223,14 @@ export default class FunctionToolbar extends React.Component {
     if (onTop !== this.onTop) {
       this.onTop = onTop
       Animated.timing(this.topOpacity, {
-        toValue: onTop ? 0 : 1,
+        toValue: onTop ? 0 : 0.6,
         duration: 150,
       }).start()
     }
     if (onBottom !== this.onBottom) {
       this.onBottom = onBottom
       Animated.timing(this.bottomOpacity, {
-        toValue: onBottom ? 0 : 1,
+        toValue: onBottom ? 0 : 0.6,
         duration: 150,
       }).start()
     }

@@ -415,17 +415,17 @@ const Map_Main_Menu = {
   MODEL_FILE: 'ナビモデルファイル',
   MY_LOCATION: '私の位置',
   //导航采集
-  MAP_INDOOR_NETWORK:'屋内',
+  MAP_INDOOR_NETWORK: '屋内',
   MAP_OUTDOOR_NETWORK: 'アウトドア',
-  MAP_INCREMENT_START:'開始',
-  MAP_INCREMENT_STOP:'停止',
-  MAP_INCREMENT_ADD_POINT:'プロット',
-  MAP_INCREMENT_CANCEL:'キャンセルする',
-  MAP_INCREMENT_COMMIT:'提出する',
-  MAP_INCREMENT_GPS_POINT:'GPSプロット方式',
-  MAP_INCREMENT_GPS_TRACK:'GPS軌跡式',
-  MAP_INCREMENT_POINTLINE:'ポイント描画式',
-  MAP_INCREMENT_FREELINE:'自由式',
+  MAP_INCREMENT_START: '開始',
+  MAP_INCREMENT_STOP: '停止',
+  MAP_INCREMENT_ADD_POINT: 'プロット',
+  MAP_INCREMENT_CANCEL: 'キャンセルする',
+  MAP_INCREMENT_COMMIT: '提出する',
+  MAP_INCREMENT_GPS_POINT: 'GPSプロット方式',
+  MAP_INCREMENT_GPS_TRACK: 'GPS軌跡式',
+  MAP_INCREMENT_POINTLINE: 'ポイント描画式',
+  MAP_INCREMENT_FREELINE: '自由式',
 }
 
 // 展開アニメーション
@@ -605,6 +605,7 @@ const Map_Setting = {
   ROTATION_GESTURE: 'ジェスチャー回転',
   PITCH_GESTURE: 'ジェスチャー俯仰',
   THEME_LEGEND: '主題図凡例',
+  COLUMN_NAV_BAR: '横持ち時ナビィバーを縦表示にする',
 
   // 効果設定
   EFFECT_SETTINGS: '効果設定',

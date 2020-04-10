@@ -111,7 +111,7 @@ export function fixedText(size) {
 const X_WIDTH = 375
 const X_HEIGHT = 812
 const X_TOP = 35
-const X_BOTTOM = 14
+const X_BOTTOM = 35
 
 function isIphoneX() {
   if (Platform.OS === 'ios') {
@@ -154,7 +154,7 @@ function getIphonePaddingTop() {
 function getIphonePaddingBottom() {
   let paddingBottom = 0
   if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
-    paddingBottom = 34
+    paddingBottom = X_BOTTOM
   }
   return paddingBottom
 }

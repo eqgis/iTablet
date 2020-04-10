@@ -260,7 +260,7 @@ export default class MapNavMenu extends React.Component {
           screen.isIphoneX() &&
             !this.props.mapColumnNavBar &&
             this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-            bottom: screen.X_BOTTOM,
+            bottom: 14,
           },
           !this.props.mapColumnNavBar && {
             borderTopLeftRadius: scaleSize(10),

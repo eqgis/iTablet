@@ -34,12 +34,12 @@ async function action(type) {
     }
   }
   const _data = LegendData.getData(type)
-  const containerType = ToolbarType.table
+  const containerType = ToolbarType.colorTable
   const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   _params.setMapLegend(mapLegend)
   _params.setToolbarVisible(true, ConstToolType.LEGEND, {
-    containerType: ToolbarType.colorTable,
+    containerType,
     column: data.column,
     isFullScreen: false,
     height: data.height,

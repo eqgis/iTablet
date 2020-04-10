@@ -594,7 +594,7 @@ function showMenuBox(type, selectKey, params = {}) {
         params.setData({
           isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
           showMenuDialog: false,
-          isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+          isFullScreen: !this.state.isTouchProgress,
         })
     } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
       params.showBox && params.showBox()

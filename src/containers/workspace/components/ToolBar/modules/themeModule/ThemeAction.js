@@ -386,10 +386,10 @@ async function getColorGradientType(type, key = '', name = '') {
 }
 
 async function getRangeMode(type, key = '', name = '') {
-  const column =
-    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
-      ? 4
-      : 8
+  // const column =
+  //   ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+  //     ? 4
+  //     : 8
   const getData = async function() {
     return await ThemeMenuData.getRangeMode(type)
   }
@@ -402,7 +402,7 @@ async function getRangeMode(type, key = '', name = '') {
       isTouchProgress: false,
       showMenuDialog: false,
       containerType: ToolbarType.table,
-      column,
+      // column,
       type,
       buttons: ThemeMenuData.getThemeFourMenu(),
       selectName: name || key,
@@ -523,10 +523,10 @@ async function getGraduatedSymbolBaseValueAndSymbolSize(
 }
 
 async function getLabelBackShape(type, key = '', name = '') {
-  const column =
-    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
-      ? 4
-      : 8
+  // const column =
+  //   ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+  //     ? 4
+  //     : 8
   const getData = async function() {
     return await ThemeMenuData.getLabelBackShape()
   }
@@ -539,7 +539,7 @@ async function getLabelBackShape(type, key = '', name = '') {
       isTouchProgress: false,
       showMenuDialog: false,
       containerType: ToolbarType.table,
-      column,
+      // column,
       type,
       buttons: ThemeMenuData.getThemeFourMenu(),
       selectName: name || key,
@@ -550,10 +550,10 @@ async function getLabelBackShape(type, key = '', name = '') {
 
 // 各种专题图的颜色值选择
 async function getColorTable(type, key = '', name = '') {
-  const column =
-    ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
-      ? 8
-      : 12
+  // const column =
+  //   ToolbarModule.getParams().device.orientation.indexOf('PORTRAIT') >= 0
+  //     ? 8
+  //     : 12
   const getData = async function() {
     return await ThemeMenuData.getColorTable()
   }
@@ -566,7 +566,7 @@ async function getColorTable(type, key = '', name = '') {
       isTouchProgress: false,
       showMenuDialog: false,
       containerType: ToolbarType.colorTable,
-      column,
+      // column,
       type,
       buttons: ThemeMenuData.getThemeFourMenu(),
       selectName: name || key,
@@ -1465,7 +1465,14 @@ function menu(type, selectKey, params = {}) {
 
 function showMenuBox(type, selectKey, params = {}) {
   if (type.indexOf('MAP_THEME_PARAM') === -1) return
-  if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE) {
+  if (Utils.isTouchProgress(selectKey)) {
+    params.showBox &&
+      params.showBox({
+        isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+        showMenuDialog: false,
+        isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+      })
+  } else if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE) {
     switch (selectKey) {
       case '表达式':
         getGraphThemeExpressions(
@@ -1487,12 +1494,12 @@ function showMenuBox(type, selectKey, params = {}) {
         break
     }
   } else {
-    params.showBox &&
-      params.showBox({
-        isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+    params.setData &&
+      params.setData({
         showMenuDialog: false,
-        isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+        isFullScreen: false,
       })
+    params.showBox && params.showBox()
   }
 }
 

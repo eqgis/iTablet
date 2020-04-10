@@ -6,7 +6,7 @@ import { Button } from '../index'
 import { getLanguage } from '../../language/index'
 
 const ARROW_WIDTH = scaleSize(20)
-const ARROW_COLOR = '#A0A0A0'
+const ARROW_COLOR = '#DDDDDD'
 
 const styles = StyleSheet.create({
   topContainer: {

@@ -196,7 +196,7 @@ export default class LayerAttributeTable extends React.Component {
   }
   _keyboardDidShow = e => {
     let { screenY, height } = e.startCoordinates
-    if (screenY - this.itemClickPosition < height) {
+    if (screenY - this.itemClickPosition < height && this.scrollIndex >= 0) {
       this.table &&
         this.table.scrollToLocation({
           itemIndex: this.scrollIndex,

@@ -3200,9 +3200,9 @@ export default class MapView extends React.Component {
           GLOBAL.Type === constants.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
+        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
           this.renderMapNavMenu()}
-        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}

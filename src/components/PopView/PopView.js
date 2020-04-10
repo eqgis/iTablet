@@ -56,7 +56,7 @@ export default class PopView extends PureComponent {
 
   _changeValue = visible => {
     let opacity = 1
-    let height = screen.getScreenHeight()
+    let height = Math.max(screen.getScreenHeight(), screen.getScreenHeight())
     let time = 300
     let time2 = 50
     if (visible === false) {

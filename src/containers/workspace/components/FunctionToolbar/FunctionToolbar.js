@@ -94,6 +94,7 @@ export default class FunctionToolbar extends React.Component {
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
     getNavMenuRef: () => {},
+    mapColumnNavBar: boolean,
   }
 
   static defaultProps = {
@@ -137,7 +138,8 @@ export default class FunctionToolbar extends React.Component {
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
-      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
+      this.props.mapColumnNavBar !== nextProps.mapColumnNavBar
     ) {
       return true
     }
@@ -221,14 +223,14 @@ export default class FunctionToolbar extends React.Component {
     if (onTop !== this.onTop) {
       this.onTop = onTop
       Animated.timing(this.topOpacity, {
-        toValue: onTop ? 0 : 1,
+        toValue: onTop ? 0 : 0.6,
         duration: 150,
       }).start()
     }
     if (onBottom !== this.onBottom) {
       this.onBottom = onBottom
       Animated.timing(this.bottomOpacity, {
-        toValue: onBottom ? 0 : 1,
+        toValue: onBottom ? 0 : 0.6,
         duration: 150,
       }).start()
     }
@@ -246,7 +248,7 @@ export default class FunctionToolbar extends React.Component {
     }).start()
     this.visible = visible
     if (!visible) {
-      this.setMenuVisible(visible)
+      !this.props.mapColumnNavBar && this.setMenuVisible(visible)
     }
   }
 
@@ -721,9 +723,11 @@ export default class FunctionToolbar extends React.Component {
       inputRange: [0, 1],
       outputRange: ['0deg', '180deg'],
     })
+    if (this.props.mapColumnNavBar) {
+      return <View style={styles.moreImageView} />
+    }
     return (
       <View>
-        <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
         <TouchableOpacity
           style={styles.moreImageView}
           onPress={() => {
@@ -791,6 +795,9 @@ export default class FunctionToolbar extends React.Component {
         {this.renderIndicator('top')}
         {this.renderList()}
         {this.renderIndicator('bottom')}
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (
+          <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
+        )}
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
           this.renderMore()}
       </Animated.View>

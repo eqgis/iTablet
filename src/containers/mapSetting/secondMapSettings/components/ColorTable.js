@@ -12,7 +12,6 @@ export default class ColorTable extends React.Component {
   props: {
     language: string,
     column: number,
-    // height: number,
     data: Array,
     device: Object,
     itemAction?: () => {},
@@ -21,7 +20,6 @@ export default class ColorTable extends React.Component {
 
   static defaultProps = {
     column: 8,
-    // height: Height.TABLE_ROW_HEIGHT_4 * 5,
   }
 
   constructor(props) {
@@ -31,6 +29,7 @@ export default class ColorTable extends React.Component {
       data: this.dealData(this.props.data),
       itemSize: 0,
     }
+    this.sizeTemp = -1
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -38,6 +37,7 @@ export default class ColorTable extends React.Component {
       this.props.language !== nextProps.language ||
       JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
+      this.sizeTemp !== this.state.itemSize ||
       JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)
     ) {
       return true
@@ -46,13 +46,6 @@ export default class ColorTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (prevProps.device.orientation !== this.props.device.orientation) {
-    //   this.height =
-    //     prevProps.device.orientation.indexOf('LANDSCAPE') === 0
-    //       ? ConstToolType.THEME_HEIGHT[7]
-    //       : ConstToolType.THEME_HEIGHT[3]
-    //   this.ColumnNums = prevProps.device.orientation.indexOf('LANDSCAPE') === 0 ? 12 : 8
-    // }
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({
         data: this.dealData(this.props.data),
@@ -76,6 +69,19 @@ export default class ColorTable extends React.Component {
       })
     }
     return newData
+  }
+
+  _onLayout = event => {
+    let { width } = event.nativeEvent.layout
+    if (
+      this.sizeTemp < width ||
+      this.state.itemSize < this.sizeTemp / this.getColumn() - scaleSize(4)
+    ) {
+      this.sizeTemp = width
+      this.setState({
+        itemSize: width / this.getColumn() - scaleSize(4),
+      })
+    }
   }
 
   itemAction = async item => {
@@ -148,12 +154,7 @@ export default class ColorTable extends React.Component {
   render() {
     return (
       <FlatList
-        onLayout={event => {
-          let { width } = event.nativeEvent.layout
-          this.setState({
-            itemSize: width / this.getColumn() - scaleSize(4),
-          })
-        }}
+        onLayout={this._onLayout}
         key={'color_list_' + this.props.device.orientation}
         renderItem={this.renderItem}
         data={this.state.data}
@@ -161,6 +162,7 @@ export default class ColorTable extends React.Component {
           (typeof item === 'string' ? item : item.key) + index
         }
         numColumns={this.getColumn()}
+        extraData={this.state}
       />
     )
   }

@@ -114,7 +114,13 @@ export default class TableList extends React.Component {
   }
 
   render() {
-    if (this.props.type === 'scrollTable') {
+    if (
+      this.props.type === 'scrollTable' &&
+      ((this.props.data.length > 10 &&
+        this.getOrientation().indexOf('LANDSCAPE') === 0) ||
+        (this.props.data.length > 8 &&
+          this.getOrientation().indexOf('PORTRAIT') === 0))
+    ) {
       return (
         <ScrollView style={[styles.scrollContainer, this.props.style]}>
           {this.renderRows()}

@@ -31,6 +31,7 @@ export const MAP_SELECT_POINT = 'MAP_SELECT_POINT'
 export const AGREE_TO_PROTOCOL = 'AGREE_TO_PROTOCOL'
 export const NAVIGATION_HISTORY = 'NAVIGATION_HISTORY'
 export const ONLINEMAP = 'ONLINEMAP'
+export const COLUMN_NAV_BAR = 'COLUMN_NAV_BAR'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -206,6 +207,13 @@ export const setAgreeToProtocol = (params = {}) => async dispatch => {
   })
 }
 
+export const setColumnNavBar = (params = {}) => async dispatch => {
+  await dispatch({
+    type: COLUMN_NAV_BAR,
+    payload: params || false,
+  })
+}
+
 const initialState = fromJS({
   buffer: {
     endType: 1,
@@ -311,6 +319,7 @@ const initialState = fromJS({
   openOnlineMap: false,
   isAgreeToProtocol: false,
   navigationhistory: [],
+  mapColumnNavBar: true,
 })
 
 export default handleActions(
@@ -530,6 +539,10 @@ export default handleActions(
     [`${AGREE_TO_PROTOCOL}`]: (state, { payload }) => {
       const data = payload || false
       return state.setIn(['isAgreeToProtocol'], fromJS(data))
+    },
+    [`${COLUMN_NAV_BAR}`]: (state, { payload }) => {
+      const data = payload || false
+      return state.setIn(['mapColumnNavBar'], fromJS(data))
     },
     [REHYDRATE]: (state, { payload }) =>
       // if (payload && payload.setting) {

@@ -342,7 +342,7 @@ export default class ToolBar extends React.PureComponent {
           newHeight = params.height
         } else if (!params || params.height === undefined) {
           let _size = ToolbarHeight.getToolbarSize(containerType, {
-            data: this.state.data,
+            data,
           })
           newHeight = _size.height
         }
@@ -909,6 +909,10 @@ export default class ToolBar extends React.PureComponent {
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? { right: this.state.right }
             : { bottom: this.state.bottom },
+          this.props.device.orientation.indexOf('LANDSCAPE') !== 0 &&
+            screen.isIphoneX() && {
+            paddingTop: screen.X_TOP + screen.X_BOTTOM,
+          },
           size,
         ]}
         pointerEvents={'box-none'}

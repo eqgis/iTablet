@@ -400,17 +400,17 @@ const Map_Main_Menu = {
   MY_LOCATION: 'Konumum',
 
   //导航采集
-  MAP_INDOOR_NETWORK:'Kapalı',
+  MAP_INDOOR_NETWORK: 'Kapalı',
   MAP_OUTDOOR_NETWORK: 'Açık',
-  MAP_INCREMENT_START:'Başla',
-  MAP_INCREMENT_STOP:'Dur',
-  MAP_INCREMENT_ADD_POINT:'Nokta Ekle',
-  MAP_INCREMENT_CANCEL:'İptal Edildi',
-  MAP_INCREMENT_COMMIT:'Sunmak',
-  MAP_INCREMENT_GPS_POINT:'GPS ile noktaları toplama',
-  MAP_INCREMENT_GPS_TRACK:'GPS ile çizgileri toplama',
-  MAP_INCREMENT_POINTLINE:'Nokta Çizim',
-  MAP_INCREMENT_FREELINE:'Serbest Çizim',
+  MAP_INCREMENT_START: 'Başla',
+  MAP_INCREMENT_STOP: 'Dur',
+  MAP_INCREMENT_ADD_POINT: 'Nokta Ekle',
+  MAP_INCREMENT_CANCEL: 'İptal Edildi',
+  MAP_INCREMENT_COMMIT: 'Sunmak',
+  MAP_INCREMENT_GPS_POINT: 'GPS ile noktaları toplama',
+  MAP_INCREMENT_GPS_TRACK: 'GPS ile çizgileri toplama',
+  MAP_INCREMENT_POINTLINE: 'Nokta Çizim',
+  MAP_INCREMENT_FREELINE: 'Serbest Çizim',
 }
 
 // 推演动画
@@ -591,6 +591,7 @@ const Map_Setting = {
   ROTATION_GESTURE: 'Dönme Hareketi',
   PITCH_GESTURE: 'Dönme Hareketi',
   THEME_LEGEND: 'Tema Lejantı',
+  COLUMN_NAV_BAR: 'Dikey Gezinme Çubuğu Yatay Olduğunda',
 
   // 效果设置
   EFFECT_SETTINGS: 'Efekt Ayarları',

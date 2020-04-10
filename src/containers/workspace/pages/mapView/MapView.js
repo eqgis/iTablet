@@ -24,6 +24,7 @@ import {
   AIFunctionToolbar,
   MapToolbar,
   MapNavMenu,
+  MapNavIcon,
   MapController,
   ToolBar,
   MenuAlertDialog,
@@ -131,6 +132,7 @@ export default class MapView extends React.Component {
     openOnlineMap: PropTypes.bool,
     navigationhistory: PropTypes.array,
     appConfig: PropTypes.object,
+    mapColumnNavBar: PropTypes.bool,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -1756,6 +1758,16 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderMapNavIcon = () => {
+    return (
+      <MapNavIcon
+        ref={ref => (this.NavIcon = ref)}
+        getNavMenuRef={() => this.NavMenu}
+        device={this.props.device}
+      />
+    )
+  }
+
   /**
    * 横屏时的导航栏
    */
@@ -1768,6 +1780,7 @@ export default class MapView extends React.Component {
         initIndex={0}
         type={this.type}
         device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
       />
     )
   }
@@ -1872,6 +1885,7 @@ export default class MapView extends React.Component {
         type={this.type}
         getToolRef={() => this.toolBox}
         getNavMenuRef={() => this.NavMenu}
+        mapColumnNavBar={this.props.mapColumnNavBar}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -1970,6 +1984,7 @@ export default class MapView extends React.Component {
     this.functionToolbar && this.functionToolbar.setVisible(full)
     this.mapController && this.mapController.setVisible(full)
     this.TrafficView && this.TrafficView.setVisible(full)
+    this.NavIcon && this.NavIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -3129,8 +3144,6 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}
@@ -3189,6 +3202,9 @@ export default class MapView extends React.Component {
           GLOBAL.Type === constants.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
+        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
+          this.renderMapNavMenu()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}

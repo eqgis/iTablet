@@ -412,6 +412,9 @@ export default class MapSelectPointButton extends React.Component {
   }
 
   render() {
+    let width = GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+      ? '50%'
+      : '80%'
     if (this.state.show) {
       return (
         <View
@@ -426,7 +429,7 @@ export default class MapSelectPointButton extends React.Component {
           <TouchableOpacity
             activeOpacity={0.5}
             style={{
-              width: '80%',
+              width,
               height: scaleSize(60),
               borderRadius: 50,
               backgroundColor: color.blue1,

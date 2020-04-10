@@ -23,6 +23,7 @@ const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
 export default class PoiTopSearchBar extends React.Component {
   props: {
     setMapNavigation: () => {},
+    device: Object,
   }
 
   constructor(props) {
@@ -31,6 +32,24 @@ export default class PoiTopSearchBar extends React.Component {
     this.state = {
       defaultValue: '',
       visible: false,
+    }
+    this.width = props.device.orientation.indexOf('LANDSCAPE') === 0
+      ? new Animated.Value(screen.getScreenWidth(props.device.orientation) * 0.45)
+      : new Animated.Value(screen.getScreenWidth(props.device.orientation))
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      let width
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+        width = screen.getScreenWidth(this.props.device.orientation) * 0.45
+      } else {
+        width = screen.getScreenWidth(this.props.device.orientation)
+      }
+      Animated.timing(this.width,{
+        toValue:width,
+        duration:300,
+      }).start()
     }
   }
   setVisible = visible => {
@@ -51,7 +70,7 @@ export default class PoiTopSearchBar extends React.Component {
     if (!this.state.visible) return <View />
     const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
     return (
-      <Animated.View style={[styles.container, { top: this.top }]}>
+      <Animated.View style={[styles.container, { top: this.top, width:this.width }]}>
         <TouchableOpacity
           onPress={async () => {
             if (GLOBAL.PoiInfoContainer) {
@@ -81,15 +100,6 @@ export default class PoiTopSearchBar extends React.Component {
                   type: 'pointSearch',
                 })
                 GLOBAL.PoiInfoContainer.setVisible(false)
-                GLOBAL.PoiInfoContainer.setState({
-                  destination: '',
-                  location: {},
-                  address: '',
-                  showMore: false,
-                  showList: false,
-                  neighbor: [],
-                  resultList: [],
-                })
                 GLOBAL.PoiInfoContainer.tempResult = {
                   name: '',
                   tempList: [],
@@ -129,7 +139,6 @@ export default class PoiTopSearchBar extends React.Component {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: '100%',
     height: HEADER_HEIGHT,
     paddingTop: HEADER_PADDINGTOP,
     flexDirection: 'row',

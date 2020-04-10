@@ -7,7 +7,7 @@ import {
   Animated,
 } from 'react-native'
 
-import { scaleSize, setSpText } from '../../../../utils'
+import {scaleSize, screen, setSpText} from '../../../../utils'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
@@ -120,11 +120,36 @@ export default class RNFloorListView extends React.Component {
   }
 
   /**
+   * 组件是否靠右显示
+   * @param bool
+   */
+  floatToRight = bool => {
+    let needAnim = false
+    let left
+    if(this.isSimilar(this.state.left._value,DEFAULT_LEFT) && bool){
+      left = screen.getScreenWidth(this.props.device.orientation) - scaleSize(94)
+      needAnim = true
+    }else if(!this.isSimilar(this.state.left._value,DEFAULT_LEFT)  && !bool){
+      left = DEFAULT_LEFT
+      needAnim = true
+    }
+    needAnim && Animated.timing(this.state.left, {
+      toValue: left,
+      duration: Const.ANIMATED_DURATION,
+    }).start()
+  }
+  /**
    * 改变bottom位置 导航路径界面使用
    * @param isBottom
    */
   changeBottom = isBottom => {
-    let value = isBottom ? scaleSize(240) : DEFAULT_BOTTOM
+    let value = isBottom
+      ? scaleSize(240)
+      : (
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? DEFAULT_BOTTOM_LOW
+          :DEFAULT_BOTTOM
+      )
     Animated.timing(this.state.bottom, {
       toValue: value,
       duration: Const.ANIMATED_DURATION,

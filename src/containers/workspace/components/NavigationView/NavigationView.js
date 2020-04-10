@@ -6,6 +6,8 @@ import {
   Text,
   FlatList,
   Platform,
+  Dimensions,
+  Animated,
 } from 'react-native'
 import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
@@ -24,6 +26,7 @@ const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 export default class NavigationView extends React.Component {
   props: {
     navigation: Object,
+    device: Object,
   }
   static propTypes = {
     mapNavigation: PropTypes.object,
@@ -44,6 +47,18 @@ export default class NavigationView extends React.Component {
     this.state = {
       startName: '',
       endName: '',
+    }
+    this.maxWidth = props.device.orientation.indexOf('LANDSCAPE') < 0 ?
+      new Animated.Value(Dimensions.get('window').width) : new Animated.Value(Dimensions.get('window').width / 2)
+  }
+  componentDidUpdate(prevProps) {
+    if(prevProps.device.orientation !== this.props.device.orientation){
+      let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') < 0 ?
+        Dimensions.get('window').width : Dimensions.get('window').width / 2
+      Animated.timing(this.maxWidth,{
+        toValue:maxWidth,
+        duration:300,
+      }).start()
     }
   }
 
@@ -476,8 +491,8 @@ export default class NavigationView extends React.Component {
           GLOBAL.TouchType = TouchType.NULL
           //考虑搜索界面跳转，不能直接goBack
           NavigationService.navigate('MapView')
-          GLOBAL.mapController && GLOBAL.mapController.changeBottom(true)
-          GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(true)
+          GLOBAL.mapController?.changeBottom(true)
+          GLOBAL.FloorListView?.changeBottom(true)
         }
       }
     }
@@ -552,9 +567,10 @@ export default class NavigationView extends React.Component {
     // )
     let renderHistory = this.props.navigationhistory
     return (
-      <View
+      <Animated.View
         style={{
           flex: 1,
+          maxWidth:this.maxWidth,
           backgroundColor: color.background,
         }}
       >
@@ -754,7 +770,7 @@ export default class NavigationView extends React.Component {
             </Text>
           </View>
         </Dialog>
-      </View>
+      </Animated.View>
     )
   }
 

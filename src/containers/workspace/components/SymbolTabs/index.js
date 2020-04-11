@@ -55,6 +55,7 @@ class SymbolTabs extends React.Component {
     style: Object,
     symbol: Object,
     template: Object,
+    column: number,
     layers: Object,
     map: Object,
     user: Object,
@@ -212,6 +213,7 @@ class SymbolTabs extends React.Component {
           setCurrentSymbol={this.props.setCurrentSymbol}
           showToolbar={this.props.showToolbar}
           device={this.props.device}
+          column={this.props.column}
         />
         <SymbolTab
           tabLabel={
@@ -222,6 +224,7 @@ class SymbolTabs extends React.Component {
           setCurrentSymbol={this.props.setCurrentSymbol}
           showToolbar={this.props.showToolbar}
           device={this.props.device}
+          column={this.props.column}
         />
         <GroupTab
           tabLabel={
@@ -277,6 +280,7 @@ class SymbolTabs extends React.Component {
           getSymbolTemplates={this.props.getSymbolTemplates}
           setCurrentSymbol={this.props.setCurrentSymbol}
           device={this.props.device}
+          column={this.props.column}
         />
         <TemplateTab
           tabLabel={
@@ -293,6 +297,7 @@ class SymbolTabs extends React.Component {
           getSymbolTemplates={this.props.getSymbolTemplates}
           setCurrentSymbol={this.props.setCurrentSymbol}
           device={this.props.device}
+          column={this.props.column}
         />
         <TemplateList
           tabLabel={

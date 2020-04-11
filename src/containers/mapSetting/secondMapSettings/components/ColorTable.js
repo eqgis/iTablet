@@ -4,7 +4,7 @@
  * https://github.com/AsortKeven
  */
 import React from 'react'
-import { TouchableOpacity, View, FlatList, Text, Platform } from 'react-native'
+import { TouchableOpacity, View, FlatList, Text } from 'react-native'
 import { scaleSize } from '../../../../utils/index'
 import { color } from '../../../tabs/Mine/MyService/Styles'
 
@@ -54,7 +54,7 @@ export default class ColorTable extends React.Component {
   }
 
   getColumn = () => {
-    if (Platform.isPad) {
+    if (GLOBAL.isPad) {
       return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 8
     } else {
       return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6

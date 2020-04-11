@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: 'black',
+    backgroundColor: '#303030',
   },
   searchWrap: {
     flex: 1,

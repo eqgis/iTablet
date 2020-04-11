@@ -3277,6 +3277,7 @@ export default class MapView extends React.Component {
           content={this.state.speechContent}
           recording={this.state.recording}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
+          device={this.props.device}
         />
         {GLOBAL.Type === constants.MAP_NAVIGATION && (
           <Dialog

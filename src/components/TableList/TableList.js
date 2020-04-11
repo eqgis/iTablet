@@ -25,14 +25,16 @@ export default class TableList extends React.Component {
     renderCell: () => {},
     type?: string,
     device?: string,
+    isAutoType?: Boolean,
     limit?: number, // scrollTable limit始终表示列数
   }
 
   static defaultProps = {
     data: [],
     limit: 2,
-    type: 'normal', // normal | scroll
+    type: 'table', // normal | scroll
     lineSeparator: 10,
+    isAutoType: true,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -41,6 +43,25 @@ export default class TableList extends React.Component {
 
   getOrientation = () => {
     return (this.props.device && this.props.device.orientation) || 'PORTRAIT'
+  }
+
+  getType = () => {
+    let type = this.props.type
+    if (this.props.isAutoType) {
+      if (
+        (this.props.data.length > 10 &&
+          this.props.limit === 2 &&
+          this.getOrientation().indexOf('LANDSCAPE') === 0) ||
+        (this.props.data.length > 8 &&
+          this.props.limit === 4 &&
+          this.getOrientation().indexOf('PORTRAIT') === 0)
+      ) {
+        type = 'scrollTable'
+      } else {
+        type = 'table'
+      }
+    }
+    return type
   }
 
   renderRows = () => {
@@ -53,7 +74,8 @@ export default class TableList extends React.Component {
       let orientation = this.getOrientation()
       if (
         orientation.indexOf('LANDSCAPE') === 0 &&
-        this.props.type !== 'scrollTable'
+        // this.props.type !== 'scrollTable'
+        this.getType() !== 'scrollTable'
       ) {
         column = Math.ceil(this.props.data.length / this.props.limit)
       }
@@ -95,14 +117,13 @@ export default class TableList extends React.Component {
     let limit = this.props.limit
     let size = {
       justifyContent: 'center',
-      alignItems: 'center',
+      width: 100 / limit + '%',
+      height: 100 / limit + '%',
     }
-    let orientation = this.getOrientation()
-    if (orientation.indexOf('LANDSCAPE') === 0) {
-      size.height = 100 / limit + '%'
-    } else {
-      size.width = 100 / limit + '%'
-    }
+    // let orientation = this.getOrientation()
+    // if (orientation.indexOf('LANDSCAPE') === 0) {
+    //   size.height = 100 / limit + '%'
+    // }
     return (
       <View
         style={[size, this.props.cellStyle]}
@@ -114,13 +135,9 @@ export default class TableList extends React.Component {
   }
 
   render() {
-    if (
-      this.props.type === 'scrollTable' &&
-      ((this.props.data.length > 10 &&
-        this.getOrientation().indexOf('LANDSCAPE') === 0) ||
-        (this.props.data.length > 8 &&
-          this.getOrientation().indexOf('PORTRAIT') === 0))
-    ) {
+    // let type = this.props.type
+    // if (type === 'scrollTable') {
+    if (this.getType() === 'scrollTable') {
       return (
         <ScrollView style={[styles.scrollContainer, this.props.style]}>
           {this.renderRows()}

@@ -374,7 +374,7 @@ export default class PopMenu extends PureComponent {
           >
             {this._renderList()}
           </View>
-          <View
+          {/* <View
             style={[
               {
                 position: 'absolute',
@@ -383,7 +383,7 @@ export default class PopMenu extends PureComponent {
             ]}
           >
             <View style={[styles.arrow, this.state.arrow]} />
-          </View>
+          </View> */}
         </TouchableOpacity>
       </Modal>
     )

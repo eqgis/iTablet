@@ -31,6 +31,7 @@ export default class MapNavIcon extends React.Component {
     this.imageX = new Animated.Value(0)
     this.visible = true
     this.menuVisible = false
+    this.opacity = new Animated.Value(1.0)
   }
 
   componentDidUpdate(prevProps) {
@@ -99,6 +100,10 @@ export default class MapNavIcon extends React.Component {
       toValue: show ? 1 : 0,
       duration: 150,
     }).start()
+    Animated.timing(this.opacity, {
+      toValue: show ? 0.6 : 1.0,
+      duration: 150,
+    }).start()
   }
 
   changeImageX = show => {
@@ -148,7 +153,7 @@ export default class MapNavIcon extends React.Component {
     })
     const color = this.color.interpolate({
       inputRange: [0, 1],
-      outputRange: ['#FBFBFB', '#EEEEE0'],
+      outputRange: ['#FBFBFB', '#EEEEEE'],
     })
     return (
       <Animated.View
@@ -164,6 +169,7 @@ export default class MapNavIcon extends React.Component {
           shadowColor: 'rgba(0, 0, 0, 0.5)',
           shadowOpacity: this.shadowVisible,
           shadowRadius: 2,
+          opacity:this.opacity,
         }}
       >
         <TouchableOpacity style={styles.moreImageView} onPress={this.onPress}>

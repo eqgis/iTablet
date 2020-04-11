@@ -1,5 +1,4 @@
 import ToolbarModule from './ToolbarModule'
-import { Platform } from 'react-native'
 import { ToolbarType, Height } from '../../../../../constants'
 
 /**
@@ -37,11 +36,11 @@ function getToolbarSize(type, additional = {}) {
       } else {
         // column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
         // column = 4
-        if (Platform.isPad) {
-          column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
-        } else {
-          column = 4
-        }
+        // if (GLOBAL.isPad) {
+        //   column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+        // } else {
+        column = 4
+        // }
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)
@@ -74,10 +73,8 @@ function getToolbarSize(type, additional = {}) {
       height = Height.TABLE_ROW_HEIGHT_1 * 2
       break
     case ToolbarType.tabs: // 符号标签栏
-      height =
-        params.device.orientation.indexOf('PORTRAIT') >= 0
-          ? Height.TABLE_ROW_HEIGHT_2 * 8
-          : Height.TABLE_ROW_HEIGHT_2 * 5
+      height = Height.TABLE_ROW_HEIGHT_2 * 8
+      column = 4
       break
   }
   if (additional.height !== undefined) {

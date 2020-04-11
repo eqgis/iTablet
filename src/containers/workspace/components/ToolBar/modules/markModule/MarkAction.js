@@ -280,8 +280,8 @@ function selectLabelToEdit(toolType = '') {
 
   const { event } = ToolbarModule.getData()
 
-  const column = 4
-  let height = ConstToolType.HEIGHT[3]
+  // const column = 4
+  // let height = ConstToolType.HEIGHT[3]
   let containerType = ToolbarType.table
   let type = ''
 
@@ -291,28 +291,28 @@ function selectLabelToEdit(toolType = '') {
   switch (toolType) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
   }
   if (type !== '') {
     _params.setToolbarVisible &&
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
-        column,
-        height,
+        // column,
+        // height,
         containerType,
         cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
       })

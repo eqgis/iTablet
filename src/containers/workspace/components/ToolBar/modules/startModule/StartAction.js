@@ -175,10 +175,10 @@ function openMap() {
     })
     _params.setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
       containerType: ToolbarType.list,
-      height:
-        _params.device.orientation.indexOf('LANDSCAPE') === 0
-          ? ConstToolType.THEME_HEIGHT[4]
-          : ConstToolType.HEIGHT[3],
+      // height:
+      //   _params.device.orientation.indexOf('LANDSCAPE') === 0
+      //     ? ConstToolType.THEME_HEIGHT[4]
+      //     : ConstToolType.HEIGHT[3],
       data,
     })
   })()
@@ -341,7 +341,7 @@ function openTemplateList() {
       ConstToolType.MAP_TEMPLATE,
       {
         containerType: ToolbarType.list,
-        height: ConstToolType.HEIGHT[3],
+        // height: ConstToolType.HEIGHT[3],
         data,
       },
     )

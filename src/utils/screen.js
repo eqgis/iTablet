@@ -45,8 +45,9 @@ function getScreenHeight(orientation) {
 function getScreenSafeHeight() {
   if (Platform.OS === 'ios') return getScreenHeight()
   let screenHeight = ExtraDimensions.getRealWindowHeight()
-  if (getScreenHeight() < getScreenWidth()) {
-    screenHeight = ExtraDimensions.getRealWindowWidth()
+  let temp = ExtraDimensions.getRealWindowWidth()
+  if (screenHeight < temp) {
+    screenHeight = temp
   }
   deviceSafeHeight = screenHeight - ExtraDimensions.getStatusBarHeight()
   return deviceSafeHeight

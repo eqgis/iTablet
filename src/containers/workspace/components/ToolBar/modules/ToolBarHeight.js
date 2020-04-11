@@ -79,6 +79,11 @@ function getToolbarSize(type, additional = {}) {
           ? Height.TABLE_ROW_HEIGHT_2 * 8
           : Height.TABLE_ROW_HEIGHT_2 * 5
       break
+    case ToolbarType.colorPicker: //颜色选择器 色盘
+      height = orientation.indexOf('LANDSCAPE') === 0
+        ? Height.TABLE_ROW_HEIGHT_3 * 5
+        : Height.TABLE_ROW_HEIGHT_3 * 4
+      break
   }
   if (additional.height !== undefined) {
     height = additional.height

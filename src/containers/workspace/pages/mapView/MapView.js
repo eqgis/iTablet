@@ -1932,16 +1932,6 @@ export default class MapView extends React.Component {
       />
     )
   }
-  renderPreviewColorPicker = () => {
-    return (
-      <PreviewColorPicker
-        ref={ref => (GLOBAL.PreviewColorPicker = ref)}
-        navigation={this.props.navigation}
-        device={this.props.device}
-        language={this.props.language}
-      />
-    )
-  }
   //遮盖层
   renderOverLayer = () => {
     return (
@@ -3273,7 +3263,6 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === constants.MAP_THEME && this.renderPreviewHeader()}
-        {GLOBAL.Type === constants.MAP_THEME && this.renderPreviewColorPicker()}
         {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
         {/*  <PopView*/}
         {/*    showFullMap={this.showFullMap}*/}

@@ -42,7 +42,6 @@ import MapSelectPointButton from './MapSelectPointButton'
 import TrafficView from './TrafficView'
 import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
-import PreviewColorPicker from './PreviewColorPicker'
 import LayerVisibilityView from './LayerVisibilityView'
 import IncrementRoadDialog from './IncrementRoadDialog'
 export {
@@ -88,7 +87,6 @@ export {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
   LayerVisibilityView,
   IncrementRoadDialog,
 }

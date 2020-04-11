@@ -148,7 +148,7 @@ export default class MapNavIcon extends React.Component {
     })
     const color = this.color.interpolate({
       inputRange: [0, 1],
-      outputRange: ['#FBFBFB', '#EEEEEE'],
+      outputRange: ['#FBFBFB', '#EEEEE0'],
     })
     return (
       <Animated.View

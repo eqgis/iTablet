@@ -7,16 +7,16 @@ import {
   Platform,
   Animated,
 } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import {scaleSize, screen, setSpText} from '../../../../utils'
 import styles from './styles'
 import { TouchType } from '../../../../constants'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-// import NavigationService from '../../../../containers/NavigationService'
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 export default class NavigationStartHead extends React.Component {
   props: {
+    device: Object,
     setMapNavigation: () => {},
   }
 
@@ -24,6 +24,20 @@ export default class NavigationStartHead extends React.Component {
     super(props)
     this.state = {
       show: false,
+      width: props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(screen.getScreenWidth(props.device.orientation) / 2)
+        : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
+    }
+  }
+  componentDidUpdate(prevProps){
+    if(prevProps.device.orientation !== this.props.device.orientation){
+      let width = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? screen.getScreenWidth(this.props.device.orientation) / 2
+        : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.state.width,{
+        toValue:width,
+        duration:300,
+      }).start()
     }
   }
 
@@ -61,8 +75,9 @@ export default class NavigationStartHead extends React.Component {
     GLOBAL.ROUTEANALYST = undefined
     GLOBAL.TouchType = TouchType.NORMAL
     await SMap.clearPoint()
-    GLOBAL.mapController && GLOBAL.mapController.changeBottom(false)
-    GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(false)
+    GLOBAL.mapController?.changeBottom(false)
+    GLOBAL.FloorListView?.floatToRight(false)
+    GLOBAL.FloorListView?.changeBottom(false)
   }
 
   _onSelectPointPress = async isStart => {
@@ -98,12 +113,13 @@ export default class NavigationStartHead extends React.Component {
   _renderSearchView = () => {
     if (this.state.show) {
       return (
-        <View
+        <Animated.View
           style={{
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
-            width: '100%',
+            width:this.state.width,
             backgroundColor: '#303030',
+            // backgroundColor: '#ebebeb',
             flexDirection: 'row',
             position: 'absolute',
             top: 0,
@@ -171,7 +187,7 @@ export default class NavigationStartHead extends React.Component {
                 style={{
                   width: '100%',
                   height: 2,
-                  backgroundColor: color.gray,
+                  backgroundColor: color.separateColorGray,
                 }}
               />
               <View
@@ -208,7 +224,7 @@ export default class NavigationStartHead extends React.Component {
               </View>
             </View>
           </View>
-        </View>
+        </Animated.View>
       )
     } else {
       return <View />

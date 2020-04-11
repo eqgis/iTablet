@@ -47,6 +47,12 @@ export default class MapSelectPointButton extends React.Component {
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
+          this.setState({
+            show:false,
+          })
+          GLOBAL.MAPSELECTPOINT?.setState({
+            show:false,
+          })
         } else {
           await SMap.getEndPoint(
             GLOBAL.ENDX,
@@ -68,6 +74,12 @@ export default class MapSelectPointButton extends React.Component {
           GLOBAL.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
+          })
+          this.setState({
+            show:false,
+          })
+          GLOBAL.MAPSELECTPOINT?.setState({
+            show:false,
           })
         } else {
           await SMap.getStartPoint(
@@ -412,6 +424,9 @@ export default class MapSelectPointButton extends React.Component {
   }
 
   render() {
+    let width = GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+      ? '50%'
+      : '80%'
     if (this.state.show) {
       return (
         <View
@@ -426,7 +441,7 @@ export default class MapSelectPointButton extends React.Component {
           <TouchableOpacity
             activeOpacity={0.5}
             style={{
-              width: '80%',
+              width,
               height: scaleSize(60),
               borderRadius: 50,
               backgroundColor: color.blue1,

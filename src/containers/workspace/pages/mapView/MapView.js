@@ -3020,6 +3020,7 @@ export default class MapView extends React.Component {
   _renderNavigationStartButton = () => {
     return (
       <NavigationStartButton
+        device={this.props.device}
         getNavigationDatas={this.getNavigationDatas}
         path={this.state.path}
         pathLength={this.state.pathLength}
@@ -3031,6 +3032,7 @@ export default class MapView extends React.Component {
   _renderNavigationStartHead = () => {
     return (
       <NavigationStartHead
+        device={this.props.device}
         ref={ref => (GLOBAL.NAVIGATIONSTARTHEAD = ref)}
         setMapNavigation={this.props.setMapNavigation}
       />
@@ -3253,6 +3255,7 @@ export default class MapView extends React.Component {
         />
         <InputDialog ref={ref => (this.InputDialog = ref)} label="名称" />
         <PoiTopSearchBar
+          device={this.props.device}
           ref={ref => (GLOBAL.PoiTopSearchBar = ref)}
           setMapNavigation={this.props.setMapNavigation}
         />

@@ -21,6 +21,8 @@ import { getLanguage } from '../../../../language'
 import constants from '../../../workspace/constants'
 import NavigationService from '../../../NavigationService'
 
+const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
+
 export default class PoiInfoContainer extends React.PureComponent {
   props: {
     device: Object,
@@ -53,9 +55,101 @@ export default class PoiInfoContainer extends React.PureComponent {
       name: '',
       tempList: [],
     } //暂存搜索结果，用于返回事件
-    this.bottom = new Animated.Value(scaleSize(-screen.getScreenHeight()))
-    this.boxHeight = new Animated.Value(scaleSize(200))
-    this.height = new Animated.Value(scaleSize(200))
+    this.bottom = new Animated.Value(-screen.getScreenHeight(props.device.orientation))
+    this.boxHeight = new Animated.Value(0)
+    this.height = new Animated.Value(0)
+    this.width = new Animated.Value(0)
+  }
+
+  componentDidMount(){
+    let animParams = this.getAnimParams()
+    this.startAnim(animParams)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.device.orientation !== this.props.device.orientation || prevState.visible !== this.state.visible) {
+      let animParams = this.getAnimParams()
+      this.startAnim(animParams)
+    }
+  }
+
+  getAnimParams = () => {
+    let width, height, bottom, boxHeight
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      width = screen.getScreenWidth(this.props.device.orientation) * 0.45
+      if(this.state.showMore){
+        height = scaleSize(80)
+        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(80)
+        boxHeight = scaleSize(80)
+      }
+      if(!this.state.showList && this.state.destination){
+        boxHeight = scaleSize(200)
+        height = scaleSize(200)
+        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(200)
+      }
+      if(this.state.showList && this.state.resultList.length === 0 ){
+        boxHeight = scaleSize(340)
+        height = scaleSize(340)
+        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(340)
+      }
+      if(this.state.showList && this.state.resultList.length !== 0 && !this.state.showMore ){
+        boxHeight = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+        height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+        bottom = 0
+      }
+    } else {
+      width = screen.getScreenWidth(this.props.device.orientation)
+      bottom = 0
+      if(this.state.showMore){
+        boxHeight = scaleSize(80)
+        height = scaleSize(80)
+      }
+      if(!this.state.showList){
+        height = scaleSize(200)
+        boxHeight = scaleSize(200)
+      }
+      if(this.state.showList && this.state.resultList.length === 0){
+        height = scaleSize(340)
+        boxHeight = scaleSize(340)
+      }
+      if(this.state.showList && this.state.resultList.length !== 0 && !this.state.showMore){
+        boxHeight = scaleSize(450)
+        height = scaleSize(450)
+      }
+    }
+    //隐藏状态
+    if(!this.state.visible){
+      bottom = -screen.getScreenHeight(this.props.device.orientation)
+    }
+    return {width,height,bottom,boxHeight}
+  }
+
+  startAnim = ({width,height,bottom,boxHeight}) => {
+    let AnimationList = []
+    width !== undefined && AnimationList.push(
+      Animated.timing(this.width,{
+        toValue:width,
+        duration:300,
+      })
+    )
+    height !== undefined && AnimationList.push(
+      Animated.timing(this.height, {
+        toValue: height,
+        duration: 300,
+      })
+    )
+    bottom !== undefined && AnimationList.push(
+      Animated.timing(this.bottom, {
+        toValue: bottom,
+        duration: 300,
+      })
+    )
+    boxHeight !== undefined && AnimationList.push(
+      Animated.timing(this.boxHeight, {
+        toValue: boxHeight,
+        duration: 300,
+      }))
+    Animated.parallel(AnimationList).start()
   }
 
   // 显示 底部存在搜周边按钮的状态  / 隐藏
@@ -71,11 +165,11 @@ export default class PoiInfoContainer extends React.PureComponent {
     GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
     if (!visible) {
       Animated.timing(this.height, {
-        toValue: scaleSize(200),
+        toValue: 0,
         duration: 400,
       }).start()
       Animated.timing(this.boxHeight, {
-        toValue: scaleSize(200),
+        toValue: 0,
         duration: 10,
       }).start()
       //同时隐藏顶部框
@@ -268,6 +362,12 @@ export default class PoiInfoContainer extends React.PureComponent {
         toValue: scaleSize(80),
         duration: 0,
       }).start()
+      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+        Animated.timing(this.bottom, {
+          toValue: screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(80),
+          duration: 0,
+        }).start()
+      }
       this.setState({
         showMore: true,
       })
@@ -275,27 +375,55 @@ export default class PoiInfoContainer extends React.PureComponent {
   }
 
   showTable = () => {
-    Animated.timing(this.height, {
-      toValue: scaleSize(200),
-      duration: 0,
-    }).start()
-    Animated.timing(this.boxHeight, {
-      toValue: scaleSize(200),
-      duration: 0,
-    }).start()
+    let boxHeight,height,bottom
+    boxHeight = scaleSize(200)
+    height = scaleSize(200)
+    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+      bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(200)
+    }else{
+      bottom = 0
+    }
+    this.startAnim({boxHeight,height,bottom})
   }
 
   show = () => {
-    Animated.timing(this.height, {
-      toValue: scaleSize(450),
-      duration: 400,
-    }).start()
-    Animated.timing(this.boxHeight, {
-      toValue: scaleSize(450),
-      duration: 400,
-    }).start()
+    let height, boxHeight, bottom = 0
+    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+      boxHeight = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+      height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+    }else{
+      height = scaleSize(450)
+      boxHeight = scaleSize(450)
+    }
+    this.startAnim({height,bottom,boxHeight})
     this.setState({
       showMore: false,
+    })
+  }
+
+  //重置为初始状态
+  setInitialState = () => {
+    this.setState({
+      destination: '',
+      location: {},
+      address: '',
+      showMore: false,
+      showList: false,
+      neighbor: [],
+      resultList: [],
+      visible: false,
+      radius: 5000,
+    },() => {
+      this.tempResult = {
+        name: '',
+        tempList: [],
+      }
+      let bottom, boxHeight, height, width
+      bottom = -screen.getScreenHeight(this.props.device.orientation)
+      boxHeight =  0
+      height = 0
+      width = 0
+      this.startAnim({width,height,boxHeight,bottom})
     })
   }
 
@@ -306,22 +434,26 @@ export default class PoiInfoContainer extends React.PureComponent {
   }
 
   close = () => {
+    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0) return
     SMap.removePOICallout()
     this.setVisible(false)
     this.props.setMapNavigation({
       isShow: false,
       name: '',
     })
+    this.setInitialState()
   }
+
   searchNeighbor = () => {
-    Animated.timing(this.height, {
-      toValue: scaleSize(340),
-      duration: 400,
-    }).start()
-    Animated.timing(this.boxHeight, {
-      toValue: scaleSize(this.props.device.height * 2),
-      duration: 10,
-    }).start()
+    let boxHeight, height, bottom
+    boxHeight = scaleSize(340)
+    height = scaleSize(340)
+    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+      bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(340)
+    }else{
+      bottom = 0
+    }
+    this.startAnim({boxHeight,height,bottom})
     this.setState({
       showList: true,
     })
@@ -346,22 +478,7 @@ export default class PoiInfoContainer extends React.PureComponent {
     await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
     await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
     GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
-    Animated.timing(this.bottom, {
-      toValue: scaleSize(-screen.getScreenHeight()),
-      duration: 400,
-    }).start()
-    //重置为初始状态
-    this.setState({
-      destination: '',
-      location: {},
-      address: '',
-      showMore: false,
-      showList: false,
-      neighbor: [],
-      resultList: [],
-      visible: false,
-      radius: 5000,
-    })
+    this.setInitialState()
   }
 
   renderView = () => {
@@ -548,6 +665,7 @@ export default class PoiInfoContainer extends React.PureComponent {
           ...styles.box,
           bottom: this.bottom,
           height: this.boxHeight,
+          width: this.width,
         }}
       >
         <TouchableOpacity

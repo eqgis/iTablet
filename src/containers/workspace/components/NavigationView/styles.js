@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   pointAnalystView: {
     flex: 1,
-    backgroundColor: color.background,
+    backgroundColor: color.content_white,
     marginLeft: scaleSize(30),
     marginRight: scaleSize(50),
     height: scaleSize(170),
@@ -102,7 +102,7 @@ export default StyleSheet.create({
     height: scaleSize(70),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.contentColorWhite2,
+    backgroundColor: color.content_white,
   },
   btn: {
     paddingHorizontal: scaleSize(5),

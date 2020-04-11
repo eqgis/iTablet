@@ -44,6 +44,7 @@ export default class Container extends Component {
     hideInBackground: boolean,
     orientation: String,
     onOverlayPress: () => {},
+    isOverlayBefore: boolean,
   }
 
   static defaultProps = {
@@ -58,6 +59,7 @@ export default class Container extends Component {
     showFullInMap: false, //是否在mapview和map3d中显示全屏页面，默认半屏
     blankOpacity: 0, //透明半屏的透明度
     hideInBackground: true, //在mapview和map3d中,StackNavigator中有新页面时是否隐藏本页面
+    isOverlayBefore: true,
   }
 
   constructor(props) {
@@ -270,7 +272,8 @@ export default class Container extends Component {
       <AnimatedView
         style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
-        <AnimatedView style={{ width: width }}>
+        {this.props.isOverlayBefore &&
+        (<AnimatedView style={{ width: width }}>
           <TouchableOpacity
             onPress={() => {
               if (this.props.onOverlayPress) {
@@ -287,7 +290,8 @@ export default class Container extends Component {
             activeOpacity={this.props.blankOpacity}
             style={[styles.overlay, { opacity: this.props.blankOpacity }]}
           />
-        </AnimatedView>
+        </AnimatedView>)
+        }
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
           {!fixHeader && this.renderHeader(fixHeader)}
@@ -311,6 +315,26 @@ export default class Container extends Component {
             initLoading={this.props.initWithLoading}
           />
         </View>
+        {!this.props.isOverlayBefore &&
+        (<AnimatedView style={{ width: width }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (this.props.onOverlayPress) {
+                this.props.onOverlayPress()
+              } else {
+                if (NavigationService.isInMap()) {
+                  NavigationService.navigate('MapView')
+                }
+                if (NavigationService.isInMap3D()) {
+                  NavigationService.navigate('Map3D')
+                }
+              }
+            }}
+            activeOpacity={this.props.blankOpacity}
+            style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+          />
+        </AnimatedView>)
+        }
       </AnimatedView>
     )
   }

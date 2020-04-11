@@ -566,15 +566,12 @@ export default class PointAnalyst extends Component {
                   radius: this.radius,
                 },
                 () => {
+                  NavigationService.navigate('MapView')
                   GLOBAL.PoiInfoContainer.setVisible(true)
                   GLOBAL.PoiTopSearchBar.setVisible(true)
                   GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.title })
-                  NavigationService.navigate('MapView')
                 },
               )
-
-              GLOBAL.PoiTopSearchBar.setVisible(true)
-              GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.title })
 
               if (GLOBAL.Type === constants.MAP_NAVIGATION) {
                 GLOBAL.TouchType = TouchType.NORMAL
@@ -611,6 +608,7 @@ export default class PointAnalyst extends Component {
   render() {
     return (
       <Container
+        isOverlayBefore={false}
         style={styles.container}
         ref={ref => (this.container = ref)}
         initWithLoading={false}

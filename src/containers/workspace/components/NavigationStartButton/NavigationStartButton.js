@@ -6,18 +6,20 @@ import {
   Animated,
   FlatList,
   Image,
+  Platform,
 } from 'react-native'
-import { scaleSize, setSpText, Toast } from '../../../../utils'
+import {scaleSize, screen, setSpText, Toast} from '../../../../utils'
 import color from '../../../../styles/color'
 import { SMap } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
-
+const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(225) : scaleSize(205)
 export default class NavigationStartButton extends React.Component {
   props: {
     pathLength: Object,
     path: Array,
     getNavigationDatas: () => {},
+    device: Object,
   }
   static defaultProps = {
     pathLength: { length: 0 },
@@ -30,10 +32,17 @@ export default class NavigationStartButton extends React.Component {
     this.language = GLOBAL.language === 'CN' ? 'CN' : 'EN'
     this.state = {
       show: false,
-      isroad: true,
+      isroad: props.device.orientation.indexOf('LANDSCAPE') !== 0, //横屏默认false
       road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
-      height: new Animated.Value(scaleSize(200)),
+      isLandScape:props.device.orientation.indexOf('LANDSCAPE') === 0, //是否横屏
+      height: props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT)
+        : new Animated.Value(scaleSize(200)),
+      width: props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(screen.getScreenWidth(props.device.orientation) / 2)
+        : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
       length: '',
+      path:props.path || [],
     }
     this.directions =
       GLOBAL.language === 'CN'
@@ -82,9 +91,60 @@ export default class NavigationStartButton extends React.Component {
           'arrival route point',
         ]
   }
+  static getDerivedStateFromProps(nextProps,prevState){
+    if (prevState.path.length === 0 || nextProps.path.length !== 0) {
+      return {
+        path: nextProps.path,
+      }
+    }
+    return null
+  }
+  componentDidUpdate(prevProps){
+    if(prevProps.device.orientation !== this.props.device.orientation){
+      let height,width,isroad,isLandScape
+      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+        height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+        width = screen.getScreenWidth(this.props.device.orientation) / 2
+        isroad = false
+        isLandScape = true
+      }else{
+        height = scaleSize(200)
+        width =screen.getScreenWidth(this.props.device.orientation)
+        isroad = true
+        isLandScape = false
+      }
+      Animated.parallel([
+        Animated.timing(this.state.width,{
+          toValue:width,
+          duration:300,
+        }),
+        Animated.timing(this.state.height, {
+          toValue: height,
+          duration: 300,
+        }),
+      ]).start()
+      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0 && this.state.show){
+          GLOBAL.FloorListView?.floatToRight(true)
+      }else{
+          GLOBAL.FloorListView?.floatToRight(false)
+      }
+      this.setState({
+        isroad,
+        isLandScape,
+      })
+    }
+  }
 
   setVisible = (iShow, isOnline = false) => {
-    this.setState({ show: iShow })
+    this.setState({
+      show: iShow,
+    },()=>{
+      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0 && iShow){
+            GLOBAL.FloorListView?.floatToRight(true)
+      }else{
+            GLOBAL.FloorListView?.floatToRight(false)
+      }
+    })
     this.isOnline = isOnline
   }
 
@@ -316,12 +376,15 @@ export default class NavigationStartButton extends React.Component {
   }
 
   renderRoad = () => {
+    let maxHeight = this.state.isLandScape
+      ? scaleSize(600)
+      : scaleSize(400)
     let data = [
       {
         text: getLanguage(this.language).Map_Main_Menu.START_FROM_START_POINT,
         turnType: 'start',
       },
-      ...this.props.path,
+      ...this.state.path,
       {
         text: getLanguage(this.language).Map_Main_Menu
           .ARRIVE_AT_THE_DESTINATION,
@@ -335,7 +398,7 @@ export default class NavigationStartButton extends React.Component {
             style={{
               flexDirection: 'column',
               width: '100%',
-              height: scaleSize(400),
+              height: maxHeight,
             }}
           >
             <FlatList
@@ -369,12 +432,12 @@ export default class NavigationStartButton extends React.Component {
         <Animated.View
           style={{
             position: 'absolute',
-            left: 0,
-            right: 0,
+            width:this.state.width,
             bottom: 0,
+            left: 0,
             elevation: 100,
             padding: scaleSize(20),
-            backgroundColor: color.contentWhite,
+            backgroundColor: '#ebebeb',
             height: this.state.height,
           }}
         >
@@ -387,7 +450,7 @@ export default class NavigationStartButton extends React.Component {
               // marginTop: scaleSize(20),
             }}
           >
-            <TouchableOpacity
+            {!this.state.isLandScape && (<TouchableOpacity
               activeOpacity={0.5}
               style={{
                 height: scaleSize(60),
@@ -410,7 +473,7 @@ export default class NavigationStartButton extends React.Component {
               >
                 {this.state.road}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity>)}
             <TouchableOpacity
               activeOpacity={0.5}
               style={{

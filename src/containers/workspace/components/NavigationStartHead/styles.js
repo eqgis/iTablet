@@ -49,7 +49,7 @@ export default StyleSheet.create({
   },
   pointAnalystView: {
     flex: 1,
-    backgroundColor: color.background,
+    backgroundColor: color.content_white,
     marginLeft: scaleSize(30),
     marginRight: scaleSize(50),
     height: scaleSize(170),
@@ -62,9 +62,6 @@ export default StyleSheet.create({
     flex: 1,
     height: scaleSize(60),
     lineHeight: scaleSize(60),
-    borderWidth: scaleSize(2),
-    borderColor: color.background,
-    borderRadius: scaleSize(5),
     justifyContent: 'center',
   },
   secondInput: {
@@ -72,9 +69,6 @@ export default StyleSheet.create({
     height: scaleSize(60),
     lineHeight: scaleSize(60),
     color: color.fontColorGray,
-    borderWidth: scaleSize(2),
-    borderColor: color.background,
-    borderRadius: scaleSize(5),
     justifyContent: 'center',
   },
   analyst: {

@@ -221,6 +221,7 @@ export default class ToolbarContentView extends React.Component {
         device={this.props.device}
         layerData={this.props.currentLayer}
         type={this.props.type}
+        column={this.state.column}
       />
     )
   }

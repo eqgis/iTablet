@@ -1067,21 +1067,13 @@ function setRangeMode(type, rangeMode) {
   }
   if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE) {
     if (rangeMode === RangeMode.CUSTOMINTERVAL) {
-      globalParams.setToolbarVisible(false, {
-        isTouchProgress: false,
-        showMenuDialog: false,
-        selectKey: '',
-      })
+      globalParams.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
     } else {
       SThemeCartography.modifyThemeLabelRangeMap(_params)
     }
   } else if (rangeMode === RangeMode.CUSTOMINTERVAL) {
-    globalParams.setToolbarVisible(false, {
-      isTouchProgress: false,
-      showMenuDialog: false,
-      selectKey: '',
-    })
+    globalParams.setToolbarVisible(false)
     NavigationService.navigate('CustomModePage', { type })
   } else {
     SThemeCartography.modifyThemeRangeMap(_params)

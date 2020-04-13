@@ -44,7 +44,7 @@ function changeCollection() {
 
   params.setToolbarVisible(true, toolbarType, {
     isFullScreen: false,
-    height: ConstToolType.HEIGHT[0],
+    // height: ConstToolType.HEIGHT[0],
     cb: () => {
       ToolbarModule.addData({
         lastType: toolbarType,

@@ -277,19 +277,17 @@ export default class ToolbarBottomButtons extends React.Component {
         }
       }
     })
-    return (
-      <View
-        style={[
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? styles.buttonzLandscape
-            : styles.buttonz,
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-            btns.length === 1 && { justifyContent: 'flex-end' }, // 只有一个按钮，从底部排列
-        ]}
-      >
-        {btns}
-      </View>
-    )
+    let style
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      style = { ...styles.buttonzLandscape }
+      style.height = this.props.device.height
+      if (btns.length === 1) {
+        style.justifyContent = 'flex-end' // 只有一个按钮，从底部排列
+      }
+    } else {
+      style = styles.buttonz
+    }
+    return <View style={style}>{btns}</View>
   }
 }
 
@@ -305,7 +303,7 @@ const styles = StyleSheet.create({
   buttonzLandscape: {
     flexDirection: 'column',
     width: Height.TOOLBAR_BUTTONS,
-    height: '100%',
+    // height: '100%',
     paddingVertical: scaleSize(20),
     backgroundColor: color.theme,
     justifyContent: 'space-between',

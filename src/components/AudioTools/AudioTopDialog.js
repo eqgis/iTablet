@@ -12,6 +12,7 @@ import {
   ScrollView,
   Image,
   Platform,
+  Animated,
 } from 'react-native'
 import { scaleSize } from '../../utils'
 import { size } from '../../styles'
@@ -30,13 +31,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(48,48,48,0.5)',
   },
   dialogStyle: {
     position: 'absolute',
     top: Platform.OS === 'ios' ? scaleSize(120) : scaleSize(100),
-    left: scaleSize(30),
-    right: scaleSize(30),
     borderRadius: scaleSize(20),
     maxHeight: scaleSize(200),
     backgroundColor: 'white',
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
   },
   tip: {
     fontSize: size.fontSize.fontSizeXl,
+    lineHeight: scaleSize(30),
     backgroundColor: 'transparent',
     textAlign: 'center',
   },
@@ -101,6 +101,7 @@ export default class AudioTopDialog extends PureComponent {
     activeOpacity?: number,
     visible?: boolean,
     recording?: boolean,
+    device: Object,
   }
 
   static defaultProps = {
@@ -119,6 +120,8 @@ export default class AudioTopDialog extends PureComponent {
       content: props.content,
       recording: props.recording,
     }
+    this.left = new Animated.Value(this.getFixDistance())
+    this.right = new Animated.Value(this.getFixDistance())
   }
 
   componentDidUpdate(prevProps) {
@@ -131,6 +134,25 @@ export default class AudioTopDialog extends PureComponent {
         recording: this.props.recording,
       })
     }
+
+    if (
+      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
+    ) {
+      this.onOrientationChange()
+    }
+  }
+
+  onOrientationChange = () => {
+    Animated.parallel([
+      Animated.timing(this.left, {
+        toValue: this.getFixDistance(),
+        duration: 0,
+      }),
+      Animated.timing(this.right, {
+        toValue: this.getFixDistance(),
+        duration: 0,
+      }),
+    ]).start()
   }
 
   //控制Modal框是否可以展示
@@ -145,6 +167,17 @@ export default class AudioTopDialog extends PureComponent {
       })
       !visible && this.props.stopRecording && this.props.stopRecording()
     }
+  }
+
+  getFixDistance = () => {
+    if (this.props.device.orientation === 'PORTRAIT') {
+      return scaleSize(30)
+    }
+    let width = this.props.device.width - this.props.device.height
+    if (width < 0) {
+      width = this.props.device.height - this.props.device.width
+    }
+    return width / 2 + scaleSize(30)
   }
 
   renderAudioBtn = () => {
@@ -197,14 +230,16 @@ export default class AudioTopDialog extends PureComponent {
             this.setVisible(false)
           }}
         />
-        <View style={styles.dialogStyle}>
+        <Animated.View
+          style={[styles.dialogStyle, { left: this.left, right: this.right }]}
+        >
           <ScrollView style={styles.contentView}>
             <Text style={styles.content}>{this.state.content}</Text>
             <Text style={styles.tip}>{this.props.defaultText}</Text>
           </ScrollView>
           {this.renderAudioBtn()}
           {this.renderCloseBtn()}
-        </View>
+        </Animated.View>
       </View>
     )
   }

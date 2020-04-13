@@ -765,11 +765,6 @@ async function listAction(type, params = {}) {
     await SThemeCartography.modifyThemeUniqueMap(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR) {
     if (item.key === 'USER_DEFINE') {
-      _params.setToolbarVisible(false, {
-        isTouchProgress: false,
-        showMenuDialog: false,
-        selectKey: '',
-      })
       _params.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
     } else {
@@ -866,11 +861,6 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR) {
     // 单值标签专题图颜色表
     if (item.key === 'USER_DEFINE') {
-      _params.setToolbarVisible(false, {
-        isTouchProgress: false,
-        showMenuDialog: false,
-        selectKey: '',
-      })
       _params.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
     } else {

@@ -391,6 +391,10 @@ export default class MapView extends React.Component {
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
         () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
         },
       )
@@ -398,6 +402,10 @@ export default class MapView extends React.Component {
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
+          if (!this.fullMap) {
+            this.showFullMap(true)
+            this.showFullonBlur = true
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )

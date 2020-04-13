@@ -18,6 +18,7 @@ import roadNetModule from './roadNetModule'
 import markModule from './markModule'
 import mark3DModule from './mark3DModule'
 import incrementModule from './incrementModule'
+import themeColorPickerModule from './themeColorPickerModule'
 export {
   startModule,
   fly3DModule,
@@ -39,4 +40,5 @@ export {
   markModule,
   mark3DModule,
   incrementModule,
+  themeColorPickerModule,
 }

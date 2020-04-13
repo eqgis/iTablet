@@ -45,8 +45,9 @@ function getScreenHeight(orientation) {
 function getScreenSafeHeight() {
   if (Platform.OS === 'ios') return getScreenHeight()
   let screenHeight = ExtraDimensions.getRealWindowHeight()
-  if (getScreenHeight() < getScreenWidth()) {
-    screenHeight = ExtraDimensions.getRealWindowWidth()
+  let temp = ExtraDimensions.getRealWindowWidth()
+  if (screenHeight < temp) {
+    screenHeight = temp
   }
   deviceSafeHeight = screenHeight - ExtraDimensions.getStatusBarHeight()
   return deviceSafeHeight
@@ -60,7 +61,7 @@ function getRatio() {
   } else if (height < 800) {
     ratio = 0.8
   } else if (height < 1000) {
-    ratio = Math.max(deviceHeight, deviceWidth) / 1000
+    ratio = Math.max(deviceHeight, deviceWidth) / 1000.0
   } else {
     ratio = 1
   }
@@ -84,7 +85,7 @@ if (deviceWidth > deviceHeight) {
  * return number dp
  */
 export function scaleSize(size) {
-  size = size * 0.7 * getRatio()
+  size = size * 0.7 * getRatio() + 0.5
   return size
 }
 
@@ -110,15 +111,22 @@ export function fixedText(size) {
 // iPhoneX
 const X_WIDTH = 375
 const X_HEIGHT = 812
-const X_TOP = 44
-const X_BOTTOM = 34
+const X_TOP = 35
+const X_BOTTOM = 35
 
 function isIphoneX() {
-  return (
-    Platform.OS === 'ios' &&
-    ((getScreenHeight() === X_HEIGHT && getScreenWidth() === X_WIDTH) ||
-      (getScreenHeight() === X_WIDTH && getScreenWidth() === X_HEIGHT))
-  )
+  if (Platform.OS === 'ios') {
+    let isPad = Platform.isPad
+    if (!isPad) {
+      let h = getScreenHeight()
+      let w = getScreenWidth()
+      if (Math.min(w, h) >= X_WIDTH && Math.max(w, h) >= X_HEIGHT) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 function getOrientation() {
@@ -131,8 +139,9 @@ function getOrientation() {
  */
 function getIphonePaddingTop() {
   let paddingTop = 0
-  if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
-    paddingTop = 34
+  if (getOrientation().indexOf('PORTRAIT') < 0) return paddingTop
+  if (isIphoneX()) {
+    // paddingTop = X_TOP
   } else if (Platform.OS === 'ios') {
     paddingTop = 20
   }
@@ -146,7 +155,7 @@ function getIphonePaddingTop() {
 function getIphonePaddingBottom() {
   let paddingBottom = 0
   if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
-    paddingBottom = 34
+    paddingBottom = X_BOTTOM
   }
   return paddingBottom
 }
@@ -161,13 +170,12 @@ function getIphonePaddingHorizontal(orientation) {
     paddingRight: 0,
   }
   if (!orientation || Platform.OS !== 'ios') return paddingHorizontal
-  // if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
-  //   // paddingHorizontal.paddingLeft = 34
-  //   // paddingHorizontal.paddingRight = 34
-  // } else
-  if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
+  if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
+    paddingHorizontal.paddingLeft = X_TOP
+    // paddingHorizontal.paddingRight = 34
+  } else if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
     // paddingHorizontal.paddingLeft = 34
-    paddingHorizontal.paddingRight = 34
+    paddingHorizontal.paddingRight = X_TOP
   }
   return paddingHorizontal
 }

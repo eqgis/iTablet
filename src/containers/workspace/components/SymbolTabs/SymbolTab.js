@@ -9,6 +9,7 @@ import { collectionModule } from '../ToolBar/modules'
 export default class SymbolTab extends React.Component {
   props: {
     data?: Array,
+    column?: Array,
     setCurrentSymbol?: () => {},
     showToolbar?: () => {},
     device?: () => {},
@@ -16,25 +17,26 @@ export default class SymbolTab extends React.Component {
 
   static defaultProps = {
     data: [],
+    column: 3,
   }
 
   constructor(props) {
     super(props)
-    this.state = {
-      column: props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
-      // column: 4,
-    }
+    // this.state = {
+    //   column: props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
+    //   // column: 4,
+    // }
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.device.orientation !== prevProps.device.orientation) {
-      this.setState({
-        column:
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
-        // column: 4,
-      })
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.device.orientation !== prevProps.device.orientation) {
+  //     this.setState({
+  //       column:
+  //         this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
+  //       // column: 4,
+  //     })
+  //   }
+  // }
 
   _onSymbolClick = data => {
     // Toast.show(JSON.stringify(data))
@@ -80,7 +82,11 @@ export default class SymbolTab extends React.Component {
             textSize: 15,
             lineSpacing: 10,
             imageSize: 40,
-            count: this.state.column,
+            count:
+              this.props.column ||
+              (this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? 3
+                : 4),
             legendBackgroundColor: dataUtil.colorRgba(color.bgW),
             textColor: dataUtil.colorRgba(color.font_color_white),
           }}

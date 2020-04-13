@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  Switch,
 } from 'react-native'
 import styles from './styles'
 import {
@@ -39,6 +40,8 @@ export default class MapSetting extends Component {
     mapLegend: Object,
     appConfig: Object,
     setMapLegend: () => {},
+    mapColumnNavBar: boolean,
+    setColumnNavBar: () => {},
   }
 
   constructor(props) {
@@ -308,7 +311,49 @@ export default class MapSetting extends Component {
         data={this.state.data}
         keyExtractor={(item, index) => item.title + index}
         numColumns={1}
+        ListFooterComponent={this.renderFooterComponent}
       />
+    )
+  }
+
+  renderFooterComponent = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            height: scaleSize(80),
+            paddingHorizontal: scaleSize(30),
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingRight: scaleSize(10),
+          }}
+        >
+          <Text style={styles.itemName}>
+            {getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}
+          </Text>
+          <Switch
+            trackColor={{ false: color.bgG, true: color.switch }}
+            thumbColor={this.props.mapColumnNavBar ? color.bgW : color.bgW}
+            ios_backgroundColor={
+              this.props.mapColumnNavBar ? color.switch : color.bgG
+            }
+            value={this.props.mapColumnNavBar}
+            onValueChange={value => {
+              this.props.setColumnNavBar(value)
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            height: 1,
+            marginHorizontal: 10,
+            backgroundColor: color.separateColorGray,
+          }}
+        />
+      </View>
     )
   }
 

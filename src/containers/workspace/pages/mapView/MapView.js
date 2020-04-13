@@ -24,6 +24,7 @@ import {
   AIFunctionToolbar,
   MapToolbar,
   MapNavMenu,
+  MapNavIcon,
   MapController,
   ToolBar,
   MenuAlertDialog,
@@ -47,7 +48,6 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
   LayerVisibilityView,
   IncrementRoadDialog,
 } from '../../components'
@@ -131,6 +131,7 @@ export default class MapView extends React.Component {
     openOnlineMap: PropTypes.bool,
     navigationhistory: PropTypes.array,
     appConfig: PropTypes.object,
+    mapColumnNavBar: PropTypes.bool,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -389,6 +390,10 @@ export default class MapView extends React.Component {
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
         () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
         },
       )
@@ -396,6 +401,10 @@ export default class MapView extends React.Component {
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
+          if (!this.fullMap) {
+            this.showFullMap(true)
+            this.showFullonBlur = true
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
@@ -1756,6 +1765,16 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderMapNavIcon = () => {
+    return (
+      <MapNavIcon
+        ref={ref => (this.NavIcon = ref)}
+        getNavMenuRef={() => this.NavMenu}
+        device={this.props.device}
+      />
+    )
+  }
+
   /**
    * 横屏时的导航栏
    */
@@ -1767,6 +1786,8 @@ export default class MapView extends React.Component {
         appConfig={this.props.appConfig}
         initIndex={0}
         type={this.type}
+        device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
       />
     )
   }
@@ -1871,6 +1892,7 @@ export default class MapView extends React.Component {
         type={this.type}
         getToolRef={() => this.toolBox}
         getNavMenuRef={() => this.NavMenu}
+        mapColumnNavBar={this.props.mapColumnNavBar}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -1917,16 +1939,6 @@ export default class MapView extends React.Component {
       />
     )
   }
-  renderPreviewColorPicker = () => {
-    return (
-      <PreviewColorPicker
-        ref={ref => (GLOBAL.PreviewColorPicker = ref)}
-        navigation={this.props.navigation}
-        device={this.props.device}
-        language={this.props.language}
-      />
-    )
-  }
   //遮盖层
   renderOverLayer = () => {
     return (
@@ -1969,6 +1981,7 @@ export default class MapView extends React.Component {
     this.functionToolbar && this.functionToolbar.setVisible(full)
     this.mapController && this.mapController.setVisible(full)
     this.TrafficView && this.TrafficView.setVisible(full)
+    this.NavIcon && this.NavIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -2401,7 +2414,7 @@ export default class MapView extends React.Component {
               let layers =
                 this.props.getLayers && (await this.props.getLayers())
               let baseMap = layers.filter(layer =>
-                LayerUtils.isBaseLayer(layer.name),
+                LayerUtils.isBaseLayer(layer),
               )[0]
               if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
                 NavigationService.navigate('PointAnalyst', {
@@ -2858,7 +2871,7 @@ export default class MapView extends React.Component {
           onPress={async () => {
             let layers = this.props.getLayers && (await this.props.getLayers())
             let baseMap = layers.filter(layer =>
-              LayerUtils.isBaseLayer(layer.name),
+              LayerUtils.isBaseLayer(layer),
             )[0]
             if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
               this.searchClickedInfo = {
@@ -3009,6 +3022,7 @@ export default class MapView extends React.Component {
   _renderNavigationStartButton = () => {
     return (
       <NavigationStartButton
+        device={this.props.device}
         getNavigationDatas={this.getNavigationDatas}
         path={this.state.path}
         pathLength={this.state.pathLength}
@@ -3020,6 +3034,7 @@ export default class MapView extends React.Component {
   _renderNavigationStartHead = () => {
     return (
       <NavigationStartHead
+        device={this.props.device}
         ref={ref => (GLOBAL.NAVIGATIONSTARTHEAD = ref)}
         setMapNavigation={this.props.setMapNavigation}
       />
@@ -3122,12 +3137,15 @@ export default class MapView extends React.Component {
         {global.isLicenseValid && this.state.showAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
+              }
+            }
             onArObjectClick={this._onArObjectClick}
             language={this.props.language}
           />
         )}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMapNavMenu()}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}
@@ -3143,11 +3161,15 @@ export default class MapView extends React.Component {
         {/*GLOBAL.Type === constants.MAP_NAVIGATION &&*/}
         {/*this.props.mapNavigation.isPointShow &&*/}
         {/*this._renderNavigationView()}*/}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderIncrementRoad()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderNavigationStartButton()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderNavigationStartHead()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderMapSelectPointButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderNavigationStartButton()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderNavigationStartHead()}
+        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+          this._renderMapSelectPointButton()}
         {!this.isExample &&
           GLOBAL.Type === constants.MAP_NAVIGATION &&
           this._renderNavigationPoiView()}
@@ -3182,6 +3204,9 @@ export default class MapView extends React.Component {
           GLOBAL.Type === constants.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
+        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
+        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
+          this.renderMapNavMenu()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
@@ -3232,6 +3257,7 @@ export default class MapView extends React.Component {
         />
         <InputDialog ref={ref => (this.InputDialog = ref)} label="名称" />
         <PoiTopSearchBar
+          device={this.props.device}
           ref={ref => (GLOBAL.PoiTopSearchBar = ref)}
           setMapNavigation={this.props.setMapNavigation}
         />
@@ -3249,7 +3275,6 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === constants.MAP_THEME && this.renderPreviewHeader()}
-        {GLOBAL.Type === constants.MAP_THEME && this.renderPreviewColorPicker()}
         {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
         {/*  <PopView*/}
         {/*    showFullMap={this.showFullMap}*/}
@@ -3264,6 +3289,7 @@ export default class MapView extends React.Component {
           content={this.state.speechContent}
           recording={this.state.recording}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
+          device={this.props.device}
         />
         {GLOBAL.Type === constants.MAP_NAVIGATION && (
           <Dialog

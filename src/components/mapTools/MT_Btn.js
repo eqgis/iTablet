@@ -56,6 +56,13 @@ export default class MT_Btn extends React.Component {
     this.clickAble = true // 防止重复点击
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps) !== JSON.stringify(this.props)
+    )
+  }
+
   action = e => {
     if (this.props.selectMode === 'flash') return
     if (this.clickAble) {
@@ -65,7 +72,6 @@ export default class MT_Btn extends React.Component {
       }, 100)
       this.props.onPress && this.props.onPress(e)
     }
-    
   }
 
   _onPressOut = e => {
@@ -132,17 +138,12 @@ export default class MT_Btn extends React.Component {
         accessible={true}
         activeOpacity={this.props.activeOpacity}
         accessibilityLabel={this.props.title}
-        style={
-          this.props.customStyle
-            ? this.props.customStyle
-            : [styles.container, this.props.style]
-        }
         onPress={this.action}
         underlayColor={BTN_UNDERCOLOR}
         onPressOut={this._onPressOut}
         onPressIn={this._onPressIn}
       >
-        <View>
+        <View style={[styles.container, this.props.style]}>
           {image && (
             <Image
               resizeMode={'contain'}
@@ -177,49 +178,33 @@ MT_Btn.Size = {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    // backgroundColor:"pink",
   },
   largeImage: {
     height: scaleSize(65),
     width: scaleSize(65),
-    alignSelf: 'center',
-    // borderRadius: 5,
   },
   normalImage: {
     height: scaleSize(60),
     width: scaleSize(60),
-    alignSelf: 'center',
-    // borderRadius: 5,
   },
   smallImage: {
     height: scaleSize(60),
     width: scaleSize(60),
-    alignSelf: 'center',
-    // borderRadius: 5,
   },
   largeText: {
     fontSize: size.fontSize.fontSizeMd,
     backgroundColor: 'transparent',
-    // width: scaleSize(100),
     textAlign: 'center',
-    // marginTop: scaleSize(5),
   },
   normalText: {
     fontSize: scaleSize(20),
     backgroundColor: 'transparent',
-    // width: scaleSize(100),
     textAlign: 'center',
-    // marginTop: scaleSize(5),
   },
   smallText: {
     fontSize: size.fontSize.fontSizeXs,
     backgroundColor: 'transparent',
-    // width: scaleSize(100),
     textAlign: 'center',
-    // marginTop: scaleSize(5),
   },
 })

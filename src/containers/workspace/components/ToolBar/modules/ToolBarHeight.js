@@ -34,12 +34,18 @@ function getToolbarSize(type, additional = {}) {
       if (additional.column !== undefined) {
         column = additional.column
       } else {
-        column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+        // column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
         // column = 4
+        // if (GLOBAL.isPad) {
+        //   column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+        // } else {
+        column = 4
+        // }
       }
       if (additional.data === undefined) additional.data = []
       let row = Math.ceil(additional.data.length / column)
-      let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
+      // let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
+      let maxRow = 6
       row = row > maxRow ? maxRow : row // 限制最大高度/宽度
       height = Height.TABLE_ROW_HEIGHT_4 * row
       break
@@ -67,10 +73,13 @@ function getToolbarSize(type, additional = {}) {
       height = Height.TABLE_ROW_HEIGHT_1 * 2
       break
     case ToolbarType.tabs: // 符号标签栏
-      height =
-        params.device.orientation.indexOf('PORTRAIT') >= 0
-          ? Height.TABLE_ROW_HEIGHT_2 * 8
-          : Height.TABLE_ROW_HEIGHT_2 * 5
+      height = Height.TABLE_ROW_HEIGHT_2 * 8
+      column = 4
+      break
+    case ToolbarType.colorPicker: //颜色选择器 色盘
+      height = orientation.indexOf('LANDSCAPE') === 0
+        ? Height.TABLE_ROW_HEIGHT_3 * 5
+        : Height.TABLE_ROW_HEIGHT_3 * 4
       break
   }
   if (additional.height !== undefined) {

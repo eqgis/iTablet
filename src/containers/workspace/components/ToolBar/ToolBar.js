@@ -136,7 +136,7 @@ export default class ToolBar extends React.PureComponent {
       containerType: props.containerProps.containerType,
       isFullScreen: props.containerProps.isFullScreen,
       // height: props.containerProps.height,
-      column: props.containerProps.column,
+      // column: props.containerProps.column,
       // data: this.getData(props.type),
       data: [],
       buttons: [],
@@ -342,7 +342,7 @@ export default class ToolBar extends React.PureComponent {
           newHeight = params.height
         } else if (!params || params.height === undefined) {
           let _size = ToolbarHeight.getToolbarSize(containerType, {
-            data: this.state.data,
+            data,
           })
           newHeight = _size.height
         }
@@ -894,6 +894,7 @@ export default class ToolBar extends React.PureComponent {
       size = { height: screen.getScreenSafeHeight() - softBarHeight }
     }
     size.width = this.props.device.width
+    // size.height = this.props.device.height
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =
@@ -909,6 +910,13 @@ export default class ToolBar extends React.PureComponent {
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? { right: this.state.right }
             : { bottom: this.state.bottom },
+          this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
+            paddingTop: screen.isIphoneX()
+              ? screen.X_TOP + screen.X_BOTTOM
+              : Platform.OS === 'ios'
+                ? 20
+                : 0,
+          },
           size,
         ]}
         pointerEvents={'box-none'}

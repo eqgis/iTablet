@@ -29,12 +29,7 @@ export default class MapController extends React.Component {
     super(props)
     this.deg = 0
     this.state = {
-      left: new Animated.Value(
-        (screen.isIphoneX() &&
-        this.props.device.orientation === 'LANDSCAPE-LEFT'
-          ? screen.X_TOP
-          : 0) + DEFAULT_LEFT,
-      ),
+      left: new Animated.Value(DEFAULT_LEFT),
       //在导航界面缩放时，bottom高度为scaleSize(240)避免mapController被遮盖
       bottom:
         (GLOBAL.NAV_PARAMS && GLOBAL.NAV_PARAMS.length > 0) ||
@@ -77,9 +72,9 @@ export default class MapController extends React.Component {
     }
     if (
       screen.isIphoneX() &&
-      this.props.device.orientation === 'LANDSCAPE-LEFT'
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
     ) {
-      newLeft = screen + DEFAULT_LEFT
+      newLeft = DEFAULT_LEFT
     }
     animatedList.push(
       Animated.timing(this.state.bottom, {
@@ -112,11 +107,7 @@ export default class MapController extends React.Component {
   setVisible = (visible, immediately = false) => {
     if (visible) {
       Animated.timing(this.state.left, {
-        toValue:
-          (screen.isIphoneX() &&
-          this.props.device.orientation === 'LANDSCAPE-LEFT'
-            ? screen.X_TOP
-            : 0) + DEFAULT_LEFT,
+        toValue: DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
       }).start()
     } else {
@@ -141,11 +132,7 @@ export default class MapController extends React.Component {
     if (this.state.left._value !== DEFAULT_LEFT) {
       animatedList.push(
         Animated.timing(this.state.left, {
-          toValue:
-            (screen.isIphoneX() &&
-            this.props.device.orientation === 'LANDSCAPE-LEFT'
-              ? screen.X_TOP
-              : 0) + DEFAULT_LEFT,
+          toValue: DEFAULT_LEFT,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
         }),
       )

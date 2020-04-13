@@ -6,8 +6,9 @@ import {
   Text,
   FlatList,
   Platform,
+  Animated,
 } from 'react-native'
-import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
+import {FetchUtils, scaleSize, screen, setSpText, Toast} from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
 import { TouchType } from '../../../../constants'
 import styles from './styles'
@@ -24,6 +25,7 @@ const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 export default class NavigationView extends React.Component {
   props: {
     navigation: Object,
+    device: Object,
   }
   static propTypes = {
     mapNavigation: PropTypes.object,
@@ -45,6 +47,20 @@ export default class NavigationView extends React.Component {
       startName: '',
       endName: '',
     }
+    this.maxWidth = props.device.orientation.indexOf('LANDSCAPE') === 0
+      ? new Animated.Value(screen.getScreenWidth(props.device.orientation) * 0.45)
+      : new Animated.Value(screen.getScreenWidth(props.device.orientation))
+  }
+  componentDidUpdate(prevProps) {
+    if(prevProps.device.orientation !== this.props.device.orientation){
+      let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? screen.getScreenWidth(this.props.device.orientation) * 0.45
+        : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.maxWidth,{
+        toValue:maxWidth,
+        duration:300,
+      }).start()
+    }
   }
 
   close = async () => {
@@ -63,6 +79,7 @@ export default class NavigationView extends React.Component {
     GLOBAL.ENDX = undefined
     GLOBAL.ROUTEANALYST = undefined
     GLOBAL.TouchType = TouchType.NORMAL
+    GLOBAL.ToolBar?.existFullMap()
     await SMap.clearPoint()
     NavigationService.goBack()
   }
@@ -476,8 +493,8 @@ export default class NavigationView extends React.Component {
           GLOBAL.TouchType = TouchType.NULL
           //考虑搜索界面跳转，不能直接goBack
           NavigationService.navigate('MapView')
-          GLOBAL.mapController && GLOBAL.mapController.changeBottom(true)
-          GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(true)
+          GLOBAL.mapController?.changeBottom(true)
+          GLOBAL.FloorListView?.changeBottom(true)
         }
       }
     }
@@ -552,10 +569,12 @@ export default class NavigationView extends React.Component {
     // )
     let renderHistory = this.props.navigationhistory
     return (
-      <View
+      <Animated.View
         style={{
           flex: 1,
-          backgroundColor: color.background,
+          maxWidth:this.maxWidth,
+          // backgroundColor: '#303030',
+          backgroundColor: '#ebebeb',
         }}
       >
         <View
@@ -563,6 +582,7 @@ export default class NavigationView extends React.Component {
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
             width: '100%',
+            // backgroundColor: '#ebebeb',
             backgroundColor: '#303030',
             flexDirection: 'row',
           }}
@@ -629,7 +649,7 @@ export default class NavigationView extends React.Component {
                 style={{
                   width: '100%',
                   height: 2,
-                  backgroundColor: color.gray,
+                  backgroundColor: color.separateColorGray,
                 }}
               />
               <View
@@ -670,7 +690,12 @@ export default class NavigationView extends React.Component {
 
         <View>
           <FlatList
-            style={{ maxHeight: scaleSize(650) }}
+            style={{
+              maxHeight: scaleSize(650),
+              marginLeft:scaleSize(90),
+              marginRight:scaleSize(50),
+              borderRadius:5,
+            }}
             data={renderHistory}
             extraData={GLOBAL.STARTX}
             keyExtractor={(item, index) => item.toString() + index}
@@ -679,11 +704,14 @@ export default class NavigationView extends React.Component {
           {renderHistory.length > 0 && (
             <TouchableOpacity
               style={{
-                backgroundColor: color.background,
-                width: '100%',
+                backgroundColor: color.content_white,
                 height: scaleSize(70),
+                width: this.maxWidth - scaleSize(140),
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginLeft:scaleSize(90),
+                marginRight:scaleSize(50),
+                borderRadius:5,
               }}
               onPress={() => {
                 this.props.setNavigationHistory &&
@@ -754,7 +782,7 @@ export default class NavigationView extends React.Component {
             </Text>
           </View>
         </Dialog>
-      </View>
+      </Animated.View>
     )
   }
 
@@ -793,7 +821,14 @@ export default class NavigationView extends React.Component {
             style={styles.pointImg}
             source={require('../../../../assets/Navigation/naviagtion-road.png')}
           />
-          {item.address && <Text style={styles.itemText}>{item.address}</Text>}
+          {item.address &&
+          <Text
+            numberOfLines={2}
+            ellipsizeMode={'tail'}
+            style={styles.itemText}>
+            {item.address}
+          </Text>
+          }
         </TouchableOpacity>
         <View style={styles.itemSeparator} />
       </View>

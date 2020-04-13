@@ -8,6 +8,7 @@ import {
 const mapStateToProps = state => ({
   mapNavigation: state.setting.toJS().mapNavigation,
   navigationhistory: state.setting.toJS().navigationhistory,
+  device: state.device.toJS().device,
 })
 const mapDispatchToProps = {
   setMapNavigation,

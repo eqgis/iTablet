@@ -5,6 +5,9 @@ import { scaleSize } from '../../utils'
 import { Button } from '../index'
 import { getLanguage } from '../../language/index'
 
+const ARROW_WIDTH = scaleSize(20)
+const ARROW_COLOR = '#DDDDDD'
+
 const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
@@ -35,6 +38,13 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeXl,
     color: color.contentColorBlack,
   },
+  arrow: {
+    width: 0,
+    height: 0,
+    borderStyle: 'solid',
+    borderWidth: ARROW_WIDTH,
+    marginVertical: 2,
+  },
 })
 
 const bottomStyle = {
@@ -64,6 +74,8 @@ export default class PopMenu extends PureComponent {
       position: {},
       container: {},
       overlay: {},
+      indicatorPosition: {},
+      arrow: {},
     }
   }
 
@@ -76,56 +88,29 @@ export default class PopMenu extends PureComponent {
   }
 
   setVisible = (visible, position) => {
-    this.setState({
-      visible,
-      position: this.getPosition(position),
-      container: this.getContainer(position),
-      overlay: this.getOverlay(position),
-    })
+    this._setVisible(visible, position)
   }
 
-  getContainer = position => {
+  _setVisible = (visible, position) => {
     let container
+    let overlay
+    let positionStyle
+    let indicatorPosition
+    let arrow
     if (
       !position ||
       (!global.isPad && this.props.device.orientation === 'PORTRAIT')
     ) {
       container = {}
-    } else {
-      container = {
-        borderRadius: scaleSize(4),
-        elevation: 20,
-        shadowOffset: { width: 0, height: 0 },
-        shadowColor: 'black',
-        shadowOpacity: 1,
-        shadowRadius: 2,
-      }
-    }
-    return container
-  }
-
-  getOverlay = position => {
-    let overlay
-    if (
-      !position ||
-      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
-    ) {
       overlay = {}
-    } else {
-      overlay = {
-        backgroundColor: 'transparent',
+      positionStyle = bottomStyle
+      indicatorPosition = {}
+      arrow = {
+        borderTopColor: 'transparent',
+        borderLeftColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderRightColor: 'transparent',
       }
-    }
-    return overlay
-  }
-
-  getPosition = position => {
-    let positonStyle
-    if (
-      !position ||
-      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
-    ) {
-      positonStyle = bottomStyle
     } else {
       let screenWidth = this.props.device.width
       let screenHeight = this.props.device.height
@@ -140,29 +125,132 @@ export default class PopMenu extends PureComponent {
       } else {
         height = scaleSize(80) * this._getItemNums()
       }
-      let x = position.x + 2
-      let y = position.y + 2
-      let left, top
-      if (x + width < screenWidth) {
-        left = x
-      } else {
-        left = x - width
+      let x = position.x
+      let y = position.y
+      let MARGIN = ARROW_WIDTH * 2
+      let marginTop = MARGIN
+      let marginRight = 0
+      let marginBottom = 0
+      let left, top, iLeft, iTop
+      let leftToRight = true
+      let upToButtom = true
+      let atTop = false
+      let totolHeight = height + MARGIN
+      if (x + width > screenWidth) {
+        leftToRight = false
       }
-      if (y + height < screenHeight) {
-        top = y
-      } else {
-        top = y - height
+      if (y + totolHeight > screenHeight) {
+        upToButtom = false
+        top = y - totolHeight
+        marginTop = 0
+        marginBottom = MARGIN
         if (top < 0) {
-          top = 0
+          atTop = true
+          marginBottom = 0
+          marginRight = MARGIN
         }
       }
-      positonStyle = {
+
+      let borderTopColor = 'transparent' //下箭头颜色
+      let borderLeftColor = 'transparent' //右箭头颜色
+      let borderBottomColor = 'transparent' //上箭头颜色
+      let borderRightColor = 'transparent' //左箭头颜色
+
+      if (leftToRight && upToButtom) {
+        //左上
+        iLeft = x
+        iTop = y
+        left = x
+        top = y
+        borderBottomColor = ARROW_COLOR
+      } else if (!leftToRight && upToButtom) {
+        //右上
+        iLeft = x - ARROW_WIDTH
+        iTop = y
+        left = iLeft - width + MARGIN
+        top = iTop
+        borderBottomColor = ARROW_COLOR
+      } else if (leftToRight && !upToButtom) {
+        if (atTop) {
+          //左边
+          iLeft = x
+          iTop = y - ARROW_WIDTH
+          left = iLeft + MARGIN
+          top = 0
+          if (y - height > 0) {
+            top = iTop - height + MARGIN
+          }
+          borderRightColor = ARROW_COLOR
+        } else {
+          //左下
+          iLeft = x - ARROW_WIDTH
+          iTop = y - ARROW_WIDTH
+          left = iLeft
+          top = iTop - height
+          borderTopColor = ARROW_COLOR
+        }
+      } else {
+        if (atTop) {
+          //右边
+          iLeft = x - ARROW_WIDTH
+          iTop = y - ARROW_WIDTH
+          left = iLeft - width + MARGIN
+          top = 0
+          if (y - height > 0) {
+            top = iTop - height + MARGIN
+          }
+          borderLeftColor = ARROW_COLOR
+        } else {
+          //右下
+          iLeft = x - ARROW_WIDTH
+          iTop = y - ARROW_WIDTH
+          left = iLeft - width + MARGIN
+          top = iTop - height
+          borderTopColor = ARROW_COLOR
+        }
+      }
+
+      positionStyle = {
         left: left,
         top: top,
         width: width,
       }
+
+      indicatorPosition = {
+        left: iLeft,
+        top: iTop,
+      }
+
+      container = {
+        borderRadius: scaleSize(4),
+        elevation: 20,
+        shadowOffset: { width: 0, height: 0 },
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowRadius: 2,
+        marginTop: marginTop,
+        marginRight: marginRight,
+        marginBottom: marginBottom,
+      }
+      overlay = {
+        backgroundColor: 'transparent',
+      }
+
+      arrow = {
+        borderTopColor: borderTopColor,
+        borderLeftColor: borderLeftColor,
+        borderBottomColor: borderBottomColor,
+        borderRightColor: borderRightColor,
+      }
     }
-    return positonStyle
+    this.setState({
+      visible,
+      position: positionStyle,
+      container: container,
+      overlay: overlay,
+      indicatorPosition: indicatorPosition,
+      arrow: arrow,
+    })
   }
 
   _getItemNums = () => {
@@ -214,7 +302,7 @@ export default class PopMenu extends PureComponent {
 
   _renderHeader = () => {
     return (
-      <View style={styles.item}>
+      <View key={this.props.title} style={styles.item}>
         <Text style={styles.title}>{this.props.title}</Text>
       </View>
     )
@@ -286,6 +374,16 @@ export default class PopMenu extends PureComponent {
           >
             {this._renderList()}
           </View>
+          {/* <View
+            style={[
+              {
+                position: 'absolute',
+              },
+              this.state.indicatorPosition,
+            ]}
+          >
+            <View style={[styles.arrow, this.state.arrow]} />
+          </View> */}
         </TouchableOpacity>
       </Modal>
     )

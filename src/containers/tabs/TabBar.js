@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Platform } from 'react-native'
-import { scaleSize, screen } from '../../utils'
+import { scaleSize } from '../../utils'
 import PropTypes from 'prop-types'
 import { getThemeAssets } from '../../assets'
 import TabItem from './TabItem'
@@ -112,20 +112,7 @@ class TabBar extends React.Component {
 
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-    let style = isLandscape
-      ? [
-        styles.containerL,
-        screen.isIphoneX() && {
-          ...screen.getIphonePaddingHorizontal(this.props.device.orientation),
-          width:
-              TAB_BAR_WIDTH_L +
-              (screen.isIphoneX() &&
-              this.props.device.orientation === 'LANDSCAPE-RIGHT'
-                ? screen.X_TOP
-                : 0),
-        },
-      ]
-      : styles.containerP
+    let style = isLandscape ? styles.containerL : styles.containerP
     return (
       <View style={[style, this.props.style]}>
         {this.renderItems(this.state.data)}

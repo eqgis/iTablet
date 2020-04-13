@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { color, size } from '../../../../styles'
 import { TableList } from '../../../../components'
 import { scaleSize, Toast } from '../../../../utils'
-import { ToolbarType } from '../../../../constants'
+import { Height, ToolbarType } from '../../../../constants'
 import { ThemeType, SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { collectionModule } from '../ToolBar/modules'
@@ -13,9 +13,14 @@ export default class TemplateTab extends React.Component {
     data: Array,
     user: Object,
     layers: Object,
+    column: Object,
     setCurrentTemplateInfo: () => {},
     showToolbar: () => {},
     device: Object,
+  }
+
+  static defaultProps = {
+    column: 3,
   }
 
   constructor(props) {
@@ -94,7 +99,12 @@ export default class TemplateTab extends React.Component {
     }
     return (
       <TouchableOpacity
-        style={styles.listItem}
+        style={[
+          styles.listItem,
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+            width: Height.TABLE_ROW_HEIGHT_4,
+          },
+        ]}
         key={item.code}
         onPress={() => this.action({ item, rowIndex, cellIndex })}
       >
@@ -127,9 +137,10 @@ export default class TemplateTab extends React.Component {
         style={styles.container}
         data={this.props.data}
         type={ToolbarType.scrollTable}
-        limit={3}
+        limit={this.props.column}
         renderCell={this._renderItem}
         device={this.props.device}
+        isAutoType={false}
       />
     )
   }
@@ -141,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.bgW,
   },
   listItem: {
+    flex: 1,
     height: scaleSize(64),
     // width: 100,
     justifyContent: 'center',

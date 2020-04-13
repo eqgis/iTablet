@@ -430,8 +430,9 @@ const Map_Main_Menu = {
   MY_LOCATION: '我的位置',
 
   //导航采集
-  MAP_INDOOR_NETWORK:'室内路网',
+  MAP_INDOOR_NETWORK: '室内路网',
   MAP_OUTDOOR_NETWORK: '室外路网',
+
   MAP_INCREMENT_START:'开始',
   MAP_INCREMENT_STOP:'停止',
   MAP_INCREMENT_ADD_POINT:'添加点',
@@ -442,6 +443,18 @@ const Map_Main_Menu = {
   MAP_INCREMENT_GPS_TRACK:'GPS轨迹式',
   MAP_INCREMENT_POINTLINE:'点绘式',
   MAP_INCREMENT_FREELINE:'自由式',
+
+  MAP_TOPO_ADD_NODE: '添加节点',
+  MAP_TOPO_EDIT_NODE: '编辑节点',
+  MAP_TOPO_DELETE_NODE: '删除节点',
+  MAP_TOPO_DELETE_OBJECT: '删除对象',
+  MAP_TOPO_SMOOTH: '平滑',
+  MAP_TOPO_POINT_ADJUST: '点平差',
+  MAP_TOPO_SPLIT: '打断',
+  MAP_TOPO_EXTEND: '延伸',
+  MAP_TOPO_TRIM: '修剪',
+  MAP_TOPO_RESAMPLE: '重采样',
+  MAP_TOPO_CHANGE_DIRECTION: '变方向',
 }
 
 // 推演动画
@@ -620,6 +633,7 @@ const Map_Setting = {
   ROTATION_GESTURE: '手势旋转',
   PITCH_GESTURE: '手势俯仰',
   THEME_LEGEND: '专题图图例',
+  COLUMN_NAV_BAR: '横屏时纵向显示导航栏',
 
   // 效果设置
   EFFECT_SETTINGS: '效果设置',

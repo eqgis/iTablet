@@ -12,7 +12,6 @@ export default class ColorTable extends React.Component {
   props: {
     language: string,
     column: number,
-    // height: number,
     data: Array,
     device: Object,
     itemAction?: () => {},
@@ -21,7 +20,6 @@ export default class ColorTable extends React.Component {
 
   static defaultProps = {
     column: 8,
-    // height: Height.TABLE_ROW_HEIGHT_4 * 5,
   }
 
   constructor(props) {
@@ -29,13 +27,17 @@ export default class ColorTable extends React.Component {
 
     this.state = {
       data: this.dealData(this.props.data),
+      itemSize: 0,
     }
+    this.sizeTemp = -1
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (
       this.props.language !== nextProps.language ||
       JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
+      JSON.stringify(this.state) !== JSON.stringify(nextState) ||
+      this.sizeTemp !== this.state.itemSize ||
       JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)
     ) {
       return true
@@ -44,13 +46,6 @@ export default class ColorTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (prevProps.device.orientation !== this.props.device.orientation) {
-    //   this.height =
-    //     prevProps.device.orientation.indexOf('LANDSCAPE') === 0
-    //       ? ConstToolType.THEME_HEIGHT[7]
-    //       : ConstToolType.THEME_HEIGHT[3]
-    //   this.ColumnNums = prevProps.device.orientation.indexOf('LANDSCAPE') === 0 ? 12 : 8
-    // }
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({
         data: this.dealData(this.props.data),
@@ -59,11 +54,11 @@ export default class ColorTable extends React.Component {
   }
 
   getColumn = () => {
-    return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 8
-  }
-
-  getRow = () => {
-    return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4
+    if (GLOBAL.isPad) {
+      return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 8
+    } else {
+      return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
+    }
   }
 
   dealData = data => {
@@ -76,12 +71,18 @@ export default class ColorTable extends React.Component {
     return newData
   }
 
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (nextProps.device.orientation !== this.props.device.orientation) {
-  //     this.height = Height.TABLE_ROW_HEIGHT_4 * 5
-  //     this.ColumnNums = 8
-  //   }
-  // }
+  _onLayout = event => {
+    let { width } = event.nativeEvent.layout
+    if (
+      this.sizeTemp < width ||
+      this.state.itemSize < this.sizeTemp / this.getColumn() - scaleSize(4)
+    ) {
+      this.sizeTemp = width
+      this.setState({
+        itemSize: width / this.getColumn() - scaleSize(4),
+      })
+    }
+  }
 
   itemAction = async item => {
     if (this.props.itemAction) {
@@ -93,22 +94,13 @@ export default class ColorTable extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    let size =
-      Math.min(this.props.device.height, this.props.device.width) / 8 -
-      scaleSize(4)
-    // (this.props.device.orientation.indexOf('LANDSCAPE') === 0
-    //   ? this.props.device.height
-    //   : this.props.device.width) /
-    // this.getColumn() -
-    // scaleSize(4)
-    // let height = 100 / this.getRow() + '%'
     if (typeof item === 'object' && item.useSpace)
       return (
         <View
           style={{
             flex: 1,
-            maxHeight: size,
-            maxWidth: size,
+            maxHeight: this.state.itemSize,
+            maxWidth: this.state.itemSize,
             backgroundColor: color.white,
             borderWidth: scaleSize(2),
             borderColor: color.white,
@@ -124,8 +116,8 @@ export default class ColorTable extends React.Component {
         }}
         style={{
           flex: 1,
-          maxHeight: size,
-          maxWidth: size,
+          maxHeight: this.state.itemSize,
+          maxWidth: this.state.itemSize,
           backgroundColor: typeof item === 'string' ? item : item.key,
           borderWidth: scaleSize(2),
           borderColor: color.gray,
@@ -162,6 +154,7 @@ export default class ColorTable extends React.Component {
   render() {
     return (
       <FlatList
+        onLayout={this._onLayout}
         key={'color_list_' + this.props.device.orientation}
         renderItem={this.renderItem}
         data={this.state.data}
@@ -169,6 +162,7 @@ export default class ColorTable extends React.Component {
           (typeof item === 'string' ? item : item.key) + index
         }
         numColumns={this.getColumn()}
+        extraData={this.state}
       />
     )
   }

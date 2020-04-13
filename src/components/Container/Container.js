@@ -3,7 +3,7 @@
  Author: Yang Shanglong
  E-mail: yangshanglong@supermap.com
  */
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
   View,
   ScrollView,
@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize, screen } from '../../utils'
+import { scaleSize } from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
@@ -24,7 +24,7 @@ import NavigationService from '../../containers/NavigationService'
 
 const AnimatedView = Animated.View
 
-export default class Container extends PureComponent {
+export default class Container extends Component {
   props: {
     style?: StyleSheet,
     titleStyle?: StyleSheet,
@@ -42,10 +42,16 @@ export default class Container extends PureComponent {
     showFullInMap: boolean,
     blankOpacity: Number,
     hideInBackground: boolean,
+    orientation: String,
     onOverlayPress: () => {},
+    isOverlayBefore: boolean,
   }
 
   static defaultProps = {
+    orientation:
+      Dimensions.get('screen').height > Dimensions.get('screen').width
+        ? 'PORTRAIT'
+        : 'LANDSCAPE',
     withoutHeader: false,
     sideMenu: false,
     initWithLoading: false,
@@ -53,6 +59,7 @@ export default class Container extends PureComponent {
     showFullInMap: false, //是否在mapview和map3d中显示全屏页面，默认半屏
     blankOpacity: 0, //透明半屏的透明度
     hideInBackground: true, //在mapview和map3d中,StackNavigator中有新页面时是否隐藏本页面
+    isOverlayBefore: true,
   }
 
   constructor(props) {
@@ -263,17 +270,10 @@ export default class Container extends PureComponent {
     })
     return (
       <AnimatedView
-        style={[
-          styles.view,
-          {
-            // TODO 统一在这里处理，去掉其他的paddingTop
-            // paddingTop: screen.getIphonePaddingTop(),
-            paddingBottom: screen.getIphonePaddingBottom(),
-          },
-          { transform: [{ translateX: this.viewX }] },
-        ]}
+        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
-        <AnimatedView style={{ width: width }}>
+        {this.props.isOverlayBefore &&
+        (<AnimatedView style={{ width: width }}>
           <TouchableOpacity
             onPress={() => {
               if (this.props.onOverlayPress) {
@@ -290,13 +290,20 @@ export default class Container extends PureComponent {
             activeOpacity={this.props.blankOpacity}
             style={[styles.overlay, { opacity: this.props.blankOpacity }]}
           />
-        </AnimatedView>
+        </AnimatedView>)
+        }
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
           {!fixHeader && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
-              {this.props.children}
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                {this.props.children}
+              </View>
               {fixHeader && this.renderHeader(fixHeader)}
               {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>
@@ -308,6 +315,26 @@ export default class Container extends PureComponent {
             initLoading={this.props.initWithLoading}
           />
         </View>
+        {!this.props.isOverlayBefore &&
+        (<AnimatedView style={{ width: width }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (this.props.onOverlayPress) {
+                this.props.onOverlayPress()
+              } else {
+                if (NavigationService.isInMap()) {
+                  NavigationService.navigate('MapView')
+                }
+                if (NavigationService.isInMap3D()) {
+                  NavigationService.navigate('Map3D')
+                }
+              }
+            }}
+            activeOpacity={this.props.blankOpacity}
+            style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+          />
+        </AnimatedView>)
+        }
       </AnimatedView>
     )
   }

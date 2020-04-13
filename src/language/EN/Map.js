@@ -414,17 +414,17 @@ const Map_Main_Menu = {
   MY_LOCATION: 'My location',
 
   //导航采集
-  MAP_INDOOR_NETWORK:'Indoor',
+  MAP_INDOOR_NETWORK: 'Indoor',
   MAP_OUTDOOR_NETWORK: 'Outdoor',
-  MAP_INCREMENT_START:'Start',
-  MAP_INCREMENT_STOP:'Stop',
-  MAP_INCREMENT_ADD_POINT:'Add point',
-  MAP_INCREMENT_CANCEL:'Cancel',
-  MAP_INCREMENT_COMMIT:'Commit',
-  MAP_INCREMENT_GPS_POINT:'Collect Points by GPS',
-  MAP_INCREMENT_GPS_TRACK:'Collect Line by GPS',
-  MAP_INCREMENT_POINTLINE:'Point Draw',
-  MAP_INCREMENT_FREELINE:'Free Draw',
+  MAP_INCREMENT_START: 'Start',
+  MAP_INCREMENT_STOP: 'Stop',
+  MAP_INCREMENT_ADD_POINT: 'Add point',
+  MAP_INCREMENT_CANCEL: 'Cancel',
+  MAP_INCREMENT_COMMIT: 'Commit',
+  MAP_INCREMENT_GPS_POINT: 'Collect Points by GPS',
+  MAP_INCREMENT_GPS_TRACK: 'Collect Line by GPS',
+  MAP_INCREMENT_POINTLINE: 'Point Draw',
+  MAP_INCREMENT_FREELINE: 'Free Draw',
 }
 
 // 推演动画
@@ -602,6 +602,7 @@ const Map_Setting = {
   ROTATION_GESTURE: 'Rotation Gesture',
   PITCH_GESTURE: 'Pitch Gesture',
   THEME_LEGEND: 'Theme Legend',
+  COLUMN_NAV_BAR: 'Vertical Navigation Bar when Landscape',
 
   // 效果设置
   EFFECT_SETTINGS: 'Effect Settings',

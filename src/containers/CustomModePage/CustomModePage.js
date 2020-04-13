@@ -20,18 +20,19 @@ import { Container } from '../../components'
 import { color } from '../../styles'
 import { scaleSize, setSpText, Toast } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
-import { ConstToolType, TouchType } from '../../constants'
+import {ConstToolType, ToolbarType, TouchType} from '../../constants'
 import { getLanguage } from '../../language'
 
 export default class CustomModePage extends Component {
   props: {
+    device: Object,
     navigation: Object,
   }
 
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
-    this.type = (params && params.type) || ToolbarModule.getData().type
+    this.type = (params && params.type) || ToolbarModule.getData().customType
     this.state = {
       originData: [],
       data: [],
@@ -67,6 +68,8 @@ export default class CustomModePage extends Component {
       originData: data,
       data,
       length,
+    },()=>{
+      GLOBAL.ToolBar?.showFullMap(true)
     })
   }
 
@@ -74,10 +77,9 @@ export default class CustomModePage extends Component {
     let mapXml = ToolbarModule.getData().mapXml
     await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
     this.props.navigation.goBack()
-    GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
-    GLOBAL.PreviewColorPicker && GLOBAL.PreviewColorPicker.setVisible(false)
-    GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
-    ToolbarModule.setData({})
+    GLOBAL.PreviewHeader?.setVisible(false)
+    GLOBAL.ToolBar?.setVisible(false)
+    GLOBAL.ToolBar?.existFullMap()
   }
 
   _changeItemVisible = index => {
@@ -162,7 +164,7 @@ export default class CustomModePage extends Component {
       GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(true)
       ToolbarModule.addData({
         customModeData: this.state.data,
-        type: this.type,
+        customType: this.type,
       })
       this.props.navigation.goBack()
     } else {
@@ -178,7 +180,6 @@ export default class CustomModePage extends Component {
     let rel = await this._setAttrToMap(data)
     if (rel) {
       GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
-      GLOBAL.PreviewColorPicker && GLOBAL.PreviewColorPicker.setVisible(false)
       GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
       GLOBAL.TouchType = TouchType.NORMAL
       ToolbarModule.setData({})
@@ -189,12 +190,14 @@ export default class CustomModePage extends Component {
   }
 
   _pressColor = index => {
-    const params = ToolbarModule.getParams()
-    ToolbarModule.addData({ customModeData: this.state.data, type: this.type })
-    params.showFullMap && params.showFullMap(true)
-    GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(true)
-    GLOBAL.PreviewColorPicker &&
-      GLOBAL.PreviewColorPicker.setVisible(true, index)
+    const _params = ToolbarModule.getParams()
+    let type = ConstToolType.MAP_COLOR_PICKER
+    ToolbarModule.addData({ customModeData: this.state.data, customType: this.type,index })
+    _params.showFullMap(true)
+    _params.setToolbarVisible && _params.setToolbarVisible(true, type, {
+      isFullScreen: false,
+      containerType:ToolbarType.colorPicker,
+    })
     this.props.navigation.goBack()
   }
 
@@ -321,7 +324,7 @@ export default class CustomModePage extends Component {
                       data,
                     })
                   }}
-                  onBlur={evt => {
+                  onEndEditing={evt => {
                     this._changeItemValue(index, evt.nativeEvent.text)
                   }}
                 />
@@ -367,6 +370,7 @@ export default class CustomModePage extends Component {
       <Container
         ref={ref => (this.container = ref)}
         style={styles.container}
+        onOverlayPress={this._back}
         headerProps={{
           title,
           backAction: this._back,

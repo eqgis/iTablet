@@ -50,13 +50,11 @@ export default class PreviewHeader extends React.Component {
   _back = () => {
     this.props.navigation.navigate('CustomModePage')
     this.setVisible(false, {})
-    GLOBAL.PreviewColorPicker && GLOBAL.PreviewColorPicker.setVisible(false)
   }
 
   _confirm = () => {
     //confirm
     this.setVisible(false, {})
-    GLOBAL.PreviewColorPicker && GLOBAL.PreviewColorPicker.setVisible(false)
     GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
     GLOBAL.TouchType = TouchType.NORMAL
     ToolbarModule.setData({})

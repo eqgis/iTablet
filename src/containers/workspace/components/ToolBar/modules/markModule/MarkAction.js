@@ -170,28 +170,34 @@ async function freecover() {
   }
 }
 function commit(type) {
-  const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP_MARKS_DRAW) {
-    let currentLayer = _params.currentLayer
-    SMap.setTaggingGrid(
-      currentLayer.datasetName,
-      _params.user.currentUser.userName,
-    )
-    SMap.setLayerEditable(currentLayer.name, true).then(() => {
-      SMap.submit()
-      SMap.refreshMap()
-      //提交标注后 需要刷新属性表
-      GLOBAL.NEEDREFRESHTABLE = true
-    })
-  } else {
-    const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
-
-    _params.setToolbarVisible(true, type, {
-      isFullScreen: false,
-      // height: 0,
-      cb: () => select(type),
-    })
-    // return false
+  try{
+    const _params = ToolbarModule.getParams()
+    if (type === ConstToolType.MAP_MARKS_DRAW) {
+      let currentLayer = _params.currentLayer
+      SMap.setTaggingGrid(
+        currentLayer.datasetName,
+        _params.user.currentUser.userName,
+      )
+      SMap.setLayerEditable(currentLayer.name, true).then(() => {
+        SMap.submit()
+        SMap.refreshMap()
+        //提交标注后 需要刷新属性表
+        GLOBAL.NEEDREFRESHTABLE = true
+      })
+    } else {
+      const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+  
+      _params.setToolbarVisible(true, type, {
+        isFullScreen: false,
+        // height: 0,
+        cb: () => select(type),
+      })
+      // return false
+    }
+  }
+  catch(e){
+    console.warn(e);
+    
   }
 }
 function undo() {
@@ -280,8 +286,8 @@ function selectLabelToEdit(toolType = '') {
 
   const { event } = ToolbarModule.getData()
 
-  const column = 4
-  let height = ConstToolType.HEIGHT[3]
+  // const column = 4
+  // let height = ConstToolType.HEIGHT[3]
   let containerType = ToolbarType.table
   let type = ''
 
@@ -291,28 +297,28 @@ function selectLabelToEdit(toolType = '') {
   switch (toolType) {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
-      height = ConstToolType.HEIGHT[2]
+      // height = ConstToolType.HEIGHT[2]
       containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
-      height = ConstToolType.HEIGHT[0]
+      // height = ConstToolType.HEIGHT[0]
       break
   }
   if (type !== '') {
     _params.setToolbarVisible &&
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
-        column,
-        height,
+        // column,
+        // height,
         containerType,
         cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
       })
@@ -480,24 +486,24 @@ function geometrySelected(event) {
       geoType = layerType
     }
     let containerType = ''
-    let height = ConstToolType.THEME_HEIGHT[3]
+    // let height = ConstToolType.THEME_HEIGHT[3]
     switch (geoType) {
       case DatasetType.POINT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_POINT
-        height = ConstToolType.HEIGHT[0]
+        // height = ConstToolType.HEIGHT[0]
         break
       case DatasetType.LINE:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_LINE
-        height = ConstToolType.HEIGHT[2]
+        // height = ConstToolType.HEIGHT[2]
         break
       case DatasetType.REGION:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
-        height = ConstToolType.HEIGHT[2]
+        // height = ConstToolType.HEIGHT[2]
         containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT
-        height = ConstToolType.HEIGHT[0]
+        // height = ConstToolType.HEIGHT[0]
         break
     }
     if (type !== '' && layerType !== DatasetType.CAD) {
@@ -511,7 +517,7 @@ function geometrySelected(event) {
         isFullScreen: false,
         // column: 5,
         containerType,
-        height,
+        // height,
         cb: () => {
           SMap.appointEditGeometry(event.id, event.layerInfo.path)
           // SMap.setLayerEditable(event.layerInfo.path, false)
@@ -592,9 +598,9 @@ function showMenuBox(type, selectKey, params = {}) {
     if (Utils.isTouchProgress(selectKey)) {
       params.setData &&
         params.setData({
-          isTouchProgress: GLOBAL.ToolBar.state.showMenuDialog,
-          showMenuDialog: !GLOBAL.ToolBar.state.showMenuDialog,
-          isFullScreen: true,
+          isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+          showMenuDialog: false,
+          isFullScreen: !this.state.isTouchProgress,
         })
     } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
       params.showBox && params.showBox()

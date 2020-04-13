@@ -707,6 +707,7 @@ export default class Map3D extends React.Component {
         appConfig={this.props.appConfig}
         initIndex={0}
         type={this.type}
+        device={this.props.device}
       />
     )
   }

@@ -1049,24 +1049,43 @@ export default function(appConfig) {
       transitionConfig: () => ({
         screenInterpolator: sceneProps => {
           const { layout, position, scene } = sceneProps
-          const { index } = scene
+          if((scene.route.routeName === 'NavigationView' || scene.route.routeName === 'PointAnalyst')
+              && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0){
+            return fromLeft(sceneProps)
+          }else{
+            const { index } = scene
 
-          const width = layout.initWidth
-          const translateX = position.interpolate({
-            inputRange: [index - 1, index, index + 1],
-            outputRange: [width, 0, 0],
-          })
-
-          const opacity = position.interpolate({
-            inputRange: [index - 1, index - 0.99, index],
-            outputRange: [0, 1, 1],
-          })
-
-          return { opacity, transform: [{ translateX: translateX }] }
+            const width = layout.initWidth
+            const translateX = position.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [width, 0, 0],
+            })
+            const opacity = position.interpolate({
+              inputRange: [index - 1, index - 0.99, index],
+              outputRange: [0, 1, 1],
+            })
+            return { opacity, transform: [{ translateX: translateX }] }
+          }
         },
       }),
     },
   )
+}
+//从左出现的组件
+const fromLeft = sceneProps => {
+  const { layout, position, scene } = sceneProps
+  const { index } = scene
+
+  const width = layout.initWidth
+  const translateX = position.interpolate({
+    inputRange: [index - 1, index, index + 1],
+    outputRange: [-width, 0, 0],
+  })
+  const opacity = position.interpolate({
+    inputRange: [index - 1, index - 0.99, index],
+    outputRange: [0, 1, 1],
+  })
+  return {opacity,  transform: [{ translateX: translateX }] }
 }
 
 // export default (function (a) {

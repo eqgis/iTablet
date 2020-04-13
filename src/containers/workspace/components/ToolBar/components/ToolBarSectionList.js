@@ -563,16 +563,18 @@ export default class ToolBarSectionList extends React.Component {
     return (
       <View style={styles.item}>
         <Text style={styles.colorSchemeName}>{item.colorSchemeName}</Text>
-        <View>
+        <View
+          style={{
+            flex: 1,
+            paddingLeft: scaleSize(20),
+            paddingRight: scaleSize(30),
+            paddingVertical: scaleSize(10),
+          }}
+        >
           <Image
             source={item.colorScheme}
             resizeMode={'stretch'} //stretch: 拉伸图片且不维持宽高比,直到宽高都刚好填满容器
-            style={[
-              styles.colorScheme,
-              {
-                width: this.props.device.width - scaleSize(220) - scaleSize(90),
-              },
-            ]}
+            style={[styles.colorScheme]}
           />
         </View>
       </View>
@@ -904,8 +906,7 @@ const styles = StyleSheet.create({
   },
   colorScheme: {
     height: scaleSize(40),
-    marginLeft: scaleSize(20),
-    marginRight: scaleSize(30),
+    width: null,
   },
   colorSchemeName: {
     width: scaleSize(220),

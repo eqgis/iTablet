@@ -9,6 +9,7 @@ import FunctionToolbar from './FunctionToolbar'
 import constants from '../constants'
 import MapToolbar from './MapToolbar'
 import MapNavMenu from './MapNavMenu'
+import MapNavIcon from './MapNavIcon'
 import BackgroundOverlay from './BackgroundOverlay'
 import MapController from './MapController'
 import ToolBar from './ToolBar'
@@ -41,11 +42,11 @@ import MapSelectPointButton from './MapSelectPointButton'
 import TrafficView from './TrafficView'
 import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
-import PreviewColorPicker from './PreviewColorPicker'
 import LayerVisibilityView from './LayerVisibilityView'
 import IncrementRoadDialog from './IncrementRoadDialog'
 export {
   MapNavMenu,
+  MapNavIcon,
   BackgroundOverlay,
   ScaleView,
   RNLegendView,
@@ -86,7 +87,6 @@ export {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
   LayerVisibilityView,
   IncrementRoadDialog,
 }

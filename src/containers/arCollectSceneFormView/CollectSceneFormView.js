@@ -55,6 +55,8 @@ export default class CollectSceneFormView extends React.Component {
       showHistory: false,
       historyData: Array,
       showbuttons: true,
+      showSwithchButtons: false,
+      isClickCollect: false, //是否是打点采集
       isLine: true,
       leftcolor: {
         color: 'black',
@@ -99,8 +101,8 @@ export default class CollectSceneFormView extends React.Component {
     //   SCollectSceneFormView.startRecording()
     // }, 500)
 
-    this.DatumPointDialog.setDialogVisible(true)
-
+    // this.DatumPointDialog.setDialogVisible(true)
+    GLOBAL.Loading.setLoading(true)
     //注册监听
     if (Platform.OS === 'ios') {
       nativeEvt.addListener('onTotalLengthChanged', this.onTotalLengthChanged)
@@ -146,10 +148,13 @@ export default class CollectSceneFormView extends React.Component {
     )
 
     let point = this.datumPoint
+    let DatumPointDialogTemp = this.DatumPointDialog
     setTimeout(function() {
     //设置基点
     // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
     SCollectSceneFormView.startRecording()
+    GLOBAL.Loading.setLoading(false)
+    DatumPointDialogTemp.setDialogVisible(true)
     }, 500)
   }
 
@@ -231,13 +236,19 @@ export default class CollectSceneFormView extends React.Component {
       getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
     )
     await SCollectSceneFormView.stopRecording()
-    await SCollectSceneFormView.saveData('line')
+    let result=await SCollectSceneFormView.saveData('line')
     await SCollectSceneFormView.routeAdd()
     GLOBAL.Loading.setLoading(false)
     this.setState({ isnew: false })
-    Toast.show(
-      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
-    )
+    if(result){
+      Toast.show(
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+      )
+    }else{
+      Toast.show(
+        getLanguage(global.language).Prompt.SAVE_FAILED,
+      )
+    }
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
@@ -253,6 +264,35 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
+  /** 保存面 */
+  saveRegion = async () => {
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_REGION,
+      )
+      await SCollectSceneFormView.stopRecording()
+      let result=await SCollectSceneFormView.saveRegionData()
+      await SCollectSceneFormView.routeAdd()
+      GLOBAL.Loading.setLoading(false)
+      this.setState({ isnew: false })
+      if(result){
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+        )
+      }else{
+        Toast.show(
+          getLanguage(global.language).Prompt.SAVE_FAILED,
+        )
+      }
+    } catch (e) {
+      () => {
+        Toast.show(
+          getLanguage(global.language).Prompt.SAVE_FAILED,
+        )
+      }
+    }
+  }
   /** 保存点 **/
   savepoint = async () => {
     GLOBAL.Loading.setLoading(
@@ -747,6 +787,34 @@ export default class CollectSceneFormView extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.saveRegion()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
+                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
+                source={require('../../assets/mapTools/icon_collection_region.png')}
+                style={styles.smallIcon}
+              />
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_SAVE_REGION
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
           {/* <TouchableOpacity
               onPress={() => this.switchViewMode()}
               style={{
@@ -776,6 +844,100 @@ export default class CollectSceneFormView extends React.Component {
       </View>
     )
   }
+  renderBottomSwitchBtns = () => {
+    return (
+      <View style={styles.toolbar}>
+        <View style={styles.buttonView}>
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                SCollectSceneFormView.setViewMode(0)
+                this.setState({
+                  showbuttons: true ,
+                  showSwithchButtons:false ,
+                  isClickCollect: false
+                  })
+              } catch (e) {
+                () => {}
+              }
+            }}
+            style={styles.iconView}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_new}
+                source={require('../../assets/mapTools/icon_collection_path_start.png')}
+                style={styles.smallIcon}
+              />
+
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_SCENE_TRACK_COLLECT
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                SCollectSceneFormView.setViewMode(1)
+                this.setState({
+                  showbuttons: true ,
+                  showSwithchButtons:false ,
+                  isClickCollect: true
+                })
+              } catch (e) {
+                () => {}
+              }
+            }}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
+                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
+                source={require('../../assets/mapTools/icon_point_black.png')}
+                style={styles.smallIcon}
+              />
+              <Text style={styles.buttonname}>
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SCENE_POINT_COLLECT}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
 
   renderBottomBtn() {
     return (
@@ -800,10 +962,26 @@ export default class CollectSceneFormView extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              if (this.state.showbuttons) {
-                this.setState({ showbuttons: false })
+              if (this.state.showSwithchButtons) {
+                this.setState({ showbuttons: false ,showSwithchButtons:false})
               } else {
-                this.setState({ showbuttons: true })
+                this.setState({ showbuttons: false ,showSwithchButtons:true})
+              }
+            }}
+            style={styles.iconView}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_switch}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (this.state.showbuttons) {
+                this.setState({ showbuttons: false ,showSwithchButtons:false})
+              } else {
+                this.setState({ showbuttons: true ,showSwithchButtons:false})
               }
             }}
             style={styles.iconView}
@@ -843,6 +1021,16 @@ export default class CollectSceneFormView extends React.Component {
       </View>
     )
   }
+  renderClickCollectHintView() {
+    return (
+      <View style={styles.clickHintView}>
+        <Text style={styles.clickHintText}>
+          {getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT}
+        </Text>
+      </View>
+    )
+  }
 
   render() {
     return (
@@ -863,8 +1051,10 @@ export default class CollectSceneFormView extends React.Component {
         />
         {/*{this.state.showHistory && this.renderHistoryView()}*/}
         {this.state.showbuttons && this.renderBottomBtns()}
+        {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
         {this.renderBottomBtn()}
         {this.renderLengthChangeView()}
+        {this.state.isClickCollect && this.renderClickCollectHintView()}
         {this.renderDialog()}
       </Container>
     )

@@ -280,7 +280,7 @@ export default class MapView extends React.Component {
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = GLOBAL.Type === constants.MAP_AR
-
+    this.lastClickTime = 0
     //  导航选中的数据
     this.selectedData = {
       selectedDatasources: [], //选中的数据源
@@ -2494,6 +2494,11 @@ export default class MapView extends React.Component {
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
           onPress={()=>{
+            this.currentTime = new Date().getTime()
+            if((this.currentTime -this.lastClickTime)<1500){
+              return
+            }
+            this.lastClickTime = this.currentTime
             this.container.setLoading(
               true,
               getLanguage(this.props.language).Prompt.LOADING,

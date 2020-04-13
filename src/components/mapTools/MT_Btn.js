@@ -62,7 +62,7 @@ export default class MT_Btn extends React.Component {
       this.clickAble = false
       setTimeout(() => {
         this.clickAble = true
-      }, 1500)
+      }, 100)
       this.props.onPress && this.props.onPress(e)
     }
     

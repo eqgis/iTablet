@@ -2417,7 +2417,7 @@ export default class MapView extends React.Component {
               let layers =
                 this.props.getLayers && (await this.props.getLayers())
               let baseMap = layers.filter(layer =>
-                LayerUtils.isBaseLayer(layer.name),
+                LayerUtils.isBaseLayer(layer),
               )[0]
               if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
                 NavigationService.navigate('PointAnalyst', {
@@ -2869,7 +2869,7 @@ export default class MapView extends React.Component {
           onPress={async () => {
             let layers = this.props.getLayers && (await this.props.getLayers())
             let baseMap = layers.filter(layer =>
-              LayerUtils.isBaseLayer(layer.name),
+              LayerUtils.isBaseLayer(layer),
             )[0]
             if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
               this.searchClickedInfo = {

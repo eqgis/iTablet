@@ -170,28 +170,34 @@ async function freecover() {
   }
 }
 function commit(type) {
-  const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP_MARKS_DRAW) {
-    let currentLayer = _params.currentLayer
-    SMap.setTaggingGrid(
-      currentLayer.datasetName,
-      _params.user.currentUser.userName,
-    )
-    SMap.setLayerEditable(currentLayer.name, true).then(() => {
-      SMap.submit()
-      SMap.refreshMap()
-      //提交标注后 需要刷新属性表
-      GLOBAL.NEEDREFRESHTABLE = true
-    })
-  } else {
-    const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
-
-    _params.setToolbarVisible(true, type, {
-      isFullScreen: false,
-      // height: 0,
-      cb: () => select(type),
-    })
-    // return false
+  try{
+    const _params = ToolbarModule.getParams()
+    if (type === ConstToolType.MAP_MARKS_DRAW) {
+      let currentLayer = _params.currentLayer
+      SMap.setTaggingGrid(
+        currentLayer.datasetName,
+        _params.user.currentUser.userName,
+      )
+      SMap.setLayerEditable(currentLayer.name, true).then(() => {
+        SMap.submit()
+        SMap.refreshMap()
+        //提交标注后 需要刷新属性表
+        GLOBAL.NEEDREFRESHTABLE = true
+      })
+    } else {
+      const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+  
+      _params.setToolbarVisible(true, type, {
+        isFullScreen: false,
+        // height: 0,
+        cb: () => select(type),
+      })
+      // return false
+    }
+  }
+  catch(e){
+    console.warn(e);
+    
   }
 }
 function undo() {

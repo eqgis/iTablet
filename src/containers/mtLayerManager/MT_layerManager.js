@@ -130,7 +130,7 @@ export default class MT_layerManager extends React.Component {
       ) {
         if (
           (allLayers.length > 0 &&
-            !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1].name)) ||
+            !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1])) ||
           (allLayers.length === 0 && GLOBAL.Type === constants.MAP_ANALYST)
         ) {
           baseMap = [
@@ -144,6 +144,7 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
+          
           baseMap = [allLayers[allLayers.length - 1]]
           allLayers.splice(allLayers.length - 1, 1)
         }
@@ -667,7 +668,7 @@ export default class MT_layerManager extends React.Component {
     let hasBaseMap = false
     if (this.props.layers && this.props.layers.length > 0) {
       hasBaseMap = LayerUtils.isBaseLayer(
-        this.props.layers[this.props.layers.length - 1].name,
+        this.props.layers[this.props.layers.length - 1],
       )
     }
     return hasBaseMap
@@ -689,14 +690,14 @@ export default class MT_layerManager extends React.Component {
             this.props.layers.length > 0 &&
             item.name === this.props.layers[this.props.layers.length - 1].name
           ) {
-            if (LayerUtils.isBaseLayer(item.name)) return true
+            if (LayerUtils.isBaseLayer(item)) return true
           }
           if (
             this.props.layers &&
             this.props.layers.length > 1 &&
             item.name === this.props.layers[this.props.layers.length - 2].name
           ) {
-            if (LayerUtils.isBaseLayer(item.name)) return true
+            if (LayerUtils.isBaseLayer(item)) return true
           }
           if (
             this.props.layers &&

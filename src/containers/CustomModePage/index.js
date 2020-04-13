@@ -1,3 +1,7 @@
+import { connect } from 'react-redux'
 import CustomModePage from './CustomModePage'
+const mapStateToProps = state => ({
+  device: state.device.toJS().device,
+})
 
-export default CustomModePage
+export default connect(mapStateToProps)(CustomModePage)

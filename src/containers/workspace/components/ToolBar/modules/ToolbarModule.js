@@ -20,6 +20,7 @@ import {
   markModule,
   mark3DModule,
   incrementModule,
+  themeColorPickerModule,
 } from '../modules'
 
 // 更新类中的数据
@@ -152,6 +153,8 @@ async function getToolBarData(type, params = {}) {
     type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule().getData(type, params)
+  } else if(type === ConstToolType.MAP_COLOR_PICKER){
+    toolBarData = themeColorPickerModule().getData(type,params)
   }
   return toolBarData
 }
@@ -234,6 +237,8 @@ async function setToolBarData(type, params = {}) {
     type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule()
+  }else if(type === ConstToolType.MAP_COLOR_PICKER){
+    toolBarData = themeColorPickerModule()
   }
   // else {
   //   toolBarData = mapModule().getData(type)

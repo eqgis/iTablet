@@ -10,6 +10,7 @@ const horizontalTable = 'horizontalTable' // 横向滚动表格
 const createPlotAnimation = 'createPlotAnimation' // 创建标绘推演
 const animationNode = 'animationNode' // 态势推演
 const picker = 'picker' // 选择器
+const colorPicker = 'colorPicker' //颜色选择器 色盘
 
 export default {
   list,
@@ -23,4 +24,5 @@ export default {
   createPlotAnimation,
   animationNode,
   picker,
+  colorPicker,
 }

@@ -290,7 +290,7 @@ export default class protocol extends Component {
       <MTBtn
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
-        customStyle={{
+        style={{
           height: scaleSize(60),
           width: scaleSize(60),
           marginLeft: scaleSize(0),
@@ -302,7 +302,7 @@ export default class protocol extends Component {
       <MTBtn
         key={'webClose'}
         image={getPublicAssets().common.icon_close}
-        customStyle={{
+        style={{
           opacity: webBackOpacity,
           height: scaleSize(60),
           width: scaleSize(60),

@@ -1399,6 +1399,31 @@ export default class MapView extends React.Component {
         //   return
         // }
 
+        let bWorkspcaOpen = true
+        let bDatasourceOPen = true
+        let bMapOPen = true
+        let bPlotOpen = true
+        let bCreateTag = true
+        let bNaviCreate = true
+
+        setTimeout( async()=>{
+          // debugger
+          this.setLoading(false)
+          if(!bWorkspcaOpen){
+            Toast.show("workspace !")
+          }else if(!bDatasourceOPen){
+            Toast.show("datasource !")
+          }else if(!bMapOPen){
+            Toast.show("map !")
+          }else if(!bPlotOpen){
+            Toast.show("plot !")
+          }else if(!bCreateTag){
+            Toast.show("tagging !")
+          }else if(!bNaviCreate){
+            Toast.show("navi !")
+          }
+          
+        },1000*5)
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
           if (this.wsData instanceof Array) {
@@ -1406,18 +1431,24 @@ export default class MapView extends React.Component {
               let item = this.wsData[i]
               if (item === null) continue
               if (item.type === 'Workspace') {
+                bWorkspcaOpen = false
                 await this._openWorkspace(
                   this.wsData[i],
                   this.wsData[i].layerIndex,
                 )
+                bWorkspcaOpen = true
               } else if (item.type === 'Datasource') {
+                bDatasourceOPen = false
                 await this._openDatasource(
                   this.wsData[i],
                   this.wsData[i].layerIndex,
                 )
+                bDatasourceOPen = true
               } else if (item.type === 'Map') {
+                bMapOPen = false
                 await this._openMap(this.wsData[i])
                 hasMap = true
+                bMapOPen = true
               }
               // else if (item.type === 'LastMap') {
               //   // 打开最近地图
@@ -1426,13 +1457,20 @@ export default class MapView extends React.Component {
               // }
             }
           } else {
+            
             if (this.wsData.type === 'Workspace') {
+              bWorkspcaOpen = false
               await this._openWorkspace(this.wsData, this.wsData.layerIndex)
+              bWorkspcaOpen = true
             } else if (this.wsData.type === 'Datasource') {
+              bDatasourceOPen = false
               await this._openDatasource(this.wsData, this.wsData.layerIndex)
+              bDatasourceOPen = true
             } else if (this.wsData.type === 'Map') {
+              bMapOPen = false
               await this._openMap(this.wsData)
               hasMap = true
+              bMapOPen = true
             }
             // else if (this.wsData.type === 'LastMap') {
             //   // 打开最近地图
@@ -1457,17 +1495,21 @@ export default class MapView extends React.Component {
             ConstPath.RelativeFilePath.Workspace[
               global.language === 'CN' ? 'CN' : 'EN'
             ]
+          bWorkspcaOpen = false
           await this._openWorkspace({
             DSParams: { server: wsPath },
           })
+          bWorkspcaOpen = true
         }
 
+    
         if (GLOBAL.Type === constants.MAP_PLOTTING) {
           this.setLoading(
             true,
             //ConstInfo.TEMPLATE_READING
             getLanguage(this.props.language).Prompt.READING_TEMPLATE,
           )
+          bPlotOpen = false
           let plotIconPath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath +
               this.props.user.currentUser.userName +
@@ -1486,6 +1528,7 @@ export default class MapView extends React.Component {
             },
           )
           GLOBAL.newPlotMapName = ''
+          bPlotOpen = true
         }
 
         // GLOBAL.Type === constants.MAP_COLLECTION && this.initCollectorDatasource()
@@ -1538,11 +1581,13 @@ export default class MapView extends React.Component {
         })
         GLOBAL.TouchType = TouchType.NORMAL
 
+        bCreateTag = false
         await SMap.openTaggingDataset(this.props.user.currentUser.userName)
 
         GLOBAL.TaggingDatasetName = await SMap.getDefaultTaggingDataset(
           this.props.user.currentUser.userName,
         )
+        
         // 检测默认标注是否存在 新建默认标注 设为当前图层
         let currentLayer = this.props.layers.layers[0]
         let hasDefaultTagging = await SMap.hasDefaultTagging(
@@ -1574,6 +1619,9 @@ export default class MapView extends React.Component {
         }
         await SMap.setLayerEditable(defaultTaggingName, true)
         this.props.setCurrentLayer(currentLayer)
+
+        bCreateTag = true
+
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
@@ -1584,16 +1632,18 @@ export default class MapView extends React.Component {
             this.showMarker.latitude,
             markerTag,
           )
-        if (
-          GLOBAL.Type === constants.MAP_COLLECTION ||
-          GLOBAL.Type === constants.MAP_PLOTTING
-        ) {
-          SMap.setIsMagnifierEnabled(true)
-        } else {
-          SMap.setIsMagnifierEnabled(false)
-        }
+        // if (
+        //   GLOBAL.Type === constants.MAP_COLLECTION ||
+        //   GLOBAL.Type === constants.MAP_PLOTTING
+        // ) {
+        //   SMap.setIsMagnifierEnabled(true)
+        // } else {
+        //   SMap.setIsMagnifierEnabled(false)
+        // }
+        SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
         if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+          bNaviCreate = false
           this.props.setMap2Dto3D(true)
           this.props.setMapNavigation({ isShow: false, name: '' })
           let currentFloorID = await SMap.getCurrentFloorID()
@@ -1605,11 +1655,25 @@ export default class MapView extends React.Component {
           GLOBAL.ENDNAME = getLanguage(
             GLOBAL.language,
           ).Map_Main_Menu.SELECT_DESTINATION
+          bNaviCreate = true
         }
 
         if (hasMap) await SMap.saveMap('', false, false)
         this.setLoading(false)
       } catch (e) {
+        if(!bWorkspcaOpen){
+          Toast.show("workspace !")
+        }else if(!bDatasourceOPen){
+          Toast.show("datasource !")
+        }else if(!bMapOPen){
+          Toast.show("map !")
+        }else if(!bPlotOpen){
+          Toast.show("plot !")
+        }else if(!bCreateTag){
+          Toast.show("tagging !")
+        }else if(!bNaviCreate){
+          Toast.show("navi !")
+        }
         this.setLoading(false)
         this.mapLoaded = true
       }

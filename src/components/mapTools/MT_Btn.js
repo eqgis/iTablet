@@ -138,17 +138,12 @@ export default class MT_Btn extends React.Component {
         accessible={true}
         activeOpacity={this.props.activeOpacity}
         accessibilityLabel={this.props.title}
-        // style={
-        //   this.props.customStyle
-        //     ? this.props.customStyle
-        //     : [styles.container, this.props.style]
-        // }
         onPress={this.action}
         underlayColor={BTN_UNDERCOLOR}
         onPressOut={this._onPressOut}
         onPressIn={this._onPressIn}
       >
-        <View style={styles.container}>
+        <View style={[styles.container, this.props.style]}>
           {image && (
             <Image
               resizeMode={'contain'}

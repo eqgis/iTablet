@@ -48,7 +48,6 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  PreviewColorPicker,
   LayerVisibilityView,
   IncrementRoadDialog,
 } from '../../components'

@@ -349,7 +349,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: 'Yüzü kaydet',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'İzleme koleksiyonu',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Rush koleksiyonu',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Toplamak için ekrana dokunun',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Geçerli noktayı belirlemek için ekrana dokunun',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED:

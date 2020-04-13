@@ -366,7 +366,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: '顔を保存',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'トレース収集',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'ラッシュコレクション',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '収集するには画面をタップします',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '画面をタップして現在のポイントを特定します',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '分類中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分類に失敗しました。再度試してください',

@@ -2824,7 +2824,7 @@ export default class MapView extends React.Component {
           onPress={async () => {
             if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
-              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
               if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
@@ -2922,7 +2922,7 @@ export default class MapView extends React.Component {
           backAction: async () => {
             if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
-              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
 
               if (GLOBAL.MapXmlStr) {
@@ -2953,7 +2953,7 @@ export default class MapView extends React.Component {
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
-            GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+            // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
             NavigationService.navigate('NavigationView', {
               changeNavPathInfo: this.changeNavPathInfo,
               getNavigationDatas: this.getNavigationDatas,

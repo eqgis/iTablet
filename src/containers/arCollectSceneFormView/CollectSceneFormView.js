@@ -115,7 +115,7 @@ export default class CollectSceneFormView extends React.Component {
   }
 
   componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
+    Orientation.unlockAllOrientations()
     SCollectSceneFormView.onDestroy()
     //移除监听
     if (Platform.OS === 'ios') {

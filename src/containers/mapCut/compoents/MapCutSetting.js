@@ -19,6 +19,7 @@ export default class MapCutSetting extends React.Component {
     language: string,
     datasources: Array,
     currentUser: Object,
+    device: Object,
     configAction?: () => {},
   }
 
@@ -33,7 +34,8 @@ export default class MapCutSetting extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate =
       JSON.stringify(nextProps.datasources) !==
-      JSON.stringify(this.props.datasources)
+        JSON.stringify(this.props.datasources) ||
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
 
     shouldUpdate = shouldUpdate || !nextState.data.compare(this.state.data)
 

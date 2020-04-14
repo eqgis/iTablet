@@ -120,7 +120,7 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
     toolBarData = plotModule().getData(type, params)
-  } else if(typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
+  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
     toolBarData = incrementModule().getData(type)
   } else if (
     type === ConstToolType.MAP3D_MARK ||
@@ -153,8 +153,8 @@ async function getToolBarData(type, params = {}) {
     type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule().getData(type, params)
-  } else if(type === ConstToolType.MAP_COLOR_PICKER){
-    toolBarData = themeColorPickerModule().getData(type,params)
+  } else if (type === ConstToolType.MAP_COLOR_PICKER) {
+    toolBarData = themeColorPickerModule().getData(type, params)
   }
   return toolBarData
 }
@@ -188,7 +188,7 @@ async function setToolBarData(type, params = {}) {
       type === ConstToolType.STYLE_TRANSFER)
   ) {
     toolBarData = toolModule()
-  }else if(typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1){
+  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
     toolBarData = incrementModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
     toolBarData = shareModule()
@@ -237,7 +237,7 @@ async function setToolBarData(type, params = {}) {
     type.indexOf(ConstToolType.MAP_MARKS) > -1
   ) {
     toolBarData = markModule()
-  }else if(type === ConstToolType.MAP_COLOR_PICKER){
+  } else if (type === ConstToolType.MAP_COLOR_PICKER) {
     toolBarData = themeColorPickerModule()
   }
   // else {
@@ -288,7 +288,6 @@ function getMenuDialogData(type, ...others) {
       data = styleModule().getMenuData(type)
       break
     case ConstToolType.LEGEND:
-    case ConstToolType.LEGEND_NOT_VISIBLE:
     case ConstToolType.LEGEND_POSITION:
       data = legendModule().getMenuData(type)
       break

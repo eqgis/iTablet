@@ -49,9 +49,11 @@ export default class ToolbarContentView extends React.Component {
     this.height = data.height
     this.state = {
       column: data.column,
+      row: data.row,
       boxHeight: new Animated.Value(this.height),
       listSelectable: false,
       clipSetting: {},
+      isShow: true, // 是否显示Content
     }
   }
 
@@ -87,7 +89,11 @@ export default class ToolbarContentView extends React.Component {
     let _data = ToolbarHeight.getToolbarSize(this.props.containerType, {
       data: this.props.data,
     })
-    if (this.height !== _data.height || this.state.column !== _data.column) {
+    if (
+      this.height !== _data.height ||
+      this.state.column !== _data.column ||
+      this.state.row !== _data.row
+    ) {
       this.height = _data.height
       this.changeHeight(_data)
     }
@@ -108,18 +114,63 @@ export default class ToolbarContentView extends React.Component {
         if (_params.wait) {
           return animate
         }
-        animate.start()
+
+        // 防止收缩回去后，图标依然显示问题
+        let isShow = this.height !== 0
+        if (
+          this.props.containerType === ToolbarType.table ||
+          this.props.containerType === ToolbarType.table
+        ) {
+          if (this.state.isShow) {
+            animate.start(() => {
+              if (this.state.isShow !== isShow) {
+                this.setState({
+                  isShow,
+                })
+              }
+            })
+          } else {
+            if (this.state.isShow !== isShow) {
+              this.setState(
+                {
+                  isShow,
+                },
+                () => {
+                  setTimeout(() => animate.start(), 100)
+                },
+              )
+            }
+          }
+        } else {
+          if (!this.state.isShow) {
+            this.setState(
+              {
+                isShow: true,
+              },
+              () => {
+                setTimeout(() => animate.start(), 100)
+              },
+            )
+          } else {
+            animate.start()
+          }
+        }
       }
     }
+    let newState = {}
     if (typeof params === 'number') {
       return change({ height: params })
     } else if (
       params.column !== undefined &&
       params.column !== this.state.column
     ) {
-      this.setState({
-        column: params.column,
-      })
+      newState.column = params.column
+    }
+    if (params.row !== undefined && params.row !== this.state.row) {
+      newState.row = params.row
+    }
+    if (Object.keys(newState).length > 0) {
+      this.setState(newState)
     }
     return change(params)
   }
@@ -233,7 +284,8 @@ export default class ToolbarContentView extends React.Component {
         data={this.props.data}
         type={this.props.type}
         containerType={this.props.containerType}
-        limit={this.state.column}
+        column={this.state.column}
+        row={this.state.row}
         device={this.props.device}
         language={this.props.language}
       />
@@ -344,6 +396,7 @@ export default class ToolbarContentView extends React.Component {
 
   render() {
     let box
+    if (!this.state.isShow) return <View />
     if (this.props.customView) {
       box = this.props.customView(this.props, this.state)
     } else {

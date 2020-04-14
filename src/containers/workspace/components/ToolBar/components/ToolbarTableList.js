@@ -1,7 +1,7 @@
 import React from 'react'
 import { color } from '../../../../../styles'
 import { setSpText } from '../../../../../utils'
-import { ToolbarType, Height } from '../../../../../constants'
+import { ToolbarType } from '../../../../../constants'
 import ToolbarModule from '../modules/ToolbarModule'
 import { MTBtn, ColorBtn, TableList } from '../../../../../components'
 
@@ -10,7 +10,8 @@ export default class ToolbarTableList extends React.Component {
     type: string,
     containerType: string,
     language: string,
-    limit?: number,
+    column?: number,
+    row?: number,
     device: Object,
     data: Array,
     getMenuAlertDialogRef: () => {},
@@ -36,7 +37,7 @@ export default class ToolbarTableList extends React.Component {
           this.itemAction(item)
         }}
         device={this.props.device}
-        numColumns={this.props.limit}
+        numColumns={this.props.column}
       />
     )
   }
@@ -45,7 +46,6 @@ export default class ToolbarTableList extends React.Component {
     // let column = this.props.column
     return (
       <MTBtn
-        // style={{ width: this.props.device.width / column }}
         key={rowIndex + '-' + cellIndex}
         title={item.title}
         textColor={item.disable ? '#A0A0A0' : color.font_color_white}
@@ -68,8 +68,8 @@ export default class ToolbarTableList extends React.Component {
     return (
       <TableList
         data={this.props.data}
-        limit={this.props.limit}
-        // numRows={this.props.row}
+        column={this.props.column}
+        numberOfRows={this.props.row}
         type={this.props.containerType}
         renderCell={
           this.props.containerType === '' ||
@@ -80,8 +80,15 @@ export default class ToolbarTableList extends React.Component {
         }
         device={this.props.device}
         cellStyle={
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-            width: Height.TABLE_ROW_HEIGHT_4,
+          {
+            // flexDirection: 'row',
+            // height: Height.TABLE_ROW_HEIGHT_4,
+            // width:
+            //   this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            //     ? Height.TABLE_ROW_HEIGHT_4
+            //     : 100 / this.props.column + '%',
+            // justifyContent: 'center',
+            // alignItems: 'center',
           }
         }
       />

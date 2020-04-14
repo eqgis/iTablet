@@ -653,14 +653,6 @@ export default class LayerManager_tolbar extends React.Component {
             ConstToolType.MAP_THEME_CREATE_BY_LAYER,
             {
               isFullScreen: true,
-              column:
-                this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                  ? 8
-                  : 4,
-              height:
-                this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                  ? ConstToolType.THEME_HEIGHT[4]
-                  : ConstToolType.THEME_HEIGHT[10],
               createThemeByLayer: this.state.layerData.path,
             },
           )

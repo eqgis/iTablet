@@ -85,11 +85,11 @@ async function geometrySelected(event) {
             // containerType: ToolbarType.createPlotAnimation,
             customView: _props => (
               <PlotAnimationView
-                ref={ref => (this.plotAnimationView = ref)}
+                ref={ref => (GLOBAL.plotAnimationView = ref)}
                 saveAndContinue={() => {
                   const createInfo =
-                    this.plotAnimationView &&
-                    this.plotAnimationView.getCreateInfo()
+                    GLOBAL.plotAnimationView &&
+                    GLOBAL.plotAnimationView.getCreateInfo()
                   if (
                     _props.selection.length > 0 &&
                     _props.selection[0].ids > 0
@@ -103,8 +103,8 @@ async function geometrySelected(event) {
                 }}
                 savePlotAnimationNode={() => {
                   const createInfo =
-                    this.plotAnimationView &&
-                    this.plotAnimationView.getCreateInfo()
+                    GLOBAL.plotAnimationView &&
+                    GLOBAL.plotAnimationView.getCreateInfo()
                   if (
                     _props.selection.length > 0 &&
                     _props.selection[0].ids > 0

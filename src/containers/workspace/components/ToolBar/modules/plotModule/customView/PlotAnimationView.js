@@ -247,7 +247,7 @@ export default class PlotAnimationView extends React.Component {
         <TableList
           style={styles.table}
           data={this.state.data}
-          limit={4}
+          column={4}
           renderCell={this._renderItem}
         />
         <View style={styles.titleView}>

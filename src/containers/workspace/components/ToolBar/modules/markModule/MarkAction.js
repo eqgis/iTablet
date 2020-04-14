@@ -170,28 +170,32 @@ async function freecover() {
   }
 }
 function commit(type) {
-  const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP_MARKS_DRAW) {
-    let currentLayer = _params.currentLayer
-    SMap.setTaggingGrid(
-      currentLayer.datasetName,
-      _params.user.currentUser.userName,
-    )
-    SMap.setLayerEditable(currentLayer.name, true).then(() => {
-      SMap.submit()
-      SMap.refreshMap()
-      //提交标注后 需要刷新属性表
-      GLOBAL.NEEDREFRESHTABLE = true
-    })
-  } else {
-    const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+  try {
+    const _params = ToolbarModule.getParams()
+    if (type === ConstToolType.MAP_MARKS_DRAW) {
+      let currentLayer = _params.currentLayer
+      SMap.setTaggingGrid(
+        currentLayer.datasetName,
+        _params.user.currentUser.userName,
+      )
+      SMap.setLayerEditable(currentLayer.name, true).then(() => {
+        SMap.submit()
+        SMap.refreshMap()
+        //提交标注后 需要刷新属性表
+        GLOBAL.NEEDREFRESHTABLE = true
+      })
+    } else {
+      const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
-    _params.setToolbarVisible(true, type, {
-      isFullScreen: false,
-      // height: 0,
-      cb: () => select(type),
-    })
-    // return false
+      _params.setToolbarVisible(true, type, {
+        isFullScreen: false,
+        // height: 0,
+        cb: () => select(type),
+      })
+      // return false
+    }
+  } catch (e) {
+    // console.warn(e)
   }
 }
 function undo() {
@@ -300,7 +304,7 @@ function selectLabelToEdit(toolType = '') {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
       // height = ConstToolType.HEIGHT[2]
-      containerType = ToolbarType.scrollTable
+      // containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
@@ -493,7 +497,7 @@ function geometrySelected(event) {
       case DatasetType.REGION:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
         // height = ConstToolType.HEIGHT[2]
-        containerType = ToolbarType.scrollTable
+        // containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT

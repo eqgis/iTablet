@@ -9,6 +9,7 @@ import { ToolbarType, Height } from '../../../../../constants'
      data: Array | 建议table类型必传，以便计算列数，默认3列,
      height: number | option,
      column: number | option,
+     row: number | option,
    }
  *    自定义高度，table列数
  * @returns {{height: number, column: number}}
@@ -17,7 +18,8 @@ function getToolbarSize(type, additional = {}) {
   const params = ToolbarModule.getParams()
   const { orientation } = params.device
   let height = 0,
-    column = 0
+    column = -1,
+    row = -1
   switch (type) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
@@ -29,36 +31,23 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.symbol: // 符号库容器
       height = Height.LIST_HEIGHT_L
       break
+    case ToolbarType.scrollTable: // 纵向滚动表格
     case ToolbarType.table: {
-      // 固定表格
-      if (additional.column !== undefined) {
-        column = additional.column
-      } else {
-        // column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
-        // column = 4
-        // if (GLOBAL.isPad) {
-        //   column = orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
-        // } else {
-        column = 4
-        // }
-      }
       if (additional.data === undefined) additional.data = []
-      let row = Math.ceil(additional.data.length / column)
-      // let maxRow = orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
-      let maxRow = 6
-      row = row > maxRow ? maxRow : row // 限制最大高度/宽度
-      height = Height.TABLE_ROW_HEIGHT_4 * row
+      let maxLimit = type === ToolbarType.scrollTable ? 2 : 6
+      if (orientation.indexOf('LANDSCAPE') === 0) {
+        row = additional.row !== undefined ? additional.row : 4
+        column = Math.ceil(additional.data.length / row)
+        column = column > maxLimit ? maxLimit : column // 限制最大高度
+        height = Height.TABLE_ROW_HEIGHT_4 * column
+      } else {
+        column = additional.column !== undefined ? additional.column : 4
+        row = Math.ceil(additional.data.length / column)
+        row = row > maxLimit ? maxLimit : row // 限制最大宽度
+        height = Height.TABLE_ROW_HEIGHT_4 * row
+      }
       break
     }
-    case ToolbarType.scrollTable: // 纵向滚动表格
-      if (additional.column !== undefined) {
-        column = additional.column
-      } else {
-        column = orientation.indexOf('LANDSCAPE') === 0 ? 2 : 4
-        // column = 4
-      }
-      height = Height.COLOR_TABLE_HEIGHT_L
-      break
     case ToolbarType.colorTable: // 颜色表格
       height = Height.LIST_HEIGHT_L
       break
@@ -73,19 +62,22 @@ function getToolbarSize(type, additional = {}) {
       height = Height.TABLE_ROW_HEIGHT_1 * 2
       break
     case ToolbarType.tabs: // 符号标签栏
-      height = Height.TABLE_ROW_HEIGHT_2 * 8
+      height =
+        Height.TABLE_ROW_HEIGHT_2 *
+        (orientation.indexOf('LANDSCAPE') === 0 ? 8 : 12)
       column = 4
       break
     case ToolbarType.colorPicker: //颜色选择器 色盘
-      height = orientation.indexOf('LANDSCAPE') === 0
-        ? Height.TABLE_ROW_HEIGHT_3 * 5
-        : Height.TABLE_ROW_HEIGHT_3 * 4
+      height =
+        orientation.indexOf('LANDSCAPE') === 0
+          ? Height.TABLE_ROW_HEIGHT_3 * 5
+          : Height.TABLE_ROW_HEIGHT_3 * 4
       break
   }
   if (additional.height !== undefined) {
     height = additional.height
   }
-  return { height, column }
+  return { height, column, row }
 }
 
 export default {

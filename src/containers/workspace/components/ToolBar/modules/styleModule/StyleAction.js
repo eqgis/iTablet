@@ -40,11 +40,7 @@ async function close() {
     )
   }
   ToolbarModule.setData()
-  _params.setToolbarVisible(false, {
-    isTouchProgress: false,
-    showMenuDialog: false,
-    selectKey: '',
-  })
+  _params.setToolbarVisible(false)
 }
 
 async function tableAction(params) {
@@ -159,8 +155,7 @@ function menu(type, selectKey, params = {}) {
         type === ConstToolType.REGIONBORDERCOLOR_SET ||
         type === ConstToolType.TEXTCOLOR_SET ||
         type === ConstToolType.TEXTFONT ||
-        type === ConstToolType.LEGEND ||
-        type === ConstToolType.LEGEND_NOT_VISIBLE) &&
+        type === ConstToolType.LEGEND) &&
         isBoxShow)
     ) {
       params.showBox && params.showBox()
@@ -182,8 +177,7 @@ function menu(type, selectKey, params = {}) {
       type === ConstToolType.REGIONBORDERCOLOR_SET ||
       type === ConstToolType.TEXTCOLOR_SET ||
       type === ConstToolType.TEXTFONT ||
-      type === ConstToolType.LEGEND ||
-      type === ConstToolType.LEGEND_NOT_VISIBLE
+      type === ConstToolType.LEGEND
     ) {
       if (type.indexOf('LEGEND') >= 0) {
         if (_params.mapLegend[GLOBAL.Type].isShow) {

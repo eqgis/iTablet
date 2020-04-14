@@ -51,6 +51,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    // width: scaleSize(120),
   },
   locationView: {
     position: 'absolute',

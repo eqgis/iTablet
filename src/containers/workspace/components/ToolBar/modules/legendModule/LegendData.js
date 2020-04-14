@@ -31,9 +31,6 @@ function getData(type) {
       )
       break
     case ConstToolType.LEGEND:
-      data = legendColor
-      break
-    case ConstToolType.LEGEND_NOT_VISIBLE:
     default:
       data = legendColor
       break
@@ -190,46 +187,53 @@ function getMenuData(type) {
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND_POSITION, {
             isFullScreen: false,
             height: ConstToolType.TOOLBAR_HEIGHT[1],
+            selectName: getLanguage(_params.language).Map_Main_Menu
+              .LEGEND_POSITION,
+            selectKey: getLanguage(_params.language).Map_Main_Menu
+              .LEGEND_POSITION,
           })
       },
-      selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
-      selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
+      selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
+      selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
     },
   ]
   return data
 }
 
 function getButtons(type) {
+  const _params = ToolbarModule.getParams()
+  const legendData = _params.mapLegend
   let buttons = []
   switch (type) {
-    case ConstToolType.LEGEND_NOT_VISIBLE:
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        {
-          type: ToolbarBtnType.VISIBLE,
-          action: LegendAction.changeLegendVisible,
-          image: getPublicAssets().mapTools.tools_legend_on,
-        },
-        ToolbarBtnType.MENU,
-        // ToolbarBtnType.FLEX,
-        ToolbarBtnType.MENU_FLEX,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
-      break
     case ConstToolType.LEGEND:
     default:
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        {
-          type: ToolbarBtnType.NOT_VISIBLE,
-          action: LegendAction.changeLegendVisible,
-          image: getPublicAssets().mapTools.tools_legend_off,
-        },
-        ToolbarBtnType.MENU,
-        // ToolbarBtnType.FLEX,
-        ToolbarBtnType.MENU_FLEX,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
+      if (legendData[GLOBAL.Type].isShow) {
+        buttons = [
+          ToolbarBtnType.CANCEL,
+          {
+            type: ToolbarBtnType.VISIBLE,
+            action: LegendAction.changeLegendVisible,
+            image: getPublicAssets().mapTools.tools_legend_on,
+          },
+          ToolbarBtnType.MENU,
+          // ToolbarBtnType.FLEX,
+          ToolbarBtnType.MENU_FLEX,
+          ToolbarBtnType.TOOLBAR_COMMIT,
+        ]
+      } else {
+        buttons = [
+          ToolbarBtnType.CANCEL,
+          {
+            type: ToolbarBtnType.NOT_VISIBLE,
+            action: LegendAction.changeLegendVisible,
+            image: getPublicAssets().mapTools.tools_legend_off,
+          },
+          ToolbarBtnType.MENU,
+          // ToolbarBtnType.FLEX,
+          ToolbarBtnType.MENU_FLEX,
+          ToolbarBtnType.TOOLBAR_COMMIT,
+        ]
+      }
       break
   }
   return buttons

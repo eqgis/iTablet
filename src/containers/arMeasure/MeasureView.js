@@ -119,7 +119,7 @@ export default class MeasureView extends React.Component {
   }
 
   componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
+    Orientation.unlockAllOrientations()
     //移除监听
     DeviceEventEmitter.removeListener(
       'onCurrentLengthChanged',

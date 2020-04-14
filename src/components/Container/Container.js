@@ -272,38 +272,32 @@ export default class Container extends Component {
       <AnimatedView
         style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
-        {this.props.isOverlayBefore &&
-        (<AnimatedView style={{ width: width }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (this.props.onOverlayPress) {
-                this.props.onOverlayPress()
-              } else {
-                if (NavigationService.isInMap()) {
-                  NavigationService.navigate('MapView')
+        {this.props.isOverlayBefore && (
+          <AnimatedView style={{ width: width }}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.props.onOverlayPress) {
+                  this.props.onOverlayPress()
+                } else {
+                  if (NavigationService.isInMap()) {
+                    NavigationService.navigate('MapView')
+                  }
+                  if (NavigationService.isInMap3D()) {
+                    NavigationService.navigate('Map3D')
+                  }
                 }
-                if (NavigationService.isInMap3D()) {
-                  NavigationService.navigate('Map3D')
-                }
-              }
-            }}
-            activeOpacity={this.props.blankOpacity}
-            style={[styles.overlay, { opacity: this.props.blankOpacity }]}
-          />
-        </AnimatedView>)
-        }
+              }}
+              activeOpacity={this.props.blankOpacity}
+              style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+            />
+          </AnimatedView>
+        )}
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
           {!fixHeader && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                {this.props.children}
-              </View>
+              {this.props.children}
               {fixHeader && this.renderHeader(fixHeader)}
               {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>
@@ -315,26 +309,26 @@ export default class Container extends Component {
             initLoading={this.props.initWithLoading}
           />
         </View>
-        {!this.props.isOverlayBefore &&
-        (<AnimatedView style={{ width: width }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (this.props.onOverlayPress) {
-                this.props.onOverlayPress()
-              } else {
-                if (NavigationService.isInMap()) {
-                  NavigationService.navigate('MapView')
+        {!this.props.isOverlayBefore && (
+          <AnimatedView style={{ width: width }}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.props.onOverlayPress) {
+                  this.props.onOverlayPress()
+                } else {
+                  if (NavigationService.isInMap()) {
+                    NavigationService.navigate('MapView')
+                  }
+                  if (NavigationService.isInMap3D()) {
+                    NavigationService.navigate('Map3D')
+                  }
                 }
-                if (NavigationService.isInMap3D()) {
-                  NavigationService.navigate('Map3D')
-                }
-              }
-            }}
-            activeOpacity={this.props.blankOpacity}
-            style={[styles.overlay, { opacity: this.props.blankOpacity }]}
-          />
-        </AnimatedView>)
-        }
+              }}
+              activeOpacity={this.props.blankOpacity}
+              style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+            />
+          </AnimatedView>
+        )}
       </AnimatedView>
     )
   }

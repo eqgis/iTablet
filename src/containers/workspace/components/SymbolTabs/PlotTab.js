@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { color, size } from '../../../../styles'
 import { TableList } from '../../../../components'
 import { scaleSize, Toast } from '../../../../utils'
-import { ToolbarType } from '../../../../constants'
+import { ToolbarType, Height } from '../../../../constants'
 import { plotModule } from '../ToolBar/modules'
 import { SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
@@ -49,7 +49,7 @@ export default class PlotTab extends React.Component {
     return (
       <TouchableOpacity
         style={styles.listItem}
-        key={item.code}
+        key={item.code + '_' + rowIndex + '_' + cellIndex}
         onPress={() => this.action({ item, rowIndex, cellIndex })}
       >
         <Image
@@ -78,7 +78,7 @@ export default class PlotTab extends React.Component {
         data={this.props.data}
         // data={this.state.data}
         type={ToolbarType.scrollTable}
-        limit={3}
+        column={3}
         renderCell={this._renderItem}
         device={this.props.device}
       />
@@ -92,12 +92,13 @@ const styles = StyleSheet.create({
     backgroundColor: color.bgW,
   },
   listItem: {
-    height: scaleSize(64),
-    // width: 100,
-    justifyContent: 'center',
+    flex: 1,
+    // height: scaleSize(64),
+    height: Height.TABLE_ROW_HEIGHT_4,
+    paddingHorizontal: scaleSize(20),
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: color.bgW,
-    paddingHorizontal: scaleSize(30),
     flexDirection: 'row',
   },
   listItemImg: {
@@ -105,19 +106,19 @@ const styles = StyleSheet.create({
     width: scaleSize(64),
   },
   listItemContent: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
   },
   listItemName: {
     minHeight: scaleSize(32),
-    width: scaleSize(160),
+    width: scaleSize(120),
     color: color.font_color_white,
     fontSize: size.fontSize.fontSizeSm,
   },
   listItemSubTitle: {
     height: scaleSize(32),
-    width: scaleSize(160),
+    width: scaleSize(1020),
     color: color.themeText2,
     fontSize: size.fontSize.fontSizeSm,
   },

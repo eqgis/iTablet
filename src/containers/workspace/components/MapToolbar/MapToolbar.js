@@ -401,6 +401,7 @@ export default class MapToolbar extends React.Component {
         textStyle={{ fontSize: setSpText(20) }}
         selected={this.state.currentIndex === index}
         image={item.image}
+        style={{ width: scaleSize(120) }}
         selectedImage={item.selectedImage}
         onPress={() => {
           let current = this.props.initIndex

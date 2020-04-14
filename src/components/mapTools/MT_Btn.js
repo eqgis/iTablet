@@ -69,7 +69,7 @@ export default class MT_Btn extends React.Component {
       this.clickAble = false
       setTimeout(() => {
         this.clickAble = true
-      }, 1500)
+      }, 100)
       this.props.onPress && this.props.onPress(e)
     }
   }
@@ -139,11 +139,12 @@ export default class MT_Btn extends React.Component {
         activeOpacity={this.props.activeOpacity}
         accessibilityLabel={this.props.title}
         onPress={this.action}
+        style={[styles.container, this.props.style]}
         underlayColor={BTN_UNDERCOLOR}
         onPressOut={this._onPressOut}
         onPressIn={this._onPressIn}
       >
-        <View style={[styles.container, this.props.style]}>
+        <View style={styles.container}>
           {image && (
             <Image
               resizeMode={'contain'}

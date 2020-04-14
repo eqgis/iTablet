@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   nav: state.nav.toJS(),
   map: state.map.toJS(),
   layers: state.layers.toJS().layers,
+  device: state.device.toJS().device,
   currentUser: state.user.toJS().currentUser,
 })
 

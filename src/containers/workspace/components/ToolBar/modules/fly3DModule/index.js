@@ -18,8 +18,7 @@ function action(type) {
   SScene.checkoutListener('startMeasure')
   params.setToolbarVisible(true, type, {
     containerType,
-    column: data.column,
-    height: data.height,
+    ...data,
     data: _data.data,
     buttons: _data.buttons,
   })

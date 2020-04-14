@@ -26,14 +26,16 @@ export default class TableList extends React.Component {
     type?: string,
     device?: string,
     isAutoType?: Boolean,
-    limit?: number, // scrollTable limit始终表示列数
+    column?: number, // 列数
+    numberOfRows?: number, // 行数限制
   }
 
   static defaultProps = {
     data: [],
-    limit: 2,
+    column: 2,
+    numberOfRows: 6,
     type: 'table', // normal | scroll
-    lineSeparator: 10,
+    lineSeparator: 5,
     isAutoType: true,
   }
 
@@ -49,16 +51,13 @@ export default class TableList extends React.Component {
     let type = this.props.type
     if (this.props.isAutoType) {
       if (
-        (this.props.data.length > 10 &&
-          this.props.limit === 2 &&
-          this.getOrientation().indexOf('LANDSCAPE') === 0) ||
-        (this.props.data.length > 8 &&
-          this.props.limit === 4 &&
-          this.getOrientation().indexOf('PORTRAIT') === 0)
+        type === 'table' &&
+        this.props.numberOfRows &&
+        this.props.data.length <= this.props.column * this.props.numberOfRows
       ) {
-        type = 'scrollTable'
-      } else {
         type = 'table'
+      } else {
+        type = 'scrollTable'
       }
     }
     return type
@@ -70,14 +69,14 @@ export default class TableList extends React.Component {
     let rows = [],
       rowsView = []
     this.props.data.forEach((item, index) => {
-      let column = this.props.limit
+      let column = this.props.column
       let orientation = this.getOrientation()
       if (
         orientation.indexOf('LANDSCAPE') === 0 &&
         // this.props.type !== 'scrollTable'
         this.getType() !== 'scrollTable'
       ) {
-        column = Math.ceil(this.props.data.length / this.props.limit)
+        column = Math.ceil(this.props.data.length / this.props.numberOfRows)
       }
       let rowIndex = Math.floor(index / column)
       let cellIndex = index % column
@@ -87,6 +86,24 @@ export default class TableList extends React.Component {
       rows[rowIndex].push(this.renderCell(item, rowIndex, cellIndex))
     })
 
+    let limit = this.props.column
+    if (rows.length >= 1 && rows[rows.length - 1].length < limit) {
+      let num = limit - rows[rows.length - 1].length
+      for (let i = 0; i < num; i++) {
+        rows[rows.length - 1].push(
+          <View
+            style={[
+              {
+                width: 100 / limit + '%',
+              },
+              this.props.cellStyle,
+            ]}
+            key={rows.length - 1 + '-' + (rows[rows.length - 1].length + i)}
+          />,
+        )
+      }
+    }
+
     rows.forEach((row, rowIndex) => {
       rowsView.push(this.renderRow(row, rowIndex))
     })
@@ -94,12 +111,11 @@ export default class TableList extends React.Component {
   }
 
   renderRow = (row, rowIndex) => {
-    let orientation = this.getOrientation()
     return (
       <View
         key={'row-' + rowIndex}
         style={[
-          orientation.indexOf('LANDSCAPE') === 0 ? styles.rowL : styles.rowP,
+          styles.row,
           this.props.rowStyle,
           rowIndex &&
             this.props.lineSeparator >= 0 && {
@@ -114,16 +130,10 @@ export default class TableList extends React.Component {
 
   renderCell = (item, rowIndex, cellIndex) => {
     if (!this.props.renderCell) throw new Error('Please render cell')
-    let limit = this.props.limit
     let size = {
-      justifyContent: 'center',
-      width: 100 / limit + '%',
-      height: 100 / limit + '%',
+      justifyContent: 'flex-start',
+      width: 100 / this.props.column + '%',
     }
-    // let orientation = this.getOrientation()
-    // if (orientation.indexOf('LANDSCAPE') === 0) {
-    //   size.height = 100 / limit + '%'
-    // }
     return (
       <View
         style={[size, this.props.cellStyle]}
@@ -135,8 +145,6 @@ export default class TableList extends React.Component {
   }
 
   render() {
-    // let type = this.props.type
-    // if (type === 'scrollTable') {
     if (this.getType() === 'scrollTable') {
       return (
         <ScrollView style={[styles.scrollContainer, this.props.style]}>

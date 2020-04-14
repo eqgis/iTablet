@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize } from '../../utils'
+// import { scaleSize } from '../../utils'
 import { color } from '../../styles'
 
 export default StyleSheet.create({
@@ -14,20 +14,10 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: color.content_white,
   },
-  rowP: {
-    // flex: 1,
-    // width: '100%',
+  row: {
     flexDirection: 'row',
-    height: scaleSize(120),
-    // justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  rowL: {
-    // flex: 1,
-    // width: '100%',
-    flexDirection: 'row',
-    height: scaleSize(120),
-    // justifyContent: 'space-around',
+    // height: scaleSize(120),
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 })

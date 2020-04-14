@@ -134,7 +134,7 @@ export default class AnalystTools extends Component {
         <TableList
           data={this.state.data}
           type={ToolbarType.scrollTable}
-          limit={this.props.device.orientation ? 4 : 8}
+          column={this.props.device.orientation ? 4 : 8}
           renderCell={this._renderItem}
           device={this.props.device}
         />

@@ -642,10 +642,13 @@ class AppRoot extends Component {
           getLanguage(this.props.language).Prompt.CLOSING,
           //'正在关闭地图'
         )
-        await this.props.closeMap()
+        setTimeout(()=>{
+          this.setSaveMapViewLoading(false)
+          NavigationService.goBack()
+        },2000)
+        await this.props.closeMap(fasle)
         GLOBAL.clearMapData()
-        this.setSaveMapViewLoading(false)
-        NavigationService.goBack()
+        
       } catch (e) {
         this.setSaveMapViewLoading(false)
       }

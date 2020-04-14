@@ -170,13 +170,11 @@ export const saveMap = (params = {}, cb = () => {}) => async (
 // 关闭地图
 export const closeMap = (cb = () => {}) => async dispatch => {
   try {
-     SMap.resetMapFixColorsModeValue(false).then(()=>{
-      SMap.closeMap().then(()=>{
-        SMap.removeMap(-1).then(()=>{
-          SMap.closeDatasource()
-        }) // 移除所有地图
-      })
-     })
+    await SMap.resetMapFixColorsModeValue(false)
+    await SMap.closeMap()
+    await SMap.removeMap(-1)
+    await SMap.closeDatasource()
+       
     await dispatch({
       type: SET_CURRENT_MAP,
       payload: {},

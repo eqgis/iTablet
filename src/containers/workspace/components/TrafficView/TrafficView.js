@@ -101,7 +101,7 @@ export default class TrafficView extends React.Component {
               } else {
                 let layers = await this.props.getLayers()
                 let baseMap = layers.filter(layer =>
-                  LayerUtils.isBaseLayer(layer.name),
+                  LayerUtils.isBaseLayer(layer),
                 )[0]
                 if (
                   baseMap &&

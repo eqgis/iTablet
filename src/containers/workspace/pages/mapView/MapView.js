@@ -281,7 +281,7 @@ export default class MapView extends React.Component {
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = GLOBAL.Type === constants.MAP_AR
-
+    this.lastClickTime = 0
     //  导航选中的数据
     this.selectedData = {
       selectedDatasources: [], //选中的数据源
@@ -2414,7 +2414,7 @@ export default class MapView extends React.Component {
               let layers =
                 this.props.getLayers && (await this.props.getLayers())
               let baseMap = layers.filter(layer =>
-                LayerUtils.isBaseLayer(layer.name),
+                LayerUtils.isBaseLayer(layer),
               )[0]
               if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
                 NavigationService.navigate('PointAnalyst', {
@@ -2506,7 +2506,12 @@ export default class MapView extends React.Component {
           style={{ padding: scaleSize(5) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
-          onPress={() => {
+          onPress={()=>{
+            this.currentTime = new Date().getTime()
+            if((this.currentTime -this.lastClickTime)<1500){
+              return
+            }
+            this.lastClickTime = this.currentTime
             this.container.setLoading(
               true,
               getLanguage(this.props.language).Prompt.LOADING,
@@ -2819,7 +2824,7 @@ export default class MapView extends React.Component {
           onPress={async () => {
             if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
-              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
               if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
@@ -2866,7 +2871,7 @@ export default class MapView extends React.Component {
           onPress={async () => {
             let layers = this.props.getLayers && (await this.props.getLayers())
             let baseMap = layers.filter(layer =>
-              LayerUtils.isBaseLayer(layer.name),
+              LayerUtils.isBaseLayer(layer),
             )[0]
             if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
               this.searchClickedInfo = {
@@ -2917,7 +2922,7 @@ export default class MapView extends React.Component {
           backAction: async () => {
             if (GLOBAL.MapSelectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
-              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
 
               if (GLOBAL.MapXmlStr) {
@@ -2948,7 +2953,7 @@ export default class MapView extends React.Component {
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
-            GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+            // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
             NavigationService.navigate('NavigationView', {
               changeNavPathInfo: this.changeNavPathInfo,
               getNavigationDatas: this.getNavigationDatas,

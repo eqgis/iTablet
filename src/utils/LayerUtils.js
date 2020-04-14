@@ -213,13 +213,23 @@ const baseMapsOrigin = [
   'baseMap',
 ]
 let baseMaps = [...baseMapsOrigin]
-function isBaseLayer(name) {
-  for (let i = 0, n = baseMaps.length; i < n; i++) {
-    if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
-      return true
+function isBaseLayer(layer) {
+  try{
+    let name = layer.name
+    for (let i = 0, n = baseMaps.length; i < n; i++) {
+      if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
+        if(layer.type === DatasetType.IMAGE)
+        {
+          return true
+        }
+      }
     }
+    return false
+  }catch (e) {
+    // debugger
+    return false
   }
-  return false
+  
   // if (
   //   name.indexOf('roadmap@GoogleMaps') >= 0 ||
   //   name.indexOf('satellite@GoogleMaps') >= 0 ||
@@ -308,7 +318,8 @@ async function addBaseMap(
  */
 function getLayerType(currentLayer) {
   // let currentLayer = GLOBAL.currentLayer
-  let layerType = ''
+  try{
+    let layerType = ''
   if (currentLayer && !currentLayer.themeType) {
     switch (currentLayer.type) {
       case DatasetType.CAD: {
@@ -331,9 +342,15 @@ function getLayerType(currentLayer) {
       case DatasetType.TEXT:
         layerType = 'TEXTLAYER'
         break
+      case DatasetType.IMAGE:
+        layerType = 'IMAGELAYER'
+        break
     }
   }
   return layerType
+  }catch (e) {
+    return ''
+  }
 }
 
 function getFieldTypeText(intType, language = 'CN') {

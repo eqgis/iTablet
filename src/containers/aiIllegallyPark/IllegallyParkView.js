@@ -91,7 +91,7 @@ export default class IllegallyParkView extends React.Component {
   }
 
   componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
+    Orientation.unlockAllOrientations()
     //移除监听
   }
 

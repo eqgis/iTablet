@@ -677,7 +677,7 @@ export default class LayerManager_item extends React.Component {
           //非标注，底图
           if (
             this.state.data.name.indexOf('@Label_') === -1 &&
-            !LayerUtils.isBaseLayer(this.state.data.name)
+            !LayerUtils.isBaseLayer(this.state.data)
           ) {
             this._showPopover(iTemView, this.state.data)
           }

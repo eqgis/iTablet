@@ -117,24 +117,42 @@ export default class ToolbarContentView extends React.Component {
 
         // 防止收缩回去后，图标依然显示问题
         let isShow = this.height !== 0
-        if (this.state.isShow) {
-          animate.start(() => {
+        if (
+          this.props.containerType === ToolbarType.table ||
+          this.props.containerType === ToolbarType.table
+        ) {
+          if (this.state.isShow) {
+            animate.start(() => {
+              if (this.state.isShow !== isShow) {
+                this.setState({
+                  isShow,
+                })
+              }
+            })
+          } else {
             if (this.state.isShow !== isShow) {
-              this.setState({
-                isShow,
-              })
+              this.setState(
+                {
+                  isShow,
+                },
+                () => {
+                  setTimeout(() => animate.start(), 100)
+                },
+              )
             }
-          })
+          }
         } else {
-          if (this.state.isShow !== isShow) {
+          if (!this.state.isShow) {
             this.setState(
               {
-                isShow,
+                isShow: true,
               },
               () => {
                 setTimeout(() => animate.start(), 100)
               },
             )
+          } else {
+            animate.start()
           }
         }
       }

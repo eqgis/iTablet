@@ -1251,8 +1251,12 @@ export default class MapView extends React.Component {
           Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
           this.props.setSelection && this.props.setSelection()
           SMap.setAction(Action.SELECT)
+          let preType = ToolbarModule.getParams().type
+          let type = preType.indexOf('MAP_TOPO_') > -1
+            ? ConstToolType.MAP_TOPO_EDIT
+            : ConstToolType.MAP_EDIT_DEFAULT
           // 删除对象后，编辑设为为选择状态
-          this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+          this.toolBox.setVisible(true, type, {
             isFullScreen: false,
             height: 0,
           })
@@ -2776,6 +2780,10 @@ export default class MapView extends React.Component {
       case ConstToolType.MAP_INCREMENT_INNER:
         break
     }
+    //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
+    let layers = this.props.layers.layers
+    layers.map(async layer => await SMap.setLayerSelectable(layer.path,false))
+    GLOBAL.TouchType = TouchType.NULL
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
 

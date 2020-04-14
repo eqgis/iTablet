@@ -1,0 +1,169 @@
+/**
+ * @description
+ * @author: Asort
+ * Copyright © SuperMap. All rights reserved.
+ * https://github.com/AsortKeven
+ */
+import React from 'react'
+import {ConstToolType} from "../../../../../../constants"
+import ToolbarBtnType from "../../ToolbarBtnType"
+import {getPublicAssets} from "../../../../../../assets"
+import TopoEditAction from "./TopoEditAction"
+import constants from "../../../../constants"
+import {getLanguage} from "../../../../../../language"
+import MergeDatasetView from "./customView/MergeDatasetView"
+import { SMap } from 'imobile_for_reactnative'
+
+async function getData(type) {
+  let data = []
+  let buttons = [
+    ToolbarBtnType.CANCEL,
+    {
+      type: ToolbarBtnType.MENU,
+      image: getPublicAssets().navigation.btn_increment_merge_dataset,
+      action: TopoEditAction.showMerge,
+    },
+    {
+      type: ConstToolType.MAP_INCREMENT_CHANGE_METHOD,
+      image: getPublicAssets().navigation.btn_increment_change_type,
+      action: TopoEditAction.changeEditType,
+    },
+    ToolbarBtnType.MENU_FLEX,
+    {
+      type: ToolbarBtnType.MAP_SYMBOL,
+      image: getPublicAssets().navigation.btn_increment_topo_edit,
+      // action: IncrementAction.topoEdit,
+    },
+  ]
+  let customView
+  switch(type){
+    case ConstToolType.MAP_TOPO_EDIT:
+      break
+    case ConstToolType.MAP_TOPO_SWITCH_TYPE:
+      data = [
+        {
+          key: constants.MAP_TOPO_ADD_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_add_node,
+        },
+        {
+          key: constants.MAP_TOPO_EDIT_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_edit_node,
+        },
+        {
+          key: constants.MAP_TOPO_DELETE_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_delete_node,
+        },
+        {
+          key: constants.MAP_TOPO_DELETE_OBJECT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_OBJECT,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_delete_object,
+        },
+        {
+          key: constants.MAP_TOPO_SMOOTH,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_smooth,
+        },
+        {
+          key: constants.MAP_TOPO_POINT_ADJUST,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_POINT_ADJUST,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_point_adjust,
+        },
+        {
+          key: constants.MAP_TOPO_SPLIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_incremnent_split,
+        },
+        {
+          key: constants.MAP_TOPO_EXTEND,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EXTEND,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_extend,
+        },
+        {
+          key: constants.MAP_TOPO_TRIM,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_TRIM,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_incremnent_trim,
+        },
+        {
+          key: constants.MAP_TOPO_RESAMPLE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_resample,
+        },
+        {
+          key: constants.MAP_TOPO_CHANGE_DIRECTION,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_CHANGE_DIRECTION,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_change_direction,
+        },
+      ]
+      break
+    case ConstToolType.MAP_TOPO_TOPING:
+      data = [
+        {
+          key: constants.UNDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: TopoEditAction.undo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          action: TopoEditAction.redo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+        {
+          key: constants.MAP_INCREMENT_CANCEL,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_CANCEL,
+          action: TopoEditAction.cancel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+        },
+        {
+          key: constants.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_COMMIT,
+          action: TopoEditAction.submit,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+        },
+      ]
+      break
+    case ConstToolType.MAP_TOPO_MERGE_DATASET: {
+      let datas = await SMap.getLineDataset()
+      let lineDatasets = datas[0] && datas[0].data.filter(item => item.datasetName !== GLOBAL.INCREMENT_DATA.datasetName)
+      data = []
+      buttons = []
+      customView = () => (<MergeDatasetView data={lineDatasets}/>)
+    }
+      break
+  }
+  return {data, buttons, customView}
+}
+
+export default {
+  getData,
+}

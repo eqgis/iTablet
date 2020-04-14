@@ -455,6 +455,14 @@ const Map_Main_Menu = {
   MAP_TOPO_TRIM: '修剪',
   MAP_TOPO_RESAMPLE: '重采样',
   MAP_TOPO_CHANGE_DIRECTION: '变方向',
+  ADD_DATASET:'追加数据集',
+  SELECT_ROADNAME_FIELD:'选择以下数据集的道路名称字段',
+  SELECT_FIELD:'选择字段',
+  MERGE_CANCEL:'取消',
+  MERGE_CONFIRM:'确定',
+  MERGE_SELECT_ALL:'全选',
+  MERGE_ADD:'追加',
+  MERGE_DATASET:'合并数据集',
 }
 
 // 推演动画

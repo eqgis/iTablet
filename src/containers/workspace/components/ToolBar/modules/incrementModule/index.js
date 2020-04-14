@@ -20,6 +20,8 @@ function setModuleData(type) {
   })
 }
 export default function(type, title) {
+  GLOBAL.FloorListView && GLOBAL.FloorListView.setVisible(false)
+  GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
   return {
     key: title,
     title: title,

@@ -217,20 +217,22 @@ export default class LineList extends Component{
       let hasExtra = this.state.selectedItem.datasourceName === item.datasourceName
             && this.state.selectedItem.datasetName === item.datasetName
       let extraStyle,extraTxtStyle,lineImg
+      let renameImg,deleteImg
       if(hasExtra){
+        renameImg = getPublicAssets().navigation.icon_increment_rename_white
+        deleteImg = getPublicAssets().navigation.icon_increment_delete_white
         extraStyle = {backgroundColor: color.item_selected_bg}
         extraTxtStyle = {color: color.white}
         lineImg = getLayerWhiteIconByType(DatasetType.LINE)
       }else{
+        renameImg = getPublicAssets().navigation.icon_increment_rename
+        deleteImg = getPublicAssets().navigation.icon_increment_delete
         extraStyle = {}
         extraTxtStyle = {}
         lineImg = getLayerIconByType(DatasetType.LINE)
       }
       let isEditing = this.state.editingItem.datasourceName === item.datasourceName
           && this.state.editingItem.datasetName === item.datasetName
-      //todo 图片白色版本
-      const renameImg = getPublicAssets().navigation.icon_increment_rename
-      const deleteImg = getPublicAssets().navigation.icon_increment_delete
       return (
         <TouchableOpacity
           style={[styles.row, extraStyle]}
@@ -294,6 +296,7 @@ export default class LineList extends Component{
               </TouchableOpacity>
             </View>
             <SectionList
+              style={styles.padding}
               keyExtractor={(item,index)=>(item.toString() + index)}
               sections={this.state.data}
               extraData={this.state}
@@ -315,6 +318,7 @@ export default class LineList extends Component{
               </TouchableOpacity>
             </View>
             <SectionList
+              style={styles.padding}
               keyExtractor={(item,index)=>(item.toString() + index)}
               sections={this.state.data}
               extraData={this.state}
@@ -331,7 +335,10 @@ export default class LineList extends Component{
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    padding:scaleSize(10),
+  },
+  padding:{
+    paddingHorizontal:scaleSize(10),
+    paddingBottom:scaleSize(10),
   },
   title:{
     width:'100%',
@@ -339,14 +346,14 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'space-between',
-    backgroundColor:color.content_white,
-    borderBottomWidth:1,
-    borderBottomColor:color.USUAL_SEPARATORCOLOR,
+    backgroundColor:'#303030',
   },
   titleTxt:{
+    color:'white',
     fontSize:setSpText(22),
   },
   actionTxt:{
+    color:'white',
     fontSize:setSpText(20),
   },
   titleTxtWrap:{

@@ -330,6 +330,12 @@ const Prompt = {
   CANT_REDO:'ないやり直し',
   DATASET_RENAME_FAILED:'データセット名には、文字、数字、「_」、「@」、「＃」のみを含めることができます',
   SWITCH_LINE: 'データを切り替える',
+  HAS_NO_ROADNAME_FIELD_DATA:'道路名フィールド情報が選択されていないデータセットがあります',
+  MERGE_SUCCESS:'正常にマージされました',
+  MERGE_FAILD:'マージに失敗しました',
+  NOT_SUPPORT_PRJCOORDSYS:'次のデータセットの座標系はマージをサポートしていません',
+  MERGEING:'マージ',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:'RoadNameフィールドを含まないデータセットがあります。次のデータセットの道路名フィールドを選択してください',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',

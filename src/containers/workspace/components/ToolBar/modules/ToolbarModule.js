@@ -21,6 +21,7 @@ import {
   mark3DModule,
   incrementModule,
   themeColorPickerModule,
+  topoEditModule,
 } from '../modules'
 
 // 更新类中的数据
@@ -106,7 +107,9 @@ async function getToolBarData(type, params = {}) {
     toolBarData = themeModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule().getData(type, params)
-  } else if (
+  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1){
+    toolBarData = topoEditModule().getData(type)
+  }else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
   ) {
@@ -196,6 +199,8 @@ async function setToolBarData(type, params = {}) {
     toolBarData = themeModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1){
+    toolBarData = topoEditModule()
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1

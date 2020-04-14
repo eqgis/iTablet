@@ -74,7 +74,8 @@
     "redux-promise-middleware": "^6.1.0",
     "redux-thunk": "^2.3.0",
     "teaset": "^0.6.3",
-    "react-native-slider": "latest"
+    "react-native-slider": "latest",
+    "react-native-modal-dropdown": "0.7.0"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",

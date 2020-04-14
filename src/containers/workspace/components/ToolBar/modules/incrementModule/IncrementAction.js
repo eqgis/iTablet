@@ -4,15 +4,13 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import ToolbarModule from '../ToolbarModule'
-import { ConstToolType, Height, ToolbarType } from '../../../../../../constants'
-import { getPublicAssets } from '../../../../../../assets'
+import ToolbarModule from "../ToolbarModule"
+import {ConstToolType, Height, ToolbarType, TouchType} from "../../../../../../constants"
+import {getPublicAssets} from "../../../../../../assets"
 import BackgroundTimer from 'react-native-background-timer'
-import { SMap, Action } from 'imobile_for_reactnative'
-import { Toast } from '../../../../../../utils'
-import IncrementData from './IncrementData'
-import ToolBarHeight from '../ToolBarHeight'
-import { getLanguage } from '../../../../../../language'
+import { SMap, Action} from 'imobile_for_reactnative'
+import {Toast} from "../../../../../../utils"
+import {getLanguage} from "../../../../../../language"
 
 //撤销过的点数组，用于undo redo
 let POINT_ARRAY = []
@@ -85,10 +83,6 @@ async function submit() {
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
   }
-  // let showType = ConstToolType.MAP_INCREMENT_EDIT
-  // _params.setToolbarVisible && _params.setToolbarVisible(true,showType,{
-  //   isFullScreen: false,
-  // })
 }
 
 /**
@@ -145,35 +139,27 @@ async function undo() {
  */
 async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
   const _params = ToolbarModule.getParams()
-  const _data = await IncrementData.getData(type)
   let containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
-  _params.setToolbarVisible &&
-    _params.setToolbarVisible(true, type, {
-      containerType,
-      isFullScreen: false,
-      ..._data,
-      ...data,
-    })
+  _params.setToolbarVisible && _params.setToolbarVisible(true, type, {
+    containerType,
+    isFullScreen: false,
+  })
 }
 
+/**
+ * 切换数据集
+ */
 function changeNetwork() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  _params.setToolbarVisible &&
-    _params.setToolbarVisible(
-      true,
-      ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,
-      {
-        isFullScreen: false,
-        containerType: ToolbarType.symbol,
-        height:
-          _params.device.orientation === 'PORTRAIT'
-            ? Height.LIST_HEIGHT_P
-            : Height.LIST_HEIGHT_L,
-      },
-    )
-  ToolbarModule.addData({ preType: type })
+  _params.setToolbarVisible(true, ConstToolType.MAP_INCREMENT_CHANGE_NETWORK, {
+    isFullScreen: false,
+    containerType:ToolbarType.list,
+    height: _params.device.orientation === "PORTRAIT"
+      ? Height.LIST_HEIGHT_P
+      : Height.LIST_HEIGHT_L,
+  })
+  ToolbarModule.addData({preType: type})
 }
 
 //底部增量方式图片
@@ -236,23 +222,29 @@ function close() {
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   SMap.setIsMagnifierEnabled(false)
+  let layers = _params.layers.layers
+  let currentLayer = _params.layers.currentLayer
+  layers.map(layer => SMap.setLayerSelectable(layer.path,false))
+  currentLayer && _params.setCurrentLayer && _params.setCurrentLayer(currentLayer)
   GLOBAL.currentLayer && _params.setCurrentLayer(GLOBAL.currentLayer)
+  GLOBAL.FloorListView?.setVisible(true)
+  GLOBAL.mapController?.setVisible(true)
+  GLOBAL.TouchType = TouchType.NORMAL
 }
 
 /**
  * 拓扑编辑
  */
 async function topoEdit() {
-  //const _params = ToolbarModule.getParams()
+  const _params = ToolbarModule.getParams()
   //切换方式 清除上次增量的数据
   await SMap.clearIncrementPoints()
   SMap.submit()
-  SMap.setAction(Action.PAN)
-  Toast.show('提交 进行拓扑编辑')
-  // _params.setToolbarVisible && _params.setToolbarVisible(true,ConstToolType.MAP_TOPO_EDIT,{
-  //   isFullScreen: false,
-  //   height:0,
-  // })
+  SMap.setAction(Action.SELECT)
+  _params.setToolbarVisible && _params.setToolbarVisible(true,ConstToolType.MAP_TOPO_EDIT,{
+    isFullScreen: false,
+    height:0,
+  })
 }
 
 export default {

@@ -45,6 +45,19 @@ export default class PreviewColorPicker extends Component {
       this.visible = false
     }
 
+    UNSAFE_componentWillReceiveProps(nextProps) {
+      if(nextProps.r !== this.props.r || nextProps.g !== this.props.g || nextProps.b !== this.props.b){
+        let {r,g,b,data,selectedIndex} = nextProps
+        this.setState({
+          r,
+          g,
+          b,
+          data,
+          selectedIndex,
+        })
+      }
+    }
+
     _changeLeftSelect = select => {
       if (this.state.leftSelect === select) {
         return
@@ -148,11 +161,13 @@ export default class PreviewColorPicker extends Component {
           <Text style={styles.sliderText}>{text.toUpperCase()}</Text>
           <TouchableOpacity
             onPress={() => {
-              this._onValueChange({
-                name: text,
-                value: this.state[`${text}`] - 1,
-              })
-              this._setAttrToMap()
+              if(this.state[`${text}`] > 0){
+                this._onValueChange({
+                  name: text,
+                  value: this.state[`${text}`] - 1,
+                })
+                this._setAttrToMap()
+              }
             }}
           >
             <Image source={minus} style={styles.leftIcon} />
@@ -181,11 +196,13 @@ export default class PreviewColorPicker extends Component {
           />
           <TouchableOpacity
             onPress={() => {
-              this._onValueChange({
-                name: text,
-                value: this.state[`${text}`] + 1,
-              })
-              this._setAttrToMap()
+              if(this.state[`${text}`] < 255){
+                this._onValueChange({
+                  name: text,
+                  value: this.state[`${text}`] + 1,
+                })
+                this._setAttrToMap()
+              }
             }}
           >
             <Image source={plus} style={styles.rightIcon} />

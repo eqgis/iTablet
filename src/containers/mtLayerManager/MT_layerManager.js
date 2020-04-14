@@ -144,7 +144,6 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
-          
           baseMap = [allLayers[allLayers.length - 1]]
           allLayers.splice(allLayers.length - 1, 1)
         }

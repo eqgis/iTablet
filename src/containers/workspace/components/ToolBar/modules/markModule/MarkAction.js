@@ -170,7 +170,7 @@ async function freecover() {
   }
 }
 function commit(type) {
-  try{
+  try {
     const _params = ToolbarModule.getParams()
     if (type === ConstToolType.MAP_MARKS_DRAW) {
       let currentLayer = _params.currentLayer
@@ -186,7 +186,7 @@ function commit(type) {
       })
     } else {
       const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
-  
+
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
         // height: 0,
@@ -194,10 +194,8 @@ function commit(type) {
       })
       // return false
     }
-  }
-  catch(e){
-    console.warn(e);
-    
+  } catch (e) {
+    // console.warn(e)
   }
 }
 function undo() {
@@ -306,7 +304,7 @@ function selectLabelToEdit(toolType = '') {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
       // height = ConstToolType.HEIGHT[2]
-      containerType = ToolbarType.scrollTable
+      // containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
@@ -499,7 +497,7 @@ function geometrySelected(event) {
       case DatasetType.REGION:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
         // height = ConstToolType.HEIGHT[2]
-        containerType = ToolbarType.scrollTable
+        // containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT

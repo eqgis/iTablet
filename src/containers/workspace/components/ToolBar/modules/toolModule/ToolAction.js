@@ -605,7 +605,7 @@ function selectLabelToEdit(toolType = '') {
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION_NOSTYLE
       // height = ConstToolType.HEIGHT[2]
-      containerType = ToolbarType.scrollTable
+      // containerType = ToolbarType.scrollTable
       break
     case ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT:
       type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT_NOSTYLE
@@ -755,7 +755,7 @@ function geometrySelected(event) {
       case DatasetType.REGION:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_REGION
         // height = ConstToolType.HEIGHT[2]
-        containerType = ToolbarType.scrollTable
+        // containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
         type = ConstToolType.MAP_TOOL_TAGGING_EDIT_TEXT

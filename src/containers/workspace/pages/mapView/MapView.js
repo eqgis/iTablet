@@ -1974,6 +1974,7 @@ export default class MapView extends React.Component {
 
   /** 显示全屏 **/
   showFullMap = isFull => {
+    this.showFullonBlur = !isFull
     if (isFull === this.fullMap) return
     let full = isFull === undefined ? !this.fullMap : !isFull
     this.container && this.container.setHeaderVisible(full)
@@ -2506,9 +2507,9 @@ export default class MapView extends React.Component {
           style={{ padding: scaleSize(5) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().ar.switch_ar_light}
-          onPress={()=>{
+          onPress={() => {
             this.currentTime = new Date().getTime()
-            if((this.currentTime -this.lastClickTime)<1500){
+            if (this.currentTime - this.lastClickTime < 1500) {
               return
             }
             this.lastClickTime = this.currentTime

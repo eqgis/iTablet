@@ -1,7 +1,7 @@
 import React from 'react'
 import { color } from '../../../../../styles'
 import { setSpText } from '../../../../../utils'
-import { ToolbarType, Height } from '../../../../../constants'
+import { ToolbarType } from '../../../../../constants'
 import ToolbarModule from '../modules/ToolbarModule'
 import { MTBtn, ColorBtn, TableList } from '../../../../../components'
 
@@ -79,13 +79,18 @@ export default class ToolbarTableList extends React.Component {
             : this._renderColorItem
         }
         device={this.props.device}
-        cellStyle={{
-          height: Height.TABLE_ROW_HEIGHT_4,
-          width:
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0
-              ? Height.TABLE_ROW_HEIGHT_4
-              : 100 / this.props.column + '%',
-        }}
+        cellStyle={
+          {
+            // flexDirection: 'row',
+            // height: Height.TABLE_ROW_HEIGHT_4,
+            // width:
+            //   this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            //     ? Height.TABLE_ROW_HEIGHT_4
+            //     : 100 / this.props.column + '%',
+            // justifyContent: 'center',
+            // alignItems: 'center',
+          }
+        }
       />
     )
   }

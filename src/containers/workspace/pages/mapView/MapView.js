@@ -1836,6 +1836,7 @@ export default class MapView extends React.Component {
         type={this.type}
         device={this.props.device}
         mapColumnNavBar={this.props.mapColumnNavBar}
+        columnNavBarDisplay={this.props.columnNavBarDisplay}
       />
     )
   }
@@ -1941,6 +1942,8 @@ export default class MapView extends React.Component {
         getToolRef={() => this.toolBox}
         getNavMenuRef={() => this.NavMenu}
         mapColumnNavBar={this.props.mapColumnNavBar}
+        columnNavBarDisplay={this.props.columnNavBarDisplay}
+        setNavBarDisplay={()=>this.props.setNavBarDisplay}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}

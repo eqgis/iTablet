@@ -4,28 +4,27 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import ToolbarModule from "../ToolbarModule"
-import {ConstToolType, Height, ToolbarType} from "../../../../../../constants"
-import {getPublicAssets} from "../../../../../../assets"
+import ToolbarModule from '../ToolbarModule'
+import { ConstToolType, Height, ToolbarType } from '../../../../../../constants'
+import { getPublicAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
-import { SMap, Action} from 'imobile_for_reactnative'
-import {Toast} from "../../../../../../utils"
-import IncrementData from "./IncrementData"
-import ToolBarHeight from "../ToolBarHeight"
-import {getLanguage} from "../../../../../../language"
+import { SMap, Action } from 'imobile_for_reactnative'
+import { Toast } from '../../../../../../utils'
+import IncrementData from './IncrementData'
+import ToolBarHeight from '../ToolBarHeight'
+import { getLanguage } from '../../../../../../language'
 
 //撤销过的点数组，用于undo redo
 let POINT_ARRAY = []
 
 async function start() {
-  if(GLOBAL.INCREMENT_DATA.datasetName){
+  if (GLOBAL.INCREMENT_DATA.datasetName) {
     BackgroundTimer.runBackgroundTimer(async () => {
       SMap.startGpsIncrement()
     }, 2000)
-  }else{
+  } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
   }
-
 }
 function stop() {
   BackgroundTimer.stopBackgroundTimer()
@@ -62,8 +61,8 @@ async function addPoint() {
 }
 
 /**
-   * 提交
-   */
+ * 提交
+ */
 async function submit() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
     const _params = ToolbarModule.getParams()
@@ -93,9 +92,9 @@ async function submit() {
 }
 
 /**
-   * 重做
-   * @returns {Promise<void>}
-   */
+ * 重做
+ * @returns {Promise<void>}
+ */
 async function redo() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
@@ -116,22 +115,23 @@ async function redo() {
 }
 
 /**
-   * 撤销打点
-   * @returns {Promise<void>}
-   */
+ * 撤销打点
+ * @returns {Promise<void>}
+ */
 async function undo() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_GPS_POINT: {
-      await SMap.clearTrackingLayer()
-      let point = await SMap.undoIncrement()
-      if (point.x && point.y) {
-        POINT_ARRAY.push(point)
-      } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_UNDO)
+    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+      {
+        await SMap.clearTrackingLayer()
+        let point = await SMap.undoIncrement()
+        if (point.x && point.y) {
+          POINT_ARRAY.push(point)
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_UNDO)
+        }
       }
-    }
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:
@@ -141,41 +141,47 @@ async function undo() {
 }
 
 /**
-   * 切换采集方式
-   */
+ * 切换采集方式
+ */
 async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
   const _params = ToolbarModule.getParams()
   const _data = await IncrementData.getData(type)
   let containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, {data: _data.data})
-  _params.setToolbarVisible && _params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: false,
-    height: data.height,
-    column: data.column,
-    ..._data,
-  })
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, type, {
+      containerType,
+      isFullScreen: false,
+      ..._data,
+      ...data,
+    })
 }
 
 function changeNetwork() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  _params.setToolbarVisible && _params.setToolbarVisible(true, ConstToolType.MAP_INCREMENT_CHANGE_NETWORK, {
-    isFullScreen: false,
-    containerType: ToolbarType.symbol,
-    height: _params.device.orientation === "PORTRAIT"
-      ? Height.LIST_HEIGHT_P
-      : Height.LIST_HEIGHT_L,
-  })
-  ToolbarModule.addData({preType: type})
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(
+      true,
+      ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,
+      {
+        isFullScreen: false,
+        containerType: ToolbarType.symbol,
+        height:
+          _params.device.orientation === 'PORTRAIT'
+            ? Height.LIST_HEIGHT_P
+            : Height.LIST_HEIGHT_L,
+      },
+    )
+  ToolbarModule.addData({ preType: type })
 }
 
 //底部增量方式图片
 let image
 
 /**
-   * 获取当前增量方式图片
-   */
+ * 获取当前增量方式图片
+ */
 function getTypeImage(type) {
   if (type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD) return image
   switch (type) {
@@ -199,9 +205,9 @@ function getTypeImage(type) {
 }
 
 /**
-   * 选择采集方式
-   * @param type
-   */
+ * 选择采集方式
+ * @param type
+ */
 async function methodSelected(type) {
   //切换方式 清除上次增量的数据
   await SMap.clearIncrementPoints()
@@ -234,8 +240,8 @@ function close() {
 }
 
 /**
-   * 拓扑编辑
-   */
+ * 拓扑编辑
+ */
 async function topoEdit() {
   //const _params = ToolbarModule.getParams()
   //切换方式 清除上次增量的数据

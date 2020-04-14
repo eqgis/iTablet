@@ -14,8 +14,7 @@ function action(type) {
   params.setToolbarVisible(true, ConstToolType.MAP_TOOLS, {
     containerType,
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    ...data,
     data: _data.data,
     buttons: _data.buttons,
   })

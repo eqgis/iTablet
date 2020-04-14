@@ -18,8 +18,7 @@ export async function action(type) {
   params.setToolbarVisible(true, type, {
     containerType,
     isFullScreen: true,
-    height: data.height,
-    column: data.column,
+    ...data,
     data: _data.data,
     buttons: _data.buttons,
   })

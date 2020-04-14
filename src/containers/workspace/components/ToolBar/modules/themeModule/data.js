@@ -1099,11 +1099,11 @@ function getRangeMode(type) {
     },
     {
       // 平方根分段
-      key: RangeMode.SQUARE_ROOT_INTERVAL,
+      key: RangeMode.SQUAREROOT,
       title: getLanguage(global.language).Map_Main_Menu
         .THEME_SQURE_ROOT_INTERVAL,
       // '平方根分段',
-      action: () => setRangeMode(type, RangeMode.SQUARE_ROOT_INTERVAL),
+      action: () => setRangeMode(type, RangeMode.SQUAREROOT),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),

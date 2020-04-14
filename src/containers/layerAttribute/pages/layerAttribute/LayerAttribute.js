@@ -1461,6 +1461,7 @@ export default class LayerAttribute extends React.Component {
         <PopView
           ref={ref => (this.popModal = ref)}
           modalVisible={this.state.editControllerVisible}
+          z
         >
           {this.renderEditControllerView()}
         </PopView>

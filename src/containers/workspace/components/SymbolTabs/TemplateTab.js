@@ -99,31 +99,27 @@ export default class TemplateTab extends React.Component {
     }
     return (
       <TouchableOpacity
-        style={[
-          styles.listItem,
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-            width: Height.TABLE_ROW_HEIGHT_4,
-          },
-        ]}
-        key={item.code}
+        key={item.code + '_' + rowIndex + '_' + cellIndex}
         onPress={() => this.action({ item, rowIndex, cellIndex })}
       >
-        <Image source={icon} style={styles.listItemImg} />
-        <View style={styles.listItemContent}>
-          <Text
-            style={styles.listItemName}
-            numberOfLines={2}
-            ellipsizeMode={'tail'}
-          >
-            {item.name}
-          </Text>
-          <Text
-            style={styles.listItemSubTitle}
-            numberOfLines={1}
-            ellipsizeMode={'tail'}
-          >
-            {item.code}
-          </Text>
+        <View style={styles.listItem}>
+          <Image source={icon} style={styles.listItemImg} />
+          <View style={styles.listItemContent}>
+            <Text
+              style={styles.listItemName}
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={styles.listItemSubTitle}
+              numberOfLines={1}
+              ellipsizeMode={'tail'}
+            >
+              {item.code}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     )
@@ -137,7 +133,7 @@ export default class TemplateTab extends React.Component {
         style={styles.container}
         data={this.props.data}
         type={ToolbarType.scrollTable}
-        limit={this.props.column}
+        column={this.props.column}
         renderCell={this._renderItem}
         device={this.props.device}
         isAutoType={false}
@@ -153,12 +149,12 @@ const styles = StyleSheet.create({
   },
   listItem: {
     flex: 1,
-    height: scaleSize(64),
-    // width: 100,
-    justifyContent: 'center',
+    // height: scaleSize(64),
+    height: Height.TABLE_ROW_HEIGHT_4,
+    paddingHorizontal: scaleSize(20),
     alignItems: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: color.bgW,
-    paddingHorizontal: scaleSize(30),
     flexDirection: 'row',
   },
   listItemImg: {
@@ -166,19 +162,19 @@ const styles = StyleSheet.create({
     width: scaleSize(64),
   },
   listItemContent: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
   },
   listItemName: {
     minHeight: scaleSize(32),
-    width: scaleSize(160),
+    maxWidth: scaleSize(140),
     color: color.font_color_white,
     fontSize: size.fontSize.fontSizeSm,
   },
   listItemSubTitle: {
     height: scaleSize(32),
-    width: scaleSize(160),
+    maxWidth: scaleSize(140),
     color: color.themeText2,
     fontSize: size.fontSize.fontSizeSm,
   },

@@ -123,9 +123,10 @@ export default class FunctionToolbar extends React.Component {
     this.visible = true
     this.menuVisible = false
     this.offset = 0
-    ;(this.onTop = true),
-    (this.onBottom = true),
-    (this.topOpacity = new Animated.Value(0))
+    this.m_maxHeight = 400
+    this.onTop = true
+    this.onBottom = true
+    this.topOpacity = new Animated.Value(0)
     this.bottomOpacity = new Animated.Value(0)
   }
 
@@ -200,9 +201,9 @@ export default class FunctionToolbar extends React.Component {
       let moreHeight = scaleSize(80) + 1
       visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
     } else {
-      let maxHeight =
-        this.props.device.height - HeaderHeight - BottomHeight - scaleSize(300)
-      visibleHeight = maxHeight
+      // let maxHeight =
+      //   this.props.device.height - HeaderHeight - BottomHeight - scaleSize(300)
+      visibleHeight = this.m_maxHeight
     }
     let onTop, onBottom
     if (visibleHeight < contentHeight) {
@@ -679,21 +680,14 @@ export default class FunctionToolbar extends React.Component {
   _keyExtractor = (item, index) => index + '-' + item.title
 
   renderList = () => {
-    // let arr = []
-    // if (!this.state.data || this.state.data.length === 0) return null
-    // this.state.data.forEach((item, index) => {
-    //   arr.push(this._renderItem({ item, index }))
-    // })
-    // return <View style={{ flexDirection: 'column' }}>{arr}</View>
+
+    this.m_maxHeight = (this.props.device.height - HeaderHeight - BottomHeight)*0.6
+    // maxHeightN < 4
     let style =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? {}
         : {
-          maxHeight:
-              this.props.device.height -
-              HeaderHeight -
-              BottomHeight -
-              scaleSize(300),
+          maxHeight:this.m_maxHeight  
         }
     return (
       <FlatList

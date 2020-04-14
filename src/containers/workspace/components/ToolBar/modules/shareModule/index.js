@@ -14,8 +14,7 @@ function action(type) {
   params.setToolbarVisible(true, type, {
     containerType: 'table',
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
+    ...data,
   })
 }
 

@@ -53,6 +53,7 @@ export default class ToolbarContentView extends React.Component {
       boxHeight: new Animated.Value(this.height),
       listSelectable: false,
       clipSetting: {},
+      isShow: true, // 是否显示Content
     }
   }
 
@@ -113,7 +114,29 @@ export default class ToolbarContentView extends React.Component {
         if (_params.wait) {
           return animate
         }
-        animate.start()
+
+        // 防止收缩回去后，图标依然显示问题
+        let isShow = this.height !== 0
+        if (this.state.isShow) {
+          animate.start(() => {
+            if (this.state.isShow !== isShow) {
+              this.setState({
+                isShow,
+              })
+            }
+          })
+        } else {
+          if (this.state.isShow !== isShow) {
+            this.setState(
+              {
+                isShow,
+              },
+              () => {
+                setTimeout(() => animate.start(), 100)
+              },
+            )
+          }
+        }
       }
     }
     let newState = {}
@@ -355,6 +378,7 @@ export default class ToolbarContentView extends React.Component {
 
   render() {
     let box
+    if (!this.state.isShow) return <View />
     if (this.props.customView) {
       box = this.props.customView(this.props, this.state)
     } else {

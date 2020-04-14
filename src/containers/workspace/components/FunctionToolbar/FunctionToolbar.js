@@ -680,14 +680,14 @@ export default class FunctionToolbar extends React.Component {
   _keyExtractor = (item, index) => index + '-' + item.title
 
   renderList = () => {
-
-    this.m_maxHeight = (this.props.device.height - HeaderHeight - BottomHeight)*0.6
+    this.m_maxHeight =
+      (this.props.device.height - HeaderHeight - BottomHeight) * 0.6
     // maxHeightN < 4
     let style =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? {}
         : {
-          maxHeight:this.m_maxHeight  
+          maxHeight: this.m_maxHeight,
         }
     return (
       <FlatList

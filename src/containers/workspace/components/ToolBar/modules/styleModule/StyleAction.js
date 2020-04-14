@@ -40,11 +40,7 @@ async function close() {
     )
   }
   ToolbarModule.setData()
-  _params.setToolbarVisible(false, {
-    isTouchProgress: false,
-    showMenuDialog: false,
-    selectKey: '',
-  })
+  _params.setToolbarVisible(false)
 }
 
 async function tableAction(params) {

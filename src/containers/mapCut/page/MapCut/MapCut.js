@@ -42,6 +42,7 @@ export default class MapCut extends React.Component {
   props: {
     language: string,
     navigation: Object,
+    device: Object,
     nav: Object,
     map: Array,
     currentUser: string,
@@ -821,6 +822,7 @@ export default class MapCut extends React.Component {
     return (
       <MapCutSetting
         language={this.props.language}
+        device={this.props.device}
         ref={ref => (this.settingModal = ref)}
         currentUser={this.props.currentUser}
         datasources={this.state.datasources}

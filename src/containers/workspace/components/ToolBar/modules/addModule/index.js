@@ -19,8 +19,7 @@ export async function action(type) {
     isFullScreen: true,
     isTouchProgress: false,
     showMenuDialog: false,
-    height: data.height,
-    column: data.column,
+    ...data,
     data: _data.data,
     buttons: _data.buttons,
   })

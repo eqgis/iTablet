@@ -7,17 +7,15 @@ import LegendData from './LegendData'
 function changeLegendVisible() {
   const _params = ToolbarModule.getParams()
   const legendData = _params.mapLegend
-  const type = legendData[GLOBAL.Type].isShow
-    ? ConstToolType.LEGEND_NOT_VISIBLE
-    : ConstToolType.LEGEND
+  const type = ConstToolType.LEGEND
+  legendData[GLOBAL.Type].isShow = !legendData[GLOBAL.Type].isShow
   const { data, buttons } = LegendData.getData(type)
   GLOBAL.ToolBar &&
     GLOBAL.ToolBar.setState({
-      type,
+      // type,
       data,
       buttons,
     })
-  legendData[GLOBAL.Type].isShow = type === ConstToolType.LEGEND
   _params.setMapLegend && _params.setMapLegend(legendData)
 }
 
@@ -40,7 +38,6 @@ function menu(type, selectKey, params = {}) {
   const showBox = function() {
     if (
       (type === ConstToolType.LEGEND ||
-        type === ConstToolType.LEGEND_NOT_VISIBLE ||
         type === ConstToolType.LEGEND_POSITION) &&
       isBoxShow
     ) {
@@ -88,12 +85,10 @@ function tableAction(item = {}) {
 }
 
 function cancelSelect() {
-  const _params = ToolbarModule.getParams()
+  // const _params = ToolbarModule.getParams()
 
-  const legendData = _params.mapLegend
-  const type = legendData[GLOBAL.Type].isShow
-    ? ConstToolType.LEGEND
-    : ConstToolType.LEGEND_NOT_VISIBLE
+  // const legendData = _params.mapLegend
+  const type = ConstToolType.LEGEND
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
@@ -102,7 +97,7 @@ function cancelSelect() {
     GLOBAL.ToolBar &&
       GLOBAL.ToolBar.setState(
         {
-          type,
+          // type,
           data,
           isFullScreen,
           showMenuDialog,

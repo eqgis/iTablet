@@ -299,7 +299,6 @@ async function getUniqueColorScheme(type, key = '', name = '') {
   })
 }
 
-// 分段专题图颜色方案列表
 async function getRangeColorScheme(type, key = '', name = '') {
   const getData = async function() {
     return [
@@ -328,6 +327,13 @@ async function getRangeColorScheme(type, key = '', name = '') {
   })
 }
 
+// 分段专题图自定义CUSTOMINTERVAL
+async function rangeCustomSetting(type) {
+  const globalParams = ToolbarModule.getParams()
+  globalParams.setToolbarVisible(false)
+  NavigationService.navigate('CustomModePage', { type })
+  // setRangeMode("MAP_THEME_PARAM_RANGE_MODE", RangeMode.CUSTOMINTERVAL)
+}
 // 热力图颜色方案列表
 async function getAggregationColorScheme(type, key = '', name = '') {
   const getData = async function() {
@@ -1572,6 +1578,7 @@ const actions = {
   getRangeMode,
   getGridRangeMode,
   getRangeParameter,
+  rangeCustomSetting,
   getGraphMaxValue,
   getDotDensityValueAndDotsize,
   getHeatmapParams,

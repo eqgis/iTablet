@@ -71,7 +71,7 @@ export default class MapNavMenu extends React.Component {
   }
 
   setVisible = (visible, immediately) => {
-    if (this.visible === visible) return
+    // if (this.visible === visible) return
     // iphone X适配向右侧横屏
     Animated.timing(this.state.right, {
       toValue: visible ? scaleSize(80) : scaleSize(-this.props.device.width),

@@ -1140,15 +1140,15 @@ function getRangeMode(type) {
       image: require('../../../../../../assets/mapTools/range_mode_quantile_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_quantile_black.png'),
     },
-    {
-      // 自定义分段
-      key: RangeMode.CUSTOMINTERVAL,
-      title: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
-      action: () => setRangeMode(type, RangeMode.CUSTOMINTERVAL),
-      size: 'large',
-      image: getPublicAssets().mapTools.range_mode_custom,
-      selectedImage: getPublicAssets().mapTools.range_mode_custom,
-    },
+    // {
+    //   // 自定义分段
+    //   key: RangeMode.CUSTOMINTERVAL,
+    //   title: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    //   action: () => setRangeMode(type, RangeMode.CUSTOMINTERVAL),
+    //   size: 'large',
+    //   image: getPublicAssets().mapTools.range_mode_custom,
+    //   selectedImage: getPublicAssets().mapTools.range_mode_custom,
+    // },
   ]
   return data
 }
@@ -3719,6 +3719,24 @@ const rangeMenuInfo = param => [
       )
     },
   },
+  {
+    key: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    selectKey: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    btnTitle: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    action: () => {
+      ThemeAction.rangeCustomSetting(ConstToolType.MAP_THEME_PARAM_RANGE_MODE)
+    },
+  },
+
+  // {
+  //   // 自定义分段
+  //   key: RangeMode.CUSTOMINTERVAL,
+  //   title: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+  //   action: () => ,
+  //   size: 'large',
+  //   image: getPublicAssets().mapTools.range_mode_custom,
+  //   selectedImage: getPublicAssets().mapTools.range_mode_custom,
+  // },
 ]
 
 // 统一标签
@@ -3966,6 +3984,14 @@ const rangeLabelMenuInfo = param => [
         ConstToolType.MAP_THEME_PARAM_RANGELABEL_ROTATION,
         getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
       )
+    },
+  },
+  {
+    key: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    selectKey: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    btnTitle: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
+    action: () => {
+      ThemeAction.rangeCustomSetting(ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE)
     },
   },
 ]

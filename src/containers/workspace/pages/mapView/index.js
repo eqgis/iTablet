@@ -41,6 +41,7 @@ import {
   setNavigationPoiView,
   setOpenOnlineMap,
   setNavigationHistory,
+  setNavBarDisplay,
 } from '../../../../models/setting'
 import { setMapSearchHistory } from '../../../../models/histories'
 import { setSharing } from '../../../../models/online'
@@ -84,6 +85,7 @@ const mapStateToProps = state => ({
   toolbarStatus: state.toolbarStatus.toJS(),
   appConfig: state.appConfig.toJS(),
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
+  columnNavBarDisplay:state.setting.toJS().columnNavBarDisplay,
 })
 
 const mapDispatchToProps = {
@@ -132,6 +134,7 @@ const mapDispatchToProps = {
   downloadFile,
   deleteDownloadFile,
   setToolbarStatus,
+  setNavBarDisplay,
 }
 
 export default connect(

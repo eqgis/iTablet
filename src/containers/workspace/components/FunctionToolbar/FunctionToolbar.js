@@ -95,6 +95,8 @@ export default class FunctionToolbar extends React.Component {
     openOnlineMap: boolean,
     getNavMenuRef: () => {},
     mapColumnNavBar: boolean,
+    columnNavBarDisplay:boolean,
+    setNavBarDisplay:() => {},
   }
 
   static defaultProps = {

@@ -324,6 +324,12 @@ const Prompt = {
   CANT_REDO:'Can\'t redo',
   DATASET_RENAME_FAILED:'The dataset name can only contain letters, numbers and "_", "@", "#"',
   SWITCH_LINE: 'Switch dataset',
+  HAS_NO_ROADNAME_FIELD_DATA:'There is a data set with no road name field information selected',
+  MERGE_SUCCESS:'Merged successfully',
+  MERGE_FAILD:'Merge failed',
+  NOT_SUPPORT_PRJCOORDSYS:'The coordinate system of the following data set does not support merging',
+  MERGEING:'Merging',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:'There is a data set that does not contain the RoadName field, please select the road name field of the following dataset',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',

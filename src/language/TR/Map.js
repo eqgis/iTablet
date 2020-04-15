@@ -415,6 +415,26 @@ const Map_Main_Menu = {
   MAP_INCREMENT_GPS_TRACK: 'GPS ile çizgileri toplama',
   MAP_INCREMENT_POINTLINE: 'Nokta Çizim',
   MAP_INCREMENT_FREELINE: 'Serbest Çizim',
+
+  MAP_TOPO_ADD_NODE: 'Düğüm Ekle',
+  MAP_TOPO_EDIT_NODE: 'Düğümü düzenle',
+  MAP_TOPO_DELETE_NODE: 'Bir düğümü silme',
+  MAP_TOPO_DELETE_OBJECT: 'Nesneyi sil',
+  MAP_TOPO_SMOOTH: 'Pürüzsüz',
+  MAP_TOPO_POINT_ADJUST: 'Nokta ayarı',
+  MAP_TOPO_SPLIT: 'Mola',
+  MAP_TOPO_EXTEND: 'Uzatmak',
+  MAP_TOPO_TRIM: 'Trim',
+  MAP_TOPO_RESAMPLE: 'Yeniden örnekleme',
+  MAP_TOPO_CHANGE_DIRECTION: 'Yönü değiştir',
+  ADD_DATASET:'Veri kümesini ekle',
+  SELECT_ROADNAME_FIELD:'Aşağıdaki veri kümesinin yol adı alanını seçin',
+  SELECT_FIELD:'Alan seçin',
+  MERGE_CANCEL:'Iptal edildi',
+  MERGE_CONFIRM:'Belirlemek',
+  MERGE_SELECT_ALL:'Tümünü seç',
+  MERGE_ADD:'Ek',
+  MERGE_DATASET:'Veri kümesini birleştir',
 }
 
 // 推演动画

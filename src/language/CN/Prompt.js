@@ -310,6 +310,13 @@ const Prompt = {
   CANT_REDO:'无法重做',
   DATASET_RENAME_FAILED:'数据集名称只能包含字母、数字和"_"、"@"、"#"',
   SWITCH_LINE: '切换数据',
+  HAS_NO_ROADNAME_FIELD_DATA:'存在未选择道路名称字段信息的数据集',
+  MERGE_SUCCESS:'合并成功',
+  MERGE_FAILD:'合并失败',
+  NOT_SUPPORT_PRJCOORDSYS:'以下数据集的坐标系不支持合并',
+  MERGEING:'合并中',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:'存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
+
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

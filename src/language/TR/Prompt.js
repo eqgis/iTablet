@@ -323,6 +323,12 @@ const Prompt = {
   CANT_REDO:'Yeniden yapamıyorum',
   DATASET_RENAME_FAILED:'Veri kümesi adı yalnızca harf, rakam, "_", "@", "#" içerebilir',
   SWITCH_LINE: 'Veri değiştirme',
+  HAS_NO_ROADNAME_FIELD_DATA:'Hiçbir yol adı alanı bilgisi seçilmemiş bir veri kümesi var',
+  MERGE_SUCCESS:'Başarıyla birleştirildi',
+  MERGE_FAILD:'Birleştirme başarısız oldu',
+  NOT_SUPPORT_PRJCOORDSYS:'Aşağıdaki veri kümesinin koordinat sistemi birleştirmeyi desteklemiyor',
+  MERGEING:'birleşme',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:'YolAdı alanını içermeyen bir veri kümesi var, lütfen aşağıdaki veri kümesinin yol adı alanını seçin',
   // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",

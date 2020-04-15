@@ -430,6 +430,26 @@ const Map_Main_Menu = {
   MAP_INCREMENT_GPS_TRACK: 'GPS軌跡式',
   MAP_INCREMENT_POINTLINE: 'ポイント描画式',
   MAP_INCREMENT_FREELINE: '自由式',
+
+  MAP_TOPO_ADD_NODE: 'ノードを追加',
+  MAP_TOPO_EDIT_NODE: 'ノードを編集',
+  MAP_TOPO_DELETE_NODE: 'ノードを削除する',
+  MAP_TOPO_DELETE_OBJECT: 'オブジェクトを削除',
+  MAP_TOPO_SMOOTH: 'スムーズ',
+  MAP_TOPO_POINT_ADJUST: 'ポイント調整',
+  MAP_TOPO_SPLIT: '割り込み',
+  MAP_TOPO_EXTEND: '伸ばす',
+  MAP_TOPO_TRIM: 'トリミング',
+  MAP_TOPO_RESAMPLE: 'リサンプリング',
+  MAP_TOPO_CHANGE_DIRECTION: '方向を変える',
+  ADD_DATASET:'データセットを追加',
+  SELECT_ROADNAME_FIELD:'次のデータセットの道路名フィールドを選択します',
+  SELECT_FIELD:'フィールドを選択',
+  MERGE_CANCEL:'キャンセルする',
+  MERGE_CONFIRM:'よし',
+  MERGE_SELECT_ALL:'すべて選択',
+  MERGE_ADD:'追加',
+  MERGE_DATASET:'データセットをマージ',
 }
 
 // 展開アニメーション

@@ -139,6 +139,8 @@ export default class ToolbarContentView extends React.Component {
                   setTimeout(() => animate.start(), 100)
                 },
               )
+            } else {
+              animate.start()
             }
           }
         } else {
@@ -441,7 +443,10 @@ export default class ToolbarContentView extends React.Component {
       style = { height: this.state.boxHeight, width: this.props.device.width }
     }
     return (
-      <Animated.View style={[style, { backgroundColor: color.content_white }]}>
+      <Animated.View
+        style={[style, { backgroundColor: 'transparent' }]}
+        pointerEvents={'box-none'}
+      >
         {box}
       </Animated.View>
     )

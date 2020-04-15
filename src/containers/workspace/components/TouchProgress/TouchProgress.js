@@ -2586,7 +2586,7 @@ const styles = StyleSheet.create({
   },
   container: {
     // backgroundColor: '#rgba(110, 110, 110, 1)',
-    marginTop: 20,
+    // marginTop: 20,
     backgroundColor: '#rgba(0, 0, 0, 0)',
     flexDirection: 'column',
     height: scaleSize(40),

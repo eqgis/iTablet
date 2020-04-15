@@ -59,7 +59,9 @@ function getToolbarSize(type, additional = {}) {
       height = Height.TABLE_ROW_HEIGHT_2 * 5
       break
     case ToolbarType.picker: // 选择器
-      height = Height.TABLE_ROW_HEIGHT_1 * 2
+      height =
+        Height.TABLE_ROW_HEIGHT_1 *
+        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 4)
       break
     case ToolbarType.tabs: // 符号标签栏
       height =

@@ -286,7 +286,7 @@ export default class CustomModePage extends Component {
     if (item.start) {
       start = item.start === 'min' ? item.start : Math.round(item.start)
       end = item.end === 'max' ? item.end : Math.round(item.end)
-      str = `${start}<=x<=`
+      str = `${start}<x<=`
     } else {
       str = item.title
     }

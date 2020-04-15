@@ -967,6 +967,7 @@ export default class ToolBar extends React.PureComponent {
                   ? styles.containersLandscape
                   : styles.containers,
               ]}
+              pointerEvents={'box-none'}
             >
               {this.renderView()}
               {this.renderBottomBtns()}
@@ -979,6 +980,7 @@ export default class ToolBar extends React.PureComponent {
                 ? styles.containersLandscape
                 : styles.containers,
             ]}
+            pointerEvents={'box-none'}
           >
             {this.renderView()}
             {this.renderBottomBtns()}

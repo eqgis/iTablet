@@ -34,13 +34,17 @@ function menu(type, selectKey, params = {}) {
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  // const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
     if (
-      (type === ConstToolType.LEGEND ||
-        type === ConstToolType.LEGEND_POSITION) &&
-      isBoxShow
+      type === ConstToolType.LEGEND ||
+      type === ConstToolType.LEGEND_POSITION
     ) {
+      // if (
+      //   (type === ConstToolType.LEGEND ||
+      //     type === ConstToolType.LEGEND_POSITION) &&
+      //   isBoxShow
+      // ) {
       params.showBox && params.showBox()
     }
   }
@@ -77,6 +81,29 @@ function menu(type, selectKey, params = {}) {
   }
 }
 
+function showMenuBox(type, selectKey, params = {}) {
+  if (type.indexOf('LEGEND') !== -1) {
+    if (Utils.isTouchProgress(selectKey)) {
+      params.setData &&
+        params.setData({
+          isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+          showMenuDialog: false,
+          isFullScreen: !this.state.isTouchProgress,
+        })
+    } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
+      params.showBox && params.showBox()
+    } else {
+      params.setData &&
+        params.setData({
+          showMenuDialog: false,
+          isFullScreen: false,
+        })
+      params.showBox && params.showBox()
+    }
+    return
+  }
+}
+
 function tableAction(item = {}) {
   const _params = ToolbarModule.getParams()
   const legendData = _params.mapLegend
@@ -89,9 +116,9 @@ function cancelSelect() {
 
   // const legendData = _params.mapLegend
   const type = ConstToolType.LEGEND
-  let isFullScreen
-  let showMenuDialog
-  let isTouchProgress
+  let isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
+  let showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+  let isTouchProgress = false
   const { data, buttons } = LegendData.getData(type)
   const setData = function() {
     GLOBAL.ToolBar &&
@@ -109,9 +136,6 @@ function cancelSelect() {
         },
       )
   }
-  isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-  showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-  isTouchProgress = false
   // 先滑出box，再显示Menu
   GLOBAL.ToolBar && GLOBAL.ToolBar.showBox()
   setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -127,6 +151,7 @@ export default {
   commit,
   close,
   menu,
+  showMenuBox,
   tableAction,
 
   cancelSelect,

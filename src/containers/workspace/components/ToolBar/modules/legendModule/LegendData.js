@@ -26,7 +26,7 @@ function getData(type) {
           cancel={LegendAction.cancelSelect}
           popData={data}
           currentPopData={_params.mapLegend[GLOBAL.Type].legendPosition}
-          viewableItems={1}
+          viewableItems={3}
         />
       )
       break
@@ -183,14 +183,18 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
       action: () => {
+        const _data = getData(ConstToolType.LEGEND_POSITION)
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND_POSITION, {
+            containerType: ToolbarType.picker,
             isFullScreen: false,
-            height: ConstToolType.TOOLBAR_HEIGHT[1],
+            // buttons,
+            // height: Height.TABLE_ROW_HEIGHT_1 * 4,
             selectName: getLanguage(_params.language).Map_Main_Menu
               .LEGEND_POSITION,
             selectKey: getLanguage(_params.language).Map_Main_Menu
               .LEGEND_POSITION,
+            ..._data,
           })
       },
       selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,

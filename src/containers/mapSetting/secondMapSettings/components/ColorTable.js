@@ -154,6 +154,7 @@ export default class ColorTable extends React.Component {
   render() {
     return (
       <FlatList
+        style={{ backgroundColor: color.content_white }}
         onLayout={this._onLayout}
         key={'color_list_' + this.props.device.orientation}
         renderItem={this.renderItem}

@@ -32,6 +32,7 @@ export const AGREE_TO_PROTOCOL = 'AGREE_TO_PROTOCOL'
 export const NAVIGATION_HISTORY = 'NAVIGATION_HISTORY'
 export const ONLINEMAP = 'ONLINEMAP'
 export const COLUMN_NAV_BAR = 'COLUMN_NAV_BAR'
+export const NAV_BAR_DISPLAY = 'NAV_BAR_DISPLAY'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -214,6 +215,13 @@ export const setColumnNavBar = (params = {}) => async dispatch => {
   })
 }
 
+export const setNavBarDisplay = (params = {}) => async dispatch => {
+  await dispatch({
+    type: NAV_BAR_DISPLAY,
+    payload: params || false,
+  })
+}
+
 const initialState = fromJS({
   buffer: {
     endType: 1,
@@ -320,6 +328,7 @@ const initialState = fromJS({
   isAgreeToProtocol: false,
   navigationhistory: [],
   mapColumnNavBar: true,
+  columnNavBarDisplay:false,
 })
 
 export default handleActions(
@@ -543,6 +552,10 @@ export default handleActions(
     [`${COLUMN_NAV_BAR}`]: (state, { payload }) => {
       const data = payload || false
       return state.setIn(['mapColumnNavBar'], fromJS(data))
+    },
+    [`${NAV_BAR_DISPLAY}`]: (state, { payload }) => {
+      const data = payload || false
+      return state.setIn(['navBarDisplay'], fromJS(data))
     },
     [REHYDRATE]: (state, { payload }) =>
       // if (payload && payload.setting) {

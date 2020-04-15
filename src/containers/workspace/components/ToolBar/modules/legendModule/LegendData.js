@@ -26,14 +26,11 @@ function getData(type) {
           cancel={LegendAction.cancelSelect}
           popData={data}
           currentPopData={_params.mapLegend[GLOBAL.Type].legendPosition}
-          viewableItems={1}
+          viewableItems={3}
         />
       )
       break
     case ConstToolType.LEGEND:
-      data = legendColor
-      break
-    case ConstToolType.LEGEND_NOT_VISIBLE:
     default:
       data = legendColor
       break
@@ -186,50 +183,61 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
       action: () => {
+        const _data = getData(ConstToolType.LEGEND_POSITION)
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND_POSITION, {
+            containerType: ToolbarType.picker,
             isFullScreen: false,
-            height: ConstToolType.TOOLBAR_HEIGHT[1],
+            // buttons,
+            // height: Height.TABLE_ROW_HEIGHT_1 * 4,
+            selectName: getLanguage(_params.language).Map_Main_Menu
+              .LEGEND_POSITION,
+            selectKey: getLanguage(_params.language).Map_Main_Menu
+              .LEGEND_POSITION,
+            ..._data,
           })
       },
-      selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
-      selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
+      selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
+      selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
     },
   ]
   return data
 }
 
 function getButtons(type) {
+  const _params = ToolbarModule.getParams()
+  const legendData = _params.mapLegend
   let buttons = []
   switch (type) {
-    case ConstToolType.LEGEND_NOT_VISIBLE:
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        {
-          type: ToolbarBtnType.VISIBLE,
-          action: LegendAction.changeLegendVisible,
-          image: getPublicAssets().mapTools.tools_legend_on,
-        },
-        ToolbarBtnType.MENU,
-        // ToolbarBtnType.FLEX,
-        ToolbarBtnType.MENU_FLEX,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
-      break
     case ConstToolType.LEGEND:
     default:
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        {
-          type: ToolbarBtnType.NOT_VISIBLE,
-          action: LegendAction.changeLegendVisible,
-          image: getPublicAssets().mapTools.tools_legend_off,
-        },
-        ToolbarBtnType.MENU,
-        // ToolbarBtnType.FLEX,
-        ToolbarBtnType.MENU_FLEX,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
+      if (legendData[GLOBAL.Type].isShow) {
+        buttons = [
+          ToolbarBtnType.CANCEL,
+          {
+            type: ToolbarBtnType.VISIBLE,
+            action: LegendAction.changeLegendVisible,
+            image: getPublicAssets().mapTools.tools_legend_on,
+          },
+          ToolbarBtnType.MENU,
+          // ToolbarBtnType.FLEX,
+          ToolbarBtnType.MENU_FLEX,
+          ToolbarBtnType.TOOLBAR_COMMIT,
+        ]
+      } else {
+        buttons = [
+          ToolbarBtnType.CANCEL,
+          {
+            type: ToolbarBtnType.NOT_VISIBLE,
+            action: LegendAction.changeLegendVisible,
+            image: getPublicAssets().mapTools.tools_legend_off,
+          },
+          ToolbarBtnType.MENU,
+          // ToolbarBtnType.FLEX,
+          ToolbarBtnType.MENU_FLEX,
+          ToolbarBtnType.TOOLBAR_COMMIT,
+        ]
+      }
       break
   }
   return buttons

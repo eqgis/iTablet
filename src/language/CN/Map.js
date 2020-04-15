@@ -373,6 +373,10 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: '切换视角',
   MAP_AR_AI_CLEAR: '清除',
   MAP_AR_AI_NEW_ROAD: '请新建路线',
+  MAP_AR_AI_SAVE_REGION: '保存面',
+  MAP_AR_AI_SCENE_TRACK_COLLECT: '轨迹式',
+  MAP_AR_AI_SCENE_POINT_COLLECT: '打点式',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '点击屏幕确定当前点',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '正在分类中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分类失败,请重试',
@@ -451,6 +455,14 @@ const Map_Main_Menu = {
   MAP_TOPO_TRIM: '修剪',
   MAP_TOPO_RESAMPLE: '重采样',
   MAP_TOPO_CHANGE_DIRECTION: '变方向',
+  ADD_DATASET:'追加数据集',
+  SELECT_ROADNAME_FIELD:'选择以下数据集的道路名称字段',
+  SELECT_FIELD:'选择字段',
+  MERGE_CANCEL:'取消',
+  MERGE_CONFIRM:'确定',
+  MERGE_SELECT_ALL:'全选',
+  MERGE_ADD:'追加',
+  MERGE_DATASET:'合并数据集',
 }
 
 // 推演动画

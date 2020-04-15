@@ -24,8 +24,7 @@ export async function action(type) {
       params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
         isFullScreen: true,
         containerType,
-        column: data.column,
-        height: data.height,
+        ...data,
       })
       break
     case ConstToolType.PLOTTING_ANIMATION:

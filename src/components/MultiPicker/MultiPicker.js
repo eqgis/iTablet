@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { FingerMenu } from '../../components'
+import { Height } from '../../constants'
 import { scaleSize } from '../../utils'
 import { size, color } from '../../styles'
 import { getLanguage } from '../../language'
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   linkView: {
     flex: 1,
-    height: scaleSize(300),
+    // height: scaleSize(300),
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -33,11 +34,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   list: {
-    maxHeight: (scaleSize(80) + 1) * 6, // 最多6条
+    maxHeight: Height.TABLE_ROW_HEIGHT_1 * 6, // 最多6条
     // backgroundColor: 'transparent',
   },
   popView: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     backgroundColor: color.bgW,
   },
@@ -121,7 +122,7 @@ export default class MultiPicker extends React.Component {
     }
   }
 
-  _scrollEnd = ()=>{
+  _scrollEnd = () => {
     let index = this._getFirstDataIndex()
     let item = this.props.popData[index].selectedItem
     this.props.onRightSelect && this.props.onRightSelect(item)
@@ -240,7 +241,14 @@ export default class MultiPicker extends React.Component {
 
   render() {
     return (
-      <View style={styles.popView}>
+      <View
+        style={[
+          styles.popView,
+          this.props.viewableItems > 0 && {
+            height: (this.props.viewableItems + 1) * Height.TABLE_ROW_HEIGHT_1,
+          },
+        ]}
+      >
         {this.renderBottom()}
         {this.renderLinkList()}
       </View>

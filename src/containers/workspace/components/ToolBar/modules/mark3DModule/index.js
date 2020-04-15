@@ -21,10 +21,9 @@ async function action(type) {
   params.setToolbarVisible(true, type, {
     containerType,
     isFullScreen: true,
-    column: data.column,
-    height: data.height,
     data: _data.data,
     buttons: _data.buttons,
+    ...data,
   })
   setModuleData(type)
 }

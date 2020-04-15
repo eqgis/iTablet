@@ -30,11 +30,6 @@ const increment_gps_track = require('./increament_gps_track.png')
 const increment_pointline = require('./increament_pointline.png')
 const increment_freeline = require('./increament_freeline.png')
 
-const increment_add_node = require('./increament_add_node.png')
-const increment_edit_node = require('./increament_edit_node.png')
-const increment_delete_node = require('./increament_delete_node.png')
-const increment_delete_object = require('./increament_delete_object.png')
-const increment_add_attribute = require('./increament_add_attribute.png')
 
 const increment_switch_network = require('./increament_switch_network.png')
 const btn_increment_gps_point = require('./btn_increment_gps_point.png')
@@ -43,12 +38,28 @@ const btn_increment_point_line = require('./btn_increment_point_line.png')
 const btn_increment_freeline = require('./btn_increment_freeline.png')
 const btn_increment_topo_edit = require('./btn_increment_topo_edit.png')
 const btn_increment_merge_dataset = require('./btn_increment_merge_dataset.png')
+const btn_increment_change_type = require('./btn_increment_change_type.png')
 
 const increment_indoor = require('./increment_indoor.png')
 const increment_outdoor = require('./increment_outdoor.png')
 //customView btns
 const icon_increment_delete = require('./icon_increment_delete.png')
+const icon_increment_delete_white = require('./icon_increment_delete_white.png')
 const icon_increment_rename = require('./icon_increment_rename.png')
+const icon_increment_rename_white = require('./icon_increment_rename_white.png')
+//topoEdit icon
+const icon_increment_add_node = require('./increament_add_node.png')
+const icon_increment_edit_node = require('./increament_edit_node.png')
+const icon_increment_delete_node = require('./increament_delete_node.png')
+const icon_increment_delete_object = require('./increament_delete_object.png')
+const icon_increment_add_attribute = require('./increament_add_attribute.png')
+const icon_increment_change_direction = require('./icon_increment_change_direction.png')
+const icon_increment_extend = require('./icon_increment_extend.png')
+const icon_increment_point_adjust = require('./icon_increment_point_adjust.png')
+const icon_increment_resample = require('./icon_increment_resample.png')
+const icon_increment_smooth = require('./icon_increment_smooth.png')
+const icon_incremnent_split = require('./icon_increment_split.png')
+const icon_incremnent_trim = require('./icon_increment_trim.png')
 export default {
   // 导航起点终点
   icon_nav_start,
@@ -85,11 +96,6 @@ export default {
   increment_gps_track,
   increment_pointline,
   increment_freeline,
-  increment_add_node,
-  increment_edit_node,
-  increment_delete_node,
-  increment_delete_object,
-  increment_add_attribute,
 
   btn_increment_gps_point,
   btn_increment_gps_track,
@@ -100,6 +106,22 @@ export default {
 
   icon_increment_delete,
   icon_increment_rename,
+  icon_increment_delete_white,
+  icon_increment_rename_white,
   increment_indoor,
   increment_outdoor,
+
+  btn_increment_change_type,
+  icon_increment_add_node,
+  icon_increment_edit_node,
+  icon_increment_delete_node,
+  icon_increment_delete_object,
+  icon_increment_add_attribute,
+  icon_increment_change_direction,
+  icon_increment_extend,
+  icon_increment_point_adjust,
+  icon_increment_resample,
+  icon_increment_smooth,
+  icon_incremnent_split,
+  icon_incremnent_trim,
 }

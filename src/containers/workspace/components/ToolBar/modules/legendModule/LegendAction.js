@@ -7,17 +7,15 @@ import LegendData from './LegendData'
 function changeLegendVisible() {
   const _params = ToolbarModule.getParams()
   const legendData = _params.mapLegend
-  const type = legendData[GLOBAL.Type].isShow
-    ? ConstToolType.LEGEND_NOT_VISIBLE
-    : ConstToolType.LEGEND
+  const type = ConstToolType.LEGEND
+  legendData[GLOBAL.Type].isShow = !legendData[GLOBAL.Type].isShow
   const { data, buttons } = LegendData.getData(type)
   GLOBAL.ToolBar &&
     GLOBAL.ToolBar.setState({
-      type,
+      // type,
       data,
       buttons,
     })
-  legendData[GLOBAL.Type].isShow = type === ConstToolType.LEGEND
   _params.setMapLegend && _params.setMapLegend(legendData)
 }
 
@@ -36,14 +34,17 @@ function menu(type, selectKey, params = {}) {
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  // const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
     if (
-      (type === ConstToolType.LEGEND ||
-        type === ConstToolType.LEGEND_NOT_VISIBLE ||
-        type === ConstToolType.LEGEND_POSITION) &&
-      isBoxShow
+      type === ConstToolType.LEGEND ||
+      type === ConstToolType.LEGEND_POSITION
     ) {
+      // if (
+      //   (type === ConstToolType.LEGEND ||
+      //     type === ConstToolType.LEGEND_POSITION) &&
+      //   isBoxShow
+      // ) {
       params.showBox && params.showBox()
     }
   }
@@ -80,6 +81,29 @@ function menu(type, selectKey, params = {}) {
   }
 }
 
+function showMenuBox(type, selectKey, params = {}) {
+  if (type.indexOf('LEGEND') !== -1) {
+    if (Utils.isTouchProgress(selectKey)) {
+      params.setData &&
+        params.setData({
+          isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+          showMenuDialog: false,
+          isFullScreen: !this.state.isTouchProgress,
+        })
+    } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
+      params.showBox && params.showBox()
+    } else {
+      params.setData &&
+        params.setData({
+          showMenuDialog: false,
+          isFullScreen: false,
+        })
+      params.showBox && params.showBox()
+    }
+    return
+  }
+}
+
 function tableAction(item = {}) {
   const _params = ToolbarModule.getParams()
   const legendData = _params.mapLegend
@@ -88,21 +112,19 @@ function tableAction(item = {}) {
 }
 
 function cancelSelect() {
-  const _params = ToolbarModule.getParams()
+  // const _params = ToolbarModule.getParams()
 
-  const legendData = _params.mapLegend
-  const type = legendData[GLOBAL.Type].isShow
-    ? ConstToolType.LEGEND
-    : ConstToolType.LEGEND_NOT_VISIBLE
-  let isFullScreen
-  let showMenuDialog
-  let isTouchProgress
+  // const legendData = _params.mapLegend
+  const type = ConstToolType.LEGEND
+  let isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
+  let showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+  let isTouchProgress = false
   const { data, buttons } = LegendData.getData(type)
   const setData = function() {
     GLOBAL.ToolBar &&
       GLOBAL.ToolBar.setState(
         {
-          type,
+          // type,
           data,
           isFullScreen,
           showMenuDialog,
@@ -114,9 +136,6 @@ function cancelSelect() {
         },
       )
   }
-  isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-  showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-  isTouchProgress = false
   // 先滑出box，再显示Menu
   GLOBAL.ToolBar && GLOBAL.ToolBar.showBox()
   setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -132,8 +151,11 @@ export default {
   commit,
   close,
   menu,
+  showMenuBox,
   tableAction,
 
+  pickerConfirm: params => changePosition(params),
+  pickerCancel: () => cancelSelect(),
   cancelSelect,
   changePosition,
   changeLegendVisible,

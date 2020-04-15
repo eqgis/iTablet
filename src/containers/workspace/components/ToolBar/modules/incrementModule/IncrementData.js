@@ -45,16 +45,14 @@ async function getData(type) {
       data = [
         {
           key: constants.UNDO,
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: constants.REDO,
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          // constants.REDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -63,7 +61,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_CANCEL,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
-          // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_close_black.png'),
@@ -72,7 +69,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_COMMIT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
-          //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
@@ -83,25 +79,22 @@ async function getData(type) {
       data = [
         {
           key: constants.UNDO,
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: constants.REDO,
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          // constants.REDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
           key: constants.MAP_INCREMENT_ADD_POINT,
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_ADD_POINT,
-          // constants.UNDO,
           action: IncrementAction.addPoint,
           size: 'large',
           image: getPublicAssets().navigation.increment_add_point,
@@ -110,7 +103,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_CANCEL,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
-          // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_close_black.png'),
@@ -119,7 +111,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_COMMIT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
-          //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
@@ -130,16 +121,14 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_INCREMENT_START,
-          title: getLanguage(global.language).Map_Main_Menu.MAP_INCREMENT_START,
-          // constants.UNDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_START,
           action: IncrementAction.start,
           size: 'large',
           image: getPublicAssets().navigation.increment_start,
         },
         {
           key: constants.MAP_INCREMENT_STOP,
-          title: getLanguage(global.language).Map_Main_Menu.MAP_INCREMENT_STOP,
-          // constants.REDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_STOP,
           action: IncrementAction.stop,
           size: 'large',
           image: getPublicAssets().navigation.increment_stop,
@@ -148,7 +137,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_CANCEL,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
-          // constants.CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_close_black.png'),
@@ -157,7 +145,6 @@ async function getData(type) {
           key: constants.MAP_INCREMENT_COMMIT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
-          //constants.SUBMIT,
           action: IncrementAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),

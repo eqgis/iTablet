@@ -357,6 +357,10 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: 'Change',
   MAP_AR_AI_CLEAR: 'Clear',
   MAP_AR_AI_NEW_ROAD: 'Please Create New Road',
+  MAP_AR_AI_SAVE_REGION: 'Save Region',
+  MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
+  MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classify Loading',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Classify failed, try Again',
@@ -421,6 +425,26 @@ const Map_Main_Menu = {
   MAP_INCREMENT_GPS_TRACK: 'Collect Line by GPS',
   MAP_INCREMENT_POINTLINE: 'Point Draw',
   MAP_INCREMENT_FREELINE: 'Free Draw',
+
+  MAP_TOPO_ADD_NODE: 'Add Node',
+  MAP_TOPO_EDIT_NODE: 'Edit node',
+  MAP_TOPO_DELETE_NODE: 'Delete node',
+  MAP_TOPO_DELETE_OBJECT: 'Delete object',
+  MAP_TOPO_SMOOTH: 'Smooth',
+  MAP_TOPO_POINT_ADJUST: 'Point adjustment',
+  MAP_TOPO_SPLIT: 'Interrupt',
+  MAP_TOPO_EXTEND: 'Extend',
+  MAP_TOPO_TRIM: 'Trim',
+  MAP_TOPO_RESAMPLE: 'Re-sampling',
+  MAP_TOPO_CHANGE_DIRECTION: 'Change Direction',
+  ADD_DATASET:'Append Dataset',
+  SELECT_ROADNAME_FIELD:'Select the road name field of the following dataset',
+  SELECT_FIELD:'Select Field',
+  MERGE_CANCEL:'Cancel',
+  MERGE_CONFIRM:'Confirm',
+  MERGE_SELECT_ALL:'Select All',
+  MERGE_ADD:'Append',
+  MERGE_DATASET:'Merge Datasets',
 }
 
 // 推演动画

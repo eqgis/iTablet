@@ -63,7 +63,8 @@ export default StyleSheet.create({
     width: '100%',
     maxHeight: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
     minHeight: Height.TOOLBAR_BUTTONS,
-    backgroundColor: color.theme,
+    // backgroundColor: color.theme,
+    backgroundColor: 'transparent',
   },
   containersLandscape: {
     // position: 'absolute',
@@ -75,7 +76,8 @@ export default StyleSheet.create({
     // width: '100%',
     maxWidth: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
     // minWidth: Height.TOOLBAR_BUTTONS,
-    backgroundColor: color.theme,
+    // backgroundColor: color.theme,
+    backgroundColor: 'transparent',
     // zIndex: zIndexLevel.FOUR,
   },
   buttonz: {

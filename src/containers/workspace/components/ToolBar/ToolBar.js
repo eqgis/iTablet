@@ -152,6 +152,7 @@ export default class ToolBar extends React.PureComponent {
     this.height = 0
     this.isShow = false
     this.column = -1
+    this.row = -1
     this.isBoxShow = false
     this.lastState = {}
 
@@ -215,16 +216,21 @@ export default class ToolBar extends React.PureComponent {
       }).start()
       return
     }
-    if (!(this.isShow && this.isBoxShow)) {
-      this.showToolbar()
-      return
-    }
+    // if (!(this.isShow && this.isBoxShow)) {
+    //   this.showToolbar()
+    //   return
+    // }
     let _data = ToolbarHeight.getToolbarSize(this.state.containerType, {
       data: this.state.data,
     })
-    if (this.height !== _data.height || this.column !== _data.column) {
+    if (
+      this.height !== _data.height ||
+      this.column !== _data.column ||
+      this.row !== _data.row
+    ) {
       this.height = _data.height
       this.column = _data.column
+      this.row = _data.row
       this.showToolbar()
     }
   }
@@ -374,6 +380,7 @@ export default class ToolBar extends React.PureComponent {
             // if (!showViewFirst) {
             if (!isNaN(newHeight)) this.height = newHeight
             if (!isNaN(params.column)) this.column = params.column
+            if (!isNaN(params.row)) this.row = params.row
             this.showToolbarAndBox(isShow, type)
             !isShow && this.props.existFullMap && this.props.existFullMap()
             // }
@@ -451,6 +458,7 @@ export default class ToolBar extends React.PureComponent {
       let animated = this.contentView.changeHeight({
         height: 0,
         column: this.column > -1 ? this.column : undefined,
+        row: this.row > -1 ? this.row : undefined,
         wait: true,
       })
       animated && animatedList.push(animated)
@@ -463,6 +471,7 @@ export default class ToolBar extends React.PureComponent {
         let boxAnimated = this.contentView.changeHeight({
           height: this.height,
           column: this.column > -1 ? this.column : undefined,
+          row: this.row > -1 ? this.row : undefined,
           wait: true,
         })
         if (boxAnimated) {
@@ -517,8 +526,9 @@ export default class ToolBar extends React.PureComponent {
     let boxAnimated =
       this.isBoxShow &&
       (await this.contentView.changeHeight({
-        height: this.height,
+        height: this.isBoxShow ? this.height : 0,
         column: this.column > -1 ? this.column : undefined,
+        row: this.row > -1 ? this.row : undefined,
         wait: true,
       }))
     if (boxAnimated) {
@@ -808,7 +818,8 @@ export default class ToolBar extends React.PureComponent {
         cb: () => SMap.setAction(Action.SELECT),
       })
     } else if (this.state.type === ConstToolType.PLOT_ANIMATION_NODE_CREATE) {
-      this.contentView.savePlotAnimationNode()
+      // TODO savePlotAnimationNode
+      // this.contentView.savePlotAnimationNode()
     } else if (this.state.type === ConstToolType.MAP3D_TOOL_FLYLIST) {
       SScene.checkoutListener('startTouchAttribute')
       SScene.setAction('PAN3D')
@@ -879,8 +890,8 @@ export default class ToolBar extends React.PureComponent {
   render() {
     let containerStyle = this.state.isFullScreen
       ? this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? styles.fullContainerLandscape
-        : styles.fullContainer
+        ? { ...styles.fullContainerLandscape, height: this.props.device.height }
+        : { ...styles.fullContainer, width: this.props.device.width }
       : this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.wrapContainerLandscape
         : styles.wrapContainer
@@ -910,7 +921,8 @@ export default class ToolBar extends React.PureComponent {
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? { right: this.state.right }
             : { bottom: this.state.bottom },
-          this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
+          (this.state.isFullScreen || this.state.isTouchProgress) &&
+            this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
             paddingTop: screen.isIphoneX()
               ? screen.X_TOP + screen.X_BOTTOM
               : Platform.OS === 'ios'
@@ -920,6 +932,10 @@ export default class ToolBar extends React.PureComponent {
           size,
         ]}
         pointerEvents={'box-none'}
+        // onLayout={event => {
+        //   let { width, height, x, y } = event.nativeEvent.layout
+        //   console.log(width, height, x, y)
+        // }}
       >
         {!this.state.isTouchProgress && !this.state.showMenuDialog && (
           <View style={styles.themeoverlay} pointerEvents={'box-none'} />
@@ -951,6 +967,7 @@ export default class ToolBar extends React.PureComponent {
                   ? styles.containersLandscape
                   : styles.containers,
               ]}
+              pointerEvents={'box-none'}
             >
               {this.renderView()}
               {this.renderBottomBtns()}
@@ -963,6 +980,7 @@ export default class ToolBar extends React.PureComponent {
                 ? styles.containersLandscape
                 : styles.containers,
             ]}
+            pointerEvents={'box-none'}
           >
             {this.renderView()}
             {this.renderBottomBtns()}

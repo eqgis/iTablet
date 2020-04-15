@@ -19,6 +19,7 @@ import markModule from './markModule'
 import mark3DModule from './mark3DModule'
 import incrementModule from './incrementModule'
 import themeColorPickerModule from './themeColorPickerModule'
+import topoEditModule from './topoEditModule'
 export {
   startModule,
   fly3DModule,
@@ -41,4 +42,5 @@ export {
   mark3DModule,
   incrementModule,
   themeColorPickerModule,
+  topoEditModule,
 }

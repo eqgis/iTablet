@@ -20,8 +20,7 @@ export async function action(type) {
   params.setToolbarVisible(true, type, {
     containerType,
     isFullScreen: false,
-    height: data.height,
-    column: data.column,
+    ...data,
     cb: () => SMap.setAction(Action.SELECT),
   })
   Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)

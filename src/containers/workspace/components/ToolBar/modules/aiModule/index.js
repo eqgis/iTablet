@@ -18,8 +18,7 @@ export async function action(type) {
   params.setToolbarVisible(true, ConstToolType.MAP_AR_AI_ASSISTANT, {
     containerType,
     isFullScreen: true,
-    height: data.height,
-    column: data.column,
+    ...data,
   })
 }
 

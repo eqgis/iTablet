@@ -1516,7 +1516,7 @@ async function changeGraphType(type) {
         isFullScreen: false,
         isTouchProgress: false,
         showMenuDialog: false,
-        containerType: 'horizontalTable',
+        containerType: ToolbarBtnType.horizontalTable,
         listSelectable: false, // 单选框
         // column: 4,
         data,
@@ -1545,11 +1545,7 @@ async function close() {
   await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
 
   ToolbarModule.setData()
-  _params.setToolbarVisible(false, {
-    isTouchProgress: false,
-    showMenuDialog: false,
-    selectKey: '',
-  })
+  _params.setToolbarVisible(false)
 }
 
 const actions = {

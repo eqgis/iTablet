@@ -20,7 +20,7 @@ async function OpenData(data, index) {
     for (let i = 1; i <= GLOBAL.BaseMapSize; i++) {
       if (
         layers.length > 0 &&
-        LayerUtils.isBaseLayer(layers[layers.length - i].name)
+        LayerUtils.isBaseLayer(layers[layers.length - i])
       ) {
         await SMap.removeLayer(layers.length - i)
       }

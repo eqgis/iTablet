@@ -212,6 +212,8 @@ export default {
 
   //= =================许可==============
   LICENSE_OFFICIAL_STORAGE_KEY: 'LICENSE_OFFICIAL_STORAGE_KEY',
+  LICENSE_CLOUD_ID: 'CLOUD_LICENSE_ID',
+  LICENSE_CLOUD_RETURN_ID: 'CLOUD_LICENSE_RETURN_ID',
 
   //================高精采集历史数据源=============
   COLLECT_SCENE_HISTORY_DATASOURCE_ALIAS_KEY:

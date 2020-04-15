@@ -1072,7 +1072,7 @@ function showMenuBox(type, selectKey, params = {}) {
     selectName: item,
    }
  */
-function pickerConfirm(params) {
+function pickerConfirm(type, params) {
   const _params = ToolbarModule.getParams()
   _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER, {
     isFullScreen: true,

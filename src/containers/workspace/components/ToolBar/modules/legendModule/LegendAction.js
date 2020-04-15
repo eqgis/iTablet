@@ -154,6 +154,8 @@ export default {
   showMenuBox,
   tableAction,
 
+  pickerConfirm: params => changePosition(params),
+  pickerCancel: () => cancelSelect(),
   cancelSelect,
   changePosition,
   changeLegendVisible,

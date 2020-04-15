@@ -1516,7 +1516,7 @@ async function changeGraphType(type) {
         isFullScreen: false,
         isTouchProgress: false,
         showMenuDialog: false,
-        containerType: 'horizontalTable',
+        containerType: ToolbarBtnType.horizontalTable,
         listSelectable: false, // 单选框
         // column: 4,
         data,

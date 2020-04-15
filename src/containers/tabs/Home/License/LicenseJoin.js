@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { setLicenseInfo } from '../../../../models/license'
 import { View, StyleSheet, TextInput, Text, AsyncStorage } from 'react-native'
 import { Container, Button } from '../../../../components'
 import { color } from '../../../../styles'
@@ -6,9 +8,10 @@ import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
 import constants from '../../../../../src/containers/workspace/constants'
 import { scaleSize, Toast } from '../../../../utils'
-export default class LicenseJoin extends Component {
+class LicenseJoin extends Component {
   props: {
     navigation: Object,
+    setLicenseInfo: () => {},
   }
 
   constructor(props) {
@@ -27,7 +30,11 @@ export default class LicenseJoin extends Component {
   }
 
   back = () => {
-    this.backAction && this.backAction()
+    if (this.backAction) {
+      this.backAction()
+    } else {
+      this.props.navigation.goBack()
+    }
   }
 
   //初始化输入框
@@ -77,11 +84,16 @@ export default class LicenseJoin extends Component {
           number = number + (1 << modultCode % 100)
         }
         GLOBAL.modulesNumber = number
+        Toast.show(
+          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+        )
+        let info = await SMap.getEnvironmentStatus()
+        this.props.setLicenseInfo(info)
         GLOBAL.Loading.setLoading(
           false,
           global.language === 'CN' ? '许可申请中...' : 'Applying',
         )
-        this.cb && this.cb()
+        this.props.navigation.pop(2)
       } else {
         Toast.show(
           // getLanguage(global.language).Profile.INPUT_LICENSE_SERIAL_NUMBER,
@@ -251,6 +263,14 @@ export default class LicenseJoin extends Component {
     )
   }
 }
+
+const mapDispatchToProps = {
+  setLicenseInfo,
+}
+export default connect(
+  null,
+  mapDispatchToProps,
+)(LicenseJoin)
 
 const styles = StyleSheet.create({
   container: {

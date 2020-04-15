@@ -5,7 +5,7 @@ import { color } from '../../styles'
 export default StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    flexDirection: 'row',
+    // flexDirection: 'row',
     backgroundColor: color.content_white,
   },
   normalContainer: {

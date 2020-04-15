@@ -17,6 +17,7 @@ import histories from './histories'
 import externalData from './externalData'
 import toolbarStatus from './toolbarStatus'
 import appConfig from './appConfig'
+import license from './license'
 
 export {
   nav,
@@ -38,4 +39,5 @@ export {
   externalData,
   toolbarStatus,
   appConfig,
+  license,
 }

@@ -11,7 +11,6 @@ import { Container, Button } from '../../../../components'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
-import constants from '../../../../../src/containers/workspace/constants'
 import { scaleSize, Toast } from '../../../../utils'
 
 var LICENSE_MODULE_REGISTER = 'LICENSE_MODULE_REGISTER'
@@ -25,6 +24,7 @@ export default class LicenseModule extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.user = params && params.user
+    this.features = params && params.features
     this.state = {
       modules: [],
       modulesNumber: 0,
@@ -42,22 +42,22 @@ export default class LicenseModule extends Component {
         }
       })
       .catch(() => {})
-    AsyncStorage.getItem(constants.LICENSE_OFFICIAL_STORAGE_KEY)
-      .then(value => {
-        if (value !== null) {
-          this.getModules(value)
-        }
-      })
-      .catch(() => {})
+    // AsyncStorage.getItem(constants.LICENSE_OFFICIAL_STORAGE_KEY)
+    //   .then(value => {
+    //     if (value !== null) {
+    //       this.getModules(value)
+    //     }
+    //   })
+    //   .catch(() => {})
   }
 
   componentDidMount() {
-    this.initItabletAllModules()
+    this.getModules()
   }
 
-  getModules = async serialNumber => {
+  getModules = async () => {
     GLOBAL.Loading.setLoading(true, getLanguage(global.language).Prompt.LOADING)
-    let modules = await SMap.licenseContainModule(serialNumber)
+    let modules = this.features.clone()
     let size = modules.length
     let number = 0
     for (let i = 0; i < size; i++) {
@@ -70,7 +70,6 @@ export default class LicenseModule extends Component {
     }
     let allAPPModules = this.initAllAPPModules()
     let allModules = this.initItabletAllModules()
-    GLOBAL.Loading.setLoading(false)
     this.setState({
       modules: modules,
       modulesNumber: number,

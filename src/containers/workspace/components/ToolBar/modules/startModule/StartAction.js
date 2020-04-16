@@ -741,8 +741,8 @@ function saveMapAs() {
         ) {
           addition.Template = ToolbarModule.getParams().map.currentMap.Template
         }
-        ToolbarModule.getParams().setToolbarVisible &&
-          ToolbarModule.getParams().setToolbarVisible(
+        ToolbarModule.getParams().setContainerLoading &&
+          ToolbarModule.getParams().setContainerLoading(
             true,
             getLanguage(global.language).Prompt.SAVING,
           )
@@ -755,6 +755,8 @@ function saveMapAs() {
                   ToolbarModule.getParams().setToolbarVisible(false)
                 if (result) {
                   NavigationService.goBack()
+                  ToolbarModule.getParams().setContainerLoading &&
+                    ToolbarModule.getParams().setContainerLoading(false)
                   setTimeout(() => {
                     Toast.show(
                       getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY,
@@ -765,8 +767,8 @@ function saveMapAs() {
                 }
               },
               () => {
-                ToolbarModule.getParams().setToolbarVisible &&
-                  ToolbarModule.getParams().setToolbarVisible(false)
+                ToolbarModule.getParams().setContainerLoading &&
+                  ToolbarModule.getParams().setContainerLoading(false)
               },
             )
       },

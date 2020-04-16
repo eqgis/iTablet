@@ -1,5 +1,5 @@
 import ToolbarModule from './ToolbarModule'
-import {ToolbarType, Height} from '../../../../../constants'
+import { ToolbarType, Height } from '../../../../../constants'
 
 /**
  * 统一ToolbarContentView高度（table类型自适应大小）
@@ -36,7 +36,7 @@ function getToolbarSize(type, additional = {}) {
       if (additional.data === undefined) additional.data = []
       let maxLimit = type === ToolbarType.scrollTable ? 2 : 6
       if (orientation.indexOf('LANDSCAPE') === 0) {
-        row = additional.row !== undefined ? additional.row : 4
+        row = additional.row !== undefined ? additional.row : 5
         column = Math.ceil(additional.data.length / row)
         column = column > maxLimit ? maxLimit : column // 限制最大高度
         height = Height.TABLE_ROW_HEIGHT_4 * column
@@ -76,10 +76,10 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.colorPicker: //颜色选择器 色盘
       height =
         orientation.indexOf('LANDSCAPE') === 0
-          ? Height.TABLE_ROW_HEIGHT_3 * 5
+          ? Height.TABLE_ROW_HEIGHT_3 * 6
           : Height.TABLE_ROW_HEIGHT_3 * 4
       break
-    case ToolbarType.buttons:  //自定义buttons
+    case ToolbarType.buttons: //自定义buttons
       height = Height.TOOLBAR_BUTTONS
       break
   }

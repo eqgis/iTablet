@@ -10,10 +10,9 @@ import { color } from '../../../../../../styles'
 import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ColorTable } from '../../../../../mapSetting/secondMapSettings/components'
-import { Row, MTBtn } from '../../../../../../components'
+import { Row, MTBtn, Picker } from '../../../../../../components'
 import SymbolTabs from '../../../SymbolTabs'
 import SymbolList from '../../../SymbolList'
-import ToolbarPicker from '../ToolbarPicker'
 import ToolList from '../ToolList'
 import ToolbarTableList from '../ToolbarTableList'
 import ToolbarHeight from '../../modules/ToolBarHeight'
@@ -426,27 +425,34 @@ export default class ToolbarContentView extends React.Component {
 
   /***************************************** Picker ***************************************/
   renderPicker = () => {
-    return ToolbarPicker.initPicker({
-      confirm: item => {
-        if (
-          ToolbarModule.getData().actions &&
-          ToolbarModule.getData().actions.pickerConfirm
-        ) {
-          ToolbarModule.getData().actions.pickerConfirm({
-            selectKey: item,
-            selectName: item,
-          })
-        }
-      },
-      cancel: () => {
-        if (
-          ToolbarModule.getData().actions &&
-          ToolbarModule.getData().actions.pickerCancel
-        ) {
-          ToolbarModule.getData().actions.pickerCancel()
-        }
-      },
-    })
+    return (
+      <Picker
+        ref={ref => (this.picker = ref)}
+        language={GLOBAL.language}
+        confirm={data => {
+          if (
+            ToolbarModule.getData().actions &&
+            ToolbarModule.getData().actions.pickerConfirm
+          ) {
+            let item = data instanceof Array ? [data[0].key, data[1].key] : data
+            ToolbarModule.getData().actions.pickerConfirm({
+              selectKey: item,
+              selectName: item,
+            })
+          }
+        }}
+        cancel={() => {
+          if (
+            ToolbarModule.getData().actions &&
+            ToolbarModule.getData().actions.pickerCancel
+          ) {
+            ToolbarModule.getData().actions.pickerCancel()
+          }
+        }}
+        popData={this.props.data}
+        viewableItems={3}
+      />
+    )
   }
 
   render() {

@@ -12,6 +12,8 @@ function isTouchProgress(selectKey) {
     selectKey ===
       getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY ||
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.CONTRAST ||
+    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST ||
+    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION ||
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
     selectKey ===
       getLanguage(GLOBAL.language).Map_Main_Menu.NUMBER_OF_SEGMENTS ||

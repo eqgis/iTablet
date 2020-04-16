@@ -4,25 +4,24 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import React from "react"
+import React from 'react'
 import LayerVisibleScaleAction from './layerVisibleScaleAction'
-import {ConstToolType, TouchType} from "../../../../../../constants"
-import {SMap} from 'imobile_for_reactnative'
-import {MultiPicker} from "../../../../../../components"
-import dataUtil from "../../../../../../utils/dataUtil"
-import {getLanguage} from "../../../../../../language"
-import ToolbarModule from "../ToolbarModule"
-import LayerVisibilityView from "./customView/LayerVisibilityView"
-
+import { ConstToolType } from '../../../../../../constants'
+import { SMap } from 'imobile_for_reactnative'
+import { MultiPicker } from '../../../../../../components'
+import dataUtil from '../../../../../../utils/dataUtil'
+import { getLanguage } from '../../../../../../language'
+import ToolbarModule from '../ToolbarModule'
+import LayerVisibilityView from './customView/LayerVisibilityView'
 
 async function getData(type) {
   let data = []
   let buttons = []
   let customView
-  switch(type){
+  switch (type) {
     case ConstToolType.MAP_LAYER_VISIBLE_SCALE:
       data = await getVisibleScalePickerData()
-      customView =() => (
+      customView = () => (
         <MultiPicker
           language={GLOBAL.language}
           confirm={LayerVisibleScaleAction.pickerConfirm}
@@ -33,24 +32,27 @@ async function getData(type) {
         />
       )
       break
-    case ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE:{
-      let currentType = ToolbarModule.getData().currentType
-      let mapScale = ToolbarModule.getData().mapScale
-      customView = () => <LayerVisibilityView currentType={currentType} mapScale={mapScale}/>
-    }
+    case ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE:
+      {
+        let currentType = ToolbarModule.getData().currentType
+        let mapScale = ToolbarModule.getData().mapScale
+        customView = () => (
+          <LayerVisibilityView currentType={currentType} mapScale={mapScale} />
+        )
+      }
       break
   }
-  return {data, buttons, customView}
+  return { data, buttons, customView }
 }
 
 async function getVisibleScalePickerData() {
   const data = ToolbarModule.getData()
-  let customMin  = data.min
+  let customMin = data.min
   let customMax = data.max
   let layerData = data.layerData
   let min = await SMap.getMinVisibleScale(layerData.path)
   let max = await SMap.getMaxVisibleScale(layerData.path)
-  let pickerData = await getBasicData(min, max,customMin, customMax)
+  let pickerData = await getBasicData(min, max, customMin, customMax)
   return pickerData
 }
 async function getBasicData(min, max, customMin, customMax) {
@@ -126,9 +128,9 @@ async function getBasicData(min, max, customMin, customMax) {
   ]
   const minOption = option.clone()
   let minInitItem =
-        min === 0
-          ? { key: '0', value: 0 }
-          : { key: `1 : ${dataUtil.NumberWithThousandSep(min)}`, value: min }
+    min === 0
+      ? { key: '0', value: 0 }
+      : { key: `1 : ${dataUtil.NumberWithThousandSep(min)}`, value: min }
   let n = 0
   for (; n < minOption.length; n++) {
     if (minInitItem.value < minOption[n].value) {
@@ -144,9 +146,9 @@ async function getBasicData(min, max, customMin, customMax) {
   }
   const maxOption = option.clone()
   let maxInitItem =
-        max === 0
-          ? { key: getLanguage(GLOBAL.language).Map_Layer.LAYER_NONE, value: 0 }
-          : { key: `1 : ${dataUtil.NumberWithThousandSep(max)}`, value: max }
+    max === 0
+      ? { key: getLanguage(GLOBAL.language).Map_Layer.LAYER_NONE, value: 0 }
+      : { key: `1 : ${dataUtil.NumberWithThousandSep(max)}`, value: max }
   n = 0
   for (; n < maxOption.length; n++) {
     if (maxInitItem.value < maxOption[n].value) {
@@ -177,7 +179,7 @@ async function getBasicData(min, max, customMin, customMax) {
       key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,
       value: '最小可见比例尺',
       children: minOption,
-      initItem:  minInitItem,
+      initItem: minInitItem,
       selectedItem: customMin ? customOptionMin : minInitItem,
     },
     {

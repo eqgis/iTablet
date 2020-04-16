@@ -36,7 +36,7 @@ function getToolbarSize(type, additional = {}) {
       if (additional.data === undefined) additional.data = []
       let maxLimit = type === ToolbarType.scrollTable ? 2 : 6
       if (orientation.indexOf('LANDSCAPE') === 0) {
-        row = additional.row !== undefined ? additional.row : 4
+        row = additional.row !== undefined ? additional.row : 5
         column = Math.ceil(additional.data.length / row)
         column = column > maxLimit ? maxLimit : column // 限制最大高度
         height = Height.TABLE_ROW_HEIGHT_4 * column
@@ -64,6 +64,9 @@ function getToolbarSize(type, additional = {}) {
         Height.TABLE_ROW_HEIGHT_1 *
         (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 4)
       break
+    case ToolbarType.multiPicker: //两列选择器
+      height = Height.TABLE_ROW_HEIGHT_1 * 4
+      break
     case ToolbarType.tabs: // 符号标签栏
       height =
         Height.TABLE_ROW_HEIGHT_2 *
@@ -73,8 +76,11 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.colorPicker: //颜色选择器 色盘
       height =
         orientation.indexOf('LANDSCAPE') === 0
-          ? Height.TABLE_ROW_HEIGHT_3 * 5
+          ? Height.TABLE_ROW_HEIGHT_3 * 6
           : Height.TABLE_ROW_HEIGHT_3 * 4
+      break
+    case ToolbarType.buttons: //自定义buttons
+      height = Height.TOOLBAR_BUTTONS
       break
   }
   if (additional.height !== undefined) {

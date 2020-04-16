@@ -10,8 +10,9 @@ const horizontalTable = 'horizontalTable' // 横向滚动表格
 const createPlotAnimation = 'createPlotAnimation' // 创建标绘推演
 const animationNode = 'animationNode' // 态势推演
 const picker = 'picker' // 选择器
+const multiPicker = 'multiPicker'// 选择器 多选
 const colorPicker = 'colorPicker' //颜色选择器 色盘
-
+const buttons = 'buttons' //自定义buttons 高度和底部buttons高度相同
 export default {
   list,
   selectableList,
@@ -24,5 +25,7 @@ export default {
   createPlotAnimation,
   animationNode,
   picker,
+  multiPicker,
   colorPicker,
+  buttons,
 }

@@ -1,11 +1,16 @@
 import React from 'react'
 import { View, Animated, Text, FlatList } from 'react-native'
-import { ToolbarType, ConstToolType, Const } from '../../../../../../constants'
+import {
+  ToolbarType,
+  ConstToolType,
+  Const,
+  Height,
+} from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ColorTable } from '../../../../../mapSetting/secondMapSettings/components'
-import { Row, HorizontalTableList, MTBtn } from '../../../../../../components'
+import { Row, MTBtn } from '../../../../../../components'
 import SymbolTabs from '../../../SymbolTabs'
 import SymbolList from '../../../SymbolList'
 import ToolbarPicker from '../ToolbarPicker'
@@ -296,20 +301,25 @@ export default class ToolbarContentView extends React.Component {
 
   /***************************************** HorizontalTable ***************************************/
   renderHorizontalTable = () => {
+    let numColumns = 1
     return (
-      <HorizontalTableList
-        data={this.props.data}
-        numColumns={this.state.column}
-        renderCell={({ item, rowIndex, cellIndex }) => {
-          let column = this.state.column
+      <FlatList
+        key={this.props.device.orientation + '_ScrollView'}
+        renderItem={({ item, index }) => {
           return (
             <MTBtn
-              style={[styles.cell, { width: this.props.device.width / column }]}
-              key={rowIndex + '-' + cellIndex}
+              key={(item.key || item.title) + '_' + index}
+              style={[
+                {
+                  width: Height.TABLE_ROW_HEIGHT_4,
+                  height: Height.TABLE_ROW_HEIGHT_4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+              ]}
               title={item.title}
               textColor={item.disable ? '#A0A0A0' : color.font_color_white}
               textStyle={{ fontSize: setSpText(20) }}
-              // size={MTBtn.Size.NORMAL}
               image={item.image}
               background={item.background}
               onPress={() => {
@@ -327,10 +337,53 @@ export default class ToolbarContentView extends React.Component {
             />
           )
         }}
-        Heighttype={this.props.type}
-        device={this.props.device}
+        data={this.props.data}
+        keyExtractor={(item, index) => item.title + index}
+        numColumns={numColumns}
+        style={[
+          { backgroundColor: color.content_white },
+          this.props.device.orientation.indexOf('PORTRAIT') === 0
+            ? { height: Height.TABLE_ROW_HEIGHT_4 * numColumns }
+            : { width: Height.TABLE_ROW_HEIGHT_4 * numColumns },
+        ]}
+        horizontal={this.props.device.orientation.indexOf('PORTRAIT') === 0}
+        extraData={this.props.device.orientation}
       />
     )
+    // return (
+    //   <HorizontalTableList
+    //     data={this.props.data}
+    //     numColumns={this.state.column}
+    //     renderCell={({ item, index }) => {
+    //       let column = this.state.column
+    //       return (
+    //         <MTBtn
+    //           style={[styles.cell, { flex: 1, backgroundColor: 'gray' }]}
+    //           // key={rowIndex + '-' + index}
+    //           title={item.title}
+    //           textColor={item.disable ? '#A0A0A0' : color.font_color_white}
+    //           textStyle={{ fontSize: setSpText(20) }}
+    //           // size={MTBtn.Size.NORMAL}
+    //           image={item.image}
+    //           background={item.background}
+    //           onPress={() => {
+    //             if (item.disable) return
+    //             if (
+    //               ToolbarModule.getData().actions &&
+    //               ToolbarModule.getData().actions.tableAction
+    //             ) {
+    //               ToolbarModule.getData().actions.tableAction(item)
+    //             }
+    //             if (item.action) {
+    //               item.action(item)
+    //             }
+    //           }}
+    //         />
+    //       )
+    //     }}
+    //     device={this.props.device}
+    //   />
+    // )
   }
 
   /***************************************** ColorTable ***************************************/

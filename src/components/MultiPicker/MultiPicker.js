@@ -115,11 +115,13 @@ export default class MultiPicker extends React.Component {
     for (let i = 0; i < currentFirstData.children.length; i++) {
       if (
         currentFirstData.children[i].key !== undefined &&
+        currentFirstData.selectedItem &&
         currentFirstData.children[i].key === currentFirstData.selectedItem.key
       ) {
         return i
       }
     }
+    return 0
   }
 
   _scrollEnd = () => {
@@ -137,7 +139,8 @@ export default class MultiPicker extends React.Component {
           data={this.props.popData}
           initialKey={
             (this.props.currentPopData && this.props.currentPopData.key) ||
-            (this.props.popData.length > 0 && this.props.popData[0].key)
+            (this.props.popData.length > 0 && this.props.popData[0].key) ||
+            0
           }
           onScroll={item => {
             this.currentFirstData = item
@@ -179,7 +182,11 @@ export default class MultiPicker extends React.Component {
           style={{ flex: 1, width: '50%' }}
           ref={ref => (this.secondMenu = ref)}
           data={this.state.secondData}
-          initialKey={this.currentFirstData.initItem.key}
+          initialKey={
+            this.currentFirstData.initItem
+              ? this.currentFirstData.initItem.key
+              : ''
+          }
           onScroll={item => {
             if (this.update) return
             let index = this._getFirstDataIndex()

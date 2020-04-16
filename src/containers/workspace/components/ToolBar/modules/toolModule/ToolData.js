@@ -11,7 +11,15 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolAction from './ToolAction'
 import EditAction from '../editModule/EditAction'
-import { line, point, region, text, colors, colorsWithNull } from './data'
+import {
+  line,
+  point,
+  region,
+  text,
+  colors,
+  colorsWithNull,
+  pickerData,
+} from './data'
 
 /**
  * 获取工具操作
@@ -22,6 +30,7 @@ import { line, point, region, text, colors, colorsWithNull } from './data'
 function getData(type, params) {
   let data = []
   let buttons = []
+  let customView = null
   ToolbarModule.setParams(params)
   GLOBAL.MapToolType = type
   let layerType = ''
@@ -877,7 +886,24 @@ function getData(type, params) {
       ]
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.STYLE_TRANSFER:
+    case ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER:
+      data = pickerData()
+      buttons = [
+        ToolbarBtnType.CANCEL,
+        {
+          type: ToolbarBtnType.STYLE_TRANSFER,
+          action: ToolAction.matchPictureStyle,
+          image: getPublicAssets().common.icon_album,
+        },
+        {
+          type: ToolbarBtnType.STYLE_TRANSFER_PICKER,
+          action: ToolAction.showMenuBox,
+          image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+        },
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
       buttons = [
         ToolbarBtnType.CANCEL,
         {
@@ -894,14 +920,14 @@ function getData(type, params) {
       ]
       break
   }
-  return { data, buttons }
+  return { data, buttons, customView }
 }
 
 function getMenuData(type) {
   const _params = ToolbarModule.getParams()
   let data = []
   switch (type) {
-    case ConstToolType.STYLE_TRANSFER:
+    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
       data = [
         {
           key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS,
@@ -914,7 +940,7 @@ function getMenuData(type) {
                   .STYLE_BRIGHTNESS,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .STYLE_BRIGHTNESS,
-                buttons: getData(ConstToolType.STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -931,7 +957,7 @@ function getMenuData(type) {
                   .STYLE_CONTRAST,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .STYLE_CONTRAST,
-                buttons: getData(ConstToolType.STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST,
@@ -947,7 +973,7 @@ function getMenuData(type) {
                   .SATURATION,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .SATURATION,
-                buttons: getData(ConstToolType.STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION,

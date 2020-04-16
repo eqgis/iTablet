@@ -98,8 +98,7 @@ async function getToolBarData(type, params = {}) {
     toolBarData = styleModule().getData(type, params)
   } else if (
     typeof type === 'string' &&
-    (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
-      type === ConstToolType.STYLE_TRANSFER)
+    type.indexOf(ConstToolType.MAP_TOOL) > -1
   ) {
     toolBarData = toolModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
@@ -108,9 +107,9 @@ async function getToolBarData(type, params = {}) {
     toolBarData = themeModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule().getData(type, params)
-  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1){
+  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
     toolBarData = topoEditModule().getData(type)
-  }else if (
+  } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
   ) {
@@ -159,9 +158,11 @@ async function getToolBarData(type, params = {}) {
     toolBarData = markModule().getData(type, params)
   } else if (type === ConstToolType.MAP_COLOR_PICKER) {
     toolBarData = themeColorPickerModule().getData(type, params)
-  }else if(type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
-  type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE){
-    toolBarData = layerVisibleScaleModule().getData(type,params)
+  } else if (
+    type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
+    type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE
+  ) {
+    toolBarData = layerVisibleScaleModule().getData(type, params)
   }
   return toolBarData
 }
@@ -192,7 +193,7 @@ async function setToolBarData(type, params = {}) {
   } else if (
     typeof type === 'string' &&
     (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
-      type === ConstToolType.STYLE_TRANSFER)
+      type === ConstToolType.MAP_TOOL_STYLE_TRANSFER)
   ) {
     toolBarData = toolModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
@@ -203,7 +204,7 @@ async function setToolBarData(type, params = {}) {
     toolBarData = themeModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule()
-  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1){
+  } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
     toolBarData = topoEditModule()
   } else if (
     typeof type === 'string' &&
@@ -248,8 +249,10 @@ async function setToolBarData(type, params = {}) {
     toolBarData = markModule()
   } else if (type === ConstToolType.MAP_COLOR_PICKER) {
     toolBarData = themeColorPickerModule()
-  }else if(type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
-      type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE){
+  } else if (
+    type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
+    type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE
+  ) {
     toolBarData = layerVisibleScaleModule()
   }
   // else {
@@ -275,7 +278,7 @@ async function setToolBarData(type, params = {}) {
 function getMenuDialogData(type, ...others) {
   let data = []
   switch (type) {
-    case ConstToolType.STYLE_TRANSFER:
+    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT:
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE:
     case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION:

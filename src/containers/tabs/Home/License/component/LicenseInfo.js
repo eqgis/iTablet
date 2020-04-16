@@ -204,7 +204,7 @@ class InfoItem extends Component {
   render() {
     return (
       <View style={{ width: '100%', backgroundColor: color.content_white }}>
-        <View
+        <TouchableOpacity
           style={{
             width: '100%',
             height: scaleSize(80),
@@ -212,18 +212,18 @@ class InfoItem extends Component {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
+          onPress={this.props.action}
+          disabled={!this.props.action}
         >
           <Text style={{ fontSize: scaleSize(20), marginLeft: 30 }}>
             {this.props.text}
           </Text>
-          <TouchableOpacity
+          <View
             style={{
               flexDirection: 'row',
               marginRight: 15,
               alignItems: 'center',
             }}
-            onPress={this.props.action}
-            disabled={!this.props.action}
           >
             <Text
               style={[
@@ -245,8 +245,8 @@ class InfoItem extends Component {
                 style={{ height: scaleSize(28), width: scaleSize(28) }}
               />
             )}
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }

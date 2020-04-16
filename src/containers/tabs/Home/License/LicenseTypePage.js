@@ -65,7 +65,6 @@ class LicenseTypePage extends Component {
       {
         title: getLanguage(global.language).Profile.LICENSE_TRIAL,
         type: LicenseType.trial,
-        onPress: this.applyTrialLicense,
       },
     ]
     if (Platform.OS === 'ios') {
@@ -76,68 +75,71 @@ class LicenseTypePage extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: color.content_white,
-          flexDirection: 'row',
-        }}
-      >
-        <View
+      <View style={{ width: '100%', backgroundColor: color.content_white }}>
+        <TouchableOpacity
           style={{
-            height: scaleSize(80),
-            width: scaleSize(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {this.props.licenseInfo &&
-            this.props.licenseInfo.licenseType === item.type && (
-            <Image
-              source={require('../../../../assets/public/settings_selected.png')}
-              style={{ height: scaleSize(55), width: scaleSize(55) }}
-            />
-          )}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            height: scaleSize(80),
+            width: '100%',
+            backgroundColor: color.content_white,
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
           }}
+          onPress={item.onPress}
+          disabled={!item.onPress}
         >
-          <Text style={{ fontSize: scaleSize(20) }}>{item.title}</Text>
-          {item.type !== LicenseType.trial ? (
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                marginRight: 15,
-                alignItems: 'center',
-              }}
-              onPress={item.onPress}
-            >
+          <View
+            style={{
+              height: scaleSize(80),
+              width: scaleSize(100),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {this.props.licenseInfo &&
+              this.props.licenseInfo.licenseType === item.type && (
               <Image
-                source={require('../../../../assets/Mine/mine_my_arrow.png')}
-                style={{ height: scaleSize(28), width: scaleSize(28) }}
+                source={require('../../../../assets/public/settings_selected.png')}
+                style={{ height: scaleSize(55), width: scaleSize(55) }}
               />
-            </TouchableOpacity>
-          ) : (
-            <Text
-              style={{
-                fontSize: scaleSize(20),
-                marginRight: 15,
-                color: color.gray2,
-              }}
-            >
-              {this.props.licenseInfo.licenseType === LicenseType.trial &&
-              this.props.licenseInfo.isLicenseValid
-                ? getLanguage(global.language).Profile.LICENSE_IN_TRIAL
-                : getLanguage(global.language).Profile.LICENSE_TRIAL_END}
-            </Text>
-          )}
-        </View>
+            )}
+          </View>
+          <View
+            style={{
+              flex: 1,
+              height: scaleSize(80),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ fontSize: scaleSize(20) }}>{item.title}</Text>
+            {item.type !== LicenseType.trial ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginRight: 15,
+                  alignItems: 'center',
+                }}
+              >
+                <Image
+                  source={require('../../../../assets/Mine/mine_my_arrow.png')}
+                  style={{ height: scaleSize(28), width: scaleSize(28) }}
+                />
+              </View>
+            ) : (
+              <Text
+                style={{
+                  fontSize: scaleSize(20),
+                  marginRight: 15,
+                  color: color.gray2,
+                }}
+              >
+                {this.props.licenseInfo.licenseType === LicenseType.trial &&
+                this.props.licenseInfo.isLicenseValid
+                  ? getLanguage(global.language).Profile.LICENSE_IN_TRIAL
+                  : getLanguage(global.language).Profile.LICENSE_TRIAL_END}
+              </Text>
+            )}
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }

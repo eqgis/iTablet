@@ -1096,6 +1096,8 @@ class Chat extends React.Component {
         <Container
           style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
           ref={ref => (this.container = ref)}
+          showFullInMap={true}
+          hideInBackground={false}
           headerProps={{
             title: this.state.title,
             withoutBack: false,

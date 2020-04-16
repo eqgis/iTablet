@@ -1,7 +1,6 @@
 import { DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { getPublicAssets } from '../../../../assets'
-import dataUtil from '../../../../utils/dataUtil'
 import constants from '../../../workspace/constants'
 
 function getGroupData(language) {
@@ -591,24 +590,6 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
   ]
 }
 
-function scaleData(language) {
-  return [
-    {
-      title: '',
-      data: [
-        {
-          title: getLanguage(language).Map_Layer.LAYERS_MAXIMUM,
-          // '最大可见比例尺',
-        },
-        {
-          title: getLanguage(language).Map_Layer.LAYERS_MINIMUM,
-          // '最小可见比例尺',
-        },
-      ],
-    },
-  ]
-}
-
 const mscaleData = [
   {
     title: '',
@@ -641,165 +622,6 @@ const mscaleData = [
   },
 ]
 
-async function getVisibleScalePickerData(min, max) {
-  const option = [
-    {
-      key: '1 : 2,500',
-      value: 2500,
-    },
-    {
-      key: '1 : 5,000',
-      value: 5000,
-    },
-    {
-      key: '1 : 10,000',
-      value: 10000,
-    },
-    {
-      key: '1 : 20,000',
-      value: 20000,
-    },
-    {
-      key: '1 : 25,000',
-      value: 25000,
-    },
-    {
-      key: '1 : 50,000',
-      value: 50000,
-    },
-    {
-      key: '1 : 100,000',
-      value: 100000,
-    },
-    {
-      key: '1 : 200,000',
-      value: 200000,
-    },
-    {
-      key: '1 : 500,000',
-      value: 500000,
-    },
-    {
-      key: '1 : 1,000,000',
-      value: 1000000,
-    },
-    {
-      key: '1 : 2,000,000',
-      value: 2000000,
-    },
-    {
-      key: '1 : 5,000,000',
-      value: 5000000,
-    },
-    {
-      key: '1 : 10,000,000',
-      value: 10000000,
-    },
-    {
-      key: '1 : 20,000,000',
-      value: 20000000,
-    },
-    {
-      key: '1 : 50,000,000',
-      value: 50000000,
-    },
-    {
-      key: '1 : 100,000,000',
-      value: 100000000,
-    },
-    {
-      key: '1 : 200,000,000',
-      value: 200000000,
-    },
-  ]
-  const minOption = option.clone()
-  let minInitItem =
-    min === 0
-      ? { key: '0', value: 0 }
-      : { key: `1 : ${dataUtil.NumberWithThousandSep(min)}`, value: min }
-  let n = 0
-  for (; n < minOption.length; n++) {
-    if (minInitItem.value < minOption[n].value) {
-      minOption.splice(n, 0, minInitItem)
-      break
-    } else if (minInitItem.value === minOption[n].value) {
-      minInitItem = minOption[n]
-      break
-    }
-  }
-  if (n === minOption.length) {
-    minOption.push(minInitItem)
-  }
-  // if (max !== 0) {
-  //   let i = 0
-  //   for (; i < minOption.length; i++) {
-  //     if (minOption[i].value > max) {
-  //       break
-  //     }
-  //   }
-  //   if (i > 0) {
-  //     minOption = minOption.slice(i)
-  //   }
-  // }
-  const maxOption = option.clone()
-  let maxInitItem =
-    max === 0
-      ? { key: getLanguage(GLOBAL.language).Map_Layer.LAYER_NONE, value: 0 }
-      : { key: `1 : ${dataUtil.NumberWithThousandSep(max)}`, value: max }
-  n = 0
-  for (; n < maxOption.length; n++) {
-    if (maxInitItem.value < maxOption[n].value) {
-      maxOption.splice(n, 0, maxInitItem)
-      break
-    } else if (maxInitItem.value === maxOption[n].value) {
-      maxInitItem = maxOption[n]
-      break
-    }
-  }
-  if (n === maxOption.length) {
-    maxOption.push(maxInitItem)
-  }
-  // if (min !== 0) {
-  //   let i = 0
-  //   for (; i < maxOption.length; i++) {
-  //     if (maxOption[i].value >= min) {
-  //       break
-  //     }
-  //   }
-  //   if (i > 0) {
-  //     maxOption = maxOption.slice(0, i)
-  //   }
-  // }
-  const customOptionMin = {
-    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
-    value: 0,
-    type: 'min',
-  }
-  const customOptionMax = {
-    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
-    value: 0,
-    type: 'max',
-  }
-  minOption.unshift(customOptionMin)
-  maxOption.unshift(customOptionMax)
-  const pickerData = [
-    {
-      key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,
-      value: '最小可见比例尺',
-      children: minOption,
-      initItem: minInitItem,
-      selectedItem: minInitItem,
-    },
-    {
-      key: getLanguage(global.language).Map_Layer.LAYERS_MAXIMUM,
-      value: '最大可见比例尺',
-      children: maxOption,
-      initItem: maxInitItem,
-      selectedItem: maxInitItem,
-    },
-  ]
-  return pickerData
-}
 
 export {
   layersetting,
@@ -815,7 +637,6 @@ export {
   layere3dTerrain,
   layer3dDefault,
   taggingData,
-  scaleData,
   mscaleData,
   layerSettingCanSelect,
   layerSettingCanNotSelect,
@@ -825,5 +646,4 @@ export {
   layerSettingCanNotEdit,
   layerSettingCanSnap,
   layerSettingCanNotSnap,
-  getVisibleScalePickerData,
 }

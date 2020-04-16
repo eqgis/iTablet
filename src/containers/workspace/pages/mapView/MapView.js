@@ -1358,7 +1358,7 @@ export default class MapView extends React.Component {
         this.setSaveViewVisible(true, null, async () => {
           this._removeGeometrySelectedListener()
           if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-             this._removeNavigationListeners()
+            this._removeNavigationListeners()
           }
         })
       } else {
@@ -1369,11 +1369,11 @@ export default class MapView extends React.Component {
             //'正在关闭地图'
           )
           if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-             this._removeNavigationListeners().then(()=>{
+            this._removeNavigationListeners().then(()=>{
               SMap.clearPoint()
               SMap.stopGuide()
               this.props.setMap2Dto3D(false)
-             })
+            })
           }
           await this.props.closeMap()
           await this._removeGeometrySelectedListener()
@@ -1465,7 +1465,7 @@ export default class MapView extends React.Component {
               // }
             }
           } else {
-            
+
             if (this.wsData.type === 'Workspace') {
               bWorkspcaOpen = false
               await this._openWorkspace(this.wsData, this.wsData.layerIndex)
@@ -1513,7 +1513,7 @@ export default class MapView extends React.Component {
           bWorkspcaOpen = true
         }
 
-    
+
         if (GLOBAL.Type === constants.MAP_PLOTTING) {
           this.setLoading(
             true,
@@ -1596,27 +1596,27 @@ export default class MapView extends React.Component {
 
         SMap.setLabelColor()
         SMap.openTaggingDataset(this.props.user.currentUser.userName).then(()=>{
-              SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(async hasDefaultTagging=>{
-                if(!hasDefaultTagging){
-                  await SMap.newTaggingDataset('Default_Tagging',this.props.user.currentUser.userName)
-                }
+          SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(async hasDefaultTagging=>{
+            if(!hasDefaultTagging){
+              await SMap.newTaggingDataset('Default_Tagging',this.props.user.currentUser.userName)
+            }
+            // debugger
+            SMap.getCurrentTaggingLayer(this.props.user.currentUser.userName).then(layer=>{
+              if(layer){
                 // debugger
-                SMap.getCurrentTaggingLayer(this.props.user.currentUser.userName).then(layer=>{
-                if(layer){
-                  // debugger
-                  GLOBAL.TaggingDatasetName = layer.name
-                  SMap.setLayerEditable(layer.name, true)
-                  SMap.setLayerVisible(layer.name, true)
-                  this.props.setCurrentLayer(layer)
+                GLOBAL.TaggingDatasetName = layer.name
+                SMap.setLayerEditable(layer.name, true)
+                SMap.setLayerVisible(layer.name, true)
+                this.props.setCurrentLayer(layer)
 
-                  bCreateTag = true
-                  if (hasMap) SMap.saveMap('', false, false)
-                  // debugger
-                }
-              })
+                bCreateTag = true
+                if (hasMap) SMap.saveMap('', false, false)
+                // debugger
+              }
             })
+          })
         })
-           
+
 
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
@@ -1628,7 +1628,7 @@ export default class MapView extends React.Component {
             this.showMarker.latitude,
             markerTag,
           )
-        
+
         SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
         if (GLOBAL.Type === constants.MAP_NAVIGATION) {
@@ -1649,19 +1649,19 @@ export default class MapView extends React.Component {
         }
         this.setLoading(false)
       } catch (e) {
-        if(!bWorkspcaOpen){
-          // Toast.show("workspace !")
-        }else if(!bDatasourceOPen){
-          // Toast.show("datasource !")
-        }else if(!bMapOPen){
-          // Toast.show("map !")
-        }else if(!bPlotOpen){
-          // Toast.show("plot !")
-        }else if(!bCreateTag){
-          // Toast.show("tagging !")
-        }else if(!bNaviCreate){
-          // Toast.show("navi !")
-        }
+        // if(!bWorkspcaOpen){
+        //   // Toast.show("workspace !")
+        // }else if(!bDatasourceOPen){
+        //   // Toast.show("datasource !")
+        // }else if(!bMapOPen){
+        //   // Toast.show("map !")
+        // }else if(!bPlotOpen){
+        //   // Toast.show("plot !")
+        // }else if(!bCreateTag){
+        //   // Toast.show("tagging !")
+        // }else if(!bNaviCreate){
+        //   // Toast.show("navi !")
+        // }
         this.setLoading(false)
         this.mapLoaded = true
       }

@@ -1,5 +1,5 @@
 import ToolbarModule from './ToolbarModule'
-import { ToolbarType, Height } from '../../../../../constants'
+import {ToolbarType, Height} from '../../../../../constants'
 
 /**
  * 统一ToolbarContentView高度（table类型自适应大小）
@@ -63,6 +63,9 @@ function getToolbarSize(type, additional = {}) {
         Height.TABLE_ROW_HEIGHT_1 *
         (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 4)
       break
+    case ToolbarType.multiPicker: //两列选择器
+      height = Height.TABLE_ROW_HEIGHT_1 * 4
+      break
     case ToolbarType.tabs: // 符号标签栏
       height =
         Height.TABLE_ROW_HEIGHT_2 *
@@ -74,6 +77,9 @@ function getToolbarSize(type, additional = {}) {
         orientation.indexOf('LANDSCAPE') === 0
           ? Height.TABLE_ROW_HEIGHT_3 * 5
           : Height.TABLE_ROW_HEIGHT_3 * 4
+      break
+    case ToolbarType.buttons:  //自定义buttons
+      height = Height.TOOLBAR_BUTTONS
       break
   }
   if (additional.height !== undefined) {

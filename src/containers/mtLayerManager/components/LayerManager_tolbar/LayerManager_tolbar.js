@@ -5,7 +5,7 @@ import {
   layerManagerData,
   ConstPath,
   UserType,
-  TouchType,
+  ToolbarType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import {
@@ -16,7 +16,6 @@ import {
   layerThemeSettings,
   layereditsetting,
   taggingData,
-  scaleData,
   mscaleData,
   layerSettingCanVisit,
   layerSettingCanSelect,
@@ -26,7 +25,6 @@ import {
   layerSettingCanNotSelect,
   layerSettingCanNotSnap,
   layerSettingCanNotEdit,
-  getVisibleScalePickerData,
   layerNavigationSetting,
 } from './LayerToolbarData'
 import {
@@ -49,7 +47,6 @@ import { FileTools } from '../../../../../src/native'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
-import { MultiPicker } from '../../../../components'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
 import DataHandler from '../../../tabs/Mine/DataHandler'
@@ -107,11 +104,7 @@ export default class LayerManager_tolbar extends React.Component {
       layerData: props.layerData || '',
       index: 0,
       // layerName: '',
-      layerVisibleScaleData: [],
     }
-    this.selectScaleKey = undefined //图层可见范围选中key
-    this.selectedMinItem = undefined //自定义最小值
-    this.selectedMaxItem = undefined // 自定义最大值
     this.isShow = false
     this.isBoxShow = true
     this.refreshParentList = null // 当前选中图层如果是图层组中的子图层，则刷新该子图层的图层组列表
@@ -128,22 +121,6 @@ export default class LayerManager_tolbar extends React.Component {
   }
   componentDidUpdate() {
     this.getHeight()
-    if (this.props.currentScale && this.selectScaleKey !== undefined) {
-      //update data
-      if (this.selectScaleKey === 'min') {
-        this.selectedMinItem = {
-          key: '自定义比例尺',
-          value: this.props.currentScale,
-          type: 'min',
-        }
-      } else {
-        this.selectedMaxItem = {
-          key: '自定义比例尺',
-          value: this.props.currentScale,
-          type: 'max',
-        }
-      }
-    }
   }
   getHeight = () => {
     let device = this.props.device
@@ -298,9 +275,6 @@ export default class LayerManager_tolbar extends React.Component {
       //     ]
       case ConstToolType.MAP_EDIT_TAGGING:
         data = taggingData(global.language)
-        break
-      case ConstToolType.MAP_SCALE:
-        data = scaleData(this.props.language)
         break
       case ConstToolType.MAP_MAX_SCALE:
         data = mscaleData
@@ -531,11 +505,15 @@ export default class LayerManager_tolbar extends React.Component {
       section.title ===
       getLanguage(global.language).Map_Layer.LAYERS_SET_VISIBLE_SCALE
     ) {
-      //'可见比例尺范围'
-      (async function() {
-        await this.setVisibleScalePickerData()
-        this.setVisible(true, ConstToolType.MAP_SCALE, {
-          layerData: this.state.layerData,
+      (async function(){
+        let mapScale = await SMap.getMapScale()
+        ToolbarModule.addData({layerData:this.state.layerData,preScale:mapScale - 0})
+        this.props.navigation.navigate('MapView')
+        let _params = ToolbarModule.getParams()
+        _params.showFullMap(true)
+        _params.setToolbarVisible(true,ConstToolType.MAP_LAYER_VISIBLE_SCALE,{
+          containerType:ToolbarType.multiPicker,
+          isFullScreen:false,
         })
       }.bind(this)())
     } else if (
@@ -981,9 +959,6 @@ export default class LayerManager_tolbar extends React.Component {
     switch (this.state.containerType) {
       case list:
         switch (this.state.type) {
-          case ConstToolType.MAP_SCALE:
-            box = this.renderPiker()
-            break
           case ConstToolType.MAP_MAX_SCALE:
           case ConstToolType.MAP_MIN_SCALE:
           case ConstToolType.MAP_EDIT_TAGGING:
@@ -1005,89 +980,6 @@ export default class LayerManager_tolbar extends React.Component {
         {box}
       </Animated.View>
     )
-  }
-
-  renderPiker = () => {
-    return (
-      <MultiPicker
-        ref={ref => (this.picker = ref)}
-        language={GLOBAL.language}
-        confirm={async item => {
-          let min =
-            item[0].selectedItem.key ===
-            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
-              ? this.selectedMinItem.value
-              : item[0].selectedItem.value
-          let max =
-            item[1].selectedItem.key ===
-            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
-              ? this.selectedMaxItem.value
-              : item[1].selectedItem.value
-          if (min !== 0 && max !== 0 && min <= max) {
-            //最大比例尺必须大于最小比例尺
-            Toast.show(
-              getLanguage(this.props.language).Map_Layer
-                .LAYER_SCALE_RANGE_WRONG,
-            )
-            return
-          }
-          for (let i = 0; i < item.length; i++) {
-            if (item[i].selectedItem.key !== item[i].initItem.key) {
-              if (item[i].value === '最大可见比例尺') {
-                await SMap.setMaxVisibleScale(this.state.layerData.path, max)
-              } else {
-                await SMap.setMinVisibleScale(this.state.layerData.path, min)
-              }
-            }
-          }
-          this.setVisible(false)
-          this.selectScaleKey = undefined
-          this.selectedMinItem = undefined
-          this.selectedMaxItem = undefined
-        }}
-        cancel={() => {
-          this.setVisible(false)
-          this.selectScaleKey = undefined
-          this.selectedMinItem = undefined
-          this.selectedMaxItem = undefined
-        }}
-        popData={this.state.layerVisibleScaleData}
-        onRightSelect={async item => {
-          if (
-            item.key ===
-            getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE
-          ) {
-            this.selectScaleKey = item.type
-            let currentScaleData
-            if (item === 'min') {
-              currentScaleData = this.selectedMinItem
-            } else {
-              currentScaleData = this.selectedMaxItem
-            }
-            let mapScale =
-              currentScaleData !== undefined
-                ? currentScaleData.value
-                : await SMap.getMapScale()
-            GLOBAL.TouchType = TouchType.NULL
-            this.props.navigation && this.props.navigation.navigate('MapView')
-            GLOBAL.ToolBar && GLOBAL.ToolBar.showFullMap()
-            GLOBAL.LayerVisibilityView &&
-              GLOBAL.LayerVisibilityView.setVisible(
-                true,
-                (mapScale - 0).toFixed(6),
-              )
-          }
-        }}
-        viewableItems={3}
-      />
-    )
-  }
-
-  setVisibleScalePickerData = async () => {
-    let min = await SMap.getMinVisibleScale(this.state.layerData.path)
-    let max = await SMap.getMaxVisibleScale(this.state.layerData.path)
-    let pickerData = await getVisibleScalePickerData(min, max)
-    this.setState({ layerVisibleScaleData: pickerData })
   }
 
   // confirm = () => {

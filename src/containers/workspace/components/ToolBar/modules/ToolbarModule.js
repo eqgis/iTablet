@@ -22,6 +22,7 @@ import {
   incrementModule,
   themeColorPickerModule,
   topoEditModule,
+  layerVisibleScaleModule,
 } from '../modules'
 
 // 更新类中的数据
@@ -158,6 +159,9 @@ async function getToolBarData(type, params = {}) {
     toolBarData = markModule().getData(type, params)
   } else if (type === ConstToolType.MAP_COLOR_PICKER) {
     toolBarData = themeColorPickerModule().getData(type, params)
+  }else if(type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
+  type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE){
+    toolBarData = layerVisibleScaleModule().getData(type,params)
   }
   return toolBarData
 }
@@ -244,6 +248,9 @@ async function setToolBarData(type, params = {}) {
     toolBarData = markModule()
   } else if (type === ConstToolType.MAP_COLOR_PICKER) {
     toolBarData = themeColorPickerModule()
+  }else if(type === ConstToolType.MAP_LAYER_VISIBLE_SCALE ||
+      type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE){
+    toolBarData = layerVisibleScaleModule()
   }
   // else {
   //   toolBarData = mapModule().getData(type)

@@ -48,7 +48,6 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  LayerVisibilityView,
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
@@ -1511,7 +1510,6 @@ export default class MapView extends React.Component {
           })
           bWorkspcaOpen = true
         }
-
         if (GLOBAL.Type === constants.MAP_PLOTTING) {
           this.setLoading(
             true,
@@ -3403,7 +3401,6 @@ export default class MapView extends React.Component {
           </Dialog>
         )}
         {this.renderBackgroundOverlay()}
-        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)} />
       </Container>
     )
   }

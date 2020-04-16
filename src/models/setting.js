@@ -328,7 +328,7 @@ const initialState = fromJS({
   isAgreeToProtocol: false,
   navigationhistory: [],
   mapColumnNavBar: true,
-  columnNavBarDisplay:false,
+  navBarDisplay: false,
 })
 
 export default handleActions(

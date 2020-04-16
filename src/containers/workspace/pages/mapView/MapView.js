@@ -1829,6 +1829,9 @@ export default class MapView extends React.Component {
         ref={ref => (this.NavIcon = ref)}
         getNavMenuRef={() => this.NavMenu}
         device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
+        navBarDisplay={this.props.navBarDisplay}
+        setNavBarDisplay={this.props.setNavBarDisplay}
       />
     )
   }
@@ -1846,7 +1849,7 @@ export default class MapView extends React.Component {
         type={this.type}
         device={this.props.device}
         mapColumnNavBar={this.props.mapColumnNavBar}
-        columnNavBarDisplay={this.props.columnNavBarDisplay}
+        navBarDisplay={this.props.navBarDisplay}
       />
     )
   }
@@ -1950,10 +1953,6 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
-        getNavMenuRef={() => this.NavMenu}
-        mapColumnNavBar={this.props.mapColumnNavBar}
-        columnNavBarDisplay={this.props.columnNavBarDisplay}
-        setNavBarDisplay={() => this.props.setNavBarDisplay}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -3270,9 +3269,8 @@ export default class MapView extends React.Component {
           GLOBAL.Type === constants.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
-        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMapNavMenu()}
+        {this.renderMapNavIcon()}
+        {this.renderMapNavMenu()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}

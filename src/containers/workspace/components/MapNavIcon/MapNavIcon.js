@@ -8,58 +8,85 @@ const ICON_RIGHT_INVISIBLE = -scaleSize(80)
 const ICON_RIGHT_SHOWMENU = scaleSize(75)
 const ICON_RIGHT_HIDEMENU = 0
 
-const MENU_RIGHT_INVISIBLE = -(scaleSize(80) + scaleSize(96))
-const MENU_RIGHT_SHOW = 0
-const MENU_RIGHT_HIDE = -scaleSize(96)
+const ICON_RIGHT_INVISIBLE_R = -scaleSize(80)
+const ICON_RIGHT_SHOWMENU_R = 0
+const ICON_RIGHT_HIDEMENU_R = 0
 
 export default class MapNavIcon extends React.Component {
   props: {
     getNavMenuRef: () => {},
     device: Object,
+    mapColumnNavBar: Boolean,
+    navBarDisplay: Boolean,
+    setNavBarDisplay: () => {},
   }
 
   constructor(props) {
     super(props)
-    this.right =
-      this.props.device.orientation === 'PORTRAIT'
-        ? new Animated.Value(ICON_RIGHT_INVISIBLE)
-        : new Animated.Value(ICON_RIGHT_HIDEMENU)
-    this.rotate = new Animated.Value(0)
-    this.shadowVisible = new Animated.Value(0)
-    this.color = new Animated.Value(0)
-    this.elevation = new Animated.Value(20)
-    this.imageX = new Animated.Value(0)
     this.visible = true
-    this.menuVisible = false
-    this.opacity = new Animated.Value(1.0)
+    this.right = new Animated.Value(this.getRight())
+    this.rotate = new Animated.Value(this.props.navBarDisplay ? 1 : 0)
+    this.shadowVisible = new Animated.Value(0)
+    this.color = new Animated.Value(
+      this.props.mapColumnNavBar ? (this.props.navBarDisplay ? 1 : 0) : 0,
+    )
+    this.elevation = new Animated.Value(
+      this.props.mapColumnNavBar ? (this.props.navBarDisplay ? 21 : 20) : 20,
+    )
+    this.imageX = new Animated.Value(
+      this.props.mapColumnNavBar
+        ? this.props.navBarDisplay
+          ? scaleSize(5)
+          : 0
+        : 0,
+    )
+    this.opacity = new Animated.Value(
+      this.props.mapColumnNavBar ? (this.props.navBarDisplay ? 0.6 : 1.0) : 1.0,
+    )
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
+    if (this.props.mapColumnNavBar !== prevProps.mapColumnNavBar) {
+      this.changStyle(this.props.navBarDisplay)
+    }
+  }
+
+  getRight = () => {
+    let right
+    if (this.props.device.orientation === 'PORTRAIT') {
+      right = this.props.mapColumnNavBar
+        ? ICON_RIGHT_INVISIBLE
+        : ICON_RIGHT_INVISIBLE_R
+    } else {
+      if (this.visible) {
+        if (this.props.navBarDisplay) {
+          right = this.props.mapColumnNavBar
+            ? ICON_RIGHT_SHOWMENU
+            : ICON_RIGHT_SHOWMENU_R
+        } else {
+          right = this.props.mapColumnNavBar
+            ? ICON_RIGHT_HIDEMENU
+            : ICON_RIGHT_HIDEMENU_R
+        }
+      } else {
+        right = this.props.mapColumnNavBar
+          ? ICON_RIGHT_INVISIBLE
+          : ICON_RIGHT_INVISIBLE_R
+      }
+    }
+    return right
   }
 
   onOrientationChange = () => {
-    if (this.props.device.orientation === 'PORTRAIT') {
-      Animated.timing(this.right, {
-        toValue: ICON_RIGHT_INVISIBLE,
-        duration: 0,
-      }).start()
-    } else {
-      if (this.visible) {
-        Animated.timing(this.right, {
-          toValue: ICON_RIGHT_HIDEMENU,
-          duration: 0,
-        }).start()
-      } else {
-        Animated.timing(this.right, {
-          toValue: ICON_RIGHT_INVISIBLE,
-          duration: 0,
-        }).start()
-      }
-    }
-    this.changStyle(false)
+    let right = this.getRight()
+    Animated.timing(this.right, {
+      toValue: right,
+      duration: 0,
+    }).start()
+    this.changStyle(this.props.navBarDisplay)
   }
 
   changStyle = showMenu => {
@@ -79,8 +106,12 @@ export default class MapNavIcon extends React.Component {
 
   changeShadow = show => {
     if (Platform.OS === 'ios') {
+      let value = show ? 1 : 0
+      if (!this.props.mapColumnNavBar) {
+        value = 0
+      }
       Animated.timing(this.shadowVisible, {
-        toValue: show ? 1 : 0,
+        toValue: value,
         duration: 300,
       }).start()
     }
@@ -88,61 +119,79 @@ export default class MapNavIcon extends React.Component {
 
   changeElevation = show => {
     if (Platform.OS === 'android') {
+      let value = show ? 21 : 20
+      if (!this.props.mapColumnNavBar) {
+        value = 20
+      }
       Animated.timing(this.elevation, {
-        toValue: show ? 21 : 20,
+        toValue: value,
         duration: 0,
       }).start()
     }
   }
 
   changeColor = show => {
+    let color = show ? 1 : 0
+    let opacity = show ? 0.6 : 1.0
+    if (!this.props.mapColumnNavBar) {
+      color = 0
+      opacity = 1.0
+    }
     Animated.timing(this.color, {
-      toValue: show ? 1 : 0,
+      toValue: color,
       duration: 150,
     }).start()
     Animated.timing(this.opacity, {
-      toValue: show ? 0.6 : 1.0,
+      toValue: opacity,
       duration: 150,
     }).start()
   }
 
   changeImageX = show => {
+    let value = show ? scaleSize(5) : 0
+    if (!this.props.mapColumnNavBar) {
+      value = 0
+    }
     Animated.timing(this.imageX, {
-      toValue: show ? scaleSize(5) : 0,
+      toValue: value,
       duration: 150,
     }).start()
   }
 
   setVisible = visible => {
-    let right = visible ? ICON_RIGHT_HIDEMENU : ICON_RIGHT_INVISIBLE
-    if (this.props.device.orientation === 'PORTRAIT') {
-      right = ICON_RIGHT_INVISIBLE
-    }
+    this.visible = visible
+    let right = this.getRight()
     Animated.timing(this.right, {
       toValue: right,
       duration: 300,
     }).start()
-    this.visible = visible
     const menu = this.props.getNavMenuRef()
     if (menu) {
-      let menuRight = visible ? MENU_RIGHT_HIDE : MENU_RIGHT_INVISIBLE
-      menu.setLocation(menuRight)
+      menu.setVisible(visible)
     }
-    this.changStyle(false)
   }
 
   onPress = () => {
     const menu = this.props.getNavMenuRef()
-    let menuVisible = menu ? menu.visible : false
-    let right = menuVisible ? ICON_RIGHT_HIDEMENU : ICON_RIGHT_SHOWMENU
+    let menuVisible = this.props.navBarDisplay
+    let right
+    if (menuVisible) {
+      right = this.props.mapColumnNavBar
+        ? ICON_RIGHT_HIDEMENU
+        : ICON_RIGHT_HIDEMENU_R
+    } else {
+      right = this.props.mapColumnNavBar
+        ? ICON_RIGHT_SHOWMENU
+        : ICON_RIGHT_SHOWMENU_R
+    }
     Animated.timing(this.right, {
       toValue: right,
       duration: 300,
     }).start()
     if (menu) {
-      let menuRight = menuVisible ? MENU_RIGHT_HIDE : MENU_RIGHT_SHOW
-      menu.setLocation(menuRight)
+      menu.locationChange()
     }
+    this.props.setNavBarDisplay(!menuVisible)
     this.changStyle(!menuVisible)
   }
 
@@ -169,7 +218,7 @@ export default class MapNavIcon extends React.Component {
           shadowColor: 'rgba(0, 0, 0, 0.5)',
           shadowOpacity: this.shadowVisible,
           shadowRadius: 2,
-          opacity:this.opacity,
+          opacity: this.opacity,
         }}
       >
         <TouchableOpacity style={styles.moreImageView} onPress={this.onPress}>

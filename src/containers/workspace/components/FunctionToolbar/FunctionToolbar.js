@@ -4,13 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import {
-  View,
-  Animated,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { View, Animated, FlatList, Dimensions } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
@@ -93,10 +87,6 @@ export default class FunctionToolbar extends React.Component {
     //弹出模型、路网弹窗
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
-    getNavMenuRef: () => {},
-    mapColumnNavBar: boolean,
-    columnNavBarDisplay:boolean,
-    setNavBarDisplay:() => {},
   }
 
   static defaultProps = {
@@ -121,9 +111,7 @@ export default class FunctionToolbar extends React.Component {
           ? new Animated.Value(RIGHT_LANDSCAPE)
           : new Animated.Value(RIGHT),
     }
-    this.rotate = new Animated.Value(0)
     this.visible = true
-    this.menuVisible = false
     this.offset = 0
     this.m_maxHeight = 400
     this.onTop = true
@@ -141,8 +129,7 @@ export default class FunctionToolbar extends React.Component {
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
-      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
-      this.props.mapColumnNavBar !== nextProps.mapColumnNavBar
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
     ) {
       return true
     }
@@ -246,20 +233,10 @@ export default class FunctionToolbar extends React.Component {
         ? RIGHT_LANDSCAPE
         : RIGHT
     Animated.timing(this.state.right, {
-      toValue: visible ? right : scaleSize(-200),
+      toValue: visible ? right : scaleSize(-80),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
     this.visible = visible
-    if (!visible) {
-      !this.props.mapColumnNavBar && this.setMenuVisible(visible)
-    }
-  }
-
-  rotateMore = visible => {
-    Animated.timing(this.rotate, {
-      toValue: visible ? 1 : 0,
-      duration: Const.ANIMATED_DURATION,
-    }).start()
   }
 
   isMapIndoorNavigation = () => {
@@ -707,41 +684,8 @@ export default class FunctionToolbar extends React.Component {
     )
   }
 
-  setMenuVisible = visible => {
-    const menu = this.props.getNavMenuRef()
-    menu && menu.setVisible(visible)
-    this.rotateMore(visible)
-    this.menuVisible = visible
-  }
-
   renderMore = () => {
-    const rotateX = this.rotate.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '180deg'],
-    })
-    if (this.props.mapColumnNavBar) {
-      return <View style={styles.moreImageView} />
-    }
-    return (
-      <View>
-        <TouchableOpacity
-          style={styles.moreImageView}
-          onPress={() => {
-            this.setMenuVisible(!this.menuVisible)
-          }}
-        >
-          <Animated.Image
-            style={[
-              styles.moreImage,
-              {
-                transform: [{ rotateY: rotateX }],
-              },
-            ]}
-            source={require('../../../../assets/public/left_arrow.png')}
-          />
-        </TouchableOpacity>
-      </View>
-    )
+    return <View style={styles.moreImageView} />
   }
 
   renderIndicator = location => {

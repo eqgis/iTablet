@@ -88,7 +88,7 @@ function showMenuBox(type, selectKey, params = {}) {
         params.setData({
           isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
           showMenuDialog: false,
-          isFullScreen: !this.state.isTouchProgress,
+          isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
         })
     } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
       params.showBox && params.showBox()
@@ -154,6 +154,8 @@ export default {
   showMenuBox,
   tableAction,
 
+  pickerConfirm: params => changePosition(params),
+  pickerCancel: () => cancelSelect(),
   cancelSelect,
   changePosition,
   changeLegendVisible,

@@ -52,7 +52,8 @@ function getToolbarSize(type, additional = {}) {
       height = Height.LIST_HEIGHT_L
       break
     case ToolbarType.horizontalTable: // 横向滚动表格
-      height = Height.TABLE_ROW_HEIGHT_2
+      height = Height.TABLE_ROW_HEIGHT_4
+      column = 8
       break
     case ToolbarType.createPlotAnimation: // 创建标绘推演
     case ToolbarType.animationNode: // 态势推演

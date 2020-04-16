@@ -1,0 +1,274 @@
+import React, { Component } from 'react'
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  AsyncStorage,
+  FlatList,
+  ScrollView,
+} from 'react-native'
+import { connect } from 'react-redux'
+import { setLicenseInfo } from '../../../../../models/license'
+import constants from '../../../../../../src/containers/workspace/constants'
+import { Container, Button } from '../../../../../components'
+import { color } from '../../../../../styles'
+import { SMap } from 'imobile_for_reactnative'
+import ModuleInfo from '../component/ModuleInfo'
+import { scaleSize, Toast } from '../../../../../utils'
+import styles from '../styles'
+import { getPublicAssets } from '../../../../../assets'
+import { getLanguage } from '../../../../../language'
+
+class LicenseJoinCloud extends Component {
+  props: {
+    navigation: Object,
+    setLicenseInfo: () => {},
+  }
+
+  constructor(props) {
+    super(props)
+    const { params } = this.props.navigation.state
+
+    this.state = {
+      licenses: params.licenseInfo.licenses || [],
+      currentLicense: params.licenseInfo.licenses
+        ? params.licenseInfo.licenses[0]
+          ? params.licenseInfo.licenses[0]
+          : {}
+        : {},
+      showDetail: false,
+    }
+  }
+
+  activate = async () => {
+    try {
+      let licenseId = this.state.currentLicense.id
+      if (licenseId) {
+        this.container &&
+          this.container.setLoading(
+            true,
+            getLanguage(global.language).Profile.LICENSE_ACTIVATING,
+          )
+        let returnId = await SMap.applyCloudLicense(licenseId)
+        if (!returnId) {
+          Toast.show(
+            getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL,
+          )
+        } else {
+          AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, licenseId)
+          AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, returnId)
+          Toast.show(
+            getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+          )
+          let info = await SMap.getEnvironmentStatus()
+          this.props.setLicenseInfo(info)
+          this.props.navigation.pop(2)
+        }
+        this.container && this.container.setLoading(false)
+      }
+    } catch (e) {
+      this.container && this.container.setLoading(false)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+    }
+  }
+
+  renderLicense = () => {
+    let licenses = this.state.licenses
+    if (!licenses.length || licenses.length === 0) {
+      return (
+        <View style={{ alignItems: 'center' }}>
+          <Text>{getLanguage(global.language).Profile.LICENSE_QUERY_NONE}</Text>
+        </View>
+      )
+    }
+    return (
+      <View>
+        <View
+          style={{
+            height: scaleSize(80),
+            justifyContent: 'center',
+            marginHorizontal: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: scaleSize(26),
+              color: color.gray2,
+            }}
+          >
+            {getLanguage(global.language).Profile.LICENSE_SELECT_LICENSE}
+          </Text>
+        </View>
+        <View style={{ marginHorizontal: 20 }}>
+          <FlatList
+            data={this.state.licenses}
+            renderItem={this.renderLicenseItem}
+            keyExtractor={(item, index) => index.toString()}
+            extraData={this.state.currentLicense.id}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  renderLicenseItem = ({ item, index }) => {
+    return (
+      <View>
+        <TouchableOpacity
+          style={[
+            {
+              height: scaleSize(80),
+              backgroundColor: 'white',
+              justifyContent: 'center',
+            },
+            this.state.currentLicense.id === item.id && {
+              backgroundColor: '#4680df',
+            },
+          ]}
+          onPress={() => {
+            this.setState({ currentLicense: item })
+          }}
+        >
+          <Text
+            style={[
+              {
+                marginLeft: scaleSize(20),
+              },
+              this.state.currentLicense.id === item.id && {
+                color: 'white',
+              },
+            ]}
+          >
+            {getLanguage(global.language).Profile.LICENSE + (index + 1)}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  renderLicenseDetail = () => {
+    return (
+      <View
+        style={{
+          paddingHorizontal: 20,
+        }}
+      >
+        {this.renderShowDetail()}
+        {this.state.showDetail && this.renderInfo()}
+        {this.state.showDetail && this.renderModules()}
+      </View>
+    )
+  }
+
+  renderShowDetail = () => {
+    let icon = this.state.showDetail
+      ? getPublicAssets().common.icon_check_disable
+      : getPublicAssets().common.icon_uncheck_disable
+
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          height: scaleSize(60),
+          alignItems: 'center',
+          marginVertical: 15,
+        }}
+        onPress={() => {
+          this.setState({ showDetail: !this.state.showDetail })
+        }}
+      >
+        <Image
+          resizeMode={'contain'}
+          style={{
+            height: scaleSize(40),
+            width: scaleSize(40),
+          }}
+          source={icon}
+        />
+        <Text style={{ color: color.gray2 }}>
+          {getLanguage(global.language).Profile.LICENSE_SHOW_DETAIL}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderInfo = () => {
+    return (
+      <View
+        style={{
+          height: scaleSize(80),
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          backgroundColor: 'white',
+          marginBottom: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: scaleSize(20),
+            marginLeft: 20,
+          }}
+        >
+          {getLanguage(global.language).Profile.LICENSE_REAMIN_DAYS}
+        </Text>
+        <Text
+          style={{
+            fontSize: scaleSize(20),
+            marginRight: 15,
+            color: color.gray2,
+          }}
+        >
+          {this.state.currentLicense.remainDays
+            ? this.state.currentLicense.remainDays +
+              getLanguage(global.language).Profile.LICENSE_DAY
+            : ''}
+        </Text>
+      </View>
+    )
+  }
+
+  renderModules = () => {
+    return <ModuleInfo selectedModule={this.state.currentLicense.moduleNames} />
+  }
+
+  renderActive = () => {
+    return (
+      <Button
+        title={getLanguage(global.language).Profile.LICENSE_ACTIVATE}
+        type={this.state.currentLicense.id ? 'BLUE' : 'GRAY'}
+        style={styles.activeButton}
+        titleStyle={{ fontSize: scaleSize(24) }}
+        onPress={this.activate}
+      />
+    )
+  }
+
+  render() {
+    return (
+      <Container
+        ref={ref => (this.container = ref)}
+        style={{ backgroundColor: color.background }}
+        headerProps={{
+          title: getLanguage(global.language).Profile.LICENSE_SELECT_LICENSE,
+          navigation: this.props.navigation,
+        }}
+      >
+        <ScrollView>
+          {this.renderLicense()}
+          {this.renderLicenseDetail()}
+          {this.renderActive()}
+        </ScrollView>
+      </Container>
+    )
+  }
+}
+
+const mapDispatchToProps = {
+  setLicenseInfo,
+}
+export default connect(
+  null,
+  mapDispatchToProps,
+)(LicenseJoinCloud)

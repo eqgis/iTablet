@@ -12,6 +12,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: '100%',
     elevation: 100,
+    zIndex:100,
   },
   overlayer: {
     flex: 1,

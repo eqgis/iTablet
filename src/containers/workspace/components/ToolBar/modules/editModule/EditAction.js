@@ -121,7 +121,7 @@ async function geometrySelected(event) {
           case DatasetType.REGION:
             type = ConstToolType.MAP_EDIT_REGION
             // height = ConstToolType.HEIGHT[2]
-            containerType = ToolbarType.scrollTable
+            // containerType = ToolbarType.scrollTable
             break
           case DatasetType.CAD:
             type = ConstToolType.MAP_EDIT_CAD

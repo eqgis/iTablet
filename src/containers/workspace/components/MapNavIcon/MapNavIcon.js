@@ -4,11 +4,11 @@ import { Const } from '../../../../constants'
 import { scaleSize } from '../../../../utils'
 import styles from './styles'
 
-const ICON_RIGHT_INVISIBLE = -scaleSize(80)
+const ICON_RIGHT_INVISIBLE = -scaleSize(100)
 const ICON_RIGHT_SHOWMENU = scaleSize(75)
 const ICON_RIGHT_HIDEMENU = 0
 
-const ICON_RIGHT_INVISIBLE_R = -scaleSize(80)
+const ICON_RIGHT_INVISIBLE_R = -scaleSize(100)
 const ICON_RIGHT_SHOWMENU_R = 0
 const ICON_RIGHT_HIDEMENU_R = 0
 

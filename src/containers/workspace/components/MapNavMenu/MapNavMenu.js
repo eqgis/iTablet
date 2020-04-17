@@ -14,11 +14,11 @@ import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 // export const MAP_LOCAL = 'MAP_LOCAL'
 // export const MAP_3D = 'MAP_3D'
 
-const INVISIBLE = -(scaleSize(80) + scaleSize(96))
+const INVISIBLE = -(scaleSize(100) + scaleSize(96))
 const SHOW = 0
 const HIDE = -scaleSize(96)
 
-const INVISIBLE_R = -(scaleSize(80) + scaleSize(600))
+const INVISIBLE_R = -(scaleSize(100) + scaleSize(600))
 const SHOW_R = scaleSize(80)
 const HIDE_R = -scaleSize(600)
 

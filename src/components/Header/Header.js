@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react'
 import { Text, View, Image, TouchableOpacity, Animated } from 'react-native'
-import styles, * as stylesConst from './styles'
+import styles from './styles'
 import { scaleSize, setSpText, screen } from '../../utils'
 
 class NavigationHeader extends Component {
@@ -59,11 +59,7 @@ class NavigationHeader extends Component {
     super(props)
     this.state = {
       headerTop: new Animated.Value(0),
-      headerHeight:
-        global.getDevice().orientation &&
-        global.getDevice().orientation.indexOf('LANDSCAPE') === 0
-          ? new Animated.Value(stylesConst.HEADER_HEIGHT_LANDSCAPE)
-          : new Animated.Value(stylesConst.HEADER_HEIGHT),
+      headerHeight: new Animated.Value(screen.getHeaderHeight()),
     }
     this.visible = true
     this.clickable = true
@@ -74,11 +70,7 @@ class NavigationHeader extends Component {
   }
 
   onOrientationChange = () => {
-    let height =
-      global.getDevice().orientation &&
-      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
-        ? stylesConst.HEADER_HEIGHT_LANDSCAPE
-        : stylesConst.HEADER_HEIGHT
+    let height = screen.getHeaderHeight()
     Animated.timing(this.state.headerHeight, {
       toValue: height,
       duration: 300,

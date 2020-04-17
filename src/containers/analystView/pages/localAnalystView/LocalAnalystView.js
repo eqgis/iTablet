@@ -183,12 +183,12 @@ export default class LocalAnalystView extends Component {
             await this.props.getLayers()
             this.setLoading(false)
             await SMap.setLayerFullView(res.layerInfo.path)
-            if (GLOBAL.mapController) {
-              GLOBAL.mapController.move({
-                bottom: scaleSize(100),
-                left: 'default',
-              })
-            }
+            // if (GLOBAL.mapController) {
+            //   GLOBAL.mapController.move({
+            //     bottom: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? scaleSize(45) : scaleSize(135),
+            //     left: 'default',
+            //   })
+            // }
             NavigationService.goBack()
           } else {
             this.setLoading(false)

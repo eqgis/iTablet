@@ -9,7 +9,6 @@ import NavigationService from '../../../../containers/NavigationService'
 import MT_Btn from '../../../../components/mapTools/MT_Btn'
 import { getLanguage } from '../../../../language/index'
 import { getThemeAssets } from '../../../../assets'
-import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 // import { SScene, Utility } from 'imobile_for_reactnative'
 // export const MAP_LOCAL = 'MAP_LOCAL'
 // export const MAP_3D = 'MAP_3D'
@@ -311,7 +310,7 @@ export default class MapNavMenu extends React.Component {
             flexDirection: 'column',
             elevation: 21,
             width: scaleSize(96),
-            height: this.props.device.height - HEADER_HEIGHT_LANDSCAPE,
+            height: this.props.device.height - screen.getHeaderHeight(),
           },
         ]}
       >

@@ -21,8 +21,6 @@ import { getLanguage } from '../../../../language'
 import constants from '../../../workspace/constants'
 import NavigationService from '../../../NavigationService'
 
-const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
-
 export default class PoiInfoContainer extends React.PureComponent {
   props: {
     device: Object,
@@ -55,19 +53,24 @@ export default class PoiInfoContainer extends React.PureComponent {
       name: '',
       tempList: [],
     } //暂存搜索结果，用于返回事件
-    this.bottom = new Animated.Value(-screen.getScreenHeight(props.device.orientation))
+    this.bottom = new Animated.Value(
+      -screen.getScreenHeight(props.device.orientation),
+    )
     this.boxHeight = new Animated.Value(0)
     this.height = new Animated.Value(0)
     this.width = new Animated.Value(0)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let animParams = this.getAnimParams()
     this.startAnim(animParams)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.device.orientation !== this.props.device.orientation || prevState.visible !== this.state.visible) {
+    if (
+      prevProps.device.orientation !== this.props.device.orientation ||
+      prevState.visible !== this.state.visible
+    ) {
       let animParams = this.getAnimParams()
       this.startAnim(animParams)
     }
@@ -77,78 +80,104 @@ export default class PoiInfoContainer extends React.PureComponent {
     let width, height, bottom, boxHeight
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       width = screen.getScreenWidth(this.props.device.orientation) * 0.45
-      if(this.state.showMore){
+      if (this.state.showMore) {
         height = scaleSize(80)
-        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(80)
+        bottom =
+          screen.getScreenHeight(this.props.device.orientation) -
+          screen.getHeaderHeight() -
+          scaleSize(80)
         boxHeight = scaleSize(80)
       }
-      if(!this.state.showList && this.state.destination){
+      if (!this.state.showList && this.state.destination) {
         boxHeight = scaleSize(200)
         height = scaleSize(200)
-        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(200)
+        bottom =
+          screen.getScreenHeight(this.props.device.orientation) -
+          screen.getHeaderHeight() -
+          scaleSize(200)
       }
-      if(this.state.showList && this.state.resultList.length === 0 ){
+      if (this.state.showList && this.state.resultList.length === 0) {
         boxHeight = scaleSize(340)
         height = scaleSize(340)
-        bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(340)
+        bottom =
+          screen.getScreenHeight(this.props.device.orientation) -
+          screen.getHeaderHeight() -
+          scaleSize(340)
       }
-      if(this.state.showList && this.state.resultList.length !== 0 && !this.state.showMore ){
-        boxHeight = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
-        height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+      if (
+        this.state.showList &&
+        this.state.resultList.length !== 0 &&
+        !this.state.showMore
+      ) {
+        boxHeight =
+          screen.getScreenHeight(this.props.device.orientation) -
+          screen.getHeaderHeight()
+        height =
+          screen.getScreenHeight(this.props.device.orientation) -
+          screen.getHeaderHeight()
         bottom = 0
       }
     } else {
       width = screen.getScreenWidth(this.props.device.orientation)
       bottom = 0
-      if(this.state.showMore){
+      if (this.state.showMore) {
         boxHeight = scaleSize(80)
         height = scaleSize(80)
       }
-      if(!this.state.showList){
+      if (!this.state.showList) {
         height = scaleSize(200)
         boxHeight = scaleSize(200)
       }
-      if(this.state.showList && this.state.resultList.length === 0){
+      if (this.state.showList && this.state.resultList.length === 0) {
         height = scaleSize(340)
         boxHeight = scaleSize(340)
       }
-      if(this.state.showList && this.state.resultList.length !== 0 && !this.state.showMore){
+      if (
+        this.state.showList &&
+        this.state.resultList.length !== 0 &&
+        !this.state.showMore
+      ) {
         boxHeight = scaleSize(450)
         height = scaleSize(450)
       }
     }
     //隐藏状态
-    if(!this.state.visible){
+    if (!this.state.visible) {
       bottom = -screen.getScreenHeight(this.props.device.orientation)
     }
-    return {width,height,bottom,boxHeight}
+    return { width, height, bottom, boxHeight }
   }
 
-  startAnim = ({width,height,bottom,boxHeight}) => {
+  startAnim = ({ width, height, bottom, boxHeight }) => {
     let AnimationList = []
-    width !== undefined && AnimationList.push(
-      Animated.timing(this.width,{
-        toValue:width,
-        duration:300,
-      })
-    )
-    height !== undefined && AnimationList.push(
-      Animated.timing(this.height, {
-        toValue: height,
-        duration: 300,
-      })
-    )
-    bottom !== undefined && AnimationList.push(
-      Animated.timing(this.bottom, {
-        toValue: bottom,
-        duration: 300,
-      })
-    )
-    boxHeight !== undefined && AnimationList.push(
-      Animated.timing(this.boxHeight, {
-        toValue: boxHeight,
-        duration: 300,
-      }))
+    width !== undefined &&
+      AnimationList.push(
+        Animated.timing(this.width, {
+          toValue: width,
+          duration: 300,
+        }),
+      )
+    height !== undefined &&
+      AnimationList.push(
+        Animated.timing(this.height, {
+          toValue: height,
+          duration: 300,
+        }),
+      )
+    bottom !== undefined &&
+      AnimationList.push(
+        Animated.timing(this.bottom, {
+          toValue: bottom,
+          duration: 300,
+        }),
+      )
+    boxHeight !== undefined &&
+      AnimationList.push(
+        Animated.timing(this.boxHeight, {
+          toValue: boxHeight,
+          duration: 300,
+        }),
+      )
     Animated.parallel(AnimationList).start()
   }
 
@@ -362,9 +391,12 @@ export default class PoiInfoContainer extends React.PureComponent {
         toValue: scaleSize(80),
         duration: 0,
       }).start()
-      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         Animated.timing(this.bottom, {
-          toValue: screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(80),
+          toValue:
+            screen.getScreenHeight(this.props.device.orientation) -
+            screen.getHeaderHeight() -
+            scaleSize(80),
           duration: 0,
         }).start()
       }
@@ -375,27 +407,36 @@ export default class PoiInfoContainer extends React.PureComponent {
   }
 
   showTable = () => {
-    let boxHeight,height,bottom
+    let boxHeight, height, bottom
     boxHeight = scaleSize(200)
     height = scaleSize(200)
-    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
-      bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(200)
-    }else{
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      bottom =
+        screen.getScreenHeight(this.props.device.orientation) -
+        screen.getHeaderHeight() -
+        scaleSize(200)
+    } else {
       bottom = 0
     }
-    this.startAnim({boxHeight,height,bottom})
+    this.startAnim({ boxHeight, height, bottom })
   }
 
   show = () => {
-    let height, boxHeight, bottom = 0
-    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
-      boxHeight = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
-      height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
-    }else{
+    let height,
+      boxHeight,
+      bottom = 0
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      boxHeight =
+        screen.getScreenHeight(this.props.device.orientation) -
+        screen.getHeaderHeight()
+      height =
+        screen.getScreenHeight(this.props.device.orientation) -
+        screen.getHeaderHeight()
+    } else {
       height = scaleSize(450)
       boxHeight = scaleSize(450)
     }
-    this.startAnim({height,bottom,boxHeight})
+    this.startAnim({ height, bottom, boxHeight })
     this.setState({
       showMore: false,
     })
@@ -403,28 +444,31 @@ export default class PoiInfoContainer extends React.PureComponent {
 
   //重置为初始状态
   setInitialState = () => {
-    this.setState({
-      destination: '',
-      location: {},
-      address: '',
-      showMore: false,
-      showList: false,
-      neighbor: [],
-      resultList: [],
-      visible: false,
-      radius: 5000,
-    },() => {
-      this.tempResult = {
-        name: '',
-        tempList: [],
-      }
-      let bottom, boxHeight, height, width
-      bottom = -screen.getScreenHeight(this.props.device.orientation)
-      boxHeight =  0
-      height = 0
-      width = 0
-      this.startAnim({width,height,boxHeight,bottom})
-    })
+    this.setState(
+      {
+        destination: '',
+        location: {},
+        address: '',
+        showMore: false,
+        showList: false,
+        neighbor: [],
+        resultList: [],
+        visible: false,
+        radius: 5000,
+      },
+      () => {
+        this.tempResult = {
+          name: '',
+          tempList: [],
+        }
+        let bottom, boxHeight, height, width
+        bottom = -screen.getScreenHeight(this.props.device.orientation)
+        boxHeight = 0
+        height = 0
+        width = 0
+        this.startAnim({ width, height, boxHeight, bottom })
+      },
+    )
   }
 
   clear = async () => {
@@ -434,7 +478,7 @@ export default class PoiInfoContainer extends React.PureComponent {
   }
 
   close = () => {
-    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0) return
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) return
     SMap.removePOICallout()
     this.setVisible(false)
     this.props.setMapNavigation({
@@ -448,12 +492,15 @@ export default class PoiInfoContainer extends React.PureComponent {
     let boxHeight, height, bottom
     boxHeight = scaleSize(340)
     height = scaleSize(340)
-    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
-      bottom = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT - scaleSize(340)
-    }else{
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      bottom =
+        screen.getScreenHeight(this.props.device.orientation) -
+        screen.getHeaderHeight() -
+        scaleSize(340)
+    } else {
       bottom = 0
     }
-    this.startAnim({boxHeight,height,bottom})
+    this.startAnim({ boxHeight, height, bottom })
     this.setState({
       showList: true,
     })

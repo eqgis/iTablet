@@ -18,9 +18,6 @@ import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { TouchType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 
-const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
-const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
-
 export default class PreviewHeader extends React.Component {
   props: {
     navigation: Object,
@@ -29,7 +26,7 @@ export default class PreviewHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.top = new Animated.Value(-HEADER_HEIGHT)
+    this.top = new Animated.Value(-screen.getHeaderHeight())
     this.params = {}
     this.visible = false
   }
@@ -42,7 +39,7 @@ export default class PreviewHeader extends React.Component {
     this.visible = iShow
     GLOBAL.TouchType = iShow ? TouchType.NULL : TouchType.NORMAL
     Animated.timing(this.top, {
-      toValue: iShow ? 0 : -HEADER_HEIGHT,
+      toValue: iShow ? 0 : -screen.getHeaderHeight(),
       time: 300,
     }).start()
   }
@@ -62,7 +59,16 @@ export default class PreviewHeader extends React.Component {
   render() {
     const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
     return (
-      <Animated.View style={[styles.container, { top: this.top }]}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            paddingTop: screen.getIphonePaddingTop(),
+            height: screen.getHeaderHeight(),
+            top: this.top,
+          },
+        ]}
+      >
         <TouchableOpacity onPress={this._back}>
           <Image source={backImg} resizeMode={'contain'} style={styles.back} />
         </TouchableOpacity>
@@ -85,8 +91,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     width: '100%',
-    height: HEADER_HEIGHT,
-    paddingTop: HEADER_PADDINGTOP,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',

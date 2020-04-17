@@ -2,7 +2,6 @@ import * as React from 'react'
 import { View, Text } from 'react-native'
 import LegendView from './'
 import { scaleSize, setSpText, screen } from '../../../../utils'
-export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
 
 export default class SMLegendView extends React.Component {
   props: {
@@ -36,7 +35,7 @@ export default class SMLegendView extends React.Component {
           borderColor: 'black',
           borderWidth: scaleSize(3),
           left: 0,
-          top: HEADER_HEIGHT,
+          top: screen.getHeaderHeight(),
           backgroundColor: this.state.backgroundColor,
           zIndex: 1,
         }}

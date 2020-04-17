@@ -105,8 +105,6 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
-export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
-export const FOOTER_HEIGHT = scaleSize(88)
 
 export default class MapView extends React.Component {
   static propTypes = {

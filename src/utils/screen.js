@@ -213,6 +213,17 @@ export function getMapChildPageWith(orientation) {
   return width
 }
 
+const HEADER_HEIGHT = scaleSize(88)
+const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
+function getHeaderHeight(orientation) {
+  let height = HEADER_HEIGHT
+  orientation = orientation || getOrientation()
+  if (orientation.indexOf('LANDSCAPE') === 0) {
+    height = HEADER_HEIGHT_LANDSCAPE
+  }
+  return height + getIphonePaddingTop(orientation)
+}
+
 export default {
   getScreenWidth,
   getScreenHeight,
@@ -227,8 +238,11 @@ export default {
   IOS_TOP,
   X_TOP,
   X_BOTTOM,
+  HEADER_HEIGHT,
+  HEADER_HEIGHT_LANDSCAPE,
   isIphoneX,
   getIphonePaddingTop,
   getIphonePaddingBottom,
   getIphonePaddingHorizontal,
+  getHeaderHeight,
 }

@@ -218,7 +218,9 @@ function isBaseLayer(layer) {
     let name = layer.name
     for (let i = 0, n = baseMaps.length; i < n; i++) {
       if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
-        if (layer.type === DatasetType.IMAGE) {
+        if (layer.type === DatasetType.IMAGE || 
+          layer.type === DatasetType.MBImage
+          ) {
           return true
         }
       }

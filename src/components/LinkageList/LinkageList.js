@@ -71,8 +71,9 @@ export default class LinkageList extends React.Component {
           [],
       })
     }
-    if (this._panBtnStyles.style.width > screen.getScreenWidth()) {
-      this._panBtnStyles.style.width = screen.getScreenWidth() - LEFT_MIN_WIDTH
+    if (this._panBtnStyles.style.width > screen.getMapChildPageWith()) {
+      this._panBtnStyles.style.width =
+        screen.getMapChildPageWith() - LEFT_MIN_WIDTH
       this._updateNativeStyles()
     }
   }
@@ -88,27 +89,31 @@ export default class LinkageList extends React.Component {
   }
 
   _handlePanResponderMove = (evt, gestureState) => {
-    this._panBtnStyles.style.width = gestureState.moveX
+    let diff = screen.getScreenWidth() - screen.getMapChildPageWith()
+    this._panBtnStyles.style.width = gestureState.moveX - diff
     if (this._panBtnStyles.style.width < LEFT_MIN_WIDTH) {
       this._panBtnStyles.style.width = LEFT_MIN_WIDTH
     } else if (
       this._panBtnStyles.style.width >
-      screen.getScreenWidth() - LEFT_MIN_WIDTH
+      screen.getMapChildPageWith() - LEFT_MIN_WIDTH
     ) {
-      this._panBtnStyles.style.width = screen.getScreenWidth() - LEFT_MIN_WIDTH
+      this._panBtnStyles.style.width =
+        screen.getMapChildPageWith() - LEFT_MIN_WIDTH
     }
     this._updateNativeStyles()
   }
 
   _handlePanResponderEnd = (evt, gestureState) => {
-    this._panBtnStyles.style.width = gestureState.moveX
+    let diff = screen.getScreenWidth() - screen.getMapChildPageWith()
+    this._panBtnStyles.style.width = gestureState.moveX - diff
     if (this._panBtnStyles.style.width < LEFT_MIN_WIDTH) {
       this._panBtnStyles.style.width = LEFT_MIN_WIDTH
     } else if (
       this._panBtnStyles.style.width >
-      screen.getScreenWidth() - LEFT_MIN_WIDTH
+      screen.getMapChildPageWith() - LEFT_MIN_WIDTH
     ) {
-      this._panBtnStyles.style.width = screen.getScreenWidth() - LEFT_MIN_WIDTH
+      this._panBtnStyles.style.width =
+        screen.getMapChildPageWith() - LEFT_MIN_WIDTH
     }
     this._updateNativeStyles()
   }

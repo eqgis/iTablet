@@ -15,11 +15,10 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
-import { HEADER_HEIGHT_LANDSCAPE } from '../Header/styles'
 import NavigationService from '../../containers/NavigationService'
 
 const AnimatedView = Animated.View
@@ -233,7 +232,7 @@ export default class Container extends Component {
       }
     }
     if (isLandscape && fixBottom) {
-      style.push({ top: HEADER_HEIGHT_LANDSCAPE })
+      style.push({ top: screen.getHeaderHeight() })
     }
     if (this.props.bottomProps && this.props.bottomProps.style) {
       style.push(this.props.bottomProps.style)

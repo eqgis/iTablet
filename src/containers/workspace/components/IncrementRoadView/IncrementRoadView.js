@@ -5,9 +5,6 @@ import Header from '../../../../components/Header'
 import { scaleSize, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 
-export const HEADER_HEIGHT = scaleSize(88)
-export const HEADER_MARGINTOP = screen.getIphonePaddingTop()
-
 export default class IncrementRoadView extends React.Component {
   props: {
     headerProps: Object,
@@ -47,7 +44,7 @@ export default class IncrementRoadView extends React.Component {
         }}
       >
         <Header {...this.props.headerProps} />
-        <View style={styles.table}>
+        <View style={[styles.table, { marginTop: screen.getHeaderHeight() }]}>
           <TouchableOpacity
             style={[styles.button, left]}
             onPress={() => {
@@ -85,7 +82,6 @@ const styles = StyleSheet.create({
   },
   table: {
     position: 'absolute',
-    marginTop: HEADER_MARGINTOP + HEADER_HEIGHT,
     width: '100%',
     height: scaleSize(60),
     backgroundColor: '#EEEEEE',

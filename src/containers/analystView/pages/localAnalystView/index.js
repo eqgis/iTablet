@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   currentUser: state.user.toJS().currentUser,
   language: state.setting.toJS().language,
   userUdbAndDs: state.localData.toJS().userUdbAndDs,
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {

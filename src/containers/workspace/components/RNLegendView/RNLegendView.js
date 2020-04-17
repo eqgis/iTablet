@@ -6,12 +6,11 @@
 import * as React from 'react'
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
-import { FOOTER_HEIGHT } from '../../pages/mapView/MapView'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import color from '../../../../styles/color'
 
-export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
+const FOOTER_HEIGHT = scaleSize(88)
 
 export default class RNLegendView extends React.Component {
   props: {
@@ -27,8 +26,8 @@ export default class RNLegendView extends React.Component {
       title: getLanguage(this.props.language).Map_Settings.THEME_LEGEND,
       width: 600,
       height: 420,
-      topLeft: { left: 0, top: HEADER_HEIGHT },
-      topRight: { right: 0, top: HEADER_HEIGHT },
+      topLeft: { left: 0, top: screen.getHeaderHeight() },
+      topRight: { right: 0, top: screen.getHeaderHeight() },
       leftBottom: { left: 0, bottom: FOOTER_HEIGHT },
       rightBottom: { right: 0, bottom: FOOTER_HEIGHT },
       legendSource: '',

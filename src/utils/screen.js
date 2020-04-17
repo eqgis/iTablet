@@ -111,6 +111,7 @@ export function fixedText(size) {
 // iPhoneX
 const X_WIDTH = 375
 const X_HEIGHT = 812
+const IOS_TOP = 20
 const X_TOP = 35
 const X_BOTTOM = 35
 
@@ -137,13 +138,14 @@ function getOrientation() {
  * 获取iphone和iphone X顶部距离
  * @returns {number}
  */
-function getIphonePaddingTop() {
+function getIphonePaddingTop(orientation) {
   let paddingTop = 0
-  if (getOrientation().indexOf('PORTRAIT') < 0) return paddingTop
+  let _orientation = orientation || getOrientation()
+  if (_orientation.indexOf('PORTRAIT') < 0) return paddingTop
   if (isIphoneX()) {
     // paddingTop = X_TOP
   } else if (Platform.OS === 'ios') {
-    paddingTop = 20
+    paddingTop = IOS_TOP
   }
   return paddingTop
 }
@@ -152,9 +154,10 @@ function getIphonePaddingTop() {
  * 获取iphone和iphone X底部距离
  * @returns {number}
  */
-function getIphonePaddingBottom() {
+function getIphonePaddingBottom(orientation) {
   let paddingBottom = 0
-  if (isIphoneX() && getOrientation().indexOf('PORTRAIT') >= 0) {
+  let _orientation = orientation || getOrientation()
+  if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
     paddingBottom = X_BOTTOM
   }
   return paddingBottom
@@ -184,6 +187,43 @@ export function px(size) {
   return size / defaultPixel
 }
 
+/**
+ * 计算地图右侧弹出非全屏页面的宽度
+ * @param orientation
+ * @returns {*}
+ */
+export function getMapChildPageWith(orientation) {
+  let width = Dimensions.get('screen').width
+  orientation = orientation || getOrientation()
+  let _height = Math.max(
+    Dimensions.get('screen').height,
+    Dimensions.get('screen').width,
+  )
+  let _width = Math.min(
+    Dimensions.get('screen').height,
+    Dimensions.get('screen').width,
+  )
+  let ration = _height / _width
+  if (orientation.indexOf('LANDSCAPE') === 0) {
+    width = width * 0.45
+    if (!GLOBAL.isPad && ration < 1.8) {
+      width = width * 0.6
+    }
+  }
+  return width
+}
+
+const HEADER_HEIGHT = scaleSize(88)
+const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
+function getHeaderHeight(orientation) {
+  let height = HEADER_HEIGHT
+  orientation = orientation || getOrientation()
+  if (orientation.indexOf('LANDSCAPE') === 0) {
+    height = HEADER_HEIGHT_LANDSCAPE
+  }
+  return height + getIphonePaddingTop(orientation)
+}
+
 export default {
   getScreenWidth,
   getScreenHeight,
@@ -193,11 +233,16 @@ export default {
   deviceHeight,
   px2dp,
   dp2px,
+  getMapChildPageWith,
 
+  IOS_TOP,
   X_TOP,
   X_BOTTOM,
+  HEADER_HEIGHT,
+  HEADER_HEIGHT_LANDSCAPE,
   isIphoneX,
   getIphonePaddingTop,
   getIphonePaddingBottom,
   getIphonePaddingHorizontal,
+  getHeaderHeight,
 }

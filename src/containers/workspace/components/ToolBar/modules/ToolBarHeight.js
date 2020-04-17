@@ -39,7 +39,7 @@ function getToolbarSize(type, additional = {}) {
         row = additional.row !== undefined ? additional.row : 5
         column = Math.ceil(additional.data.length / row)
         column = column > maxLimit ? maxLimit : column // 限制最大高度
-        height = Height.TABLE_ROW_HEIGHT_4 * column
+        height = Height.TABLE_ROW_HEIGHT_5 * column
       } else {
         column = additional.column !== undefined ? additional.column : 4
         row = Math.ceil(additional.data.length / column)

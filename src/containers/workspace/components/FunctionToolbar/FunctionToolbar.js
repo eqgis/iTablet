@@ -44,15 +44,14 @@ import {
   mark3DModule,
   incrementModule,
 } from '../ToolBar/modules'
-import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 
-const HeaderHeight = scaleSize(88) + screen.getIphonePaddingTop()
+// const HeaderHeight = scaleSize(88)
 const BottomHeight = scaleSize(100)
 
 const RIGHT = scaleSize(20)
 const RIGHT_LANDSCAPE = 0
-const TOP = scaleSize(143) + screen.getIphonePaddingTop()
-const TOP_LANDSCAPE = HEADER_HEIGHT_LANDSCAPE
+const TOP = scaleSize(143)
+const TOP_LANDSCAPE = screen.HEADER_HEIGHT_LANDSCAPE
 const BOTTOM_LANDSCAPE = 0
 export default class FunctionToolbar extends React.Component {
   props: {
@@ -105,7 +104,7 @@ export default class FunctionToolbar extends React.Component {
       top:
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(TOP_LANDSCAPE)
-          : new Animated.Value(TOP),
+          : new Animated.Value(TOP + screen.getIphonePaddingTop()),
       right:
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(RIGHT_LANDSCAPE)
@@ -149,7 +148,7 @@ export default class FunctionToolbar extends React.Component {
         top = TOP_LANDSCAPE
         right = RIGHT_LANDSCAPE
       } else {
-        top = TOP
+        top = TOP + screen.getIphonePaddingTop()
         right = RIGHT
       }
       Animated.parallel([
@@ -166,7 +165,7 @@ export default class FunctionToolbar extends React.Component {
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         top = TOP_LANDSCAPE
       } else {
-        top = TOP
+        top = TOP + screen.getIphonePaddingTop()
       }
       Animated.timing(this.state.top, {
         toValue: top,
@@ -186,7 +185,7 @@ export default class FunctionToolbar extends React.Component {
         Dimensions.get('window').height,
         Dimensions.get('window').width,
       )
-      let headerHeight = HEADER_HEIGHT_LANDSCAPE
+      let headerHeight = screen.HEADER_HEIGHT_LANDSCAPE
       let moreHeight = scaleSize(80) + 1
       visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
     } else {
@@ -660,7 +659,7 @@ export default class FunctionToolbar extends React.Component {
 
   renderList = () => {
     this.m_maxHeight =
-      (this.props.device.height - HeaderHeight - BottomHeight) * 0.6
+      (this.props.device.height - screen.getHeaderHeight() - BottomHeight) * 0.6
     // maxHeightN < 4
     let style =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0

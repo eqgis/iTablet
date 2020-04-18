@@ -232,7 +232,7 @@ export default class FunctionToolbar extends React.Component {
         ? RIGHT_LANDSCAPE
         : RIGHT
     Animated.timing(this.state.right, {
-      toValue: visible ? right : scaleSize(-80),
+      toValue: visible ? right : scaleSize(-100),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
     this.visible = visible

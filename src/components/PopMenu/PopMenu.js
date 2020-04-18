@@ -97,13 +97,32 @@ export default class PopMenu extends PureComponent {
     let positionStyle
     let indicatorPosition
     let arrow
-    if (
-      !position ||
-      (!global.isPad && this.props.device.orientation === 'PORTRAIT')
-    ) {
+    if (!global.isPad && this.props.device.orientation === 'PORTRAIT') {
       container = {}
       overlay = {}
       positionStyle = bottomStyle
+      indicatorPosition = {}
+      arrow = {
+        borderTopColor: 'transparent',
+        borderLeftColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderRightColor: 'transparent',
+      }
+    } else if (!position) {
+      let screenWidth = this.props.device.width
+      let screenHeight = this.props.device.height
+      let width = scaleSize(300)
+      let height = scaleSize(80) * this._getItemNums()
+      let left = (screenWidth - width) / 2
+      let top = (screenHeight - height) / 2
+
+      container = {}
+      overlay = {}
+      positionStyle = {
+        left: left,
+        top: top,
+        width: width,
+      }
       indicatorPosition = {}
       arrow = {
         borderTopColor: 'transparent',
@@ -268,10 +287,8 @@ export default class PopMenu extends PureComponent {
     return nums
   }
 
-  _renderSeparatorLine = info => {
-    let key = info
-      ? 'separator_' + info.item.title + '_' + info.index
-      : new Date().getTime()
+  _renderSeparatorLine = (info, index) => {
+    let key = info ? 'separator_' + info + '_' + index : new Date().getTime()
     return <View key={key} style={styles.separator} />
   }
 
@@ -284,15 +301,15 @@ export default class PopMenu extends PureComponent {
     data.forEach((item, index) => {
       list.push(this._renderBtn(item))
       if (index < data.length - 1) {
-        list.push(this._renderSeparatorLine({ item, index }))
+        list.push(this._renderSeparatorLine('item', index))
       }
     })
     if (this.props.title && this.props.title !== '') {
-      list.unshift(this._renderSeparatorLine())
+      list.unshift(this._renderSeparatorLine('title', 0))
       list.unshift(this._renderHeader())
     }
     if (this.props.hasCancel) {
-      list.push(this._renderSeparatorLine())
+      list.push(this._renderSeparatorLine('cancel', 0))
       list.push(this._renderCancelBtn())
     }
     return (

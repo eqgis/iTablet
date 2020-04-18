@@ -173,6 +173,7 @@ export default {
   MAP_TOPO_TRIM: 'MAP_TOPO_TRIM', //修剪
   MAP_TOPO_RESAMPLE: 'MAP_TOPO_RESAMPLE', //重采样
   MAP_TOPO_CHANGE_DIRECTION: 'MAP_TOPO_CHANGE_DIRECTION', //变方向
+  MAP_TOPO_OBJECT_EDIT: 'MAP_TOPO_OBJECT_EDIT',
   //============================================
 
   POINT_GPS: 'point_gps',

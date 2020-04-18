@@ -4,12 +4,6 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-
-/**
- * Copyright © SuperMap. All rights reserved.
- * Author: Asort
- * https://github.com/AsortKeven
- */
 import React, { Component } from 'react'
 import {View, Image, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native'
 import Slider from 'react-native-slider'

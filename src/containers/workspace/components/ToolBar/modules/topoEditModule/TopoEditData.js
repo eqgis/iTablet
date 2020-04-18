@@ -29,46 +29,15 @@ async function getData(type) {
       action: TopoEditAction.changeEditType,
     },
     ToolbarBtnType.MENU_FLEX,
-    {
-      type: ToolbarBtnType.MAP_SYMBOL,
-      image: getPublicAssets().navigation.btn_increment_topo_edit,
-      // action: IncrementAction.topoEdit,
-    },
+    ToolbarBtnType.TOOLBAR_COMMIT,
   ]
   let customView
   switch(type){
     case ConstToolType.MAP_TOPO_EDIT:
+    case ConstToolType.MAP_TOPO_OBJECT_EDIT:
       break
     case ConstToolType.MAP_TOPO_SWITCH_TYPE:
       data = [
-        {
-          key: constants.MAP_TOPO_ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_add_node,
-        },
-        {
-          key: constants.MAP_TOPO_EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_edit_node,
-        },
-        {
-          key: constants.MAP_TOPO_DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_NODE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_delete_node,
-        },
-        {
-          key: constants.MAP_TOPO_DELETE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_OBJECT,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_delete_object,
-        },
         {
           key: constants.MAP_TOPO_SMOOTH,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
@@ -118,6 +87,45 @@ async function getData(type) {
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_change_direction,
         },
+        {
+          key: constants.MAP_TOPO_OBJECT_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_edit.png'),
+        },
+      ]
+      break
+    case ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED:
+      data = [
+        {
+          key: constants.MAP_TOPO_ADD_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_add_node,
+        },
+        {
+          key: constants.MAP_TOPO_EDIT_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_edit_node,
+        },
+        {
+          key: constants.MAP_TOPO_DELETE_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_NODE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_delete_node,
+        },
+        {
+          key: constants.MAP_TOPO_DELETE_OBJECT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_OBJECT,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_delete_object,
+        },
       ]
       break
     case ConstToolType.MAP_TOPO_TOPING:
@@ -154,10 +162,9 @@ async function getData(type) {
       break
     case ConstToolType.MAP_TOPO_MERGE_DATASET: {
       let datas = await SMap.getLineDataset()
-      let lineDatasets = datas[0] && datas[0].data.filter(item => item.datasetName !== GLOBAL.INCREMENT_DATA.datasetName)
       data = []
       buttons = []
-      customView = () => (<MergeDatasetView data={lineDatasets}/>)
+      customView = () => (<MergeDatasetView data={datas}/>)
     }
       break
   }

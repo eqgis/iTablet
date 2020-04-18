@@ -1,16 +1,17 @@
 /**
+ * @description
+ * @author: Asort
  * Copyright © SuperMap. All rights reserved.
- * Author: Asort
  * https://github.com/AsortKeven
  */
-import {connect} from 'react-redux'
-
-import NavigationDataChangePage from './NavigationDataChangePage'
+import { connect } from 'react-redux'
+import CreateNavDataPage from "./CreateNavDataPage"
 
 const mapStateToProps = state => ({
   device: state.device.toJS().device,
+  currentUser: state.user.toJS().currentUser,
 })
 
 export default connect(
   mapStateToProps,
-)(NavigationDataChangePage)
+)(CreateNavDataPage)

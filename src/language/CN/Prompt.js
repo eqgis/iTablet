@@ -316,7 +316,14 @@ const Prompt = {
   NOT_SUPPORT_PRJCOORDSYS:'以下数据集的坐标系不支持合并',
   MERGEING:'合并中',
   HAS_NO_ROADNAME_FIELD_DATA_DIALOG:'存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
-
+  NEW_NAV_DATA:'创建导航数据',
+  INPUT_MODEL_FILE_NAME:'请输入模型文件名称',
+  INCREMENT_FIRST:'请先采集路网数据',
+  SELECT_DESTINATION_DATASOURCE:'请选择目标数据源',
+  FILENAME_ALREADY_EXIST:'文件已存在,请重新输入文件名',
+  NETWORK_BUILDING:'导航数据制作中，请稍后再来查看',
+  LINE_DATASET:'线数据集',
+  DESTINATION_DATASOURCE:'目标数据源',
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

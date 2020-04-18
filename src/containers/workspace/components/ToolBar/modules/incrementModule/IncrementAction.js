@@ -216,6 +216,8 @@ async function methodSelected(type) {
 function close() {
   const _params = ToolbarModule.getParams()
   if (GLOBAL.INCREMENT_DATA.datasetName) {
+    BackgroundTimer.stopBackgroundTimer()
+    SMap.clearIncrementPoints()
     SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
     SMap.clearTrackingLayer()
   }
@@ -225,8 +227,11 @@ function close() {
   let layers = _params.layers.layers
   let currentLayer = _params.layers.currentLayer
   layers.map(layer => SMap.setLayerSelectable(layer.path,false))
-  currentLayer && _params.setCurrentLayer && _params.setCurrentLayer(currentLayer)
-  GLOBAL.currentLayer && _params.setCurrentLayer(GLOBAL.currentLayer)
+  if(currentLayer.name){
+    _params.setCurrentLayer(currentLayer)
+    SMap.setLayerEditable(currentLayer.name, true)
+    SMap.setLayerVisible(currentLayer.name, true)
+  }
   GLOBAL.FloorListView?.setVisible(true)
   GLOBAL.mapController?.setVisible(true)
   GLOBAL.TouchType = TouchType.NORMAL

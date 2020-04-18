@@ -11,7 +11,7 @@ import {
   Text,
   Image,
   StyleSheet,
-  SectionList,
+  FlatList,
   TextInput,
   Platform,
   Keyboard,
@@ -19,7 +19,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native"
 import {scaleSize, setSpText, Toast} from "../../../../../../../utils"
-import {getLayerIconByType, getLayerWhiteIconByType, getPublicAssets, getThemeAssets} from "../../../../../../../assets"
+import {getLayerIconByType, getLayerWhiteIconByType, getPublicAssets} from "../../../../../../../assets"
 import {SMap,DatasetType} from 'imobile_for_reactnative'
 import {color} from "../../../../../../../styles"
 import ToolbarModule from "../../ToolbarModule"
@@ -118,21 +118,6 @@ export default class LineList extends Component{
       })
     }
 
-    _onTitlePress = section => {
-      let data = JSON.parse(JSON.stringify(this.state.data))
-      let currentIndex
-      for(let i = 0; i < data.length; i++){
-        if(data[i].title === section.title){
-          currentIndex = i
-          break
-        }
-      }
-      data[currentIndex].visible = !data[currentIndex].visible
-      this.setState({
-        data,
-      })
-    }
-
     _onEditPress = ({item}) => {
       let editingItem = this.state.editingItem
       if(editingItem.datasetName !== item.datasetName
@@ -145,20 +130,13 @@ export default class LineList extends Component{
         })
       }
     }
-    _endEditing = ({section,index,text}) => {
+    _endEditing = ({index,text}) => {
       let data = JSON.parse(JSON.stringify(this.state.data))
-      let currentIndex
-      for(let i = 0; i < data.length; i++){
-        if(data[i].title === section.title){
-          currentIndex = i
-          break
-        }
-      }
       let regExp = /^[a-zA-Z0-9@#_]+$/
       let isValid = regExp.test(text)
       if(isValid){
-        let {datasourceName, datasetName} = data[currentIndex].data[index]
-        data[currentIndex].data[index].datasetName = text
+        let {datasourceName, datasetName} = data[index]
+        data[index].datasetName = text
         let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
         selectedItem.datasetName = text
         //更新datasteName
@@ -186,22 +164,15 @@ export default class LineList extends Component{
         })
       }
     }
-    _onDeletePress = ({index,section}) => {
+    _onDeletePress = ({index}) => {
       let data = JSON.parse(JSON.stringify(this.state.data))
-      let currentIndex
-      for(let i = 0; i < data.length; i++){
-        if(section.title === data[i].title){
-          currentIndex = i
-          break
-        }
-      }
-      let deleteData = data[currentIndex].data.splice(index,1)
+      let deleteData = data.splice(index,1)
       let {datasourceName,datasetName} = deleteData[0]
       //如果删除的是当前选中 自动选中下一个
       let selectedItem = this.state.selectedItem
       let removeLayer = false
       if(selectedItem.datasourceName === datasourceName && selectedItem.datasetName === datasetName){
-        selectedItem = data[currentIndex].data[index] || {}
+        selectedItem = data[index] || {}
       }
       if(GLOBAL.INCREMENT_DATA.datasourceName === datasourceName && GLOBAL.INCREMENT_DATA.datasetName === datasetName){
         removeLayer = true
@@ -212,8 +183,7 @@ export default class LineList extends Component{
         selectedItem,
       })
     }
-    _renderItem = ({section, index, item}) => {
-      if(!section.visible) return null
+    _renderItem = ({index, item}) => {
       let hasExtra = this.state.selectedItem.datasourceName === item.datasourceName
             && this.state.selectedItem.datasetName === item.datasetName
       let extraStyle,extraTxtStyle,lineImg
@@ -247,9 +217,9 @@ export default class LineList extends Component{
               style={[styles.text,styles.input,extraTxtStyle]}
               defaultValue={item.datasetName}
               returnKeyType={'done'}
-              maxLength={32}
+              maxLength={30}
               onEndEditing={evt=>{
-                this._endEditing({section,index,text:evt.nativeEvent.text})
+                this._endEditing({index,text:evt.nativeEvent.text})
               }}
             />
             : <Text style={[styles.text,extraTxtStyle]}>{item.datasetName}</Text>}
@@ -260,24 +230,10 @@ export default class LineList extends Component{
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.imageWrap}
-            onPress={()=>{this._onDeletePress({index,section})}}
+            onPress={()=>{this._onDeletePress({index})}}
           >
             <Image source={deleteImg} resizeMode={'contain'} style={styles.image}/>
           </TouchableOpacity>
-        </TouchableOpacity>
-      )
-    }
-
-    _renderSectionHeader = ({section}) => {
-      let arrowImg = section.visible
-        ? getThemeAssets().publicAssets.icon_arrow_down
-        : getThemeAssets().publicAssets.icon_arrow_right_2
-      return (
-        <TouchableOpacity style={styles.section}  onPress={()=>{this._onTitlePress(section)}}>
-          <View style={styles.imageWrap}>
-            <Image source={arrowImg} style={styles.image} resizeMode={'contain'}/>
-          </View>
-          <Text style={styles.text}>{section.title}</Text>
         </TouchableOpacity>
       )
     }
@@ -295,12 +251,11 @@ export default class LineList extends Component{
                 <Text style={styles.actionTxt}>{getLanguage(GLOBAL.language).Prompt.CONFIRM}</Text>
               </TouchableOpacity>
             </View>
-            <SectionList
+            <FlatList
               style={styles.padding}
               keyExtractor={(item,index)=>(item.toString() + index)}
-              sections={this.state.data}
+              data={this.state.data}
               extraData={this.state}
-              renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderItem}
             />
           </View>
@@ -317,12 +272,11 @@ export default class LineList extends Component{
                 <Text style={styles.actionTxt}>{getLanguage(GLOBAL.language).Prompt.CONFIRM}</Text>
               </TouchableOpacity>
             </View>
-            <SectionList
+            <FlatList
               style={styles.padding}
               keyExtractor={(item,index)=>(item.toString() + index)}
-              sections={this.state.data}
+              data={this.state.data}
               extraData={this.state}
-              renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderItem}
             />
           </KeyboardAvoidingView>
@@ -335,6 +289,7 @@ export default class LineList extends Component{
 const styles = StyleSheet.create({
   container:{
     flex:1,
+    backgroundColor:color.content_white,
   },
   padding:{
     paddingHorizontal:scaleSize(10),

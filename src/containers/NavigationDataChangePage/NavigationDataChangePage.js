@@ -11,17 +11,18 @@ import {
   Text,
   TouchableOpacity,
   SectionList,
-  StyleSheet,
+  StyleSheet, Animated,
 } from 'react-native'
 import { Container } from '../../components'
 import { getPublicAssets, getThemeAssets } from '../../assets'
-import { scaleSize, setSpText } from '../../utils'
+import {scaleSize, screen, setSpText} from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
 
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
+    device:Object,
   }
   constructor(props) {
     super(props)
@@ -33,6 +34,21 @@ export default class NavigationDataChangePage extends Component {
     this.selectedDatasets = params.selectedDatasets || []
     this.currentDatasource = params.currentDatasource || []
     this.currentDataset = params.currentDataset || {}
+    this.maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+      ? new Animated.Value(screen.getScreenWidth(this.props.device.orientation) * 0.45)
+      : new Animated.Value(screen.getScreenWidth(this.props.device.orientation))
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.device.orientation !== this.props.device.orientation){
+      let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? screen.getScreenWidth(this.props.device.orientation) * 0.45
+        : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.maxWidth,{
+        toValue:maxWidth,
+        duration:300,
+      }).start()
+    }
   }
 
   _onPress = item => {
@@ -82,7 +98,9 @@ export default class NavigationDataChangePage extends Component {
       data,
     })
   }
-
+  _newNavData = () => {
+    this.props.navigation.navigate('CreateNavDataPage')
+  }
   _confirm = () => {
     const _params = ToolbarModule.getParams()
     _params.setNavigationDatas &&
@@ -166,7 +184,12 @@ export default class NavigationDataChangePage extends Component {
     return (
       <View>
         {separate && <View style={styles.sectionSeparate} />}
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.textContainer}>
+          <View style={[styles.textWrapper,{justifyContent:'flex-start'}]}><Text style={styles.title}>{title}</Text></View>
+          {separate
+            ? (<TouchableOpacity onPress={this._newNavData} style={styles.textWrapper}><Text style={styles.actionTxt}>新建</Text></TouchableOpacity>)
+            :<View/>}
+        </View>
         {this.renderLine()}
       </View>
     )
@@ -180,23 +203,29 @@ export default class NavigationDataChangePage extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <SectionList
-          style={styles.list}
-          sections={this.state.data}
-          renderSectionHeader={this._renderSectionHeader}
-          renderItem={this._renderItem}
-          keyExtractor={(item, index) => item.toString() + index}
-          getItemLayout={(data, index) => ({
-            length: 81,
-            offset: 81 * index,
-            index,
-          })}
-        />
-        <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
-          <Text style={styles.confirmTxt}>
-            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
-          </Text>
-        </TouchableOpacity>
+        <Animated.View style={{
+          width:this.maxWidth,
+          flex:1,
+        }}>
+          <SectionList
+            style={styles.list}
+            sections={this.state.data}
+            renderSectionHeader={this._renderSectionHeader}
+            renderItem={this._renderItem}
+            keyExtractor={(item, index) => item.toString() + index}
+            getItemLayout={(data, index) => ({
+              length: 81,
+              offset: 81 * index,
+              index,
+            })}
+          />
+          <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
+            <Text style={styles.confirmTxt}>
+              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+
       </Container>
     )
   }
@@ -204,12 +233,19 @@ export default class NavigationDataChangePage extends Component {
 
 const styles = StyleSheet.create({
   title: {
-    width: '100%',
-    height: scaleSize(80),
     fontSize: setSpText(24),
-    paddingLeft: scaleSize(40),
-    paddingTop: scaleSize(30),
-    backgroundColor: color.white,
+  },
+  textWrapper:{
+    height:scaleSize(80),
+    width:scaleSize(200),
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'flex-end',
+    marginHorizontal:scaleSize(40),
+  },
+  actionTxt:{
+    color:color.item_selected_bg,
+    fontSize:setSpText(24),
   },
   list: {
     maxHeight: scaleSize(650),
@@ -218,6 +254,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: scaleSize(20),
     backgroundColor: color.separateColorGray,
+  },
+  textContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   row: {
     flex: 1,

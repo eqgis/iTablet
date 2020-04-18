@@ -909,6 +909,13 @@ export default class MapView extends React.Component {
   }
 
   geometryMultiSelected = event => {
+    if (
+      ToolbarModule.getData().actions &&
+      ToolbarModule.getData().actions.geometryMultiSelected
+    ) {
+      ToolbarModule.getData().actions.geometryMultiSelected(event)
+      return
+    }
     let data = []
     for (let i = 0; i < event.geometries.length; i++) {
       if (event.geometries[i].layerInfo.editable) {

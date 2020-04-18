@@ -419,7 +419,7 @@ export default class LayerAttributeTabs extends React.Component {
             ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
             {
               isFullScreen: false,
-              height: 0,
+              // height: 0,
             },
           )
         GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()

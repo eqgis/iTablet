@@ -109,7 +109,8 @@ async function geometrySelected(event) {
         // let height = ConstToolType.HEIGHT[3]
         let containerType = ToolbarType.table
         let type = ''
-        switch (event.layerInfo.type) {
+        // switch (event.layerInfo.type) {
+        switch (event.geometryType) {
           case DatasetType.POINT:
             type = ConstToolType.MAP_EDIT_POINT
             // height = ConstToolType.HEIGHT[0]

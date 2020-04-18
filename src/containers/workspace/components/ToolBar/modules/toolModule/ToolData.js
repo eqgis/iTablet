@@ -672,6 +672,20 @@ function getData(type, params) {
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => EditAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => EditAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
       ]
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,

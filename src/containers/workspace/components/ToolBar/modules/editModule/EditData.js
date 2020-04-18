@@ -3,6 +3,7 @@ import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import EditAction from './EditAction'
+import ToolAction from '../toolModule/ToolAction'
 
 /**
  * 获取编辑操作
@@ -252,7 +253,39 @@ function getData(type) {
         // },
       ]
       break
-    case ConstToolType.MAP_EDIT_CAD:
+    case ConstToolType.MAP_EDIT_TEXT:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: EditAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: ToolAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => EditAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => EditAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+      ]
+      break
+    case ConstToolType.MAP_EDIT_PLOT:
       data = [
         {
           key: constants.EDIT_NODE,
@@ -316,7 +349,7 @@ function getData(type) {
     ]
   } else {
     buttons = [
-      ToolbarBtnType.CANCEL,
+      ToolbarBtnType.TOOLBAR_BACK,
       ToolbarBtnType.FLEX,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]

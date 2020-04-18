@@ -217,11 +217,11 @@ export default class ToolbarBottomButtons extends React.Component {
           image = require('../../../../../../assets/mapEdit/icon_function_cancel.png')
           action = () => this.props.close(this.props.type, true)
           break
-        case ToolbarBtnType.TAGGING_BACK:
-          //返回上一级
-          image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
-          action = this.taggingBack
-          break
+        // case ToolbarBtnType.TAGGING_BACK:
+        //   //返回上一级
+        //   image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
+        //   action = this.taggingBack
+        //   break
         case ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE:
           image = require('../../../../../../assets/mapTools/icon_attribute_white.png')
           action = () => {
@@ -241,7 +241,7 @@ export default class ToolbarBottomButtons extends React.Component {
         case ToolbarBtnType.TOOLBAR_BACK:
           //返回上一级
           image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
-          action = this.props.back
+          action = () => this.props.back(this.props.type)
           break
       }
 

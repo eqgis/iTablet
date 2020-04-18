@@ -549,12 +549,12 @@ export default class ToolBar extends React.PureComponent {
     }
   }
 
-  back = () => {
+  back = type => {
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.toolbarBack
     ) {
-      ToolbarModule.getData().actions.toolbarBack()
+      ToolbarModule.getData().actions.toolbarBack(type)
       return
     }
   }

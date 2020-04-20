@@ -31,6 +31,7 @@ export default class DrawerBar extends React.Component {
     this.state = {
       currentIndex: props.index,
       left: new Animated.Value(-BAR_WIDTH),
+      fadeOutOpacity: new Animated.Value(0),
     }
   }
 
@@ -46,10 +47,23 @@ export default class DrawerBar extends React.Component {
   }
 
   showBar = isShow => {
-    Animated.timing(this.state.left, {
+    let animations = []
+    let moveAnimation = Animated.timing(this.state.left, {
       toValue: isShow ? 0 : -BAR_WIDTH,
       duration: 300,
-    }).start()
+    })
+    let opacityAnimation = Animated.timing(this.state.fadeOutOpacity, {
+      toValue: isShow ? 1 : 0,
+      duration: 0,
+    })
+    if (isShow) {
+      animations.push(opacityAnimation)
+      animations.push(moveAnimation)
+    } else {
+      animations.push(moveAnimation)
+      animations.push(opacityAnimation)
+    }
+    Animated.sequence(animations).start()
   }
 
   action = ({ item, index }) => {
@@ -98,7 +112,12 @@ export default class DrawerBar extends React.Component {
 
   render() {
     return (
-      <Animated.View style={[styles.container, { left: this.state.left }]}>
+      <Animated.View
+        style={[
+          styles.container,
+          { left: this.state.left, opacity: this.state.fadeOutOpacity },
+        ]}
+      >
         <FlatList
           ItemSeparatorComponent={this._renderItemSeparatorComponent}
           style={styles.list}

@@ -11,7 +11,7 @@ import {
   // StatusBar,
   // AsyncStorage,
 } from 'react-native'
-import { scaleSize, setSpText, screen } from '../../../../utils'
+import { scaleSize, setSpText } from '../../../../utils'
 import {
   SCartography,
   SThemeCartography,
@@ -67,7 +67,7 @@ export default class TouchProgress extends Component {
       onPanResponderRelease: this._handlePanResponderEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     })
-    this._initStatusBarVisible()
+    // this._initStatusBarVisible()
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -113,13 +113,13 @@ export default class TouchProgress extends Component {
     this.debounce(this.props.setMapLegend.bind(this, data))
   }
 
-  _initStatusBarVisible = async () => {
-    // let result = await AsyncStorage.getItem('StatusBarVisible')
-    // let invisible = result === 'true'
-    // let android_statusHeight = invisible ? 0 : StatusBar.currentHeight
-    //安卓进度条ToolBar直接扣除了状态栏和软键盘高度
-    this.statusBarHeight = screen.getIphonePaddingTop() //获取状态栏高度
-  }
+  // _initStatusBarVisible = async () => {
+  //   // let result = await AsyncStorage.getItem('StatusBarVisible')
+  //   // let invisible = result === 'true'
+  //   // let android_statusHeight = invisible ? 0 : StatusBar.currentHeight
+  //   //安卓进度条ToolBar直接扣除了状态栏和软键盘高度
+  //   // this.statusBarHeight = screen.getIphonePaddingTop() //获取状态栏高度
+  // }
 
   _updateNativeStyles = () => {
     this.panBtn && this.panBtn.setNativeProps(this._panBtnStyles)
@@ -2493,7 +2493,7 @@ export default class TouchProgress extends Component {
 
   render() {
     let container = {
-      marginTop: this.statusBarHeight,
+      // marginTop: this.statusBarHeight,
       backgroundColor: '#rgba(110, 110, 110, 1)',
       flexDirection: 'column',
       height: scaleSize(40),

@@ -524,13 +524,13 @@ export default class ToolBar extends React.PureComponent {
     //   this.height.toString()
     // ) {
     let boxAnimated =
-      this.isBoxShow &&
-      (await this.contentView.changeHeight({
+      // this.isBoxShow &&
+      await this.contentView.changeHeight({
         height: this.isBoxShow ? this.height : 0,
         column: this.column > -1 ? this.column : undefined,
         row: this.row > -1 ? this.row : undefined,
         wait: true,
-      }))
+      })
     if (boxAnimated) {
       this.height === 0 && boxPosition >= 0
         ? animatedList.unshift(boxAnimated)
@@ -549,12 +549,12 @@ export default class ToolBar extends React.PureComponent {
     }
   }
 
-  back = () => {
+  back = type => {
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.toolbarBack
     ) {
-      ToolbarModule.getData().actions.toolbarBack()
+      ToolbarModule.getData().actions.toolbarBack(type)
       return
     }
   }

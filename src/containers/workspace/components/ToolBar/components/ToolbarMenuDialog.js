@@ -24,7 +24,7 @@ export default class ToolbarMenuDialog extends React.Component {
     if (
       this.props.type !== nextProps.type ||
       JSON.stringify(this.state.data) !== JSON.stringify(nextState.data) ||
-      JSON.stringify(this.state.device) !== JSON.stringify(nextState.device)
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
     ) {
       return true
     }

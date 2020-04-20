@@ -290,6 +290,7 @@ export default class LayerAttributeSearch extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showFullInMap={true}
         headerProps={{
           navigation: this.props.navigation,
           headerCenter: this.renderSearchBar(),

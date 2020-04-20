@@ -909,6 +909,13 @@ export default class MapView extends React.Component {
   }
 
   geometryMultiSelected = event => {
+    if (
+      ToolbarModule.getData().actions &&
+      ToolbarModule.getData().actions.geometryMultiSelected
+    ) {
+      ToolbarModule.getData().actions.geometryMultiSelected(event)
+      return
+    }
     let data = []
     for (let i = 0; i < event.geometries.length; i++) {
       if (event.geometries[i].layerInfo.editable) {
@@ -2756,6 +2763,8 @@ export default class MapView extends React.Component {
   }
 
   _pressRoad = async type => {
+    //暂时屏蔽室内采集
+    if(type === ConstToolType.MAP_INCREMENT_INNER) return
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
@@ -3396,6 +3405,16 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
+        {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
+        {/*    <InputDialog*/}
+        {/*        ref={ref=>(GLOBAL.SMOOTHDIALOG = ref)}*/}
+        {/*        cancelAction={()=>{GLOBAL.SMOOTHDIALOG.setDialogVisible(false)}}*/}
+        {/*        confirmAction={()=>{console.warn('confirm()')}}*/}
+        {/*        keyboardType={'numeric'}*/}
+        {/*        value={2}*/}
+        {/*        placeholder={'平滑系数'}*/}
+        {/*    />*/}
+        {/*)}*/}
         {this.renderBackgroundOverlay()}
       </Container>
     )

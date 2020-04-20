@@ -125,7 +125,7 @@ async function geometrySelected(event) {
           case GeometryType.GEOTEXT:
             type = ConstToolType.MAP_EDIT_TEXT
             break
-          case GeometryType.PLOT:
+          case GeometryType.GEOGRAPHICOBJECT:
             type = ConstToolType.MAP_EDIT_PLOT
             break
         }

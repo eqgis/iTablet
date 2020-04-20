@@ -36,7 +36,7 @@ async function doubleTouchCallback(event) {
   isDoubleTouchCome = true
 }
 
-async function longtouchCallback(event) {
+async function longtouchCallback() {
   switch (GLOBAL.TouchType) {
     case TouchType.NORMAL:
       break

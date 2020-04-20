@@ -287,7 +287,7 @@ export default class ToolBarSectionList extends React.Component {
               styles.sectionTitle,
               this.props.device &&
                 this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-                width: scaleSize(300),
+                width: scaleSize(250),
               },
               this.props.sectionTitleStyle,
             ]}

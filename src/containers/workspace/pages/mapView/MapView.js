@@ -2764,7 +2764,7 @@ export default class MapView extends React.Component {
 
   _pressRoad = async type => {
     //暂时屏蔽室内采集
-    if(type === ConstToolType.MAP_INCREMENT_INNER) return
+    if (type === ConstToolType.MAP_INCREMENT_INNER) return
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
@@ -3225,7 +3225,10 @@ export default class MapView extends React.Component {
         {/*!this.props.analyst.params &&*/}
         {/*this.state.showAIDetect &&*/}
         {/*this.renderAIFunctionToolbar()}*/}
-        <SurfaceView ref={ref => (GLOBAL.MapSurfaceView = ref)} />
+        <SurfaceView
+          ref={ref => (GLOBAL.MapSurfaceView = ref)}
+          orientation={this.props.device.orientation}
+        />
         {!this.state.showAIDetect && this.renderMapController()}
         {/*{!this.isExample &&*/}
         {/*GLOBAL.Type === constants.MAP_NAVIGATION &&*/}

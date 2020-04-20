@@ -11,6 +11,7 @@ import {
   exportmap3DWorkspace,
   importSceneWorkspace,
 } from '../../../../models/map'
+import { setNavBarDisplay } from '../../../../models/setting'
 import { setSharing } from '../../../../models/online'
 import { setBackAction, removeBackAction } from '../../../../models/backActions'
 import { setToolbarStatus } from '../../../../models/toolbarStatus'
@@ -29,6 +30,8 @@ const mapStateToProps = state => ({
   downloads: state.down.toJS().downloads,
   toolbarStatus: state.toolbarStatus.toJS(),
   appConfig: state.appConfig.toJS(),
+  mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
+  navBarDisplay: state.setting.toJS().navBarDisplay,
 })
 
 const mapDispatchToProps = {
@@ -43,6 +46,7 @@ const mapDispatchToProps = {
   setBackAction,
   removeBackAction,
   setToolbarStatus,
+  setNavBarDisplay,
 }
 
 export default connect(

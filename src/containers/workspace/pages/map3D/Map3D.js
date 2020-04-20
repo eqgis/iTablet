@@ -30,6 +30,7 @@ import {
   ToolBar,
   OverlayView,
   MapNavMenu,
+  MapNavIcon,
   BackgroundOverlay,
 } from '../../components'
 import { Toast, scaleSize } from '../../../../utils'
@@ -119,6 +120,10 @@ export default class Map3D extends React.Component {
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
         () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
         },
       )
@@ -126,6 +131,10 @@ export default class Map3D extends React.Component {
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
+          if (!this.fullMap) {
+            this.showFullMap(true)
+            this.showFullonBlur = true
+          }
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
@@ -626,12 +635,14 @@ export default class Map3D extends React.Component {
   }
 
   showFullMap = isFull => {
+    this.showFullonBlur = !isFull
     if (isFull === this.fullMap) return
     let full = isFull === undefined ? !this.fullMap : !isFull
     this.container && this.container.setHeaderVisible(full)
     this.container && this.container.setBottomVisible(full)
     this.functionToolbar && this.functionToolbar.setVisible(full)
     this.mapController && this.mapController.setVisible(full)
+    this.NavIcon && this.NavIcon.setVisible(full)
     this.fullMap = isFull
   }
 
@@ -696,6 +707,19 @@ export default class Map3D extends React.Component {
     )
   }
 
+  renderMapNavIcon = () => {
+    return (
+      <MapNavIcon
+        ref={ref => (this.NavIcon = ref)}
+        getNavMenuRef={() => this.NavMenu}
+        device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
+        navBarDisplay={this.props.navBarDisplay}
+        setNavBarDisplay={this.props.setNavBarDisplay}
+      />
+    )
+  }
+
   /**
    * 横屏时的导航栏
    */
@@ -708,6 +732,8 @@ export default class Map3D extends React.Component {
         initIndex={0}
         type={this.type}
         device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
+        navBarDisplay={this.props.navBarDisplay}
       />
     )
   }
@@ -887,8 +913,8 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMapNavMenu()}
+        {this.renderMapNavIcon()}
+        {this.renderMapNavMenu()}
         {this.renderBackgroundOverlay()}
       </Container>
     )

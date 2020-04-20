@@ -23,10 +23,10 @@ function getToolbarSize(type, additional = {}) {
   switch (type) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
-      height =
-        orientation.indexOf('LANDSCAPE') === 0
-          ? Height.LIST_HEIGHT_L
-          : Height.LIST_HEIGHT_P
+      height = Height.LIST_HEIGHT_P
+      // orientation.indexOf('LANDSCAPE') === 0
+      //   ? Height.LIST_HEIGHT_L
+      //   : Height.LIST_HEIGHT_P
       break
     case ToolbarType.symbol: // 符号库容器
       height = Height.LIST_HEIGHT_L

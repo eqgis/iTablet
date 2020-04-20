@@ -204,6 +204,9 @@ export default class setting extends Component {
           navigation: this.props.navigation,
           withoutBack: true,
         }}
+        onOverlayPress={() => {
+          this.props.navigation.navigate('Map3D')
+        }}
         bottomBar={this.renderToolBar()}
       >
         {this.renderSelection()}

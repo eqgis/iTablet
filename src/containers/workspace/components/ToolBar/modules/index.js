@@ -20,6 +20,7 @@ import mark3DModule from './mark3DModule'
 import incrementModule from './incrementModule'
 import themeColorPickerModule from './themeColorPickerModule'
 import topoEditModule from './topoEditModule'
+import layerVisibleScaleModule from './layerVisibleScaleModule'
 export {
   startModule,
   fly3DModule,
@@ -43,4 +44,5 @@ export {
   incrementModule,
   themeColorPickerModule,
   topoEditModule,
+  layerVisibleScaleModule,
 }

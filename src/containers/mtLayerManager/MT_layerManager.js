@@ -81,7 +81,6 @@ export default class MT_layerManager extends React.Component {
       data: [],
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
       allLayersVisible: false,
-      currentScale: 0,
     }
     this.itemRefs = {} // 记录列表items
     this.currentItemRef = {} // 当前被选中的item
@@ -93,16 +92,6 @@ export default class MT_layerManager extends React.Component {
       JSON.stringify(prevProps.layers) !== JSON.stringify(this.props.layers)
     ) {
       this.getData()
-    }
-    let { params } = this.props.navigation.state
-    if (
-      params &&
-      params.currentScale &&
-      params.currentScale !== this.state.currentScale
-    ) {
-      this.setState({
-        currentScale: params.currentScale,
-      })
     }
   }
 
@@ -1014,7 +1003,6 @@ export default class MT_layerManager extends React.Component {
         device={this.props.device}
         user={this.props.user}
         navigation={this.props.navigation}
-        currentScale={this.state.currentScale}
       />
     )
   }
@@ -1035,6 +1023,9 @@ export default class MT_layerManager extends React.Component {
             marginLeft: scaleSize(80),
           },
           withoutBack: true,
+        }}
+        onOverlayPress={() => {
+          this.props.navigation.navigate('MapView')
         }}
         bottomBar={this.renderToolBar()}
       >

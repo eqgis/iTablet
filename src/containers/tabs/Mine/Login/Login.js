@@ -5,32 +5,20 @@
 */
 
 import * as React from 'react'
-import {
-  TextInput,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  ScrollView,
-  Keyboard,
-  NetInfo,
-} from 'react-native'
-import { Toast, scaleSize, OnlineServicesUtils } from '../../../../utils/index'
+import { NetInfo } from 'react-native'
+import { Toast, OnlineServicesUtils } from '../../../../utils/index'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
 import { SOnlineService } from 'imobile_for_reactnative'
-import styles, {
-  titleOnFocusBackgroundColor,
-  titleOnBlurBackgroundColor,
-} from './Styles'
+import styles from './Styles'
 import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
-import color from '../../../../styles/color'
 import UserType from '../../../../constants/UserType'
 import { getLanguage } from '../../../../language/index'
 import { setUser } from '../../../../models/user'
 import { connect } from 'react-redux'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
+import OnlineLoginView from './component/OnlineLoginView'
 
 const JSOnlineService = new OnlineServicesUtils('online')
 class Login extends React.Component {
@@ -44,12 +32,6 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      onEmailTitleFocus: false,
-      onPhoneTitleFocus: true,
-      titleEmailDefaultBg: titleOnBlurBackgroundColor,
-      titlePhoneBg: titleOnFocusBackgroundColor,
-      behavior: 'padding',
-      isChangeOrientation: false,
       isFirstLogin: this.props.navigation === undefined,
     }
   }
@@ -92,41 +74,40 @@ class Login extends React.Component {
     }
   }
 
-  _login = async () => {
+  _login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
     let result
-    let isEmail = this.state.onEmailTitleFocus
     let userName = ''
     let password = ''
 
     try {
       if (isEmail) {
-        if (!this.txtEmail) {
+        if (!email) {
           //请输入邮箱或昵称
           Toast.show(
             getLanguage(this.props.language).Profile.ENTER_EMAIL_OR_USERNAME,
           )
           return
         }
-        if (!this.txtEmailPassword) {
+        if (!emailPwd) {
           //请输入密码
           Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
           return
         }
-        userName = this.txtEmail
-        password = this.txtEmailPassword
+        userName = email
+        password = emailPwd
       } else {
-        if (!this.txtPhoneNumber) {
+        if (!phone) {
           //请输入手机号
           Toast.show(getLanguage(this.props.language).Profile.ENTER_MOBILE)
           return
         }
-        if (!this.txtPhoneNumberPassword) {
+        if (!phonePwd) {
           //请输入密码
           Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
           return
         }
-        userName = this.txtPhoneNumber
-        password = this.txtPhoneNumberPassword
+        userName = phone
+        password = phonePwd
       }
 
       let userInfo
@@ -244,99 +225,11 @@ class Login extends React.Component {
       this.container && this.container.setLoading(false)
     }
   }
-  _renderEmail = () => {
-    return (
-      <View key={'email'} style={{ width: '70%' }}>
-        <TextInput
-          clearButtonMode={'while-editing'}
-          keyboardType={'email-address'}
-          // 请输入邮箱或昵称
-          placeholder={
-            getLanguage(this.props.language).Profile.ENTER_EMAIL_OR_USERNAME
-          }
-          placeholderTextColor={'#A7A7A7'}
-          multiline={false}
-          defaultValue={this.txtEmail || ''}
-          style={styles.textInputStyle}
-          onChangeText={text => {
-            this.txtEmail = text
-          }}
-        />
-        <TextInput
-          clearButtonMode={'while-editing'}
-          secureTextEntry={true}
-          // 请输入密码
-          placeholder={getLanguage(this.props.language).Profile.ENTER_PASSWORD}
-          placeholderTextColor={'#A7A7A7'}
-          multiline={false}
-          password={true}
-          style={styles.textInputStyle}
-          defaultValue={this.txtEmailPassword || ''}
-          onChangeText={text => {
-            this.txtEmailPassword = text
-          }}
-        />
-      </View>
-    )
+
+  renderLogin = () => {
+    return <OnlineLoginView language={global.language} login={this._login} />
   }
-  _renderPhone = () => {
-    return (
-      <View key={'phone'} style={{ width: '70%' }}>
-        <TextInput
-          clearButtonMode={'while-editing'}
-          //请输入手机号
-          placeholder={getLanguage(this.props.language).Profile.ENTER_MOBILE}
-          placeholderTextColor={'#A7A7A7'}
-          defaultValue={this.txtPhoneNumber}
-          keyboardType={'number-pad'}
-          style={styles.textInputStyle}
-          onChangeText={text => {
-            this.txtPhoneNumber = text
-          }}
-        />
-        <TextInput
-          secureTextEntry={true}
-          multiline={false}
-          textContentType={'password'}
-          //请输入密码
-          placeholder={getLanguage(this.props.language).Profile.ENTER_PASSWORD}
-          placeholderTextColor={'#A7A7A7'}
-          defaultValue={this.txtPhoneNumberPassword}
-          style={styles.textInputStyle}
-          onChangeText={text => {
-            this.txtPhoneNumberPassword = text
-          }}
-        />
-      </View>
-    )
-  }
-  _onEmailPress = () => {
-    if (!this.state.onEmailTitleFocus) {
-      this.setState({
-        onEmailTitleFocus: true,
-        onPhoneTitleFocus: false,
-        titleEmailDefaultBg: titleOnFocusBackgroundColor,
-        titlePhoneBg: titleOnBlurBackgroundColor,
-      })
-    }
-  }
-  _onPhonePress = () => {
-    if (!this.state.onPhoneTitleFocus) {
-      this.setState({
-        onEmailTitleFocus: false,
-        onPhoneTitleFocus: true,
-        titleEmailDefaultBg: titleOnBlurBackgroundColor,
-        titlePhoneBg: titleOnFocusBackgroundColor,
-      })
-    }
-  }
-  _onSelectTitle = () => {
-    if (this.state.onEmailTitleFocus) {
-      return this._renderEmail()
-    } else {
-      return this._renderPhone()
-    }
-  }
+
   render() {
     return (
       <Container
@@ -349,151 +242,7 @@ class Login extends React.Component {
           navigation: this.props.navigation,
         }}
       >
-        <KeyboardAvoidingView
-          enabled={true}
-          keyboardVerticalOffset={0}
-          style={{ flex: 1 }}
-          contentContainerStyle={{
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}
-          behavior={this.state.behavior}
-        >
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{ height: 500, alignItems: 'center' }}
-            keyboardDismissMode={'on-drag'}
-            keyboardShouldPersistTaps={'handled'}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.keyboardAvoidingStyle}>
-              <View
-                style={[
-                  styles.titleStyle,
-                  {
-                    borderRadius: 6,
-                    borderColor: color.itemColorBlack,
-                    borderWidth: 2,
-                  },
-                ]}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    this._onPhonePress()
-                  }}
-                  style={[
-                    {
-                      flex: 1,
-                      height: '100%',
-                      alignItems: 'center',
-                      borderTopLeftRadius: 1,
-                      borderBottomLeftRadius: 1,
-                      borderTopRightRadius: 0,
-                      borderBottomRightRadius: 0,
-                      borderColor: color.borderColorBlack,
-                      justifyContent: 'center',
-                      backgroundColor: this.state.titlePhoneBg,
-                    },
-                  ]}
-                >
-                  <Text style={[styles.titleContainerStyle]}>
-                    {/* 手机登录 */}
-                    {getLanguage(this.props.language).Profile.MOBILE_LOGIN}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    this._onEmailPress()
-                  }}
-                  style={{
-                    flex: 1,
-                    height: '100%',
-                    alignItems: 'center',
-                    borderTopLeftRadius: 0,
-                    borderBottomLeftRadius: 0,
-                    borderTopRightRadius: 1,
-                    borderBottomRightRadius: 1,
-                    borderColor: color.borderColorBlack,
-                    justifyContent: 'center',
-                    backgroundColor: this.state.titleEmailDefaultBg,
-                  }}
-                >
-                  <Text style={[styles.titleContainerStyle]}>
-                    {/* 邮箱登录 */}
-                    {getLanguage(this.props.language).Profile.EMAIL_LOGIN}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {this._onSelectTitle()}
-              <View style={styles.viewStyle}>
-                <Text
-                  style={{
-                    paddingLeft: 5,
-                    lineHeight: 40,
-                    textAlign: 'left',
-                    color: color.font_color_white,
-                    fontSize: scaleSize(20),
-                  }}
-                  onPress={() => {
-                    NavigationService.navigate('Register')
-                    // NavigationService.navigate('Protocol', {
-                    //   type: 'Register',
-                    // })
-                  }}
-                >
-                  {/* 注册 */}
-                  {getLanguage(this.props.language).Profile.REGISTER}
-                </Text>
-                <Text
-                  style={{
-                    paddingRight: 5,
-                    lineHeight: 40,
-                    textAlign: 'right',
-                    color: color.font_color_white,
-                    fontSize: scaleSize(20),
-                  }}
-                  onPress={() => {
-                    NavigationService.navigate('GetBack')
-                  }}
-                >
-                  {getLanguage(global.language).Profile.FORGET_PASSWORD}
-                </Text>
-              </View>
-
-              {/* 登录 */}
-              <TouchableOpacity
-                accessible={true}
-                accessibilityLabel={
-                  getLanguage(this.props.language).Profile.LOGIN
-                }
-                style={styles.loginStyle}
-                onPress={() => {
-                  Keyboard.dismiss()
-                  this._login()
-                }}
-              >
-                <Text style={[styles.titleContainerStyle]}>
-                  {/* 登录 */}
-                  {getLanguage(this.props.language).Profile.LOGIN}
-                </Text>
-              </TouchableOpacity>
-              {/*<View style={{marginTop: 5}}/>*/}
-              {/* <TouchableOpacity
-                accessible={true}
-                accessibilityLabel={'游客'}
-                style={styles.probationStyle}
-                onPress={() => {
-                  this._probation()
-                }}
-              >
-                <Text style={[styles.titleContainerStyle]}>游客</Text>
-              </TouchableOpacity>*/}
-              <View style={{ flex: 1, height: 200 }} />
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+        {this.renderLogin()}
       </Container>
     )
   }

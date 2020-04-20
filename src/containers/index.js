@@ -89,9 +89,14 @@ import AnimationNodeEditView from './workspace/components/AnimationNodeEditView'
 import AnimationNodeEditRotateView from './workspace/components/AnimationNodeEditRotateView'
 import InputPage from './InputPage'
 import protocol from './tabs/Home/AboutITablet/Protocol'
-import LicensePage from './tabs/Home/License/LicensePage'
-import LicenseModule from './tabs/Home/License/LicenseModule'
-import LicenseJoin from './tabs/Home/License/LicenseJoin'
+import {
+  LicensePage,
+  LicenseTypePage,
+  LicenseModule,
+  LicenseJoin,
+  LicenseJoinCloud,
+  LicenseJoinPrivateCloud,
+} from './tabs/Home/License'
 import SuggestionFeedback from './tabs/Home/SuggestionFeedback/SuggestionFeedback'
 import PointAnalyst from './pointAnalyst'
 import PublicMap from './publicMap'
@@ -131,6 +136,7 @@ import CastModelOperateView from './arCastModelOperateView'
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
+import CreateNavDataPage from "./CreateNavDataPage"
 import ChooseTaggingLayer from './ChooseTaggingLayer'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
@@ -638,6 +644,13 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
+      LicenseTypePage: {
+        screen: LicenseTypePage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
       LicenseModule: {
         screen: LicenseModule,
         navigationOptions: {
@@ -647,6 +660,20 @@ export default function(appConfig) {
       },
       LicenseJoin: {
         screen: LicenseJoin,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      LicenseJoinCloud: {
+        screen: LicenseJoinCloud,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      LicenseJoinPrivateCloud: {
+        screen: LicenseJoinPrivateCloud,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,
@@ -1008,6 +1035,12 @@ export default function(appConfig) {
           header: null,
         },
       },
+      CreateNavDataPage:{
+        screen: CreateNavDataPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
       CollectSceneFormHistoryView: {
         screen: CollectSceneFormHistoryView,
         navigationOptions: {
@@ -1049,10 +1082,13 @@ export default function(appConfig) {
       transitionConfig: () => ({
         screenInterpolator: sceneProps => {
           const { layout, position, scene } = sceneProps
-          if((scene.route.routeName === 'NavigationView' || scene.route.routeName === 'PointAnalyst')
-              && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0){
+          if (
+            (scene.route.routeName === 'NavigationView' ||
+              scene.route.routeName === 'PointAnalyst') &&
+            GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+          ) {
             return fromLeft(sceneProps)
-          }else{
+          } else {
             const { index } = scene
 
             const width = layout.initWidth
@@ -1085,7 +1121,7 @@ const fromLeft = sceneProps => {
     inputRange: [index - 1, index - 0.99, index],
     outputRange: [0, 1, 1],
   })
-  return {opacity,  transform: [{ translateX: translateX }] }
+  return { opacity, transform: [{ translateX: translateX }] }
 }
 
 // export default (function (a) {

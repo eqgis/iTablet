@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.facebook.react.ReactActivity;
 import com.rnfs.RNFSManager;
@@ -101,7 +102,13 @@ public class MainActivity extends ReactActivity {
         //must store the new intent unless getIntent() will return the old one
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
+            return true;
+        } 
+        return super.onKeyDown(keyCode, event);
+    }
     private void initEnvironment() {
 //        String licensePath = SDCARD + "/iTablet/license/";
 //        String licenseName = "Trial_License.slm";

@@ -85,7 +85,7 @@ const mapStateToProps = state => ({
   toolbarStatus: state.toolbarStatus.toJS(),
   appConfig: state.appConfig.toJS(),
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
-  columnNavBarDisplay:state.setting.toJS().columnNavBarDisplay,
+  navBarDisplay: state.setting.toJS().navBarDisplay,
 })
 
 const mapDispatchToProps = {

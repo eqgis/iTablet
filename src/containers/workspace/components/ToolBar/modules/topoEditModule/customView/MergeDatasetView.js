@@ -368,6 +368,7 @@ export default class MergeDatasetView extends Component{
 const styles = StyleSheet.create({
   container:{
     flex:1,
+    backgroundColor:color.content_white,
   },
   padding:{
     paddingHorizontal:scaleSize(10),

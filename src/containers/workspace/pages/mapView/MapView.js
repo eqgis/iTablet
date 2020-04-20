@@ -48,7 +48,6 @@ import {
   NavigationPoiView,
   RNFloorListView,
   PreviewHeader,
-  LayerVisibilityView,
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
@@ -106,8 +105,6 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 
 const markerTag = 118081
-export const HEADER_HEIGHT = scaleSize(88) + screen.getIphonePaddingTop()
-export const FOOTER_HEIGHT = scaleSize(88)
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -912,6 +909,13 @@ export default class MapView extends React.Component {
   }
 
   geometryMultiSelected = event => {
+    if (
+      ToolbarModule.getData().actions &&
+      ToolbarModule.getData().actions.geometryMultiSelected
+    ) {
+      ToolbarModule.getData().actions.geometryMultiSelected(event)
+      return
+    }
     let data = []
     for (let i = 0; i < event.geometries.length; i++) {
       if (event.geometries[i].layerInfo.editable) {
@@ -1252,9 +1256,10 @@ export default class MapView extends React.Component {
           this.props.setSelection && this.props.setSelection()
           SMap.setAction(Action.SELECT)
           let preType = ToolbarModule.getParams().type
-          let type = preType.indexOf('MAP_TOPO_') > -1
-            ? ConstToolType.MAP_TOPO_EDIT
-            : ConstToolType.MAP_EDIT_DEFAULT
+          let type =
+            preType.indexOf('MAP_TOPO_') > -1
+              ? ConstToolType.MAP_TOPO_EDIT
+              : ConstToolType.MAP_EDIT_DEFAULT
           // 删除对象后，编辑设为为选择状态
           this.toolBox.setVisible(true, type, {
             isFullScreen: false,
@@ -1358,7 +1363,7 @@ export default class MapView extends React.Component {
         this.setSaveViewVisible(true, null, async () => {
           this._removeGeometrySelectedListener()
           if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-             this._removeNavigationListeners()
+            this._removeNavigationListeners()
           }
         })
       } else {
@@ -1369,11 +1374,11 @@ export default class MapView extends React.Component {
             //'正在关闭地图'
           )
           if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-             this._removeNavigationListeners().then(()=>{
+            this._removeNavigationListeners().then(() => {
               SMap.clearPoint()
               SMap.stopGuide()
               this.props.setMap2Dto3D(false)
-             })
+            })
           }
           await this.props.closeMap()
           await this._removeGeometrySelectedListener()
@@ -1398,37 +1403,36 @@ export default class MapView extends React.Component {
 
   _addMap = () => {
     (async function() {
+      let bWorkspcaOpen = true
+      let bDatasourceOPen = true
+      let bMapOPen = true
+      let bPlotOpen = true
+      let bCreateTag = true
+      let bNaviCreate = true
       try {
         // if (this.wsData === null || this.wsData === undefined) {
         //   this.setLoading(false)
         //   return
         // }
 
-        let bWorkspcaOpen = true
-        let bDatasourceOPen = true
-        let bMapOPen = true
-        let bPlotOpen = true
-        let bCreateTag = true
-        let bNaviCreate = true
-
-        setTimeout( async()=>{
+        setTimeout(async () => {
           // debugger
           this.setLoading(false)
-          if(!bWorkspcaOpen){
+          if (!bWorkspcaOpen) {
             // Toast.show("workspace !")
-          }else if(!bDatasourceOPen){
+          } else if (!bDatasourceOPen) {
             // Toast.show("datasource !")
-          }else if(!bMapOPen){
+          } else if (!bMapOPen) {
             // Toast.show("map !")
-          }else if(!bPlotOpen){
+          } else if (!bPlotOpen) {
             // Toast.show("plot !")
-          }else if(!bCreateTag){
+          } else if (!bCreateTag) {
             // Toast.show("tagging !")
-          }else if(!bNaviCreate){
+          } else if (!bNaviCreate) {
             // Toast.show("navi !")
           }
           // debugger
-        },1000*15)
+        }, 1000 * 15)
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
           if (this.wsData instanceof Array) {
@@ -1465,7 +1469,6 @@ export default class MapView extends React.Component {
               // }
             }
           } else {
-            
             if (this.wsData.type === 'Workspace') {
               bWorkspcaOpen = false
               await this._openWorkspace(this.wsData, this.wsData.layerIndex)
@@ -1512,8 +1515,6 @@ export default class MapView extends React.Component {
           })
           bWorkspcaOpen = true
         }
-
-    
         if (GLOBAL.Type === constants.MAP_PLOTTING) {
           this.setLoading(
             true,
@@ -1595,28 +1596,36 @@ export default class MapView extends React.Component {
         bCreateTag = false
 
         SMap.setLabelColor()
-        SMap.openTaggingDataset(this.props.user.currentUser.userName).then(()=>{
-              SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(async hasDefaultTagging=>{
-                if(!hasDefaultTagging){
-                  await SMap.newTaggingDataset('Default_Tagging',this.props.user.currentUser.userName)
+        SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
+          () => {
+            SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(
+              async hasDefaultTagging => {
+                if (!hasDefaultTagging) {
+                  await SMap.newTaggingDataset(
+                    'Default_Tagging',
+                    this.props.user.currentUser.userName,
+                  )
                 }
                 // debugger
-                SMap.getCurrentTaggingLayer(this.props.user.currentUser.userName).then(layer=>{
-                if(layer){
-                  // debugger
-                  GLOBAL.TaggingDatasetName = layer.name
-                  SMap.setLayerEditable(layer.name, true)
-                  SMap.setLayerVisible(layer.name, true)
-                  this.props.setCurrentLayer(layer)
+                SMap.getCurrentTaggingLayer(
+                  this.props.user.currentUser.userName,
+                ).then(layer => {
+                  if (layer) {
+                    // debugger
+                    GLOBAL.TaggingDatasetName = layer.name
+                    SMap.setLayerEditable(layer.name, true)
+                    SMap.setLayerVisible(layer.name, true)
+                    this.props.setCurrentLayer(layer)
 
-                  bCreateTag = true
-                  if (hasMap) SMap.saveMap('', false, false)
-                  // debugger
-                }
-              })
-            })
-        })
-           
+                    bCreateTag = true
+                    if (hasMap) SMap.saveMap('', false, false)
+                    // debugger
+                  }
+                })
+              },
+            )
+          },
+        )
 
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
@@ -1628,14 +1637,14 @@ export default class MapView extends React.Component {
             this.showMarker.latitude,
             markerTag,
           )
-        
+
         SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
         if (GLOBAL.Type === constants.MAP_NAVIGATION) {
           bNaviCreate = false
           this.props.setMap2Dto3D(true)
           this.props.setMapNavigation({ isShow: false, name: '' })
-          SMap.getCurrentFloorID().then(currentFloorID=>{
+          SMap.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
           })
           SMap.initSpeakPlugin()
@@ -1649,17 +1658,17 @@ export default class MapView extends React.Component {
         }
         this.setLoading(false)
       } catch (e) {
-        if(!bWorkspcaOpen){
+        if (!bWorkspcaOpen) {
           // Toast.show("workspace !")
-        }else if(!bDatasourceOPen){
+        } else if (!bDatasourceOPen) {
           // Toast.show("datasource !")
-        }else if(!bMapOPen){
+        } else if (!bMapOPen) {
           // Toast.show("map !")
-        }else if(!bPlotOpen){
+        } else if (!bPlotOpen) {
           // Toast.show("plot !")
-        }else if(!bCreateTag){
+        } else if (!bCreateTag) {
           // Toast.show("tagging !")
-        }else if(!bNaviCreate){
+        } else if (!bNaviCreate) {
           // Toast.show("navi !")
         }
         this.setLoading(false)
@@ -1823,6 +1832,9 @@ export default class MapView extends React.Component {
         ref={ref => (this.NavIcon = ref)}
         getNavMenuRef={() => this.NavMenu}
         device={this.props.device}
+        mapColumnNavBar={this.props.mapColumnNavBar}
+        navBarDisplay={this.props.navBarDisplay}
+        setNavBarDisplay={this.props.setNavBarDisplay}
       />
     )
   }
@@ -1840,7 +1852,7 @@ export default class MapView extends React.Component {
         type={this.type}
         device={this.props.device}
         mapColumnNavBar={this.props.mapColumnNavBar}
-        columnNavBarDisplay={this.props.columnNavBarDisplay}
+        navBarDisplay={this.props.navBarDisplay}
       />
     )
   }
@@ -1944,10 +1956,6 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
-        getNavMenuRef={() => this.NavMenu}
-        mapColumnNavBar={this.props.mapColumnNavBar}
-        columnNavBarDisplay={this.props.columnNavBarDisplay}
-        setNavBarDisplay={()=>this.props.setNavBarDisplay}
         getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
@@ -2755,6 +2763,8 @@ export default class MapView extends React.Component {
   }
 
   _pressRoad = async type => {
+    //暂时屏蔽室内采集
+    if(type === ConstToolType.MAP_INCREMENT_INNER) return
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
@@ -2785,7 +2795,7 @@ export default class MapView extends React.Component {
     }
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
     let layers = this.props.layers.layers
-    layers.map(async layer => await SMap.setLayerSelectable(layer.path,false))
+    layers.map(async layer => await SMap.setLayerSelectable(layer.path, false))
     GLOBAL.TouchType = TouchType.NULL
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
@@ -3264,9 +3274,8 @@ export default class MapView extends React.Component {
           GLOBAL.Type === constants.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
-        {this.props.mapColumnNavBar && this.renderMapNavIcon()}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMapNavMenu()}
+        {this.renderMapNavIcon()}
+        {this.renderMapNavMenu()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
@@ -3396,8 +3405,17 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
+        {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
+        {/*    <InputDialog*/}
+        {/*        ref={ref=>(GLOBAL.SMOOTHDIALOG = ref)}*/}
+        {/*        cancelAction={()=>{GLOBAL.SMOOTHDIALOG.setDialogVisible(false)}}*/}
+        {/*        confirmAction={()=>{console.warn('confirm()')}}*/}
+        {/*        keyboardType={'numeric'}*/}
+        {/*        value={2}*/}
+        {/*        placeholder={'平滑系数'}*/}
+        {/*    />*/}
+        {/*)}*/}
         {this.renderBackgroundOverlay()}
-        <LayerVisibilityView ref={ref => (GLOBAL.LayerVisibilityView = ref)} />
       </Container>
     )
   }

@@ -17,9 +17,6 @@ import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
 
-const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
-const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
-
 export default class PoiTopSearchBar extends React.Component {
   props: {
     setMapNavigation: () => {},
@@ -28,14 +25,17 @@ export default class PoiTopSearchBar extends React.Component {
 
   constructor(props) {
     super(props)
-    this.top = new Animated.Value(-HEADER_HEIGHT)
+    this.top = new Animated.Value(-screen.getHeaderHeight())
     this.state = {
       defaultValue: '',
       visible: false,
     }
-    this.width = props.device.orientation.indexOf('LANDSCAPE') === 0
-      ? new Animated.Value(screen.getScreenWidth(props.device.orientation) * 0.45)
-      : new Animated.Value(screen.getScreenWidth(props.device.orientation))
+    this.width =
+      props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(
+          screen.getScreenWidth(props.device.orientation) * 0.45,
+        )
+        : new Animated.Value(screen.getScreenWidth(props.device.orientation))
   }
 
   componentDidUpdate(prevProps) {
@@ -46,15 +46,15 @@ export default class PoiTopSearchBar extends React.Component {
       } else {
         width = screen.getScreenWidth(this.props.device.orientation)
       }
-      Animated.timing(this.width,{
-        toValue:width,
-        duration:300,
+      Animated.timing(this.width, {
+        toValue: width,
+        duration: 300,
       }).start()
     }
   }
   setVisible = visible => {
     if (visible === this.state.visible) return
-    let height = visible ? 0 : -HEADER_HEIGHT
+    let height = visible ? 0 : -screen.getHeaderHeight()
     Animated.timing(this.top, {
       toValue: height,
       duration: 400,
@@ -70,7 +70,17 @@ export default class PoiTopSearchBar extends React.Component {
     if (!this.state.visible) return <View />
     const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
     return (
-      <Animated.View style={[styles.container, { top: this.top, width:this.width }]}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            height: screen.getHeaderHeight(),
+            paddingTop: screen.getIphonePaddingTop(),
+            top: this.top,
+            width: this.width,
+          },
+        ]}
+      >
         <TouchableOpacity
           onPress={async () => {
             if (GLOBAL.PoiInfoContainer) {
@@ -139,8 +149,8 @@ export default class PoiTopSearchBar extends React.Component {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    height: HEADER_HEIGHT,
-    paddingTop: HEADER_PADDINGTOP,
+    // height: HEADER_HEIGHT,
+    // paddingTop: HEADER_PADDINGTOP,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',

@@ -22,10 +22,6 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import { SimpleDialog } from '../../Friend/Component'
-import {
-  HEADER_HEIGHT,
-  HEADER_HEIGHT_LANDSCAPE,
-} from '../../../../../src/components/Header/styles'
 import { TAB_BAR_HEIGHT_P } from '../../TabBar'
 // let AppUtils = NativeModules.AppUtils
 
@@ -426,14 +422,14 @@ class ModuleList extends Component {
     } else {
       windowHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth())
     }
-    let contentH = windowHeight - HEADER_HEIGHT - TAB_BAR_HEIGHT_P
+    let contentH = windowHeight - screen.getHeaderHeight() - TAB_BAR_HEIGHT_P
     let scrollEnabled = false
     if (height >= contentH) {
       height = contentH
       scrollEnabled = true
     }
     let spaceHeight =
-      (windowHeight - fixedSize(157) * 2 - HEADER_HEIGHT_LANDSCAPE) / 3 -
+      (windowHeight - fixedSize(157) * 2 - screen.getHeaderHeight()) / 3 -
       fixedSize(70)
     if (spaceHeight < 0) {
       spaceHeight = 0

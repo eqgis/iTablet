@@ -4,13 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import {
-  View,
-  Animated,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { View, Animated, FlatList, Dimensions } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
@@ -50,15 +44,14 @@ import {
   mark3DModule,
   incrementModule,
 } from '../ToolBar/modules'
-import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 
-const HeaderHeight = scaleSize(88) + screen.getIphonePaddingTop()
+// const HeaderHeight = scaleSize(88)
 const BottomHeight = scaleSize(100)
 
 const RIGHT = scaleSize(20)
 const RIGHT_LANDSCAPE = 0
-const TOP = scaleSize(143) + screen.getIphonePaddingTop()
-const TOP_LANDSCAPE = HEADER_HEIGHT_LANDSCAPE
+const TOP = scaleSize(143)
+const TOP_LANDSCAPE = screen.HEADER_HEIGHT_LANDSCAPE
 const BOTTOM_LANDSCAPE = 0
 export default class FunctionToolbar extends React.Component {
   props: {
@@ -93,10 +86,6 @@ export default class FunctionToolbar extends React.Component {
     //弹出模型、路网弹窗
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
-    getNavMenuRef: () => {},
-    mapColumnNavBar: boolean,
-    columnNavBarDisplay:boolean,
-    setNavBarDisplay:() => {},
   }
 
   static defaultProps = {
@@ -115,15 +104,13 @@ export default class FunctionToolbar extends React.Component {
       top:
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(TOP_LANDSCAPE)
-          : new Animated.Value(TOP),
+          : new Animated.Value(TOP + screen.getIphonePaddingTop()),
       right:
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(RIGHT_LANDSCAPE)
           : new Animated.Value(RIGHT),
     }
-    this.rotate = new Animated.Value(0)
     this.visible = true
-    this.menuVisible = false
     this.offset = 0
     this.m_maxHeight = 400
     this.onTop = true
@@ -141,8 +128,7 @@ export default class FunctionToolbar extends React.Component {
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
-      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
-      this.props.mapColumnNavBar !== nextProps.mapColumnNavBar
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
     ) {
       return true
     }
@@ -162,7 +148,7 @@ export default class FunctionToolbar extends React.Component {
         top = TOP_LANDSCAPE
         right = RIGHT_LANDSCAPE
       } else {
-        top = TOP
+        top = TOP + screen.getIphonePaddingTop()
         right = RIGHT
       }
       Animated.parallel([
@@ -179,7 +165,7 @@ export default class FunctionToolbar extends React.Component {
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         top = TOP_LANDSCAPE
       } else {
-        top = TOP
+        top = TOP + screen.getIphonePaddingTop()
       }
       Animated.timing(this.state.top, {
         toValue: top,
@@ -199,7 +185,7 @@ export default class FunctionToolbar extends React.Component {
         Dimensions.get('window').height,
         Dimensions.get('window').width,
       )
-      let headerHeight = HEADER_HEIGHT_LANDSCAPE
+      let headerHeight = screen.HEADER_HEIGHT_LANDSCAPE
       let moreHeight = scaleSize(80) + 1
       visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
     } else {
@@ -246,20 +232,10 @@ export default class FunctionToolbar extends React.Component {
         ? RIGHT_LANDSCAPE
         : RIGHT
     Animated.timing(this.state.right, {
-      toValue: visible ? right : scaleSize(-200),
+      toValue: visible ? right : scaleSize(-100),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
     this.visible = visible
-    if (!visible) {
-      !this.props.mapColumnNavBar && this.setMenuVisible(visible)
-    }
-  }
-
-  rotateMore = visible => {
-    Animated.timing(this.rotate, {
-      toValue: visible ? 1 : 0,
-      duration: Const.ANIMATED_DURATION,
-    }).start()
   }
 
   isMapIndoorNavigation = () => {
@@ -683,7 +659,7 @@ export default class FunctionToolbar extends React.Component {
 
   renderList = () => {
     this.m_maxHeight =
-      (this.props.device.height - HeaderHeight - BottomHeight) * 0.6
+      (this.props.device.height - screen.getHeaderHeight() - BottomHeight) * 0.6
     // maxHeightN < 4
     let style =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -707,41 +683,8 @@ export default class FunctionToolbar extends React.Component {
     )
   }
 
-  setMenuVisible = visible => {
-    const menu = this.props.getNavMenuRef()
-    menu && menu.setVisible(visible)
-    this.rotateMore(visible)
-    this.menuVisible = visible
-  }
-
   renderMore = () => {
-    const rotateX = this.rotate.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '180deg'],
-    })
-    if (this.props.mapColumnNavBar) {
-      return <View style={styles.moreImageView} />
-    }
-    return (
-      <View>
-        <TouchableOpacity
-          style={styles.moreImageView}
-          onPress={() => {
-            this.setMenuVisible(!this.menuVisible)
-          }}
-        >
-          <Animated.Image
-            style={[
-              styles.moreImage,
-              {
-                transform: [{ rotateY: rotateX }],
-              },
-            ]}
-            source={require('../../../../assets/public/left_arrow.png')}
-          />
-        </TouchableOpacity>
-      </View>
-    )
+    return <View style={styles.moreImageView} />
   }
 
   renderIndicator = location => {

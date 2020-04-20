@@ -9,10 +9,17 @@ import NavigationService from '../../../../containers/NavigationService'
 import MT_Btn from '../../../../components/mapTools/MT_Btn'
 import { getLanguage } from '../../../../language/index'
 import { getThemeAssets } from '../../../../assets'
-import { HEADER_HEIGHT_LANDSCAPE } from '../../../../components/Header/styles'
 // import { SScene, Utility } from 'imobile_for_reactnative'
 // export const MAP_LOCAL = 'MAP_LOCAL'
 // export const MAP_3D = 'MAP_3D'
+
+const INVISIBLE = -(scaleSize(100) + scaleSize(96))
+const SHOW = 0
+const HIDE = -scaleSize(96)
+
+const INVISIBLE_R = -(scaleSize(100) + scaleSize(600))
+const SHOW_R = scaleSize(80)
+const HIDE_R = -scaleSize(600)
 
 export default class MapNavMenu extends React.Component {
   static propTypes = {
@@ -26,6 +33,7 @@ export default class MapNavMenu extends React.Component {
     style: PropTypes.any,
     appConfig: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
+    navBarDisplay: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -56,36 +64,63 @@ export default class MapNavMenu extends React.Component {
     this.state = {
       data: data,
       currentIndex: current,
-      right: new Animated.Value(-this.props.device.width),
     }
-    this.visible = false
+    this.visible = true
+    this.right = new Animated.Value(this.getRight())
   }
 
-  componentDidUpdate(preProps) {
-    if (
-      this.props.mapColumnNavBar !== preProps.mapColumnNavBar &&
-      !this.props.mapColumnNavBar
-    ) {
-      this.setVisible(false)
+  componentDidUpdate(prevProps) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      this.onOrientationChange()
     }
+  }
+
+  getRight = () => {
+    let right
+    if (this.props.device.orientation === 'PORTRAIT') {
+      right = this.props.mapColumnNavBar ? INVISIBLE : INVISIBLE_R
+    } else {
+      if (this.visible) {
+        if (this.props.navBarDisplay) {
+          right = this.props.mapColumnNavBar ? SHOW : SHOW_R
+        } else {
+          right = this.props.mapColumnNavBar ? HIDE : HIDE_R
+        }
+      } else {
+        right = this.props.mapColumnNavBar ? INVISIBLE : INVISIBLE_R
+      }
+    }
+    return right
+  }
+
+  onOrientationChange = () => {
+    let right = this.getRight()
+    Animated.timing(this.right, {
+      toValue: right,
+      duration: 0,
+    }).start()
   }
 
   setVisible = (visible, immediately) => {
-    if (this.visible === visible) return
-    // iphone X适配向右侧横屏
-    Animated.timing(this.state.right, {
-      toValue: visible ? scaleSize(80) : scaleSize(-this.props.device.width),
+    this.visible = visible
+    let right = this.getRight()
+    Animated.timing(this.right, {
+      toValue: right,
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
     }).start()
-    this.visible = visible
   }
 
-  setLocation = location => {
-    Animated.timing(this.state.right, {
-      toValue: location,
+  locationChange = () => {
+    let right
+    if (this.props.navBarDisplay) {
+      right = this.props.mapColumnNavBar ? HIDE : HIDE_R
+    } else {
+      right = this.props.mapColumnNavBar ? SHOW : SHOW_R
+    }
+    Animated.timing(this.right, {
+      toValue: right,
       duration: Const.ANIMATED_DURATION,
     }).start()
-    this.visible = location >= 0 ? true : false
   }
 
   getToolbar = type => {
@@ -236,9 +271,6 @@ export default class MapNavMenu extends React.Component {
           }
           if (current !== index) {
             item.btnClick && item.btnClick()
-            !this.props.mapColumnNavBar &&
-              GLOBAL.FUNCTIONTOOLBAR &&
-              GLOBAL.FUNCTIONTOOLBAR.setMenuVisible(false)
           }
         }}
       />
@@ -265,7 +297,7 @@ export default class MapNavMenu extends React.Component {
         style={[
           styles.container,
           this.props.style,
-          { right: this.state.right },
+          { right: this.right },
           screen.isIphoneX() &&
             !this.props.mapColumnNavBar &&
             this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
@@ -278,7 +310,7 @@ export default class MapNavMenu extends React.Component {
             flexDirection: 'column',
             elevation: 21,
             width: scaleSize(96),
-            height: this.props.device.height - HEADER_HEIGHT_LANDSCAPE,
+            height: this.props.device.height - screen.getHeaderHeight(),
           },
         ]}
       >

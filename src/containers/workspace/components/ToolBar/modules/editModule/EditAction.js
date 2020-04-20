@@ -2,7 +2,7 @@ import {
   SMap,
   Action,
   SMediaCollector,
-  DatasetType,
+  GeometryType,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils } from '../../../../../../utils'
@@ -59,7 +59,7 @@ function commit(type) {
   })
 }
 
-function close(type) {
+function toolbarBack(type) {
   const params = ToolbarModule.getParams()
   let actionType = Action.PAN
   if (
@@ -74,12 +74,17 @@ function close(type) {
       isFullScreen: false,
       // height: 0,
     })
-  } else {
-    params.existFullMap && params.existFullMap()
-    // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-    params.setToolbarVisible(false)
-    ToolbarModule.setData() // 关闭Toolbar清除临时数据
   }
+  SMap.setAction(actionType)
+}
+
+function close() {
+  const params = ToolbarModule.getParams()
+  let actionType = Action.PAN
+  params.existFullMap && params.existFullMap()
+  // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
+  params.setToolbarVisible(false)
+  ToolbarModule.setData() // 关闭Toolbar清除临时数据
   SMap.setAction(actionType)
 }
 
@@ -105,36 +110,29 @@ async function geometrySelected(event) {
     case ConstToolType.MAP_EDIT_REGION:
     case ConstToolType.MAP_EDIT_DEFAULT: {
       if (currentToolbarType === ConstToolType.MAP_EDIT_DEFAULT) {
-        // let column = 4
-        // let height = ConstToolType.HEIGHT[3]
         let containerType = ToolbarType.table
         let type = ''
-        switch (event.layerInfo.type) {
-          case DatasetType.POINT:
+        switch (event.geometryType) {
+          case GeometryType.GEOPOINT:
             type = ConstToolType.MAP_EDIT_POINT
-            // height = ConstToolType.HEIGHT[0]
             break
-          case DatasetType.LINE:
+          case GeometryType.GEOLINE:
             type = ConstToolType.MAP_EDIT_LINE
-            // height = ConstToolType.HEIGHT[2]
             break
-          case DatasetType.REGION:
+          case GeometryType.GEOREGION:
             type = ConstToolType.MAP_EDIT_REGION
-            // height = ConstToolType.HEIGHT[2]
-            containerType = ToolbarType.scrollTable
             break
-          case DatasetType.CAD:
-            type = ConstToolType.MAP_EDIT_CAD
-            // height = ConstToolType.HEIGHT[0]
-            // column = 5
+          case GeometryType.GEOTEXT:
+            type = ConstToolType.MAP_EDIT_TEXT
+            break
+          case GeometryType.PLOT:
+            type = ConstToolType.MAP_EDIT_PLOT
             break
         }
         params.showFullMap && params.showFullMap(true)
         params.setToolbarVisible &&
           params.setToolbarVisible(true, type, {
             isFullScreen: false,
-            // column,
-            // height,
             containerType,
             cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
           })
@@ -231,6 +229,7 @@ function patchHollowRegion() {
 const actions = {
   commit,
   close,
+  toolbarBack,
   geometrySelected,
 
   move,

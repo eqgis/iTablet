@@ -1,5 +1,10 @@
 import { SThemeCartography, SMap, ThemeType } from 'imobile_for_reactnative'
-import { ConstToolType, ToolbarType, Const } from '../../../../../../constants'
+import {
+  ConstToolType,
+  ToolbarType,
+  Const,
+  Height,
+} from '../../../../../../constants'
 import ThemeMenuData from './data'
 import ThemeData from './ThemeData'
 import { getLanguage } from '../../../../../../language'
@@ -299,7 +304,6 @@ async function getUniqueColorScheme(type, key = '', name = '') {
   })
 }
 
-// 分段专题图颜色方案列表
 async function getRangeColorScheme(type, key = '', name = '') {
   const getData = async function() {
     return [
@@ -328,6 +332,13 @@ async function getRangeColorScheme(type, key = '', name = '') {
   })
 }
 
+// 分段专题图自定义CUSTOMINTERVAL
+async function rangeCustomSetting(type) {
+  const globalParams = ToolbarModule.getParams()
+  globalParams.setToolbarVisible(false)
+  NavigationService.navigate('CustomModePage', { type })
+  // setRangeMode("MAP_THEME_PARAM_RANGE_MODE", RangeMode.CUSTOMINTERVAL)
+}
 // 热力图颜色方案列表
 async function getAggregationColorScheme(type, key = '', name = '') {
   const getData = async function() {
@@ -1504,9 +1515,7 @@ async function changeGraphType(type) {
   }
   GLOBAL.ToolBar && !GLOBAL.ToolBar.setBoxShow(isBoxShow)
   const showBox = function() {
-    _params.contentView.changeHeight(
-      isBoxShow ? ConstToolType.THEME_HEIGHT[8] : 0,
-    )
+    _params.contentView.changeHeight(isBoxShow ? Height.TABLE_ROW_HEIGHT_4 : 0)
   }
 
   const setData = async function() {
@@ -1516,7 +1525,7 @@ async function changeGraphType(type) {
         isFullScreen: false,
         isTouchProgress: false,
         showMenuDialog: false,
-        containerType: 'horizontalTable',
+        containerType: ToolbarType.horizontalTable,
         listSelectable: false, // 单选框
         // column: 4,
         data,
@@ -1572,6 +1581,7 @@ const actions = {
   getRangeMode,
   getGridRangeMode,
   getRangeParameter,
+  rangeCustomSetting,
   getGraphMaxValue,
   getDotDensityValueAndDotsize,
   getHeatmapParams,

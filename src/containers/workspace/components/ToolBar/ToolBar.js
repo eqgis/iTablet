@@ -549,12 +549,12 @@ export default class ToolBar extends React.PureComponent {
     }
   }
 
-  back = () => {
+  back = type => {
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.toolbarBack
     ) {
-      ToolbarModule.getData().actions.toolbarBack()
+      ToolbarModule.getData().actions.toolbarBack(type)
       return
     }
   }
@@ -768,7 +768,7 @@ export default class ToolBar extends React.PureComponent {
   overlayOnPress = () => {
     if (
       !this.state.isFullScreen ||
-      this.state.type === ConstToolType.STYLE_TRANSFER ||
+      this.state.type === ConstToolType.MAP_TOOL_STYLE_TRANSFER ||
       this.state.isTouchProgress ||
       this.state.showMenuDialog
     )
@@ -946,7 +946,9 @@ export default class ToolBar extends React.PureComponent {
             selectName={this.state.selectName}
             showMenu={() => {
               // 智能配图选择器，唤起选择器菜单
-              if (this.state.type === ConstToolType.STYLE_TRANSFER_PICKER) {
+              if (
+                this.state.type === ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER
+              ) {
                 this.showPicker()
                 return
               } else {

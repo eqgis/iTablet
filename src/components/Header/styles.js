@@ -1,17 +1,10 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize, setSpText, screen } from '../../utils'
+import { scaleSize, setSpText } from '../../utils'
 import { color, zIndexLevel } from '../../styles'
 
-export const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
-export const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
-export const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
 export default StyleSheet.create({
   defaultHeaderView: {
     width: '100%',
-    paddingTop: HEADER_PADDINGTOP,
-    height: HEADER_HEIGHT,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#e2e2e2',
     flexDirection: 'row',
     backgroundColor: '#303030',
     alignItems: 'center',
@@ -23,8 +16,6 @@ export default StyleSheet.create({
     right: 0,
     zIndex: zIndexLevel.FOUR + 1,
     width: '100%',
-    paddingTop: HEADER_PADDINGTOP,
-    height: HEADER_HEIGHT,
     backgroundColor: '#303030',
     flexDirection: 'row',
     alignItems: 'center',
@@ -36,8 +27,6 @@ export default StyleSheet.create({
     right: 0,
     zIndex: zIndexLevel.FOUR + 1,
     width: '100%',
-    paddingTop: HEADER_PADDINGTOP,
-    height: HEADER_HEIGHT,
     backgroundColor: '#rgba(255, 255, 255, 0)',
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,8 +38,6 @@ export default StyleSheet.create({
     right: 0,
     zIndex: 100019,
     width: '100%',
-    paddingTop: HEADER_PADDINGTOP,
-    height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#rgba(255, 255, 255, 0)',

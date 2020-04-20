@@ -174,7 +174,7 @@ export const closeMap = (cb = () => {}) => async dispatch => {
     await SMap.closeMap()
     await SMap.removeMap(-1)
     await SMap.closeDatasource()
-       
+
     await dispatch({
       type: SET_CURRENT_MAP,
       payload: {},

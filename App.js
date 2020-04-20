@@ -39,6 +39,7 @@ import { Dialog, Loading } from './src/components'
 import { setAnalystParams } from './src/models/analyst'
 import { setCollectionInfo } from './src/models/collection'
 import { setShow }  from './src/models/device'
+import { setLicenseInfo } from './src/models/license'
 import { FileTools }  from './src/native'
 import ConfigStore from './src/store'
 import { SaveView } from './src/containers/workspace/components'
@@ -53,9 +54,7 @@ import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRe
 import SplashScreen from 'react-native-splash-screen'
 import UserType from './src/constants/UserType'
 import { getLanguage } from './src/language/index'
-import FetchUtils from './src/utils/FetchUtils'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
-import RNFS from 'react-native-fs'
 import constants from './src/containers/workspace/constants'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
 import { SimpleDialog } from './src/containers/tabs/Friend'
@@ -161,6 +160,7 @@ class AppRoot extends Component {
     setMap2Dto3D: PropTypes.func,
     setCurrentLayer: PropTypes.func,
     setModules: PropTypes.func,
+    setLicenseInfo: PropTypes.func,
   }
 
   constructor (props) {
@@ -370,13 +370,15 @@ class AppRoot extends Component {
 
   inspectEnvironment = async () => {
 
+    //todo 初始化云许可，私有云许可状态
     let serialNumber =await SMap.initSerialNumber('')
     if(serialNumber!==''){
       AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, serialNumber)
     }
 
     let status = await SMap.getEnvironmentStatus()
-    if (!status.isLicenseValid) {
+    this.props.setLicenseInfo(status)
+    if (!status || !status.isLicenseValid) {
       GLOBAL.LicenseValidDialog.setDialogVisible(true)
     }
     // else if(serialNumber === '' && !status.isTrailLicense)
@@ -384,23 +386,23 @@ class AppRoot extends Component {
     //   GLOBAL.isNotItableLicenseDialog.setDialogVisible(true)
     // }
 
-    if(serialNumber!==''&&!status.isTrailLicense){
-      let licenseInfo = await SMap.getSerialNumberAndModules()
-      if(licenseInfo!=null&&licenseInfo.modulesArray){
-        let modules=licenseInfo.modulesArray
-        let size = modules.length
-        let number = 0
-        for (let i = 0; i < size; i++) {
-          let modultCode = Number(modules[i])
-          if(modultCode == 0){
-            continue
-          }
-          number = number + (1<<(modultCode%100))
-        }
-        GLOBAL.modulesNumber=number
-      }
+    // if(serialNumber!==''&&!status.isTrailLicense){
+    //   let licenseInfo = await SMap.getSerialNumberAndModules()
+    //   if(licenseInfo!=null&&licenseInfo.modulesArray){
+    //     let modules=licenseInfo.modulesArray
+    //     let size = modules.length
+    //     let number = 0
+    //     for (let i = 0; i < size; i++) {
+    //       let modultCode = Number(modules[i])
+    //       if(modultCode == 0){
+    //         continue
+    //       }
+    //       number = number + (1<<(modultCode%100))
+    //     }
+    //     GLOBAL.modulesNumber=number
+    //   }
 
-    }
+    // }
 
   }
 
@@ -739,18 +741,7 @@ class AppRoot extends Component {
     // }
 
     GLOBAL.LicenseValidDialog.setDialogVisible(false)
-    NavigationService.navigate('LicenseJoin',{
-      cb: async () => {
-        NavigationService.goBack()
-        GLOBAL.LicenseValidDialog.setDialogVisible(false)
-        Toast.show(getLanguage(this.props.language).Profile.LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS)
-        GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
-      },
-      backAction:()=>{
-        NavigationService.goBack()
-        GLOBAL.LicenseValidDialog.setDialogVisible(true)
-      },
-    })
+    NavigationService.navigate('LicenseTypePage')
   }
   //申请试用许可
   applyTrialLicense =async () => {
@@ -769,67 +760,68 @@ class AppRoot extends Component {
               : 'You have applied for trial license, please access the formal license',
           )
         }
-
+        let status = await SMap.getEnvironmentStatus()
+        this.props.setLicenseInfo(status)
         GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
       })
       return
     }
 
 
-    GLOBAL.Loading.setLoading(
-      true,
-      this.props.language==='CN'?"许可申请中...":"Applying"
-    )
-    try{
-      let fileCachePath = await FileTools.appendingHomeDirectory('/iTablet/license/Trial_License.slm')
-      let bRes = await RNFS.exists(fileCachePath)
-      if(bRes){
-        await RNFS.unlink(fileCachePath)
-      }
-      let dataUrl = undefined
-      setTimeout(()=>{
-        if(dataUrl === undefined){
-          GLOBAL.Loading.setLoading(
-            false,
-            this.props.language==='CN'?"许可申请中...":"Applying..."
-          )
-          Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
-        }
-      }, 10000 )
-      dataUrl = await FetchUtils.getFindUserDataUrl(
-        'xiezhiyan123',
-        'Trial_License',
-        '.geojson',
-      )
-      let downloadOptions = {
-        fromUrl: dataUrl,
-        toFile: fileCachePath,
-        background: true,
-        fileName: 'Trial_License.slm',
-        progressDivider: 1,
-      }
+    // GLOBAL.Loading.setLoading(
+    //   true,
+    //   this.props.language==='CN'?"许可申请中...":"Applying"
+    // )
+    // try{
+    //   let fileCachePath = await FileTools.appendingHomeDirectory('/iTablet/license/Trial_License.slm')
+    //   let bRes = await RNFS.exists(fileCachePath)
+    //   if(bRes){
+    //     await RNFS.unlink(fileCachePath)
+    //   }
+    //   let dataUrl = undefined
+    //   setTimeout(()=>{
+    //     if(dataUrl === undefined){
+    //       GLOBAL.Loading.setLoading(
+    //         false,
+    //         this.props.language==='CN'?"许可申请中...":"Applying..."
+    //       )
+    //       Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
+    //     }
+    //   }, 10000 )
+    //   dataUrl = await FetchUtils.getFindUserDataUrl(
+    //     'xiezhiyan123',
+    //     'Trial_License',
+    //     '.geojson',
+    //   )
+    //   let downloadOptions = {
+    //     fromUrl: dataUrl,
+    //     toFile: fileCachePath,
+    //     background: true,
+    //     fileName: 'Trial_License.slm',
+    //     progressDivider: 1,
+    //   }
 
-      const ret =  RNFS.downloadFile(downloadOptions)
+    //   const ret =  RNFS.downloadFile(downloadOptions)
 
-      ret.promise
-        .then(async () => {
-          GLOBAL.Loading.setLoading(
-            false,
-            this.props.language==='CN'?"许可申请中...":"Applying"
-          )
-          SMap.initTrailLicensePath()
-          this.openWorkspace()
-          Toast.show(this.props.language==='CN'?"试用成功":'Successful trial')
-          GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
-        })
-    }catch (e) {
-      GLOBAL.Loading.setLoading(
-        false,
-        this.props.language==='CN'?"许可申请中...":"Applying"
-      )
-      Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
-      GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
-    }
+    //   ret.promise
+    //     .then(async () => {
+    //       GLOBAL.Loading.setLoading(
+    //         false,
+    //         this.props.language==='CN'?"许可申请中...":"Applying"
+    //       )
+    //       SMap.initTrailLicensePath()
+    //       this.openWorkspace()
+    //       Toast.show(this.props.language==='CN'?"试用成功":'Successful trial')
+    //       GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
+    //     })
+    // }catch (e) {
+    //   GLOBAL.Loading.setLoading(
+    //     false,
+    //     this.props.language==='CN'?"许可申请中...":"Applying"
+    //   )
+    //   Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
+    //   GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
+    // }
     // NavigationService.navigate('Protocol', { type: 'ApplyLicense' })
   }
   renderDialog = () => {
@@ -1144,6 +1136,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setLanguage,
   setMap2Dto3D,
   setModules,
+  setLicenseInfo,
 })(AppRoot)
 
 const App = () =>

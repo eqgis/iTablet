@@ -21,9 +21,6 @@ import { PopView, Button } from '../../components'
 import { BatchHeadBar } from '../../containers/tabs/Mine/component'
 import constants from '../../containers/workspace/constants'
 
-const HEADER_PADDINGTOP = screen.getIphonePaddingTop()
-const HEADER_HEIGHT = scaleSize(88) + HEADER_PADDINGTOP
-
 export default class CollectSceneFormHistoryView extends React.Component {
   props: {
     navigation: Object,
@@ -760,8 +757,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
       <View style={{ flex: 1, backgroundColor: color.white }}>
         <View
           style={{
-            paddingTop: HEADER_PADDINGTOP,
-            height: HEADER_HEIGHT,
+            paddingTop: screen.getIphonePaddingTop(),
+            height: screen.getHeaderHeight(),
             width: '100%',
             backgroundColor: '#303030',
             flexDirection: 'row',

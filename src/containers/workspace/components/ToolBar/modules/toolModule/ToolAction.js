@@ -539,7 +539,7 @@ function matchPictureStyle() {
       }
       ToolbarModule.getParams().showFullMap &&
         ToolbarModule.getParams().showFullMap(true)
-      _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER, {
+      _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
         isFullScreen: false,
         // height: 0,
       })
@@ -926,7 +926,7 @@ function commit(type) {
     NavigationService.navigate('MapCut', {
       points: GLOBAL.MapSurfaceView.getResult(),
     })
-  } else if (type === ConstToolType.STYLE_TRANSFER) {
+  } else if (type === ConstToolType.MAP_TOOL_STYLE_TRANSFER) {
     // ToolbarPicker.hide()
     SMap.resetMapFixColorsModeValue(false)
     _params.setToolbarVisible(false, '', {
@@ -1056,12 +1056,16 @@ function showMenuBox(type, selectKey, params = {}) {
   }
 
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER_PICKER, {
-    containerType: ToolbarType.picker,
-    isFullScreen: false,
-    // height: ConstToolType.TOOLBAR_HEIGHT_2[3],
-    // cb: () => SCollector.stopCollect(),
-  })
+  _params.setToolbarVisible(
+    true,
+    ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER,
+    {
+      containerType: ToolbarType.picker,
+      isFullScreen: false,
+      // height: ConstToolType.TOOLBAR_HEIGHT_2[3],
+      // cb: () => SCollector.stopCollect(),
+    },
+  )
 }
 
 /**
@@ -1074,7 +1078,7 @@ function showMenuBox(type, selectKey, params = {}) {
  */
 function pickerConfirm(params) {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER, {
+  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
     isFullScreen: true,
     showMenuDialog: false,
     isTouchProgress: true,
@@ -1088,7 +1092,7 @@ function pickerConfirm(params) {
  */
 function pickerCancel() {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.STYLE_TRANSFER, {
+  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
     isFullScreen: false,
     showMenuDialog: false,
     isTouchProgress: false,
@@ -1186,7 +1190,7 @@ async function close(type) {
     SMap.setAction(Action.PAN)
     SMap.setIsMagnifierEnabled(false)
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.STYLE_TRANSFER) {
+  } else if (type === ConstToolType.MAP_TOOL_STYLE_TRANSFER) {
     await SMap.resetMapFixColorsModeValue(true)
     // _params.setToolbarVisible(false)
     return false
@@ -1236,7 +1240,7 @@ async function close(type) {
     NavigationService.navigate('LayerAttribute')
     await SMap.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
-    _params.setToolbarVisible(false)
+    // _params.setToolbarVisible(false)
   } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerSelectionAttribute', {
@@ -1251,7 +1255,7 @@ async function close(type) {
         }
         await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
-        _params.setToolbarVisible(false)
+        // _params.setToolbarVisible(false)
       },
     })
     // NavigationService.goBack()

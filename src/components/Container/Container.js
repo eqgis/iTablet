@@ -282,7 +282,7 @@ export default class Container extends Component {
                     this.props.headerProps.backAction &&
                     typeof this.props.headerProps.backAction === 'function'
                   ) {
-                    this.props.backAction()
+                    this.props.headerProps.backAction()
                   } else if (this.props.headerProps.navigation) {
                     this.props.headerProps.navigation.goBack()
                   }

@@ -1024,6 +1024,9 @@ export default class MT_layerManager extends React.Component {
           },
           withoutBack: true,
         }}
+        onOverlayPress={() => {
+          this.props.navigation.navigate('MapView')
+        }}
         bottomBar={this.renderToolBar()}
       >
         {this.renderList()}

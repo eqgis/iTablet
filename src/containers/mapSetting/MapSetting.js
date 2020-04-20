@@ -386,6 +386,9 @@ export default class MapSetting extends Component {
           },
           withoutBack: true,
         }}
+        onOverlayPress={() => {
+          this.props.navigation.navigate('MapView')
+        }}
         bottomBar={this.renderToolBar()}
       >
         {this.renderSelection()}

@@ -145,6 +145,7 @@ export default class CustomModePage extends Component {
       }
       item.start = min + rand * (index - 1) + ''
       item.end = min + rand * index + ''
+      item.caption = item.start+" < "+item.end
     })
     this.setState({
       data,

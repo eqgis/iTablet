@@ -3919,17 +3919,17 @@ const rangeLabelMenuInfo = param => [
       )
     },
   },
-  {
-    key: getLanguage(param).Map_Main_Menu.THEME_METHOD,
-    selectKey: getLanguage(param).Map_Main_Menu.THEME_METHOD,
-    btnTitle: getLanguage(param).Map_Main_Menu.THEME_METHOD,
-    action: () => {
-      ThemeAction.getRangeMode(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE,
-        getLanguage(param).Map_Main_Menu.THEME_METHOD,
-      )
-    },
-  },
+  // {
+  //   key: getLanguage(param).Map_Main_Menu.THEME_METHOD,
+  //   selectKey: getLanguage(param).Map_Main_Menu.THEME_METHOD,
+  //   btnTitle: getLanguage(param).Map_Main_Menu.THEME_METHOD,
+  //   action: () => {
+  //     ThemeAction.getRangeMode(
+  //       ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE,
+  //       getLanguage(param).Map_Main_Menu.THEME_METHOD,
+  //     )
+  //   },
+  // },
   {
     key: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,

@@ -1,6 +1,6 @@
 import { Platform } from 'react-native'
 import Orientation from 'react-native-orientation'
-import { SAIDetectView } from 'imobile_for_reactnative'
+import { SMap, SAIDetectView } from 'imobile_for_reactnative'
 import NavigationService from '../containers/NavigationService'
 import constants from '../containers/workspace/constants'
 import { FileTools } from '../native'
@@ -10,6 +10,17 @@ import { scaleSize } from '../utils'
 import { getLanguage } from '../language/index'
 import { getThemeAssets } from '../assets'
 import Toast from '../utils/Toast'
+
+const MODULE = {
+  VIEW: 0x01,
+  MAP3D: 0x02,
+  THEME: 0x04,
+  COLLECT: 0x08,
+  AR: 0x10,
+  NAVIGATION: 0x20,
+  DATAANALYSIS: 0x40,
+  PLOT: 0x80,
+}
 
 function getHeaderTitle(type) {
   if (!type) return ''
@@ -107,6 +118,7 @@ function mapEdit(language) {
         data,
       ]
 
+      SMap.setCurrentModule(MODULE.VIEW)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_EDIT,
         wsData,
@@ -154,6 +166,7 @@ function map3D(language) {
       const cachePath = homePath + ConstPath.CachePath
       const fileDirPath = cachePath + fileName
       const arrFile = await FileTools.getFilterFiles(fileDirPath)
+      SMap.setCurrentModule(MODULE.MAP3D)
       if (arrFile.length === 0) {
         NavigationService.navigate('Map3D', {})
       } else {
@@ -247,6 +260,7 @@ function mapAR(language) {
       ]
 
       Orientation.lockToPortrait()
+      SMap.setCurrentModule(MODULE.AR)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_AR,
         wsData,
@@ -325,6 +339,7 @@ function mapNavigation(language) {
         },
         data,
       ]
+      SMap.setCurrentModule(MODULE.NAVIGATION)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_NAVIGATION,
         wsData,
@@ -401,7 +416,7 @@ function mapTheme(language) {
         },
         data,
       ]
-
+      SMap.setCurrentModule(MODULE.THEME)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_THEME,
         wsData,
@@ -482,6 +497,7 @@ function mapPlotting(language) {
         data,
       ]
 
+      SMap.setCurrentModule(MODULE.PLOT)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_PLOTTING,
         wsData,
@@ -560,6 +576,7 @@ function mapCollection(language) {
         },
         data,
       ]
+      SMap.setCurrentModule(MODULE.COLLECT)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_COLLECTION,
         wsData,
@@ -639,6 +656,7 @@ function mapAnalyst(language) {
         data,
       ]
 
+      SMap.setCurrentModule(MODULE.DATAANALYSIS)
       NavigationService.navigate('MapView', {
         operationType: constants.MAP_ANALYST,
         wsData,

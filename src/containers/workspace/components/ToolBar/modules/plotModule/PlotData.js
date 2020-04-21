@@ -78,9 +78,9 @@ function getPlotOperationData(type, params) {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始播放',
-          action: () => {
-            SMap.initAnimation()
-            SMap.animationPlay()
+          action: async () => {
+            await SMap.initAnimation()
+            await SMap.animationPlay()
           },
           size: 'large',
           image: require('../../../../../../assets/mapEdit/icon_play.png'),

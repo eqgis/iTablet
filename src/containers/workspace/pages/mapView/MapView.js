@@ -588,6 +588,7 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
+    SMap.setCurrentModule(0)
     if (GLOBAL.Type === constants.MAP_AR) {
       Orientation.unlockAllOrientations()
     }
@@ -720,7 +721,7 @@ export default class MapView extends React.Component {
             { x: item.endX, y: item.endY },
           )
         }
-        SMap.indoorNavigation(1)
+        await SMap.indoorNavigation(1)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -732,7 +733,7 @@ export default class MapView extends React.Component {
               { x: item.endX, y: item.endY },
             )
           }
-          SMap.outdoorNavigation(1)
+          await SMap.outdoorNavigation(1)
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)

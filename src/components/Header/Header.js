@@ -70,7 +70,7 @@ class NavigationHeader extends Component {
   }
 
   onOrientationChange = () => {
-    let height = screen.getHeaderHeight()
+    let height = screen.getHeaderHeight(global.getDevice().orientation)
     Animated.timing(this.state.headerHeight, {
       toValue: height,
       duration: 300,

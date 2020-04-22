@@ -52,7 +52,7 @@ async function cancel() {
 
 async function addPoint() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
-    await SMap.startGpsIncrement()
+    await SMap.startGpsIncrement(false)
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
   }

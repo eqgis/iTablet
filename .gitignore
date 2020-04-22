@@ -126,3 +126,4 @@ ios/SDKExport/WXApi.h
 .flowconfig
 .gitattributes
 android/local.properties
+.watchmanconfig

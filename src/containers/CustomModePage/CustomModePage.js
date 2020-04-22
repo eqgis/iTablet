@@ -20,7 +20,7 @@ import { Container } from '../../components'
 import { color } from '../../styles'
 import { scaleSize, setSpText, Toast } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
-import {ConstToolType, ToolbarType, TouchType} from '../../constants'
+import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
 
 export default class CustomModePage extends Component {
@@ -64,13 +64,16 @@ export default class CustomModePage extends Component {
       }
       length = data.length
     }
-    this.setState({
-      originData: data,
-      data,
-      length,
-    },()=>{
-      GLOBAL.ToolBar?.showFullMap(true)
-    })
+    this.setState(
+      {
+        originData: data,
+        data,
+        length,
+      },
+      () => {
+        GLOBAL.ToolBar?.showFullMap(true)
+      },
+    )
   }
 
   _back = async () => {
@@ -145,7 +148,7 @@ export default class CustomModePage extends Component {
       }
       item.start = min + rand * (index - 1) + ''
       item.end = min + rand * index + ''
-      item.caption = item.start+" < "+item.end
+      item.caption = item.start + ' < ' + item.end
     })
     this.setState({
       data,
@@ -193,12 +196,17 @@ export default class CustomModePage extends Component {
   _pressColor = index => {
     const _params = ToolbarModule.getParams()
     let type = ConstToolType.MAP_COLOR_PICKER
-    ToolbarModule.addData({ customModeData: this.state.data, customType: this.type,index })
-    _params.showFullMap(true)
-    _params.setToolbarVisible && _params.setToolbarVisible(true, type, {
-      isFullScreen: false,
-      containerType:ToolbarType.colorPicker,
+    ToolbarModule.addData({
+      customModeData: this.state.data,
+      customType: this.type,
+      index,
     })
+    _params.showFullMap(true)
+    _params.setToolbarVisible &&
+      _params.setToolbarVisible(true, type, {
+        isFullScreen: false,
+        containerType: ToolbarType.colorPicker,
+      })
     this.props.navigation.goBack()
   }
 

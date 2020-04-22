@@ -466,6 +466,7 @@ export default class Map3D extends React.Component {
           autoSelect={true}
           viewableItems={5}
           selectKey={this.selectKey}
+          device={this.props.device}
         />
       </View>
     )
@@ -578,6 +579,10 @@ export default class Map3D extends React.Component {
     let tips = this.state.tips
     tips = tips.toString().length > 8 ? tips.toFixed(6) : tips
     let needTips = !!tips
+    let padding =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? { paddingHorizontal: scaleSize(80) }
+        : {}
     return (
       <View
         style={{
@@ -586,6 +591,7 @@ export default class Map3D extends React.Component {
           left: 0,
           right: 0,
           bottom: 0,
+          ...padding,
           backgroundColor: color.transOverlay,
         }}
       >
@@ -900,7 +906,10 @@ export default class Map3D extends React.Component {
         {global.isLicenseValid && (
           <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
         )}
-        <SurfaceView ref={ref => (GLOBAL.MapSurfaceView = ref)} />
+        <SurfaceView
+          ref={ref => (GLOBAL.MapSurfaceView = ref)}
+          orientation={this.props.device.orientation}
+        />
         {this.renderMapController()}
         {this.renderFunctionToolbar()}
         {this.renderOverLayer()}

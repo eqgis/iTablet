@@ -82,6 +82,9 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.buttons: //自定义buttons
       height = Height.TOOLBAR_BUTTONS
       break
+    case ToolbarType.typeNull:
+      height = 0
+      break
   }
   if (additional.height !== undefined) {
     height = additional.height

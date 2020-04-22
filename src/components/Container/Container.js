@@ -190,6 +190,28 @@ export default class Container extends Component {
     return height / width
   }
 
+  onOverlayPress = () => {
+    if (this.props.onOverlayPress) {
+      this.props.onOverlayPress()
+    } else if (this.props.headerProps) {
+      if (
+        this.props.headerProps.backAction &&
+        typeof this.props.headerProps.backAction === 'function'
+      ) {
+        this.props.headerProps.backAction()
+      } else if (this.props.headerProps.navigation) {
+        this.props.headerProps.navigation.goBack()
+      }
+    } else {
+      if (NavigationService.isInMap()) {
+        NavigationService.navigate('MapView')
+      }
+      if (NavigationService.isInMap3D()) {
+        NavigationService.navigate('Map3D')
+      }
+    }
+  }
+
   renderHeader = fixHeader => {
     return this.props.withoutHeader ? (
       Platform.OS === 'ios' ? (
@@ -274,27 +296,7 @@ export default class Container extends Component {
         {this.props.isOverlayBefore && (
           <AnimatedView style={{ width: width }}>
             <TouchableOpacity
-              onPress={() => {
-                if (this.props.onOverlayPress) {
-                  this.props.onOverlayPress()
-                } else if (this.props.headerProps) {
-                  if (
-                    this.props.headerProps.backAction &&
-                    typeof this.props.headerProps.backAction === 'function'
-                  ) {
-                    this.props.headerProps.backAction()
-                  } else if (this.props.headerProps.navigation) {
-                    this.props.headerProps.navigation.goBack()
-                  }
-                } else {
-                  if (NavigationService.isInMap()) {
-                    NavigationService.navigate('MapView')
-                  }
-                  if (NavigationService.isInMap3D()) {
-                    NavigationService.navigate('Map3D')
-                  }
-                }
-              }}
+              onPress={this.onOverlayPress}
               activeOpacity={this.props.blankOpacity}
               style={[styles.overlay, { opacity: this.props.blankOpacity }]}
             />
@@ -320,18 +322,7 @@ export default class Container extends Component {
         {!this.props.isOverlayBefore && (
           <AnimatedView style={{ width: width }}>
             <TouchableOpacity
-              onPress={() => {
-                if (this.props.onOverlayPress) {
-                  this.props.onOverlayPress()
-                } else {
-                  if (NavigationService.isInMap()) {
-                    NavigationService.navigate('MapView')
-                  }
-                  if (NavigationService.isInMap3D()) {
-                    NavigationService.navigate('Map3D')
-                  }
-                }
-              }}
+              onPress={this.onOverlayPress}
               activeOpacity={this.props.blankOpacity}
               style={[styles.overlay, { opacity: this.props.blankOpacity }]}
             />

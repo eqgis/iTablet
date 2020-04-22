@@ -130,8 +130,19 @@ function isIphoneX() {
   return false
 }
 
+let orientation = ''
+function setOrientation(o) {
+  if (o) {
+    orientation = o
+  }
+}
+
 function getOrientation() {
-  return getScreenHeight() > getScreenWidth() ? 'PORTRAIT' : 'LANDSCAPE'
+  if (orientation === '') {
+    return getScreenHeight() > getScreenWidth() ? 'PORTRAIT' : 'LANDSCAPE'
+  } else {
+    return orientation
+  }
 }
 
 /**
@@ -228,6 +239,7 @@ export default {
   getScreenWidth,
   getScreenHeight,
   getScreenSafeHeight,
+  setOrientation,
   getOrientation,
   deviceWidth,
   deviceHeight,

@@ -90,7 +90,9 @@ export default class SelectList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: scaleSize(80),
+    flex: 1,
+    // paddingBottom: scaleSize(80),
+    backgroundColor: color.content_white,
   },
   title: {
     fontSize: setSpText(20),

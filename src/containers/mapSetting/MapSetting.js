@@ -334,10 +334,10 @@ export default class MapSetting extends Component {
             flex: 1,
             flexDirection: 'row',
             height: scaleSize(80),
-            paddingHorizontal: scaleSize(30),
+            paddingHorizontal: 15,
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingRight: scaleSize(10),
+            paddingRight: 10,
           }}
         >
           <Text style={styles.itemName}>

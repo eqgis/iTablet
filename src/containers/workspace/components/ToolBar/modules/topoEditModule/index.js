@@ -8,7 +8,6 @@
 import TopoEditData from './TopoEditData'
 import TopoEditAction from './TopoEditAction'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 
 function setModuleData(type) {
@@ -19,8 +18,8 @@ function setModuleData(type) {
   })
 }
 
-export default function(type,title) {
-  setModuleData(ConstToolType.MAP_TOPO_EDIT)
+export default function(type, title) {
+  setModuleData(type)
   return {
     key: title,
     title,

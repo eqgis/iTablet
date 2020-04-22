@@ -16,264 +16,300 @@ import {
   Animated,
   Platform,
 } from 'react-native'
-import {Container, Dialog} from '../../components'
-import {getLayerIconByType, getLayerWhiteIconByType, getPublicAssets, getThemeAssets} from '../../assets'
-import {dataUtil, scaleSize, screen, setSpText, Toast} from '../../utils'
+import { Container, Dialog } from '../../components'
+import { getLayerIconByType, getLayerWhiteIconByType } from '../../assets'
+import { dataUtil, scaleSize, screen, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import {SMap, DatasetType} from 'imobile_for_reactnative'
-import {FileTools} from "../../native"
-import {ConstPath} from "../../constants"
+import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { FileTools } from '../../native'
+import { ConstPath } from '../../constants'
 
 export default class CreateNavDataPage extends Component {
-    props: {
-        navigation: Object,
-        device:Object,
-        currentUser: Object,
+  props: {
+    navigation: Object,
+    device: Object,
+    currentUser: Object,
+  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: [],
+      selectedDataset: {},
+      selectedDatasource: {},
     }
-    constructor(props) {
-      super(props)
-      this.state = {
-        data: [],
-        selectedDataset:{},
-        selectedDatasource:{},
-      }
-      this.maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(screen.getScreenWidth(this.props.device.orientation) * 0.45)
-        : new Animated.Value(screen.getScreenWidth(this.props.device.orientation))
-    }
-    async componentDidMount() {
-      let data = await SMap.getDatasourceAndDataset()
-      if(data.length === 0 || data[0]?.data?.length === 0){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INCREMENT_FIRST)
-        this.props.navigation.goBack()
-      }else{
-        this.setState({
-          data,
-          selectedDatasource:data[1].default,
-        })
-      }
-    }
+    this.maxWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(
+          screen.getScreenWidth(this.props.device.orientation) * 0.45,
+        )
+        : new Animated.Value(
+          screen.getScreenWidth(this.props.device.orientation),
+        )
 
-    componentDidUpdate(prevProps) {
-      if(prevProps.device.orientation !== this.props.device.orientation){
-        let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-          : screen.getScreenWidth(this.props.device.orientation)
-        Animated.timing(this.maxWidth,{
-          toValue:maxWidth,
-          duration:300,
-        }).start()
-      }
-    }
-
-    _onPressRow = ({section,item}) => {
-      let name = section.title === 'dataset'
-        ? 'selectedDataset'
-        : 'selectedDatasource'
+    this.maxHeight =
+      screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
+  }
+  async componentDidMount() {
+    let data = await SMap.getDatasourceAndDataset()
+    if (data.length === 0 || data[0]?.data?.length === 0) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.INCREMENT_FIRST)
+      this.props.navigation.goBack()
+    } else {
       this.setState({
-        [name]:item,
+        data,
+        selectedDatasource: data[1].default,
       })
     }
+  }
 
-    _confirm = () => {
-      this.dialog.setDialogVisible(true)
-      setTimeout(()=>{
-        this.input.focus()
-      },50)
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      this.maxHeight =
+        screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
+      let maxWidth =
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
+          : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.maxWidth, {
+        toValue: maxWidth,
+        duration: 300,
+      }).start()
     }
+  }
 
-    _dialogConfirm = async () => {
-      let {selectedDatasource,selectedDataset} = this.state
-      if(!selectedDataset.datasetName){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
-        return
-      }
-      if(!selectedDatasource.datasourceName){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE)
-        return
-      }
-      let {result,error} = dataUtil.isLegalName(this.fileName)
-      if(!result){
-        Toast.show(error)
+  _onPressRow = ({ section, item }) => {
+    let name =
+      section.title === 'dataset' ? 'selectedDataset' : 'selectedDatasource'
+    this.setState({
+      [name]: item,
+    })
+  }
+
+  _confirm = () => {
+    this.dialog.setDialogVisible(true)
+    setTimeout(() => {
+      this.input.focus()
+    }, 50)
+  }
+
+  _dialogConfirm = async () => {
+    let { selectedDatasource, selectedDataset } = this.state
+    if (!selectedDataset.datasetName) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      return
+    }
+    if (!selectedDatasource.datasourceName) {
+      Toast.show(
+        getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
+      )
+      return
+    }
+    let { result, error } = dataUtil.isLegalName(this.fileName)
+    if (!result) {
+      Toast.show(error)
+      this.input.focus()
+    } else {
+      let filePath = await FileTools.appendingHomeDirectory(
+        ConstPath.AppPath +
+          'User/' +
+          this.props.currentUser.userName +
+          '/' +
+          ConstPath.RelativePath.Datasource +
+          '/' +
+          this.fileName +
+          '.snm',
+      )
+      let isFileExist = await FileTools.fileIsExist(filePath)
+      if (isFileExist) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
         this.input.focus()
-      }else{
-        let filePath = await FileTools.appendingHomeDirectory(
-          ConstPath.AppPath +
-              'User/' +
-              this.props.currentUser.userName +
-              '/' +
-              ConstPath.RelativePath.Datasource +
-            '/' + this.fileName +'.snm'
-        )
-        let isFileExist = await FileTools.fileIsExist(filePath)
-        if(isFileExist){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
-          this.input.focus()
-        }else{
-          let rel = await SMap.buildOutdoorNetwork({...selectedDataset,...selectedDatasource,filePath})
+      } else {
+        let rel = await SMap.buildOutdoorNetwork({
+          ...selectedDataset,
+          ...selectedDatasource,
+          filePath,
+        })
+        if (rel) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING)
+          this.dialog.setDialogVisible(false)
+          GLOBAL.BUILD_NETWORK_LISTENER = SMap.addBuildNetworkListener({
+            success: networkName => {
+              if (networkName) {
+                Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+                GLOBAL.BUILD_NETWORK_LISTENER.remove()
+              }
+            },
+          })
+          this.props.navigation.goBack()
         }
       }
     }
-    _renderSectionHeader = ({section}) => {
-      let title = section.title === 'dataset'
+  }
+  _renderSectionHeader = ({ section }) => {
+    let title =
+      section.title === 'dataset'
         ? getLanguage(GLOBAL.language).Prompt.LINE_DATASET
         : getLanguage(GLOBAL.language).Prompt.DESTINATION_DATASOURCE
-      return (
-        <View style={styles.section}><Text style={styles.title}>{title}</Text></View>
-      )
-    }
-    _renderItem = ({section,item,index}) => {
-      let img,
-        extraTxt = {},
-        extraBack = {},
-        name
-      if(section.title === 'dataset'){
-        name = item.datasetName
-        let hasExtra = this.state.selectedDataset.datasetName === item.datasetName
-        if(hasExtra){
-          img = getLayerWhiteIconByType(DatasetType.LINE)
-          extraTxt = {
-            color:color.white,
-          }
-          extraBack = {
-            backgroundColor: color.item_selected_bg,
-          }
-        }else{
-          img = getLayerIconByType(DatasetType.LINE)
+    return (
+      <View style={styles.section}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    )
+  }
+  _renderItem = ({ section, item }) => {
+    let img,
+      extraTxt = {},
+      extraBack = {},
+      name
+    if (section.title === 'dataset') {
+      name = item.datasetName
+      let hasExtra = this.state.selectedDataset.datasetName === item.datasetName
+      if (hasExtra) {
+        img = getLayerWhiteIconByType(DatasetType.LINE)
+        extraTxt = {
+          color: color.white,
         }
-      }else{
-        let hasExtra = this.state.selectedDatasource.datasourceName === item.datasourceName
-        name = item.datasourceName
-        if(hasExtra){
-          img = require('../../assets/Navigation/indoor_datasource_white.png')
-          extraTxt = {
-            color:color.white,
-          }
-          extraBack = {
-            backgroundColor: color.item_selected_bg,
-          }
-        }else{
-          img = require('../../assets/Navigation/indoor_datasource.png')
+        extraBack = {
+          backgroundColor: color.item_selected_bg,
         }
+      } else {
+        img = getLayerIconByType(DatasetType.LINE)
       }
+    } else {
+      let hasExtra =
+        this.state.selectedDatasource.datasourceName === item.datasourceName
+      name = item.datasourceName
+      if (hasExtra) {
+        img = require('../../assets/Navigation/indoor_datasource_white.png')
+        extraTxt = {
+          color: color.white,
+        }
+        extraBack = {
+          backgroundColor: color.item_selected_bg,
+        }
+      } else {
+        img = require('../../assets/Navigation/indoor_datasource.png')
+      }
+    }
 
-      return (
-        <TouchableOpacity style={[styles.row,extraBack]} onPress={()=>this._onPressRow({section,item})}>
-          <Image source={img} style={styles.image} resizeMode={'contain'}/>
-          <Text style={[styles.name,extraTxt]}>{name}</Text>
+    return (
+      <TouchableOpacity
+        style={[styles.row, extraBack]}
+        onPress={() => this._onPressRow({ section, item })}
+      >
+        <Image source={img} style={styles.image} resizeMode={'contain'} />
+        <Text style={[styles.name, extraTxt]}>{name}</Text>
+      </TouchableOpacity>
+    )
+  }
+  _renderContainer = () => {
+    return (
+      <Container
+        headerProps={{
+          title: getLanguage(GLOBAL.language).Prompt.NEW_NAV_DATA,
+          navigation: this.props.navigation,
+        }}
+      >
+        <SectionList
+          style={{ maxHeight: this.maxHeight }}
+          sections={this.state.data}
+          renderSectionHeader={this._renderSectionHeader}
+          renderItem={this._renderItem}
+          keyExtractor={(item, index) => item.toString() + index}
+          getItemLayout={(data, index) => ({
+            length: scaleSize(81),
+            offset: scaleSize(81) * index,
+            index,
+          })}
+        />
+        <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
+          <Text style={styles.confirmTxt}>
+            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+          </Text>
         </TouchableOpacity>
-      )
-    }
-    _renderContainer = () => {
-      return (
-        <Container
-          headerProps={{
-            title: getLanguage(GLOBAL.language).Prompt.NEW_NAV_DATA,
-            navigation: this.props.navigation,
-          }}
-        >
-          <SectionList
-            style={styles.list}
-            sections={this.state.data}
-            renderSectionHeader={this._renderSectionHeader}
-            renderItem={this._renderItem}
-            keyExtractor={(item, index) => item.toString() + index}
-            getItemLayout={(data, index) => ({
-              length: scaleSize(81),
-              offset: scaleSize(81) * index,
-              index,
-            })}
-          />
-          <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
-            <Text style={styles.confirmTxt}>
-              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+      </Container>
+    )
+  }
+
+  _renderDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.dialog = ref)}
+        confirmAction={this._dialogConfirm}
+        opacity={1}
+        opacityStyle={styles.dialogBackground}
+        style={styles.dialogBackground}
+        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
+      >
+        <View style={styles.dialogContent}>
+          <View style={styles.flex}>
+            <Text style={styles.dialogTitle}>
+              {getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME}
             </Text>
-          </TouchableOpacity>
-        </Container>
-      )
-    }
-
-    _renderDialog = () => {
-      return (
-        <Dialog
-          ref={ref => (this.dialog = ref)}
-          confirmAction={this._dialogConfirm}
-          opacity={1}
-          opacityStyle={styles.dialogBackground}
-          style={styles.dialogBackground}
-          confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
-          cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
-        >
-          <View style={styles.dialogContent}>
-            <View style={styles.flex}>
-              <Text style={styles.dialogTitle}>{getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME}</Text>
-            </View>
-            <View style={styles.flex}>
-              <TextInput
-                ref={ref=>(this.input = ref)}
-                style={styles.dialogInput}
-                maxLength={30}
-                onChangeText={text=>{
-                  this.fileName = text
-                }}
-              />
-            </View>
           </View>
-        </Dialog>
-      )
-    }
+          <View style={styles.flex}>
+            <TextInput
+              ref={ref => (this.input = ref)}
+              style={styles.dialogInput}
+              maxLength={30}
+              onChangeText={text => {
+                this.fileName = text
+              }}
+            />
+          </View>
+        </View>
+      </Dialog>
+    )
+  }
 
-    render() {
-      return (
-        <Animated.View style={[styles.container,{width:this.maxWidth}]}>
-          {this._renderContainer()}
-          {this._renderDialog()}
-        </Animated.View>
-      )
-    }
+  render() {
+    return (
+      <Animated.View style={[styles.container, { width: this.maxWidth }]}>
+        {this._renderContainer()}
+        {this._renderDialog()}
+      </Animated.View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
+  container: {
+    flex: 1,
   },
-  list: {
-    maxHeight: scaleSize(1000),
-  },
-  section:{
-    flex:1,
-    height:scaleSize(80),
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    marginHorizontal:scaleSize(20),
-    backgroundColor:color.content_white,
-    borderBottomWidth:1,
-    borderBottomColor:color.USUAL_SEPARATORCOLOR,
+  section: {
+    flex: 1,
+    height: scaleSize(80),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: scaleSize(20),
+    backgroundColor: color.content_white,
+    borderBottomWidth: 1,
+    borderBottomColor: color.USUAL_SEPARATORCOLOR,
   },
   row: {
     flex: 1,
-    flexDirection:'row',
-    justifyContent:'space-around',
-    alignItems:'center',
-    marginLeft:scaleSize(40),
-    marginRight:scaleSize(20),
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginLeft: scaleSize(40),
+    marginRight: scaleSize(20),
     height: scaleSize(80),
-    borderBottomWidth:1,
-    borderColor:color.USUAL_SEPARATORCOLOR,
+    borderBottomWidth: 1,
+    borderColor: color.USUAL_SEPARATORCOLOR,
   },
-  title:{
-    fontSize:setSpText(24),
+  title: {
+    fontSize: setSpText(24),
   },
   name: {
     flex: 1,
     fontSize: setSpText(20),
   },
-  imageWrap:{
-    width:scaleSize(80),
-    height:scaleSize(80),
+  imageWrap: {
+    width: scaleSize(80),
+    height: scaleSize(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -297,28 +333,28 @@ const styles = StyleSheet.create({
     fontSize: setSpText(24),
     color: color.white,
   },
-  dialogBackground:{
+  dialogBackground: {
     height: scaleSize(240),
   },
-  dialogContent:{
-    flex:1,
-    justifyContent:'center',
+  dialogContent: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  flex:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
+  flex: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  dialogTitle:{
-    fontSize:setSpText(26),
+  dialogTitle: {
+    fontSize: setSpText(26),
   },
-  dialogInput:{
-    borderColor:color.separateColorGray,
-    borderWidth:1,
-    borderRadius:5,
-    height:scaleSize(60),
-    width:'80%',
-    fontSize:setSpText(24),
+  dialogInput: {
+    borderColor: color.separateColorGray,
+    borderWidth: 1,
+    borderRadius: 5,
+    height: scaleSize(60),
+    width: '80%',
+    fontSize: setSpText(24),
     ...Platform.select({
       android: {
         padding: 0,

@@ -46,11 +46,15 @@ export default class SaveView extends React.Component {
 
   save = () => {
     (async function() {
-      this.props.save && (await this.props.save())
+      let result
+      if (this.props.save) {
+        result = await this.props.save()
+      }
       this.setVisible(false)
-
-      this.cb && typeof this.cb === 'function' && this.cb()
-      this.cb = null
+      if (result) {
+        this.cb && typeof this.cb === 'function' && this.cb()
+        this.cb = null
+      }
     }.bind(this)())
   }
 

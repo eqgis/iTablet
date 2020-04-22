@@ -35,6 +35,7 @@ export default class MapPlottingConfig extends Module {
       defaultMapName: 'TourLine',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 1,
+      licenceType: 0x80,
     })
   }
 }

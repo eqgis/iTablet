@@ -34,6 +34,7 @@ export default class MapCollectionConfig extends Module {
       defaultMapName: '国情普查_示范数据',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 1,
+      licenceType: 0x08,
     })
   }
 }

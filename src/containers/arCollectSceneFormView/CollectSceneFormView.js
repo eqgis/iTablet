@@ -231,20 +231,25 @@ export default class CollectSceneFormView extends React.Component {
 
   /** 保存 **/
   save = async () => {
-    GLOBAL.Loading.setLoading(
-      true,
-      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
-    )
-    await SCollectSceneFormView.stopRecording()
-    let result = await SCollectSceneFormView.saveData('line')
-    await SCollectSceneFormView.routeAdd()
-    GLOBAL.Loading.setLoading(false)
-    this.setState({ isnew: false })
-    if (result) {
-      Toast.show(
-        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
       )
-    } else {
+      await SCollectSceneFormView.stopRecording()
+      let result = await SCollectSceneFormView.saveData('line')
+      await SCollectSceneFormView.routeAdd()
+      GLOBAL.Loading.setLoading(false)
+      this.setState({ isnew: false })
+      if (result) {
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+        )
+      } else {
+        Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
+      }
+    } catch (e) {
+      GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
     // NavigationService.navigate('InputPage', {
@@ -282,24 +287,28 @@ export default class CollectSceneFormView extends React.Component {
         Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
-      () => {
-        Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
-      }
+      GLOBAL.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   }
   /** 保存点 **/
   savepoint = async () => {
-    GLOBAL.Loading.setLoading(
-      true,
-      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
-    )
-    // await SCollectSceneFormView.stopRecording()
-    await SCollectSceneFormView.saveGPSData('point')
-    GLOBAL.Loading.setLoading(false)
-    this.setState({ isnew: false })
-    Toast.show(
-      getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
-    )
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
+      )
+      // await SCollectSceneFormView.stopRecording()
+      await SCollectSceneFormView.saveGPSData('point')
+      GLOBAL.Loading.setLoading(false)
+      this.setState({ isnew: false })
+      Toast.show(
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+      )
+    } catch (e) {
+      GLOBAL.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
+    }
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,

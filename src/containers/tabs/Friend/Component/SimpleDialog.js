@@ -26,6 +26,7 @@ export default class SimpleDialog extends PureComponent {
       renderExtra: props.renderExtra ? props.renderExtra : this.renderExtra,
       dialogStyle: {},
       showTitleImage: true,
+      confirmText: getLanguage(global.language).Friends.CONFIRM,
     }
   }
 
@@ -41,6 +42,7 @@ export default class SimpleDialog extends PureComponent {
     renderExtra,
     dialogStyle,
     showTitleImage,
+    confirmText,
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
@@ -63,6 +65,9 @@ export default class SimpleDialog extends PureComponent {
       renderExtra: renderExtra ? renderExtra : this.renderExtra,
       dialogStyle: dialogStyle ? dialogStyle : {},
       showTitleImage: showTitleImage !== undefined ? showTitleImage : true,
+      confirmText: confirmText
+        ? confirmText
+        : getLanguage(global.language).Friends.CONFIRM,
     })
   }
 
@@ -127,7 +132,7 @@ export default class SimpleDialog extends PureComponent {
       <Dialog
         ref={ref => (this.Dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(global.language).Friends.CONFIRM}
+        confirmBtnTitle={this.state.confirmText}
         cancelBtnTitle={getLanguage(global.language).Friends.CANCEL}
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}

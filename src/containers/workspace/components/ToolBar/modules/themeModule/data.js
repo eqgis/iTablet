@@ -3991,7 +3991,9 @@ const rangeLabelMenuInfo = param => [
     selectKey: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
     btnTitle: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
     action: () => {
-      ThemeAction.rangeCustomSetting(ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE)
+      ThemeAction.rangeCustomSetting(
+        ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE,
+      )
     },
   },
 ]

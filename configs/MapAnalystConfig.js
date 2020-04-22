@@ -34,6 +34,7 @@ export default class MapAnalystConfig extends Module {
       defaultMapName: 'TracingAnalysis',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 1,
+      licenceType: 0x40,
     })
   }
 }

@@ -35,6 +35,7 @@ export default class MapThemeConfig extends Module {
       defaultMapName: GLOBAL.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 3,
+      licenceType: 0x04,
     })
   }
 }

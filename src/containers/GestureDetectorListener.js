@@ -164,6 +164,10 @@ async function touchCallback(event) {
       SMap.showMarker(point.x, point.y, 118081)
       break
     }
+    case TouchType.MAP_TOPO_SPLIT_BY_POINT: {
+      // const point = await SMap.getPixelPointToMap(event.screenPoint)
+      break
+    }
     case TouchType.ADD_NODES:
     case TouchType.NULL:
       break

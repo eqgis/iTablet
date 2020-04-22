@@ -5,6 +5,7 @@ import { getThemeAssets } from '../src/assets'
 import { Module } from '../src/class'
 import { FileTools } from '../src/native'
 import NavigationService from '../src/containers/NavigationService'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class Map3DConfig extends Module {
   constructor (props) {
@@ -42,6 +43,7 @@ export default class Map3DConfig extends Module {
         } else {
           fileName = 'OlympicGreen_ios'
         }
+        SMap.setCurrentModule(0x02)
         const homePath = await FileTools.appendingHomeDirectory()
         const cachePath = homePath + ConstPath.CachePath
         const fileDirPath = cachePath + fileName

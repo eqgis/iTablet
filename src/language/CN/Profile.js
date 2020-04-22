@@ -275,6 +275,9 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: '导航地图',
   ITABLET_DATAANALYSIS: '数据分析',
   ITABLET_PLOTTING: '应急标绘',
+  INVALID_MODULE: '当前模块许可无效，不能进行此操作。',
+  INVALID_LICENSE: '许可无效，不能进行此操作。',
+  GO_ACTIVATE: '前往激活',
 
   // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: '功能异常：功能故障或不可用',

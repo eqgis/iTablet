@@ -880,78 +880,83 @@ export default class LayerManager_tolbar extends React.Component {
         layerData: this.state.layerData,
         targetUser: targetUser,
         callBack: async (targetUser, shareDataset, sendFile) => {
-          global.Loading.setLoading(
-            true,
-            getLanguage(global.language).Prompt.SHARING,
-          )
+          try {
+            global.Loading.setLoading(
+              true,
+              getLanguage(global.language).Prompt.SHARING,
+            )
 
-          let homePath = await FileTools.appendingHomeDirectory()
-          let tempPath =
-            homePath +
-            ConstPath.UserPath +
-            this.props.user.currentUser.userName +
-            '/' +
-            ConstPath.RelativePath.Temp
+            let homePath = await FileTools.appendingHomeDirectory()
+            let tempPath =
+              homePath +
+              ConstPath.UserPath +
+              this.props.user.currentUser.userName +
+              '/' +
+              ConstPath.RelativePath.Temp
 
-          let targetPath = tempPath + layerData.name + '.xml'
-          let exportName = await DataHandler.getAvailableFileName(
-            tempPath,
-            'MyExportLayer',
-            'zip',
-          )
-          let zipPath = tempPath + exportName
-          let xmlLayer = await SMap.getLayerAsXML(layerData.path)
-          if (await FileTools.fileIsExist(targetPath)) {
-            await FileTools.deleteFile(targetPath)
-          }
-          await FileTools.writeFile(targetPath, xmlLayer)
-          await FileTools.zipFile(targetPath, zipPath)
-          FileTools.deleteFile(targetPath)
-
-          let layerAction = {
-            name: 'onSendFile',
-            type: MsgConstant.MSG_LAYER,
-            filePath: zipPath,
-            fileName: layerData.caption,
-          }
-          let action = [layerAction]
-
-          if (shareDataset) {
-            let datasetPath = tempPath + layerData.datasetName + '.json'
-            let exportDatasetName = await DataHandler.getAvailableFileName(
+            let targetPath = tempPath + layerData.name + '.xml'
+            let exportName = await DataHandler.getAvailableFileName(
               tempPath,
-              'MyExportDataset',
+              'MyExportLayer',
               'zip',
             )
-            let datasetZipPath = tempPath + exportDatasetName
-            await SMap.getDatasetToGeoJson(
-              layerData.datasourceAlias,
-              layerData.datasetName,
-              datasetPath,
-            )
-            await FileTools.zipFile(datasetPath, datasetZipPath)
-            FileTools.deleteFile(datasetPath)
-            let datasetAction = {
-              name: 'onSendFile',
-              type: MsgConstant.MSG_DATASET,
-              filePath: datasetZipPath,
-              fileName: layerData.datasetName,
-              extraInfo: {
-                datasourceAlias: layerData.datasourceAlias,
-              },
+            let zipPath = tempPath + exportName
+            //todo 合成一个原生接口？
+            let xmlLayer = await SMap.getLayerAsXML(layerData.path)
+            if (await FileTools.fileIsExist(targetPath)) {
+              await FileTools.deleteFile(targetPath)
             }
-            action.push(datasetAction)
+            await FileTools.writeFile(targetPath, xmlLayer)
+            await FileTools.zipFile(targetPath, zipPath)
+            FileTools.deleteFile(targetPath)
+
+            let layerAction = {
+              name: 'onSendFile',
+              type: MsgConstant.MSG_LAYER,
+              filePath: zipPath,
+              fileName: layerData.caption,
+            }
+            let action = [layerAction]
+
+            if (shareDataset) {
+              let datasetPath = tempPath + layerData.datasetName + '.json'
+              let exportDatasetName = await DataHandler.getAvailableFileName(
+                tempPath,
+                'MyExportDataset',
+                'zip',
+              )
+              let datasetZipPath = tempPath + exportDatasetName
+              await SMap.getDatasetToGeoJson(
+                layerData.datasourceAlias,
+                layerData.datasetName,
+                datasetPath,
+              )
+              await FileTools.zipFile(datasetPath, datasetZipPath)
+              FileTools.deleteFile(datasetPath)
+              let datasetAction = {
+                name: 'onSendFile',
+                type: MsgConstant.MSG_DATASET,
+                filePath: datasetZipPath,
+                fileName: layerData.datasetName,
+                extraInfo: {
+                  datasourceAlias: layerData.datasourceAlias,
+                },
+              }
+              action.push(datasetAction)
+            }
+            if (GLOBAL.coworkMode) {
+              Chat = GLOBAL.getFriend().curChat
+              Chat._handleAciton(action)
+            } else {
+              action.map(item => {
+                sendFile && sendFile(item)
+              })
+            }
+            global.Loading.setLoading(false)
+            NavigationService.goBack()
+          } catch (error) {
+            global.Loading.setLoading(false)
           }
-          if (GLOBAL.coworkMode) {
-            Chat = GLOBAL.getFriend().curChat
-            Chat._handleAciton(action)
-          } else {
-            action.map(item => {
-              sendFile && sendFile(item)
-            })
-          }
-          global.Loading.setLoading(false)
-          NavigationService.goBack()
         },
       })
     }

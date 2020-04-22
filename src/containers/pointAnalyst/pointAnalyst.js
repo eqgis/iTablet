@@ -264,6 +264,7 @@ export default class PointAnalyst extends Component {
       }
     } catch (error) {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      this.container && this.container.setLoading(false)
       //'网络错误')
     }
   }

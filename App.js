@@ -182,6 +182,8 @@ class AppRoot extends Component {
     } else {
       this.props.setLanguage(this.props.language)
     }
+    SMap.setModuleListener(this.onInvalidModule)
+    SMap.setLicenseListener(this.onInvalidLicense)
   }
 
   UNSAFE_componentWillMount(){
@@ -353,6 +355,28 @@ class AppRoot extends Component {
         return false
       }
     }
+  }
+
+  onInvalidModule = () => {
+    global.SimpleDialog.set({
+      text: getLanguage(this.props.language).Profile.INVALID_MODULE,
+      confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
+      confirmAction: () => {
+        NavigationService.navigate('LicensePage')
+      },
+    })
+    global.SimpleDialog.setVisible(true)
+  }
+
+  onInvalidLicense = () => {
+    global.SimpleDialog.set({
+      text: getLanguage(this.props.language).Profile.INVALID_LICENSE,
+      confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
+      confirmAction: () => {
+        NavigationService.navigate('LicensePage')
+      },
+    })
+    global.SimpleDialog.setVisible(true)
   }
 
   handleStateChange = appState => {
@@ -587,7 +611,7 @@ class AppRoot extends Component {
       addition.Template = this.props.map.currentMap.Template
     }
 
-    await this.saveMapName(mapName, '', addition, this.closeMapHandler)
+    return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
   }
 
   // 导出(保存)工作空间中地图到模块
@@ -610,14 +634,17 @@ class AppRoot extends Component {
         Toast.show(
           result || result === '' ?
             getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-            : ConstInfo.SAVE_MAP_FAILED,
+            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
         )
         cb && cb()
+        return true
       } else {
         this.setSaveMapViewLoading(false)
+        return false
       }
     } catch (e) {
       this.setSaveMapViewLoading(false)
+      return false
     }
   }
 

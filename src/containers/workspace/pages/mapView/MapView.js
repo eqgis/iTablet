@@ -102,6 +102,7 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
+import { CustomInputDialog } from '../../../../components/Dialog'
 
 const markerTag = 118081
 
@@ -581,6 +582,7 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
+    SMap.setCurrentModule(0)
     if (GLOBAL.Type === ChunkType.MAP_AR) {
       Orientation.unlockAllOrientations()
     }
@@ -713,7 +715,7 @@ export default class MapView extends React.Component {
             { x: item.endX, y: item.endY },
           )
         }
-        SMap.indoorNavigation(1)
+        await SMap.indoorNavigation(1)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -725,7 +727,7 @@ export default class MapView extends React.Component {
               { x: item.endX, y: item.endY },
             )
           }
-          SMap.outdoorNavigation(1)
+          await SMap.outdoorNavigation(1)
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -2014,6 +2016,10 @@ export default class MapView extends React.Component {
         device={this.props.device}
       />
     )
+  }
+
+  renderCustomInputDialog = () => {
+    return <CustomInputDialog ref={ref => (GLOBAL.InputDialog = ref)} />
   }
 
   /** 地图控制器，放大缩小等功能 **/
@@ -3412,6 +3418,7 @@ export default class MapView extends React.Component {
         {/*    />*/}
         {/*)}*/}
         {this.renderBackgroundOverlay()}
+        {this.renderCustomInputDialog()}
       </Container>
     )
   }

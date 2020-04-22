@@ -28,6 +28,7 @@ export default class MapARConfig extends Module {
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 1,
       openDefaultMap: false,
+      licenceType: 0x10,
       preAction: async () => {
         let isAvailable = await SAIDetectView.checkIfAvailable()
         if (!isAvailable) {

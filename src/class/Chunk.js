@@ -4,6 +4,7 @@
 import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class Chunk {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class Chunk {
     this.baseMapSource = { ...props.baseMapSource } // 默认地图资源
     this.baseMapIndex = props.baseMapIndex // 默认地图资源对应的地图index
     this.isExample = props.isExample || false // 是否是示例，只显示地图，没有其他功能
+    this.licenceType = props.isExample || 255 // TODO 临时方法
   }
 
   action = async (user, lastMap) => {
@@ -30,7 +32,7 @@ export default class Chunk {
       await this.props.action()
       return
     }
-
+    SMap.setCurrentModule(this.licenceType)
     let data = this.baseMapSource
     data.layerIndex = this.baseMapIndex
     GLOBAL.Type = this.key

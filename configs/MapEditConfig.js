@@ -33,6 +33,7 @@ export default class MapEditConfig extends Module {
       defaultMapName: language === 'CN' ? '湖南' : 'LosAngeles',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 3,
+      licenceType: 0x01,
     })
   }
 }

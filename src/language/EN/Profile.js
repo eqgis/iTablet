@@ -273,6 +273,9 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: 'Navigation Map',
   ITABLET_DATAANALYSIS: 'Data Analysis',
   ITABLET_PLOTTING: 'Plotting',
+  INVALID_MODULE: 'Invalid module. Unable to continue.',
+  INVALID_LICENSE: 'Invalid license. Unable to continue.',
+  GO_ACTIVATE: 'Go Activate',
 
   // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL:

@@ -80,9 +80,9 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.SAVE,
           image: require('../../../../../../assets/mapEdit/commit.png'),
-          action: () => {
+          action: async () => {
             try {
-              if (GLOBAL.Type === ChunkType.MAP_3D) SScene.save()
+              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
               // getParams.getMap3DAttribute()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
               // '保存成功')
@@ -113,9 +113,9 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.SAVE,
           image: require('../../../../../../assets/mapEdit/commit.png'),
-          action: () => {
+          action: async () => {
             try {
-              if (GLOBAL.Type === ChunkType.MAP_3D) SScene.save()
+              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
               // getParams.getMap3DAttribute()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
               // '保存成功')

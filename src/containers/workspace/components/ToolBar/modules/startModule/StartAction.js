@@ -681,12 +681,12 @@ function saveMap() {
       Toast.show(
         result
           ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY
-          : ConstInfo.SAVE_MAP_FAILED,
+          : getLanguage(global.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
-      Toast.show(ConstInfo.SAVE_MAP_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   })()
 }
@@ -745,17 +745,17 @@ function saveMapAs() {
               result => {
                 ToolbarModule.getParams().setToolbarVisible &&
                   ToolbarModule.getParams().setToolbarVisible(false)
+                ToolbarModule.getParams().setContainerLoading &&
+                  ToolbarModule.getParams().setContainerLoading(false)
                 if (result) {
                   NavigationService.goBack()
-                  ToolbarModule.getParams().setContainerLoading &&
-                    ToolbarModule.getParams().setContainerLoading(false)
                   setTimeout(() => {
                     Toast.show(
                       getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY,
                     )
                   }, 1000)
                 } else {
-                  Toast.show(ConstInfo.MAP_EXIST)
+                  Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
                 }
               },
               () => {

@@ -35,6 +35,7 @@ export default class MapNavigationConfig extends Module {
       defaultMapName: 'beijing',
       baseMapSource: {...ConstOnline.Google},
       baseMapIndex: 1,
+      licenceType: 0x20,
     })
   }
 }

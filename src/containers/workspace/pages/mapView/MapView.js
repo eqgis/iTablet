@@ -103,6 +103,7 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
+import { CustomInputDialog } from '../../../../components/Dialog'
 
 const markerTag = 118081
 
@@ -2024,6 +2025,10 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderCustomInputDialog = () => {
+    return <CustomInputDialog ref={ref => (GLOBAL.InputDialog = ref)} />
+  }
+
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
     if (this.state.currentFloorID) return null
@@ -3420,6 +3425,7 @@ export default class MapView extends React.Component {
         {/*    />*/}
         {/*)}*/}
         {this.renderBackgroundOverlay()}
+        {this.renderCustomInputDialog()}
       </Container>
     )
   }

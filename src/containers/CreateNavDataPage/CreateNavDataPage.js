@@ -46,6 +46,8 @@ export default class CreateNavDataPage extends Component {
         : new Animated.Value(
           screen.getScreenWidth(this.props.device.orientation),
         )
+    this.maxHeight =
+      screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
   }
   async componentDidMount() {
     let data = await SMap.getDatasourceAndDataset()
@@ -62,6 +64,8 @@ export default class CreateNavDataPage extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.device.orientation !== this.props.device.orientation) {
+      this.maxHeight =
+        screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
       let maxWidth =
         this.props.device.orientation.indexOf('LANDSCAPE') === 0
           ? screen.getScreenWidth(this.props.device.orientation) * 0.45
@@ -120,12 +124,24 @@ export default class CreateNavDataPage extends Component {
         Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
         this.input.focus()
       } else {
-        await SMap.buildOutdoorNetwork({
+        let rel = await SMap.buildOutdoorNetwork({
           ...selectedDataset,
           ...selectedDatasource,
           filePath,
         })
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING)
+        if (rel) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING)
+          this.dialog.setDialogVisible(false)
+          GLOBAL.BUILD_NETWORK_LISTENER = SMap.addBuildNetworkListener({
+            success: networkName => {
+              if (networkName) {
+                Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+                GLOBAL.BUILD_NETWORK_LISTENER.remove()
+              }
+            },
+          })
+          this.props.navigation.goBack()
+        }
       }
     }
   }
@@ -195,7 +211,7 @@ export default class CreateNavDataPage extends Component {
         }}
       >
         <SectionList
-          style={styles.list}
+          style={{ maxHeight: this.maxHeight }}
           sections={this.state.data}
           renderSectionHeader={this._renderSectionHeader}
           renderItem={this._renderItem}
@@ -260,9 +276,6 @@ export default class CreateNavDataPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  list: {
-    maxHeight: scaleSize(1000),
   },
   section: {
     flex: 1,

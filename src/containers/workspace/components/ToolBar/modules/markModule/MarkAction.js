@@ -207,6 +207,7 @@ function redo() {
   SMap.redo()
 }
 function back() {
+  const _params = ToolbarModule.getParams()
   if (
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
@@ -223,8 +224,6 @@ function back() {
       cb: () => select(type),
     })
   }
-
-  const _params = ToolbarModule.getParams()
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
     isFullScreen: true,

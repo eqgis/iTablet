@@ -89,7 +89,31 @@ export default class MapCut extends React.Component {
           })
         })
         let _layers = await this.getAllLayers(layers)
-        _layers = _layers.filter(item => item.isVisible)
+        _layers = _layers.filter(item => {
+          if (item.isVisible) {
+            let data = this.state.extraData.get(item.name)
+            if (!data || data.datasourceName === '') {
+              data = {
+                inRangeStatus: CheckStatus.CHECKED,
+                eraseStatus:
+                  item.type !== DatasetType.Text &&
+                  item.type !== DatasetType.GRID
+                    ? CheckStatus.UN_CHECK
+                    : CheckStatus.UN_CHECK_DISABLE,
+                exactCutStatus:
+                  item.type === DatasetType.GRID
+                    ? CheckStatus.UN_CHECK
+                    : CheckStatus.CHECKED_DISABLE,
+                datasourceName: item.datasourceAlias,
+                caption: '',
+              }
+
+              // 为减少循环遍历并setState的临时方案，extraData为Map
+              this.state.extraData.set(item.name, data)
+            }
+          }
+          return item.isVisible
+        })
         this.selectAll(true, _layers)
       }.bind(this)())
     })
@@ -138,139 +162,135 @@ export default class MapCut extends React.Component {
             getLanguage(this.props.language).Prompt.CLIPPING,
           )
         setTimeout(async () => {
-          let layersInfo = []
-          let newDatasourceName =
-            this.props.currentUser.userName + '_Clip_Label#'
-          let filePath = await FileTools.appendingHomeDirectory(
-            ConstPath.AppPath +
-              'User/' +
-              this.props.currentUser.userName +
-              '/' +
-              ConstPath.RelativePath.Datasource,
-          )
-          let newDatasourcePath = filePath + newDatasourceName + '.udb'
-          let newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
-          //另存地图
-          let addition = {}
-          if (this.props.map.currentMap.Template) {
-            addition.Template = this.props.map.currentMap.Template
-          }
-          if (this.state.saveAsName !== '') {
-            let datasourceParams = {}
-            let index = 0
-            let flag = true
-            newDatasourcePath = filePath + newDatasourceName + index + '.udb'
-            while (flag) {
-              index++
-              newDatasourceName =
-                this.props.currentUser.userName + index + '_Clip_Label#'
-              newDatasourcePath = filePath + newDatasourceName + '.udb'
-              newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
-              flag = await FileTools.fileIsExist(newDatasourcePath)
+          try {
+            let layersInfo = []
+            let newDatasourceName =
+              this.props.currentUser.userName + '_Clip_Label#'
+            let filePath = await FileTools.appendingHomeDirectory(
+              ConstPath.AppPath +
+                'User/' +
+                this.props.currentUser.userName +
+                '/' +
+                ConstPath.RelativePath.Datasource,
+            )
+            let newDatasourcePath = filePath + newDatasourceName + '.udb'
+            let newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
+            //另存地图
+            let addition = {}
+            if (this.props.map.currentMap.Template) {
+              addition.Template = this.props.map.currentMap.Template
             }
-            //如果别名不可用 返回了新的别名 重新赋值
-            let returnName = await SMap.isAvilableAlias(newDatasourceName)
-            if (returnName !== newDatasourceName) {
-              newDatasourcePath = filePath + returnName + '.udb'
-              newDatasourceUDDPath = filePath + returnName + '.udd'
-              newDatasourceName = returnName
-            }
-            datasourceParams.server = newDatasourcePath
-            datasourceParams.engineType = EngineType.UDB
-            datasourceParams.alias = newDatasourceName
-            let rel = await SMap.createDatasource(datasourceParams)
-            if (rel === true) {
-              await SMap.openDatasource(datasourceParams)
-            }
-            let prefix = `@Label_${this.props.currentUser.userName}#`
-            let regexp = new RegExp(prefix)
-            let layers = this.state.layers
-            addition.filterLayers = layers
-              .filter(item => item.name.match(regexp))
-              .map(val => val.name)
-          }
-          let DSName = this.state.datasources.map(item => item.alias)
-          //不另存地图需要新建数据源 for of中await
-          for (let item of this.state.selected) {
-            let layerInfo = {}
-            let info = this.state.extraData.get(item[0])
-            if (
-              DSName.indexOf(info.datasourceName) === -1 &&
-              this.state.saveAsName === ''
-            ) {
-              let newDatasourcePath = filePath + info.datasourceName + '.udb'
+            if (this.state.saveAsName !== '') {
               let datasourceParams = {}
+              let index = 0
+              let flag = true
+              newDatasourcePath = filePath + newDatasourceName + index + '.udb'
+              while (flag) {
+                index++
+                newDatasourceName =
+                  this.props.currentUser.userName + index + '_Clip_Label#'
+                newDatasourcePath = filePath + newDatasourceName + '.udb'
+                newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
+                flag = await FileTools.fileIsExist(newDatasourcePath)
+              }
+              //如果别名不可用 返回了新的别名 重新赋值
+              let returnName = await SMap.isAvilableAlias(newDatasourceName)
+              if (returnName !== newDatasourceName) {
+                newDatasourcePath = filePath + returnName + '.udb'
+                newDatasourceUDDPath = filePath + returnName + '.udd'
+                newDatasourceName = returnName
+              }
               datasourceParams.server = newDatasourcePath
               datasourceParams.engineType = EngineType.UDB
-              let returnName = await SMap.isAvilableAlias(info.datasourceName)
-              datasourceParams.alias = returnName
+              datasourceParams.alias = newDatasourceName
               let rel = await SMap.createDatasource(datasourceParams)
               if (rel === true) {
                 await SMap.openDatasource(datasourceParams)
-                DSName.push(info.datasourceName)
               }
+              let prefix = `@Label_${this.props.currentUser.userName}#`
+              let regexp = new RegExp(prefix)
+              let layers = this.state.layers
+              addition.filterLayers = layers
+                .filter(item => item.name.match(regexp))
+                .map(val => val.name)
             }
-            layerInfo.LayerName = item[0]
-            layerInfo.IsClipInRegion =
-              info.inRangeStatus === CheckStatus.CHECKED ||
-              info.inRangeStatus === CheckStatus.CHECKED_DISABLE
-            layerInfo.IsErase =
-              info.eraseStatus === CheckStatus.CHECKED ||
-              info.eraseStatus === CheckStatus.CHECKED_DISABLE
-            if (
-              info.exactCutStatus === CheckStatus.CHECKED ||
-              info.exactCutStatus === CheckStatus.UN_CHECK
-            ) {
-              layerInfo.IsExactClip =
-                info.exactCutStatus === CheckStatus.CHECKED
+            let DSName = this.state.datasources.map(item => item.alias)
+            //不另存地图需要新建数据源 for of中await
+            for (let item of this.state.selected) {
+              let layerInfo = {}
+              let info = this.state.extraData.get(item[0])
+              if (
+                DSName.indexOf(info.datasourceName) === -1 &&
+                this.state.saveAsName === ''
+              ) {
+                let newDatasourcePath = filePath + info.datasourceName + '.udb'
+                let datasourceParams = {}
+                datasourceParams.server = newDatasourcePath
+                datasourceParams.engineType = EngineType.UDB
+                let returnName = await SMap.isAvilableAlias(info.datasourceName)
+                datasourceParams.alias = returnName
+                let rel = await SMap.createDatasource(datasourceParams)
+                if (rel === true) {
+                  await SMap.openDatasource(datasourceParams)
+                  DSName.push(info.datasourceName)
+                }
+              }
+              layerInfo.LayerName = item[0]
+              layerInfo.IsClipInRegion =
+                info.inRangeStatus === CheckStatus.CHECKED ||
+                info.inRangeStatus === CheckStatus.CHECKED_DISABLE
+              layerInfo.IsErase =
+                info.eraseStatus === CheckStatus.CHECKED ||
+                info.eraseStatus === CheckStatus.CHECKED_DISABLE
+              if (
+                info.exactCutStatus === CheckStatus.CHECKED ||
+                info.exactCutStatus === CheckStatus.UN_CHECK
+              ) {
+                layerInfo.IsExactClip =
+                  info.exactCutStatus === CheckStatus.CHECKED
+              }
+              layerInfo.DatasourceTarget =
+                this.state.saveAsName !== ''
+                  ? newDatasourceName
+                  : info.datasourceName
+              layersInfo.push(layerInfo)
             }
-            layerInfo.DatasourceTarget =
-              this.state.saveAsName !== ''
-                ? newDatasourceName
-                : info.datasourceName
-            layersInfo.push(layerInfo)
+
+            SMap.clipMap(
+              this.state.points,
+              layersInfo,
+              this.state.saveAsName,
+              '',
+              addition,
+              true,
+            ).then(
+              () => {
+                if (this.state.saveAsName !== '') {
+                  SMap.closeDatasource(newDatasourceName)
+                  SMap.deleteDatasource(newDatasourcePath)
+                  SMap.deleteDatasource(newDatasourceUDDPath)
+                }
+                this.container && this.container.setLoading(false)
+                this.isCutting = false
+
+                GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+                GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
+                NavigationService.goBack()
+                Toast.show(
+                  getLanguage(this.props.language).Prompt.CLIPPED_SUCCESS,
+                )
+              },
+              () => {
+                this.container && this.container.setLoading(false)
+                this.isCutting = false
+                Toast.show(getLanguage(this.props.language).Prompt.CLIP_FAILED)
+              },
+            )
+          } catch (e) {
+            this.container && this.container.setLoading(false)
+            this.isCutting = false
+            Toast.show(getLanguage(this.props.language).Prompt.CLIP_FAILED)
           }
-
-          SMap.clipMap(
-            this.state.points,
-            layersInfo,
-            this.state.saveAsName,
-            '',
-            addition,
-            true,
-          ).then(
-            () => {
-              if (this.state.saveAsName !== '') {
-                SMap.closeDatasource(newDatasourceName)
-                SMap.deleteDatasource(newDatasourcePath)
-                SMap.deleteDatasource(newDatasourceUDDPath)
-              }
-              this.container && this.container.setLoading(false)
-              this.isCutting = false
-
-              GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
-              GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
-              NavigationService.goBack()
-              Toast.show(
-                getLanguage(this.props.language).Prompt.CLIPPED_SUCCESS,
-              )
-            },
-            () => {
-              this.container && this.container.setLoading(false)
-              this.isCutting = false
-              Toast.show(getLanguage(this.props.language).Prompt.CLIP_FAILED)
-            },
-          )
-          // this.container && this.container.setLoading(false)
-          // this.isCutting = false
-          // if (result) {
-          //   GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
-          //   GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
-          //   NavigationService.goBack()
-          //   Toast.show(getLanguage(this.props.language).Prompt.CLIPPED_SUCCESS)
-          // } else {
-          //   Toast.show(ConstInfo.CLIP_FAILED)
-          // }
         }, 0)
       } catch (e) {
         this.isCutting = false
@@ -606,29 +626,6 @@ export default class MapCut extends React.Component {
 
   _renderItem = ({ item }) => {
     let data = this.state.extraData.get(item.name)
-    if (!data || data.datasourceName === '') {
-      data = {
-        inRangeStatus: CheckStatus.CHECKED,
-        eraseStatus:
-          item.type !== DatasetType.Text && item.type !== DatasetType.GRID
-            ? CheckStatus.UN_CHECK
-            : CheckStatus.UN_CHECK_DISABLE,
-        exactCutStatus:
-          item.type === DatasetType.GRID
-            ? CheckStatus.UN_CHECK
-            : CheckStatus.CHECKED_DISABLE,
-        datasourceName: item.datasourceAlias,
-        caption: '',
-      }
-      // this.setState(state => {
-      //   const extraData = new Map(state.extraData)
-      //   extraData.set(item.name, data)
-      //   return { extraData }
-      // })
-
-      // 为减少循环遍历并setState的临时方案，extraData为Map
-      this.state.extraData.set(item.name, data)
-    }
     return (
       <CutListItem
         data={item}

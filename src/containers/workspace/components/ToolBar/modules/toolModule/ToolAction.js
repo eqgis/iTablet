@@ -1240,7 +1240,7 @@ async function close(type) {
     NavigationService.navigate('LayerAttribute')
     await SMap.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
-    _params.setToolbarVisible(false)
+    // _params.setToolbarVisible(false)
   } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerSelectionAttribute', {
@@ -1255,7 +1255,7 @@ async function close(type) {
         }
         await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
-        _params.setToolbarVisible(false)
+        // _params.setToolbarVisible(false)
       },
     })
     // NavigationService.goBack()

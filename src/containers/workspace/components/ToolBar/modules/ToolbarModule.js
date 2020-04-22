@@ -327,8 +327,8 @@ function getPlotAnimationData(type) {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始飞行',
-          action: () => {
-            SMap.animationPlay()
+          action: async () => {
+            await SMap.animationPlay()
           },
           size: 'large',
           image: require('../../../../../assets/mapEdit/icon_play.png'),

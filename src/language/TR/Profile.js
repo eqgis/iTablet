@@ -276,6 +276,9 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: 'Navigasyon',
   ITABLET_DATAANALYSIS: 'Veri Analizi',
   ITABLET_PLOTTING: 'Çizim',
+  INVALID_MODULE: 'Mevcut Modülü Geçersiz. Devam Edememek.',
+  INVALID_LICENSE: 'Lisans Geçersiz. Devam Edememek.',
+  GO_ACTIVATE: 'Aktivasyonu',
 
   // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: 'Anormal fonksiyon: arıza veya mevcut değil',

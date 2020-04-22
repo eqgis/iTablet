@@ -9,7 +9,7 @@ import * as React from 'react'
 import { ActionPopover } from 'teaset'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
-import { Toast, scaleSize, LayerUtils } from '../../../../utils'
+import { Toast, scaleSize, LayerUtils, screen } from '../../../../utils'
 import SwipeOut from 'react-native-swipeout'
 import styles from './styles'
 import { color } from '../../../../styles'
@@ -492,24 +492,25 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
-            let {px,py,width,height}  = this.PressViewPosition
-            if(layer.index > 0){
+            let { px, py, width, height } = this.PressViewPosition
+            if (layer.index > 0) {
               py = py - height
-              ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
+              py >= scaleSize(88) &&
+                ActionPopover.show(
+                  {
+                    x: px,
+                    y: py,
+                    width,
+                    height,
+                  },
+                  items,
+                )
               layer.index -= 1
               this.setState({
-                data:layer,
+                data: layer,
               })
-              this.PressViewPosition = {px,py,width,height}
-            }else{
+              this.PressViewPosition = { px, py, width, height }
+            } else {
               ActionPopover.show(
                 {
                   x: px,
@@ -534,24 +535,25 @@ export default class LayerManager_item extends React.Component {
             } else {
               await this.props.getLayers()
             }
-            let {px,py,width,height}  = this.PressViewPosition
-            if(layer.index < layer.layerCount - 1){
+            let { px, py, width, height } = this.PressViewPosition
+            if (layer.index < layer.layerCount - 1) {
               py = py + height
-              ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
+              py < screen.getScreenHeight() - scaleSize(100) &&
+                ActionPopover.show(
+                  {
+                    x: px,
+                    y: py,
+                    width,
+                    height,
+                  },
+                  items,
+                )
               layer.index += 1
               this.setState({
-                data:layer,
+                data: layer,
               })
-              this.PressViewPosition = {px,py,width,height}
-            }else{
+              this.PressViewPosition = { px, py, width, height }
+            } else {
               ActionPopover.show(
                 {
                   x: px,
@@ -562,7 +564,6 @@ export default class LayerManager_item extends React.Component {
                 items,
               )
             }
-
           }.bind(this)())
         },
       },

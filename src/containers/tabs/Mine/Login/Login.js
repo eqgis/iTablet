@@ -165,7 +165,7 @@ class Login extends React.Component {
         })
       }
 
-      let res = await new Promise.race([result, timeout(20)])
+      let res = await new Promise.race([result, timeout(40)])
       if (res === 'timeout') {
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         return

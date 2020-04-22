@@ -257,7 +257,13 @@ export default class MapSetting extends Component {
     return (
       <View style={{ flex: 1 }} display={this.state.display}>
         <TouchableOpacity
-          onPress={() => this.flatListPressHandle(title)}
+          onPress={() => {
+            if (item.action) {
+              item.action()
+            } else {
+              this.flatListPressHandle(title)
+            }
+          }}
           style={{
             flexDirection: 'row',
             width: styles.itemWidth,
@@ -319,6 +325,14 @@ export default class MapSetting extends Component {
   renderFooterComponent = () => {
     return (
       <View>
+        {this.renderFlatListItem({
+          item: {
+            title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+            action: () => {
+              NavigationService.navigate('LocationSetting')
+            },
+          },
+        })}
         <View
           style={{
             flex: 1,
@@ -385,6 +399,9 @@ export default class MapSetting extends Component {
             marginLeft: scaleSize(80),
           },
           withoutBack: true,
+        }}
+        onOverlayPress={() => {
+          this.props.navigation.navigate('MapView')
         }}
         bottomBar={this.renderToolBar()}
       >

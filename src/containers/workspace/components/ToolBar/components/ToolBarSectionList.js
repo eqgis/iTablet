@@ -282,21 +282,21 @@ export default class ToolBarSectionList extends React.Component {
               style={styles.section_dataset_type}
             />
           )}
-          <Text style={[styles.sectionTitle, this.props.sectionTitleStyle]}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              this.props.device &&
+                this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+                width: scaleSize(250),
+              },
+              this.props.sectionTitleStyle,
+            ]}
+          >
             {section.title}
           </Text>
           {section.expressionType && (
             <TouchableOpacity
-              style={
-                (styles.selectImgView,
-                {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: scaleSize(30),
-                  height: scaleSize(80),
-                })
-              }
+              style={styles.sectionRightButton}
               onPress={() => this.sectionSelect(section)}
             >
               <Image
@@ -315,16 +315,7 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.allSelectType && (
             <TouchableOpacity
-              style={
-                (styles.selectImgView,
-                {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: scaleSize(30),
-                  height: scaleSize(80),
-                })
-              }
+              style={styles.sectionRightButton}
               onPress={() => this.sectionAllPress(section)}
             >
               <Text style={[styles.sectionSelectedTitle]}>
@@ -341,16 +332,7 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.addDatasource && (
             <TouchableOpacity
-              style={
-                (styles.selectImgView,
-                {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: scaleSize(30),
-                  height: scaleSize(80),
-                })
-              }
+              style={styles.sectionRightButton}
               onPress={() =>
                 NavigationService.navigate('MyDatasource', {
                   title: getLanguage(global.language).Profile.DATA,
@@ -799,7 +781,7 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     fontWeight: 'bold',
     color: color.section_text,
-    textAlign: 'center',
+    textAlign: 'left',
     textAlignVertical: 'center',
   },
   sectionButtons: {
@@ -874,6 +856,13 @@ const styles = StyleSheet.create({
     width: scaleSize(50),
     height: scaleSize(50),
     marginLeft: scaleSize(30),
+  },
+  sectionRightButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    right: scaleSize(30),
+    height: scaleSize(80),
   },
   dataset_type_img: {
     width: scaleSize(50),

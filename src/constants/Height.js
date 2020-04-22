@@ -13,7 +13,7 @@ export default {
   TABLE_ROW_HEIGHT_4: HEIGHT_4,
   TABLE_ROW_HEIGHT_5: HEIGHT_5,
 
-  LIST_HEIGHT_P: scaleSize(600), // 列表竖屏高度
+  LIST_HEIGHT_P: scaleSize(800), // 列表竖屏高度
   LIST_HEIGHT_L: scaleSize(500), // 列表横屏高度
 
   COLOR_TABLE_HEIGHT_P: scaleSize(400), // 列表竖屏高度

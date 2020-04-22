@@ -26,6 +26,8 @@ import io.reactivex.functions.Consumer;
 
 import org.devio.rn.splashscreen.SplashScreen;
 
+import java.util.Vector;
+
 public class MainActivity extends ReactActivity {
     public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     public static boolean isActive;
@@ -44,6 +46,23 @@ public class MainActivity extends ReactActivity {
         super.onCreate(savedInstanceState);
         requestPermissions();
         initEnvironment();
+
+//        ITabletLicenseManager instace = ITabletLicenseManager.getInstance(this);
+//        instace.setPrivateServerUrl("ws://192.168.0.109:9183");
+//        instace.queryPrivateFormalLicense(new ITabletLicenseManager.privateLicQueryCallback() {
+//            @Override
+//            public void onQueryComplete(Vector<ITabletLicenseManager.privateCloudLicInfo> vecInfos) {
+//                if(vecInfos != null){
+//                    int[] ids = {19001,19006};
+//                    instace.applyPrivateFormalLicense(ids, new ITabletLicenseManager.privateLicApplyCallback() {
+//                        @Override
+//                        public void onResult(boolean success) {
+//                            Log.d("xzy","onResult "+success);
+//                        }
+//                    });
+//                }
+//            }
+//        });
         initDefaultData();
 //        if (!isTablet(this)) {
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

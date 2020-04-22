@@ -46,7 +46,6 @@ export default class CreateNavDataPage extends Component {
         : new Animated.Value(
           screen.getScreenWidth(this.props.device.orientation),
         )
-
     this.maxHeight =
       screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
   }

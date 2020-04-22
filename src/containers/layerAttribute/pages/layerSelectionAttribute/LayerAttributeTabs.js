@@ -500,20 +500,7 @@ export default class LayerAttributeTabs extends React.Component {
           ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE,
           {
             containerType: 'table',
-            column: 3,
             isFullScreen: false,
-            height: ConstToolType.HEIGHT[0],
-            // cb: () => {
-            //   switch (GLOBAL.currentToolbarType) {
-            //     case ConstToolType.MAP_TOOL_POINT_SELECT:
-            //       SMap.setAction(Action.SELECT)
-            //       break
-            //     case ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE:
-            //       // SMap.selectByRectangle()
-            //       SMap.setAction(Action.SELECT_BY_RECTANGLE)
-            //       break
-            //   }
-            // },
           },
         )
     }

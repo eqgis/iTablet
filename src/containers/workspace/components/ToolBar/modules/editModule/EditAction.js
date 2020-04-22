@@ -8,7 +8,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 
-function commit(type) {
+async function commit(type) {
   const params = ToolbarModule.getParams()
   let currentToolbarType = ''
   if (type === ConstToolType.MAP_EDIT_DEFAULT) {
@@ -24,35 +24,37 @@ function commit(type) {
   //   type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
   // )
   else {
-    currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
-    // 编辑完成关闭Toolbar
-    // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-    params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
-      isFullScreen: false,
-      // height: 0,
-      cb: async () => {
-        await SMap.submit()
-        await SMap.setAction(Action.SELECT)
+    try {
+      await SMap.submit()
+      await SMap.setAction(Action.SELECT)
 
-        // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
-        if (ToolbarModule.getData().fieldInfo) {
-          const fieldInfo = ToolbarModule.getData().fieldInfo || []
-          const layerInfo = ToolbarModule.getData().layerInfo || {}
-          let geoID = -1
-          for (let i = 0; i < fieldInfo.length; i++) {
-            if (
-              fieldInfo[i].name === 'MediaFilePaths' &&
-              fieldInfo[i].value !== ''
-            ) {
-              geoID = fieldInfo[0].value
-            }
+      // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
+      if (ToolbarModule.getData().fieldInfo) {
+        const fieldInfo = ToolbarModule.getData().fieldInfo || []
+        const layerInfo = ToolbarModule.getData().layerInfo || {}
+        let geoID = -1
+        for (let i = 0; i < fieldInfo.length; i++) {
+          if (
+            fieldInfo[i].name === 'MediaFilePaths' &&
+            fieldInfo[i].value !== ''
+          ) {
+            geoID = fieldInfo[0].value
           }
-          layerInfo.name !== undefined &&
-            geoID > -1 &&
-            (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
         }
-      },
-    })
+        layerInfo.name !== undefined &&
+          geoID > -1 &&
+          (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
+      }
+      currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
+      // 编辑完成关闭Toolbar
+      // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
+      params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+        isFullScreen: false,
+        // height: 0,
+      })
+    } catch (e) {
+      SMap.cancel()
+    }
   }
   ToolbarModule.addData({
     type: currentToolbarType,
@@ -125,7 +127,7 @@ async function geometrySelected(event) {
           case GeometryType.GEOTEXT:
             type = ConstToolType.MAP_EDIT_TEXT
             break
-          case GeometryType.PLOT:
+          case GeometryType.GEOGRAPHICOBJECT:
             type = ConstToolType.MAP_EDIT_PLOT
             break
         }

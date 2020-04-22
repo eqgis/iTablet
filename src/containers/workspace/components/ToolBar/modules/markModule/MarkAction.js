@@ -185,12 +185,14 @@ function commit(type) {
         GLOBAL.NEEDREFRESHTABLE = true
       })
     } else {
-      const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+      SMap.submit().then(() => {
+        const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
 
-      _params.setToolbarVisible(true, type, {
-        isFullScreen: false,
-        // height: 0,
-        cb: () => select(type),
+        _params.setToolbarVisible(true, type, {
+          isFullScreen: false,
+          // height: 0,
+          cb: () => select(type),
+        })
       })
       // return false
     }
@@ -619,6 +621,7 @@ function toolbarBack() {
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
   ) {
+    //todo 取消标注风格
     SMap.cancel()
     SMap.clearSelection()
     _params.setSelection()

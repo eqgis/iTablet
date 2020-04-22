@@ -31,6 +31,7 @@ function isTouchProgress(selectKey) {
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_FONT ||
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_ICON ||
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT ||
+    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.DATUM_VALUE ||
     selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH
   ) {
     return true

@@ -277,6 +277,15 @@ export default class Container extends Component {
               onPress={() => {
                 if (this.props.onOverlayPress) {
                   this.props.onOverlayPress()
+                } else if (this.props.headerProps) {
+                  if (
+                    this.props.headerProps.backAction &&
+                    typeof this.props.headerProps.backAction === 'function'
+                  ) {
+                    this.props.headerProps.backAction()
+                  } else if (this.props.headerProps.navigation) {
+                    this.props.headerProps.navigation.goBack()
+                  }
                 } else {
                   if (NavigationService.isInMap()) {
                     NavigationService.navigate('MapView')

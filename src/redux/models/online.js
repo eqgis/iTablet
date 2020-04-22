@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { SOnlineService } from 'imobile_for_reactnative'
-import { FileTools } from '../native'
-import { request } from '../utils'
+import { FileTools } from '../../native'
+import { request } from '../../utils'
 
 // Constants
 // --------------------------------------------------

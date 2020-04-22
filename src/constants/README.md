@@ -6,7 +6,6 @@
 > * Const                      (常量(专题图文字))
 > * ConstAnalyst               (常量(地图分析文字))
 > * ConstInfo                  (常量(地图操作文字提示))
-> * ConstModule                (iTablet模块列表)
 > * ConstOnline                (在线数据源列表)
 > * ConstPath                  (iTabletApp文件路径)
 > * ConstToolType              (二级菜单数据类型)

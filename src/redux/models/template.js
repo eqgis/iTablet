@@ -4,8 +4,8 @@ import { handleActions } from 'redux-actions'
 import { SMap, WorkspaceType } from 'imobile_for_reactnative'
 import fs from 'react-native-fs'
 import xml2js from 'react-native-xml2js'
-import { FileTools } from '../native'
-import { ConstInfo } from '../constants'
+import { FileTools } from '../../native'
+import { ConstInfo } from '../../constants'
 
 const parser = new xml2js.Parser()
 // Constants

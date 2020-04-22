@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import OnlineAnalystView from './OnlineAnalystView'
-import { getLayers } from '../../../../models/layers'
-import { getDatasetInfoFromIServer } from '../../../../models/online'
+import { getLayers } from '../../../../redux/models/layers'
+import { getDatasetInfoFromIServer } from '../../../../redux/models/online'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

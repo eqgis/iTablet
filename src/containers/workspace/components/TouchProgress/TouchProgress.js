@@ -8,8 +8,6 @@ import {
   Platform,
   TextInput,
   TouchableOpacity,
-  // StatusBar,
-  // AsyncStorage,
 } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import {
@@ -18,8 +16,7 @@ import {
   ThemeType,
   SMap,
 } from 'imobile_for_reactnative'
-import constants from '../../constants'
-import { ConstToolType, Height } from '../../../../constants'
+import { ConstToolType, Height, ChunkType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import TPData from './TPData'
@@ -153,7 +150,7 @@ export default class TouchProgress extends Component {
     }
     if (
       (tips === '' &&
-        GLOBAL.Type === constants.MAP_THEME &&
+        GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
       this.props.currentLayer.isHeatmap
     ) {
@@ -1035,7 +1032,7 @@ export default class TouchProgress extends Component {
     ) {
       newValue = value * 100
     } else if (
-      (GLOBAL.Type === constants.MAP_THEME &&
+      (GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
       this.props.currentLayer.isHeatmap
     ) {
@@ -1381,7 +1378,7 @@ export default class TouchProgress extends Component {
         '     ' +
         parseInt(value)
     } else if (
-      (GLOBAL.Type === constants.MAP_THEME &&
+      (GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
       this.props.currentLayer.isHeatmap
     ) {
@@ -1807,7 +1804,7 @@ export default class TouchProgress extends Component {
         tips = TPData.getMatchPictureTip(this.props.selectName, value)
       }
     } else if (
-      (GLOBAL.Type === constants.MAP_THEME &&
+      (GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
       this.props.currentLayer.isHeatmap
     ) {
@@ -2376,7 +2373,7 @@ export default class TouchProgress extends Component {
     ) {
       newValue = value / 100
     } else if (
-      (GLOBAL.Type === constants.MAP_THEME &&
+      (GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
       this.props.currentLayer.isHeatmap
     ) {

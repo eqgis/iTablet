@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import LayerAttributeObj from './LayerAttributeObj'
-import { setCurrentAttribute } from '../../../../models/layers'
+import { setCurrentAttribute } from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
   currentAttribute: state.layers.toJS().currentAttribute,

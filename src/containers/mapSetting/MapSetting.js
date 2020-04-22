@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Container } from '../../components'
-import constants from '../workspace/constants'
 import NavigationService from '../NavigationService'
 import { MapToolbar } from '../workspace/components'
 import {
@@ -21,7 +20,7 @@ import {
 } from './settingData'
 import SettingSection from './SettingSection'
 import { getLanguage } from '../../language/index'
-import { getHeaderTitle } from '../../constants'
+import { ChunkType } from '../../constants'
 import { legendModule } from '../workspace/components/ToolBar/modules'
 import { scaleSize } from '../../utils'
 import size from '../../styles/size'
@@ -74,17 +73,14 @@ export default class MapSetting extends Component {
 
   getData = async () => {
     let newData = getThematicMapSettings().concat(getlegendSetting())
-    /*if (GLOBAL.Type === constants.MAP_THEME) {
-      newData = newData.concat(getlegendSetting())
-    } else */
-    if (GLOBAL.Type === constants.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
       newData = newData.concat(getMapARSettings())
       //ios先暂时屏蔽POI设置和检测类型
       if (Platform.OS === 'ios') {
         newData.splice(4, 1)
       }
     }
-    // if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+    // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
     //   newData = newData.concat(getnavigationSetting())
     // }
     this.setState({
@@ -338,10 +334,10 @@ export default class MapSetting extends Component {
             flex: 1,
             flexDirection: 'row',
             height: scaleSize(80),
-            paddingHorizontal: scaleSize(30),
+            paddingHorizontal: 15,
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingRight: scaleSize(10),
+            paddingRight: 10,
           }}
         >
           <Text style={styles.itemName}>
@@ -390,7 +386,9 @@ export default class MapSetting extends Component {
         headerProps={{
           title:
             this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            getHeaderTitle(GLOBAL.Type),
+            this.props.appConfig.mapModules[
+              this.props.appConfig.currentMapModule
+            ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

@@ -26,7 +26,7 @@ export default class PreviewHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.top = new Animated.Value(-screen.getHeaderHeight())
+    this.top = new Animated.Value(-300)
     this.params = {}
     this.visible = false
   }
@@ -39,7 +39,7 @@ export default class PreviewHeader extends React.Component {
     this.visible = iShow
     GLOBAL.TouchType = iShow ? TouchType.NULL : TouchType.NORMAL
     Animated.timing(this.top, {
-      toValue: iShow ? 0 : -screen.getHeaderHeight(),
+      toValue: iShow ? 0 : -300,
       time: 300,
     }).start()
   }

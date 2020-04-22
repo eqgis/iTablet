@@ -2,8 +2,7 @@ import * as React from 'react'
 import { StyleSheet, Animated } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
-import constants from '../../constants'
-import { Const } from '../../../../constants'
+import { Const, ChunkType } from '../../../../constants'
 import PropTypes from 'prop-types'
 import NavigationService from '../../../../containers/NavigationService'
 import MT_Btn from '../../../../components/mapTools/MT_Btn'
@@ -37,7 +36,7 @@ export default class MapNavMenu extends React.Component {
   }
 
   static defaultProps = {
-    type: constants.MAP_COLLECTION,
+    type: ChunkType.MAP_COLLECTION,
     hidden: false,
     editLayer: {},
     initIndex: -1,
@@ -134,7 +133,7 @@ export default class MapNavMenu extends React.Component {
           list.push({
             key: 'MapView',
             title:
-              type === constants.MAP_AR
+              type === ChunkType.MAP_AR
                 ? getLanguage(global.language).Map_Label.ARMAP
                 : getLanguage(global.language).Map_Label.MAP,
             //'地图',
@@ -249,7 +248,7 @@ export default class MapNavMenu extends React.Component {
   }
 
   _map3Dchange = () => {
-    NavigationService.navigate('WorkspaceFileList', { type: constants.MAP_3D })
+    NavigationService.navigate('WorkspaceFileList', { type: ChunkType.MAP_3D })
   }
 
   _renderItem = ({ item, index }) => {

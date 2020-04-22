@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../models/license'
+import { setLicenseInfo } from '../../../../redux/models/license'
 import { View, StyleSheet, TextInput, Text, AsyncStorage } from 'react-native'
 import { Container, Button } from '../../../../components'
 import { color } from '../../../../styles'

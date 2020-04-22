@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import IServerLoginPage from './IServerLoginPage'
-import { loginIServer } from '../../../../models/online'
+import { loginIServer } from '../../../../redux/models/online'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

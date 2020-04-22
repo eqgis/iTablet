@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { View, Animated, FlatList } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { ConstToolType, Const } from '../../../../constants'
+import { ConstToolType, Const, ChunkType } from '../../../../constants'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import styles from './styles'
 import PropTypes from 'prop-types'
@@ -42,7 +42,7 @@ export default class AIFunctionToolbar extends React.Component {
   }
 
   static defaultProps = {
-    type: constants.MAP_COLLECTION,
+    type: ChunkType.MAP_COLLECTION,
     hide: false,
     direction: 'column',
     separator: 20,

@@ -4,8 +4,8 @@ import {
   setSettingData,
   setMapLegend,
   setColumnNavBar,
-} from '../../models/setting'
-import { closeMap } from '../../models/map'
+} from '../../redux/models/setting'
+import { closeMap } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

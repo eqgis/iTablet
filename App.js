@@ -15,33 +15,33 @@ import {
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
-import { setNav } from './src/models/nav'
-import { setUser } from './src/models/user'
-import { setAgreeToProtocol, setLanguage, setMapSetting ,setMap2Dto3D} from './src/models/setting'
+import { setNav } from './src/redux/models/nav'
+import { setUser } from './src/redux/models/user'
+import { setAgreeToProtocol, setLanguage, setMapSetting ,setMap2Dto3D} from './src/redux/models/setting'
 import {
   setEditLayer,
   setSelection,
   setCurrentLayer,
-} from './src/models/layers'
+} from './src/redux/models/layers'
 import {
   openWorkspace,
   closeMap,
   setCurrentMap,
   saveMap,
-} from './src/models/map'
+} from './src/redux/models/map'
 import {
   setCurrentTemplateInfo,
   setCurrentTemplateList,
   setTemplate,
-} from './src/models/template'
-import { setModules } from './src/models/appConfig'
+} from './src/redux/models/template'
+import { setModules } from './src/redux/models/appConfig'
 import { Dialog, Loading } from './src/components'
-import { setAnalystParams } from './src/models/analyst'
-import { setCollectionInfo } from './src/models/collection'
-import { setShow }  from './src/models/device'
-import { setLicenseInfo } from './src/models/license'
+import { setAnalystParams } from './src/redux/models/analyst'
+import { setCollectionInfo } from './src/redux/models/collection'
+import { setShow }  from './src/redux/models/device'
+import { setLicenseInfo } from './src/redux/models/license'
 import { FileTools }  from './src/native'
-import ConfigStore from './src/store'
+import ConfigStore from './src/redux/store'
 import { SaveView } from './src/containers/workspace/components'
 import { scaleSize, Toast, screen } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
@@ -60,7 +60,7 @@ import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHan
 import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
-
+import config from './config'
 
 const {persistor, store} = ConfigStore()
 
@@ -169,7 +169,6 @@ class AppRoot extends Component {
       sceneStyle: styles.invisibleMap,
       import: null,
     }
-    let config = require('./config.json')
     this.props.setModules(config) // 设置模块
     this.initGlobal()
     PT.initCustomPrototype()

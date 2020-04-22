@@ -1,18 +1,13 @@
 import React, { Component } from 'react'
 import { InteractionManager } from 'react-native'
 import { Container } from '../../../../components'
-// import { ConstInfo } from '../../../../constants'
+import { ChunkType } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
-import constants from '../../../workspace/constants'
 import styles from './styles'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-// import ScrollableTabView, {
-//   DefaultTabBar,
-// } from 'react-native-scrollable-tab-view'
 import { SAnalyst, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
-// import TabNavigationService from '../../../TabNavigationService'
 
 import BufferAnalystViewTab from './BufferAnalystViewTab'
 
@@ -179,7 +174,7 @@ export default class BufferAnalystView extends Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        type={constants.MAP_ANALYST}
+        type={ChunkType.MAP_ANALYST}
       />
     )
   }

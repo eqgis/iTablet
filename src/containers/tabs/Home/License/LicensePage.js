@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Image, Text, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../models/license'
+import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'

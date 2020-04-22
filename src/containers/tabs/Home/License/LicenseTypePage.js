@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../models/license'
+import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'

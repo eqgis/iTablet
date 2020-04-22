@@ -5,9 +5,9 @@ import {
   setCurrentLayer,
   getLayers,
   clearAttributeHistory,
-} from '../../models/layers'
-import { setMapLegend } from '../../models/setting'
-import { closeMap } from '../../models/map'
+} from '../../redux/models/layers'
+import { setMapLegend } from '../../redux/models/setting'
+import { closeMap } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

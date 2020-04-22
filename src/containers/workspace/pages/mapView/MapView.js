@@ -84,10 +84,9 @@ import {
   ConstToolType,
   TouchType,
   ConstInfo,
-  getHeaderTitle,
   ToolbarType,
+  ChunkType,
 } from '../../../../constants'
-import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
 import { setGestureDetectorListener } from '../../../GestureDetectorListener'
 import {
@@ -200,14 +199,8 @@ export default class MapView extends React.Component {
     this.isExample = (params && params.isExample) || false
     this.noLegend = (params && params.noLegend) || false
     this.wsData = params && params.wsData
-    this.operationType = params && params.operationType
     this.showMarker = params && params.showMarker
-    this.mapTitle = ''
-    if (params && params.mapTitle) {
-      this.mapTitle = params.mapTitle
-    } else if (GLOBAL.Type) {
-      this.mapTitle = getHeaderTitle(GLOBAL.Type)
-    }
+    this.mapTitle = params.mapTitle
 
     this.path = (params && params.path) || ''
     this.showDialogCaption =
@@ -227,7 +220,7 @@ export default class MapView extends React.Component {
       // changeLayerBtnBottom: scaleSize(200),
       canBeUndo: false,
       canBeRedo: false,
-      showAIDetect: GLOBAL.Type === constants.MAP_AR,
+      showAIDetect: GLOBAL.Type === ChunkType.MAP_AR,
       showRoadView: true,
       showArModeIcon: true,
       showIncrement: false,
@@ -278,7 +271,7 @@ export default class MapView extends React.Component {
     this.mapLoaded = false // 判断地图是否加载完成
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
-    GLOBAL.showAIDetect = GLOBAL.Type === constants.MAP_AR
+    GLOBAL.showAIDetect = GLOBAL.Type === ChunkType.MAP_AR
     this.lastClickTime = 0
     //  导航选中的数据
     this.selectedData = {
@@ -329,7 +322,7 @@ export default class MapView extends React.Component {
     }
 
     if (global.isLicenseValid) {
-      if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
         SMap.setIndustryNavigationListener({
           callback: async () => {
@@ -548,7 +541,7 @@ export default class MapView extends React.Component {
       }
     }
 
-    if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+    if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
       (async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
@@ -590,10 +583,10 @@ export default class MapView extends React.Component {
 
   componentWillUnmount() {
     SMap.setCurrentModule(0)
-    if (GLOBAL.Type === constants.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
       Orientation.unlockAllOrientations()
     }
-    if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+    if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
       (async function() {
         await SMap.destroySpeakPlugin()
       })()
@@ -653,7 +646,7 @@ export default class MapView extends React.Component {
                 info.indexOf('location') !== -1
               ) {
                 (async function() {
-                  if (GLOBAL.Type === constants.MAP_3D) {
+                  if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
                     this.mapController.setCompass(0)
@@ -1364,7 +1357,7 @@ export default class MapView extends React.Component {
       if (result && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
           this._removeGeometrySelectedListener()
-          if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             this._removeNavigationListeners()
           }
         })
@@ -1375,7 +1368,7 @@ export default class MapView extends React.Component {
             getLanguage(this.props.language).Prompt.CLOSING,
             //'正在关闭地图'
           )
-          if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             this._removeNavigationListeners().then(() => {
               SMap.clearPoint()
               SMap.stopGuide()
@@ -1517,7 +1510,7 @@ export default class MapView extends React.Component {
           })
           bWorkspcaOpen = true
         }
-        if (GLOBAL.Type === constants.MAP_PLOTTING) {
+        if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
           this.setLoading(
             true,
             //ConstInfo.TEMPLATE_READING
@@ -1545,7 +1538,7 @@ export default class MapView extends React.Component {
           bPlotOpen = true
         }
 
-        // GLOBAL.Type === constants.MAP_COLLECTION && this.initCollectorDatasource()
+        // GLOBAL.Type === ChunkType.MAP_COLLECTION && this.initCollectorDatasource()
         // 获取图层列表
         this.props.getLayers(
           { type: -1, currentLayerIndex: 0 },
@@ -1642,7 +1635,7 @@ export default class MapView extends React.Component {
 
         SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
-        if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
           bNaviCreate = false
           this.props.setMap2Dto3D(true)
           this.props.setMapNavigation({ isShow: false, name: '' })
@@ -1715,7 +1708,7 @@ export default class MapView extends React.Component {
       })
       if (mapInfo) {
         // 如果是模板地图，则加载模板
-        if (mapInfo.Template && GLOBAL.Type === constants.MAP_COLLECTION) {
+        if (mapInfo.Template && GLOBAL.Type === ChunkType.MAP_COLLECTION) {
           this.setLoading(
             true,
             //ConstInfo.TEMPLATE_READING
@@ -2055,7 +2048,7 @@ export default class MapView extends React.Component {
     if (
       !(
         !full &&
-        GLOBAL.Type === constants.MAP_NAVIGATION &&
+        GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
         this.FloorListView.state.currentFloorID
       )
     ) {
@@ -2143,7 +2136,7 @@ export default class MapView extends React.Component {
   }
 
   _onArObjectClick = data => {
-    if (GLOBAL.Type === constants.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
       let params = {
         ID: data.id,
         mediaName: data.name,
@@ -2480,7 +2473,7 @@ export default class MapView extends React.Component {
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+            if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
               let layers =
                 this.props.getLayers && (await this.props.getLayers())
               let baseMap = layers.filter(layer =>
@@ -3200,7 +3193,7 @@ export default class MapView extends React.Component {
             onGetInstance={this._onGetInstance}
           />
         )}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {/*{this.props.map2Dto3D && (*/}
         {/*<Map2Dto3D*/}
@@ -3209,7 +3202,7 @@ export default class MapView extends React.Component {
         {/*openWorkspace={this.props.openWorkspace}*/}
         {/*/>*/}
         {/*)}*/}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && this._renderTrafficView()}
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {global.isLicenseValid && this.state.showAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
@@ -3237,27 +3230,27 @@ export default class MapView extends React.Component {
         />
         {!this.state.showAIDetect && this.renderMapController()}
         {/*{!this.isExample &&*/}
-        {/*GLOBAL.Type === constants.MAP_NAVIGATION &&*/}
+        {/*GLOBAL.Type === ChunkType.MAP_NAVIGATION &&*/}
         {/*this.props.mapNavigation.isPointShow &&*/}
         {/*this._renderNavigationView()}*/}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderNavigationStartButton()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderNavigationStartHead()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderMapSelectPointButton()}
         {!this.isExample &&
-          GLOBAL.Type === constants.MAP_NAVIGATION &&
+          GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderNavigationPoiView()}
         {!this.isExample &&
-          GLOBAL.Type === constants.MAP_NAVIGATION &&
+          GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           !this.props.mapNavigation.isShow &&
           this.state.showIncrement &&
           this._renderNavigationIcon()}
-        {/*{GLOBAL.Type === constants.MAP_NAVIGATION && this._renderLocationIcon()}*/}
+        {/*{GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderLocationIcon()}*/}
         {!this.isExample &&
           this.props.analyst.params &&
           this.renderAnalystMapButtons()}
@@ -3280,7 +3273,7 @@ export default class MapView extends React.Component {
           !this.props.analyst.params &&
           this.renderMeasureLabel()}
         {!this.isExample &&
-          GLOBAL.Type === constants.MAP_AR &&
+          GLOBAL.Type === ChunkType.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
         {this.renderMapNavIcon()}
@@ -3352,8 +3345,8 @@ export default class MapView extends React.Component {
           setNavigationPoiView={this.props.setNavigationPoiView}
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
-        {GLOBAL.Type === constants.MAP_THEME && this.renderPreviewHeader()}
-        {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
+        {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
+        {/*{GLOBAL.Type === ChunkType.MAP_NAVIGATION && (*/}
         {/*  <PopView*/}
         {/*    showFullMap={this.showFullMap}*/}
         {/*    ref={ref => (this.selectList = ref)}*/}
@@ -3369,7 +3362,7 @@ export default class MapView extends React.Component {
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
         />
-        {GLOBAL.Type === constants.MAP_NAVIGATION && (
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}
             confirmAction={this._onlineRouteAnylystConfirm}
@@ -3390,7 +3383,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
-        {GLOBAL.Type === constants.MAP_NAVIGATION && (
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.changeRouteDialog = ref)}
             confirmAction={this._changeNavRoute}
@@ -3414,7 +3407,7 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
-        {/*{GLOBAL.Type === constants.MAP_NAVIGATION && (*/}
+        {/*{GLOBAL.Type === ChunkType.MAP_NAVIGATION && (*/}
         {/*    <InputDialog*/}
         {/*        ref={ref=>(GLOBAL.SMOOTHDIALOG = ref)}*/}
         {/*        cancelAction={()=>{GLOBAL.SMOOTHDIALOG.setDialogVisible(false)}}*/}
@@ -3435,7 +3428,7 @@ export default class MapView extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
-        {GLOBAL.Type === constants.MAP_NAVIGATION &&
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this.renderIncrementDialog()}
       </View>
     )

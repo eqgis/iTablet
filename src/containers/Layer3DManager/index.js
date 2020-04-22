@@ -1,6 +1,9 @@
 import { connect } from 'react-redux'
 import Layer3DManager from './Layer3DManager'
-import { refreshLayer3dList, setCurrentLayer3d } from '../../models/layers'
+import {
+  refreshLayer3dList,
+  setCurrentLayer3d,
+} from '../../redux/models/layers'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

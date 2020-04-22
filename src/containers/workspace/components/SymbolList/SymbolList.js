@@ -8,8 +8,7 @@ import {
   SCartography,
   SThemeCartography,
 } from 'imobile_for_reactnative'
-import constants from '../../constants'
-import { ConstToolType } from '../../../../constants'
+import { ConstToolType, ChunkType } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
 export default class SymbolList extends React.Component {
@@ -31,7 +30,7 @@ export default class SymbolList extends React.Component {
 
   _onSymbolClick = data => {
     if (
-      GLOBAL.Type === constants.MAP_THEME &&
+      GLOBAL.Type === ChunkType.MAP_THEME &&
       this.props.layerData.themeType > 0
     ) {
       let params = {
@@ -92,7 +91,7 @@ export default class SymbolList extends React.Component {
 
   renderLibrary = () => {
     let symbols = []
-    if (GLOBAL.Type === constants.MAP_THEME) {
+    if (GLOBAL.Type === ChunkType.MAP_THEME) {
       switch (this.props.type) {
         case ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
         case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOLS:

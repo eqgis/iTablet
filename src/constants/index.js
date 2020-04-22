@@ -4,7 +4,6 @@ import Const from './Const'
 import AudioKeywords from './AudioKeywords'
 import EventConst from './EventConst'
 import ExampleMapData from './ExampleMapData'
-import ConstModule, { getHeaderTitle } from './ConstModule'
 import ConstToolType from './ConstToolType'
 import Map3DBaseMapList from './Map3DBaseMapList'
 import ConstInfo from './ConstInfo'
@@ -15,6 +14,7 @@ import ConstAnalyst from './ConstAnalyst'
 import TouchType from './TouchType'
 import ToolbarType from './ToolbarType'
 import Height from './Height'
+import ChunkType from './ChunkType'
 
 import {
   layerAdd,
@@ -41,7 +41,6 @@ export {
   EventConst,
   layerManagerData,
   ExampleMapData,
-  ConstModule,
   layerAdd,
   // BotMap,
   // openData,
@@ -59,9 +58,9 @@ export {
   CheckStatus,
   ConstAnalyst,
   TouchType,
-  getHeaderTitle,
   legendMenuInfo,
   legendMenuInfoNotVisible,
   ToolbarType,
   Height,
+  ChunkType,
 }

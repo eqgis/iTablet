@@ -70,7 +70,7 @@ class NavigationHeader extends Component {
   }
 
   onOrientationChange = () => {
-    let height = screen.getHeaderHeight(global.getDevice().orientation)
+    let height = screen.getHeaderHeight()
     Animated.timing(this.state.headerHeight, {
       toValue: height,
       duration: 300,
@@ -223,20 +223,9 @@ class NavigationHeader extends Component {
         currentHeaderStyle = styles.defaultHeaderView
         break
     }
-    // 适配iphone x
-    if (screen.isIphoneX()) {
-      let iphonePaddingTop = screen.getIphonePaddingTop()
-      let headerHeight = scaleSize(88) + iphonePaddingTop
-      currentHeaderStyle.paddingTop = iphonePaddingTop
-      currentHeaderStyle.height = headerHeight
-    }
-    let padding = {}
-    if (
-      global.getDevice().orientation &&
-      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
-    ) {
-      padding = { paddingTop: 0 }
-    }
+
+    let padding = { paddingTop: screen.getIphonePaddingTop() }
+
     return (
       <Animated.View
         style={[

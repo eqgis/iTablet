@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import TouchProgress from './TouchProgress'
-import { setCurrentAttribute } from '../../../../models/layers'
-import { setMapLegend } from '../../../../models/setting'
+import { setCurrentAttribute } from '../../../../redux/models/layers'
+import { setMapLegend } from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

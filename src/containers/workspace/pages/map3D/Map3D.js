@@ -35,7 +35,6 @@ import {
 } from '../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
-import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -73,7 +72,6 @@ export default class Map3D extends React.Component {
     GLOBAL.openWorkspace = false
     GLOBAL.action3d = ''
     const params = this.props.navigation.state.params
-    this.operationType = params.operationType || constants.MAP_3D
     this.isExample = params.isExample || false
     this.mapName = params.mapName || null
     this.state = {
@@ -707,7 +705,6 @@ export default class Map3D extends React.Component {
         navigation={this.props.navigation}
         appConfig={this.props.appConfig}
         initIndex={0}
-        type={this.operationType}
         layerManager={this._layer_manager}
       />
     )

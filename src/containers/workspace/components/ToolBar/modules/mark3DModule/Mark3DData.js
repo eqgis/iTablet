@@ -6,11 +6,10 @@
 
 import { SScene } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ChunkType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import Mark3DAction from './Mark3DAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import constants from '../../../../constants'
 import { Toast } from '../../../../../../utils'
 
 async function getData(type, params) {
@@ -75,7 +74,7 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: require('../../../../../../assets/mapEdit/icon_back.png'),
           action: () => {
-            if (GLOBAL.Type === constants.MAP_3D) SScene.symbolback()
+            if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
@@ -83,7 +82,7 @@ async function getData(type, params) {
           image: require('../../../../../../assets/mapEdit/commit.png'),
           action: async () => {
             try {
-              if (GLOBAL.Type === constants.MAP_3D) await SScene.save()
+              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
               // getParams.getMap3DAttribute()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
               // '保存成功')
@@ -103,7 +102,7 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: require('../../../../../../assets/mapEdit/icon_back.png'),
           action: () => {
-            if (GLOBAL.Type === constants.MAP_3D) SScene.symbolback()
+            if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
@@ -116,7 +115,7 @@ async function getData(type, params) {
           image: require('../../../../../../assets/mapEdit/commit.png'),
           action: async () => {
             try {
-              if (GLOBAL.Type === constants.MAP_3D) await SScene.save()
+              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
               // getParams.getMap3DAttribute()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
               // '保存成功')

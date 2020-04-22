@@ -4,10 +4,10 @@ import {
   TouchType,
   ToolbarType,
   Const,
+  ChunkType,
 } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
-import constants from '../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Utils from '../../utils'
@@ -15,7 +15,7 @@ import Utils from '../../utils'
 async function commit() {
   const _params = ToolbarModule.getParams()
 
-  if (GLOBAL.Type === constants.MAP_EDIT) {
+  if (GLOBAL.Type === ChunkType.MAP_EDIT) {
     GLOBAL.showMenu = true
   }
 
@@ -143,7 +143,7 @@ function menu(type, selectKey, params = {}) {
   const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
     if (
-      GLOBAL.Type === constants.MAP_EDIT ||
+      GLOBAL.Type === ChunkType.MAP_EDIT ||
       type === ConstToolType.GRID_STYLE ||
       type === ConstToolType.MAP_STYLE ||
       type === ConstToolType.MAP_EDIT_STYLE ||
@@ -165,7 +165,7 @@ function menu(type, selectKey, params = {}) {
   const setData = function() {
     let buttons
     if (
-      GLOBAL.Type === constants.MAP_EDIT ||
+      GLOBAL.Type === ChunkType.MAP_EDIT ||
       type === ConstToolType.GRID_STYLE ||
       type === ConstToolType.MAP_STYLE ||
       type === ConstToolType.MAP_EDIT_STYLE ||

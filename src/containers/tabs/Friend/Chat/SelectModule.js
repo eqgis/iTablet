@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { ScrollView, FlatList } from 'react-native'
 import { Container } from '../../../../components'
 import TouchableItemView from '../TouchableItemView'
-import ConstModule from '../../../../constants/ConstModule'
 import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
 import { SMap } from 'imobile_for_reactnative'
-import { setCurrentMapModule } from '../../../../models/appConfig'
+import { setCurrentMapModule } from '../../../../redux/models/appConfig'
 
 class SelectModule extends Component {
   props: {
+    language: String,
     latestMap: Object,
     navigation: Object,
     appConfig: Object,
@@ -54,6 +54,9 @@ class SelectModule extends Component {
   }
 
   render() {
+    let data = this.props.appConfig.mapModules.map(item =>
+      item.chunk(this.props.language),
+    )
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -65,7 +68,7 @@ class SelectModule extends Component {
       >
         <ScrollView>
           <FlatList
-            data={ConstModule(this.props.appConfig.mapModules, global.language)}
+            data={data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
               if (
@@ -95,6 +98,7 @@ class SelectModule extends Component {
 }
 
 const mapStateToProps = state => ({
+  language: state.setting.toJS().language,
   latestMap: state.map.toJS().latestMap,
   appConfig: state.appConfig.toJS(),
 })

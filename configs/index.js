@@ -6,7 +6,6 @@ import MapCollectionConfig from './MapCollectionConfig'
 import MapNavigationConfig from './MapNavigationConfig'
 import MapPlottingConfig from './MapPlottingConfig'
 import MapThemeConfig from './MapThemeConfig'
-import TestConfig from './TestConfig'
 
 /** export顺序为首页模块显示顺序 **/
 export default [
@@ -18,5 +17,4 @@ export default [
   new MapThemeConfig(),
   new MapPlottingConfig(),
   new MapAnalystConfig(),
-  new TestConfig(),
 ]

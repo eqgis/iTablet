@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import MyColor from './MyColor'
-import { setUser } from '../../../../models/user'
-import { uploading } from '../../../../models/online'
+import { setUser } from '../../../../redux/models/user'
+import { uploading } from '../../../../redux/models/online'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

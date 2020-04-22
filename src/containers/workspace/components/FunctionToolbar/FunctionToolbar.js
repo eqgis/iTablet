@@ -6,12 +6,11 @@
 import * as React from 'react'
 import { View, Animated, FlatList, Dimensions } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { ConstToolType, Const } from '../../../../constants'
+import { ConstToolType, Const, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
 import styles from './styles'
 import { SMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
-import constants from '../../constants'
 import { Bar } from 'react-native-progress'
 import { getPublicAssets } from '../../../../assets'
 
@@ -89,7 +88,7 @@ export default class FunctionToolbar extends React.Component {
   }
 
   static defaultProps = {
-    type: constants.MAP_COLLECTION,
+    type: ChunkType.MAP_COLLECTION,
     hide: false,
     direction: 'column',
     separator: 20,
@@ -370,22 +369,6 @@ export default class FunctionToolbar extends React.Component {
     })
     const functionModules = currentMapModule.functionModules
 
-    // switch (type) {
-    //   case constants.MAP_AR:
-    //     //ar模块id是19004
-    //     isLicenseNotValid = !this.getLicenseValid(4)
-    //     break
-    //   case constants.MAP_PLOTTING:
-    //     isLicenseNotValid = !this.getLicenseValid(7)
-    //     break
-    //   case constants.MAP_NAVIGATION:
-    //     isLicenseNotValid = !this.getLicenseValid(5)
-    //     break
-    //   case constants.MAP_ANALYST:
-    //     isLicenseNotValid = !this.getLicenseValid(6)
-    //     break
-    // }
-
     let data = []
     functionModules.forEach(item => {
       switch (item.key) {
@@ -409,12 +392,12 @@ export default class FunctionToolbar extends React.Component {
           break
         case 'styleModule': {
           let styleAction = !isLicenseNotValid
-          if (type === constants.MAP_THEME && styleAction) {
+          if (type === ChunkType.MAP_THEME && styleAction) {
             styleAction = () => {
               let currentLayer = this.props.currentLayer
               if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
                 styleModule().action(ConstToolType.MAP_STYLE)
-              } else if (GLOBAL.Type === constants.MAP_THEME) {
+              } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
                 themeModule().actions.layerListAction(this.props.currentLayer)
               } else {
                 Toast.show(

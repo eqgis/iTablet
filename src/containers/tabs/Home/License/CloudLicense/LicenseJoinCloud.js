@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../../models/license'
+import { setLicenseInfo } from '../../../../../redux/models/license'
 import constants from '../../../../../../src/containers/workspace/constants'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'

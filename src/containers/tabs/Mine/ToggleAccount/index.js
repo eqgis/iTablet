@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import ToggleAccount from './ToggleAccount'
-import { setUser, deleteUser } from '../../../../models/user'
+import { setUser, deleteUser } from '../../../../redux/models/user'
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),

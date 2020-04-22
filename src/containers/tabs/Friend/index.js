@@ -15,9 +15,9 @@ import RecommendFriend from './RecommendFriend'
 import MsgConstant from './MsgConstant'
 import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
-import { openWorkspace, closeWorkspace } from '../../../models/map'
-import { setUser } from '../../../models/user'
-import { addChat, editChat, setConsumer } from '../../../models/chat'
+import { openWorkspace, closeWorkspace } from '../../../redux/models/map'
+import { setUser } from '../../../redux/models/user'
+import { addChat, editChat, setConsumer } from '../../../redux/models/chat'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

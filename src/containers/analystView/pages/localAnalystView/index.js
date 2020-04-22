@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import LocalAnalystView from './LocalAnalystView'
-import { getLayers } from '../../../../models/layers'
-import { setAnalystParams } from '../../../../models/analyst'
-import { getUdbAndDs } from '../../../../models/localData'
-import { closeMap } from '../../../../models/map'
+import { getLayers } from '../../../../redux/models/layers'
+import { setAnalystParams } from '../../../../redux/models/analyst'
+import { getUdbAndDs } from '../../../../redux/models/localData'
+import { closeMap } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

@@ -1,7 +1,10 @@
 import { connect } from 'react-redux'
 import PointAnalyst from './pointAnalyst'
-import { setMapNavigation, setNavigationChangeAR } from '../../models/setting'
-import { setMapSearchHistory } from '../../models/histories'
+import {
+  setMapNavigation,
+  setNavigationChangeAR,
+} from '../../redux/models/setting'
+import { setMapSearchHistory } from '../../redux/models/histories'
 
 const mapStateToProps = state => ({
   mapNavigation: state.setting.toJS().mapNavigation,

@@ -3,11 +3,15 @@ import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { color, size } from '../../../../styles'
 import { scaleSize, setSpText } from '../../../../utils'
+import { ChunkType } from '../../../../constants'
 import DefaultTabBar from './DefaultTabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import GroupTab from './GroupTab'
 import SymbolTab from './SymbolTab'
-import { setCurrentSymbol, setCurrentSymbols } from '../../../../models/symbol'
+import {
+  setCurrentSymbol,
+  setCurrentSymbols,
+} from '../../../../redux/models/symbol'
 import {
   setCurrentTemplateInfo,
   setCurrentPlotInfo,
@@ -15,15 +19,14 @@ import {
   getSymbolPlots,
   setCurrentTemplateList,
   setCurrentPlotList,
-} from '../../../../models/template'
-import { setEditLayer } from '../../../../models/layers'
+} from '../../../../redux/models/template'
+import { setEditLayer } from '../../../../redux/models/layers'
 import TemplateList from './TemplateList'
 import TemplateTab from './TemplateTab'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import PlotList from './PlotList'
 import PlotTab from './PlotTab'
-import constants from '../../constants'
 import PlotLibTab from './PlotLibTab'
 
 const mapStateToProps = state => ({
@@ -92,7 +95,7 @@ class SymbolTabs extends React.Component {
       this.props.symbol.currentSymbols.length === 0 && this.initSymbols()
     }
     if (
-      GLOBAL.Type === constants.MAP_PLOTTING &&
+      GLOBAL.Type === ChunkType.MAP_PLOTTING &&
       this.props.template.currentPlotList.length === 0
     ) {
       this.initPlotting()
@@ -417,7 +420,7 @@ class SymbolTabs extends React.Component {
   }
 
   render() {
-    if (GLOBAL.Type === constants.MAP_PLOTTING) {
+    if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
       return this.renderPlotTab()
     }
 

@@ -6,6 +6,7 @@ import {
   ConstPath,
   UserType,
   ToolbarType,
+  ChunkType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import {
@@ -50,7 +51,6 @@ import { themeModule } from '../../../workspace/components/ToolBar/modules'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
 import DataHandler from '../../../tabs/Mine/DataHandler'
-import constants from '../../../workspace/constants'
 /** 工具栏类型 **/
 const list = 'list'
 
@@ -136,7 +136,7 @@ export default class LayerManager_tolbar extends React.Component {
             boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
           } else {
             boxHeight =
-              GLOBAL.Type === constants.MAP_EDIT
+              GLOBAL.Type === ChunkType.MAP_EDIT
                 ? ConstToolType.TOOLBAR_HEIGHT[6]
                 : ConstToolType.TOOLBAR_HEIGHT[7]
           }
@@ -505,15 +505,18 @@ export default class LayerManager_tolbar extends React.Component {
       section.title ===
       getLanguage(global.language).Map_Layer.LAYERS_SET_VISIBLE_SCALE
     ) {
-      (async function(){
+      (async function() {
         let mapScale = await SMap.getMapScale()
-        ToolbarModule.addData({layerData:this.state.layerData,preScale:mapScale - 0})
+        ToolbarModule.addData({
+          layerData: this.state.layerData,
+          preScale: mapScale - 0,
+        })
         this.props.navigation.navigate('MapView')
         let _params = ToolbarModule.getParams()
         _params.showFullMap(true)
-        _params.setToolbarVisible(true,ConstToolType.MAP_LAYER_VISIBLE_SCALE,{
-          containerType:ToolbarType.multiPicker,
-          isFullScreen:false,
+        _params.setToolbarVisible(true, ConstToolType.MAP_LAYER_VISIBLE_SCALE, {
+          containerType: ToolbarType.multiPicker,
+          isFullScreen: false,
         })
       }.bind(this)())
     } else if (

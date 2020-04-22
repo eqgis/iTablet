@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../../models/license'
+import { setLicenseInfo } from '../../../../../redux/models/license'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
 import { SMap } from 'imobile_for_reactnative'

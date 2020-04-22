@@ -4,8 +4,8 @@ import {
   setEditLayer,
   setSelection,
   setAnalystLayer,
-} from '../../models/layers'
-import { setBufferSetting, setOverlaySetting } from '../../models/setting'
+} from '../../redux/models/layers'
+import { setBufferSetting, setOverlaySetting } from '../../redux/models/setting'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

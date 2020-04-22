@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { Platform } from 'react-native'
 import { Container, TableList, MTBtn } from '../../../../components'
 import { MapToolbar } from '../../../workspace/components'
-import constants from '../../../workspace/constants'
 import styles from './styles'
 import analystData from './analystData'
 import { setSpText } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import { ToolbarType } from '../../../../constants'
+import { ToolbarType, ChunkType } from '../../../../constants'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { SMediaCollector } from 'imobile_for_reactnative'
@@ -84,7 +83,7 @@ export default class AnalystTools extends Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        type={constants.MAP_ANALYST}
+        type={ChunkType.MAP_ANALYST}
       />
     )
   }

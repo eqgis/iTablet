@@ -5,16 +5,19 @@ import {
   setCurrentAttribute,
   refreshLayer3dList,
   setAttributes,
-} from '../../../../models/layers'
+} from '../../../../redux/models/layers'
 import {
   setLatestMap,
   exportmap3DWorkspace,
   importSceneWorkspace,
-} from '../../../../models/map'
-import { setNavBarDisplay } from '../../../../models/setting'
-import { setSharing } from '../../../../models/online'
-import { setBackAction, removeBackAction } from '../../../../models/backActions'
-import { setToolbarStatus } from '../../../../models/toolbarStatus'
+} from '../../../../redux/models/map'
+import { setNavBarDisplay } from '../../../../redux/models/setting'
+import { setSharing } from '../../../../redux/models/online'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../../../redux/models/backActions'
+import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

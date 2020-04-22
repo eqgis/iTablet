@@ -8,15 +8,13 @@ import {
   // NativeModules,
   // PermissionsAndroid,
 } from 'react-native'
-import { ConstPath } from '../../../../constants'
-import constants from '../../../../containers/workspace/constants'
-import ConstModule from '../../../../constants/ConstModule'
+import { ConstPath, ChunkType } from '../../../../constants'
 import { fixedSize, screen } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
 import FetchUtils from '../../../../utils/FetchUtils'
 import { SMap } from 'imobile_for_reactnative'
-import { downloadFile, deleteDownloadFile } from '../../../../models/down'
+import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
@@ -200,31 +198,6 @@ class ModuleList extends Component {
     }
     let fileName = getNameFromConfig(example)
 
-    // 默认数据
-    // if (!fileName) {
-    //   /** 服务器上解压出来的名字就是以下的fileName，不可改动，若需要改，则必须改为解压过后的文件名*/
-    //   if (moduleKey === constants.MAP_EDIT) {
-    //     fileName = language === 'CN' ? '湖南' : 'LosAngeles'
-    //   } else if (moduleKey === constants.MAP_THEME) {
-    //     fileName = language === 'CN' ? '湖北' : 'PrecipitationOfUSA'
-    //   } else if (moduleKey === constants.MAP_COLLECTION) {
-    //     fileName = '地理国情普查_示范数据'
-    //   } else if (moduleKey === constants.MAP_ANALYST) {
-    //     // fileName = 'Xiamen_CN'
-    //     fileName = '数据分析数据'
-    //   } else if (moduleKey === constants.MAP_3D) {
-    //     if (Platform.OS === 'android') {
-    //       fileName = 'OlympicGreen_android'
-    //     } else if (Platform.OS === 'ios') {
-    //       fileName = 'OlympicGreen_ios'
-    //     }
-    //   } else if (moduleKey === constants.MAP_PLOTTING) {
-    //     fileName = '福建_示范数据'
-    //   } else if (moduleKey === constants.MAP_NAVIGATION) {
-    //     fileName = 'Navigation_示范数据'
-    //   }
-    // }
-
     let tmpCurrentUser = this.props.currentUser
 
     let toPath = this.homePath + ConstPath.CachePath + fileName
@@ -282,7 +255,7 @@ class ModuleList extends Component {
         return
       }
 
-      if (item.key === constants.MAP_AR) {
+      if (item.key === ChunkType.MAP_AR) {
         this.props.setCurrentMapModule(index).then(() => {
           item.action && composeWaiting(item.action(tmpCurrentUser, latestMap))
         })
@@ -412,7 +385,9 @@ class ModuleList extends Component {
   }
 
   render() {
-    let data = ConstModule(this.props.mapModules, this.props.language)
+    let data = this.props.mapModules.map(item =>
+      item.getChunk(this.props.language),
+    )
     //模块个数为单数时高度处理
     let heightNum = data.length % 2 === 0 ? data.length : data.length + 1
     let height = (fixedSize(220) * heightNum) / 2
@@ -452,6 +427,7 @@ class ModuleList extends Component {
               numColumns={4}
               keyboardShouldPersistTaps={'always'}
               showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
             />
           </View>
         ) : (

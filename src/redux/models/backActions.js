@@ -3,7 +3,7 @@
  */
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import NavigationService from '../containers/NavigationService'
+import NavigationService from '../../containers/NavigationService'
 // Constants
 // --------------------------------------------------
 export const BACK_ACTION_SET = 'BACK_ACTION_SET'

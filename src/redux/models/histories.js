@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { ModelUtils } from '../utils'
+import { ModelUtils } from '../../utils'
 
 export const MAP_SEARCH_HISTORY = 'MAP_SEARCH_HISTORY'
 

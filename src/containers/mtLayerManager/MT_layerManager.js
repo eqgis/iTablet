@@ -7,7 +7,6 @@
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
 import { Container } from '../../components'
-import constants from '../workspace/constants'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import { SMap, ThemeType, SMediaCollector } from 'imobile_for_reactnative'
@@ -15,9 +14,9 @@ import { LayerManager_item, LayerManager_tolbar } from './components'
 import {
   ConstToolType,
   ConstPath,
-  getHeaderTitle,
   ConstOnline,
   UserType,
+  ChunkType,
 } from '../../constants'
 import { color, size } from '../../styles'
 import {
@@ -115,12 +114,12 @@ export default class MT_layerManager extends React.Component {
       let baseMap = []
       if (
         allLayers.length > 0 ||
-        (allLayers.length === 0 && GLOBAL.Type === constants.MAP_ANALYST)
+        (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
       ) {
         if (
           (allLayers.length > 0 &&
             !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1])) ||
-          (allLayers.length === 0 && GLOBAL.Type === constants.MAP_ANALYST)
+          (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
         ) {
           baseMap = [
             {
@@ -139,7 +138,7 @@ export default class MT_layerManager extends React.Component {
       } else if (allLayers.length === 0) {
         await SMap.openDatasource(
           ConstOnline.Google.DSParams,
-          GLOBAL.Type === constants.MAP_COLLECTION
+          GLOBAL.Type === ChunkType.MAP_COLLECTION
             ? 1
             : ConstOnline.Google.layerIndex,
           false,
@@ -287,7 +286,7 @@ export default class MT_layerManager extends React.Component {
 
   onPressRow = async ({ data, parentData, section }) => {
     // this.props.setMapLegend(false)
-    if (GLOBAL.Type === constants.MAP_EDIT) return
+    if (GLOBAL.Type === ChunkType.MAP_EDIT) return
     this.props.setCurrentLayer &&
       this.props.setCurrentLayer(data, () => {
         // 切换地图，清除历史记录
@@ -297,9 +296,9 @@ export default class MT_layerManager extends React.Component {
           this.props.clearAttributeHistory && this.props.clearAttributeHistory()
         }
         if (
-          GLOBAL.Type !== constants.MAP_EDIT &&
-          GLOBAL.Type !== constants.MAP_THEME &&
-          GLOBAL.Type !== constants.MAP_ANALYST
+          GLOBAL.Type !== ChunkType.MAP_EDIT &&
+          GLOBAL.Type !== ChunkType.MAP_THEME &&
+          GLOBAL.Type !== ChunkType.MAP_ANALYST
         ) {
           return
         }
@@ -308,7 +307,7 @@ export default class MT_layerManager extends React.Component {
           // this.mapEdit(data)
           styleModule().actions.layerListAction &&
             styleModule().actions.layerListAction(data)
-        } else if (GLOBAL.Type === constants.MAP_THEME) {
+        } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
           // this.mapTheme(data)
           themeModule().actions.layerListAction &&
             themeModule().actions.layerListAction(data)
@@ -374,7 +373,7 @@ export default class MT_layerManager extends React.Component {
           this.itemRefs[parent.name].setChildrenList(children)
       }
     }
-    if (GLOBAL.Type === constants.MAP_THEME) {
+    if (GLOBAL.Type === ChunkType.MAP_THEME) {
       let themeType
       switch (data.themeType) {
         case ThemeType.UNIQUE:
@@ -405,8 +404,8 @@ export default class MT_layerManager extends React.Component {
         resetToolModuleData: true,
       })
     } else if (
-      GLOBAL.Type === constants.MAP_EDIT ||
-      GLOBAL.Type === constants.MAP_ANALYST
+      GLOBAL.Type === ChunkType.MAP_EDIT ||
+      GLOBAL.Type === ChunkType.MAP_ANALYST
     ) {
       this.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
         height: isGroup
@@ -417,7 +416,7 @@ export default class MT_layerManager extends React.Component {
         resetToolModuleData: true,
       })
     } else if (
-      GLOBAL.Type === constants.MAP_PLOTTING &&
+      GLOBAL.Type === ChunkType.MAP_PLOTTING &&
       data.name.substring(0, 9) === 'PlotEdit_'
     ) {
       this.toolBox.setVisible(true, ConstToolType.PLOTTING, {
@@ -428,7 +427,7 @@ export default class MT_layerManager extends React.Component {
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
       })
-    } else if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+    } else if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
       this.toolBox.setVisible(true, ConstToolType.MAP_NAVIGATION, {
         height: isGroup
           ? ConstToolType.TOOLBAR_HEIGHT[3]
@@ -1014,7 +1013,9 @@ export default class MT_layerManager extends React.Component {
         headerProps={{
           title:
             this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            getHeaderTitle(GLOBAL.Type),
+            this.props.appConfig.mapModules[
+              this.props.appConfig.currentMapModule
+            ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

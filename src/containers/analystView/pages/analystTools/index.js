@@ -1,8 +1,11 @@
 import { connect } from 'react-redux'
 import AnalystTools from './AnalystTools'
-import { setBackAction, removeBackAction } from '../../../../models/backActions'
-import { setMapLegend } from '../../../../models/setting'
-import { closeMap } from '../../../../models/map'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../../../redux/models/backActions'
+import { setMapLegend } from '../../../../redux/models/setting'
+import { closeMap } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

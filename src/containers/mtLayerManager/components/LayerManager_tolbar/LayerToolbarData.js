@@ -1,7 +1,7 @@
 import { DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { getPublicAssets } from '../../../../assets'
-import constants from '../../../workspace/constants'
+import { ChunkType } from '../../../../constants'
 
 function getGroupData(language) {
   return [
@@ -95,7 +95,7 @@ function layersetting(language, isGroup = false) {
       // },
     ]
   }
-  if (GLOBAL.Type === constants.MAP_EDIT) {
+  if (GLOBAL.Type === ChunkType.MAP_EDIT) {
     data.splice(3, 1)
   }
   return [
@@ -576,7 +576,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
             layerData.type === DatasetType.IMAGE ||
             layerData.type === DatasetType.MBImage ||
             layerData.type === DatasetType.TEXT ||
-            GLOBAL.Type === constants.MAP_PLOTTING))
+            GLOBAL.Type === ChunkType.MAP_PLOTTING))
       ) {
         data.splice(3, 1) // 若当前图层为CAD或者TEXT，则没有'当前图层采集'选项
       }
@@ -621,7 +621,6 @@ const mscaleData = [
     ],
   },
 ]
-
 
 export {
   layersetting,

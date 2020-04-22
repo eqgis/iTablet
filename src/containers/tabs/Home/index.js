@@ -1,17 +1,20 @@
 import { connect } from 'react-redux'
 import Home from './Home'
-import { setShow } from '../../../models/device'
-import { setLanguage } from '../../../models/setting'
+import { setShow } from '../../../redux/models/device'
+import { setLanguage } from '../../../redux/models/setting'
 import {
   importSceneWorkspace,
   openWorkspace,
   closeWorkspace,
-} from '../../../models/map'
-import { setDownInformation } from '../../../models/down'
-import { importWorkspace } from '../../../models/template'
-import { setUser } from '../../../models/user'
-import { setBackAction, removeBackAction } from '../../../models/backActions'
-import { setCurrentMapModule } from '../../../models/appConfig'
+} from '../../../redux/models/map'
+import { setDownInformation } from '../../../redux/models/down'
+import { importWorkspace } from '../../../redux/models/template'
+import { setUser } from '../../../redux/models/user'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../../redux/models/backActions'
+import { setCurrentMapModule } from '../../../redux/models/appConfig'
 import AboutITablet from './AboutITablet'
 import Setting from './Setting'
 

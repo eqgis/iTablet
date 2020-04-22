@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { screen } from '../utils'
+import { screen } from '../../utils'
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'

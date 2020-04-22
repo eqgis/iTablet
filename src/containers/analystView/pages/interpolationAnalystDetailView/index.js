@@ -3,7 +3,7 @@
  */
 import { connect } from 'react-redux'
 import InterpolationAnalystDetailView from './InterpolationAnalystDetailView'
-import { getLayers } from '../../../../models/layers'
+import { getLayers } from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

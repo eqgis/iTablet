@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, MTBtn } from '../../../../components'
+import { ChunkType } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
-import constants from '../../../workspace/constants'
 import styles from './styles'
 import analystData from './ARMapData'
 import { getLanguage } from '../../../../language'
@@ -57,7 +57,7 @@ export default class ARMap extends Component {
   }
 
   _onArObjectClick = data => {
-    if (GLOBAL.Type === constants.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
       // let params = {
       //   ID: data.id,
       //   Name: data.name,
@@ -78,7 +78,7 @@ export default class ARMap extends Component {
 
   renderToolBar = () => {
     return (
-      <MapToolbar navigation={this.props.navigation} type={constants.MAP_AR} />
+      <MapToolbar navigation={this.props.navigation} type={ChunkType.MAP_AR} />
     )
   }
 

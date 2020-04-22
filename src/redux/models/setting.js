@@ -3,9 +3,9 @@ import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { DatasetType, SMap, SLanguage } from 'imobile_for_reactnative'
 import { NativeModules } from 'react-native'
-import { getMapSettings } from '../containers/mapSetting/settingData'
-import { ModelUtils } from '../utils'
-import constants from '../containers/workspace/constants'
+import { getMapSettings } from '../../containers/mapSetting/settingData'
+import { ModelUtils } from '../../utils'
+import { ChunkType } from '../../constants'
 
 const { AppUtils } = NativeModules
 // Constants
@@ -244,7 +244,7 @@ const initialState = fromJS({
   autoLanguage: true,
   peripheralDevice: 'local',
   mapLegend: {
-    [constants.MAP_EDIT]: {
+    [ChunkType.MAP_EDIT]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -254,7 +254,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_THEME]: {
+    [ChunkType.MAP_THEME]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -264,7 +264,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_PLOTTING]: {
+    [ChunkType.MAP_PLOTTING]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -274,7 +274,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_NAVIGATION]: {
+    [ChunkType.MAP_NAVIGATION]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -284,7 +284,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_ANALYST]: {
+    [ChunkType.MAP_ANALYST]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -294,7 +294,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_COLLECTION]: {
+    [ChunkType.MAP_COLLECTION]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -304,7 +304,7 @@ const initialState = fromJS({
       imagePercent: 50,
       legendPosition: 'topLeft',
     },
-    [constants.MAP_AR]: {
+    [ChunkType.MAP_AR]: {
       isShow: false,
       backgroundColor: 'white',
       column: 2,
@@ -405,7 +405,7 @@ export default handleActions(
         data = payload
       } else {
         data = {
-          [constants.MAP_EDIT]: {
+          [ChunkType.MAP_EDIT]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -415,7 +415,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_THEME]: {
+          [ChunkType.MAP_THEME]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -425,7 +425,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_PLOTTING]: {
+          [ChunkType.MAP_PLOTTING]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -435,7 +435,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_NAVIGATION]: {
+          [ChunkType.MAP_NAVIGATION]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -445,7 +445,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_ANALYST]: {
+          [ChunkType.MAP_ANALYST]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -455,7 +455,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_COLLECTION]: {
+          [ChunkType.MAP_COLLECTION]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,
@@ -465,7 +465,7 @@ export default handleActions(
             imagePercent: 50,
             legendPosition: 'topLeft',
           },
-          [constants.MAP_AR]: {
+          [ChunkType.MAP_AR]: {
             isShow: false,
             backgroundColor: 'white',
             column: 2,

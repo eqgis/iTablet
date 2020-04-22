@@ -5,6 +5,7 @@ import {
   TouchType,
   Const,
   ToolbarType,
+  ChunkType,
 } from '../../../../constants'
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
@@ -13,7 +14,6 @@ import ToolbarHeight from './modules/ToolBarHeight'
 import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
-import constants from '../../constants'
 import styles from './styles'
 import {
   ToolbarMenuDialog,
@@ -562,7 +562,7 @@ export default class ToolBar extends React.PureComponent {
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
     let newState = { data: [] }
-    if (GLOBAL.Type === constants.MAP_EDIT) {
+    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''
     }
@@ -724,7 +724,7 @@ export default class ToolBar extends React.PureComponent {
       this.contentView &&
         this.contentView.changeHeight(this.isBoxShow ? 0 : this.height)
       this.isBoxShow = !this.isBoxShow
-      if (GLOBAL.Type === constants.MAP_EDIT) {
+      if (GLOBAL.Type === ChunkType.MAP_EDIT) {
         if (
           GLOBAL.MapToolType &&
           (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_EDIT) !==
@@ -831,7 +831,7 @@ export default class ToolBar extends React.PureComponent {
     // if (this.state.type === ConstToolType.MAP_BASE) {
     //   this.props.getLayers()
     // }
-    if (GLOBAL.Type === constants.MAP_EDIT) {
+    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       // GLOBAL.showFlex = true
       this.setState({ selectKey: '' })

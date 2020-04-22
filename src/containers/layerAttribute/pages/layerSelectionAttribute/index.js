@@ -6,7 +6,7 @@ import {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
-} from '../../../../models/layers'
+} from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

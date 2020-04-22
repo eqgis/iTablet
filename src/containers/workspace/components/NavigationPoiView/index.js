@@ -3,7 +3,7 @@ import NavigationPoiView from './NavigationPoiView'
 import {
   setMapNavigation,
   setNavigationPoiView,
-} from '../../../../models/setting'
+} from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
   mapNavigation: state.setting.toJS().mapNavigation,

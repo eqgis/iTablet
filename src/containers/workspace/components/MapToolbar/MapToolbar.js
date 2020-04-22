@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
-import constants from '../../constants'
+import { ChunkType } from '../../../../constants'
 import PropTypes from 'prop-types'
 import NavigationService from '../../../../containers/NavigationService'
 import MT_Btn from '../../../../components/mapTools/MT_Btn'
@@ -26,7 +26,7 @@ export default class MapToolbar extends React.Component {
   }
 
   static defaultProps = {
-    type: constants.MAP_COLLECTION,
+    type: ChunkType.MAP_COLLECTION,
     hidden: false,
     editLayer: {},
     initIndex: -1,
@@ -67,7 +67,7 @@ export default class MapToolbar extends React.Component {
           list.push({
             key: 'MapView',
             title:
-              type === constants.MAP_AR
+              type === ChunkType.MAP_AR
                 ? getLanguage(global.language).Map_Label.ARMAP
                 : getLanguage(global.language).Map_Label.MAP,
             //'地图',
@@ -180,18 +180,18 @@ export default class MapToolbar extends React.Component {
     }
 
     // switch (type) {
-    //   case constants.MAP_EDIT:
-    //   case constants.MAP_PLOTTING:
-    //   case constants.MAP_COLLECTION:
-    //   case constants.MAP_THEME:
-    //   case constants.MAP_ANALYST:
-    //   case constants.MAP_NAVIGATION:
-    //   case constants.MAP_AR:
+    //   case ChunkType.MAP_EDIT:
+    //   case ChunkType.MAP_PLOTTING:
+    //   case ChunkType.MAP_COLLECTION:
+    //   case ChunkType.MAP_THEME:
+    //   case ChunkType.MAP_ANALYST:
+    //   case ChunkType.MAP_NAVIGATION:
+    //   case ChunkType.MAP_AR:
     //     list = [
     //       {
     //         key: 'MapView',
     //         title:
-    //           type === constants.MAP_AR
+    //           type === ChunkType.MAP_AR
     //             ? getLanguage(global.language).Map_Label.ARMAP
     //             : getLanguage(global.language).Map_Label.MAP,
     //         //'地图',
@@ -237,7 +237,7 @@ export default class MapToolbar extends React.Component {
     //       },
     //     ]
     //     break
-    //   // case constants.MAP_ANALYST:
+    //   // case ChunkType.MAP_ANALYST:
     //   //   list = [
     //   //     {
     //   //       key: 'MapAnalystView',
@@ -271,7 +271,7 @@ export default class MapToolbar extends React.Component {
     //   //     },
     //   //   ]
     //   //   break
-    //   case constants.MAP_3D:
+    //   case ChunkType.MAP_3D:
     //     list = [
     //       {
     //         key: 'scene',
@@ -331,12 +331,12 @@ export default class MapToolbar extends React.Component {
     //       },
     //     ]
     //     break
-    //   // case constants.MAP_NAVIGATION:
+    //   // case ChunkType.MAP_NAVIGATION:
     //   //   list = [
     //   //     {
     //   //       key: 'MapView',
     //   //       title:
-    //   //         type === constants.MAP_AR
+    //   //         type === ChunkType.MAP_AR
     //   //           ? getLanguage(global.language).Map_Label.ARMAP
     //   //           : getLanguage(global.language).Map_Label.MAP,
     //   //       //'地图',
@@ -389,7 +389,7 @@ export default class MapToolbar extends React.Component {
   }
 
   _map3Dchange = () => {
-    NavigationService.navigate('WorkspaceFileList', { type: constants.MAP_3D })
+    NavigationService.navigate('WorkspaceFileList', { type: ChunkType.MAP_3D })
   }
 
   _renderItem = ({ item, index }) => {

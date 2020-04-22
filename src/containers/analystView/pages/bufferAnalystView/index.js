@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import BufferAnalystView from './BufferAnalystView'
-import { getLayers } from '../../../../models/layers'
+import { getLayers } from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

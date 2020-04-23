@@ -33,6 +33,9 @@ import {
   mapBackGroundColor,
 } from './ColorList'
 
+import AppTabs from './AppTabs'
+import MapTabs from './MapTabs'
+
 export {
   ConstPath,
   ConstOnline,
@@ -63,4 +66,6 @@ export {
   ToolbarType,
   Height,
   ChunkType,
+  AppTabs,
+  MapTabs,
 }

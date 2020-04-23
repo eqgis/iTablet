@@ -1,4 +1,4 @@
-import mapModules from './configs'
+import { mapModules, tabModules } from './configs'
 
 export default {
   name: 'SuperMap iTablet',
@@ -10,7 +10,8 @@ export default {
     url: ''
   },
   login: ['Online', 'iPortal'],
-  tabModules: ['Home', 'Friend', 'Find', 'Mine'],
+  // tabModules: ['Friend', 'Home', 'Find', 'Mine'],
+  tabModules: tabModules,
   mapModules: mapModules,
   mineModules: [
     {key: 'IMPORT'},

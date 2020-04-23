@@ -1966,24 +1966,6 @@ export default class MapView extends React.Component {
         setMap2Dto3D={this.props.setMap2Dto3D}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.appConfig.mapModules}
-        save={() => {
-          //this.saveMapWithNoWorkspace()
-        }}
-        saveAs={() => {
-          //弹出保存框
-          //this.saveXMLDialog.setDialogVisible(true)
-        }}
-        closeOneMap={() => {
-          //弹出关闭选项
-          //SMap.isModified().then(result =>{
-          //  if(result){
-          //    if(this.mapType === 'LOAD')
-          //      this.AlertDialog.setDialogVisible(true)
-          //    else
-          //      this.saveMapDialog.setDialogVisible(true)
-          //  }
-          //})
-        }}
       />
     )
   }

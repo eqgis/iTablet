@@ -38,35 +38,43 @@ import Friend, {
   GroupMemberList,
   SelectFriend,
 } from './Friend'
+import { AppTabs } from '../../constants'
 
 const Tabs = function(arr) {
-  const tabs = {}
+  const tabs = {
+    Home: {
+      screen: Home,
+    },
+  }
   for (let i = 0; i < arr.length; i++) {
     switch (arr[i]) {
-      case 'Home':
-        tabs.Home = {
-          screen: Home,
-        }
-        break
-      case 'Friend':
+      case AppTabs.Friend:
         tabs.Friend = {
           screen: Friend,
         }
         break
-      case 'Find':
+      case AppTabs.Find:
         tabs.Find = {
           screen: Find,
         }
         break
-      case 'Mine':
+      case AppTabs.Mine:
         tabs.Mine = {
           screen: Mine,
         }
         break
+      default:
+        if (arr[i] && arr[i].Screen) {
+          tabs[arr[i].key] = {
+            screen: arr[i].Screen,
+          }
+        }
     }
   }
   return createBottomTabNavigator(tabs, {
-    tabBarComponent: () => { return null},
+    tabBarComponent: () => {
+      return null
+    },
     animationEnabled: false, // 切换页面时是否有动画效果
     tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
     swipeEnabled: false, // 是否可以左右滑动切换tab

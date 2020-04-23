@@ -1,11 +1,12 @@
 import { Platform } from 'react-native'
-import { ConstPath, ChunkType } from '../src/constants'
-import { getLanguage } from '../src/language'
-import { getThemeAssets } from '../src/assets'
-import { Module } from '../src/class'
-import { FileTools } from '../src/native'
-import NavigationService from '../src/containers/NavigationService'
+import { ConstPath, ChunkType } from '../../src/constants'
+import { getLanguage } from '../../src/language'
+import { getThemeAssets } from '../../src/assets'
+import { Module } from '../../src/class'
+import { FileTools } from '../../src/native'
+import NavigationService from '../../src/containers/NavigationService'
 import { SMap } from 'imobile_for_reactnative'
+import mapTabModules from '../mapTabModules'
 
 export default class Map3DConfig extends Module {
   constructor (props) {
@@ -25,7 +26,7 @@ export default class Map3DConfig extends Module {
       {key: 'tool3DModule', type: 'MAP3D_TOOL'},
       {key: 'shareModule', type: 'MAP_SHARE_MAP3D'},
     ]
-    this.tabModules = ['Scene', 'Layer3D', 'Attribute3D', 'Settings3D']
+    this.tabModules = [mapTabModules.Scene, mapTabModules.Layer3D, mapTabModules.Attribute3D, mapTabModules.Settings3D]
   }
 
   getChunk = language => {

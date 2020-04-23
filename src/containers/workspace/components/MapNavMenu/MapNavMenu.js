@@ -127,24 +127,22 @@ export default class MapNavMenu extends React.Component {
     const tabModules = this.props.appConfig.mapModules[
       this.props.appConfig.currentMapModule
     ].tabModules
+    list.push({
+      key: 'MapView',
+      title:
+        type === ChunkType.MAP_AR
+          ? getLanguage(global.language).Map_Label.ARMAP
+          : getLanguage(global.language).Map_Label.MAP,
+      //'地图',
+      image: getThemeAssets().tabBar.tab_map,
+      selectedImage: getThemeAssets().tabBar.tab_map_selected,
+      btnClick: () => {
+        this.props.navigation &&
+          this.props.navigation.navigate('MapView', { type })
+      },
+    })
     for (let i = 0; i < tabModules.length; i++) {
       switch (tabModules[i]) {
-        case 'Map':
-          list.push({
-            key: 'MapView',
-            title:
-              type === ChunkType.MAP_AR
-                ? getLanguage(global.language).Map_Label.ARMAP
-                : getLanguage(global.language).Map_Label.MAP,
-            //'地图',
-            image: getThemeAssets().tabBar.tab_map,
-            selectedImage: getThemeAssets().tabBar.tab_map_selected,
-            btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate('MapView', { type })
-            },
-          })
-          break
         case 'Layer':
           list.push({
             key: 'LayerManager',

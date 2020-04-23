@@ -1,7 +1,8 @@
-import { ConstOnline, ChunkType } from '../src/constants'
-import { getLanguage } from '../src/language'
-import { getThemeAssets } from '../src/assets'
-import { Module } from '../src/class'
+import { ConstOnline, ChunkType } from '../../src/constants'
+import { getLanguage } from '../../src/language'
+import { getThemeAssets } from '../../src/assets'
+import { Module } from '../../src/class'
+import mapTabModules from '../mapTabModules'
 
 export default class MapCollectionConfig extends Module {
   constructor (props) {
@@ -22,7 +23,7 @@ export default class MapCollectionConfig extends Module {
       {key: 'toolModule', type: 'MAP_TOOLS'},
       {key: 'shareModule', type: 'MAP_SHARE'},
     ]
-    this.tabModules = ['Map', 'Layer', 'Attribute', 'Settings']
+    this.tabModules = [mapTabModules.MapView, mapTabModules.Layer, mapTabModules.Attribute, mapTabModules.Settings]
   }
 
   getChunk = language => {

@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation'
 // eslint-disable-next-line
-import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
+// import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
 // 主页
 import MapLoad from './mapLoad'
 
@@ -136,7 +136,7 @@ import CastModelOperateView from './arCastModelOperateView'
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
-import CreateNavDataPage from "./CreateNavDataPage"
+import CreateNavDataPage from './CreateNavDataPage'
 import ChooseTaggingLayer from './ChooseTaggingLayer'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
@@ -1035,7 +1035,7 @@ export default function(appConfig) {
           header: null,
         },
       },
-      CreateNavDataPage:{
+      CreateNavDataPage: {
         screen: CreateNavDataPage,
         navigationOptions: {
           header: null,

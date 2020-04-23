@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { getThemeAssets } from '../../assets'
 import TabItem from './TabItem'
 import InformSpot from './Friend/InformSpot'
+import { getLanguage } from '../../language'
 
 class TabBar extends React.Component {
   static propTypes = {
@@ -25,51 +26,83 @@ class TabBar extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.language !== prevProps.language) {
+      this.setState({
+        data: this.getToolbar(),
+      })
+    }
+  }
+
   getToolbar = () => {
-    let list = []
+    let list = [
+      {
+        key: 'Home',
+        title: getLanguage(this.props.language).Navigator_Label.HOME,
+        image: getThemeAssets().tabBar.tab_home,
+        selectedImage: getThemeAssets().tabBar.tab_home_selected,
+        btnClick: () => {
+          this.props.navigation && this.props.navigation.navigate('Home')
+        },
+      },
+    ]
     const tabModules = this.props.appConfig.tabModules
+    let btnClick = function(key) {
+      this.props.navigation && this.props.navigation.navigate(key)
+    }.bind(this)
     for (let i = 0; i < tabModules.length; i++) {
       switch (tabModules[i]) {
-        case 'Home':
-          list.push({
-            key: 'Home',
-            image: getThemeAssets().tabBar.tab_home,
-            selectedImage: getThemeAssets().tabBar.tab_home_selected,
-            btnClick: () => {
-              this.props.navigation && this.props.navigation.navigate('Home')
-            },
-          })
-          break
+        // case 'Home':
+        //   list.push({
+        //     key: 'Home',
+        //     image: getThemeAssets().tabBar.tab_home,
+        //     selectedImage: getThemeAssets().tabBar.tab_home_selected,
+        //     btnClick: () => {
+        //       this.props.navigation && this.props.navigation.navigate('Home')
+        //     },
+        //   })
+        //   break
         case 'Friend':
           list.push({
             key: 'Friend',
+            title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
             image: getThemeAssets().tabBar.tab_friend,
             selectedImage: getThemeAssets().tabBar.tab_friend_selected,
-            btnClick: () => {
-              this.props.navigation && this.props.navigation.navigate('Friend')
-            },
+            btnClick: () => btnClick(tabModules[i]),
           })
           break
         case 'Find':
           list.push({
             key: 'Find',
+            title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
             image: getThemeAssets().tabBar.tab_discover,
             selectedImage: getThemeAssets().tabBar.tab_discover_selected,
-            btnClick: () => {
-              this.props.navigation && this.props.navigation.navigate('Find')
-            },
+            btnClick: () => btnClick(tabModules[i]),
           })
           break
         case 'Mine':
           list.push({
             key: 'Mine',
+            title: getLanguage(this.props.language).Navigator_Label.PROFILE,
             image: getThemeAssets().tabBar.tab_mine,
             selectedImage: getThemeAssets().tabBar.tab_mine_selected,
-            btnClick: () => {
-              this.props.navigation && this.props.navigation.navigate('Mine')
-            },
+            btnClick: () => btnClick(tabModules[i]),
           })
           break
+        default:
+          if (
+            tabModules[i] instanceof Object &&
+            tabModules[i].key &&
+            tabModules[i].Screen
+          ) {
+            list.push({
+              key: tabModules[i].key,
+              title: tabModules[i].getTitle(this.props.language),
+              image: tabModules[i].image,
+              selectedImage: tabModules[i].selectedImage,
+              btnClick: () => btnClick(tabModules[i].key),
+            })
+          }
       }
     }
     return list

@@ -1,9 +1,10 @@
-import { ConstOnline, ChunkType } from '../src/constants'
-import { getLanguage } from '../src/language'
-import { getThemeAssets } from '../src/assets'
-import { Module } from '../src/class'
-import Toast from '../src/utils/Toast'
+import { ConstOnline, ChunkType } from '../../src/constants'
+import { getLanguage } from '../../src/language'
+import { getThemeAssets } from '../../src/assets'
+import { Module } from '../../src/class'
+import Toast from '../../src/utils/Toast'
 import { SAIDetectView } from 'imobile_for_reactnative'
+import mapTabModules from '../mapTabModules'
 
 export default class MapARConfig extends Module {
   constructor (props) {
@@ -16,7 +17,7 @@ export default class MapARConfig extends Module {
       {key: 'styleModule', type: 'MAP_STYLE'},
       {key: 'arAIAssistant', type: 'MAP_AR_AI_ASSISTANT'},
     ]
-    this.tabModules = ['Map', 'Layer', 'Attribute', 'Settings']
+    this.tabModules = [mapTabModules.MapView, mapTabModules.Layer, mapTabModules.Attribute, mapTabModules.Settings]
   }
 
   getChunk = language => {

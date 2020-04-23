@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
-import { ChunkType } from '../../../../constants'
+import { ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
 import MT_Btn from '../../../../components/mapTools/MT_Btn'
 import { getLanguage } from '../../../../language/index'
@@ -58,7 +58,7 @@ export default class MapToolbar extends React.Component {
       this.props.appConfig.currentMapModule
     ].tabModules
     list.push({
-      key: 'MapView',
+      key: MapTabs.MapView,
       title:
         type === ChunkType.MAP_AR
           ? getLanguage(global.language).Map_Label.ARMAP
@@ -73,7 +73,7 @@ export default class MapToolbar extends React.Component {
     })
     for (let i = 0; i < tabModules.length; i++) {
       switch (tabModules[i]) {
-        case 'Layer':
+        case MapTabs.Layer:
           list.push({
             key: 'LayerManager',
             title: getLanguage(global.language).Map_Label.LAYER,
@@ -86,7 +86,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Attribute':
+        case MapTabs.Attribute:
           list.push({
             key: 'LayerAttribute',
             title: getLanguage(global.language).Map_Label.ATTRIBUTE,
@@ -99,7 +99,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Settings':
+        case MapTabs.Settings:
           list.push({
             key: 'MapSetting',
             title: getLanguage(global.language).Map_Label.SETTING,
@@ -112,7 +112,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Scene':
+        case MapTabs.Scene:
           list.push({
             key: 'scene',
             title: getLanguage(global.language).Map_Label.SCENE,
@@ -127,7 +127,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Layer3D':
+        case MapTabs.Layer3D:
           list.push({
             key: 'Layer3DManager',
             title: getLanguage(global.language).Map_Label.LAYER,
@@ -142,7 +142,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Attribute3D':
+        case MapTabs.Attribute3D:
           list.push({
             key: 'LayerAttribute3D',
             title: getLanguage(global.language).Map_Label.ATTRIBUTE,
@@ -157,7 +157,7 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case 'Settings3D':
+        case MapTabs.Settings3D:
           list.push({
             key: 'Setting',
             title: getLanguage(global.language).Map_Label.SETTING,

@@ -1,7 +1,7 @@
 /**
  * 功能模块基础类
  */
-import { Chunk } from '.'
+import Chunk from './Chunk'
 export default class Module {
   constructor(props) {
     if (props) {

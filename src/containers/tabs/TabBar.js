@@ -7,6 +7,7 @@ import { getThemeAssets } from '../../assets'
 import TabItem from './TabItem'
 import InformSpot from './Friend/InformSpot'
 import { getLanguage } from '../../language'
+import { AppTabs } from '../../constants'
 
 class TabBar extends React.Component {
   static propTypes = {
@@ -37,7 +38,7 @@ class TabBar extends React.Component {
   getToolbar = () => {
     let list = [
       {
-        key: 'Home',
+        key: AppTabs.Home,
         title: getLanguage(this.props.language).Navigator_Label.HOME,
         image: getThemeAssets().tabBar.tab_home,
         selectedImage: getThemeAssets().tabBar.tab_home_selected,
@@ -62,7 +63,7 @@ class TabBar extends React.Component {
         //     },
         //   })
         //   break
-        case 'Friend':
+        case AppTabs.Friend:
           list.push({
             key: 'Friend',
             title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
@@ -71,7 +72,7 @@ class TabBar extends React.Component {
             btnClick: () => btnClick(tabModules[i]),
           })
           break
-        case 'Find':
+        case AppTabs.Find:
           list.push({
             key: 'Find',
             title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
@@ -80,7 +81,7 @@ class TabBar extends React.Component {
             btnClick: () => btnClick(tabModules[i]),
           })
           break
-        case 'Mine':
+        case AppTabs.Mine:
           list.push({
             key: 'Mine',
             title: getLanguage(this.props.language).Navigator_Label.PROFILE,

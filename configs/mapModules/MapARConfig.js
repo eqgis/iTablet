@@ -17,7 +17,7 @@ export default class MapARConfig extends Module {
       {key: 'styleModule', type: 'MAP_STYLE'},
       {key: 'arAIAssistant', type: 'MAP_AR_AI_ASSISTANT'},
     ]
-    this.tabModules = [mapTabModules.MapView, mapTabModules.Layer, mapTabModules.Attribute, mapTabModules.Settings]
+    this.tabModules = [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
   }
 
   getChunk = language => {

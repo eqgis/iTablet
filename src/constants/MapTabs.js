@@ -1,20 +1,20 @@
 /** Map预留Tab名称 **/
 const MapView = 'MapView' // 地图
-const Layer = 'Layer' // 图层管理
-const Attribute = 'Attribute' // 属性
-const Settings = 'Settings' // 设置
+const LayerManager = 'LayerManager' // 图层管理
+const LayerAttribute = 'LayerAttribute' // 属性
+const MapSetting = 'MapSetting' // 设置
 const Scene = 'Scene' // 我的
-const Layer3D = 'Layer3D' // 三维图层管理
-const Attribute3D = 'Attribute3D' // 三维属性
-const Settings3D = 'Settings3D' // 三维我的
+const Layer3DManager = 'Layer3DManager' // 三维图层管理
+const LayerLayerAttribute3D = 'LayerLayerAttribute3D' // 三维属性
+const Map3DSetting = 'Map3DSetting' // 三维我的
 
 export default {
   MapView,
-  Layer,
-  Attribute,
-  Settings,
+  LayerManager,
+  LayerAttribute,
+  MapSetting,
   Scene,
-  Layer3D,
-  Attribute3D,
-  Settings3D,
+  Layer3DManager,
+  LayerLayerAttribute3D,
+  Map3DSetting,
 }

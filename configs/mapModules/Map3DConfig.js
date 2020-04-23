@@ -26,7 +26,7 @@ export default class Map3DConfig extends Module {
       {key: 'tool3DModule', type: 'MAP3D_TOOL'},
       {key: 'shareModule', type: 'MAP_SHARE_MAP3D'},
     ]
-    this.tabModules = [mapTabModules.Scene, mapTabModules.Layer3D, mapTabModules.Attribute3D, mapTabModules.Settings3D]
+    this.tabModules = [mapTabModules.Scene, mapTabModules.Layer3DManager, mapTabModules.LayerAttribute3D, mapTabModules.Map3DSetting]
   }
 
   getChunk = language => {

@@ -23,7 +23,7 @@ export default class MapCollectionConfig extends Module {
       {key: 'toolModule', type: 'MAP_TOOLS'},
       {key: 'shareModule', type: 'MAP_SHARE'},
     ]
-    this.tabModules = [mapTabModules.MapView, mapTabModules.Layer, mapTabModules.Attribute, mapTabModules.Settings]
+    this.tabModules = [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.Settings]
   }
 
   getChunk = language => {

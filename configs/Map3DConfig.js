@@ -10,7 +10,7 @@ import { SMap } from 'imobile_for_reactnative'
 export default class Map3DConfig extends Module {
   constructor (props) {
     super(props)
-    this.key = ChunkType.MAP_ANALYST
+    this.key = ChunkType.MAP_3D
     this.example = {
       checkUrl: 'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=',
       name_ios: 'OlympicGreen_ios',

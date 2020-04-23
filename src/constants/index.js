@@ -14,7 +14,6 @@ import ConstAnalyst from './ConstAnalyst'
 import TouchType from './TouchType'
 import ToolbarType from './ToolbarType'
 import Height from './Height'
-import ChunkType from './ChunkType'
 
 import {
   layerAdd,
@@ -33,8 +32,8 @@ import {
   mapBackGroundColor,
 } from './ColorList'
 
-import AppTabs from './AppTabs'
-import MapTabs from './MapTabs'
+/** 自定义相关预留字段 **/
+import { AppTabs, ChunkType, MapTabs } from './custom'
 
 export {
   ConstPath,

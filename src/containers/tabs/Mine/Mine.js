@@ -172,21 +172,21 @@ export default class Mine extends Component {
         case 'IMPORT':
           data.push({
             title: getLanguage(this.props.language).Profile.IMPORT,
-            leftImagePath: getThemeAssets().mine.my_import,
+            image: getThemeAssets().mine.my_import,
             onClick: this.goToMyLocalData,
           })
           break
         case 'MY_SERVICE':
           data.push({
             title: getLanguage(this.props.language).Profile.MY_SERVICE,
-            leftImagePath: getThemeAssets().mine.my_service,
+            image: getThemeAssets().mine.my_service,
             onClick: this.goToMyService,
           })
           break
         case 'DATA':
           data.push({
             title: getLanguage(this.props.language).Profile.DATA,
-            leftImagePath: getThemeAssets().mine.my_data,
+            image: getThemeAssets().mine.my_data,
             onClick: () =>
               this.goToMyDatasource(
                 getLanguage(this.props.language).Profile.DATA,
@@ -196,7 +196,7 @@ export default class Mine extends Component {
         case 'MARK':
           data.push({
             title: getLanguage(this.props.language).Profile.MARK,
-            leftImagePath: getThemeAssets().mine.my_plot,
+            image: getThemeAssets().mine.my_plot,
             onClick: () => {
               this.goToMyLabel(getLanguage(this.props.language).Profile.MARK)
             },
@@ -205,7 +205,7 @@ export default class Mine extends Component {
         case 'MAP':
           data.push({
             title: getLanguage(this.props.language).Profile.MAP,
-            leftImagePath: getThemeAssets().mine.my_map,
+            image: getThemeAssets().mine.my_map,
             onClick: () =>
               this.goToMyMap(getLanguage(this.props.language).Profile.MAP),
           })
@@ -213,7 +213,7 @@ export default class Mine extends Component {
         case 'SCENE':
           data.push({
             title: getLanguage(this.props.language).Profile.SCENE,
-            leftImagePath: getThemeAssets().mine.my_scene,
+            image: getThemeAssets().mine.my_scene,
             onClick: () =>
               this.goToMyScene(getLanguage(this.props.language).Profile.SCENE),
           })
@@ -221,14 +221,14 @@ export default class Mine extends Component {
         case 'BASE_MAP':
           data.push({
             title: getLanguage(this.props.language).Profile.BASEMAP,
-            leftImagePath: getThemeAssets().mine.my_basemap,
+            image: getThemeAssets().mine.my_basemap,
             onClick: this.goToMyBaseMap,
           })
           break
         case 'SYMBOL':
           data.push({
             title: getLanguage(this.props.language).Profile.SYMBOL,
-            leftImagePath: getThemeAssets().mine.my_symbol,
+            image: getThemeAssets().mine.my_symbol,
             onClick: () =>
               this.goToMySymbol(
                 getLanguage(this.props.language).Profile.SYMBOL,
@@ -238,7 +238,7 @@ export default class Mine extends Component {
         case 'TEMPLATE':
           data.push({
             title: getLanguage(this.props.language).Profile.TEMPLATE,
-            leftImagePath: require('../../../assets/function/icon_function_style.png'),
+            image: require('../../../assets/function/icon_function_style.png'),
             onClick: () =>
               this.goToMyTemplate(
                 getLanguage(this.props.language).Profile.TEMPLATE,
@@ -248,7 +248,7 @@ export default class Mine extends Component {
         case 'MyColor':
           data.push({
             title: getLanguage(this.props.language).Profile.COLOR_SCHEME,
-            leftImagePath: getThemeAssets().mine.my_color,
+            image: getThemeAssets().mine.my_color,
             onClick: () =>
               NavigationService.navigate('MyColor', {
                 title: getLanguage(this.props.language).Profile.COLOR_SCHEME,
@@ -457,7 +457,7 @@ export default class Mine extends Component {
             : null,
         ]}
       >
-        <Image style={styles.itemImg} source={item.leftImagePath} />
+        <Image style={styles.itemImg} source={item.image} />
         <Text style={styles.itemText}>{item.title}</Text>
       </TouchableOpacity>
     )

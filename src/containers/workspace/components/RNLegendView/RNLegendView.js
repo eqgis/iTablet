@@ -283,14 +283,10 @@ export default class RNLegendView extends React.Component {
         >
           <View
             style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
               width: '100%',
               height: scaleSize(30),
               backgroundColor: this.props.legendSettings[GLOBAL.Type]
                 .backgroundColor,
-              zIndex: 999,
             }}
           >
             <Text style={backStyle}>{this.state.title}</Text>

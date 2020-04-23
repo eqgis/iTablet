@@ -18,17 +18,26 @@ function getData(type) {
   let customView = null
   switch (type) {
     case ConstToolType.LEGEND_POSITION:
-      data = getPickerData(_params.mapLegend[GLOBAL.Type].legendPosition)
-      customView = () => (
-        <MultiPicker
-          language={GLOBAL.language}
-          confirm={LegendAction.changePosition}
-          cancel={LegendAction.cancelSelect}
-          popData={data}
-          currentPopData={_params.mapLegend[GLOBAL.Type].legendPosition}
-          viewableItems={3}
-        />
-      )
+      {
+        let currentPopData
+        if (GLOBAL.Type) {
+          data = getPickerData(_params.mapLegend[GLOBAL.Type].legendPosition)
+          currentPopData = _params.mapLegend[GLOBAL.Type].legendPosition
+        } else {
+          data = []
+          currentPopData = {}
+        }
+        customView = () => (
+          <MultiPicker
+            language={GLOBAL.language}
+            confirm={LegendAction.changePosition}
+            cancel={LegendAction.cancelSelect}
+            popData={data}
+            currentPopData={currentPopData}
+            viewableItems={3}
+          />
+        )
+      }
       break
     case ConstToolType.LEGEND:
     default:

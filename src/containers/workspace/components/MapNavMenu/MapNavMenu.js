@@ -76,7 +76,7 @@ export default class MapNavMenu extends React.Component {
 
   getRight = () => {
     let right
-    if (this.props.device.orientation === 'PORTRAIT') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       right = this.props.mapColumnNavBar ? INVISIBLE : INVISIBLE_R
     } else {
       if (this.visible) {

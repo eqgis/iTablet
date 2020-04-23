@@ -56,7 +56,7 @@ export default class MapNavIcon extends React.Component {
 
   getRight = () => {
     let right
-    if (this.props.device.orientation === 'PORTRAIT') {
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       right = this.props.mapColumnNavBar
         ? ICON_RIGHT_INVISIBLE
         : ICON_RIGHT_INVISIBLE_R

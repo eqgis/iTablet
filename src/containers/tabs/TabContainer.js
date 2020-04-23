@@ -4,10 +4,11 @@
  E-mail: yangshanglong@supermap.com
  */
 import React from 'react'
-import { Container } from '../../components'
+import { Container } from '../../components/Container'
 import TabBar from './TabBar'
+import { connect } from 'react-redux'
 
-export default class TabContainer extends Container {
+class TabContainer extends Container {
   renderTabBar = () => {
     return <TabBar navigation={this.props.navigation} />
   }
@@ -20,3 +21,18 @@ export default class TabContainer extends Container {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    device: state.device.toJS().device,
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  {
+    forwardRef: true,
+  },
+)(TabContainer)

@@ -72,7 +72,6 @@ export default class Map3D extends React.Component {
     GLOBAL.openWorkspace = false
     GLOBAL.action3d = ''
     const params = this.props.navigation.state.params
-    this.isExample = params.isExample || false
     this.mapName = params.mapName || null
     this.state = {
       title: '',

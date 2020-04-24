@@ -13,6 +13,9 @@ const Analyst_Modules = {
   CONNECTIVITY_ANALYSIS: '连通性分析',
   FIND_TSP_PATH: '商旅分析',
   TRACING_ANALYSIS: '追踪分析',
+
+  REGISTRATION_CREATE: '新建配准',
+  REGISTRATION_SPEEDINESS: '快速配准',
 }
 
 const Analyst_Methods = {
@@ -183,6 +186,16 @@ const Analyst_Labels = {
   FUNCTION: '变换函数',
   SHOW_STATISTICS: '显示统计信息',
   EXPORT_TO_ALBUM: '保存到相册',
+
+  REGISTRATION_DATASET: '配准数据',
+  REGISTRATION_REFER_DATASET_ADD: '添加参考数据',
+  REGISTRATION: '配准',
+  REGISTRATION_ARITHMETIC: '配准算法',
+  REGISTRATION_LINE: '线性配准（至少4个控制点）',
+  REGISTRATION_QUADRATIC: '二次多项式配准（至少7个控制点）',
+  REGISTRATION_RECTANGLE: '矩形配准（2个控制点）',
+  REGISTRATION_OFFSET: '偏移配准（1个控制点）',
+  REGISTRATION_ASSOCIATION: '关联浏览',
 }
 
 const Analyst_Params = {

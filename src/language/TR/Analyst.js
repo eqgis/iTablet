@@ -13,6 +13,9 @@ const Analyst_Modules = {
   CONNECTIVITY_ANALYSIS: 'Bağlantı Analizi',
   FIND_TSP_PATH: 'TSP Yolunu Bul',
   TRACING_ANALYSIS: 'İzleme Analizi',
+
+  REGISTRATION_CREATE: 'Yeni kayıt',
+  REGISTRATION_SPEEDINESS: 'Hızlı kayıt',
 }
 
 const Analyst_Methods = {
@@ -183,6 +186,17 @@ const Analyst_Labels = {
   FUNCTION: 'Fonksiyon',
   SHOW_STATISTICS: 'İstatistikleri Göster',
   EXPORT_TO_ALBUM: 'Albüme Aktar',
+
+  REGISTRATION_DATASET: 'Kayıt verileri',
+  REGISTRATION_REFER_DATASET_ADD: 'Kayıt Veri Kaynağı Ekle',
+  REGISTRATION: 'kayıt',
+  REGISTRATION_ARITHMETIC: 'Kayıt algoritması',
+  REGISTRATION_LINE: 'Doğrusal kayıt (en az 4 kontrol noktası)',
+  REGISTRATION_QUADRATIC:
+    'İkinci dereceden polinom kaydı (en az 7 kontrol noktası)',
+  REGISTRATION_RECTANGLE: 'Dikdörtgen kayıt (2 kontrol noktası)',
+  REGISTRATION_OFFSET: 'Ofset kaydı (1 kontrol noktası)',
+  REGISTRATION_ASSOCIATION: 'İlişkili tarama',
 }
 
 const Analyst_Params = {

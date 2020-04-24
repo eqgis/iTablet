@@ -114,6 +114,10 @@ import {
   AnalystRangePage,
   WeightAndStatistic,
   LocalAnalystView,
+  RegistrationDatasetPage,
+  RegistrationReferDatasetPage,
+  RegistrationArithmeticPage,
+  RegistrationPage,
   ReferenceAnalystView,
   InterpolationAnalystView,
   InterpolationAnalystDetailView,
@@ -136,7 +140,7 @@ import CastModelOperateView from './arCastModelOperateView'
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
-import CreateNavDataPage from "./CreateNavDataPage"
+import CreateNavDataPage from './CreateNavDataPage'
 import ChooseTaggingLayer from './ChooseTaggingLayer'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
@@ -955,6 +959,34 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
+      RegistrationDatasetPage: {
+        screen: RegistrationDatasetPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationReferDatasetPage: {
+        screen: RegistrationReferDatasetPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationArithmeticPage: {
+        screen: RegistrationArithmeticPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationPage: {
+        screen: RegistrationPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
       InterpolationAnalystView: {
         screen: InterpolationAnalystView,
         navigationOptions: {
@@ -1035,7 +1067,7 @@ export default function(appConfig) {
           header: null,
         },
       },
-      CreateNavDataPage:{
+      CreateNavDataPage: {
         screen: CreateNavDataPage,
         navigationOptions: {
           header: null,

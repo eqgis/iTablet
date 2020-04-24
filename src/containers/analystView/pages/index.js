@@ -9,6 +9,10 @@ import SourceDatasetPage from './sourceDatasetPage'
 import AnalystRangePage from './analystRangePage'
 import WeightAndStatistic from './weightAndStatistic'
 import LocalAnalystView from './localAnalystView'
+import RegistrationDatasetPage from './registrationDatasetPage'
+import RegistrationReferDatasetPage from './registrationReferDatasetPage'
+import RegistrationArithmeticPage from './registrationArithmeticPage'
+import RegistrationPage from './registrationPage'
 import ReferenceAnalystView from './referenceAnalystView'
 import InterpolationAnalystView from './interpolationAnalystView'
 import InterpolationAnalystDetailView from './interpolationAnalystDetailView'
@@ -25,6 +29,10 @@ export {
   AnalystRangePage,
   WeightAndStatistic,
   LocalAnalystView,
+  RegistrationDatasetPage,
+  RegistrationReferDatasetPage,
+  RegistrationArithmeticPage,
+  RegistrationPage,
   ReferenceAnalystView,
   InterpolationAnalystView,
   InterpolationAnalystDetailView,

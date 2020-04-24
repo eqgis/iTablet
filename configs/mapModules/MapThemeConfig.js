@@ -9,11 +9,8 @@ export default class MapThemeConfig extends Module {
     super(props)
     this.key = ChunkType.MAP_THEME
     this.example = {
-      checkUrl: 'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=',
       name_en: 'PrecipitationOfUSA',
       name_cn: '湖北',
-      nickname: 'xiezhiyan123',
-      type: 'zip',
     }
     this.functionModules = [
       {key: 'startModule', type: 'MAP_START'},

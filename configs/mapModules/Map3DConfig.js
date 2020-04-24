@@ -13,11 +13,8 @@ export default class Map3DConfig extends Module {
     super(props)
     this.key = ChunkType.MAP_3D
     this.example = {
-      checkUrl: 'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=',
       name_ios: 'OlympicGreen_ios',
       name_android: 'OlympicGreen_android',
-      nickname: 'xiezhiyan123',
-      type: 'zip',
     }
     this.functionModules = [
       {key: 'startModule', type: 'MAP_3D_START'},

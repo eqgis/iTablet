@@ -203,6 +203,19 @@ class ModuleList extends Component {
     let toPath = this.homePath + ConstPath.CachePath + fileName
 
     let cachePath = this.homePath + ConstPath.CachePath
+    let defaultExample = {}
+    if (example) {
+      if (example.checkUrl === undefined) {
+        defaultExample.checkUrl =
+          'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords='
+      }
+      if (example.nickname === undefined) {
+        defaultExample.nickname = 'xiezhiyan123'
+      }
+      if (example.type === undefined) {
+        defaultExample.type = 'zip'
+      }
+    }
     return {
       key: moduleKey,
       fileName: fileName,
@@ -211,6 +224,7 @@ class ModuleList extends Component {
       itemData: item,
       tmpCurrentUser: tmpCurrentUser,
       ...example,
+      ...defaultExample,
     }
   }
 

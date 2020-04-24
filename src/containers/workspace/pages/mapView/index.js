@@ -8,7 +8,7 @@ import {
   setCurrentAttribute,
   setCurrentLayer,
   clearAttributeHistory,
-} from '../../../../models/layers'
+} from '../../../../redux/models/layers'
 import {
   setLatestMap,
   setCurrentMap,
@@ -19,7 +19,7 @@ import {
   openMap,
   closeMap,
   saveMap,
-} from '../../../../models/map'
+} from '../../../../redux/models/map'
 import {
   importTemplate,
   importWorkspace,
@@ -28,7 +28,7 @@ import {
   setTemplate,
   getSymbolTemplates,
   getSymbolPlots,
-} from '../../../../models/template'
+} from '../../../../redux/models/template'
 import {
   setBufferSetting,
   setOverlaySetting,
@@ -42,15 +42,21 @@ import {
   setOpenOnlineMap,
   setNavigationHistory,
   setNavBarDisplay,
-} from '../../../../models/setting'
-import { setMapSearchHistory } from '../../../../models/histories'
-import { setSharing } from '../../../../models/online'
-import { setCurrentSymbols, setCurrentSymbol } from '../../../../models/symbol'
-import { setCollectionInfo } from '../../../../models/collection'
-import { setBackAction, removeBackAction } from '../../../../models/backActions'
-import { setAnalystParams } from '../../../../models/analyst'
-import { downloadFile, deleteDownloadFile } from '../../../../models/down'
-import { setToolbarStatus } from '../../../../models/toolbarStatus'
+} from '../../../../redux/models/setting'
+import { setMapSearchHistory } from '../../../../redux/models/histories'
+import { setSharing } from '../../../../redux/models/online'
+import {
+  setCurrentSymbols,
+  setCurrentSymbol,
+} from '../../../../redux/models/symbol'
+import { setCollectionInfo } from '../../../../redux/models/collection'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../../../redux/models/backActions'
+import { setAnalystParams } from '../../../../redux/models/analyst'
+import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
+import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

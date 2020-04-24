@@ -8,7 +8,7 @@ import {
   Image,
   Platform,
 } from 'react-native'
-import {scaleSize, screen, setSpText, Toast} from '../../../../utils'
+import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
 import { SMap } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../assets'
@@ -34,15 +34,21 @@ export default class NavigationStartButton extends React.Component {
       show: false,
       isroad: props.device.orientation.indexOf('LANDSCAPE') !== 0, //横屏默认false
       road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
-      isLandScape:props.device.orientation.indexOf('LANDSCAPE') === 0, //是否横屏
-      height: props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT)
-        : new Animated.Value(scaleSize(200)),
-      width: props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(screen.getScreenWidth(props.device.orientation) / 2)
-        : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
+      isLandScape: props.device.orientation.indexOf('LANDSCAPE') === 0, //是否横屏
+      height:
+        props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(
+            screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT,
+          )
+          : new Animated.Value(scaleSize(200)),
+      width:
+        props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(
+            screen.getScreenWidth(props.device.orientation) / 2,
+          )
+          : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
       length: '',
-      path:props.path || [],
+      path: props.path || [],
     }
     this.directions =
       GLOBAL.language === 'CN'
@@ -91,7 +97,7 @@ export default class NavigationStartButton extends React.Component {
           'arrival route point',
         ]
   }
-  static getDerivedStateFromProps(nextProps,prevState){
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.path.length === 0 || nextProps.path.length !== 0) {
       return {
         path: nextProps.path,
@@ -99,34 +105,38 @@ export default class NavigationStartButton extends React.Component {
     }
     return null
   }
-  componentDidUpdate(prevProps){
-    if(prevProps.device.orientation !== this.props.device.orientation){
-      let height,width,isroad,isLandScape
-      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0){
-        height = screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      let height, width, isroad, isLandScape
+      if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+        height =
+          screen.getScreenHeight(this.props.device.orientation) - HEADER_HEIGHT
         width = screen.getScreenWidth(this.props.device.orientation) / 2
         isroad = false
         isLandScape = true
-      }else{
+      } else {
         height = scaleSize(200)
-        width =screen.getScreenWidth(this.props.device.orientation)
+        width = screen.getScreenWidth(this.props.device.orientation)
         isroad = true
         isLandScape = false
       }
       Animated.parallel([
-        Animated.timing(this.state.width,{
-          toValue:width,
-          duration:300,
+        Animated.timing(this.state.width, {
+          toValue: width,
+          duration: 300,
         }),
         Animated.timing(this.state.height, {
           toValue: height,
           duration: 300,
         }),
       ]).start()
-      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0 && this.state.show){
-          GLOBAL.FloorListView?.floatToRight(true)
-      }else{
-          GLOBAL.FloorListView?.floatToRight(false)
+      if (
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
+        this.state.show
+      ) {
+        GLOBAL.FloorListView?.floatToRight(true)
+      } else {
+        GLOBAL.FloorListView?.floatToRight(false)
       }
       this.setState({
         isroad,
@@ -136,15 +146,18 @@ export default class NavigationStartButton extends React.Component {
   }
 
   setVisible = (iShow, isOnline = false) => {
-    this.setState({
-      show: iShow,
-    },()=>{
-      if(this.props.device.orientation.indexOf('LANDSCAPE') === 0 && iShow){
-            GLOBAL.FloorListView?.floatToRight(true)
-      }else{
-            GLOBAL.FloorListView?.floatToRight(false)
-      }
-    })
+    this.setState(
+      {
+        show: iShow,
+      },
+      () => {
+        if (this.props.device.orientation.indexOf('LANDSCAPE') === 0 && iShow) {
+          GLOBAL.FloorListView?.floatToRight(true)
+        } else {
+          GLOBAL.FloorListView?.floatToRight(false)
+        }
+      },
+    )
     this.isOnline = isOnline
   }
 
@@ -178,49 +191,62 @@ export default class NavigationStartButton extends React.Component {
     }
   }
   realNavigation = async () => {
-    if (this.isOnline) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Prompt.NOT_SUPPORT_ONLINE_NAVIGATION,
-      )
-      return
-    }
-    let position = await SMap.getCurrentPosition()
-    if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
-      let isindoor = await SMap.isIndoorPoint(position.x, position.y)
-      if (isindoor) {
-        SMap.indoorNavigation(0)
-        this.setVisible(false)
-        GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
-      } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
+    try {
+      if (this.isOnline) {
+        Toast.show(
+          getLanguage(GLOBAL.language).Prompt.NOT_SUPPORT_ONLINE_NAVIGATION,
+        )
+        return
       }
-    } else if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
-      let naviData = this.props.getNavigationDatas()
-      let isInBounds = await SMap.isInBounds(position, naviData.selectedDataset)
-      if (isInBounds) {
-        SMap.outdoorNavigation(0)
-        this.setVisible(false)
-        GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
-      } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
+      let position = await SMap.getCurrentPosition()
+      if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
+        let isindoor = await SMap.isIndoorPoint(position.x, position.y)
+        if (isindoor) {
+          await SMap.indoorNavigation(0)
+          this.setVisible(false)
+          GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
+        }
+      } else if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+        let naviData = this.props.getNavigationDatas()
+        let isInBounds = await SMap.isInBounds(
+          position,
+          naviData.selectedDataset,
+        )
+        if (isInBounds) {
+          await SMap.outdoorNavigation(0)
+          this.setVisible(false)
+          GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
+        }
       }
+    } catch (error) {
+      this.setVisible(true)
+      GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
     }
   }
 
   simulatedNavigation = async () => {
-    if (this.isOnline) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Prompt.NOT_SUPPORT_ONLINE_NAVIGATION,
-      )
-      return
-    }
-    this.setVisible(false)
-    GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
-    if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
-      GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
-      SMap.outdoorNavigation(1)
-    } else if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
-      SMap.indoorNavigation(1)
+    try {
+      if (this.isOnline) {
+        Toast.show(
+          getLanguage(GLOBAL.language).Prompt.NOT_SUPPORT_ONLINE_NAVIGATION,
+        )
+        return
+      }
+      if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+        GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
+        await SMap.outdoorNavigation(1)
+      } else if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
+        await SMap.indoorNavigation(1)
+      }
+      this.setVisible(false)
+      GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+    } catch (error) {
+      this.setVisible(true)
+      GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
     }
   }
 
@@ -376,9 +402,7 @@ export default class NavigationStartButton extends React.Component {
   }
 
   renderRoad = () => {
-    let maxHeight = this.state.isLandScape
-      ? scaleSize(600)
-      : scaleSize(400)
+    let maxHeight = this.state.isLandScape ? scaleSize(600) : scaleSize(400)
     let data = [
       {
         text: getLanguage(this.language).Map_Main_Menu.START_FROM_START_POINT,
@@ -432,7 +456,7 @@ export default class NavigationStartButton extends React.Component {
         <Animated.View
           style={{
             position: 'absolute',
-            width:this.state.width,
+            width: this.state.width,
             bottom: 0,
             left: 0,
             elevation: 100,
@@ -450,30 +474,32 @@ export default class NavigationStartButton extends React.Component {
               // marginTop: scaleSize(20),
             }}
           >
-            {!this.state.isLandScape && (<TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                height: scaleSize(60),
-                flex: 1,
-                borderRadius: 5,
-                backgroundColor: color.blue1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: scaleSize(20),
-              }}
-              onPress={() => {
-                this.changeHeight()
-              }}
-            >
-              <Text
+            {!this.state.isLandScape && (
+              <TouchableOpacity
+                activeOpacity={0.5}
                 style={{
-                  fontSize: setSpText(20),
-                  color: color.white,
+                  height: scaleSize(60),
+                  flex: 1,
+                  borderRadius: 5,
+                  backgroundColor: color.blue1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: scaleSize(20),
+                }}
+                onPress={() => {
+                  this.changeHeight()
                 }}
               >
-                {this.state.road}
-              </Text>
-            </TouchableOpacity>)}
+                <Text
+                  style={{
+                    fontSize: setSpText(20),
+                    color: color.white,
+                  }}
+                >
+                  {this.state.road}
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               activeOpacity={0.5}
               style={{

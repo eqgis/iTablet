@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { color } from '../../styles'
 import { scaleSize, setSpText } from '../../utils'
-import { getLanguage } from '../../language/index'
 
 class TabItem extends React.Component {
   props: {
@@ -16,25 +15,6 @@ class TabItem extends React.Component {
 
   constructor(props) {
     super(props)
-  }
-
-  getTitle = () => {
-    let t = ''
-    switch (this.props.item.key) {
-      case 'Home':
-        t = getLanguage(this.props.language).Navigator_Label.HOME
-        break
-      case 'Friend':
-        t = getLanguage(this.props.language).Navigator_Label.FRIENDS
-        break
-      case 'Find':
-        t = getLanguage(this.props.language).Navigator_Label.EXPLORE
-        break
-      case 'Mine':
-        t = getLanguage(this.props.language).Navigator_Label.PROFILE
-        break
-    }
-    return t
   }
 
   render() {
@@ -54,7 +34,7 @@ class TabItem extends React.Component {
             }
             style={styles.icon}
           />
-          <Text style={styles.tabText}>{this.getTitle()}</Text>
+          <Text style={styles.tabText}>{this.props.item.title}</Text>
           {this.props.renderExtra && this.props.renderExtra()}
         </View>
       </TouchableOpacity>

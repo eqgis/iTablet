@@ -15,7 +15,7 @@ import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
 import { getLanguage } from '../../../../language/index'
-import { setUser } from '../../../../models/user'
+import { setUser } from '../../../../redux/models/user'
 import { connect } from 'react-redux'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 import OnlineLoginView from './component/OnlineLoginView'
@@ -165,7 +165,7 @@ class Login extends React.Component {
         })
       }
 
-      let res = await new Promise.race([result, timeout(20)])
+      let res = await new Promise.race([result, timeout(40)])
       if (res === 'timeout') {
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         return

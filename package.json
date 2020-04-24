@@ -21,7 +21,7 @@
   "lint-staged": {
     "{src,__tests__}/**/*.js": [
       "prettier --single-quote --trailing-comma all --no-semi --write",
-      "eslint src --fix",
+      "eslint src configs --fix",
       "git add"
     ]
   },
@@ -75,7 +75,8 @@
     "redux-thunk": "^2.3.0",
     "teaset": "^0.6.3",
     "react-native-slider": "latest",
-    "react-native-modal-dropdown": "0.7.0"
+    "react-native-modal-dropdown": "0.7.0",
+    "react-native-photo-view": "1.5.2"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",

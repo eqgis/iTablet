@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import Personal from './Personal'
-import { setUser } from '../../../../models/user'
-import { openWorkspace, closeWorkspace } from '../../../../models/map'
+import { setUser } from '../../../../redux/models/user'
+import { openWorkspace, closeWorkspace } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),

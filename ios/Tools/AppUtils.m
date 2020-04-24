@@ -8,7 +8,7 @@
 
 #import "AppUtils.h"
 #import <UIKit/UIKit.h>
-#import "NativeUtil.h"
+#import <CoreLocation/CLLocationManager.h>
 @implementation AppUtils
 RCT_EXPORT_MODULE();
 RCT_REMAP_METHOD(AppExit,AppExit:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
@@ -88,15 +88,7 @@ RCT_REMAP_METHOD(startAppLoactionSetting, startLocationWithresolve:(RCTPromiseRe
     reject(@"AppUtils", exception.reason, nil);
   }
 }
-RCT_REMAP_METHOD(getCurrentLocation, resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-  @try {
-    [NativeUtil openGPS];
-    GPSData* gpsData = [NativeUtil getGPSData];
-    resolve(@{@"longitude":@(gpsData.dLongitude),@"latitude":@(gpsData.dLatitude)});
-  } @catch (NSException *exception) {
-    reject(@"AppUtils", exception.reason, nil);
-  }
-}
+
 RCT_REMAP_METHOD(pause, pauseTime:(int) time resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
   @try {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

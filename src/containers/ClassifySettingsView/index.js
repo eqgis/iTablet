@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import ClassifySettingsView from './ClassifySettingsView'
-import { downloadFile } from '../../models/down'
+import { downloadFile } from '../../redux/models/down'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

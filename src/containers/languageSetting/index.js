@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { setLanguage } from '../../models/setting'
+import { setLanguage } from '../../redux/models/setting'
 import LanguageSetting from './LanguageSetting'
 
 const mapStateToProps = state => ({

@@ -193,7 +193,7 @@ export default {
   CAD_LINE: 'cad_line',
   CAD_REGION: 'cad_region',
 
-  // =====================================
+  // ==================注：以下常量暂停使用===================
 
   MAP_COLLECTION: 'MAP_COLLECTION',
   // PLOTTING: 'PLOTTING',
@@ -203,7 +203,7 @@ export default {
   MAP_PLOTTING: 'MAP_PLOTTING',
   PLOTTING_ANIMATION: 'PLOTTING_ANIMATION',
   MAP_ANALYST: 'MAP_ANALYST',
-  NETWORK: 'NETWORK',
+  // NETWORK: 'NETWORK',
   MAP_AR: 'MAP_AR',
   MAP_NAVIGATION: 'MAP_NAVIGATION',
 

@@ -4,7 +4,6 @@ import Const from './Const'
 import AudioKeywords from './AudioKeywords'
 import EventConst from './EventConst'
 import ExampleMapData from './ExampleMapData'
-import ConstModule, { getHeaderTitle } from './ConstModule'
 import ConstToolType from './ConstToolType'
 import Map3DBaseMapList from './Map3DBaseMapList'
 import ConstInfo from './ConstInfo'
@@ -33,6 +32,9 @@ import {
   mapBackGroundColor,
 } from './ColorList'
 
+/** 自定义相关预留字段 **/
+import { AppTabs, ChunkType, MapTabs } from './custom'
+
 export {
   ConstPath,
   ConstOnline,
@@ -41,7 +43,6 @@ export {
   EventConst,
   layerManagerData,
   ExampleMapData,
-  ConstModule,
   layerAdd,
   // BotMap,
   // openData,
@@ -59,9 +60,11 @@ export {
   CheckStatus,
   ConstAnalyst,
   TouchType,
-  getHeaderTitle,
   legendMenuInfo,
   legendMenuInfoNotVisible,
   ToolbarType,
   Height,
+  ChunkType,
+  AppTabs,
+  MapTabs,
 }

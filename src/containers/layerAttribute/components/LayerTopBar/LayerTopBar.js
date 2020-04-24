@@ -140,6 +140,7 @@ export default class LayerTopBar extends React.Component {
               .ATTRIBUTE_FIELD_ADD,
             //'添加',
             action: () => {
+              GLOBAL.ToolBar.showFullMap(true)
               NavigationService.navigate('LayerAttributeAdd', {
                 defaultParams:
                   this.props.attributesData.length > 1 &&

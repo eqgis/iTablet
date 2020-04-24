@@ -406,8 +406,8 @@ function showMenuDialog() {
   const configs = JSON.parse(JSON.stringify(_data))
   if (configs.showBox) {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
+      containerType: ToolbarType.typeNull,
       isFullScreen: false,
-      // height: 0,
     })
     ToolbarModule.addData({ showBox: false })
   }
@@ -424,13 +424,13 @@ function showLayerList() {
     })
   if (!showBox) {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_SHOW, {
+      containerType: ToolbarType.colorTable,
       isFullScreen: false,
-      // height: ConstToolType.TOOLBAR_HEIGHT[3],
     })
   } else {
     _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
+      containerType: ToolbarType.typeNull,
       isFullScreen: false,
-      // height: 0,
     })
   }
   showBox = !showBox
@@ -440,7 +440,9 @@ function showLayerList() {
 function changeClip() {
   const _params = ToolbarModule.getParams()
   const _data = _params.getClipSetting()
-
+  _params.showMenuDialog({
+    showMenuDialog: false,
+  })
   const clipSetting = JSON.parse(JSON.stringify(_data))
   clipSetting.clipInner = !clipSetting.clipInner
   if (!clipSetting.layers) {
@@ -452,8 +454,8 @@ function changeClip() {
     ? ConstToolType.MAP3D_BOX_CLIP_IN
     : ConstToolType.MAP3D_BOX_CLIP_OUT
   _params.setToolbarVisible(true, type, {
+    containerType: ToolbarType.typeNull,
     isFullScreen: false,
-    // height: 0,
   })
 }
 function layerChange(layers) {

@@ -279,6 +279,9 @@ const Profile = {
   ITABLET_NAVIGATIONMAP: 'ナビマップ',
   ITABLET_DATAANALYSIS: 'データ解析',
   ITABLET_PLOTTING: 'アニメシンボル',
+  INVALID_MODULE: '有効なモジュールではありません。この機能は使用できません。',
+  INVALID_LICENSE: '無効なライセンスです。この機能は使用できません。',
+  GO_ACTIVATE: 'ライセンス登録',
 
   // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: '機能異常:機能障害や使用不可',

@@ -24,7 +24,7 @@ import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import ModalBtns from './ModalBtns'
 import UserType from '../../../../constants/UserType'
-import { DatasetType } from 'imobile_for_reactnative'
+import { DatasetType, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
@@ -310,6 +310,9 @@ export default class MyDataPage extends Component {
           ? getLanguage(global.language).Prompt.EXPORTING
           : getLanguage(global.language).Prompt.SHARING,
       )
+
+      await SMap.checkLicense()
+
       let result = undefined
       if (fileName === '') {
         if (this.type === this.types.dataset) {

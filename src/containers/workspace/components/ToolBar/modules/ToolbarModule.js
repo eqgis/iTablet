@@ -108,7 +108,7 @@ async function getToolBarData(type, params = {}) {
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
-    toolBarData = topoEditModule().getData(type)
+    toolBarData = topoEditModule(type).getData(type) //无action的module 先传type设置数据
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
@@ -205,7 +205,7 @@ async function setToolBarData(type, params = {}) {
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     toolBarData = editModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
-    toolBarData = topoEditModule()
+    toolBarData = topoEditModule(type)
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
@@ -327,8 +327,8 @@ function getPlotAnimationData(type) {
           key: 'startFly',
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始飞行',
-          action: () => {
-            SMap.animationPlay()
+          action: async () => {
+            await SMap.animationPlay()
           },
           size: 'large',
           image: require('../../../../../assets/mapEdit/icon_play.png'),

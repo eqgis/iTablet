@@ -18,7 +18,7 @@ import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
 import Toast from '../../../../utils/Toast'
 import { getLanguage } from '../../../../language'
-import constants from '../../../workspace/constants'
+import { ChunkType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 
 export default class PoiInfoContainer extends React.PureComponent {
@@ -529,7 +529,7 @@ export default class PoiInfoContainer extends React.PureComponent {
   }
 
   renderView = () => {
-    if (GLOBAL.Type !== constants.MAP_NAVIGATION) {
+    if (GLOBAL.Type !== ChunkType.MAP_NAVIGATION) {
       return (
         <View
           style={{

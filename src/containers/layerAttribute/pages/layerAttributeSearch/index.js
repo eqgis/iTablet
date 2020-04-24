@@ -3,8 +3,8 @@ import LayerAttributeSearch from './LayerAttributeSearch'
 import {
   setCurrentAttribute,
   setLayerAttributes,
-} from '../../../../models/layers'
-import { closeMap } from '../../../../models/map'
+} from '../../../../redux/models/layers'
+import { closeMap } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   currentAttribute: state.layers.toJS().currentAttribute,

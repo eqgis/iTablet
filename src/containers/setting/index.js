@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Setting from './setting'
-import { setSettingData } from '../../models/setting'
+import { setSettingData } from '../../redux/models/setting'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

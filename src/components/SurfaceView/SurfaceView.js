@@ -5,6 +5,8 @@
  */
 import React, { Component } from 'react'
 import { View, ART, PanResponder, Dimensions } from 'react-native'
+// import { SMap } from 'imobile_for_reactnative'
+import Orientation from 'react-native-orientation'
 import { color } from '../../styles'
 import styles from './styles'
 
@@ -19,6 +21,7 @@ export default class SurfaceView extends Component {
   props: {
     style: Object,
     type: string,
+    orientation: string,
   }
 
   static defaultProps = {
@@ -40,6 +43,16 @@ export default class SurfaceView extends Component {
       },
     }
 
+    // this.mapStartPoint = {
+    //   x: 0,
+    //   y: 0,
+    // }
+    //
+    // this.mapEndPoint = {
+    //   x: 0,
+    //   y: 0,
+    // }
+
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
@@ -59,6 +72,19 @@ export default class SurfaceView extends Component {
     )
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.orientation !== prevProps.orientation) {
+  //     (async function () {
+  //       let mapStart = await SMap.mapToPixel(this.mapStartPoint)
+  //       let mapEnd = await SMap.mapToPixel(this.mapEndPoint)
+  //       this.setState({
+  //         startPoint: mapStart,
+  //         endPoint: mapEnd,
+  //       })
+  //     }.bind(this)())
+  //   }
+  // }
+
   _handleStartShouldSetPanResponder = () => {
     return true
   }
@@ -68,16 +94,17 @@ export default class SurfaceView extends Component {
   }
 
   _onPanResponderGrant = (evt, gestureState) => {
+    let point = {
+      x: gestureState.x0,
+      y: gestureState.y0,
+    }
     this.setState({
-      startPoint: {
-        x: gestureState.x0,
-        y: gestureState.y0,
-      },
-      endPoint: {
-        x: gestureState.x0,
-        y: gestureState.y0,
-      },
+      startPoint: point,
+      endPoint: point,
     })
+    // SMap.pixelPointToMap(point).then(mapPoint => {
+    //   this.mapStartPoint = mapPoint
+    // })
   }
 
   _handlePanResponderMove = (evt, gestureState) => {
@@ -89,7 +116,18 @@ export default class SurfaceView extends Component {
     })
   }
 
-  _handlePanResponderEnd = () => {}
+  _handlePanResponderEnd = (evt, gestureState) => {
+    let point = {
+      x: gestureState.moveX,
+      y: gestureState.moveY,
+    }
+    this.setState({
+      endPoint: point,
+    })
+    // SMap.pixelPointToMap(point).then(mapPoint => {
+    //   this.mapEndPoint = mapPoint
+    // })
+  }
 
   show = isShow => {
     let newState = {}
@@ -112,6 +150,15 @@ export default class SurfaceView extends Component {
       newState = {
         isShow: true,
       }
+    }
+    if (newState.isShow) {
+      if (this.props.orientation.indexOf('LANDSCAPE') === 0) {
+        Orientation.lockToLandscape()
+      } else {
+        Orientation.lockToPortrait()
+      }
+    } else {
+      Orientation.unlockAllOrientations()
     }
     this.setState(newState)
   }

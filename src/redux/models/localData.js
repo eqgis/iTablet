@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { DatasetType, SMap, EngineType } from 'imobile_for_reactnative'
-import { ConstPath } from '../constants'
-import { FileTools } from '../native'
+import { ConstPath } from '../../constants'
+import { FileTools } from '../../native'
 // Constants
 // --------------------------------------------------
 export const LOCAL_DATA_GET_DATASOURCES = 'LOCAL_DATA_GET_DATASOURCES'

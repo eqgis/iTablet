@@ -5,6 +5,7 @@ import {
   TouchType,
   Const,
   ToolbarType,
+  ChunkType,
 } from '../../../../constants'
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
@@ -13,7 +14,6 @@ import ToolbarHeight from './modules/ToolBarHeight'
 import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
-import constants from '../../constants'
 import styles from './styles'
 import {
   ToolbarMenuDialog,
@@ -305,6 +305,7 @@ export default class ToolBar extends React.PureComponent {
    *   column:          表格列数（仅table可用）
    *   containerType:   容器的类型, list | table
    *   resetToolModuleData: 是否重置ToolbarModule中的data
+   *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
   setVisible = (isShow, type = this.state.type, params = {}) => {
@@ -524,13 +525,13 @@ export default class ToolBar extends React.PureComponent {
     //   this.height.toString()
     // ) {
     let boxAnimated =
-      // this.isBoxShow &&
-      await this.contentView.changeHeight({
-        height: this.isBoxShow ? this.height : 0,
+      this.isBoxShow &&
+      (await this.contentView.changeHeight({
+        height: this.height,
         column: this.column > -1 ? this.column : undefined,
         row: this.row > -1 ? this.row : undefined,
         wait: true,
-      })
+      }))
     if (boxAnimated) {
       this.height === 0 && boxPosition >= 0
         ? animatedList.unshift(boxAnimated)
@@ -562,7 +563,7 @@ export default class ToolBar extends React.PureComponent {
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
     let newState = { data: [] }
-    if (GLOBAL.Type === constants.MAP_EDIT) {
+    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''
     }
@@ -724,7 +725,7 @@ export default class ToolBar extends React.PureComponent {
       this.contentView &&
         this.contentView.changeHeight(this.isBoxShow ? 0 : this.height)
       this.isBoxShow = !this.isBoxShow
-      if (GLOBAL.Type === constants.MAP_EDIT) {
+      if (GLOBAL.Type === ChunkType.MAP_EDIT) {
         if (
           GLOBAL.MapToolType &&
           (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_EDIT) !==
@@ -831,7 +832,7 @@ export default class ToolBar extends React.PureComponent {
     // if (this.state.type === ConstToolType.MAP_BASE) {
     //   this.props.getLayers()
     // }
-    if (GLOBAL.Type === constants.MAP_EDIT) {
+    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       // GLOBAL.showFlex = true
       this.setState({ selectKey: '' })

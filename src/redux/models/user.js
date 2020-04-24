@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { ModelUtils } from '../utils'
+import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'

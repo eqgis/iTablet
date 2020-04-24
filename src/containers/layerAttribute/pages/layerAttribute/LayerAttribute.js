@@ -21,7 +21,7 @@ import {
   StyleUtils,
   screen,
 } from '../../../../utils'
-import { ConstInfo, ConstToolType, getHeaderTitle } from '../../../../constants'
+import { ConstInfo, ConstToolType, ChunkType } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
 import {
   LayerAttributeTable,
@@ -40,7 +40,6 @@ import {
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { color, size } from '../../../../styles'
-import constants from '../../../workspace/constants'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
@@ -788,7 +787,7 @@ export default class LayerAttribute extends React.Component {
       })
 
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-      if (GLOBAL.Type === constants.MAP_AR && GLOBAL.showAIDetect) {
+      if (GLOBAL.Type === ChunkType.MAP_AR && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
       }
 
@@ -1404,7 +1403,9 @@ export default class LayerAttribute extends React.Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: getHeaderTitle(this.type),
+          title: this.props.appConfig.mapModules[
+            this.props.appConfig.currentMapModule
+          ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),

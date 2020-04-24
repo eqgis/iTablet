@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { screen } from '../utils'
+import { screen } from '../../utils'
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'
@@ -9,6 +9,7 @@ export const SHOW_SET = 'SHOW_SET'
 
 // 横竖屏切换，使用
 export const setShow = (params = {}, cb = () => {}) => async dispatch => {
+  screen.setOrientation(params.orientation)
   await dispatch({
     type: SHOW_SET,
     payload: params,

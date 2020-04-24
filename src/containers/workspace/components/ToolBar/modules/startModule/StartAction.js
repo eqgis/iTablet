@@ -10,10 +10,10 @@ import {
   UserType,
   ConstOnline,
   ToolbarType,
+  ChunkType,
 } from '../../../../../../constants'
 import { Toast, LayerUtils, scaleSize } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
-import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 
@@ -350,7 +350,7 @@ function openTemplateList() {
 
 /** 导入 * */
 // function importWorkspace() {
-//   if (GLOBAL.Type === constants.MAP_COLLECTION) {
+//   if (GLOBAL.Type === ChunkType.MAP_COLLECTION) {
 //     openWorkspace(async path => {
 //       try {
 //         ToolbarModule.getParams().setContainerLoading &&
@@ -392,17 +392,17 @@ function openTemplateList() {
 
 /** 新建 * */
 async function create() {
-  if (GLOBAL.Type === constants.MAP_COLLECTION) {
+  if (GLOBAL.Type === ChunkType.MAP_COLLECTION) {
     openTemplateList()
     return
   }
   if (
-    GLOBAL.Type === constants.MAP_EDIT ||
-    GLOBAL.Type === constants.MAP_THEME ||
-    GLOBAL.Type === constants.MAP_PLOTTING ||
-    GLOBAL.Type === constants.MAP_NAVIGATION ||
-    GLOBAL.Type === constants.MAP_ANALYST ||
-    GLOBAL.Type === constants.MAP_AR
+    GLOBAL.Type === ChunkType.MAP_EDIT ||
+    GLOBAL.Type === ChunkType.MAP_THEME ||
+    GLOBAL.Type === ChunkType.MAP_PLOTTING ||
+    GLOBAL.Type === ChunkType.MAP_NAVIGATION ||
+    GLOBAL.Type === ChunkType.MAP_ANALYST ||
+    GLOBAL.Type === ChunkType.MAP_AR
   ) {
     GLOBAL.FUNCTIONTOOLBAR.isMapIndoorNavigation()
     const userPath =
@@ -467,7 +467,7 @@ async function create() {
           (await ToolbarModule.getParams().getLayers())
 
         // 如果是标绘模块则加载标绘数据
-        if (GLOBAL.Type === constants.MAP_PLOTTING) {
+        if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
           const plotIconPath = await FileTools.appendingHomeDirectory(
             `${userPath + ConstPath.RelativePath.Plotting}PlotLibData`,
           )
@@ -622,7 +622,7 @@ function saveMap() {
 
   (async function() {
     try {
-      if (GLOBAL.Type === constants.MAP_3D) {
+      if (GLOBAL.Type === ChunkType.MAP_3D) {
         GLOBAL.openWorkspace && Toast.show(ConstInfo.SAVE_SCENE_SUCCESS)
         ToolbarModule.getParams().setToolbarVisible &&
           ToolbarModule.getParams().setToolbarVisible(false)
@@ -681,12 +681,12 @@ function saveMap() {
       Toast.show(
         result
           ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY
-          : ConstInfo.SAVE_MAP_FAILED,
+          : getLanguage(global.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
-      Toast.show(ConstInfo.SAVE_MAP_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   })()
 }
@@ -745,17 +745,17 @@ function saveMapAs() {
               result => {
                 ToolbarModule.getParams().setToolbarVisible &&
                   ToolbarModule.getParams().setToolbarVisible(false)
+                ToolbarModule.getParams().setContainerLoading &&
+                  ToolbarModule.getParams().setContainerLoading(false)
                 if (result) {
                   NavigationService.goBack()
-                  ToolbarModule.getParams().setContainerLoading &&
-                    ToolbarModule.getParams().setContainerLoading(false)
                   setTimeout(() => {
                     Toast.show(
                       getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY,
                     )
                   }, 1000)
                 } else {
-                  Toast.show(ConstInfo.MAP_EXIST)
+                  Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
                 }
               },
               () => {
@@ -800,7 +800,7 @@ async function changeMap(item) {
         getLanguage(params.language).Prompt.SWITCHING_SUCCESS,
         // ConstInfo.CHANGE_MAP_TO + mapInfo.name
       )
-      if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         const floorListView = params.getFloorListView()
         const datas = await SMap.getFloorData()
         if (datas.data && datas.data.length > 0) {
@@ -846,14 +846,14 @@ async function changeMap(item) {
         // 若没有底图，默认添加地图
         // if (LayerUtils.getBaseLayers(layers).length > 0) {
         //   await SMap.openDatasource(
-        //     ConstOnline['Google'].DSParams, GLOBAL.Type === constants.MAP_COLLECTION
+        //     ConstOnline['Google'].DSParams, GLOBAL.Type === ChunkType.MAP_COLLECTION
         //       ? 1 : ConstOnline['Google'].layerIndex, false)
         // }
         // if (!LayerUtils.isBaseLayer(layers[layers.length - 1].caption)) {
         //   await LayerUtils.addBaseMap(
         //     layers,
         //     ConstOnline['Google'],
-        //     GLOBAL.Type === constants.MAP_COLLECTION
+        //     GLOBAL.Type === ChunkType.MAP_COLLECTION
         //       ? 1
         //       : ConstOnline['Google'].layerIndex,
         //     false,
@@ -871,7 +871,7 @@ async function changeMap(item) {
         })
       })
       // 如果是标绘模块则加载标绘数据
-      if (GLOBAL.Type === constants.MAP_PLOTTING) {
+      if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
         const plotIconPath = await FileTools.appendingHomeDirectory(
           `${ConstPath.UserPath + params.user.currentUser.userName}/${
             ConstPath.RelativePath.Plotting
@@ -1215,7 +1215,7 @@ async function openTemplate(item) {
                   await LayerUtils.addBaseMap(
                     layers,
                     ConstOnline.Google,
-                    GLOBAL.Type === constants.MAP_COLLECTION
+                    GLOBAL.Type === ChunkType.MAP_COLLECTION
                       ? 1
                       : ConstOnline.Google.layerIndex,
                     false,
@@ -1225,7 +1225,7 @@ async function openTemplate(item) {
                 // // 若没有底图，默认添加地图
                 // if (LayerUtils.getBaseLayers(layers).length > 0) {
                 //   await SMap.openDatasource(
-                //     ConstOnline['Google'].DSParams, GLOBAL.Type === constants.MAP_COLLECTION
+                //     ConstOnline['Google'].DSParams, GLOBAL.Type === ChunkType.MAP_COLLECTION
                 //       ? 1 : ConstOnline['Google'].layerIndex, false)
                 // }
               })

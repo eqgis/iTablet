@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { setDevice } from '../../models/setting'
+import { setDevice } from '../../redux/models/setting'
 import LocationSetting from './LocationSetting'
 
 const mapStateToProps = state => ({

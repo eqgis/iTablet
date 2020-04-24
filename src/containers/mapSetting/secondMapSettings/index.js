@@ -6,7 +6,7 @@
 
 import { connect } from 'react-redux'
 import SecondMapSettings from './SecondMapSettings'
-import { setMapScaleView } from '../../../models/setting'
+import { setMapScaleView } from '../../../redux/models/setting'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

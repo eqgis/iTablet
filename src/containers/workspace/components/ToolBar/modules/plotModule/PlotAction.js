@@ -327,17 +327,21 @@ async function animationSave() {
     placeholder: getLanguage(global.language).Prompt.ENTER_ANIMATION_NAME,
     type: 'name',
     cb: async value => {
-      GLOBAL.Loading &&
-        GLOBAL.Loading.setLoading(
-          true,
-          getLanguage(global.language).Prompt.SAVEING,
-        )
-      await SMap.animationSave(savePath, value)
+      try {
+        GLOBAL.Loading &&
+          GLOBAL.Loading.setLoading(
+            true,
+            getLanguage(global.language).Prompt.SAVEING,
+          )
+        await SMap.animationSave(savePath, value)
 
-      GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+        GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
 
-      NavigationService.goBack()
-      Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
+        NavigationService.goBack()
+        Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
+      } catch (error) {
+        GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+      }
     },
   })
 }

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import MyTemplate from './MyTemplate'
-import { importWorkspace } from '../../../../models/template'
-import { setUser } from '../../../../models/user'
-import { uploading } from '../../../../models/online'
-import { exportWorkspace } from '../../../../models/map'
+import { importWorkspace } from '../../../../redux/models/template'
+import { setUser } from '../../../../redux/models/user'
+import { uploading } from '../../../../redux/models/online'
+import { exportWorkspace } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

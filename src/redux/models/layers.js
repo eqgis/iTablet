@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { SMap, SScene } from 'imobile_for_reactnative'
-import { Toast, dataUtil } from '../utils'
-import { ConstInfo } from '../constants'
-import { getLanguage } from '../language/index'
+import { Toast, dataUtil } from '../../utils'
+import { ConstInfo } from '../../constants'
+import { getLanguage } from '../../language'
 // Constants
 // --------------------------------------------------
 export const SET_EDIT_LAYER = 'SET_EDIT_LAYER'

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import RefrenceAnalystView from './ReferenceAnalystView'
-import { getLayers, setSelection } from '../../../../models/layers'
-import { setAnalystParams } from '../../../../models/analyst'
-import { setBackAction } from '../../../../models/backActions'
+import { getLayers, setSelection } from '../../../../redux/models/layers'
+import { setAnalystParams } from '../../../../redux/models/analyst'
+import { setBackAction } from '../../../../redux/models/backActions'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

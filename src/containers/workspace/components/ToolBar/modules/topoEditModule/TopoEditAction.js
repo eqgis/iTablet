@@ -4,13 +4,19 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import {ConstToolType, Height, ToolbarType, TouchType} from "../../../../../../constants"
-import ToolbarModule from "../ToolbarModule"
-import {StyleUtils, Toast} from "../../../../../../utils"
-import {DatasetType, SMap, Action} from 'imobile_for_reactnative'
-import {constants} from "../../../index"
-import TopoEditData from "./TopoEditData"
-import ToolBarHeight from "../ToolBarHeight"
+import {
+  ConstToolType,
+  Height,
+  ToolbarType,
+  TouchType,
+} from '../../../../../../constants'
+import ToolbarModule from '../ToolbarModule'
+import { StyleUtils, Toast } from '../../../../../../utils'
+import { DatasetType, SMap, Action } from 'imobile_for_reactnative'
+import { constants } from '../../../index'
+import TopoEditData from './TopoEditData'
+import ToolBarHeight from '../ToolBarHeight'
+import { getLanguage } from '../../../../../../language'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
@@ -33,29 +39,44 @@ async function geometrySelected(event) {
 
   let preType = _params.type
   let type
-  switch(preType){
-    case ConstToolType.MAP_TOPO_EDIT:
-    case ConstToolType.MAP_TOPO_OBJECT_EDIT:
-      type = ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
-      if(geoType === DatasetType.LINE){
-        StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
-        const _data = await TopoEditData.getData(type)
-        const containerType = ToolbarType.table
-        const data = ToolBarHeight.getToolbarSize(containerType, {data: _data.data})
-        _params.setToolbarVisible(true, type, {
-          containerType,
-          isFullScreen: false,
-          height: data.height,
-          column: data.column,
-          ..._data,
+  if (geoType === DatasetType.LINE) {
+    switch (preType) {
+      case ConstToolType.MAP_TOPO_EDIT:
+      case ConstToolType.MAP_TOPO_OBJECT_EDIT:
+        {
+          type = ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
+          StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
+          const _data = await TopoEditData.getData(type)
+          const containerType = ToolbarType.table
+          const data = ToolBarHeight.getToolbarSize(containerType, {
+            data: _data.data,
+          })
+          _params.setToolbarVisible(true, type, {
+            containerType,
+            isFullScreen: false,
+            height: data.height,
+            column: data.column,
+            ..._data,
+          })
+        }
+        break
+      case ConstToolType.MAP_TOPO_SMOOTH:
+        //弹窗 输入平滑系数
+        GLOBAL.InputDialog?.setDialogVisible(true, {
+          title: '请输入平滑系数',
+          value: '',
+          confirmBtnTitle: '确定',
+          cancelBtnTitle: '取消',
+          placeholder: '',
+          returnKeyType: 'done',
+          keyboardAppearance: 'dark',
+          keyboardType: 'numeric',
+          confirmAction: inputConfirm,
+          cancelAction: inputCancel,
         })
-      }
-      break
-    case ConstToolType.MAP_TOPO_SMOOTH:
-      //弹窗 输入平滑系数
-      break
+        break
+    }
   }
-
 }
 
 function commit() {
@@ -66,8 +87,8 @@ function commit() {
   SMap.setIsMagnifierEnabled(false)
   let layers = _params.layers.layers
   let currentLayer = _params.layers.currentLayer
-  layers.map(layer => SMap.setLayerSelectable(layer.path,false))
-  if(currentLayer.name){
+  layers.map(layer => SMap.setLayerSelectable(layer.path, false))
+  if (currentLayer.name) {
     _params.setCurrentLayer(currentLayer)
     SMap.setLayerEditable(currentLayer.name, true)
     SMap.setLayerVisible(currentLayer.name, true)
@@ -84,20 +105,25 @@ function showMerge() {
   let preType = _params.type
   _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_MERGE_DATASET, {
     isFullScreen: false,
-    containerType:ToolbarType.list,
-    height: _params.device.orientation === "PORTRAIT"
-      ? Height.LIST_HEIGHT_P
-      : Height.LIST_HEIGHT_L,
+    containerType: ToolbarType.list,
+    height:
+      _params.device.orientation === 'PORTRAIT'
+        ? Height.LIST_HEIGHT_P
+        : Height.LIST_HEIGHT_L,
   })
-  ToolbarModule.addData({preType})
+  ToolbarModule.addData({ preType })
 }
 
 //切换编辑方式
 async function changeEditType() {
   const _params = ToolbarModule.getParams()
+  const data = ToolbarModule.getData()
+  if (data.type === ConstToolType.MAP_TOPO_SWITCH_TYPE) {
+    return
+  }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_SWITCH_TYPE, {
-    containerType:ToolbarType.table,
+    containerType: ToolbarType.table,
     isFullScreen: false,
   })
 }
@@ -106,7 +132,7 @@ async function changeEditType() {
 async function switchType(item) {
   let { key } = item
   let type
-  switch(key){
+  switch (key) {
     case constants.MAP_TOPO_ADD_NODE:
       SMap.setAction(Action.VERTEXADD)
       type = ConstToolType.MAP_TOPO_TOPING
@@ -120,15 +146,20 @@ async function switchType(item) {
       type = ConstToolType.MAP_TOPO_TOPING
       break
     case constants.MAP_TOPO_DELETE_OBJECT:
-      GLOBAL.removeObjectDialog && GLOBAL.removeObjectDialog.setDialogVisible(true)
+      GLOBAL.removeObjectDialog &&
+        GLOBAL.removeObjectDialog.setDialogVisible(true)
       break
     case constants.MAP_TOPO_SMOOTH:
       type = ConstToolType.MAP_TOPO_SMOOTH
       SMap.setAction(Action.SELECT)
-      Toast.show('请选择需要平滑的线')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
       break
     case constants.MAP_TOPO_POINT_ADJUST:
     case constants.MAP_TOPO_SPLIT:
+      GLOBAL.TouchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
+      SMap.setAction(Action.PAN)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
+      break
     case constants.MAP_TOPO_EXTEND:
     case constants.MAP_TOPO_TRIM:
     case constants.MAP_TOPO_RESAMPLE:
@@ -137,12 +168,11 @@ async function switchType(item) {
       type = ConstToolType.MAP_TOPO_OBJECT_EDIT
       SMap.setAction(Action.SELECT)
       break
-
   }
   const _params = ToolbarModule.getParams()
   const _data = await TopoEditData.getData(type)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, {data: _data.data})
+  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
   _params.setToolbarVisible(true, type, {
     containerType,
     isFullScreen: false,
@@ -191,9 +221,44 @@ function close() {
   ToolbarModule.setToolBarData(ConstToolType.MAP_INCREMENT_GPS_TRACK)
   let nextType = ConstToolType.MAP_INCREMENT_GPS_TRACK
   SMap.setAction(Action.PAN)
-  _params.setToolbarVisible(true,nextType,{
+  _params.setToolbarVisible(true, nextType, {
     containerType,
-    isFullScreen:false,
+    isFullScreen: false,
+  })
+}
+
+/**
+ * 输入框确定事件
+ * @param text
+ */
+async function inputConfirm(text) {
+  let data = ToolbarModule.getData()
+
+  let reg = /^[0-9]+$/
+  if (reg.test(text) && text >= 2 && text < 100) {
+    let result = await SMap.smoothLine({
+      id: data.event.id,
+      smooth: ~~text,
+      ...GLOBAL.INCREMENT_DATA,
+    })
+    if (result) {
+      Toast.show('线平滑成功')
+    }
+    SMap.setAction(Action.SELECT)
+  } else {
+    Toast.show('平滑系数应为不小于2的整数')
+  }
+}
+
+/**
+ * 输入框取消事件
+ */
+function inputCancel() {
+  const _params = ToolbarModule.getParams()
+  SMap.setAction(Action.PAN)
+  _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_SWITCH_TYPE, {
+    containerType: ToolbarType.table,
+    isFullScreen: false,
   })
 }
 export default {
@@ -208,4 +273,6 @@ export default {
   redo,
   cancel,
   submit,
+  inputConfirm,
+  inputCancel,
 }

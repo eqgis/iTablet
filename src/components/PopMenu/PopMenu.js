@@ -97,7 +97,10 @@ export default class PopMenu extends PureComponent {
     let positionStyle
     let indicatorPosition
     let arrow
-    if (!global.isPad && this.props.device.orientation === 'PORTRAIT') {
+    if (
+      !global.isPad &&
+      this.props.device.orientation.indexOf('PORTRAIT') === 0
+    ) {
       container = {}
       overlay = {}
       positionStyle = bottomStyle

@@ -1,10 +1,16 @@
 import { connect } from 'react-redux'
 import MyLocalData from './MyLocalData'
-import { importPlotLib, importWorkspace } from '../../../../models/template'
-import { importSceneWorkspace } from '../../../../models/map'
-import { updateDownList, removeItemOfDownList } from '../../../../models/online'
-import { setUser } from '../../../../models/user'
-import { setImportItem } from '../../../../models/externalData'
+import {
+  importPlotLib,
+  importWorkspace,
+} from '../../../../redux/models/template'
+import { importSceneWorkspace } from '../../../../redux/models/map'
+import {
+  updateDownList,
+  removeItemOfDownList,
+} from '../../../../redux/models/online'
+import { setUser } from '../../../../redux/models/user'
+import { setImportItem } from '../../../../redux/models/externalData'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,

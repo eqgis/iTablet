@@ -8,19 +8,15 @@ import {
   Image,
 } from 'react-native'
 import { Container, SearchBar } from '../../components'
-// import { scaleSize} from '../../utils'
-// import { ConstInfo } from '../../constants'
 import { SScene, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { scaleSize, setSpText, Toast } from '../../utils'
 import styles from './styles'
 import { getLanguage } from '../../language/index'
-import constants from '../workspace/constants'
 import PropTypes from 'prop-types'
 import PoiData from './PoiData'
 import color from '../../styles/color'
-import { TouchType } from '../../constants'
-// import { color } from '../../styles';
+import { TouchType, ChunkType } from '../../constants'
 export default class PointAnalyst extends Component {
   props: {
     navigation: Object,
@@ -41,7 +37,7 @@ export default class PointAnalyst extends Component {
     this.type = params.type
     this.searchClickedInfo = params.searchClickedInfo || {}
     this.changeNavPathInfo = params.changeNavPathInfo || {}
-    this.is3D = GLOBAL.Type === constants.MAP_3D
+    this.is3D = GLOBAL.Type === ChunkType.MAP_3D
     this.PointType = null
     this.state = {
       searchValue: null,
@@ -235,7 +231,7 @@ export default class PointAnalyst extends Component {
         let y = item.y
         let address = item.address
         this.setState({ searchValue: pointName, searchData: [] })
-        if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
           await SMap.clearTrackingLayer()
           this.props.setMapNavigation({
             isShow: true,
@@ -268,6 +264,7 @@ export default class PointAnalyst extends Component {
       }
     } catch (error) {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      this.container && this.container.setLoading(false)
       //'网络错误')
     }
   }
@@ -573,7 +570,7 @@ export default class PointAnalyst extends Component {
                 },
               )
 
-              if (GLOBAL.Type === constants.MAP_NAVIGATION) {
+              if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
                 GLOBAL.TouchType = TouchType.NORMAL
                 await SMap.clearTrackingLayer()
                 // this.props.setNavigationChangeAR(true)

@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation'
 // eslint-disable-next-line
-import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
+// import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
 // 主页
 import MapLoad from './mapLoad'
 

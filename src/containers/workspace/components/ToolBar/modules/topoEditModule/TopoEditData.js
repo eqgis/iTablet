@@ -5,13 +5,13 @@
  * https://github.com/AsortKeven
  */
 import React from 'react'
-import {ConstToolType} from "../../../../../../constants"
-import ToolbarBtnType from "../../ToolbarBtnType"
-import {getPublicAssets} from "../../../../../../assets"
-import TopoEditAction from "./TopoEditAction"
-import constants from "../../../../constants"
-import {getLanguage} from "../../../../../../language"
-import MergeDatasetView from "./customView/MergeDatasetView"
+import { ConstToolType } from '../../../../../../constants'
+import ToolbarBtnType from '../../ToolbarBtnType'
+import { getPublicAssets } from '../../../../../../assets'
+import TopoEditAction from './TopoEditAction'
+import constants from '../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import MergeDatasetView from './customView/MergeDatasetView'
 import { SMap } from 'imobile_for_reactnative'
 
 async function getData(type) {
@@ -32,7 +32,7 @@ async function getData(type) {
     ToolbarBtnType.TOOLBAR_COMMIT,
   ]
   let customView
-  switch(type){
+  switch (type) {
     case ConstToolType.MAP_TOPO_EDIT:
     case ConstToolType.MAP_TOPO_OBJECT_EDIT:
       break
@@ -47,7 +47,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_TOPO_POINT_ADJUST,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_POINT_ADJUST,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_TOPO_POINT_ADJUST,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_point_adjust,
@@ -82,7 +83,8 @@ async function getData(type) {
         },
         {
           key: constants.MAP_TOPO_CHANGE_DIRECTION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_CHANGE_DIRECTION,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_TOPO_CHANGE_DIRECTION,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_change_direction,
@@ -114,14 +116,16 @@ async function getData(type) {
         },
         {
           key: constants.MAP_TOPO_DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_TOPO_DELETE_NODE,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_delete_node,
         },
         {
           key: constants.MAP_TOPO_DELETE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_DELETE_OBJECT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_TOPO_DELETE_OBJECT,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_delete_object,
@@ -146,29 +150,35 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_CANCEL,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_CANCEL,
           action: TopoEditAction.cancel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_close_black.png'),
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_COMMIT,
           action: TopoEditAction.submit,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
         },
       ]
       break
-    case ConstToolType.MAP_TOPO_MERGE_DATASET: {
-      let datas = await SMap.getLineDataset()
-      data = []
-      buttons = []
-      customView = () => (<MergeDatasetView data={datas}/>)
-    }
+    case ConstToolType.MAP_TOPO_MERGE_DATASET:
+      {
+        let datas = await SMap.getLineDataset()
+        data = []
+        buttons = []
+        datas = datas.filter(
+          item => item.datasetName !== GLOBAL.INCREMENT_DATA.datasetName,
+        )
+        customView = () => <MergeDatasetView data={datas} />
+      }
       break
   }
-  return {data, buttons, customView}
+  return { data, buttons, customView }
 }
 
 export default {

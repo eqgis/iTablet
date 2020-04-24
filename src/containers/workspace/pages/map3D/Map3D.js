@@ -35,7 +35,6 @@ import {
 } from '../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
-import constants from '../../constants'
 import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -73,8 +72,6 @@ export default class Map3D extends React.Component {
     GLOBAL.openWorkspace = false
     GLOBAL.action3d = ''
     const params = this.props.navigation.state.params
-    this.operationType = params.operationType || constants.MAP_3D
-    this.isExample = params.isExample || false
     this.mapName = params.mapName || null
     this.state = {
       title: '',
@@ -468,6 +465,7 @@ export default class Map3D extends React.Component {
           autoSelect={true}
           viewableItems={5}
           selectKey={this.selectKey}
+          device={this.props.device}
         />
       </View>
     )
@@ -580,6 +578,10 @@ export default class Map3D extends React.Component {
     let tips = this.state.tips
     tips = tips.toString().length > 8 ? tips.toFixed(6) : tips
     let needTips = !!tips
+    let padding =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? { paddingHorizontal: scaleSize(80) }
+        : {}
     return (
       <View
         style={{
@@ -588,6 +590,7 @@ export default class Map3D extends React.Component {
           left: 0,
           right: 0,
           bottom: 0,
+          ...padding,
           backgroundColor: color.transOverlay,
         }}
       >
@@ -701,7 +704,6 @@ export default class Map3D extends React.Component {
         navigation={this.props.navigation}
         appConfig={this.props.appConfig}
         initIndex={0}
-        type={this.operationType}
         layerManager={this._layer_manager}
       />
     )
@@ -903,7 +905,10 @@ export default class Map3D extends React.Component {
         {global.isLicenseValid && (
           <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
         )}
-        <SurfaceView ref={ref => (GLOBAL.MapSurfaceView = ref)} />
+        <SurfaceView
+          ref={ref => (GLOBAL.MapSurfaceView = ref)}
+          orientation={this.props.device.orientation}
+        />
         {this.renderMapController()}
         {this.renderFunctionToolbar()}
         {this.renderOverLayer()}

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import NewDSource from './NewDSource'
 
-import { setMapView } from '../../models/map'
+import { setMapView } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),

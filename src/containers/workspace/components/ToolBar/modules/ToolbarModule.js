@@ -4,9 +4,11 @@ import ToolbarBtnType from '../ToolbarBtnType'
 import { getLanguage } from '../../../../../language'
 import {
   startModule,
+  start3DModule,
   styleModule,
   toolModule,
   shareModule,
+  share3DModule,
   themeModule,
   collectionModule,
   editModule,
@@ -82,8 +84,10 @@ async function getToolBarData(type, params = {}) {
     type === ConstToolType.MAP_COLLECTION_REGION
   ) {
     toolBarData = collectionModule().getData(type, params)
-  } else if (typeof type === 'string' && type.indexOf('_START') > -1) {
+  } else if (type === ConstToolType.MAP_START) {
     toolBarData = startModule().getData(type, params)
+  } else if (type === ConstToolType.MAP_3D_START) {
+    toolBarData = start3DModule().getData(type, params)
   } else if (
     type === ConstToolType.MAP_STYLE ||
     type === ConstToolType.GRID_STYLE ||
@@ -101,8 +105,10 @@ async function getToolBarData(type, params = {}) {
     type.indexOf(ConstToolType.MAP_TOOL) > -1
   ) {
     toolBarData = toolModule().getData(type, params)
-  } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
+  } else if (type === ConstToolType.MAP_SHARE) {
     toolBarData = shareModule().getData(type, params)
+  } else if (type === ConstToolType.MAP_SHARE_MAP3D) {
+    toolBarData = share3DModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
     toolBarData = themeModule().getData(type, params)
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
@@ -176,8 +182,10 @@ async function setToolBarData(type, params = {}) {
     type === ConstToolType.MAP_COLLECTION_REGION
   ) {
     toolBarData = collectionModule()
-  } else if (typeof type === 'string' && type.indexOf('_START') > -1) {
+  } else if (type === ConstToolType.MAP_START) {
     toolBarData = startModule()
+  } else if (type === ConstToolType.MAP_3D_START) {
+    toolBarData = start3DModule()
   } else if (
     type === ConstToolType.MAP_STYLE ||
     type === ConstToolType.GRID_STYLE ||
@@ -198,8 +206,10 @@ async function setToolBarData(type, params = {}) {
     toolBarData = toolModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
     toolBarData = incrementModule()
-  } else if (typeof type === 'string' && type.indexOf('MAP_SHARE') > -1) {
+  } else if (type === ConstToolType.MAP_SHARE) {
     toolBarData = shareModule()
+  } else if (type === ConstToolType.MAP_SHARE_MAP3D) {
+    toolBarData = share3DModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_THEME') > -1) {
     toolBarData = themeModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {

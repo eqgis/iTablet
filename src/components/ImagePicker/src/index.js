@@ -4,7 +4,11 @@ import PageKeys from './PageKeys'
 import PhotoModalPage from './PhotoModalPage'
 import AlbumListView from './AlbumListView'
 import AlbumView from './AlbumView'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import ConfigStore from '../../../../src/redux/store'
 // import PreviewMultiView from './PreviewMultiView'
+const { persistor, store } = ConfigStore()
 
 /**
  * --OPTIONS--
@@ -26,14 +30,18 @@ function showImagePicker(initialRouteName, options) {
   }
   sibling = new RootSiblings(
     (
-      <PhotoModalPage
-        initialRouteName={initialRouteName}
-        onDestroy={() => {
-          sibling && sibling.destroy()
-          sibling = null
-        }}
-        {...options}
-      />
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <PhotoModalPage
+            initialRouteName={initialRouteName}
+            onDestroy={() => {
+              sibling && sibling.destroy()
+              sibling = null
+            }}
+            {...options}
+          />
+        </PersistGate>
+      </Provider>
     ),
   )
 }

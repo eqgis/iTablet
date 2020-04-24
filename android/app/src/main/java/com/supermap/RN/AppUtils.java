@@ -112,19 +112,6 @@ public class AppUtils extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void  getCurrentLocation(Promise promise){
-        try {
-            LocationManagePlugin.GPSData data = SMCollector.getGPSPoint();
-            WritableMap map = Arguments.createMap();
-            map.putDouble ("longitude", data.dLongitude);
-            map.putDouble("latitude", data.dLatitude);
-            promise.resolve(map);
-        }catch (Exception e){
-            promise.reject(e);
-        }
-    }
-
-    @ReactMethod
     public void pause (int time, Promise promise){
         try {
             final int timeInMS = time * 1000;

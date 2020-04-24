@@ -13,6 +13,9 @@ const Analyst_Modules = {
   CONNECTIVITY_ANALYSIS: '連結解析',
   FIND_TSP_PATH: '巡回ルート解析',
   TRACING_ANALYSIS: 'トレース解析',
+
+  REGISTRATION_CREATE: '新規登録',
+  REGISTRATION_SPEEDINESS: 'クイック登録',
 }
 
 const Analyst_Methods = {
@@ -183,6 +186,17 @@ const Analyst_Labels = {
   FUNCTION: '変換関数',
   SHOW_STATISTICS: '統計情報の表示',
   EXPORT_TO_ALBUM: 'アルバムに保存',
+
+  REGISTRATION_DATASET: '登録データ',
+  REGISTRATION_REFER_DATASET_ADD: '登録データソースを追加',
+  REGISTRATION: '登録',
+  REGISTRATION_ARITHMETIC: '登録アルゴリズム',
+  REGISTRATION_LINE: '線形レジストレーション（少なくとも4つの制御点）',
+  REGISTRATION_QUADRATIC:
+    '二次多項式レジストレーション（少なくとも7つの制御点）',
+  REGISTRATION_RECTANGLE: '長方形の登録（2つの制御点）',
+  REGISTRATION_OFFSET: 'オフセット登録（1制御点）',
+  REGISTRATION_ASSOCIATION: '関連ブラウジング',
 }
 
 const Analyst_Params = {

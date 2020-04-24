@@ -10,7 +10,6 @@ export default {
     url: ''
   },
   login: ['Online', 'iPortal'],
-  // tabModules: ['Friend', 'Home', 'Find', 'Mine'],
   tabModules: tabModules,
   mapModules: mapModules,
   mineModules: [

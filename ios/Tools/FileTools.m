@@ -700,7 +700,7 @@ RCT_EXPORT_METHOD(getThumbnail:(NSString *)filepath resolve:(RCTPromiseResolveBl
       if ([[NSFileManager defaultManager] fileExistsAtPath:targetPlotLibPath isDirectory:nil]) {
         [[NSFileManager defaultManager] removeItemAtPath:targetPlotLibPath error:nil];
       }
-      [FileUtils copyFiles:fromPath targetDictionary:toPath filterFileSuffix:@"plot" filterFileDicName:@"Symbol" otherFileDicName:@"SymbolIcon" isOnly:YES];
+      [FileTools copyFiles:fromPath targetDictionary:toPath filterFileSuffix:@"plot" filterFileDicName:@"Symbol" otherFileDicName:@"SymbolIcon" isOnly:YES];
 
     }
 //  } else {

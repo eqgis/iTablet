@@ -306,6 +306,7 @@ export default class ToolBar extends React.PureComponent {
    *   containerType:   容器的类型, list | table
    *   resetToolModuleData: 是否重置ToolbarModule中的data
    *   touchType:           setVisible之后 GLOBAL.TouchType的值
+   *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
   setVisible = (isShow, type = this.state.type, params = {}) => {

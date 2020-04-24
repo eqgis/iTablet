@@ -9,11 +9,8 @@ export default class MapEditConfig extends Module {
     super(props)
     this.key = ChunkType.MAP_EDIT
     this.example = {
-      checkUrl: 'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=',
       name_en: 'LosAngeles',
       name_cn: '湖南',
-      nickname: 'xiezhiyan123',
-      type: 'zip',
     }
     this.functionModules = [
       {key: 'startModule', type: 'MAP_START'},

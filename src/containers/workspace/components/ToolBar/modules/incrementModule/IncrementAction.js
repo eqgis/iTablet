@@ -17,9 +17,6 @@ import { SMap, Action } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 
-//撤销过的点数组，用于undo redo
-let POINT_ARRAY = []
-
 async function start() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
     BackgroundTimer.runBackgroundTimer(async () => {
@@ -57,7 +54,7 @@ async function cancel() {
 
 async function addPoint() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
-    await SMap.startGpsIncrement(false)
+    await SMap.startGpsIncrement()
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
   }
@@ -73,9 +70,8 @@ async function submit() {
     switch (type) {
       case ConstToolType.MAP_INCREMENT_GPS_POINT:
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
-        SMap.clearTrackingLayer()
         BackgroundTimer.stopBackgroundTimer()
-        await SMap.submitIncrement(GLOBAL.INCREMENT_DATA)
+        await SMap.submitIncrement()
         break
       case ConstToolType.MAP_INCREMENT_POINTLINE:
         await SMap.submit()
@@ -100,12 +96,7 @@ async function redo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      if (POINT_ARRAY.length === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_REDO)
-      } else {
-        let point = POINT_ARRAY.pop()
-        await SMap.redoIncrement(point)
-      }
+      SMap.redoIncrement()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:
@@ -123,15 +114,7 @@ async function undo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      {
-        await SMap.clearTrackingLayer()
-        let point = await SMap.undoIncrement()
-        if (point.x && point.y) {
-          POINT_ARRAY.push(point)
-        } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_UNDO)
-        }
-      }
+      SMap.undoIncrement()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:

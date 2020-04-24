@@ -184,72 +184,6 @@ function openMap() {
   })()
 }
 
-/** 地图制图，专题制图：导入模块（暂用） */
-// function importTemplate() {
-//   if (!ToolbarModule.getParams().setToolbarVisible) return
-//   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
-//   ;(async function() {
-//     let templatePath = FileTools.appendingHomeDirectory(
-//       ConstPath.UserPath +
-//         (ToolbarModule.getParams().user.currentUser.userName || 'Customer') +
-//         '/' +
-//         ConstPath.RelativePath.ExternalData,
-//     )
-//     FileTools.getFilterFiles(templatePath, { smwu: 'smwu', sxwu: 'sxwu' }).then(
-//       async listData => {
-//         let tpList = []
-//         for (let i = 0; i < listData.length; i++) {
-//           let item = listData[i]
-//           let path = item.filePath
-//           let is3D = await SScene.is3DWorkspace({ server: path })
-//           if (!is3D) {
-//             tpList.push({
-//               name: item.fileName,
-//               path: item.filePath,
-//             })
-//           }
-//         }
-//
-//         let data = [
-//           {
-//             title: Const.INFORMATION,
-//             data: tpList,
-//           },
-//         ]
-//         ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_IMPORT_TEMPLATE, {
-//           containerType: ToolbarType.list,
-//           height: ConstToolType.HEIGHT[3],
-//           data,
-//         })
-//       },
-//     )
-//   }.bind(this)())
-//   // NativeMethod.getTemplates(ToolbarModule.getParams().user.currentUser.userName).then(
-//   //   async templateList => {
-//   //     let tpList = []
-//   //     for (let i = 0; i < templateList.length; i++) {
-//   //       let item = templateList[i]
-//   //       let path = await FileTools.appendingHomeDirectory(item.path)
-//   //       let is3D = await SScene.is3DWorkspace({ server: path })
-//   //       if (!is3D) {
-//   //         tpList.push(item)
-//   //       }
-//   //     }
-//   //     let data = [
-//   //       {
-//   //         title: Const.MODULE,
-//   //         data: tpList,
-//   //       },
-//   //     ]
-//   //     ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_IMPORT_TEMPLATE, {
-//   //       containerType: ToolbarType.list,
-//   //       height: ConstToolType.HEIGHT[3],
-//   //       data,
-//   //     })
-//   //   },
-//   // )
-// }
-
 /** 判断是否保存 * */
 function isNeedToSave(cb = () => {}) {
   let isAnyMapOpened = true // 是否有打开的地图
@@ -911,9 +845,6 @@ async function listAction(type, params = {}) {
       changeMap(params.item)
       _params.getMapSetting()
       break
-    case ConstToolType.MAP3D_WORKSPACE_LIST:
-      openScene(params.item)
-      break
   }
 }
 
@@ -1020,98 +951,6 @@ async function headerAction(type, section = {}) {
       break
     }
   }
-}
-
-function openScene(item) {
-  const _params = ToolbarModule.getParams()
-  if (item.name === GLOBAL.sceneName) {
-    Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
-    // '场景已打开,请勿重复打开场景')
-    return
-  }
-  SScene.openScence(item.name).then(() => {
-    SScene.setNavigationControlVisible(false)
-    SScene.setListener()
-    SScene.getAttribute()
-    SScene.setCircleFly()
-    SScene.setAction('PAN3D')
-    SScene.changeBaseLayer(1)
-    // SScene.addLayer3D(
-    //   'http://t0.tianditu.com/img_c/wmts',
-    //   'l3dBingMaps',
-    //   'bingmap',
-    //   'JPG_PNG',
-    //   96.0,
-    //   true,
-    //   'c768f9fd3e388eb0d155405f8d8c6999',
-    // )
-    GLOBAL.action3d = 'PAN3D'
-    GLOBAL.openWorkspace = true
-    GLOBAL.sceneName = item.name
-    _params.refreshLayer3dList && _params.refreshLayer3dList()
-    _params.existFullMap && _params.existFullMap(true)
-    _params.setToolbarVisible(false)
-    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
-
-    _params.changeLayerList && _params.changeLayerList()
-  })
-}
-
-async function getSceneData() {
-  const params = ToolbarModule.getParams()
-  const buttons = []
-  const data = []
-  try {
-    // let buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.FLEX]
-    const userName = params.user.currentUser.userName || 'Customer'
-    const path = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + userName}/${ConstPath.RelativeFilePath.Scene}`,
-    )
-    const result = await FileTools.fileIsExist(path)
-    if (result) {
-      const fileList = await FileTools.getPathListByFilter(path, {
-        extension: 'pxp',
-        type: 'file',
-      })
-      const _data = []
-      for (let index = 0; index < fileList.length; index++) {
-        const element = fileList[index]
-        if (element.name.indexOf('.pxp') > -1) {
-          fileList[index].name = element.name.substr(
-            0,
-            element.name.lastIndexOf('.'),
-          )
-          if (params.language === 'EN') {
-            const day = element.mtime
-              .replace(/年|月|日/g, '/')
-              .split('  ')[0]
-              .split('/')
-            const info = `${day[2]}/${day[1]}/${day[0]}  ${
-              element.mtime.split('  ')[1]
-            }`
-            element.mtime = info
-          }
-          element.subTitle = element.mtime
-          element.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
-          _data.push(element)
-        }
-      }
-      data.push({
-        image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
-        title: getLanguage(params.language).Map_Label.SCENE,
-        data: _data,
-      })
-    }
-  } catch (error) {
-    Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
-  }
-  const type = ConstToolType.MAP3D_WORKSPACE_LIST
-  ToolbarModule.getParams().setToolbarVisible(true, type, {
-    containerType: ToolbarType.list,
-    isFullScreen: true,
-    data,
-    buttons,
-  })
 }
 
 async function openTemplate(item) {
@@ -1293,6 +1132,5 @@ export default {
   showHistory,
   saveMap,
   saveMapAs,
-  getSceneData,
   openWorkspace,
 }

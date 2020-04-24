@@ -17,11 +17,11 @@ export default class Map3DConfig extends Module {
       name_android: 'OlympicGreen_android',
     }
     this.functionModules = [
-      {key: 'startModule', type: 'MAP_3D_START'},
+      {key: 'start3DModule', type: 'MAP_3D_START'},
       {key: 'mark3DModule', type: 'MAP3D_MARK'},
       {key: 'fly3DModule', type: 'MAP3D_TOOL_FLYLIST'},
       {key: 'tool3DModule', type: 'MAP3D_TOOL'},
-      {key: 'shareModule', type: 'MAP_SHARE_MAP3D'},
+      {key: 'share3DModule', type: 'MAP_SHARE_MAP3D'},
     ]
     this.tabModules = [mapTabModules.Scene, mapTabModules.Layer3DManager, mapTabModules.LayerAttribute3D, mapTabModules.Map3DSetting]
   }

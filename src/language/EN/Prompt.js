@@ -346,6 +346,7 @@ const Prompt = {
   SELECT_A_POINT_INLINE: 'Please select an online point',
   LINE_DATASET: 'Line Dataset',
   DESTINATION_DATASOURCE: 'Target Datasource',
+  SMOOTH_FACTOR: 'Please enter smoothing factor',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',

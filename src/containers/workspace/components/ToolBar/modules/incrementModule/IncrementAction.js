@@ -4,13 +4,18 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import ToolbarModule from "../ToolbarModule"
-import {ConstToolType, Height, ToolbarType, TouchType} from "../../../../../../constants"
-import {getPublicAssets} from "../../../../../../assets"
+import ToolbarModule from '../ToolbarModule'
+import {
+  ConstToolType,
+  Height,
+  ToolbarType,
+  TouchType,
+} from '../../../../../../constants'
+import { getPublicAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
-import { SMap, Action} from 'imobile_for_reactnative'
-import {Toast} from "../../../../../../utils"
-import {getLanguage} from "../../../../../../language"
+import { SMap, Action } from 'imobile_for_reactnative'
+import { Toast } from '../../../../../../utils'
+import { getLanguage } from '../../../../../../language'
 
 //撤销过的点数组，用于undo redo
 let POINT_ARRAY = []
@@ -69,6 +74,7 @@ async function submit() {
       case ConstToolType.MAP_INCREMENT_GPS_POINT:
       case ConstToolType.MAP_INCREMENT_GPS_TRACK:
         SMap.clearTrackingLayer()
+        BackgroundTimer.stopBackgroundTimer()
         await SMap.submitIncrement(GLOBAL.INCREMENT_DATA)
         break
       case ConstToolType.MAP_INCREMENT_POINTLINE:
@@ -140,10 +146,11 @@ async function undo() {
 async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
   const _params = ToolbarModule.getParams()
   let containerType = ToolbarType.table
-  _params.setToolbarVisible && _params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: false,
-  })
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, type, {
+      containerType,
+      isFullScreen: false,
+    })
 }
 
 /**
@@ -154,12 +161,13 @@ function changeNetwork() {
   let type = _params.type
   _params.setToolbarVisible(true, ConstToolType.MAP_INCREMENT_CHANGE_NETWORK, {
     isFullScreen: false,
-    containerType:ToolbarType.list,
-    height: _params.device.orientation === "PORTRAIT"
-      ? Height.LIST_HEIGHT_P
-      : Height.LIST_HEIGHT_L,
+    containerType: ToolbarType.list,
+    height:
+      _params.device.orientation === 'PORTRAIT'
+        ? Height.LIST_HEIGHT_P
+        : Height.LIST_HEIGHT_L,
   })
-  ToolbarModule.addData({preType: type})
+  ToolbarModule.addData({ preType: type })
 }
 
 //底部增量方式图片
@@ -226,8 +234,8 @@ function close() {
   SMap.setIsMagnifierEnabled(false)
   let layers = _params.layers.layers
   let currentLayer = _params.layers.currentLayer
-  layers.map(layer => SMap.setLayerSelectable(layer.path,false))
-  if(currentLayer.name){
+  layers.map(layer => SMap.setLayerSelectable(layer.path, false))
+  if (currentLayer.name) {
     _params.setCurrentLayer(currentLayer)
     SMap.setLayerEditable(currentLayer.name, true)
     SMap.setLayerVisible(currentLayer.name, true)
@@ -246,10 +254,11 @@ async function topoEdit() {
   await SMap.clearIncrementPoints()
   SMap.submit()
   SMap.setAction(Action.SELECT)
-  _params.setToolbarVisible && _params.setToolbarVisible(true,ConstToolType.MAP_TOPO_EDIT,{
-    isFullScreen: false,
-    height:0,
-  })
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_EDIT, {
+      isFullScreen: false,
+      height: 0,
+    })
 }
 
 export default {

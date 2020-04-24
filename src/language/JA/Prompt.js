@@ -352,6 +352,7 @@ const Prompt = {
   SELECT_A_POINT_INLINE: 'オンラインポイントを選択してください',
   LINE_DATASET: 'ラインデータセット',
   DESTINATION_DATASOURCE: 'ターゲットデータソース',
+  SMOOTH_FACTOR: '平滑化係数を入力してください',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',

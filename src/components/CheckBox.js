@@ -15,6 +15,7 @@ export default class CheckBox extends React.Component {
     style?: Object,
     imgStyle?: Object,
     disable?: boolean,
+    checked?: boolean,
   }
 
   static defaultProps = {
@@ -23,8 +24,13 @@ export default class CheckBox extends React.Component {
 
   constructor(props) {
     super(props)
+    this.isPropsEdit = false
+    let isCheckd = false
+    if (this.props.checked) {
+      isCheckd = true
+    }
     this.state = {
-      checked: false,
+      checked: isCheckd,
     }
   }
 
@@ -33,9 +39,21 @@ export default class CheckBox extends React.Component {
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       JSON.stringify(nextState) !== JSON.stringify(this.state)
     ) {
+      if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+        this.isPropsEdit = true
+      }
       return true
     }
     return false
+  }
+
+  componentDidUpdate() {
+    if (this.isPropsEdit) {
+      this.setState({
+        checked: this.props.checked,
+      })
+      this.isPropsEdit = false
+    }
   }
 
   _btnPress = () => {

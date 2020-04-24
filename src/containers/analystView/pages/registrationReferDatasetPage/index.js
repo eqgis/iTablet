@@ -1,0 +1,3 @@
+import RegistrationReferDatasetPage from './RegistrationReferDatasetPage'
+
+export default RegistrationReferDatasetPage

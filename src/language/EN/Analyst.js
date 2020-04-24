@@ -13,6 +13,9 @@ const Analyst_Modules = {
   CONNECTIVITY_ANALYSIS: 'Connectivity Analysis',
   FIND_TSP_PATH: 'Find TSP Path',
   TRACING_ANALYSIS: 'Tracing Analysis',
+
+  REGISTRATION_CREATE: 'Registration Create',
+  REGISTRATION_SPEEDINESS: 'Registration Speediness',
 }
 
 const Analyst_Methods = {
@@ -183,6 +186,16 @@ const Analyst_Labels = {
   FUNCTION: 'Function',
   SHOW_STATISTICS: 'Show Statistics',
   EXPORT_TO_ALBUM: 'Export to Album',
+
+  REGISTRATION_DATASET: 'Registration dataset',
+  REGISTRATION_REFER_DATASET_ADD: 'Registration refer dataset add',
+  REGISTRATION: 'Registration',
+  REGISTRATION_ARITHMETIC: 'Registration arithmetic',
+  REGISTRATION_LINE: 'Registration line (at least 4 control points)',
+  REGISTRATION_QUADRATIC: 'Registration quadratic (at least 7 control points)',
+  REGISTRATION_RECTANGLE: 'Registration rectangle (2 control points)',
+  REGISTRATION_OFFSET: 'Registration offset (1 control points)',
+  REGISTRATION_ASSOCIATION: 'Association',
 }
 
 const Analyst_Params = {

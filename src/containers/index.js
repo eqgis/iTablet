@@ -114,6 +114,10 @@ import {
   AnalystRangePage,
   WeightAndStatistic,
   LocalAnalystView,
+  RegistrationDatasetPage,
+  RegistrationReferDatasetPage,
+  RegistrationArithmeticPage,
+  RegistrationPage,
   ReferenceAnalystView,
   InterpolationAnalystView,
   InterpolationAnalystDetailView,
@@ -950,6 +954,34 @@ export default function(appConfig) {
       },
       ReferenceAnalystView: {
         screen: ReferenceAnalystView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationDatasetPage: {
+        screen: RegistrationDatasetPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationReferDatasetPage: {
+        screen: RegistrationReferDatasetPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationArithmeticPage: {
+        screen: RegistrationArithmeticPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationPage: {
+        screen: RegistrationPage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

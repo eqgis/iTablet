@@ -19,6 +19,10 @@ export default class LoginCloud extends Component {
     }
   }
 
+  componentDidMount() {
+    SMap.logoutCloudLicense()
+  }
+
   login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
     let result
     let userName = ''

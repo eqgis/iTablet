@@ -17,6 +17,7 @@ import {
 import { scaleSize, screen } from '../../utils'
 import { getPublicAssets } from '../../assets'
 import styles from './styles'
+import { CheckBox } from '../../components'
 
 const LEFT_MIN_WIDTH = scaleSize(240)
 export default class LinkageList extends React.Component {
@@ -28,6 +29,7 @@ export default class LinkageList extends React.Component {
     onRightPress?: () => {}, //右侧点击
     styles?: Object, //样式
     adjustmentWidth?: boolean,
+    isMultiple: boolean, //是否是多选
   }
 
   static defaultProps = {
@@ -41,6 +43,10 @@ export default class LinkageList extends React.Component {
       rightSelected: 0,
       // data: props.data || [],
       rightData: (props.data && props.data[0] && props.data[0].data) || [],
+      selectedData: [],
+    }
+    if (this.props.isMultiple) {
+      this.isMultiple = true
     }
     this.styles = this.props.styles
       ? Object.assign(styles, this.props.styles)
@@ -76,6 +82,10 @@ export default class LinkageList extends React.Component {
         screen.getMapChildPageWith() - LEFT_MIN_WIDTH
       this._updateNativeStyles()
     }
+  }
+
+  getSelectData = () => {
+    return this.state.selectedData
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -188,6 +198,29 @@ export default class LinkageList extends React.Component {
   }
 
   renderRightItem = ({ item, index }) => {
+    let rightItem = this.isMultiple
+      ? this.renderMultipleRightItem({ item, index })
+      : this.renderSingleRightItem({ item, index })
+    return rightItem
+    // return (
+    //   <TouchableOpacity
+    //     style={
+    //       this.state.rightSelected === index
+    //         ? this.styles.leftWrapSelect
+    //         : this.styles.leftWrap
+    //     }
+    //     onPress={() => {
+    //       this.onRightPress({ item, index })
+    //     }}
+    //   >
+    //     <Text style={this.styles.rightItem} numberOfLines={1}>
+    //       {item.title}
+    //     </Text>
+    //   </TouchableOpacity>
+    // )
+  }
+
+  renderSingleRightItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         style={
@@ -203,6 +236,88 @@ export default class LinkageList extends React.Component {
           {item.title}
         </Text>
       </TouchableOpacity>
+    )
+  }
+
+  indexOf(arr, val) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === val) return i
+    }
+    return -1
+  }
+
+  renderMultipleRightItem = ({ item, index }) => {
+    let isSelect = false
+    let data = this.state.selectedData
+    let datasourceIndex = -1
+    for (let i = 0; i < data.length; i++) {
+      if (item.datasourceName === data[i].datasourceName) {
+        datasourceIndex = i
+        break
+      }
+    }
+    if (datasourceIndex != -1) {
+      let desetIndex = this.indexOf(data[datasourceIndex].data, index)
+      if (desetIndex != -1) {
+        isSelect = true
+      }
+    }
+
+    return (
+      <View
+        style={this.styles.leftWrap}
+        // onPress={() => {
+        //   this.onRightPress({ item, index })
+        // }}
+      >
+        <CheckBox
+          style={{
+            height: scaleSize(30),
+            width: scaleSize(30),
+            marginLeft: scaleSize(20),
+          }}
+          checked={isSelect}
+          onChange={value => {
+            item.isSelect = value
+            let data = this.state.selectedData
+            if (value) {
+              let datasourceIndex = -1
+              for (let i = 0; i < data.length; i++) {
+                if (item.datasourceName === data[i].datasourceName) {
+                  data[i].data.push(index)
+                  datasourceIndex = i
+                  break
+                }
+              }
+              if (datasourceIndex == -1) {
+                let dataItem = {}
+                dataItem.datasourceName = item.datasourceName
+                let datasetArray = []
+                datasetArray.splice()
+                datasetArray.push(index)
+                dataItem.data = datasetArray
+                data.push(dataItem)
+              }
+            } else {
+              for (let i = 0; i < data.length; i++) {
+                if (item.datasourceName === data[i].datasourceName) {
+                  let datasetIndex = this.indexOf(data[i].data, index)
+                  if (datasetIndex != -1) {
+                    data[i].data.splice(datasetIndex, 1)
+                  }
+                  break
+                }
+              }
+            }
+            this.setState({
+              selectedData: data,
+            })
+          }}
+        />
+        <Text style={this.styles.rightItem} numberOfLines={1}>
+          {item.title}
+        </Text>
+      </View>
     )
   }
 
@@ -244,9 +359,14 @@ export default class LinkageList extends React.Component {
             <View style={styles.shortLine2} />
           </View>
           <FlatList
+            ref={ref => (this.RightList = ref)}
             renderItem={this.renderRightItem}
             data={this.state.rightData}
-            extraData={this.state.rightSelected}
+            extraData={
+              this.isMultiple
+                ? this.state.selectedData
+                : this.state.rightSelected
+            }
             keyExtractor={(item, index) => item + index}
           />
         </View>

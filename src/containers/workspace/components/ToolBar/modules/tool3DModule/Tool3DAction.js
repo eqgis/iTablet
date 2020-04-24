@@ -375,6 +375,7 @@ async function close(type) {
   ) {
     await SScene.clipSenceClear()
     GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+    _params.setToolbarVisible(false)
   } else {
     SScene.checkoutListener('startTouchAttribute')
     SScene.setAction('PAN3D')

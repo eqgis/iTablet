@@ -63,10 +63,10 @@ async function geometrySelected(event) {
       case ConstToolType.MAP_TOPO_SMOOTH:
         //弹窗 输入平滑系数
         GLOBAL.InputDialog?.setDialogVisible(true, {
-          title: '请输入平滑系数',
+          title: getLanguage(GLOBAL.language).Prompt.SMOOTH_FACTOR,
           value: '',
-          confirmBtnTitle: '确定',
-          cancelBtnTitle: '取消',
+          confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
+          cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
           placeholder: '',
           returnKeyType: 'done',
           keyboardAppearance: 'dark',
@@ -74,6 +74,14 @@ async function geometrySelected(event) {
           confirmAction: inputConfirm,
           cancelAction: inputCancel,
         })
+        break
+      case ConstToolType.MAP_TOPO_EXTEND_LINE:
+        SMap.setAction(Action.PAN)
+        Toast.show('请选择需要延长的线')
+        //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
+        setTimeout(() => {
+          GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
+        }, 200)
         break
     }
   }
@@ -117,8 +125,7 @@ function showMerge() {
 //切换编辑方式
 async function changeEditType() {
   const _params = ToolbarModule.getParams()
-  const data = ToolbarModule.getData()
-  if (data.type === ConstToolType.MAP_TOPO_SWITCH_TYPE) {
+  if (_params.type === ConstToolType.MAP_TOPO_SWITCH_TYPE) {
     return
   }
   SMap.setAction(Action.PAN)
@@ -131,6 +138,7 @@ async function changeEditType() {
 //拓扑编辑
 async function switchType(item) {
   let { key } = item
+  let touchType
   let type
   switch (key) {
     case constants.MAP_TOPO_ADD_NODE:
@@ -155,12 +163,18 @@ async function switchType(item) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
       break
     case constants.MAP_TOPO_POINT_ADJUST:
+      break
     case constants.MAP_TOPO_SPLIT:
-      GLOBAL.TouchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
+      type = ConstToolType.MAP_TOPO_SPLIT
+      touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       SMap.setAction(Action.PAN)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       break
     case constants.MAP_TOPO_EXTEND:
+      type = ConstToolType.MAP_TOPO_EXTEND_LINE
+      SMap.setAction(Action.SELECT)
+      Toast.show('请选择目标线')
+      break
     case constants.MAP_TOPO_TRIM:
     case constants.MAP_TOPO_RESAMPLE:
     case constants.MAP_TOPO_CHANGE_DIRECTION:
@@ -178,6 +192,7 @@ async function switchType(item) {
     isFullScreen: false,
     height: data.height,
     column: data.column,
+    touchType,
     ..._data,
   })
 }
@@ -261,6 +276,43 @@ function inputCancel() {
     isFullScreen: false,
   })
 }
+
+/**
+ * 点打断线
+ * @param point
+ */
+async function pointSplitLine(point) {
+  let params = {
+    point,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.pointSplitLine(params)
+  if (rel) {
+    Toast.show('打断成功')
+  } else {
+    Toast.show('打断失败')
+  }
+}
+
+/**
+ * 线延长
+ * @param point
+ */
+async function extendLine(point) {
+  let data = ToolbarModule.getData()
+  let params = {
+    point,
+    id: data.event.id,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.extendLine(params)
+  if (rel) {
+    Toast.show('线延长成功')
+    ToolbarModule.addData({ event: undefined })
+  } else {
+    Toast.show('线延长失败')
+  }
+}
 export default {
   close,
   commit,
@@ -275,4 +327,6 @@ export default {
   submit,
   inputConfirm,
   inputCancel,
+  pointSplitLine,
+  extendLine,
 }

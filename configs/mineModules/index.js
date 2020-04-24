@@ -11,5 +11,5 @@ export default [
   {key: 'BASE_MAP'},
   {key: 'SYMBOL'},
   {key: 'TEMPLATE'},
-  {key: 'MyColor'}
+  {key: 'MyColor'},
 ]

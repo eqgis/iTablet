@@ -8,6 +8,7 @@
 
 #import "AppUtils.h"
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CLLocationManager.h>
 @implementation AppUtils
 RCT_EXPORT_MODULE();
 RCT_REMAP_METHOD(AppExit,AppExit:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){

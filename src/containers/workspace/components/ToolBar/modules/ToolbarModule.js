@@ -139,8 +139,6 @@ function getModule(type, params = {}) {
     module = tool3DModule()
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
     module = legendModule()
-  } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
-    module = getPlotAnimationData(type)
   } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
     module = aiModule()
   } else if (
@@ -182,6 +180,8 @@ async function getToolBarData(type, params = {}) {
   let module = getModule(type, params)
   if (module && module.getData) {
     toolBarData = module.getData(type, params)
+  } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
+    toolBarData = getPlotAnimationData(type)
   }
 
   return toolBarData

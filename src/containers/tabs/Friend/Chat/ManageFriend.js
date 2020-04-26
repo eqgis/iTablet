@@ -164,12 +164,11 @@ class ManageFriend extends Component {
         <TouchableOpacity
           style={{ alignItems: 'center', paddingVertical: scaleSize(20) }}
           onPress={() => {
-            this.SimpleDialog.setText(
-              getLanguage(this.language).Friends.ALERT_DEL_FRIEND,
-            )
-            this.SimpleDialog.setConfirm(() => {
-              this.SimpleDialog.setVisible(false)
-              this._deleteFriend()
+            this.SimpleDialog.set({
+              text: getLanguage(this.language).Friends.ALERT_DEL_FRIEND,
+              confirmAction: () => {
+                this._deleteFriend()
+              },
             })
             this.SimpleDialog.setVisible(true)
           }}

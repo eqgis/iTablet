@@ -54,23 +54,22 @@ export default class InformMessage extends React.Component {
     switch (item.type) {
       case MSGconstant.MSG_ADD_FRIEND:
         if (!FriendListFileHandle.isFriend(item.originMsg.user.id)) {
-          this.SimpleDialog.setText(
-            getLanguage(this.language).Friends.FRIEND_RESPOND,
-          )
-          this.SimpleDialog.setConfirm(() => {
-            this.SimpleDialog.setVisible(false)
-            this._acceptFriend(item)
-            item.originMsg.consumed = true
-            MessageDataHandle.editMessage({
-              userId: this.state.currentUser.userId,
-              talkId: item.originMsg.user.groupID,
-              msgId: item.msgId,
-              type: item.type,
-              editItem: item,
-            })
-            this.setState({
-              messageInfo: JSON.parse(JSON.stringify(this.state.messageInfo)),
-            })
+          this.SimpleDialog.set({
+            text: getLanguage(this.language).Friends.FRIEND_RESPOND,
+            confirmAction: () => {
+              this._acceptFriend(item)
+              item.originMsg.consumed = true
+              MessageDataHandle.editMessage({
+                userId: this.state.currentUser.userId,
+                talkId: item.originMsg.user.groupID,
+                msgId: item.msgId,
+                type: item.type,
+                editItem: item,
+              })
+              this.setState({
+                messageInfo: JSON.parse(JSON.stringify(this.state.messageInfo)),
+              })
+            },
           })
           this.SimpleDialog.setVisible(true)
         } else {

@@ -168,13 +168,12 @@ class Chat extends React.Component {
 
   back = () => {
     if (this.state.coworkMode) {
-      this.SimpleDialog.setConfirm(() => {
-        this.SimpleDialog.setVisible(false)
-        this.endCowork()
+      this.SimpleDialog.set({
+        text: getLanguage(global.language).Friends.ALERT_EXIT_COWORK,
+        confirmAction: () => {
+          this.endCowork()
+        },
       })
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Friends.ALERT_EXIT_COWORK,
-      )
       this.SimpleDialog.setVisible(true)
     }
     return true
@@ -776,14 +775,15 @@ class Chat extends React.Component {
         fileSize = fileSize / 1024
         fileSizeText = fileSize.toFixed(2) + 'MB'
       }
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
+      this.SimpleDialog.set({
+        text:
+          getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
           '(' +
           fileSizeText +
           ')？',
-      )
-      this.SimpleDialog.setConfirm(() => {
-        this.receivePicture(message)
+        confirmAction: () => {
+          this.receivePicture(message)
+        },
       })
       this.SimpleDialog.setVisible(true)
       return
@@ -841,50 +841,46 @@ class Chat extends React.Component {
       if (message.downloading) {
         Toast.show(getLanguage(global.language).Friends.WAIT_DOWNLOADING)
       } else if (message.originMsg.message.message.progress !== 100) {
-        this.SimpleDialog.setConfirm(() => {
-          this.SimpleDialog.setVisible(false)
-          this.receiveFile(message, receivePath)
+        this.SimpleDialog.set({
+          text: getLanguage(global.language).Friends.RECEIVE_CONFIRM,
+          confirmAction: () => {
+            this.receiveFile(message, receivePath)
+          },
         })
-        this.SimpleDialog.setText(
-          getLanguage(global.language).Friends.RECEIVE_CONFIRM,
-        )
         this.SimpleDialog.setVisible(true)
       } else if (message.originMsg.message.message.progress === 100) {
         let homePath = await FileTools.appendingHomeDirectory()
         let filePath = homePath + message.originMsg.message.message.filePath
         if (!(await FileTools.fileIsExist(filePath))) {
-          this.SimpleDialog.setConfirm(() => {
-            this.SimpleDialog.setVisible(false)
-            this.receiveFile(message, receivePath)
+          this.SimpleDialog.set({
+            text: getLanguage(global.language).Friends.DATA_NOT_FOUND,
+            confirmAction: () => {
+              this.receiveFile(message, receivePath)
+            },
           })
-          this.SimpleDialog.setText(
-            getLanguage(global.language).Friends.DATA_NOT_FOUND,
-          )
           this.SimpleDialog.setVisible(true)
           return
         }
         switch (type) {
           case MSGConstant.MSG_MAP:
-            this.SimpleDialog.setConfirm(() => {
-              this.SimpleDialog.setVisible(false)
-              this.importMap(message)
+            this.SimpleDialog.set({
+              text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
+              confirmAction: () => {
+                this.importMap(message)
+              },
             })
-            this.SimpleDialog.setText(
-              getLanguage(global.language).Friends.IMPORT_CONFIRM,
-            )
             this.SimpleDialog.setVisible(true)
             break
           case MSGConstant.MSG_LAYER:
             if (!global.coworkMode) {
               this.showOpenCoworkDialog()
             } else {
-              this.SimpleDialog.setConfirm(() => {
-                this.SimpleDialog.setVisible(false)
-                this.importLayer(message)
+              this.SimpleDialog.set({
+                text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
+                confirmAction: () => {
+                  this.importLayer(message)
+                },
               })
-              this.SimpleDialog.setText(
-                getLanguage(global.language).Friends.IMPORT_CONFIRM,
-              )
               this.SimpleDialog.setVisible(true)
             }
             break
@@ -892,13 +888,12 @@ class Chat extends React.Component {
             if (!global.coworkMode) {
               this.showOpenCoworkDialog()
             } else {
-              this.SimpleDialog.setConfirm(() => {
-                this.SimpleDialog.setVisible(false)
-                this.importDataset(message)
+              this.SimpleDialog.set({
+                text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
+                confirmAction: () => {
+                  this.importDataset(message)
+                },
               })
-              this.SimpleDialog.setText(
-                getLanguage(global.language).Friends.IMPORT_CONFIRM,
-              )
               this.SimpleDialog.setVisible(true)
             }
 
@@ -1080,12 +1075,12 @@ class Chat extends React.Component {
   }
 
   showOpenCoworkDialog = () => {
-    this.SimpleDialog.setConfirm(() => {
-      NavigationService.navigate('SelectModule')
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Friends.OPENCOWORKFIRST,
+      confirmAction: () => {
+        NavigationService.navigate('SelectModule')
+      },
     })
-    this.SimpleDialog.setText(
-      getLanguage(global.language).Friends.OPENCOWORKFIRST,
-    )
     this.SimpleDialog.setVisible(true)
   }
 

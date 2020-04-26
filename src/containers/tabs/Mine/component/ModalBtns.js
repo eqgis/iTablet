@@ -76,12 +76,12 @@ export default class ModalBtns extends Component {
               image={getThemeAssets().share.wechat}
               imageStyle={styles.headerBtn}
               onPress={() => {
-                this.SimpleDialog.setConfirm(() => {
-                  this.props.actionOfWechat && this.props.actionOfWechat()
+                this.SimpleDialog.set({
+                  text: getLanguage(global.language).Prompt.OPEN_THRID_PARTY,
+                  confirmAction: () => {
+                    this.props.actionOfWechat && this.props.actionOfWechat()
+                  },
                 })
-                this.SimpleDialog.setText(
-                  getLanguage(global.language).Prompt.OPEN_THRID_PARTY,
-                )
                 this.SimpleDialog.setVisible(true)
               }}
             />

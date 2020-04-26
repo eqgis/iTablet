@@ -26,11 +26,10 @@ export default class Personal extends Component {
   }
 
   _logoutConfirm = () => {
-    this.SimpleDialog.setConfirm(() => {
-      this.SimpleDialog.setVisible(false)
-      this._logout()
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Prompt.LOG_OUT,
+      confirmAction: this._logout,
     })
-    this.SimpleDialog.setText(getLanguage(global.language).Prompt.LOG_OUT)
     this.SimpleDialog.setVisible(true)
   }
 

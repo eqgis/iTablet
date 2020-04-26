@@ -80,37 +80,8 @@ export default class SimpleDialog extends PureComponent {
       renderExtra: this.renderExtra,
       dialogStyle: {},
       showTitleImage: true,
+      confirmText: getLanguage(global.language).Friends.CONFIRM,
     })
-  }
-
-  setConfirm = action => {
-    if (action && typeof action === 'function') {
-      this.setState({
-        confirmAction: () => {
-          this.setVisible(false)
-          action()
-        },
-      })
-    }
-  }
-
-  setCancel = action => {
-    if (action && typeof action === 'function') {
-      this.setState({
-        cancelAction: () => {
-          this.setVisible(false)
-          action()
-        },
-      })
-    }
-  }
-
-  setText = text => {
-    this.setState({ text: text })
-  }
-
-  setExtra = renderExtra => {
-    this.setState({ renderExtra: renderExtra })
   }
 
   confirm = () => {

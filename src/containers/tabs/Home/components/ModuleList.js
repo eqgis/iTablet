@@ -19,7 +19,6 @@ import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
-import { SimpleDialog } from '../../Friend/Component'
 import { TAB_BAR_HEIGHT_P } from '../../TabBar'
 // let AppUtils = NativeModules.AppUtils
 
@@ -230,21 +229,6 @@ class ModuleList extends Component {
 
   itemAction = async (language, { item, index }) => {
     try {
-      // if (Platform.OS === 'android') {
-      //   let granted = await PermissionsAndroid.request(
-      //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      //   )
-      //   if (PermissionsAndroid.RESULTS.GRANTED !== granted) {
-      //     this.SimpleDialog.setConfirm(() => {
-      //       AppUtils.startAppLoactionSetting()
-      //     })
-      //     this.SimpleDialog.setText(
-      //       getLanguage(global.language).Prompt.REQUEST_LOCATION,
-      //     )
-      //     this.SimpleDialog.setVisible(true)
-      //     return
-      //   }
-      // }
       let tmpCurrentUser = this.props.currentUser
       let currentUserName = tmpCurrentUser.userName
         ? tmpCurrentUser.userName
@@ -394,10 +378,6 @@ class ModuleList extends Component {
     )
   }
 
-  renderSimpleDialog = () => {
-    return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
-  }
-
   render() {
     let data = this.props.mapModules.map(item =>
       item.getChunk(this.props.language),
@@ -459,7 +439,6 @@ class ModuleList extends Component {
             />
           </View>
         )}
-        {this.renderSimpleDialog()}
       </View>
     )
   }

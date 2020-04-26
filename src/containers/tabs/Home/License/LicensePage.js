@@ -26,6 +26,7 @@ class LicensePage extends Component {
   props: {
     navigation: Object,
     licenseInfo: Object,
+    cloudLicenseUser: Object,
     setLicenseInfo: () => {},
   }
 
@@ -33,6 +34,11 @@ class LicensePage extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.user = params && params.user
+    global.recycleCloudLicense = this._recycleCloudLicense
+  }
+
+  componentWillUnmount() {
+    global.recycleCloudLicense = null
   }
 
   getLicenseInfo = async () => {
@@ -77,6 +83,17 @@ class LicensePage extends Component {
 
   _recycleCloudLicense = async () => {
     try {
+      let userInfo = this.props.cloudLicenseUser
+      if (userInfo.isEmail === undefined) {
+        Toast.show('请先登录')
+        NavigationService.navigate('LicenseJoinCloud', {
+          callback: () => {
+            NavigationService.goBack()
+            this._recycleCloudLicense()
+          },
+        })
+        return false
+      }
       GLOBAL.Loading.setLoading(
         true,
         getLanguage(global.language).Prompt.LOADING,
@@ -85,6 +102,9 @@ class LicensePage extends Component {
       let returnId = await AsyncStorage.getItem(
         constants.LICENSE_CLOUD_RETURN_ID,
       )
+      let username = userInfo.isEmail ? userInfo.email : userInfo.phone
+      let password = userInfo.isEmail ? userInfo.emailPwd : userInfo.phonePwd
+      await SMap.loginCloudLicense(username, password)
       let days = await SMap.recycleCloudLicense(licenseId, returnId)
       if (days === false) {
         Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
@@ -94,9 +114,11 @@ class LicensePage extends Component {
       }
       this.getLicenseInfo()
       GLOBAL.Loading.setLoading(false)
+      return days
     } catch (e) {
       Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       GLOBAL.Loading.setLoading(false)
+      return false
     }
   }
 
@@ -195,6 +217,7 @@ class LicensePage extends Component {
 
 const mapStateToProps = state => ({
   licenseInfo: state.license.toJS().licenseInfo,
+  cloudLicenseUser: state.license.toJS().cloudLicenseUser,
 })
 
 const mapDispatchToProps = {

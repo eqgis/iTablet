@@ -6,24 +6,75 @@ import { Toast } from '../../../../../utils'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../NavigationService'
+import { connect } from 'react-redux'
+import { setCloudLicenseUser } from '../../../../../redux/models/license'
 
-export default class LoginCloud extends Component {
+class LoginCloud extends Component {
   props: {
     navigation: Object,
+    cloudLicenseUser: Object,
+    setCloudLicenseUser: () => {},
   }
 
   constructor(props) {
     super(props)
+    const { params } = this.props.navigation.state
     this.state = {
       onEmailTitleFocus: true,
+      reLogin: true,
     }
+    this.cb = (params && params.callback) || null
   }
 
   componentDidMount() {
-    SMap.logoutCloudLicense()
+    this.reLogin()
   }
 
-  login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
+  reLogin = async () => {
+    try {
+      let user = this.props.cloudLicenseUser
+      if (user.isEmail !== undefined) {
+        await SMap.logoutCloudLicense()
+        let result = await this._login(user)
+        if (result) {
+          this._queryLicense()
+        } else {
+          this.setState({ reLogin: false })
+        }
+      } else {
+        this.setState({ reLogin: false })
+      }
+    } catch (error) {
+      this.setState({ reLogin: false })
+    }
+  }
+
+  login = async userInfo => {
+    let result = await this._login(userInfo)
+    if (result) {
+      if (this.cb && typeof this.cb === 'function') {
+        this.cb()
+      } else {
+        this._queryLicense()
+      }
+    }
+  }
+
+  _queryLicense = async () => {
+    let result
+    this.container && this.container.setLoading(true)
+    try {
+      result = await SMap.queryCloudLicense()
+    } catch (error) {
+      result = {}
+    }
+    this.container && this.container.setLoading(false)
+    NavigationService.navigate('LicenseJoinCloud', {
+      licenseInfo: result,
+    })
+  }
+
+  _login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
     let result
     let userName = ''
     let password = ''
@@ -34,22 +85,22 @@ export default class LoginCloud extends Component {
           Toast.show(
             getLanguage(global.language).Profile.ENTER_EMAIL_OR_USERNAME,
           )
-          return
+          return false
         }
         if (!emailPwd) {
           Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
-          return
+          return false
         }
         userName = email
         password = emailPwd
       } else {
         if (!phone) {
           Toast.show(getLanguage(global.language).Profile.ENTER_MOBILE)
-          return
+          return false
         }
         if (!phonePwd) {
           Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
-          return
+          return false
         }
         userName = phone
         password = phonePwd
@@ -68,7 +119,7 @@ export default class LoginCloud extends Component {
         result = startLogin()
       } else {
         Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
-        return
+        return false
       }
 
       let timeout = sec => {
@@ -82,20 +133,28 @@ export default class LoginCloud extends Component {
       let res = await new Promise.race([result, timeout(20)])
       if (res === 'timeout') {
         Toast.show(getLanguage(global.language).Profile.LOGIN_TIMEOUT)
-        return
+        return false
       } else {
         result = res
       }
       if (result === true) {
-        let result = await SMap.queryCloudLicense()
-        NavigationService.navigate('LicenseJoinCloud', {
-          licenseInfo: result,
+        this.props.setCloudLicenseUser({
+          isEmail,
+          email,
+          emailPwd,
+          phone,
+          phonePwd,
         })
+        return true
       } else {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
+        SMap.logoutCloudLicense()
+        return false
       }
     } catch (e) {
       Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
+      SMap.logoutCloudLicense()
+      return false
     } finally {
       this.container && this.container.setLoading(false)
     }
@@ -120,8 +179,21 @@ export default class LoginCloud extends Component {
           navigation: this.props.navigation,
         }}
       >
-        {this.renderLogin()}
+        {!this.state.reLogin && this.renderLogin()}
       </Container>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  cloudLicenseUser: state.license.toJS().cloudLicenseUser,
+})
+
+const mapDispatchToProps = {
+  setCloudLicenseUser,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginCloud)

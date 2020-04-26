@@ -9,7 +9,10 @@ import {
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../../redux/models/license'
+import {
+  setLicenseInfo,
+  setCloudLicenseUser,
+} from '../../../../../redux/models/license'
 import constants from '../../../../../../src/containers/workspace/constants'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
@@ -23,26 +26,76 @@ import { getLanguage } from '../../../../../language'
 class LicenseJoinCloud extends Component {
   props: {
     navigation: Object,
+    licenseInfo: Object,
     setLicenseInfo: () => {},
+    setCloudLicenseUser: () => {},
   }
 
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state
-
+    let licenseInfo = (params && params.licenseInfo) || {}
     this.state = {
-      licenses: params.licenseInfo.licenses || [],
-      currentLicense: params.licenseInfo.licenses
-        ? params.licenseInfo.licenses[0]
-          ? params.licenseInfo.licenses[0]
+      licenses: licenseInfo.licenses || [],
+      currentLicense: licenseInfo.licenses
+        ? licenseInfo.licenses[0]
+          ? licenseInfo.licenses[0]
           : {}
         : {},
       showDetail: false,
     }
   }
 
-  activate = async () => {
+  _checkCloudLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 1
+    ) {
+      GLOBAL.SimpleDialog.set({
+        text: '归还当前云许可并激活此许可?',
+        confirmAction: async () => {
+          let result = await global.recycleCloudLicense()
+          if (result !== false) {
+            this.activate(true)
+          }
+        },
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      this.activate(true)
+    }
+  }
+
+  _checkCloudLicense4Logout = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 1
+    ) {
+      GLOBAL.SimpleDialog.set({
+        text: '归还当前云许可并退出账号?',
+        confirmAction: async () => {
+          let result = await global.recycleCloudLicense()
+          if (result !== false) {
+            this.logout(true)
+          }
+        },
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      this.logout(true)
+    }
+  }
+
+  activate = async (confirm = false) => {
     try {
+      if (!confirm) {
+        this._checkCloudLicense()
+        return
+      }
       let licenseId = this.state.currentLicense.id
       if (licenseId) {
         this.container &&
@@ -70,6 +123,27 @@ class LicenseJoinCloud extends Component {
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+    }
+  }
+
+  logout = async (confirm = false) => {
+    try {
+      if (!confirm) {
+        this._checkCloudLicense4Logout()
+        return
+      }
+      this.container && this.container.setLoading(true, '退出中')
+      let result = await SMap.logoutCloudLicense()
+      this.container && this.container.setLoading(false)
+      if (result) {
+        this.props.setCloudLicenseUser({})
+        this.props.navigation.pop(2)
+      } else {
+        Toast.show('退出失败')
+      }
+    } catch (error) {
+      Toast.show('退出失败')
+      this.container && this.container.setLoading(false)
     }
   }
 
@@ -240,8 +314,33 @@ class LicenseJoinCloud extends Component {
         type={this.state.currentLicense.id ? 'BLUE' : 'GRAY'}
         style={styles.activeButton}
         titleStyle={{ fontSize: scaleSize(24) }}
-        onPress={this.activate}
+        onPress={() => this.activate(false)}
       />
+    )
+  }
+
+  renderLogout = () => {
+    return (
+      <View
+        style={{
+          marginTop: -scaleSize(20),
+          marginBottom: scaleSize(20),
+          flexDirection: 'row',
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+      >
+        <TouchableOpacity onPress={() => this.logout(false)}>
+          <Text
+            style={{
+              fontSize: scaleSize(24),
+              color: '#4680DF',
+            }}
+          >
+            {'退出登录'}
+          </Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -259,16 +358,24 @@ class LicenseJoinCloud extends Component {
           {this.renderLicense()}
           {this.renderLicenseDetail()}
           {this.renderActive()}
+          {this.renderLogout()}
         </ScrollView>
       </Container>
     )
   }
 }
 
+const mapStateToProps = state => ({
+  licenseInfo: state.license.toJS().licenseInfo,
+  cloudLicenseUser: state.license.toJS().cloudLicenseUser,
+})
+
 const mapDispatchToProps = {
   setLicenseInfo,
+  setCloudLicenseUser,
 }
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(LicenseJoinCloud)

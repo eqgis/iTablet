@@ -13,15 +13,19 @@ import { Toast } from '../../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../NavigationService'
 import styles from '../styles'
+import { connect } from 'react-redux'
+import { setPrivateLicenseServer } from '../../../../../redux/models/license'
 
-export default class ConnectServer extends Component {
+class ConnectServer extends Component {
   props: {
     navigation: Object,
+    privateLicenseServer: String,
+    setPrivateLicenseServer: () => {},
   }
 
   constructor(props) {
     super(props)
-    this.server = ''
+    this.server = this.props.privateLicenseServer || ''
   }
 
   queryLicense = async () => {
@@ -31,7 +35,7 @@ export default class ConnectServer extends Component {
         return
       }
       if (
-        this.server.indexOf('ws://') !== 0 ||
+        this.server.indexOf('ws://') !== 0 &&
         this.server.indexOf('http') !== 0
       ) {
         this.server = 'ws://' + this.server
@@ -45,6 +49,7 @@ export default class ConnectServer extends Component {
       let modules = await SMap.queryPrivateCloudLicense()
       this.container && this.container.setLoading(false)
       if (modules) {
+        this.props.setPrivateLicenseServer(this.server)
         NavigationService.navigate('LicenseJoinPrivateCloud', {
           modules: modules,
         })
@@ -114,3 +119,16 @@ export default class ConnectServer extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  privateLicenseServer: state.license.toJS().privateLicenseServer,
+})
+
+const mapDispatchToProps = {
+  setPrivateLicenseServer,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ConnectServer)

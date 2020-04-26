@@ -12,6 +12,7 @@ import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
+import ModuleInfo from './component/ModuleInfo'
 
 var LICENSE_MODULE_REGISTER = 'LICENSE_MODULE_REGISTER'
 
@@ -52,7 +53,7 @@ export default class LicenseModule extends Component {
   }
 
   componentDidMount() {
-    this.getModules()
+    // this.getModules()
   }
 
   getModules = async () => {
@@ -77,6 +78,29 @@ export default class LicenseModule extends Component {
       allAPPModules: allAPPModules,
     })
     GLOBAL.Loading.setLoading(false)
+  }
+
+  getModuleID = () => {
+    let modules = this.features.clone()
+    let ids = []
+    for (let i = 0; i < modules.length; i++) {
+      ids.push(modules[i])
+      if (modules[i] === '18002' || modules[i] === '19002') {
+        ids = ids.concat([
+          Platform.OS === 'ios' ? '18004' : '19004',
+          Platform.OS === 'ios' ? '18005' : '19005',
+        ])
+      }
+      if (modules[i] === '18003' || modules[i] === '19003') {
+        ids = ids.concat([
+          Platform.OS === 'ios' ? '18004' : '19004',
+          Platform.OS === 'ios' ? '18005' : '19005',
+          Platform.OS === 'ios' ? '18006' : '19006',
+          Platform.OS === 'ios' ? '18007' : '19007',
+        ])
+      }
+    }
+    return ids
   }
 
   initAllModules = () => {
@@ -386,6 +410,10 @@ export default class LicenseModule extends Component {
     )
   }
 
+  renderModules = () => {
+    return <ModuleInfo selectedModule={this.getModuleID()} />
+  }
+
   render() {
     return (
       <Container
@@ -394,8 +422,12 @@ export default class LicenseModule extends Component {
           //'所含模块',
           navigation: this.props.navigation,
         }}
+        style={{
+          backgroundColor: color.background,
+        }}
       >
-        {this.renderContent()}
+        {/* {this.renderContent()} */}
+        {this.renderModules()}
       </Container>
     )
   }

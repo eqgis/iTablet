@@ -125,12 +125,12 @@ export default class CustomActions extends React.Component {
       return
     }
     if (!(await AppUtils.isLocationOpen())) {
-      this.SimpleDialog.setConfirm(() => {
-        AppUtils.startAppLoactionSetting()
+      this.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.OPEN_LOCATION,
+        confirmAction: () => {
+          AppUtils.startAppLoactionSetting()
+        },
       })
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Prompt.OPEN_LOCATION,
-      )
       this.SimpleDialog.setVisible(true)
       return
     }
@@ -149,12 +149,12 @@ export default class CustomActions extends React.Component {
       }
     }
     if (!allowed) {
-      this.SimpleDialog.setConfirm(() => {
-        AppUtils.startAppLoactionSetting()
+      this.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.REQUEST_LOCATION,
+        confirmAction: () => {
+          AppUtils.startAppLoactionSetting()
+        },
       })
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Prompt.REQUEST_LOCATION,
-      )
       this.SimpleDialog.setVisible(true)
       return
     }

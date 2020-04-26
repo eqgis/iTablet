@@ -48,19 +48,19 @@ export default class ModuleInfo extends Component {
   getModuleData = () => {
     return [
       {
-        title: getLanguage(global.language).Profile.ITABLET_ARMAP,
+        title: getLanguage(global.language).Map_Module.MAP_AR,
         id: Platform.OS === 'ios' ? '18004' : '19004',
       },
       {
-        title: getLanguage(global.language).Profile.ITABLET_NAVIGATIONMAP,
+        title: getLanguage(global.language).Map_Module.MAP_NAVIGATION,
         id: Platform.OS === 'ios' ? '18005' : '19005',
       },
       {
-        title: getLanguage(global.language).Profile.ITABLET_DATAANALYSIS,
+        title: getLanguage(global.language).Map_Module.MAP_ANALYST,
         id: Platform.OS === 'ios' ? '18006' : '19006',
       },
       {
-        title: getLanguage(global.language).Profile.ITABLET_PLOTTING,
+        title: getLanguage(global.language).Map_Module.MAP_PLOTTING,
         id: Platform.OS === 'ios' ? '18007' : '19007',
       },
     ]

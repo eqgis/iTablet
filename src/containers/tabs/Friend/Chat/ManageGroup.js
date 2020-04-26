@@ -27,6 +27,9 @@ class ManageGroup extends Component {
     this.language = global.language
     this.chat = this.props.navigation.getParam('chat')
     this.masterID = FriendListFileHandle.getGroup(this.targetUser.id).masterID
+    this.state = {
+      coworkMode: global.coworkMode,
+    }
   }
 
   _modifyGroupName = value => {
@@ -139,6 +142,29 @@ class ManageGroup extends Component {
   renderSettings = () => {
     return (
       <ScrollView>
+        {!this.state.coworkMode && !this.chat.action && (
+          <TouchableItemView
+            //地图协作
+            image={getThemeAssets().friend.friend_map}
+            text={getLanguage(global.language).Friends.COWORK}
+            onPress={() => {
+              NavigationService.navigate('SelectModule')
+            }}
+          />
+        )}
+        {this.state.coworkMode ? (
+          <TouchableItemView
+            //退出协作
+            image={getThemeAssets().friend.friend_map}
+            text={getLanguage(global.language).Friends.EXIT_COWORK}
+            onPress={() => {
+              this.chat.back()
+              // this.friend.setCurMap(undefined)
+              // this.setState({coworkMode : false})
+              // this.chat.setCoworkMode(false)
+            }}
+          />
+        ) : null}
         <TouchableItemView
           //发消息
           image={getThemeAssets().friend.new_chat}
@@ -239,20 +265,18 @@ class ManageGroup extends Component {
           style={{ alignItems: 'center', paddingVertical: scaleSize(20) }}
           onPress={() => {
             if (this.user.userId === this.masterID) {
-              this.SimpleDialog.setText(
-                getLanguage(this.language).Friends.DEL_GROUP_CONFIRM2,
-              )
-              this.SimpleDialog.setConfirm(() => {
-                this.SimpleDialog.setVisible(false)
-                this._disbandGroup()
+              this.SimpleDialog.set({
+                text: getLanguage(this.language).Friends.DEL_GROUP_CONFIRM2,
+                confirmAction: () => {
+                  this._disbandGroup()
+                },
               })
             } else {
-              this.SimpleDialog.setText(
-                getLanguage(this.language).Friends.DEL_GROUP_CONFIRM,
-              )
-              this.SimpleDialog.setConfirm(() => {
-                this.SimpleDialog.setVisible(false)
-                this._leaveGroup()
+              this.SimpleDialog.set({
+                text: getLanguage(this.language).Friends.DEL_GROUP_CONFIRM,
+                confirmAction: () => {
+                  this._leaveGroup()
+                },
               })
             }
             this.SimpleDialog.setVisible(true)

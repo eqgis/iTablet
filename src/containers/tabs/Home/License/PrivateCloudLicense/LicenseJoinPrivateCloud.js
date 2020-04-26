@@ -97,19 +97,19 @@ class LicenseJoinPrivateCloud extends Component {
         break
       case '18004':
       case '19004':
-        title = getLanguage(global.language).Profile.ITABLET_ARMAP
+        title = getLanguage(global.language).Map_Module.MAP_AR
         break
       case '18005':
       case '19005':
-        title = getLanguage(global.language).Profile.ITABLET_NAVIGATIONMAP
+        title = getLanguage(global.language).Map_Module.MAP_NAVIGATION
         break
       case '18006':
       case '19006':
-        title = getLanguage(global.language).Profile.ITABLET_DATAANALYSIS
+        title = getLanguage(global.language).Map_Module.MAP_ANALYST
         break
       case '18007':
       case '19007':
-        title = getLanguage(global.language).Profile.ITABLET_PLOTTING
+        title = getLanguage(global.language).Map_Module.MAP_PLOTTING
         break
     }
     return title

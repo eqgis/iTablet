@@ -189,11 +189,12 @@ export default class Home extends Component {
 
   _logoutConfirm = () => {
     this._closeModal()
-    this.SimpleDialog.setConfirm(() => {
-      this.SimpleDialog.setVisible(false)
-      this._onLogout()
+    this.SimpleDialog.set({
+      text: getLanguage(this.props.language).Prompt.LOG_OUT,
+      confirmAction: () => {
+        this._onLogout()
+      },
     })
-    this.SimpleDialog.setText(getLanguage(this.props.language).Prompt.LOG_OUT)
     this.SimpleDialog.setVisible(true)
   }
 

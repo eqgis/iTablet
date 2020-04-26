@@ -1,11 +1,7 @@
-import { Platform } from 'react-native'
-import { ConstPath, ChunkType } from '../../src/constants'
+import { ChunkType } from '../../src/constants'
 import { getLanguage } from '../../src/language'
 import { getThemeAssets } from '../../src/assets'
 import { Module } from '../../src/class'
-import { FileTools } from '../../src/native'
-import NavigationService from '../../src/containers/NavigationService'
-import { SMap } from 'imobile_for_reactnative'
 import mapTabModules from '../mapTabModules'
 
 export default class Map3DConfig extends Module {
@@ -33,29 +29,8 @@ export default class Map3DConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_3d,
       moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
       defaultMapName: language === 'CN' ? '湖南' : 'LosAngeles',
-      action: async () => {
-        GLOBAL.Type = ChunkType.MAP_3D
-        let fileName = ''
-        if (Platform.OS === 'android') {
-          fileName = 'OlympicGreen_android'
-        } else {
-          fileName = 'OlympicGreen_ios'
-        }
-        SMap.setCurrentModule(0x02)
-        const homePath = await FileTools.appendingHomeDirectory()
-        const cachePath = homePath + ConstPath.CachePath
-        const fileDirPath = cachePath + fileName
-        const arrFile = await FileTools.getFilterFiles(fileDirPath)
-        if (arrFile.length === 0) {
-          NavigationService.navigate('Map3D', {})
-        } else {
-          const name =
-            Platform.OS === 'android'
-              ? 'OlympicGreen_android'
-              : 'OlympicGreen_ios'
-          NavigationService.navigate('Map3D', { name })
-        }
-      },
+      is3D: true,
+      licenceType: 0x02,
     })
   }
 }

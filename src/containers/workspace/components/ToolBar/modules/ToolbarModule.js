@@ -93,12 +93,9 @@ function getModule(type, params = {}) {
     module = styleModule()
   } else if (
     typeof type === 'string' &&
-    (type.indexOf(ConstToolType.MAP_TOOL) > -1 ||
-      type === ConstToolType.MAP_TOOL_STYLE_TRANSFER)
+    type.indexOf(ConstToolType.MAP_TOOL) > -1
   ) {
     module = toolModule()
-  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
-    module = incrementModule()
   } else if (type === ConstToolType.MAP_SHARE) {
     module = shareModule()
   } else if (type === ConstToolType.MAP_SHARE_MAP3D) {
@@ -108,7 +105,7 @@ function getModule(type, params = {}) {
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     module = editModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
-    module = topoEditModule(type)
+    module = topoEditModule(type) //无action的module 先传type设置数据
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
@@ -123,6 +120,8 @@ function getModule(type, params = {}) {
     type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
     module = plotModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
+    module = incrementModule()
   } else if (
     type === ConstToolType.MAP3D_MARK ||
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
@@ -136,14 +135,10 @@ function getModule(type, params = {}) {
     type === ConstToolType.MAP3D_TOOL_NEWFLY
   ) {
     module = fly3DModule()
-  } else if (
-    (typeof type === 'string' && type.indexOf('MAP3D_') > -1) ||
-    type === ConstToolType.MAP3D_BOX_CLIPPING ||
-    type === ConstToolType.MAP3D_BOX_CLIP
-  ) {
+  } else if (typeof type === 'string' && type.indexOf('MAP3D_') > -1) {
     module = tool3DModule()
   } else if (typeof type === 'string' && type.indexOf('LEGEND') > -1) {
-    module = legendModule().getData(type, params)
+    module = legendModule()
   } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
     module = getPlotAnimationData(type)
   } else if (type === ConstToolType.MAP_AR_AI_ASSISTANT) {
@@ -167,7 +162,7 @@ function getModule(type, params = {}) {
     module = layerVisibleScaleModule()
   } else {
     // TODO 新增自定义FunctionModule
-    module = mapFunctionModules.getModule(type, (params = {}))
+    module = mapFunctionModules.getModule(type, params)
   }
   return module
 }
@@ -185,7 +180,7 @@ async function getToolBarData(type, params = {}) {
   }
 
   let module = getModule(type, params)
-  if (module) {
+  if (module && module.getData) {
     toolBarData = module.getData(type, params)
   }
 

@@ -107,7 +107,10 @@ export default class CustomModePage extends Component {
       val = Math.round(nextItem.end) - 1
     }
     data[index].end = val + ''
+    data[index].caption = data[index].start + ' <= X < ' + data[index].end
     data[index + 1].start = val + ''
+    data[index + 1].caption =
+      data[index + 1].start + ' <= X < ' + data[index + 1].end
     this.setState({
       data,
     })

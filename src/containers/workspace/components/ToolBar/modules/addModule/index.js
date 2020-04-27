@@ -4,15 +4,14 @@
 import AddData from './AddData'
 import AddAction from './AddAction'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
   const _data = await AddData.getData(type, params)
   const containerType = ToolbarType.list
-  const data = ToolBarHeight.getToolbarSize(containerType, {})
   await setModuleData(type, _data)
+  const data = ToolbarModule.getToolbarSize(containerType, {})
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType,

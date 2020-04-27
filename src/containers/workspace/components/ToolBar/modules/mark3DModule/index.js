@@ -10,13 +10,12 @@ import Mark3DAction from './Mark3DAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
-import ToolBarHeight from '../ToolBarHeight'
 
 async function action(type) {
   const params = ToolbarModule.getParams()
   const _data = await Mark3DData.getData(type, params)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {
     containerType,

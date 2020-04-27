@@ -15,14 +15,14 @@ export default StyleSheet.create({
     fontSize: 17,
   },
   btns: {
-    height: scaleSize(60),
+    // height: scaleSize(60),
     // width: '90%',
     // flexDirection: 'row',
     flexDirection: 'column',
     justifyContent: 'space-between',
     // marginHorizontal: scaleSize(150),
     alignItems: 'center',
-    marginVertical: scaleSize(100),
+    paddingVertical: scaleSize(30),
   },
   rows: {
     flex: 1,

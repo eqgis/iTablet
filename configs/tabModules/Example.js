@@ -20,18 +20,20 @@ class Example extends Component {
   }
 
   render() {
+    // TabContainer为首页Tab的界面容器，具体Props参照Container组件
     return (
       <TabContainer
         ref={ref => (this.container = ref)}
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          title: this.getTitle(),
+          title: Example.getTitle(),
           withoutBack: true,
         }}
         navigation={this.props.navigation}
       >
-        <View style={{flex: 1}} />
+        <View style={{flex: 1, backgroundColor: 'yellow'}} />
+        <View style={{flex: 1, backgroundColor: 'blue'}} />
       </TabContainer>
     )
   }
@@ -44,15 +46,21 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
 })
 
+// 链接Redux，获取持久化/全局动态数据
 const MyExample = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Example)
 
+// 导出界面相关信息
 export default {
   key: 'Example',
-  getTitle: MyExample.getTitle,
+  // 根据系统语言获取Title
+  getTitle: Example.getTitle,
+  // 自定义Tab界面
   Screen: MyExample,
+  // Tab未点击图片
   image: getThemeAssets().tabBar.tab_discover,
+  // Tab高亮图片
   selectedImage: getThemeAssets().tabBar.tab_discover_selected,
 }

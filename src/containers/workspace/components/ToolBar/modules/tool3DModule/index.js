@@ -1,14 +1,13 @@
 import Tool3DData from './Tool3DData'
 import Tool3DAction from './Tool3DAction'
 import ToolbarModule from '../ToolbarModule'
-import ToolBarHeight from '../ToolBarHeight'
 import { ToolbarType } from '../../../../../../constants'
 
 async function action(type) {
   const params = ToolbarModule.getParams()
   const _data = await Tool3DData.getData(type, params)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {

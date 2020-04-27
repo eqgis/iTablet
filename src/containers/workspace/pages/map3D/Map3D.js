@@ -756,7 +756,7 @@ export default class Map3D extends React.Component {
   renderTool = () => {
     return (
       <ToolBar
-        ref={ref => (this.toolBox = ref)}
+        ref={ref => (GLOBAL.ToolBar = this.toolBox = ref)}
         user={this.props.user}
         existFullMap={() => this.showFullMap(false)}
         confirmDialog={this.confirm}

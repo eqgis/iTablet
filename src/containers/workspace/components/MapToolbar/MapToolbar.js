@@ -125,7 +125,6 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_scene,
             selectedImage: getThemeAssets().tabBar.tab_scene_selected,
             btnClick: () => {
-              GLOBAL.ToolBar.showFullMap(false)
               this.props.navigation &&
                 this.props.navigation.navigate('Map3D', {
                   type: 'MAP_3D',

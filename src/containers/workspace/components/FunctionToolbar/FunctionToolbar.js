@@ -726,6 +726,7 @@ export default class FunctionToolbar extends React.Component {
       <Animated.View
         style={[
           styles.container,
+          this.state.data.length > 0 && styles.containerShadow,
           bottom,
           this.props.style,
           {
@@ -734,9 +735,9 @@ export default class FunctionToolbar extends React.Component {
           },
         ]}
       >
-        {this.renderIndicator('top')}
+        {this.state.data.length > 0 && this.renderIndicator('top')}
         {this.renderList()}
-        {this.renderIndicator('bottom')}
+        {this.state.data.length > 0 && this.renderIndicator('bottom')}
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (
           <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
         )}

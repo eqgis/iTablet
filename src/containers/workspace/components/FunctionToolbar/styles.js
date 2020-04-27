@@ -7,6 +7,8 @@ export default StyleSheet.create({
     position: 'absolute',
     backgroundColor: color.content_white,
     borderRadius: scaleSize(4),
+  },
+  containerShadow: {
     elevation: 20,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'rgba(0, 0, 0, 0.5)',

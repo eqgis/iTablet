@@ -15,7 +15,6 @@ import { StyleUtils, Toast } from '../../../../../../utils'
 import { DatasetType, SMap, Action } from 'imobile_for_reactnative'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
-import ToolBarHeight from '../ToolBarHeight'
 import { getLanguage } from '../../../../../../language'
 
 async function geometrySelected(event) {
@@ -48,7 +47,7 @@ async function geometrySelected(event) {
           StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
           const _data = await TopoEditData.getData(type)
           const containerType = ToolbarType.table
-          const data = ToolBarHeight.getToolbarSize(containerType, {
+          const data = ToolbarModule.getToolbarSize(containerType, {
             data: _data.data,
           })
           _params.setToolbarVisible(true, type, {
@@ -186,7 +185,7 @@ async function switchType(item) {
   const _params = ToolbarModule.getParams()
   const _data = await TopoEditData.getData(type)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   _params.setToolbarVisible(true, type, {
     containerType,
     isFullScreen: false,

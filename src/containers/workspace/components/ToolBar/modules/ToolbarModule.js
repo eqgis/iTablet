@@ -2,6 +2,7 @@ import SMap from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { ConstToolType } from '../../../../../constants'
 import ToolbarBtnType from '../ToolbarBtnType'
 import { getLanguage } from '../../../../../language'
+import { screen } from '../../../../../utils'
 import {
   startModule,
   start3DModule,
@@ -27,6 +28,7 @@ import {
   layerVisibleScaleModule,
 } from '../modules'
 import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
+import ToolBarHeight from './ToolBarHeight'
 
 // 更新类中的数据
 // function setParams(params) {
@@ -66,6 +68,27 @@ function getData() {
   return _data
 }
 
+/** 获取Toolbar 高度、行数、列数 **/
+function getToolbarSize(type, additional = {}) {
+  const params = getParams()
+  let toolbarSize = {}
+  let data = getData()
+  let orientation
+  if (params && params.device && params.device.orientation) {
+    orientation = params.device.orientation
+  } else {
+    orientation = screen.getOrientation()
+  }
+  // 找当前模块下自定义的getToolbarSize，如果返回false，则去ToolBarHeight中去获取对应类型高度
+  if (data && data.getToolbarSize) {
+    toolbarSize = data.getToolbarSize(type, orientation, additional)
+  }
+  if (!toolbarSize || Object.keys(toolbarSize).length === 0) {
+    toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
+  }
+  return toolbarSize
+}
+
 function getModule(type, params = {}) {
   let module
   if (
@@ -96,6 +119,8 @@ function getModule(type, params = {}) {
     type.indexOf(ConstToolType.MAP_TOOL) > -1
   ) {
     module = toolModule()
+  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
+    module = incrementModule()
   } else if (type === ConstToolType.MAP_SHARE) {
     module = shareModule()
   } else if (type === ConstToolType.MAP_SHARE_MAP3D) {
@@ -105,7 +130,7 @@ function getModule(type, params = {}) {
   } else if (typeof type === 'string' && type.indexOf('MAP_EDIT_') > -1) {
     module = editModule()
   } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
-    module = topoEditModule(type) //无action的module 先传type设置数据
+    module = topoEditModule(type)
   } else if (
     typeof type === 'string' &&
     type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
@@ -120,8 +145,6 @@ function getModule(type, params = {}) {
     type === ConstToolType.PLOT_ANIMATION_XML_LIST
   ) {
     module = plotModule()
-  } else if (typeof type === 'string' && type.indexOf('MAP_INCREMENT_') > -1) {
-    module = incrementModule()
   } else if (
     type === ConstToolType.MAP3D_MARK ||
     type === ConstToolType.MAP3D_SYMBOL_POINT ||
@@ -290,4 +313,5 @@ export default {
   getToolBarData,
   setToolBarData,
   getMenuDialogData,
+  getToolbarSize,
 }

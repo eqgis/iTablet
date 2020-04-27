@@ -153,7 +153,26 @@ export default class RNLegendView extends React.Component {
    * @param item
    * @returns {*}
    */
-  renderLegendItem = item => {
+  renderLegendItem = ({ item }) => {
+    let title = item.title
+    title = title.replace(/\s<=?\sX\s<\s/, '~').split('~')
+    //处理分段专题图 自定义
+    if (item.type === 3) {
+      //保留2位小数
+      title = title.map(item =>
+        isNaN(item) ? item : parseFloat(item).toFixed(2),
+      )
+      if (title[0]?.indexOf('-3') === 0 && title[0].length > 12) {
+        title[0] = 'min'
+      } else if (title[1]?.indexOf('3') === 0 && title[1].length > 12) {
+        title[1] = 'max'
+      }
+      //新建分段专题图caption信息错误 需要反转
+      if (title[0] && title[1] && title[0] - title[1] > 0) {
+        title = title.reverse()
+      }
+    }
+    title = title.join('~')
     let curImageSize =
       (this.state.imageSize *
         this.props.legendSettings[GLOBAL.Type].imagePercent) /
@@ -173,9 +192,9 @@ export default class RNLegendView extends React.Component {
           flexDirection: 'row',
         }}
       >
-        {item.item.image && (
+        {item.image && (
           <Image
-            source={{ uri: `data:image/png;base64,${item.item.image}` }}
+            source={{ uri: `data:image/png;base64,${item.image}` }}
             style={{
               width: curImageSize,
               height: curImageSize / 2,
@@ -183,7 +202,7 @@ export default class RNLegendView extends React.Component {
             }}
           />
         )}
-        {item.item.color && (
+        {item.color && (
           <View
             style={{
               width: curImageSize,
@@ -196,7 +215,7 @@ export default class RNLegendView extends React.Component {
               style={{
                 width: (curImageSize * 3) / 4,
                 height: (curImageSize * 9) / 16,
-                backgroundColor: item.item.color,
+                backgroundColor: item.color,
               }}
             />
           </View>
@@ -212,7 +231,7 @@ export default class RNLegendView extends React.Component {
             height: curFontSize + scaleSize(4),
           }}
         >
-          {item.item.title.replace(/\s<=?\sX\s<\s/, '~')}
+          {title.toLowerCase()}
         </Text>
       </TouchableOpacity>
     )

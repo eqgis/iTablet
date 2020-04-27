@@ -7,6 +7,9 @@ import MapNavigationConfig from './MapNavigationConfig'
 import MapPlottingConfig from './MapPlottingConfig'
 import MapThemeConfig from './MapThemeConfig'
 
+/** 自定义模块 **/
+// import MapExample from './MapExample'
+
 /** export顺序为首页模块显示顺序 **/
 export default [
   new MapEditConfig(),
@@ -14,6 +17,7 @@ export default [
   new MapCollectionConfig(),
   new MapARConfig(),
   new MapNavigationConfig(),
+  // new MapExample(),
   new MapThemeConfig(),
   new MapPlottingConfig(),
   new MapAnalystConfig(),

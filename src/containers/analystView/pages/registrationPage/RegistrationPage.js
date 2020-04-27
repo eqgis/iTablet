@@ -11,6 +11,10 @@ import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
 // import { SMRectifyView } from 'imobile_for_reactnative'
 
 export default class RegistrationPage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -70,6 +74,7 @@ export default class RegistrationPage extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
+          navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn

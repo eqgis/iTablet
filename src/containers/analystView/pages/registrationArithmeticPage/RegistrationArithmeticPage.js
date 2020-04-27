@@ -9,6 +9,10 @@ import NavigationService from '../../../NavigationService'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 export default class RegistrationArithmeticPage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -86,6 +90,7 @@ export default class RegistrationArithmeticPage extends Component {
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_ARITHMETIC,
+          navigation: this.props.navigation,
           backAction: this.back,
         }}
       >

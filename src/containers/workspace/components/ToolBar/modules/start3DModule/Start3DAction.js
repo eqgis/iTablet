@@ -4,6 +4,7 @@ import {
   ConstPath,
   ToolbarType,
 } from '../../../../../../constants'
+import { SScene } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
@@ -65,6 +66,41 @@ async function getSceneData() {
   })
 }
 
+function openScene(item) {
+  const _params = ToolbarModule.getParams()
+  if (item.name === GLOBAL.sceneName) {
+    Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
+    // '场景已打开,请勿重复打开场景')
+    return
+  }
+  SScene.openScence(item.name).then(() => {
+    SScene.setNavigationControlVisible(false)
+    SScene.setListener()
+    SScene.getAttribute()
+    SScene.setCircleFly()
+    SScene.setAction('PAN3D')
+    SScene.changeBaseLayer(1)
+    GLOBAL.action3d = 'PAN3D'
+    GLOBAL.openWorkspace = true
+    GLOBAL.sceneName = item.name
+    _params.refreshLayer3dList && _params.refreshLayer3dList()
+    _params.existFullMap && _params.existFullMap(true)
+    _params.setToolbarVisible(false)
+    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+
+    _params.changeLayerList && _params.changeLayerList()
+  })
+}
+
+async function listAction(type, params = {}) {
+  switch (type) {
+    case ConstToolType.MAP3D_WORKSPACE_LIST:
+      openScene(params.item)
+      break
+  }
+}
+
 export default {
+  listAction,
   getSceneData,
 }

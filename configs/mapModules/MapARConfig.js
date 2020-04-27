@@ -4,20 +4,19 @@ import { getThemeAssets } from '../../src/assets'
 import { Module } from '../../src/class'
 import Toast from '../../src/utils/Toast'
 import { SAIDetectView } from 'imobile_for_reactnative'
-import mapTabModules from '../mapTabModules'
 
 export default class MapARConfig extends Module {
-  constructor (props) {
-    super(props)
-    this.key = ChunkType.MAP_AR
-    this.functionModules = [
-      {key: 'startModule', type: 'MAP_START'},
-      {key: 'addModule', type: 'MAP_ADD'},
-      {key: 'markModule', type: 'MAP_MARKS'},
-      {key: 'styleModule', type: 'MAP_STYLE'},
-      {key: 'arAIAssistant', type: 'MAP_AR_AI_ASSISTANT'},
-    ]
-    this.tabModules = [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
+  constructor () {
+    super({
+      key: ChunkType.MAP_AR,
+      functionModules: [
+        {key: 'startModule', type: 'MAP_START'},
+        {key: 'addModule', type: 'MAP_ADD'},
+        {key: 'markModule', type: 'MAP_MARKS'},
+        {key: 'styleModule', type: 'MAP_STYLE'},
+        {key: 'arAIAssistant', type: 'MAP_AR_AI_ASSISTANT'},
+      ],
+    })
   }
 
   getChunk = language => {

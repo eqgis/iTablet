@@ -2,24 +2,23 @@ import { ConstOnline, ChunkType } from '../../src/constants'
 import { getLanguage } from '../../src/language'
 import { getThemeAssets } from '../../src/assets'
 import { Module } from '../../src/class'
-import mapTabModules from '../mapTabModules'
 
 export default class MapEditConfig extends Module {
-  constructor (props) {
-    super(props)
-    this.key = ChunkType.MAP_EDIT
-    this.example = {
-      name_en: 'LosAngeles',
-      name_cn: '湖南',
-    }
-    this.functionModules = [
-      {key: 'startModule', type: 'MAP_START'},
-      {key: 'addModule', type: 'MAP_ADD'},
-      {key: 'markModule', type: 'MAP_MARKS'},
-      {key: 'toolModule', type: 'MAP_TOOLS'},
-      {key: 'shareModule', type: 'MAP_SHARE'},
-    ]
-    this.tabModules = [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
+  constructor () {
+    super({
+      key: ChunkType.MAP_EDIT,
+      example: {
+        name_en: 'LosAngeles',
+        name_cn: '湖南',
+      },
+      functionModules: [
+        {key: 'startModule', type: 'MAP_START'},
+        {key: 'addModule', type: 'MAP_ADD'},
+        {key: 'markModule', type: 'MAP_MARKS'},
+        {key: 'toolModule', type: 'MAP_TOOLS'},
+        {key: 'shareModule', type: 'MAP_SHARE'},
+      ],
+    })
   }
 
   getChunk = language => {

@@ -1,9 +1,9 @@
-import ToolbarModule from './ToolbarModule'
 import { ToolbarType, Height } from '../../../../../constants'
 
 /**
  * 统一ToolbarContentView高度（table类型自适应大小）
  * @param type
+ * @param orientation
  * @param additional
    {
      data: Array | 建议table类型必传，以便计算列数，默认3列,
@@ -14,9 +14,9 @@ import { ToolbarType, Height } from '../../../../../constants'
  *    自定义高度，table列数
  * @returns {{height: number, column: number}}
  */
-function getToolbarSize(type, additional = {}) {
-  const params = ToolbarModule.getParams()
-  const { orientation } = params.device
+function getToolbarSize(type, orientation, additional = {}) {
+  // const params = ToolbarModule.getParams()
+  // const { orientation } = params.device
   let height = 0,
     column = -1,
     row = -1
@@ -70,7 +70,7 @@ function getToolbarSize(type, additional = {}) {
     case ToolbarType.tabs: // 符号标签栏
       height =
         Height.TABLE_ROW_HEIGHT_2 *
-        (orientation.indexOf('LANDSCAPE') === 0 ? 8 : 12)
+        (orientation.indexOf('LANDSCAPE') === 0 ? 8 : 10)
       column = 4
       break
     case ToolbarType.colorPicker: //颜色选择器 色盘

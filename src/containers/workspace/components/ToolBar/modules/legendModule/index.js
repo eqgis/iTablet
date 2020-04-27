@@ -5,7 +5,6 @@ import LegendData from './LegendData'
 import LegendAction from './LegendAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
@@ -35,7 +34,7 @@ async function action(type) {
   }
   const _data = LegendData.getData(type)
   const containerType = ToolbarType.colorTable
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   _params.setMapLegend(mapLegend)
   _params.setToolbarVisible(true, ConstToolType.LEGEND, {

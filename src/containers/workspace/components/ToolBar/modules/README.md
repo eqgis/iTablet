@@ -16,7 +16,7 @@ async function action(type) {
   const params = ToolbarModule.getParams()             // Toolbar中的属性和方法
   const _data = StartData.getData(type, params)        // 获取指定类型的数据
   const containerType = ToolbarType.table              // Toolbar内容界面类型
-  const data = ToolBarHeight.getToolbarSize(containerType, {data: _data.data})
+  const data = ToolbarModule.getToolbarSize(containerType, {data: _data.data})
                                                        // Toolbar内容高度和列数
   setModuleData(type)
   params.setToolbarVisible(true, type, {               // 弹出底部界面

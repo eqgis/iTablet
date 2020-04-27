@@ -30,21 +30,14 @@ function close() {
 }
 
 function menu(type, selectKey, params = {}) {
-  const _params = ToolbarModule.getParams()
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  // const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
     if (
       type === ConstToolType.LEGEND ||
       type === ConstToolType.LEGEND_POSITION
     ) {
-      // if (
-      //   (type === ConstToolType.LEGEND ||
-      //     type === ConstToolType.LEGEND_POSITION) &&
-      //   isBoxShow
-      // ) {
       params.showBox && params.showBox()
     }
   }
@@ -60,7 +53,7 @@ function menu(type, selectKey, params = {}) {
       })
   }
 
-  if (Utils.isTouchProgress(_params.language)) {
+  if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true
     showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
     isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog

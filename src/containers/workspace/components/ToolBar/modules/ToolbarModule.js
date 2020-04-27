@@ -68,6 +68,7 @@ function getData() {
   return _data
 }
 
+/** 获取Toolbar 高度、行数、列数 **/
 function getToolbarSize(type, additional = {}) {
   const params = getParams()
   let toolbarSize = {}
@@ -78,9 +79,11 @@ function getToolbarSize(type, additional = {}) {
   } else {
     orientation = screen.getOrientation()
   }
+  // 找当前模块下自定义的getToolbarSize，如果返回false，则去ToolBarHeight中去获取对应类型高度
   if (data && data.getToolbarSize) {
     toolbarSize = data.getToolbarSize(type, orientation, additional)
-  } else {
+  }
+  if (toolbarSize === false) {
     toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
   }
   return toolbarSize

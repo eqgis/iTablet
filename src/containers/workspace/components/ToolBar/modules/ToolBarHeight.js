@@ -60,13 +60,14 @@ function getToolbarSize(type, orientation, additional = {}) {
       height = Height.TABLE_ROW_HEIGHT_2 * 8
       break
     case ToolbarType.picker: // 选择器
+    case ToolbarType.multiPicker: //两列选择器
       height =
         Height.TABLE_ROW_HEIGHT_1 *
-        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 4)
+        (orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4)
       break
-    case ToolbarType.multiPicker: //两列选择器
-      height = Height.TABLE_ROW_HEIGHT_1 * 4
-      break
+    // case ToolbarType.multiPicker: //两列选择器
+    //   height = Height.TABLE_ROW_HEIGHT_1 * 4
+    //   break
     case ToolbarType.tabs: // 符号标签栏
       height =
         Height.TABLE_ROW_HEIGHT_2 *

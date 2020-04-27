@@ -45,6 +45,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#rgba(240, 240, 240 ,0)',
   },
+  rightWrapBlue: {
+    flex: 1,
+    height: scaleSize(60),
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: color.blue1,
+  },
   leftWrapSelect: {
     flex: 1,
     height: scaleSize(60),

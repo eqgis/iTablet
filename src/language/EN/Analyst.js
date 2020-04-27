@@ -196,6 +196,19 @@ const Analyst_Labels = {
   REGISTRATION_RECTANGLE: 'Registration rectangle (2 control points)',
   REGISTRATION_OFFSET: 'Registration offset (1 control points)',
   REGISTRATION_ASSOCIATION: 'Association',
+
+  REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
+  REGISTRATION_EXECUTE: 'Execute',
+  REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
+  REGISTRATION_SAVE_AS: 'Save as',
+  REGISTRATION_RESAMPLE: 'Result resampling',
+  REGISTRATION_SAMPLE_MODE: 'Sampling mode',
+  REGISTRATION_SAMPLE_MODE_NEAR: 'The method of adjacent',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilinear interpolation',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Cubic convolution interpolation',
+  REGISTRATION_RESULT_DATASET: 'Result dataset',
+  REGISTRATION_RESULT_DATASOURCE: 'Result datasource',
+  REGISTRATION_ORIGINAL_DATASOURCE: 'Original dataset',
 }
 
 const Analyst_Params = {

@@ -5,11 +5,16 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
+import NavigationService from '../../../NavigationService'
 
-// import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
-import { SMRectifyView } from 'imobile_for_reactnative'
+import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
+// import { SMRectifyView } from 'imobile_for_reactnative'
 
 export default class RegistrationPage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -17,17 +22,23 @@ export default class RegistrationPage extends Component {
 
     this.state = {
       data: tempData,
-      isCanDo: false,
+      isCanDo: true,
     }
   }
 
   componentDidMount = async () => {
-    // if(GLOBAL.RectifyDatasetInfo){
-    //   await SRectifyView.setRectifyDataset(GLOBAL.RectifyDatasetInfo)
-    // }
-    // if(GLOBAL.RectifyReferDatasetInfo){
-    //   await SRectifyView.setReferDataset(GLOBAL.RectifyReferDatasetInfo)
-    // }
+    try {
+      setTimeout(async function() {
+        if (GLOBAL.RectifyDatasetInfo) {
+          await SRectifyView.setRectifyDataset(GLOBAL.RectifyDatasetInfo)
+        }
+        if (GLOBAL.RectifyReferDatasetInfo) {
+          await SRectifyView.setReferDataset(GLOBAL.RectifyReferDatasetInfo)
+        }
+      }, 500)
+    } catch (e) {
+      return
+    }
   }
 
   getData() {
@@ -52,6 +63,10 @@ export default class RegistrationPage extends Component {
     return data
   }
 
+  confirm() {
+    NavigationService.navigate('RegistrationExecutePage')
+  }
+
   render() {
     return (
       <Container
@@ -59,10 +74,13 @@ export default class RegistrationPage extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
+          navigation: this.props.navigation,
+          backAction: this.back,
           headerRight: (
             <TextBtn
-              // btnText={this.state.btnTitle}
-              // btnText={"this.state.btnTitle"}
+              btnText={
+                getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTE
+              }
               textStyle={
                 this.state.isCanDo
                   ? styles.headerBtnTitle

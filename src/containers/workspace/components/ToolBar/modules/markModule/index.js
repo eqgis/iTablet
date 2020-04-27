@@ -10,13 +10,12 @@ import MarkAction from './MarkAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
-import ToolBarHeight from '../ToolBarHeight'
 
 function action(type) {
   const params = ToolbarModule.getParams()
   const _data = MarkData.getData(type, params)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
     containerType,

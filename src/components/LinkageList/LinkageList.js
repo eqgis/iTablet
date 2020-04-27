@@ -18,6 +18,7 @@ import { scaleSize, screen } from '../../utils'
 import { getPublicAssets } from '../../assets'
 import styles from './styles'
 import { CheckBox } from '../../components'
+import { color, size } from '../../styles'
 
 const LEFT_MIN_WIDTH = scaleSize(240)
 export default class LinkageList extends React.Component {
@@ -202,22 +203,6 @@ export default class LinkageList extends React.Component {
       ? this.renderMultipleRightItem({ item, index })
       : this.renderSingleRightItem({ item, index })
     return rightItem
-    // return (
-    //   <TouchableOpacity
-    //     style={
-    //       this.state.rightSelected === index
-    //         ? this.styles.leftWrapSelect
-    //         : this.styles.leftWrap
-    //     }
-    //     onPress={() => {
-    //       this.onRightPress({ item, index })
-    //     }}
-    //   >
-    //     <Text style={this.styles.rightItem} numberOfLines={1}>
-    //       {item.title}
-    //     </Text>
-    //   </TouchableOpacity>
-    // )
   }
 
   renderSingleRightItem = ({ item, index }) => {
@@ -265,10 +250,8 @@ export default class LinkageList extends React.Component {
 
     return (
       <View
+        // style={item.hasSelect?this.styles.rightWrapBlue:this.styles.leftWrap}
         style={this.styles.leftWrap}
-        // onPress={() => {
-        //   this.onRightPress({ item, index })
-        // }}
       >
         <CheckBox
           style={{
@@ -314,7 +297,15 @@ export default class LinkageList extends React.Component {
             })
           }}
         />
-        <Text style={this.styles.rightItem} numberOfLines={1}>
+        <Text
+          style={{
+            flex: 1,
+            marginLeft: scaleSize(40),
+            fontSize: size.fontSize.fontSizeSm,
+            color: item.hasSelect ? color.blue1 : color.black,
+          }}
+          numberOfLines={1}
+        >
           {item.title}
         </Text>
       </View>

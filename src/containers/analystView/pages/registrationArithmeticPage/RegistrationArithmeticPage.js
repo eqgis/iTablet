@@ -9,6 +9,10 @@ import NavigationService from '../../../NavigationService'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 export default class RegistrationArithmeticPage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -49,19 +53,20 @@ export default class RegistrationArithmeticPage extends Component {
   renderRows() {
     let rows = []
     for (let i = 0; i < this.state.data.length; i++) {
-      rows.push(this.renderItem(this.state.data[i]))
+      rows.push(this.renderItem(this.state.data[i], i))
     }
     return <View style={{ backgroundColor: color.content_white }}>{rows}</View>
   }
 
-  renderItem(item) {
+  renderItem(item, index) {
     return (
       <View
         style={{
           width: '100%',
-          height: scaleSize(60),
+          height: scaleSize(80),
         }}
       >
+        {index != 0 ? <View style={styles.lineStyle} /> : null}
         <TouchableOpacity
           style={styles.leftWrap}
           onPress={() => {
@@ -85,6 +90,8 @@ export default class RegistrationArithmeticPage extends Component {
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_ARITHMETIC,
+          navigation: this.props.navigation,
+          backAction: this.back,
         }}
       >
         {this.renderRows()}

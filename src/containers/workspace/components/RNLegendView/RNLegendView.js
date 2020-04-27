@@ -162,11 +162,14 @@ export default class RNLegendView extends React.Component {
       title = title.map(item =>
         isNaN(item) ? item : parseFloat(item).toFixed(2),
       )
-      if (title[0].indexOf('-3') === 0 && title[0].length > 12) {
+      if (title[0]?.indexOf('-3') === 0 && title[0].length > 12) {
         title[0] = 'min'
-      }
-      if (title[1].indexOf('3') === 0 && title[1].length > 12) {
+      } else if (title[1]?.indexOf('3') === 0 && title[1].length > 12) {
         title[1] = 'max'
+      }
+      //新建分段专题图caption信息错误 需要反转
+      if (title[0] && title[1] && title[0] - title[1] > 0) {
+        title = title.reverse()
       }
     }
     title = title.join('~')

@@ -105,7 +105,6 @@ export default class LineList extends Component {
         ..._data,
       })
   }
-
   _confirm = async () => {
     if (
       GLOBAL.INCREMENT_DATA.datasetName !==
@@ -113,7 +112,12 @@ export default class LineList extends Component {
       GLOBAL.INCREMENT_DATA.datasourceName !==
         this.state.selectedItem.datasourceName
     ) {
-      await SMap.setCurrentDataset(this.state.selectedItem)
+      let params = {
+        preDatasetName: GLOBAL.INCREMENT_DATA.datasetName,
+        datasourceName: GLOBAL.INCREMENT_DATA.datasourceName,
+        datasetName: this.state.selectedItem.datasetName,
+      }
+      await SMap.setCurrentDataset(params)
       GLOBAL.INCREMENT_DATA = this.state.selectedItem
     }
     const params = ToolbarModule.getParams()

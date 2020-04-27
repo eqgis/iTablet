@@ -48,7 +48,7 @@ class LicenseJoin extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: '归还当前云许可并激活此许可?',
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
@@ -70,7 +70,7 @@ class LicenseJoin extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: '归还当前云许可并激活此许可?',
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
@@ -85,12 +85,24 @@ class LicenseJoin extends Component {
     }
   }
 
+  _checkPrivateCloudLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 2
+    ) {
+      SMap.closePrivateCloudLicense()
+    }
+  }
+
   reloadLocalLicense = async (confirm = false) => {
     try {
       if (!confirm) {
         this._checkCloudLicense4Reload()
         return
       }
+      this._checkPrivateCloudLicense()
       let serialNumber = await SMap.initSerialNumber('')
       if (serialNumber !== '') {
         GLOBAL.Loading.setLoading(
@@ -106,6 +118,8 @@ class LicenseJoin extends Component {
         if (status && status.isLicenseValid && status.licenseType === 0) {
           this.props.setLicenseInfo(status)
           this.props.navigation.pop(2)
+        } else {
+          this.setState({ checkLocal: false })
         }
         GLOBAL.Loading.setLoading(false)
       } else {
@@ -136,6 +150,7 @@ class LicenseJoin extends Component {
           this._checkCloudLicense()
           return
         }
+        this._checkPrivateCloudLicense()
         GLOBAL.Loading.setLoading(
           true,
           global.language === 'CN' ? '许可申请中...' : 'Applying',

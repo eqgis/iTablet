@@ -214,6 +214,10 @@ const Profile = {
   LICENSE_MODULE_REGISTER_FAIL: 'モジュールのログインに失敗しました',
   LICENSE_EXIT: '閉じる',
   LICENSE_EXIT_FAILED: '閉じるのに失敗しました',
+  LICENSE_EXIT_CLOUD_ACTIVATE:
+    'クラウドライセンスをリサイクルしてアクティブしますか?',
+  LICENSE_EXIT_CLOUD_LOGOUT:
+    'クラウドライセンスをリサイクルしてログアウトしますか?',
   LICENSE_CURRENT_EXPIRE: '現在ライセンスは無効です',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE:
     '現在ライセンスに当モジュールはありません',

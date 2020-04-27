@@ -85,7 +85,7 @@ class LicensePage extends Component {
     try {
       let userInfo = this.props.cloudLicenseUser
       if (userInfo.isEmail === undefined) {
-        Toast.show('请先登录')
+        Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN)
         NavigationService.navigate('LicenseJoinCloud', {
           callback: () => {
             NavigationService.goBack()

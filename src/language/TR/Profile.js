@@ -212,6 +212,8 @@ const Profile = {
   LICENSE_MODULE_REGISTER_SUCCESS: 'Modül Kaydı Başarılı',
   LICENSE_EXIT: 'Çıkış',
   LICENSE_EXIT_FAILED: 'Çıkış Başarısız',
+  LICENSE_EXIT_CLOUD_ACTIVATE: 'Dönüş bulut lisans ve Aktivasyonu?',
+  LICENSE_EXIT_CLOUD_LOGOUT: 'Dönüş bulut lisans ve Çıkış',
   LICENSE_CURRENT_EXPIRE: 'Mevcut Lisans Geçersiz',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE: 'Bu modül mevcut lisansa dahil değildir',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB:

@@ -28,13 +28,14 @@ class LicenseJoinPrivateCloud extends Component {
     super(props)
 
     const { params } = this.props.navigation.state
-    this.modules = params && params.modules
+    this.modules = (params && params.modules) || []
     this.state = {
       editionData: [],
       moduleData: [],
       selectEdition: {},
       selectModule: [],
       showMore: '',
+      hasData: false,
     }
   }
 
@@ -50,7 +51,7 @@ class LicenseJoinPrivateCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: '归还当前云许可并激活此许可?',
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
@@ -80,6 +81,15 @@ class LicenseJoinPrivateCloud extends Component {
             getLanguage(global.language).Profile.LICENSE_ACTIVATING,
           )
         await SMap.applyPrivateCloudLicense(ids)
+        await SMap.setPrivateCloudCloseCallback(async () => {
+          Toast.show(
+            global.language === 'CN'
+              ? '与私有云服务器的连接已断开!'
+              : 'Lost connection with private cloud license server!',
+          )
+          let info = await SMap.getEnvironmentStatus()
+          this.props.setLicenseInfo(info)
+        })
         let info = await SMap.getEnvironmentStatus()
         this.props.setLicenseInfo(info)
         this.container && this.container.setLoading(false)
@@ -147,21 +157,24 @@ class LicenseJoinPrivateCloud extends Component {
   }
 
   getData = () => {
-    let modules = this.modules.clone()
-    modules.sort(this.sortById)
-    let Edition = []
-    let Module = []
-    for (let i = 0; i < modules.length; i++) {
-      if (this.isEdition(modules[i].id)) {
-        Edition.push(modules[i])
-      } else {
-        Module.push(modules[i])
+    if (this.modules.length !== 0) {
+      let modules = this.modules.clone()
+      modules.sort(this.sortById)
+      let Edition = []
+      let Module = []
+      for (let i = 0; i < modules.length; i++) {
+        if (this.isEdition(modules[i].id)) {
+          Edition.push(modules[i])
+        } else {
+          Module.push(modules[i])
+        }
       }
+      this.setState({
+        editionData: Edition,
+        moduleData: Module,
+        hasData: true,
+      })
     }
-    this.setState({
-      editionData: Edition,
-      moduleData: Module,
-    })
   }
 
   onModulePress = item => {
@@ -334,6 +347,16 @@ class LicenseJoinPrivateCloud extends Component {
     )
   }
 
+  renderNoData = () => {
+    return (
+      <View style={{ marginTop: scaleSize(50), alignSelf: 'center' }}>
+        <Text style={{ fontSize: scaleSize(26), color: color.gray2 }}>
+          {getLanguage(global.language).Profile.LICENSE_QUERY_NONE}
+        </Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -345,8 +368,9 @@ class LicenseJoinPrivateCloud extends Component {
         }}
       >
         <ScrollView>
-          {this.renderEdition()}
-          {this.renderModule()}
+          {!this.state.hasData && this.renderNoData()}
+          {this.state.hasData && this.renderEdition()}
+          {this.state.hasData && this.renderModule()}
           {this.renderActive()}
         </ScrollView>
       </Container>

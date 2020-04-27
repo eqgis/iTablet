@@ -82,8 +82,7 @@ function getToolbarSize(type, additional = {}) {
   // 找当前模块下自定义的getToolbarSize，如果返回false，则去ToolBarHeight中去获取对应类型高度
   if (data && data.getToolbarSize) {
     toolbarSize = data.getToolbarSize(type, orientation, additional)
-  }
-  if (toolbarSize === false) {
+  } else {
     toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
   }
   return toolbarSize

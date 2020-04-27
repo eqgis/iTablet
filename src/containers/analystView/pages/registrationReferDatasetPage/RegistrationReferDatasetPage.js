@@ -36,6 +36,8 @@ export default class RegistrationReferDatasetPage extends Component {
             dataset.title = dataset.datasetName
             dataset.parentTitle = dataset.datasourceName
             dataset.isSelect = false
+            dataset.index = j
+            dataset.hasSelect = this.hasSelect(dataset)
           }
         }
         this.setState({
@@ -46,6 +48,28 @@ export default class RegistrationReferDatasetPage extends Component {
         this.setLoading(false)
       }
     }.bind(this)())
+  }
+
+  hasSelect = item => {
+    let hasSelect = false
+    let rectivyDatasetInfo = GLOBAL.RectifyDatasetInfo
+    if (rectivyDatasetInfo) {
+      let length = rectivyDatasetInfo.length
+      for (let i = 0; i < length; i++) {
+        let datasourceInfo = rectivyDatasetInfo[i]
+        if (item.datasourceName === datasourceInfo.datasourceName) {
+          let datasetInfoData = datasourceInfo.data
+          for (let j = 0; j < datasetInfoData.length; j++) {
+            let datasetInfo = datasetInfoData[j]
+            if (item.index === datasetInfo) {
+              hasSelect = true
+              return hasSelect
+            }
+          }
+        }
+      }
+    }
+    return hasSelect
   }
 
   setLoading = (loading = false, info, extra) => {
@@ -64,6 +88,7 @@ export default class RegistrationReferDatasetPage extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
+          backAction: this.back,
         }}
       >
         <LinkageList
@@ -82,10 +107,7 @@ export default class RegistrationReferDatasetPage extends Component {
 
         <View style={{ alignItems: 'center' }}>
           <Button
-            title={
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_REFER_DATASET_ADD
-            }
+            title={getLanguage(global.language).Analyst_Labels.REGISTRATION}
             ref={ref => (this.sureButton = ref)}
             type={'BLUE'}
             style={{

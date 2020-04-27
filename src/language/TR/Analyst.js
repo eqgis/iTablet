@@ -197,6 +197,19 @@ const Analyst_Labels = {
   REGISTRATION_RECTANGLE: 'Dikdörtgen kayıt (2 kontrol noktası)',
   REGISTRATION_OFFSET: 'Ofset kaydı (1 kontrol noktası)',
   REGISTRATION_ASSOCIATION: 'İlişkili tarama',
+
+  REGISTRATION_ASSOCIATION_CLOCE: 'Bağlantı kaldırıldı',
+  REGISTRATION_EXECUTE: 'infaz',
+  REGISTRATION_EXECUTE_SUCCESS: 'Başarılı uygulama',
+  REGISTRATION_SAVE_AS: 'Farklı kaydet',
+  REGISTRATION_RESAMPLE: 'Yeniden örnekleme sonuçları',
+  REGISTRATION_SAMPLE_MODE: 'Örnekleme modu',
+  REGISTRATION_SAMPLE_MODE_NEAR: 'En yakın komşu yöntemi',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilineer enterpolasyon',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Kübik evrişim enterpolasyonu',
+  REGISTRATION_RESULT_DATASET: 'Sonuç veri kümesi',
+  REGISTRATION_RESULT_DATASOURCE: 'Sonuç veri kaynağı',
+  REGISTRATION_ORIGINAL_DATASOURCE: 'Ham veriler',
 }
 
 const Analyst_Params = {

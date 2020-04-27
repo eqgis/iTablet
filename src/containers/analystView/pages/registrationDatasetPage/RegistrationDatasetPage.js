@@ -65,6 +65,8 @@ export default class RegistrationDatasetPage extends Component {
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_DATASET,
+          // navigation: this.props.navigation,
+          backAction: this.back,
         }}
       >
         <LinkageList

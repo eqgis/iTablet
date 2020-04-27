@@ -20,6 +20,7 @@ import { getLanguage } from '../../../../../language'
 class LicenseJoinPrivateCloud extends Component {
   props: {
     navigation: Object,
+    licenseInfo: Object,
     setLicenseInfo: () => {},
   }
 
@@ -27,7 +28,7 @@ class LicenseJoinPrivateCloud extends Component {
     super(props)
 
     const { params } = this.props.navigation.state
-    this.modules = params.modules
+    this.modules = params && params.modules
     this.state = {
       editionData: [],
       moduleData: [],
@@ -41,9 +42,35 @@ class LicenseJoinPrivateCloud extends Component {
     this.getData()
   }
 
-  activate = async () => {
+  _checkCloudLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 1
+    ) {
+      GLOBAL.SimpleDialog.set({
+        text: '归还当前云许可并激活此许可?',
+        confirmAction: async () => {
+          let result = await global.recycleCloudLicense()
+          if (result !== false) {
+            this.activate(true)
+          }
+        },
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      this.activate(true)
+    }
+  }
+
+  activate = async (confirm = false) => {
     try {
       if (this.state.selectEdition.id) {
+        if (!confirm) {
+          this._checkCloudLicense()
+          return
+        }
         let ids = []
         ids.push(this.state.selectEdition.id)
         ids = ids.concat(this.state.selectModule)
@@ -302,7 +329,7 @@ class LicenseJoinPrivateCloud extends Component {
         type={this.state.selectEdition.id ? 'BLUE' : 'GRAY'}
         style={styles.activeButton}
         titleStyle={{ fontSize: scaleSize(24) }}
-        onPress={this.activate}
+        onPress={() => this.activate()}
       />
     )
   }
@@ -327,10 +354,14 @@ class LicenseJoinPrivateCloud extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  licenseInfo: state.license.toJS().licenseInfo,
+})
+
 const mapDispatchToProps = {
   setLicenseInfo,
 }
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(LicenseJoinPrivateCloud)

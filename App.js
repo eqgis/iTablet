@@ -397,6 +397,7 @@ class AppRoot extends Component {
     let serialNumber =await SMap.initSerialNumber('')
     if(serialNumber!==''){
       AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, serialNumber)
+      await SMap.reloadLocalLicense()
     }
 
     let status = await SMap.getEnvironmentStatus()

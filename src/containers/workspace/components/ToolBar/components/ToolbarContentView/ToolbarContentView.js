@@ -15,7 +15,6 @@ import SymbolTabs from '../../../SymbolTabs'
 import SymbolList from '../../../SymbolList'
 import ToolList from '../ToolList'
 import ToolbarTableList from '../ToolbarTableList'
-import ToolbarHeight from '../../modules/ToolBarHeight'
 import ToolbarModule from '../../modules/ToolbarModule'
 import styles from './styles'
 
@@ -47,10 +46,11 @@ export default class ToolbarContentView extends React.Component {
 
   constructor(props) {
     super(props)
-    const data = ToolbarHeight.getToolbarSize(props.containerType, {
+    const data = ToolbarModule.getToolbarSize(props.containerType, {
       data: props.data,
     })
-    this.height = data.height
+    this.height = data.height // ToolbarContentView当前类型，未收缩前的高度
+    this.isBoxShow = false
     this.state = {
       column: data.column,
       row: data.row,
@@ -83,23 +83,39 @@ export default class ToolbarContentView extends React.Component {
 
   componentDidUpdate(prevProps) {
     // 点采集，GPS打点类型为0
-    if (this.props.type !== undefined && this.props.type !== prevProps.type) {
-      this.onChangeHeight(this.props.device.orientation, this.props.type)
+    if (
+      (this.props.type !== undefined && this.props.type !== prevProps.type) ||
+      this.props.device.orientation !== prevProps.device.orientation
+    ) {
+      let _data = ToolbarModule.getToolbarSize(this.props.containerType, {
+        data: this.props.data,
+      })
+      this.height = _data.height
+      // 若转动屏幕前后，ContentView高度为0，为不显示状态，则不调用改变高度
+      if (
+        this.props.device.orientation !== prevProps.device.orientation &&
+        !this.isBoxShow &&
+        // this.height === 0
+        JSON.stringify(this.state.boxHeight) === '0'
+      ) {
+        this.setState({
+          column: _data.column,
+          row: _data.row,
+        })
+      } else {
+        this.onChangeHeight(_data)
+      }
     }
   }
 
-  // TODO 每次更改高度和列数的方式可能会两次次setState，需要优化
-  onChangeHeight = async () => {
-    let _data = ToolbarHeight.getToolbarSize(this.props.containerType, {
-      data: this.props.data,
-    })
+  onChangeHeight = async data => {
     if (
-      this.height !== _data.height ||
-      this.state.column !== _data.column ||
-      this.state.row !== _data.row
+      JSON.stringify(this.state.boxHeight) !== data.height + '' ||
+      this.state.column !== data.column ||
+      this.state.row !== data.row
     ) {
-      this.height = _data.height
-      this.changeHeight(_data)
+      // this.height = data.height
+      this.changeHeight(data)
     }
   }
 
@@ -110,9 +126,11 @@ export default class ToolbarContentView extends React.Component {
         !isNaN(_params.height) &&
         JSON.stringify(this.state.boxHeight) !== _params.height.toString()
       ) {
-        this.height = _params.height
+        // this.height = _params.height
+        this.isBoxShow = _params.height !== 0
         let animate = Animated.timing(this.state.boxHeight, {
-          toValue: this.height,
+          // toValue: this.height,
+          toValue: _params.height,
           duration: Const.ANIMATED_DURATION,
         })
         if (_params.wait) {
@@ -120,7 +138,7 @@ export default class ToolbarContentView extends React.Component {
         }
 
         // 防止收缩回去后，图标依然显示问题
-        let isShow = this.height !== 0
+        let isShow = _params.height !== 0
         if (
           this.props.containerType === ToolbarType.table ||
           this.props.containerType === ToolbarType.table
@@ -349,40 +367,6 @@ export default class ToolbarContentView extends React.Component {
         extraData={this.props.device.orientation}
       />
     )
-    // return (
-    //   <HorizontalTableList
-    //     data={this.props.data}
-    //     numColumns={this.state.column}
-    //     renderCell={({ item, index }) => {
-    //       let column = this.state.column
-    //       return (
-    //         <MTBtn
-    //           style={[styles.cell, { flex: 1, backgroundColor: 'gray' }]}
-    //           // key={rowIndex + '-' + index}
-    //           title={item.title}
-    //           textColor={item.disable ? '#A0A0A0' : color.font_color_white}
-    //           textStyle={{ fontSize: setSpText(20) }}
-    //           // size={MTBtn.Size.NORMAL}
-    //           image={item.image}
-    //           background={item.background}
-    //           onPress={() => {
-    //             if (item.disable) return
-    //             if (
-    //               ToolbarModule.getData().actions &&
-    //               ToolbarModule.getData().actions.tableAction
-    //             ) {
-    //               ToolbarModule.getData().actions.tableAction(item)
-    //             }
-    //             if (item.action) {
-    //               item.action(item)
-    //             }
-    //           }}
-    //         />
-    //       )
-    //     }}
-    //     device={this.props.device}
-    //   />
-    // )
   }
 
   /***************************************** ColorTable ***************************************/

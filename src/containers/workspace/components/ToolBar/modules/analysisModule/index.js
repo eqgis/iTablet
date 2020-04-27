@@ -6,9 +6,7 @@ import AnalysisData from './AnalysisData'
 import AnalysisAction from './AnalysisAction'
 import ToolbarModule from '../ToolbarModule'
 import { getThemeAssets } from '../../../../../../assets'
-// import { ToolbarType } from '../../../../../../constants'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 import AnalysisMenuListView from './customView/AnalysisMenuListView'
 
 export async function action(type) {
@@ -30,7 +28,7 @@ export async function action(type) {
   const params = ToolbarModule.getParams()
   const _data = AnalysisData.getData(type)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {

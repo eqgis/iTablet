@@ -8,13 +8,12 @@ import ToolbarModule from '../ToolbarModule'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import { ToolbarType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
   const _data = EditData.getData(type)
   const containerType = ToolbarType.table
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, type, {

@@ -5,13 +5,12 @@ import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 
 function action(type) {
   const params = ToolbarModule.getParams()
   const _data = CollectionData.getData(type)
   const containerType = ToolbarType.tabs
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {

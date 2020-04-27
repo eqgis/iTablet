@@ -6,13 +6,12 @@ import Fly3DData from './Fly3DData'
 import Fly3DAction from './Fly3DAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 
 function action(type) {
   const params = ToolbarModule.getParams()
   const _data = Fly3DData.getData(type, params)
   const containerType = ToolbarType.list
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   params.showFullMap && params.showFullMap(true)
   SScene.checkoutListener('startMeasure')

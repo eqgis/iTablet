@@ -5,7 +5,6 @@ import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
-import ToolBarHeight from '../ToolBarHeight'
 
 export async function action(type) {
   const params = ToolbarModule.getParams()
@@ -19,7 +18,7 @@ export async function action(type) {
         return
       }
       containerType = ToolbarType.tabs
-      data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+      data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
       params.showFullMap && params.showFullMap(true)
       params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
         isFullScreen: true,

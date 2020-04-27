@@ -8,13 +8,12 @@ import MapSettingData from './MapSettingData'
 import MapSettingAction from './MapSettingAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType } from '../../../../../../constants'
-import ToolBarHeight from '../ToolBarHeight'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
   const _data = MapSettingData.getData(type)
   const containerType = ToolbarType.colorTable
-  const data = ToolBarHeight.getToolbarSize(containerType, { data: _data.data })
+  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
   await setModuleData(type)

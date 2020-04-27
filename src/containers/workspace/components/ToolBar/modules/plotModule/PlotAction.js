@@ -81,8 +81,7 @@ async function geometrySelected(event) {
           ConstToolType.PLOT_ANIMATION_NODE_CREATE,
           {
             isFullScreen: true,
-            height: ConstToolType.TOOLBAR_HEIGHT[5],
-            // containerType: ToolbarType.createPlotAnimation,
+            containerType: ToolbarType.createPlotAnimation,
             customView: _props => (
               <PlotAnimationView
                 ref={ref => (GLOBAL.plotAnimationView = ref)}

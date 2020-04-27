@@ -57,7 +57,7 @@ function getToolbarSize(type, orientation, additional = {}) {
       break
     case ToolbarType.createPlotAnimation: // 创建标绘推演
     case ToolbarType.animationNode: // 态势推演
-      height = Height.TABLE_ROW_HEIGHT_2 * 5
+      height = Height.TABLE_ROW_HEIGHT_2 * 8
       break
     case ToolbarType.picker: // 选择器
       height =

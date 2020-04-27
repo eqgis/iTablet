@@ -187,7 +187,7 @@ function getTypeImage(type) {
  */
 async function methodSelected(type) {
   //切换方式 清除上次增量的数据
-  await SMap.clearIncrementPoints()
+  SMap.clearIncrementPoints()
   SMap.setAction(Action.PAN)
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:

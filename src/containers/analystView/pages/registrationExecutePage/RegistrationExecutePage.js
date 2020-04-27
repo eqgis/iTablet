@@ -9,6 +9,10 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { SMap, SRectifyView } from 'imobile_for_reactnative'
 
 export default class RegistrationExecutePage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -250,6 +254,7 @@ export default class RegistrationExecutePage extends Component {
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE,
+          navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn

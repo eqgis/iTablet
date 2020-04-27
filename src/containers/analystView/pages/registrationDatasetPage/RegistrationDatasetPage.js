@@ -8,6 +8,10 @@ import { View } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
 
 export default class RegistrationDatasetPage extends Component {
+  props: {
+    navigation: Object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -65,7 +69,7 @@ export default class RegistrationDatasetPage extends Component {
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_DATASET,
-          // navigation: this.props.navigation,
+          navigation: this.props.navigation,
           backAction: this.back,
         }}
       >

@@ -17,7 +17,7 @@ import {
   PermissionsAndroid,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
-import { SOnlineService } from 'imobile_for_reactnative'
+import { SOnlineService, SMap } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import { SimpleDialog } from '../Component'
@@ -125,12 +125,12 @@ export default class CustomActions extends React.Component {
       return
     }
     if (!(await AppUtils.isLocationOpen())) {
-      this.SimpleDialog.setConfirm(() => {
-        AppUtils.startAppLoactionSetting()
+      this.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.OPEN_LOCATION,
+        confirmAction: () => {
+          AppUtils.startAppLoactionSetting()
+        },
       })
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Prompt.OPEN_LOCATION,
-      )
       this.SimpleDialog.setVisible(true)
       return
     }
@@ -149,17 +149,17 @@ export default class CustomActions extends React.Component {
       }
     }
     if (!allowed) {
-      this.SimpleDialog.setConfirm(() => {
-        AppUtils.startAppLoactionSetting()
+      this.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.REQUEST_LOCATION,
+        confirmAction: () => {
+          AppUtils.startAppLoactionSetting()
+        },
       })
-      this.SimpleDialog.setText(
-        getLanguage(global.language).Prompt.REQUEST_LOCATION,
-      )
       this.SimpleDialog.setVisible(true)
       return
     }
 
-    let location = await AppUtils.getCurrentLocation()
+    let location = await SMap.getCurrentLocation()
     if (location.longitude === 0 && location.latitude === 0) {
       Toast.show(getLanguage(global.language).Prompt.LOCATION_ERROR)
       return

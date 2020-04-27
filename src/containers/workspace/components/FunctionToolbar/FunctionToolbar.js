@@ -25,10 +25,12 @@ export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language'
 import {
   startModule,
+  start3DModule,
   addModule,
   styleModule,
   toolModule,
   shareModule,
+  share3DModule,
   themeModule,
   collectionModule,
   editModule,
@@ -381,6 +383,15 @@ export default class FunctionToolbar extends React.Component {
             ),
           )
           break
+        case 'start3DModule':
+          data.push(
+            start3DModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.START,
+              !isLicenseNotValid,
+            ),
+          )
+          break
         case 'addModule':
           data.push(
             addModule(
@@ -446,6 +457,15 @@ export default class FunctionToolbar extends React.Component {
         case 'shareModule':
           data.push(
             shareModule(
+              item.type,
+              getLanguage(this.props.language).Map_Main_Menu.SHARE,
+              !isLicenseNotValid,
+            ),
+          )
+          break
+        case 'share3DModule':
+          data.push(
+            share3DModule(
               item.type,
               getLanguage(this.props.language).Map_Main_Menu.SHARE,
               !isLicenseNotValid,

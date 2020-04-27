@@ -29,7 +29,6 @@ class MapTabExample extends Component {
       <TabContainer
         ref={ref => (this.container = ref)}
         hideInBackground={false}
-        showFullInMap={true}
         headerProps={{
           title: this.getTitle(),
           withoutBack: true,

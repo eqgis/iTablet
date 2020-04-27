@@ -8,6 +8,7 @@ import { getLanguage } from '../language'
 import { TouchType } from '../constants'
 // eslint-disable-next-line
 import { Toast } from '../utils'
+import ToolbarModule from './workspace/components/ToolBar/modules/ToolbarModule'
 // eslint-disable-next-line
 let _params = {}
 let isDoubleTouchCome = false
@@ -165,7 +166,15 @@ async function touchCallback(event) {
       break
     }
     case TouchType.MAP_TOPO_SPLIT_BY_POINT: {
-      // const point = await SMap.getPixelPointToMap(event.screenPoint)
+      const data = ToolbarModule.getData()
+      const point = event.LLPoint
+      data?.actions?.pointSplitLine(point)
+      break
+    }
+    case TouchType.MAP_TOPO_EXTEND_LINE: {
+      const data = ToolbarModule.getData()
+      const point = event.LLPoint
+      data?.actions?.extendLine(point)
       break
     }
     case TouchType.ADD_NODES:

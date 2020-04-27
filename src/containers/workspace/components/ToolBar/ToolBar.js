@@ -305,15 +305,20 @@ export default class ToolBar extends React.PureComponent {
    *   column:          表格列数（仅table可用）
    *   containerType:   容器的类型, list | table
    *   resetToolModuleData: 是否重置ToolbarModule中的data
+   *   touchType:           setVisible之后 GLOBAL.TouchType的值
    *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
   setVisible = (isShow, type = this.state.type, params = {}) => {
-    if (isShow && GLOBAL.TouchType !== TouchType.ANIMATION_WAY) {
-      GLOBAL.TouchType = TouchType.NULL
-      GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
-    } else if (!isShow) {
-      GLOBAL.TouchType = TouchType.NORMAL
+    if (params.touchType) {
+      GLOBAL.TouchType = params.touchType
+    } else {
+      if (isShow) {
+        GLOBAL.TouchType = TouchType.NULL
+        GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
+      } else if (!isShow) {
+        GLOBAL.TouchType = TouchType.NORMAL
+      }
     }
     if (
       this.isShow !== isShow ||

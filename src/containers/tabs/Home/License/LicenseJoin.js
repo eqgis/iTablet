@@ -11,6 +11,7 @@ import { scaleSize, Toast } from '../../../../utils'
 class LicenseJoin extends Component {
   props: {
     navigation: Object,
+    licenseInfo: Object,
     setLicenseInfo: () => {},
   }
 
@@ -22,11 +23,13 @@ class LicenseJoin extends Component {
     this.state = {
       texts: ['', '', '', '', ''],
       isCanSure: false,
+      checkLocal: true,
     }
   }
 
   componentDidMount() {
     this.initTextInputs()
+    this.reloadLocalLicense()
   }
 
   back = () => {
@@ -34,6 +37,84 @@ class LicenseJoin extends Component {
       this.backAction()
     } else {
       this.props.navigation.goBack()
+    }
+  }
+
+  _checkCloudLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 1
+    ) {
+      GLOBAL.SimpleDialog.set({
+        text: '归还当前云许可并激活此许可?',
+        confirmAction: async () => {
+          let result = await global.recycleCloudLicense()
+          if (result !== false) {
+            this.activateLicenseSerialNumber(true)
+          }
+        },
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      this.activateLicenseSerialNumber(true)
+    }
+  }
+
+  _checkCloudLicense4Reload = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 1
+    ) {
+      GLOBAL.SimpleDialog.set({
+        text: '归还当前云许可并激活此许可?',
+        confirmAction: async () => {
+          let result = await global.recycleCloudLicense()
+          if (result !== false) {
+            this.reloadLocalLicense(true)
+          }
+        },
+        cancelAction: () => this.props.navigation.goBack(),
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      this.reloadLocalLicense(true)
+    }
+  }
+
+  reloadLocalLicense = async (confirm = false) => {
+    try {
+      if (!confirm) {
+        this._checkCloudLicense4Reload()
+        return
+      }
+      let serialNumber = await SMap.initSerialNumber('')
+      if (serialNumber !== '') {
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
+        )
+        AsyncStorage.setItem(
+          constants.LICENSE_OFFICIAL_STORAGE_KEY,
+          serialNumber,
+        )
+        await SMap.reloadLocalLicense()
+        let status = await SMap.getEnvironmentStatus()
+        if (status && status.isLicenseValid && status.licenseType === 0) {
+          this.props.setLicenseInfo(status)
+          this.props.navigation.pop(2)
+        }
+        GLOBAL.Loading.setLoading(false)
+      } else {
+        this.setState({ checkLocal: false })
+      }
+    } catch (error) {
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+      GLOBAL.Loading.setLoading(false)
+      this.setState({ checkLocal: false })
     }
   }
 
@@ -48,70 +129,82 @@ class LicenseJoin extends Component {
   }
 
   //激活许可序列号
-  activateLicenseSerialNumber = async () => {
-    GLOBAL.Loading.setLoading(
-      true,
-      global.language === 'CN' ? '许可申请中...' : 'Applying',
-    )
-    let str = ''
-    for (let i = 0; i < this.state.texts.length - 1; i++) {
-      str = str + this.state.texts[i] + '-'
-    }
-    str = str + this.state.texts[this.state.texts.length - 1]
-    //4C95F-AB5F2-6944D-0976C-06891
-    if (str.length === 29) {
-      let result = -1
-      setTimeout(function() {
-        if (result === -1) {
-          GLOBAL.Loading.setLoading(false)
-          Toast.show(
-            global.language === 'CN' ? '激活失败...' : 'Activate Faild',
-          )
+  activateLicenseSerialNumber = async (confirm = false) => {
+    try {
+      if (this.state.isCanSure) {
+        if (!confirm) {
+          this._checkCloudLicense()
           return
         }
-      }, 40000)
-      result = await SMap.activateLicense(str)
-      if (result) {
-        AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, str)
-        let modules = await SMap.licenseContainModule(str)
-        let size = modules.length
-        let number = 0
-        for (let i = 0; i < size; i++) {
-          let modultCode = Number(modules[i])
-          if (modultCode == 0) {
-            continue
-          }
-          number = number + (1 << modultCode % 100)
+        GLOBAL.Loading.setLoading(
+          true,
+          global.language === 'CN' ? '许可申请中...' : 'Applying',
+        )
+        let str = ''
+        for (let i = 0; i < this.state.texts.length - 1; i++) {
+          str = str + this.state.texts[i] + '-'
         }
-        GLOBAL.modulesNumber = number
-        Toast.show(
-          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
-        )
-        let info = await SMap.getEnvironmentStatus()
-        this.props.setLicenseInfo(info)
-        GLOBAL.Loading.setLoading(
-          false,
-          global.language === 'CN' ? '许可申请中...' : 'Applying',
-        )
-        this.props.navigation.pop(2)
-      } else {
-        Toast.show(
-          // getLanguage(global.language).Profile.INPUT_LICENSE_SERIAL_NUMBER,
-          global.language === 'CN' ? '激活失败...' : 'Activate Faild',
-        )
-        GLOBAL.Loading.setLoading(
-          false,
-          global.language === 'CN' ? '许可申请中...' : 'Applying',
-        )
+        str = str + this.state.texts[this.state.texts.length - 1]
+        //4C95F-AB5F2-6944D-0976C-06891
+        if (str.length === 29) {
+          let result = -1
+          setTimeout(function() {
+            if (result === -1) {
+              GLOBAL.Loading.setLoading(false)
+              Toast.show(
+                global.language === 'CN' ? '激活失败...' : 'Activate Faild',
+              )
+              return
+            }
+          }, 40000)
+          result = await SMap.activateLicense(str)
+          if (result) {
+            AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, str)
+            let modules = await SMap.licenseContainModule(str)
+            let size = modules.length
+            let number = 0
+            for (let i = 0; i < size; i++) {
+              let modultCode = Number(modules[i])
+              if (modultCode == 0) {
+                continue
+              }
+              number = number + (1 << modultCode % 100)
+            }
+            GLOBAL.modulesNumber = number
+            Toast.show(
+              getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+            )
+            let info = await SMap.getEnvironmentStatus()
+            this.props.setLicenseInfo(info)
+            GLOBAL.Loading.setLoading(
+              false,
+              global.language === 'CN' ? '许可申请中...' : 'Applying',
+            )
+            this.props.navigation.pop(2)
+          } else {
+            Toast.show(
+              // getLanguage(global.language).Profile.INPUT_LICENSE_SERIAL_NUMBER,
+              global.language === 'CN' ? '激活失败...' : 'Activate Faild',
+            )
+            GLOBAL.Loading.setLoading(
+              false,
+              global.language === 'CN' ? '许可申请中...' : 'Applying',
+            )
+          }
+        } else {
+          Toast.show(
+            getLanguage(global.language).Profile
+              .PLEASE_INPUT_LICENSE_SERIAL_NUMBER,
+          )
+          GLOBAL.Loading.setLoading(
+            false,
+            global.language === 'CN' ? '许可申请中...' : 'Applying',
+          )
+        }
       }
-    } else {
-      Toast.show(
-        getLanguage(global.language).Profile.PLEASE_INPUT_LICENSE_SERIAL_NUMBER,
-      )
-      GLOBAL.Loading.setLoading(
-        false,
-        global.language === 'CN' ? '许可申请中...' : 'Applying',
-      )
+    } catch (error) {
+      Toast.show(global.language === 'CN' ? '激活失败...' : 'Activate Faild')
+      GLOBAL.Loading.setLoading(false)
     }
   }
 
@@ -238,9 +331,7 @@ class LicenseJoin extends Component {
               marginTop: scaleSize(60),
             }}
             titleStyle={{ fontSize: scaleSize(24) }}
-            onPress={
-              this.state.isCanSure ? this.activateLicenseSerialNumber : null
-            }
+            onPress={() => this.activateLicenseSerialNumber()}
           />
         </View>
       </View>
@@ -258,17 +349,20 @@ class LicenseJoin extends Component {
           backAction: this.back,
         }}
       >
-        {this.renderContent()}
+        {!this.state.checkLocal && this.renderContent()}
       </Container>
     )
   }
 }
+const mapStateToProps = state => ({
+  licenseInfo: state.license.toJS().licenseInfo,
+})
 
 const mapDispatchToProps = {
   setLicenseInfo,
 }
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(LicenseJoin)
 

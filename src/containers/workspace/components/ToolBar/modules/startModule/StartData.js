@@ -9,45 +9,6 @@ function getData(type, params) {
   let data = []
   const buttons = []
   switch (type) {
-    case ConstToolType.MAP_3D_START:
-      data = [
-        // {
-        //   key: constants.CREATE,
-        //   title: '导入场景',
-        //   size: 'large',
-        //   action: () => {
-        //     if (!ToolbarModule.getParams().setToolbarVisible) return
-        //     // ToolbarModule.getParams().setToolbarVisible(false)
-        //     // NavigationService.navigate('WorkspaceFileList', { type: 'MAP_3D' })
-        //     ToolbarModule.getParams().setToolbarVisible(
-        //       true,
-        //       ConstToolType.MAP3D_IMPORTWORKSPACE,
-        //       {
-        //         containerType: 'list',
-        //       },
-        //     )
-        //   },
-        //   image: require('../../../../assets/mapTools/icon_create.png'),
-        // },
-        {
-          key: constants.OPEN,
-          title: getLanguage(global.language).Map_Main_Menu.START_OPEN_SENCE,
-          // '打开场景',
-          action: StartAction.getSceneData,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_open_black.png'),
-        },
-        // {
-        //   key: constants.BASE_MAP,
-        //   title: constants.BASE_MAP,
-        //   size: 'large',
-        //   action: () => {
-        //     changeBaseLayer('MAP_3D')
-        //   },
-        //   image: require('../../../../assets/mapTools/icon_base_black.png'),
-        // },
-      ]
-      break
     case ConstToolType.MAP_START:
     case ConstToolType.MAP_ANALYST_START:
     case ConstToolType.MAP_EDIT_START:

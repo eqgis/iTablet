@@ -328,6 +328,8 @@ const Prompt = {
   SELECT_A_POINT_INLINE: '请选择一个线上点',
   LINE_DATASET: '线数据集',
   DESTINATION_DATASOURCE: '目标数据源',
+  SMOOTH_FACTOR: '请输入平滑系数',
+
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

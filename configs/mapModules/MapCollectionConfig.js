@@ -9,10 +9,7 @@ export default class MapCollectionConfig extends Module {
     super(props)
     this.key = ChunkType.MAP_COLLECTION
     this.example = {
-      checkUrl: 'https://www.supermapol.com/web/datas.json?currentPage=1&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&keywords=',
       name: '地理国情普查_示范数据',
-      nickname: 'xiezhiyan123',
-      type: 'zip',
     }
     this.functionModules = [
       {key: 'startModule', type: 'MAP_START'},

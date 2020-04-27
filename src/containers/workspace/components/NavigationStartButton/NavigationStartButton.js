@@ -321,6 +321,7 @@ export default class NavigationStartButton extends React.Component {
     return icon
   }
   renderItem = ({ item }) => {
+    if (item.routeName === 'PathPoint') return null
     let roadLength = item.roadLength || item.length
     let turnType =
       item.turnType !== undefined ? item.turnType : item.dirToSwerve
@@ -330,7 +331,8 @@ export default class NavigationStartButton extends React.Component {
         getLanguage(this.language).Map_Main_Menu.KILOMETERS
     else
       roadLength =
-        (roadLength || 1) + getLanguage(this.language).Map_Main_Menu.METERS
+        (roadLength || 1).toFixed(2) +
+        getLanguage(this.language).Map_Main_Menu.METERS
     let str = ''
     let thenInfo = this.language === 'CN' ? '然后' : 'and then'
     if (turnType === 'start' || turnType === 'end') {

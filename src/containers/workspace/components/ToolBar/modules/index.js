@@ -1,9 +1,11 @@
 import startModule from './startModule'
+import start3DModule from './start3DModule'
 import fly3DModule from './fly3DModule'
 import addModule from './addModule'
 import styleModule from './styleModule'
 import toolModule from './toolModule'
 import shareModule from './shareModule'
+import share3DModule from './share3DModule'
 import themeModule from './themeModule'
 import collectionModule from './collectionModule'
 import editModule from './editModule'
@@ -23,11 +25,13 @@ import topoEditModule from './topoEditModule'
 import layerVisibleScaleModule from './layerVisibleScaleModule'
 export {
   startModule,
+  start3DModule,
   fly3DModule,
   addModule,
   styleModule,
   toolModule,
   shareModule,
+  share3DModule,
   themeModule,
   collectionModule,
   editModule,

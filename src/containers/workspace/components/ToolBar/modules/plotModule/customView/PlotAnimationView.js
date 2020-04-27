@@ -554,11 +554,11 @@ export default class PlotAnimationView extends React.Component {
   createAnimationWay = () => {
     if (this.state.animationMode === 0) {
       GLOBAL.animationWayData = this.getCreateInfo()
-      GLOBAL.TouchType = TouchType.ANIMATION_WAY
       this.props.showToolbar(true, ConstToolType.PLOT_ANIMATION_WAY, {
         containerType: 'table',
         height: ConstToolType.HEIGHT[0],
         isFullScreen: false,
+        touchType: TouchType.ANIMATION_WAY,
         cb: () => SMap.setAction(Action.PAN),
       })
     }

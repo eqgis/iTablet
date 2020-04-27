@@ -148,7 +148,7 @@ export default class CustomModePage extends Component {
       }
       item.start = min + rand * (index - 1) + ''
       item.end = min + rand * index + ''
-      item.caption = item.start + ' < ' + item.end
+      item.caption = item.start + ' <= X < ' + item.end
     })
     this.setState({
       data,
@@ -295,7 +295,7 @@ export default class CustomModePage extends Component {
     if (item.start) {
       start = item.start === 'min' ? item.start : Math.round(item.start)
       end = item.end === 'max' ? item.end : Math.round(item.end)
-      str = `${start}<x<=`
+      str = `${start}<=X<`
     } else {
       str = item.title
     }

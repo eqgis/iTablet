@@ -83,7 +83,7 @@ function getToolbarSize(type, additional = {}) {
   if (data && data.getToolbarSize) {
     toolbarSize = data.getToolbarSize(type, orientation, additional)
   }
-  if (toolbarSize === false || Object.keys(toolbarSize).length === 0) {
+  if (!toolbarSize || Object.keys(toolbarSize).length === 0) {
     toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
   }
   return toolbarSize

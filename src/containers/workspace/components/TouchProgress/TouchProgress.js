@@ -23,6 +23,7 @@ import TPData from './TPData'
 const IMAGE_SIZE = scaleSize(25)
 const MARGIN = scaleSize(30)
 
+// TODO TouchProgress待重构
 export default class TouchProgress extends Component {
   props: {
     language: string,
@@ -136,6 +137,74 @@ export default class TouchProgress extends Component {
     let panBtnDevLeft = MARGIN - IMAGE_SIZE / 2 // 图片相对左边偏差
 
     let tips = ''
+    if (tips === '') {
+      if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
+      ) {
+        let columnnumber = this.props.mapLegend[GLOBAL.Type].column
+        this._panBtnStyles.style.left =
+          (columnnumber * 10 * progressWidth) / 40 + panBtnDevLeft
+        this._previousLeft = (columnnumber * 10 * progressWidth) / 40
+        this._BackLine.style.width = (columnnumber * 10 * progressWidth) / 40
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
+          '     ' +
+          parseInt(columnnumber)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
+      ) {
+        let width = this.props.mapLegend[GLOBAL.Type].widthPercent
+        this._panBtnStyles.style.left =
+          (width * progressWidth) / 100 + panBtnDevLeft
+        this._previousLeft = (width * progressWidth) / 100
+        this._BackLine.style.width = (width * progressWidth) / 100
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
+          '     ' +
+          parseInt(width)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
+      ) {
+        let height = this.props.mapLegend[GLOBAL.Type].heightPercent
+        this._panBtnStyles.style.left =
+          (height * progressWidth) / 100 + panBtnDevLeft
+        this._previousLeft = (height * progressWidth) / 100
+        this._BackLine.style.width = (height * progressWidth) / 100
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
+          '     ' +
+          parseInt(height)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
+      ) {
+        let imagePercent = this.props.mapLegend[GLOBAL.Type].imagePercent
+        this._panBtnStyles.style.left =
+          (imagePercent * progressWidth) / 100 + panBtnDevLeft
+        this._previousLeft = (imagePercent * progressWidth) / 100
+        this._BackLine.style.width = (imagePercent * progressWidth) / 100
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
+          '     ' +
+          parseInt(imagePercent)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
+      ) {
+        let fontPercent = this.props.mapLegend[GLOBAL.Type].fontPercent
+        this._panBtnStyles.style.left =
+          (fontPercent * progressWidth) / 100 + panBtnDevLeft
+        this._previousLeft = (fontPercent * progressWidth) / 100
+        this._BackLine.style.width = (fontPercent * progressWidth) / 100
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
+          '     ' +
+          parseInt(fontPercent)
+      }
+    }
     if (tips === '' && this.props.selectName instanceof Array) {
       // 智能配图 selectName 为数组
       let mode = TPData.getMatchPictureMode(this.props.selectName)
@@ -685,74 +754,7 @@ export default class TouchProgress extends Component {
           break
         }
       }
-      if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
-      ) {
-        let columnnumber = this.props.mapLegend[GLOBAL.Type].column
-        this._panBtnStyles.style.left =
-          (columnnumber * 10 * progressWidth) / 40 + panBtnDevLeft
-        this._previousLeft = (columnnumber * 10 * progressWidth) / 40
-        this._BackLine.style.width = (columnnumber * 10 * progressWidth) / 40
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-          '     ' +
-          parseInt(columnnumber)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
-      ) {
-        let width = this.props.mapLegend[GLOBAL.Type].widthPercent
-        this._panBtnStyles.style.left =
-          (width * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (width * progressWidth) / 100
-        this._BackLine.style.width = (width * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-          '     ' +
-          parseInt(width)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
-      ) {
-        let height = this.props.mapLegend[GLOBAL.Type].heightPercent
-        this._panBtnStyles.style.left =
-          (height * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (height * progressWidth) / 100
-        this._BackLine.style.width = (height * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-          '     ' +
-          parseInt(height)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
-      ) {
-        let imagePercent = this.props.mapLegend[GLOBAL.Type].imagePercent
-        this._panBtnStyles.style.left =
-          (imagePercent * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (imagePercent * progressWidth) / 100
-        this._BackLine.style.width = (imagePercent * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-          '     ' +
-          parseInt(imagePercent)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
-      ) {
-        let fontPercent = this.props.mapLegend[GLOBAL.Type].fontPercent
-        this._panBtnStyles.style.left =
-          (fontPercent * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (fontPercent * progressWidth) / 100
-        this._BackLine.style.width = (fontPercent * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-          '     ' +
-          parseInt(fontPercent)
-      }
     }
-
     if (
       ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
@@ -1172,6 +1174,91 @@ export default class TouchProgress extends Component {
     let event = ToolbarModule.getData().event
 
     if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
+    ) {
+      let legendSettings = this.props.mapLegend
+      let columns
+      if (value <= 25) {
+        columns = 1
+      } else if (value <= 50) {
+        columns = 2
+      } else if (value <= 75) {
+        columns = 3
+      } else {
+        columns = 4
+      }
+      legendSettings[GLOBAL.Type].column = columns
+      this._setMapLegend(legendSettings)
+      tips =
+        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
+        '     ' +
+        parseInt(columns)
+    } else if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
+    ) {
+      let legendSettings = this.props.mapLegend
+      if (value > 100) {
+        value = 100
+      } else if (value <= 20) {
+        value = 20
+      }
+      legendSettings[GLOBAL.Type].widthPercent = value
+      this._setMapLegend(legendSettings)
+      tips =
+        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
+        '     ' +
+        parseInt(value)
+    } else if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
+    ) {
+      let legendSettings = this.props.mapLegend
+      if (value > 100) {
+        value = 100
+      } else if (value <= 20) {
+        value = 20
+      }
+      legendSettings[GLOBAL.Type].heightPercent = value
+      this._setMapLegend(legendSettings)
+      tips =
+        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
+        '     ' +
+        parseInt(value)
+    } else if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
+    ) {
+      let legendSettings = this.props.mapLegend
+      if (value > 100) {
+        value = 100
+      } else if (value <= 10) {
+        value = 10
+      }
+      legendSettings[GLOBAL.Type].imagePercent = value
+      this._setMapLegend(legendSettings)
+      tips =
+        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
+        '     ' +
+        parseInt(value)
+    } else if (
+      this.props.selectName ===
+      getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
+    ) {
+      let legendSettings = this.props.mapLegend
+      if (value > 100) {
+        value = 100
+      } else if (value <= 10) {
+        value = 10
+      }
+      legendSettings[GLOBAL.Type].fontPercent = value
+      this._setMapLegend(legendSettings)
+      tips =
+        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
+        '     ' +
+        parseInt(value)
+    } else if (
       ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
       (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT ||
         GLOBAL.MapToolType === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE ||
@@ -1292,91 +1379,6 @@ export default class TouchProgress extends Component {
       if (mode !== undefined) {
         await SMap.updateMapFixColorsMode(mode, value)
       }
-    } else if (
-      this.props.selectName ===
-      getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
-    ) {
-      let legendSettings = this.props.mapLegend
-      let columns
-      if (value <= 25) {
-        columns = 1
-      } else if (value <= 50) {
-        columns = 2
-      } else if (value <= 75) {
-        columns = 3
-      } else {
-        columns = 4
-      }
-      legendSettings[GLOBAL.Type].column = columns
-      this._setMapLegend(legendSettings)
-      tips =
-        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-        '     ' +
-        parseInt(columns)
-    } else if (
-      this.props.selectName ===
-      getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
-    ) {
-      let legendSettings = this.props.mapLegend
-      if (value > 100) {
-        value = 100
-      } else if (value <= 20) {
-        value = 20
-      }
-      legendSettings[GLOBAL.Type].widthPercent = value
-      this._setMapLegend(legendSettings)
-      tips =
-        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-        '     ' +
-        parseInt(value)
-    } else if (
-      this.props.selectName ===
-      getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
-    ) {
-      let legendSettings = this.props.mapLegend
-      if (value > 100) {
-        value = 100
-      } else if (value <= 20) {
-        value = 20
-      }
-      legendSettings[GLOBAL.Type].heightPercent = value
-      this._setMapLegend(legendSettings)
-      tips =
-        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-        '     ' +
-        parseInt(value)
-    } else if (
-      this.props.selectName ===
-      getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
-    ) {
-      let legendSettings = this.props.mapLegend
-      if (value > 100) {
-        value = 100
-      } else if (value <= 10) {
-        value = 10
-      }
-      legendSettings[GLOBAL.Type].imagePercent = value
-      this._setMapLegend(legendSettings)
-      tips =
-        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-        '     ' +
-        parseInt(value)
-    } else if (
-      this.props.selectName ===
-      getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
-    ) {
-      let legendSettings = this.props.mapLegend
-      if (value > 100) {
-        value = 100
-      } else if (value <= 10) {
-        value = 10
-      }
-      legendSettings[GLOBAL.Type].fontPercent = value
-      this._setMapLegend(legendSettings)
-      tips =
-        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-        '     ' +
-        parseInt(value)
     } else if (
       (GLOBAL.Type === ChunkType.MAP_THEME &&
         this.props.currentLayer.themeType > 0) ||
@@ -1785,6 +1787,81 @@ export default class TouchProgress extends Component {
   setTips = value => {
     let layerType = this.props.currentLayer.type
     let tips = ''
+
+    if (tips === '') {
+      if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
+      ) {
+        let columns = this.props.mapLegend[GLOBAL.Type].columns
+        if (value <= 25) {
+          columns = 1
+        } else if (value <= 50) {
+          columns = 2
+        } else if (value <= 75) {
+          columns = 3
+        } else {
+          columns = 4
+        }
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
+          '     ' +
+          parseInt(columns)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
+      ) {
+        if (value > 100) {
+          value = 100
+        } else if (value <= 20) {
+          value = 20
+        }
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
+          '     ' +
+          parseInt(value)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
+      ) {
+        if (value > 100) {
+          value = 100
+        } else if (value <= 20) {
+          value = 20
+        }
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
+          '     ' +
+          parseInt(value)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
+      ) {
+        if (value > 100) {
+          value = 100
+        } else if (value <= 10) {
+          value = 10
+        }
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
+          '     ' +
+          parseInt(value)
+      } else if (
+        this.props.selectName ===
+        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
+      ) {
+        if (value > 100) {
+          value = 100
+        } else if (value <= 10) {
+          value = 10
+        }
+        tips =
+          getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
+          '     ' +
+          parseInt(value)
+      }
+    }
+
     if (tips === '' && this.props.selectName instanceof Array) {
       // 智能配图 selectName 为数组
       if (
@@ -2127,77 +2204,6 @@ export default class TouchProgress extends Component {
           value -= 100
           tips = TPData.getMatchPictureTip(this.props.selectName, value)
         }
-      }
-      if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN
-      ) {
-        let columns = this.props.mapLegend[GLOBAL.Type].columns
-        if (value <= 25) {
-          columns = 1
-        } else if (value <= 50) {
-          columns = 2
-        } else if (value <= 75) {
-          columns = 3
-        } else {
-          columns = 4
-        }
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-          '     ' +
-          parseInt(columns)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH
-      ) {
-        if (value > 100) {
-          value = 100
-        } else if (value <= 20) {
-          value = 20
-        }
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-          '     ' +
-          parseInt(value)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT
-      ) {
-        if (value > 100) {
-          value = 100
-        } else if (value <= 20) {
-          value = 20
-        }
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-          '     ' +
-          parseInt(value)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_ICON
-      ) {
-        if (value > 100) {
-          value = 100
-        } else if (value <= 10) {
-          value = 10
-        }
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-          '     ' +
-          parseInt(value)
-      } else if (
-        this.props.selectName ===
-        getLanguage(global.language).Map_Main_Menu.LEGEND_FONT
-      ) {
-        if (value > 100) {
-          value = 100
-        } else if (value <= 10) {
-          value = 10
-        }
-        tips =
-          getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-          '     ' +
-          parseInt(value)
       }
     }
 

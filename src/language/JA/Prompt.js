@@ -171,6 +171,7 @@ const Prompt = {
   FIELD_TYPE: 'フィールドタイプ: ',
 
   PLEASE_LOGIN_AND_SHARE: 'ログインしてシェアします',
+  PLEASE_LOGIN: 'ログインしてください',
   SHARING: 'シェア中',
   SHARE_SUCCESS: 'シェアに成功',
   SHARE_FAILED: 'シェアに失敗',

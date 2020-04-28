@@ -208,6 +208,9 @@ const Profile = {
   LICENSE_MODULE_REGISTER_SUCCESS: 'Module Register Success',
   LICENSE_EXIT: 'Exit',
   LICENSE_EXIT_FAILED: 'Exit Failed',
+  LICENSE_EXIT_CLOUD_ACTIVATE:
+    'Do you want recycle cloud license and activate?',
+  LICENSE_EXIT_CLOUD_LOGOUT: 'Do you want recycle cloud license and logout?',
   LICENSE_CURRENT_EXPIRE: 'Current License Invalid',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE:
     'This module is not included under the current license',

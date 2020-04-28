@@ -4,21 +4,22 @@ import { getThemeAssets } from '../../src/assets'
 import { Module } from '../../src/class'
 
 export default class Map3DConfig extends Module {
-  constructor (props) {
-    super(props)
-    this.key = ChunkType.MAP_3D
-    this.is3D = true
-    this.example = {
-      name_ios: 'OlympicGreen_ios',
-      name_android: 'OlympicGreen_android',
-    }
-    this.functionModules = [
-      {key: 'start3DModule', type: 'MAP_3D_START'},
-      {key: 'mark3DModule', type: 'MAP3D_MARK'},
-      {key: 'fly3DModule', type: 'MAP3D_TOOL_FLYLIST'},
-      {key: 'tool3DModule', type: 'MAP3D_TOOL'},
-      {key: 'share3DModule', type: 'MAP_SHARE_MAP3D'},
-    ]
+  constructor () {
+    super({
+      key: ChunkType.MAP_3D,
+      is3D: true,
+      example: {
+        name_ios: 'OlympicGreen_ios',
+        name_android: 'OlympicGreen_android',
+      },
+      functionModules: [
+        {key: 'start3DModule', type: 'MAP_3D_START'},
+        {key: 'mark3DModule', type: 'MAP3D_MARK'},
+        {key: 'fly3DModule', type: 'MAP3D_TOOL_FLYLIST'},
+        {key: 'tool3DModule', type: 'MAP3D_TOOL'},
+        {key: 'share3DModule', type: 'MAP_SHARE_MAP3D'},
+      ],
+    })
   }
 
   getChunk = language => {

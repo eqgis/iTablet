@@ -168,6 +168,7 @@ const Prompt = {
   FIELD_TYPE: 'Field Type: ',
 
   PLEASE_LOGIN_AND_SHARE: 'Please log in and share',
+  PLEASE_LOGIN: 'Please login',
   SHARING: 'Sharing',
   SHARE_SUCCESS: 'Shared Successfully',
   SHARE_FAILED: 'Failed to Share',

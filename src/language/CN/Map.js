@@ -616,7 +616,7 @@ const Map_Attribute = {
   REQUIRED: '必填',
   NAME: '名称',
   TYPE: '类型',
-  ENGTH: '长度',
+  LENGTH: '长度',
   DEFAULT: '缺省值',
   CONFIRM_ADD: '确认',
 

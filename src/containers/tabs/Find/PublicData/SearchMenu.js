@@ -11,6 +11,7 @@ import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import DropdownView from './DropdownView'
 import styles from './styles'
+import { screen } from '../../../../utils'
 
 const orderBy = {
   lastModifiedTime: 'LASTMODIFIEDTIME',
@@ -305,8 +306,22 @@ export default class SearchMenu extends React.Component {
   }
 
   renderList = () => {
+    let orientation = screen.getOrientation()
     return (
-      <View style={styles.SearchMenuContainer}>
+      <View
+        style={[
+          styles.SearchMenuContainer,
+          orientation.indexOf('LANDSCAPE') === 0
+            ? {
+              width: '50%',
+              height: '100%',
+            }
+            : {
+              width: '100%',
+              maxHeight: '65%',
+            },
+        ]}
+      >
         {this.renderSearchBar()}
         {this.renderOrderBar()}
         <FlatList

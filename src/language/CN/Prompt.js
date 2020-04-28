@@ -165,6 +165,7 @@ const Prompt = {
   FIELD_TYPE: '字段类型: ',
 
   PLEASE_LOGIN_AND_SHARE: '请登录后再分享',
+  PLEASE_LOGIN: '请登录',
   SHARING: '分享中',
   SHARE_SUCCESS: '分享成功',
   SHARE_FAILED: '分享失败',

@@ -6,12 +6,12 @@
 import { AppTabs } from '../../src/constants'
 
 /** 自定义Tab **/
-import Example from './Example'
+// import Example from './Example'
 
 /** export顺序为首页Tabs显示顺序, 默认第一个为Home **/
 export default [
   AppTabs.Friend,
   AppTabs.Find,
-  Example,
+  // Example,
   AppTabs.Mine,
 ]

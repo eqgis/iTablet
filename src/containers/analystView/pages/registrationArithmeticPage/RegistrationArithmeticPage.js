@@ -27,26 +27,27 @@ export default class RegistrationArithmeticPage extends Component {
     let data = []
     data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_LINE,
-      arithmeticMode: 1,
+      arithmeticMode: 0,
     })
     data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_QUADRATIC,
-      arithmeticMode: 2,
+      arithmeticMode: 1,
     })
     data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_RECTANGLE,
-      arithmeticMode: 3,
+      arithmeticMode: 2,
     })
     data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET,
-      arithmeticMode: 4,
+      arithmeticMode: 3,
     })
 
     return data
   }
 
-  // onPressItem(item) {
-  onPressItem() {
+  onPressItem(item) {
+    // onPressItem() {
+    GLOBAL.RegistrationArithmeticMode = item.arithmeticMode
     NavigationService.navigate('RegistrationPage')
   }
 
@@ -70,8 +71,8 @@ export default class RegistrationArithmeticPage extends Component {
         <TouchableOpacity
           style={styles.leftWrap}
           onPress={() => {
-            // this.onPressItem(item)
-            this.onPressItem()
+            this.onPressItem(item)
+            // this.onPressItem()
           }}
         >
           <Text style={styles.rightItem} numberOfLines={1}>

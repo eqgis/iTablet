@@ -210,6 +210,12 @@ const Analyst_Labels = {
   REGISTRATION_RESULT_DATASET: 'Sonuç veri kümesi',
   REGISTRATION_RESULT_DATASOURCE: 'Sonuç veri kaynağı',
   REGISTRATION_ORIGINAL_DATASOURCE: 'Ham veriler',
+  REGISTRATION_POINTS_DETAIL: 'görünüm',
+  REGISTRATION_EXECUTING: 'Devam ediyor',
+  REGISTRATION_ENUMBER: 'Seri numarası',
+  REGISTRATION_ORIGINAL: 'Kaynak noktası',
+  REGISTRATION_TAREGT: 'Hedef nokta',
+  REGISTRATION_RESELECT_POINT: 'Yeniden seçim noktası',
 }
 
 const Analyst_Params = {
@@ -312,6 +318,11 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: 'Lütfen önce veri kaynağını seçin',
   SELECT_DATA_SET_FIRST: 'Lütfen önce veri kümesini seçin',
   PLEASE_SELECT_A_REGION: 'Lütfen Bir Bölge Seçin',
+  REGISTRATION_LINE_POINTS: 'Lütfen en az 4 kontrol noktası ayarlayın',
+  REGISTRATION_QUADRATIC_POINTS: 'Lütfen en az 7 kontrol noktası ayarlayın',
+  REGISTRATION_RECTANGLE_POINTS: 'Lütfen 2 kontrol noktası ayarlayın',
+  REGISTRATION_OFFSET_POINTS: 'Lütfen 1 kontrol noktası ayarlayın',
+  REGISTRATION_POINTS_NUMBER_ERROR: 'Kontrol noktalarının sayısı eşleşmiyor',
 }
 
 export {

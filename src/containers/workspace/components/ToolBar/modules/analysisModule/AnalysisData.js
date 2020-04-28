@@ -1,23 +1,27 @@
 /**
  * 分析工具
  */
+import React from 'react'
 import { STransportationAnalyst } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../../../assets'
-import NavigationService from '../../../../../NavigationService'
+// import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ConstToolType, TouchType } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import AnalysisAction from './AnalysisAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 // import { Analyst_Types } from '../../../../../analystView/AnalystType'
+import AnalysisMenuListView from './customView/AnalysisMenuListView'
 
 function getData(type) {
   let buttons
+  let customView
   let data
   let temp = { buttons: [], data: [] }
   switch (type) {
     case ConstToolType.MAP_ANALYSIS:
-      temp = getToolData()
+      // temp = getToolData()
+      temp = getCustomView()
       break
     case ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH:
       temp = getOptimalPathData()
@@ -31,149 +35,166 @@ function getData(type) {
   }
   data = temp.data
   buttons = temp.buttons
-  return { data, buttons }
+  customView = temp.customView
+  return { data, buttons, customView }
+}
+
+function getCustomView() {
+  let obj = {}
+  // customView: () => (
+  const params = ToolbarModule.getParams()
+  let _customView = () => (
+    <AnalysisMenuListView
+      device={params.device}
+      showToolbar={params.setToolbarVisible}
+    />
+  )
+  obj.data = undefined
+  obj.buttons = undefined
+  obj.customView = _customView
+  return obj
 }
 
 /** 工具栏数据 * */
-function getToolData() {
-  const _params = ToolbarModule.getParams()
-  const buttons = []
-  const data = [
-    {
-      key: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
-      title: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
-      action: (params = {}) => {
-        NavigationService.navigate('LocalAnalystView', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
-          // cb: cb,
-        })
-      },
-      size: 'large',
-      image: getThemeAssets().analyst.analysis_shortestpath,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.CONNECTIVITY_ANALYSIS,
-      title: getLanguage(_params.language).Analyst_Modules
-        .CONNECTIVITY_ANALYSIS,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('LocalAnalystView', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_connectivity,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.FIND_TSP_PATH,
-      title: getLanguage(_params.language).Analyst_Modules.FIND_TSP_PATH,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('LocalAnalystView', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_traveling,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.BUFFER_ANALYST_SINGLE,
-      title: getLanguage(_params.language).Analyst_Modules
-        .BUFFER_ANALYST_SINGLE,
-      action: (params = {}) => {
-        NavigationService.navigate('BufferAnalystView', {
-          ...params,
-          type: 'single',
-        })
-      },
-      size: 'large',
-      image: getThemeAssets().analyst.analysis_buffer,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules
-        .BUFFER_ANALYST_MULTIPLE,
-      title: getLanguage(_params.language).Analyst_Modules
-        .BUFFER_ANALYST_MULTIPLE,
-      action: (params = {}) => {
-        NavigationService.navigate('BufferAnalystView', {
-          ...params,
-          type: 'multiple',
-        })
-      },
-      size: 'large',
-      image: getThemeAssets().analyst.analysis_multibuffer,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
-      title: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('AnalystListEntry', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS,
-          title: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_overlay,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
-      title: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('ReferenceAnalystView', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON,
-          title: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_thiessen,
-    },
-    // {
-    //   key: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
-    //   title: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
-    //   size: 'large',
-    //   action: (params = {}) => {
-    //     NavigationService.navigate('ReferenceAnalystView', {
-    //       ...params,
-    //       type: ConstToolType.MEASURE_DISTANCE,
-    //       title: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
-    //     })
-    //   },
-    //   image: getThemeAssets().analyst.analysis_measure,
-    // },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.INTERPOLATION_ANALYSIS,
-      title: getLanguage(_params.language).Analyst_Modules
-        .INTERPOLATION_ANALYSIS,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('InterpolationAnalystView', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
-          title: getLanguage(_params.language).Analyst_Modules
-            .INTERPOLATION_ANALYSIS,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_interpolation,
-    },
-    {
-      key: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
-      title: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
-      size: 'large',
-      action: (params = {}) => {
-        NavigationService.navigate('AnalystListEntry', {
-          ...params,
-          type: ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS,
-          title: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
-        })
-      },
-      image: getThemeAssets().analyst.analysis_online,
-    },
-  ]
-  return { data, buttons }
-}
+// function getToolData() {
+//   const _params = ToolbarModule.getParams()
+//   const buttons = []
+//   const data = [
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
+//       title: getLanguage(_params.language).Analyst_Modules.OPTIMAL_PATH,
+//       action: (params = {}) => {
+//         NavigationService.navigate('LocalAnalystView', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+//           // cb: cb,
+//         })
+//       },
+//       size: 'large',
+//       image: getThemeAssets().analyst.analysis_shortestpath,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.CONNECTIVITY_ANALYSIS,
+//       title: getLanguage(_params.language).Analyst_Modules
+//         .CONNECTIVITY_ANALYSIS,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('LocalAnalystView', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_connectivity,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.FIND_TSP_PATH,
+//       title: getLanguage(_params.language).Analyst_Modules.FIND_TSP_PATH,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('LocalAnalystView', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_traveling,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.BUFFER_ANALYST_SINGLE,
+//       title: getLanguage(_params.language).Analyst_Modules
+//         .BUFFER_ANALYST_SINGLE,
+//       action: (params = {}) => {
+//         NavigationService.navigate('BufferAnalystView', {
+//           ...params,
+//           type: 'single',
+//         })
+//       },
+//       size: 'large',
+//       image: getThemeAssets().analyst.analysis_buffer,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules
+//         .BUFFER_ANALYST_MULTIPLE,
+//       title: getLanguage(_params.language).Analyst_Modules
+//         .BUFFER_ANALYST_MULTIPLE,
+//       action: (params = {}) => {
+//         NavigationService.navigate('BufferAnalystView', {
+//           ...params,
+//           type: 'multiple',
+//         })
+//       },
+//       size: 'large',
+//       image: getThemeAssets().analyst.analysis_multibuffer,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
+//       title: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('AnalystListEntry', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS,
+//           title: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_overlay,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
+//       title: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('ReferenceAnalystView', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON,
+//           title: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_thiessen,
+//     },
+//     // {
+//     //   key: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
+//     //   title: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
+//     //   size: 'large',
+//     //   action: (params = {}) => {
+//     //     NavigationService.navigate('ReferenceAnalystView', {
+//     //       ...params,
+//     //       type: ConstToolType.MEASURE_DISTANCE,
+//     //       title: getLanguage(_params.language).Analyst_Modules.MEASURE_DISTANCE,
+//     //     })
+//     //   },
+//     //   image: getThemeAssets().analyst.analysis_measure,
+//     // },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.INTERPOLATION_ANALYSIS,
+//       title: getLanguage(_params.language).Analyst_Modules
+//         .INTERPOLATION_ANALYSIS,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('InterpolationAnalystView', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
+//           title: getLanguage(_params.language).Analyst_Modules
+//             .INTERPOLATION_ANALYSIS,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_interpolation,
+//     },
+//     {
+//       key: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
+//       title: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
+//       size: 'large',
+//       action: (params = {}) => {
+//         NavigationService.navigate('AnalystListEntry', {
+//           ...params,
+//           type: ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS,
+//           title: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
+//         })
+//       },
+//       image: getThemeAssets().analyst.analysis_online,
+//     },
+//   ]
+//   return { data, buttons }
+// }
 
 /** 路径分析数据 * */
 function getOptimalPathData() {

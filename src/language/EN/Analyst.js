@@ -209,6 +209,12 @@ const Analyst_Labels = {
   REGISTRATION_RESULT_DATASET: 'Result dataset',
   REGISTRATION_RESULT_DATASOURCE: 'Result datasource',
   REGISTRATION_ORIGINAL_DATASOURCE: 'Original dataset',
+  REGISTRATION_POINTS_DETAIL: 'Detail',
+  REGISTRATION_EXECUTING: 'In progress',
+  REGISTRATION_ENUMBER: 'Serial number',
+  REGISTRATION_ORIGINAL: 'Source',
+  REGISTRATION_TAREGT: 'Target',
+  REGISTRATION_RESELECT_POINT: '再選択',
 }
 
 const Analyst_Params = {
@@ -311,6 +317,12 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: 'Please select datasource first',
   SELECT_DATA_SET_FIRST: 'Please select dataset first',
   PLEASE_SELECT_A_REGION: 'Please select a region',
+  REGISTRATION_LINE_POINTS: 'Please set at least 4 control points',
+  REGISTRATION_QUADRATIC_POINTS: 'Please set at least 7 control points',
+  REGISTRATION_RECTANGLE_POINTS: 'Please set 2 control points',
+  REGISTRATION_OFFSET_POINTS: 'Please set 1 control point',
+  REGISTRATION_POINTS_NUMBER_ERROR:
+    'The number of control points does not match',
 }
 
 export {

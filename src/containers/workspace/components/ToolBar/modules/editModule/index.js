@@ -7,49 +7,41 @@ import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-export async function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = EditData.getData(type)
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type)
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: false,
-    ...data,
-    cb: () => SMap.setAction(Action.SELECT),
-  })
-  Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)
+class EditModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    this.setModuleData(this.type)
+    const params = ToolbarModule.getParams()
+    const _data = EditData.getData(this.type)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      isFullScreen: false,
+      ...data,
+      cb: () => SMap.setAction(Action.SELECT),
+    })
+    Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: EditData.getData,
-    actions: EditAction,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new EditModule({
+    type: ConstToolType.MAP_EDIT,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
     size: 'large',
     image: require('../../../../../../assets/function/icon_edit.png'),
     getData: EditData.getData,
     actions: EditAction,
-    setModuleData,
-  }
+  })
 }

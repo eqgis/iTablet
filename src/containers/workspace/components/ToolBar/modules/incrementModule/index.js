@@ -6,30 +6,30 @@
  */
 import IncrementData from './IncrementData'
 import IncrementAction from './IncrementAction'
-import ToolbarModule from '../ToolbarModule'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-function action() {
-  GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+class IncrementModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+    this.getMenuData = IncrementAction.getMenuData
+  }
+
+  action = () => {
+    GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+  }
 }
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: IncrementData.getData,
-    getMenuData: IncrementAction.getMenuData,
-    actions: IncrementAction,
-  })
-}
-export default function(type, title) {
+
+export default function() {
   GLOBAL.FloorListView && GLOBAL.FloorListView.setVisible(false)
   GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
-  return {
-    key: title,
-    title: title,
-    action: action,
+  return new IncrementModule({
+    type: 'MAP_INCREAMENT',
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_symbol.png'),
-    setModuleData,
     getData: IncrementData.getData,
     actions: IncrementAction,
-  }
+  })
 }

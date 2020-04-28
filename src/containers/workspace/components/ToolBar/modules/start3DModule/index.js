@@ -1,49 +1,41 @@
 import Star3DtData from './Start3DData'
 import Start3DAction from './Start3DAction'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = Star3DtData.getData(type, params)
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type)
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: true,
-    ...data,
-    data: _data.data,
-    buttons: _data.buttons,
-  })
+class Start3DModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    const params = ToolbarModule.getParams()
+    const _data = Star3DtData.getData(this.type, params)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      isFullScreen: true,
+      ...data,
+      ..._data,
+    })
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: Star3DtData.getData,
-    actions: Start3DAction,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new Start3DModule({
+    type: ConstToolType.MAP_3D_START,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.START,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_start.png'),
     getData: Star3DtData.getData,
     actions: Start3DAction,
-    setModuleData,
-  }
+  })
 }

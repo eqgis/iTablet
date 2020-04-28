@@ -6,45 +6,40 @@ import AiActions from './AiActions'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-export async function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = AiData.getData()
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type, data)
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_AR_AI_ASSISTANT, {
-    containerType,
-    isFullScreen: true,
-    ...data,
-  })
+class AIModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    this.setModuleData(this.type)
+    const params = ToolbarModule.getParams()
+    const _data = AiData.getData()
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      isFullScreen: true,
+      ...data,
+    })
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: AiData.getData,
-    actions: AiActions,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new AIModule({
+    type: ConstToolType.MAP_AR_AI_ASSISTANT,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT,
     size: 'large',
     image: getThemeAssets().ar.icon_ai_assistant,
     getData: AiData.getData,
-    setModuleData,
-  }
+    actions: AiActions,
+  })
 }

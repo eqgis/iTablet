@@ -1,24 +1,18 @@
-import MapEditConfig from './MapEditConfig'
-import MapAnalystConfig from './MapAnalystConfig'
-import Map3DConfig from './Map3DConfig'
-import MapARConfig from './MapARConfig'
-import MapCollectionConfig from './MapCollectionConfig'
-import MapNavigationConfig from './MapNavigationConfig'
-import MapPlottingConfig from './MapPlottingConfig'
-import MapThemeConfig from './MapThemeConfig'
+/** App自带模块 **/
+import * as AppModule from '../../src/customModule/mapModules'
 
 /** 自定义模块 **/
-// import MapExample from './MapExample'
+import MapExample from './MapExample'
 
 /** export顺序为首页模块显示顺序 **/
 export default [
-  new MapEditConfig(),
-  new Map3DConfig(),
-  new MapCollectionConfig(),
-  new MapARConfig(),
-  new MapNavigationConfig(),
-  // new MapExample(),
-  new MapThemeConfig(),
-  new MapPlottingConfig(),
-  new MapAnalystConfig(),
+  new AppModule.MapEditConfig(),
+  new AppModule.Map3DConfig(),
+  new AppModule.MapCollectionConfig(),
+  new AppModule.MapARConfig(),
+  new AppModule.MapNavigationConfig(),
+  new MapExample(),
+  new AppModule.MapThemeConfig(),
+  new AppModule.MapPlottingConfig(),
+  new AppModule.MapAnalystConfig(),
 ]

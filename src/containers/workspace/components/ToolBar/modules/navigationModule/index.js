@@ -1,32 +1,29 @@
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
+import { ConstToolType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-async function action() {
-  try {
+class MarkModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = () => {
     const _params = ToolbarModule.getParams()
     _params.showFullMap(true)
     NavigationService.navigate('NavigationView', {
       changeNavPathInfo: _params.changeNavPathInfo,
     })
-  } catch (e) {
-    // console.warn(e)
   }
 }
 
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new MarkModule({
+    type: ConstToolType.MAP_NAVIGATION_MODULE,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
     size: 'large',
     image: require('../../../../../../assets/Navigation/navi_icon.png'),
-  }
+  })
 }

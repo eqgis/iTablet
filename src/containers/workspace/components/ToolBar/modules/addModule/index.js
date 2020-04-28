@@ -4,56 +4,41 @@
 import AddData from './AddData'
 import AddAction from './AddAction'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-export async function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = await AddData.getData(type, params)
-  const containerType = ToolbarType.list
-  await setModuleData(type, _data)
-  const data = ToolbarModule.getToolbarSize(containerType, {})
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: true,
-    isTouchProgress: false,
-    showMenuDialog: false,
-    ...data,
-    data: _data.data,
-    buttons: _data.buttons,
-  })
-}
-
-async function setModuleData(type, data) {
-  let _data = data
-  if (!_data) {
-    _data = await AddData.getData(type)
+class AddModule extends FunctionModule {
+  constructor(props) {
+    super(props)
   }
-  ToolbarModule.setData({
-    type,
-    getData: AddData.getData,
-    data: _data,
-    actions: AddAction,
-  })
+
+  action = async () => {
+    this.setModuleData(this.type)
+    const params = ToolbarModule.getParams()
+    const _data = await AddData.getData(this.type, params)
+    const containerType = ToolbarType.list
+    const data = ToolbarModule.getToolbarSize(containerType, {})
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      isFullScreen: true,
+      isTouchProgress: false,
+      showMenuDialog: false,
+      ...data,
+      ..._data,
+    })
+  }
 }
 
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new AddModule({
+    type: ConstToolType.MAP_ADD,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_add.png'),
     getData: AddData.getData,
     actions: AddAction,
-    setModuleData,
-  }
+  })
 }

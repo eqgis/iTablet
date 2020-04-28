@@ -1,4 +1,5 @@
-import { mapModules, tabModules } from './configs'
+import mapModules from './mapModules/index'
+import tabModules from './tabModules/index'
 
 export default {
   name: 'SuperMap iTablet',
@@ -7,7 +8,7 @@ export default {
   language: 'CN',
   about: {
     isShow: true,
-    url: ''
+    url: '',
   },
   login: ['Online', 'iPortal'],
   tabModules: tabModules,
@@ -22,10 +23,10 @@ export default {
     {key: 'BASE_MAP'},
     {key: 'SYMBOL'},
     {key: 'TEMPLATE'},
-    {key: 'MyColor'}
+    {key: 'MyColor'},
   ],
   infoServer: {
     url: 'https://www.supermapol.com/web/datas/235674088/download',
-    fileName: 'ServerInfo.geojson'
-  }
+    fileName: 'ServerInfo.geojson',
+  },
 }

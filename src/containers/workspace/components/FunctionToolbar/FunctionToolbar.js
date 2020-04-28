@@ -23,28 +23,7 @@ const EDIT = 'EDIT'
  */
 export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language'
-import {
-  startModule,
-  start3DModule,
-  addModule,
-  styleModule,
-  toolModule,
-  shareModule,
-  share3DModule,
-  themeModule,
-  collectionModule,
-  editModule,
-  analysisModule,
-  plotModule,
-  fly3DModule,
-  tool3DModule,
-  navigationModule,
-  aiModule,
-  roadNetModule,
-  markModule,
-  mark3DModule,
-  incrementModule,
-} from '../ToolBar/modules'
+import { styleModule, themeModule } from '../ToolBar/modules'
 
 // const HeaderHeight = scaleSize(88)
 const BottomHeight = scaleSize(100)
@@ -244,101 +223,6 @@ export default class FunctionToolbar extends React.Component {
     GLOBAL.toolBox.props.setOpenOnlineMap(false)
   }
 
-  // showMenuAlertDialog = () => {
-  //   if (
-  //     !GLOBAL.currentLayer ||
-  //     (GLOBAL.currentLayer.themeType <= 0 && !GLOBAL.currentLayer.isHeatmap)
-  //   ) {
-  //     Toast.show(
-  //       getLanguage(this.props.language).Prompt.PLEASE_SELECT_THEMATIC_LAYER,
-  //     )
-  //     //'提示: 请先选择专题图层。')
-  //     NavigationService.navigate('LayerManager')
-  //     return
-  //   }
-  //   let type = ''
-  //   if (GLOBAL.currentLayer.isHeatmap) {
-  //     type = constants.THEME_HEATMAP
-  //   } else {
-  //     switch (GLOBAL.currentLayer.themeType) {
-  //       case ThemeType.UNIQUE:
-  //         type = constants.THEME_UNIQUE_STYLE
-  //         break
-  //       case ThemeType.RANGE:
-  //         type = constants.THEME_RANGE_STYLE
-  //         break
-  //       case ThemeType.LABEL:
-  //         type = constants.THEME_UNIFY_LABEL
-  //         break
-  //       case ThemeType.LABELUNIQUE:
-  //         type = constants.THEME_UNIQUE_LABEL
-  //         break
-  //       case ThemeType.LABELRANGE:
-  //         type = constants.THEME_RANGE_LABEL
-  //         break
-  //       case ThemeType.GRAPH:
-  //         type = constants.THEME_GRAPH_STYLE
-  //         break
-  //       case ThemeType.DOTDENSITY:
-  //         type = constants.THEME_DOT_DENSITY
-  //         break
-  //       case ThemeType.GRADUATEDSYMBOL:
-  //         type = constants.THEME_GRADUATED_SYMBOL
-  //         break
-  //       case ThemeType.GRIDRANGE:
-  //         type = constants.THEME_GRID_RANGE
-  //         break
-  //       case ThemeType.GRIDUNIQUE:
-  //         type = constants.THEME_GRID_UNIQUE
-  //         break
-  //       case ThemeType.CUSTOM:
-  //         Toast.show('提示: 暂不支持编辑的专题图层。')
-  //         return
-  //       default:
-  //         Toast.show(
-  //           getLanguage(this.props.language).Prompt
-  //             .PLEASE_SELECT_THEMATIC_LAYER,
-  //         )
-  //         //''提示: 请先选择专题图层。')
-  //         NavigationService.navigate('LayerManager')
-  //         return
-  //     }
-  //   }
-  //
-  //   if (GLOBAL.toolBox) {
-  //     GLOBAL.toolBox.setVisible(
-  //       true,
-  //       type === constants.THEME_GRAPH_STYLE
-  //         ? ConstToolType.MAP_THEME_PARAM_GRAPH
-  //         : ConstToolType.MAP_THEME_PARAM,
-  //       {
-  //         containerType: 'list',
-  //         isFullScreen: true,
-  //         isTouchProgress: false,
-  //         themeType: type,
-  //         showMenuDialog: true,
-  //       },
-  //     )
-  //     GLOBAL.toolBox.showFullMap()
-  //   }
-  //
-  //   // const menuRef = this.props.getMenuAlertDialogRef()
-  //   // if (menuRef) {
-  //   //   this.props.showFullMap && this.props.showFullMap(true)
-  //   //   menuRef.setMenuType(type)
-  //   //   menuRef.showMenuDialog()
-  //   // }
-  //   //
-  //   // const toolRef = this.props.getToolRef()
-  //   // if (toolRef) {
-  //   //   toolRef.setVisible(true, ConstToolType.MAP_THEME_PARAM, {
-  //   //     isFullScreen: false,
-  //   //     containerType: 'list',
-  //   //     height: ConstToolType.THEME_HEIGHT[1],
-  //   //   })
-  //   // }
-  // }
-
   remove = () => {}
 
   save = async e => {
@@ -364,7 +248,6 @@ export default class FunctionToolbar extends React.Component {
 
   /** 获取一级数据 **/
   getData = type => {
-    // TODO 带添加读取配置文件，添加指定模块功能
     let isLicenseNotValid = false
     const currentMapModule = this.props.mapModules.find(function(item) {
       return item.key === type
@@ -373,210 +256,25 @@ export default class FunctionToolbar extends React.Component {
 
     let data = []
     functionModules.forEach(item => {
-      switch (item.key) {
-        case 'startModule':
-          data.push(
-            startModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.START,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'start3DModule':
-          data.push(
-            start3DModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.START,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'addModule':
-          data.push(
-            addModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.OPEN,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'styleModule': {
-          let styleAction = !isLicenseNotValid
-          if (type === ChunkType.MAP_THEME && styleAction) {
-            styleAction = () => {
-              let currentLayer = this.props.currentLayer
-              if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
-                styleModule().action(ConstToolType.MAP_STYLE)
-              } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
-                themeModule().actions.layerListAction(this.props.currentLayer)
-              } else {
-                Toast.show(
-                  getLanguage(this.props.language).Prompt
-                    .THE_CURRENT_LAYER_CANNOT_BE_STYLED,
-                )
-              }
-            }
+      if (
+        type === ChunkType.MAP_THEME &&
+        item.type === ConstToolType.MAP_STYLE
+      ) {
+        item.action = () => {
+          let currentLayer = this.props.currentLayer
+          if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
+            styleModule().action(ConstToolType.MAP_STYLE)
+          } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
+            themeModule().actions.layerListAction(this.props.currentLayer)
+          } else {
+            Toast.show(
+              getLanguage(this.props.language).Prompt
+                .THE_CURRENT_LAYER_CANNOT_BE_STYLED,
+            )
           }
-          data.push(
-            styleModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.STYLE,
-              styleAction,
-            ),
-          )
-          break
         }
-        case 'toolModule':
-          data.push(
-            toolModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.TOOLS,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'markModule':
-          data.push(
-            markModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.PLOTS,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'mark3DModule':
-          data.push(
-            mark3DModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.PLOTS,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'shareModule':
-          data.push(
-            shareModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.SHARE,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'share3DModule':
-          data.push(
-            share3DModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.SHARE,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'fly3DModule':
-          data.push(
-            fly3DModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.FLY,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'tool3DModule':
-          data.push(
-            tool3DModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.TOOLS,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'arAIAssistant':
-          data.push(
-            aiModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu
-                .MAP_AR_AI_ASSISTANT,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'navigationModule':
-          data.push(
-            navigationModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.NAVIGATION_START,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'roadNetModule':
-          data.push(
-            roadNetModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.NETWORK_MODULE,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'incrementModule':
-          data.push(
-            incrementModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'themeModule':
-          data.push(
-            themeModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.THEME,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'collectionModule':
-          data.push(
-            collectionModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.COLLECTION,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'editModule':
-          data.push(
-            editModule(
-              // item.type,
-              ConstToolType.MAP_EDIT_DEFAULT,
-              getLanguage(this.props.language).Map_Main_Menu.EDIT,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'plotModule':
-          data.push(
-            plotModule(
-              item.type,
-              item.type === ConstToolType.PLOTTING_ANIMATION
-                ? getLanguage(this.props.language).Map_Main_Menu
-                  .PLOTTING_ANIMATION
-                : getLanguage(this.props.language).Map_Main_Menu.PLOT,
-              !isLicenseNotValid,
-            ),
-          )
-          break
-        case 'analysisModule':
-          data.push(
-            analysisModule(
-              item.type,
-              getLanguage(this.props.language).Map_Main_Menu.ANALYSIS,
-              !isLicenseNotValid,
-            ),
-          )
-          break
       }
+      data.push(item)
     })
 
     if (isLicenseNotValid) {

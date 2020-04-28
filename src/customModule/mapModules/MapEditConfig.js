@@ -19,11 +19,11 @@ export default class MapEditConfig extends Module {
         name_cn: '湖南',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        toolModule(),
-        shareModule(),
+        startModule,
+        addModule,
+        markModule,
+        toolModule,
+        shareModule,
       ],
     })
   }

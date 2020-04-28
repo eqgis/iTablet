@@ -1,6 +1,6 @@
-import { ConstOnline } from '../../src/constants/index'
-import { getThemeAssets } from '../../src/assets/index'
-import { Module } from '../../src/class/index'
+import { ConstOnline } from '../../src/constants'
+import { getThemeAssets } from '../../src/assets'
+import { Module } from '../../src/class'
 import {
   startModule,
   addModule,

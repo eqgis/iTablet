@@ -28,8 +28,11 @@ class LicenseJoin extends Component {
   }
 
   componentDidMount() {
-    this.initTextInputs()
     this.reloadLocalLicense()
+  }
+
+  componentDidUpdate() {
+    this.initTextInputs()
   }
 
   back = () => {

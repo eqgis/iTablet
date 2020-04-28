@@ -165,8 +165,7 @@ const styles = StyleSheet.create({
 
   // SearchMenu
   SearchMenuContainer: {
-    width: '100%',
-    maxHeight: '65%',
+    alignSelf: 'flex-end',
     backgroundColor: '#EEEEEE',
     justifyContent: 'center',
   },

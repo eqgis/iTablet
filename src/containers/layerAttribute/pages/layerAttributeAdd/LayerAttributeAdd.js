@@ -7,11 +7,13 @@
 import * as React from 'react'
 import {
   View,
+  ScrollView,
   TouchableOpacity,
   Text,
   Image,
   Keyboard,
   TextInput,
+  Platform,
 } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import { Container, Row, Button } from '../../../../components'
@@ -417,7 +419,7 @@ export default class LayerAttributeAdd extends React.Component {
   renderRows = () => {
     let maxLengthCanEdit = this.maxLengthCanEdit()
     return (
-      <View style={styles.rows}>
+      <ScrollView style={styles.rows}>
         <Row
           style={{ marginTop: scaleSize(30) }}
           customRightStyle={styles.customRightStyle}
@@ -482,11 +484,20 @@ export default class LayerAttributeAdd extends React.Component {
           customRgihtView={
             <View
               style={{
+                paddingHorizontal: scaleSize(15),
+                paddingVertical: scaleSize(1),
+                height: scaleSize(60),
+                ...Platform.select({
+                  android: {
+                    padding: 0,
+                  },
+                }),
+                borderWidth: 1,
+                borderRadius: scaleSize(8),
                 flexDirection: 'row',
                 flex: 2,
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginLeft: scaleSize(20),
               }}
             >
               <TextInput
@@ -524,7 +535,7 @@ export default class LayerAttributeAdd extends React.Component {
           getValue={this.getType}
         />
         {this.renderDefaultValue()}
-      </View>
+      </ScrollView>
     )
   }
 

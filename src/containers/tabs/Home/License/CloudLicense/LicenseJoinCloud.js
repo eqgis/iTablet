@@ -54,7 +54,7 @@ class LicenseJoinCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: '归还当前云许可并激活此许可?',
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
@@ -76,7 +76,7 @@ class LicenseJoinCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: '归还当前云许可并退出账号?',
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_LOGOUT,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
@@ -90,12 +90,24 @@ class LicenseJoinCloud extends Component {
     }
   }
 
+  _checkPrivateCloudLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 2
+    ) {
+      SMap.closePrivateCloudLicense()
+    }
+  }
+
   activate = async (confirm = false) => {
     try {
       if (!confirm) {
         this._checkCloudLicense()
         return
       }
+      this._checkPrivateCloudLicense()
       let licenseId = this.state.currentLicense.id
       if (licenseId) {
         this.container &&
@@ -132,17 +144,21 @@ class LicenseJoinCloud extends Component {
         this._checkCloudLicense4Logout()
         return
       }
-      this.container && this.container.setLoading(true, '退出中')
+      this.container &&
+        this.container.setLoading(
+          true,
+          getLanguage(global.language).Profile.LICENSE_EXIT + '...',
+        )
       let result = await SMap.logoutCloudLicense()
       this.container && this.container.setLoading(false)
       if (result) {
         this.props.setCloudLicenseUser({})
         this.props.navigation.pop(2)
       } else {
-        Toast.show('退出失败')
+        Toast.show(getLanguage(global.language).Profile.LICENSE_EXIT_FAILED)
       }
     } catch (error) {
-      Toast.show('退出失败')
+      Toast.show(getLanguage(global.language).Profile.LICENSE_EXIT_FAILED)
       this.container && this.container.setLoading(false)
     }
   }
@@ -151,8 +167,10 @@ class LicenseJoinCloud extends Component {
     let licenses = this.state.licenses
     if (!licenses.length || licenses.length === 0) {
       return (
-        <View style={{ alignItems: 'center' }}>
-          <Text>{getLanguage(global.language).Profile.LICENSE_QUERY_NONE}</Text>
+        <View style={{ marginTop: scaleSize(50), alignItems: 'center' }}>
+          <Text style={{ fontSize: scaleSize(26), color: color.gray2 }}>
+            {getLanguage(global.language).Profile.LICENSE_QUERY_NONE}
+          </Text>
         </View>
       )
     }
@@ -337,7 +355,7 @@ class LicenseJoinCloud extends Component {
               color: '#4680DF',
             }}
           >
-            {'退出登录'}
+            {getLanguage(global.language).Profile.LOG_OUT}
           </Text>
         </TouchableOpacity>
       </View>

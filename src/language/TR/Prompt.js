@@ -169,6 +169,7 @@ const Prompt = {
   FIELD_TYPE: 'Alan Tipi: ',
 
   PLEASE_LOGIN_AND_SHARE: 'Lütfen giriş yap ve paylaş',
+  PLEASE_LOGIN: 'Lütfen giriş',
   SHARING: 'Paylaşıyor',
   SHARE_SUCCESS: 'Başarıyla Paylaşıldı',
   SHARE_FAILED: 'Paylaşım Başarısız',

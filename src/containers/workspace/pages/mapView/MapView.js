@@ -51,7 +51,6 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import ToolBarHeight from '../../components/ToolBar/modules/ToolBarHeight'
 import {
   Container,
   MTBtn,
@@ -2749,7 +2748,7 @@ export default class MapView extends React.Component {
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
-    const data = ToolBarHeight.getToolbarSize(containerType, {
+    const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
     this.showFullMap(true)

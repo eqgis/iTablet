@@ -63,6 +63,7 @@ export default class SelectList extends React.Component {
   render() {
     return (
       <FlatList
+        style={styles.container}
         renderItem={this.renderItem}
         data={this.props.data}
         keyExtractor={(item, index) => item.value + index}
@@ -73,6 +74,9 @@ export default class SelectList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: color.content_white,
+  },
   row: {
     flex: 1,
     flexDirection: 'row',

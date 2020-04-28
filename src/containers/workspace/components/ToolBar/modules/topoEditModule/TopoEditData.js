@@ -46,9 +46,8 @@ async function getData(type) {
           image: getPublicAssets().navigation.icon_increment_smooth,
         },
         {
-          key: constants.MAP_TOPO_POINT_ADJUST,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_TOPO_POINT_ADJUST,
+          key: constants.MAP_TOPO_SPLIT_LINE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_point_adjust,

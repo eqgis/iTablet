@@ -30,6 +30,7 @@ export default {
   //导航模块 拓扑编辑
   MAP_TOPO_SPLIT_BY_POINT: 'MAP_TOPO_SPLIT_BY_POINT', //点线打断
   MAP_TOPO_EXTEND_LINE: 'MAP_TOPO_EXTEND_LINE', //线延长
+  MAP_TOPO_TRIM_LINE: 'MAP_TOPO_TRIM_LINE', //线修剪
   // 视频地图AR模式下点击
   AIMAPTOUCH: 'AIMAPTOUCH',
 

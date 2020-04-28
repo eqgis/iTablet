@@ -210,7 +210,6 @@ function close() {
     BackgroundTimer.stopBackgroundTimer()
     SMap.clearIncrementPoints()
     SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
-    SMap.clearTrackingLayer()
   }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)

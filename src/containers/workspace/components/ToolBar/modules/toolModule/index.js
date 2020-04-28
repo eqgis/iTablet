@@ -2,56 +2,47 @@ import ToolAction from './ToolAction'
 import ToolData from './ToolData'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = ToolData.getData(type, params)
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type)
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_TOOLS, {
-    containerType,
-    isFullScreen: true,
-    ...data,
-    data: _data.data,
-    buttons: _data.buttons,
-  })
-  // 重置canUndo和canRedo
-  if (params.toolbarStatus.canUndo || params.toolbarStatus.canRedo) {
-    params.setToolbarStatus({
-      canUndo: false,
-      canRedo: false,
+class ToolModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    const params = ToolbarModule.getParams()
+    const _data = ToolData.getData(this.type, params)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
     })
+    this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, ConstToolType.MAP_TOOLS, {
+      containerType,
+      isFullScreen: true,
+      ...data,
+      ..._data,
+    })
+    // 重置canUndo和canRedo
+    if (params.toolbarStatus.canUndo || params.toolbarStatus.canRedo) {
+      params.setToolbarStatus({
+        canUndo: false,
+        canRedo: false,
+      })
+    }
   }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: ToolData.getData,
-    actions: ToolAction,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new ToolModule({
+    type: ConstToolType.MAP_TOOLS,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_tool.png'),
     getData: ToolData.getData,
-    getMenuData: ToolData.getMenuData,
     actions: ToolAction,
-    setModuleData,
-  }
+  })
 }

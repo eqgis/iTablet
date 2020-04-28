@@ -1,7 +1,14 @@
-import { ConstOnline } from '../../src/constants'
-import { getThemeAssets } from '../../src/assets'
-import { Module } from '../../src/class'
-// import mapTabModules from '../mapTabModules'
+import { ConstOnline } from '../../src/constants/index'
+import { getThemeAssets } from '../../src/assets/index'
+import { Module } from '../../src/class/index'
+import {
+  startModule,
+  addModule,
+  markModule,
+  toolModule,
+  shareModule,
+} from '../../src/containers/workspace/components/ToolBar/modules'
+// import { functionExample } from '../mapFunctionModules'
 
 export default class MapExample extends Module {
   constructor () {
@@ -11,13 +18,14 @@ export default class MapExample extends Module {
         name_en: 'PrecipitationOfUSA', // 英文数据名称
         name_cn: '湖北', // 中文数据名称
       },
-      // functionModules: [
-      //   {key: 'startModule', type: 'MAP_START'},
-      //   {key: 'addModule', type: 'MAP_ADD'},
-      //   {key: 'markModule', type: 'MAP_MARKS'},
-      //   {key: 'toolModule', type: 'MAP_TOOLS'},
-      //   {key: 'shareModule', type: 'MAP_SHARE'},
-      // ],
+      functionModules: [
+        startModule(),
+        addModule(),
+        markModule(),
+        toolModule(),
+        shareModule(),
+        // functionExample(),
+      ],
       // tabModules: [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
     })
   }

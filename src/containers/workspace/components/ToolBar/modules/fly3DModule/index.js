@@ -5,49 +5,42 @@ import { SScene } from 'imobile_for_reactnative'
 import Fly3DData from './Fly3DData'
 import Fly3DAction from './Fly3DAction'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = Fly3DData.getData(type, params)
-  const containerType = ToolbarType.list
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type)
-  params.showFullMap && params.showFullMap(true)
-  SScene.checkoutListener('startMeasure')
-  params.setToolbarVisible(true, type, {
-    containerType,
-    ...data,
-    data: _data.data,
-    buttons: _data.buttons,
-  })
+class Fly3DModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    const params = ToolbarModule.getParams()
+    const _data = Fly3DData.getData(this.type, params)
+    const containerType = ToolbarType.list
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
+    SScene.checkoutListener('startMeasure')
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      ...data,
+      data: _data.data,
+      buttons: _data.buttons,
+    })
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: Fly3DData.getData,
-    actions: Fly3DAction,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new Fly3DModule({
+    type: ConstToolType.MAP3D_TOOL_FLYLIST,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
     size: 'large',
     image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png'),
     getData: Fly3DData.getData,
     actions: Fly3DAction,
-    setModuleData,
-  }
+  })
 }

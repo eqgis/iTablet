@@ -60,7 +60,7 @@ import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHan
 import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
-import config from './config'
+import config from './configs/config'
 
 const {persistor, store} = ConfigStore()
 

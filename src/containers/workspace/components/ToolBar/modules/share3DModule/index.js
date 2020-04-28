@@ -1,48 +1,40 @@
 import Share3DData from './Share3DData'
 import Share3DAction from './Share3DAction'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = Share3DData.getData(type, params)
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  setModuleData(type)
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, type, {
-    containerType: 'table',
-    isFullScreen: true,
-    ...data,
-  })
+class Share3DModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    const params = ToolbarModule.getParams()
+    const _data = Share3DData.getData(this.type, params)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType: 'table',
+      isFullScreen: true,
+      ...data,
+    })
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: Share3DData.getData,
-    actions: Share3DAction,
-    isSharing: false,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new Share3DModule({
+    type: ConstToolType.MAP_SHARE_MAP3D,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_share.png'),
     getData: Share3DData.getData,
     actions: Share3DAction,
-    setModuleData,
-  }
+  })
 }

@@ -1,23 +1,32 @@
-import { ConstOnline, ChunkType } from '../../src/constants'
-import { getLanguage } from '../../src/language'
-import { getThemeAssets } from '../../src/assets'
-import { Module } from '../../src/class'
+import { ConstOnline, ChunkType } from '../../constants'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
+import { Module } from '../../class'
+import {
+  startModule,
+  addModule,
+  markModule,
+  collectionModule,
+  editModule,
+  toolModule,
+  shareModule,
+} from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapCollectionConfig extends Module {
-  constructor () {
+  constructor() {
     super({
       key: ChunkType.MAP_COLLECTION,
       example: {
         name: '地理国情普查_示范数据',
       },
       functionModules: [
-        {key: 'startModule', type: 'MAP_START'},
-        {key: 'addModule', type: 'MAP_ADD'},
-        {key: 'markModule', type: 'MAP_MARKS'},
-        {key: 'collectionModule', type: 'MAP_SYMBOL'},
-        {key: 'editModule', type: 'MAP_EDIT'},
-        {key: 'toolModule', type: 'MAP_TOOLS'},
-        {key: 'shareModule', type: 'MAP_SHARE'},
+        startModule(),
+        addModule(),
+        markModule(),
+        collectionModule(),
+        editModule(),
+        toolModule(),
+        shareModule(),
       ],
     })
   }
@@ -29,7 +38,7 @@ export default class MapCollectionConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_collection,
       moduleImageTouch: getThemeAssets().nav.icon_map_collection_touch,
       defaultMapName: '国情普查_示范数据',
-      baseMapSource: {...ConstOnline.Google},
+      baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       licenceType: 0x08,
     })

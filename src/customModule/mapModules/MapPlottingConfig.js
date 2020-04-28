@@ -1,0 +1,47 @@
+import { ConstOnline, ChunkType } from '../../constants'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
+import { Module } from '../../class'
+import {
+  startModule,
+  addModule,
+  markModule,
+  plotModule,
+  editModule,
+  toolModule,
+  shareModule,
+} from '../../containers/workspace/components/ToolBar/modules'
+
+export default class MapPlottingConfig extends Module {
+  constructor() {
+    super({
+      key: ChunkType.MAP_PLOTTING,
+      example: {
+        name: '福建_示范数据',
+      },
+      functionModules: [
+        startModule(),
+        addModule(),
+        markModule(),
+        plotModule('PLOTTING'),
+        editModule(),
+        plotModule('PLOTTING_ANIMATION'),
+        toolModule(),
+        shareModule(),
+      ],
+    })
+  }
+
+  getChunk = language => {
+    return this.createChunk(language, {
+      key: ChunkType.MAP_PLOTTING,
+      title: getLanguage(language).Map_Module.MAP_PLOTTING,
+      moduleImage: getThemeAssets().nav.icon_map_plot,
+      moduleImageTouch: getThemeAssets().nav.icon_map_plot_touch,
+      defaultMapName: 'TourLine',
+      baseMapSource: { ...ConstOnline.Google },
+      baseMapIndex: 1,
+      licenceType: 0x80,
+    })
+  }
+}

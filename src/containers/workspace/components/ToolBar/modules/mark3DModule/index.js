@@ -8,50 +8,42 @@
 import Mark3DData from './Mark3DData'
 import Mark3DAction from './Mark3DAction'
 import ToolbarModule from '../ToolbarModule'
-import { ToolbarType } from '../../../../../../constants'
+import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
+import { getLanguage } from '../../../../../../language'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
-async function action(type) {
-  const params = ToolbarModule.getParams()
-  const _data = await Mark3DData.getData(type, params)
-  const containerType = ToolbarType.table
-  const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
-  params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: true,
-    data: _data.data,
-    buttons: _data.buttons,
-    ...data,
-  })
-  setModuleData(type)
+class Mark3DModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  action = async () => {
+    this.setModuleData(this.type)
+    const params = ToolbarModule.getParams()
+    const _data = await Mark3DData.getData(this.type, params)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    params.showFullMap && params.showFullMap(true)
+    params.setToolbarVisible(true, this.type, {
+      containerType,
+      isFullScreen: true,
+      ...data,
+      ..._data,
+    })
+  }
 }
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
-    getData: Mark3DData.getData,
-    actions: Mark3DAction,
-  })
-}
-
-export default function(type, title, customAction) {
-  return {
-    key: title,
-    title,
-    action: () => {
-      if (customAction === false) {
-        return
-      } else if (typeof customAction === 'function') {
-        customAction(type)
-      } else {
-        action(type)
-      }
-    },
+export default function() {
+  return new Mark3DModule({
+    type: ConstToolType.MAP3D_MARK,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
     size: 'large',
     image: getThemeAssets().functionBar.rightbar_mark,
     getData: Mark3DData.getData,
     actions: Mark3DAction,
-    setModuleData: setModuleData,
-  }
+  })
 }

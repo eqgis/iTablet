@@ -1,20 +1,27 @@
-import { ConstOnline, ChunkType } from '../../src/constants'
-import { getLanguage } from '../../src/language'
-import { getThemeAssets } from '../../src/assets'
-import { Module } from '../../src/class'
-import Toast from '../../src/utils/Toast'
+import { ConstOnline, ChunkType } from '../../constants'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
+import { Module } from '../../class'
+import Toast from '../../utils/Toast'
 import { SAIDetectView } from 'imobile_for_reactnative'
+import {
+  startModule,
+  addModule,
+  markModule,
+  styleModule,
+  aiModule,
+} from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapARConfig extends Module {
-  constructor () {
+  constructor() {
     super({
       key: ChunkType.MAP_AR,
       functionModules: [
-        {key: 'startModule', type: 'MAP_START'},
-        {key: 'addModule', type: 'MAP_ADD'},
-        {key: 'markModule', type: 'MAP_MARKS'},
-        {key: 'styleModule', type: 'MAP_STYLE'},
-        {key: 'arAIAssistant', type: 'MAP_AR_AI_ASSISTANT'},
+        startModule(),
+        addModule(),
+        markModule(),
+        styleModule(),
+        aiModule(),
       ],
     })
   }
@@ -25,7 +32,7 @@ export default class MapARConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_AR,
       moduleImage: getThemeAssets().nav.icon_map_vedio,
       moduleImageTouch: getThemeAssets().nav.icon_map_vedio_touch,
-      baseMapSource: {...ConstOnline.Google},
+      baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       openDefaultMap: false,
       licenceType: 0x10,

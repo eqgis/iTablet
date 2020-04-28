@@ -1,10 +1,17 @@
-import { ChunkType } from '../../src/constants'
-import { getLanguage } from '../../src/language'
-import { getThemeAssets } from '../../src/assets'
-import { Module } from '../../src/class'
+import { ChunkType } from '../../constants'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
+import { Module } from '../../class'
+import {
+  start3DModule,
+  mark3DModule,
+  fly3DModule,
+  tool3DModule,
+  share3DModule,
+} from '../../containers/workspace/components/ToolBar/modules'
 
 export default class Map3DConfig extends Module {
-  constructor () {
+  constructor() {
     super({
       key: ChunkType.MAP_3D,
       is3D: true,
@@ -13,11 +20,11 @@ export default class Map3DConfig extends Module {
         name_android: 'OlympicGreen_android',
       },
       functionModules: [
-        {key: 'start3DModule', type: 'MAP_3D_START'},
-        {key: 'mark3DModule', type: 'MAP3D_MARK'},
-        {key: 'fly3DModule', type: 'MAP3D_TOOL_FLYLIST'},
-        {key: 'tool3DModule', type: 'MAP3D_TOOL'},
-        {key: 'share3DModule', type: 'MAP_SHARE_MAP3D'},
+        start3DModule(),
+        mark3DModule(),
+        fly3DModule(),
+        tool3DModule(),
+        share3DModule(),
       ],
     })
   }

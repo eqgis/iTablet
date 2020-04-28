@@ -348,6 +348,17 @@ const Prompt = {
   LINE_DATASET: 'Line Dataset',
   DESTINATION_DATASOURCE: 'Target Datasource',
   SMOOTH_FACTOR: 'Please enter smoothing factor',
+  SELECT_EXTEND_LINE: 'Please select the line that needs to be extended',
+  SELECT_SECOND_LINE: 'Please select the second line',
+  SELECT_TRIM_LINE: 'Please select the line to be trimmed',
+  SELECT_BASE_LINE: 'Please select a baseline',
+  SELECT_RESAMPLE_LINE: 'Please select the line that needs to be resampled',
+  SELECT_CHANGE_DIRECTION_LINE:
+    'Please select the line that needs to change direction',
+  EDIT_SUCCESS: 'Successful operation',
+  EDIT_FAILED: 'Operation failed',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
+    'Smoothing factor should be an integer not less than 2',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',

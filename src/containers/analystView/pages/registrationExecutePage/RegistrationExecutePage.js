@@ -3,7 +3,7 @@ import { Container, TextBtn, CheckBox } from '../../../../components'
 
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, Toast } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { SMap, SRectifyView } from 'imobile_for_reactnative'
@@ -97,11 +97,24 @@ export default class RegistrationExecutePage extends Component {
     // NavigationService.navigate('RegistrationPage')
   }
 
-  confirm() {
+  confirm = async () => {
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
+    )
     let datasets = this.state.datasets
+    let count = 0
     for (let i = 0; i < datasets.length; i++) {
-      SRectifyView.rectifyRasterDirectByDataset(datasets[i])
+      await SRectifyView.rectifyRasterDirectByDataset(datasets[i])
+      count++
     }
+    if (count === datasets.length) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels
+          .REGISTRATION_EXECUTE_SUCCESS,
+      )
+    }
+    GLOBAL.Loading.setLoading(false)
   }
 
   renderRows() {

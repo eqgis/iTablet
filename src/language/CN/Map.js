@@ -449,7 +449,7 @@ const Map_Main_Menu = {
   MAP_TOPO_DELETE_NODE: '删除节点',
   MAP_TOPO_DELETE_OBJECT: '删除对象',
   MAP_TOPO_SMOOTH: '平滑',
-  MAP_TOPO_POINT_ADJUST: '点平差',
+  MAP_TOPO_SPLIT_LINE: '线线打断',
   MAP_TOPO_SPLIT: '打断',
   MAP_TOPO_EXTEND: '延伸',
   MAP_TOPO_TRIM: '修剪',

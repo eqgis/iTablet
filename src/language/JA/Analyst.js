@@ -210,6 +210,12 @@ const Analyst_Labels = {
   REGISTRATION_RESULT_DATASET: '結果データセット',
   REGISTRATION_RESULT_DATASOURCE: '結果データソース',
   REGISTRATION_ORIGINAL_DATASOURCE: '生データ',
+  REGISTRATION_POINTS_DETAIL: '見る',
+  REGISTRATION_EXECUTING: '進行中',
+  REGISTRATION_ENUMBER: 'シリアル番号',
+  REGISTRATION_ORIGINAL: 'ソースポイント',
+  REGISTRATION_TAREGT: '目標点',
+  REGISTRATION_RESELECT_POINT: '再選択',
 }
 
 const Analyst_Params = {
@@ -315,6 +321,11 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: 'データソースを選択してください',
   SELECT_DATA_SET_FIRST: 'データセットを選択してください',
   PLEASE_SELECT_A_REGION: '1つのポリゴンを選択してください',
+  REGISTRATION_LINE_POINTS: '少なくとも4つの制御点を設定してください',
+  REGISTRATION_QUADRATIC_POINTS: '少なくとも7つの制御点を設定してください',
+  REGISTRATION_RECTANGLE_POINTS: '2つの制御点を設定してください',
+  REGISTRATION_OFFSET_POINTS: 'コントロールポイントを1つ設定してください',
+  REGISTRATION_POINTS_NUMBER_ERROR: 'コントロールポイントの数が一致しません',
 }
 
 export {

@@ -177,6 +177,12 @@ async function touchCallback(event) {
       data?.actions?.extendLine(point)
       break
     }
+    case TouchType.MAP_TOPO_TRIM_LINE: {
+      const data = ToolbarModule.getData()
+      const point = event.LLPoint
+      data?.actions?.trimLine(point)
+      break
+    }
     case TouchType.ADD_NODES:
     case TouchType.NULL:
       break

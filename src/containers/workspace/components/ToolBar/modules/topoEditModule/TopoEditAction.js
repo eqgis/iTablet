@@ -19,10 +19,17 @@ import { getLanguage } from '../../../../../../language'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
-
-  ToolbarModule.addData({
-    event,
-  })
+  let preType = _params.type
+  if (
+    preType === ConstToolType.MAP_TOPO_SPLIT_LINE &&
+    ToolbarModule.getData().event
+  ) {
+    ToolbarModule.addData({ secondEvent: event })
+  } else {
+    ToolbarModule.addData({
+      event,
+    })
+  }
   const layerType = event.layerInfo.type
   let geoType
   let fieldInfos = event.fieldInfo
@@ -36,7 +43,6 @@ async function geometrySelected(event) {
     geoType = layerType
   }
 
-  let preType = _params.type
   let type
   if (geoType === DatasetType.LINE) {
     switch (preType) {
@@ -76,11 +82,36 @@ async function geometrySelected(event) {
         break
       case ConstToolType.MAP_TOPO_EXTEND_LINE:
         SMap.setAction(Action.PAN)
-        Toast.show('请选择需要延长的线')
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_EXTEND_LINE)
         //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
         setTimeout(() => {
           GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
-        }, 200)
+        }, 50)
+        break
+      case ConstToolType.MAP_TOPO_SPLIT_LINE: {
+        SMap.setAction(Action.SELECT)
+        let data = ToolbarModule.getData()
+        let { secondEvent } = data
+        if (secondEvent) {
+          lineSplitByLine()
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_SECOND_LINE)
+        }
+        break
+      }
+      case ConstToolType.MAP_TOPO_TRIM_LINE:
+        SMap.setAction(Action.PAN)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_TRIM_LINE)
+        //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
+        setTimeout(() => {
+          GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
+        }, 50)
+        break
+      case ConstToolType.MAP_TOPO_RESAMPLE_LINE:
+        resampleLine()
+        break
+      case ConstToolType.MAP_TOPO_CHANGE_DIRECTION:
+        changeLineDirection()
         break
     }
   }
@@ -161,7 +192,10 @@ async function switchType(item) {
       SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
       break
-    case constants.MAP_TOPO_POINT_ADJUST:
+    case constants.MAP_TOPO_SPLIT_LINE:
+      type = ConstToolType.MAP_TOPO_SPLIT_LINE
+      SMap.setAction(Action.SELECT)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_SPLIT:
       type = ConstToolType.MAP_TOPO_SPLIT
@@ -172,11 +206,25 @@ async function switchType(item) {
     case constants.MAP_TOPO_EXTEND:
       type = ConstToolType.MAP_TOPO_EXTEND_LINE
       SMap.setAction(Action.SELECT)
-      Toast.show('请选择目标线')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_TRIM:
+      type = ConstToolType.MAP_TOPO_TRIM_LINE
+      SMap.setAction(Action.SELECT)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
+      break
     case constants.MAP_TOPO_RESAMPLE:
+      type = ConstToolType.MAP_TOPO_RESAMPLE_LINE
+      SMap.setAction(Action.SELECT)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_RESAMPLE_LINE)
+      break
     case constants.MAP_TOPO_CHANGE_DIRECTION:
+      type = ConstToolType.MAP_TOPO_CHANGE_DIRECTION
+      SMap.setAction(Action.SELECT)
+      Toast.show(
+        getLanguage(GLOBAL.language).Prompt.SELECT_CHANGE_DIRECTION_LINE,
+      )
+      break
     case constants.MAP_TOPO_OBJECT_EDIT:
       type = ConstToolType.MAP_TOPO_OBJECT_EDIT
       SMap.setAction(Action.SELECT)
@@ -234,10 +282,12 @@ function close() {
   const containerType = ToolbarType.table
   ToolbarModule.setToolBarData(ConstToolType.MAP_INCREMENT_GPS_TRACK)
   let nextType = ConstToolType.MAP_INCREMENT_GPS_TRACK
+  let touchType = TouchType.NULL
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, nextType, {
     containerType,
     isFullScreen: false,
+    touchType,
   })
 }
 
@@ -256,11 +306,13 @@ async function inputConfirm(text) {
       ...GLOBAL.INCREMENT_DATA,
     })
     if (result) {
-      Toast.show('线平滑成功')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
     }
     SMap.setAction(Action.SELECT)
   } else {
-    Toast.show('平滑系数应为不小于2的整数')
+    Toast.show(
+      getLanguage(GLOBAL.language).Prompt.SMOOTH_NUMBER_NEED_BIGGER_THAN_2,
+    )
   }
 }
 
@@ -279,6 +331,7 @@ function inputCancel() {
 /**
  * 点打断线
  * @param point
+ * @returns {Promise<void>}
  */
 async function pointSplitLine(point) {
   let params = {
@@ -287,15 +340,16 @@ async function pointSplitLine(point) {
   }
   let rel = await SMap.pointSplitLine(params)
   if (rel) {
-    Toast.show('打断成功')
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
   } else {
-    Toast.show('打断失败')
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
   }
 }
 
 /**
  * 线延长
  * @param point
+ * @returns {Promise<void>}
  */
 async function extendLine(point) {
   let data = ToolbarModule.getData()
@@ -306,11 +360,98 @@ async function extendLine(point) {
   }
   let rel = await SMap.extendLine(params)
   if (rel) {
-    Toast.show('线延长成功')
-    ToolbarModule.addData({ event: undefined })
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
   } else {
-    Toast.show('线延长失败')
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
   }
+  GLOBAL.TouchType = TouchType.NULL
+  SMap.setAction(Action.SELECT)
+  ToolbarModule.addData({ event: undefined })
+}
+
+/**
+ * 线线打断
+ * @returns {Promise<void>}
+ */
+async function lineSplitByLine() {
+  let data = ToolbarModule.getData()
+  let { event, secondEvent } = data
+  let params = {
+    id1: event.id,
+    id2: secondEvent.id,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.lineSplitByLine(params)
+  if (rel) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
+  }
+  GLOBAL.TouchType = TouchType.NULL
+  ToolbarModule.setData({ event: undefined, secondEvent: undefined })
+}
+
+/**
+ * 线修剪
+ * @param point
+ * @returns {Promise<void>}
+ */
+async function trimLine(point) {
+  let data = ToolbarModule.getData()
+  let params = {
+    point,
+    id: data.event.id,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.trimLine(params)
+  if (rel) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
+  }
+  GLOBAL.TouchType = TouchType.NULL
+  SMap.setAction(Action.SELECT)
+  ToolbarModule.addData({ event: undefined })
+}
+
+/**
+ * 重采样
+ * @returns {Promise<void>}
+ */
+async function resampleLine() {
+  let data = ToolbarModule.getData()
+  let params = {
+    id: data.event.id,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.resampleLine(params)
+  if (rel) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
+  }
+  SMap.setAction(Action.SELECT)
+  ToolbarModule.addData({ event: undefined })
+}
+
+/**
+ * 变方向
+ * @returns {Promise<void>}
+ */
+async function changeLineDirection() {
+  let data = ToolbarModule.getData()
+  let params = {
+    id: data.event.id,
+    ...GLOBAL.INCREMENT_DATA,
+  }
+  let rel = await SMap.changeLineDirection(params)
+  if (rel) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
+  }
+  SMap.setAction(Action.SELECT)
+  ToolbarModule.addData({ event: undefined })
 }
 export default {
   close,
@@ -328,4 +469,7 @@ export default {
   inputCancel,
   pointSplitLine,
   extendLine,
+  trimLine,
+  resampleLine,
+  changeLineDirection,
 }

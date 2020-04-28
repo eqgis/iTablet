@@ -100,4 +100,11 @@ export default StyleSheet.create({
     fontSize: scaleSize(24),
     marginLeft: 15,
   },
+  detalItemView: {
+    flexDirection: 'row',
+    height: scaleSize(60),
+    marginHorizontal: scaleSize(30),
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
 })

@@ -20,13 +20,13 @@ export default class MapCollectionConfig extends Module {
         name: '地理国情普查_示范数据',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        collectionModule(),
-        editModule(),
-        toolModule(),
-        shareModule(),
+        startModule,
+        addModule,
+        markModule,
+        collectionModule,
+        editModule,
+        toolModule,
+        shareModule,
       ],
     })
   }

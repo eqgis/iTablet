@@ -1,6 +1,6 @@
-import { ConstOnline } from '../../src/constants/index'
-import { getThemeAssets } from '../../src/assets/index'
-import { Module } from '../../src/class/index'
+import { ConstOnline } from '../../src/constants'
+import { getThemeAssets } from '../../src/assets'
+import { Module } from '../../src/class'
 import {
   startModule,
   addModule,
@@ -8,7 +8,7 @@ import {
   toolModule,
   shareModule,
 } from '../../src/containers/workspace/components/ToolBar/modules'
-// import { functionExample } from '../mapFunctionModules'
+import { functionExample } from '../mapFunctionModules'
 
 export default class MapExample extends Module {
   constructor () {
@@ -19,12 +19,12 @@ export default class MapExample extends Module {
         name_cn: '湖北', // 中文数据名称
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        toolModule(),
-        shareModule(),
-        // functionExample(),
+        startModule,
+        addModule,
+        markModule,
+        toolModule,
+        shareModule,
+        functionExample,
       ],
       // tabModules: [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
     })

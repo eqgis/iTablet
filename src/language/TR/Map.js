@@ -349,7 +349,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: 'Yüzü kaydet',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'İzleme koleksiyonu',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Rush koleksiyonu',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Geçerli noktayı belirlemek için ekrana dokunun',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT:
+    'Geçerli noktayı belirlemek için ekrana dokunun',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED:
@@ -421,20 +422,20 @@ const Map_Main_Menu = {
   MAP_TOPO_DELETE_NODE: 'Bir düğümü silme',
   MAP_TOPO_DELETE_OBJECT: 'Nesneyi sil',
   MAP_TOPO_SMOOTH: 'Pürüzsüz',
-  MAP_TOPO_POINT_ADJUST: 'Nokta ayarı',
+  MAP_TOPO_SPLIT_LINE: 'Satır sonu',
   MAP_TOPO_SPLIT: 'Mola',
   MAP_TOPO_EXTEND: 'Uzatmak',
   MAP_TOPO_TRIM: 'Trim',
   MAP_TOPO_RESAMPLE: 'Yeniden örnekleme',
   MAP_TOPO_CHANGE_DIRECTION: 'Yönü değiştir',
-  ADD_DATASET:'Veri kümesini ekle',
-  SELECT_ROADNAME_FIELD:'Aşağıdaki veri kümesinin yol adı alanını seçin',
-  SELECT_FIELD:'Alan seçin',
-  MERGE_CANCEL:'Iptal edildi',
-  MERGE_CONFIRM:'Belirlemek',
-  MERGE_SELECT_ALL:'Tümünü seç',
-  MERGE_ADD:'Ek',
-  MERGE_DATASET:'Veri kümesini birleştir',
+  ADD_DATASET: 'Veri kümesini ekle',
+  SELECT_ROADNAME_FIELD: 'Aşağıdaki veri kümesinin yol adı alanını seçin',
+  SELECT_FIELD: 'Alan seçin',
+  MERGE_CANCEL: 'Iptal edildi',
+  MERGE_CONFIRM: 'Belirlemek',
+  MERGE_SELECT_ALL: 'Tümünü seç',
+  MERGE_ADD: 'Ek',
+  MERGE_DATASET: 'Veri kümesini birleştir',
 }
 
 // 推演动画

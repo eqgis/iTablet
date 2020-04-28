@@ -353,6 +353,17 @@ const Prompt = {
   LINE_DATASET: 'ラインデータセット',
   DESTINATION_DATASOURCE: 'ターゲットデータソース',
   SMOOTH_FACTOR: '平滑化係数を入力してください',
+  SELECT_EXTEND_LINE: '延長する必要があるラインを選択してください',
+  SELECT_SECOND_LINE: '二行目を選択してください',
+  SELECT_TRIM_LINE: 'トリミングするラインを選択してください',
+  SELECT_BASE_LINE: 'ベースラインを選択してください',
+  SELECT_RESAMPLE_LINE: 'リサンプリングする必要があるラインを選択してください',
+  SELECT_CHANGE_DIRECTION_LINE:
+    '方向を変える必要があるラインを選択してください',
+  EDIT_SUCCESS: '操作は成功しました',
+  EDIT_FAILED: '操作に失敗しました',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
+    '平滑化因数は2以上の整数である必要があります',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',

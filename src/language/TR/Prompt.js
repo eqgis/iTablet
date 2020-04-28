@@ -345,6 +345,17 @@ const Prompt = {
   LINE_DATASET: 'Satır veri kümesi',
   DESTINATION_DATASOURCE: 'Hedef veri kaynağı',
   SMOOTH_FACTOR: 'Lütfen yumuşatma faktörünü girin',
+  SELECT_EXTEND_LINE: 'Lütfen uzatılması gereken satırı seçin',
+  SELECT_SECOND_LINE: 'Lütfen ikinci satırı seçin',
+  SELECT_TRIM_LINE: 'Lütfen kırpılacak çizgiyi seçin',
+  SELECT_BASE_LINE: 'Lütfen bir taban çizgisi seçin',
+  SELECT_RESAMPLE_LINE: 'Lütfen yeniden örneklenmesi gereken satırı seçin',
+  SELECT_CHANGE_DIRECTION_LINE:
+    'Lütfen yönünü değiştirmeniz gereken satırı seçin',
+  EDIT_SUCCESS: 'Operasyon başarılı',
+  EDIT_FAILED: 'İşlem başarısız oldu',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
+    "Düzeltme faktörü 2'den az olmayan bir tamsayı olmalıdır",
   // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",

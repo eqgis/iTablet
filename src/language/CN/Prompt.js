@@ -329,7 +329,15 @@ const Prompt = {
   LINE_DATASET: '线数据集',
   DESTINATION_DATASOURCE: '目标数据源',
   SMOOTH_FACTOR: '请输入平滑系数',
-
+  SELECT_EXTEND_LINE: '请选择需要延长的线',
+  SELECT_SECOND_LINE: '请选择第二条线',
+  SELECT_TRIM_LINE: '请选择需要修剪的线',
+  SELECT_BASE_LINE: '请选择基线',
+  SELECT_RESAMPLE_LINE: '请选择需要重采样的线',
+  SELECT_CHANGE_DIRECTION_LINE: '请选择需要变方向的线',
+  EDIT_SUCCESS: '操作成功',
+  EDIT_FAILED: '操作失败',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: '平滑系数应为不小于2的整数',
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

@@ -14,7 +14,6 @@ import { color } from '../../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
-import { getThemeAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 
 class LicenseJoinPrivateCloud extends Component {
@@ -80,20 +79,26 @@ class LicenseJoinPrivateCloud extends Component {
             true,
             getLanguage(global.language).Profile.LICENSE_ACTIVATING,
           )
-        await SMap.applyPrivateCloudLicense(ids)
-        await SMap.setPrivateCloudCloseCallback(async () => {
-          Toast.show(
-            global.language === 'CN'
-              ? '与私有云服务器的连接已断开!'
-              : 'Lost connection with private cloud license server!',
-          )
+        let result = await SMap.applyPrivateCloudLicense(ids)
+        if (result) {
+          await SMap.setPrivateCloudCloseCallback(async () => {
+            Toast.show(
+              global.language === 'CN'
+                ? '与私有云服务器的连接已断开!'
+                : 'Lost connection with private cloud license server!',
+            )
+            let info = await SMap.getEnvironmentStatus()
+            this.props.setLicenseInfo(info)
+          })
           let info = await SMap.getEnvironmentStatus()
           this.props.setLicenseInfo(info)
-        })
-        let info = await SMap.getEnvironmentStatus()
-        this.props.setLicenseInfo(info)
+          this.props.navigation.pop(2)
+        } else {
+          Toast.show(
+            getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL,
+          )
+        }
         this.container && this.container.setLoading(false)
-        this.props.navigation.pop(2)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
@@ -244,16 +249,17 @@ class LicenseJoinPrivateCloud extends Component {
             }}
           >
             <Image
-              source={
-                this.state.showMore === item.id
-                  ? getThemeAssets().publicAssets.icon_arrow_down
-                  : getThemeAssets().publicAssets.icon_arrow_right_2
-              }
-              style={{
-                height: scaleSize(30),
-                width: scaleSize(30),
-                opacity: 0.6,
-              }}
+              source={require('../../../../../assets/Mine/mine_my_arrow.png')}
+              style={[
+                {
+                  height: scaleSize(30),
+                  width: scaleSize(30),
+                  opacity: 0.6,
+                },
+                this.state.showMore === item.id && {
+                  transform: [{ rotate: '90deg' }],
+                },
+              ]}
             />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -270,7 +276,8 @@ class LicenseJoinPrivateCloud extends Component {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingHorizontal: 20,
+          paddingLeft: scaleSize(100),
+          paddingRight: 20,
         }}
       >
         <View>

@@ -189,6 +189,7 @@ const Profile = {
   LICENSE_SURPLUS: '剩余',
   LICENSE_YEAR: '年',
   LICENSE_DAY: '天',
+  LICENSE_PERMANENT: '永久',
   LICENSE_CONTAIN_MODULE: '所含模块',
   LICENSE_CONTAIN_EXPAND_MODULE: '所含拓展模块',
   LICENSE_USER_NAME: '用户名',

@@ -131,7 +131,10 @@ export default class ToolbarContentView extends React.Component {
         let animate = Animated.timing(this.state.boxHeight, {
           // toValue: this.height,
           toValue: _params.height,
-          duration: Const.ANIMATED_DURATION,
+          duration:
+            _params.animationTime !== undefined
+              ? _params.animationTime
+              : Const.ANIMATED_DURATION,
         })
         if (_params.wait) {
           return animate

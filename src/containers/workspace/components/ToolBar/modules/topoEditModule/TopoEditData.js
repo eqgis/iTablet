@@ -50,7 +50,7 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_point_adjust,
+          image: getPublicAssets().navigation.icon_increment_line_split_line,
         },
         {
           key: constants.MAP_TOPO_SPLIT,

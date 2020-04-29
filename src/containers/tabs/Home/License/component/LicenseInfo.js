@@ -115,19 +115,23 @@ export default class LicenseInfo extends Component {
         timeStr = licenseInfo.expireDate
         let tempTimeStr =
           timeStr.slice(0, 4) +
-          '-' +
+          '/' +
           timeStr.slice(4, 6) +
-          '-' +
-          timeStr.slice(6)
+          '/' +
+          timeStr.slice(6) +
+          ' 00:00'
         let date1 = new Date()
         let date2 = new Date(tempTimeStr)
         days = Math.ceil(
           (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
         )
+        if (days < 0) {
+          days = 0
+        }
       }
       if (days >= yearDays * 20) {
         daysStr = getLanguage(global.language).Profile.LICENSE_LONG_EFFECTIVE
-      } else if (days > yearDays * 20 && days > yearDays) {
+      } else if (days > yearDays) {
         daysStr =
           getLanguage(global.language).Profile.LICENSE_SURPLUS +
           days / yearDays +

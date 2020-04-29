@@ -11,7 +11,7 @@ import {
   TouchType,
 } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
-import { StyleUtils, Toast } from '../../../../../../utils'
+import { Toast } from '../../../../../../utils'
 import { DatasetType, SMap, Action } from 'imobile_for_reactnative'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
@@ -50,7 +50,7 @@ async function geometrySelected(event) {
       case ConstToolType.MAP_TOPO_OBJECT_EDIT:
         {
           type = ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
-          StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
+          // StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
           const _data = await TopoEditData.getData(type)
           const containerType = ToolbarType.table
           const data = ToolbarModule.getToolbarSize(containerType, {
@@ -86,10 +86,10 @@ async function geometrySelected(event) {
         //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
         setTimeout(() => {
           GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
-        }, 50)
+        }, 200)
         break
       case ConstToolType.MAP_TOPO_SPLIT_LINE: {
-        SMap.setAction(Action.SELECT)
+        //SMap.setAction(Action.SELECT)
         let data = ToolbarModule.getData()
         let { secondEvent } = data
         if (secondEvent) {
@@ -105,7 +105,7 @@ async function geometrySelected(event) {
         //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
         setTimeout(() => {
           GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
-        }, 50)
+        }, 200)
         break
       case ConstToolType.MAP_TOPO_RESAMPLE_LINE:
         resampleLine()
@@ -387,8 +387,9 @@ async function lineSplitByLine() {
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
   }
+  SMap.setAction(Action.SELECT)
   GLOBAL.TouchType = TouchType.NULL
-  ToolbarModule.setData({ event: undefined, secondEvent: undefined })
+  ToolbarModule.addData({ event: undefined, secondEvent: undefined })
 }
 
 /**

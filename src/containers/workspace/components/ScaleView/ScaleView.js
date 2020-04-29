@@ -5,10 +5,9 @@
  */
 
 import * as React from 'react'
-import { Animated, View, Text, Platform ,requireNativeComponent} from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { Animated, requireNativeComponent } from 'react-native'
+import { scaleSize } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
-import { color } from '../../../../styles'
 
 export default class ScaleView extends React.Component {
   props: {
@@ -153,7 +152,7 @@ export default class ScaleView extends React.Component {
         }}
       >
         <RCTSMScaleView
-          ref={ref => this.SMScaleView = ref}
+          ref={ref => (this.SMScaleView = ref)}
           {...props}
           style={{
             flex: 1,
@@ -165,4 +164,3 @@ export default class ScaleView extends React.Component {
   }
 }
 var RCTSMScaleView = requireNativeComponent('RCTSMScaleView', RCTSMScaleView)
-

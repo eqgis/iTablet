@@ -66,7 +66,10 @@ export default class LayerVisibilityView extends Component {
           }}
           onEndEditing={evt => {
             let mapScale = 0
-            if (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) {
+            if (
+              (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) ||
+              evt.nativeEvent.text === ''
+            ) {
               Toast.show(getLanguage(GLOBAL.language).Prompt.TRANSFER_PARAMS)
             } else {
               mapScale = Number.parseFloat(this.state.mapScale)
@@ -87,9 +90,10 @@ const styles = StyleSheet.create({
   textContainer: {
     position: 'absolute',
     top: Platform.OS === 'ios' ? scaleSize(80) : scaleSize(60),
-    maxWidth: scaleSize(240),
+    maxWidth: scaleSize(320),
+    paddingHorizontal: scaleSize(10),
     height: scaleSize(80),
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(240,240,240,0.85)',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -99,7 +103,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: Const.BOTTOM_HEIGHT,
-    width: scaleSize(200),
+    maxWidth: scaleSize(280),
+    minWidth: scaleSize(80),
     fontSize: setSpText(20),
     ...Platform.select({
       android: {

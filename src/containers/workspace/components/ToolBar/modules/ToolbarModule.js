@@ -224,43 +224,8 @@ async function setToolBarData(type, params = {}) {
  * @returns {Array}
  */
 function getMenuDialogData(type, ...others) {
-  let data = []
-  switch (type) {
-    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT_COLOR_SET:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE_COLOR_SET:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_FORECOLOR_SET:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION_BOARDERCOLOR_SET:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_FONT:
-    case ConstToolType.MAP_TOOL_TAGGING_STYLE_TEXT_COLOR_SET:
-      data = toolModule().getMenuData(type)
-      break
-    case ConstToolType.MAP_STYLE:
-    case ConstToolType.GRID_STYLE:
-    case ConstToolType.LINECOLOR_SET:
-    case ConstToolType.POINTCOLOR_SET:
-    case ConstToolType.REGIONBEFORECOLOR_SET:
-    case ConstToolType.REGIONAFTERCOLOR_SET:
-    case ConstToolType.REGIONBORDERCOLOR_SET:
-    case ConstToolType.TEXTCOLOR_SET:
-    case ConstToolType.TEXTFONT:
-      data = styleModule().getMenuData(type)
-      break
-    case ConstToolType.LEGEND:
-    case ConstToolType.LEGEND_POSITION:
-      data = legendModule().getMenuData(type)
-      break
-    case ConstToolType.MAP_COLOR_MODE:
-    case ConstToolType.MAP_BACKGROUND_COLOR:
-      data = mapSettingModule.getMenuData(type)
-  }
-  if (data.length === 0 && type.indexOf('MAP_THEME_PARAM') >= 0) {
-    data = themeModule().getMenuData(type, ...others)
-  }
+  let module = getModule(type)
+  let data = (module.getMenuData && module.getMenuData(type, ...others)) || []
   return data
 }
 

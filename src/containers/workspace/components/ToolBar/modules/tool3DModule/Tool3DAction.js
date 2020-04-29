@@ -397,8 +397,7 @@ function circleFly() {
   _params.setToolbarVisible(true, ConstToolType.MAP3D_CIRCLEFLY, {
     containerType: ToolbarType.table,
     isFullScreen: false,
-    // column: 1,
-    // height: ConstToolType.HEIGHT[0],
+    resetToolModuleData: true,
   })
 }
 function showMenuDialog() {

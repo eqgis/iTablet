@@ -8,6 +8,7 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 class ToolModule extends FunctionModule {
   constructor(props) {
     super(props)
+    this.getMenuData = ToolData.getMenuData
   }
 
   action = async () => {

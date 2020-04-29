@@ -1,5 +1,5 @@
 import { ConstOnline } from '../../src/constants'
-import { getThemeAssets } from '../../src/assets'
+import { getThemeAssets, getPublicAssets } from '../../src/assets'
 import { Module } from '../../src/class'
 import {
   startModule,
@@ -18,6 +18,11 @@ export default class MapExample extends Module {
         name_en: 'PrecipitationOfUSA', // 英文数据名称
         name_cn: '湖北', // 中文数据名称
       },
+      headerButtons: [{
+        key: 'example',
+        image: getPublicAssets().common.icon_album,
+        action: () => alert(1),
+      }],
       functionModules: [
         startModule,
         addModule,

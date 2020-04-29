@@ -256,11 +256,12 @@ export default class FunctionToolbar extends React.Component {
 
     let data = []
     functionModules.forEach(item => {
+      let _item = typeof item === 'function' ? item() : item
       if (
         type === ChunkType.MAP_THEME &&
-        item.type === ConstToolType.MAP_STYLE
+        _item.type === ConstToolType.MAP_STYLE
       ) {
-        item.action = () => {
+        _item.action = () => {
           let currentLayer = this.props.currentLayer
           if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
             styleModule().action(ConstToolType.MAP_STYLE)
@@ -274,7 +275,7 @@ export default class FunctionToolbar extends React.Component {
           }
         }
       }
-      data.push(item)
+      data.push(_item)
     })
 
     if (isLicenseNotValid) {

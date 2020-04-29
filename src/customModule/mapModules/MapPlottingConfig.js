@@ -20,14 +20,14 @@ export default class MapPlottingConfig extends Module {
         name: '福建_示范数据',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
+        startModule,
+        addModule,
+        markModule,
         plotModule('PLOTTING'),
-        editModule(),
+        editModule,
         plotModule('PLOTTING_ANIMATION'),
-        toolModule(),
-        shareModule(),
+        toolModule,
+        shareModule,
       ],
     })
   }

@@ -21,13 +21,13 @@ export default class MapThemeConfig extends Module {
         name_cn: '湖北',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        themeModule(),
-        styleModule(),
-        toolModule(),
-        shareModule(),
+        startModule,
+        addModule,
+        markModule,
+        themeModule,
+        styleModule,
+        toolModule,
+        shareModule,
       ],
     })
   }

@@ -21,14 +21,14 @@ export default class MapNavigationConfig extends Module {
         name: 'Navigation_示范数据',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        navigationModule(),
-        roadNetModule(),
-        incrementModule(),
-        toolModule(),
-        shareModule(),
+        startModule,
+        addModule,
+        markModule,
+        navigationModule,
+        roadNetModule,
+        incrementModule,
+        toolModule,
+        shareModule,
       ],
     })
   }

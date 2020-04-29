@@ -20,13 +20,13 @@ export default class MapAnalystConfig extends Module {
         name: '数据分析数据',
       },
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        analysisModule(),
-        styleModule(),
-        toolModule(),
-        shareModule(),
+        startModule,
+        addModule,
+        markModule,
+        analysisModule,
+        styleModule,
+        toolModule,
+        shareModule,
       ],
     })
   }

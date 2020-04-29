@@ -286,6 +286,14 @@ class LicenseJoinCloud extends Component {
   }
 
   renderInfo = () => {
+    let remainText = ''
+    if (this.state.currentLicense.remainDays !== undefined) {
+      let remainDays = this.state.currentLicense.remainDays
+      remainText = remainDays + getLanguage(global.language).Profile.LICENSE_DAY
+      if (remainDays === 73000) {
+        remainText = getLanguage(global.language).Profile.LICENSE_PERMANENT
+      }
+    }
     return (
       <View
         style={{
@@ -312,10 +320,7 @@ class LicenseJoinCloud extends Component {
             color: color.gray2,
           }}
         >
-          {this.state.currentLicense.remainDays
-            ? this.state.currentLicense.remainDays +
-              getLanguage(global.language).Profile.LICENSE_DAY
-            : ''}
+          {remainText}
         </Text>
       </View>
     )

@@ -55,7 +55,7 @@ export default StyleSheet.create({
   containersLandscape: {
     flexDirection: 'row',
     height: '100%',
-    maxWidth: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
+    // maxWidth: ConstToolType.HEIGHT[3] + Height.TOOLBAR_BUTTONS,
     backgroundColor: 'transparent',
   },
   buttonz: {

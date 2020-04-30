@@ -87,7 +87,9 @@ export default class Map3D extends React.Component {
       tips: '', //裁剪数值信息
     }
     this.selectKey = '' //裁剪选中的key
-    this.preGestureDx = 0 //上一次拖动的X位移
+    this.changeLength = 0 //总的位移
+    this.leftInterval = null // 作画定时器
+    this.rightInterval = null //右滑定时器
     this.name = params.name || ''
     this.type = params.type || 'MAP_3D'
     this.mapLoaded = false // 判断地图是否加载完成
@@ -470,101 +472,114 @@ export default class Map3D extends React.Component {
       </View>
     )
   }
+  /**
+   * 移动的时候改变clipSetting 每次调用changeLength改变
+   * @param type  -1：左移  1：右移  0：结束移动，setState改变clipSetting
+   * @param cb
+   * @private
+   */
+  _changeClipSetting = (type, cb) => {
+    let clipSetting = JSON.parse(JSON.stringify(this.state.clipSetting))
+    this.changeLength += 10 * type
+    let distance = 0
+    switch (this.selectKey) {
+      case 'X':
+      case 'Y':
+        distance = this.changeLength / 5000000
+        clipSetting[this.selectKey] += distance
+        if (clipSetting[this.selectKey] < 0) {
+          clipSetting[this.selectKey] = 0
+        } else if (clipSetting[this.selectKey] > 360) {
+          clipSetting[this.selectKey] = 360
+        }
+        break
+      case 'Z':
+        distance = this.changeLength / 200
+        clipSetting[this.selectKey] += distance
+        if (clipSetting[this.selectKey] < 0) {
+          clipSetting[this.selectKey] = 0
+        }
+        break
+      case 'width':
+      case 'height':
+      case 'length':
+        distance = this.changeLength / 100
+        clipSetting[this.selectKey] += distance
+        if (clipSetting[this.selectKey] < 1) {
+          clipSetting[this.selectKey] = 1
+        }
+        break
+    }
+    if (type === 0) {
+      this.setState(
+        {
+          clipSetting,
+        },
+        () => {
+          cb && cb(clipSetting)
+        },
+      )
+    } else {
+      //parseFloat去除小数后多余的0
+      this.setState(
+        {
+          tips: parseFloat(clipSetting[this.selectKey]),
+        },
+        () => {
+          cb && cb(clipSetting)
+        },
+      )
+    }
+  }
 
   //移动
   _onHandleMove = async (evt, gestureState) => {
-    let clipSetting = JSON.parse(JSON.stringify(this.state.clipSetting))
     let { dx } = gestureState
-    let change = 0
-    if (Math.abs(this.preGestureDx - dx) >= 10) {
-      this.preGestureDx = dx
-      switch (this.selectKey) {
-        case 'X':
-        case 'Y':
-          change = dx / 5000000
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 0) {
-            clipSetting[this.selectKey] = 0
-          } else if (clipSetting[this.selectKey] > 360) {
-            clipSetting[this.selectKey] = 360
-          }
-          break
-        case 'Z':
-          change = dx / 200
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 0) {
-            clipSetting[this.selectKey] = 0
-          }
-          break
-        case 'width':
-        case 'height':
-        case 'length':
-          change = dx / 100
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 1) {
-            clipSetting[this.selectKey] = 1
-          }
-          break
+    if (dx > 10 && !this.rightInterval) {
+      //右移
+      if (this.leftInterval) {
+        clearInterval(this.leftInterval)
       }
-      // clipSetting.layers = [...this.state.cutLayers]
-      this.setState({
-        tips: clipSetting[this.selectKey],
-      })
-      await SScene.clipByBox(clipSetting)
+      this.rightInterval = setInterval(() => {
+        this._changeClipSetting(1, async clipSetting => {
+          await SScene.clipByBox(clipSetting)
+        })
+      }, 100)
+    } else if (dx < -10 && !this.leftInterval) {
+      //左移
+      if (this.rightInterval) {
+        clearInterval(this.rightInterval)
+      }
+      this.leftInterval = setInterval(() => {
+        this._changeClipSetting(-1, async clipSetting => {
+          await SScene.clipByBox(clipSetting)
+        })
+      }, 100)
     }
   }
 
   //结束移动
   _onHandleMoveEnd = (evt, gestureState) => {
     let { dx, dy } = gestureState
-    let clipSetting = JSON.parse(JSON.stringify(this.state.clipSetting))
     if (Math.abs(dx) > 10) {
-      let change
-      switch (this.selectKey) {
-        case 'X':
-        case 'Y':
-          change = dx / 5000000
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 0) {
-            clipSetting[this.selectKey] = 0
-          } else if (clipSetting[this.selectKey] > 360) {
-            clipSetting[this.selectKey] = 360
-          }
-          break
-        case 'Z':
-          change = dx / 200
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 0) {
-            clipSetting[this.selectKey] = 0
-          }
-          break
-        case 'width':
-        case 'height':
-        case 'length':
-          change = dx / 100
-          clipSetting[this.selectKey] += change
-          if (clipSetting[this.selectKey] < 1) {
-            clipSetting[this.selectKey] = 1
-          }
-          break
-      }
-      this.setState(
-        {
-          clipSetting,
-        },
-        () => {
-          this.preGestureDx = 0
-          ToolbarModule.addData({ clipSetting })
-        },
-      )
-    } else if (Math.abs(dy) >= 10) {
+      this._changeClipSetting(0, async clipSetting => {
+        this.changeLength = 0
+        ToolbarModule.addData({ clipSetting })
+      })
+    } else if (Math.abs(dy) > 10) {
       this.setState({
         tips: '',
         showMenuDialog: true,
         showPanResponderView: false,
       })
     }
+    this.leftInterval && clearInterval(this.leftInterval)
+    this.rightInterval && clearInterval(this.rightInterval)
+    this.leftInterval = null
+    this.rightInterval = null
+    this.changeLength = 0
   }
+
   clearClip = () => {
     this.selectKey = ''
     this.setState({

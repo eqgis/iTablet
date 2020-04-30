@@ -91,10 +91,7 @@ export default class LayerManager_tolbar extends React.Component {
             title: '',
             data: [
               {
-                title:
-                  global.language === 'CN'
-                    ? '添加影像图层'
-                    : 'Add a image layer',
+                title: getLanguage(global.language).Map_Layer.ADD_A_IMAGE_LAYER,
                 image: require('../../../../assets/mapTools/icon_create_black.png'),
                 type: 'AddImage',
               },
@@ -110,13 +107,13 @@ export default class LayerManager_tolbar extends React.Component {
         data = layere3dImage(global.language)
         break
       case ConstToolType.MAP3D_LAYER3D_TERRAIN:
-        data = layere3dTerrain()
+        data = layere3dTerrain(global.language)
         break
       case ConstToolType.MAP3D_BASE:
         data = [
           {
             header: {
-              title: global.language === 'CN' ? '在线底图' : 'Online BaseMap',
+              title: getLanguage(global.language).Map_Layer.ONLINE_BASE_MAP,
               image: require('../../../../assets/map/layers_theme_unique_style.png'),
             },
             data: [
@@ -146,7 +143,7 @@ export default class LayerManager_tolbar extends React.Component {
         //地形添加二级界面
         let terrainDatas = {
           header: {
-            title: global.language === 'CN' ? '地形' : 'Terrain',
+            title: getLanguage(global.language).Map_Layer.TERRAIN,
             image: require('../../../../assets/map/Frenchgrey/icon_vectorfile_white.png'),
             type: 'Terrain',
           },
@@ -171,7 +168,7 @@ export default class LayerManager_tolbar extends React.Component {
         //影像添加二级界面
         let terrainDatas = {
           header: {
-            title: global.language === 'CN' ? '影像' : 'Image',
+            title: getLanguage(global.language).Map_Layer.IMAGE,
             image: require('../../../../assets/map/layers_theme_unique_style.png'),
             type: 'Image',
           },
@@ -458,8 +455,7 @@ export default class LayerManager_tolbar extends React.Component {
           }}
           onPress={() => {
             this.props.navigation.navigate('InputPage', {
-              headerTitle:
-                global.language === 'CN' ? '添加在线图层地址' : 'Add Layer Url',
+              headerTitle: getLanguage(global.language).Map_Layer.ADD_LAYER_URL,
               value: '',
               placeholder: 'eg http://ip:port/iserver/services/',
               cb: async value => {

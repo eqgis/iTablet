@@ -319,10 +319,7 @@ const layer3dDefault = (language, selected) => {
       data: [
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
-          title:
-            global.language === 'CN'
-              ? '缩放至当前图层'
-              : 'Scale to the current layer',
+          title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
           image: getPublicAssets().mapTools.tools_visible_scale_range,
           type: 'scaleToLayer',
         },
@@ -332,28 +329,24 @@ const layer3dDefault = (language, selected) => {
   ]
 }
 
-function layere3dImage() {
+function layere3dImage(language) {
   return [
     {
       title: '',
       data: [
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
-          title:
-            global.language === 'CN'
-              ? '缩放至当前图层'
-              : 'Scale to the current layer',
+          title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
           image: getPublicAssets().mapTools.tools_visible_scale_range,
           type: 'scaleToLayer',
         },
         {
-          title:
-            global.language === 'CN' ? '添加影像图层' : 'Add a image layer',
+          title: getLanguage(language).Map_Layer.ADD_A_IMAGE_LAYER,
           image: require('../../../../assets/mapTools/icon_create_black.png'),
           type: 'AddImage',
         },
         {
-          title: global.language === 'CN' ? '移除当前图层' : 'Remove the layer',
+          title: getLanguage(language).Map_Layer.REMOVE_THE_CURRENT_LAYER,
           image: require('../../../../assets/layerToolbar/layer_remove.png'),
           type: 'RemoveLayer3d_image',
         },
@@ -366,28 +359,24 @@ function layere3dImage() {
   ]
 }
 
-function layere3dTerrain() {
+function layere3dTerrain(language) {
   return [
     {
       title: '',
       data: [
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
-          title:
-            global.language === 'CN'
-              ? '缩放至当前图层'
-              : 'Scale to the current layer',
+          title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
           image: getPublicAssets().mapTools.tools_visible_scale_range,
           type: 'scaleToLayer',
         },
         {
-          title:
-            global.language === 'CN' ? '添加地形图层' : 'Add a terrain layer',
+          title: getLanguage(language).Map_Layer.ADD_A_TERRAIN_LAYER,
           image: require('../../../../assets/mapTools/icon_create_black.png'),
           type: 'AddTerrain',
         },
         {
-          title: global.language === 'CN' ? '移除当前图层' : 'Remove the layer',
+          title: getLanguage(language).Map_Layer.REMOVE_THE_CURRENT_LAYER,
           image: require('../../../../assets/layerToolbar/layer_remove.png'),
           type: 'RemoveLayer3d_terrain',
         },

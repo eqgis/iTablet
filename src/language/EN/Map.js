@@ -206,6 +206,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: 'Dot Density\n Map',
   THEME_GRADUATED_SYMBOLS_MAP: 'Graduated\n Symbols Map',
   THEME_HEATMAP: 'HeatMap',
+  THEME_CRID_UNIQUE: 'Grid Unique',
+  THEME_CRID_RANGE: 'Grid Range',
 
   THEME_ALL_SELECTED: 'All Selected',
   THEME_ALL_CANCEL: 'All Cancel',
@@ -575,6 +577,15 @@ const Map_Layer = {
   NOT_EDITABLE: 'Not Editable',
   SNAPABLE: 'Snapable',
   NOT_SNAPABLE: 'Not Snapable',
+
+  SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
+  ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
+  ADD_A_IMAGE_LAYER: 'Add a image layer',
+  REMOVE_THE_CURRENT_LAYER: 'Remove the current layer',
+  ONLINE_BASE_MAP: 'Online BaseMap',
+  ADD_LAYER_URL: 'Add Layer Url',
+  TERRAIN: 'Terrain',
+  IMAGE: 'Image',
 }
 
 // 属性

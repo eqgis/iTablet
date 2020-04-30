@@ -206,6 +206,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: 'Nokta Yoğunluğu\n Harita',
   THEME_GRADUATED_SYMBOLS_MAP: 'Dereceli\n Sembol Harita',
   THEME_HEATMAP: 'IsıHaritası',
+  THEME_CRID_UNIQUE: 'Grid Eşsiz Değeri Haritası',
+  THEME_CRID_RANGE: 'Grid Segmentasyon Tematik Harita',
 
   THEME_ALL_SELECTED: 'Hepsi Seçili',
   THEME_ALL_CANCEL: 'Hepsi İptal Edildi',
@@ -568,6 +570,15 @@ const Map_Layer = {
   NOT_EDITABLE: 'Düzenlenebilir Değil',
   SNAPABLE: 'Yakalama Kullanılabilir',
   NOT_SNAPABLE: 'Yakalama Kullanılamaz',
+
+  SCALE_TO_CURRENT_LAYER: 'Mevcut katına küçültün',
+  ADD_A_TERRAIN_LAYER: 'Toprak katını ekle',
+  ADD_A_IMAGE_LAYER: 'Resim katını ekle',
+  REMOVE_THE_CURRENT_LAYER: 'Ağımdaki katı kaldır',
+  ONLINE_BASE_MAP: 'Çevrimiçi temel haritası',
+  ADD_LAYER_URL: 'Çevrimiçi katma adresini ekle',
+  TERRAIN: 'Terin',
+  IMAGE: 'resim',
 }
 
 // 属性

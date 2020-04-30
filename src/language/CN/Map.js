@@ -591,6 +591,15 @@ const Map_Layer = {
   BASEMAP: '我的底图',
   BASEMAP_SWITH: '切换底图',
   MY_TERRAIN: '我的地形',
+
+  SCALE_TO_CURRENT_LAYER: '缩放至当前图层',
+  ADD_A_TERRAIN_LAYER: '添加地形图层',
+  ADD_A_IMAGE_LAYER: '添加影像图层',
+  REMOVE_THE_CURRENT_LAYER: '移除当前图层',
+  ONLINE_BASE_MAP: '在线底图',
+  ADD_LAYER_URL: '添加在线图层地址',
+  TERRAIN: '地形',
+  IMAGE: '影像',
 }
 
 // 属性

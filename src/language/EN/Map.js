@@ -575,6 +575,15 @@ const Map_Layer = {
   NOT_EDITABLE: 'Not Editable',
   SNAPABLE: 'Snapable',
   NOT_SNAPABLE: 'Not Snapable',
+
+  SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
+  ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
+  ADD_A_IMAGE_LAYER: 'Add a image layer',
+  REMOVE_THE_CURRENT_LAYER: 'Remove the current layer',
+  ONLINE_BASE_MAP: 'Online BaseMap',
+  ADD_LAYER_URL: 'Add Layer Url',
+  TERRAIN: 'Terrain',
+  IMAGE: 'Image',
 }
 
 // 属性

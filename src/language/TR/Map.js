@@ -568,6 +568,15 @@ const Map_Layer = {
   NOT_EDITABLE: 'Düzenlenebilir Değil',
   SNAPABLE: 'Yakalama Kullanılabilir',
   NOT_SNAPABLE: 'Yakalama Kullanılamaz',
+
+  SCALE_TO_CURRENT_LAYER: 'Mevcut katına küçültün',
+  ADD_A_TERRAIN_LAYER: 'Toprak katını ekle',
+  ADD_A_IMAGE_LAYER: 'Resim katını ekle',
+  REMOVE_THE_CURRENT_LAYER: 'Ağımdaki katı kaldır',
+  ONLINE_BASE_MAP: 'Çevrimiçi temel haritası',
+  ADD_LAYER_URL: 'Çevrimiçi katma adresini ekle',
+  TERRAIN: 'Terin',
+  IMAGE: 'resim',
 }
 
 // 属性

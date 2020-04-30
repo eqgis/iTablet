@@ -580,6 +580,15 @@ const Map_Layer = {
   BASEMAP: '私のベースマップ',
   BASEMAP_SWITH: 'ベースマップの切替',
   MY_TERRAIN: '私の地形',
+
+  SCALE_TO_CURRENT_LAYER: '現在のレイヤーにズーム',
+  ADD_A_TERRAIN_LAYER: '地形レイヤーを追加',
+  ADD_A_IMAGE_LAYER: '画像レイヤーを追加',
+  REMOVE_THE_CURRENT_LAYER: '現在のレイヤーを削除',
+  ONLINE_BASE_MAP: 'オンライン地図',
+  ADD_LAYER_URL: 'オンラインレイヤーのアドレスを追加',
+  TERRAIN: '地形',
+  IMAGE: 'イメージ',
 }
 
 // 属性

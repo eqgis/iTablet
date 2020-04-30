@@ -167,9 +167,13 @@ export default class ToolBar extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    let tempNext = Object.assign({}, nextProps)
+    let tempthis = Object.assign({}, this.props)
+    tempNext.nav && delete tempNext.nav
+    tempthis.nav && delete tempthis.nav
     this.setToolbarParams(nextProps, nextState)
     if (
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+      JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     ) {
       return true

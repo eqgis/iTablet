@@ -12,12 +12,12 @@ class PlotModule extends FunctionModule {
     super(props)
   }
 
-  action = async type => {
+  action = async () => {
     const params = ToolbarModule.getParams()
-    let _data = PlotData.getData(type, params)
+    let _data = PlotData.getData(this.type, params)
     let containerType, data
-    this.setModuleData(type)
-    switch (type) {
+    this.setModuleData(this.type)
+    switch (this.type) {
       case ConstToolType.PLOTTING:
         if (!GLOBAL.isInitSymbolPlotsEnd) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.MAP_LOADING)

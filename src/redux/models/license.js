@@ -4,9 +4,9 @@ import { handleActions } from 'redux-actions'
 import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------
-export const INFO_SET = 'INFO_SET'
-export const USER_SET = 'USER_SET'
-export const SERVER_SET = 'SERVER_SET'
+export const LICENSE_INFO_SET = 'LICENSE_INFO_SET'
+export const CLOUD_LICENSE_USER_SET = 'CLOUD_LICENSE_USER_SET'
+export const LICENSE_SERVER_SET = 'LICENSE_SERVER_SET'
 
 // Actions
 // ---------------------------------.3-----------------
@@ -16,7 +16,7 @@ export const setLicenseInfo = (
   cb = () => {},
 ) => async dispatch => {
   await dispatch({
-    type: INFO_SET,
+    type: LICENSE_INFO_SET,
     payload: params,
   })
   cb && cb()
@@ -27,7 +27,7 @@ export const setCloudLicenseUser = (
   cb = () => {},
 ) => async dispatch => {
   await dispatch({
-    type: USER_SET,
+    type: CLOUD_LICENSE_USER_SET,
     payload: params,
   })
   cb && cb()
@@ -38,7 +38,7 @@ export const setPrivateLicenseServer = (
   cb = () => {},
 ) => async dispatch => {
   await dispatch({
-    type: SERVER_SET,
+    type: LICENSE_SERVER_SET,
     payload: params,
   })
   cb && cb()
@@ -52,13 +52,13 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${INFO_SET}`]: (state, { payload }) => {
+    [`${LICENSE_INFO_SET}`]: (state, { payload }) => {
       return state.setIn(['licenseInfo'], fromJS(payload))
     },
-    [`${USER_SET}`]: (state, { payload }) => {
+    [`${CLOUD_LICENSE_USER_SET}`]: (state, { payload }) => {
       return state.setIn(['cloudLicenseUser'], fromJS(payload))
     },
-    [`${SERVER_SET}`]: (state, { payload }) => {
+    [`${LICENSE_SERVER_SET}`]: (state, { payload }) => {
       return state.setIn(['privateLicenseServer'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {

@@ -30,7 +30,6 @@ const increment_gps_track = require('./increament_gps_track.png')
 const increment_pointline = require('./increament_pointline.png')
 const increment_freeline = require('./increament_freeline.png')
 
-
 const increment_switch_network = require('./increament_switch_network.png')
 const btn_increment_gps_point = require('./btn_increment_gps_point.png')
 const btn_increment_gps_track = require('./btn_increment_gps_track.png')
@@ -56,6 +55,7 @@ const icon_increment_add_attribute = require('./increament_add_attribute.png')
 const icon_increment_change_direction = require('./icon_increment_change_direction.png')
 const icon_increment_extend = require('./icon_increment_extend.png')
 const icon_increment_point_adjust = require('./icon_increment_point_adjust.png')
+const icon_increment_line_split_line = require('./icon_increment_line_split_line.png')
 const icon_increment_resample = require('./icon_increment_resample.png')
 const icon_increment_smooth = require('./icon_increment_smooth.png')
 const icon_incremnent_split = require('./icon_increment_split.png')
@@ -120,6 +120,7 @@ export default {
   icon_increment_change_direction,
   icon_increment_extend,
   icon_increment_point_adjust,
+  icon_increment_line_split_line,
   icon_increment_resample,
   icon_increment_smooth,
   icon_incremnent_split,

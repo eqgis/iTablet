@@ -13,6 +13,7 @@ import dataUtil from '../../../../../../utils/dataUtil'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import LayerVisibilityView from './customView/LayerVisibilityView'
+import ToolbarBtnType from '../../ToolbarBtnType'
 
 async function getData(type) {
   let data = []
@@ -39,6 +40,7 @@ async function getData(type) {
         customView = () => (
           <LayerVisibilityView currentType={currentType} mapScale={mapScale} />
         )
+        buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
       }
       break
   }

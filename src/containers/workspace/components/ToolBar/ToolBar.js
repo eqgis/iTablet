@@ -777,9 +777,7 @@ export default class ToolBar extends React.Component {
       : this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.wrapContainerLandscape
         : styles.wrapContainer
-    let size = this.state.isFullScreen
-      ? { height: this.props.device.height }
-      : {}
+    let size = { height: this.props.device.height }
     if (this.state.isFullScreen && this.state.isTouchProgress) {
       let softBarHeight = this.state.hasSoftMenuBottom
         ? ExtraDimensions.getSoftMenuBarHeight()

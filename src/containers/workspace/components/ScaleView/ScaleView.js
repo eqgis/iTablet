@@ -137,7 +137,7 @@ export default class ScaleView extends React.Component {
   }
 
   render() {
-    if (this.props.mapNavigation.isShow) return null
+    if (this.props.mapNavigation.isShow || !this.props.isShow) return null
 
     var props = { ...this.props }
 

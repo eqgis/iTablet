@@ -17,6 +17,8 @@ export default class Module {
 
     this.functionModules = this.props.functionModules || [] // 地图界面右侧功能栏
 
+    this.headerButtons = this.props.headerButtons // 地图导航栏右侧按钮 App默认有audio，undo，search
+
     this.tabModules = this.props.tabModules || [] // 地图底部Tab栏
     // 若tabModules为空，默认根据二维三维地图生成tabModules
     if (this.tabModules.length === 0) {

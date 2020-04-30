@@ -33,7 +33,7 @@ import {
 } from './ColorList'
 
 /** 自定义相关预留字段 **/
-import { AppTabs, ChunkType, MapTabs } from './custom'
+import { AppTabs, ChunkType, MapTabs, MapHeaderButton } from './custom'
 
 export {
   ConstPath,
@@ -67,4 +67,5 @@ export {
   ChunkType,
   AppTabs,
   MapTabs,
+  MapHeaderButton,
 }

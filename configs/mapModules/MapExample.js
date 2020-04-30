@@ -1,5 +1,5 @@
 import { ConstOnline } from '../../src/constants'
-import { getThemeAssets } from '../../src/assets'
+import { getThemeAssets, getPublicAssets } from '../../src/assets'
 import { Module } from '../../src/class'
 import {
   startModule,

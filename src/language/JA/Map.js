@@ -219,6 +219,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: '点密度図',
   THEME_GRADUATED_SYMBOLS_MAP: '連続的スケール記号図',
   THEME_HEATMAP: 'ヒートマップ',
+  THEME_CRID_UNIQUE: 'グリッド単一値特定のテーマ図',
+  THEME_CRID_RANGE: 'グリッドセグメントの特定のテーマ図',
 
   THEME_ALL_SELECTED: 'すべて選択',
   THEME_ALL_CANCEL: 'すべてキャンセル',

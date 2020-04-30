@@ -375,6 +375,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: 'Öznitelik Ekleme Başarılı',
   ATTRIBUTE_ADD_FAILED: 'Öznitelik Ekleme Başarısız',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Varsayılan değer boş',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
+  HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 }
 
 export { Prompt }

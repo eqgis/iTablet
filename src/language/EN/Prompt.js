@@ -375,6 +375,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: 'Attribute Add Succeed',
   ATTRIBUTE_ADD_FAILED: 'Attribute Add Failed',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Default value is null',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect in Thematic layers',
+  HEAT_MAP_DATASET_TYPE_ERROR: 'Only point dataset can be created',
 }
 
 export { Prompt }

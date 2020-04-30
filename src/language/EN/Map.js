@@ -206,6 +206,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: 'Dot Density\n Map',
   THEME_GRADUATED_SYMBOLS_MAP: 'Graduated\n Symbols Map',
   THEME_HEATMAP: 'HeatMap',
+  THEME_CRID_UNIQUE: 'Grid Unique',
+  THEME_CRID_RANGE: 'Grid Range',
 
   THEME_ALL_SELECTED: 'All Selected',
   THEME_ALL_CANCEL: 'All Cancel',

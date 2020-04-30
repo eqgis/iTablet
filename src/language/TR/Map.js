@@ -206,6 +206,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: 'Nokta Yoğunluğu\n Harita',
   THEME_GRADUATED_SYMBOLS_MAP: 'Dereceli\n Sembol Harita',
   THEME_HEATMAP: 'IsıHaritası',
+  THEME_CRID_UNIQUE: 'Grid Eşsiz Değeri Haritası',
+  THEME_CRID_RANGE: 'Grid Segmentasyon Tematik Harita',
 
   THEME_ALL_SELECTED: 'Hepsi Seçili',
   THEME_ALL_CANCEL: 'Hepsi İptal Edildi',

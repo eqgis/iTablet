@@ -61,7 +61,7 @@ export default class LayerManager_tolbar extends React.Component {
     containerProps?: Object,
     data: Array,
     layerData?: Object,
-    existFullMap: () => {},
+    // existFullMap: () => {},
     getLayers: () => {}, // 更新数据（包括其他界面）
     setCurrentLayer: () => {},
     onPress: () => {},
@@ -372,7 +372,7 @@ export default class LayerManager_tolbar extends React.Component {
       },
       () => {
         this.showToolbarAndBox(isShow)
-        !isShow && this.props.existFullMap && this.props.existFullMap()
+        // !isShow && this.props.existFullMap && this.props.existFullMap()
         // this.updateMenuState()
         this.updateOverlayView()
       },
@@ -527,9 +527,7 @@ export default class LayerManager_tolbar extends React.Component {
         this.state.layerData.isHeatmap
       ) {
         Toast.show(
-          global.language === 'CN'
-            ? '专题图层不能采集'
-            : 'Cannot collect in Thematic layers',
+          getLanguage(global.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS,
         )
       } else {
         let type = ''

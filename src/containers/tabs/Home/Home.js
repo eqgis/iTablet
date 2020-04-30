@@ -48,6 +48,7 @@ export default class Home extends Component {
     closeWorkspace: () => {},
     openWorkspace: () => {},
     setUser: () => {},
+    deleteUser: () => {},
     setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
@@ -216,6 +217,7 @@ export default class Home extends Component {
               global.language === 'CN' ? 'CN' : 'EN'
             ],
         )
+        this.props.deleteUser(this.props.user.currentUser)
         this.props.setUser({
           userName: 'Customer',
           userType: UserType.PROBATION_USER,

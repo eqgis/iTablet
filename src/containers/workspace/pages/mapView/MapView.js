@@ -3160,6 +3160,13 @@ export default class MapView extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
+        {this.state.showMap && (
+          <SMMapView
+            ref={ref => (GLOBAL.mapView = ref)}
+            style={styles.map}
+            onGetInstance={this._onGetInstance}
+          />
+        )}
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3170,13 +3177,6 @@ export default class MapView extends React.Component {
             device={this.props.device}
             language={this.props.language}
             ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
-        {this.state.showMap && (
-          <SMMapView
-            ref={ref => (GLOBAL.mapView = ref)}
-            style={styles.map}
-            onGetInstance={this._onGetInstance}
           />
         )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&

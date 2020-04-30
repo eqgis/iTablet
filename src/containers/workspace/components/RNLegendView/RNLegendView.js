@@ -4,7 +4,7 @@
  * https://github.com/AsortKeven
  */
 import * as React from 'react'
-import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -182,7 +182,8 @@ export default class RNLegendView extends React.Component {
         this.props.legendSettings[GLOBAL.Type].fontPercent) /
       100
     return (
-      <TouchableOpacity
+      <View
+        pointerEvents={'box-none'}
         style={{
           width:
             (1 / this.props.legendSettings[GLOBAL.Type].column) * 100 + '%',
@@ -233,7 +234,7 @@ export default class RNLegendView extends React.Component {
         >
           {title.toLowerCase()}
         </Text>
-      </TouchableOpacity>
+      </View>
     )
   }
 
@@ -294,7 +295,6 @@ export default class RNLegendView extends React.Component {
             paddingRight: scaleSize(5),
             backgroundColor: this.props.legendSettings[GLOBAL.Type]
               .backgroundColor,
-            zIndex: 1,
             ...this.state[
               this.props.legendSettings[GLOBAL.Type].legendPosition
             ],
@@ -315,6 +315,7 @@ export default class RNLegendView extends React.Component {
             style={{
               flex: 1,
             }}
+            pointerEvents={'box-none'}
             renderItem={this.renderLegendItem}
             data={this.state.legendSource}
             keyExtractor={(item, index) => item.title + index}

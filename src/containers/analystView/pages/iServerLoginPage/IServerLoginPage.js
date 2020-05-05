@@ -144,7 +144,7 @@ export default class IServerLoginPage extends React.Component {
                   inputStyle={styles.input}
                   placeholder={
                     getLanguage(this.props.language).Profile
-                      .ENTER_SERVER_ADDRESS
+                      .ENTER_SERVER_ADDRESS + ' eg: 10.10.0.1:8090'
                   }
                   placeholderTextColor={color.themePlaceHolder}
                   defaultValue={this.serverUrl}

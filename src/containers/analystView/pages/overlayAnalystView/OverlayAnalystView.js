@@ -254,7 +254,7 @@ export default class OverlayAnalystView extends Component {
       } catch (e) {
         this.setLoading(false)
         Toast.show(
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS,
+          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
         )
       }
     })
@@ -573,7 +573,7 @@ export default class OverlayAnalystView extends Component {
                 // 原数据源为空，或者切换数据源，则自动获取对应数据源第一个数据集
                 let udbPath = await FileTools.appendingHomeDirectory(data.path)
                 let filter = {}
-                filter.typeFilter = this.getDataLimit()
+                filter.typeFilter = [DatasetType.REGION]
                 filter.exclude = {}
                 if (
                   this.state.overlayDataSet &&

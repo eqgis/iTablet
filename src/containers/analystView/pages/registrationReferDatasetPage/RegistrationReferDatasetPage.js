@@ -91,7 +91,8 @@ export default class RegistrationReferDatasetPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
+          title: getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_REFER_DATASET_ADD,
           navigation: this.props.navigation,
           backAction: this.back,
         }}

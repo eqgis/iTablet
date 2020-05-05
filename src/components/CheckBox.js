@@ -37,9 +37,14 @@ export default class CheckBox extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-      JSON.stringify(nextState) !== JSON.stringify(this.state)
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      (this.props.checked != undefined &&
+        nextProps.checked !== this.state.checked)
     ) {
-      if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+      if (
+        JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+        nextProps.checked !== this.state.checked
+      ) {
         this.isPropsEdit = true
       }
       return true
@@ -48,7 +53,7 @@ export default class CheckBox extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.isPropsEdit) {
+    if (this.isPropsEdit && this.props.checked != undefined) {
       this.setState({
         checked: this.props.checked,
       })

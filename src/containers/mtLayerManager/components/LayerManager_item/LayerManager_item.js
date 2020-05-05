@@ -538,7 +538,11 @@ export default class LayerManager_item extends React.Component {
             let { px, py, width, height } = this.PressViewPosition
             if (layer.index < layer.layerCount - 1) {
               py = py + height
-              py < screen.getScreenHeight() - scaleSize(100) &&
+              py <
+                screen.getScreenHeight() -
+                  scaleSize(
+                    screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
+                  ) &&
                 ActionPopover.show(
                   {
                     x: px,

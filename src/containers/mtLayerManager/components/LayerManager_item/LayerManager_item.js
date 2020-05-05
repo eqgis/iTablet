@@ -495,7 +495,7 @@ export default class LayerManager_item extends React.Component {
             let { px, py, width, height } = this.PressViewPosition
             if (layer.index > 0) {
               py = py - height
-              py >= scaleSize(88) &&
+              py >= scaleSize(180) &&
                 ActionPopover.show(
                   {
                     x: px,

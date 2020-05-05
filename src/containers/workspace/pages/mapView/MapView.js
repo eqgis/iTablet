@@ -85,6 +85,7 @@ import {
   ConstInfo,
   ToolbarType,
   ChunkType,
+  MapHeaderButton,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { setGestureDetectorListener } from '../../../GestureDetectorListener'
@@ -2395,95 +2396,99 @@ export default class MapView extends React.Component {
   renderHeaderRight = () => {
     if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
       return null
-    // if (this.props.analyst.params) {
-    //   return [
-    //     <TextBtn
-    //       key={'analyst'}
-    //       btnText={getLanguage(this.props.language).Analyst_Labels.ANALYST}
-    //       textStyle={styles.headerBtnTitle}
-    //       btnClick={() => {
-    //         if (this.props.analyst.params) {
-    //           // this.analystRecommendVisible = !this.analystRecommendVisible
-    //           // this.analystRecommend.setVisible(this.analystRecommendVisible)
-    //           // if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
-    //           //   if (this.analystRecommendVisible) {
-    //           //     this.mapController.move({ bottom: 200 })
-    //           //   } else {
-    //           //     this.mapController.reset()
-    //           //   }
-    //           // }
-    //           // return
-    //         }
-    //       }}
-    //     />,
-    //   ]
-    // }
-    let width =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 250 : 200
+    let itemWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 80 : 65
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 50 : 60
+
+    const currentMapModule = this.props.appConfig.mapModules.find(item => {
+      return item.key === this.type
+    })
+    let buttonInfos = currentMapModule.headerButtons || [
+      MapHeaderButton.Audio,
+      MapHeaderButton.Undo,
+      MapHeaderButton.Search,
+    ]
+    let buttons = []
+    for (let i = 0; i < buttonInfos.length; i++) {
+      let info
+      if (typeof buttonInfos[i] === 'string') {
+        switch (buttonInfos[i]) {
+          case MapHeaderButton.Audio:
+            info = {
+              key: MapHeaderButton.Audio,
+              image: getPublicAssets().common.icon_audio,
+              action: () => {
+                SSpeechRecognizer.start()
+                this.AudioDialog.setVisible(true)
+              },
+            }
+            break
+          case MapHeaderButton.Undo:
+            info = {
+              key: MapHeaderButton.Undo,
+              image: getPublicAssets().common.icon_undo,
+              action: this.showUndoView,
+            }
+            break
+          case MapHeaderButton.Search:
+            info = {
+              key: MapHeaderButton.Search,
+              image: getPublicAssets().common.icon_search,
+              action: async () => {
+                if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+                  let layers =
+                    this.props.getLayers && (await this.props.getLayers())
+                  let baseMap = layers.filter(layer =>
+                    LayerUtils.isBaseLayer(layer),
+                  )[0]
+                  if (
+                    baseMap &&
+                    baseMap.name !== 'baseMap' &&
+                    baseMap.isVisible
+                  ) {
+                    NavigationService.navigate('PointAnalyst', {
+                      type: 'pointSearch',
+                    })
+                    this.changeFloorID('')
+                  } else {
+                    Toast.show(
+                      getLanguage(this.props.language).Prompt
+                        .PLEASE_SET_BASEMAP_VISIBLE,
+                    )
+                  }
+                } else {
+                  NavigationService.navigate('PointAnalyst', {
+                    type: 'pointSearch',
+                  })
+                }
+              },
+            }
+            break
+        }
+      } else {
+        info = buttonInfos[i]
+      }
+      info &&
+        buttons.push(
+          <MTBtn
+            key={info.key}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            image={info.image}
+            onPress={info.action}
+          />,
+        )
+    }
     return (
       <View
         style={{
-          width: scaleSize(width),
+          width: scaleSize(itemWidth * buttons.length),
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
           alignItems: 'center',
         }}
       >
-        <TouchableOpacity
-          key={'audio'}
-          onPress={() => {
-            SSpeechRecognizer.start()
-            this.AudioDialog.setVisible(true)
-          }}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={getPublicAssets().common.icon_audio}
-            style={{ width: scaleSize(size), height: scaleSize(size) }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity key={'undo'} onPress={this.showUndoView}>
-          <Image
-            resizeMode={'contain'}
-            source={getPublicAssets().common.icon_undo}
-            style={{ width: scaleSize(size), height: scaleSize(size) }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          key={'search'}
-          onPress={async () => {
-            if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-              let layers =
-                this.props.getLayers && (await this.props.getLayers())
-              let baseMap = layers.filter(layer =>
-                LayerUtils.isBaseLayer(layer),
-              )[0]
-              if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
-                NavigationService.navigate('PointAnalyst', {
-                  type: 'pointSearch',
-                })
-                this.changeFloorID('')
-              } else {
-                Toast.show(
-                  getLanguage(this.props.language).Prompt
-                    .PLEASE_SET_BASEMAP_VISIBLE,
-                )
-              }
-            } else {
-              NavigationService.navigate('PointAnalyst', {
-                type: 'pointSearch',
-              })
-            }
-          }}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={getPublicAssets().common.icon_search}
-            style={{ width: scaleSize(size), height: scaleSize(size) }}
-          />
-        </TouchableOpacity>
+        {buttons}
       </View>
     )
   }
@@ -3155,6 +3160,13 @@ export default class MapView extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
+        {this.state.showMap && (
+          <SMMapView
+            ref={ref => (GLOBAL.mapView = ref)}
+            style={styles.map}
+            onGetInstance={this._onGetInstance}
+          />
+        )}
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3165,13 +3177,6 @@ export default class MapView extends React.Component {
             device={this.props.device}
             language={this.props.language}
             ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
-        {this.state.showMap && (
-          <SMMapView
-            ref={ref => (GLOBAL.mapView = ref)}
-            style={styles.map}
-            onGetInstance={this._onGetInstance}
           />
         )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&

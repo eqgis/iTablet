@@ -1512,7 +1512,6 @@ async function changeGraphType(type) {
     type = ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE
     isBoxShow = true
   }
-  GLOBAL.ToolBar && !GLOBAL.ToolBar.setBoxShow(isBoxShow)
   const showBox = function() {
     _params.contentView.changeHeight(isBoxShow ? Height.TABLE_ROW_HEIGHT_4 : 0)
   }

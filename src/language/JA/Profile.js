@@ -191,6 +191,7 @@ const Profile = {
   LICENSE_SURPLUS: '残り',
   LICENSE_YEAR: '年',
   LICENSE_DAY: '日',
+  LICENSE_PERMANENT: '永久',
   LICENSE_CONTAIN_MODULE: 'モジュール',
   LICENSE_CONTAIN_EXPAND_MODULE: '拡張モジュール',
   LICENSE_USER_NAME: 'ユーザーネーム',

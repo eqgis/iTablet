@@ -167,9 +167,13 @@ export default class ToolBar extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    let tempNext = Object.assign({}, nextProps)
+    let tempthis = Object.assign({}, this.props)
+    tempNext.nav && delete tempNext.nav
+    tempthis.nav && delete tempthis.nav
     this.setToolbarParams(nextProps, nextState)
     if (
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+      JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     ) {
       return true
@@ -773,9 +777,7 @@ export default class ToolBar extends React.Component {
       : this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.wrapContainerLandscape
         : styles.wrapContainer
-    let size = this.state.isFullScreen
-      ? { height: this.props.device.height }
-      : {}
+    let size = { height: this.props.device.height }
     if (this.state.isFullScreen && this.state.isTouchProgress) {
       let softBarHeight = this.state.hasSoftMenuBottom
         ? ExtraDimensions.getSoftMenuBarHeight()

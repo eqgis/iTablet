@@ -18,7 +18,12 @@ export default class FunctionModule {
     this.actions = Object(this.props.actions || {}, Actions)
   }
 
-  /** 自定义高度 **/
+  /**
+   * 自定义高度
+   * @param type
+   * @param orientation 横竖屏方向
+   * @param additional  补充数据，自行定义
+   */
   // eslint-disable-next-line
   getToolbarSize = (type, orientation, additional) => {
     // let height = 0,
@@ -27,7 +32,10 @@ export default class FunctionModule {
     // return { height, column, row }
   }
 
-  /** 存放当前数据到ToolbarModule **/
+  /**
+   * 存放当前数据到ToolbarModule
+   * @param type
+   */
   setModuleData = (type = this.type) => {
     ToolbarModule.setData({
       type,
@@ -37,13 +45,19 @@ export default class FunctionModule {
     })
   }
 
-  /** 启动模块事件 **/
+  /**
+   * 启动模块事件
+   * @param type
+   */
   action = type => {
     this.setModuleData(type)
     this.props.action && this.props.action()
   }
 
-  /** 添加模块事件 **/
+  /**
+   * 添加模块事件
+   * @param _actions
+   */
   addActions = (_actions = {}) => {
     this.actions = Object(this.actions || {}, _actions)
   }
@@ -52,18 +66,19 @@ export default class FunctionModule {
 /** 模块相关默认事件 **/
 const Actions = {
   /********** ToolbarBottomButtons事件 **********/
-  commit: () => {},
-  menu: () => {},
-  showMenuBox: () => {},
-  showAttribute: () => {},
-  undo: () => {},
-  redo: () => {},
-  close: () => {},
-  toolbarBack: () => {},
+  commit: () => {}, // 提交
+  menu: () => {}, // 屏幕中间的指滑菜单
+  showMenuBox: () => {}, // 指滑菜单和内容框交替显示
+  showAttribute: () => {}, // 显示属性
+  undo: () => {}, // 地图撤销
+  redo: () => {}, // 地图重做
+  close: () => {}, // 关闭Toolbar
+  toolbarBack: () => {}, // Toolbar界面回退
 
   /********** ToolbarContentView事件 **********/
-  listSelectableAction: () => {},
+  listSelectableAction: () => {}, // Toolbar SelectList类型点击事件
+  listAction: () => {}, // Toolbar List类型点击事件
 
   /********** 地图事件 **********/
-  geometrySelected: () => {},
+  geometrySelected: () => {}, // 地图对象选择事件
 }

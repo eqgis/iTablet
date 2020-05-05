@@ -419,7 +419,11 @@ export default class LayerAttributeAdd extends React.Component {
   renderRows = () => {
     let maxLengthCanEdit = this.maxLengthCanEdit()
     return (
-      <ScrollView style={styles.rows}>
+      <ScrollView
+        style={styles.rows}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      >
         <Row
           style={{ marginTop: scaleSize(30) }}
           customRightStyle={styles.customRightStyle}
@@ -486,12 +490,6 @@ export default class LayerAttributeAdd extends React.Component {
               style={{
                 paddingHorizontal: scaleSize(15),
                 paddingVertical: scaleSize(1),
-                height: scaleSize(60),
-                ...Platform.select({
-                  android: {
-                    padding: 0,
-                  },
-                }),
                 borderWidth: 1,
                 borderRadius: scaleSize(8),
                 flexDirection: 'row',
@@ -502,6 +500,12 @@ export default class LayerAttributeAdd extends React.Component {
             >
               <TextInput
                 style={{
+                  height: scaleSize(60),
+                  ...Platform.select({
+                    android: {
+                      padding: 0,
+                    },
+                  }),
                   fontSize: scaleSize(20),
                   color: color.black,
                   width: scaleSize(150),

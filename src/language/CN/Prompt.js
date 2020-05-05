@@ -356,6 +356,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: '属性添加成功',
   ATTRIBUTE_ADD_FAILED: '属性添加失败',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: '缺省值为空',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
+  HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
 }
 
 export { Prompt }

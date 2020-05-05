@@ -3,9 +3,6 @@ global.APP_VERSION = 'V3.1.0_20200323'
 function getLanguage(param) {
   let language = {}
   switch (param) {
-    case 'CN':
-      language = require('./CN/index').default
-      break
     case 'EN':
       language = require('./EN/index').default
       break
@@ -14,6 +11,10 @@ function getLanguage(param) {
       break
     case 'JA':
       language = require('./JA/index').default
+      break
+    case 'CN':
+    default:
+      language = require('./CN/index').default
       break
   }
   return language

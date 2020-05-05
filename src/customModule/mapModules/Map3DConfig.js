@@ -20,11 +20,11 @@ export default class Map3DConfig extends Module {
         name_android: 'OlympicGreen_android',
       },
       functionModules: [
-        start3DModule(),
-        mark3DModule(),
-        fly3DModule(),
-        tool3DModule(),
-        share3DModule(),
+        start3DModule,
+        mark3DModule,
+        fly3DModule,
+        tool3DModule,
+        share3DModule,
       ],
     })
   }

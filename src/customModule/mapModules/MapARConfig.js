@@ -18,11 +18,11 @@ export default class MapARConfig extends Module {
     super({
       key: ChunkType.MAP_AR,
       functionModules: [
-        startModule(),
-        addModule(),
-        markModule(),
-        styleModule(),
-        aiModule(),
+        startModule,
+        addModule,
+        markModule,
+        styleModule,
+        aiModule,
       ],
     })
   }

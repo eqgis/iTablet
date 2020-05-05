@@ -36,7 +36,10 @@ class AnalysisModule extends FunctionModule {
   getToolbarSize = (type, orientation, additional) => {
     const _data = ToolbarModule.getData()
     let data = {}
-    if (_data.type === ConstToolType.MAP_ANALYSIS) {
+    if (
+      _data.type === ConstToolType.MAP_ANALYSIS &&
+      !(additional && additional.data && additional.data.length > 0)
+    ) {
       data.height =
         ConstToolType.TOOLBAR_HEIGHT[0] *
         (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 8)

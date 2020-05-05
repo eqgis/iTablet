@@ -299,7 +299,7 @@ async function inputConfirm(text) {
   let data = ToolbarModule.getData()
 
   let reg = /^[0-9]+$/
-  if (reg.test(text) && text >= 2 && text < 100) {
+  if (reg.test(text) && text >= 2 && text <= 10) {
     let result = await SMap.smoothLine({
       id: data.event.id,
       smooth: ~~text,
@@ -313,6 +313,7 @@ async function inputConfirm(text) {
     Toast.show(
       getLanguage(GLOBAL.language).Prompt.SMOOTH_NUMBER_NEED_BIGGER_THAN_2,
     )
+    return false
   }
 }
 

@@ -716,6 +716,7 @@ export default class MapView extends React.Component {
           )
         }
         await SMap.indoorNavigation(1)
+        this.FloorListView?.setVisible(true)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -728,6 +729,7 @@ export default class MapView extends React.Component {
             )
           }
           await SMap.outdoorNavigation(1)
+          this.FloorListView?.setVisible(false)
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)

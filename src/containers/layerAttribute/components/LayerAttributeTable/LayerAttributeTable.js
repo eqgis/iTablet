@@ -205,6 +205,8 @@ export default class LayerAttributeTable extends React.Component {
         })
     }
   }
+
+  // 隐藏系统属性时，横向滚动到最左边
   horizontalScrollToStart = () => {
     this.horizontalTable &&
       this.horizontalTable.scrollTo({ x: 0, animated: false })

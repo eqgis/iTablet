@@ -49,19 +49,19 @@ export default class SymbolList extends React.Component {
     }
     let event = ToolbarModule.getData().event
 
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE) {
+    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 3) {
       SCartography.setLineSymbolID(data.id, this.props.layerData.name)
     }
 
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT) {
+    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
       SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
     }
 
-    if (this.props.type === ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION) {
+    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
       SCartography.setFillSymbolID(data.id, this.props.layerData.name)
@@ -107,13 +107,13 @@ export default class SymbolList extends React.Component {
     }
     let symbolType = this.props.layerData.type
     switch (this.props.type) {
-      case ConstToolType.MAP_TOOL_TAGGING_STYLE_POINT:
+      case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
         symbolType = 1
         break
-      case ConstToolType.MAP_TOOL_TAGGING_STYLE_LINE:
+      case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
         symbolType = 3
         break
-      case ConstToolType.MAP_TOOL_TAGGING_STYLE_REGION:
+      case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
         symbolType = 5
         break
     }

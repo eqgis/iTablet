@@ -82,4 +82,38 @@ export default class SMessageServiceHTTP {
       .catch(() => false)
     return res
   }
+
+  /**
+   * 查看用户与群组的绑定关系
+   * @param {*} id
+   * @param {*} groupId
+   */
+  static async checkBinding(id, groupId) {
+    try {
+      const auth = Buffer.from(
+        `${GLOBAL.MSG_UserName}:${GLOBAL.MSG_Password}`,
+      ).toString('base64')
+      const url = `http://${GLOBAL.MSG_IP}:${
+        GLOBAL.MSG_HTTP_Port
+      }/api/bindings/%2F/e/message.group/q/Message_${id}`
+      encodeURI(url)
+      const extraData = {
+        headers: {
+          Authorization: `Basic ${auth}`,
+        },
+      }
+      let response = await fetch(url, extraData)
+      let list = await response.json()
+      let res = false
+      for (let i = 0; i < list.length; i++) {
+        if (groupId === list[i].routing_key) {
+          res = true
+          break
+        }
+      }
+      return res
+    } catch (error) {
+      return false
+    }
+  }
 }

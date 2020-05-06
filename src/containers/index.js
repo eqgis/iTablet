@@ -147,6 +147,8 @@ import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
 import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
+import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
+import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -192,6 +194,18 @@ export default function(appConfig) {
       },
       CoworkTabs: {
         screen: CoworkTabs,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      CoworkMember: {
+        screen: CoworkMember,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      CoworkMessage: {
+        screen: CoworkMessage,
         navigationOptions: {
           header: null,
         },

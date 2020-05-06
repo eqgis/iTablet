@@ -250,7 +250,11 @@ export default class Cell extends Component {
             )}
           />
         ) : (
-          <Text style={[styles.cellText, this.props.cellTextStyle]}>
+          <Text
+            style={[styles.cellText, this.props.cellTextStyle]}
+            numberOfLines={2}
+            ellipsizeMode={'tail'}
+          >
             {this.state.value + ''}
           </Text>
         )}

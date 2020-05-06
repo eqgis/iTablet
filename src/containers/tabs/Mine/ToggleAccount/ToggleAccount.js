@@ -10,6 +10,8 @@ import { getLanguage } from '../../../../language/index'
 import UserType from '../../../../constants/UserType'
 import { MineItem } from '../component'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
+import { FileTools } from '../../../../native'
+import { ConstPath } from '../../../../constants'
 
 export default class ToggleAccount extends Component {
   props: {
@@ -18,13 +20,12 @@ export default class ToggleAccount extends Component {
     setUser: () => {},
     deleteUser: () => {},
     device: Object,
+    openWorkspace: () => {},
+    closeWorkspace: () => {},
   }
 
   constructor(props) {
     super(props)
-    this.state = {
-      data: this.props.user.users,
-    }
   }
 
   toggleAccount = async item => {
@@ -84,15 +85,36 @@ export default class ToggleAccount extends Component {
         this.props.user.currentUser.userName === userName &&
         this.props.user.currentUser.password === password
       ) {
-        Toast.show(getLanguage(global.language).Profile.UNABLE_DELETE_SELF)
-        return
+        this.logout()
+      } else {
+        this.props.deleteUser(item)
       }
-      await this.props.deleteUser(item)
-      let users = this.props.user.users
-      this.setState({ data: users })
     } catch (error) {
       Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
     }
+  }
+
+  logout = async () => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      SOnlineService.logout()
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      SIPortalService.logout()
+    }
+    this.props.closeWorkspace(async () => {
+      SOnlineService.removeCookie()
+      let customPath = await FileTools.appendingHomeDirectory(
+        ConstPath.CustomerPath +
+          ConstPath.RelativeFilePath.Workspace[
+            global.language === 'CN' ? 'CN' : 'EN'
+          ],
+      )
+      this.props.deleteUser(this.props.user.currentUser)
+      this.props.setUser({
+        userName: 'Customer',
+        userType: UserType.PROBATION_USER,
+      })
+      this.props.openWorkspace({ server: customPath })
+    })
   }
 
   _renderItem = info => {
@@ -112,8 +134,8 @@ export default class ToggleAccount extends Component {
           onPressMore={event => {
             this.item = info.item
             this.ItemPopup.setVisible(true, {
-              x: event.nativeEvent.PageX,
-              y: event.nativeEvent.PageY,
+              x: event.nativeEvent.pageX,
+              y: event.nativeEvent.pageY,
             })
           }}
           showSeperator={false}
@@ -195,7 +217,7 @@ export default class ToggleAccount extends Component {
       >
         <FlatList
           style={{ flex: 1, backgroundColor: color.content_white }}
-          data={this.state.data}
+          data={this.props.user.users}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
           ListFooterComponent={this._renderAddAccount()}

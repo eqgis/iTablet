@@ -77,6 +77,17 @@ const Friends = {
   LOCATION: '位置',
   PICTURE: '画像',
   LOCATION_FAILED: '位置取得にに失敗',
+  // Cowork
+  SEND_COWORK_INVITE: 'マップコラボレーション招待状を送りしますか',
+  COWORK_INVITATION: 'マップコラボレーション招待',
+  COWORK_MEMBER: 'コラボメンバー',
+  COWORK_IS_END: 'マップコラボレーションは終了しました',
+  COWORK_JOIN_FAIL: '現在参加することができません',
+  COWORK_UPDATE: '更新',
+  COWORK_ADD: '追加',
+  COWORK_IGNORE: '無視',
+  NEW_MESSAGE: 'ニューメッセージ',
+  NEW_MESSAGE_SHORT: 'メッセージ',
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',
@@ -121,5 +132,6 @@ const Friends = {
   SYS_LOGIN_ON_OTHER_DEVICE: 'アカウントは他のデバイスでログインしました',
   SYS_MSG_REJ: '相手はあなたをまだ友達に追加していません',
   SYS_FRIEND_REQ_ACCEPT: '友達になりました。チャットを開始してください。',
+  SYS_INVITE_TO_COWORK: 'はあなたをマップコラボレーションに招待してます',
 }
 export { Friends }

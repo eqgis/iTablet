@@ -51,6 +51,7 @@ export default function() {
     size: 'large',
     image: getThemeAssets().functionBar.rightbar_mark,
     getData: MarkData.getData,
+    getMenuData: MarkData.getMenuData,
     actions: MarkAction,
   })
 }

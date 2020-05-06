@@ -8,6 +8,7 @@ import { ModelUtils } from '../../utils'
 export const ADD_CHAT = 'ADD_CHAT'
 export const EDIT_CHAT = 'EDIT_CHAT'
 export const SET_CONSUMER = 'SET_CONSUMER'
+export const SET_COWORK_NEW_MESSAGE = 'SET_COWORK_NEW_MESSAGE'
 // Actions
 // ---------------------------------.3-----------------
 export const addChat = (params = {}, cb = () => {}) => async dispatch => {
@@ -33,6 +34,18 @@ export const setConsumer = (params = {}, cb = () => {}) => async dispatch => {
   })
   cb && cb()
 }
+
+export const setCoworkNewMessage = (
+  params = {},
+  cb = () => {},
+) => async dispatch => {
+  await dispatch({
+    type: SET_COWORK_NEW_MESSAGE,
+    payload: params,
+  })
+  cb && cb()
+}
+
 /**
  * [
  *    {
@@ -65,7 +78,9 @@ export const setConsumer = (params = {}, cb = () => {}) => async dispatch => {
  * ]
  * @type {any}
  */
-const initialState = fromJS({})
+const initialState = fromJS({
+  coworkNewMessage: 0,
+})
 
 export default handleActions(
   {
@@ -145,6 +160,12 @@ export default handleActions(
       const allChat = state.toJS() || {}
       // console.log(allChat)
       allChat.consumer = payload
+      return fromJS(allChat)
+    },
+    [`${SET_COWORK_NEW_MESSAGE}`]: (state, { payload }) => {
+      const allChat = state.toJS() || {}
+      // console.log(allChat)
+      allChat.coworkNewMessage = payload
       return fromJS(allChat)
     },
     [REHYDRATE]: (state, { payload }) => {

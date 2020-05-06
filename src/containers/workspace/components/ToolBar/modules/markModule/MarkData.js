@@ -11,9 +11,9 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import { LayerUtils } from '../../../../../../utils'
 import MarkAction from './MarkAction'
-// import EditAction from '../editModule/EditAction'
 import constants from '../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
+import { colors, colorsWithNull, line, point, region, text } from './data'
 
 function getData(type, params) {
   let data = []
@@ -181,10 +181,546 @@ function getData(type, params) {
         },
       ]
       break
+    case ConstToolType.MAP_MARKS_TAGGING_SELECT:
+      buttons = [ToolbarBtnType.CANCEL]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => MarkAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => MarkAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
+          action: MarkAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: MarkAction.undo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: MarkAction.redo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.EDIT_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
+          action: MarkAction.editNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
+        },
+        {
+          key: constants.DELETE_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          action: MarkAction.deleteNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
+        },
+        {
+          key: constants.ADD_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
+          action: MarkAction.addNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
+        },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
+          action: MarkAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          // constants.DELETE,
+          size: 'large',
+          action: MarkAction.deleteLabel,
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          size: 'large',
+          action: MarkAction.undo,
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          size: 'large',
+          action: MarkAction.redo,
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+        {
+          key: constants.EDIT_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
+          size: 'large',
+          action: MarkAction.editNode,
+          image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
+        },
+        {
+          key: constants.DELETE_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          size: 'large',
+          action: MarkAction.deleteNode,
+          image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
+        },
+        {
+          key: constants.ADD_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
+          // constants.ADD_NODE,
+          size: 'large',
+          action: MarkAction.addNode,
+          image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
+        },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
+          action: MarkAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => MarkAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => MarkAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+        {
+          key: 'tagging_style',
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
+          action: MarkAction.selectLabelToStyle,
+          size: 'large',
+          image: require('../../../../../../assets/function/icon_function_style.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT_NOSTYLE:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => MarkAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => MarkAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE_NOSTYLE:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: MarkAction.undo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: MarkAction.redo,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+          selectMode: 'flash',
+        },
+        {
+          key: constants.EDIT_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
+          action: MarkAction.editNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
+        },
+        {
+          key: constants.DELETE_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          action: MarkAction.deleteNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
+        },
+        {
+          key: constants.ADD_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
+          action: MarkAction.addNode,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION_NOSTYLE:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          //constants.DELETE,
+          size: 'large',
+          action: MarkAction.deleteLabel,
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          size: 'large',
+          action: MarkAction.undo,
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          size: 'large',
+          action: MarkAction.redo,
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+        {
+          key: constants.EDIT_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
+          size: 'large',
+          action: MarkAction.editNode,
+          image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
+        },
+        {
+          key: constants.DELETE_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          size: 'large',
+          action: MarkAction.deleteNode,
+          image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
+        },
+        {
+          key: constants.ADD_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
+          //constants.ADD_NODE,
+          size: 'large',
+          action: MarkAction.addNode,
+          image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT_NOSTYLE:
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => MarkAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => MarkAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT:
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
+      data = [
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_bold.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_bold.png'),
+        },
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_italic.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_italic.png'),
+        },
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_underline.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_underline.png'),
+        },
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+        },
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+        },
+        {
+          key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
+          action: MarkAction.setTaggingTextFont,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/style_font_outline.png'),
+          selectedImage: require('../../../../../../assets/mapTools/style_font_outline.png'),
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
+      data = colors
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
+      data = colorsWithNull
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
   }
   return { data, buttons }
 }
-
+function getMenuData(type) {
+  const _params = ToolbarModule.getParams()
+  let data = []
+  switch (type) {
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
+      data = point(_params.language, _params.device.orientation)
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
+      data = line(_params.language, _params.device.orientation)
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
+      data = region(_params.language, _params.device.orientation)
+      break
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
+    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
+      data = text(_params.language, _params.device.orientation)
+      break
+  }
+  return data
+}
 export default {
   getData,
+  getMenuData,
 }

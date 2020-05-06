@@ -30,7 +30,7 @@ export default class JPushService {
       titleText = messageObj.user.groupName
       messageText = messageObj.user.name + ': ' + messageText
     }
-    if (messageText) {
+    if (messageText && typeof messageText === 'string') {
       messageText = messageText.replace(/[\r\n]/g, '')
     }
     let request = {
@@ -87,7 +87,7 @@ export default class JPushService {
       titleText = messageObj.user.groupName
       messageText = messageObj.user.name + ': ' + messageText
     }
-    if (messageText) {
+    if (messageText && typeof messageText === 'string') {
       messageText = messageText.replace(/[\r\n]/g, '')
     }
     let notification = {

@@ -642,6 +642,7 @@ const Map_Setting = {
   PITCH_GESTURE: '手势俯仰',
   THEME_LEGEND: '专题图图例',
   COLUMN_NAV_BAR: '横屏时纵向显示导航栏',
+  REAL_TIME_SYNC: '实时同步',
 
   // 效果设置
   EFFECT_SETTINGS: '效果设置',

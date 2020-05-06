@@ -16,8 +16,13 @@ import MsgConstant from './MsgConstant'
 import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
 import { openWorkspace, closeWorkspace } from '../../../redux/models/map'
-import { setUser } from '../../../redux/models/user'
-import { addChat, editChat, setConsumer } from '../../../redux/models/chat'
+import { setUser, deleteUser } from '../../../redux/models/user'
+import {
+  addChat,
+  editChat,
+  setConsumer,
+  setCoworkNewMessage,
+} from '../../../redux/models/chat'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -29,12 +34,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   setUser,
+  deleteUser,
   addChat,
   // addUnreadMessage,
   editChat,
   setConsumer,
   openWorkspace,
   closeWorkspace,
+  setCoworkNewMessage,
 }
 export default connect(
   mapStateToProps,

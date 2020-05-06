@@ -631,6 +631,7 @@ const Map_Setting = {
   PITCH_GESTURE: 'ジェスチャー俯仰',
   THEME_LEGEND: '主題図凡例',
   COLUMN_NAV_BAR: '横持ち時ナビィバーを縦表示にする',
+  REAL_TIME_SYNC: 'リアルタイム同期',
 
   // 効果設定
   EFFECT_SETTINGS: '効果設定',

@@ -103,6 +103,8 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import { CustomInputDialog } from '../../../../components/Dialog'
+import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
+import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 
 const markerTag = 118081
 
@@ -1652,6 +1654,22 @@ export default class MapView extends React.Component {
           bNaviCreate = true
         }
         this.setLoading(false)
+        if (global.coworkMode && CoworkInfo.coworkId === '') {
+          global.SimpleDialog.set({
+            text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
+            confirmAction: () => {
+              try {
+                let friend = global.getFriend()
+                let talkId = friend.curChat.targetId
+                let mapName = this.props.map.currentMap.name
+                friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+              } catch (error) {
+                Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+              }
+            },
+          })
+          // global.SimpleDialog.setVisible(true)
+        }
       } catch (e) {
         if (!bWorkspcaOpen) {
           // Toast.show("workspace !")
@@ -2478,6 +2496,18 @@ export default class MapView extends React.Component {
             onPress={info.action}
           />,
         )
+    }
+    if (global.coworkMode) {
+      buttons.push(
+        <MTBtn
+          key={'CoworkMember'}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          image={require('../../../../assets/home/Frenchgrey/icon_else_selected.png')}
+          onPress={async () => {
+            NavigationService.navigate('CoworkMember')
+          }}
+        />,
+      )
     }
     return (
       <View
@@ -3348,6 +3378,7 @@ export default class MapView extends React.Component {
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
         />
+        {global.coworkMode && <NewMessageIcon />}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

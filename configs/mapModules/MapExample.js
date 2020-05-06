@@ -1,9 +1,7 @@
 import { ConstOnline } from '../../src/constants'
-import { getThemeAssets, getPublicAssets } from '../../src/assets'
 import { Module } from '../../src/class'
 import {
   startModule,
-  addModule,
   markModule,
   toolModule,
   shareModule,

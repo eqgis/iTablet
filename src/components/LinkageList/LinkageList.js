@@ -86,7 +86,9 @@ export default class LinkageList extends React.Component {
   }
 
   getSelectData = () => {
-    return this.state.selectedData
+    let newSelectData = JSON.parse(JSON.stringify(this.state.selectedData))
+    return newSelectData
+    // return this.state.selectedData
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -261,40 +263,78 @@ export default class LinkageList extends React.Component {
           }}
           checked={isSelect}
           onChange={value => {
-            item.isSelect = value
-            let data = this.state.selectedData
-            if (value) {
-              let datasourceIndex = -1
-              for (let i = 0; i < data.length; i++) {
-                if (item.datasourceName === data[i].datasourceName) {
-                  data[i].data.push(index)
-                  datasourceIndex = i
-                  break
-                }
-              }
-              if (datasourceIndex == -1) {
-                let dataItem = {}
-                dataItem.datasourceName = item.datasourceName
-                let datasetArray = []
-                datasetArray.splice()
-                datasetArray.push(index)
-                dataItem.data = datasetArray
-                data.push(dataItem)
-              }
-            } else {
-              for (let i = 0; i < data.length; i++) {
-                if (item.datasourceName === data[i].datasourceName) {
-                  let datasetIndex = this.indexOf(data[i].data, index)
-                  if (datasetIndex != -1) {
-                    data[i].data.splice(datasetIndex, 1)
+            try {
+              item.isSelect = value
+              let data = this.state.selectedData
+              if (value) {
+                let datasourceIndex = -1
+                for (let i = 0; i < data.length; i++) {
+                  if (item.datasourceName === data[i].datasourceName) {
+                    data[i].data.push(index)
+                    datasourceIndex = i
+                    break
                   }
-                  break
+                }
+                if (datasourceIndex == -1) {
+                  let dataItem = {}
+                  dataItem.datasourceName = item.datasourceName
+                  let datasetArray = []
+                  datasetArray.splice()
+                  datasetArray.push(index)
+                  dataItem.data = datasetArray
+                  data.push(dataItem)
+                }
+              } else {
+                for (let i = 0; i < data.length; i++) {
+                  if (item.datasourceName === data[i].datasourceName) {
+                    let datasetIndex = this.indexOf(data[i].data, index)
+                    if (datasetIndex != -1) {
+                      data[i].data.splice(datasetIndex, 1)
+                    }
+                    break
+                  }
                 }
               }
+              this.setState({
+                selectedData: data,
+              })
+            } catch (e) {
+              return
             }
-            this.setState({
-              selectedData: data,
-            })
+            //   item.isSelect = value
+            //   let data = this.state.selectedData
+            //   if (value) {
+            //     let datasourceIndex = -1
+            //     for (let i = 0; i < data.length; i++) {
+            //       if (item.datasourceName === data[i].datasourceName) {
+            //         data[i].data.push(index)
+            //         datasourceIndex = i
+            //         break
+            //       }
+            //     }
+            //     if (datasourceIndex == -1) {
+            //       let dataItem = {}
+            //       dataItem.datasourceName = item.datasourceName
+            //       let datasetArray = []
+            //       datasetArray.splice()
+            //       datasetArray.push(index)
+            //       dataItem.data = datasetArray
+            //       data.push(dataItem)
+            //     }
+            //   } else {
+            //     for (let i = 0; i < data.length; i++) {
+            //       if (item.datasourceName === data[i].datasourceName) {
+            //         let datasetIndex = this.indexOf(data[i].data, index)
+            //         if (datasetIndex != -1) {
+            //           data[i].data.splice(datasetIndex, 1)
+            //         }
+            //         break
+            //       }
+            //     }
+            //   }
+            //   this.setState({
+            //     selectedData: data,
+            //   })
           }}
         />
         <Text

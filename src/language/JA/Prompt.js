@@ -363,8 +363,7 @@ const Prompt = {
     '方向を変える必要があるラインを選択してください',
   EDIT_SUCCESS: '操作は成功しました',
   EDIT_FAILED: '操作に失敗しました',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
-    '平滑化因数は2以上の整数である必要があります',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'スムージング係数は2~10の整数である',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',
@@ -382,6 +381,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: '属性の追加に成功しました',
   ATTRIBUTE_ADD_FAILED: '属性の追加に失敗しました',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'ポイントデータセットのみ作成できます',
+  HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
 }
 
 export { Prompt }

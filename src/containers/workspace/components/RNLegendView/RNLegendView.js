@@ -4,7 +4,7 @@
  * https://github.com/AsortKeven
  */
 import * as React from 'react'
-import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -26,8 +26,14 @@ export default class RNLegendView extends React.Component {
       title: getLanguage(this.props.language).Map_Settings.THEME_LEGEND,
       width: 600,
       height: 420,
-      topLeft: { left: 0, top: screen.getHeaderHeight() },
-      topRight: { right: 0, top: screen.getHeaderHeight() },
+      topLeft: {
+        left: 0,
+        top: screen.getHeaderHeight(props.device.orientation),
+      },
+      topRight: {
+        right: 0,
+        top: screen.getHeaderHeight(props.device.orientation),
+      },
       leftBottom: { left: 0, bottom: FOOTER_HEIGHT },
       rightBottom: { right: 0, bottom: FOOTER_HEIGHT },
       legendSource: '',
@@ -40,47 +46,46 @@ export default class RNLegendView extends React.Component {
     this.INTERVAL = 300
   }
 
-  setMapLegend = ({ backgroundColor }) => {
-    let settings = this.props.legendSettings
-    settings[GLOBAL.Type].backgroundColor = backgroundColor
-    this.props.setMapLegend && this.props.setMapLegend(settings)
-  }
+  // setMapLegend = ({ backgroundColor }) => {
+  //   let settings = this.props.legendSettings
+  //   settings[GLOBAL.Type].backgroundColor = backgroundColor
+  //   this.props.setMapLegend && this.props.setMapLegend(settings)
+  // }
 
   UNSAFE_componentWillMount() {
     if (this.state.legendSource === '') {
       this.getLegendData()
     }
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   let returnFlag = false
-  //   if (this.props.device.orientation !== nextProps.device.orientation) {
-  //     let flatListKey = this.state.flatListKey + 1
-  //     this.setState({
-  //       columns: this.props.legendSettings.column,
-  //       flatListKey,
-  //     })
-  //     returnFlag = true
-  //   }
-  //   if (
-  //     nextState.legendSource !== this.state.legendSource ||
-  //     JSON.stringify(nextProps) !== JSON.stringify(this.props)
-  //   ) {
-  //     returnFlag = true
-  //   }
-  //   return returnFlag
-  // }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.legendSettings[GLOBAL.Type].column !==
-      this.props.legendSettings[GLOBAL.Type].column
+  shouldComponentUpdate(nextProps, nextState) {
+    let returnFlag = false
+    //方向改变 setState 不更新组件， 组件更新放到下一次调用SCU时判断state变化
+    if (this.props.device.orientation !== nextProps.device.orientation) {
+      let top = screen.getHeaderHeight(nextProps.device.orientation)
+      let bottom = FOOTER_HEIGHT
+      this.setState({
+        topLeft: { left: 0, top },
+        topRight: { right: 0, top },
+        leftBottom: { left: 0, bottom },
+        rightBottom: { right: 0, bottom },
+      })
+      returnFlag = false
+    } else if (
+      nextState.legendSource !== this.state.legendSource ||
+      JSON.stringify(nextProps.legendSettings[GLOBAL.Type]) !==
+        JSON.stringify(this.props.legendSettings[GLOBAL.Type]) ||
+      (JSON.stringify(this.state) !== JSON.stringify(nextState) &&
+        this.state.flatListKey === nextState.flatListKey)
     ) {
       let flatListKey = this.state.flatListKey + 1
       this.setState({
         flatListKey,
       })
+      returnFlag = true
     }
+    return returnFlag
   }
+
   componentWillUnmount() {
     SMap.removeLegendListener()
   }
@@ -182,7 +187,8 @@ export default class RNLegendView extends React.Component {
         this.props.legendSettings[GLOBAL.Type].fontPercent) /
       100
     return (
-      <TouchableOpacity
+      <View
+        pointerEvents={'box-none'}
         style={{
           width:
             (1 / this.props.legendSettings[GLOBAL.Type].column) * 100 + '%',
@@ -233,7 +239,7 @@ export default class RNLegendView extends React.Component {
         >
           {title.toLowerCase()}
         </Text>
-      </TouchableOpacity>
+      </View>
     )
   }
 
@@ -294,7 +300,6 @@ export default class RNLegendView extends React.Component {
             paddingRight: scaleSize(5),
             backgroundColor: this.props.legendSettings[GLOBAL.Type]
               .backgroundColor,
-            zIndex: 1,
             ...this.state[
               this.props.legendSettings[GLOBAL.Type].legendPosition
             ],
@@ -315,6 +320,7 @@ export default class RNLegendView extends React.Component {
             style={{
               flex: 1,
             }}
+            pointerEvents={'box-none'}
             renderItem={this.renderLegendItem}
             data={this.state.legendSource}
             keyExtractor={(item, index) => item.title + index}

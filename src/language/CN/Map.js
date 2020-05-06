@@ -219,6 +219,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: '点密度图',
   THEME_GRADUATED_SYMBOLS_MAP: '等级符号图',
   THEME_HEATMAP: '热力图',
+  THEME_CRID_UNIQUE: '栅格单值专题图',
+  THEME_CRID_RANGE: '栅格分段专题图',
 
   THEME_ALL_SELECTED: '全部选中',
   THEME_ALL_CANCEL: '全部取消',
@@ -591,6 +593,15 @@ const Map_Layer = {
   BASEMAP: '我的底图',
   BASEMAP_SWITH: '切换底图',
   MY_TERRAIN: '我的地形',
+
+  SCALE_TO_CURRENT_LAYER: '缩放至当前图层',
+  ADD_A_TERRAIN_LAYER: '添加地形图层',
+  ADD_A_IMAGE_LAYER: '添加影像图层',
+  REMOVE_THE_CURRENT_LAYER: '移除当前图层',
+  ONLINE_BASE_MAP: '在线底图',
+  ADD_LAYER_URL: '添加在线图层地址',
+  TERRAIN: '地形',
+  IMAGE: '影像',
 }
 
 // 属性

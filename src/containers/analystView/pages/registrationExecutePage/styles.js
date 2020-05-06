@@ -49,7 +49,7 @@ export default StyleSheet.create({
 
   leftWrap: {
     flex: 1,
-    height: scaleSize(24),
+    height: scaleSize(26),
     color: color.black,
     justifyContent: 'center',
     textAlign: 'center',
@@ -84,7 +84,7 @@ export default StyleSheet.create({
   },
   textOriginalStyle: {
     flex: 1,
-    height: scaleSize(24),
+    height: scaleSize(26),
     color: color.black,
     justifyContent: 'center',
     textAlign: 'center',
@@ -94,12 +94,17 @@ export default StyleSheet.create({
   },
   textOriginalStyle2: {
     flex: 1,
-    height: scaleSize(48),
+    height: scaleSize(52),
     color: color.black,
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: size.fontSize.fontSizeSm,
     marginLeft: scaleSize(15),
     backgroundColor: color.content_white,
+  },
+  selectionImg: {
+    width: scaleSize(20),
+    height: scaleSize(8),
+    marginRight: scaleSize(20),
   },
 })

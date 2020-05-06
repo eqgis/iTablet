@@ -99,7 +99,7 @@ function showMenuBox(type, selectKey, params = {}) {
 
 function tableAction(item = {}) {
   const _params = ToolbarModule.getParams()
-  const legendData = _params.mapLegend
+  const legendData = JSON.parse(JSON.stringify(_params.mapLegend))
   legendData[GLOBAL.Type].backgroundColor = item.background
   _params.setMapLegend && _params.setMapLegend(legendData)
 }
@@ -135,7 +135,7 @@ function cancelSelect() {
 }
 function changePosition(params) {
   const _params = ToolbarModule.getParams()
-  const legendData = { ..._params.mapLegend }
+  const legendData = JSON.parse(JSON.stringify(_params.mapLegend))
   legendData[GLOBAL.Type].legendPosition =
     params[0].selectedItem && params[0].selectedItem.value
   _params.setMapLegend(legendData)

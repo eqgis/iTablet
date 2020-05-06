@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Text,
-  Platform,
+  // Platform,
 } from 'react-native'
 import { TableList } from '../../../../../../../components'
 import { color } from '../../../../../../../styles'
@@ -261,7 +261,7 @@ export default class AnalysisMenuListView extends React.Component {
           ref={ref => (this.scrollView = ref)}
         >
           {this.renderAnalysView()}
-          {Platform.OS === 'ios' ? this.renderView() : null}
+          {/* {Platform.OS === 'ios' ? this.renderView() : null} */}
         </ScrollView>
       </View>
     )

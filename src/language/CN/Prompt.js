@@ -338,7 +338,7 @@ const Prompt = {
   SELECT_CHANGE_DIRECTION_LINE: '请选择需要变方向的线',
   EDIT_SUCCESS: '操作成功',
   EDIT_FAILED: '操作失败',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: '平滑系数应为不小于2的整数',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: '平滑系数应为2~10的整数',
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',
@@ -356,6 +356,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: '属性添加成功',
   ATTRIBUTE_ADD_FAILED: '属性添加失败',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: '缺省值为空',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
+  HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
 }
 
 export { Prompt }

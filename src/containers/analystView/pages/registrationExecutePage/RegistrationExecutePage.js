@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { Container, TextBtn, CheckBox } from '../../../../components'
+import { Container, TextBtn, CheckBox, PopView } from '../../../../components'
 
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { color, size } from '../../../../styles'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { SMap, SRectifyView } from 'imobile_for_reactnative'
+import SampleModeView from '../../components/SampleModeView'
+import { getPublicAssets } from '../../../../assets'
+import NavigationService from '../../../NavigationService'
 
 export default class RegistrationExecutePage extends Component {
   props: {
@@ -15,10 +18,12 @@ export default class RegistrationExecutePage extends Component {
 
   constructor(props) {
     super(props)
-
+    this.datasources = []
+    this.currentDatasetIndex = -1
     this.tempDatasets = []
     this.state = {
       datasets: [],
+      datasourcesInfo: [],
     }
   }
 
@@ -37,12 +42,15 @@ export default class RegistrationExecutePage extends Component {
         for (let i = 0; i < data.length; i++) {
           let datasource = data[i]
           datasource.title = datasource.alias
+          datasource.datasourceName = datasource.alias
           let datasetsData = datasource.data
           for (let j = 0; j < datasetsData.length; j++) {
             let dataset = datasetsData[j]
             dataset.title = dataset.datasetName
             dataset.parentTitle = dataset.datasourceName
             dataset.isSelect = false
+            dataset.outputDatasetName = dataset.datasetName
+            dataset.outputDatasourceName = dataset.datasourceName
           }
         }
 
@@ -84,6 +92,7 @@ export default class RegistrationExecutePage extends Component {
         this.tempDatasets = datasetArr
         this.setState({
           datasets: datasetArr,
+          datasourcesInfo: data,
         })
         GLOBAL.Loading.setLoading(false)
       } catch (e) {
@@ -102,9 +111,29 @@ export default class RegistrationExecutePage extends Component {
       true,
       getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
     )
+    let arithmeticMode = GLOBAL.RegistrationArithmeticMode
     let datasets = this.state.datasets
     let count = 0
     for (let i = 0; i < datasets.length; i++) {
+      if (datasets[i].sampleModeData && datasets[i].sampleModeData.checked) {
+        datasets[i].isResmaple = true
+
+        if (datasets[i].sampleModeData.resmapleMode) {
+          datasets[i].resmapleMode = datasets[i].sampleModeData.resmapleMode
+        }
+        if (datasets[i].sampleModeData.cellSize) {
+          datasets[i].cellSize = datasets[i].sampleModeData.cellSize
+        }
+      } else {
+        datasets[i].isResmaple = false
+      }
+      if (datasets[i].isSelect) {
+        datasets[i].saveAs = 1
+      } else {
+        datasets[i].saveAs = 0
+      }
+      datasets[i].transformationMode = arithmeticMode
+
       await SRectifyView.rectifyRasterDirectByDataset(datasets[i])
       count++
     }
@@ -168,9 +197,38 @@ export default class RegistrationExecutePage extends Component {
                 .REGISTRATION_RESULT_DATASOURCE
             }
           </Text>
+          <Text style={styles.textOriginalStyle}>
+            {
+              getLanguage(global.language).Analyst_Labels
+                .REGISTRATION_SAMPLE_MODE
+            }
+          </Text>
         </View>
       </View>
     )
+  }
+
+  isGridOrImageDatasetType(datasetType) {
+    return datasetType === 81 || datasetType === 83
+  }
+
+  editDatasetName(dataset, index) {
+    NavigationService.navigate('InputPage', {
+      headerTitle: getLanguage(global.language).Analyst_Labels
+        .REGISTRATION_RESULT_DATASET,
+      value: dataset.outputDatasetName,
+      placeholder: getLanguage(global.language).Analyst_Labels
+        .REGISTRATION_RESULT_DATASET,
+      type: 'name',
+      cb: async value => {
+        let _datasets = this.state.datasets
+        _datasets[index].outputDatasetName = value
+        this.setState({
+          datasets: _datasets,
+        })
+        NavigationService.goBack()
+      },
+    })
   }
 
   renderItem(item, index) {
@@ -212,12 +270,12 @@ export default class RegistrationExecutePage extends Component {
                   datasets: tempData,
                 })
               } else {
-                tempData[index].datasetName = this.tempDatasets[
+                tempData[index].outputDatasetName = this.tempDatasets[
                   index
                 ].datasetName
-                tempData[index].datasourceName = this.tempDatasets[
+                tempData[index].outputDatasourceName = this.tempDatasets[
                   index
-                ].datasourceName
+                ].outputDatasourceName
                 this.setState({
                   datasets: tempData,
                 })
@@ -225,7 +283,12 @@ export default class RegistrationExecutePage extends Component {
             }}
           />
 
-          <TouchableOpacity style={styles.leftWrap} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.leftWrap}
+            onPress={() => {
+              this.editDatasetName(item, index)
+            }}
+          >
             <Text
               style={{
                 flex: 1,
@@ -236,26 +299,192 @@ export default class RegistrationExecutePage extends Component {
               }}
               numberOfLines={1}
             >
-              {item.datasetName}
+              {item.outputDatasetName}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.leftWrap} onPress={() => {}}>
-            <Text
+          <TouchableOpacity
+            style={styles.leftWrap}
+            onPress={() => {
+              this.currentDatasetIndex = index
+              this.DatasourcePopView.setVisible(true)
+            }}
+          >
+            <View
               style={{
-                flex: 1,
-                width: '100%',
-                textAlign: 'center',
-                fontSize: size.fontSize.fontSizeSm,
-                color: item.isSelect ? color.fontColorBlack : color.gray,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-              numberOfLines={1}
             >
-              {item.datasourceName}
-            </Text>
+              <Text
+                style={{
+                  fontSize: size.fontSize.fontSizeSm,
+                  color: item.isSelect ? color.fontColorBlack : color.gray,
+                }}
+                numberOfLines={1}
+              >
+                {item.outputDatasourceName}
+              </Text>
+              <Image
+                source={getPublicAssets().mapTools.icon_arrow_down}
+                style={styles.selectionImg}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.leftWrap}
+            onPress={() => {
+              if (!this.isGridOrImageDatasetType(item.datasetType)) {
+                return
+              }
+              if (!item.sampleModeData) {
+                let _sampleModeData = {}
+                _sampleModeData.checked = false
+                _sampleModeData.index = index
+                _sampleModeData.cellSize = item.cellSize
+                item.sampleModeData = _sampleModeData
+              }
+              this.SampleModeSelectView.setData(item.sampleModeData)
+              this.SampleModeSelectView.setVisable(true)
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: size.fontSize.fontSizeSm,
+                  color: this.isGridOrImageDatasetType(item.datasetType)
+                    ? color.fontColorBlack
+                    : color.gray,
+                }}
+                numberOfLines={1}
+              >
+                {item.sampleModeData && item.sampleModeData.checked
+                  ? item.sampleModeData.sampleModeTitle
+                  : getLanguage(global.language).Analyst_Labels
+                    .REGISTRATION_SAMPLE_MODE_NO}
+              </Text>
+              <Image
+                source={getPublicAssets().mapTools.icon_arrow_down}
+                style={styles.selectionImg}
+              />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
+    )
+  }
+
+  renderSampleModeSelectView() {
+    return (
+      <SampleModeView
+        ref={ref => (this.SampleModeSelectView = ref)}
+        getData={selectData => this.getSampleModeData(selectData)}
+      />
+    )
+  }
+  getSampleModeData = selectData => {
+    let _sampleModeData = selectData
+    let _datasets = this.state.datasets
+    _datasets[selectData.index].sampleModeData = _sampleModeData
+    this.setState({
+      datasets: _datasets,
+    })
+  }
+
+  _renderDatasourcePagePopup = () => {
+    let rows = []
+    let _datasourcesInfo = this.state.datasourcesInfo
+    for (let i = 0; i < _datasourcesInfo.length; i++) {
+      rows.push(this.renderDatasourceItem(_datasourcesInfo[i]))
+    }
+    return (
+      <PopView ref={ref => (this.DatasourcePopView = ref)}>
+        <View
+          style={{
+            width: '100%',
+            height: scaleSize(500),
+            backgroundColor: color.contentColorWhite,
+          }}
+        >
+          <ScrollView
+            style={{
+              backgroundColor: color.contentColorWhite,
+              flex: 1,
+              // height: '100%',
+              height: scaleSize(500),
+            }}
+            ref={ref => (this.scrollView = ref)}
+          >
+            {/* img = require('../../assets/Navigation/indoor_datasource.png') */}
+            <View
+              style={{
+                width: '100%',
+                backgroundColor: color.contentColorWhite,
+              }}
+            >
+              {rows}
+            </View>
+          </ScrollView>
+        </View>
+      </PopView>
+    )
+  }
+
+  renderDatasourceItem(datasources) {
+    return (
+      <TouchableOpacity
+        style={{
+          height: scaleSize(60),
+          justifyContent: 'center',
+        }}
+        onPress={() => {
+          let _datasets = this.state.datasets
+          _datasets[this.currentDatasetIndex].outputDatasourceName =
+            datasources.datasourceName
+          this.setState({
+            datasets: _datasets,
+          })
+          this.DatasourcePopView.setVisible(false)
+        }}
+      >
+        <View
+          style={{
+            // width: scaleSize(30),
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            source={require('../../../../assets/Navigation/indoor_datasource.png')}
+            style={{
+              height: scaleSize(35),
+              width: scaleSize(35),
+              marginLeft: scaleSize(30),
+            }}
+          />
+          <Text
+            style={{
+              width: '100%',
+              height: scaleSize(28),
+              marginLeft: scaleSize(30),
+              fontSize: size.fontSize.fontSizeSm,
+              color: color.fontColorBlack,
+            }}
+            numberOfLines={1}
+          >
+            {datasources.datasourceName}
+          </Text>
+        </View>
+      </TouchableOpacity>
     )
   }
 
@@ -273,7 +502,6 @@ export default class RegistrationExecutePage extends Component {
             <TextBtn
               btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
-              // btnClick={this.confirm}
               btnClick={() => {
                 this.confirm()
               }}
@@ -284,6 +512,8 @@ export default class RegistrationExecutePage extends Component {
         {this.renderListHeader()}
         <View style={styles.lineStyle} />
         {this.renderRows()}
+        {this.renderSampleModeSelectView()}
+        {this._renderDatasourcePagePopup()}
       </Container>
     )
   }

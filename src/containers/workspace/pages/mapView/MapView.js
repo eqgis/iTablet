@@ -63,7 +63,7 @@ import {
   // SearchBar,
   Progress,
   BubblePane,
-  AudioTopDialog,
+  AudioDialog,
 } from '../../../../components'
 import {
   Toast,
@@ -718,6 +718,7 @@ export default class MapView extends React.Component {
           )
         }
         await SMap.indoorNavigation(1)
+        this.FloorListView?.setVisible(true)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -730,6 +731,7 @@ export default class MapView extends React.Component {
             )
           }
           await SMap.outdoorNavigation(1)
+          this.FloorListView?.setVisible(false)
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -2437,7 +2439,7 @@ export default class MapView extends React.Component {
               key: MapHeaderButton.Audio,
               image: getPublicAssets().common.icon_audio,
               action: () => {
-                SSpeechRecognizer.start()
+                // SSpeechRecognizer.start()
                 this.AudioDialog.setVisible(true)
               },
             }
@@ -3190,6 +3192,13 @@ export default class MapView extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
+        {this.state.showMap && (
+          <SMMapView
+            ref={ref => (GLOBAL.mapView = ref)}
+            style={styles.map}
+            onGetInstance={this._onGetInstance}
+          />
+        )}
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3200,13 +3209,6 @@ export default class MapView extends React.Component {
             device={this.props.device}
             language={this.props.language}
             ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
-        {this.state.showMap && (
-          <SMMapView
-            ref={ref => (GLOBAL.mapView = ref)}
-            style={styles.map}
-            onGetInstance={this._onGetInstance}
           />
         )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
@@ -3370,13 +3372,11 @@ export default class MapView extends React.Component {
         {/*    {this.renderNetworkSelectList()}*/}
         {/*  </PopView>*/}
         {/*)}*/}
-        <AudioTopDialog
+        <AudioDialog
           ref={ref => (this.AudioDialog = ref)}
-          startRecording={() => SSpeechRecognizer.start()}
-          content={this.state.speechContent}
-          recording={this.state.recording}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
+          language={this.props.language}
         />
         {global.coworkMode && <NewMessageIcon />}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (

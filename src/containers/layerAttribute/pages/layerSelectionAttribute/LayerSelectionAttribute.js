@@ -634,6 +634,11 @@ export default class LayerSelectionAttribute extends React.Component {
     }
   }
 
+  // 隐藏系统属性时，横向滚动到最左边
+  horizontalScrollToStart = () => {
+    this.table && this.table.horizontalScrollToStart({ x: 0, animated: false })
+  }
+
   //显示详情和删除的弹框
   _showPopover = (pressView, index, fieldInfo) => {
     let items = []

@@ -356,7 +356,7 @@ const Prompt = {
   EDIT_SUCCESS: 'Operasyon başarılı',
   EDIT_FAILED: 'İşlem başarısız oldu',
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
-    "Düzeltme faktörü 2'den az olmayan bir tamsayı olmalıdır",
+    'Düzeltme faktörü 2 ila 10 arasında bir tam sayı olmalıdır',
   // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
@@ -375,6 +375,9 @@ const Prompt = {
   ATTRIBUTE_ADD_SUCCESS: 'Öznitelik Ekleme Başarılı',
   ATTRIBUTE_ADD_FAILED: 'Öznitelik Ekleme Başarısız',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Varsayılan değer boş',
+
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
+  HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 }
 
 export { Prompt }

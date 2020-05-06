@@ -11,6 +11,7 @@ import {
   styleModule,
   aiModule,
 } from '../../containers/workspace/components/ToolBar/modules'
+import Orientation from 'react-native-orientation'
 
 export default class MapARConfig extends Module {
   constructor() {
@@ -58,6 +59,7 @@ export default class MapARConfig extends Module {
           )
           return false
         }
+        Orientation.lockToPortrait()
         return isAvailable
       },
     })

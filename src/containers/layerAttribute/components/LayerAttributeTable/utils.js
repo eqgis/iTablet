@@ -121,8 +121,8 @@ function getText(value, defaultValue) {
     _value =
       defaultValue !== undefined && defaultValue !== '' ? defaultValue : ''
   }
-  if (_value.length > 5) {
-    _value = _value.substr(0, 5)
+  if (_value.length > 255) {
+    _value = _value.substr(0, 255)
   }
   return _value
 }

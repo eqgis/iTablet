@@ -210,6 +210,7 @@ class AppRoot extends Component {
     this.setIsPad()
     GLOBAL.isDownload = true //目标分类默认文件下载判断
     GLOBAL.getDevice = this.getDevice
+    GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
   }
 
   getDevice = () => {
@@ -337,7 +338,7 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    if (Platform.OS === 'android') {
+    // if (Platform.OS === 'android') {
       // 防止初始化时，nav为空
       let nav = this.props.nav && this.props.nav.routes
         ? this.props.nav
@@ -354,7 +355,7 @@ class AppRoot extends Component {
       } else {
         return false
       }
-    }
+    // }
   }
 
   onInvalidModule = () => {

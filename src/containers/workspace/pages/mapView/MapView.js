@@ -63,7 +63,7 @@ import {
   // SearchBar,
   Progress,
   BubblePane,
-  AudioTopDialog,
+  AudioDialog,
 } from '../../../../components'
 import {
   Toast,
@@ -2421,7 +2421,7 @@ export default class MapView extends React.Component {
               key: MapHeaderButton.Audio,
               image: getPublicAssets().common.icon_audio,
               action: () => {
-                SSpeechRecognizer.start()
+                // SSpeechRecognizer.start()
                 this.AudioDialog.setVisible(true)
               },
             }
@@ -3342,13 +3342,11 @@ export default class MapView extends React.Component {
         {/*    {this.renderNetworkSelectList()}*/}
         {/*  </PopView>*/}
         {/*)}*/}
-        <AudioTopDialog
+        <AudioDialog
           ref={ref => (this.AudioDialog = ref)}
-          startRecording={() => SSpeechRecognizer.start()}
-          content={this.state.speechContent}
-          recording={this.state.recording}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
+          language={this.props.language}
         />
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog

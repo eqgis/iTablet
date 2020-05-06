@@ -4,6 +4,10 @@ const keywords = {
   OSM: 'OSM',
   TD: '天地图',
   THEME: '专题',
+  LOCATION: '定位,locate,location',
+  CLOSE: '关闭,close',
+  ZOOM_IN: '放大,zoom in',
+  ZOOM_OUT: '缩小,zoom out',
 }
 
 const chineseNumber = {

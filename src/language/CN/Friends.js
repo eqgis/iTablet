@@ -75,6 +75,17 @@ const Friends = {
   LOCATION: '位置',
   PICTURE: '图片',
   LOCATION_FAILED: '获取位置失败',
+  // Cowork
+  SEND_COWORK_INVITE: '是否发送协作邀请？',
+  COWORK_INVITATION: '协作邀请',
+  COWORK_MEMBER: '协作人员',
+  COWORK_IS_END: '协作已结束',
+  COWORK_JOIN_FAIL: '暂时无法加入',
+  COWORK_UPDATE: '更新',
+  COWORK_ADD: '追加',
+  COWORK_IGNORE: '忽略',
+  NEW_MESSAGE: '新消息',
+  NEW_MESSAGE_SHORT: '新消息',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',
@@ -118,5 +129,6 @@ const Friends = {
   SYS_LOGIN_ON_OTHER_DEVICE: '您的账号已在别的设备上登录',
   SYS_MSG_REJ: '对方还未添加您为好友',
   SYS_FRIEND_REQ_ACCEPT: '你们已经是朋友了，开始聊天吧',
+  SYS_INVITE_TO_COWORK: '邀您参加协作',
 }
 export { Friends }

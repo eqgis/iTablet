@@ -77,6 +77,17 @@ const Friends = {
   LOCATION: 'Lacation',
   PICTURE: 'Picture',
   LOCATION_FAILED: 'Failed to locate',
+  // Cowork
+  SEND_COWORK_INVITE: 'Do you want to send the cowork invitation?',
+  COWORK_INVITATION: 'Cowork Invitation',
+  COWORK_MEMBER: 'Cowork Members',
+  COWORK_IS_END: 'The cowork has ended',
+  COWORK_JOIN_FAIL: 'Unable to join this cowork now',
+  COWORK_UPDATE: 'Update',
+  COWORK_ADD: 'Add',
+  COWORK_IGNORE: 'Ignore',
+  NEW_MESSAGE: 'New Message',
+  NEW_MESSAGE_SHORT: 'New',
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',
@@ -121,5 +132,6 @@ const Friends = {
   SYS_LOGIN_ON_OTHER_DEVICE: 'Your account is logged in on other device',
   SYS_MSG_REJ: "The opposite haven't added you as friend yet",
   SYS_FRIEND_REQ_ACCEPT: "You're friends now, enjoy taking!",
+  SYS_INVITE_TO_COWORK: ' invites you to join the cowork',
 }
 export { Friends }

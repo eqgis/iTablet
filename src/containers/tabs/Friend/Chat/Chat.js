@@ -46,11 +46,12 @@ if (Platform.OS === 'ios') {
 class Chat extends React.Component {
   props: {
     navigation: Object,
-    user: Object,
+    appConfig: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     closeWorkspace: () => {},
     getLayers: () => {},
+    setCurrentMapModule: () => {},
   }
   constructor(props) {
     super(props)
@@ -201,6 +202,7 @@ class Chat extends React.Component {
       this.setCoworkMode(false)
       global.coworkMode = false
       this.props.closeWorkspace()
+      this.friend.leaveCowork()
       NavigationService.pop()
       this.props.navigation.replace('CoworkTabs', {
         targetId: this.targetId,
@@ -217,12 +219,7 @@ class Chat extends React.Component {
         if (result) {
           GLOBAL.SaveMapView &&
             GLOBAL.SaveMapView.setVisible(true, null, () => {
-              this.friend.setCurMod(undefined)
-              this.setCoworkMode(false)
-              global.coworkMode = false
-              this.props.navigation.replace('CoworkTabs', {
-                targetId: this.targetId,
-              })
+              close()
             })
         } else {
           close()
@@ -231,6 +228,23 @@ class Chat extends React.Component {
     } else {
       close()
     }
+  }
+
+  /**
+   * 获取协作模块的图像和标题
+   */
+  getModuleData = moduleType => {
+    let image, title
+    let modules = this.props.appConfig.mapModules
+    for (let i = 0; i < modules.length; i++) {
+      if (modules[i].key === moduleType) {
+        let data = modules[i].getChunk(global.language)
+        image = data.moduleImage
+        title = data.title
+        break
+      }
+    }
+    return { image, title }
   }
 
   // eslint-disable-next-line
@@ -755,8 +769,53 @@ class Chat extends React.Component {
       case MSGConstant.MSG_PICTURE:
         this.onCustomViewPictureTouch(message)
         break
+      case MSGConstant.MSG_INVITE_COWORK:
+        this.onCustomViewCoworkTouch(message)
+        break
       default:
         break
+    }
+  }
+
+  onCustomViewCoworkTouch = async message => {
+    let licenseStatus = await SMap.getEnvironmentStatus()
+    global.isLicenseValid = licenseStatus.isLicenseValid
+    if (!global.isLicenseValid) {
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+      })
+      global.SimpleDialog.setVisible(true)
+      return
+    }
+    let result = await this.friend.joinCowork(
+      message.originMsg.message.coworkId,
+    )
+    if (result) {
+      let modules = this.props.appConfig.mapModules
+      let module
+      let i = 0
+      for (i = 0; i < modules.length; i++) {
+        if (modules[i].key === message.originMsg.message.module) {
+          module = modules[i].getChunk(global.language)
+          break
+        }
+      }
+      //TODO 获取协作地图
+      // let currentUserName = this.curUser.userName
+      // let latestMap
+      // if (
+      //   this.props.latestMap[currentUserName] &&
+      //   this.props.latestMap[currentUserName][module.key] &&
+      //   this.props.latestMap[currentUserName][module.key].length > 0
+      // ) {
+      //   latestMap = this.props.latestMap[currentUserName][module.key][0]
+      // }
+      global.getFriend().setCurMod(module)
+      this.props.setCurrentMapModule(i).then(() => {
+        module.action(this.curUser)
+      })
+      global.getFriend().curChat.setCoworkMode(true)
+      global.coworkMode = true
     }
   }
 
@@ -1202,13 +1261,7 @@ class Chat extends React.Component {
             renderFooter={this.renderFooter}
             renderAvatar={this.renderAvatar}
             renderMessageText={props => {
-              if (
-                props.currentMessage.type === MSGConstant.MSG_PICTURE ||
-                props.currentMessage.type === MSGConstant.MSG_MAP ||
-                props.currentMessage.type === MSGConstant.MSG_LOCATION ||
-                props.currentMessage.type === MSGConstant.MSG_LAYER ||
-                props.currentMessage.type === MSGConstant.MSG_DATASET
-              ) {
+              if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
                 return null
               }
               return (
@@ -1384,7 +1437,13 @@ class Chat extends React.Component {
   }
 
   renderCustomView = props => {
-    return <CustomView {...props} onTouch={this.onCustomViewTouch} />
+    return (
+      <CustomView
+        {...props}
+        onTouch={this.onCustomViewTouch}
+        getModuleData={this.getModuleData}
+      />
+    )
   }
 
   // eslint-disable-next-line

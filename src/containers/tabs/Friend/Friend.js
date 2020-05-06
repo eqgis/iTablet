@@ -14,13 +14,14 @@ import {
   Platform,
   AppState,
   NetInfo,
+  AsyncStorage,
 } from 'react-native'
 import ScrollableTabView, {
   DefaultTabBar,
 } from 'react-native-scrollable-tab-view'
 
 // eslint-disable-next-line
-import { SMessageService, SOnlineService } from 'imobile_for_reactnative'
+import { SMessageService, SOnlineService, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../NavigationService'
 import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
@@ -48,6 +49,7 @@ import { Buffer } from 'buffer'
 import SMessageServiceHTTP from './SMessageServiceHTTP'
 import RNFS from 'react-native-fs'
 import TabBar from '../TabBar'
+import CoworkInfo from './Cowork/CoworkInfo'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -67,8 +69,10 @@ export default class Friend extends Component {
     editChat: () => {},
     setConsumer: () => {},
     setUser: () => {},
+    deleteUser: () => {},
     openWorkspace: () => {},
     closeWorkspace: () => {},
+    setCoworkNewMessage: () => {},
   }
 
   constructor(props) {
@@ -79,6 +83,7 @@ export default class Friend extends Component {
     this.curChat = undefined
     this.curMod = undefined
     MessageDataHandle.setHandle(this.props.addChat)
+    CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
     FriendListFileHandle.refreshCallback = this.refreshList
     FriendListFileHandle.refreshMessageCallback = this.refreshMsg
     this.state = {
@@ -465,13 +470,31 @@ export default class Friend extends Component {
           )
 
           this.startCheckAvailability()
-
+          this._closeCowork()
           g_connectService = true
         }
       } catch (error) {
         Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
       }
+    }
+  }
+
+  /**
+   * 每次连接时检查是否有未退出的协作
+   */
+  _closeCowork = async () => {
+    try {
+      let coworkId = await AsyncStorage.getItem('COWORKID')
+      if (CoworkInfo.coworkId === '' && coworkId && coworkId !== '') {
+        await SMessageService.exitSession(
+          this.props.user.currentUser.userId,
+          coworkId,
+        )
+        CoworkInfo.reset()
+      }
+    } catch (error) {
+      //
     }
   }
 
@@ -486,10 +509,14 @@ export default class Friend extends Component {
 
   _startConsumeMessage = async () => {
     this.consumingMessage = true
-    for (; this.messageQueue.length > 0; ) {
-      await this._receiveMessage(this.messageQueue.shift())
+    try {
+      for (; this.messageQueue.length > 0; ) {
+        await this._receiveMessage(this.messageQueue.shift())
+      }
+      this.consumingMessage = false
+    } catch (error) {
+      this.consumingMessage = false
     }
-    this.consumingMessage = false
   }
 
   onReceiveProgress = value => {
@@ -641,42 +668,202 @@ export default class Friend extends Component {
     }
   }
 
-  isGroupMsg = messageStr => {
-    let messageObj = JSON.parse(messageStr)
-    let type = messageObj.type
-    let isGroup = false
-    if (type === MSGConstant.MSG_GROUP) {
-      isGroup = true
-    } else if (type > 9) {
-      //大于2的都是系统消息
-      if (type > 910 && type < 920) {
-        //群组相关的系统消息
-        isGroup = true
+  /**
+   * 向好友或群组发送协作邀请
+   */
+  sendCoworkInvitation = async (talkId, moduleId, mapName) => {
+    let time = new Date().getTime()
+    let coworkId =
+      'Group_' + 'Cowork_' + time + '_' + this.props.user.currentUser.userId
+    try {
+      let isGroup = talkId.indexOf('Group_') === 0
+      let groupId = this.props.user.currentUser.userId
+      let groupName = ''
+      if (isGroup) {
+        let group = FriendListFileHandle.getGroup(groupId)
+        groupId = talkId
+        groupName = group.groupName
       }
+      let msgObj = {
+        type: isGroup ? MSGConstant.MSG_GROUP : MSGConstant.MSG_SINGLE,
+        time: time,
+        user: {
+          name: this.props.user.currentUser.nickname,
+          id: this.props.user.currentUser.userId,
+          groupID: groupId,
+          groupName: groupName,
+        },
+        message: {
+          type: MSGConstant.MSG_INVITE_COWORK,
+          module: moduleId,
+          mapName: mapName,
+          coworkId: coworkId,
+        },
+      }
+
+      CoworkInfo.setId(coworkId)
+      let member = {
+        id: this.props.user.currentUser.userId,
+        name: this.props.user.currentUser.nickname,
+      }
+      CoworkInfo.addMember(member)
+      await SMessageService.declareSession([member], coworkId)
+      this.startSendLocation()
+
+      let msgStr = JSON.stringify(msgObj)
+      await this._sendMessage(msgStr, talkId, false)
+    } catch (error) {
+      CoworkInfo.reset()
+      SMessageService.exitSession(this.props.user.currentUser.userId, coworkId)
+      this.locationTimer && clearInterval(this.locationTimer)
     }
-    return isGroup
+  }
+
+  /**
+   * 加入协作
+   */
+  joinCowork = async coworkId => {
+    try {
+      let masterId = coworkId.split('_').pop()
+      let result = await SMessageServiceHTTP.checkBinding(masterId, coworkId)
+      if (result) {
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: coworkId,
+            groupName: '',
+          },
+          message: {
+            type: MSGConstant.MSG_JOIN_COWORK,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, coworkId, false)
+        CoworkInfo.setId(coworkId)
+        let member = {
+          id: this.props.user.currentUser.userId,
+          name: this.props.user.currentUser.nickname,
+        }
+        CoworkInfo.addMember(member)
+        await SMessageService.declareSession([member], coworkId)
+        this.startSendLocation()
+        return true
+      } else {
+        Toast.show(getLanguage(global.language).Friends.COWORK_IS_END)
+        return false
+      }
+    } catch (error) {
+      Toast.show(getLanguage(global.language).Friends.COWORK_JOIN_FAIL)
+      return false
+    }
+  }
+
+  /**
+   * 离开或解散协作
+   */
+  leaveCowork = async () => {
+    try {
+      if (CoworkInfo.coworkId !== '') {
+        let coworkId = CoworkInfo.coworkId
+        let id = this.props.user.currentUser.userId
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: id,
+            groupID: coworkId,
+            groupName: '',
+          },
+          message: {
+            type: MSGConstant.MSG_LEAVE_COWORK,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, coworkId, false)
+        await SMessageService.exitSession(id, coworkId)
+        CoworkInfo.reset()
+        this.locationTimer && clearInterval(this.locationTimer)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  startSendLocation = () => {
+    this.sendCurrentLocation()
+    this.locationTimer = setInterval(() => {
+      this.sendCurrentLocation()
+    }, 60000)
+  }
+
+  sendCurrentLocation = async () => {
+    try {
+      if (CoworkInfo.coworkId !== '') {
+        let location = await SMap.getCurrentLocation()
+        let coworkId = CoworkInfo.coworkId
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: coworkId,
+            groupName: '',
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_GPS,
+            latitude: location.latitude,
+            longitude: location.longitude,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, coworkId, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  isGroupMsg = messageObj => {
+    let type = messageObj.type
+    if (
+      type === MSGConstant.MSG_GROUP ||
+      type === MSGConstant.MSG_MODIFY_GROUP_NAME ||
+      type === MSGConstant.MSG_CREATE_GROUP ||
+      type === MSGConstant.MSG_REMOVE_MEMBER ||
+      type === MSGConstant.MSG_DISBAND_GROUP
+    ) {
+      return true
+    }
+    return false
   }
 
   _sendMessage = async (messageStr, talkId, bSilent = false, cb) => {
     try {
+      let messageObj = JSON.parse(messageStr)
       let talkIds = []
-      if (this.isGroupMsg(messageStr)) {
+      if (this.isGroupMsg(messageObj)) {
         let members = FriendListFileHandle.readGroupMemberList(talkId)
         await SMessageService.declareSession(members, talkId)
         for (let key = 0; key < members.length; key++) {
           talkIds.push(members[key].id)
         }
-      } else {
+      } else if (messageObj.type !== MSGConstant.MSG_COWORK) {
         talkIds.push(talkId)
       }
       //对接桌面
-      let messageObj = JSON.parse(messageStr)
       if (messageObj.type < 10 && typeof messageObj.message === 'string') {
         messageObj.message = Buffer.from(messageObj.message).toString('base64')
       }
       let generalMsg = JSON.stringify(messageObj)
       let result = await SMessageService.sendMessage(generalMsg, talkId)
-      result && JPushService.push(messageStr, talkIds)
+      if (messageObj.type !== MSGConstant.MSG_COWORK) {
+        result && JPushService.push(messageStr, talkIds)
+      }
 
       if (!bSilent && !result) {
         Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
@@ -707,7 +894,7 @@ export default class Friend extends Component {
       type = messageObj.type
     }
     let bSystem = false
-    if (type > 100) {
+    if (messageObj.type > 9) {
       bSystem = true
     }
     let storeMsg = {
@@ -834,6 +1021,11 @@ export default class Friend extends Component {
           msg.originMsg.user.name +
           getLanguage(this.props.language).Friends.SYS_MSG_MOD_GROUP_NAME +
           msg.originMsg.message.name
+        break
+      case MSGConstant.MSG_INVITE_COWORK:
+        text =
+          msg.originMsg.user.name +
+          getLanguage(global.language).Friends.SYS_INVITE_TO_COWORK
         break
       default:
         break
@@ -1048,6 +1240,7 @@ export default class Friend extends Component {
               global.language === 'CN' ? 'CN' : 'EN'
             ],
         )
+        this.props.deleteUser(this.props.user.currentUser)
         this.props.setUser({
           userName: 'Customer',
           userType: UserType.PROBATION_USER,
@@ -1062,6 +1255,70 @@ export default class Friend extends Component {
       })
     } catch (e) {
       //
+    }
+  }
+
+  handleCowork = async messageObj => {
+    if (CoworkInfo.coworkId !== '') {
+      let coworkId = CoworkInfo.coworkId
+      let masterId = coworkId.split('_').pop()
+      let coworkType = messageObj.message.type
+      /**
+       * 加入协作群
+       */
+      if (coworkType === MSGConstant.MSG_JOIN_COWORK) {
+        CoworkInfo.addMember({
+          id: messageObj.user.id,
+          name: messageObj.user.name,
+        })
+        if (this.props.user.currentUser.userId === masterId) {
+          let members = []
+          for (let i = 0; i < CoworkInfo.members.length; i++) {
+            members.push({
+              id: CoworkInfo.members[i].id,
+              name: CoworkInfo.members[i].name,
+            })
+          }
+          let msgObj = {
+            type: MSGConstant.MSG_COWORK,
+            time: new Date().getTime(),
+            user: {
+              name: this.props.user.currentUser.nickname,
+              id: this.props.user.currentUser.userId,
+              groupID: this.props.user.currentUser.userId,
+              groupName: '',
+            },
+            message: {
+              type: MSGConstant.MSG_COWORK_LIST,
+              members: members,
+            },
+          }
+          let msgStr = JSON.stringify(msgObj)
+          await this._sendMessage(msgStr, messageObj.user.id, false)
+        }
+      } else if (coworkType === MSGConstant.MSG_LEAVE_COWORK) {
+        /**
+         * 退出协作群
+         */
+        if (masterId === messageObj.user.id) {
+          //协作结束
+        } else {
+          //暂不处理
+        }
+      } else if (coworkType === MSGConstant.MSG_COWORK_LIST) {
+        /**
+         * 更新协作成员列表
+         */
+        let members = messageObj.message.members
+        for (let i = 0; i < members.length; i++) {
+          CoworkInfo.addMember(members[i])
+        }
+      } else {
+        /**
+         * 对象添加更改的协作消息
+         */
+        CoworkInfo.pushMessage(messageObj)
+      }
     }
   }
 
@@ -1086,6 +1343,11 @@ export default class Friend extends Component {
       messageObj.message = Buffer.from(messageObj.message, 'base64').toString()
     }
 
+    if (messageObj.type === MSGConstant.MSG_COWORK) {
+      await this.handleCowork(messageObj)
+      return
+    }
+
     let bSystem = false
     let bUnReadMsg = false
     let msgId = 0
@@ -1104,9 +1366,9 @@ export default class Friend extends Component {
 
     if (messageObj.type === MSGConstant.MSG_ADD_FRIEND) {
       msgId = this.getMsgId(1)
-    } else if (this.isGroupMsg(message['message'])) {
+    } else if (this.isGroupMsg(messageObj)) {
       msgId = this.getMsgId(messageObj.user.groupID)
-    } else {
+    } else if (messageObj.type !== MSGConstant.MSG_COWORK) {
       msgId = this.getMsgId(messageObj.user.id)
     }
 

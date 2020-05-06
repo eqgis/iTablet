@@ -635,6 +635,7 @@ const Map_Setting = {
   PITCH_GESTURE: 'Pitch Gesture',
   THEME_LEGEND: 'Theme Legend',
   COLUMN_NAV_BAR: 'Vertical Navigation Bar when Landscape',
+  REAL_TIME_SYNC: 'Real-time Synchronize',
 
   // 效果设置
   EFFECT_SETTINGS: 'Effect Settings',

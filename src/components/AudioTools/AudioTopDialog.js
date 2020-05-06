@@ -235,7 +235,9 @@ export default class AudioTopDialog extends PureComponent {
         >
           <ScrollView style={styles.contentView}>
             <Text style={styles.content}>{this.state.content}</Text>
-            <Text style={styles.tip}>{this.props.defaultText}</Text>
+            {this.state.content === '' && (
+              <Text style={styles.tip}>{this.props.defaultText}</Text>
+            )}
           </ScrollView>
           {this.renderAudioBtn()}
           {this.renderCloseBtn()}

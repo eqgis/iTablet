@@ -85,6 +85,12 @@ const styles = StyleSheet.create({
     height: scaleSize(100),
     width: scaleSize(100),
   },
+  tip: {
+    fontSize: size.fontSize.fontSizeXl,
+    lineHeight: scaleSize(30),
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
 })
 
 export default class AudioCenterDialog extends PureComponent {
@@ -99,6 +105,7 @@ export default class AudioCenterDialog extends PureComponent {
     activeOpacity?: number,
     visible?: boolean,
     recording?: boolean,
+    defaultText?: string,
   }
 
   static defaultProps = {
@@ -107,6 +114,7 @@ export default class AudioCenterDialog extends PureComponent {
     visible: false,
     recording: false,
     content: '',
+    defaultText: '',
   }
 
   constructor(props) {
@@ -199,6 +207,9 @@ export default class AudioCenterDialog extends PureComponent {
           {this.renderCloseBtn()}
           <ScrollView style={styles.contentView}>
             <Text style={styles.content}>{this.state.content}</Text>
+            {this.state.content === '' && (
+              <Text style={styles.tip}>{this.props.defaultText}</Text>
+            )}
           </ScrollView>
           {this.renderAudioBtn()}
         </View>

@@ -411,7 +411,11 @@ export default class LicenseModule extends Component {
   }
 
   renderModules = () => {
-    return <ModuleInfo selectedModule={this.getModuleID()} />
+    return (
+      <ScrollView>
+        <ModuleInfo selectedModule={this.getModuleID()} />
+      </ScrollView>
+    )
   }
 
   render() {

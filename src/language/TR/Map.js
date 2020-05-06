@@ -628,6 +628,7 @@ const Map_Setting = {
   PITCH_GESTURE: 'Dönme Hareketi',
   THEME_LEGEND: 'Tema Lejantı',
   COLUMN_NAV_BAR: 'Dikey Gezinme Çubuğu Yatay Olduğunda',
+  REAL_TIME_SYNC: 'Gerçek Zamanlı Senkronize',
 
   // 效果设置
   EFFECT_SETTINGS: 'Efekt Ayarları',

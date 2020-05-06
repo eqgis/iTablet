@@ -332,16 +332,16 @@ export default class Mine extends Component {
     }
     return (
       <View style={styles.MyProfileStyle}>
-        <View style={styles.profileHeadStyle}>
-          {/*<TouchableOpacity*/}
-          {/*disabled={!isPro}*/}
-          {/*activeOpacity={0.7}*/}
-          {/*onPress={this._onPressAvatar}*/}
-          {/*style={styles.profileAvatarStyle}*/}
-          {/*>*/}
-          {/*<Image style={styles.headImgStyle} source={headerImage} />*/}
-          {/*</TouchableOpacity>*/}
-          <TouchableOpacity
+        {/* <View style={styles.profileHeadStyle}> */}
+        {/*<TouchableOpacity*/}
+        {/* disabled={!isPro}*/}
+        {/*activeOpacity={0.7}*/}
+        {/*onPress={this._onPressAvatar}*/}
+        {/*style={styles.profileAvatarStyle}*/}
+        {/*>*/}
+        {/*<Image style={styles.headImgStyle} source={headerImage} />*/}
+        {/*</TouchableOpacity> */}
+        {/* <TouchableOpacity
             activeOpacity={0.7}
             onPress={this._onPressMore}
             style={styles.moreViewStyle}
@@ -349,9 +349,11 @@ export default class Mine extends Component {
             <View style={styles.moreX}>
               <View style={styles.moreY} />
             </View>
-          </TouchableOpacity>
-        </View>
-        <View
+          </TouchableOpacity> */}
+        {/* </View> */}
+        <TouchableOpacity
+          onPress={this._onPressMore}
+          disabled={isPro}
           style={[
             styles.profileTextStyle,
             this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -363,7 +365,7 @@ export default class Mine extends Component {
             {headerTitle}
           </Text>
           <Text style={styles.statusTextStyle}>{statusText}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -495,7 +497,7 @@ export default class Mine extends Component {
         showFullInMap={true}
         withoutHeader={this.props.device.orientation.indexOf('LANDSCAPE') < 0}
         headerProps={{
-          title: getLanguage(this.props.language).Navigator_Label.PROFILE,
+          title: '', //getLanguage(this.props.language).Navigator_Label.PROFILE,
           withoutBack: true,
         }}
         bottomBar={this.renderTabBar()}

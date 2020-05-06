@@ -608,10 +608,11 @@ export default class ToolBar extends React.Component {
       if (GLOBAL.Type === ChunkType.MAP_EDIT) {
         if (
           GLOBAL.MapToolType &&
-          (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_EDIT) !==
+          (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_MARKS_TAGGING_EDIT) !==
             -1 ||
-            GLOBAL.MapToolType.indexOf(ConstToolType.MAP_TOOL_TAGGING_STYLE) !==
-              -1)
+            GLOBAL.MapToolType.indexOf(
+              ConstToolType.MAP_MARKS_TAGGING_STYLE,
+            ) !== -1)
         ) {
           return
         }

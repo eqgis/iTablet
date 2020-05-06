@@ -10,7 +10,6 @@ export default class ToolbarMenuDialog extends React.Component {
     selectKey: string,
     device: Object,
     mapLegend: Object,
-    device: Object,
   }
 
   constructor(props) {

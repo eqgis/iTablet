@@ -18,6 +18,7 @@ import LayerSelectionAttribute from './LayerSelectionAttribute'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import { SMap, Action, GeoStyle } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
+import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 
 const styles = StyleSheet.create({
   container: {
@@ -83,6 +84,7 @@ export default class LayerAttributeTabs extends React.Component {
     let initFieldInfo = []
 
     this.preAction = params && params.preAction
+    this.preToolbarType = params?.preType
     // 初始化选择的图层和属性（关联后返回属性界面，找到对应的图层属性）
     const selectionAttribute = params && params.selectionAttribute
     if (
@@ -423,7 +425,7 @@ export default class LayerAttributeTabs extends React.Component {
             },
           )
         GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-
+        ToolbarModule.addData({ preType: this.preToolbarType })
         StyleUtils.setSelectionStyle(
           // this.props.currentLayer.path || objs[0].layerPath,
           layerPath,
@@ -479,6 +481,7 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   back = () => {
+    const _data = ToolbarModule.getData()
     if (!this.backClicked) {
       this.backClicked = true
       if (this.locationView && this.locationView.isShow()) {
@@ -496,14 +499,13 @@ export default class LayerAttributeTabs extends React.Component {
         GLOBAL.toolBox.showFullMap(true)
 
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE,
-          {
-            containerType: 'table',
-            isFullScreen: false,
+        GLOBAL.toolBox.setVisible(true, this.preToolbarType, {
+          containerType: 'table',
+          isFullScreen: false,
+          cb: () => {
+            _data?.actions?.select(this.preToolbarType)
           },
-        )
+        })
     }
   }
 

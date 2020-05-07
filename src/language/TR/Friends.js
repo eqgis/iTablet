@@ -79,6 +79,17 @@ const Friends = {
   LOCATION: 'Konum',
   PICTURE: 'Resim',
   LOCATION_FAILED: 'Konumlandırma Başarısız',
+  // Cowork
+  SEND_COWORK_INVITE: 'İşbirliği daveti mi gönderiyorsun?',
+  COWORK_INVITATION: 'İşbirliği davetisi',
+  COWORK_MEMBER: 'İşbirliğici',
+  COWORK_IS_END: 'İşbirliği bitti',
+  COWORK_JOIN_FAIL: 'Geçici olarak katılamadı',
+  COWORK_UPDATE: 'Güncelle',
+  COWORK_ADD: 'Ekle',
+  COWORK_IGNORE: 'ignore',
+  NEW_MESSAGE: 'Yeni mesajı',
+  NEW_MESSAGE_SHORT: 'Yeni',
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',
@@ -124,5 +135,6 @@ const Friends = {
   SYS_LOGIN_ON_OTHER_DEVICE: 'Hesabınız başka bir cihazda oturum açtı',
   SYS_MSG_REJ: 'Karşı taraf seni henüz arkadaş olarak eklemedi',
   SYS_FRIEND_REQ_ACCEPT: 'Artık arkadaşsınız, keyfini çıkar!',
+  SYS_INVITE_TO_COWORK: ' seni işbirliğine davet',
 }
 export { Friends }

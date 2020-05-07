@@ -767,7 +767,7 @@ export default class InterpolationAnalystView extends Component {
         }}
       >
         <KeyboardAvoidingView
-          style={{ marginBottom: Const.BOTTOM_HEIGHT }}
+          // style={{ marginBottom: Const.BOTTOM_HEIGHT }}
           behavior="padding"
           keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
         >

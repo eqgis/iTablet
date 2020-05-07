@@ -63,7 +63,7 @@ import {
   // SearchBar,
   Progress,
   BubblePane,
-  AudioTopDialog,
+  AudioDialog,
 } from '../../../../components'
 import {
   Toast,
@@ -103,6 +103,8 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import { CustomInputDialog } from '../../../../components/Dialog'
+import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
+import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 
 const markerTag = 118081
 
@@ -716,6 +718,7 @@ export default class MapView extends React.Component {
           )
         }
         await SMap.indoorNavigation(1)
+        this.FloorListView?.setVisible(true)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -728,6 +731,7 @@ export default class MapView extends React.Component {
             )
           }
           await SMap.outdoorNavigation(1)
+          this.FloorListView?.setVisible(false)
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1652,6 +1656,22 @@ export default class MapView extends React.Component {
           bNaviCreate = true
         }
         this.setLoading(false)
+        if (global.coworkMode && CoworkInfo.coworkId === '') {
+          global.SimpleDialog.set({
+            text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
+            confirmAction: () => {
+              try {
+                let friend = global.getFriend()
+                let talkId = friend.curChat.targetId
+                let mapName = this.props.map.currentMap.name
+                friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+              } catch (error) {
+                Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+              }
+            },
+          })
+          // global.SimpleDialog.setVisible(true)
+        }
       } catch (e) {
         if (!bWorkspcaOpen) {
           // Toast.show("workspace !")
@@ -2419,7 +2439,7 @@ export default class MapView extends React.Component {
               key: MapHeaderButton.Audio,
               image: getPublicAssets().common.icon_audio,
               action: () => {
-                SSpeechRecognizer.start()
+                // SSpeechRecognizer.start()
                 this.AudioDialog.setVisible(true)
               },
             }
@@ -2478,6 +2498,18 @@ export default class MapView extends React.Component {
             onPress={info.action}
           />,
         )
+    }
+    if (global.coworkMode) {
+      buttons.push(
+        <MTBtn
+          key={'CoworkMember'}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          image={require('../../../../assets/home/Frenchgrey/icon_else_selected.png')}
+          onPress={async () => {
+            NavigationService.navigate('CoworkMember')
+          }}
+        />,
+      )
     }
     return (
       <View
@@ -3340,14 +3372,13 @@ export default class MapView extends React.Component {
         {/*    {this.renderNetworkSelectList()}*/}
         {/*  </PopView>*/}
         {/*)}*/}
-        <AudioTopDialog
+        <AudioDialog
           ref={ref => (this.AudioDialog = ref)}
-          startRecording={() => SSpeechRecognizer.start()}
-          content={this.state.speechContent}
-          recording={this.state.recording}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
+          language={this.props.language}
         />
+        {global.coworkMode && <NewMessageIcon />}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

@@ -13,12 +13,7 @@ import { Button, BtnOne, BtnTwo } from './Button'
 import DataSetListItem from './DataSetListItem'
 import DataSetListSection from './DataSetListSection'
 import { Dialog, InputDialog, BottomDialog } from './Dialog'
-import {
-  AudioBottomDialog,
-  AudioTopDialog,
-  AudioCenterDialog,
-  AudioDialog,
-} from './AudioTools'
+import AudioDialog from './AudioTools'
 import PanAudioButton from './PanAudioButton'
 import { Row, Radio, RadioGroup, ChooseNumber, LabelBtn } from './Row'
 import {
@@ -84,9 +79,9 @@ export {
   Loading,
   Dialog,
   InputDialog,
-  AudioBottomDialog,
-  AudioTopDialog,
-  AudioCenterDialog,
+  // AudioBottomDialog,
+  // AudioTopDialog,
+  // AudioCenterDialog,
   AudioDialog,
   BottomDialog,
   Button,

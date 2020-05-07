@@ -48,14 +48,13 @@ class SelectModule extends Component {
     this.props.setCurrentMapModule(index).then(() => {
       module.action(tmpCurrentUser, latestMap)
     })
-    module.action(tmpCurrentUser, latestMap)
     global.getFriend().curChat.setCoworkMode(true)
     global.coworkMode = true
   }
 
   render() {
     let data = this.props.appConfig.mapModules.map(item =>
-      item.chunk(this.props.language),
+      item.getChunk(this.props.language),
     )
     return (
       <Container

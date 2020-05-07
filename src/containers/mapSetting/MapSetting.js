@@ -25,6 +25,7 @@ import { legendModule } from '../workspace/components/ToolBar/modules'
 import { scaleSize } from '../../utils'
 import size from '../../styles/size'
 import color from '../../styles/color'
+import CoworkInfo from '../tabs/Friend/Cowork/CoworkInfo'
 export default class MapSetting extends Component {
   props: {
     nav: string,
@@ -49,6 +50,7 @@ export default class MapSetting extends Component {
     this.type = params && params.type
     this.state = {
       data: [],
+      isRealTime: CoworkInfo.isRealTime,
     }
   }
 
@@ -363,6 +365,45 @@ export default class MapSetting extends Component {
             backgroundColor: color.separateColorGray,
           }}
         />
+        {CoworkInfo.coworkId !== '' && (
+          <View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                height: scaleSize(80),
+                paddingHorizontal: 15,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingRight: 10,
+              }}
+            >
+              <Text style={styles.itemName}>
+                {getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
+              </Text>
+              <Switch
+                trackColor={{ false: color.bgG, true: color.switch }}
+                thumbColor={this.state.isRealTime ? color.bgW : color.bgW}
+                ios_backgroundColor={
+                  this.state.isRealTime ? color.switch : color.bgG
+                }
+                value={this.state.isRealTime}
+                onValueChange={value => {
+                  CoworkInfo.setIsRealTime(value)
+                  this.setState({ isRealTime: value })
+                }}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                height: 1,
+                marginHorizontal: 10,
+                backgroundColor: color.separateColorGray,
+              }}
+            />
+          </View>
+        )}
       </View>
     )
   }

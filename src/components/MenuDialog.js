@@ -7,7 +7,7 @@ import {
   Image,
   PanResponder,
 } from 'react-native'
-import { scaleSize, screen } from '../utils'
+import { scaleSize } from '../utils'
 import { size, color } from '../styles'
 import { Const } from '../constants'
 
@@ -33,7 +33,6 @@ export default class MenuDialog extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this.screenWidth = screen.getScreenWidth()
     this.lastIndex = this.getIndexByKey(props.data, props.selectKey)
     this.state = {
       currentIndex: this.lastIndex,
@@ -73,9 +72,8 @@ export default class MenuDialog extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.screenWidth !== screen.getScreenWidth()) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
       this.moveToIndex()
-      this.screenWidth = screen.getScreenWidth()
     } else if (
       JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
     ) {

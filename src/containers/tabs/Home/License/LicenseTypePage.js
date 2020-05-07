@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  FlatList,
-  Platform,
-} from 'react-native'
+import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
@@ -67,9 +60,9 @@ class LicenseTypePage extends Component {
         type: LicenseType.trial,
       },
     ]
-    if (Platform.OS === 'ios') {
-      data.splice(2, 1)
-    }
+    // if (Platform.OS === 'ios') {
+    //   data.splice(2, 1)
+    // }
     return data
   }
 

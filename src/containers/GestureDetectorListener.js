@@ -87,7 +87,7 @@ async function touchCallback(event) {
         }
       }
       break
-    case TouchType.MAP_TOOL_TAGGING:
+    case TouchType.MAP_MARKS_TAGGING:
       NavigationService.navigate('InputPage', {
         headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
         type: 'name',

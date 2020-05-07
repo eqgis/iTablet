@@ -106,6 +106,12 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeMd,
     backgroundColor: 'transparent',
   },
+  tip: {
+    fontSize: size.fontSize.fontSizeXl,
+    lineHeight: scaleSize(30),
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
 })
 
 /**
@@ -137,11 +143,13 @@ export default class AudioDialog extends PureComponent {
     cancelBtnTitle?: string,
     audioSavePath?: string,
     content?: string,
+    defaultText?: string,
   }
 
   static defaultProps = {
     label: '',
     content: '',
+    defaultText: '',
     activeOpacity: 0.8,
     backHide: true,
     visible: false,
@@ -272,6 +280,9 @@ export default class AudioDialog extends PureComponent {
           <ScrollView style={styles.contentView}>
             <Text style={[styles.content, this.props.textStyle]}>
               {this.state.content}
+              {this.state.content === '' && (
+                <Text style={styles.tip}>{this.props.defaultText}</Text>
+              )}
             </Text>
           </ScrollView>
           {this.renderAudioBtn()}

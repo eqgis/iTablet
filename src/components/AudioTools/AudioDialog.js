@@ -50,9 +50,11 @@ export default class AudioDialog extends PureComponent {
   componentWillUnmount() {
     (async function() {
       try {
-        if (!this.state.visible) {
-          await SSpeechRecognizer.removeListener()
-        }
+        // if (!this.state.visible) {
+        //   await SSpeechRecognizer.removeListener()
+        // }
+        this.state.recording && (await SSpeechRecognizer.stop())
+        await SSpeechRecognizer.removeListener()
       } catch (e) {
         () => {}
       }
@@ -104,6 +106,7 @@ export default class AudioDialog extends PureComponent {
           })
           this.startRecording()
         } else {
+          this.state.recording && (await SSpeechRecognizer.stop())
           await SSpeechRecognizer.removeListener()
         }
       } catch (e) {
@@ -129,7 +132,8 @@ export default class AudioDialog extends PureComponent {
   stopRecording = () => {
     (async function() {
       try {
-        SSpeechRecognizer.removeListener()
+        await SSpeechRecognizer.stop()
+        await SSpeechRecognizer.removeListener()
       } catch (e) {
         () => {}
       }

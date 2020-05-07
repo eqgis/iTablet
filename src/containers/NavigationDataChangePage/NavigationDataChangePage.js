@@ -45,7 +45,6 @@ export default class NavigationDataChangePage extends Component {
         : new Animated.Value(
           screen.getScreenWidth(this.props.device.orientation),
         )
-    this.refreshing = false
   }
 
   componentDidUpdate(prevProps) {

@@ -138,13 +138,6 @@ async function pointcover() {
   }
 }
 async function move() {
-  const _params = ToolbarModule.getParams()
-  // const { currentLayer } = _params
-  // let reg = /^Label_(.*)#$/
-  _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
-    isFullScreen: false,
-    // height: ConstToolType.HEIGHT[4],
-  })
   SMap.setAction(Action.MOVE_GEOMETRY)
 }
 async function freecover() {
@@ -184,27 +177,6 @@ function commit(type) {
         //提交标注后 需要刷新属性表
         GLOBAL.NEEDREFRESHTABLE = true
       })
-    } else if (
-      type.indexOf('MAP_MARKS_TAGGING_EDIT') !== -1 ||
-      type.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
-    ) {
-      SMap.clearSelection()
-      SMap.setAction(Action.PAN)
-      const { layers } = _params.layers
-      // 还原其他图层的选择状态
-      // _setMyLayersSelectable(layers, true)
-      for (let i = 0; i < layers.length; i++) {
-        if (LayerUtils.getLayerType(layers[i]) === 'TAGGINGLAYER') {
-          if (
-            _params.currentLayer &&
-            _params.currentLayer.name &&
-            _params.currentLayer.name === layers[i].name
-          ) {
-            SMap.setLayerEditable(layers[i].path, true)
-          }
-        }
-      }
-      _params.setToolbarVisible(false)
     } else {
       SMap.submit().then(() => {
         const type = ConstToolType.MAP_MARKS_TAGGING_SELECT

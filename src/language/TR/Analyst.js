@@ -218,6 +218,13 @@ const Analyst_Labels = {
   REGISTRATION_ORIGINAL: 'Kaynak noktası',
   REGISTRATION_TAREGT: 'Hedef nokta',
   REGISTRATION_RESELECT_POINT: 'Yeniden seçim noktası',
+  REGISTRATION_EXPORT: 'ihracat',
+  REGISTRATION_EXPORT_SUCCESS: 'Dışa aktarma başarılı',
+  REGISTRATION_EXPORT_FAILED: 'Dışa aktarma başarısız',
+  REGISTRATION_EXPORT_FILE_NAME: 'Kayıt bilgileri dosya adını dışa aktar',
+  REGISTRATION_NOT_SETLECT_DATASET: 'Lütfen bir kayıt veri kümesi seçin',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET:
+    'Lütfen bir referans veri kümesi seçin',
 }
 
 const Analyst_Params = {

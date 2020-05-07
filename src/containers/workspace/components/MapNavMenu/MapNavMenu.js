@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { StyleSheet, Animated } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
-import { ListSeparator } from '../../../../components'
+import { ListSeparator, MTBtn } from '../../../../components'
 import { Const, ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
 import NavigationService from '../../../../containers/NavigationService'
-import MT_Btn from '../../../../components/mapTools/MT_Btn'
 import { getLanguage } from '../../../../language/index'
 import { getThemeAssets } from '../../../../assets'
 // import { SScene, Utility } from 'imobile_for_reactnative'
@@ -254,7 +253,7 @@ export default class MapNavMenu extends React.Component {
 
   _renderItem = ({ item, index }) => {
     return (
-      <MT_Btn
+      <MTBtn
         key={item.key}
         title={item.title}
         textColor={'#505050'}

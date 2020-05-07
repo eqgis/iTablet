@@ -5,40 +5,30 @@
 */
 
 import * as React from 'react'
-import {
-  StyleSheet,
-  Image,
-  // TouchableOpacity,
-  TouchableHighlight,
-  Text,
-  View,
-} from 'react-native'
-import { constUtil, scaleSize } from '../../utils'
-import { size } from '../../styles'
+import { StyleSheet, Image, TouchableHighlight, Text, View } from 'react-native'
+import { constUtil, scaleSize } from '../../utils/index'
+import { size } from '../../styles/index'
 
-// const ICON_HEIGHT =0.75* 0.1 * constUtil.WIDTH
-// const CONTAINER_HEIGHT = 1.4 * ICON_HEIGHT
-// const CONTAINER_WIDTH = CONTAINER_HEIGHT
 const BTN_UNDERCOLOR = constUtil.UNDERLAYCOLOR_TINT
 
-export default class MT_Btn extends React.Component {
+export default class MTBtn extends React.Component {
   props: {
-    image: any,
-    selectedImage?: any,
-    size?: string,
-    title?: string,
-    onPress: () => {},
-    textStyle?: any,
-    textColor?: string,
-    imageStyle?: any,
-    style?: any,
-    customStyle?: any,
-    selected?: boolean,
-    selectMode?: string,
-    activeOpacity?: number,
-    separator?: number,
-    onPressIn?: () => {},
-    onPressOut?: () => {},
+    image: any, // 未点击时图片
+    selectedImage?: any, // 点击时图片
+    size?: string, // 图片文字大小
+    title?: string, // 文字
+    onPress: () => {}, // 点击事件
+    textStyle?: any, // 自定义文字样式
+    textColor?: string, // 自定义文字颜色
+    imageStyle?: any, // 自定义图片样式
+    style?: any, // 自定义按钮样式
+    selected?: boolean, // 是否被选中
+    selectMode?: string, // normal: 选择 | 非选择状态
+    // flash：按下和松开
+    activeOpacity?: number, // 点击按钮透明度 0 - 1
+    separator?: number, // 图片和文字的间距
+    onPressIn?: () => {}, // 按下时的事件
+    onPressOut?: () => {}, // 松开时的事件
   }
 
   static defaultProps = {
@@ -170,7 +160,7 @@ export default class MT_Btn extends React.Component {
   }
 }
 
-MT_Btn.Size = {
+MTBtn.Size = {
   LARGE: 'large',
   NORMAL: 'normal',
   SMALL: 'small',

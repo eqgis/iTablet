@@ -11,42 +11,52 @@ import {
   Text,
   TouchableOpacity,
   SectionList,
-  StyleSheet, Animated,
+  StyleSheet,
+  Animated,
+  RefreshControl,
 } from 'react-native'
 import { Container } from '../../components'
 import { getPublicAssets, getThemeAssets } from '../../assets'
-import {scaleSize, screen, setSpText} from '../../utils'
+import { scaleSize, screen, setSpText } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-
+import { SMap } from 'imobile_for_reactnative'
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
-    device:Object,
+    device: Object,
   }
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
     this.state = {
       data: (params && params.data) || {},
+      isRefresh: false,
     }
     this.selectedDatasources = params.selectedDatasources || []
     this.selectedDatasets = params.selectedDatasets || []
     this.currentDatasource = params.currentDatasource || []
     this.currentDataset = params.currentDataset || {}
-    this.maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-      ? new Animated.Value(screen.getScreenWidth(this.props.device.orientation) * 0.45)
-      : new Animated.Value(screen.getScreenWidth(this.props.device.orientation))
+    this.maxWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(
+          screen.getScreenWidth(this.props.device.orientation) * 0.45,
+        )
+        : new Animated.Value(
+          screen.getScreenWidth(this.props.device.orientation),
+        )
+    this.refreshing = false
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.device.orientation !== this.props.device.orientation){
-      let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-        : screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.maxWidth,{
-        toValue:maxWidth,
-        duration:300,
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      let maxWidth =
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
+          : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.maxWidth, {
+        toValue: maxWidth,
+        duration: 300,
       }).start()
     }
   }
@@ -98,9 +108,44 @@ export default class NavigationDataChangePage extends Component {
       data,
     })
   }
+
+  _onRefresh = async () => {
+    this.setState(
+      {
+        isRefresh: true,
+      },
+      async () => {
+        let datas = await SMap.getAllNavData()
+        const mapDatasource = datas[0]
+        const mapDataset = datas[1]
+        mapDatasource.data.map(item => {
+          this.selectedDatasources &&
+            this.selectedDatasources.map(ds => {
+              if (item.name === ds.name) {
+                item.selected = true
+              }
+            })
+        })
+        mapDataset.data.map(item => {
+          this.selectedDatasets &&
+            this.selectedDatasets.map(dt => {
+              if (item.name === dt.name) {
+                item.selected = true
+              }
+            })
+        })
+        let data = [mapDatasource, mapDataset]
+        this.setState({
+          data,
+          isRefresh: false,
+        })
+      },
+    )
+  }
   _newNavData = () => {
     this.props.navigation.navigate('CreateNavDataPage')
   }
+
   _confirm = () => {
     const _params = ToolbarModule.getParams()
     _params.setNavigationDatas &&
@@ -149,10 +194,6 @@ export default class NavigationDataChangePage extends Component {
           </TouchableOpacity>
           <Image source={typeImg} resizeMode={'contain'} style={styles.icon} />
           <Text style={[styles.name, extraTxt]}>{item.name}</Text>
-          {/*<TouchableOpacity style={styles.imgWrap}>*/}
-          {/*  /!*<Image source={img} resizeMode={'contain'} style={styles.image} />*!/*/}
-          {/*  <View style={{width:scaleSize(40),height:scaleSize(40), backgroundColor:color.blue1}}/>*/}
-          {/*</TouchableOpacity>*/}
         </View>
         {this.renderLine()}
       </View>
@@ -185,10 +226,19 @@ export default class NavigationDataChangePage extends Component {
       <View>
         {separate && <View style={styles.sectionSeparate} />}
         <View style={styles.textContainer}>
-          <View style={[styles.textWrapper,{justifyContent:'flex-start'}]}><Text style={styles.title}>{title}</Text></View>
-          {separate
-            ? (<TouchableOpacity onPress={this._newNavData} style={styles.textWrapper}><Text style={styles.actionTxt}>新建</Text></TouchableOpacity>)
-            :<View/>}
+          <View style={[styles.textWrapper, { justifyContent: 'flex-start' }]}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+          {separate ? (
+            <TouchableOpacity
+              onPress={this._newNavData}
+              style={styles.textWrapper}
+            >
+              <Text style={styles.actionTxt}>新建</Text>
+            </TouchableOpacity>
+          ) : (
+            <View />
+          )}
         </View>
         {this.renderLine()}
       </View>
@@ -203,11 +253,24 @@ export default class NavigationDataChangePage extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <Animated.View style={{
-          width:this.maxWidth,
-          flex:1,
-        }}>
+        <Animated.View
+          style={{
+            width: this.maxWidth,
+            flex: 1,
+          }}
+        >
           <SectionList
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.isRefresh}
+                onRefresh={this._onRefresh}
+                colors={['orange', 'red']}
+                tintColor={'orange'}
+                titleColor={'orange'}
+                title={getLanguage(global.language).Friends.LOADING}
+                enabled={true}
+              />
+            }
             style={styles.list}
             sections={this.state.data}
             renderSectionHeader={this._renderSectionHeader}
@@ -225,7 +288,6 @@ export default class NavigationDataChangePage extends Component {
             </Text>
           </TouchableOpacity>
         </Animated.View>
-
       </Container>
     )
   }
@@ -235,17 +297,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: setSpText(24),
   },
-  textWrapper:{
-    height:scaleSize(80),
-    width:scaleSize(200),
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'flex-end',
-    marginHorizontal:scaleSize(40),
+  textWrapper: {
+    height: scaleSize(80),
+    width: scaleSize(200),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginHorizontal: scaleSize(40),
   },
-  actionTxt:{
-    color:color.item_selected_bg,
-    fontSize:setSpText(24),
+  actionTxt: {
+    color: color.item_selected_bg,
+    fontSize: setSpText(24),
   },
   list: {
     maxHeight: scaleSize(650),
@@ -255,7 +317,7 @@ const styles = StyleSheet.create({
     height: scaleSize(20),
     backgroundColor: color.separateColorGray,
   },
-  textContainer:{
+  textContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

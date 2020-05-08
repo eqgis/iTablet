@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
-import { getPublicAssets } from '../../../../assets'
+import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import {
   View,
   Text,
@@ -295,7 +295,8 @@ export default class RegistrationPage extends Component {
               height: scaleSize(50),
               width: scaleSize(50),
             }}
-            source={getPublicAssets().mapTools.tools_new_thematic_map}
+            // source={getPublicAssets().mapTools.tools_new_thematic_map}
+            source={getThemeAssets().analyst.analysis_connectivity}
           />
           <Text
             style={{
@@ -324,7 +325,8 @@ export default class RegistrationPage extends Component {
               height: scaleSize(50),
               width: scaleSize(50),
             }}
-            source={getPublicAssets().mapTools.tools_new_thematic_map}
+            // source={getPublicAssets().mapTools.tools_new_thematic_map}
+            source={getThemeAssets().analyst.analysis_traveling}
           />
           <Text
             style={{

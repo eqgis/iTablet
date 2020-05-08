@@ -13,6 +13,19 @@ class AddModule extends FunctionModule {
     super(props)
   }
 
+  setModuleData = async (type, data) => {
+    let _data = data
+    if (!_data) {
+      _data = await AddData.getData(type)
+    }
+    ToolbarModule.setData({
+      type,
+      getData: AddData.getData,
+      data: _data,
+      actions: AddAction,
+    })
+  }
+
   action = async () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()

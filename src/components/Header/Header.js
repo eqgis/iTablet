@@ -16,26 +16,24 @@ class NavigationHeader extends Component {
     backBtnType?: string, // 返回按钮类型（white, gray）
     backAction?: any, // 返回事件
     title?: string, // 标题
-    subTitle?: string, //副标题
-    subTitleStyle?: StyleSheet, //副标题样式
+    subTitle?: string, // 副标题
+    subTitleStyle?: StyleSheet, // 副标题样式
     headerViewStyle?: StyleSheet, // Header Style
-    headerLeftStyle?: StyleSheet, //
-    headerRightStyle?: StyleSheet, //
-    headerTitleViewStyle?: StyleSheet, //
-    headerTitleStyle?: StyleSheet, //
+    headerLeftStyle?: StyleSheet, // Header左边View样式
+    headerRightStyle?: StyleSheet, // Header右边View样式
+    headerTitleViewStyle?: StyleSheet, // Header中间Title View样式
+    headerTitleStyle?: StyleSheet, // Header标题样式
     headerLeft?: any, // Header左端组件，可为Array
     headerRight?: any, // Header右端组件，可为Array
     opacity?: number, // 透明度
     activeOpacity?: number, // 返回键点击透明度
     type?: string, // default | float:浮动Header | floatNoTitle:浮动无title,透明背景 | fix:固定顶部，绝对定位
     navigation?: any, // navigation
-    count?: any,
+    count?: any, // 消息提示数量
     darkBackBtn?: boolean, // 黑色透明背景，返回按钮
-    headerCenter?: any,
+    headerCenter?: any, // 自定义Header中间View
     backImg?: any, // 返回按钮图片
-
-    /** 转态栏是否可见*/
-    statusVisible?: boolean,
+    statusVisible?: boolean, // 状态栏是否可见
   }
 
   static defaultProps = {

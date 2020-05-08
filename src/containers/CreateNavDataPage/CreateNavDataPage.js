@@ -17,7 +17,11 @@ import {
   Platform,
 } from 'react-native'
 import { Container, Dialog } from '../../components'
-import { getLayerIconByType, getLayerWhiteIconByType } from '../../assets'
+import {
+  getLayerIconByType,
+  getLayerWhiteIconByType,
+  getThemeAssets,
+} from '../../assets'
 import { dataUtil, scaleSize, screen, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
@@ -38,14 +42,9 @@ export default class CreateNavDataPage extends Component {
       selectedDataset: {},
       selectedDatasource: {},
     }
-    this.maxWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation) * 0.45,
-        )
-        : new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation),
-        )
+    this.maxWidth = new Animated.Value(
+      screen.getScreenWidth(this.props.device.orientation),
+    )
     this.maxHeight =
       screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
   }
@@ -66,10 +65,7 @@ export default class CreateNavDataPage extends Component {
     if (prevProps.device.orientation !== this.props.device.orientation) {
       this.maxHeight =
         screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
-      let maxWidth =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-          : screen.getScreenWidth(this.props.device.orientation)
+      let maxWidth = screen.getScreenWidth(this.props.device.orientation)
       Animated.timing(this.maxWidth, {
         toValue: maxWidth,
         duration: 300,
@@ -180,7 +176,7 @@ export default class CreateNavDataPage extends Component {
         this.state.selectedDatasource.datasourceName === item.datasourceName
       name = item.datasourceName
       if (hasExtra) {
-        img = require('../../assets/Navigation/indoor_datasource_white.png')
+        img = getThemeAssets().navigation.icon_datasource_white
         extraTxt = {
           color: color.white,
         }
@@ -188,7 +184,7 @@ export default class CreateNavDataPage extends Component {
           backgroundColor: color.item_selected_bg,
         }
       } else {
-        img = require('../../assets/Navigation/indoor_datasource.png')
+        img = getThemeAssets().navigation.icon_datasource
       }
     }
 

@@ -6,9 +6,9 @@ import {
   Text,
   View,
 } from 'react-native'
-import { scaleSize } from '../../utils'
+import { scaleSize } from '../../utils/index'
 
-export default class Color_Btn extends React.Component {
+export default class ColorBtn extends React.Component {
   props: {
     onPress: () => {},
     background: string,

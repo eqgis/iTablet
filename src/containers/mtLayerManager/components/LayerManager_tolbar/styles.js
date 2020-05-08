@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize, screen } from '../../../../utils/index'
+import { scaleSize } from '../../../../utils/index'
 import { zIndexLevel, color, size } from '../../../../styles/index'
 import { ConstToolType } from '../../../../constants/index'
 // 地图按钮栏默认高度
@@ -11,7 +11,6 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: screen.deviceHeight,
     backgroundColor: '#rgba(0, 0, 0, 0)',
     zIndex: zIndexLevel.FOUR,
   },

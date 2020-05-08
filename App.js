@@ -397,7 +397,6 @@ class AppRoot extends Component {
     //todo 初始化云许可，私有云许可状态
     let serialNumber =await SMap.initSerialNumber('')
     if(serialNumber!==''){
-      AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, serialNumber)
       await SMap.reloadLocalLicense()
     }
 

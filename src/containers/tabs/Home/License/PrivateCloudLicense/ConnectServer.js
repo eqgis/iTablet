@@ -11,7 +11,6 @@ import { Container } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast } from '../../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
-import NavigationService from '../../../../NavigationService'
 import styles from '../styles'
 import { connect } from 'react-redux'
 import { setPrivateLicenseServer } from '../../../../../redux/models/license'
@@ -50,7 +49,7 @@ class ConnectServer extends Component {
       this.container && this.container.setLoading(false)
       if (modules) {
         this.props.setPrivateLicenseServer(this.server)
-        NavigationService.navigate('LicenseJoinPrivateCloud', {
+        this.props.navigation.navigate('LicenseJoinPrivateCloud', {
           modules: modules,
         })
       } else {

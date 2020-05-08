@@ -622,12 +622,182 @@ function toolbarBack() {
     })
   }
 }
+
+/**
+ * 获取Touchprogress的初始信息
+ *
+ * @returns {{
+ * value: Number,     当前值
+ * tips: String,      当前信息
+ * step: Number,      步长 最小改变单位,默认值1
+ * range: Array,      数值范围
+ * }}
+ */
+async function getTouchProgressInfo() {
+  const data = ToolbarModule.getData()
+  let event = data.event
+  let tips = ''
+  let range = [1, 100]
+  let value = 0
+  let step = 1
+  switch (GLOBAL.ToolBar?.state?.selectName) {
+    //线宽 边框宽度
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+      value = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH +
+        '     ' +
+        parseInt(value) +
+        'mm'
+      range = [1, 20]
+      break
+    //符号大小
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      value = await SMap.getTaggingMarkerSize(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
+        '     ' +
+        parseInt(value) +
+        'mm'
+      range = [1, 100]
+      break
+    //旋转角度
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+      value = await SMap.getTaggingAngle(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+        '     ' +
+        parseInt(value) +
+        '°'
+      range = [0, 360]
+      break
+    //透明度
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+      value = await SMap.getTaggingAlpha(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY +
+        '     ' +
+        parseInt(value) +
+        '%'
+      range = [0, 100]
+      break
+    //字号
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      value = await SMap.getTaggingTextSize(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE +
+        '     ' +
+        parseInt(value)
+      range = [1, 20]
+      break
+    //文本旋转角度
+    case 'TEXT_ROTATION':
+      value = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+        '     ' +
+        parseInt(value) +
+        '°'
+      range = [0, 360]
+      break
+  }
+  return { value, tips, range, step }
+}
+
+/**
+ * 设置TouchProgress的值到地图对应的属性
+ * @param value
+ */
+function setTouchProgressInfo(value) {
+  const data = ToolbarModule.getData()
+  let event = data.event
+  switch (GLOBAL.ToolBar?.state?.selectName) {
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+      SMap.setTaggingLineWidth(value, event.layerInfo.path, event.id)
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      SMap.setTaggingMarkerSize(value, event.layerInfo.path, event.id)
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+      SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+      SMap.setTaggingAlpha(value, event.layerInfo.path, event.id)
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
+      break
+    case 'TEXT_ROTATION':
+      SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
+      break
+  }
+}
+
+/**
+ * 获取Progress的tips
+ * @param value
+ * @returns {string}
+ */
+function getTouchProgressTips(value) {
+  let tips = ''
+  switch (GLOBAL.ToolBar?.state?.selectName) {
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH +
+        '     ' +
+        parseInt(value) +
+        'mm'
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
+        '     ' +
+        parseInt(value) +
+        'mm'
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+        '     ' +
+        parseInt(value) +
+        '°'
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY +
+        '     ' +
+        parseInt(value) +
+        '%'
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE +
+        '     ' +
+        parseInt(value)
+      break
+    case 'TEXT_ROTATION':
+      tips =
+        getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+        '     ' +
+        parseInt(value) +
+        '°'
+      break
+  }
+  return tips
+}
 export default {
   menu,
   showMenuBox,
   toolbarBack,
   commit,
   close,
+
+  getTouchProgressInfo,
+  setTouchProgressInfo,
+  getTouchProgressTips,
 
   undo,
   redo,

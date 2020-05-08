@@ -11,7 +11,6 @@ import { scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 
 export default class PopTitleBtn extends React.Component {
-
   static propTypes = {
     btnClick: PropTypes.func,
     title: PropTypes.string,
@@ -51,15 +50,28 @@ export default class PopTitleBtn extends React.Component {
     //   textStyle = styles.text
     // }
     if (this.props.selected !== undefined) {
-      containerStyle = this.props.selected ? styles.containerSelected : styles.container
+      containerStyle = this.props.selected
+        ? styles.containerSelected
+        : styles.container
       textStyle = this.props.selected ? styles.textSelected : styles.text
     } else {
-      containerStyle = this.state.selected ? styles.containerSelected : styles.container
+      containerStyle = this.state.selected
+        ? styles.containerSelected
+        : styles.container
       textStyle = this.state.selected ? styles.textSelected : styles.text
     }
     return (
-      <TouchableOpacity accessible={true} accessibilityLabel={this.props.title} style={[containerStyle, this.props.style]} onPress={this.action}>
-        {this.props.title && <Text style={[textStyle, this.props.titleStyle]}>{this.props.title}</Text>}
+      <TouchableOpacity
+        accessible={true}
+        accessibilityLabel={this.props.title}
+        style={[containerStyle, this.props.style]}
+        onPress={this.action}
+      >
+        {this.props.title && (
+          <Text style={[textStyle, this.props.titleStyle]}>
+            {this.props.title}
+          </Text>
+        )}
       </TouchableOpacity>
     )
   }

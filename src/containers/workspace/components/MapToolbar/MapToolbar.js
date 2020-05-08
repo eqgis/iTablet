@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
-import { ListSeparator } from '../../../../components'
+import { ListSeparator, MTBtn } from '../../../../components'
 import { ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
-import MT_Btn from '../../../../components/mapTools/MT_Btn'
 import { getLanguage } from '../../../../language/index'
 import { getThemeAssets } from '../../../../assets'
 
@@ -182,7 +181,7 @@ export default class MapToolbar extends React.Component {
 
   _renderItem = ({ item, index }) => {
     return (
-      <MT_Btn
+      <MTBtn
         key={item.key}
         title={item.title}
         textColor={'#505050'}

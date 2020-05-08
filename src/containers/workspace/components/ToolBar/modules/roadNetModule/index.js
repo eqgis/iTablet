@@ -18,6 +18,9 @@ class RoadNetModule extends FunctionModule {
   action = async () => {
     const _params = ToolbarModule.getParams()
     let data = await RoadNetData.getData()
+    const mapDatasource = data[0]
+    const mapDataset = data[1]
+
     const selectedDatas = _params.getNavigationDatas()
     let {
       selectedDatasets,
@@ -25,38 +28,48 @@ class RoadNetModule extends FunctionModule {
       currentDatasource,
       currentDataset,
     } = selectedDatas
-    const mapDatasource = data[0]
-    const mapDataset = data[1]
-    mapDatasource.data.map(item => {
-      selectedDatasources &&
-        selectedDatasources.map(ds => {
-          if (item.name === ds.name) {
-            item.selected = true
-          }
-        })
-    })
-    mapDataset.data.map(item => {
-      selectedDatasets &&
-        selectedDatasets.map(dt => {
-          if (item.name === dt.name) {
-            item.selected = true
-          }
-        })
-    })
-    if (selectedDatasets.length === 0 && selectedDatasources.length === 0) {
-      mapDatasource.data[0].selected = true
-      mapDataset.data[0].selected = true
-      selectedDatasets = JSON.parse(JSON.stringify([mapDataset.data[0]]))
-      selectedDatasources = JSON.parse(JSON.stringify([mapDatasource.data[0]]))
+    if (mapDatasource.data.length === 0 && mapDataset.data.length === 0) {
+      NavigationService.navigate('NavigationDataChangePage', {
+        data,
+        selectedDatasets,
+        selectedDatasources,
+        currentDatasource,
+        currentDataset,
+      })
+    } else {
+      mapDatasource.data.map(item => {
+        selectedDatasources &&
+          selectedDatasources.map(ds => {
+            if (item.name === ds.name) {
+              item.selected = true
+            }
+          })
+      })
+      mapDataset.data.map(item => {
+        selectedDatasets &&
+          selectedDatasets.map(dt => {
+            if (item.name === dt.name) {
+              item.selected = true
+            }
+          })
+      })
+      if (selectedDatasets.length === 0 && selectedDatasources.length === 0) {
+        mapDatasource.data[0].selected = true
+        mapDataset.data[0].selected = true
+        selectedDatasets = JSON.parse(JSON.stringify([mapDataset.data[0]]))
+        selectedDatasources = JSON.parse(
+          JSON.stringify([mapDatasource.data[0]]),
+        )
+      }
+      data = [mapDatasource, mapDataset]
+      NavigationService.navigate('NavigationDataChangePage', {
+        data,
+        selectedDatasets: JSON.parse(JSON.stringify(selectedDatasets)),
+        selectedDatasources: JSON.parse(JSON.stringify(selectedDatasources)),
+        currentDatasource: JSON.parse(JSON.stringify(currentDatasource)),
+        currentDataset: JSON.parse(JSON.stringify(currentDataset)),
+      })
     }
-    data = [mapDatasource, mapDataset]
-    NavigationService.navigate('NavigationDataChangePage', {
-      data,
-      selectedDatasets: JSON.parse(JSON.stringify(selectedDatasets)),
-      selectedDatasources: JSON.parse(JSON.stringify(selectedDatasources)),
-      currentDatasource: JSON.parse(JSON.stringify(currentDatasource)),
-      currentDataset: JSON.parse(JSON.stringify(currentDataset)),
-    })
   }
 }
 

@@ -7,13 +7,14 @@ import {
   Platform,
   Animated,
 } from 'react-native'
-import {scaleSize, screen, setSpText} from '../../../../utils'
+import { scaleSize, screen, setSpText } from '../../../../utils'
 import styles from './styles'
 import { TouchType } from '../../../../constants'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
+const HEADER_HEIGHT = TOOLBARHEIGHT + scaleSize(205)
 export default class NavigationStartHead extends React.Component {
   props: {
     device: Object,
@@ -24,19 +25,23 @@ export default class NavigationStartHead extends React.Component {
     super(props)
     this.state = {
       show: false,
-      width: props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(screen.getScreenWidth(props.device.orientation) / 2)
-        : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
+      width:
+        props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(
+            screen.getScreenWidth(props.device.orientation) / 2,
+          )
+          : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
     }
   }
-  componentDidUpdate(prevProps){
-    if(prevProps.device.orientation !== this.props.device.orientation){
-      let width = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? screen.getScreenWidth(this.props.device.orientation) / 2
-        : screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.state.width,{
-        toValue:width,
-        duration:300,
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      let width =
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? screen.getScreenWidth(this.props.device.orientation) / 2
+          : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.state.width, {
+        toValue: width,
+        duration: 300,
       }).start()
     }
   }
@@ -48,12 +53,20 @@ export default class NavigationStartHead extends React.Component {
   close = async () => {
     await SMap.clearTrackingLayer()
     this.setVisible(false)
+    let { orientation } = this.props.device
     GLOBAL.NAVIGATIONSTARTBUTTON.setState({
       show: false,
-      isroad: true,
+      isroad: orientation.indexOf('LANDSCAPE') !== 0,
+      isLandScape: orientation.indexOf('LANDSCAPE') === 0,
       road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
-      height: new Animated.Value(scaleSize(200)),
+      height:
+        orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(
+            screen.getScreenHeight(orientation) - HEADER_HEIGHT,
+          )
+          : new Animated.Value(scaleSize(200)),
       length: '',
+      path: [],
     })
     GLOBAL.toolBox.existFullMap()
     this.props.setMapNavigation({
@@ -117,7 +130,7 @@ export default class NavigationStartHead extends React.Component {
           style={{
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
-            width:this.state.width,
+            width: this.state.width,
             backgroundColor: '#303030',
             // backgroundColor: '#ebebeb',
             flexDirection: 'row',

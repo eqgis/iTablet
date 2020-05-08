@@ -42,14 +42,9 @@ export default class CreateNavDataPage extends Component {
       selectedDataset: {},
       selectedDatasource: {},
     }
-    this.maxWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation) * 0.45,
-        )
-        : new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation),
-        )
+    this.maxWidth = new Animated.Value(
+      screen.getScreenWidth(this.props.device.orientation),
+    )
     this.maxHeight =
       screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
   }
@@ -70,10 +65,7 @@ export default class CreateNavDataPage extends Component {
     if (prevProps.device.orientation !== this.props.device.orientation) {
       this.maxHeight =
         screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
-      let maxWidth =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-          : screen.getScreenWidth(this.props.device.orientation)
+      let maxWidth = screen.getScreenWidth(this.props.device.orientation)
       Animated.timing(this.maxWidth, {
         toValue: maxWidth,
         duration: 300,

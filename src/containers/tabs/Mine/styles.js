@@ -201,7 +201,7 @@ export default StyleSheet.create({
   logoImagStyle: {
     width: fixedSize(100),
     height: fixedSize(100),
-    marginBottom: fixedSize(30),
+    marginTop: fixedSize(20),
     marginHorizontal: fixedSize(10),
   },
 })

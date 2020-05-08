@@ -16,7 +16,7 @@ import {
   ThemeType,
   SMap,
 } from 'imobile_for_reactnative'
-import { ConstToolType, Height, ChunkType } from '../../../../constants'
+import { Height, ChunkType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import TPData from './TPData'
@@ -24,6 +24,10 @@ const IMAGE_SIZE = scaleSize(25)
 const MARGIN = scaleSize(30)
 
 // TODO TouchProgress待重构
+//  module的action中需要以下三个方法 参考markModule
+//  getTouchProgressInfo,
+//   setTouchProgressInfo,
+//   getTouchProgressTips,
 export default class TouchProgress extends Component {
   props: {
     language: string,
@@ -66,6 +70,8 @@ export default class TouchProgress extends Component {
       onPanResponderTerminate: this._handlePanResponderEnd,
     })
     // this._initStatusBarVisible()
+    this.range = [0, 100] //进度条范围默认值
+    this.step = 1 //进度条步长默认值
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -127,11 +133,12 @@ export default class TouchProgress extends Component {
     this.backLine && this.backLine.setNativeProps(this._BackLine)
   }
 
+  //初始化时去对应Toolbar的module找getTouchProgressInfo这个方法 获取信息
   _initialization = async value => {
     let layerType = this.props.currentLayer.type
     let themeType = this.props.currentLayer.themeType
     let isHeatmap = this.props.currentLayer.isHeatmap
-    let event = ToolbarModule.getData().event
+    const _data = ToolbarModule.getData()
 
     let progressWidth = this.getWidthByOrientation() - MARGIN * 2
     let panBtnDevLeft = MARGIN - IMAGE_SIZE / 2 // 图片相对左边偏差
@@ -755,131 +762,16 @@ export default class TouchProgress extends Component {
         }
       }
     }
-    if (
-      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
-      (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET)
-    ) {
-      if (
-        this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH ||
-        this.props.selectName ===
-          getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH
-      ) {
-        let lineWidth = await SMap.getTaggingLineWidth(
-          event.layerInfo.path,
-          event.id,
-        )
-        this._panBtnStyles.style.left =
-          (lineWidth * progressWidth) / 20 + panBtnDevLeft
-        this._previousLeft = (lineWidth * progressWidth) / 20
-        this._BackLine.style.width = (lineWidth * progressWidth) / 20
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-          '     ' +
-          parseInt(lineWidth) +
-          'mm'
-      } else if (
-        this.props.selectName ===
-        getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE
-      ) {
-        let pointSize = await SMap.getTaggingMarkerSize(
-          event.layerInfo.path,
-          event.id,
-        )
-        this._panBtnStyles.style.left =
-          (pointSize * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (pointSize * progressWidth) / 100
-        this._BackLine.style.width = (pointSize * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-          '     ' +
-          parseInt(pointSize) +
-          'mm'
-      } else if (
-        this.props.selectName ===
-        getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION
-      ) {
-        let pointAngle = await SMap.getTaggingAngle(
-          event.layerInfo.path,
-          event.id,
-        )
-        this._panBtnStyles.style.left =
-          (pointAngle * progressWidth) / 360 + panBtnDevLeft
-        this._previousLeft = (pointAngle * progressWidth) / 360
-        this._BackLine.style.width = (pointAngle * progressWidth) / 360
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-          '     ' +
-          parseInt(pointAngle) +
-          '°'
-      } else if (
-        this.props.selectName ===
-        getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY
-      ) {
-        let pointAlpha = await SMap.getTaggingAlpha(
-          event.layerInfo.path,
-          event.id,
-        )
-        this._panBtnStyles.style.left =
-          (pointAlpha * progressWidth) / 100 + panBtnDevLeft
-        this._previousLeft = (pointAlpha * progressWidth) / 100
-        this._BackLine.style.width = (pointAlpha * progressWidth) / 100
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-          '     ' +
-          parseInt(pointAlpha) +
-          '%'
-      } else if (
-        this.props.selectName ===
-        getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE
-      ) {
-        let value = await SMap.getTaggingTextSize(
-          event.layerInfo.path,
-          event.id,
-        )
-        if (value <= 1) {
-          value = 1
-        } else if (value > 20) {
-          value = 20
-        }
-        this._panBtnStyles.style.left =
-          (value * progressWidth) / 20 + panBtnDevLeft
-        this._previousLeft = (value * progressWidth) / 20
-        this._BackLine.style.width = (value * progressWidth) / 20
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-          '     ' +
-          parseInt(value)
-      } else if (this.props.selectName === 'TEXT_ROTATION') {
-        let angle = await SMap.getTaggingTextAngle(
-          event.layerInfo.path,
-          event.id,
-        )
-        this._panBtnStyles.style.left =
-          (angle * progressWidth) / 360 + panBtnDevLeft
-        this._previousLeft = (angle * progressWidth) / 360
-        this._BackLine.style.width = (angle * progressWidth) / 360
-        tips =
-          getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-          '     ' +
-          parseInt(angle) +
-          '°'
-      }
+    if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+      let data = await _data.actions?.getTouchProgressInfo()
+      let { value, range, step } = data
+      this._panBtnStyles.style.left =
+        (value * progressWidth) / range[1] + panBtnDevLeft
+      this._previousLeft = (value * progressWidth) / range[1]
+      this._BackLine.style.width = (value * progressWidth) / range[1]
+      tips = data.tips
+      this.range = range
+      this.step = step
     }
 
     if (tips !== this.state.tips) {
@@ -979,49 +871,8 @@ export default class TouchProgress extends Component {
       ) {
         newValue = value * 200
       }
-    } else if (
-      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
-      (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET)
-    ) {
-      switch (this.props.selectName) {
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-          newValue = value * 20
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-          newValue = value * 100
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION:
-        case 'TEXT_ROTATION':
-          newValue = value * 360
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-          newValue = value * 100
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE:
-          newValue = value * 20
-          if (newValue <= 1) {
-            newValue = 1
-          } else if (newValue > 20) {
-            newValue = 20
-          }
-          break
-      }
+    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+      newValue = value * this.range[1]
     } else if (
       this.props.selectName ===
         getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN ||
@@ -1170,10 +1021,10 @@ export default class TouchProgress extends Component {
    * @param value
    */
   setData = async value => {
+    const _data = ToolbarModule.getData()
     let layerType = this.props.currentLayer.type
     let themeType = this.props.currentLayer.themeType
     let tips = ''
-    let event = ToolbarModule.getData().event
 
     if (
       this.props.selectName ===
@@ -1260,103 +1111,11 @@ export default class TouchProgress extends Component {
         getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
         '     ' +
         parseInt(value)
-    } else if (
-      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
-      (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET)
-    ) {
-      switch (this.props.selectName) {
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-          await SMap.setTaggingLineWidth(value, event.layerInfo.path, event.id)
-          if (value <= 1) {
-            value = 1
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-            '     ' +
-            parseInt(value) +
-            'mm'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-          await SMap.setTaggingMarkerSize(value, event.layerInfo.path, event.id)
-          if (value < 1) {
-            value = 1
-          } else if (value > 100) {
-            value = 100
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-            '     ' +
-            parseInt(value) +
-            'mm'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION:
-          await SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
-          if (value < 0) {
-            value = 0
-          } else if (value > 360) {
-            value = 360
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-            '     ' +
-            parseInt(value) +
-            '°'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-          await SMap.setTaggingAlpha(value, event.layerInfo.path, event.id)
-          if (value < 0) {
-            value = 0
-          } else if (value >= 100) {
-            value = 100
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-            '     ' +
-            parseInt(value) +
-            '%'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE:
-          await SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
-          if (value <= 1) {
-            value = 1
-          } else if (value > 20) {
-            value = 20
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-            '     ' +
-            parseInt(value)
-          break
-        case 'TEXT_ROTATION':
-          await SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
-          if (value < 0) {
-            value = 0
-          } else if (value > 360) {
-            value = 360
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-            '     ' +
-            parseInt(value) +
-            '°'
-          break
-      }
+    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+      if (value < this.range[0]) value = this.range[0]
+      if (value > this.range[1]) value = this.range[1]
+      _data.actions?.setTouchProgressInfo(value)
+      tips = _data.actions?.getTouchProgressTips(value)
     } else if (
       this.props.selectName instanceof Array &&
       (this.props.selectName[this.props.selectName.length - 1] ===
@@ -1788,6 +1547,7 @@ export default class TouchProgress extends Component {
    * @param value
    */
   setTips = value => {
+    const _data = ToolbarModule.getData()
     let layerType = this.props.currentLayer.type
     let tips = ''
 
@@ -2210,97 +1970,10 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if (
-      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
-      (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET)
-    ) {
-      switch (this.props.selectName) {
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-          if (value <= 1) {
-            value = 1
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-            '     ' +
-            parseInt(value) +
-            'mm'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-          if (value < 1) {
-            value = 1
-          } else if (value > 100) {
-            value = 100
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-            '     ' +
-            parseInt(value) +
-            'mm'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION:
-          if (value < 0) {
-            value = 0
-          } else if (value > 360) {
-            value = 360
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-            '     ' +
-            parseInt(value) +
-            '°'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-          if (value < 0) {
-            value = 0
-          } else if (value >= 100) {
-            value = 100
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-            '     ' +
-            parseInt(value) +
-            '%'
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE:
-          if (value <= 1) {
-            value = 1
-          } else if (value > 20) {
-            value = 20
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-            '     ' +
-            parseInt(value)
-          break
-        case 'TEXT_ROTATION':
-          if (value < 0) {
-            value = 0
-          } else if (value > 360) {
-            value = 360
-          }
-          tips =
-            getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-            '     ' +
-            parseInt(value) +
-            '°'
-          break
-      }
+    if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+      if (value < this.range[0]) value = this.range[0]
+      if (value > this.range[1]) value = this.range[1]
+      tips = _data.actions?.getTouchProgressTips(value)
     }
 
     if (tips !== this.state.tips) {
@@ -2329,44 +2002,8 @@ export default class TouchProgress extends Component {
       ) {
         newValue = (value + 100) / 200
       }
-    } else if (
-      ToolbarModule.getData().type === ConstToolType.MAP_MARKS &&
-      (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION ||
-        GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT ||
-        GLOBAL.MapToolType ===
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET)
-    ) {
-      switch (this.props.selectName) {
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-          newValue = value / 20
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-          newValue = value / 100
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_ROTATION:
-        case 'TEXT_ROTATION':
-          newValue = value / 360
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-          newValue = value / 100
-          break
-        case getLanguage(this.props.language).Map_Main_Menu.STYLE_FONT_SIZE:
-          newValue = value / 20
-          break
-      }
+    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+      newValue = value / this.range[1]
     } else if (
       this.props.selectName ===
       getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN

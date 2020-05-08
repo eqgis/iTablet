@@ -122,7 +122,6 @@ function commit() {
   SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
-  SMap.setIsMagnifierEnabled(false)
   let layers = _params.layers.layers
   let currentLayer = _params.layers.currentLayer
   layers.map(layer => SMap.setLayerSelectable(layer.path, false))

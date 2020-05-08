@@ -41,6 +41,9 @@ const btn_increment_change_type = require('./btn_increment_change_type.png')
 
 const increment_indoor = require('./increment_indoor.png')
 const increment_outdoor = require('./increment_outdoor.png')
+
+const icon_datasource = require('./icon_datasource.png')
+const icon_datasource_white = require('./icon_datasource_white.png')
 //customView btns
 const icon_increment_delete = require('./icon_increment_delete.png')
 const icon_increment_delete_white = require('./icon_increment_delete_white.png')
@@ -110,6 +113,9 @@ export default {
   icon_increment_rename_white,
   increment_indoor,
   increment_outdoor,
+
+  icon_datasource,
+  icon_datasource_white,
 
   btn_increment_change_type,
   icon_increment_add_node,

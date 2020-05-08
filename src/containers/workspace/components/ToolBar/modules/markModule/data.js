@@ -1,41 +1,26 @@
-import ToolbarBtnType from '../../ToolbarBtnType'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import ToolbarModule from '../ToolbarModule'
 
+const showAction = (type, params) => {
+  const _params = ToolbarModule.getParams()
+  const _data = ToolbarModule.getData()
+  _data.actions?.menu()
+  _params.setToolbarVisible(true, type, {
+    ...params,
+  })
+}
 const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '符号线',
     action: () => {
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 4
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 8
-      // }
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE,
-          {
-            containerType: ToolbarType.symbol,
-            isFullScreen: false,
-            // column,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-            selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE, {
+        containerType: ToolbarType.symbol,
+        isFullScreen: false,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '符号线',
@@ -45,19 +30,13 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_WIDTH, {
+        isFullScreen: true,
+        showMenuDialog: false,
+        isTouchProgress: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
+      })
     },
     // 线宽
     selectName: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
@@ -66,34 +45,12 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 8
-      // } else {
-      //   height = ConstToolType.HEIGHT[2]
-      //   column = 12
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            // column,
-            isFullScreen: false,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET, {
+        containerType: ToolbarType.colorTable,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+      })
     },
     selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
@@ -104,35 +61,12 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 4
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 8
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT,
-          {
-            containerType: ToolbarType.symbol,
-            isFullScreen: false,
-            // column,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
-            selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT, {
+        containerType: ToolbarType.symbol,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
+        selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
+      })
     },
     selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
@@ -140,19 +74,13 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_SIZE, {
+        isFullScreen: true,
+        showMenuDialog: false,
+        isTouchProgress: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
+      })
     },
     selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
@@ -160,35 +88,12 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 8
-      // } else {
-      //   height = ConstToolType.HEIGHT[2]
-      //   column = 12
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            // column,
-            isFullScreen: false,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET, {
+        containerType: ToolbarType.colorTable,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+      })
     },
     selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
@@ -196,38 +101,26 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_ROTATION, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
   },
@@ -238,252 +131,126 @@ const region = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '面符号',
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 4
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 8
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION,
-          {
-            containerType: ToolbarType.symbol,
-            isFullScreen: false,
-            // column,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION, {
+        containerType: ToolbarType.symbol,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
-    // '面符号',
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 8
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 12
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            // column,
-            isFullScreen: false,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET, {
+        containerType: ToolbarType.colorTable,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 8
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 12
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            // column,
-            isFullScreen: false,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET, {
+        containerType: ToolbarType.colorTable,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
+      })
     },
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
   },
 ]
 
 const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT,
-    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[2]
-      //   column = 4
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[2]
-      //   column = 8
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT,
-          {
-            isFullScreen: false,
-            // column,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT, {
+        containerType: ToolbarType.table,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+      })
     },
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
-    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-          selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
-          selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+      })
     },
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
   },
   {
-    key: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
-    selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+    key: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
-          isTouchProgress: true,
-          showMenuDialog: false,
-          buttons: [
-            ToolbarBtnType.TOOLBAR_BACK,
-            ToolbarBtnType.MENU,
-            ToolbarBtnType.MENU_FLEX,
-            ToolbarBtnType.TOOLBAR_COMMIT,
-          ],
-          selectName: 'TEXT_ROTATION',
-          selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
-        })
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION, {
+        isTouchProgress: true,
+        showMenuDialog: false,
+        isFullScreen: true,
+        selectName: 'TEXT_ROTATION',
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
+      })
     },
+    selectName: 'TEXT_ROTATION',
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
   },
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-    selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      // let height
-      // let column
-      // if (orientation.indexOf('PORTRAIT') >= 0) {
-      //   height = ConstToolType.THEME_HEIGHT[3]
-      //   column = 8
-      // } else {
-      //   height = ConstToolType.TOOLBAR_HEIGHT_2[3]
-      //   column = 12
-      // }
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(
-          true,
-          ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET,
-          {
-            containerType: ToolbarType.colorTable,
-            // column,
-            isFullScreen: false,
-            // height,
-            buttons: [
-              ToolbarBtnType.TOOLBAR_BACK,
-              ToolbarBtnType.MENU,
-              ToolbarBtnType.MENU_FLEX,
-              ToolbarBtnType.TOOLBAR_COMMIT,
-            ],
-            selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
-          },
-        )
+      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET, {
+        containerType: ToolbarType.colorTable,
+        isFullScreen: false,
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+        selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+      })
     },
+    selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
   },
 ]
 

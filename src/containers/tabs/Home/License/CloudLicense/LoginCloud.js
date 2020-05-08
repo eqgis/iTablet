@@ -5,7 +5,6 @@ import { getLanguage } from '../../../../../language'
 import { Toast } from '../../../../../utils'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
-import NavigationService from '../../../../NavigationService'
 import { connect } from 'react-redux'
 import { setCloudLicenseUser } from '../../../../../redux/models/license'
 
@@ -69,7 +68,7 @@ class LoginCloud extends Component {
       result = {}
     }
     this.container && this.container.setLoading(false)
-    NavigationService.navigate('LicenseJoinCloud', {
+    this.props.navigation.navigate('LicenseJoinCloud', {
       licenseInfo: result,
     })
   }

@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import RadioGroup from './RadioGroup'
 import Radio from './Radio'
 import ChooseNumber from './ChooseNumber'
@@ -15,25 +15,25 @@ import { Input } from '../../components'
 
 export default class Row extends PureComponent {
   props: {
-    style?: StyleSheet,
-    titleStyle?: StyleSheet,
-    customRightStyle?: StyleSheet,
-    title: string,
-    defaultValue?: any,
-    customRgihtView?: any,
-    type?: string,
-    inputType?: string,
-    value?: any,
-    radioArr?: Array,
-    radioColumn?: number,
-    separatorHeight?: number,
-    minValue?: number,
-    maxValue?: number,
-    getValue?: () => {},
-    commonDifference?: number,
-    times?: number,
-    unit?: string,
-    disable?: boolean,
+    style?: Object, // 自定义Row样式
+    titleStyle?: Object, // 左侧文字样式
+    customRightStyle?: Object, // 右侧内容样式
+    title: string, // 左侧文字
+    defaultValue?: any, // 默认值
+    customRightView?: any, // 自定义右侧内容
+    type?: string, // Row.Type
+    inputType?: string, // Row.InputType
+    value?: any, // 值
+    radioArr?: Array, // 单选框组[{title, value}]
+    radioColumn?: number, // 单选框组列数
+    separatorHeight?: number, // 单选框行间隔
+    minValue?: number, // CHOOSE_NUMBER 最小值
+    maxValue?: number, // CHOOSE_NUMBER 最大值
+    commonDifference?: number, // CHOOSE_NUMBER 公差，值之间差值
+    times?: number, // CHOOSE_NUMBER 倍数
+    unit?: string, // CHOOSE_NUMBER 单位
+    getValue?: () => {}, // 获取值的回调
+    disable?: boolean, // 是否可操作
   }
 
   static defaultProps = {
@@ -79,8 +79,8 @@ export default class Row extends PureComponent {
 
   renderRight = () => {
     let right = <View />
-    if (this.props.customRgihtView) {
-      right = this.props.customRgihtView
+    if (this.props.customRightView) {
+      right = this.props.customRightView
     } else if (this.props.type === 'input') {
       right = (
         <View style={styles.inputView}>
@@ -184,16 +184,17 @@ export default class Row extends PureComponent {
 }
 
 Row.Type = {
-  INPUT: 'input',
-  INPUT_WRAP: 'input_wrap',
-  RADIO: 'radio',
-  RADIO_GROUP: 'radio_group',
-  CHOOSE_NUMBER: 'choose_number',
-  CHOOSE_COLOR: 'choose_color',
-  TEXT_BTN: 'text_btn',
+  INPUT: 'input', // 普通输入框
+  INPUT_WRAP: 'input_wrap', // 含删除输入框Input
+  RADIO: 'radio', // 一个单选框
+  RADIO_GROUP: 'radio_group', // 多个单选框
+  CHOOSE_NUMBER: 'choose_number', // 含数字增减按钮
+  CHOOSE_COLOR: 'choose_color', // 色板
+  TEXT_BTN: 'text_btn', // 文字按钮
 }
 
+// 输入框内容，键盘类型
 Row.InputType = {
-  NUMERIC: 'numeric',
-  DEFAULT: 'default',
+  NUMERIC: 'numeric', // 数字键盘
+  DEFAULT: 'default', // 默认
 }

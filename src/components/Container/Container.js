@@ -25,25 +25,24 @@ const AnimatedView = Animated.View
 
 export default class Container extends Component {
   props: {
-    style?: StyleSheet,
-    titleStyle?: StyleSheet,
-    children: any,
-    title: string,
-    header: any,
-    bottomBar: any,
-    withoutHeader: boolean,
-    headerProps: Object,
-    bottomProps: Object,
-    navigation: Object,
-    initWithLoading: boolean,
-    dialogInfo: boolean,
-    scrollable: boolean,
-    showFullInMap: boolean,
-    blankOpacity: Number,
-    hideInBackground: boolean,
-    orientation: String,
-    onOverlayPress: () => {},
-    isOverlayBefore: boolean,
+    style?: StyleSheet, // 自定义内容样式
+    children: any, // Component自带属性，子组件
+    header?: any, // 自定义导航栏
+    bottomBar?: any, // 自定义底部栏
+    withoutHeader?: boolean, // 设置没有导航栏
+    headerProps?: Object, // 导航栏属性（参照Header.js）
+    bottomProps?: Object, // {type: 'fix'} 底部栏和内容是同一级的
+    // 若不是fix，则底部栏是压盖在内容上的
+    navigation: Object, // react-navigation的导航
+    initWithLoading?: boolean, // 初始化显示加载
+    dialogInfo?: boolean, // 加载的文字
+    scrollable?: boolean, // 内容是ScrollView或者View
+    showFullInMap?: boolean, // 横屏时，地图上层界面是否显示半屏
+    blankOpacity?: Number, // 横屏时，半屏遮罩透明度
+    hideInBackground?: boolean, // 在mapview和map3d中,StackNavigator中有新页面时是否隐藏本页面
+    orientation?: String, // redux中的实时横竖屏数据
+    onOverlayPress?: () => {}, // 横屏时，半屏遮罩点击事件
+    isOverlayBefore?: boolean, // 横屏是，遮罩的位置，true为左，反之为右
   }
 
   static defaultProps = {

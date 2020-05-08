@@ -11,7 +11,6 @@ import { getPublicAssets } from '../assets'
 export default class CheckBox extends React.Component {
   props: {
     onChange: () => {},
-    checkStatus: string,
     style?: Object,
     imgStyle?: Object,
     disable?: boolean,
@@ -38,7 +37,7 @@ export default class CheckBox extends React.Component {
     if (
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
-      (this.props.checked != undefined &&
+      (this.props.checked !== undefined &&
         nextProps.checked !== this.state.checked)
     ) {
       if (
@@ -53,7 +52,7 @@ export default class CheckBox extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.isPropsEdit && this.props.checked != undefined) {
+    if (this.isPropsEdit && this.props.checked !== undefined) {
       this.setState({
         checked: this.props.checked,
       })

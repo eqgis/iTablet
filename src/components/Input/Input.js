@@ -18,22 +18,22 @@ export default class Input extends PureComponent {
   props: {
     accessible?: boolean,
     accessibilityLabel?: string,
-    showClear?: boolean,
-    isKeyboardAvoiding?: boolean,
-    behavior?: string,
-    style?: Object,
-    inputStyle?: Object,
-    placeholder: string,
-    value: string,
-    defaultValue: string,
-    keyboardAppearance: string,
-    returnKeyType?: string,
-    placeholderTextColor?: string,
-    keyboardType?: string,
-    textContentType?: string,
-    secureTextEntry?: boolean,
-    onChangeText?: () => {},
-    onClear?: () => {},
+    showClear?: boolean, // 显示清除按钮
+    isKeyboardAvoiding?: boolean, // 是否使用KeyboardAvoidingView键盘
+    behavior?: string, // ReactNative KeyboardAvoidingView
+    style?: Object, // Input样式
+    inputStyle?: Object, // 自定义输入框样式
+    placeholder?: string, // 占位符
+    value?: string, // 输入框值
+    defaultValue?: string, // 输入框默认值
+    keyboardAppearance?: string, // 键盘颜色
+    returnKeyType?: string, // 返回键类型
+    placeholderTextColor?: string, // 占位符颜色
+    keyboardType?: string, // 弹出键盘类型
+    textContentType?: string, // iOS输入内容类型，eg：password
+    secureTextEntry?: boolean, // 密码
+    onChangeText?: () => {}, // 输入回调
+    onClear?: () => {}, // 自定义清除事件
   }
 
   static defaultProps = {

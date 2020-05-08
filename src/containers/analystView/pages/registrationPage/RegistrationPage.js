@@ -266,7 +266,7 @@ export default class RegistrationPage extends Component {
           position: 'absolute',
           alignContent: 'center',
           top: '10%',
-          right: scaleSize(30),
+          right: scaleSize(20),
           marginBottom: 'auto',
           marginTop: 'auto',
           height: scaleSize(320),
@@ -281,7 +281,7 @@ export default class RegistrationPage extends Component {
       >
         <TouchableOpacity
           style={{
-            width: scaleSize(100),
+            width: scaleSize(80),
             height: scaleSize(100),
             alignItems: 'center',
             marginTop: scaleSize(20),
@@ -312,7 +312,7 @@ export default class RegistrationPage extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            width: scaleSize(100),
+            width: scaleSize(80),
             height: scaleSize(100),
             alignItems: 'center',
           }}
@@ -340,7 +340,7 @@ export default class RegistrationPage extends Component {
 
         <TouchableOpacity
           style={{
-            width: scaleSize(100),
+            width: scaleSize(80),
             height: scaleSize(100),
             alignItems: 'center',
           }}
@@ -410,7 +410,11 @@ export default class RegistrationPage extends Component {
     for (let i = 0; i < length; i++) {
       let _originalPoint = originalPoints.length > i ? originalPoints[i] : null
       let _targetPoint = targetPoints.length > i ? targetPoints[i] : null
-      let point = { originalPoint: _originalPoint, targetPoint: _targetPoint }
+      let point = {
+        originalPoint: _originalPoint,
+        targetPoint: _targetPoint,
+        index: i,
+      }
       pointsData.push(point)
     }
     return pointsData
@@ -495,6 +499,15 @@ export default class RegistrationPage extends Component {
     })
   }
 
+  removePoint = index => {
+    SRectifyView.removeControlPoint(index)
+    let _showPointsData = this.state.showPointsData
+    _showPointsData.splice(index, 1)
+    this.setState({
+      showPointsData: _showPointsData,
+    })
+  }
+
   clearNoNum = value => {
     value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
     value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
@@ -537,20 +550,37 @@ export default class RegistrationPage extends Component {
             {getLanguage(global.language).Analyst_Labels.REGISTRATION_ENUMBER +
               (index + 1)}
           </Text>
-          <TextBtn
-            btnText={
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_RESELECT_POINT
-            }
-            textStyle={{
-              fontSize: scaleSize(24),
-              color: color.blue1,
+          <View
+            style={{
+              flexDirection: 'row',
             }}
-            // btnClick={this.reselcetPoint}
-            btnClick={() => {
-              this.reselcetPoint(index)
-            }}
-          />
+          >
+            <TextBtn
+              btnText={getLanguage(global.language).Analyst_Labels.DELETE}
+              textStyle={{
+                fontSize: scaleSize(24),
+                color: color.blue1,
+              }}
+              btnClick={() => {
+                this.removePoint(index)
+              }}
+            />
+
+            <TextBtn
+              btnText={
+                getLanguage(global.language).Analyst_Labels
+                  .REGISTRATION_RESELECT_POINT
+              }
+              textStyle={{
+                fontSize: scaleSize(24),
+                color: color.blue1,
+                marginLeft: scaleSize(15),
+              }}
+              btnClick={() => {
+                this.reselcetPoint(index)
+              }}
+            />
+          </View>
         </View>
         <View style={styles.lineStyle} />
         <View style={styles.detalSubItemView}>

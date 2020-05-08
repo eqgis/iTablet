@@ -5,7 +5,7 @@ import { color } from '../../styles'
 import PropTypes from 'prop-types'
 import Pop_Btn from './Pop_Btn'
 import PopTextBtn from './PopTextBtn'
-import MTBtn from './MT_Btn'
+import MTBtn from '../Button/MTBtn'
 
 const WIDTH = constUtil.WIDTH
 const SEPATATOR_WIDTH = 1
@@ -250,8 +250,7 @@ export default class Pop_BtnSectionList extends React.Component {
         {this.props.currentOperation && this.props.subPopShow ? (
           <View style={styles.subContainer}>
             {this.props.subLeft}
-            {operations &&
-              operations.length > 0 && (
+            {operations && operations.length > 0 && (
               <FlatList
                 ref={ref => (this.gridList = ref)}
                 style={styles.operationsListView}

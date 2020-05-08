@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import * as Util from '../../utils/constUtil'
 import PropTypes from 'prop-types'
-import MT_Btn from './MT_Btn'
+import MTBtn from '../Button/MTBtn'
 
 const WIDTH = Util.WIDTH
 const ITEM_HEIGHT = 0.75 * 1.4 * 0.1 * WIDTH
@@ -87,7 +87,7 @@ export default class Map_Tools extends React.Component {
         : ITEM_WIDTH
     return (
       <View style={[styles.item, { width: width }]}>
-        <MT_Btn title={key} image={image} btnClick={btnClick} />
+        <MTBtn title={key} image={image} btnClick={btnClick} />
       </View>
     )
   }

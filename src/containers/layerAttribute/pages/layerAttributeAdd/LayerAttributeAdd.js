@@ -451,7 +451,7 @@ export default class LayerAttributeAdd extends React.Component {
           title={getLanguage(global.language).Map_Attribute.TYPE}
           defaultValue={this.state.type}
           disable={this.state.isEdit}
-          customRgihtView={
+          customRightView={
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -485,7 +485,7 @@ export default class LayerAttributeAdd extends React.Component {
           key={'长度'}
           type={Row.Type.TEXT_BTN}
           title={getLanguage(global.language).Map_Attribute.LENGTH}
-          customRgihtView={
+          customRightView={
             <View
               style={{
                 paddingHorizontal: scaleSize(15),

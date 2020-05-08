@@ -15,17 +15,15 @@ import styles from './styles'
  */
 export default class TableList extends React.Component {
   props: {
-    type: string,
-    data: Array,
-    // numColumns?: number,
-    lineSeparator?: number,
-    style?: Object,
-    cellStyle?: Object,
-    rowStyle?: Object,
-    renderCell: () => {},
-    type?: string,
-    device?: string,
-    isAutoType?: Boolean,
+    data: Array, // 数据
+    lineSeparator?: number, // 行间距
+    style?: Object, // 表格样式
+    cellStyle?: Object, // Cell样式
+    rowStyle?: Object, // 行样式
+    renderCell: () => {}, // 自定义Cell， 必填
+    type?: string, // normal 固定 | scroll 滚动
+    device?: string, // 设备信息
+    isAutoType?: Boolean, // 是否根据个数，自适应滚动或固定表格
     column?: number, // 列数
     numberOfRows?: number, // 行数限制
   }

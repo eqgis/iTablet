@@ -340,17 +340,17 @@ export default class LayerAttributeTable extends React.Component {
       this.setState(state => {
         // copy the map rather than modifying state.
         const selected = new Map(state.selected)
-        const target = selected.get(item.data[0].value)
-        if (!this.props.multiSelect && !target) {
-          // 多选或者点击已选行
-          selected.clear()
-        }
 
         let data = item.data[0]
         if (
           data.name === getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
         ) {
           data = item.data[1]
+        }
+        const target = selected.get(data.value)
+        if (!this.props.multiSelect && !target) {
+          // 多选或者点击已选行
+          selected.clear()
         }
 
         selected.set(data.value, !target) // toggle

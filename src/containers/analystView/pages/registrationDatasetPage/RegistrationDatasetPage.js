@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Container, LinkageList, Button } from '../../../../components'
+import { Container, LinkageList, Button, TextBtn } from '../../../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, Toast } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { View } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
@@ -56,11 +56,32 @@ export default class RegistrationDatasetPage extends Component {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
-  confirm() {
-    GLOBAL.RectifyDatasetInfo = GLOBAL.RegistrationLinkageList.getSelectData()
-    NavigationService.navigate('RegistrationReferDatasetPage')
+  getRectifyDatasetInfoLength(rectifyDatasetInfo) {
+    let count = 0
+    let datasourceLength = rectifyDatasetInfo.length
+    for (let i = 0; i < datasourceLength; i++) {
+      count += rectifyDatasetInfo[i].data.length
+    }
+    return count
   }
 
+  confirm = () => {
+    let _rectifyDatasetInfo = GLOBAL.RegistrationLinkageList.getSelectData()
+    let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
+    if (length > 0) {
+      GLOBAL.RectifyDatasetInfo = _rectifyDatasetInfo
+      NavigationService.navigate('RegistrationReferDatasetPage')
+    } else {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels
+          .REGISTRATION_NOT_SETLECT_DATASET,
+      )
+    }
+  }
+
+  exit() {
+    NavigationService.goBack()
+  }
   render() {
     return (
       <Container
@@ -71,6 +92,13 @@ export default class RegistrationDatasetPage extends Component {
             .REGISTRATION_DATASET,
           navigation: this.props.navigation,
           backAction: this.back,
+          headerRight: (
+            <TextBtn
+              btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
+              textStyle={styles.headerBtnTitle}
+              btnClick={this.exit}
+            />
+          ),
         }}
       >
         <LinkageList

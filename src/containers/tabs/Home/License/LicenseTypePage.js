@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  FlatList,
-  Platform,
-} from 'react-native'
+import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'

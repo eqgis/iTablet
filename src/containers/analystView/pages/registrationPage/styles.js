@@ -101,10 +101,43 @@ export default StyleSheet.create({
     marginLeft: 15,
   },
   detalItemView: {
+    // height: scaleSize(300),
+    backgroundColor: color.content_white,
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+  },
+  detalItemHeaderView: {
+    flexDirection: 'row',
+    height: scaleSize(60),
+    marginHorizontal: scaleSize(30),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  detalSubItemView: {
     flexDirection: 'row',
     height: scaleSize(60),
     marginHorizontal: scaleSize(30),
     justifyContent: 'flex-start',
     alignItems: 'center',
+  },
+  lineStyle: {
+    height: 1,
+    width: '100%',
+    backgroundColor: color.background,
+  },
+  lineSubStyle: {
+    height: 1,
+    width: '100%',
+    marginLeft: scaleSize(30),
+    backgroundColor: color.background,
+  },
+  textStyle: {
+    fontSize: scaleSize(24),
+    width: scaleSize(120),
+  },
+  textInputStyle: {
+    marginLeft: scaleSize(30),
+    fontSize: scaleSize(24),
+    width: '100%',
   },
 })

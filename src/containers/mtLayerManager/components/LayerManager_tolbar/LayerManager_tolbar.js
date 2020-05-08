@@ -42,7 +42,7 @@ import styles from './styles'
 import { SMap, DatasetType, SMCollectorType } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
-import { screen, Toast, scaleSize, setSpText } from '../../../../utils'
+import { Toast, scaleSize, setSpText } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
@@ -96,7 +96,9 @@ export default class LayerManager_tolbar extends React.Component {
       type: props.type, // 当前传入的类型
       containerType: props.containerProps.containerType,
       data: [],
-      bottom: new Animated.Value(-screen.deviceHeight),
+      bottom: new Animated.Value(
+        -Math.max(this.props.device.height, this.props.device.width),
+      ),
       boxHeight: new Animated.Value(this.height),
       showMenuDialog: false,
       listSelectable: false, // 列表是否可以选择（例如地图）
@@ -291,7 +293,9 @@ export default class LayerManager_tolbar extends React.Component {
     if (this.isShow !== isShow) {
       isShow = isShow === undefined ? true : isShow
       Animated.timing(this.state.bottom, {
-        toValue: isShow ? 0 : -screen.deviceHeight,
+        toValue: isShow
+          ? 0
+          : -Math.max(this.props.device.height, this.props.device.width),
         duration: 300,
       }).start()
       this.isShow = isShow
@@ -319,7 +323,9 @@ export default class LayerManager_tolbar extends React.Component {
     if (this.isShow !== isShow) {
       isShow = isShow === undefined ? true : isShow
       Animated.timing(this.state.bottom, {
-        toValue: isShow ? 0 : -screen.deviceHeight,
+        toValue: isShow
+          ? 0
+          : -Math.max(this.props.device.height, this.props.device.width),
         duration: 300,
       }).start()
       this.isShow = isShow
@@ -1046,7 +1052,12 @@ export default class LayerManager_tolbar extends React.Component {
   render() {
     let containerStyle = styles.fullContainer
     return (
-      <Animated.View style={[containerStyle, { bottom: this.state.bottom }]}>
+      <Animated.View
+        style={[
+          containerStyle,
+          { height: this.props.device.height, bottom: this.state.bottom },
+        ]}
+      >
         {
           <TouchableOpacity
             activeOpacity={1}

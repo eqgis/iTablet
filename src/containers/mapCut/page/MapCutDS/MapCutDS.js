@@ -5,11 +5,10 @@
  */
 import * as React from 'react'
 import { View, Image, Text, FlatList, TouchableOpacity } from 'react-native'
-import { Container } from '../../../../components'
+import { Container, MTBtn } from '../../../../components'
 import NavigationService from '../../../NavigationService'
 import { color } from '../../../../styles'
 import styles from '../../styles'
-import MTBtn from '../../../../components/mapTools/MT_Btn'
 import FileTools from '../../../../native/FileTools'
 import { getLanguage } from '../../../../language'
 

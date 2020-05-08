@@ -118,8 +118,8 @@ export default class RegistrationExecutePage extends Component {
       if (datasets[i].sampleModeData && datasets[i].sampleModeData.checked) {
         datasets[i].isResmaple = true
 
-        if (datasets[i].sampleModeData.resmapleMode) {
-          datasets[i].resmapleMode = datasets[i].sampleModeData.resmapleMode
+        if (datasets[i].sampleModeData.sampleMode != undefined) {
+          datasets[i].resmapleMode = datasets[i].sampleModeData.sampleMode
         }
         if (datasets[i].sampleModeData.cellSize) {
           datasets[i].cellSize = datasets[i].sampleModeData.cellSize
@@ -134,8 +134,10 @@ export default class RegistrationExecutePage extends Component {
       }
       datasets[i].transformationMode = arithmeticMode
 
-      await SRectifyView.rectifyRasterDirectByDataset(datasets[i])
-      count++
+      let result = await SRectifyView.rectifyRasterDirectByDataset(datasets[i])
+      if (result) {
+        count++
+      }
     }
     if (count === datasets.length) {
       Toast.show(
@@ -144,6 +146,7 @@ export default class RegistrationExecutePage extends Component {
       )
     }
     GLOBAL.Loading.setLoading(false)
+    NavigationService.goBack()
   }
 
   renderRows() {
@@ -336,7 +339,12 @@ export default class RegistrationExecutePage extends Component {
           <TouchableOpacity
             style={styles.leftWrap}
             onPress={() => {
-              if (!this.isGridOrImageDatasetType(item.datasetType)) {
+              if (
+                !(
+                  this.isGridOrImageDatasetType(item.datasetType) &&
+                  item.isSelect
+                )
+              ) {
                 return
               }
               if (!item.sampleModeData) {
@@ -361,9 +369,11 @@ export default class RegistrationExecutePage extends Component {
                 style={{
                   textAlign: 'center',
                   fontSize: size.fontSize.fontSizeSm,
-                  color: this.isGridOrImageDatasetType(item.datasetType)
-                    ? color.fontColorBlack
-                    : color.gray,
+                  color:
+                    this.isGridOrImageDatasetType(item.datasetType) &&
+                    item.isSelect
+                      ? color.fontColorBlack
+                      : color.gray,
                 }}
                 numberOfLines={1}
               >

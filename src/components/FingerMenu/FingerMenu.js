@@ -17,9 +17,9 @@ export default class FingerMenu extends React.Component {
     autoSelect?: boolean, // 松手自动选择
     onSelect?: () => {}, // 选中item的回调
     onScroll?: () => {}, // 滚动选中item的回调
-    onScrollEnd?: () => {}, //滚动结束的回调
-    onDragEnd?: () => {}, //手指拖动结束的回调
-    rowHeight?: number,
+    onScrollEnd?: () => {}, // 滚动结束的回调
+    onDragEnd?: () => {}, // 手指拖动结束的回调
+    rowHeight?: number, // 行高
     style?: Object,
   }
 
@@ -266,7 +266,7 @@ export default class FingerMenu extends React.Component {
           //     this.timer = null
           //   }
           // }}
-          onScrollEndDrag={()=>{
+          onScrollEndDrag={() => {
             this.props.onDragEnd && this.props.onDragEnd()
           }}
           onMomentumScrollEnd={() => {

@@ -218,6 +218,12 @@ const Analyst_Labels = {
   REGISTRATION_ORIGINAL: 'ソースポイント',
   REGISTRATION_TAREGT: '目標点',
   REGISTRATION_RESELECT_POINT: '再選択',
+  REGISTRATION_EXPORT: '輸出',
+  REGISTRATION_EXPORT_SUCCESS: 'エクスポートに成功しました',
+  REGISTRATION_EXPORT_FAILED: 'エクスポートに失敗しました',
+  REGISTRATION_EXPORT_FILE_NAME: 'エクスポート登録情報ファイル名',
+  REGISTRATION_NOT_SETLECT_DATASET: '登録データセットを選択してください',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET: '参照データセットを選択してください',
 }
 
 const Analyst_Params = {

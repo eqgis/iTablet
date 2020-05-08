@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Container, LinkageList, Button } from '../../../../components'
+import { Container, LinkageList, Button, TextBtn } from '../../../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, Toast } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { View } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
@@ -80,9 +80,32 @@ export default class RegistrationReferDatasetPage extends Component {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
-  confirm() {
-    GLOBAL.RectifyReferDatasetInfo = GLOBAL.ReferLinkageList.getSelectData()
-    NavigationService.navigate('RegistrationArithmeticPage')
+  getRectifyDatasetInfoLength(rectifyDatasetInfo) {
+    let count = 0
+    let datasourceLength = rectifyDatasetInfo.length
+    for (let i = 0; i < datasourceLength; i++) {
+      count += rectifyDatasetInfo[i].data.length
+    }
+    return count
+  }
+
+  confirm = () => {
+    let _rectifyDatasetInfo = GLOBAL.ReferLinkageList.getSelectData()
+    let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
+    if (length > 0) {
+      GLOBAL.RectifyReferDatasetInfo = _rectifyDatasetInfo
+      NavigationService.navigate('RegistrationArithmeticPage')
+    } else {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels
+          .REGISTRATION_NOT_SETLECT_REFER_DATASET,
+      )
+    }
+  }
+
+  exit() {
+    NavigationService.goBack()
+    NavigationService.goBack()
   }
 
   render() {
@@ -95,6 +118,13 @@ export default class RegistrationReferDatasetPage extends Component {
             .REGISTRATION_REFER_DATASET_ADD,
           navigation: this.props.navigation,
           backAction: this.back,
+          headerRight: (
+            <TextBtn
+              btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
+              textStyle={styles.headerBtnTitle}
+              btnClick={this.exit}
+            />
+          ),
         }}
       >
         <LinkageList

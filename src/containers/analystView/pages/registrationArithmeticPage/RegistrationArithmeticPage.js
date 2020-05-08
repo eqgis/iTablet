@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container } from '../../../../components'
+import { Container, TextBtn } from '../../../../components'
 
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -27,19 +27,19 @@ export default class RegistrationArithmeticPage extends Component {
     let data = []
     data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_LINE,
-      arithmeticMode: 0,
-    })
-    data.push({
-      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_QUADRATIC,
       arithmeticMode: 1,
     })
     data.push({
-      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_RECTANGLE,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_QUADRATIC,
       arithmeticMode: 2,
     })
     data.push({
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_RECTANGLE,
+      arithmeticMode: 0,
+    })
+    data.push({
       title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET,
-      arithmeticMode: 3,
+      arithmeticMode: 4,
     })
 
     return data
@@ -49,6 +49,12 @@ export default class RegistrationArithmeticPage extends Component {
     // onPressItem() {
     GLOBAL.RegistrationArithmeticMode = item.arithmeticMode
     NavigationService.navigate('RegistrationPage')
+  }
+
+  exit() {
+    NavigationService.goBack()
+    NavigationService.goBack()
+    NavigationService.goBack()
   }
 
   renderRows() {
@@ -93,6 +99,13 @@ export default class RegistrationArithmeticPage extends Component {
             .REGISTRATION_ARITHMETIC,
           navigation: this.props.navigation,
           backAction: this.back,
+          headerRight: (
+            <TextBtn
+              btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
+              textStyle={styles.headerBtnTitle}
+              btnClick={this.exit}
+            />
+          ),
         }}
       >
         {this.renderRows()}

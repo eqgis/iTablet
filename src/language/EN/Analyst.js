@@ -216,7 +216,13 @@ const Analyst_Labels = {
   REGISTRATION_ENUMBER: 'Serial number',
   REGISTRATION_ORIGINAL: 'Source',
   REGISTRATION_TAREGT: 'Target',
-  REGISTRATION_RESELECT_POINT: '再選択',
+  REGISTRATION_RESELECT_POINT: 'Reselect point',
+  REGISTRATION_EXPORT: 'Export',
+  REGISTRATION_EXPORT_SUCCESS: 'Export success',
+  REGISTRATION_EXPORT_FAILED: 'Export failed',
+  REGISTRATION_EXPORT_FILE_NAME: 'Export file name',
+  REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
 }
 
 const Analyst_Params = {

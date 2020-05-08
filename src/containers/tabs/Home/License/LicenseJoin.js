@@ -101,13 +101,13 @@ class LicenseJoin extends Component {
 
   reloadLocalLicense = async (confirm = false) => {
     try {
-      if (!confirm) {
-        this._checkCloudLicense4Reload()
-        return
-      }
-      this._checkPrivateCloudLicense()
       let serialNumber = await SMap.initSerialNumber('')
       if (serialNumber !== '') {
+        if (!confirm) {
+          this._checkCloudLicense4Reload()
+          return
+        }
+        this._checkPrivateCloudLicense()
         GLOBAL.Loading.setLoading(
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,

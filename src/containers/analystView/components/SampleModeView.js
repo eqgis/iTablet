@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  // KeyboardAvoidingView,
   Platform,
   TextInput,
 } from 'react-native'
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: size.fontSize.fontSizeXl,
-    height: scaleSize(30),
+    height: scaleSize(32),
     color: color.black,
     textAlign: 'center',
     padding: scaleSize(3),
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontSize: size.fontSize.fontSizeXl,
-    height: scaleSize(24),
+    height: scaleSize(32),
     marginLeft: scaleSize(15),
     color: color.black,
   },
@@ -337,7 +338,7 @@ export default class SampleModeView extends React.Component {
             <Text
               style={{
                 fontSize: size.fontSize.fontSizeXl,
-                height: scaleSize(28),
+                height: scaleSize(32),
                 color: color.black,
               }}
             >
@@ -376,13 +377,15 @@ export default class SampleModeView extends React.Component {
                   style={{
                     fontSize: size.fontSize.fontSizeXl,
                     color: color.black,
-                    width: scaleSize(150),
+                    // width: scaleSize(150),
+                    width: '100%',
                     marginRight: scaleSize(50),
                   }}
                   value={this.state.data.cellSize}
                   // editable={this.data.checked}
                   onChangeText={text => {
-                    let _cellSize = Number(text.replace(/[^0-9]*/g, ''))
+                    // let _cellSize = Number(text.replace(/[^0-9]*/g, ''))
+                    let _cellSize = this.clearNoNum(text)
                     let _data = this.state.data
                     _data.cellSize = _cellSize
                     this.setState({
@@ -406,7 +409,7 @@ export default class SampleModeView extends React.Component {
             <Text
               style={{
                 fontSize: size.fontSize.fontSizeXl,
-                height: scaleSize(28),
+                height: scaleSize(32),
                 color: color.black,
               }}
             >
@@ -464,7 +467,19 @@ export default class SampleModeView extends React.Component {
             backgroundColor: color.white,
           }}
         >
+          {/* <KeyboardAvoidingView
+            enabled={true}
+            keyboardVerticalOffset={0}
+            style={{ flex: 1 }}
+            contentContainerStyle={{
+              flex: 1,
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+            behavior={Platform.OS === 'ios' && 'position'}
+          > */}
           {this.renderContentView()}
+          {/* </KeyboardAvoidingView> */}
         </View>
       </PopView>
     )

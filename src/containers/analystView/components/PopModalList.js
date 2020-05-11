@@ -51,12 +51,14 @@ const LIST_TYPE = {
 
 export default class PopModalList extends React.Component {
   props: {
-    language: String,
-    type?: String,
-    confirm: () => {},
-    cancel: () => {},
-    popData: Array,
-    currentPopData: Object,
+    language?: String, // 语言，用于根据当前语言设置按钮Title
+    type?: String, // LIST_TYPE
+    confirm: () => {}, // 自定义确定事件
+    cancel: () => {}, // 自定义取消事件
+    confirmTitle?: String, // 自定义确定Title
+    cancelTitle?: String, // 自定义取消Title
+    popData: Array, // 数据
+    currentPopData: Object, // 当前选中对象，用户初始化选中对象
   }
 
   static defaultProps = {
@@ -178,13 +180,17 @@ export default class PopModalList extends React.Component {
       <View style={[styles.btnsView, { width: '100%' }]}>
         <TouchableOpacity
           style={[styles.btnView, { justifyContent: 'flex-start' }]}
-          onPress={() => this.popModal && this.popModal.setVisible(false)}
+          onPress={() => {
+            this.popModal && this.popModal.setVisible(false)
+            if (this.props.cancel && typeof this.props.cancel === 'function') {
+              this.props.cancel()
+            }
+          }}
         >
           <Text style={styles.btnText}>
-            {
+            {this.props.cancelTitle ||
               getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
-                .CANCEL
-            }
+                .CANCEL}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -214,10 +220,9 @@ export default class PopModalList extends React.Component {
           }}
         >
           <Text style={styles.btnText}>
-            {
+            {this.props.confirmTitle ||
               getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
-                .CONFIRM
-            }
+                .CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>

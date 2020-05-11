@@ -164,6 +164,9 @@ export default class AnimationNodeListView extends React.Component {
   render() {
     return (
       <SectionList
+        style={{
+          backgroundColor: color.content_white,
+        }}
         sections={this.state.data}
         renderItem={this.renderListItem}
         renderSectionHeader={this.renderListSectionHeader}

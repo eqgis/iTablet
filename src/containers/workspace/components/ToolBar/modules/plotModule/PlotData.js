@@ -25,12 +25,7 @@ function getData(type, params) {
   return tabBarData
 }
 
-/**
- * 获取标绘操作数据
- */
-function getPlotOperationData(type, params) {
-  ToolbarModule.setParams(params)
-  let data = []
+function getPlotButtons() {
   let buttons = [
     // ToolbarBtnType.END_ANIMATION,
     ToolbarBtnType.CANCEL,
@@ -58,6 +53,16 @@ function getPlotOperationData(type, params) {
       action: PlotAction.animationSave,
     },
   ]
+  return buttons
+}
+
+/**
+ * 获取标绘操作数据
+ */
+function getPlotOperationData(type, params) {
+  ToolbarModule.setParams(params)
+  let data = []
+  let buttons = getPlotButtons()
   switch (type) {
     case ConstToolType.PLOT_ANIMATION_START:
       data = []
@@ -227,6 +232,7 @@ function getCollectionData(libId, symbolCode, params) {
 
 async function getAnimationList() {
   const params = ToolbarModule.getParams()
+  let buttons = getPlotButtons()
   try {
     const mapName = await SMap.getMapName()
 
@@ -269,10 +275,10 @@ async function getAnimationList() {
         data: animationXmlList,
       },
     ]
-    const buttons = []
+    // const buttons = []
     return { data, buttons }
   } catch (error) {
-    const buttons = []
+    // const buttons = []
     const data = [
       {
         title: getLanguage(params.language).Map_Main_Menu

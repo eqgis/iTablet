@@ -8,7 +8,13 @@ import {
   Platform,
   Animated,
 } from 'react-native'
-import {FetchUtils, scaleSize, screen, setSpText, Toast} from '../../../../utils'
+import {
+  FetchUtils,
+  scaleSize,
+  screen,
+  setSpText,
+  Toast,
+} from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
 import { TouchType } from '../../../../constants'
 import styles from './styles'
@@ -47,18 +53,22 @@ export default class NavigationView extends React.Component {
       startName: '',
       endName: '',
     }
-    this.maxWidth = props.device.orientation.indexOf('LANDSCAPE') === 0
-      ? new Animated.Value(screen.getScreenWidth(props.device.orientation) * 0.45)
-      : new Animated.Value(screen.getScreenWidth(props.device.orientation))
+    this.maxWidth =
+      props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(
+          screen.getScreenWidth(props.device.orientation) * 0.45,
+        )
+        : new Animated.Value(screen.getScreenWidth(props.device.orientation))
   }
   componentDidUpdate(prevProps) {
-    if(prevProps.device.orientation !== this.props.device.orientation){
-      let maxWidth = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-        : screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.maxWidth,{
-        toValue:maxWidth,
-        duration:300,
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      let maxWidth =
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
+          : screen.getScreenWidth(this.props.device.orientation)
+      Animated.timing(this.maxWidth, {
+        toValue: maxWidth,
+        duration: 300,
       }).start()
     }
   }
@@ -482,7 +492,6 @@ export default class NavigationView extends React.Component {
           address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
           start: GLOBAL.STARTNAME,
           end: GLOBAL.ENDNAME,
-          isOutDoor: true,
         })
         if (this.historyclick) {
           this.props.setNavigationHistory(history)
@@ -572,7 +581,7 @@ export default class NavigationView extends React.Component {
       <Animated.View
         style={{
           flex: 1,
-          maxWidth:this.maxWidth,
+          maxWidth: this.maxWidth,
           // backgroundColor: '#303030',
           backgroundColor: '#ebebeb',
         }}
@@ -692,9 +701,9 @@ export default class NavigationView extends React.Component {
           <FlatList
             style={{
               maxHeight: scaleSize(650),
-              marginLeft:scaleSize(90),
-              marginRight:scaleSize(50),
-              borderRadius:5,
+              marginLeft: scaleSize(90),
+              marginRight: scaleSize(50),
+              borderRadius: 5,
             }}
             data={renderHistory}
             extraData={GLOBAL.STARTX}
@@ -709,9 +718,9 @@ export default class NavigationView extends React.Component {
                 width: this.maxWidth - scaleSize(140),
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginLeft:scaleSize(90),
-                marginRight:scaleSize(50),
-                borderRadius:5,
+                marginLeft: scaleSize(90),
+                marginRight: scaleSize(50),
+                borderRadius: 5,
               }}
               onPress={() => {
                 this.props.setNavigationHistory &&
@@ -821,14 +830,15 @@ export default class NavigationView extends React.Component {
             style={styles.pointImg}
             source={require('../../../../assets/Navigation/naviagtion-road.png')}
           />
-          {item.address &&
-          <Text
-            numberOfLines={2}
-            ellipsizeMode={'tail'}
-            style={styles.itemText}>
-            {item.address}
-          </Text>
-          }
+          {item.address && (
+            <Text
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+              style={styles.itemText}
+            >
+              {item.address}
+            </Text>
+          )}
         </TouchableOpacity>
         <View style={styles.itemSeparator} />
       </View>

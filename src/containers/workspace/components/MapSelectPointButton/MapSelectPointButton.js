@@ -48,10 +48,10 @@ export default class MapSelectPointButton extends React.Component {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
           this.setState({
-            show:false,
+            show: false,
           })
           GLOBAL.MAPSELECTPOINT?.setState({
-            show:false,
+            show: false,
           })
         } else {
           await SMap.getEndPoint(
@@ -76,10 +76,10 @@ export default class MapSelectPointButton extends React.Component {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
           this.setState({
-            show:false,
+            show: false,
           })
           GLOBAL.MAPSELECTPOINT?.setState({
-            show:false,
+            show: false,
           })
         } else {
           await SMap.getStartPoint(
@@ -416,7 +416,6 @@ export default class MapSelectPointButton extends React.Component {
           address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
           start: GLOBAL.STARTNAME,
           end: GLOBAL.ENDNAME,
-          isOutDoor: GLOBAL.ISOUTDOORMAP,
         })
         this.props.setNavigationHistory(history)
       }
@@ -424,9 +423,8 @@ export default class MapSelectPointButton extends React.Component {
   }
 
   render() {
-    let width = GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
-      ? '50%'
-      : '80%'
+    let width =
+      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0 ? '50%' : '80%'
     if (this.state.show) {
       return (
         <View

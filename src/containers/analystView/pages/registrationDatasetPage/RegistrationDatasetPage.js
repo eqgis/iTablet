@@ -42,11 +42,12 @@ export default class RegistrationDatasetPage extends Component {
               datasetsData.splice(j, 1)
               continue
             } else {
+              dataset.title = dataset.datasetName
+              dataset.parentTitle = dataset.datasourceName
+              dataset.isSelect = false
+              dataset.index = j
               j++
             }
-            dataset.title = dataset.datasetName
-            dataset.parentTitle = dataset.datasourceName
-            dataset.isSelect = false
           }
           if (datasetsData.length == 0) {
             data.splice(i, 1)

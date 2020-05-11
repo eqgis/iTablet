@@ -139,7 +139,8 @@ export default class TouchProgress extends Component {
     let themeType = this.props.currentLayer.themeType
     let isHeatmap = this.props.currentLayer.isHeatmap
     const _data = ToolbarModule.getData()
-
+    const _params = ToolbarModule.getParams()
+    const type = _params.type
     let progressWidth = this.getWidthByOrientation() - MARGIN * 2
     let panBtnDevLeft = MARGIN - IMAGE_SIZE / 2 // 图片相对左边偏差
 
@@ -762,7 +763,7 @@ export default class TouchProgress extends Component {
         }
       }
     }
-    if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+    if (type.indexOf('MAP_MARKS') === 0) {
       let data = await _data.actions?.getTouchProgressInfo()
       let { value, range, step } = data
       this._panBtnStyles.style.left =
@@ -856,7 +857,8 @@ export default class TouchProgress extends Component {
    */
   dealData = value => {
     let layerType = this.props.currentLayer.type
-
+    const _params = ToolbarModule.getParams()
+    const type = _params.type
     let newValue
 
     if (this.props.selectName instanceof Array) {
@@ -871,7 +873,7 @@ export default class TouchProgress extends Component {
       ) {
         newValue = value * 200
       }
-    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('MAP_MARKS') === 0) {
       newValue = value * this.range[1]
     } else if (
       this.props.selectName ===
@@ -1022,6 +1024,8 @@ export default class TouchProgress extends Component {
    */
   setData = async value => {
     const _data = ToolbarModule.getData()
+    const _params = ToolbarModule.getParams()
+    const type = _params.type
     let layerType = this.props.currentLayer.type
     let themeType = this.props.currentLayer.themeType
     let tips = ''
@@ -1111,7 +1115,7 @@ export default class TouchProgress extends Component {
         getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
         '     ' +
         parseInt(value)
-    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('MAP_MARKS') === 0) {
       if (value < this.range[0]) value = this.range[0]
       if (value > this.range[1]) value = this.range[1]
       _data.actions?.setTouchProgressInfo(value)
@@ -1548,6 +1552,8 @@ export default class TouchProgress extends Component {
    */
   setTips = value => {
     const _data = ToolbarModule.getData()
+    const _params = ToolbarModule.getParams()
+    const type = _params.type
     let layerType = this.props.currentLayer.type
     let tips = ''
 
@@ -1970,7 +1976,7 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+    if (type.indexOf('MAP_MARKS') === 0) {
       if (value < this.range[0]) value = this.range[0]
       if (value > this.range[1]) value = this.range[1]
       tips = _data.actions?.getTouchProgressTips(value)
@@ -1986,6 +1992,8 @@ export default class TouchProgress extends Component {
   }
 
   _caculateProgress = value => {
+    const _params = ToolbarModule.getParams()
+    const type = _params.type
     let layerType = this.props.currentLayer.type
 
     let newValue
@@ -2002,7 +2010,7 @@ export default class TouchProgress extends Component {
       ) {
         newValue = (value + 100) / 200
       }
-    } else if (GLOBAL.MapToolType.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('MAP_MARKS') === 0) {
       newValue = value / this.range[1]
     } else if (
       this.props.selectName ===

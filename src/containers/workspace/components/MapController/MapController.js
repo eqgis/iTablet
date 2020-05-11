@@ -41,6 +41,7 @@ export default class MapController extends React.Component {
             ? new Animated.Value(DEFAULT_BOTTOM_LAND)
             : new Animated.Value(DEFAULT_BOTTOM),
       compass: new Animated.Value(0),
+      isGuiding: false,
     }
     this.visible = true
   }
@@ -92,6 +93,17 @@ export default class MapController extends React.Component {
     Animated.sequence(animatedList).start()
   }
 
+  /**
+   * 设置导航状态
+   * @param isGuiding
+   */
+  setGuiding = isGuiding => {
+    if (isGuiding !== this.state.isGuiding) {
+      this.setState({
+        isGuiding,
+      })
+    }
+  }
   /**
    * 改变bottom位置 导航路径界面使用
    * @param isBottom
@@ -270,7 +282,7 @@ export default class MapController extends React.Component {
   }
 
   render() {
-    if (this.state.isIndoor) return null
+    if (this.state.isGuiding) return null
     return (
       <Animated.View
         style={[

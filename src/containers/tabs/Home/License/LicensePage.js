@@ -65,20 +65,25 @@ class LicensePage extends Component {
   }
 
   _recycleLocalLicense = async () => {
-    GLOBAL.Loading.setLoading(true, getLanguage(global.language).Prompt.LOADING)
-    AsyncStorage.getItem(constants.LICENSE_OFFICIAL_STORAGE_KEY)
-      .then(async serialNumber => {
-        if (serialNumber !== null) {
-          this.cleanDialog.setDialogVisible(false)
-          await SMap.recycleLicense()
-          this.getLicenseInfo()
-        } else {
-          await SMap.clearLocalLicense()
-          this.getLicenseInfo()
-        }
-        GLOBAL.Loading.setLoading(false)
-      })
-      .catch(() => {})
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Prompt.LOADING,
+      )
+      let serialNumber = await SMap.initSerialNumber('')
+      if (serialNumber !== '') {
+        await SMap.recycleLicense()
+        this.getLicenseInfo()
+      } else {
+        await SMap.clearLocalLicense()
+        this.getLicenseInfo()
+      }
+      GLOBAL.Loading.setLoading(false)
+    } catch (error) {
+      Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
+      GLOBAL.Loading.setLoading(false)
+      this.getLicenseInfo()
+    }
   }
 
   _recycleCloudLicense = async () => {
@@ -116,6 +121,7 @@ class LicensePage extends Component {
       GLOBAL.Loading.setLoading(false)
       return days
     } catch (e) {
+      this.getLicenseInfo()
       Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       GLOBAL.Loading.setLoading(false)
       return false

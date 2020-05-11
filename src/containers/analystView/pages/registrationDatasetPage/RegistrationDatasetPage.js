@@ -31,15 +31,27 @@ export default class RegistrationDatasetPage extends Component {
       this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; ) {
           let datasource = data[i]
           datasource.title = datasource.alias
           let datasetsData = datasource.data
-          for (let j = 0; j < datasetsData.length; j++) {
+          for (let j = 0; j < datasetsData.length; ) {
             let dataset = datasetsData[j]
+            let result = this.filtDataset(dataset)
+            if (!result) {
+              datasetsData.splice(j, 1)
+              continue
+            } else {
+              j++
+            }
             dataset.title = dataset.datasetName
             dataset.parentTitle = dataset.datasourceName
             dataset.isSelect = false
+          }
+          if (datasetsData.length == 0) {
+            data.splice(i, 1)
+          } else {
+            i++
           }
         }
         this.setState({
@@ -50,6 +62,24 @@ export default class RegistrationDatasetPage extends Component {
         this.setLoading(false)
       }
     }.bind(this)())
+  }
+
+  filtDataset = dataset => {
+    if (
+      dataset.datasetType === 1 ||
+      dataset.datasetType === 3 ||
+      dataset.datasetType === 5 ||
+      dataset.datasetType === 81 ||
+      dataset.datasetType === 83 ||
+      dataset.datasetType === 101 ||
+      dataset.datasetType === 103 ||
+      dataset.datasetType === 105 ||
+      dataset.datasetType === 149 ||
+      dataset.datasetType === 88
+    ) {
+      return true
+    }
+    return false
   }
 
   setLoading = (loading = false, info, extra) => {

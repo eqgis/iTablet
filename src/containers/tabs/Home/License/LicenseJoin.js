@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
-import { View, StyleSheet, TextInput, Text, AsyncStorage } from 'react-native'
+import { View, StyleSheet, TextInput, Text } from 'react-native'
 import { Container, Button } from '../../../../components'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
-import constants from '../../../../../src/containers/workspace/constants'
 import { scaleSize, Toast } from '../../../../utils'
 class LicenseJoin extends Component {
   props: {
@@ -112,10 +111,6 @@ class LicenseJoin extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
-        AsyncStorage.setItem(
-          constants.LICENSE_OFFICIAL_STORAGE_KEY,
-          serialNumber,
-        )
         await SMap.reloadLocalLicense()
         let status = await SMap.getEnvironmentStatus()
         if (status && status.isLicenseValid && status.licenseType === 0) {
@@ -177,7 +172,6 @@ class LicenseJoin extends Component {
           }, 40000)
           result = await SMap.activateLicense(str)
           if (result) {
-            AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, str)
             let modules = await SMap.licenseContainModule(str)
             let size = modules.length
             let number = 0

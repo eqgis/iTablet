@@ -302,14 +302,9 @@ export default class MapView extends React.Component {
         this.currentFloorID = result.currentFloorID
         let guideInfo = await SMap.isGuiding()
         if (!guideInfo.isOutdoorGuiding) {
-          this.setState(
-            {
-              currentFloorID: result.currentFloorID,
-            },
-            () => {
-              GLOBAL.ISOUTDOORMAP = !result.currentFloorID
-            },
-          )
+          this.setState({
+            currentFloorID: result.currentFloorID,
+          })
         } else {
           this.currentFloorID = this.state.currentFloorID
         }
@@ -772,8 +767,14 @@ export default class MapView extends React.Component {
     GLOBAL.ENDNAME = getLanguage(
       GLOBAL.language,
     ).Map_Main_Menu.SELECT_DESTINATION
-    GLOBAL.mapController && GLOBAL.mapController.changeBottom(false)
-    GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(false)
+    if (GLOBAL.mapController) {
+      GLOBAL.mapController.changeBottom(false)
+      GLOBAL.mapController.setGuiding(false)
+    }
+    if (GLOBAL.FloorListView) {
+      GLOBAL.FloorListView.changeBottom(false)
+      GLOBAL.FloorListView.setGuiding(false)
+    }
   }
 
   /** 检测MapView在router中是否唯一 **/
@@ -2706,7 +2707,6 @@ export default class MapView extends React.Component {
           currentFloorID,
         },
         () => {
-          GLOBAL.ISOUTDOORMAP = !currentFloorID
           cb && cb()
         },
       )
@@ -3093,7 +3093,6 @@ export default class MapView extends React.Component {
         address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
         start: GLOBAL.STARTNAME,
         end: GLOBAL.ENDNAME,
-        isOutDoor: true,
       })
       this.props.setNavigationHistory(history)
     }

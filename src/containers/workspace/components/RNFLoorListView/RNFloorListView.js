@@ -7,7 +7,7 @@ import {
   Animated,
 } from 'react-native'
 
-import {scaleSize, screen, setSpText} from '../../../../utils'
+import { scaleSize, screen, setSpText } from '../../../../utils'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
@@ -30,17 +30,17 @@ export default class RNFloorListView extends React.Component {
       data: [],
       height:
         props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? (
-            GLOBAL.isPad
-              ? scaleSize(360)
-              : scaleSize(240)
-          )
+          ? GLOBAL.isPad
+            ? scaleSize(360)
+            : scaleSize(240)
           : scaleSize(360),
       left: new Animated.Value(DEFAULT_LEFT),
-      bottom: props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(DEFAULT_BOTTOM_LOW)
-        : new Animated.Value(DEFAULT_BOTTOM),
+      bottom:
+        props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? new Animated.Value(DEFAULT_BOTTOM_LOW)
+          : new Animated.Value(DEFAULT_BOTTOM),
       currentFloorID: props.currentFloorID,
+      isGuiding: false,
     }
   }
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -56,10 +56,14 @@ export default class RNFloorListView extends React.Component {
       let height, bottom
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
-        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM) ? DEFAULT_BOTTOM_LOW : prevState.bottom._value
+        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM)
+          ? DEFAULT_BOTTOM_LOW
+          : prevState.bottom._value
       } else {
         height = scaleSize(360)
-        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM_LOW)? DEFAULT_BOTTOM : prevState.bottom._value
+        bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM_LOW)
+          ? DEFAULT_BOTTOM
+          : prevState.bottom._value
       }
       this.setState(
         {
@@ -96,12 +100,23 @@ export default class RNFloorListView extends React.Component {
   }
 
   /**
+   * 设置导航状态
+   * @param isGuiding
+   */
+  setGuiding = isGuiding => {
+    if (isGuiding !== this.state.isGuiding) {
+      this.setState({
+        isGuiding,
+      })
+    }
+  }
+  /**
    * 判断两数相等 兼容scaleSize转换后animate得到的值不精确
    * @param num1
    * @param num2
    * @returns {boolean}
    */
-  isSimilar = (num1,num2) => {
+  isSimilar = (num1, num2) => {
     return Math.abs(num1 - num2) < 0.001
   }
 
@@ -126,17 +141,19 @@ export default class RNFloorListView extends React.Component {
   floatToRight = bool => {
     let needAnim = false
     let left
-    if(this.isSimilar(this.state.left._value,DEFAULT_LEFT) && bool){
-      left = screen.getScreenWidth(this.props.device.orientation) - scaleSize(94)
+    if (this.isSimilar(this.state.left._value, DEFAULT_LEFT) && bool) {
+      left =
+        screen.getScreenWidth(this.props.device.orientation) - scaleSize(94)
       needAnim = true
-    }else if(!this.isSimilar(this.state.left._value,DEFAULT_LEFT)  && !bool){
+    } else if (!this.isSimilar(this.state.left._value, DEFAULT_LEFT) && !bool) {
       left = DEFAULT_LEFT
       needAnim = true
     }
-    needAnim && Animated.timing(this.state.left, {
-      toValue: left,
-      duration: Const.ANIMATED_DURATION,
-    }).start()
+    needAnim &&
+      Animated.timing(this.state.left, {
+        toValue: left,
+        duration: Const.ANIMATED_DURATION,
+      }).start()
   }
   /**
    * 改变bottom位置 导航路径界面使用
@@ -145,11 +162,9 @@ export default class RNFloorListView extends React.Component {
   changeBottom = isBottom => {
     let value = isBottom
       ? scaleSize(240)
-      : (
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? DEFAULT_BOTTOM_LOW
-          :DEFAULT_BOTTOM
-      )
+      : this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? DEFAULT_BOTTOM_LOW
+        : DEFAULT_BOTTOM
     Animated.timing(this.state.bottom, {
       toValue: value,
       duration: Const.ANIMATED_DURATION,
@@ -190,7 +205,14 @@ export default class RNFloorListView extends React.Component {
   }
 
   render() {
-    if (this.state.data.length === 0 || !this.state.currentFloorID) return null
+    if (
+      this.state.data.length === 0 ||
+      !this.state.currentFloorID ||
+      (!GLOBAL.isPad &&
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
+        this.state.isGuiding)
+    )
+      return null
     let floorListStyle = {
       maxHeight: this.state.height,
       left: this.state.left,

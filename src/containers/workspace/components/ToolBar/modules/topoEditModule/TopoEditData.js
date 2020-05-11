@@ -100,39 +100,20 @@ async function getData(type) {
     case ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED:
       data = [
         {
-          key: constants.MAP_TOPO_ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
-          action: TopoEditAction.switchType,
+          key: constants.MAP_TOPO_MOVE_OBJECT,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: TopoEditAction.changeAction,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_add_node,
-        },
-        {
-          key: constants.MAP_TOPO_EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_edit_node,
-        },
-        {
-          key: constants.MAP_TOPO_DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_TOPO_DELETE_NODE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getPublicAssets().navigation.icon_increment_delete_node,
+          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.MAP_TOPO_DELETE_OBJECT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_TOPO_DELETE_OBJECT,
-          action: TopoEditAction.switchType,
+          action: TopoEditAction.changeAction,
           size: 'large',
           image: getPublicAssets().navigation.icon_increment_delete_object,
         },
-      ]
-      break
-    case ConstToolType.MAP_TOPO_TOPING:
-      data = [
         {
           key: constants.UNDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
@@ -148,12 +129,26 @@ async function getData(type) {
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
-          key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_INCREMENT_CANCEL,
-          action: TopoEditAction.cancel,
+          key: constants.MAP_TOPO_ADD_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
+          action: TopoEditAction.changeAction,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+          image: getPublicAssets().navigation.icon_increment_add_node,
+        },
+        {
+          key: constants.MAP_TOPO_EDIT_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
+          action: TopoEditAction.changeAction,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_edit_node,
+        },
+        {
+          key: constants.MAP_TOPO_DELETE_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_TOPO_DELETE_NODE,
+          action: TopoEditAction.changeAction,
+          size: 'large',
+          image: getPublicAssets().navigation.icon_increment_delete_node,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,

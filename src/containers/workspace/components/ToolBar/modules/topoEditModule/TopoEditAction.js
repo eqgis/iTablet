@@ -49,8 +49,8 @@ async function geometrySelected(event) {
       case ConstToolType.MAP_TOPO_EDIT:
       case ConstToolType.MAP_TOPO_OBJECT_EDIT:
         {
+          SMap.setAction(Action.VERTEXEDIT)
           type = ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
-          // StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
           const _data = await TopoEditData.getData(type)
           const containerType = ToolbarType.table
           const data = ToolbarModule.getToolbarSize(containerType, {
@@ -163,6 +163,29 @@ async function changeEditType() {
     isFullScreen: false,
   })
 }
+//对象编辑
+function changeAction(item) {
+  //打开捕捉
+  let { key } = item
+  switch (key) {
+    case constants.MAP_TOPO_MOVE_OBJECT:
+      SMap.setAction(Action.MOVE_GEOMETRY)
+      break
+    case constants.MAP_TOPO_ADD_NODE:
+      SMap.setAction(Action.VERTEXADD)
+      break
+    case constants.MAP_TOPO_EDIT_NODE:
+      SMap.setAction(Action.VERTEXEDIT)
+      break
+    case constants.MAP_TOPO_DELETE_NODE:
+      SMap.setAction(Action.VERTEXDELETE)
+      break
+    case constants.MAP_TOPO_DELETE_OBJECT:
+      GLOBAL.removeObjectDialog &&
+        GLOBAL.removeObjectDialog.setDialogVisible(true)
+      break
+  }
+}
 
 //拓扑编辑
 async function switchType(item) {
@@ -170,22 +193,6 @@ async function switchType(item) {
   let touchType
   let type
   switch (key) {
-    case constants.MAP_TOPO_ADD_NODE:
-      SMap.setAction(Action.VERTEXADD)
-      type = ConstToolType.MAP_TOPO_TOPING
-      break
-    case constants.MAP_TOPO_EDIT_NODE:
-      SMap.setAction(Action.VERTEXEDIT)
-      type = ConstToolType.MAP_TOPO_TOPING
-      break
-    case constants.MAP_TOPO_DELETE_NODE:
-      SMap.setAction(Action.VERTEXDELETE)
-      type = ConstToolType.MAP_TOPO_TOPING
-      break
-    case constants.MAP_TOPO_DELETE_OBJECT:
-      GLOBAL.removeObjectDialog &&
-        GLOBAL.removeObjectDialog.setDialogVisible(true)
-      break
     case constants.MAP_TOPO_SMOOTH:
       type = ConstToolType.MAP_TOPO_SMOOTH
       SMap.setAction(Action.SELECT)
@@ -264,24 +271,20 @@ function submit() {
   SMap.setAction(Action.SELECT)
 }
 
-function cancel() {
-  let type = ConstToolType.MAP_TOPO_EDIT
-  const _params = ToolbarModule.getParams()
-  const containerType = ToolbarType.table
-  ToolbarModule.setToolBarData(type)
-  _params.setToolbarVisible(true, type, {
-    containerType,
-    isFullScreen: false,
-  })
-  SMap.setAction(Action.SELECT)
-}
-
 function close() {
   const _params = ToolbarModule.getParams()
   const containerType = ToolbarType.table
-  ToolbarModule.setToolBarData(ConstToolType.MAP_INCREMENT_GPS_TRACK)
-  let nextType = ConstToolType.MAP_INCREMENT_GPS_TRACK
-  let touchType = TouchType.NULL
+  let nextType, touchType
+  if (
+    _params.type === ConstToolType.MAP_TOPO_OBJECT_EDIT ||
+    _params.type === ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
+  ) {
+    nextType = ConstToolType.MAP_TOPO_SWITCH_TYPE
+  } else {
+    ToolbarModule.setToolBarData(ConstToolType.MAP_INCREMENT_GPS_TRACK)
+    nextType = ConstToolType.MAP_INCREMENT_GPS_TRACK
+    touchType = TouchType.NULL
+  }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, nextType, {
     containerType,
@@ -461,10 +464,10 @@ export default {
 
   showMerge,
   changeEditType,
+  changeAction,
   switchType,
   undo,
   redo,
-  cancel,
   submit,
   inputConfirm,
   inputCancel,

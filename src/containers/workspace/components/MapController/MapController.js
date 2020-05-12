@@ -133,10 +133,14 @@ export default class MapController extends React.Component {
   // 归位
   reset = (immediately = false) => {
     let animatedList = []
-    if (this.state.bottom._value !== DEFAULT_BOTTOM) {
+    let bottom =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? DEFAULT_BOTTOM_LAND
+        : DEFAULT_BOTTOM
+    if (this.state.bottom._value !== bottom) {
       animatedList.push(
         Animated.timing(this.state.bottom, {
-          toValue: DEFAULT_BOTTOM,
+          toValue: bottom,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
         }),
       )

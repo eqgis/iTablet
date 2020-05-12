@@ -154,11 +154,7 @@ export default class Friend extends Component {
   }
 
   _getFriend = () => {
-    if (this.props.user.currentUser.userId !== undefined) {
-      return this
-    } else {
-      return undefined
-    }
+    return this
   }
 
   _setHomePath = async () => {
@@ -227,13 +223,13 @@ export default class Friend extends Component {
     }
   }
 
-  setCurChat = chat => {
+  setCurChat = (chat, time) => {
     //防止replace chat页面时变量设置错误
-    if (chat !== undefined && this.curChat !== undefined) {
-      setTimeout(() => this.setCurChat(chat), 1000)
+    if (chat === undefined && time !== this.chatOpenTime) {
       return
     }
     this.curChat = chat
+    this.chatOpenTime = time
     if (this.curChat) {
       MessageDataHandle.readMessage({
         //清除未读信息

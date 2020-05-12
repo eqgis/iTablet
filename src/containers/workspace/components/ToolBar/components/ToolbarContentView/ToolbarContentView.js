@@ -84,7 +84,7 @@ export default class ToolbarContentView extends React.Component {
   componentDidUpdate(prevProps) {
     // 点采集，GPS打点类型为0
     if (
-      (this.props.type !== undefined && this.props.type !== prevProps.type) ||
+      this.props.type !== undefined ||
       this.props.device.orientation !== prevProps.device.orientation
     ) {
       let _data = ToolbarModule.getToolbarSize(this.props.containerType, {

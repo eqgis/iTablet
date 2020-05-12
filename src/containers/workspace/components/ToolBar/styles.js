@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize, screen } from '../../../../utils'
+import { scaleSize } from '../../../../utils'
 import { color, zIndexLevel, size } from '../../../../styles'
 import { ConstToolType, Height } from '../../../../constants'
 
@@ -7,34 +7,12 @@ export default StyleSheet.create({
   fullContainer: {
     flexDirection: 'column',
     position: 'absolute',
-    left: 0,
-    right: 0,
-    height: screen.deviceHeight,
-    backgroundColor: '#rgba(0, 0, 0, 0)',
-    zIndex: zIndexLevel.FOUR,
-  },
-  wrapContainer: {
-    flexDirection: 'column',
-    position: 'absolute',
-    left: 0,
-    right: 0,
     backgroundColor: '#rgba(0, 0, 0, 0)',
     zIndex: zIndexLevel.FOUR,
   },
   fullContainerLandscape: {
     flexDirection: 'row',
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: screen.deviceWidth,
-    backgroundColor: '#rgba(0, 0, 0, 0)',
-    zIndex: zIndexLevel.FOUR,
-  },
-  wrapContainerLandscape: {
-    flexDirection: 'row',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
     backgroundColor: '#rgba(0, 0, 0, 0)',
     zIndex: zIndexLevel.FOUR,
   },

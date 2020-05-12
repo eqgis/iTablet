@@ -75,8 +75,14 @@ export default class ToolbarBottomButtons extends React.Component {
       isFinished = await ToolbarModule.getData().actions.commit(this.props.type)
     }
     if (isFinished === false) {
-      this.props.close && this.props.close(this.props.type)
+      this.props.close && this.props.close()
       ToolbarModule.setData() // 关闭Toolbar清除临时数据
+    } else {
+      // TODO 统一到this.props.close
+      GLOBAL.ToolBar.setState({
+        data: [],
+        type: '',
+      })
     }
   }
 
@@ -87,10 +93,16 @@ export default class ToolbarBottomButtons extends React.Component {
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.close
     ) {
-      isFinished = await ToolbarModule.getData().actions.close(this.props.type)
+      isFinished = await ToolbarModule.getData().actions.close()
     }
     if (isFinished === false) {
       this.props.close && this.props.close(this.props.type)
+    } else {
+      // TODO 统一到this.props.close
+      GLOBAL.ToolBar.setState({
+        data: [],
+        type: '',
+      })
     }
     GLOBAL.TouchType = TouchType.NORMAL
     // ToolbarModule.setData() // 关闭Toolbar清除临时数据

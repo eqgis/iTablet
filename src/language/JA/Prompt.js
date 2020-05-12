@@ -122,6 +122,7 @@ const Prompt = {
   READING_TEMPLATE: 'テンプレート読取中',
   SWITCHED_TEMPLATE: 'テンプレートは切替されました',
   THE_CURRENT_SELECTION: '現在の選択は ',
+  THE_LAYER_DOES_NOT_EXIST: 'このレイヤーは存在しません',
 
   IMPORTING_DATA: 'データインポート中',
   DATA_BEING_IMPORT: 'データインポート中',

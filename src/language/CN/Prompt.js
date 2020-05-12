@@ -118,6 +118,7 @@ const Prompt = {
   READING_TEMPLATE: '正在读取模板',
   SWITCHED_TEMPLATE: '已为您切换模板',
   THE_CURRENT_SELECTION: '当前选择为 ',
+  THE_LAYER_DOES_NOT_EXIST: '该图层不存在',
 
   IMPORTING_DATA: '正在导入数据',
   DATA_BEING_IMPORT: '数据正在导入',

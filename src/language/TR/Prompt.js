@@ -122,6 +122,7 @@ const Prompt = {
   READING_TEMPLATE: 'Taslak okunuyor',
   SWITCHED_TEMPLATE: 'Değiştirilmiş Taslak',
   THE_CURRENT_SELECTION: 'Geçerli seçim ',
+  THE_LAYER_DOES_NOT_EXIST: 'Lağıt mevcut değil',
 
   IMPORTING_DATA: 'Veriyi içeri aktarıyor',
   DATA_BEING_IMPORT: 'Veri içe aktarılıyor',

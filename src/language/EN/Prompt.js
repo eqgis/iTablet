@@ -121,6 +121,7 @@ const Prompt = {
   READING_TEMPLATE: 'Reading Template',
   SWITCHED_TEMPLATE: 'Switched Template',
   THE_CURRENT_SELECTION: 'The current selection is ',
+  THE_LAYER_DOES_NOT_EXIST: 'The layer does not exist',
 
   IMPORTING_DATA: 'Importing Data',
   DATA_BEING_IMPORT: 'Data is being import',

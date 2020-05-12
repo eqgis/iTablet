@@ -33,14 +33,6 @@ export default class TemplateTab extends React.Component {
   componentDidMount() {}
 
   action = ({ item }) => {
-    Toast.show(
-      //'当前选择为:'
-      getLanguage(global.language).Prompt.THE_CURRENT_SELECTION +
-        item.code +
-        ' ' +
-        item.name,
-    )
-
     // 找到对应的图层
     let layer, type, toolbarType
     for (let i = 0; i < this.props.layers.length; i++) {
@@ -55,6 +47,13 @@ export default class TemplateTab extends React.Component {
     }
     // 设置对应图层为可编辑
     if (layer) {
+      Toast.show(
+        //'当前选择为:'
+        getLanguage(global.language).Prompt.THE_CURRENT_SELECTION +
+          item.code +
+          ' ' +
+          item.name,
+      )
       switch (type) {
         case 'Region':
           // toolbarType = ConstToolType.MAP_COLLECTION_REGION
@@ -81,6 +80,8 @@ export default class TemplateTab extends React.Component {
       //     this.props.setCurrentTemplateInfo(tempSymbol)
       //   },
       // })
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.THE_LAYER_DOES_NOT_EXIST)
     }
   }
 

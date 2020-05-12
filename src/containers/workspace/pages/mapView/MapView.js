@@ -2027,7 +2027,7 @@ export default class MapView extends React.Component {
 
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
-    if (this.state.currentFloorID && this.mapController?.state.isGuiding)
+    if (this.state.currentFloorID || this.mapController?.state.isGuiding)
       return null
     return (
       <MapController

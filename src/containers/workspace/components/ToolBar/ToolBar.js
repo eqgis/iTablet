@@ -444,7 +444,7 @@ export default class ToolBar extends React.Component {
 
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
-    let newState = { data: [] }
+    let newState = { data: [], type: '' }
     if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''

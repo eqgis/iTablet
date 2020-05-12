@@ -65,7 +65,7 @@ export default class ToolbarContentView extends React.Component {
     // let data = ToolbarHeight.getToolbarHeight(nextProps.device.orientation, nextProps.type)
     if (
       // this.height !== 0 ||
-      (this.props.type !== undefined && this.props.type !== nextProps.type) ||
+      this.props.type !== nextProps.type ||
       this.props.containerType !== nextProps.containerType ||
       this.props.language !== nextProps.language ||
       JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||

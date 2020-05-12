@@ -287,7 +287,7 @@ export default class ToolBar extends React.Component {
    *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
-  setVisible = (isShow, type = this.state.type, params = {}) => {
+  setVisible = (isShow, type = '', params = {}) => {
     if (params.touchType) {
       GLOBAL.TouchType = params.touchType
     } else {

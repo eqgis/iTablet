@@ -304,6 +304,8 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
   NOT_SUPPORT_ONLINE_NAVIGATION: '在线导航暂不支持',
+  CREATE: '新建',
+  NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
 
   //导航增量路网
   SELECT_LINE_DATASET: '请先选择一个线数据集',

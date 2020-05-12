@@ -54,8 +54,8 @@ class RoadNetModule extends FunctionModule {
           })
       })
       if (selectedDatasets.length === 0 && selectedDatasources.length === 0) {
-        mapDatasource.data[0].selected = true
-        mapDataset.data[0].selected = true
+        mapDatasource.data[0] && (mapDatasource.data[0].selected = true)
+        mapDataset.data[0] && (mapDataset.data[0].selected = true)
         selectedDatasets = JSON.parse(JSON.stringify([mapDataset.data[0]]))
         selectedDatasources = JSON.parse(
           JSON.stringify([mapDatasource.data[0]]),

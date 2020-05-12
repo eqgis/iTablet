@@ -153,8 +153,10 @@ async function getDatasets(type, params = {}) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
-    const list = await SThemeCartography.getUDBName(path)
+    let list = await SThemeCartography.getUDBName(path)
 
+    //过滤属性表
+    list = list.filter(item => item.datasetType !== 'TABULAR')
     list.forEach(_params => {
       if (_params.geoCoordSysType && _params.prjCoordSysType) {
         _params.info = {

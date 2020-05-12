@@ -317,6 +317,9 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
+  CREATE: 'Yeni',
+  NO_DATASOURCE:
+    'Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Lütfen önce bir satır veri kümesi seçin',

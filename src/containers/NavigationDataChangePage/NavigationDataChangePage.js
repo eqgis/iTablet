@@ -233,7 +233,9 @@ export default class NavigationDataChangePage extends Component {
               onPress={this._newNavData}
               style={styles.textWrapper}
             >
-              <Text style={styles.actionTxt}>新建</Text>
+              <Text style={styles.actionTxt}>
+                {getLanguage(GLOBAL.language).Prompt.CREATE}
+              </Text>
             </TouchableOpacity>
           ) : (
             <View />

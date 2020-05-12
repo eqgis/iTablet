@@ -650,7 +650,7 @@ class AppRoot extends Component {
   }
 
   setSaveMapViewLoading = (loading = false, info, extra) => {
-    GLOBAL.SaveMapView && GLOBAL.SaveMapView.setLoading(loading, info, extra)
+    GLOBAL.Loading && GLOBAL.Loading.setLoading(loading, info, extra)
   }
 
   closeMapHandler = async () => {

@@ -71,15 +71,16 @@ export default class ColorTable extends React.Component {
     return newData
   }
 
-  _onLayout = event => {
-    let { width } = event.nativeEvent.layout
+  _onLayout = () => {
+    // let { width } = event.nativeEvent.layout
+    let height = GLOBAL.toolBox?.height
     if (
-      this.sizeTemp < width ||
+      this.sizeTemp < height ||
       this.state.itemSize < this.sizeTemp / this.getColumn() - scaleSize(4)
     ) {
-      this.sizeTemp = width
+      this.sizeTemp = height
       this.setState({
-        itemSize: width / this.getColumn() - scaleSize(4),
+        itemSize: height / this.getColumn() - scaleSize(4),
       })
     }
   }

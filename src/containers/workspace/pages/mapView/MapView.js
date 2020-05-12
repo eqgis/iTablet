@@ -2426,7 +2426,7 @@ export default class MapView extends React.Component {
     const currentMapModule = this.props.appConfig.mapModules.find(item => {
       return item.key === this.type
     })
-    let buttonInfos = currentMapModule.headerButtons || [
+    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
       MapHeaderButton.Audio,
       MapHeaderButton.Undo,
       MapHeaderButton.Search,

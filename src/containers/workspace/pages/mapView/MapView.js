@@ -768,7 +768,7 @@ export default class MapView extends React.Component {
       GLOBAL.language,
     ).Map_Main_Menu.SELECT_DESTINATION
     if (GLOBAL.mapController) {
-      GLOBAL.mapController.changeBottom(false)
+      GLOBAL.mapController.reset()
       GLOBAL.mapController.setGuiding(false)
     }
     if (GLOBAL.FloorListView) {

@@ -6,10 +6,10 @@
 import { MapTabs } from '../../src/constants'
 
 /** 自定义Tab **/
-import MapTabExample from './MapTabExample'
+// import MapTabExample from './MapTabExample'
 
 export default {
   ...MapTabs,
 
-  MapTabExample,
+  // MapTabExample,
 }

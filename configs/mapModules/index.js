@@ -11,8 +11,8 @@ export default [
   new AppModule.MapCollectionConfig(),
   new AppModule.MapARConfig(),
   new AppModule.MapNavigationConfig(),
-  // new MapExample(),
   new AppModule.MapThemeConfig(),
   new AppModule.MapPlottingConfig(),
   new AppModule.MapAnalystConfig(),
+  // new MapExample(),
 ]

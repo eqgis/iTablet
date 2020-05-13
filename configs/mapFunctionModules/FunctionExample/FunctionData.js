@@ -1,4 +1,3 @@
-import { getLanguage } from '../../../src/language'
 import ToolbarModule from '../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import FunctionAction from './FunctionAction'
 
@@ -7,11 +6,11 @@ function getData(type, params) {
   let data = [
     {
       key: 'OPEN',
-      title: getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
+      title: "Location",
       // constants.OPEN,
-      action: FunctionAction.openMap,
+      action: FunctionAction.location,
       size: 'large',
-      image: require('../../../src/assets/mapTools/icon_open_black.png'),
+      image: require('../../../src/assets/userDefine/userDefineTab.png'),
     },
   ]
   const buttons = []

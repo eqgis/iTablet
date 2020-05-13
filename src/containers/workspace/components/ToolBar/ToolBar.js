@@ -287,7 +287,7 @@ export default class ToolBar extends React.Component {
    *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
-  setVisible = (isShow, type = this.state.type, params = {}) => {
+  setVisible = (isShow, type = '', params = {}) => {
     if (params.touchType) {
       GLOBAL.TouchType = params.touchType
     } else {
@@ -444,7 +444,7 @@ export default class ToolBar extends React.Component {
 
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
-    let newState = { data: [] }
+    let newState = { data: [], type: '' }
     if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''

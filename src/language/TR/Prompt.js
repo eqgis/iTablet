@@ -122,6 +122,7 @@ const Prompt = {
   READING_TEMPLATE: 'Taslak okunuyor',
   SWITCHED_TEMPLATE: 'Değiştirilmiş Taslak',
   THE_CURRENT_SELECTION: 'Geçerli seçim ',
+  THE_LAYER_DOES_NOT_EXIST: 'Lağıt mevcut değil',
 
   IMPORTING_DATA: 'Veriyi içeri aktarıyor',
   DATA_BEING_IMPORT: 'Veri içe aktarılıyor',
@@ -317,6 +318,9 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
+  CREATE: 'Yeni',
+  NO_DATASOURCE:
+    'Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Lütfen önce bir satır veri kümesi seçin',

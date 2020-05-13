@@ -14,6 +14,20 @@ import { Toast, scaleSize } from '../../../src/utils'
 import { getLanguage } from '../../../src/language'
 import ToolbarModule from '../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule'
 
+//定位当位置
+function location() {
+  //step1:移动到当前位置
+  SMap.moveToCurrent()
+  //step2:获取定位信息
+  setTimeout(()=>{
+    SMap.getCurrentLocation().then(({longitude,latitude})=>{
+      Toast.show("当前位置("+longitude+","+latitude+")",{position: Toast.POSITION.TOP,duration:3500})
+    })
+  },2000)
+
+  const _params = ToolbarModule.getParams()
+  _params.setToolbarVisible(false)
+}
 /** 打开地图 * */
 function openMap() {
   const _params = ToolbarModule.getParams()
@@ -227,6 +241,7 @@ async function listAction(type, params = {}) {
 }
 
 export default {
+  location,
   openMap,
   listAction,
 }

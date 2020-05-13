@@ -122,6 +122,7 @@ const Prompt = {
   READING_TEMPLATE: 'テンプレート読取中',
   SWITCHED_TEMPLATE: 'テンプレートは切替されました',
   THE_CURRENT_SELECTION: '現在の選択は ',
+  THE_LAYER_DOES_NOT_EXIST: 'このレイヤーは存在しません',
 
   IMPORTING_DATA: 'データインポート中',
   DATA_BEING_IMPORT: 'データインポート中',
@@ -324,6 +325,9 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
+  CREATE: '新しい',
+  NO_DATASOURCE:
+    '現在のワークスペースにはデータソースがありません。最初に新しいデータソースを作成してください',
 
   //导航增量路网
   SELECT_LINE_DATASET: '最初にラインデータセットを選択してください',

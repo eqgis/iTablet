@@ -72,14 +72,21 @@ export default class ColorTable extends React.Component {
   }
 
   _onLayout = event => {
-    let { width } = event.nativeEvent.layout
+    // let { width } = event.nativeEvent.layout
+    let size
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      size = GLOBAL.toolBox?.height
+    } else {
+      size = event.nativeEvent.layout.width
+    }
+
     if (
-      this.sizeTemp < width ||
+      this.sizeTemp < size ||
       this.state.itemSize < this.sizeTemp / this.getColumn() - scaleSize(4)
     ) {
-      this.sizeTemp = width
+      this.sizeTemp = size
       this.setState({
-        itemSize: width / this.getColumn() - scaleSize(4),
+        itemSize: size / this.getColumn() - scaleSize(4),
       })
     }
   }

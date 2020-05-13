@@ -768,7 +768,7 @@ export default class MapView extends React.Component {
       GLOBAL.language,
     ).Map_Main_Menu.SELECT_DESTINATION
     if (GLOBAL.mapController) {
-      GLOBAL.mapController.changeBottom(false)
+      GLOBAL.mapController.reset()
       GLOBAL.mapController.setGuiding(false)
     }
     if (GLOBAL.FloorListView) {
@@ -2039,7 +2039,8 @@ export default class MapView extends React.Component {
 
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
-    if (this.state.currentFloorID) return null
+    if (this.state.currentFloorID || this.mapController?.state.isGuiding)
+      return null
     return (
       <MapController
         ref={ref => (GLOBAL.mapController = this.mapController = ref)}
@@ -2437,7 +2438,7 @@ export default class MapView extends React.Component {
     const currentMapModule = this.props.appConfig.mapModules.find(item => {
       return item.key === this.type
     })
-    let buttonInfos = currentMapModule.headerButtons || [
+    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
       MapHeaderButton.Audio,
       MapHeaderButton.Undo,
       MapHeaderButton.Search,

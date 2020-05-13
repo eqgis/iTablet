@@ -12,7 +12,7 @@ import Loading from './Container/Loading'
 import { Button, BtnOne, BtnTwo, ColorBtn, MTBtn } from './Button'
 import DataSetListItem from './DataSetListItem'
 import DataSetListSection from './DataSetListSection'
-import { Dialog, InputDialog, BottomDialog } from './Dialog'
+import { Dialog, InputDialog, BottomDialog, CustomInputDialog } from './Dialog'
 import AudioDialog from './AudioTools'
 import PanAudioButton from './PanAudioButton'
 import { Row, Radio, RadioGroup, ChooseNumber, LabelBtn } from './Row'
@@ -53,7 +53,6 @@ import Picker from './Picker'
 import MenuDialog from './MenuDialog'
 import MultiPicker from './MultiPicker'
 import PopMenu from './PopMenu'
-
 export {
   Container,
   BtnOne,
@@ -82,6 +81,7 @@ export {
   // AudioCenterDialog,
   AudioDialog,
   BottomDialog,
+  CustomInputDialog,
   Button,
   Row,
   Radio,

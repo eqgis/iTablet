@@ -121,6 +121,7 @@ const Prompt = {
   READING_TEMPLATE: 'Reading Template',
   SWITCHED_TEMPLATE: 'Switched Template',
   THE_CURRENT_SELECTION: 'The current selection is ',
+  THE_LAYER_DOES_NOT_EXIST: 'The layer does not exist',
 
   IMPORTING_DATA: 'Importing Data',
   DATA_BEING_IMPORT: 'Data is being import',
@@ -318,6 +319,9 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     "Points are out of dataset's bounds or there are no dataset around points, do you want to use online route analyst?",
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Online navigation is not support yet.',
+  CREATE: 'New',
+  NO_DATASOURCE:
+    'There is no datasource in the current workspace, please create a new datasource first',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Please select a line dataset first',

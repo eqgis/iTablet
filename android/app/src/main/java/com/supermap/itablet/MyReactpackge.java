@@ -7,8 +7,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.NativeMethod;
-import com.supermap.RN.FileTools;
+//import com.supermap.RN.FileTools;
 import com.supermap.RN.SPUtils;
+import com.supermap.RNUtils.FileTools;
 
 
 import java.util.ArrayList;

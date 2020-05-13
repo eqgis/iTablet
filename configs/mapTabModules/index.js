@@ -11,5 +11,5 @@ import MapTabExample from './MapTabExample'
 export default {
   ...MapTabs,
 
-  MapTabExample,
+  // MapTabExample,
 }

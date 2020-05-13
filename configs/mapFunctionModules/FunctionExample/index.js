@@ -39,7 +39,7 @@ export default function () {
     key: '示例',
     title: '示例',
     size: 'large',
-    image: require('../../../src/assets/function/icon_function_start.png'),
+    image: require('../../../src/assets/userDefine/userDefineTab.png'),
     getData: FunctionData.getData, // 当前Function模块获取数据的方法
     actions: FunctionAction, // 当前Function模块所有事件
   })

@@ -11,8 +11,6 @@
 #import <UIKit/UIKit.h>
 #import "React/RCTBridgeModule.h"
 #import "React/RCTEventEmitter.h"
-#import <ZipArchive/ZipArchive.h>
-#import "FileUtils.h"
 #import <SuperMap/Environment.h>
 #import <SuperMap/Workspace.h>
 #import <SuperMap/DatasourceConnectionInfo.h>
@@ -22,8 +20,8 @@
 NSString *USER_NAME;
 static BOOL hasImportedData = NO;
 
-@interface FileTools : RCTEventEmitter<RCTBridgeModule, SSZipArchiveDelegate>
-@property(nonatomic) id<SSZipArchiveDelegate> zipArchiveDelegate;
+@interface FileTools : RCTEventEmitter<RCTBridgeModule>
+//@property(nonatomic) id<SSZipArchiveDelegate> zipArchiveDelegate;
 
 
 

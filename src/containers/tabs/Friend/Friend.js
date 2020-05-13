@@ -745,7 +745,6 @@ export default class Friend extends Component {
         }
         CoworkInfo.addMember(member)
         await SMessageService.declareSession([member], coworkId)
-        this.startSendLocation()
         return true
       } else {
         Toast.show(getLanguage(global.language).Friends.COWORK_IS_END)
@@ -793,13 +792,25 @@ export default class Friend extends Component {
     this.sendCurrentLocation()
     this.locationTimer = setInterval(() => {
       this.sendCurrentLocation()
-    }, 60000)
+    }, 15000)
   }
 
   sendCurrentLocation = async () => {
     try {
       if (CoworkInfo.coworkId !== '') {
         let location = await SMap.getCurrentLocation()
+        SMap.addLocationCallout(
+          location.longitude,
+          location.latitude,
+          this.props.user.currentUser.nickname,
+          this.props.user.currentUser.userId,
+        )
+        SMap.addUserTrack(
+          location.longitude,
+          location.latitude,
+          this.props.user.currentUser.nickname,
+          this.props.user.currentUser.userId,
+        )
         let coworkId = CoworkInfo.coworkId
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
@@ -812,8 +823,8 @@ export default class Friend extends Component {
           },
           message: {
             type: MSGConstant.MSG_COWORK_GPS,
-            latitude: location.latitude,
             longitude: location.longitude,
+            latitude: location.latitude,
           },
         }
         let msgStr = JSON.stringify(msgObj)
@@ -1309,6 +1320,19 @@ export default class Friend extends Component {
         for (let i = 0; i < members.length; i++) {
           CoworkInfo.addMember(members[i])
         }
+      } else if (coworkType === MSGConstant.MSG_COWORK_GPS) {
+        SMap.addLocationCallout(
+          messageObj.message.longitude,
+          messageObj.message.latitude,
+          messageObj.user.name,
+          messageObj.user.id,
+        )
+        SMap.addUserTrack(
+          messageObj.message.longitude,
+          messageObj.message.latitude,
+          messageObj.user.name,
+          messageObj.user.id,
+        )
       } else {
         /**
          * 对象添加更改的协作消息

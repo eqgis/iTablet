@@ -1656,6 +1656,11 @@ export default class MapView extends React.Component {
           ).Map_Main_Menu.SELECT_DESTINATION
           bNaviCreate = true
         }
+
+        //防止退出时没有清空
+        await SMap.removeUserCallout()
+        await SMap.clearUserTrack()
+
         this.setLoading(false)
         if (global.coworkMode && CoworkInfo.coworkId === '') {
           global.SimpleDialog.set({
@@ -1672,6 +1677,13 @@ export default class MapView extends React.Component {
             },
           })
           // global.SimpleDialog.setVisible(true)
+        } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
+          try {
+            let friend = global.getFriend()
+            friend.startSendLocation()
+          } catch (error) {
+            //
+          }
         }
       } catch (e) {
         if (!bWorkspcaOpen) {

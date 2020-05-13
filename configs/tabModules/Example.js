@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { View,Image,TouchableHighlight } from 'react-native'
+import { View,TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import TabContainer from '../../src/containers/tabs/TabContainer'
-import { getThemeAssets } from '../../src/assets'
+// import { getThemeAssets } from '../../src/assets'
 // import { TouchableHighlight } from 'react-native-gesture-handler'
 import { Toast } from '../../src/utils'
 

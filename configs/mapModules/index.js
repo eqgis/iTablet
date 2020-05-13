@@ -2,7 +2,7 @@
 import * as AppModule from '../../src/customModule/mapModules'
 
 /** 自定义模块 **/
-import MapExample from './MapExample'
+// import MapExample from './MapExample'
 
 /** export顺序为首页模块显示顺序 **/
 export default [

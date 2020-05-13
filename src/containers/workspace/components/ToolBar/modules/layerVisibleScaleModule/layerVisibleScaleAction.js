@@ -12,6 +12,10 @@ import ToolbarModule from '../ToolbarModule'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
+//判断两数相等，小数点五位以后忽略不计
+function isSimilar(num1, num2) {
+  return num1 - num2 < 0.00001
+}
 function pickerConfirm(item) {
   const _params = ToolbarModule.getParams()
   let data = ToolbarModule.getData()
@@ -22,10 +26,10 @@ function pickerConfirm(item) {
     //最大比例尺必须大于最小比例尺
     Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
   } else {
-    min !== item[0].initItem.value &&
-      SMap.setMaxVisibleScale(layerData.path, max)
-    max !== item[1].initItem.value &&
+    isSimilar(min, item[0].initItem.value) &&
       SMap.setMinVisibleScale(layerData.path, min)
+    isSimilar(max, item[1].initItem.value) &&
+      SMap.setMaxVisibleScale(layerData.path, max)
     Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
     _params.setToolbarVisible(false)
     _params.existFullMap()

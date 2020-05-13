@@ -1,4 +1,3 @@
-import { getLanguage } from '../../../src/language'
 import ToolbarModule from '../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import FunctionAction from './FunctionAction'
 

@@ -2,6 +2,7 @@ import mapModules from './mapModules/index'
 import tabModules from './tabModules/index'
 
 export default {
+  // name: '全功能移动GIS软件',
   name: 'SuperMap iTablet',
   alias: 'iTablet',
   version: '0.0.1',
@@ -11,8 +12,8 @@ export default {
     url: '',
   },
   login: ['Online', 'iPortal'],
-  tabModules: tabModules,
-  mapModules: mapModules,
+  tabModules: tabModules,//组册首页底部模块
+  mapModules: mapModules,//组册首页模块
   mineModules: [
     {key: 'IMPORT'},
     {key: 'MY_SERVICE'},

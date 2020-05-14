@@ -11,16 +11,15 @@ import {
   Text,
   TouchableOpacity,
   SectionList,
-  TextInput,
   StyleSheet,
   Animated,
   Platform,
 } from 'react-native'
-import { Container, Dialog } from '../../components'
+import { Container, CustomInputDialog } from '../../components'
 import {
   getLayerIconByType,
   getLayerWhiteIconByType,
-  getThemeAssets,
+  getPublicAssets,
 } from '../../assets'
 import { dataUtil, scaleSize, screen, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
@@ -53,6 +52,20 @@ export default class CreateNavDataPage extends Component {
     if (data.length === 0 || data[0]?.data?.length === 0) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.INCREMENT_FIRST)
       this.props.navigation.goBack()
+    } else if (data[1]?.data?.length === 0) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NO_DATASOURCE)
+      setTimeout(() => {
+        this.dialog.setDialogVisible(true, {
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE,
+          value: 'default_roadnet_datasource',
+          confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
+          cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          placeholder: '',
+          returnKeyType: 'done',
+          keyboardAppearance: 'dark',
+          confirmAction: this._createDatasource,
+        })
+      }, 1000)
     } else {
       this.setState({
         data,
@@ -82,28 +95,54 @@ export default class CreateNavDataPage extends Component {
   }
 
   _confirm = () => {
-    this.dialog.setDialogVisible(true)
-    setTimeout(() => {
-      this.input.focus()
-    }, 50)
+    this.dialog.setDialogVisible(true, {
+      title: getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME,
+      value: this.state.selectedDataset.datasetName,
+      confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
+      cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+      placeholder: '',
+      returnKeyType: 'done',
+      keyboardAppearance: 'dark',
+      confirmAction: this._dialogConfirm,
+    })
   }
 
-  _dialogConfirm = async () => {
+  _createDatasource = async datasourceName => {
+    this.container.setLoading(
+      true,
+      getLanguage(GLOBAL.language).Prompt.CREATING,
+    )
+    let rel = await SMap.createNavDatasource(datasourceName)
+    if (rel) {
+      let data = await SMap.getDatasourceAndDataset()
+      this.setState(
+        {
+          data,
+          selectedDatasource: data[1].default,
+        },
+        () => {
+          this.container.setLoading(false)
+        },
+      )
+    }
+    return true
+  }
+
+  _dialogConfirm = async fileName => {
     let { selectedDatasource, selectedDataset } = this.state
     if (!selectedDataset.datasetName) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
-      return
+      return true
     }
     if (!selectedDatasource.datasourceName) {
       Toast.show(
         getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
       )
-      return
+      return true
     }
-    let { result, error } = dataUtil.isLegalName(this.fileName)
+    let { result, error } = dataUtil.isLegalName(fileName)
     if (!result) {
       Toast.show(error)
-      this.input.focus()
     } else {
       let filePath = await FileTools.appendingHomeDirectory(
         ConstPath.AppPath +
@@ -112,13 +151,12 @@ export default class CreateNavDataPage extends Component {
           '/' +
           ConstPath.RelativePath.Datasource +
           '/' +
-          this.fileName +
+          fileName +
           '.snm',
       )
       let isFileExist = await FileTools.fileIsExist(filePath)
       if (isFileExist) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
-        this.input.focus()
       } else {
         let rel = await SMap.buildOutdoorNetwork({
           ...selectedDataset,
@@ -137,6 +175,7 @@ export default class CreateNavDataPage extends Component {
             },
           })
           this.props.navigation.goBack()
+          return true
         }
       }
     }
@@ -176,7 +215,7 @@ export default class CreateNavDataPage extends Component {
         this.state.selectedDatasource.datasourceName === item.datasourceName
       name = item.datasourceName
       if (hasExtra) {
-        img = getThemeAssets().navigation.icon_datasource_white
+        img = getPublicAssets().navigation.icon_datasource_white
         extraTxt = {
           color: color.white,
         }
@@ -184,7 +223,7 @@ export default class CreateNavDataPage extends Component {
           backgroundColor: color.item_selected_bg,
         }
       } else {
-        img = getThemeAssets().navigation.icon_datasource
+        img = getPublicAssets().navigation.icon_datasource
       }
     }
 
@@ -201,6 +240,7 @@ export default class CreateNavDataPage extends Component {
   _renderContainer = () => {
     return (
       <Container
+        ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(GLOBAL.language).Prompt.NEW_NAV_DATA,
           navigation: this.props.navigation,
@@ -218,45 +258,19 @@ export default class CreateNavDataPage extends Component {
             index,
           })}
         />
-        <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
-          <Text style={styles.confirmTxt}>
-            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
-          </Text>
-        </TouchableOpacity>
+        {this.state.data.length > 0 && (
+          <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
+            <Text style={styles.confirmTxt}>
+              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+            </Text>
+          </TouchableOpacity>
+        )}
       </Container>
     )
   }
 
   _renderDialog = () => {
-    return (
-      <Dialog
-        ref={ref => (this.dialog = ref)}
-        confirmAction={this._dialogConfirm}
-        opacity={1}
-        opacityStyle={styles.dialogBackground}
-        style={styles.dialogBackground}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
-      >
-        <View style={styles.dialogContent}>
-          <View style={styles.flex}>
-            <Text style={styles.dialogTitle}>
-              {getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME}
-            </Text>
-          </View>
-          <View style={styles.flex}>
-            <TextInput
-              ref={ref => (this.input = ref)}
-              style={styles.dialogInput}
-              maxLength={30}
-              onChangeText={text => {
-                this.fileName = text
-              }}
-            />
-          </View>
-        </View>
-      </Dialog>
-    )
+    return <CustomInputDialog ref={ref => (this.dialog = ref)} />
   }
 
   render() {

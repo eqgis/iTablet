@@ -20,7 +20,7 @@ import { getLanguage } from '../../../../../../language'
 async function start() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
     BackgroundTimer.runBackgroundTimer(async () => {
-      SMap.startGpsIncrement()
+      await SMap.startGpsIncrement()
     }, 2000)
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
@@ -36,18 +36,18 @@ async function cancel() {
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       BackgroundTimer.stopBackgroundTimer()
-      SMap.clearIncrementPoints()
+      await SMap.clearIncrementPoints()
       break
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      SMap.clearIncrementPoints()
+      await SMap.clearIncrementPoints()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
       await SMap.cancel()
-      SMap.setAction(Action.CREATEPOLYLINE)
+      await SMap.setAction(Action.CREATEPOLYLINE)
       break
     case ConstToolType.MAP_INCREMENT_FREELINE:
       await SMap.cancel()
-      SMap.setAction(Action.FREEDRAW)
+      await SMap.setAction(Action.FREEDRAW)
       break
   }
 }
@@ -75,11 +75,11 @@ async function submit() {
         break
       case ConstToolType.MAP_INCREMENT_POINTLINE:
         await SMap.submit()
-        SMap.setAction(Action.CREATEPOLYLINE)
+        await SMap.setAction(Action.CREATEPOLYLINE)
         break
       case ConstToolType.MAP_INCREMENT_FREELINE:
         await SMap.submit()
-        SMap.setAction(Action.FREEDRAW)
+        await SMap.setAction(Action.FREEDRAW)
         break
     }
   } else {
@@ -96,7 +96,7 @@ async function redo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      SMap.redoIncrement()
+      await SMap.redoIncrement()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:
@@ -114,7 +114,7 @@ async function undo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      SMap.undoIncrement()
+      await SMap.undoIncrement()
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
     case ConstToolType.MAP_INCREMENT_FREELINE:
@@ -187,18 +187,18 @@ function getTypeImage(type) {
  */
 async function methodSelected(type) {
   //切换方式 清除上次增量的数据
-  SMap.clearIncrementPoints()
-  SMap.setAction(Action.PAN)
+  await SMap.clearIncrementPoints()
+  await SMap.setAction(Action.PAN)
   switch (type) {
     case ConstToolType.MAP_INCREMENT_GPS_POINT:
       break
     case ConstToolType.MAP_INCREMENT_GPS_TRACK:
       break
     case ConstToolType.MAP_INCREMENT_POINTLINE:
-      SMap.setAction(Action.CREATEPOLYLINE)
+      await SMap.setAction(Action.CREATEPOLYLINE)
       break
     case ConstToolType.MAP_INCREMENT_FREELINE:
-      SMap.setAction(Action.FREEDRAW)
+      await SMap.setAction(Action.FREEDRAW)
       break
   }
   changeMethod(type)
@@ -234,7 +234,7 @@ async function topoEdit() {
   //切换方式 清除上次增量的数据
   await SMap.clearIncrementPoints()
   SMap.submit()
-  SMap.setAction(Action.SELECT)
+  await SMap.setAction(Action.SELECT)
   _params.setToolbarVisible &&
     _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_EDIT, {
       isFullScreen: false,

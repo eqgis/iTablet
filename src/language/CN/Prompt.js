@@ -118,6 +118,7 @@ const Prompt = {
   READING_TEMPLATE: '正在读取模板',
   SWITCHED_TEMPLATE: '已为您切换模板',
   THE_CURRENT_SELECTION: '当前选择为 ',
+  THE_LAYER_DOES_NOT_EXIST: '该图层不存在',
 
   IMPORTING_DATA: '正在导入数据',
   DATA_BEING_IMPORT: '数据正在导入',
@@ -304,6 +305,8 @@ const Prompt = {
   USE_ONLINE_ROUTE_ANALYST:
     '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
   NOT_SUPPORT_ONLINE_NAVIGATION: '在线导航暂不支持',
+  CREATE: '新建',
+  NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
 
   //导航增量路网
   SELECT_LINE_DATASET: '请先选择一个线数据集',

@@ -13,8 +13,9 @@ import android.view.KeyEvent;
 
 import com.facebook.react.ReactActivity;
 import com.rnfs.RNFSManager;
-import com.supermap.RN.FileTools;
+//import com.supermap.RN.FileTools;
 import com.supermap.RN.appManager;
+import com.supermap.RNUtils.FileTools;
 import com.supermap.data.Environment;
 import com.supermap.data.ITabletLicenseManager;
 import com.supermap.data.Toolkit;
@@ -25,8 +26,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import io.reactivex.functions.Consumer;
 
 import org.devio.rn.splashscreen.SplashScreen;
-
-import java.util.Vector;
 
 public class MainActivity extends ReactActivity {
     public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();

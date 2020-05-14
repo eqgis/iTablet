@@ -137,6 +137,9 @@ export default class CustomInputDialog extends PureComponent {
     } else if (this.props.cancelAction) {
       this.props.cancelAction()
     }
+    this.setState({
+      value: '',
+    })
     this.setDialogVisible(false)
   }
 

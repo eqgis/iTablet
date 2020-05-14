@@ -20,7 +20,7 @@
 //#import "VisualViewController.h"
 //#import "VCViewController.h"
 #import "RNFSManager.h"
-#import "SuperMap/LogInfoService.h"
+//#import "SuperMap/LogInfoService.h"
 //#import "RNSplashScreen.h"
 #import "Common/HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
@@ -120,7 +120,7 @@ static NSString* g_sampleCodeName = @"#";;
   
   
   [self initDefaultData];
-  [self initEnvironment];
+//  [self initEnvironment];
   self.allowRotation = UIInterfaceOrientationMaskAll;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];
   
@@ -132,12 +132,7 @@ static NSString* g_sampleCodeName = @"#";;
                                                       object:nil];
   // 开启网络监听
   [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
-  
-  //监听崩溃信息
-  NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
-  //判断上次是否有崩溃信息
-  initCrash();
-  
+    
   @try {
     //初始化极光推送
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
@@ -169,40 +164,40 @@ static NSString* g_sampleCodeName = @"#";;
 }
 
 #pragma mark - 初始化license
-- (void)initEnvironment {
-//  [Environment setOpenGLMode:false];
-  
-  NSString *srclic = [[NSBundle mainBundle] pathForResource:@"Trial_License" ofType:@"slm"];
-  if (srclic) {
-    NSString* deslic = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@"Trial_License.slm"];
-    if([[NSFileManager defaultManager] fileExistsAtPath:deslic isDirectory:nil]){
-      NSString* srcTime = [NSString stringWithContentsOfFile:srclic encoding:NSUTF8StringEncoding error:nil];
-      NSString* desTime = [NSString stringWithContentsOfFile:deslic encoding:NSUTF8StringEncoding error:nil];
-      NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:@"ExpiredDate=([0-9]+)" options:0 error:nil];
-      
-      NSTextCheckingResult *match = [regular firstMatchInString:srcTime options:0 range:NSMakeRange(0, [srcTime length])];
-      NSTextCheckingResult *match1 = [regular firstMatchInString:desTime options:0 range:NSMakeRange(0, [desTime length])];
-      
-      if (match && match1) {
-          NSString *result = [srcTime substringWithRange:[match rangeAtIndex:1] ];
-          NSLog(@"time: %@",result);
-          NSString *result1 = [desTime substringWithRange:[match1 rangeAtIndex:1] ];
-          NSLog(@"time: %@",result);
-        if(result1.longLongValue < result.longLongValue){
-          [[NSFileManager defaultManager] removeItemAtPath:deslic error:nil];
-        }
-      }
-    }
-    [FileTools createFileDirectories:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@""]];
-    if(![[NSFileManager defaultManager] copyItemAtPath:srclic toPath:deslic error:nil])
-      NSLog(@"拷贝数据失败");
-    [Environment setLicensePath:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/%@/",@"license"]];
-  }
-}
+//- (void)initEnvironment {
+////  [Environment setOpenGLMode:false];
+//
+//  NSString *srclic = [[NSBundle mainBundle] pathForResource:@"Trial_License" ofType:@"slm"];
+//  if (srclic) {
+//    NSString* deslic = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@"Trial_License.slm"];
+//    if([[NSFileManager defaultManager] fileExistsAtPath:deslic isDirectory:nil]){
+//      NSString* srcTime = [NSString stringWithContentsOfFile:srclic encoding:NSUTF8StringEncoding error:nil];
+//      NSString* desTime = [NSString stringWithContentsOfFile:deslic encoding:NSUTF8StringEncoding error:nil];
+//      NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:@"ExpiredDate=([0-9]+)" options:0 error:nil];
+//
+//      NSTextCheckingResult *match = [regular firstMatchInString:srcTime options:0 range:NSMakeRange(0, [srcTime length])];
+//      NSTextCheckingResult *match1 = [regular firstMatchInString:desTime options:0 range:NSMakeRange(0, [desTime length])];
+//
+//      if (match && match1) {
+//          NSString *result = [srcTime substringWithRange:[match rangeAtIndex:1] ];
+//          NSLog(@"time: %@",result);
+//          NSString *result1 = [desTime substringWithRange:[match1 rangeAtIndex:1] ];
+//          NSLog(@"time: %@",result);
+//        if(result1.longLongValue < result.longLongValue){
+//          [[NSFileManager defaultManager] removeItemAtPath:deslic error:nil];
+//        }
+//      }
+//    }
+//    [FileTools createFileDirectories:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@""]];
+//    if(![[NSFileManager defaultManager] copyItemAtPath:srclic toPath:deslic error:nil])
+//      NSLog(@"拷贝数据失败");
+//    [Environment setLicensePath:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/%@/",@"license"]];
+//  }
+//}
 
 #pragma mark - 初始化默认数据
 - (void)initDefaultData {
-  //  [self initCustomWorkspace];
+    [self initCustomWorkspace];
   [self initDefaultWorkspace];
 }
 
@@ -256,35 +251,6 @@ static NSString* g_sampleCodeName = @"#";;
   
   [[NSNotificationCenter defaultCenter] postNotificationName:@"dowloadFile"
                                                       object:nil];
-}
-
-void UncaughtExceptionHandler(NSException *exception) {
-  /**
-   *  获取异常崩溃信息
-   */
-  NSArray *callStack = [exception callStackSymbols];
-  NSString *reason = [exception reason];
-  NSString *name = [exception name];
-  NSString *content = [NSString stringWithFormat:@"========异常错误报告========\nname:%@\nreason:\n%@\ncallStackSymbols:\n%@",name,reason,[callStack componentsJoinedByString:@"\n"]];
-  
-  //将崩溃信息持久化在本地，下次程序启动时、或者后台，将崩溃信息作为日志发送给开发者。
-  [[NSUserDefaults standardUserDefaults] setObject:content forKey:@"ExceptionContent"];
-}
-void initCrash(){
-  NSString* crashKey=@"ExceptionContent";
-  NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-  NSString* crashStr=[userDefault objectForKey:crashKey];
-  if(crashStr){
-    NSMutableDictionary* dic=[[NSMutableDictionary alloc] init];
-    [dic setValue:crashStr forKey:@"crashIos"];
-    //上传数据
-    [LogInfoService sendAPPLogInfo:dic completionHandler:^(BOOL result) {
-      if(result){
-        //上传成功
-      }
-    }];
-    [userDefault removeObjectForKey:crashKey];
-  }
 }
 
 

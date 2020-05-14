@@ -287,7 +287,7 @@ export default class ToolBar extends React.Component {
    *   isExistFullMap:   setVisible之后是否退出全屏
    * }
    **/
-  setVisible = (isShow, type = this.state.type, params = {}) => {
+  setVisible = (isShow, type = '', params = {}) => {
     if (params.touchType) {
       GLOBAL.TouchType = params.touchType
     } else {
@@ -422,7 +422,7 @@ export default class ToolBar extends React.Component {
       )
       this.isShow = isShow
     }
-    if (!this.contentView) return
+    // if (!this.contentView) return
     // Box内容框的显示和隐藏
     let positionNumber = parseFloat(JSON.stringify(position))
     if (positionNumber < 0) {
@@ -444,7 +444,7 @@ export default class ToolBar extends React.Component {
 
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
-    let newState = { data: [] }
+    let newState = { data: [], type: '' }
     if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
       newState.selectKey = ''
@@ -771,13 +771,10 @@ export default class ToolBar extends React.Component {
   }
 
   render() {
-    let containerStyle = this.state.isFullScreen
-      ? this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? { ...styles.fullContainerLandscape, height: this.props.device.height }
-        : { ...styles.fullContainer, width: this.props.device.width }
-      : this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? styles.wrapContainerLandscape
-        : styles.wrapContainer
+    let containerStyle =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? styles.fullContainerLandscape
+        : styles.fullContainer
     let size = { height: this.props.device.height }
     if (this.state.isFullScreen && this.state.isTouchProgress) {
       let softBarHeight = this.state.hasSoftMenuBottom

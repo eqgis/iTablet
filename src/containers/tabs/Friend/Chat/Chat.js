@@ -49,17 +49,18 @@ class Chat extends React.Component {
     appConfig: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
-    closeWorkspace: () => {},
+    closeMap: () => {},
     getLayers: () => {},
     setCurrentMapModule: () => {},
   }
   constructor(props) {
     super(props)
+    this.openTime = new Date().getTime()
     this.friend = global.getFriend()
     this.curUser = this.friend.props.user.currentUser
     this.targetId = this.props.navigation.getParam('targetId')
     this.targetUser = this.friend.getTargetUser(this.targetId)
-    this.friend.setCurChat(this)
+    this.friend.setCurChat(this, this.openTime)
     this.action = this.props.navigation.getParam('action')
     this._isMounted = false
     this.state = {
@@ -163,7 +164,7 @@ class Chat extends React.Component {
         key: this.props.navigation.state.routeName,
       })
     }
-    this.friend.setCurChat(undefined)
+    this.friend.setCurChat(undefined, this.openTime)
     this._isMounted = false
   }
 
@@ -201,9 +202,7 @@ class Chat extends React.Component {
       this.friend.setCurMod(undefined)
       this.setCoworkMode(false)
       global.coworkMode = false
-      this.props.closeWorkspace()
       this.friend.leaveCowork()
-      NavigationService.pop()
       this.props.navigation.replace('CoworkTabs', {
         targetId: this.targetId,
       })
@@ -215,18 +214,22 @@ class Chat extends React.Component {
       mapOpen = false
     }
     if (mapOpen) {
-      SMap.mapIsModified().then(result => {
+      SMap.mapIsModified().then(async result => {
         if (result) {
           GLOBAL.SaveMapView &&
             GLOBAL.SaveMapView.setVisible(true, null, () => {
               close()
             })
         } else {
+          await this.props.closeMap()
           close()
+          this.props.navigation.pop()
         }
       })
     } else {
+      await this.props.closeMap()
       close()
+      this.props.navigation.pop()
     }
   }
 

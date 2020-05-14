@@ -4,7 +4,7 @@ import {
   setBackAction,
   removeBackAction,
 } from '../../../../redux/models/backActions'
-import { closeWorkspace } from '../../../../redux/models/map'
+import { closeMap } from '../../../../redux/models/map'
 import { getLayers } from '../../../../redux/models/layers'
 import { setCurrentMapModule } from '../../../../redux/models/appConfig'
 
@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setBackAction,
   removeBackAction,
-  closeWorkspace,
+  closeMap,
   getLayers,
   setCurrentMapModule,
 }

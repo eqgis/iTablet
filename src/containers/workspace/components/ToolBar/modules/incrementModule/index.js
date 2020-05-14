@@ -21,8 +21,6 @@ class IncrementModule extends FunctionModule {
 }
 
 export default function() {
-  GLOBAL.FloorListView && GLOBAL.FloorListView.setVisible(false)
-  GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
   return new IncrementModule({
     type: 'MAP_INCREAMENT',
     key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,

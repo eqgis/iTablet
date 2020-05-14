@@ -1,4 +1,4 @@
-import { SOnlineService, SMap, SIPortalService } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { ConstToolType, ConstInfo, UserType } from '../../../../../../constants'
 import { Toast, OnlineServicesUtils, LayerUtils } from '../../../../../../utils'
 import constants from '../../../../constants'
@@ -32,7 +32,7 @@ async function shareMap(type, list = [], name = '') {
       const layers = await SMap.getLayersByType()
       const notExportMapIndexes = []
       for (let i = 1; i <= GLOBAL.BaseMapSize; i++) {
-        if (LayerUtils.isBaseLayer(layers[layers.length - i].name)) {
+        if (LayerUtils.isBaseLayer(layers[layers.length - i])) {
           notExportMapIndexes.push(layers.length - i)
         }
       }
@@ -48,15 +48,21 @@ async function shareMap(type, list = [], name = '') {
           },
         },
         async (result, path) => {
-          !result && Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
+          if (!result) {
+            Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
+            return
+          }
           // 分享
           const fileName = path.substr(path.lastIndexOf('/') + 1)
           const dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
 
           // SOnlineService.deleteData(dataName).then(async () => {
           Toast.show(getLanguage(global.language).Prompt.SHARE_START)
-          const onProgeress = progress => {
+          const onProgress = progress => {
             progress = parseInt(progress)
+            if (progress % 10 !== 0) {
+              return
+            }
             let currentSharingProgress = 0
             for (
               let i = 0;
@@ -106,25 +112,19 @@ async function shareMap(type, list = [], name = '') {
             FileTools.deleteFile(path)
             ToolbarModule.addData({ isSharing: false })
           }
-
+          let JSOnlineService
           if (type === constants.SUPERMAP_ONLINE) {
-            await SOnlineService.uploadFile(path, dataName, {
-              onProgress: onProgeress,
-              onResult: async () => {
-                SOnlineService.publishService(dataName)
-                onResult(true)
-              },
-            })
+            JSOnlineService = new OnlineServicesUtils('online')
           } else if (type === constants.SUPERMAP_IPORTAL) {
-            await SIPortalService.uploadData(path, `${dataName}.zip`, {
-              onProgress: onProgeress,
-              onResult: async () => {
-                const JSIPortalService = new OnlineServicesUtils('iportal')
-                JSIPortalService.publishServiceByName(`${dataName}.zip`)
-                onResult(true)
-              },
-            })
+            JSOnlineService = new OnlineServicesUtils('iportal')
           }
+          let uploadResult = await JSOnlineService.uploadFile(
+            path,
+            `${dataName}.zip`,
+            'WORKSPACE',
+            { onProgress: onProgress },
+          )
+          onResult(uploadResult)
         },
       )
     }, 500)

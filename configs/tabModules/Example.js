@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View,TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import TabContainer from '../../src/containers/tabs/TabContainer'
-import { getThemeAssets } from '../../src/assets'
+// import { getThemeAssets } from '../../src/assets'
+// import { TouchableHighlight } from 'react-native-gesture-handler'
+import { Toast } from '../../src/utils'
 
 class Example extends Component {
   props: {
@@ -32,8 +34,12 @@ class Example extends Component {
         }}
         navigation={this.props.navigation}
       >
-        <View style={{flex: 1, backgroundColor: 'yellow'}} />
-        <View style={{flex: 1, backgroundColor: 'blue'}} />
+        <TouchableHighlight style={{flex: 1, backgroundColor: 'yellow'}} onPress={() => {Toast.show("用户自定义yellow")} }>
+          <View></View>
+        </TouchableHighlight>
+        <TouchableHighlight style={{flex: 1, backgroundColor: 'blue'}} onPress={() => {Toast.show("用户自定义blue")} }>
+          <View></View>
+        </TouchableHighlight>
       </TabContainer>
     )
   }
@@ -60,7 +66,6 @@ export default {
   // 自定义Tab界面
   Screen: MyExample,
   // Tab未点击图片
-  image: getThemeAssets().tabBar.tab_discover,
-  // Tab高亮图片
-  selectedImage: getThemeAssets().tabBar.tab_discover_selected,
+  image: require('../../src/assets/userDefine/userDefineTab.png'), // Tab未点击图片
+  selectedImage: require('../../src/assets/userDefine/userDefineTab.png'),
 }

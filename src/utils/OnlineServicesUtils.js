@@ -209,8 +209,13 @@ export default class OnlineServicesUtils {
             }
           },
           progress: res => {
-            if (callback && typeof callback.onProgress === 'function') {
-              callback.onProgress(res)
+            try {
+              if (callback && typeof callback.onProgress === 'function') {
+                let progress = res.totalBytesSent / res.totalBytesExpectedToSend
+                callback.onProgress(progress * 100)
+              }
+            } catch {
+              /*** */
             }
           },
         }

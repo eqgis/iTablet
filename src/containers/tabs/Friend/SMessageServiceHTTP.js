@@ -35,7 +35,12 @@ export default class SMessageServiceHTTP {
       }
       const comsumer = await fetch(url, extraData)
         .then(data => data.json())
-        .then(data => data.consumer_details[0].consumer_tag)
+        .then(data => {
+          if (data.consumer_details[0]) {
+            return data.consumer_details[0].consumer_tag
+          }
+          return false
+        })
         .catch(() => false)
       return comsumer
     } catch (e) {
@@ -57,7 +62,12 @@ export default class SMessageServiceHTTP {
     }
     const connectionName = await fetch(url, extraData)
       .then(data => data.json())
-      .then(data => data.consumer_details[0].channel_details.connection_name)
+      .then(data => {
+        if (data.consumer_details[0]) {
+          return data.consumer_details[0].channel_details.connection_name
+        }
+        return false
+      })
       .catch(() => false)
     return connectionName
   }

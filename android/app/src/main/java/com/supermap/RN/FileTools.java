@@ -874,6 +874,7 @@ public class FileTools extends ReactContextBaseJavaModule {
         createDirectory(dataPath + "Media");
         boolean dataPlot=createDirectory(dataPath + "Plotting");
         createDirectory(dataPath + "Animation");
+        createDirectory(dataPath + "Rectify");
 //        createDirectory(CachePath);
         createDirectory(externalDataPath);
         boolean plotExt=createDirectory(plottingExtDataPath);

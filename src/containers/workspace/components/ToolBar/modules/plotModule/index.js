@@ -42,6 +42,21 @@ class PlotModule extends FunctionModule {
         break
     }
   }
+
+  //eslint-disable-next-line
+  getToolbarSize = (type, orientation, additional) => {
+    // const _data = ToolbarModule.getData()
+    let data = {}
+    if (
+      type === ToolbarType.animationNode &&
+      (additional && additional.data && additional.data.length === 1)
+    ) {
+      data.height =
+        ConstToolType.TOOLBAR_HEIGHT[0] *
+        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 8)
+    }
+    return data
+  }
 }
 
 export default function(type) {

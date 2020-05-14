@@ -111,42 +111,53 @@ export default class RegistrationExecutePage extends Component {
       true,
       getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
     )
-    let arithmeticMode = GLOBAL.RegistrationArithmeticMode
-    let datasets = this.state.datasets
-    let count = 0
-    for (let i = 0; i < datasets.length; i++) {
-      if (datasets[i].sampleModeData && datasets[i].sampleModeData.checked) {
-        datasets[i].isResmaple = true
+    try {
+      let arithmeticMode = GLOBAL.RegistrationArithmeticMode
+      let datasets = this.state.datasets
+      let count = 0
+      for (let i = 0; i < datasets.length; i++) {
+        if (datasets[i].sampleModeData && datasets[i].sampleModeData.checked) {
+          datasets[i].isResmaple = true
 
-        if (datasets[i].sampleModeData.sampleMode != undefined) {
-          datasets[i].resmapleMode = datasets[i].sampleModeData.sampleMode
+          if (datasets[i].sampleModeData.sampleMode != undefined) {
+            datasets[i].resmapleMode = datasets[i].sampleModeData.sampleMode
+          }
+          if (datasets[i].sampleModeData.cellSize) {
+            datasets[i].cellSize = datasets[i].sampleModeData.cellSize
+          }
+        } else {
+          datasets[i].isResmaple = false
         }
-        if (datasets[i].sampleModeData.cellSize) {
-          datasets[i].cellSize = datasets[i].sampleModeData.cellSize
+        if (datasets[i].isSelect) {
+          datasets[i].saveAs = 1
+        } else {
+          datasets[i].saveAs = 0
         }
-      } else {
-        datasets[i].isResmaple = false
-      }
-      if (datasets[i].isSelect) {
-        datasets[i].saveAs = 1
-      } else {
-        datasets[i].saveAs = 0
-      }
-      datasets[i].transformationMode = arithmeticMode
+        datasets[i].transformationMode = arithmeticMode
 
-      let result = await SRectifyView.rectifyRasterDirectByDataset(datasets[i])
-      if (result) {
-        count++
+        let result = await SRectifyView.rectifyRasterDirectByDataset(
+          datasets[i],
+        )
+        if (result) {
+          count++
+        }
       }
+      if (count === datasets.length) {
+        Toast.show(
+          getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_EXECUTE_SUCCESS,
+        )
+      } else {
+        Toast.show(
+          getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_EXECUTE_FAILED,
+        )
+      }
+      GLOBAL.Loading.setLoading(false)
+      NavigationService.goBack()
+    } catch {
+      GLOBAL.Loading.setLoading(false)
     }
-    if (count === datasets.length) {
-      Toast.show(
-        getLanguage(global.language).Analyst_Labels
-          .REGISTRATION_EXECUTE_SUCCESS,
-      )
-    }
-    GLOBAL.Loading.setLoading(false)
-    NavigationService.goBack()
   }
 
   renderRows() {

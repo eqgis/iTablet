@@ -819,7 +819,7 @@ function _isRelatedDS(name, checkName) {
 }
 
 function _isTIF(name) {
-  return _isType(name, ['tif'])
+  return _isType(name, ['tif', 'tiff'])
 }
 
 function _isSHP(name) {

@@ -123,9 +123,14 @@ export default class MapNavMenu extends React.Component {
 
   getToolbar = type => {
     let list = []
-    const tabModules = this.props.appConfig.mapModules[
-      this.props.appConfig.currentMapModule
-    ].tabModules
+    const tabModules =
+      (this.props.appConfig.mapModules &&
+        this.props.appConfig.mapModules[
+          this.props.appConfig.currentMapModule
+        ] &&
+        this.props.appConfig.mapModules[this.props.appConfig.currentMapModule]
+          .tabModules) ||
+      []
 
     for (let i = 0; i < tabModules.length; i++) {
       switch (tabModules[i]) {

@@ -23,6 +23,7 @@ export default class MapController extends React.Component {
     compassStyle?: any,
     type: any,
     device: any,
+    currentFloorID: string,
   }
 
   constructor(props) {
@@ -286,7 +287,7 @@ export default class MapController extends React.Component {
   }
 
   render() {
-    if (this.state.isGuiding) return null
+    if (this.state.isGuiding || this.props.currentFloorID) return null
     return (
       <Animated.View
         style={[

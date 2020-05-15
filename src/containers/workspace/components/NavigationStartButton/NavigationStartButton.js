@@ -237,15 +237,13 @@ export default class NavigationStartButton extends React.Component {
         return
       }
       if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
-        if (GLOBAL.mapController) {
-          GLOBAL.mapController.setVisible(false)
-          GLOBAL.mapController.setGuiding(true)
-        }
+        GLOBAL.mapController?.setVisible(false)
         await SMap.outdoorNavigation(1)
       } else if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
         GLOBAL.FloorListView?.setGuiding(true)
         await SMap.indoorNavigation(1)
       }
+      GLOBAL.mapController?.setGuiding(true)
       this.setVisible(false)
       GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
     } catch (error) {

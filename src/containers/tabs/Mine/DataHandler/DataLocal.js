@@ -38,7 +38,7 @@ async function _getListByFilter(user, type) {
     case 'DATA':
       path = userPath + ConstPath.RelativePath.Datasource
       filter = {
-        extension: 'udb',
+        extension: 'udb,sci',
         type: 'file',
         exclued: `Label_${user.userName}#.udb`,
       }

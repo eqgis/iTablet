@@ -104,7 +104,7 @@ export default class RegistrationPage extends Component {
         currentIndex: -1,
       })
     } else {
-      SRectifyView.clearData()
+      SRectifyView.dispose()
       NavigationService.goBack()
     }
   }
@@ -133,7 +133,7 @@ export default class RegistrationPage extends Component {
   }
 
   exit = () => {
-    SRectifyView.clearData()
+    SRectifyView.dispose()
     NavigationService.goBack()
     NavigationService.goBack()
     NavigationService.goBack()

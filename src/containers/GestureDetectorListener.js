@@ -171,16 +171,16 @@ async function touchCallback(event) {
       data?.actions?.pointSplitLine(point)
       break
     }
+    case TouchType.MAP_TOPO_TRIM_LINE:
     case TouchType.MAP_TOPO_EXTEND_LINE: {
-      const data = ToolbarModule.getData()
+      // const data = ToolbarModule.getData()
       const point = event.LLPoint
-      data?.actions?.extendLine(point)
-      break
-    }
-    case TouchType.MAP_TOPO_TRIM_LINE: {
-      const data = ToolbarModule.getData()
-      const point = event.LLPoint
-      data?.actions?.trimLine(point)
+      ToolbarModule.addData({ point })
+      let params = {
+        point,
+        ...GLOBAL.INCREMENT_DATA,
+      }
+      SMap.drawSelectedLineOnTrackingLayer(params)
       break
     }
     case TouchType.ADD_NODES:

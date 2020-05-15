@@ -350,6 +350,9 @@ export default class MyLocalData extends Component {
         case 'datasource':
           await DataHandler.importDatasource(user, item)
           break
+        case 'sci':
+          await DataHandler.importSCI(user, item)
+          break
         case 'color':
           await DataHandler.importColor(user, item)
           break
@@ -481,6 +484,7 @@ export default class MyLocalData extends Component {
         fileType === 'workspace' ||
         fileType === 'workspace3d' ||
         fileType === 'datasource' ||
+        fileType === 'sci' ||
         fileType === 'color' ||
         fileType === 'symbol'
       ) {

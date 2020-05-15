@@ -200,6 +200,7 @@ const Analyst_Labels = {
   REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
   REGISTRATION_EXECUTE: 'Execute',
   REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
+  REGISTRATION_EXECUTE_FAILED: 'Execute failed',
   REGISTRATION_SAVE_AS: 'Save as',
   REGISTRATION_RESAMPLE: 'Result resampling',
   REGISTRATION_SAMPLE_MODE: 'Sampling mode',

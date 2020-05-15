@@ -201,6 +201,7 @@ const Analyst_Labels = {
   REGISTRATION_ASSOCIATION_CLOCE: 'Bağlantı kaldırıldı',
   REGISTRATION_EXECUTE: 'infaz',
   REGISTRATION_EXECUTE_SUCCESS: 'Başarılı uygulama',
+  REGISTRATION_EXECUTE_FAILED: 'Yürütme başarısız',
   REGISTRATION_SAVE_AS: 'Farklı kaydet',
   REGISTRATION_RESAMPLE: 'Yeniden örnekleme sonuçları',
   REGISTRATION_SAMPLE_MODE: 'Örnekleme modu',

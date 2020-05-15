@@ -125,6 +125,7 @@ class AppRoot extends Component {
   static propTypes = {
     language: PropTypes.string,
     autoLanguage: PropTypes.bool,
+    configLangSet: PropTypes.bool,
     peripheralDevice: PropTypes.string,
     nav: PropTypes.object,
     backActions: PropTypes.object,
@@ -175,8 +176,8 @@ class AppRoot extends Component {
     this.login = this.login.bind(this)
     this.reCircleLogin = this.reCircleLogin.bind(this)
 
-    if (this.props.language !== config.language) {
-      this.props.setLanguage(config.language)
+    if(config.language && !this.props.configLangSet) {
+      this.props.setLanguage(config.language, true)
     } else if(this.props.autoLanguage) {
       this.props.setLanguage('AUTO')
     } else {
@@ -1128,6 +1129,7 @@ const mapStateToProps = state => {
   return {
     language: state.setting.toJS().language,
     autoLanguage: state.setting.toJS().autoLanguage,
+    configLangSet: state.setting.toJS().configLangSet,
     peripheralDevice: state.setting.toJS().peripheralDevice,
     user: state.user.toJS(),
     nav: state.nav.toJS(),

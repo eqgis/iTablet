@@ -233,6 +233,7 @@ export default class MapView extends React.Component {
       showScaleView: false, //是否显示比例尺（地图加载完成后更改值）
       path: '',
       pathLength: '',
+      onlineCowork: CoworkInfo.coworkId !== '',
     }
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -1671,6 +1672,7 @@ export default class MapView extends React.Component {
                 let talkId = friend.curChat.targetId
                 let mapName = this.props.map.currentMap.name
                 friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+                this.setState({ onlineCowork: true })
               } catch (error) {
                 Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
               }
@@ -2513,7 +2515,7 @@ export default class MapView extends React.Component {
           />,
         )
     }
-    if (global.coworkMode) {
+    if (global.coworkMode && this.state.onlineCowork) {
       buttons.push(
         <MTBtn
           key={'CoworkMember'}
@@ -3390,7 +3392,7 @@ export default class MapView extends React.Component {
           device={this.props.device}
           language={this.props.language}
         />
-        {global.coworkMode && <NewMessageIcon />}
+        {global.coworkMode && this.state.onlineCowork && <NewMessageIcon />}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

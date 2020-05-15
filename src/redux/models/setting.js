@@ -18,6 +18,7 @@ export const SETTING_DATA = 'SETTING_DATA'
 export const MAP_SETTING = 'MAP_SETTING'
 export const SETTING_LANGUAGE = 'SETTING_LANGUAGE'
 export const SETTING_LANGUAGE_AUTO = 'SETTING_LANGUAGE_AUTO'
+export const SETTING_CONFIG_LANGUAGE_SET = 'SETTING_CONFIG_LANGUAGE_SET'
 export const SETTING_DEVICE = 'SETTING_DEVICE'
 export const MAP_LEGEND = 'MAP_LEGEND'
 export const MAP_SCALEVIEW = 'MAP_SCALEVIEW'
@@ -83,7 +84,11 @@ export const setMapSetting = (cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setLanguage = (params, cb = () => {}) => async dispatch => {
+export const setLanguage = (
+  params,
+  isConfig = false,
+  cb = () => {},
+) => async dispatch => {
   if (params === 'AUTO') {
     const locale = await AppUtils.getLocale()
     let language
@@ -109,6 +114,11 @@ export const setLanguage = (params, cb = () => {}) => async dispatch => {
       payload: params,
     })
     global.language = params
+  }
+  if (isConfig) {
+    await dispatch({
+      type: SETTING_CONFIG_LANGUAGE_SET,
+    })
   }
   cb && cb()
 }
@@ -242,6 +252,7 @@ const initialState = fromJS({
   mapSetting: [],
   language: 'CN',
   autoLanguage: true,
+  configLangSet: false,
   peripheralDevice: 'local',
   mapLegend: {
     [ChunkType.MAP_EDIT]: {
@@ -341,6 +352,8 @@ export default handleActions(
       state
         .setIn(['language'], fromJS(payload))
         .setIn(['autoLanguage'], fromJS(true)),
+    [`${SETTING_CONFIG_LANGUAGE_SET}`]: state =>
+      state.setIn(['configLangSet'], fromJS(true)),
     [`${SETTING_DEVICE}`]: (state, { payload }) =>
       state.setIn(['peripheralDevice'], fromJS(payload)),
     [`${BUFFER_SETTING_SET}`]: (state, { payload }) =>

@@ -49,7 +49,7 @@ class Chat extends React.Component {
     appConfig: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
-    closeWorkspace: () => {},
+    closeMap: () => {},
     getLayers: () => {},
     setCurrentMapModule: () => {},
   }
@@ -214,20 +214,20 @@ class Chat extends React.Component {
       mapOpen = false
     }
     if (mapOpen) {
-      SMap.mapIsModified().then(result => {
+      SMap.mapIsModified().then(async result => {
         if (result) {
           GLOBAL.SaveMapView &&
             GLOBAL.SaveMapView.setVisible(true, null, () => {
               close()
             })
         } else {
-          this.props.closeWorkspace()
+          await this.props.closeMap()
           close()
           this.props.navigation.pop()
         }
       })
     } else {
-      this.props.closeWorkspace()
+      await this.props.closeMap()
       close()
       this.props.navigation.pop()
     }

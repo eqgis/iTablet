@@ -159,9 +159,17 @@ export default class PlotAnimationView extends React.Component {
   }
 
   action = ({ item }) => {
+    let _data = JSON.parse(JSON.stringify(this.state.data))
+    for (let i = 0; i < _data.length; i++) {
+      if (_data[i].name === item.name) {
+        _data[i].select = true
+      } else {
+        _data[i].select = false
+      }
+    }
     this.setState({
       animationMode: item.animationMode,
-      data: this.state.data.concat(),
+      data: _data,
     })
   }
 
@@ -187,7 +195,6 @@ export default class PlotAnimationView extends React.Component {
       <TouchableOpacity
         // style={styles.tableItem}
         style={{
-          // paddingVertical: scaleSize(20),
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
@@ -609,7 +616,7 @@ const styles = StyleSheet.create({
   table: {
     flex: 1,
     //   paddingHorizontal: scaleSize(30),
-    // paddingVertical:scaleSize(20),
+    paddingVertical: scaleSize(20),
     // alignItems: 'center',
     backgroundColor: color.bgW,
   },

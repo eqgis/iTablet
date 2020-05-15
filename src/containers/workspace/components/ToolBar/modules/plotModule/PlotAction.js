@@ -153,6 +153,9 @@ function showSymbol() {
     //     ? ConstToolType.HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[4],
     // column: params.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
+    cb: () => {
+      SMap.cancel()
+    },
   })
 }
 

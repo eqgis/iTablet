@@ -90,6 +90,40 @@ async function importDatasource(user, item) {
   await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
 }
 
+
+async function importSCI(user, item) {
+  try{
+    const userPath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + user.userName}/Data/Datasource`,
+    )
+  
+  
+    let index = item.directory.lastIndexOf('/')
+    datasourceName = item.directory.substring(
+      index+1,
+      item.directory.length,
+    )
+    datasourceName = datasourceName+'.sci'
+    //sci文件多有可能不完整，所以直接覆盖吧
+    // const contentList = await FileTools.getDirectoryContent(userPath)
+    // for (let i = 0; i < contentList.length; i++) {
+    //   if (datasourceName === contentList[i].name && 'directory' === contentList[i].type) {
+    //     datasourceName = datasourceName+'#'
+    //     break
+    //   }
+    // }
+  
+    // debugger
+    await FileTools.copydir(item.directory, `${userPath}/${datasourceName}`)
+    // debugger
+  }catch(e){
+    console.warn(e)
+  }
+  
+  // await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
+}
+
+
 async function importColor(user, item) {
   const userPath = await FileTools.appendingHomeDirectory(
     `${ConstPath.UserPath + user.userName}/Data/Color`,
@@ -266,6 +300,7 @@ export default {
   importWorkspace,
   importWorkspace3D,
   importDatasource,
+  importSCI,
   importColor,
   importSymbol,
   importTIF,

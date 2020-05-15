@@ -23,6 +23,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let WS = []
     let WS3D = []
     let DS = []
+    let SCI = []
     let TIF = []
     let SHP = []
     let MIF = []
@@ -42,6 +43,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     WS = await getWSList(path, contentList, uncheckedChildFileList)
     WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
     DS = getDSList(path, contentList, uncheckedChildFileList)
+    SCI = getSCIDSList(path, contentList, uncheckedChildFileList)
     TIF = getTIFList(path, contentList, uncheckedChildFileList)
     SHP = getSHPList(path, contentList, uncheckedChildFileList)
     MIF = getMIFList(path, contentList, uncheckedChildFileList)
@@ -60,6 +62,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(WS)
       .concat(WS3D)
       .concat(DS)
+      .concat(SCI)
       .concat(TIF)
       .concat(SHP)
       .concat(MIF)
@@ -218,6 +221,40 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
   }
 }
 
+/** 获取SCI数据源 */
+function getSCIDSList(path, contentList, uncheckedChildFileList) {
+  let DS = []
+  const relatedFiles = []
+  try {
+    _checkUncheckedFile(path, contentList, uncheckedChildFileList)
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        if (_isSCIDatasource(contentList[i].name)) {
+          contentList[i].check = true
+          DS.push({
+            directory: path,
+            fileName: contentList[i].name,
+            filePath: `${path}/${contentList[i].name}`,
+            fileType: 'sci',
+            relatedFiles,
+          })
+        }
+      } else if (!contentList[i].check && contentList[i].type === 'directory') {
+        DS = DS.concat(
+          getSCIDSList(
+            `${path}/${contentList[i].name}`,
+            contentList[i].contentList,
+            uncheckedChildFileList,
+          ),
+        )
+      }
+    }
+    return DS
+  } catch (error) {
+    // console.log(error)
+    return DS
+  }
+}
 /** 获取数据源 */
 function getDSList(path, contentList, uncheckedChildFileList) {
   let DS = []
@@ -801,6 +838,11 @@ function _isDatasource(name) {
  * 不含同名的udd等的datasource
  * @param {*} name
  */
+
+function _isSCIDatasource(name) {
+  return _isType(name, ['SCI','sci'])
+}
+
 function _isDatasource2(name) {
   return _isType(name, ['udb'])
 }

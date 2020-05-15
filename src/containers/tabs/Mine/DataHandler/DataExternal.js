@@ -636,18 +636,22 @@ function _checkDatasources(
         0,
         relatedDatasources[n].server.lastIndexOf('.'),
       )
-      relatedFiles.push(`${ServerPathNoExt}.udb`)
-      relatedFiles.push(`${ServerPathNoExt}.udd`)
+      let type = relatedDatasources[n].server.substring(
+        relatedDatasources[n].server.lastIndexOf('.') + 1,
+      )
+      if (type === 'udb') {
+        relatedFiles.push(`${ServerPathNoExt}.udb`)
+        relatedFiles.push(`${ServerPathNoExt}.udd`)
+      } else {
+        relatedFiles.push(relatedDatasources[n].server)
+      }
       let datasourceChecked = false
       for (let i = 0; i < contentList.length; i++) {
-        if (
-          !contentList[i].check &&
-          contentList[i].type === 'file' &&
-          _isDatasource(contentList[i].name)
-        ) {
+        if (!contentList[i].check && contentList[i].type === 'file') {
           if (
             `${path}/${contentList[i].name}` === `${ServerPathNoExt}.udb` ||
-            `${path}/${contentList[i].name}` === `${ServerPathNoExt}.udd`
+            `${path}/${contentList[i].name}` === `${ServerPathNoExt}.udd` ||
+            `${path}/${contentList[i].name}` === relatedDatasources[n].server
           ) {
             contentList[i].check = true
             datasourceChecked = true
@@ -793,9 +797,9 @@ function _isWorkspace(name) {
  * 所有datasource
  * @param {*} name
  */
-function _isDatasource(name) {
-  return _isType(name, ['udb', 'udd'])
-}
+// function _isDatasource(name) {
+//   return _isType(name, ['udb', 'udd'])
+// }
 
 /**
  * 不含同名的udd等的datasource

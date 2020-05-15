@@ -1442,7 +1442,10 @@ function menu(type, selectKey, params = {}) {
       })
   }
 
-  if (Utils.isTouchProgress(selectKey)) {
+  if (
+    Utils.isTouchProgress(selectKey) &&
+    type !== ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
+  ) {
     isFullScreen = true
     showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
     isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog
@@ -1465,7 +1468,10 @@ function menu(type, selectKey, params = {}) {
 
 function showMenuBox(type, selectKey, params = {}) {
   if (type.indexOf('MAP_THEME_PARAM') === -1) return
-  if (Utils.isTouchProgress(selectKey)) {
+  if (
+    Utils.isTouchProgress(selectKey) &&
+    type !== ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
+  ) {
     params.showBox &&
       params.showBox({
         isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,

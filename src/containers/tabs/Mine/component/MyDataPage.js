@@ -924,6 +924,10 @@ export default class MyDataPage extends Component {
         showRight={isShowMore}
         showCheck={this.state.batchMode}
         onPress={() => {
+          if(info?.item.isDirectory){
+            Toast.show(global.language==='CN' ?"not UDB data source":"")
+            return
+          }
           this.itemInfo = info
           if (this.chatCallback) {
             this._onShareData('chat')

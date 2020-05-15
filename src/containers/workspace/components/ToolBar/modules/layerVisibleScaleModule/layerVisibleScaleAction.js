@@ -26,9 +26,9 @@ function pickerConfirm(item) {
     //最大比例尺必须大于最小比例尺
     Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
   } else {
-    isSimilar(min, item[0].initItem.value) &&
+    !isSimilar(min, item[0].initItem.value) &&
       SMap.setMinVisibleScale(layerData.path, min)
-    isSimilar(max, item[1].initItem.value) &&
+    !isSimilar(max, item[1].initItem.value) &&
       SMap.setMaxVisibleScale(layerData.path, max)
     Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
     _params.setToolbarVisible(false)

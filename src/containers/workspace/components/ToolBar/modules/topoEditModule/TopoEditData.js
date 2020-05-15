@@ -171,6 +171,30 @@ async function getData(type) {
         customView = () => <MergeDatasetView data={datas} />
       }
       break
+    case ConstToolType.MAP_TOPO_SPLIT_LINE:
+    case ConstToolType.MAP_TOPO_EXTEND_LINE:
+    case ConstToolType.MAP_TOPO_TRIM_LINE:
+      data = [
+        {
+          key: constants.CANCEL_SELECT,
+          title: getLanguage(global.language).Prompt.CANCEL,
+          // constants.CANCEL_SELECT,
+          action: TopoEditAction.editCancel,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+        },
+        {},
+        {},
+        {
+          key: constants.MAP_INCREMENT_COMMIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_INCREMENT_COMMIT,
+          action: TopoEditAction.editConfirm,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+        },
+      ]
+      break
   }
   return { data, buttons, customView }
 }

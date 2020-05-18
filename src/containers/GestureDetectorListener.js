@@ -179,6 +179,7 @@ async function touchCallback(event) {
       let params = {
         point,
         ...GLOBAL.INCREMENT_DATA,
+        secondLine: true,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
       break

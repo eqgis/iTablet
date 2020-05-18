@@ -44,6 +44,7 @@ async function geometrySelected(event) {
   }
 
   let type
+  let secondLine = false
   if (geoType === DatasetType.LINE) {
     switch (preType) {
       case ConstToolType.MAP_TOPO_EDIT:
@@ -93,6 +94,7 @@ async function geometrySelected(event) {
         let data = ToolbarModule.getData()
         let { secondEvent } = data
         if (!secondEvent) {
+          secondLine = true
           Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_SECOND_LINE)
         } else {
           SMap.setAction(Action.PAN)
@@ -122,6 +124,7 @@ async function geometrySelected(event) {
       let params = {
         id: event.id,
         ...GLOBAL.INCREMENT_DATA,
+        secondLine,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
     }
@@ -300,6 +303,7 @@ function close() {
     nextType = ConstToolType.MAP_TOPO_SWITCH_TYPE
   }
   SMap.setAction(Action.PAN)
+  SMap.clearTrackingLayer()
   _params.setToolbarVisible(true, nextType, {
     containerType,
     isFullScreen: false,

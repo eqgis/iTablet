@@ -88,6 +88,10 @@ const Friends = {
   COWORK_IGNORE: '無視',
   NEW_MESSAGE: 'ニューメッセージ',
   NEW_MESSAGE_SHORT: 'メッセージ',
+  UPDATING: '更新中',
+  SELECT_MESSAGE_TO_UPDATE: 'アップデートしたいメッセージを選んでください',
+  UPDATE_NOT_EXIST_OBJ: 'オブジェクトは存在しないてめ更新できません',
+  ADD_DELETE_ERROR: '削除されたオブジェクトの追加はできません',
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',
@@ -133,5 +137,11 @@ const Friends = {
   SYS_MSG_REJ: '相手はあなたをまだ友達に追加していません',
   SYS_FRIEND_REQ_ACCEPT: '友達になりました。チャットを開始してください。',
   SYS_INVITE_TO_COWORK: 'はあなたをマップコラボレーションに招待してます',
+  SYS_MSG_GEO_ADDED: '',
+  SYS_MSG_GEO_DELETED: '',
+  SYS_MSG_GEO_UPDATED: '',
+  SYS_MSG_GEO_ADDED2: 'を追加しました',
+  SYS_MSG_GEO_DELETED2: 'を削除しました',
+  SYS_MSG_GEO_UPDATED2: 'を更新しました',
 }
 export { Friends }

@@ -164,8 +164,11 @@ export default handleActions(
     },
     [`${SET_COWORK_NEW_MESSAGE}`]: (state, { payload }) => {
       const allChat = state.toJS() || {}
-      // console.log(allChat)
-      allChat.coworkNewMessage = payload
+      let num = allChat.coworkNewMessage + payload
+      if (payload === 0) {
+        num = 0
+      }
+      allChat.coworkNewMessage = num
       return fromJS(allChat)
     },
     [REHYDRATE]: (state, { payload }) => {

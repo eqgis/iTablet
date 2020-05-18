@@ -86,6 +86,10 @@ const Friends = {
   COWORK_IGNORE: '忽略',
   NEW_MESSAGE: '新消息',
   NEW_MESSAGE_SHORT: '新消息',
+  UPDATING: '更新中',
+  SELECT_MESSAGE_TO_UPDATE: '请选择要处理的消息',
+  UPDATE_NOT_EXIST_OBJ: '该对象不存在，无法更新',
+  ADD_DELETE_ERROR: '不能添加删除对象',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',
@@ -130,5 +134,11 @@ const Friends = {
   SYS_MSG_REJ: '对方还未添加您为好友',
   SYS_FRIEND_REQ_ACCEPT: '你们已经是朋友了，开始聊天吧',
   SYS_INVITE_TO_COWORK: '邀您参加协作',
+  SYS_MSG_GEO_ADDED: '添加了',
+  SYS_MSG_GEO_DELETED: '删除了',
+  SYS_MSG_GEO_UPDATED: '更新了',
+  SYS_MSG_GEO_ADDED2: '',
+  SYS_MSG_GEO_DELETED2: '',
+  SYS_MSG_GEO_UPDATED2: '',
 }
 export { Friends }

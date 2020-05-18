@@ -140,8 +140,8 @@ export default class ClassifyView extends React.Component {
    */
   recognizeImage = params => {
     this.Loading.setLoading(false)
-    if(params === "License Invalid"){
-      Toast.show("License Invalid\nPlease Check Your License")
+    if (params === 'License Invalid') {
+      Toast.show('License Invalid\nPlease Check Your License')
       return
     }
     this.results = params.results
@@ -367,7 +367,9 @@ export default class ClassifyView extends React.Component {
             mediaPaths.push(item.uri)
           })
           let path =
-            'file://' + (await SAIClassifyView.getImagePath(mediaPaths[0]))
+            Platform.OS === 'ios'
+              ? await SAIClassifyView.getImagePath(mediaPaths[0])
+              : 'file://' + (await SAIClassifyView.getImagePath(mediaPaths[0]))
           this.setState(
             {
               isCameraVisible: false,

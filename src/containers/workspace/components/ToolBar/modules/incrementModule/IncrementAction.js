@@ -127,6 +127,7 @@ async function undo() {
  * 切换采集方式
  */
 async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
+  BackgroundTimer.stopBackgroundTimer()
   const _params = ToolbarModule.getParams()
   let containerType = ToolbarType.table
   _params.setToolbarVisible &&

@@ -29,11 +29,13 @@ async function getUDBsAndMaps() {
     const userPath = `${(await FileTools.appendingHomeDirectory(
       ConstPath.UserPath,
     )) + ToolbarModule.getParams().user.currentUser.userName}/`
+
     userUDBPath = userPath + ConstPath.RelativePath.Datasource
     userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
-      extension: 'udb',
+      extension: 'udb,sci',
       type: 'file',
     })
+
     // 过滤掉标注和标绘
     const filterUDBs = userUDBs.filter(item => {
       item.name = dataUtil.getNameByURL(item.path)
@@ -41,6 +43,9 @@ async function getUDBsAndMaps() {
     })
     filterUDBs.map(item => {
       item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+      if (item.isDirectory) {
+        item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+      }
       item.info = {
         infoType: 'mtime',
         lastModifiedDate: item.mtime,
@@ -90,7 +95,7 @@ async function getUDBsAndMaps() {
       ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
     )
     const customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
-      extension: 'udb',
+      extension: 'udb,sci',
       type: 'file',
     })
     // 过滤掉标注和标绘
@@ -100,6 +105,9 @@ async function getUDBsAndMaps() {
     })
     filterUDBs.map(item => {
       item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+      if (item.isDirectory) {
+        item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+      }
       item.info = {
         infoType: 'mtime',
         lastModifiedDate: item.mtime,

@@ -661,7 +661,8 @@ async function getTouchProgressInfo() {
   let range = [1, 100]
   let value = 0
   let step = 1
-  switch (GLOBAL.ToolBar?.state?.selectName) {
+  let selectedName = GLOBAL.toolBox?.state?.selectName
+  switch (selectedName) {
     //线宽 边框宽度
     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:

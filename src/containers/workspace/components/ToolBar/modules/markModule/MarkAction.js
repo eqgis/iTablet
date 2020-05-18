@@ -176,10 +176,31 @@ function commit(type) {
         SMap.refreshMap()
         //提交标注后 需要刷新属性表
         GLOBAL.NEEDREFRESHTABLE = true
+        if (global.coworkMode && global.getFriend) {
+          let layerType = LayerUtils.getLayerType(currentLayer)
+          if (layerType !== 'TAGGINGLAYER') {
+            let friend = global.getFriend()
+            friend.onGeometryAdd(currentLayer)
+          }
+        }
       })
     } else {
       SMap.submit().then(() => {
         const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+
+        if (global.coworkMode && global.getFriend) {
+          let event = ToolbarModule.getData().event
+          let layerType = LayerUtils.getLayerType(event.layerInfo)
+          if (layerType !== 'TAGGINGLAYER') {
+            let friend = global.getFriend()
+            friend.onGeometryEdit(
+              event.layerInfo,
+              event.fieldInfo,
+              event.id,
+              event.geometryType,
+            )
+          }
+        }
 
         _params.setToolbarVisible(true, type, {
           isFullScreen: false,

@@ -6,6 +6,9 @@ import { scaleSize, Toast } from '../../../../utils'
 import { getPublicAssets } from '../../../../assets'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
+import MsgConstant from '../MsgConstant'
+import { SMap, DatasetType } from 'imobile_for_reactnative'
+import moment from 'moment'
 
 class CoworkMessage extends Component {
   props: {
@@ -35,8 +38,9 @@ class CoworkMessage extends Component {
   getMessage = () => {
     try {
       if (global.coworkMode) {
-        let messages = CoworkInfo.newMessages
-        this.setState({ messages: messages })
+        let messages = CoworkInfo.messages
+        let rvsMsg = messages.clone().reverse()
+        this.setState({ messages: rvsMsg })
       }
     } catch (error) {
       //
@@ -55,33 +59,110 @@ class CoworkMessage extends Component {
     }
   }
 
-  add = async () => {
+  add = async (message, notify = true) => {
     try {
-      if (this.state.selected.length > 0) {
-        Toast.show('todo')
+      let result = false
+      let type = message.message.type
+      if (
+        type === MsgConstant.MSG_COWORK_ADD ||
+        type === MsgConstant.MSG_COWORK_UPDATE
+      ) {
+        result = await SMap.addUserGeometry(
+          message.message.layerPath,
+          message.message.id,
+          message.message.geoUserID,
+          message.message.geometry,
+          message.message.geoType,
+        )
+        CoworkInfo.consumeMessage(message.messageID)
+      } else if (type === MsgConstant.MSG_COWORK_DELETE) {
+        notify &&
+          Toast.show(getLanguage(global.language).Friends.ADD_DELETE_ERROR)
       }
+      return result
     } catch (error) {
-      //
+      return false
     }
   }
 
-  update = async () => {
+  update = async (message, notify = true) => {
     try {
-      if (this.state.selected.length > 0) {
-        Toast.show('todo')
+      let result = false
+      let type = message.message.type
+      if (type === MsgConstant.MSG_COWORK_ADD) {
+        result = await SMap.addUserGeometry(
+          message.message.layerPath,
+          message.message.id,
+          message.message.geoUserID,
+          message.message.geometry,
+          message.message.geoType,
+        )
+        CoworkInfo.consumeMessage(message.messageID)
+      } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
+        let exist = await SMap.isUserGeometryExist(
+          message.message.layerPath,
+          message.message.id,
+          message.message.geoUserID,
+        )
+        if (exist) {
+          result = await SMap.updateUserGeometry(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+            message.message.geometry,
+          )
+          CoworkInfo.consumeMessage(message.messageID)
+        } else {
+          notify &&
+            Toast.show(
+              getLanguage(global.language).Friends.UPDATE_NOT_EXIST_OBJ,
+            )
+        }
+      } else if (type === MsgConstant.MSG_COWORK_DELETE) {
+        //TODO 处理删除
+        result = true
+        CoworkInfo.consumeMessage(message.messageID)
       }
+      return result
     } catch (error) {
-      //
+      return false
     }
   }
 
-  ignore = async () => {
+  ignore = async message => {
+    CoworkInfo.consumeMessage(message.messageID)
+  }
+
+  onButtomPress = async type => {
     try {
       if (this.state.selected.length > 0) {
-        Toast.show('todo')
+        let notify = this.state.selected.length === 1
+        let selection = this.state.selected.clone()
+        selection.sort()
+        for (let i = 0; i < selection.length; i++) {
+          GLOBAL.Loading.setLoading(
+            true,
+            getLanguage(global.language).Friends.UPDATING,
+          )
+          let message = CoworkInfo.messages[selection[i]]
+          if (type === 'update') {
+            await this.update(message, notify)
+          } else if (type === 'add') {
+            await this.add(message, notify)
+          } else if (type === 'ignore') {
+            await this.ignore(message)
+          }
+        }
+        this.getMessage()
+        GLOBAL.Loading.setLoading(false)
+      } else {
+        Toast.show(
+          getLanguage(global.language).Friends.SELECT_MESSAGE_TO_UPDATE,
+        )
       }
     } catch (error) {
-      //
+      this.getMessage()
+      GLOBAL.Loading.setLoading(false)
     }
   }
 
@@ -100,7 +181,9 @@ class CoworkMessage extends Component {
         }}
       >
         <TouchableOpacity
-          onPress={this.update}
+          onPress={() => {
+            this.onButtomPress('update')
+          }}
           style={{
             backgroundColor: 'white',
             width: scaleSize(160),
@@ -117,7 +200,9 @@ class CoworkMessage extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={this.add}
+          onPress={() => {
+            this.onButtomPress('add')
+          }}
           style={{
             backgroundColor: 'white',
             width: scaleSize(160),
@@ -134,7 +219,9 @@ class CoworkMessage extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={this.ignore}
+          onPress={() => {
+            this.onButtomPress('ignore')
+          }}
           style={{
             backgroundColor: 'white',
             width: scaleSize(160),
@@ -154,31 +241,75 @@ class CoworkMessage extends Component {
     )
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     let message = item
-    let time = new Date(message.time).toLocaleString()
+    let messageID = message.messageID
+    let isConsumed = message.consume
+    let time = moment(new Date(message.time)).format('YYYY/MM/DD HH:mm')
+    let action = ''
+    let actionAfter = ''
+    let geoType = ''
+    switch (message.message.type) {
+      case MsgConstant.MSG_COWORK_ADD:
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED2
+        break
+      case MsgConstant.MSG_COWORK_DELETE:
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED2
+        break
+      case MsgConstant.MSG_COWORK_UPDATE:
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
+        break
+    }
+    switch (message.message.geoType) {
+      case DatasetType.POINT:
+        geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
+        break
+      case DatasetType.LINE:
+        geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
+        break
+      case DatasetType.REGION:
+        geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
+        break
+      case DatasetType.TEXT:
+        geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
+        break
+    }
+    if (action) {
+      action = action + ' '
+    }
+    if (actionAfter) {
+      actionAfter = ' ' + action
+    }
     return (
       <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          height: scaleSize(180),
-          alignItems: 'center',
-          marginBottom: scaleSize(20),
-        }}
+        style={[
+          {
+            flexDirection: 'row',
+            backgroundColor: 'white',
+            height: scaleSize(180),
+            alignItems: 'center',
+            marginBottom: scaleSize(20),
+          },
+          isConsumed && {
+            backgroundColor: '#F5F5F5',
+          },
+        ]}
         onPress={() => {
           let selected = this.state.selected.clone()
-          if (selected.includes(index)) {
-            selected.splice(selected.indexOf(index), 1)
+          if (selected.includes(messageID)) {
+            selected.splice(selected.indexOf(messageID), 1)
           } else {
-            selected.push(index)
+            selected.push(messageID)
           }
           this.setState({ selected })
         }}
       >
         <Image
           source={
-            this.state.selected.includes(index)
+            this.state.selected.includes(messageID)
               ? getPublicAssets().common.icon_check
               : getPublicAssets().common.icon_uncheck
           }
@@ -191,10 +322,10 @@ class CoworkMessage extends Component {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ flex: 1, fontSize: scaleSize(26) }}>
-                {message.message.type}
+                {action + geoType + actionAfter}
               </Text>
               <Text style={{ fontSize: scaleSize(26), color: 'grey' }}>
-                {'layer'}
+                {message.message.caption || message.message.layerName}
               </Text>
             </View>
           </View>

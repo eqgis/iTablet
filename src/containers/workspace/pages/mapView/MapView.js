@@ -2063,6 +2063,7 @@ export default class MapView extends React.Component {
     this.mapController && this.mapController.setVisible(full)
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
+    this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -3392,7 +3393,9 @@ export default class MapView extends React.Component {
           device={this.props.device}
           language={this.props.language}
         />
-        {global.coworkMode && this.state.onlineCowork && <NewMessageIcon />}
+        {global.coworkMode && this.state.onlineCowork && (
+          <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

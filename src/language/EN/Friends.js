@@ -88,6 +88,10 @@ const Friends = {
   COWORK_IGNORE: 'Ignore',
   NEW_MESSAGE: 'New Message',
   NEW_MESSAGE_SHORT: 'New',
+  UPDATING: 'Updating',
+  SELECT_MESSAGE_TO_UPDATE: 'Please select a message to update',
+  UPDATE_NOT_EXIST_OBJ: 'The geometry is not exist, unbale to update',
+  ADD_DELETE_ERROR: 'Unbale to add the deleted geometry',
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',
@@ -133,5 +137,11 @@ const Friends = {
   SYS_MSG_REJ: "The opposite haven't added you as friend yet",
   SYS_FRIEND_REQ_ACCEPT: "You're friends now, enjoy taking!",
   SYS_INVITE_TO_COWORK: ' invites you to join the cowork',
+  SYS_MSG_GEO_ADDED: 'Added',
+  SYS_MSG_GEO_DELETED: 'Deleted',
+  SYS_MSG_GEO_UPDATED: 'Updated',
+  SYS_MSG_GEO_ADDED2: '',
+  SYS_MSG_GEO_DELETED2: '',
+  SYS_MSG_GEO_UPDATED2: '',
 }
 export { Friends }

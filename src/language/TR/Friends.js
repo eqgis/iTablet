@@ -90,6 +90,10 @@ const Friends = {
   COWORK_IGNORE: 'ignore',
   NEW_MESSAGE: 'Yeni mesajı',
   NEW_MESSAGE_SHORT: 'Yeni',
+  UPDATING: 'Yañartılıyor',
+  SELECT_MESSAGE_TO_UPDATE: 'Lütfen işlemek için mesajı seçin',
+  UPDATE_NOT_EXIST_OBJ: 'Nesne yok ve güncellenemiyor',
+  ADD_DELETE_ERROR: 'Silinmiş öğeyi eklemez',
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',
@@ -136,5 +140,11 @@ const Friends = {
   SYS_MSG_REJ: 'Karşı taraf seni henüz arkadaş olarak eklemedi',
   SYS_FRIEND_REQ_ACCEPT: 'Artık arkadaşsınız, keyfini çıkar!',
   SYS_INVITE_TO_COWORK: ' seni işbirliğine davet',
+  SYS_MSG_GEO_ADDED: '',
+  SYS_MSG_GEO_DELETED: '',
+  SYS_MSG_GEO_UPDATED: '',
+  SYS_MSG_GEO_ADDED2: 'ekle',
+  SYS_MSG_GEO_DELETED2: 'silin',
+  SYS_MSG_GEO_UPDATED2: 'güncelle',
 }
 export { Friends }

@@ -788,6 +788,84 @@ export default class Friend extends Component {
     }
   }
 
+  onGeometryAdd = async layerInfo => {
+    try {
+      if (CoworkInfo.coworkId !== '') {
+        let geoInfo = await SMap.getUserAddGeometry(
+          layerInfo.path,
+          this.props.user.currentUser.userId,
+        )
+        let geometry = geoInfo.geometry
+        let geoType = geoInfo.geoType
+        let geoID = geoInfo.geoID
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: CoworkInfo.coworkId,
+            groupName: '',
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_ADD,
+            layerPath: layerInfo.path,
+            layerName: layerInfo.name,
+            caption: layerInfo.caption,
+            id: geoID,
+            geoUserID: this.props.user.currentUser.userId,
+            geometry: geometry,
+            geoType: geoType,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, CoworkInfo.coworkId, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  onGeometryEdit = async (layerInfo, fieldInfos, id, geoType) => {
+    try {
+      if (CoworkInfo.coworkId !== '') {
+        let geometry = await SMap.getUserEditGeometry(layerInfo.path, id)
+        let geoUserID = ''
+        for (let i = 0; i < fieldInfos.length; i++) {
+          let fieldInfo = fieldInfos[i]
+          if (fieldInfo.name === 'userID') {
+            geoUserID = fieldInfo.value
+            break
+          }
+        }
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: CoworkInfo.coworkId,
+            groupName: '',
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_UPDATE,
+            layerPath: layerInfo.path,
+            layerName: layerInfo.name,
+            caption: layerInfo.caption,
+            id: id,
+            geoUserID: geoUserID,
+            geometry: geometry,
+            geoType: geoType,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, CoworkInfo.coworkId, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
   startSendLocation = () => {
     this.sendCurrentLocation()
     this.locationTimer = setInterval(() => {
@@ -1266,8 +1344,8 @@ export default class Friend extends Component {
   }
 
   handleCowork = async messageObj => {
-    if (CoworkInfo.coworkId !== '') {
-      let coworkId = CoworkInfo.coworkId
+    let coworkId = CoworkInfo.coworkId
+    if (coworkId !== '' && coworkId === messageObj.user.groupID) {
       let masterId = coworkId.split('_').pop()
       let coworkType = messageObj.message.type
       /**

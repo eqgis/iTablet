@@ -1,26 +1,27 @@
 import { AsyncStorage } from 'react-native'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class CoworkInfo {
   static coworkId = ''
   static members = []
+  static prevMessages = []
   static messages = []
-  static newMessages = []
   static isRealTime = true
   static adding = false
-  static setNewMessage = undefined
+  static addMessageNum = undefined
 
   static setNewMsgHandle(handle) {
-    this.setNewMessage = handle
+    this.addMessageNum = handle
   }
 
   static reset() {
     this.coworkId = ''
     this.members = []
+    this.prevMessages = []
     this.messages = []
-    this.newMessages = []
     this.isRealTime = true
     this.adding = false
-    this.setNewMessage && this.setNewMessage(0)
+    this.addMessageNum && this.addMessageNum(0)
     AsyncStorage.setItem('COWORKID', '')
   }
 
@@ -58,7 +59,7 @@ export default class CoworkInfo {
   }
 
   static pushMessage(message) {
-    this.messages.push(message)
+    this.prevMessages.push(message)
     if (this.isRealTime && !this.adding) {
       this.addNewMessage()
     }
@@ -66,10 +67,41 @@ export default class CoworkInfo {
 
   static addNewMessage() {
     this.adding = true
-    while (this.messages.length > 0) {
-      this.newMessages.push(this.messages.shift())
+    while (this.prevMessages.length > 0) {
+      let message = this.prevMessages.shift()
+      message.consume = false
+      message.messageID = this.messages.length
+      this.messages.push(message)
+      this.addMessageNum && this.addMessageNum(1),
+      async function() {
+        try {
+          let result = await SMap.isUserGeometryExist(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+          )
+          if (result) {
+            SMap.addMessageCallout(
+              message.message.layerPath,
+              message.message.id,
+              message.message.geoUserID,
+              message.user.name,
+              message.messageID,
+            )
+          }
+        } catch (error) {
+          //
+        }
+      }.bind(this)()
     }
-    this.setNewMessage && this.setNewMessage(this.newMessages.length)
     this.adding = false
+  }
+
+  static consumeMessage(messageID) {
+    if (!this.messages[messageID].consume) {
+      this.messages[messageID].consume = true
+      this.addMessageNum && this.addMessageNum(-1)
+      SMap.removeMessageCallout(messageID)
+    }
   }
 }

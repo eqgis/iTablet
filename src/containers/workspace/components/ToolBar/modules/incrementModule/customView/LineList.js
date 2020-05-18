@@ -92,6 +92,7 @@ export default class LineList extends Component {
     ) {
       GLOBAL.INCREMENT_DATA = {}
     }
+    this._keyboardDidHide()
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })

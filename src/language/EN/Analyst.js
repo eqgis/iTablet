@@ -195,6 +195,10 @@ const Analyst_Labels = {
   REGISTRATION_QUADRATIC: 'Registration quadratic (at least 7 control points)',
   REGISTRATION_RECTANGLE: 'Registration rectangle (2 control points)',
   REGISTRATION_OFFSET: 'Registration offset (1 control points)',
+  REGISTRATION_LINE_: 'Registration line',
+  REGISTRATION_QUADRATIC_: 'Registration quadratic',
+  REGISTRATION_RECTANGLE_: 'Registration rectangle',
+  REGISTRATION_OFFSET_: 'Registration offset',
   REGISTRATION_ASSOCIATION: 'Association',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
@@ -222,6 +226,8 @@ const Analyst_Labels = {
   REGISTRATION_EXPORT_SUCCESS: 'Export success',
   REGISTRATION_EXPORT_FAILED: 'Export failed',
   REGISTRATION_EXPORT_FILE_NAME: 'Export file name',
+  REGISTRATION_EXPORT_FILE: 'Registration info file',
+  REGISTRATION_PLEASE_SELECT: 'Please select',
   REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
 }

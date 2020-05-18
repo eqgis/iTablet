@@ -13,6 +13,7 @@ import RegistrationDatasetPage from './registrationDatasetPage'
 import RegistrationReferDatasetPage from './registrationReferDatasetPage'
 import RegistrationArithmeticPage from './registrationArithmeticPage'
 import RegistrationExecutePage from './registrationExecutePage'
+import RegistrationFastPage from './registrationFastPage'
 import RegistrationPage from './registrationPage'
 import ReferenceAnalystView from './referenceAnalystView'
 import InterpolationAnalystView from './interpolationAnalystView'
@@ -34,6 +35,7 @@ export {
   RegistrationReferDatasetPage,
   RegistrationArithmeticPage,
   RegistrationExecutePage,
+  RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,
   InterpolationAnalystView,

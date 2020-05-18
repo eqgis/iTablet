@@ -43,8 +43,10 @@ function getCustomView() {
   let obj = {}
   // customView: () => (
   const params = ToolbarModule.getParams()
+  const userName = params.user.currentUser.userName || 'Customer'
   let _customView = () => (
     <AnalysisMenuListView
+      userName={userName}
       device={params.device}
       showToolbar={params.setToolbarVisible}
     />

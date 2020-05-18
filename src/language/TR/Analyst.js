@@ -196,6 +196,10 @@ const Analyst_Labels = {
     'İkinci dereceden polinom kaydı (en az 7 kontrol noktası)',
   REGISTRATION_RECTANGLE: 'Dikdörtgen kayıt (2 kontrol noktası)',
   REGISTRATION_OFFSET: 'Ofset kaydı (1 kontrol noktası)',
+  REGISTRATION_LINE_: 'Doğrusal kayıt',
+  REGISTRATION_QUADRATIC_: 'İkinci dereceden polinom kaydı',
+  REGISTRATION_RECTANGLE_: 'Dikdörtgen kayıt',
+  REGISTRATION_OFFSET_: 'Ofset kaydı',
   REGISTRATION_ASSOCIATION: 'İlişkili tarama',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'Bağlantı kaldırıldı',
@@ -223,6 +227,8 @@ const Analyst_Labels = {
   REGISTRATION_EXPORT_SUCCESS: 'Dışa aktarma başarılı',
   REGISTRATION_EXPORT_FAILED: 'Dışa aktarma başarısız',
   REGISTRATION_EXPORT_FILE_NAME: 'Kayıt bilgileri dosya adını dışa aktar',
+  REGISTRATION_EXPORT_FILE: 'Kayıt bilgi dosyası',
+  REGISTRATION_PLEASE_SELECT: 'lütfen seç',
   REGISTRATION_NOT_SETLECT_DATASET: 'Lütfen bir kayıt veri kümesi seçin',
   REGISTRATION_NOT_SETLECT_REFER_DATASET:
     'Lütfen bir referans veri kümesi seçin',

@@ -14,6 +14,9 @@ export default class RegistrationDatasetPage extends Component {
 
   constructor(props) {
     super(props)
+    const { params } = this.props.navigation.state
+    this.pageType = params && params.pageType
+    this.userName = params && params.userName
 
     let title = ''
     this.state = {
@@ -101,7 +104,13 @@ export default class RegistrationDatasetPage extends Component {
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
       GLOBAL.RectifyDatasetInfo = _rectifyDatasetInfo
-      NavigationService.navigate('RegistrationReferDatasetPage')
+      if (this.pageType && this.pageType == 1) {
+        NavigationService.navigate('RegistrationFastPage', {
+          userName: this.userName,
+        })
+      } else {
+        NavigationService.navigate('RegistrationReferDatasetPage')
+      }
     } else {
       Toast.show(
         getLanguage(global.language).Analyst_Labels
@@ -149,8 +158,10 @@ export default class RegistrationDatasetPage extends Component {
         <View style={{ alignItems: 'center' }}>
           <Button
             title={
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_REFER_DATASET_ADD
+              this.pageType && this.pageType == 1
+                ? getLanguage(global.language).Analyst_Labels.REGISTRATION
+                : getLanguage(global.language).Analyst_Labels
+                  .REGISTRATION_REFER_DATASET_ADD
             }
             ref={ref => (this.sureButton = ref)}
             type={'BLUE'}
@@ -161,7 +172,9 @@ export default class RegistrationDatasetPage extends Component {
               marginBottom: scaleSize(30),
             }}
             titleStyle={{ fontSize: scaleSize(24) }}
-            onPress={this.confirm}
+            onPress={() => {
+              this.confirm()
+            }}
           />
         </View>
       </Container>

@@ -587,21 +587,21 @@ function saveMap() {
         }
       }
       const addition = {}
-      const prefix = `@Label_${
-        ToolbarModule.getParams().user.currentUser.userName
-      }#`
-      const regexp = new RegExp(prefix)
-      const layers = await ToolbarModule.getParams().getLayers()
-      addition.filterLayers = layers
-        .filter(item => item.name.match(regexp))
-        .map(val => val.name)
-      if (
-        ToolbarModule.getParams().map &&
-        ToolbarModule.getParams().map.currentMap &&
-        ToolbarModule.getParams().map.currentMap.Template
-      ) {
-        addition.Template = ToolbarModule.getParams().map.currentMap.Template
-      }
+      // const prefix = `@Label_${
+      //   ToolbarModule.getParams().user.currentUser.userName
+      // }#`
+      // const regexp = new RegExp(prefix)
+      // const layers = await ToolbarModule.getParams().getLayers()
+      // addition.filterLayers = layers
+      //   .filter(item => item.name.match(regexp))
+      //   .map(val => val.name)
+      // if (
+      //   ToolbarModule.getParams().map &&
+      //   ToolbarModule.getParams().map.currentMap &&
+      //   ToolbarModule.getParams().map.currentMap.Template
+      // ) {
+      //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
+      // }
 
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
@@ -738,7 +738,16 @@ async function changeMap(item) {
         const floorListView = params.getFloorListView()
         const datas = await SMap.getFloorData()
         if (datas.data && datas.data.length > 0) {
-          const { data, datasource, currentFloorID } = datas
+          let { data, datasource, currentFloorID } = datas
+          data = data.sort(function(a, b) {
+            let key1 = a.name
+            let key2 = b.name
+            return key1[0] !== key2[0]
+              ? key2.charCodeAt(0) - key1.charCodeAt(0)
+              : key1[0] === 'F'
+                ? key2.charCodeAt(1) - key1.charCodeAt(1)
+                : key1.charCodeAt(1) - key2.charCodeAt(1)
+          })
           floorListView.setState(
             {
               data,

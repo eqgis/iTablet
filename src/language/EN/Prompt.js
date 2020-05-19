@@ -363,6 +363,7 @@ const Prompt = {
   EDIT_FAILED: 'Operation failed',
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
     'Smoothing coefficient should be 2 ~ 10 integers',
+  CONFIRM_EXIT: 'Are you sure to exit?',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',

@@ -37,7 +37,7 @@ class MyLabel extends MyDataPage {
       homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/'
     let datasourcePath =
       userPath +
-      ConstPath.RelativePath.Datasource +
+      ConstPath.RelativePath.Label +
       'Label_' +
       this.props.user.currentUser.userName +
       '#.udb'
@@ -53,7 +53,7 @@ class MyLabel extends MyDataPage {
       homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/'
     let datasourcePath =
       userPath +
-      ConstPath.RelativePath.Datasource +
+      ConstPath.RelativePath.Label +
       'Label_' +
       this.props.user.currentUser.userName +
       '#.udb'

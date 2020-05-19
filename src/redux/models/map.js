@@ -4,7 +4,7 @@ import { handleActions } from 'redux-actions'
 import { SMap, SScene } from 'imobile_for_reactnative'
 import fs from 'react-native-fs'
 import { FileTools } from '../../native'
-import { Toast } from '../../utils'
+import { Toast, LayerUtils } from '../../utils'
 import { ConstPath, ConstInfo } from '../../constants'
 import UserType from '../../constants/UserType'
 import ConstOnline from '../../constants/ConstOnline'
@@ -130,6 +130,21 @@ export const saveMap = (params = {}, cb = () => {}) => async (
     const { userName } = getState().user.toJS().currentUser
     let path = ''
     if (!params.notSaveToXML) {
+      const prefix = `@Label_${userName}#`
+      const regexp = new RegExp(prefix)
+      const layers = await SMap.getLayersByType(-1)
+      params.addition.filterLayers = layers
+        .filter(item => {
+          if( item.name.match(regexp) || LayerUtils.isBaseLayer(item)){
+            return item
+          }
+        })
+        .map(val => val.name)
+
+      if (currentMap.Template) {
+        params.addition.Template = ToolbarModule.getParams().map.currentMap.Template
+      }
+      debugger
       mapName = await SMap.saveMapName(
         params.mapName,
         params.nModule || '',

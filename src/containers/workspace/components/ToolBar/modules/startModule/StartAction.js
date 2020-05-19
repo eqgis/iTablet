@@ -587,21 +587,21 @@ function saveMap() {
         }
       }
       const addition = {}
-      const prefix = `@Label_${
-        ToolbarModule.getParams().user.currentUser.userName
-      }#`
-      const regexp = new RegExp(prefix)
-      const layers = await ToolbarModule.getParams().getLayers()
-      addition.filterLayers = layers
-        .filter(item => item.name.match(regexp))
-        .map(val => val.name)
-      if (
-        ToolbarModule.getParams().map &&
-        ToolbarModule.getParams().map.currentMap &&
-        ToolbarModule.getParams().map.currentMap.Template
-      ) {
-        addition.Template = ToolbarModule.getParams().map.currentMap.Template
-      }
+      // const prefix = `@Label_${
+      //   ToolbarModule.getParams().user.currentUser.userName
+      // }#`
+      // const regexp = new RegExp(prefix)
+      // const layers = await ToolbarModule.getParams().getLayers()
+      // addition.filterLayers = layers
+      //   .filter(item => item.name.match(regexp))
+      //   .map(val => val.name)
+      // if (
+      //   ToolbarModule.getParams().map &&
+      //   ToolbarModule.getParams().map.currentMap &&
+      //   ToolbarModule.getParams().map.currentMap.Template
+      // ) {
+      //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
+      // }
 
       const result = await ToolbarModule.getParams().saveMap({
         mapName,

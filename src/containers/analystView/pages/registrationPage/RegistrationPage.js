@@ -94,7 +94,7 @@ export default class RegistrationPage extends Component {
     }
   }
 
-  back = () => {
+  back = async () => {
     if (this.state.isEditPoint) {
       this.setPoint(this.state.tempPoint, this.state.currentIndex)
       SRectifyView.setCurrentIndex(-1)
@@ -104,7 +104,13 @@ export default class RegistrationPage extends Component {
         currentIndex: -1,
       })
     } else {
-      SRectifyView.dispose()
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Prompt.CLOSING,
+        //'正在关闭地图'
+      )
+      await SRectifyView.dispose()
+      GLOBAL.Loading.setLoading(false)
       NavigationService.goBack()
     }
   }
@@ -132,8 +138,15 @@ export default class RegistrationPage extends Component {
     }
   }
 
-  exit = () => {
-    SRectifyView.dispose()
+  exit = async () => {
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Prompt.CLOSING,
+      //'正在关闭地图'
+    )
+    await SRectifyView.dispose()
+    GLOBAL.Loading.setLoading(false)
+
     NavigationService.goBack()
     NavigationService.goBack()
     NavigationService.goBack()

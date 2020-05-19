@@ -90,6 +90,7 @@ export default class RNFloorListView extends React.Component {
       let datas = await SMap.getFloorData()
       if (datas.data && datas.data.length > 0) {
         let { data, datasource, currentFloorID } = datas
+        data = data.sort(this.sortWithCharCode('name'))
         this.setState({
           data,
           datasource,
@@ -97,6 +98,16 @@ export default class RNFloorListView extends React.Component {
         })
       }
     }
+  }
+  //  楼层属性排序 F正序，B反序
+  sortWithCharCode = key => (a, b) => {
+    let key1 = a[key]
+    let key2 = b[key]
+    return key1[0] !== key2[0]
+      ? key2.charCodeAt(0) - key1.charCodeAt(0)
+      : key1[0] === 'F'
+        ? key2.charCodeAt(1) - key1.charCodeAt(1)
+        : key1.charCodeAt(1) - key2.charCodeAt(1)
   }
 
   /**

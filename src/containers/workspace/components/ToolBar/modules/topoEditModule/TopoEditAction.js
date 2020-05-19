@@ -330,6 +330,7 @@ async function inputConfirm(text) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
     }
     SMap.setAction(Action.SELECT)
+    return true
   } else {
     Toast.show(
       getLanguage(GLOBAL.language).Prompt.SMOOTH_NUMBER_NEED_BIGGER_THAN_2,

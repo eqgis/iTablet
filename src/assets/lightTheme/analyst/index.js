@@ -40,6 +40,8 @@ const analysis_online_buffer = require('./analysis_online_buffer_light.png')
 const analysis_online_odline = require('./analysis_online_odline_light.png')
 const analysis_online_topology = require('./analysis_online_topology_light.png')
 const analysis_online_features = require('./analysis_online_features_light.png')
+const analysis_rapid_registration_light = require('./analysis_rapid_registration_light.png')
+const analysis_new_registration_light = require('./analysis_new_registration_light.png')
 
 /** 路径｜商旅分析* */
 const analysis_stop = require('./analysis_stop_light.png')
@@ -90,6 +92,8 @@ export default {
   analysis_online_odline,
   analysis_online_topology,
   analysis_online_features,
+  analysis_rapid_registration_light,
+  analysis_new_registration_light,
 
   analysis_stop,
   analysis_barrier,

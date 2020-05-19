@@ -57,7 +57,7 @@ export default class AnalysisMenuListView extends React.Component {
         NavigationService.navigate('RegistrationDatasetPage', {})
       },
       size: 'large',
-      image: getThemeAssets().analyst.analysis_shortestpath,
+      image: getThemeAssets().analyst.analysis_new_registration_light,
     })
     data.push({
       key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
@@ -70,7 +70,7 @@ export default class AnalysisMenuListView extends React.Component {
         })
       },
       size: 'large',
-      image: getThemeAssets().analyst.analysis_shortestpath,
+      image: getThemeAssets().analyst.analysis_rapid_registration_light,
     })
     // data.push({
     //     key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,

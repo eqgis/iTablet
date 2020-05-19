@@ -2819,8 +2819,6 @@ export default class MapView extends React.Component {
               // column:data.column,
               ...data,
             })
-            //开启放大镜
-            SMap.setIsMagnifierEnabled(true)
             GLOBAL.INCREMENT_DATA = returnData
           }
         })

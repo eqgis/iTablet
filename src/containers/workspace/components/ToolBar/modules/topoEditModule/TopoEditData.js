@@ -183,8 +183,6 @@ async function getData(type) {
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
         },
-        {},
-        {},
         {
           key: constants.MAP_INCREMENT_COMMIT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu

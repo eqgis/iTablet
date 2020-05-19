@@ -9,6 +9,7 @@ import { ConstPath, ConstInfo } from '../../constants'
 import UserType from '../../constants/UserType'
 import ConstOnline from '../../constants/ConstOnline'
 import { getLanguage } from '../../language'
+import ToolbarModule from '../../containers/workspace/components/ToolBar/modules/ToolbarModule'
 // Constants
 // --------------------------------------------------
 export const OPEN_WORKSPACE = 'OPEN_WORKSPACE'
@@ -135,7 +136,7 @@ export const saveMap = (params = {}, cb = () => {}) => async (
       const layers = await SMap.getLayersByType(-1)
       params.addition.filterLayers = layers
         .filter(item => {
-          if( item.name.match(regexp) || LayerUtils.isBaseLayer(item)){
+          if (item.name.match(regexp) || LayerUtils.isBaseLayer(item)) {
             return item
           }
         })
@@ -144,7 +145,7 @@ export const saveMap = (params = {}, cb = () => {}) => async (
       if (currentMap.Template) {
         params.addition.Template = ToolbarModule.getParams().map.currentMap.Template
       }
-      debugger
+
       mapName = await SMap.saveMapName(
         params.mapName,
         params.nModule || '',

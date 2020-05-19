@@ -1,4 +1,4 @@
-import { SMap, EngineType } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 

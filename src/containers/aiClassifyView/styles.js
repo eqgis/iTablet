@@ -18,7 +18,7 @@ export default StyleSheet.create({
     right: 0,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#rgba(45, 45, 47, 0.7)',
+    backgroundColor: '#rgb(45, 45, 47)',
   },
   backImg: {
     position: 'absolute',

@@ -55,6 +55,7 @@ const RelativeFilePath = {
   Media: `${Data}Media/`,
   AR: `${Data}Datasource/`,
   Animation: `${Data}Animation/`,
+  Rectify: `${Data}Rectify/`,
   NaviWorkspace: `${Data}Workspace/`,
   Image: `${Data}Workspace/`,
 }

@@ -145,7 +145,8 @@ export default class OnlineLoginView extends React.Component {
             fontSize: scaleSize(20),
           }}
           onPress={() => {
-            NavigationService.navigate('Register')
+            // NavigationService.navigate('Register')
+            NavigationService.navigate('Protocol', { type: 'Register' })
           }}
         >
           {/* 注册 */}

@@ -19,6 +19,7 @@ import NavigationService from '../../../../../../../containers/NavigationService
 export default class AnalysisMenuListView extends React.Component {
   props: {
     layerName: string,
+    userName: string,
     geoId: number,
     device: Object,
     saveAndContinue: () => {},
@@ -28,6 +29,7 @@ export default class AnalysisMenuListView extends React.Component {
 
   constructor(props) {
     super(props)
+    this.userName = this.props.userName
 
     let toolData = this.getToolData()
     let tempAnalysData = this.getData(global.language)
@@ -55,7 +57,20 @@ export default class AnalysisMenuListView extends React.Component {
         NavigationService.navigate('RegistrationDatasetPage', {})
       },
       size: 'large',
-      image: getThemeAssets().analyst.analysis_shortestpath,
+      image: getThemeAssets().analyst.analysis_new_registration_light,
+    })
+    data.push({
+      key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
+      title: getLanguage(global.language).Analyst_Modules
+        .REGISTRATION_SPEEDINESS,
+      action: () => {
+        NavigationService.navigate('RegistrationDatasetPage', {
+          pageType: 1,
+          userName: this.userName,
+        })
+      },
+      size: 'large',
+      image: getThemeAssets().analyst.analysis_rapid_registration_light,
     })
     // data.push({
     //     key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,

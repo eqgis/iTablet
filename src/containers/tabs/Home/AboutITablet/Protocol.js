@@ -263,9 +263,9 @@ export default class protocol extends Component {
         break
       case 'Register':
         source = {
-          uri: `https://sso.supermap.com/register?service=http://www.supermapol.com`,
+          uri: `https://sso.supermap.com/phoneregister?service=http://www.supermapol.com`,
         }
-        title = '注册'
+        title = getLanguage(global.language).Profile.REGISTER
         break
       case 'SuperMapOnlineProtocal':
         if (global.language === 'CN') {

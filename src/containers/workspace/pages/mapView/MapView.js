@@ -64,6 +64,8 @@ import {
   Progress,
   BubblePane,
   AudioDialog,
+  CustomInputDialog,
+  CustomAlertDialog,
 } from '../../../../components'
 import {
   Toast,
@@ -102,7 +104,6 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
-import { CustomInputDialog } from '../../../../components/Dialog'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 
@@ -2038,7 +2039,9 @@ export default class MapView extends React.Component {
   renderCustomInputDialog = () => {
     return <CustomInputDialog ref={ref => (GLOBAL.InputDialog = ref)} />
   }
-
+  renderCustomAlertDialog = () => {
+    return <CustomAlertDialog ref={ref => (GLOBAL.AlertDialog = ref)} />
+  }
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
     return (
@@ -3452,6 +3455,7 @@ export default class MapView extends React.Component {
         {/*)}*/}
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
+        {this.renderCustomAlertDialog()}
       </Container>
     )
   }

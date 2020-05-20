@@ -708,6 +708,9 @@ export default class Friend extends Component {
 
       let msgStr = JSON.stringify(msgObj)
       await this._sendMessage(msgStr, talkId, false)
+      let msgId = this.getMsgId(talkId)
+      this.storeMessage(msgObj, talkId, msgId)
+      this.curChat && this.curChat.onReceive(msgId)
     } catch (error) {
       CoworkInfo.reset()
       SMessageService.exitSession(this.props.user.currentUser.userId, coworkId)
@@ -877,16 +880,20 @@ export default class Friend extends Component {
     try {
       if (CoworkInfo.coworkId !== '') {
         let location = await SMap.getCurrentLocation()
-        SMap.addLocationCallout(
-          location.longitude,
-          location.latitude,
-          this.props.user.currentUser.nickname,
-          this.props.user.currentUser.userId,
-        )
+        if (
+          CoworkInfo.isRealTime &&
+          CoworkInfo.isUserShow(this.props.user.currentUser.userId)
+        ) {
+          SMap.addLocationCallout(
+            location.longitude,
+            location.latitude,
+            this.props.user.currentUser.nickname,
+            this.props.user.currentUser.userId,
+          )
+        }
         SMap.addUserTrack(
           location.longitude,
           location.latitude,
-          this.props.user.currentUser.nickname,
           this.props.user.currentUser.userId,
         )
         let coworkId = CoworkInfo.coworkId
@@ -1345,77 +1352,87 @@ export default class Friend extends Component {
 
   handleCowork = async messageObj => {
     let coworkId = CoworkInfo.coworkId
-    if (coworkId !== '' && coworkId === messageObj.user.groupID) {
+    if (coworkId !== '') {
       let masterId = coworkId.split('_').pop()
       let coworkType = messageObj.message.type
-      /**
-       * 加入协作群
-       */
-      if (coworkType === MSGConstant.MSG_JOIN_COWORK) {
-        CoworkInfo.addMember({
-          id: messageObj.user.id,
-          name: messageObj.user.name,
-        })
-        if (this.props.user.currentUser.userId === masterId) {
-          let members = []
-          for (let i = 0; i < CoworkInfo.members.length; i++) {
-            members.push({
-              id: CoworkInfo.members[i].id,
-              name: CoworkInfo.members[i].name,
-            })
+      if (messageObj.user.groupID === masterId) {
+        //群主发送的单人协作消息
+        if (coworkType === MSGConstant.MSG_COWORK_LIST) {
+          /**
+           * 更新协作成员列表
+           */
+          let members = messageObj.message.members
+          for (let i = 0; i < members.length; i++) {
+            CoworkInfo.addMember(members[i])
           }
-          let msgObj = {
-            type: MSGConstant.MSG_COWORK,
-            time: new Date().getTime(),
-            user: {
-              name: this.props.user.currentUser.nickname,
-              id: this.props.user.currentUser.userId,
-              groupID: this.props.user.currentUser.userId,
-              groupName: '',
-            },
-            message: {
-              type: MSGConstant.MSG_COWORK_LIST,
-              members: members,
-            },
-          }
-          let msgStr = JSON.stringify(msgObj)
-          await this._sendMessage(msgStr, messageObj.user.id, false)
         }
-      } else if (coworkType === MSGConstant.MSG_LEAVE_COWORK) {
-        /**
-         * 退出协作群
-         */
-        if (masterId === messageObj.user.id) {
-          //协作结束
+      } else if (messageObj.user.groupID === coworkId) {
+        //面向所有群员的协作消息
+        if (coworkType === MSGConstant.MSG_JOIN_COWORK) {
+          /**
+           * 加入协作群
+           */
+          CoworkInfo.addMember({
+            id: messageObj.user.id,
+            name: messageObj.user.name,
+          })
+          if (this.props.user.currentUser.userId === masterId) {
+            let members = []
+            for (let i = 0; i < CoworkInfo.members.length; i++) {
+              members.push({
+                id: CoworkInfo.members[i].id,
+                name: CoworkInfo.members[i].name,
+              })
+            }
+            let msgObj = {
+              type: MSGConstant.MSG_COWORK,
+              time: new Date().getTime(),
+              user: {
+                name: this.props.user.currentUser.nickname,
+                id: this.props.user.currentUser.userId,
+                groupID: this.props.user.currentUser.userId,
+                groupName: '',
+              },
+              message: {
+                type: MSGConstant.MSG_COWORK_LIST,
+                members: members,
+              },
+            }
+            let msgStr = JSON.stringify(msgObj)
+            await this._sendMessage(msgStr, messageObj.user.id, false)
+          }
+        } else if (coworkType === MSGConstant.MSG_LEAVE_COWORK) {
+          /**
+           * 退出协作群
+           */
+          if (masterId === messageObj.user.id) {
+            //协作结束
+          } else {
+            //暂不处理
+          }
+        } else if (coworkType === MSGConstant.MSG_COWORK_GPS) {
+          if (
+            CoworkInfo.isRealTime &&
+            CoworkInfo.isUserShow(messageObj.user.id)
+          ) {
+            SMap.addLocationCallout(
+              messageObj.message.longitude,
+              messageObj.message.latitude,
+              messageObj.user.name,
+              messageObj.user.id,
+            )
+          }
+          SMap.addUserTrack(
+            messageObj.message.longitude,
+            messageObj.message.latitude,
+            messageObj.user.id,
+          )
         } else {
-          //暂不处理
+          /**
+           * 对象添加更改的协作消息
+           */
+          CoworkInfo.pushMessage(messageObj)
         }
-      } else if (coworkType === MSGConstant.MSG_COWORK_LIST) {
-        /**
-         * 更新协作成员列表
-         */
-        let members = messageObj.message.members
-        for (let i = 0; i < members.length; i++) {
-          CoworkInfo.addMember(members[i])
-        }
-      } else if (coworkType === MSGConstant.MSG_COWORK_GPS) {
-        SMap.addLocationCallout(
-          messageObj.message.longitude,
-          messageObj.message.latitude,
-          messageObj.user.name,
-          messageObj.user.id,
-        )
-        SMap.addUserTrack(
-          messageObj.message.longitude,
-          messageObj.message.latitude,
-          messageObj.user.name,
-          messageObj.user.id,
-        )
-      } else {
-        /**
-         * 对象添加更改的协作消息
-         */
-        CoworkInfo.pushMessage(messageObj)
       }
     }
   }

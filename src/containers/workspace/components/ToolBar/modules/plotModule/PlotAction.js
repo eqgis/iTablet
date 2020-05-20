@@ -244,6 +244,10 @@ async function collectionSubmit(libId, symbolCode) {
     }
     if (plotLayer) {
       ToolbarModule.getParams().setCurrentLayer(plotLayer)
+      if (global.coworkMode && global.getFriend) {
+        let friend = global.getFriend()
+        friend.onGeometryAdd(plotLayer)
+      }
     }
   })
 }

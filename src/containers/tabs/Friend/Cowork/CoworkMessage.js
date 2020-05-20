@@ -7,7 +7,7 @@ import { getPublicAssets } from '../../../../assets'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
 import MsgConstant from '../MsgConstant'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
 
 class CoworkMessage extends Component {
@@ -59,80 +59,6 @@ class CoworkMessage extends Component {
     }
   }
 
-  add = async (message, notify = true) => {
-    try {
-      let result = false
-      let type = message.message.type
-      if (
-        type === MsgConstant.MSG_COWORK_ADD ||
-        type === MsgConstant.MSG_COWORK_UPDATE
-      ) {
-        result = await SMap.addUserGeometry(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-          message.message.geometry,
-          message.message.geoType,
-        )
-        CoworkInfo.consumeMessage(message.messageID)
-      } else if (type === MsgConstant.MSG_COWORK_DELETE) {
-        notify &&
-          Toast.show(getLanguage(global.language).Friends.ADD_DELETE_ERROR)
-      }
-      return result
-    } catch (error) {
-      return false
-    }
-  }
-
-  update = async (message, notify = true) => {
-    try {
-      let result = false
-      let type = message.message.type
-      if (type === MsgConstant.MSG_COWORK_ADD) {
-        result = await SMap.addUserGeometry(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-          message.message.geometry,
-          message.message.geoType,
-        )
-        CoworkInfo.consumeMessage(message.messageID)
-      } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
-        let exist = await SMap.isUserGeometryExist(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-        )
-        if (exist) {
-          result = await SMap.updateUserGeometry(
-            message.message.layerPath,
-            message.message.id,
-            message.message.geoUserID,
-            message.message.geometry,
-          )
-          CoworkInfo.consumeMessage(message.messageID)
-        } else {
-          notify &&
-            Toast.show(
-              getLanguage(global.language).Friends.UPDATE_NOT_EXIST_OBJ,
-            )
-        }
-      } else if (type === MsgConstant.MSG_COWORK_DELETE) {
-        //TODO 处理删除
-        result = true
-        CoworkInfo.consumeMessage(message.messageID)
-      }
-      return result
-    } catch (error) {
-      return false
-    }
-  }
-
-  ignore = async message => {
-    CoworkInfo.consumeMessage(message.messageID)
-  }
-
   onButtomPress = async type => {
     try {
       if (this.state.selected.length > 0) {
@@ -144,13 +70,13 @@ class CoworkMessage extends Component {
             true,
             getLanguage(global.language).Friends.UPDATING,
           )
-          let message = CoworkInfo.messages[selection[i]]
+          let messageID = selection[i]
           if (type === 'update') {
-            await this.update(message, notify)
+            await CoworkInfo.update(messageID, notify)
           } else if (type === 'add') {
-            await this.add(message, notify)
+            await CoworkInfo.add(messageID, notify)
           } else if (type === 'ignore') {
-            await this.ignore(message)
+            await CoworkInfo.ignore(messageID)
           }
         }
         this.getMessage()
@@ -264,24 +190,26 @@ class CoworkMessage extends Component {
         break
     }
     switch (message.message.geoType) {
-      case DatasetType.POINT:
+      case GeometryType.POINT:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
         break
-      case DatasetType.LINE:
+      case GeometryType.LINE:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
         break
-      case DatasetType.REGION:
+      case GeometryType.REGION:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
         break
-      case DatasetType.TEXT:
+      case GeometryType.TEXT:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
         break
+      case GeometryType.GEOGRAPHICOBJECT:
+        geoType = getLanguage(global.language).Map_Main_Menu.PLOTTING
     }
     if (action) {
       action = action + ' '
     }
     if (actionAfter) {
-      actionAfter = ' ' + action
+      actionAfter = ' ' + actionAfter
     }
     return (
       <TouchableOpacity
@@ -321,10 +249,22 @@ class CoworkMessage extends Component {
               <Text>{message.user.name}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ flex: 1, fontSize: scaleSize(26) }}>
+              <Text
+                style={{ flex: 1, fontSize: scaleSize(26) }}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
+              >
                 {action + geoType + actionAfter}
               </Text>
-              <Text style={{ fontSize: scaleSize(26), color: 'grey' }}>
+              <Text
+                style={{
+                  fontSize: scaleSize(26),
+                  color: 'grey',
+                  width: '40%',
+                }}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
+              >
                 {message.message.caption || message.message.layerName}
               </Text>
             </View>

@@ -60,11 +60,13 @@ export default class PopMenu extends PureComponent {
     device: Object,
     title: String,
     getData: () => {},
+    fixOnPhone: boolean,
   }
 
   static defaultProps = {
     hasCancel: true,
     data: [],
+    fixOnPhone: true,
   }
 
   constructor(props) {
@@ -98,6 +100,7 @@ export default class PopMenu extends PureComponent {
     let indicatorPosition
     let arrow
     if (
+      this.props.fixOnPhone &&
       !global.isPad &&
       this.props.device.orientation.indexOf('PORTRAIT') === 0
     ) {

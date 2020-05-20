@@ -6,13 +6,13 @@ import * as AppModule from '../../src/customModule/mapModules'
 
 /** export顺序为首页模块显示顺序 **/
 export default [
-  new AppModule.MapEditConfig(),
-  new AppModule.Map3DConfig(),
-  new AppModule.MapCollectionConfig(),
-  new AppModule.MapARConfig(),
-  new AppModule.MapNavigationConfig(),
-  new AppModule.MapThemeConfig(),
-  new AppModule.MapPlottingConfig(),
-  new AppModule.MapAnalystConfig(),
+  AppModule.MapEditConfig,
+  AppModule.Map3DConfig,
+  AppModule.MapCollectionConfig,
+  AppModule.MapARConfig,
+  AppModule.MapNavigationConfig,
+  AppModule.MapThemeConfig,
+  AppModule.MapPlottingConfig,
+  AppModule.MapAnalystConfig,
   // new MapExample(),
 ]

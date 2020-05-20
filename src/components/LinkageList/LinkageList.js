@@ -78,7 +78,7 @@ export default class LinkageList extends React.Component {
           [],
       })
     }
-    if (this._panBtnStyles.style.width > screen.getMapChildPageWith()) {
+    if (this._panBtnStyles?.style.width > screen.getMapChildPageWith()) {
       this._panBtnStyles.style.width =
         screen.getMapChildPageWith() - LEFT_MIN_WIDTH
       this._updateNativeStyles()

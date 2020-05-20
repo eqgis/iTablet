@@ -85,7 +85,6 @@ export default class NavigationStartHead extends React.Component {
     GLOBAL.ENDY = undefined
     GLOBAL.CURRENT_NAV_MODE = ''
     GLOBAL.NAV_PARAMS = []
-    GLOBAL.ROUTEANALYST = undefined
     GLOBAL.TouchType = TouchType.NORMAL
     await SMap.clearPoint()
     GLOBAL.mapController?.changeBottom(false)

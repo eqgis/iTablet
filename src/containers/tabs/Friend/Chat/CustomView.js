@@ -228,6 +228,7 @@ export default class CustomView extends React.Component {
             style={{
               padding: scaleSize(20),
               width: scaleSize(500),
+              backgroundColor: 'white',
             }}
           >
             <TouchableOpacity

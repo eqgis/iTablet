@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Switch } from 'react-native'
 import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language/index'
 import { scaleSize } from '../../../../utils'
 import CoworkInfo from './CoworkInfo'
+import color from '../../../../styles/color'
 
 class CoworkMember extends Component {
   props: {
@@ -13,13 +14,24 @@ class CoworkMember extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      data: [],
+    }
   }
 
-  render() {
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = () => {
     let data = []
     if (CoworkInfo.coworkId !== '') {
       data = data.concat(CoworkInfo.members)
+      this.setState({ data })
     }
+  }
+
+  render() {
     return (
       <Container
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
@@ -31,7 +43,7 @@ class CoworkMember extends Component {
         }}
       >
         <FlatList
-          data={data}
+          data={this.state.data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => {
             return (
@@ -42,8 +54,30 @@ class CoworkMember extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <View style={{ marginLeft: scaleSize(20) }}>
-                  <Text style={{ fontSize: scaleSize(26) }}>{item.name}</Text>
+                <View
+                  style={{
+                    marginHorizontal: scaleSize(20),
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ flex: 1, fontSize: scaleSize(26) }}>
+                    {item.name}
+                  </Text>
+                  <Switch
+                    trackColor={{ false: color.bgG, true: color.switch }}
+                    thumbColor={item.show ? color.bgW : color.bgW}
+                    ios_backgroundColor={item.show ? color.switch : color.bgG}
+                    value={item.show}
+                    onValueChange={value => {
+                      if (value) {
+                        CoworkInfo.showUserTrack(item.id)
+                      } else {
+                        CoworkInfo.hideUserTrack(item.id)
+                      }
+                      this.getData()
+                    }}
+                  />
                 </View>
               </View>
             )

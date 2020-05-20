@@ -64,6 +64,7 @@ import {
   Progress,
   BubblePane,
   AudioDialog,
+  PopMenu,
   CustomInputDialog,
   CustomAlertDialog,
 } from '../../../../components'
@@ -398,7 +399,7 @@ export default class MapView extends React.Component {
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
-
+      SMap.addMessageCalloutListener(this.onMessageCalloutTap)
       this.addSpeechRecognizeListener()
       if (GLOBAL.language === 'CN') {
         SSpeechRecognizer.setParameter('language', 'zh_cn')
@@ -602,6 +603,8 @@ export default class MapView extends React.Component {
 
     // 移除多媒体采集监听
     SMediaCollector.removeListener()
+    // 移除协作消息点击监听
+    SMap.removeMessageCalloutListener()
 
     // 移除多媒体采集Callout
     GLOBAL.mapView && SMediaCollector.removeMedias()
@@ -761,7 +764,6 @@ export default class MapView extends React.Component {
     GLOBAL.ENDY = undefined
     GLOBAL.TouchType = TouchType.NORMAL
     GLOBAL.CURRENT_NAV_MODE = ''
-    GLOBAL.ROUTEANALYST = undefined
     GLOBAL.NAV_PARAMS = []
     GLOBAL.STARTNAME = getLanguage(
       GLOBAL.language,
@@ -1664,6 +1666,13 @@ export default class MapView extends React.Component {
         await SMap.clearUserTrack()
 
         this.setLoading(false)
+        //切换地图完成后重置导航选择的数据
+        this.selectedData = {
+          selectedDatasources: [], //选中的数据源
+          selectedDatasets: [], //选中的数据集
+          currentDatasource: [], //当前使用的数据源
+          currentDataset: {}, //当前使用的数据集
+        }
         if (global.coworkMode && CoworkInfo.coworkId === '') {
           global.SimpleDialog.set({
             text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
@@ -1840,6 +1849,53 @@ export default class MapView extends React.Component {
    */
   setInputDialogVisible = (visible, params = {}) => {
     this.InputDialog && this.InputDialog.setDialogVisible(visible, params)
+  }
+
+  onMessageCalloutTap = info => {
+    try {
+      this.coworkMessageID = info.messageID
+      this.messageMenu.setVisible(true, {
+        x: info.x,
+        y: info.y,
+      })
+    } catch (error) {
+      //
+    }
+  }
+
+  /**
+   * 点击协作消息callout出现的菜单
+   */
+  renderMessageMenu = () => {
+    let data = [
+      {
+        title: getLanguage(global.language).Friends.COWORK_UPDATE,
+        action: () => {
+          CoworkInfo.update(this.coworkMessageID)
+        },
+      },
+      {
+        title: getLanguage(global.language).Friends.COWORK_ADD,
+        action: () => {
+          CoworkInfo.add(this.coworkMessageID)
+        },
+      },
+      {
+        title: getLanguage(global.language).Friends.COWORK_IGNORE,
+        action: () => {
+          CoworkInfo.ignore(this.coworkMessageID)
+        },
+      },
+    ]
+    return (
+      <PopMenu
+        ref={ref => (this.messageMenu = ref)}
+        fixOnPhone={false}
+        getData={() => data}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
   }
 
   /**
@@ -3447,6 +3503,7 @@ export default class MapView extends React.Component {
         {/*        placeholder={'平滑系数'}*/}
         {/*    />*/}
         {/*)}*/}
+        {this.renderMessageMenu()}
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}

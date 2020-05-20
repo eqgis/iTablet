@@ -536,6 +536,7 @@ export default class Home extends Component {
             getModuleItem={this.getModuleItem}
             latestMap={this.props.latestMap}
             mapModules={this.props.appConfig.mapModules}
+            // mapModules={this.state.mapModules}
             setCurrentMapModule={this.props.setCurrentMapModule}
           />
           {this.renderPopMenu()}

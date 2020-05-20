@@ -196,6 +196,10 @@ const Analyst_Labels = {
     '二次多項式レジストレーション（少なくとも7つの制御点）',
   REGISTRATION_RECTANGLE: '長方形の登録（2つの制御点）',
   REGISTRATION_OFFSET: 'オフセット登録（1制御点）',
+  REGISTRATION_LINE_: '線形登録',
+  REGISTRATION_QUADRATIC_: '二次多項式レジストレーション',
+  REGISTRATION_RECTANGLE_: '長方形の登録',
+  REGISTRATION_OFFSET_: 'Ofset kaydı',
   REGISTRATION_ASSOCIATION: '関連ブラウジング',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'リンクを解除',
@@ -223,6 +227,8 @@ const Analyst_Labels = {
   REGISTRATION_EXPORT_SUCCESS: 'エクスポートに成功しました',
   REGISTRATION_EXPORT_FAILED: 'エクスポートに失敗しました',
   REGISTRATION_EXPORT_FILE_NAME: 'エクスポート登録情報ファイル名',
+  REGISTRATION_EXPORT_FILE: '登録情報ファイル',
+  REGISTRATION_PLEASE_SELECT: '選んでください',
   REGISTRATION_NOT_SETLECT_DATASET: '登録データセットを選択してください',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: '参照データセットを選択してください',
 }

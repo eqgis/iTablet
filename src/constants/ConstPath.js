@@ -21,6 +21,7 @@ const RelativePath = {
   Log: 'Log/',
   ExternalData: 'ExternalData/',
   Data,
+  Label: `${Data}Label/`,
   Datasource: `${Data}Datasource/`,
   Scene: `${Data}Scene/`,
   Template: `${Data}Template/`,
@@ -55,6 +56,7 @@ const RelativeFilePath = {
   Media: `${Data}Media/`,
   AR: `${Data}Datasource/`,
   Animation: `${Data}Animation/`,
+  Rectify: `${Data}Rectify/`,
   NaviWorkspace: `${Data}Workspace/`,
   Image: `${Data}Workspace/`,
 }

@@ -300,7 +300,9 @@ export default class RegistrationExecutePage extends Component {
           <TouchableOpacity
             style={styles.leftWrap}
             onPress={() => {
-              this.editDatasetName(item, index)
+              if (item.isSelect) {
+                this.editDatasetName(item, index)
+              }
             }}
           >
             <Text
@@ -320,8 +322,10 @@ export default class RegistrationExecutePage extends Component {
           <TouchableOpacity
             style={styles.leftWrap}
             onPress={() => {
-              this.currentDatasetIndex = index
-              this.DatasourcePopView.setVisible(true)
+              if (item.isSelect) {
+                this.currentDatasetIndex = index
+                this.DatasourcePopView.setVisible(true)
+              }
             }}
           >
             <View

@@ -204,8 +204,16 @@ async function methodSelected(type) {
   }
   changeMethod(type)
 }
-
 function close() {
+  GLOBAL.AlertDialog.setDialogVisible(true, {
+    value: getLanguage(GLOBAL.language).Prompt.CONFIRM_EXIT,
+    confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.YES,
+    cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.NO,
+    confirmAction: dialogConfim,
+  })
+}
+
+function dialogConfim() {
   const _params = ToolbarModule.getParams()
   if (GLOBAL.INCREMENT_DATA.datasetName) {
     BackgroundTimer.stopBackgroundTimer()

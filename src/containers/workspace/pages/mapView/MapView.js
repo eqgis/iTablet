@@ -65,6 +65,8 @@ import {
   BubblePane,
   AudioDialog,
   PopMenu,
+  CustomInputDialog,
+  CustomAlertDialog,
 } from '../../../../components'
 import {
   Toast,
@@ -103,7 +105,6 @@ import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
-import { CustomInputDialog } from '../../../../components/Dialog'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 
@@ -2088,7 +2089,9 @@ export default class MapView extends React.Component {
   renderCustomInputDialog = () => {
     return <CustomInputDialog ref={ref => (GLOBAL.InputDialog = ref)} />
   }
-
+  renderCustomAlertDialog = () => {
+    return <CustomAlertDialog ref={ref => (GLOBAL.AlertDialog = ref)} />
+  }
   /** 地图控制器，放大缩小等功能 **/
   renderMapController = () => {
     return (
@@ -2725,26 +2728,22 @@ export default class MapView extends React.Component {
     //清空Toolbar数据
     ToolbarModule.setData({})
     let rel = await SMap.addNetWorkDataset()
+    let type
     if (rel) {
       this.FloorListView.setVisible(false)
       if (!this.state.isRight) {
-        this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_GPSINCREMENT, {
-          containerType: 'table',
-          // column: 4,
-          isFullScreen: false,
-          // height: ConstToolType.HEIGHT[0],
-        })
+        type = ConstToolType.MAP_TOOL_GPSINCREMENT
       } else {
+        type = ConstToolType.MAP_TOOL_INCREMENT
         await SMap.setLabelColor()
         await SMap.setAction(Action.DRAWLINE)
         await SMap.setIsMagnifierEnabled(true)
-        this.toolBox.setVisible(true, ConstToolType.MAP_TOOL_INCREMENT, {
-          containerType: 'table',
-          // column: 4,
-          isFullScreen: false,
-          // height: ConstToolType.HEIGHT[0],
-        })
       }
+      this.toolBox.setVisible(true, type, {
+        containerType: ToolbarType.table,
+        isFullScreen: false,
+      })
+      ToolbarModule.setToolBarData(type)
     } else {
       GLOBAL.TouchType = TouchType.NORMAL
       this.showFullMap(false)
@@ -2866,8 +2865,6 @@ export default class MapView extends React.Component {
               // column:data.column,
               ...data,
             })
-            //开启放大镜
-            SMap.setIsMagnifierEnabled(true)
             GLOBAL.INCREMENT_DATA = returnData
           }
         })
@@ -3503,6 +3500,7 @@ export default class MapView extends React.Component {
         {this.renderMessageMenu()}
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
+        {this.renderCustomAlertDialog()}
       </Container>
     )
   }

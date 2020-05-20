@@ -94,9 +94,9 @@ async function geometrySelected(event) {
         let data = ToolbarModule.getData()
         let { secondEvent } = data
         if (!secondEvent) {
-          secondLine = true
           Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_SECOND_LINE)
         } else {
+          secondLine = true
           SMap.setAction(Action.PAN)
         }
         break
@@ -174,6 +174,7 @@ async function changeEditType() {
     return
   }
   SMap.clearTrackingLayer()
+  GLOBAL.TouchType = TouchType.NULL
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_SWITCH_TYPE, {
     containerType: ToolbarType.table,
@@ -329,6 +330,7 @@ async function inputConfirm(text) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
     }
     SMap.setAction(Action.SELECT)
+    return true
   } else {
     Toast.show(
       getLanguage(GLOBAL.language).Prompt.SMOOTH_NUMBER_NEED_BIGGER_THAN_2,
@@ -520,6 +522,7 @@ async function editCancel() {
       })
       break
   }
+  GLOBAL.TouchType = TouchType.NULL
   SMap.clearTrackingLayer()
 }
 export default {

@@ -1,4 +1,4 @@
-import { SMap, EngineType } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 
@@ -78,13 +78,13 @@ async function _getLabelDataList(user) {
   const homePath = await FileTools.appendingHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
-  const path = `${userPath + ConstPath.RelativePath.Datasource}Label_${
+  const path = `${userPath + ConstPath.RelativePath.Label}Label_${
     user.userName
   }#.udb`
-  const result = await FileTools.fileIsExist(path)
-  if (!result) {
-    creatLabelDatasource(user, path)
-  }
+  // const result = await FileTools.fileIsExist(path)
+  // if (!result) {
+  //   creatLabelDatasource(user, path)
+  // }
   const list = await SMap.getUDBNameOfLabel(path)
   return list
 }
@@ -125,17 +125,17 @@ async function _getPlotDataList(user) {
   return list
 }
 
-async function creatLabelDatasource(user, datasourcePath) {
-  const result = await SMap.createDatasourceOfLabel({
-    server: datasourcePath,
-    engineType: EngineType.UDB,
-    alias: `Label_${user.userName}#`,
-    description: 'Label',
-  })
-  return result
-}
+// async function creatLabelDatasource(user, datasourcePath) {
+//   const result = await SMap.createDatasourceOfLabel({
+//     server: datasourcePath,
+//     engineType: EngineType.UDB,
+//     alias: `Label_${user.userName}#`,
+//     description: 'Label',
+//   })
+//   return result
+// }
 
 export default {
   getLocalData,
-  creatLabelDatasource,
+  // creatLabelDatasource,
 }

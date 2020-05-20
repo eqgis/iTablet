@@ -10,7 +10,7 @@ import {
 import { Container, SearchBar } from '../../components'
 import { SScene, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
-import { scaleSize, setSpText, Toast } from '../../utils'
+import { scaleSize, screen, setSpText, Toast } from '../../utils'
 import styles from './styles'
 import { getLanguage } from '../../language/index'
 import PropTypes from 'prop-types'
@@ -493,6 +493,9 @@ export default class PointAnalyst extends Component {
   }
 
   renderIconItem = () => {
+    let orientation = GLOBAL.getDevice().orientation
+    let maxHeight = screen.getScreenHeight(orientation)
+    let headerHeight = screen.getHeaderHeight(orientation)
     let data = PoiData()
     return (
       <View
@@ -510,7 +513,9 @@ export default class PointAnalyst extends Component {
         {this.props.mapSearchHistory.length > 0 && (
           <FlatList
             style={{
-              maxHeight: scaleSize(400),
+              //最大高度为 屏幕高度 - 前一个Flatlist的高度 - 清除历史按键高度 - 顶部搜索栏高度
+              maxHeight:
+                maxHeight - (scaleSize(440) + scaleSize(70) + headerHeight),
             }}
             renderItem={this.renderItem}
             data={this.props.mapSearchHistory}

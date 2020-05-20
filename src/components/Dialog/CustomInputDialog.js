@@ -120,12 +120,12 @@ export default class CustomInputDialog extends PureComponent {
     }
   }
 
-  confirm = () => {
+  confirm = async () => {
     let result
     if (this.params.confirmAction) {
-      result = this.params.confirmAction(this.state.value)
+      result = await this.params.confirmAction(this.state.value)
     } else if (this.props.confirmAction) {
-      result = this.props.confirmAction(this.state.value)
+      result = await this.props.confirmAction(this.state.value)
     }
     //返回false弹框不消失
     result && this.setDialogVisible(false)

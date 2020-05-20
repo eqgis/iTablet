@@ -179,4 +179,10 @@ export default StyleSheet.create({
     color: color.red,
     textAlign: 'left',
   },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })

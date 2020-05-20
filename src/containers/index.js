@@ -118,6 +118,7 @@ import {
   RegistrationReferDatasetPage,
   RegistrationArithmeticPage,
   RegistrationExecutePage,
+  RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,
   InterpolationAnalystView,
@@ -997,6 +998,13 @@ export default function(appConfig) {
       },
       RegistrationExecutePage: {
         screen: RegistrationExecutePage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      RegistrationFastPage: {
+        screen: RegistrationFastPage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

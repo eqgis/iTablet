@@ -14,6 +14,9 @@ export default class RegistrationDatasetPage extends Component {
 
   constructor(props) {
     super(props)
+    const { params } = this.props.navigation.state
+    this.pageType = params && params.pageType
+    this.userName = params && params.userName
 
     let title = ''
     this.state = {
@@ -33,6 +36,10 @@ export default class RegistrationDatasetPage extends Component {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length; ) {
           let datasource = data[i]
+          if (!this.filtDatasource(datasource)) {
+            data.splice(i, 1)
+            continue
+          }
           datasource.title = datasource.alias
           let datasetsData = datasource.data
           for (let j = 0; j < datasetsData.length; ) {
@@ -65,18 +72,34 @@ export default class RegistrationDatasetPage extends Component {
     }.bind(this)())
   }
 
+  filtDatasource = datasource => {
+    if (
+      datasource.engineType === 23 ||
+      datasource.engineType === 224 ||
+      datasource.engineType === 223 ||
+      datasource.engineType === 225 ||
+      datasource.engineType === 227 ||
+      datasource.engineType === 228 ||
+      datasource.engineType === 230
+    ) {
+      return false
+    }
+    return true
+  }
+
   filtDataset = dataset => {
     if (
       dataset.datasetType === 1 ||
       dataset.datasetType === 3 ||
+      dataset.datasetType === 4 ||
       dataset.datasetType === 5 ||
-      dataset.datasetType === 81 ||
-      dataset.datasetType === 83 ||
+      // dataset.datasetType === 81 ||     //影像数据集
+      // dataset.datasetType === 83 ||      //栅格数据集
       dataset.datasetType === 101 ||
       dataset.datasetType === 103 ||
       dataset.datasetType === 105 ||
-      dataset.datasetType === 149 ||
-      dataset.datasetType === 88
+      dataset.datasetType === 149
+      // dataset.datasetType === 88           //多波段影像
     ) {
       return true
     }
@@ -101,7 +124,13 @@ export default class RegistrationDatasetPage extends Component {
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
       GLOBAL.RectifyDatasetInfo = _rectifyDatasetInfo
-      NavigationService.navigate('RegistrationReferDatasetPage')
+      if (this.pageType && this.pageType == 1) {
+        NavigationService.navigate('RegistrationFastPage', {
+          userName: this.userName,
+        })
+      } else {
+        NavigationService.navigate('RegistrationReferDatasetPage')
+      }
     } else {
       Toast.show(
         getLanguage(global.language).Analyst_Labels
@@ -149,8 +178,10 @@ export default class RegistrationDatasetPage extends Component {
         <View style={{ alignItems: 'center' }}>
           <Button
             title={
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_REFER_DATASET_ADD
+              this.pageType && this.pageType == 1
+                ? getLanguage(global.language).Analyst_Labels.REGISTRATION
+                : getLanguage(global.language).Analyst_Labels
+                  .REGISTRATION_REFER_DATASET_ADD
             }
             ref={ref => (this.sureButton = ref)}
             type={'BLUE'}
@@ -161,7 +192,9 @@ export default class RegistrationDatasetPage extends Component {
               marginBottom: scaleSize(30),
             }}
             titleStyle={{ fontSize: scaleSize(24) }}
-            onPress={this.confirm}
+            onPress={() => {
+              this.confirm()
+            }}
           />
         </View>
       </Container>

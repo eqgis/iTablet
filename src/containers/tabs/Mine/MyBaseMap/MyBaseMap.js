@@ -102,6 +102,7 @@ export default class MyBaseMap extends Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        hideInBackground={false}
         headerProps={{
           title: this.state.title,
           navigation: this.props.navigation,

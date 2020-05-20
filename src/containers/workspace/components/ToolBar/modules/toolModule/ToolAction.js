@@ -785,7 +785,6 @@ async function close(type) {
     GLOBAL.FloorListView.setVisible(true)
     await SMap.removeNetworkDataset()
     SMap.setAction(Action.PAN)
-    SMap.setIsMagnifierEnabled(false)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.MAP_TOOL_STYLE_TRANSFER) {
     await SMap.resetMapFixColorsModeValue(true)

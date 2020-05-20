@@ -64,6 +64,7 @@ import {
   Progress,
   BubblePane,
   AudioDialog,
+  PopMenu,
   CustomInputDialog,
   CustomAlertDialog,
 } from '../../../../components'
@@ -398,7 +399,7 @@ export default class MapView extends React.Component {
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
-
+      SMap.addMessageCalloutListener(this.onMessageCalloutTap)
       this.addSpeechRecognizeListener()
       if (GLOBAL.language === 'CN') {
         SSpeechRecognizer.setParameter('language', 'zh_cn')
@@ -602,6 +603,8 @@ export default class MapView extends React.Component {
 
     // 移除多媒体采集监听
     SMediaCollector.removeListener()
+    // 移除协作消息点击监听
+    SMap.removeMessageCalloutListener()
 
     // 移除多媒体采集Callout
     GLOBAL.mapView && SMediaCollector.removeMedias()
@@ -1839,6 +1842,53 @@ export default class MapView extends React.Component {
    */
   setInputDialogVisible = (visible, params = {}) => {
     this.InputDialog && this.InputDialog.setDialogVisible(visible, params)
+  }
+
+  onMessageCalloutTap = info => {
+    try {
+      this.coworkMessageID = info.messageID
+      this.messageMenu.setVisible(true, {
+        x: info.x,
+        y: info.y,
+      })
+    } catch (error) {
+      //
+    }
+  }
+
+  /**
+   * 点击协作消息callout出现的菜单
+   */
+  renderMessageMenu = () => {
+    let data = [
+      {
+        title: getLanguage(global.language).Friends.COWORK_UPDATE,
+        action: () => {
+          CoworkInfo.update(this.coworkMessageID)
+        },
+      },
+      {
+        title: getLanguage(global.language).Friends.COWORK_ADD,
+        action: () => {
+          CoworkInfo.add(this.coworkMessageID)
+        },
+      },
+      {
+        title: getLanguage(global.language).Friends.COWORK_IGNORE,
+        action: () => {
+          CoworkInfo.ignore(this.coworkMessageID)
+        },
+      },
+    ]
+    return (
+      <PopMenu
+        ref={ref => (this.messageMenu = ref)}
+        fixOnPhone={false}
+        getData={() => data}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
   }
 
   /**
@@ -3446,6 +3496,7 @@ export default class MapView extends React.Component {
         {/*        placeholder={'平滑系数'}*/}
         {/*    />*/}
         {/*)}*/}
+        {this.renderMessageMenu()}
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}

@@ -33,6 +33,10 @@ export default class RegistrationReferDatasetPage extends Component {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length; ) {
           let datasource = data[i]
+          if (!this.filtDatasource(datasource)) {
+            data.splice(i, 1)
+            continue
+          }
           datasource.title = datasource.alias
           let datasetsData = datasource.data
           for (let j = 0; j < datasetsData.length; ) {
@@ -66,18 +70,34 @@ export default class RegistrationReferDatasetPage extends Component {
     }.bind(this)())
   }
 
+  filtDatasource = datasource => {
+    if (
+      datasource.engineType === 23 ||
+      datasource.engineType === 224 ||
+      datasource.engineType === 223 ||
+      datasource.engineType === 225 ||
+      datasource.engineType === 227 ||
+      datasource.engineType === 228 ||
+      datasource.engineType === 230
+    ) {
+      return false
+    }
+    return true
+  }
+
   filtDataset = dataset => {
     if (
       dataset.datasetType === 1 ||
       dataset.datasetType === 3 ||
+      dataset.datasetType === 4 ||
       dataset.datasetType === 5 ||
-      dataset.datasetType === 81 ||
-      dataset.datasetType === 83 ||
+      // dataset.datasetType === 81 ||     //影像数据集
+      // dataset.datasetType === 83 ||      //栅格数据集
       dataset.datasetType === 101 ||
       dataset.datasetType === 103 ||
       dataset.datasetType === 105 ||
-      dataset.datasetType === 149 ||
-      dataset.datasetType === 88
+      dataset.datasetType === 149
+      // dataset.datasetType === 88           //多波段影像
     ) {
       return true
     }

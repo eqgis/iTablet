@@ -1169,7 +1169,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
 
 const App = () =>
   <Provider store={store}>
-    <PersistGate loading={Platform.OS === 'android' ? null : <Loading/>} persistor={persistor}>
+    <PersistGate loading={Platform.OS === 'android' ? null : <Loading info="Loading"/>} persistor={persistor}>
       {/*<PersistGate loading={null} persistor={persistor}>*/}
       <AppRootWithRedux />
     </PersistGate>

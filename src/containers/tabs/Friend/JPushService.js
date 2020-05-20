@@ -21,17 +21,20 @@ export default class JPushService {
     }
     if (audience.length === 0) return
 
+    //TODO 判断消息类型后构造消息
     let messageText = messageObj.message
     if (messageObj.message.message) {
       messageText = messageObj.message.message.message
+    }
+    if (messageText && typeof messageText === 'string') {
+      messageText = messageText.replace(/[\r\n]/g, '')
+    } else {
+      return
     }
     let titleText = messageObj.user.name
     if (messageObj.type === MsgConstant.MSG_GROUP) {
       titleText = messageObj.user.groupName
       messageText = messageObj.user.name + ': ' + messageText
-    }
-    if (messageText && typeof messageText === 'string') {
-      messageText = messageText.replace(/[\r\n]/g, '')
     }
     let request = {
       platform: 'all',
@@ -82,13 +85,15 @@ export default class JPushService {
     if (messageObj.message.message) {
       messageText = messageObj.message.message.message
     }
+    if (messageText && typeof messageText === 'string') {
+      messageText = messageText.replace(/[\r\n]/g, '')
+    } else {
+      return
+    }
     let titleText = messageObj.user.name
     if (messageObj.type === MsgConstant.MSG_GROUP) {
       titleText = messageObj.user.groupName
       messageText = messageObj.user.name + ': ' + messageText
-    }
-    if (messageText && typeof messageText === 'string') {
-      messageText = messageText.replace(/[\r\n]/g, '')
     }
     let notification = {
       buildId: 0,

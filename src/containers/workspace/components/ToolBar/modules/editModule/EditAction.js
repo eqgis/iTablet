@@ -45,6 +45,18 @@ async function commit(type) {
           geoID > -1 &&
           (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
       }
+      //协作时同步编辑对象
+      if (global.coworkMode && global.getFriend) {
+        let event = ToolbarModule.getData().event
+        //TODO 增加类型判断
+        let friend = global.getFriend()
+        friend.onGeometryEdit(
+          event.layerInfo,
+          event.fieldInfo,
+          event.id,
+          event.geometryType,
+        )
+      }
       currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
       // 编辑完成关闭Toolbar
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
@@ -105,6 +117,9 @@ async function geometrySelected(event) {
       fieldInfo: event.fieldInfo,
     })
   }
+  ToolbarModule.addData({
+    event,
+  })
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
     case ConstToolType.MAP_EDIT_POINT:

@@ -761,7 +761,6 @@ export default class MapView extends React.Component {
     GLOBAL.ENDY = undefined
     GLOBAL.TouchType = TouchType.NORMAL
     GLOBAL.CURRENT_NAV_MODE = ''
-    GLOBAL.ROUTEANALYST = undefined
     GLOBAL.NAV_PARAMS = []
     GLOBAL.STARTNAME = getLanguage(
       GLOBAL.language,

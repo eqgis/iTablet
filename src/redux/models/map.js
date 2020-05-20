@@ -143,7 +143,7 @@ export const saveMap = (params = {}, cb = () => {}) => async (
         .map(val => val.name)
 
       if (currentMap.Template) {
-        params.addition.Template = ToolbarModule.getParams().map.currentMap.Template
+        params.addition.Template = currentMap.Template
       }
 
       mapName = await SMap.saveMapName(

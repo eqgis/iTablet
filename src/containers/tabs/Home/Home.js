@@ -61,7 +61,6 @@ export default class Home extends Component {
       isDownloaded: false,
       dialogCheck: false,
       downloadData: null,
-      mapModules: this.props.appConfig.mapModules.map(item => new item())
     }
   }
 
@@ -536,8 +535,8 @@ export default class Home extends Component {
             showDialog={this.showDialog}
             getModuleItem={this.getModuleItem}
             latestMap={this.props.latestMap}
-            // mapModules={this.props.appConfig.mapModules}
-            mapModules={this.state.mapModules}
+            mapModules={this.props.appConfig.mapModules}
+            // mapModules={this.state.mapModules}
             setCurrentMapModule={this.props.setCurrentMapModule}
           />
           {this.renderPopMenu()}

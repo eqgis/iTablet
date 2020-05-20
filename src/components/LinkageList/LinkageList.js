@@ -270,7 +270,7 @@ export default class LinkageList extends React.Component {
                 let datasourceIndex = -1
                 for (let i = 0; i < data.length; i++) {
                   if (item.datasourceName === data[i].datasourceName) {
-                    data[i].data.push(index)
+                    data[i].data.push(item.index)
                     datasourceIndex = i
                     break
                   }
@@ -280,14 +280,14 @@ export default class LinkageList extends React.Component {
                   dataItem.datasourceName = item.datasourceName
                   let datasetArray = []
                   datasetArray.splice()
-                  datasetArray.push(index)
+                  datasetArray.push(item.index)
                   dataItem.data = datasetArray
                   data.push(dataItem)
                 }
               } else {
                 for (let i = 0; i < data.length; i++) {
                   if (item.datasourceName === data[i].datasourceName) {
-                    let datasetIndex = this.indexOf(data[i].data, index)
+                    let datasetIndex = this.indexOf(data[i].data, item.index)
                     if (datasetIndex != -1) {
                       data[i].data.splice(datasetIndex, 1)
                     }

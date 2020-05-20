@@ -750,7 +750,7 @@ export default class RegistrationPage extends Component {
 
   render() {
     return (
-      <View style={[styles.container, { backgroundColor: color.transOverlay }]}>
+      <View style={[styles.container, { backgroundColor: color.transView }]}>
         <View
           style={{
             height: this.state.isShowDetail ? 0 : '100%',

@@ -104,14 +104,17 @@ export default class RegistrationPage extends Component {
         currentIndex: -1,
       })
     } else {
-      GLOBAL.Loading.setLoading(
-        true,
-        getLanguage(global.language).Prompt.CLOSING,
-        //'正在关闭地图'
-      )
-      await SRectifyView.dispose()
-      GLOBAL.Loading.setLoading(false)
-      NavigationService.goBack()
+      // GLOBAL.Loading.setLoading(
+      //   true,
+      //   getLanguage(global.language).Prompt.CLOSING,
+      //   //'正在关闭地图'
+      // )
+      Toast.show(getLanguage(global.language).Prompt.CLOSING)
+      setTimeout(async function() {
+        await SRectifyView.dispose()
+        // GLOBAL.Loading.setLoading(false)
+        NavigationService.goBack()
+      }, 200)
     }
   }
 

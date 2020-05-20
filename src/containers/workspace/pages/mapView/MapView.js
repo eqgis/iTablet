@@ -1666,6 +1666,13 @@ export default class MapView extends React.Component {
         await SMap.clearUserTrack()
 
         this.setLoading(false)
+        //切换地图完成后重置导航选择的数据
+        this.selectedData = {
+          selectedDatasources: [], //选中的数据源
+          selectedDatasets: [], //选中的数据集
+          currentDatasource: [], //当前使用的数据源
+          currentDataset: {}, //当前使用的数据集
+        }
         if (global.coworkMode && CoworkInfo.coworkId === '') {
           global.SimpleDialog.set({
             text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,

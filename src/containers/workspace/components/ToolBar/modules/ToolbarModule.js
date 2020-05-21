@@ -132,10 +132,11 @@ function getModule(type, params = {}) {
   } else if (typeof type === 'string' && type.indexOf('MAP_TOPO_') > -1) {
     module = topoEditModule(type)
   } else if (
-    typeof type === 'string' &&
-    type.indexOf(ConstToolType.MAP_ANALYSIS) > -1
+    (typeof type === 'string' &&
+      type.indexOf(ConstToolType.MAP_ANALYSIS) > -1) ||
+    type.indexOf(ConstToolType.MAP_PROCESS) > -1
   ) {
-    module = analysisModule()
+    module = analysisModule(type)
   } else if (
     type === ConstToolType.PLOT_ANIMATION_START ||
     type === ConstToolType.PLOT_ANIMATION_NODE_CREATE ||

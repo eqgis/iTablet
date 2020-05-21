@@ -52,6 +52,7 @@ const Map_Main_Menu = {
   Traffic: 'Traffic',
 
   ANALYSIS: 'Analysis',
+  PROCESS: 'Process',
 
   NEW_DATASOURCE: 'New Datasource',
 

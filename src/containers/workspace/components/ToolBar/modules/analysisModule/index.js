@@ -37,25 +37,45 @@ class AnalysisModule extends FunctionModule {
     const _data = ToolbarModule.getData()
     let data = {}
     if (
-      _data.type === ConstToolType.MAP_ANALYSIS &&
+      _data.type === ConstToolType.MAP_PROCESS &&
       !(additional && additional.data && additional.data.length > 0)
     ) {
       data.height =
         ConstToolType.TOOLBAR_HEIGHT[0] *
-        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 8)
+        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 5)
     }
     return data
   }
 }
 
-export default function() {
+export default function(type) {
+  let image, title
+  if (type === ConstToolType.MAP_ANALYSIS) {
+    title = getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS
+    image = getThemeAssets().functionBar.rightbar_analysis
+  } else if (type === ConstToolType.MAP_PROCESS) {
+    title = getLanguage(GLOBAL.language).Map_Main_Menu.PROCESS
+    image = getThemeAssets().analyst.analysis_traveling
+  }
   return new AnalysisModule({
-    type: ConstToolType.MAP_ANALYSIS,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
+    type: type,
+    key: title,
+    title: title,
     size: 'large',
-    image: getThemeAssets().functionBar.rightbar_analysis,
+    image: image,
     getData: AnalysisData.getData,
     actions: AnalysisAction,
   })
 }
+
+// export default function() {
+//   return new AnalysisModule({
+//     type: ConstToolType.MAP_ANALYSIS,
+//     key: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
+//     title: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
+//     size: 'large',
+//     image: getThemeAssets().functionBar.rightbar_analysis,
+//     getData: AnalysisData.getData,
+//     actions: AnalysisAction,
+//   })
+// }

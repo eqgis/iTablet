@@ -343,6 +343,7 @@ const Prompt = {
   EDIT_FAILED: '操作失败',
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: '平滑系数应为2~10的整数',
   CONFIRM_EXIT: '是否确定退出?',
+  TOPO_EDIT_END: '是否编辑完成并退出？',
   // 自定义专题图
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',

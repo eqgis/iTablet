@@ -2092,9 +2092,17 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 用户自定义输入弹窗
+   * @returns {*}
+   */
   renderCustomInputDialog = () => {
     return <CustomInputDialog ref={ref => (GLOBAL.InputDialog = ref)} />
   }
+  /**
+   * 用户自定义信息弹窗
+   * @returns {*}
+   */
   renderCustomAlertDialog = () => {
     return <CustomAlertDialog ref={ref => (GLOBAL.AlertDialog = ref)} />
   }

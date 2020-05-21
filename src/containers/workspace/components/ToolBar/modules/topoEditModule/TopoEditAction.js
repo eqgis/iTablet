@@ -131,7 +131,19 @@ async function geometrySelected(event) {
   }
 }
 
+/**
+ * 提交 显示Dialog
+ */
 function commit() {
+  GLOBAL.AlertDialog.setDialogVisible(true, {
+    value: getLanguage(GLOBAL.language).Prompt.TOPO_EDIT_END,
+    confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.YES,
+    cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.NO,
+    confirmAction: dialogConfirm,
+  })
+}
+
+function dialogConfirm() {
   const _params = ToolbarModule.getParams()
   SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
   SMap.setAction(Action.PAN)

@@ -57,6 +57,7 @@ const Map_Main_Menu = {
   Traffic: '路况',
 
   ANALYSIS: '分析',
+  PROCESS: '处理',
 
   NEW_DATASOURCE: '新建数据源',
   // 图例设置

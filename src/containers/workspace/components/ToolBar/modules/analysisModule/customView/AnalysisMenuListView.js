@@ -274,7 +274,7 @@ export default class AnalysisMenuListView extends React.Component {
           style={styles.container}
           ref={ref => (this.scrollView = ref)}
         >
-          {this.renderAnalysView()}
+          {/* {this.renderAnalysView()} */}
           {this.renderView()}
         </ScrollView>
       </View>

@@ -1,5 +1,6 @@
 package com.supermap.itablet;
 
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
 import com.supermap.file.CrashHandler;
@@ -27,8 +28,11 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.supermap.rnsupermap.BuildConfig;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
     public static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
@@ -70,6 +74,16 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Override
         protected String getJSMainModuleName() {
             return "index";
+        }
+
+        @Nullable
+        @Override
+        protected String getJSBundleFile() {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
+            if (!(new File(path).exists())) {
+                path = null;
+            }
+            return path;
         }
     };
 

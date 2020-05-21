@@ -286,13 +286,13 @@ export default class Find extends Component {
               })
             },
           })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
-            //Const.FORUMOFSUPERMAP,
-            leftImagePath: getThemeAssets().find.forum,
-            isInformSpot: false,
-            onClick: this.goToSuperMapForum,
-          })}
+          {/*{this._renderItem({*/}
+            {/*title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,*/}
+            {/*//Const.FORUMOFSUPERMAP,*/}
+            {/*leftImagePath: getThemeAssets().find.forum,*/}
+            {/*isInformSpot: false,*/}
+            {/*onClick: this.goToSuperMapForum,*/}
+          {/*})}*/}
         </ScrollView>
       </View>
     )

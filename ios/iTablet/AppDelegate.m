@@ -90,21 +90,15 @@ static NSString* g_sampleCodeName = @"#";;
   [JPUSHService setupWithOption:launchOptions appKey:@"7d2470baad20e273cd6e53cc"
                         channel:nil apsForProduction:nil];
   NSURL *jsCodeLocation;
-  NSString* jsBundlePath = [NSHomeDirectory() stringByAppendingString:@"/Documents/iTablet/Bundles/index.ios.bundle"];
-  NSFileManager* fileMgr = [NSFileManager defaultManager];
-  BOOL isDir = NO;
-  if ([fileMgr fileExistsAtPath:jsBundlePath isDirectory:&isDir]) {
-    jsCodeLocation = [NSURL URLWithString:jsBundlePath];
-  } else {
-    #if DEBUG
-
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-
-    #endif
-      jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  }
   
-  NSLog(@"============== %@", jsCodeLocation);
+#if DEBUG
+
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
+
+#endif
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+  NSLog(@"============== %@",NSHomeDirectory());
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"iTablet"
                                                initialProperties:nil

@@ -128,7 +128,7 @@ export default class DataItem extends Component {
   }
   _downloadFile = async () => {
     // let fileName = this.props.data.fileName
-    let fileName = 'index.ios.bundle.zip'
+    let fileName = 'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') +  + '.bundle.zip'
     let dataId = this.props.data.id
     let path =
       global.homePath +
@@ -217,7 +217,7 @@ export default class DataItem extends Component {
       result = await FileTools.copyFile(path, bundlesPath, true)
     }
     result
-      ? Toast.show(getLanguage(global.language).Find.DOWNLOADED)
+      ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT)
       : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
   }
 
@@ -248,7 +248,7 @@ export default class DataItem extends Component {
         index === -1
           ? this.props.data.fileName
           : this.props.data.fileName.substring(0, index)
-      const suffix = (Platform.OS === 'ios' ? '.ios' : '.android') + '.jsbundle'
+      const suffix = (Platform.OS === 'ios' ? '.ios' : '.android') + '.bundle'
       if (this.titleName.endsWith(suffix)) {
         this.titleName = this.titleName.replace(suffix, '')
       }

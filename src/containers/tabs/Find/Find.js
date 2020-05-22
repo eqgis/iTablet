@@ -286,13 +286,21 @@ export default class Find extends Component {
               })
             },
           })}
-          {/*{this._renderItem({*/}
-            {/*title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,*/}
-            {/*//Const.FORUMOFSUPERMAP,*/}
-            {/*leftImagePath: getThemeAssets().find.forum,*/}
-            {/*isInformSpot: false,*/}
-            {/*onClick: this.goToSuperMapForum,*/}
-          {/*})}*/}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
+            //Const.FORUMOFSUPERMAP,
+            leftImagePath: getThemeAssets().find.forum,
+            isInformSpot: false,
+            onClick: this.goToSuperMapForum,
+          })}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Find.APPLET,
+            leftImagePath: getThemeAssets().find.app,
+            isInformSpot: false,
+            onClick: () => {
+              NavigationService.navigate('Applet', {type: 'APPLET'})
+            },
+          })}
         </ScrollView>
       </View>
     )

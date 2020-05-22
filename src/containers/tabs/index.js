@@ -26,6 +26,7 @@ import Mine, {
 import Find from './Find'
 import SuperMapKnown from './Find/superMapKnown'
 import PublicData from './Find/PublicData'
+import Applet from './Find/Applet'
 import Friend, {
   Chat,
   AddFriend,
@@ -135,4 +136,5 @@ export {
   MyBaseMap,
   SuperMapKnown,
   PublicData,
+  Applet,
 }

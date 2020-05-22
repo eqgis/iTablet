@@ -75,6 +75,7 @@ export default {
   // SampleDataPath: AppPath + '/SampleData/', // 存放示例数据
   UserPath: `${AppPath}User/`, // 存放用户数据
   UserPath2: `${AppPath}User`, // 存放用户数据
+  BundlesPath: `${AppPath}Bundles/`, // Bundle数据
   Common: `${AppPath}Common/`, // 公共数据
   Images: `${AppPath}Common/Images`, // 公共图片
   Common_AIDetectModel: `${AppPath}Common/AI/DetectModel/`, // 公共数据:检测模型

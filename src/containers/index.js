@@ -42,6 +42,7 @@ import {
   MyBaseMap,
   SuperMapKnown,
   PublicData,
+  Applet,
 } from './tabs'
 
 import GetBack from './register&getBack/GetBack'
@@ -778,6 +779,13 @@ export default function(appConfig) {
       },
       PublicData: {
         screen: PublicData,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      Applet: {
+        screen: Applet,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

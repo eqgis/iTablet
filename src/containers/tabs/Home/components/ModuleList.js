@@ -286,6 +286,7 @@ class ModuleList extends Component {
       let arrFile = await FileTools.getFilterFiles(fileDirPath)
       if (arrFile.length === 0) {
         if (
+          downloadData.fileName &&
           !(
             this.moduleItems &&
             this.moduleItems[index] &&

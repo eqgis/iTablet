@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Image, Text, View, StyleSheet } from 'react-native'
+import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import FriendList from './FriendList/FriendList'
+import FriendGroup from './FriendGroup/FriendGroup'
 import { Container, Dialog, CheckBox } from '../../../components'
 import { getLanguage } from '../../../language/index'
-import { scaleSize, setSpText, Toast } from '../../../utils'
+import { scaleSize, setSpText, Toast, screen } from '../../../utils'
 import {
   getLayerIconByType,
   getThemeAssets,
@@ -12,16 +13,23 @@ import {
 import { stat } from 'react-native-fs'
 import color from '../../../styles/color'
 import { FileTools } from '../../../native'
+import { connect } from 'react-redux'
+import ScrollableTabView, {
+  DefaultTabBar,
+} from 'react-native-scrollable-tab-view'
 
-export default class SelectFriend extends Component {
+class SelectFriend extends Component {
   props: {
     navigation: Object,
+    user: Object,
+    device: Object,
   }
 
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
-    this.user = params.user
+    this.showType = params.showType || 'friend'
+    this.user = this.props.user
     this.callBack = params.callBack
     this.type = params.type || ''
     this.layerData = params.layerData || {}
@@ -191,6 +199,113 @@ export default class SelectFriend extends Component {
       </View>
     )
   }
+
+  renderFriendList = () => {
+    return (
+      <FriendList
+        ref={ref => (this.friendList = ref)}
+        tabLabel={getLanguage(global.language).Friends.FRIENDS}
+        language={global.language}
+        user={this.user.currentUser}
+        friend={global.getFriend()}
+        callBack={targetId => {
+          if (this.type === 'ShareFromLayer') {
+            let targetUser = GLOBAL.getFriend().getTargetUser(targetId + '')
+            this.setState({
+              targetUser,
+            })
+            this.Dialog.setDialogVisible(true)
+          } else {
+            this.callBack && this.callBack(targetId)
+          }
+        }}
+      />
+    )
+  }
+
+  renderGroupList = () => {
+    return (
+      <FriendGroup
+        ref={ref => (this.friendGroup = ref)}
+        tabLabel={getLanguage(global.language).Friends.GROUPS}
+        language={global.language}
+        user={this.user.currentUser}
+        friend={global.getFriend()}
+        callBack={targetId => {
+          this.callBack && this.callBack(targetId)
+        }}
+      />
+    )
+  }
+
+  renderLists = () => {
+    let width = screen.getScreenWidth(this.props.device.orientation)
+    return (
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <ScrollableTabView
+          renderTabBar={() => (
+            <DefaultTabBar
+              style={{ height: scaleSize(60) }}
+              renderTab={(name, page, isTabActive, onPressHandler) => {
+                let activeTextColor = 'rgba(70,128,223,1.0)'
+                let inactiveTextColor = 'black'
+                const textColor = isTabActive
+                  ? activeTextColor
+                  : inactiveTextColor
+                const fontWeight = isTabActive ? 'bold' : 'normal'
+
+                return (
+                  <TouchableOpacity
+                    style={{ flex: 1 }}
+                    key={name}
+                    accessible={true}
+                    accessibilityLabel={name}
+                    accessibilityTraits="button"
+                    onPress={() => onPressHandler(page)}
+                  >
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        paddingVertical: scaleSize(10),
+                      }}
+                    >
+                      <View>
+                        <Text
+                          style={{
+                            color: textColor,
+                            fontWeight,
+                            fontSize: scaleSize(25),
+                            textAlign: 'center',
+                          }}
+                        >
+                          {name}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }}
+            />
+          )}
+          initialPage={0}
+          prerenderingSiblingsNumber={1}
+          tabBarUnderlineStyle={{
+            backgroundColor: 'rgba(70,128,223,1.0)',
+            height: scaleSize(3),
+            width: scaleSize(30),
+            marginLeft: width / 2 / 2 - 10,
+          }}
+        >
+          {this.renderFriendList()}
+          {this.renderGroupList()}
+        </ScrollableTabView>
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -199,23 +314,8 @@ export default class SelectFriend extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <FriendList
-          ref={ref => (this.friendList = ref)}
-          language={global.language}
-          user={this.user.currentUser}
-          friend={global.getFriend()}
-          callBack={targetId => {
-            if (this.type === 'ShareFromLayer') {
-              let targetUser = GLOBAL.getFriend().getTargetUser(targetId + '')
-              this.setState({
-                targetUser,
-              })
-              this.Dialog.setDialogVisible(true)
-            } else {
-              this.callBack && this.callBack(targetId)
-            }
-          }}
-        />
+        {this.showType === 'friend' && this.renderFriendList()}
+        {this.showType === 'all' && this.renderLists()}
         {this.type === 'ShareFromLayer' && (
           <Dialog
             ref={ref => (this.Dialog = ref)}
@@ -243,6 +343,18 @@ export default class SelectFriend extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user.toJS(),
+  device: state.device.toJS().device,
+})
+
+const mapDispatchToProps = {}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SelectFriend)
 
 const styles = StyleSheet.create({
   dialogBackground: {

@@ -10,10 +10,9 @@ import {
   View,
   Platform,
 } from 'react-native'
-// import MapView from 'react-native-maps'
-import { scaleSize, px } from '../../../../utils/screen'
+import { scaleSize } from '../../../../utils/screen'
 import MSGConstant from '../MsgConstant'
-import { getLanguage } from '../../../../language'
+import CoworkInviteView from '../Cowork/CoworkInviteView'
 
 export default class CustomView extends React.Component {
   props: {
@@ -21,7 +20,6 @@ export default class CustomView extends React.Component {
     currentMessage: any,
     position: '',
     onTouch: () => {},
-    getModuleData: () => {},
   }
 
   touchCallback = (type, message) => {
@@ -222,60 +220,16 @@ export default class CustomView extends React.Component {
       let coworkType = this.props.currentMessage.originMsg.message.module
       let mapName = this.props.currentMessage.originMsg.message.mapName || ''
       if (coworkType) {
-        let data = this.props.getModuleData(coworkType)
-        return (
-          <View
-            style={{
-              padding: scaleSize(20),
-              width: scaleSize(500),
-              backgroundColor: 'white',
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                this.touchCallback(type, this.props.currentMessage)
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: scaleSize(26),
-                  color: 'grey',
-                  marginBottom: scaleSize(20),
-                }}
-              >
-                {getLanguage(global.language).Friends.COWORK_INVITATION}
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <Image
-                  source={data.image}
-                  style={{
-                    width: scaleSize(60),
-                    height: scaleSize(60),
-                    marginRight: scaleSize(20),
-                  }}
-                />
-                <Text style={{ fontSize: scaleSize(26) }}>{data.title}</Text>
-              </View>
-            </TouchableOpacity>
-            <View
-              style={{
-                backgroundColor: 'grey',
-                height: px(1),
-                marginVertical: scaleSize(15),
-              }}
-            />
-            <Text style={{ fontSize: scaleSize(26) }}>
-              {getLanguage(global.language).Friends.MAP + ':  ' + mapName}
-            </Text>
-          </View>
-        )
+        let info = {
+          module: coworkType,
+          mapName: mapName,
+          coworkId: this.props.currentMessage.originMsg.message.coworkId,
+          time: this.props.currentMessage.originMsg.time,
+          talkId: this.props.currentMessage.originMsg.user.groupId,
+        }
+        return <CoworkInviteView data={info} />
       } else {
-        return null
+        return this.renderUnsupported()
       }
     }
     /*

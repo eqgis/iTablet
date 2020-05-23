@@ -1,0 +1,128 @@
+import React from 'react'
+import Container from '../../../../components/Container'
+import { FlatList, TouchableOpacity, Text } from 'react-native'
+import CoworkInviteView from '../../Friend/Cowork/CoworkInviteView'
+import { scaleSize } from '../../../../utils'
+import NavigationService from '../../../NavigationService'
+import { getLanguage } from '../../../../language'
+import { SMap } from 'imobile_for_reactnative'
+import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
+
+export default class CoworkManagePage extends React.Component {
+  props: {
+    navigation: Object,
+    user: Object,
+    invites: Array,
+    appConfig: Object,
+    latestMap: Object,
+    setCurrentMapModule: () => {},
+    deleteInvite: () => {},
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  createCowork = async (targetId, module, index) => {
+    try {
+      GLOBAL.Loading.setLoading(true, '准备中')
+      let licenseStatus = await SMap.getEnvironmentStatus()
+      global.isLicenseValid = licenseStatus.isLicenseValid
+      if (!global.isLicenseValid) {
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+        })
+        global.SimpleDialog.setVisible(true)
+        return
+      }
+      let currentUserName = this.props.user.currentUser.userName
+      let latestMap
+      if (
+        this.props.latestMap[currentUserName] &&
+        this.props.latestMap[currentUserName][module.key] &&
+        this.props.latestMap[currentUserName][module.key].length > 0
+      ) {
+        latestMap = this.props.latestMap[currentUserName][module.key][0]
+      }
+      global.getFriend().setCurMod(module)
+      this.props.setCurrentMapModule(index).then(() => {
+        module.action(this.props.user.currentUser, latestMap)
+      })
+      global.getFriend().curChat &&
+        global.getFriend().curChat.setCoworkMode(true)
+      global.coworkMode = true
+      CoworkInfo.setTalkId(targetId)
+      setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
+    } catch (error) {
+      GLOBAL.Loading.setLoading(false)
+    }
+  }
+
+  deleteInvite = data => {
+    global.SimpleDialog.set({
+      text: '是否删除此协作?',
+      confirmAction: () => this.props.deleteInvite(data),
+    })
+    global.SimpleDialog.setVisible(true)
+  }
+
+  renderRight = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          NavigationService.navigate('SelectFriend', {
+            showType: 'all',
+            callBack: targetId => {
+              NavigationService.navigate('SelectModule', {
+                callBack: (module, index) => {
+                  NavigationService.pop(2)
+                  this.createCowork(targetId, module, index)
+                },
+              })
+            },
+          })
+        }}
+      >
+        <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
+          {'新建'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderItem = ({ item }) => {
+    return (
+      <CoworkInviteView
+        style={{
+          alignSelf: 'center',
+          width: '90%',
+          marginBottom: scaleSize(20),
+        }}
+        data={item}
+        onLongPress={data => this.deleteInvite(data)}
+      />
+    )
+  }
+
+  render() {
+    return (
+      <Container
+        ref={ref => (this.container = ref)}
+        showFullInMap={true}
+        hideInBackground={false}
+        headerProps={{
+          title: '在线协作',
+          navigation: this.props.navigation,
+          headerRight: this.renderRight(),
+        }}
+      >
+        <FlatList
+          data={this.props.invites[this.props.user.currentUser.userId]}
+          renderItem={this.renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </Container>
+    )
+  }
+}

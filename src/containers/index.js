@@ -42,6 +42,7 @@ import {
   MyBaseMap,
   SuperMapKnown,
   PublicData,
+  CoworkManagePage,
 } from './tabs'
 
 import GetBack from './register&getBack/GetBack'
@@ -75,8 +76,6 @@ import dataSets from './dataSets'
 import ColorPickerPage from './colorPickerPage'
 import UpLoadList from './uploadList'
 import {
-  MapTabs,
-  Map3DTabs,
   MapStack,
   Map3DStack,
   // MapAnalystTabs,
@@ -166,13 +165,6 @@ export default function(appConfig) {
           header: null,
         },
       },
-      MapTabs: {
-        screen: MapTabs,
-        navigationOptions: {
-          header: null,
-          gesturesEnabled: false,
-        },
-      },
       MapStack: {
         screen: MapStack,
         navigationOptions: {
@@ -217,13 +209,6 @@ export default function(appConfig) {
       //     header: null,
       //   },
       // },
-      Map3DTabs: {
-        screen: Map3DTabs,
-        navigationOptions: {
-          header: null,
-          gesturesEnabled: false,
-        },
-      },
 
       LayerManager: {
         screen: MTLayerManager,
@@ -778,6 +763,13 @@ export default function(appConfig) {
       },
       PublicData: {
         screen: PublicData,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      CoworkManagePage: {
+        screen: CoworkManagePage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

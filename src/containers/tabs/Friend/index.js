@@ -17,6 +17,7 @@ import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
 import { openWorkspace, closeWorkspace } from '../../../redux/models/map'
 import { setUser, deleteUser } from '../../../redux/models/user'
+import { addInvite } from '../../../redux/models/cowork'
 import {
   addChat,
   editChat,
@@ -42,6 +43,7 @@ const mapDispatchToProps = {
   openWorkspace,
   closeWorkspace,
   setCoworkNewMessage,
+  addInvite,
 }
 export default connect(
   mapStateToProps,

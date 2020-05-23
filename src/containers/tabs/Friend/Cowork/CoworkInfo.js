@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../language'
 
 export default class CoworkInfo {
   static coworkId = ''
+  static talkId = ''
   static members = []
   static prevMessages = []
   static messages = []
@@ -19,6 +20,7 @@ export default class CoworkInfo {
 
   static reset() {
     this.coworkId = ''
+    this.talkId = ''
     this.members = []
     this.prevMessages = []
     this.messages = []
@@ -31,6 +33,10 @@ export default class CoworkInfo {
   static setId(Id) {
     this.coworkId = Id
     AsyncStorage.setItem('COWORKID', Id)
+  }
+
+  static setTalkId(id) {
+    this.talkId = id
   }
 
   static addMember(member) {
@@ -199,7 +205,7 @@ export default class CoworkInfo {
     }
   }
 
-  static add = async (messageID, notify = true) => {
+  static async add(messageID, notify = true) {
     try {
       let message = this.messages[messageID]
       let result = false
@@ -226,7 +232,7 @@ export default class CoworkInfo {
     }
   }
 
-  static update = async (messageID, notify = true) => {
+  static async update(messageID, notify = true) {
     try {
       let message = this.messages[messageID]
       let result = false
@@ -271,7 +277,7 @@ export default class CoworkInfo {
     }
   }
 
-  static ignore = async messageID => {
+  static async ignore(messageID) {
     let message = this.messages[messageID]
     this.consumeMessage(message.messageID)
   }

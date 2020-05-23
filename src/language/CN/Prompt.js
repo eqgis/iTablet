@@ -25,6 +25,7 @@ const Prompt = {
   DOWNLOADING: '下载中',
   DOWNLOAD_SUCCESSFULLY: '已下载',
   DOWNLOAD_FAILED: '下载失败',
+  UNZIPPING: '解压中',
 
   NO_REMINDER: '下次不再提醒',
 

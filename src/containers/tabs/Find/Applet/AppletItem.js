@@ -128,7 +128,7 @@ export default class DataItem extends Component {
   }
   _downloadFile = async () => {
     // let fileName = this.props.data.fileName
-    let fileName = 'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') +  + '.bundle.zip'
+    let fileName = 'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
     let dataId = this.props.data.id
     let path =
       global.homePath +
@@ -209,6 +209,9 @@ export default class DataItem extends Component {
     if (!type) {
       result = false
     } else if (type === 'zip') {
+      this.setState({
+        progress: getLanguage(global.language).Prompt.UNZIPPING,
+      })
       if (await RNFS.exists(bundlesPath + name)) {
         await RNFS.unlink(bundlesPath + name)
       }
@@ -216,6 +219,10 @@ export default class DataItem extends Component {
     } else {
       result = await FileTools.copyFile(path, bundlesPath, true)
     }
+    this.setState({
+      progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+      isDownloading: false,
+    })
     result
       ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT)
       : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)

@@ -118,6 +118,9 @@ import {
   RegistrationReferDatasetPage,
   RegistrationArithmeticPage,
   RegistrationExecutePage,
+  ProjectionTransformationPage,
+  SourceCoordsPage,
+  ProjectionParameterSetPage,
   RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,
@@ -998,6 +1001,27 @@ export default function(appConfig) {
       },
       RegistrationExecutePage: {
         screen: RegistrationExecutePage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ProjectionTransformationPage: {
+        screen: ProjectionTransformationPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      SourceCoordsPage: {
+        screen: SourceCoordsPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ProjectionParameterSetPage: {
+        screen: ProjectionParameterSetPage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

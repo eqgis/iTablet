@@ -73,6 +73,16 @@ export default class AnalysisMenuListView extends React.Component {
       image: getThemeAssets().analyst.analysis_rapid_registration_light,
     })
     // data.push({
+    //   key: getLanguage(global.language).Analyst_Modules.PROJECTION_TRANSFORMATION,
+    //   title: getLanguage(global.language).Analyst_Modules
+    //     .PROJECTION_TRANSFORMATION,
+    //   action: () => {
+    //     NavigationService.navigate('ProjectionTransformationPage', {})
+    //   },
+    //   size: 'large',
+    //   image: getThemeAssets().analyst.analysis_converter,
+    // })
+    // data.push({
     //     key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
     //     title: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
     //     size: 'large',

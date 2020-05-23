@@ -16,6 +16,7 @@ const Analyst_Modules = {
 
   REGISTRATION_CREATE: 'Yeni kayıt',
   REGISTRATION_SPEEDINESS: 'Hızlı kayıt',
+  PROJECTION_TRANSFORMATION: 'Projeksiyon dönüşümü',
 }
 
 const Analyst_Methods = {
@@ -232,6 +233,20 @@ const Analyst_Labels = {
   REGISTRATION_NOT_SETLECT_DATASET: 'Lütfen bir kayıt veri kümesi seçin',
   REGISTRATION_NOT_SETLECT_REFER_DATASET:
     'Lütfen bir referans veri kümesi seçin',
+  //投影转换
+  PROJECTION_SOURCE_COORDS: 'Kaynak koordinat sistemi',
+  PROJECTION_COORDS_NAME: 'Koordinat sistemi adı',
+  PROJECTION_COORDS_UNIT: 'Koordinat birimi',
+  PROJECTION_GROUND_DATUM: 'Zemin referans noktası',
+  PROJECTION_REFERENCE_ELLIPSOID: 'Referans elipsoidi',
+
+  PROJECTION_CONVERT_SETTING: 'Referans sistem dönüşüm ayarları',
+  PROJECTION_CONVERT_MOTHED: 'Dönüştürme yöntemi',
+  PROJECTION_PARAMETER_SETTING: 'parametre ayarları',
+  BASIC_PARAMETER: 'Temel parametreler',
+  ROTATION_ANGLE_SECOND: 'Dönme açısı (saniye)',
+  OFFSET: 'dengelemek',
+  RATIO_DIFFERENCE: 'Oransal fark',
 }
 
 const Analyst_Params = {

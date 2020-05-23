@@ -13,6 +13,9 @@ import RegistrationDatasetPage from './registrationDatasetPage'
 import RegistrationReferDatasetPage from './registrationReferDatasetPage'
 import RegistrationArithmeticPage from './registrationArithmeticPage'
 import RegistrationExecutePage from './registrationExecutePage'
+import ProjectionTransformationPage from './projectionTransformationPage'
+import SourceCoordsPage from './sourceCoordsPage'
+import ProjectionParameterSetPage from './projectionParameterSetPage'
 import RegistrationFastPage from './registrationFastPage'
 import RegistrationPage from './registrationPage'
 import ReferenceAnalystView from './referenceAnalystView'
@@ -35,6 +38,9 @@ export {
   RegistrationReferDatasetPage,
   RegistrationArithmeticPage,
   RegistrationExecutePage,
+  ProjectionTransformationPage,
+  SourceCoordsPage,
+  ProjectionParameterSetPage,
   RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,

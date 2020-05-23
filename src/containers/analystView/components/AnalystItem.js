@@ -129,6 +129,7 @@ export default class AnalystItem extends PureComponent {
     rightProps: {},
     disable: false,
     numberRange: '',
+    value: '',
   }
 
   constructor(props) {
@@ -172,6 +173,12 @@ export default class AnalystItem extends PureComponent {
 
   _blur = () => {
     this.input && this.input.blur()
+  }
+
+  getInputText = () => {
+    if (this.props.rightType === 'input') {
+      return this.input && this.input._getText()
+    }
   }
 
   checkNumberRange = text => {

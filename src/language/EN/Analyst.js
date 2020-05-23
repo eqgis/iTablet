@@ -16,6 +16,7 @@ const Analyst_Modules = {
 
   REGISTRATION_CREATE: 'Registration Create',
   REGISTRATION_SPEEDINESS: 'Registration Speediness',
+  PROJECTION_TRANSFORMATION: 'Projection Transformation',
 }
 
 const Analyst_Methods = {
@@ -230,6 +231,20 @@ const Analyst_Labels = {
   REGISTRATION_PLEASE_SELECT: 'Please select',
   REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
+  //投影转换
+  PROJECTION_SOURCE_COORDS: 'Source Coords',
+  PROJECTION_COORDS_NAME: 'Coords Name',
+  PROJECTION_COORDS_UNIT: 'Coords Unit',
+  PROJECTION_GROUND_DATUM: 'Ground Datum',
+  PROJECTION_REFERENCE_ELLIPSOID: 'Reference Ellipsoid',
+
+  PROJECTION_CONVERT_SETTING: 'Reference system conversion settings',
+  PROJECTION_CONVERT_MOTHED: 'Convert method',
+  PROJECTION_PARAMETER_SETTING: 'Parameter Setting',
+  BASIC_PARAMETER: 'Basic Parameter',
+  ROTATION_ANGLE_SECOND: 'Rotation Angle (second) 旋转角度(秒)',
+  OFFSET: 'Offset',
+  RATIO_DIFFERENCE: 'Ratio Difference',
 }
 
 const Analyst_Params = {

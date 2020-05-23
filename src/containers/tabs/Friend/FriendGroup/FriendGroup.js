@@ -29,6 +29,7 @@ class FriendGroup extends Component {
     friend: Object,
     user: Object,
     chat: Array,
+    callBack: () => {},
   }
 
   constructor(props) {
@@ -94,9 +95,13 @@ class FriendGroup extends Component {
   }
 
   _onSectionselect = key => {
-    NavigationService.navigate('Chat', {
-      targetId: key.id,
-    })
+    if (this.props.callBack !== undefined) {
+      this.props.callBack(key.id)
+    } else {
+      NavigationService.navigate('Chat', {
+        targetId: key.id,
+      })
+    }
   }
 
   render() {

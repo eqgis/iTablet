@@ -18,6 +18,7 @@ import externalData from './externalData'
 import toolbarStatus from './toolbarStatus'
 import appConfig from './appConfig'
 import license from './license'
+import cowork from './cowork'
 
 export {
   nav,
@@ -40,4 +41,5 @@ export {
   toolbarStatus,
   appConfig,
   license,
+  cowork,
 }

@@ -27,6 +27,7 @@ import Find from './Find'
 import SuperMapKnown from './Find/superMapKnown'
 import PublicData from './Find/PublicData'
 import Applet from './Find/Applet'
+import CoworkManagePage from './Find/CoworkManagePage'
 import Friend, {
   Chat,
   AddFriend,
@@ -137,4 +138,5 @@ export {
   SuperMapKnown,
   PublicData,
   Applet,
+  CoworkManagePage,
 }

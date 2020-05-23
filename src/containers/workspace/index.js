@@ -105,26 +105,6 @@ const forHorizontal = sceneProps => {
   return { opacity, transform: [{ translateX: translateX }] }
 }
 
-const MapTabs = compose(
-  createBottomTabNavigator(
-    {
-      // MapView: {
-      //   screen: MapView,
-      // },
-      LayerManager: {
-        screen: LayerManager,
-      },
-      LayerAttribute: {
-        screen: LayerAttribute,
-      },
-      MapSetting: {
-        screen: MapSetting,
-      },
-    },
-    options,
-  ),
-)
-
 const MapStack = compose(
   createStackNavigator(
     {
@@ -180,24 +160,6 @@ const CoworkTabs = createBottomTabNavigator(
 //   ),
 // )
 
-const Map3DTabs = createBottomTabNavigator(
-  {
-    // Map3D: {
-    //   screen: Map3D,
-    // },
-    Layer3DManager: {
-      screen: Layer3DManager,
-    },
-    LayerAttribute3D: {
-      screen: LayerAttribute,
-    },
-    Map3DSetting: {
-      screen: Setting,
-    },
-  },
-  options,
-)
-
 const Map3DStack = createStackNavigator(
   {
     Map3D: {
@@ -216,4 +178,4 @@ const Map3DStack = createStackNavigator(
   stackOption,
 )
 
-export { MapTabs, Map3DTabs, CoworkTabs, MapView, MapStack, Map3DStack }
+export { CoworkTabs, MapView, MapStack, Map3DStack }

@@ -197,7 +197,11 @@ export default class MapView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    let { params } = this.props.navigation.state
+    if (!params) {
+      let parent = this.props.navigation.dangerouslyGetParent()
+      params = parent.state.key === 'CoworkMapStack' && parent.state.params
+    }
     this.type = (params && params.type) || GLOBAL.Type || 'LOCAL'
     this.mapType = (params && params.mapType) || 'DEFAULT'
     this.isExample = (params && params.isExample) || false
@@ -1342,8 +1346,11 @@ export default class MapView extends React.Component {
     }
 
     if (global.coworkMode) {
-      // NavigationService.navigate('CoworkChat')
-      NavigationService.navigate('Chat')
+      let param = {}
+      if (CoworkInfo.coworkId !== '') {
+        param.targetId = CoworkInfo.talkId
+      }
+      NavigationService.navigate('Chat', param)
       return true
     }
 
@@ -1673,30 +1680,7 @@ export default class MapView extends React.Component {
           currentDatasource: [], //当前使用的数据源
           currentDataset: {}, //当前使用的数据集
         }
-        if (global.coworkMode && CoworkInfo.coworkId === '') {
-          global.SimpleDialog.set({
-            text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
-            confirmAction: () => {
-              try {
-                let friend = global.getFriend()
-                let talkId = friend.curChat.targetId
-                let mapName = this.props.map.currentMap.name
-                friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
-                this.setState({ onlineCowork: true })
-              } catch (error) {
-                Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
-              }
-            },
-          })
-          // global.SimpleDialog.setVisible(true)
-        } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
-          try {
-            let friend = global.getFriend()
-            friend.startSendLocation()
-          } catch (error) {
-            //
-          }
-        }
+        this.startCowork()
       } catch (e) {
         if (!bWorkspcaOpen) {
           // Toast.show("workspace !")
@@ -1715,6 +1699,45 @@ export default class MapView extends React.Component {
         this.mapLoaded = true
       }
     }.bind(this)())
+  }
+
+  startCowork = () => {
+    if (global.coworkMode && CoworkInfo.coworkId === '') {
+      if (CoworkInfo.talkId != '') {
+        try {
+          let friend = global.getFriend()
+          let talkId = CoworkInfo.talkId
+          let mapName = this.props.map.currentMap.name
+          friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+          this.setState({ onlineCowork: true })
+        } catch (error) {
+          Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+        }
+      } else {
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
+          confirmAction: () => {
+            try {
+              let friend = global.getFriend()
+              let talkId = friend.curChat.targetId
+              let mapName = this.props.map.currentMap.name
+              friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+              this.setState({ onlineCowork: true })
+            } catch (error) {
+              Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+            }
+          },
+        })
+        global.SimpleDialog.setVisible(true)
+      }
+    } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
+      try {
+        let friend = global.getFriend()
+        friend.startSendLocation()
+      } catch (error) {
+        //
+      }
+    }
   }
 
   _openWorkspace = async (wsData, index = -1) => {

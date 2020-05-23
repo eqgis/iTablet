@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: 'Public Data',
+  APPLET: 'Applet',
   SEARCH_RESULT: 'Search Result',
   BACK: 'Back',
   CONFIRM: 'Search',
@@ -21,6 +22,7 @@ const Find = {
   NETWORK_ERROR: 'Network error, please try again later',
   NO_MORE_DATA: 'No more data found',
   DOWNLOADED: 'Download successful. You can import this data at Import',
+  APPLET_DOWNLOADED_REBOOT: 'Download completed, restart the loadable applet',
 }
 
 export { Find }

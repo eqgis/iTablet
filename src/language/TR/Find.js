@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: 'Açık Veri',
+  APPLET: 'Aplet',
   SEARCH_RESULT: 'Sonuç',
   BACK: 'Geri',
   CONFIRM: 'Onay',
@@ -21,6 +22,7 @@ const Find = {
   NETWORK_ERROR: 'Ağ hatası, lütfen daha sonra tekrar deneyiniz',
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
+  APPLET_DOWNLOADED_REBOOT: 'Endirme tamamlandı, yüklenebilir uygulamacığı yeniden başlat',
 }
 
 export { Find }

@@ -81,7 +81,7 @@ class SelectModule extends Component {
                   text={item.title}
                   onPress={() => {
                     if (this.callBack) {
-                      this.callBack(item)
+                      this.callBack(item, index)
                     } else {
                       this.navigateToModule(item, index)
                     }

@@ -73,6 +73,7 @@ export default class Friend extends Component {
     openWorkspace: () => {},
     closeWorkspace: () => {},
     setCoworkNewMessage: () => {},
+    addInvite: () => {},
   }
 
   constructor(props) {
@@ -676,7 +677,7 @@ export default class Friend extends Component {
       let groupId = this.props.user.currentUser.userId
       let groupName = ''
       if (isGroup) {
-        let group = FriendListFileHandle.getGroup(groupId)
+        let group = FriendListFileHandle.getGroup(talkId)
         groupId = talkId
         groupName = group.groupName
       }
@@ -698,6 +699,7 @@ export default class Friend extends Component {
       }
 
       CoworkInfo.setId(coworkId)
+      CoworkInfo.setTalkId(talkId)
       let member = {
         id: this.props.user.currentUser.userId,
         name: this.props.user.currentUser.nickname,
@@ -711,6 +713,21 @@ export default class Friend extends Component {
       let msgId = this.getMsgId(talkId)
       this.storeMessage(msgObj, talkId, msgId)
       this.curChat && this.curChat.onReceive(msgId)
+
+      this.props.addInvite({
+        userId: this.props.user.currentUser.userId,
+        module: moduleId,
+        mapName: mapName,
+        coworkId: coworkId,
+        time: time,
+        talkId: talkId,
+        user: {
+          name: this.props.user.currentUser.nickname,
+          id: this.props.user.currentUser.userId,
+          groupID: groupId,
+          groupName: groupName,
+        },
+      })
     } catch (error) {
       CoworkInfo.reset()
       SMessageService.exitSession(this.props.user.currentUser.userId, coworkId)
@@ -721,7 +738,7 @@ export default class Friend extends Component {
   /**
    * 加入协作
    */
-  joinCowork = async coworkId => {
+  joinCowork = async (coworkId, talkId) => {
     try {
       let masterId = coworkId.split('_').pop()
       let result = await SMessageServiceHTTP.checkBinding(masterId, coworkId)
@@ -742,6 +759,7 @@ export default class Friend extends Component {
         let msgStr = JSON.stringify(msgObj)
         await this._sendMessage(msgStr, coworkId, false)
         CoworkInfo.setId(coworkId)
+        CoworkInfo.setTalkId(talkId)
         let member = {
           id: this.props.user.currentUser.userId,
           name: this.props.user.currentUser.nickname,
@@ -754,6 +772,7 @@ export default class Friend extends Component {
         return false
       }
     } catch (error) {
+      CoworkInfo.reset()
       Toast.show(getLanguage(global.language).Friends.COWORK_JOIN_FAIL)
       return false
     }
@@ -873,7 +892,7 @@ export default class Friend extends Component {
     this.sendCurrentLocation()
     this.locationTimer = setInterval(() => {
       this.sendCurrentLocation()
-    }, 15000)
+    }, 5000)
   }
 
   sendCurrentLocation = async () => {
@@ -1533,6 +1552,20 @@ export default class Friend extends Component {
           )
           return
         }
+      }
+      if (
+        messageObj.message.type &&
+        messageObj.message.type === MSGConstant.MSG_INVITE_COWORK
+      ) {
+        this.props.addInvite({
+          userId: this.props.user.currentUser.userId,
+          module: messageObj.message.module,
+          mapName: messageObj.message.mapName,
+          coworkId: messageObj.message.coworkId,
+          user: messageObj.user,
+          time: messageObj.time,
+          talkId: messageObj.user.groupID,
+        })
       }
     } else {
       //系统消息，做处理机制

@@ -121,12 +121,16 @@ export default class Chunk {
         },
         data,
       ]
-
-      NavigationService.navigate('MapView', {
+      let param = {
         wsData,
         mapTitle: this.title,
         isExample: this.isExample,
-      })
+      }
+      if (global.coworkMode) {
+        NavigationService.navigate('CoworkMapStack', param)
+      } else {
+        NavigationService.navigate('MapView', param)
+      }
     }
   }
 }

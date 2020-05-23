@@ -39,20 +39,23 @@ export default class RegistrationReferDatasetPage extends Component {
           }
           datasource.title = datasource.alias
           let datasetsData = datasource.data
+          let _index = 0
           for (let j = 0; j < datasetsData.length; ) {
             let dataset = datasetsData[j]
             let result = this.filtDataset(dataset)
             if (!result) {
               datasetsData.splice(j, 1)
+              _index++
               continue
             } else {
               dataset.title = dataset.datasetName
               dataset.parentTitle = dataset.datasourceName
               dataset.isSelect = false
-              dataset.index = j
+              dataset.index = _index
               dataset.hasSelect = this.hasSelect(dataset)
-              j++
             }
+            _index++
+            j++
           }
           if (datasetsData.length == 0) {
             data.splice(i, 1)

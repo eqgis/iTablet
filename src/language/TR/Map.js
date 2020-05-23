@@ -52,6 +52,7 @@ const Map_Main_Menu = {
   Traffic: 'Trafik',
 
   ANALYSIS: 'Analiz',
+  PROCESS: 'uğraşmak',
 
   NEW_DATASOURCE: 'Yeni Veri Kaynağı',
 

@@ -200,24 +200,32 @@ export default class SecondMapSettings extends Component {
     let result = data
     let index = 0
     let dataset
-    for (let item of data) {
-      let datasets = []
-      dataset = await SMap.getDatasetsByDatasource(
-        {
-          server: item.server,
-          engineType: item.engineType,
-          alias: item.title,
-        },
-        false,
-      )
-      dataset.list.map(val => {
-        let obj = {}
-        obj.title = val.datasetName
-        obj.parentTitle = val.datasourceName
-        datasets.push(obj)
-      })
-      result[index++].data = datasets
+    try {
+
+      for (let item of data) {
+        let datasets = []
+        dataset = await SMap.getDatasetsByDatasource(
+          {
+            server: item.server,
+            engineType: item.engineType,
+            alias: item.title,
+          },
+          false,
+        )
+        // debugger
+        dataset.list.map(val => {
+          let obj = {}
+          obj.title = val.datasetName
+          obj.parentTitle = val.datasourceName
+          datasets.push(obj)
+        })
+        result[index++].data = datasets
+      }
+
+    }catch (e) {
+      return result
     }
+
     return result
   }
 

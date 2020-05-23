@@ -369,6 +369,7 @@ const Prompt = {
   EDIT_FAILED: '操作に失敗しました',
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'スムージング係数は2~10の整数である',
   CONFIRM_EXIT: '終了してもよろしいですか？',
+  TOPO_EDIT_END: '編集を終了して終了しますか？',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',

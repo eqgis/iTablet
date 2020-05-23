@@ -209,11 +209,11 @@ function close() {
     value: getLanguage(GLOBAL.language).Prompt.CONFIRM_EXIT,
     confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.YES,
     cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.NO,
-    confirmAction: dialogConfim,
+    confirmAction: dialogConfirm,
   })
 }
 
-function dialogConfim() {
+function dialogConfirm() {
   const _params = ToolbarModule.getParams()
   if (GLOBAL.INCREMENT_DATA.datasetName) {
     BackgroundTimer.stopBackgroundTimer()

@@ -57,6 +57,7 @@ const Map_Main_Menu = {
   Traffic: '道路状況',
 
   ANALYSIS: '解析',
+  PROCESS: '扱う',
 
   NEW_DATASOURCE: '新規データソース',
   // 凡例設定

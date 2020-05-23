@@ -14,7 +14,6 @@ import {
   setBackAction,
   removeBackAction,
 } from '../../../redux/models/backActions'
-import { setCurrentMapModule } from '../../../redux/models/appConfig'
 import AboutITablet from './AboutITablet'
 import Setting from './Setting'
 
@@ -38,7 +37,6 @@ const mapDispatchToProps = {
   setDownInformation,
   setBackAction,
   removeBackAction,
-  setCurrentMapModule,
 }
 export default connect(
   mapStateToProps,

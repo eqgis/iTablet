@@ -52,7 +52,6 @@ export default class Home extends Component {
     setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
-    setCurrentMapModule: () => {},
   }
 
   constructor(props) {
@@ -535,9 +534,10 @@ export default class Home extends Component {
             showDialog={this.showDialog}
             getModuleItem={this.getModuleItem}
             latestMap={this.props.latestMap}
-            mapModules={this.props.appConfig.mapModules}
+            // appConfig={this.props.appConfig}
             // mapModules={this.state.mapModules}
-            setCurrentMapModule={this.props.setCurrentMapModule}
+            // setCurrentMapModule={this.props.setCurrentMapModule}
+            // setOldMapModule={this.props.setOldMapModule}
           />
           {this.renderPopMenu()}
           {this.renderDialog()}

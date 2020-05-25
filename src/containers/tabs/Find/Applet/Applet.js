@@ -100,9 +100,7 @@ export default class Applet extends React.Component {
     }
   }
 
-  getAllDataTypes = () => [
-    'UDB',
-  ]
+  getAllDataTypes = () => ['UDB']
 
   onRefresh = () => {
     this.getData()
@@ -119,7 +117,7 @@ export default class Applet extends React.Component {
         loadError: false,
       })
       let data = []
-      async function getDownloadData () {
+      let getDownloadData = async function() {
         let searchParams = {
           currentPage: this.currentPage + 1,
           keywords: (Platform.OS === 'ios' ? 'ios.' : 'android.') + 'bundle',
@@ -133,8 +131,7 @@ export default class Applet extends React.Component {
         )
         return data
       }
-      while (data)
-      data = await getDownloadData()
+      while (data) data = await getDownloadData()
       this.currentPage++
       this.setState({
         data: this.state.data.concat(data.content),

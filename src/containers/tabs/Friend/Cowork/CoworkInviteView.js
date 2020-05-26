@@ -49,7 +49,7 @@ class CoworkInviteView extends React.Component {
     let item = this.props.data
     let map = await this.getMap()
     if (!map) {
-      Toast.show('无此地图！')
+      Toast.show(getLanguage(global.language).Friends.NO_SUCH_MAP)
       return
     }
     let licenseStatus = await SMap.getEnvironmentStatus()
@@ -113,7 +113,7 @@ class CoworkInviteView extends React.Component {
     let time = moment(new Date(this.props.data.time)).format('YYYY/MM/DD HH:mm')
     let user = this.props.data.user.name
     if (this.props.data.userId === this.props.data.user.id) {
-      user = '自己'
+      user = getLanguage(global.language).Friends.SELF
     }
     let group = this.props.data.user.groupName
     if (group) {

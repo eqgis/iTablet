@@ -21,6 +21,8 @@ const Find = {
   NETWORK_ERROR: 'Network error, please try again later',
   NO_MORE_DATA: 'No more data found',
   DOWNLOADED: 'Download successful. You can import this data at Import',
+
+  ONLINE_COWORK: 'Online Cowork',
 }
 
 export { Find }

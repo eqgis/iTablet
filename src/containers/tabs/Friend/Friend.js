@@ -860,6 +860,14 @@ export default class Friend extends Component {
             break
           }
         }
+        let geoID = id
+        for (let i = 0; i < fieldInfos.length; i++) {
+          let fieldInfo = fieldInfos[i]
+          if (fieldInfo.name === 'geoID') {
+            geoID = parseInt(fieldInfo.value)
+            break
+          }
+        }
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
           time: new Date().getTime(),
@@ -874,7 +882,7 @@ export default class Friend extends Component {
             layerPath: layerInfo.path,
             layerName: layerInfo.name,
             caption: layerInfo.caption,
-            id: id,
+            id: geoID,
             geoUserID: geoUserID,
             geometry: geometry,
             geoType: geoType,
@@ -903,11 +911,16 @@ export default class Friend extends Component {
           CoworkInfo.isRealTime &&
           CoworkInfo.isUserShow(this.props.user.currentUser.userId)
         ) {
+          let initial = getLanguage(global.language).Friends.SELF
+          if (initial.length > 2) {
+            initial = initial.slice(0, 2)
+          }
           SMap.addLocationCallout(
             location.longitude,
             location.latitude,
             this.props.user.currentUser.nickname,
             this.props.user.currentUser.userId,
+            initial,
           )
         }
         SMap.addUserTrack(

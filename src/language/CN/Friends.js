@@ -90,6 +90,9 @@ const Friends = {
   SELECT_MESSAGE_TO_UPDATE: '请选择要处理的消息',
   UPDATE_NOT_EXIST_OBJ: '该对象不存在，无法更新',
   ADD_DELETE_ERROR: '不能添加删除对象',
+  DELETE_COWORK_ALERT: '是否删除此协作？',
+  NO_SUCH_MAP: '无此地图',
+  SELF: '我',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',

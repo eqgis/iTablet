@@ -21,6 +21,8 @@ const Find = {
   NETWORK_ERROR: 'Ağ hatası, lütfen daha sonra tekrar deneyiniz',
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
+
+  ONLINE_COWORK: 'Çevrimiçi işbirliği',
 }
 
 export { Find }

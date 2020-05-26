@@ -190,16 +190,16 @@ class CoworkMessage extends Component {
         break
     }
     switch (message.message.geoType) {
-      case GeometryType.POINT:
+      case GeometryType.GEOPOINT:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
         break
-      case GeometryType.LINE:
+      case GeometryType.GEOLINE:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
         break
-      case GeometryType.REGION:
+      case GeometryType.GEOREGION:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
         break
-      case GeometryType.TEXT:
+      case GeometryType.GEOTEXT:
         geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
         break
       case GeometryType.GEOGRAPHICOBJECT:
@@ -260,7 +260,7 @@ class CoworkMessage extends Component {
                 style={{
                   fontSize: scaleSize(26),
                   color: 'grey',
-                  width: '40%',
+                  maxWidth: '40%',
                 }}
                 numberOfLines={1}
                 ellipsizeMode={'tail'}

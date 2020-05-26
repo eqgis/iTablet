@@ -421,7 +421,7 @@ class FriendMessage extends Component {
           </View>
           <View
             style={{
-              width: scaleSize(110),
+              // width: scaleSize(110),
               flexDirection: 'column',
               justifyContent: 'flex-end',
             }}

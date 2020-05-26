@@ -94,6 +94,9 @@ const Friends = {
   SELECT_MESSAGE_TO_UPDATE: 'Lütfen işlemek için mesajı seçin',
   UPDATE_NOT_EXIST_OBJ: 'Nesne yok ve güncellenemiyor',
   ADD_DELETE_ERROR: 'Silinmiş öğeyi eklemez',
+  DELETE_COWORK_ALERT: 'Bu işbirliği silin mi?',
+  NO_SUCH_MAP: 'Hiçbir harita bulunamadı',
+  SELF: 'Kendim',
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',

@@ -16,6 +16,7 @@ const Analyst_Modules = {
 
   REGISTRATION_CREATE: '新建配准',
   REGISTRATION_SPEEDINESS: '快速配准',
+  PROJECTION_TRANSFORMATION: '投影转换',
 }
 
 const Analyst_Methods = {
@@ -230,6 +231,20 @@ const Analyst_Labels = {
   REGISTRATION_PLEASE_SELECT: '请选择',
   REGISTRATION_NOT_SETLECT_DATASET: '请选择配准数据集',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: '请选择参考数据集',
+  //投影转换
+  PROJECTION_SOURCE_COORDS: '源坐标系',
+  PROJECTION_COORDS_NAME: '坐标系名称',
+  PROJECTION_COORDS_UNIT: '坐标单位',
+  PROJECTION_GROUND_DATUM: '大地基准面',
+  PROJECTION_REFERENCE_ELLIPSOID: '参考椭球体',
+
+  PROJECTION_CONVERT_SETTING: '参考系转换设置',
+  PROJECTION_CONVERT_MOTHED: '转换方法',
+  PROJECTION_PARAMETER_SETTING: '参数设置',
+  BASIC_PARAMETER: '基本参数',
+  ROTATION_ANGLE_SECOND: '旋转角度(秒)',
+  OFFSET: '偏移量',
+  RATIO_DIFFERENCE: '比例差',
 }
 
 const Analyst_Params = {

@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: '公共数据',
+  APPLET: '小程序',
   SEARCH_RESULT: '搜索结果',
   BACK: '返回',
   CONFIRM: '确定',
@@ -23,6 +24,7 @@ const Find = {
   DOWNLOADED: '下载完成，可在导入中导入数据',
 
   ONLINE_COWORK: '在线协作',
+  APPLET_DOWNLOADED_REBOOT: '下载完成，重启可加载小程序',
 }
 
 export { Find }

@@ -294,6 +294,14 @@ export default class Find extends Component {
             isInformSpot: false,
             onClick: this.goToSuperMapForum,
           })}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Find.APPLET,
+            leftImagePath: getThemeAssets().find.app,
+            isInformSpot: false,
+            onClick: () => {
+              NavigationService.navigate('Applet', { type: 'APPLET' })
+            },
+          })}
           {UserType.isOnlineUser(this.props.user.currentUser) &&
             this._renderItem({
               title: getLanguage(this.props.language).Find.ONLINE_COWORK,

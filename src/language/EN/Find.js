@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: 'Public Data',
+  APPLET: 'Applet',
   SEARCH_RESULT: 'Search Result',
   BACK: 'Back',
   CONFIRM: 'Search',
@@ -23,6 +24,7 @@ const Find = {
   DOWNLOADED: 'Download successful. You can import this data at Import',
 
   ONLINE_COWORK: 'Online Cowork',
+  APPLET_DOWNLOADED_REBOOT: 'Download completed, restart the loadable applet',
 }
 
 export { Find }

@@ -42,6 +42,7 @@ import {
   MyBaseMap,
   SuperMapKnown,
   PublicData,
+  Applet,
   CoworkManagePage,
 } from './tabs'
 
@@ -117,6 +118,9 @@ import {
   RegistrationReferDatasetPage,
   RegistrationArithmeticPage,
   RegistrationExecutePage,
+  ProjectionTransformationPage,
+  SourceCoordsPage,
+  ProjectionParameterSetPage,
   RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,
@@ -768,6 +772,13 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
+      Applet: {
+        screen: Applet,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
       CoworkManagePage: {
         screen: CoworkManagePage,
         navigationOptions: {
@@ -990,6 +1001,27 @@ export default function(appConfig) {
       },
       RegistrationExecutePage: {
         screen: RegistrationExecutePage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ProjectionTransformationPage: {
+        screen: ProjectionTransformationPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      SourceCoordsPage: {
+        screen: SourceCoordsPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ProjectionParameterSetPage: {
+        screen: ProjectionParameterSetPage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

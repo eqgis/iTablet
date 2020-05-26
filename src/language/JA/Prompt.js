@@ -27,6 +27,7 @@ const Prompt = {
   DOWNLOADING: 'ダウンロード中',
   DOWNLOAD_SUCCESSFULLY: 'ダウンロード済',
   DOWNLOAD_FAILED: 'ダウンロードに失敗しました',
+  UNZIPPING: '解凍中',
 
   NO_REMINDER: '次回からヒントを表示しません',
 

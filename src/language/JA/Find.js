@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: 'パブリックデータ',
+  APPLET: 'アプレット',
   SEARCH_RESULT: '検索結果',
   BACK: '返す',
   CONFIRM: '検索',
@@ -23,6 +24,7 @@ const Find = {
   DOWNLOADED: 'ダウンロード完了、インポート可能です',
 
   ONLINE_COWORK: 'オンライン　コラボレーション',
+  APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動します',
 }
 
 export { Find }

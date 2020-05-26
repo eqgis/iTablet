@@ -15,6 +15,10 @@ import Toast from '../../../../utils/Toast'
 import FetchUtils from '../../../../utils/FetchUtils'
 import { SMap } from 'imobile_for_reactnative'
 import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
+import {
+  setCurrentMapModule,
+  setOldMapModule,
+} from '../../../../redux/models/appConfig'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
@@ -40,13 +44,14 @@ class ModuleList extends Component {
     currentUser: Object,
     latestMap: Object,
     downloads: Array,
-    mapModules: Array,
+    appConfig: Array,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
     downloadFile: () => {},
     deleteDownloadFile: () => {},
     setCurrentMapModule: () => {},
+    setOldMapModule: () => {},
   }
 
   constructor(props) {
@@ -175,7 +180,7 @@ class ModuleList extends Component {
   }
 
   getDownloadData = (language, item, index) => {
-    let example = this.props.mapModules[index].example
+    let example = this.props.appConfig.mapModules[index].example
     let moduleKey = item.key
     let getNameFromConfig = function(example) {
       if (example) {
@@ -286,6 +291,7 @@ class ModuleList extends Component {
       let arrFile = await FileTools.getFilterFiles(fileDirPath)
       if (arrFile.length === 0) {
         if (
+          downloadData.fileName &&
           !(
             this.moduleItems &&
             this.moduleItems[index] &&
@@ -368,18 +374,20 @@ class ModuleList extends Component {
       <ModuleItem
         item={item}
         device={this.props.device}
+        oldMapModules={this.props.appConfig.oldMapModules}
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}
         importWorkspace={this.props.importWorkspace}
         showDialog={this.props.showDialog}
         getModuleItem={this.props.getModuleItem}
+        setOldMapModule={this.props.setOldMapModule}
         itemAction={() => this.itemAction(this.props.language, { item, index })}
       />
     )
   }
 
   render() {
-    let data = this.props.mapModules.map(item =>
+    let data = this.props.appConfig.mapModules.map(item =>
       item.getChunk(this.props.language),
     )
     //模块个数为单数时高度处理
@@ -447,10 +455,13 @@ class ModuleList extends Component {
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   downloads: state.down.toJS().downloads,
+  appConfig: state.appConfig.toJS(),
 })
 const mapDispatchToProps = {
   downloadFile,
   deleteDownloadFile,
+  setCurrentMapModule,
+  setOldMapModule,
 }
 export default connect(
   mapStateToProps,

@@ -26,6 +26,7 @@ const Prompt = {
   DOWNLOADING: 'Yükleniyor',
   DOWNLOAD_SUCCESSFULLY: 'Tamamlandı',
   DOWNLOAD_FAILED: 'İndirme Başarısız',
+  UNZIPPING: 'Sıçrama',
 
   NO_REMINDER: 'Hatırlatma Yok',
 

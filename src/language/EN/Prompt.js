@@ -26,6 +26,7 @@ const Prompt = {
   DOWNLOADING: 'Loading',
   DOWNLOAD_SUCCESSFULLY: 'Done',
   DOWNLOAD_FAILED: 'Failed to Download',
+  UNZIPPING: 'Decompressing',
 
   NO_REMINDER: 'No reminder',
 

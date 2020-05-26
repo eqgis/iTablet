@@ -1,5 +1,6 @@
 const Find = {
   PUBLIC_DATA: 'Açık Veri',
+  APPLET: 'Aplet',
   SEARCH_RESULT: 'Sonuç',
   BACK: 'Geri',
   CONFIRM: 'Onay',
@@ -23,6 +24,8 @@ const Find = {
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
 
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
+  APPLET_DOWNLOADED_REBOOT:
+    'Endirme tamamlandı, yüklenebilir uygulamacığı yeniden başlat',
 }
 
 export { Find }

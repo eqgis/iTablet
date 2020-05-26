@@ -8,10 +8,12 @@ export default class ModuleItem extends Component {
     downloadData: Object,
     item: Object,
     device: Object,
+    oldMapModules: Array,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
     itemAction: () => {},
+    setOldMapModule: () => {},
   }
 
   constructor(props) {
@@ -102,6 +104,7 @@ export default class ModuleItem extends Component {
           activeOpacity={1}
           disabled={this.state.disabled}
           onPress={() => {
+            this.props.setOldMapModule && this.props.setOldMapModule(item.key)
             this.props.itemAction && this.props.itemAction(item)
           }}
           onPressIn={() => {
@@ -121,6 +124,9 @@ export default class ModuleItem extends Component {
           {/* <Image source={image} style={item.img} /> */}
           {/* <Image source={item.baseImage} style={item.style} /> */}
           <View style={styles.moduleItem}>
+            {this.props.oldMapModules.indexOf(item.key) < 0 && (
+              <View style={styles.redDot} />
+            )}
             <Image
               resizeMode={'contain'}
               source={image}
@@ -174,5 +180,14 @@ const styles = StyleSheet.create({
     color: '#5E5E5E',
     textAlign: 'center',
     marginTop: fixedSize(13),
+  },
+  redDot: {
+    position: 'absolute',
+    left: fixedSize(40),
+    top: fixedSize(24),
+    width: fixedSize(16),
+    height: fixedSize(16),
+    borderRadius: fixedSize(8),
+    backgroundColor: 'red',
   },
 })

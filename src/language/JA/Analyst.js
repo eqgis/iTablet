@@ -16,6 +16,7 @@ const Analyst_Modules = {
 
   REGISTRATION_CREATE: '新規登録',
   REGISTRATION_SPEEDINESS: 'クイック登録',
+  PROJECTION_TRANSFORMATION: '投影変換',
 }
 
 const Analyst_Methods = {
@@ -231,6 +232,20 @@ const Analyst_Labels = {
   REGISTRATION_PLEASE_SELECT: '選んでください',
   REGISTRATION_NOT_SETLECT_DATASET: '登録データセットを選択してください',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: '参照データセットを選択してください',
+  //投影转换
+  PROJECTION_SOURCE_COORDS: 'ソース座標系',
+  PROJECTION_COORDS_NAME: '座標系名',
+  PROJECTION_COORDS_UNIT: '座標単位',
+  PROJECTION_GROUND_DATUM: '地面基準',
+  PROJECTION_REFERENCE_ELLIPSOID: '参照楕円体',
+
+  PROJECTION_CONVERT_SETTING: 'リファレンスシステム変換設定',
+  PROJECTION_CONVERT_MOTHED: '換算方法',
+  PROJECTION_PARAMETER_SETTING: 'パラメータ設定',
+  BASIC_PARAMETER: '基本的なパラメータ',
+  ROTATION_ANGLE_SECOND: '回転角度（秒）',
+  OFFSET: 'オフセット',
+  RATIO_DIFFERENCE: '比例差',
 }
 
 const Analyst_Params = {

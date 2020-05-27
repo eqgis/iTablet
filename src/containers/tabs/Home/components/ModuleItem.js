@@ -104,7 +104,6 @@ export default class ModuleItem extends Component {
           activeOpacity={1}
           disabled={this.state.disabled}
           onPress={() => {
-            this.props.setOldMapModule && this.props.setOldMapModule(item.key)
             this.props.itemAction && this.props.itemAction(item)
           }}
           onPressIn={() => {

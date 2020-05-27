@@ -44,7 +44,7 @@ class ModuleList extends Component {
     currentUser: Object,
     latestMap: Object,
     downloads: Array,
-    appConfig: Array,
+    appConfig: Object,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
@@ -341,9 +341,8 @@ class ModuleList extends Component {
           disabled: false,
           isShowProgressView: false,
         })
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && composeWaiting(item.action(tmpCurrentUser, latestMap))
-        })
+        await this.props.setCurrentMapModule(index)
+        item.action && await composeWaiting(item.action(tmpCurrentUser, latestMap))
       }
     } catch (e) {
       this.moduleItems[index].setNewState({
@@ -381,7 +380,10 @@ class ModuleList extends Component {
         showDialog={this.props.showDialog}
         getModuleItem={this.props.getModuleItem}
         setOldMapModule={this.props.setOldMapModule}
-        itemAction={() => this.itemAction(this.props.language, { item, index })}
+        itemAction={async _item => {
+          await this.itemAction(this.props.language, { item: _item, index })
+          await this.props.setOldMapModule && this.props.setOldMapModule(_item.key)
+        }}
       />
     )
   }

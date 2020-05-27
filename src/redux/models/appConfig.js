@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { ModelUtils } from '../../utils'
+// import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------
 export const MODULES_SET = 'MODULES_SET'
@@ -68,8 +68,11 @@ export default handleActions(
       if (mapModule.indexOf(payload) < 0) mapModule.push(payload)
       return state.setIn(['oldMapModules'], fromJS(mapModule))
     },
-    [REHYDRATE]: (state, { payload }) =>
-      ModelUtils.checkModel(state, payload && payload.appConfig),
+    [REHYDRATE]: state =>
+    {
+      // return payload && payload.appConfig ? fromJS(payload.appConfig) : state
+      return state
+    },
   },
   initialState,
 )

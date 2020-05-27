@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
+import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------
 export const MODULES_SET = 'MODULES_SET'
@@ -16,7 +17,7 @@ export const setModules = (params, cb = () => {}) => async (dispatch, getState) 
     let oldMapModules = getState().appConfig.toJS().oldMapModules || []
     for (let i = 0; i < params.mapModules.length; i++) {
       let item = params.mapModules[i]
-      if (oldMapModules.indexOf(item.key) <= 0 && !item.isNew) {
+      if (oldMapModules.indexOf(item.key) < 0 && !item.isNew) {
         params.oldMapModules.push(item.key)
       }
     }
@@ -67,8 +68,8 @@ export default handleActions(
       if (mapModule.indexOf(payload) < 0) mapModule.push(payload)
       return state.setIn(['oldMapModules'], fromJS(mapModule))
     },
-    [REHYDRATE]: (state, payload) =>
-      payload && payload.appConfig ? fromJS(payload.appConfig) : state,
+    [REHYDRATE]: (state, { payload }) =>
+      ModelUtils.checkModel(state, payload && payload.appConfig),
   },
   initialState,
 )

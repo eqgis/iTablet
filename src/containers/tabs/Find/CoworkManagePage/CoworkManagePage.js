@@ -21,19 +21,6 @@ export default class CoworkManagePage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      data: [],
-    }
-  }
-
-  componentDidMount() {
-    this.getData()
-  }
-
-  getData = () => {
-    let data = this.props.invites[this.props.user.currentUser.userId] || []
-    data = data.concat()
-    this.setState({ data: data })
   }
 
   createCowork = async (targetId, module, index) => {
@@ -133,7 +120,7 @@ export default class CoworkManagePage extends React.Component {
         }}
       >
         <FlatList
-          data={this.state.data}
+          data={this.props.invites[this.props.user.currentUser.userId]}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}
         />

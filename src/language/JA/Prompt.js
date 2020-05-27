@@ -20,6 +20,7 @@ const Prompt = {
     'WeChatにシェアのに失敗しました。WeChatをインストールしているかどうかを確認ください',
   RENAME: '名前変更',
   BATCH_DELETE: 'バッチ削除',
+  PREPARING: '準備中',
 
   DOWNLOAD_SAMPLE_DATA: 'サンプルデータをダウンロードしますか？',
   DOWNLOAD: 'ダウンロード',

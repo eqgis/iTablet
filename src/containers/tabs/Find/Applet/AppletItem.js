@@ -91,9 +91,7 @@ export default class DataItem extends Component {
 
   getDownloadStatus = async () => {
     let path =
-      global.homePath +
-      ConstPath.BundlesPath +
-      this.props.data.fileName
+      global.homePath + ConstPath.BundlesPath + this.props.data.fileName
     if (await RNFS.exists(path)) {
       this.setState({
         progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
@@ -128,12 +126,10 @@ export default class DataItem extends Component {
   }
   _downloadFile = async () => {
     // let fileName = this.props.data.fileName
-    let fileName = 'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
+    let fileName =
+      'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
     let dataId = this.props.data.id
-    let path =
-      global.homePath +
-      ConstPath.BundlesPath +
-      fileName
+    let path = global.homePath + ConstPath.BundlesPath + fileName
     let dataUrl
     try {
       if (this.state.isDownloading) {
@@ -195,9 +191,7 @@ export default class DataItem extends Component {
 
   onDownloaded = async (fileName, path) => {
     let appHome = await FileTools.appendingHomeDirectory()
-    let bundlesPath =
-      appHome +
-      ConstPath.BundlesPath
+    let bundlesPath = appHome + ConstPath.BundlesPath
     let index = fileName.lastIndexOf('.')
     let name, type
     if (index !== -1) {
@@ -283,17 +277,17 @@ export default class DataItem extends Component {
               {this.titleName}
             </Text>
             {/*<View style={styles.viewStyle2}>*/}
-              {/*<Image*/}
-                {/*style={[styles.imageStyle2, { tintColor: fontColor }]}*/}
-                {/*resizeMode={'contain'}*/}
-                {/*source={require('../../../../assets/tabBar/tab_user.png')}*/}
-              {/*/>*/}
-              {/*<Text*/}
-                {/*style={[styles.textStyle2, { color: fontColor }]}*/}
-                {/*numberOfLines={1}*/}
-              {/*>*/}
-                {/*{this.props.data.nickname}*/}
-              {/*</Text>*/}
+            {/*<Image*/}
+            {/*style={[styles.imageStyle2, { tintColor: fontColor }]}*/}
+            {/*resizeMode={'contain'}*/}
+            {/*source={require('../../../../assets/tabBar/tab_user.png')}*/}
+            {/*/>*/}
+            {/*<Text*/}
+            {/*style={[styles.textStyle2, { color: fontColor }]}*/}
+            {/*numberOfLines={1}*/}
+            {/*>*/}
+            {/*{this.props.data.nickname}*/}
+            {/*</Text>*/}
             {/*</View>*/}
             <View style={[styles.viewStyle2, { marginTop: 5 }]}>
               <Image

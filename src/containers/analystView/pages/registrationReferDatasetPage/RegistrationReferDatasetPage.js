@@ -74,37 +74,37 @@ export default class RegistrationReferDatasetPage extends Component {
   }
 
   filtDatasource = datasource => {
-    if (
-      datasource.engineType === 23 ||
-      datasource.engineType === 224 ||
-      datasource.engineType === 223 ||
-      datasource.engineType === 225 ||
-      datasource.engineType === 227 ||
-      datasource.engineType === 228 ||
-      datasource.engineType === 230
-    ) {
-      return false
-    }
+    // if (
+    //   datasource.engineType === 23 ||
+    //   datasource.engineType === 224 ||
+    //   datasource.engineType === 223 ||
+    //   datasource.engineType === 225 ||
+    //   datasource.engineType === 227 ||
+    //   datasource.engineType === 228 ||
+    //   datasource.engineType === 230
+    // ) {
+    //   return false
+    // }
     return true
   }
 
   filtDataset = dataset => {
-    if (
-      dataset.datasetType === 1 ||
-      dataset.datasetType === 3 ||
-      dataset.datasetType === 4 ||
-      dataset.datasetType === 5 ||
-      // dataset.datasetType === 81 ||     //影像数据集
-      // dataset.datasetType === 83 ||      //栅格数据集
-      dataset.datasetType === 101 ||
-      dataset.datasetType === 103 ||
-      dataset.datasetType === 105 ||
-      dataset.datasetType === 149
-      // dataset.datasetType === 88           //多波段影像
-    ) {
-      return true
-    }
-    return false
+    // if (
+    //   dataset.datasetType === 1 ||
+    //   dataset.datasetType === 3 ||
+    //   dataset.datasetType === 4 ||
+    //   dataset.datasetType === 5 ||
+    //   // dataset.datasetType === 81 ||     //影像数据集
+    //   // dataset.datasetType === 83 ||      //栅格数据集
+    //   dataset.datasetType === 101 ||
+    //   dataset.datasetType === 103 ||
+    //   dataset.datasetType === 105 ||
+    //   dataset.datasetType === 149
+    //   // dataset.datasetType === 88           //多波段影像
+    // ) {
+    //   return true
+    // }
+    return true
   }
 
   hasSelect = item => {

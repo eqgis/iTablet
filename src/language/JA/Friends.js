@@ -92,6 +92,9 @@ const Friends = {
   SELECT_MESSAGE_TO_UPDATE: 'アップデートしたいメッセージを選んでください',
   UPDATE_NOT_EXIST_OBJ: 'オブジェクトは存在しないてめ更新できません',
   ADD_DELETE_ERROR: '削除されたオブジェクトの追加はできません',
+  DELETE_COWORK_ALERT: '招待状を削除しますか',
+  NO_SUCH_MAP: 'マップが見つかりません',
+  SELF: '自分',
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',

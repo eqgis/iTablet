@@ -22,6 +22,8 @@ const Find = {
   NETWORK_ERROR: '网络出错，请稍后再试',
   NO_MORE_DATA: '数据已全部加载',
   DOWNLOADED: '下载完成，可在导入中导入数据',
+
+  ONLINE_COWORK: '在线协作',
   APPLET_DOWNLOADED_REBOOT: '下载完成，重启可加载小程序',
 }
 

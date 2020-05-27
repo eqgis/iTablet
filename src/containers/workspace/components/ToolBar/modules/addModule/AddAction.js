@@ -105,8 +105,6 @@ async function listAction(type, params = {}) {
       data = Object.assign(data, { selectList: params.selectList })
     }
     ToolbarModule.addData(data)
-  } else if (type === ConstToolType.MAP_NAVIGATION_SELECT_MODEL) {
-    params.refreshList && (await params.refreshList(params.item))
   }
 }
 

@@ -92,6 +92,9 @@ const Friends = {
   SELECT_MESSAGE_TO_UPDATE: 'Please select a message to update',
   UPDATE_NOT_EXIST_OBJ: 'The geometry is not exist, unbale to update',
   ADD_DELETE_ERROR: 'Unbale to add the deleted geometry',
+  DELETE_COWORK_ALERT: 'Do you want to delete this cowork invitation?',
+  NO_SUCH_MAP: "Didn't find this map",
+  SELF: 'Me',
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',

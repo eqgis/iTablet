@@ -21,12 +21,14 @@ export default class CoworkManagePage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
   }
 
   createCowork = async (targetId, module, index) => {
     try {
-      GLOBAL.Loading.setLoading(true, '准备中')
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(global.language).Prompt.PREPARING,
+      )
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
@@ -61,7 +63,7 @@ export default class CoworkManagePage extends React.Component {
 
   deleteInvite = data => {
     global.SimpleDialog.set({
-      text: '是否删除此协作?',
+      text: getLanguage(global.language).Friends.DELETE_COWORK_ALERT,
       confirmAction: () => this.props.deleteInvite(data),
     })
     global.SimpleDialog.setVisible(true)
@@ -85,7 +87,7 @@ export default class CoworkManagePage extends React.Component {
         }}
       >
         <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
-          {'新建'}
+          {getLanguage(global.language).Prompt.CREATE}
         </Text>
       </TouchableOpacity>
     )
@@ -112,7 +114,7 @@ export default class CoworkManagePage extends React.Component {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: '在线协作',
+          title: getLanguage(global.language).Find.ONLINE_COWORK,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
         }}

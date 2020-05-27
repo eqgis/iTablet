@@ -124,7 +124,9 @@ export default class ModuleItem extends Component {
           {/* <Image source={image} style={item.img} /> */}
           {/* <Image source={item.baseImage} style={item.style} /> */}
           <View style={styles.moduleItem}>
-            {this.props.oldMapModules.indexOf(item.key) < 0 && <View style={styles.redDot} />}
+            {this.props.oldMapModules.indexOf(item.key) < 0 && (
+              <View style={styles.redDot} />
+            )}
             <Image
               resizeMode={'contain'}
               source={image}

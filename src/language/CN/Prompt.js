@@ -19,6 +19,7 @@ const Prompt = {
   WX_SHARE_FAILED: '微信分享失败，请检查是否安装微信',
   RENAME: '重命名',
   BATCH_DELETE: '批量删除',
+  PREPARING: '准备中',
 
   DOWNLOAD_SAMPLE_DATA: '是否下载样例数据？',
   DOWNLOAD: '下载',

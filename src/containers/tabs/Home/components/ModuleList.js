@@ -15,7 +15,10 @@ import Toast from '../../../../utils/Toast'
 import FetchUtils from '../../../../utils/FetchUtils'
 import { SMap } from 'imobile_for_reactnative'
 import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
-import { setCurrentMapModule, setOldMapModule } from '../../../../redux/models/appConfig'
+import {
+  setCurrentMapModule,
+  setOldMapModule,
+} from '../../../../redux/models/appConfig'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'

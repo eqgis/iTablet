@@ -17,7 +17,7 @@
 #import <SuperMap/Datasource.h>
 #import <SuperMap/Datasources.h>
 
-NSString *USER_NAME;
+//NSString *USER_NAME;
 static BOOL hasImportedData = NO;
 
 @interface FileTools : RCTEventEmitter<RCTBridgeModule>

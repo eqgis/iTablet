@@ -25,14 +25,14 @@ export const deleteInvite = (params = {}, cb = () => {}) => async dispatch => {
 }
 
 const initialState = fromJS({
-  invites: [],
+  invites: {},
 })
 
 export default handleActions(
   {
     [`${ADD_COWORK_INVITE}`]: (state, { payload }) => {
       const cowork = state.toJS()
-      if (!cowork.invites[payload.userId]) {
+      if (!cowork.invites.hasOwnProperty(payload.userId)) {
         cowork.invites[payload.userId] = []
       }
       let userInvites = cowork.invites[payload.userId]

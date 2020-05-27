@@ -19,6 +19,7 @@ const Prompt = {
   WX_SHARE_FAILED: 'Wechat share failed,Please check wechat install',
   RENAME: 'Rename',
   BATCH_DELETE: 'Batch Delete',
+  PREPARING: 'Preparing',
 
   DOWNLOAD_SAMPLE_DATA: 'Download the sample data?',
   DOWNLOAD: 'Download',

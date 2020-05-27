@@ -299,13 +299,13 @@ export default class Find extends Component {
             leftImagePath: getThemeAssets().find.app,
             isInformSpot: false,
             onClick: () => {
-              NavigationService.navigate('Applet', {type: 'APPLET'})
+              NavigationService.navigate('Applet', { type: 'APPLET' })
             },
           })}
           {UserType.isOnlineUser(this.props.user.currentUser) &&
             this._renderItem({
-              title: '在线协作',
-              leftImagePath: getThemeAssets().find.public_data,
+              title: getLanguage(this.props.language).Find.ONLINE_COWORK,
+              leftImagePath: getThemeAssets().friend.friend_map,
               isInformSpot: false,
               onClick: () => {
                 NavigationService.navigate('CoworkManagePage')

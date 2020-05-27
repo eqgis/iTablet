@@ -10,7 +10,10 @@ export const MODULES_SET_OLD = 'MODULES_SET_OLD' // 标记为已读
 
 // Actions
 // --------------------------------------------------
-export const setModules = (params, cb = () => {}) => async (dispatch, getState) => {
+export const setModules = (params, cb = () => {}) => async (
+  dispatch,
+  getState,
+) => {
   if (!params) return
   if (params.mapModules) {
     params.oldMapModules = []
@@ -42,10 +45,7 @@ export const setCurrentMapModule = (
   }
 }
 
-export const setOldMapModule = (
-  params,
-  cb = () => {},
-) => async dispatch => {
+export const setOldMapModule = (params, cb = () => {}) => async dispatch => {
   await dispatch({
     type: MODULES_SET_OLD,
     payload: params,

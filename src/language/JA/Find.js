@@ -22,6 +22,8 @@ const Find = {
   NETWORK_ERROR: 'ネット異常、後で試してください',
   NO_MORE_DATA: 'データはすべてロードしました。',
   DOWNLOADED: 'ダウンロード完了、インポート可能です',
+
+  ONLINE_COWORK: 'オンライン　コラボレーション',
   APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動します',
 }
 

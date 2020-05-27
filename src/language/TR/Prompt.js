@@ -19,6 +19,7 @@ const Prompt = {
   WX_SHARE_FAILED: 'Wechat yüklemesini kontrol edin',
   RENAME: 'Yeniden adlandır',
   BATCH_DELETE: 'Toplu Sil',
+  PREPARING: 'Hazırlamak',
 
   DOWNLOAD_SAMPLE_DATA: 'Örnek veri indir?',
   DOWNLOAD: 'İndir',

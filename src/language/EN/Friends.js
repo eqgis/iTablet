@@ -10,6 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'New Group Chat',
   RECOMMEND_FRIEND: 'Recommend Friends',
   SELECT_MODULE: 'Select Module',
+  SELECT_MAP: 'Select Map',
   // Friend
   MSG_SERVICE_FAILED: 'Failed to connect to message service',
   MSG_SERVICE_NOT_CONNECT: 'Unable to connect to message service',
@@ -95,6 +96,7 @@ const Friends = {
   DELETE_COWORK_ALERT: 'Do you want to delete this cowork invitation?',
   NO_SUCH_MAP: "Didn't find this map",
   SELF: 'Me',
+  ONLINECOWORK_DISABLE_ADD: 'Unable to add when online cowork',
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',

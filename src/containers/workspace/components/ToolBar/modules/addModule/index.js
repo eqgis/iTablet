@@ -7,6 +7,8 @@ import ToolbarModule from '../ToolbarModule'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
+import { Toast } from '../../../../../../utils'
 
 class AddModule extends FunctionModule {
   constructor(props) {
@@ -27,6 +29,10 @@ class AddModule extends FunctionModule {
   }
 
   action = async () => {
+    if (global.coworkMode && CoworkInfo.coworkId !== '') {
+      Toast.show(getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_ADD)
+      return
+    }
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
     const _data = await AddData.getData(this.type, params)

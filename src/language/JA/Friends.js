@@ -10,6 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'グループチャットを開始',
   RECOMMEND_FRIEND: '友達推奨',
   SELECT_MODULE: 'モジュールの選択',
+  SELECT_MAP: 'マップの選択',
   // Friend
   MSG_SERVICE_FAILED: 'メッセージサービスに接続のに失敗しました！',
   MSG_SERVICE_NOT_CONNECT: 'メッセージサービスに接続しません！',
@@ -95,6 +96,7 @@ const Friends = {
   DELETE_COWORK_ALERT: '招待状を削除しますか',
   NO_SUCH_MAP: 'マップが見つかりません',
   SELF: '自分',
+  ONLINECOWORK_DISABLE_ADD: 'オンラインコラボ中では使用できません',
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',

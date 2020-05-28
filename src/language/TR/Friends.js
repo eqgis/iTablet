@@ -10,6 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'Yeni Grup Sohbeti',
   RECOMMEND_FRIEND: 'Arkadaş Ekle',
   SELECT_MODULE: 'Modül Seç',
+  SELECT_MAP: 'Harita Seç',
   // Friend
   MSG_SERVICE_FAILED: 'Mesaj servisine bağlanılamadı',
   MSG_SERVICE_NOT_CONNECT: 'Mesaj servisine bağlanılamıyor',
@@ -97,6 +98,7 @@ const Friends = {
   DELETE_COWORK_ALERT: 'Bu işbirliği silin mi?',
   NO_SUCH_MAP: 'Hiçbir harita bulunamadı',
   SELF: 'Kendim',
+  ONLINECOWORK_DISABLE_ADD: 'Çevrimiçi işbirliğinde eklenemiyorum',
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',

@@ -24,6 +24,7 @@ const Find = {
   DOWNLOADED: '下载完成，可在导入中导入数据',
 
   ONLINE_COWORK: '在线协作',
+  COWORK_LOGIN: '请登录Online获取列表',
   APPLET_DOWNLOADED_REBOOT: '下载完成，重启可加载小程序',
 }
 

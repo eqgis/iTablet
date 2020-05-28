@@ -1,6 +1,6 @@
 import CoworkManagePage from './CoworkManagePage'
 import { connect } from 'react-redux'
-import { setCurrentMapModule } from '../../../../redux/models/appConfig'
+import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { deleteInvite } from '../../../../redux/models/cowork'
 
 const mapStateToProps = state => ({

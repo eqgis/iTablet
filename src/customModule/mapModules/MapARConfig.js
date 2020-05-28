@@ -14,9 +14,10 @@ import {
 import Orientation from 'react-native-orientation'
 
 export default class MapARConfig extends Module {
+  static key = ChunkType.MAP_AR
   constructor() {
     super({
-      key: ChunkType.MAP_AR,
+      key: MapARConfig.key,
       functionModules: [
         startModule,
         addModule,
@@ -24,18 +25,20 @@ export default class MapARConfig extends Module {
         styleModule,
         aiModule,
       ],
+      mapType: Module.MapType.MAP,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: ChunkType.MAP_AR,
+      key: MapARConfig.key,
       title: getLanguage(language).Map_Module.MAP_AR,
       moduleImage: getThemeAssets().nav.icon_map_vedio,
       moduleImageTouch: getThemeAssets().nav.icon_map_vedio_touch,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       openDefaultMap: false,
+      mapType: this.mapType,
       licenceType: 0x10,
       preAction: async () => {
         let isAvailable = await SAIDetectView.checkIfAvailable()

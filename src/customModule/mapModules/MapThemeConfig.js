@@ -13,9 +13,10 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapThemeConfig extends Module {
+  static key = ChunkType.MAP_THEME
   constructor() {
     super({
-      key: ChunkType.MAP_THEME,
+      key: MapThemeConfig.key,
       example: {
         name_en: 'PrecipitationOfUSA',
         name_cn: '湖北',
@@ -29,12 +30,13 @@ export default class MapThemeConfig extends Module {
         toolModule,
         shareModule,
       ],
+      mapType: Module.MapType.MAP,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: ChunkType.MAP_THEME,
+      key: MapThemeConfig.key,
       title: getLanguage(language).Map_Module.MAP_THEME,
       moduleImage: getThemeAssets().nav.icon_map_theme,
       moduleImageTouch: getThemeAssets().nav.icon_map_theme_touch,
@@ -43,6 +45,7 @@ export default class MapThemeConfig extends Module {
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 3,
       licenceType: 0x04,
+      mapType: this.mapType,
     })
   }
 }

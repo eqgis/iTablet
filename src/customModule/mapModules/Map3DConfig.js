@@ -11,9 +11,10 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class Map3DConfig extends Module {
+  static key = ChunkType.MAP_3D
   constructor() {
     super({
-      key: ChunkType.MAP_3D,
+      key: Map3DConfig.key,
       is3D: true,
       example: {
         name_ios: 'OlympicGreen_ios',
@@ -26,18 +27,21 @@ export default class Map3DConfig extends Module {
         tool3DModule,
         share3DModule,
       ],
+      mapType: Module.MapType.SCENE,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: ChunkType.MAP_3D,
+      key: Map3DConfig.key,
       title: getLanguage(language).Map_Module.MAP_3D,
       moduleImage: getThemeAssets().nav.icon_map_3d,
       moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
       defaultMapName: language === 'CN' ? '湖南' : 'LosAngeles',
-      is3D: this.is3D,
+      mapType: this.mapType,
       licenceType: 0x02,
     })
   }
 }
+
+

@@ -33,6 +33,7 @@ const mapStateToProps = state => ({
   downloads: state.down.toJS().downloads,
   toolbarStatus: state.toolbarStatus.toJS(),
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
   navBarDisplay: state.setting.toJS().navBarDisplay,
 })

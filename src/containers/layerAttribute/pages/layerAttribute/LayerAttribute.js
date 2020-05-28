@@ -61,6 +61,7 @@ export default class LayerAttribute extends React.Component {
     selection: Object,
     map: Object,
     appConfig: Object,
+    mapModules: Object,
     attributesHistory: Array,
     attributes: Object, // 此时用于3D属性
     // setAttributes: () => {},
@@ -1166,7 +1167,7 @@ export default class LayerAttribute extends React.Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={2}
         type={this.type}
       />
@@ -1403,8 +1404,8 @@ export default class LayerAttribute extends React.Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: this.props.appConfig.mapModules[
-            this.props.appConfig.currentMapModule
+          title: this.props.mapModules.modules[
+            this.props.mapModules.currentMapModule
           ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,

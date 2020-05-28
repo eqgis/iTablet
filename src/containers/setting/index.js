@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
   settingData: state.setting.toJS().settingData,
   device: state.device.toJS().device,
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatchToProps = {

@@ -3,6 +3,7 @@ import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import StartAction from './StartAction'
+import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 
 function getData(type, params) {
   ToolbarModule.setParams(params)
@@ -80,6 +81,19 @@ function getData(type, params) {
           image: require('../../../../../../assets/mapTools/icon_save_as_black.png'),
         },
       ]
+      if (global.coworkMode && CoworkInfo.coworkId !== '') {
+        data = [
+          {
+            key: constants.SAVE,
+            title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
+            // constants.SAVE,
+            size: 'large',
+            // TODO 保存地图
+            action: () => StartAction.saveMap('TempMap'),
+            image: require('../../../../../../assets/mapTools/icon_save_black.png'),
+          },
+        ]
+      }
       break
   }
   return { data, buttons }

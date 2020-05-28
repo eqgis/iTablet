@@ -24,6 +24,7 @@ const Find = {
   DOWNLOADED: 'Download successful. You can import this data at Import',
 
   ONLINE_COWORK: 'Online Cowork',
+  COWORK_LOGIN: 'Please login SuperMap Online',
   APPLET_DOWNLOADED_REBOOT: 'Download completed, restart the loadable applet',
 }
 

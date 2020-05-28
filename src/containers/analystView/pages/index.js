@@ -16,6 +16,7 @@ import RegistrationExecutePage from './registrationExecutePage'
 import ProjectionTransformationPage from './projectionTransformationPage'
 import SourceCoordsPage from './sourceCoordsPage'
 import ProjectionParameterSetPage from './projectionParameterSetPage'
+import ProjectionTargetCoordsPage from './projectionTargetCoordsPage'
 import RegistrationFastPage from './registrationFastPage'
 import RegistrationPage from './registrationPage'
 import ReferenceAnalystView from './referenceAnalystView'
@@ -41,6 +42,7 @@ export {
   ProjectionTransformationPage,
   SourceCoordsPage,
   ProjectionParameterSetPage,
+  ProjectionTargetCoordsPage,
   RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,

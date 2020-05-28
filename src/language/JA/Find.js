@@ -24,6 +24,7 @@ const Find = {
   DOWNLOADED: 'ダウンロード完了、インポート可能です',
 
   ONLINE_COWORK: 'オンライン　コラボレーション',
+  COWORK_LOGIN: 'SuperMap Onlineにログインしてください',
   APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動します',
 }
 

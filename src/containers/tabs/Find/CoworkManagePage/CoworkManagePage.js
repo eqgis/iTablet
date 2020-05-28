@@ -1,12 +1,13 @@
 import React from 'react'
 import Container from '../../../../components/Container'
-import { FlatList, TouchableOpacity, Text } from 'react-native'
+import { View, FlatList, TouchableOpacity, Text } from 'react-native'
 import CoworkInviteView from '../../Friend/Cowork/CoworkInviteView'
 import { scaleSize } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
+import { UserType } from '../../../../constants'
 
 export default class CoworkManagePage extends React.Component {
   props: {
@@ -23,7 +24,7 @@ export default class CoworkManagePage extends React.Component {
     super(props)
   }
 
-  createCowork = async (targetId, module, index) => {
+  createCowork = async (targetId, module, index, map) => {
     try {
       GLOBAL.Loading.setLoading(
         true,
@@ -38,18 +39,9 @@ export default class CoworkManagePage extends React.Component {
         global.SimpleDialog.setVisible(true)
         return
       }
-      let currentUserName = this.props.user.currentUser.userName
-      let latestMap
-      if (
-        this.props.latestMap[currentUserName] &&
-        this.props.latestMap[currentUserName][module.key] &&
-        this.props.latestMap[currentUserName][module.key].length > 0
-      ) {
-        latestMap = this.props.latestMap[currentUserName][module.key][0]
-      }
       global.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(index).then(() => {
-        module.action(this.props.user.currentUser, latestMap)
+        module.action(this.props.user.currentUser, map)
       })
       global.getFriend().curChat &&
         global.getFriend().curChat.setCoworkMode(true)
@@ -73,17 +65,34 @@ export default class CoworkManagePage extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          NavigationService.navigate('SelectFriend', {
-            showType: 'all',
-            callBack: targetId => {
-              NavigationService.navigate('SelectModule', {
-                callBack: (module, index) => {
-                  NavigationService.pop(2)
-                  this.createCowork(targetId, module, index)
-                },
-              })
-            },
-          })
+          if (UserType.isOnlineUser(this.props.user.currentUser)) {
+            NavigationService.navigate('SelectFriend', {
+              showType: 'all',
+              callBack: targetId => {
+                NavigationService.navigate('SelectModule', {
+                  callBack: (module, index) => {
+                    NavigationService.navigate('MyMap', {
+                      title: getLanguage(global.language).Friends.SELECT_MAP,
+                      getItemCallback: ({ item }) => {
+                        let mapName = item.name.substring(
+                          0,
+                          item.name.lastIndexOf('.'),
+                        )
+                        let map = {
+                          name: mapName,
+                          path: item.path,
+                        }
+                        NavigationService.pop(3)
+                        this.createCowork(targetId, module, index, map)
+                      },
+                    })
+                  },
+                })
+              },
+            })
+          } else {
+            NavigationService.navigate('Login')
+          }
         }}
       >
         <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
@@ -107,6 +116,26 @@ export default class CoworkManagePage extends React.Component {
     )
   }
 
+  renderContent = () => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      return (
+        <FlatList
+          data={this.props.invites[this.props.user.currentUser.userId]}
+          renderItem={this.renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )
+    } else {
+      return (
+        <View style={{ alignItems: 'center' }}>
+          <Text style={{ color: 'grey', marginTop: scaleSize(24) }}>
+            {getLanguage(global.language).Find.COWORK_LOGIN}
+          </Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
       <Container
@@ -119,11 +148,7 @@ export default class CoworkManagePage extends React.Component {
           headerRight: this.renderRight(),
         }}
       >
-        <FlatList
-          data={this.props.invites[this.props.user.currentUser.userId]}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {this.renderContent()}
       </Container>
     )
   }

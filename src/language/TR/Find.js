@@ -24,6 +24,7 @@ const Find = {
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
 
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
+  COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_REBOOT:
     'Endirme tamamlandı, yüklenebilir uygulamacığı yeniden başlat',
 }

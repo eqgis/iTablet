@@ -73,6 +73,7 @@ export default class RegistrationReferDatasetPage extends Component {
     }.bind(this)())
   }
 
+  // eslint-disable-next-line
   filtDatasource = datasource => {
     // if (
     //   datasource.engineType === 23 ||
@@ -88,6 +89,7 @@ export default class RegistrationReferDatasetPage extends Component {
     return true
   }
 
+  // eslint-disable-next-line
   filtDataset = dataset => {
     // if (
     //   dataset.datasetType === 1 ||

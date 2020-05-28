@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
 import { SMap } from 'imobile_for_reactnative'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
+import NavigationService from '../../../NavigationService'
 
 class SelectModule extends Component {
   props: {
@@ -21,7 +22,21 @@ class SelectModule extends Component {
     this.callBack = this.props.navigation.getParam('callBack')
   }
 
-  navigateToModule = async (module, index) => {
+  onPress = (module, index) => {
+    NavigationService.navigate('MyMap', {
+      title: getLanguage(global.language).Friends.SELECT_MAP,
+      getItemCallback: ({ item }) => {
+        let mapName = item.name.substring(0, item.name.lastIndexOf('.'))
+        let map = {
+          name: mapName,
+          path: item.path,
+        }
+        this.navigateToModule(module, index, map)
+      },
+    })
+  }
+
+  navigateToModule = async (module, index, map) => {
     let licenseStatus = await SMap.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     if (!global.isLicenseValid) {
@@ -32,21 +47,9 @@ class SelectModule extends Component {
       return
     }
     let tmpCurrentUser = global.getFriend().props.user.currentUser
-    let currentUserName = tmpCurrentUser.userName
-      ? tmpCurrentUser.userName
-      : 'Customer'
-
-    let latestMap
-    if (
-      this.props.latestMap[currentUserName] &&
-      this.props.latestMap[currentUserName][module.key] &&
-      this.props.latestMap[currentUserName][module.key].length > 0
-    ) {
-      latestMap = this.props.latestMap[currentUserName][module.key][0]
-    }
     global.getFriend().setCurMod(module)
     this.props.setCurrentMapModule(index).then(() => {
-      module.action(tmpCurrentUser, latestMap)
+      module.action(tmpCurrentUser, map)
     })
     global.getFriend().curChat.setCoworkMode(true)
     global.coworkMode = true
@@ -83,7 +86,7 @@ class SelectModule extends Component {
                     if (this.callBack) {
                       this.callBack(item, index)
                     } else {
-                      this.navigateToModule(item, index)
+                      this.onPress(item, index)
                     }
                   }}
                 />

@@ -245,6 +245,11 @@ const Analyst_Labels = {
   ROTATION_ANGLE_SECOND: '旋转角度(秒)',
   OFFSET: '偏移量',
   RATIO_DIFFERENCE: '比例差',
+  TARGET_COORDS: '目标坐标系',
+  COPY: '复制',
+  RESETING: '重设',
+  GEOCOORDSYS: '地理坐标系',
+  PRJCOORDSYS: '投影坐标系',
 }
 
 const Analyst_Params = {

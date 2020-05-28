@@ -1704,7 +1704,9 @@ export default class MapView extends React.Component {
 
   startCowork = () => {
     if (global.coworkMode && CoworkInfo.coworkId === '') {
+      //创建
       if (CoworkInfo.talkId != '') {
+        //从发现创建
         try {
           let friend = global.getFriend()
           let talkId = CoworkInfo.talkId
@@ -1714,7 +1716,8 @@ export default class MapView extends React.Component {
         } catch (error) {
           Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
         }
-      } else {
+      } else if (this.props.map.currentMap.name) {
+        //从好友创建
         global.SimpleDialog.set({
           text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
           confirmAction: () => {
@@ -1732,6 +1735,7 @@ export default class MapView extends React.Component {
         global.SimpleDialog.setVisible(true)
       }
     } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
+      //加入
       try {
         let friend = global.getFriend()
         friend.startSendLocation()
@@ -3374,7 +3378,6 @@ export default class MapView extends React.Component {
         {/*{!this.isExample && this.props.analyst.params && this.renderAnalystMapRecommend()}*/}
         {!this.isExample &&
           !this.props.analyst.params &&
-          !this.state.showAIDetect &&
           this.renderFunctionToolbar()}
         {!this.isExample &&
           !this.props.analyst.params &&

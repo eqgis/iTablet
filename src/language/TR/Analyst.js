@@ -247,6 +247,11 @@ const Analyst_Labels = {
   ROTATION_ANGLE_SECOND: 'Dönme açısı (saniye)',
   OFFSET: 'dengelemek',
   RATIO_DIFFERENCE: 'Oransal fark',
+  TARGET_COORDS: 'Hedef koordinat sistemi',
+  COPY: 'kopya',
+  RESETING: 'Sıfırla',
+  GEOCOORDSYS: 'Coğrafi koordinat sistemi',
+  PRJCOORDSYS: 'Öngörülen koordinat sistemi',
 }
 
 const Analyst_Params = {

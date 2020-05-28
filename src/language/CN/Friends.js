@@ -10,6 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: '发起群聊',
   RECOMMEND_FRIEND: '好友推荐',
   SELECT_MODULE: '选择模块',
+  SELECT_MAP: '选择地图',
   // Friend
   MSG_SERVICE_FAILED: '连接消息服务失败！',
   MSG_SERVICE_NOT_CONNECT: '未能连接消息服务！',
@@ -93,6 +94,7 @@ const Friends = {
   DELETE_COWORK_ALERT: '是否删除此协作？',
   NO_SUCH_MAP: '无此地图',
   SELF: '我',
+  ONLINECOWORK_DISABLE_ADD: '在线协作中，不能添加',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',

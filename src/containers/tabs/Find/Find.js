@@ -20,7 +20,6 @@ import { scaleSize, OnlineServicesUtils } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
-import { UserType } from '../../../constants'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
@@ -302,15 +301,14 @@ export default class Find extends Component {
               NavigationService.navigate('Applet', { type: 'APPLET' })
             },
           })}
-          {UserType.isOnlineUser(this.props.user.currentUser) &&
-            this._renderItem({
-              title: getLanguage(this.props.language).Find.ONLINE_COWORK,
-              leftImagePath: getThemeAssets().friend.friend_map,
-              isInformSpot: false,
-              onClick: () => {
-                NavigationService.navigate('CoworkManagePage')
-              },
-            })}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Find.ONLINE_COWORK,
+            leftImagePath: getThemeAssets().friend.friend_map,
+            isInformSpot: false,
+            onClick: () => {
+              NavigationService.navigate('CoworkManagePage')
+            },
+          })}
         </ScrollView>
       </View>
     )

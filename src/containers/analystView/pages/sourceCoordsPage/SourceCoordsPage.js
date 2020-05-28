@@ -81,7 +81,7 @@ export default class SourceCoordsPage extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(global.language).Analyst_Labels
-            .REGISTRATION_ARITHMETIC,
+            .PROJECTION_SOURCE_COORDS,
           navigation: this.props.navigation,
           backAction: this.back,
         }}

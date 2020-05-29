@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
-import { NetInfo } from 'react-native'
-import { Container } from '../../../../../components'
+import { View, NetInfo, Text, TouchableOpacity, Image } from 'react-native'
+import { Container, DropdownView } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { Toast } from '../../../../../utils'
+import { Toast, scaleSize } from '../../../../../utils'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
-import { setCloudLicenseUser } from '../../../../../redux/models/license'
+import {
+  setCloudLicenseUser,
+  setCloudLicenseSite,
+} from '../../../../../redux/models/license'
 
 class LoginCloud extends Component {
   props: {
     navigation: Object,
+    device: Object,
     cloudLicenseUser: Object,
+    cloudLicenseSite: String,
     setCloudLicenseUser: () => {},
+    setCloudLicenseSite: () => {},
   }
 
   constructor(props) {
@@ -31,6 +37,7 @@ class LoginCloud extends Component {
 
   reLogin = async () => {
     try {
+      await SMap.setCloudLicenseSite(this.props.cloudLicenseSite)
       let user = this.props.cloudLicenseUser
       if (user.isEmail !== undefined) {
         await SMap.logoutCloudLicense()
@@ -159,6 +166,94 @@ class LoginCloud extends Component {
     }
   }
 
+  renderItem = item => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          height: scaleSize(90),
+          alignItems: 'center',
+          marginRight: scaleSize(40),
+        }}
+        onPress={() => {
+          SMap.setCloudLicenseSite(item.key)
+          this.props.setCloudLicenseSite(item.key)
+        }}
+      >
+        <View
+          style={{
+            width: scaleSize(60),
+            marginHorizontal: scaleSize(15),
+          }}
+        >
+          {item.key === this.props.cloudLicenseSite && (
+            <Image
+              source={require('../../../../../assets/public/settings_selected.png')}
+              style={{ width: scaleSize(50), height: scaleSize(50) }}
+            />
+          )}
+        </View>
+        <Text style={{ fontSize: scaleSize(24), color: 'black' }}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderList = () => {
+    return (
+      <View
+        style={{
+          marginTop: scaleSize(20),
+          marginRight: scaleSize(20),
+          alignSelf: 'flex-end',
+          backgroundColor: '#FBFBFB',
+          justifyContent: 'center',
+          elevation: 10,
+          shadowOffset: { width: 0, height: 0 },
+          shadowColor: 'grey',
+          shadowOpacity: 0.5,
+          shadowRadius: 5,
+        }}
+      >
+        {this.renderItem({
+          key: 'DEFAULT',
+          title: getLanguage(global.language).Profile
+            .LICENSE_CLOUD_SITE_DEFAULT,
+        })}
+        {this.renderItem({
+          key: 'JP',
+          title: getLanguage(global.language).Profile.LICENSE_CLOUD_SITE_JP,
+        })}
+      </View>
+    )
+  }
+
+  renderPopMenu = () => {
+    return (
+      <DropdownView
+        ref={ref => (this.Menu = ref)}
+        backgrourdColor={'transparent'}
+      >
+        {this.renderList()}
+      </DropdownView>
+    )
+  }
+
+  renderRight = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.Menu.setVisible(true)
+        }}
+      >
+        <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
+          {getLanguage(global.language).Profile.LICENSE_CLOUD_SITE_SWITCH}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
   renderLogin = () => {
     return (
       <OnlineLoginView
@@ -176,9 +271,11 @@ class LoginCloud extends Component {
         headerProps={{
           title: getLanguage(global.language).Profile.LOGIN,
           navigation: this.props.navigation,
+          headerRight: !this.state.reLogin && this.renderRight(),
         }}
       >
         {!this.state.reLogin && this.renderLogin()}
+        {this.renderPopMenu()}
       </Container>
     )
   }
@@ -186,10 +283,13 @@ class LoginCloud extends Component {
 
 const mapStateToProps = state => ({
   cloudLicenseUser: state.license.toJS().cloudLicenseUser,
+  cloudLicenseSite: state.license.toJS().cloudLicenseSite,
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {
   setCloudLicenseUser,
+  setCloudLicenseSite,
 }
 
 export default connect(

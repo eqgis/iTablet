@@ -7,6 +7,7 @@ import { ModelUtils } from '../../utils'
 export const LICENSE_INFO_SET = 'LICENSE_INFO_SET'
 export const CLOUD_LICENSE_USER_SET = 'CLOUD_LICENSE_USER_SET'
 export const LICENSE_SERVER_SET = 'LICENSE_SERVER_SET'
+export const CLOUD_LICENSE_SITE_SET = 'CLOUD_LICENSE_SITE_SET'
 
 // Actions
 // ---------------------------------.3-----------------
@@ -44,10 +45,22 @@ export const setPrivateLicenseServer = (
   cb && cb()
 }
 
+export const setCloudLicenseSite = (
+  params = {},
+  cb = () => {},
+) => async dispatch => {
+  await dispatch({
+    type: CLOUD_LICENSE_SITE_SET,
+    payload: params,
+  })
+  cb && cb()
+}
+
 const initialState = fromJS({
   licenseInfo: {},
   cloudLicenseUser: {},
   privateLicenseServer: '',
+  cloudLicenseSite: 'DEFAULT',
 })
 
 export default handleActions(
@@ -60,6 +73,9 @@ export default handleActions(
     },
     [`${LICENSE_SERVER_SET}`]: (state, { payload }) => {
       return state.setIn(['privateLicenseServer'], fromJS(payload))
+    },
+    [`${CLOUD_LICENSE_SITE_SET}`]: (state, { payload }) => {
+      return state.setIn(['cloudLicenseSite'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       const _data = ModelUtils.checkModel(state, payload && payload.license)

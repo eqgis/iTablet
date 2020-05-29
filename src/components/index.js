@@ -59,6 +59,7 @@ import Picker from './Picker'
 import MenuDialog from './MenuDialog'
 import MultiPicker from './MultiPicker'
 import PopMenu from './PopMenu'
+import { DropdownView } from './DropdownView'
 export {
   Container,
   BtnOne,
@@ -130,4 +131,5 @@ export {
   MultiPicker,
   PanResponderView,
   PopMenu,
+  DropdownView,
 }

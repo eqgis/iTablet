@@ -9,9 +9,9 @@ import {
 } from 'react-native'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
-import DropdownView from './DropdownView'
 import styles from './styles'
 import { screen } from '../../../../utils'
+import { DropdownView } from '../../../../components'
 
 const orderBy = {
   lastModifiedTime: 'LASTMODIFIEDTIME',
@@ -36,7 +36,6 @@ export default class SearchMenu extends React.Component {
       orderBy: orderBy.lastModifiedTime,
       orderType: orderType.DESC,
       searchText: '',
-      visible: false,
     }
   }
 
@@ -82,9 +81,7 @@ export default class SearchMenu extends React.Component {
   }
 
   setVisible = visible => {
-    if (this.state.visible !== visible) {
-      this.setState({ visible: visible })
-    }
+    this.dropdownView.setVisible(visible)
   }
 
   reset = () => {
@@ -338,7 +335,7 @@ export default class SearchMenu extends React.Component {
   render() {
     return (
       <DropdownView
-        visible={this.state.visible}
+        ref={ref => (this.dropdownView = ref)}
         onBackgroudPress={() => {
           this.setVisible(false)
         }}

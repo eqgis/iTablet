@@ -15,6 +15,7 @@ export default class SearchBar extends PureComponent {
     onClear?: () => {}, // 清除文字
     onSubmitEditing?: () => {}, // 提交
 
+    style?: StyleSheet, // 自定义内容样式
     defaultValue: string, // 默认值
     editable: string, // 是否可编辑
     placeholder: string, // 占位符
@@ -89,7 +90,7 @@ export default class SearchBar extends PureComponent {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <Image
           style={styles.searchImg}
           resizeMode={'contain'}

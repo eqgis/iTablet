@@ -14,9 +14,10 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapNavigationConfig extends Module {
+  static key = ChunkType.MAP_NAVIGATION
   constructor() {
     super({
-      key: ChunkType.MAP_NAVIGATION,
+      key: MapNavigationConfig.key,
       example: {
         name: 'Navigation_示范数据',
       },
@@ -30,12 +31,13 @@ export default class MapNavigationConfig extends Module {
         toolModule,
         shareModule,
       ],
+      mapType: Module.MapType.MAP,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: ChunkType.MAP_NAVIGATION,
+      key: MapNavigationConfig.key,
       title: getLanguage(language).Map_Module.MAP_NAVIGATION,
       moduleImage: getThemeAssets().nav.icon_map_navigation,
       moduleImageTouch: getThemeAssets().nav.icon_map_navigation_touch,
@@ -43,6 +45,7 @@ export default class MapNavigationConfig extends Module {
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       licenceType: 0x20,
+      mapType: this.mapType,
     })
   }
 }

@@ -19,6 +19,7 @@ export default class Layer3DManager extends Component {
     refreshLayer3dList: () => {},
     setCurrentLayer3d: () => {},
     layer3dList: Array,
+    mapModules: Object,
     device: Object,
     appConfig: Object,
     currentLayer3d: Object,
@@ -174,7 +175,7 @@ export default class Layer3DManager extends Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={1}
         type={'MAP_3D'}
       />

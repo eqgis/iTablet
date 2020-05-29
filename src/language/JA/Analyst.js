@@ -246,6 +246,11 @@ const Analyst_Labels = {
   ROTATION_ANGLE_SECOND: '回転角度（秒）',
   OFFSET: 'オフセット',
   RATIO_DIFFERENCE: '比例差',
+  TARGET_COORDS: 'ターゲット座標系',
+  COPY: '写す',
+  RESETING: 'リセット',
+  GEOCOORDSYS: '地理座標系',
+  PRJCOORDSYS: '投影座標系',
 }
 
 const Analyst_Params = {

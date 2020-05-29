@@ -5,14 +5,20 @@ import * as AppModule from '../../src/customModule/mapModules'
 // import MapExample from './MapExample'
 
 /** export顺序为首页模块显示顺序 **/
-export default [
-  new AppModule.MapEditConfig(),
-  new AppModule.Map3DConfig(),
-  new AppModule.MapCollectionConfig(),
-  new AppModule.MapARConfig(),
-  new AppModule.MapNavigationConfig(),
-  new AppModule.MapThemeConfig(),
-  new AppModule.MapPlottingConfig(),
-  new AppModule.MapAnalystConfig(),
-  // new MapExample(),
+const mapModules = [
+  AppModule.MapEditConfig,
+  AppModule.Map3DConfig,
+  AppModule.MapCollectionConfig,
+  AppModule.MapARConfig,
+  AppModule.MapNavigationConfig,
+  AppModule.MapThemeConfig,
+  AppModule.MapPlottingConfig,
+  AppModule.MapAnalystConfig,
+  // MapExample,
 ]
+
+export default (function () {
+  return mapModules.map(item => item.key)
+})()
+
+export { mapModules }

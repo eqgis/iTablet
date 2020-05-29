@@ -61,6 +61,7 @@ export default class Map3D extends React.Component {
     user: Object,
     device: Object,
     appConfig: Object,
+    mapModules: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     setToolbarStatus: () => {},
@@ -638,7 +639,7 @@ export default class Map3D extends React.Component {
         showFullMap={this.showFullMap}
         device={this.props.device}
         online={this.props.online}
-        mapModules={this.props.appConfig.mapModules}
+        mapModules={this.props.mapModules}
       />
     )
   }
@@ -717,7 +718,7 @@ export default class Map3D extends React.Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={0}
         layerManager={this._layer_manager}
       />
@@ -745,7 +746,7 @@ export default class Map3D extends React.Component {
       <MapNavMenu
         ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
         device={this.props.device}

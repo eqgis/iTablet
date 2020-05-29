@@ -19,6 +19,7 @@ const mapStateToProps = state => ({
   map: state.map.toJS(),
   nav: state.nav.toJS(),
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
 })
 

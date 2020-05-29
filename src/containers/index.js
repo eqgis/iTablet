@@ -121,6 +121,7 @@ import {
   ProjectionTransformationPage,
   SourceCoordsPage,
   ProjectionParameterSetPage,
+  ProjectionTargetCoordsPage,
   RegistrationFastPage,
   RegistrationPage,
   ReferenceAnalystView,
@@ -1022,6 +1023,13 @@ export default function(appConfig) {
       },
       ProjectionParameterSetPage: {
         screen: ProjectionParameterSetPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ProjectionTargetCoordsPage: {
+        screen: ProjectionTargetCoordsPage,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

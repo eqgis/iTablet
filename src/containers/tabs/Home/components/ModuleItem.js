@@ -123,15 +123,15 @@ export default class ModuleItem extends Component {
           {/* <Image source={image} style={item.img} /> */}
           {/* <Image source={item.baseImage} style={item.style} /> */}
           <View style={styles.moduleItem}>
-            {this.props.oldMapModules.indexOf(item.key) < 0 && (
-              <View style={styles.redDot} />
-            )}
             <Image
               resizeMode={'contain'}
               source={image}
               style={styles.moduleImage}
             />
             <Text style={[styles.title, textColor]}>{item.title}</Text>
+            {this.props.oldMapModules.indexOf(item.key) < 0 && (
+              <View style={styles.redDot} />
+            )}
           </View>
           {this._renderProgressView()}
         </TouchableOpacity>

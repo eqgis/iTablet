@@ -4,7 +4,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, px } from '../../../../utils/screen'
 import { SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
-import { setCurrentMapModule } from '../../../../redux/models/appConfig'
+import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import moment from 'moment'
 import DataHandler from '../../Mine/DataHandler'
 import { Toast } from '../../../../utils'
@@ -15,7 +15,7 @@ class CoworkInviteView extends React.Component {
     data: Object,
     onPress: () => {},
     onLongPress: () => {},
-    appConfig: Object,
+    mapModules: Object,
     setCurrentMapModule: () => {},
     style: Object,
   }
@@ -64,7 +64,7 @@ class CoworkInviteView extends React.Component {
     let friend = global.getFriend()
     let result = await friend.joinCowork(item.coworkId, item.talkId)
     if (result) {
-      let modules = this.props.appConfig.mapModules
+      let modules = this.props.mapModules.modules
       let module
       let i = 0
       for (i = 0; i < modules.length; i++) {
@@ -97,7 +97,7 @@ class CoworkInviteView extends React.Component {
    */
   getModuleData = () => {
     let image, title
-    let modules = this.props.appConfig.mapModules
+    let modules = this.props.mapModules.modules
     for (let i = 0; i < modules.length; i++) {
       if (modules[i].key === this.props.data.module) {
         let data = modules[i].getChunk(global.language)
@@ -195,7 +195,7 @@ class CoworkInviteView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
   user: state.user.toJS(),
 })
 

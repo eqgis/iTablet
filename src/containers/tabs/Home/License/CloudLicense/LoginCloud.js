@@ -72,7 +72,10 @@ class LoginCloud extends Component {
     try {
       result = await SMap.queryCloudLicense()
     } catch (error) {
-      result = {}
+      result = {
+        licenses: [],
+        hasTrial: false,
+      }
     }
     this.container && this.container.setLoading(false)
     this.props.navigation.navigate('LicenseJoinCloud', {

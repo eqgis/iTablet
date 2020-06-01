@@ -10,6 +10,7 @@ import {
   setCloudLicenseUser,
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
+import { getThemeAssets } from '../../../../../assets'
 
 class LoginCloud extends Component {
   props: {
@@ -244,15 +245,18 @@ class LoginCloud extends Component {
   }
 
   renderRight = () => {
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') !== -1 ? 40 : 50
     return (
       <TouchableOpacity
         onPress={() => {
           this.Menu.setVisible(true)
         }}
       >
-        <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
-          {getLanguage(global.language).Profile.LICENSE_CLOUD_SITE_SWITCH}
-        </Text>
+        <Image
+          source={getThemeAssets().collection.icon_collection_change}
+          style={{ width: scaleSize(size), height: scaleSize(size) }}
+        />
       </TouchableOpacity>
     )
   }

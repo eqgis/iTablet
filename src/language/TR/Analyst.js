@@ -252,6 +252,56 @@ const Analyst_Labels = {
   RESETING: 'Sıfırla',
   GEOCOORDSYS: 'Coğrafi koordinat sistemi',
   PRJCOORDSYS: 'Öngörülen koordinat sistemi',
+  CONVERTTING: 'dönüştürme',
+  CONVERT_SUCCESS: 'Dönüşüm başarılı',
+  CONVERT_FAILED: 'Dönüştürülemedi',
+}
+
+const Convert_Unit = {
+  ///  毫米。
+  MILIMETER: 'mm',
+  /// 平方毫米。
+  SQUAREMILIMETER: 'mm2',
+  ///  厘米。
+  CENTIMETER: 'santimetre',
+  /// 平方厘米。
+  SQUARECENTIMETER: 'cm2',
+  /// 英寸。
+  INCH: 'inç',
+  /// 平方英寸。
+  SQUAREINCH: 'İnç kare',
+  /// 分米。
+  DECIMETER: 'Dm',
+  /// 平方分米。
+  SQUAREDECIMETER: 'Kare decimetres',
+  ///  英尺。
+  FOOT: 'ayak',
+  ///  平方英尺。
+  SQUAREFOOT: 'Fit Kare',
+  ///  码。
+  YARD: 'kod',
+  ///  平方码。
+  SQUAREYARD: 'Kare bahçe',
+  ///  米。
+  METER: 'Metre',
+  ///  平方米。
+  SQUAREMETER: 'Metrekare',
+  /// 千米。
+  KILOMETER: 'km',
+  /// 平方千米。
+  SQUAREKILOMETER: 'kilometre kare',
+  /// 平方英里。
+  MILE: 'Mil kare',
+  /// 英里。
+  SQUAREMILE: 'mil',
+  ///  秒。
+  SECOND: 'ikinci',
+  ///  分。
+  MINUTE: 'Dakika',
+  ///  度。
+  DEGREE: 'derece',
+  /// 弧度。
+  RADIAN: 'radyan',
 }
 
 const Analyst_Params = {
@@ -367,4 +417,5 @@ export {
   Analyst_Labels,
   Analyst_Params,
   Analyst_Prompt,
+  Convert_Unit,
 }

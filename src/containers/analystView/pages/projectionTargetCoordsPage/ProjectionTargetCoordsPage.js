@@ -26,9 +26,9 @@ export default class ProjectionTargetCoordsPage extends Component {
 
   constructor(props) {
     super(props)
-    // const { params } = this.props.navigation.state
+    const { params } = this.props.navigation.state
     // let _transMothodParameter = params.transMothodParameter
-    // this.cb = params && params.cb
+    this.cb = params && params.cb
 
     this.isLoadingData = false //是否正在加载数据
 
@@ -87,7 +87,6 @@ export default class ProjectionTargetCoordsPage extends Component {
       allPrjCoordSysTypes: allPrjCoordSysTypes,
     })
   }
-  getData = async () => {}
 
   confirm = () => {
     if (!this.state.coordSysSelectItem) {
@@ -143,8 +142,8 @@ export default class ProjectionTargetCoordsPage extends Component {
             }
             case popTypes.DataSet: {
               let _coordSysSelectItem = {
-                title: data.coordName,
-                value: data.priCoordSysType,
+                title: data.coordParams.coordName,
+                value: data.coordParams.priCoordSysType,
               }
               newStateData = {
                 dataSet: data,
@@ -208,7 +207,10 @@ export default class ProjectionTargetCoordsPage extends Component {
               })
             }}
           >
-            <Text style={styles.rightItem} numberOfLines={1}>
+            <Text
+              style={[styles.rightItem, { width: '100%' }]}
+              numberOfLines={1}
+            >
               {info.item.title}
             </Text>
           </TouchableOpacity>
@@ -383,12 +385,21 @@ export default class ProjectionTargetCoordsPage extends Component {
       let allPrjCoordSysTypes = []
 
       for (let i = 0; i < this._allGeoCoordSysTypes.length; i++) {
-        if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
+        // if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
+        if (
+          this._allGeoCoordSysTypes[i].title
+            .tolocaleUpperCase()
+            .indexOf(searchKey.tolocaleUpperCase()) != -1
+        ) {
           allGeoCoordSysTypes.push(this._allGeoCoordSysTypes[i])
         }
       }
       for (let i = 0; i < this._allPrjCoordSysTypes.length; i++) {
-        if (this._allPrjCoordSysTypes[i].title.indexOf(searchKey) != -1) {
+        if (
+          this._allPrjCoordSysTypes[i].title
+            .tolocaleUpperCase()
+            .indexOf(searchKey.tolocaleUpperCase()) != -1
+        ) {
           allPrjCoordSysTypes.push(this._allPrjCoordSysTypes[i])
         }
       }
@@ -522,6 +533,29 @@ export default class ProjectionTargetCoordsPage extends Component {
     )
   }
 
+  // getData(paramsData) {
+  //   let data = []
+  //   data.push({
+  //     title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_NAME,
+  //     value: paramsData.coordName,
+  //   })
+  //   data.push({
+  //     title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
+  //     value: paramsData.coordUnit,
+  //   })
+  //   data.push({
+  //     title: getLanguage(global.language).Analyst_Labels
+  //       .PROJECTION_GROUND_DATUM,
+  //     value: paramsData.geoDatumName,
+  //   })
+  //   data.push({
+  //     title: getLanguage(global.language).Analyst_Labels
+  //       .PROJECTION_REFERENCE_ELLIPSOID,
+  //     value: paramsData.geoSpheroid,
+  //   })
+  //   return data
+  // }
+
   getData(paramsData) {
     let data = []
     data.push({
@@ -530,7 +564,8 @@ export default class ProjectionTargetCoordsPage extends Component {
     })
     data.push({
       title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
-      value: paramsData.coordUnit,
+      // value: paramsData.coordUnit,
+      value: this.getUnitName(paramsData.coordUnit),
     })
     data.push({
       title: getLanguage(global.language).Analyst_Labels
@@ -544,6 +579,80 @@ export default class ProjectionTargetCoordsPage extends Component {
     })
     return data
   }
+
+  getUnitName(coordUnitType) {
+    let unitName = ''
+    switch (coordUnitType) {
+      case 10:
+        unitName = getLanguage(global.language).Convert_Unit.MILIMETER
+        break
+      case 11:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILIMETER
+        break
+      case 100:
+        unitName = getLanguage(global.language).Convert_Unit.CENTIMETER
+        break
+      case 101:
+        unitName = getLanguage(global.language).Convert_Unit.SQUARECENTIMETER
+        break
+      case 254:
+        unitName = getLanguage(global.language).Convert_Unit.INCH
+        break
+      case 255:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREINCH
+        break
+      case 1000:
+        unitName = getLanguage(global.language).Convert_Unit.DECIMETER
+        break
+      case 1001:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREDECIMETER
+        break
+      case 3048:
+        unitName = getLanguage(global.language).Convert_Unit.FOOT
+        break
+      case 3049:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREFOOT
+        break
+      case 9144:
+        unitName = getLanguage(global.language).Convert_Unit.YARD
+        break
+      case 9145:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREYARD
+        break
+      case 10000:
+        unitName = getLanguage(global.language).Convert_Unit.METER
+        break
+      case 10001:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMETER
+        break
+      case 10000000:
+        unitName = getLanguage(global.language).Convert_Unit.KILOMETER
+        break
+      case 10000001:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREKILOMETER
+        break
+      case 16090000:
+        unitName = getLanguage(global.language).Convert_Unit.MILE
+        break
+      case 16090001:
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILE
+        break
+      case 1000000000 + 485:
+        unitName = getLanguage(global.language).Convert_Unit.SECOND
+        break
+      case 1000000000 + 29089:
+        unitName = getLanguage(global.language).Convert_Unit.MINUTE
+        break
+      case 1000000000 + 1745329:
+        unitName = getLanguage(global.language).Convert_Unit.DEGREE
+        break
+      case 100000000 + 1000000000:
+        unitName = getLanguage(global.language).Convert_Unit.RADIAN
+        break
+    }
+    return unitName
+  }
+
   renderRows() {
     let tempData = this.getData(this.state.dataSet.coordParams)
     let rows = []

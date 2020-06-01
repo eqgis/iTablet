@@ -1,53 +1,46 @@
 import { ConstOnline } from '../../src/constants'
 import { Module } from '../../src/class'
+import { getLanguage } from '../../src/language'
+import { getPublicAssets } from '../../src/assets'
 import {
   startModule,
-  markModule,
-  toolModule,
-  shareModule,
+  addModule,
 } from '../../src/containers/workspace/components/ToolBar/modules'
-import { functionExample } from '../mapFunctionModules'
+import { Tour } from '../mapFunctionModules'
 
-export default class MapExample extends Module {
+export default class TourModule extends Module {
+  static key = 'Tour'
   constructor () {
     super({
-      key: 'MapExample',
-      // example: {
-      //   name_en: 'PrecipitationOfUSA', // 英文数据名称
-      //   name_cn: '湖北', // 中文数据名称
-      // },
+      key: TourModule.key,
       //工具条加载项
       functionModules: [
         startModule(),
-        // addModule(),
-        markModule(),
-        toolModule(),
-        shareModule(),
-        functionExample(),
+        addModule(),
+        Tour('TourCreate'),
+        // Tour('TourBrowse'),
       ],
       mapType: Module.MapType.MAP,
-      //  tabModules: [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]
     })
+    this.isNew = true
   }
 
   // 首页模块数据
   getChunk = language => {
     return this.createChunk(language, {
-      key: 'MapExample',
+      key: TourModule.key,
       // 根据语言获取地图模块名称
-      title:'Gis小程序',
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.TOUR,
       // 模块图片
-      moduleImage: require('../../src/assets/userDefine/userDefineTab.png'),
+      moduleImage: getPublicAssets().mapTools.tour,
       // 点击时模块高亮图片
-      moduleImageTouch: require('../../src/assets/userDefine/userDefineTab.png'),
+      moduleImageTouch: getPublicAssets().mapTools.tour,
       // 默认地图名称
       defaultMapName: GLOBAL.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据
       baseMapSource: {...ConstOnline.Google},
       // 地图默认底图当前显示的地图
       baseMapIndex: 3,
-      licenceType: 0x04,
-      // 地图类型，二维/三维
       mapType: this.mapType,
     })
   }

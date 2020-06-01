@@ -53,6 +53,7 @@ export default class MT_layerManager extends React.Component {
     user: Object,
     baseMaps: Object,
     appConfig: Object,
+    mapModules: Object,
   }
 
   constructor(props) {
@@ -906,7 +907,7 @@ export default class MT_layerManager extends React.Component {
         navigation={this.props.navigation}
         type={this.state.type}
         initIndex={1}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
       />
     )
   }
@@ -1013,8 +1014,8 @@ export default class MT_layerManager extends React.Component {
         headerProps={{
           title:
             this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            this.props.appConfig.mapModules[
-              this.props.appConfig.currentMapModule
+            this.props.mapModules.modules[
+              this.props.mapModules.currentMapModule
             ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,

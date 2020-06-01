@@ -132,6 +132,7 @@ export default class MapView extends React.Component {
     openOnlineMap: PropTypes.bool,
     navigationhistory: PropTypes.array,
     appConfig: PropTypes.object,
+    mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
 
     bufferSetting: PropTypes.object,
@@ -1933,7 +1934,7 @@ export default class MapView extends React.Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
       />
@@ -1961,7 +1962,7 @@ export default class MapView extends React.Component {
       <MapNavMenu
         ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
         device={this.props.device}
@@ -2084,7 +2085,7 @@ export default class MapView extends React.Component {
         online={this.props.online}
         setMap2Dto3D={this.props.setMap2Dto3D}
         openOnlineMap={this.props.openOnlineMap}
-        mapModules={this.props.appConfig.mapModules}
+        mapModules={this.props.mapModules}
       />
     )
   }
@@ -2531,7 +2532,7 @@ export default class MapView extends React.Component {
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 50 : 60
 
-    const currentMapModule = this.props.appConfig.mapModules.find(item => {
+    const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type
     })
     let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [

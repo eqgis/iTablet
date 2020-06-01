@@ -10,6 +10,7 @@ import {
 import { setDownInformation } from '../../../redux/models/down'
 import { importWorkspace } from '../../../redux/models/template'
 import { setUser, deleteUser } from '../../../redux/models/user'
+import { setMapModule } from '../../../redux/models/mapModules'
 import {
   setBackAction,
   removeBackAction,
@@ -23,6 +24,7 @@ const mapStateToProps = state => ({
   currentUser: state.user.toJS().currentUser,
   device: state.device.toJS().device,
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
   user: state.user.toJS(),
 })
 const mapDispatchToProps = {
@@ -37,6 +39,7 @@ const mapDispatchToProps = {
   setDownInformation,
   setBackAction,
   removeBackAction,
+  setMapModule,
 }
 export default connect(
   mapStateToProps,

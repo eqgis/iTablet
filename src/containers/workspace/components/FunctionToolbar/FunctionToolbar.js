@@ -36,7 +36,7 @@ const BOTTOM_LANDSCAPE = 0
 export default class FunctionToolbar extends React.Component {
   props: {
     navigation: Object,
-    mapModules: Array,
+    mapModules: Object,
     language: string,
     style?: any,
     hide?: boolean,
@@ -249,7 +249,7 @@ export default class FunctionToolbar extends React.Component {
   /** 获取一级数据 **/
   getData = type => {
     let isLicenseNotValid = false
-    const currentMapModule = this.props.mapModules.find(function(item) {
+    const currentMapModule = this.props.mapModules.modules.find(function(item) {
       return item.key === type
     })
     const functionModules = currentMapModule.functionModules

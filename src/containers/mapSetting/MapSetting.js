@@ -39,6 +39,7 @@ export default class MapSetting extends Component {
     device: Object,
     mapLegend: Object,
     appConfig: Object,
+    mapModules: Object,
     setMapLegend: () => {},
     mapColumnNavBar: boolean,
     setColumnNavBar: () => {},
@@ -412,7 +413,7 @@ export default class MapSetting extends Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={3}
         type={this.type}
       />
@@ -427,8 +428,8 @@ export default class MapSetting extends Component {
         headerProps={{
           title:
             this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            this.props.appConfig.mapModules[
-              this.props.appConfig.currentMapModule
+            this.props.mapModules.modules[
+              this.props.mapModules.currentMapModule
             ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,

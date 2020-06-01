@@ -20,6 +20,7 @@ const mapStateToProps = state => ({
   user: state.user.toJS(),
   baseMaps: state.map.toJS().baseMaps,
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatchToProps = {

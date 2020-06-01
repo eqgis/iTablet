@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
   device: state.device.toJS().device,
   mapLegend: state.setting.toJS().mapLegend,
   appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
 })
 

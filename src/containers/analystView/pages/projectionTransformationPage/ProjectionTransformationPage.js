@@ -14,11 +14,8 @@ const popTypes = {
   DataSource: 'DataSource',
   DataSet: 'DataSet',
   TransMothodData: 'TransMothodData',
-
-  BufferType: 'BufferType',
   ResultDataSource: 'ResultDataSource',
   ResultDataSet: 'ResultDataSet',
-  SemicircleArcNum: 'SemicircleArcNum',
 }
 
 export default class ProjectionTransformationPage extends Component {
@@ -34,6 +31,10 @@ export default class ProjectionTransformationPage extends Component {
       dataSet: null, //源数据集
       transMothodData: null, //转换方法
       transMothodParameter: null, //转换方法参数
+      isSaveAs: false, //是否另存
+      resultDataSource: null, //结果数据源
+      resultDataSet: null, //结果数据集
+      targetCoords: null, //目标坐标系
 
       // 弹出框数据
       popData: [],
@@ -60,6 +61,17 @@ export default class ProjectionTransformationPage extends Component {
   getDataSets = () => {
     let dss = []
     let dataSets = this.state.dataSource
+    dataSets.data.forEach(item => {
+      item.key = item.datasetName
+      item.value = item.key
+      dss.push(item)
+    })
+    return dss
+  }
+
+  getResultDataSets = () => {
+    let dss = []
+    let dataSets = this.state.resultDataSource
     dataSets.data.forEach(item => {
       item.key = item.datasetName
       item.value = item.key
@@ -127,7 +139,7 @@ export default class ProjectionTransformationPage extends Component {
           </Text>
         </View>
         <AnalystItem
-          style={{ marginRight: scaleSize(0) }}
+          // style={{ marginRight: scaleSize(0) }}
           title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
           value={(this.state.dataSource && this.state.dataSource.value) || ''}
           onPress={async () => {
@@ -145,7 +157,7 @@ export default class ProjectionTransformationPage extends Component {
           }}
         />
         <AnalystItem
-          style={{ marginRight: scaleSize(0) }}
+          // style={{ marginRight: scaleSize(0) }}
           title={getLanguage(global.language).Analyst_Labels.DATA_SET}
           value={(this.state.dataSet && this.state.dataSet.value) || ''}
           onPress={async () => {
@@ -179,7 +191,7 @@ export default class ProjectionTransformationPage extends Component {
           }}
         />
         <AnalystItem
-          style={{ marginRight: scaleSize(0), borderBottomWidth: 0 }}
+          style={{ borderBottomWidth: 0 }}
           title={
             getLanguage(global.language).Analyst_Labels.PROJECTION_SOURCE_COORDS
           }
@@ -212,7 +224,7 @@ export default class ProjectionTransformationPage extends Component {
           </Text>
         </View>
         <AnalystItem
-          style={{ marginRight: scaleSize(0) }}
+          // style={{ marginRight: scaleSize(0) }}
           title={
             getLanguage(global.language).Analyst_Labels
               .PROJECTION_CONVERT_MOTHED
@@ -237,7 +249,7 @@ export default class ProjectionTransformationPage extends Component {
           }}
         />
         <AnalystItem
-          style={{ marginRight: scaleSize(0), borderBottomWidth: 0 }}
+          style={{ borderBottomWidth: 0 }}
           title={
             getLanguage(global.language).Analyst_Labels
               .PROJECTION_PARAMETER_SETTING
@@ -274,6 +286,105 @@ export default class ProjectionTransformationPage extends Component {
     )
   }
 
+  //结果设置界面
+  renderResult() {
+    return (
+      <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
+        <View style={[styles.titleView, { backgroundColor: color.white }]}>
+          <Text style={styles.title}>
+            {getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS}
+          </Text>
+        </View>
+        <AnalystItem
+          // style={{ marginRight: scaleSize(0) }}
+          title={
+            getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS
+          }
+          value={this.state.isSaveAs}
+          onChange={value => {
+            this.setState({
+              isSaveAs: value,
+            })
+          }}
+        />
+        <AnalystItem
+          // style={{ marginRight: scaleSize(0) }}
+          title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
+          value={
+            (this.state.resultDataSource &&
+              this.state.resultDataSource.value) ||
+            ''
+          }
+          onPress={async () => {
+            this.currentPop = popTypes.ResultDataSource
+            let datasources = await this.getDataSources()
+            this.setState(
+              {
+                popData: datasources,
+                currentPopData: this.state.resultDataSource,
+              },
+              () => {
+                this.popModal && this.popModal.setVisible(true)
+              },
+            )
+          }}
+        />
+        <AnalystItem
+          title={getLanguage(global.language).Analyst_Labels.DATA_SET}
+          value={
+            (this.state.resultDataSet && this.state.resultDataSet.value) || ''
+          }
+          onPress={async () => {
+            if (!this.state.resultDataSource) {
+              Toast.show(
+                getLanguage(global.language).Analyst_Prompt
+                  .SELECT_DATA_SOURCE_FIRST,
+              )
+              return
+            }
+
+            this.currentPop = popTypes.ResultDataSet
+            let dataSets = this.getResultDataSets()
+
+            let newDataSets = []
+            dataSets.forEach(item => {
+              let _item = Object.assign({}, item)
+              _item.icon = getLayerIconByType(_item.datasetType)
+              _item.highLightIcon = getLayerWhiteIconByType(_item.datasetType)
+              newDataSets.push(_item)
+            })
+            this.setState(
+              {
+                popData: newDataSets,
+                currentPopData: this.state.transMothodData,
+              },
+              () => {
+                this.popModal && this.popModal.setVisible(true)
+              },
+            )
+          }}
+        />
+        <AnalystItem
+          style={{ borderBottomWidth: 0 }}
+          title={getLanguage(global.language).Analyst_Labels.TARGET_COORDS}
+          value={
+            (this.state.targetCoords && this.state.targetCoords.title) || ''
+          }
+          onPress={async () => {
+            NavigationService.navigate('ProjectionTargetCoordsPage', {
+              cb: targetCoords => {
+                NavigationService.goBack()
+                this.setState({
+                  targetCoords: targetCoords,
+                })
+              },
+            })
+          }}
+        />
+      </View>
+    )
+  }
+
   /** 选择数据源弹出框 **/
   renderPopList = () => {
     return (
@@ -300,15 +411,8 @@ export default class ProjectionTransformationPage extends Component {
               }
               break
             }
-
-            case popTypes.BufferType:
-              newStateData = { flatType: data }
-              break
-            case popTypes.SemicircleArcNum:
-              newStateData = { semicircleArcNum: data }
-              break
             case popTypes.ResultDataSource:
-              newStateData = { resultDataSource: data }
+              newStateData = { resultDataSource: data, dataSet: null }
               break
             case popTypes.ResultDataSet:
               newStateData = { resultDataSet: data }
@@ -344,6 +448,7 @@ export default class ProjectionTransformationPage extends Component {
         <ScrollView style={{ backgroundColor: color.background }}>
           {this.renderTop()}
           {this.renderTransMethodView()}
+          {this.renderResult()}
         </ScrollView>
         {this.renderPopList()}
       </Container>

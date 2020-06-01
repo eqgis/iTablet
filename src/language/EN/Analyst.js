@@ -245,6 +245,11 @@ const Analyst_Labels = {
   ROTATION_ANGLE_SECOND: 'Rotation Angle (second) 旋转角度(秒)',
   OFFSET: 'Offset',
   RATIO_DIFFERENCE: 'Ratio Difference',
+  TARGET_COORDS: 'Target Coords',
+  COPY: 'Copy',
+  RESETING: 'Reset',
+  GEOCOORDSYS: 'Geographic coordinate system',
+  PRJCOORDSYS: 'Projected coordinate system',
 }
 
 const Analyst_Params = {

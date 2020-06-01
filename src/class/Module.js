@@ -4,12 +4,18 @@
 import Chunk from './Chunk'
 import { MapTabs } from '../constants'
 export default class Module {
+  // static MapType = Chunk.MapType
+  static MapType = {
+    MAP: 'MAP',
+    SCENE: 'SCENE',
+  }
+  
   constructor(props) {
     this.props = props || {}
 
     this.key = this.props.key // 必填
 
-    this.is3D = this.props.is3D || false // 是否是三维地图
+    this.mapType = props.mapType || '' // 二维，三维地图，默认为空   '2D' ｜ '3D' ｜ ''
 
     this.chunk = this.props.chunk // 必填，首页模块，包含数据，图片，事件等的类
 
@@ -22,20 +28,23 @@ export default class Module {
     this.tabModules = this.props.tabModules || [] // 地图底部Tab栏
     // 若tabModules为空，默认根据二维三维地图生成tabModules
     if (this.tabModules.length === 0) {
-      if (this.is3D) {
-        this.tabModules = [
-          MapTabs.Scene,
-          MapTabs.Layer3DManager,
-          MapTabs.LayerAttribute3D,
-          MapTabs.Map3DSetting,
-        ]
-      } else {
-        this.tabModules = [
-          MapTabs.MapView,
-          MapTabs.LayerManager,
-          MapTabs.LayerAttribute,
-          MapTabs.MapSetting,
-        ]
+      switch (this.mapType) {
+        case Module.MapType.SCENE:
+          this.tabModules = [
+            MapTabs.Scene,
+            MapTabs.Layer3DManager,
+            MapTabs.LayerAttribute3D,
+            MapTabs.Map3DSetting,
+          ]
+          break
+        case Module.MapType.MAP:
+          this.tabModules = [
+            MapTabs.MapView,
+            MapTabs.LayerManager,
+            MapTabs.LayerAttribute,
+            MapTabs.MapSetting,
+          ]
+          break
       }
     }
   }

@@ -8,6 +8,10 @@ import { ConstPath } from '../constants'
 import { SMap } from 'imobile_for_reactnative'
 
 export default class Chunk {
+  static MapType = {
+    MAP: 'MAP',
+    SCENE: 'SCENE',
+  }
   constructor(props) {
     this.props = props
 
@@ -32,7 +36,7 @@ export default class Chunk {
 
     this.isExample = props.isExample || false // 是否是示例，只显示地图，没有其他功能
 
-    this.is3D = props.is3D || false // 是否是三维地图，默认否
+    this.mapType = props.mapType || '' // 二维，三维地图，默认为空   'MAP' ｜ 'SCENE' ｜ ''
 
     this.licenceType = props.licenceType || 255 // TODO 临时方法
   }
@@ -42,7 +46,7 @@ export default class Chunk {
       let result = await this.preAction()
       if (!result) return
     }
-    if (this.props.action && typeof this.props.action === 'function') {
+    if (this.mapType === '' && this.props.action && typeof this.props.action === 'function') {
       await this.props.action()
       return
     }
@@ -50,87 +54,93 @@ export default class Chunk {
     SMap.setCurrentModule(this.licenceType)
     const homePath = await FileTools.appendingHomeDirectory()
 
-    if (this.is3D) {
-      // 三维地图
-      let fileName = ''
-      if (Platform.OS === 'android') {
-        fileName = 'OlympicGreen_android'
-      } else {
-        fileName = 'OlympicGreen_ios'
-      }
-      const homePath = await FileTools.appendingHomeDirectory()
-      const cachePath = homePath + ConstPath.CachePath
-      const fileDirPath = cachePath + fileName
-      const arrFile = await FileTools.getFilterFiles(fileDirPath)
-      if (arrFile.length === 0) {
-        NavigationService.navigate('Map3D', {})
-      } else {
-        const name =
-          Platform.OS === 'android'
-            ? 'OlympicGreen_android'
-            : 'OlympicGreen_ios'
-        NavigationService.navigate('Map3D', { name })
-      }
-    } else {
-      // 二维地图
-      let data = this.baseMapSource
-      data.layerIndex = this.baseMapIndex
-      GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
-
-      let userPath = ConstPath.CustomerPath
-      if (user && user.userName) {
-        userPath = `${ConstPath.UserPath + user.userName}/`
-      }
-      const wsPath =
-        homePath +
-        userPath +
-        ConstPath.RelativeFilePath.Workspace[
-          global.language === 'CN' ? 'CN' : 'EN'
-        ]
-
-      let wsData
-      let isOpenLastMap = false
-
-      if (lastMap) {
-        isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
-      }
-
-      if (isOpenLastMap) {
-        data = {
-          type: 'Map',
-          ...lastMap,
+    switch (this.mapType) {
+      case Chunk.MapType.SCENE: {
+        // 三维地图
+        let fileName = ''
+        if (Platform.OS === 'android') {
+          fileName = 'OlympicGreen_android'
+        } else {
+          fileName = 'OlympicGreen_ios'
         }
-      } else if (this.openDefaultMap) {
-        const moduleMapFullName = `${this.defaultMapName}.xml`
-        // 地图用相对路径
-        const moduleMapPath =
-          userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
-        if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
+        const homePath = await FileTools.appendingHomeDirectory()
+        const cachePath = homePath + ConstPath.CachePath
+        const fileDirPath = cachePath + fileName
+        const arrFile = await FileTools.getFilterFiles(fileDirPath)
+        if (arrFile.length === 0) {
+          NavigationService.navigate('Map3D', {})
+        } else {
+          const name =
+            Platform.OS === 'android'
+              ? 'OlympicGreen_android'
+              : 'OlympicGreen_ios'
+          NavigationService.navigate('Map3D', { name })
+        }
+        break
+      }
+      case Chunk.MapType.MAP:
+        // 二维地图
+        let data = this.baseMapSource
+        data.layerIndex = this.baseMapIndex
+        GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
+
+        let userPath = ConstPath.CustomerPath
+        if (user && user.userName) {
+          userPath = `${ConstPath.UserPath + user.userName}/`
+        }
+        const wsPath =
+          homePath +
+          userPath +
+          ConstPath.RelativeFilePath.Workspace[
+            global.language === 'CN' ? 'CN' : 'EN'
+          ]
+
+        let wsData
+        let isOpenLastMap = false
+
+        if (lastMap) {
+          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
+        }
+
+        if (isOpenLastMap) {
           data = {
             type: 'Map',
-            path: moduleMapPath,
-            name: this.defaultMapName,
+            ...lastMap,
+          }
+        } else if (this.openDefaultMap) {
+          const moduleMapFullName = `${this.defaultMapName}.xml`
+          // 地图用相对路径
+          const moduleMapPath =
+            userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
+          if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
+            data = {
+              type: 'Map',
+              path: moduleMapPath,
+              name: this.defaultMapName,
+            }
           }
         }
-      }
 
-      wsData = [
-        {
-          DSParams: { server: wsPath },
-          type: 'Workspace',
-        },
-        data,
-      ]
-      let param = {
-        wsData,
-        mapTitle: this.title,
-        isExample: this.isExample,
-      }
-      if (global.coworkMode) {
-        NavigationService.navigate('CoworkMapStack', param)
-      } else {
-        NavigationService.navigate('MapView', param)
-      }
+        wsData = [
+          {
+            DSParams: { server: wsPath },
+            type: 'Workspace',
+          },
+          data,
+        ]
+        let param = {
+          wsData,
+          mapTitle: this.title,
+          isExample: this.isExample,
+        }
+        if (global.coworkMode) {
+          NavigationService.navigate('CoworkMapStack', param)
+        } else {
+          NavigationService.navigate('MapView', param)
+        }
+        break
+      default:
+        break
     }
   }
 }

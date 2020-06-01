@@ -256,6 +256,9 @@ const Profile = {
   LICENSE_TOTAL_NUM: 'トータル',
   LICENSE_REMIAN_NUM: '残り',
   LICENSE_DUE_DATE: '有効期間',
+  LICENSE_CLOUD_SITE_SWITCH: '切り替え',
+  LICENSE_CLOUD_SITE_DEFAULT: 'デフォルトサイト',
+  LICENSE_CLOUD_SITE_JP: '日本サイト',
   // itablet许可版本
   LICENSE_EDITION_STANDARD: 'スタンダド　エディション',
   LICENSE_EDITION_PROFESSIONAL: 'プロフェッショナル　エディション',

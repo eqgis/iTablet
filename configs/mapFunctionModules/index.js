@@ -1,10 +1,14 @@
 import functionExample from './FunctionExample'
+import Tour from './Tour'
 
-// eslint-disable-next-line
-function getModule (type, params = {}) {
+function getModule (type) {
   let module = {}
-  if (type === 'FunctionExample') {
-    module = functionExample()
+  switch (type) {
+    case 'FunctionExample':
+      module = functionExample()
+      break
+    case 'TourCreate': // 右侧FunctionToolbar入口
+      module = Tour()
   }
   return module
 }
@@ -15,4 +19,5 @@ export default {
 
 export {
   functionExample,
+  Tour,
 }

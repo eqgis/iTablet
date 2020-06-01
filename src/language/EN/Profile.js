@@ -249,10 +249,13 @@ const Profile = {
   LICENSE_TOTAL_NUM: 'Total Numbers',
   LICENSE_REMIAN_NUM: 'Remain Numbers',
   LICENSE_DUE_DATE: 'Expire at',
+  LICENSE_CLOUD_SITE_SWITCH: 'Switch',
+  LICENSE_CLOUD_SITE_DEFAULT: 'Default Site',
+  LICENSE_CLOUD_SITE_JP: 'Japan Site',
   // itablet许可版本
   LICENSE_EDITION_STANDARD: 'Standard Edition',
   LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
-  LICENSE_EDITION_ADVANCED: 'ADVANCED Edition',
+  LICENSE_EDITION_ADVANCED: 'Advanced Edition',
   // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: 'Core Runtime',

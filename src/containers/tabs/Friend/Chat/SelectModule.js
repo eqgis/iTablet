@@ -5,7 +5,7 @@ import TouchableItemView from '../TouchableItemView'
 import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
 import { SMap } from 'imobile_for_reactnative'
-import { setCurrentMapModule } from '../../../../redux/models/appConfig'
+import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import NavigationService from '../../../NavigationService'
 
 class SelectModule extends Component {
@@ -13,7 +13,7 @@ class SelectModule extends Component {
     language: String,
     latestMap: Object,
     navigation: Object,
-    appConfig: Object,
+    mapModules: Object,
     setCurrentMapModule: () => {},
   }
 
@@ -56,7 +56,7 @@ class SelectModule extends Component {
   }
 
   render() {
-    let data = this.props.appConfig.mapModules.map(item =>
+    let data = this.props.mapModules.modules.map(item =>
       item.getChunk(this.props.language),
     )
     return (
@@ -102,7 +102,7 @@ class SelectModule extends Component {
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   latestMap: state.map.toJS().latestMap,
-  appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
 })
 const mapDispatchToProps = {
   setCurrentMapModule,

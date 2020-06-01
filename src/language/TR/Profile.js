@@ -251,6 +251,9 @@ const Profile = {
   LICENSE_TOTAL_NUM: 'Toplam',
   LICENSE_REMIAN_NUM: 'kalmak',
   LICENSE_DUE_DATE: 'son tarih',
+  LICENSE_CLOUD_SITE_SWITCH: 'Değiştir',
+  LICENSE_CLOUD_SITE_DEFAULT: 'Varsayılan Site',
+  LICENSE_CLOUD_SITE_JP: 'Japon Site',
   // itablet许可版本
   LICENSE_EDITION_STANDARD: 'Standart Baskı',
   LICENSE_EDITION_PROFESSIONAL: 'Profesyonel Baskı',

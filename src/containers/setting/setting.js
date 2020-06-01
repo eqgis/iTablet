@@ -20,6 +20,7 @@ export default class setting extends Component {
     language: string,
     navigation: Object,
     data: Array,
+    mapModules: Object,
     setSettingData: () => {},
     settingData: any,
     device: Object,
@@ -181,7 +182,7 @@ export default class setting extends Component {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        appConfig={this.props.appConfig}
+        mapModules={this.props.mapModules}
         initIndex={3}
         type={this.type}
       />

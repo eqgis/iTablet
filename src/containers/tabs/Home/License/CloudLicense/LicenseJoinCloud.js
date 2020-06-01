@@ -44,9 +44,11 @@ class LicenseJoinCloud extends Component {
         : {},
       showDetail: false,
     }
+    this.licenseCount = this.state.licenses.length
+    this.hasTrial = licenseInfo.hasTrial
   }
 
-  _checkCloudLicense = () => {
+  _checkCloudLicense = cb => {
     let licenseInfo = this.props.licenseInfo
     if (
       licenseInfo &&
@@ -58,13 +60,13 @@ class LicenseJoinCloud extends Component {
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
           if (result !== false) {
-            this.activate(true)
+            cb()
           }
         },
       })
       GLOBAL.SimpleDialog.setVisible(true)
     } else {
-      this.activate(true)
+      cb()
     }
   }
 
@@ -104,7 +106,9 @@ class LicenseJoinCloud extends Component {
   activate = async (confirm = false) => {
     try {
       if (!confirm) {
-        this._checkCloudLicense()
+        this._checkCloudLicense(() => {
+          this.activate(true)
+        })
         return
       }
       this._checkPrivateCloudLicense()
@@ -132,6 +136,41 @@ class LicenseJoinCloud extends Component {
         }
         this.container && this.container.setLoading(false)
       }
+    } catch (e) {
+      this.container && this.container.setLoading(false)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+    }
+  }
+
+  activateTrail = async (confirm = false) => {
+    try {
+      if (!confirm) {
+        this._checkCloudLicense(() => {
+          this.activateTrail(true)
+        })
+        return
+      }
+      this._checkPrivateCloudLicense()
+
+      this.container &&
+        this.container.setLoading(
+          true,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
+        )
+      let result = await SMap.applyCloudTrialLicense()
+      if (!result) {
+        Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+      } else {
+        AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, '')
+        AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, '')
+        Toast.show(
+          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+        )
+        let info = await SMap.getEnvironmentStatus()
+        this.props.setLicenseInfo(info)
+        this.props.navigation.pop(2)
+      }
+      this.container && this.container.setLoading(false)
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
@@ -331,13 +370,28 @@ class LicenseJoinCloud extends Component {
   }
 
   renderActive = () => {
+    let title
+    let enable
+    if (this.licenseCount === 0 && this.hasTrial) {
+      title = getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY
+      enable = true
+    } else {
+      title = getLanguage(global.language).Profile.LICENSE_ACTIVATE
+      enable = this.state.currentLicense.id !== undefined
+    }
     return (
       <Button
-        title={getLanguage(global.language).Profile.LICENSE_ACTIVATE}
-        type={this.state.currentLicense.id ? 'BLUE' : 'GRAY'}
+        title={title}
+        type={enable ? 'BLUE' : 'GRAY'}
         style={styles.activeButton}
         titleStyle={{ fontSize: scaleSize(24) }}
-        onPress={() => this.activate(false)}
+        onPress={() => {
+          if (this.licenseCount === 0 && this.hasTrial) {
+            this.activateTrail(false)
+          } else {
+            this.activate(false)
+          }
+        }}
       />
     )
   }

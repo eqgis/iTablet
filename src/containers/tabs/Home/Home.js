@@ -29,6 +29,7 @@ import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
 import TabBar from '../TabBar'
+import { mapModules } from '../../../../configs/mapModules'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {
@@ -43,6 +44,7 @@ export default class Home extends Component {
     device: Object,
     user: Object,
     appConfig: Object,
+    mapModules: Object,
     importSceneWorkspace: () => {},
     importWorkspace: () => {},
     closeWorkspace: () => {},
@@ -52,6 +54,7 @@ export default class Home extends Component {
     setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
+    setMapModule: () => {},
   }
 
   constructor(props) {
@@ -65,10 +68,18 @@ export default class Home extends Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
+      this.props.setMapModule(mapModules)
       if (Platform.OS === 'android') {
         this.props.setBackAction({ action: () => this.showMorePop() })
       }
     })
+  }
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps) !== JSON.stringify(this.props)
+    )
   }
 
   componentWillUnmount() {
@@ -534,8 +545,8 @@ export default class Home extends Component {
             showDialog={this.showDialog}
             getModuleItem={this.getModuleItem}
             latestMap={this.props.latestMap}
-            // appConfig={this.props.appConfig}
-            // mapModules={this.state.mapModules}
+            oldMapModules={this.props.appConfig.oldMapModules}
+            mapModules={this.props.mapModules}
             // setCurrentMapModule={this.props.setCurrentMapModule}
             // setOldMapModule={this.props.setOldMapModule}
           />

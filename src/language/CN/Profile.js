@@ -250,6 +250,9 @@ const Profile = {
   LICENSE_TOTAL_NUM: '总套数',
   LICENSE_REMIAN_NUM: '可用套数',
   LICENSE_DUE_DATE: '到期时间',
+  LICENSE_CLOUD_SITE_SWITCH: '切换',
+  LICENSE_CLOUD_SITE_DEFAULT: '默认站点',
+  LICENSE_CLOUD_SITE_JP: '日本站点',
   // itablet许可版本
   LICENSE_EDITION_STANDARD: '标准版',
   LICENSE_EDITION_PROFESSIONAL: '专业版',

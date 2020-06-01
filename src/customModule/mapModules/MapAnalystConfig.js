@@ -13,9 +13,10 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapAnalystConfig extends Module {
+  static key = ChunkType.MAP_ANALYST
   constructor() {
     super({
-      key: ChunkType.MAP_ANALYST,
+      key: MapAnalystConfig.key,
       example: {
         name: '数据分析数据',
       },
@@ -29,18 +30,20 @@ export default class MapAnalystConfig extends Module {
         toolModule,
         shareModule,
       ],
+      mapType: Module.MapType.MAP,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: ChunkType.MAP_ANALYST,
+      key: MapAnalystConfig.key,
       title: getLanguage(language).Map_Module.MAP_ANALYST,
       moduleImage: getThemeAssets().nav.icon_map_analysis,
       moduleImageTouch: getThemeAssets().nav.icon_map_analysis_touch,
       defaultMapName: 'TracingAnalysis',
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
+      mapType: this.mapType,
       licenceType: 0x40,
     })
   }

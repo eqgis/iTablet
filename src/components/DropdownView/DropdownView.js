@@ -13,12 +13,16 @@ export default class DropdownView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: this.props.visible,
+      visible: false,
     }
   }
 
+  setVisible = visible => {
+    this.setState({ visible: visible })
+  }
+
   render() {
-    if (!this.props.visible) {
+    if (!this.state.visible) {
       return null
     }
     return (
@@ -26,7 +30,11 @@ export default class DropdownView extends React.Component {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            this.props.onBackgroudPress && this.props.onBackgroudPress()
+            if (this.props.onBackgroudPress) {
+              this.props.onBackgroudPress()
+            } else {
+              this.setVisible(false)
+            }
           }}
           style={[
             styles.bagroudTouchViewStyle,

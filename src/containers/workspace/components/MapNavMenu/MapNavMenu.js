@@ -29,7 +29,7 @@ export default class MapNavMenu extends React.Component {
     POP_List: PropTypes.func,
     layerManager: PropTypes.func,
     style: PropTypes.any,
-    appConfig: PropTypes.object,
+    mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
     navBarDisplay: PropTypes.bool,
   }
@@ -124,11 +124,11 @@ export default class MapNavMenu extends React.Component {
   getToolbar = type => {
     let list = []
     const tabModules =
-      (this.props.appConfig.mapModules &&
-        this.props.appConfig.mapModules[
-          this.props.appConfig.currentMapModule
+      (this.props.mapModules &&
+        this.props.mapModules.modules[
+          this.props.mapModules.currentMapModule
         ] &&
-        this.props.appConfig.mapModules[this.props.appConfig.currentMapModule]
+        this.props.mapModules.modules[this.props.mapModules.currentMapModule]
           .tabModules) ||
       []
 

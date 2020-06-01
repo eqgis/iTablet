@@ -7,7 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { View, Text, ScrollView } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SProcess } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 
 const popTypes = {
@@ -31,6 +31,7 @@ export default class ProjectionTransformationPage extends Component {
       dataSet: null, //源数据集
       transMothodData: null, //转换方法
       transMothodParameter: null, //转换方法参数
+      isMustSaveAs: false, //是否必须另存，影像和栅格数据集必须另存
       isSaveAs: false, //是否另存
       resultDataSource: null, //结果数据源
       resultDataSet: null, //结果数据集
@@ -42,7 +43,134 @@ export default class ProjectionTransformationPage extends Component {
     }
   }
 
-  confirm = () => {}
+  getDefaultParameter = () => {
+    let _transMothodParameter = {
+      offsetX: 0,
+      offsetY: 0,
+      offsetZ: 0,
+
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+
+      ratitionDifference: 0,
+    }
+    return _transMothodParameter
+  }
+
+  confirm = async () => {
+    //判断数据源
+    if (!this.state.dataSource) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
+      )
+      return
+    }
+    //判断数据集
+    if (!this.state.dataSet) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.DATA_SET,
+      )
+      return
+    }
+    //判断转换方法
+    if (!this.state.transMothodData) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.PROJECTION_CONVERT_MOTHED,
+      )
+      return
+    }
+    //是否另存
+    if (this.state.isSaveAs) {
+      //判断数据源
+      if (!this.state.resultDataSource) {
+        Toast.show(
+          getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_PLEASE_SELECT +
+            getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS +
+            getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
+        )
+        return
+      }
+      // //目标坐标系
+      // if(!this.state.targetCoords){
+      //   Toast.show(
+      //     getLanguage(global.language).Analyst_Labels
+      //       .REGISTRATION_PLEASE_SELECT +
+      //       getLanguage(global.language).Analyst_Labels
+      //         .TARGET_COORDS,
+      //   )
+      //   return
+      // }
+      //判断数据集
+      if (!this.state.resultDataSet) {
+        Toast.show(
+          getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_PLEASE_SELECT +
+            getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS +
+            getLanguage(global.language).Analyst_Labels.DATA_SET,
+        )
+        return
+      }
+      //目标坐标系
+      if (!this.state.targetCoords) {
+        Toast.show(
+          getLanguage(global.language).Analyst_Labels
+            .REGISTRATION_PLEASE_SELECT +
+            getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
+        )
+        return
+      }
+    }
+    //目标坐标系
+    if (!this.state.targetCoords) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
+      )
+      return
+    }
+
+    GLOBAL.Loading.setLoading(
+      true,
+      getLanguage(global.language).Analyst_Labels.CONVERTTING,
+    )
+    let dataInfo = {}
+    dataInfo.datasourceName = this.state.dataSource.alias
+    dataInfo.datasetName = this.state.dataSet.datasetName
+    dataInfo.transMothodId = this.state.transMothodData.id
+    dataInfo.transMothodParameter = this.state.transMothodParameter
+    dataInfo.saveAs = this.state.isSaveAs ? 1 : 0
+    if (dataInfo.saveAs === 1) {
+      dataInfo.outputDatasourceName = this.state.resultDataSource.alias
+      dataInfo.outputDatasetName = this.state.resultDataSet.datasetName
+    }
+    dataInfo.coordSysType = this.state.targetCoords.value
+    let result = await SProcess.convertDataset(dataInfo)
+    GLOBAL.Loading.setLoading(false)
+
+    if (result) {
+      NavigationService.goBack()
+      Toast.show(getLanguage(global.language).Analyst_Labels.CONVERT_SUCCESS)
+    } else {
+      Toast.show(getLanguage(global.language).Analyst_Labels.CONVERT_FAILED)
+    }
+  }
+
+  //是否是影像或者栅格数据集
+  isImageOrGridDataset = dataset => {
+    if (
+      dataset.datasetType === 81 || //影像数据集
+      dataset.datasetType === 83 || //栅格数据集
+      dataset.datasetType === 88 //多波段影像
+    ) {
+      return true
+    }
+    return false
+  }
 
   getDataSources = async () => {
     // let datasources = await SMap.getDatasetsByWorkspaceDatasource()
@@ -200,7 +328,13 @@ export default class ProjectionTransformationPage extends Component {
             ''
           }
           onPress={async () => {
-            // coordParams
+            if (!this.state.dataSet) {
+              Toast.show(
+                getLanguage(global.language).Analyst_Prompt
+                  .SELECT_DATA_SET_FIRST,
+              )
+              return
+            }
             let _coordParams = this.state.dataSet.coordParams
             NavigationService.navigate('SourceCoordsPage', {
               paramsData: _coordParams,
@@ -266,11 +400,11 @@ export default class ProjectionTransformationPage extends Component {
               )
               return
             }
-            let transMothodParameter = {}
-            transMothodParameter.paraNumber = this.state.transMothodData.paraNumber
+            let transMothodParameter = this.getDefaultParameter()
             transMothodParameter = this.state.transMothodParameter
               ? this.state.transMothodParameter
               : transMothodParameter
+            transMothodParameter.paraNumber = this.state.transMothodData.paraNumber
             NavigationService.navigate('ProjectionParameterSetPage', {
               transMothodParameter,
               cb: parameter => {
@@ -296,11 +430,29 @@ export default class ProjectionTransformationPage extends Component {
           </Text>
         </View>
         <AnalystItem
+          // style={{ borderBottomWidth: 0 }}
+          title={getLanguage(global.language).Analyst_Labels.TARGET_COORDS}
+          value={
+            (this.state.targetCoords && this.state.targetCoords.title) || ''
+          }
+          onPress={async () => {
+            NavigationService.navigate('ProjectionTargetCoordsPage', {
+              cb: targetCoords => {
+                NavigationService.goBack()
+                this.setState({
+                  targetCoords: targetCoords,
+                })
+              },
+            })
+          }}
+        />
+        <AnalystItem
           // style={{ marginRight: scaleSize(0) }}
           title={
             getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS
           }
-          value={this.state.isSaveAs}
+          disable={this.state.isMustSaveAs}
+          value={this.state.isMustSaveAs || this.state.isSaveAs}
           onChange={value => {
             this.setState({
               isSaveAs: value,
@@ -330,52 +482,27 @@ export default class ProjectionTransformationPage extends Component {
           }}
         />
         <AnalystItem
+          style={{ borderBottomWidth: 0 }}
           title={getLanguage(global.language).Analyst_Labels.DATA_SET}
           value={
-            (this.state.resultDataSet && this.state.resultDataSet.value) || ''
+            // (this.state.resultDataSet && this.state.resultDataSet.value) || ''
+            (this.state.resultDataSet &&
+              this.state.resultDataSet.datasetName) ||
+            ''
           }
           onPress={async () => {
-            if (!this.state.resultDataSource) {
-              Toast.show(
-                getLanguage(global.language).Analyst_Prompt
-                  .SELECT_DATA_SOURCE_FIRST,
-              )
-              return
-            }
-
-            this.currentPop = popTypes.ResultDataSet
-            let dataSets = this.getResultDataSets()
-
-            let newDataSets = []
-            dataSets.forEach(item => {
-              let _item = Object.assign({}, item)
-              _item.icon = getLayerIconByType(_item.datasetType)
-              _item.highLightIcon = getLayerWhiteIconByType(_item.datasetType)
-              newDataSets.push(_item)
-            })
-            this.setState(
-              {
-                popData: newDataSets,
-                currentPopData: this.state.transMothodData,
-              },
-              () => {
-                this.popModal && this.popModal.setVisible(true)
-              },
-            )
-          }}
-        />
-        <AnalystItem
-          style={{ borderBottomWidth: 0 }}
-          title={getLanguage(global.language).Analyst_Labels.TARGET_COORDS}
-          value={
-            (this.state.targetCoords && this.state.targetCoords.title) || ''
-          }
-          onPress={async () => {
-            NavigationService.navigate('ProjectionTargetCoordsPage', {
-              cb: targetCoords => {
+            NavigationService.navigate('InputPage', {
+              headerTitle: getLanguage(global.language).Analyst_Labels.DATA_SET,
+              value:
+                (this.state.resultDataSet &&
+                  this.state.resultDataSet.datasetName) ||
+                '',
+              placeholder: getLanguage(global.language).Analyst_Labels.DATA_SET,
+              type: 'name',
+              cb: async value => {
                 NavigationService.goBack()
                 this.setState({
-                  targetCoords: targetCoords,
+                  resultDataSet: { datasetName: value },
                 })
               },
             })
@@ -401,7 +528,16 @@ export default class ProjectionTransformationPage extends Component {
               break
             }
             case popTypes.DataSet: {
-              newStateData = { dataSet: data }
+              let _isMustSaveAs = false
+              if (this.isImageOrGridDataset(data)) {
+                _isMustSaveAs = true
+              }
+
+              newStateData = {
+                dataSet: data,
+                isMustSaveAs: _isMustSaveAs,
+                resultDataSet: { datasetName: data.datasetName + '_1' },
+              }
               break
             }
             case popTypes.TransMothodData: {
@@ -412,7 +548,7 @@ export default class ProjectionTransformationPage extends Component {
               break
             }
             case popTypes.ResultDataSource:
-              newStateData = { resultDataSource: data, dataSet: null }
+              newStateData = { resultDataSource: data }
               break
             case popTypes.ResultDataSet:
               newStateData = { resultDataSet: data }

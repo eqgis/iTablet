@@ -76,6 +76,15 @@ export default class ProjectionParameterSetPage extends Component {
         this.ratitionDifferenceItem &&
           this.ratitionDifferenceItem.getInputText() + '',
       )
+      isNaN(_data.offsetX) ? (_data.offsetX = 0) : null
+      isNaN(_data.offsetY) ? (_data.offsetY = 0) : null
+      isNaN(_data.offsetZ) ? (_data.offsetZ = 0) : null
+
+      isNaN(_data.rotationX) ? (_data.rotationX = 0) : null
+      isNaN(_data.rotationY) ? (_data.rotationY = 0) : null
+      isNaN(_data.rotationZ) ? (_data.rotationZ = 0) : null
+
+      isNaN(_data.ratitionDifference) ? (_data.ratitionDifference = 0) : null
 
       this.cb(_data)
     }
@@ -203,7 +212,7 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.offsetXItem = ref)}
           rightType={'input'}
           title={'X'}
-          value={this.state.offsetX || ''}
+          value={this.state.offsetX + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -224,7 +233,7 @@ export default class ProjectionParameterSetPage extends Component {
           // style={{ borderBottomWidth: 0 }}
           rightType={'input'}
           title={'Y'}
-          value={this.state.offsetY || ''}
+          value={this.state.offsetY + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -245,7 +254,7 @@ export default class ProjectionParameterSetPage extends Component {
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
           title={'Z'}
-          value={this.state.offsetZ || ''}
+          value={this.state.offsetZ + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {

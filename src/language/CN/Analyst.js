@@ -250,6 +250,56 @@ const Analyst_Labels = {
   RESETING: '重设',
   GEOCOORDSYS: '地理坐标系',
   PRJCOORDSYS: '投影坐标系',
+  CONVERTTING: '转换中',
+  CONVERT_SUCCESS: '转换成功',
+  CONVERT_FAILED: '转换失败',
+}
+
+const Convert_Unit = {
+  ///  毫米。
+  MILIMETER: '毫米',
+  /// 平方毫米。
+  SQUAREMILIMETER: '平方毫米',
+  ///  厘米。
+  CENTIMETER: '厘米',
+  /// 平方厘米。
+  SQUARECENTIMETER: '平方厘米',
+  /// 英寸。
+  INCH: '英寸',
+  /// 平方英寸。
+  SQUAREINCH: '平方英寸',
+  /// 分米。
+  DECIMETER: '分米',
+  /// 平方分米。
+  SQUAREDECIMETER: '平方分米',
+  ///  英尺。
+  FOOT: '英尺',
+  ///  平方英尺。
+  SQUAREFOOT: '平方英尺',
+  ///  码。
+  YARD: '码',
+  ///  平方码。
+  SQUAREYARD: '平方码',
+  ///  米。
+  METER: '米',
+  ///  平方米。
+  SQUAREMETER: '平方米',
+  /// 千米。
+  KILOMETER: '千米',
+  /// 平方千米。
+  SQUAREKILOMETER: '平方千米',
+  /// 平方英里。
+  MILE: '平方英里',
+  /// 英里。
+  SQUAREMILE: '英里',
+  ///  秒。
+  SECOND: '秒',
+  ///  分。
+  MINUTE: '分',
+  ///  度。
+  DEGREE: '度',
+  /// 弧度。
+  RADIAN: '弧度',
 }
 
 const Analyst_Params = {
@@ -366,4 +416,5 @@ export {
   Analyst_Labels,
   Analyst_Params,
   Analyst_Prompt,
+  Convert_Unit,
 }

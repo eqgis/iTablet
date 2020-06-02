@@ -158,6 +158,7 @@ const Profile = {
   SET_DATASOURCE_NAME: '设置数据源名称',
   ENTER_DATASOURCE_NAME: '请输入数据源名称',
   OPEN_DATASROUCE_FAILED: '打开数据源失败',
+  DATASOURCE_TYPE: '数据类型',
 
   SELECT_DATASET_EXPORT_TYPE: '请选择导出类型',
   DATASET_EXPORT_NOT_SUPPORTED: '暂不支持此数据集的导出',

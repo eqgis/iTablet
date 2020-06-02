@@ -14,8 +14,8 @@ const Analyst_Modules = {
   FIND_TSP_PATH: 'Find TSP Path',
   TRACING_ANALYSIS: 'Tracing Analysis',
 
-  REGISTRATION_CREATE: 'Registration Create',
-  REGISTRATION_SPEEDINESS: 'Registration Speediness',
+  REGISTRATION_CREATE: 'New Registration',
+  REGISTRATION_SPEEDINESS: 'Rapid Registration',
   PROJECTION_TRANSFORMATION: 'Projection Transformation',
 }
 

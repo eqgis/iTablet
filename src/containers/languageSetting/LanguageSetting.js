@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from 'react-native'
 import Container from '../../components/Container'
 import { scaleSize } from '../../utils'
 import NavigationService from '../NavigationService'
@@ -13,6 +20,8 @@ const option = {
   EN: 'EN',
   TR: 'TR',
   JA: 'JA',
+  FR: 'FR',
+  AR: 'AR',
 }
 
 class LanguageSetting extends React.Component {
@@ -41,38 +50,22 @@ class LanguageSetting extends React.Component {
     NavigationService.goBack()
   }
 
-  renderItem = key => {
-    let title = key
-    switch (key) {
-      case option.auto:
-        title = getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO
-        break
-      case option.CN:
-        title = '中文'
-        break
-      case option.EN:
-        title = 'English'
-        break
-      case option.TR:
-        title = 'Türkçe'
-        break
-      case option.JA:
-        title = '日本語'
-        break
-    }
+  renderItem = ({ item }) => {
     return (
       <View>
         <TouchableOpacity
           style={styles.itemView}
           activeOpacity={0.9}
           onPress={() => {
-            this.setState({ currentOption: key })
+            this.setState({ currentOption: item.key })
           }}
         >
-          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.text}>{item.title}</Text>
           <Image
             style={styles.image}
-            source={this.state.currentOption === key ? radio_on : radio_off}
+            source={
+              this.state.currentOption === item.key ? radio_on : radio_off
+            }
           />
         </TouchableOpacity>
         {this.renderSeperator()}
@@ -81,13 +74,39 @@ class LanguageSetting extends React.Component {
   }
 
   renderList = () => {
+    let data = [
+      {
+        key: option.auto,
+        title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
+      },
+      {
+        key: option.CN,
+        title: '中文',
+      },
+      {
+        key: option.EN,
+        title: 'English',
+      },
+      {
+        key: option.FR,
+        title: 'Français',
+      },
+      {
+        key: option.TR,
+        title: 'Türkçe',
+      },
+      {
+        key: option.AR,
+        title: 'العربية',
+      },
+      {
+        key: option.JA,
+        title: '日本語',
+      },
+    ]
     return (
       <View style={{ flexDirection: 'column' }}>
-        {this.renderItem(option.auto)}
-        {this.renderItem(option.CN)}
-        {this.renderItem(option.EN)}
-        {this.renderItem(option.TR)}
-        {this.renderItem(option.JA)}
+        <FlatList data={data} renderItem={this.renderItem} />
       </View>
     )
   }

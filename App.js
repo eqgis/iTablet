@@ -16,7 +16,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import { setUser } from './src/redux/models/user'
+import { setUser, setUsers } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting ,setMap2Dto3D} from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -50,7 +50,7 @@ import { ConstPath, ConstInfo, ConstToolType, ThemeType} from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation} from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils} from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import UserType from './src/constants/UserType'
 import { getLanguage } from './src/language/index'
@@ -140,6 +140,7 @@ class AppRoot extends Component {
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
+    setUsers: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
@@ -185,6 +186,19 @@ class AppRoot extends Component {
     }
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
+    // 获取用户登录记录
+    ConfigUtils.getUsers().then(async users => {
+      if (users.length === 0) {
+        // 若没有任何用户登录，则默认Customer登录
+        this.props.setUser({
+          userName: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+      } else {
+        await this.props.setUsers(users)
+      }
+      this.login()
+    })
   }
 
   UNSAFE_componentWillMount(){
@@ -273,7 +287,6 @@ class AppRoot extends Component {
 
   componentDidMount () {
     this.inspectEnvironment()
-    this.login()
     this.reCircleLogin()
     if(this.props.peripheralDevice !== 'local') {
       SLocation.changeDevice(this.props.peripheralDevice)
@@ -1146,6 +1159,7 @@ const mapStateToProps = state => {
 const AppRootWithRedux = connect(mapStateToProps, {
   setNav,
   setUser,
+  setUsers,
   openWorkspace,
   setShow,
   closeMap,

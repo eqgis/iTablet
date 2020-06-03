@@ -1,7 +1,5 @@
 import { fromJS } from 'immutable'
-import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { ModelUtils } from '../../utils'
 import { ConfigUtils } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------

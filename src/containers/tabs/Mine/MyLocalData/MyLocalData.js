@@ -15,13 +15,13 @@ import { color } from '../../../../styles'
 import { UserType, ConstPath } from '../../../../constants'
 import { getLanguage } from '../../../../language/index'
 import LocalDataItem from './LocalDataItem'
-import { getOnlineData, downFileAction } from './Method'
+import { getOnlineData } from './Method'
 import LocalDtaHeader from './LocalDataHeader'
 import OnlineDataItem from './OnlineDataItem'
-
 import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
+import { downloadFile } from 'react-native-fs'
 let JSIPortalService
 
 export default class MyLocalData extends Component {
@@ -317,17 +317,15 @@ export default class MyLocalData extends Component {
     }
   }
 
-  _onImportPlotLib = async () => {
+  _onImportExternalData = async item => {
     try {
       this.onImportStart()
-      let filePath = this.itemInfo.item.filePath
-      let result = await this.props.importPlotLib({ path: filePath })
-      if (result.msg !== undefined) {
-        Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-      } else {
-        Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
-      }
-      this.setLoading(false)
+      let result = await this._importExternalData(item)
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS
+          : getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT,
+      )
     } catch (e) {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
     } finally {
@@ -335,39 +333,36 @@ export default class MyLocalData extends Component {
     }
   }
 
-  _onImportExternalData = async type => {
-    try {
-      this.onImportStart()
-      let user = this.props.user.currentUser
-      let item = this.itemInfo.item
-      switch (type) {
-        case 'workspace':
-          await DataHandler.importWorkspace(item)
-          break
-        case 'workspace3d':
-          await DataHandler.importWorkspace3D(user, item)
-          break
-        case 'datasource':
-          await DataHandler.importDatasource(user, item)
-          break
-        case 'sci':
-          await DataHandler.importSCI(user, item)
-          break
-        case 'color':
-          await DataHandler.importColor(user, item)
-          break
-        case 'symbol':
-          await DataHandler.importSymbol(user, item)
-          break
-        default:
-          break
-      }
-      Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
-    } catch (e) {
-      Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-    } finally {
-      this.onImportEnd()
+  _importExternalData = async item => {
+    let user = this.props.user.currentUser
+    let type = item.fileType
+    let result = false
+    switch (type) {
+      case 'plotting':
+        result = await DataHandler.importPlotLib(item)
+        break
+      case 'workspace':
+        result = await DataHandler.importWorkspace(item)
+        break
+      case 'workspace3d':
+        result = await DataHandler.importWorkspace3D(user, item)
+        break
+      case 'datasource':
+        result = await DataHandler.importDatasource(user, item)
+        break
+      case 'sci':
+        result = await DataHandler.importSCI(user, item)
+        break
+      case 'color':
+        result = await DataHandler.importColor(user, item)
+        break
+      case 'symbol':
+        result = await DataHandler.importSymbol(user, item)
+        break
+      default:
+        break
     }
+    return result
   }
 
   _onImportDataset = async type => {
@@ -467,20 +462,11 @@ export default class MyLocalData extends Component {
       return
     }
     if (this.itemInfo && this.itemInfo.id) {
-      downFileAction(
-        this.props.down,
-        this.itemInfo,
-        this.props.user.currentUser,
-        this.cookie,
-        this.props.updateDownList,
-        this.props.importWorkspace,
-        this.props.importSceneWorkspace,
-      )
+      this._onImportOnlineData()
     } else {
       let fileType = this.itemInfo.item.fileType
-      if (fileType === 'plotting') {
-        this._onImportPlotLib()
-      } else if (
+      if (
+        fileType === 'plotting' ||
         fileType === 'workspace' ||
         fileType === 'workspace3d' ||
         fileType === 'datasource' ||
@@ -488,7 +474,7 @@ export default class MyLocalData extends Component {
         fileType === 'color' ||
         fileType === 'symbol'
       ) {
-        this._onImportExternalData(fileType)
+        this._onImportExternalData(this.itemInfo.item)
       } else if (
         fileType === 'tif' ||
         fileType === 'shp' ||
@@ -504,6 +490,123 @@ export default class MyLocalData extends Component {
       } else {
         Toast.show('暂不支持此数据的导入')
       }
+    }
+  }
+
+  _onImportOnlineData = async () => {
+    try {
+      let currentUser = this.props.user.currentUser
+      let down = this.props.down
+      let itemInfo = this.itemInfo
+      if (down.length > 0) {
+        for (let index = 0; index < down.length; index++) {
+          const element = down[index]
+          if (
+            element.id &&
+            itemInfo.id === element.id &&
+            element.progress > 0
+          ) {
+            Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+            return
+          }
+        }
+      }
+      let temPath = await FileTools.appendingHomeDirectory(
+        `${ConstPath.UserPath + currentUser.userName}/${
+          ConstPath.RelativePath.Temp
+        }`,
+      )
+      let filePath = temPath + itemInfo.fileName
+      let url
+      if (UserType.isOnlineUser(currentUser)) {
+        url = 'https://www.supermapol.com/web'
+      } else if (UserType.isIPortalUser(currentUser)) {
+        url = currentUser.serverUrl
+        if (url.indexOf('http') !== 0) {
+          url = 'http://' + url
+        }
+      }
+      let dataUrl = `${url}/datas/${itemInfo.id}/download`
+      let headers = {}
+      if (this.cookie) {
+        headers = {
+          Cookie: this.cookie,
+          'Cache-Control': 'no-cache',
+        }
+      }
+      const downloadOptions = {
+        fromUrl: dataUrl,
+        toFile: filePath,
+        background: true,
+        headers,
+        progressDivider: 2,
+        begin: () => {
+          Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+        },
+        progress: res => {
+          const value = ~~res.progress.toFixed(0)
+          this.props.updateDownList({
+            id: itemInfo.id,
+            progress: value,
+            downed: false,
+          })
+        },
+      }
+      await downloadFile(downloadOptions).promise
+
+      this.props.updateDownList({
+        id: itemInfo.id,
+        progress: 0,
+        downed: true,
+      })
+
+      let name = itemInfo.fileName
+      let type = ''
+      let index = itemInfo.fileName.lastIndexOf('.')
+      if (index !== -1) {
+        name = itemInfo.fileName.substring(0, index)
+        type = itemInfo.fileName.substring(index + 1).toLowerCase()
+      }
+      let result = false
+      this.onImportStart()
+      if (type === 'zip') {
+        let toPath = temPath + name
+        const unzipRes = await FileTools.unZipFile(filePath, toPath)
+        if (unzipRes) {
+          let dataList = await DataHandler.getExternalData(toPath)
+          let results = []
+          for (let i = 0; i < dataList.length; i++) {
+            results.push(await this._importExternalData(dataList[i]))
+          }
+          result = results.some(value => value === true)
+          FileTools.deleteFile(toPath)
+        }
+      } else if (
+        this.itemInfo.type === 'MARKERSYMBOL' ||
+        this.itemInfo.type === 'LINESYMBOL' ||
+        this.itemInfo.type === 'FILLSYMBOL'
+      ) {
+        result = await DataHandler.importSymbol(currentUser, {
+          fileName: itemInfo.fileName,
+          filePath: filePath,
+        })
+      } else if (this.itemInfo.type === 'COLORSCHEME') {
+        result = await DataHandler.importColor(currentUser, {
+          fileName: itemInfo.fileName,
+          filePath: filePath,
+        })
+      }
+
+      FileTools.deleteFile(filePath)
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS
+          : getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT,
+      )
+    } catch (error) {
+      Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+    } finally {
+      this.onImportEnd()
     }
   }
 
@@ -800,7 +903,8 @@ export default class MyLocalData extends Component {
       if (item.dataItemServices) {
         if (
           item.serviceStatus !== 'PUBLISHED' &&
-          item.serviceStatus !== 'PUBLISHING'
+          item.serviceStatus !== 'PUBLISHING' &&
+          item.serviceStatus !== 'DOES_NOT_INVOLVE'
         ) {
           data.push({
             title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,

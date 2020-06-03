@@ -46,7 +46,11 @@ export default class Chunk {
       let result = await this.preAction()
       if (!result) return
     }
-    if (this.mapType === '' && this.props.action && typeof this.props.action === 'function') {
+    if (
+      this.mapType === '' &&
+      this.props.action &&
+      typeof this.props.action === 'function'
+    ) {
       await this.props.action()
       return
     }
@@ -78,7 +82,7 @@ export default class Chunk {
         }
         break
       }
-      case Chunk.MapType.MAP:
+      case Chunk.MapType.MAP: {
         // 二维地图
         let data = this.baseMapSource
         data.layerIndex = this.baseMapIndex
@@ -99,7 +103,9 @@ export default class Chunk {
         let isOpenLastMap = false
 
         if (lastMap) {
-          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(lastMap.path)
+          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
+            lastMap.path,
+          )
         }
 
         if (isOpenLastMap) {
@@ -139,6 +145,7 @@ export default class Chunk {
           NavigationService.navigate('MapView', param)
         }
         break
+      }
       default:
         break
     }

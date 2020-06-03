@@ -301,6 +301,7 @@ export default class OnlineServicesUtils {
       url = this.serverUrl + `/datas.rjson?types=[${types}]`
     }
 
+    url += '&isPublic=true'
     url += `&orderBy=${orderBy}&orderType=${orderType}`
     url += `&pageSize=${pageSize}&currentPage=${currentPage}`
     if (keywords) {

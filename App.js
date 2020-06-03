@@ -352,22 +352,22 @@ class AppRoot extends Component {
 
   back = () => {
     // if (Platform.OS === 'android') {
-      // 防止初始化时，nav为空
-      let nav = this.props.nav && this.props.nav.routes
-        ? this.props.nav
-        : NavigationService.getTopLevelNavigator().state.nav
-      let current = nav.routes[nav.index]
-      let key
-      while (current.routes) {
-        current = current.routes[current.index]
-      }
-      key = current.routeName
-      if (this.props.backActions[key] && typeof this.props.backActions[key] === 'function') {
-        this.props.backActions[key]()
-        return true
-      } else {
-        return false
-      }
+    // 防止初始化时，nav为空
+    let nav = this.props.nav && this.props.nav.routes
+      ? this.props.nav
+      : NavigationService.getTopLevelNavigator().state.nav
+    let current = nav.routes[nav.index]
+    let key
+    while (current.routes) {
+      current = current.routes[current.index]
+    }
+    key = current.routeName
+    if (this.props.backActions[key] && typeof this.props.backActions[key] === 'function') {
+      this.props.backActions[key]()
+      return true
+    } else {
+      return false
+    }
     // }
   }
 
@@ -937,29 +937,34 @@ class AppRoot extends Component {
         confirmBtnTitle={getLanguage(this.props.language).Prompt.YES}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         confirmAction={async () => {
-          this.import.setDialogVisible(false)
-          GLOBAL.Loading.setLoading(
-            true,
-            getLanguage(this.props.language).Friends.IMPORT_DATA,
-          )
-          let homePath = global.homePath
-          let importPath = homePath + '/iTablet/Import'
-          let filePath = importPath + '/import.zip'
-          let isImport = false
-          if(await FileTools.fileIsExist(filePath)) {
-            await FileTools.unZipFile(filePath, importPath)
-            let dataList = await DataHandler.getExternalData(importPath)
-            //暂时只支持单个工作空间的导入
-            if(dataList.length === 1 && dataList[0].fileType === 'workspace') {
-              await DataHandler.importWorkspace(dataList[0])
-              isImport = true
+          try {
+            this.import.setDialogVisible(false)
+            GLOBAL.Loading.setLoading(
+              true,
+              getLanguage(this.props.language).Friends.IMPORT_DATA,
+            )
+            let homePath = global.homePath
+            let importPath = homePath + '/iTablet/Import'
+            let filePath = importPath + '/import.zip'
+            let isImport = false
+            if(await FileTools.fileIsExist(filePath)) {
+              await FileTools.unZipFile(filePath, importPath)
+              let dataList = await DataHandler.getExternalData(importPath)
+              let results = []
+              for(let i = 0; i < dataList.length; i++) {
+                results.push(await this._importExternalData(dataList[i]))
+              }
+              isImport = results.some(value => value === true)
             }
+            FileTools.deleteFile(importPath)
+            isImport
+              ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
+              : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+            GLOBAL.Loading.setLoading(false)
+          } catch (error) {
+            Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+            GLOBAL.Loading.setLoading(false)
           }
-          FileTools.deleteFile(importPath)
-          isImport
-            ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
-            : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-          GLOBAL.Loading.setLoading(false)
         }}
         cancelAction={ async () => {
           let homePath = global.homePath
@@ -974,6 +979,38 @@ class AppRoot extends Component {
         {this.renderImportDialogChildren()}
       </Dialog>
     )
+  }
+
+  _importExternalData = async item => {
+    let user = this.props.user.currentUser
+    let type = item.fileType
+    let result = false
+    switch (type) {
+      case 'plotting':
+        result = await DataHandler.importPlotLib(item)
+        break
+      case 'workspace':
+        result = await DataHandler.importWorkspace(item)
+        break
+      case 'workspace3d':
+        result = await DataHandler.importWorkspace3D(user, item)
+        break
+      case 'datasource':
+        result = await DataHandler.importDatasource(user, item)
+        break
+      case 'sci':
+        result = await DataHandler.importSCI(user, item)
+        break
+      case 'color':
+        result = await DataHandler.importColor(user, item)
+        break
+      case 'symbol':
+        result = await DataHandler.importSymbol(user, item)
+        break
+      default:
+        break
+    }
+    return result
   }
 
   _renderProtocolDialog = () => {

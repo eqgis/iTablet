@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
-import { TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import {
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Image,
+  View,
+} from 'react-native'
 import { Container } from '../../../../components'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
-import { Toast } from '../../../../utils'
+import { Toast, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
+
+const radio_on = require('../../../../assets/public/radio_select.png')
+const radio_off = require('../../../../assets/public/radio_select_no.png')
+
 export default class LoadServer extends Component {
   props: {
     navigation: Object,
@@ -20,6 +31,7 @@ export default class LoadServer extends Component {
       this.item = {
         server: params.item.DSParams.server,
         name: params.item.mapName,
+        engineType: params.item.engineType,
       }
       this.state = {
         server: params.item.DSParams.server,
@@ -30,6 +42,7 @@ export default class LoadServer extends Component {
       this.state = {
         server: '',
         name: '',
+        engineType: 225,
       }
     }
   }
@@ -60,13 +73,29 @@ export default class LoadServer extends Component {
               ) +
               '@' +
               alias //this.state.server.lastIndexOf('/')
+            let _DSParams = {}
+            if (this.state.engineType === 23) {
+              _DSParams = {
+                server: this.state.server,
+                engineType: this.state.engineType,
+                alias: alias,
+                driver: 'WMTS',
+              }
+            } else {
+              _DSParams = {
+                server: this.state.server,
+                engineType: this.state.engineType,
+                alias: alias,
+              }
+            }
             let item = {
               type: 'Datasource',
-              DSParams: {
-                server: this.state.server,
-                engineType: 225,
-                alias: alias,
-              },
+              DSParams: _DSParams,
+              // DSParams: {
+              //   server: this.state.server,
+              //   engineType: this.state.engineType,
+              //   alias: alias,
+              // },
               layerIndex: 0,
               mapName: this.state.name,
               layerName: layerName,
@@ -138,6 +167,49 @@ export default class LoadServer extends Component {
           ref={ref => (this.server = ref)}
           onChangeText={text => this.setState({ server: text })}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: scaleSize(25),
+            marginTop: 10,
+            height: scaleSize(60),
+            alignItems: 'center',
+          }}
+        >
+          <Text state={styles.textRadio}>
+            {getLanguage(global.language).Profile.DATASOURCE_TYPE + ' :'}
+          </Text>
+          <TouchableOpacity
+            style={[styles.itemView, { alignItems: 'center' }]}
+            activeOpacity={0.9}
+            onPress={() => {
+              this.setState({ engineType: 225 })
+            }}
+          >
+            <Image
+              style={styles.image}
+              source={this.state.engineType === 225 ? radio_on : radio_off}
+            />
+            <Text state={styles.textRadio}>{'REST'}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.itemView,
+              { alignItems: 'center', marginLeft: scaleSize(50) },
+            ]}
+            activeOpacity={0.9}
+            onPress={() => {
+              this.setState({ engineType: 23 })
+            }}
+          >
+            <Image
+              style={styles.image}
+              source={this.state.engineType === 23 ? radio_on : radio_off}
+            />
+            <Text state={styles.textRadio}>{'OGC'}</Text>
+          </TouchableOpacity>
+        </View>
       </Container>
     )
   }
@@ -154,5 +226,19 @@ const styles = StyleSheet.create({
   text: {
     fontSize: size.fontSize.fontSizeLg,
     color: color.reverseTheme,
+  },
+  itemView: {
+    height: scaleSize(60),
+    marginLeft: scaleSize(15),
+    flexDirection: 'row',
+  },
+  image: {
+    height: scaleSize(60),
+    width: scaleSize(60),
+  },
+  textRadio: {
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.black,
+    marginLeft: scaleSize(20),
   },
 })

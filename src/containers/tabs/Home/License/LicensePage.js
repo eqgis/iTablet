@@ -107,9 +107,13 @@ class LicensePage extends Component {
       let returnId = await AsyncStorage.getItem(
         constants.LICENSE_CLOUD_RETURN_ID,
       )
-      let username = userInfo.isEmail ? userInfo.email : userInfo.phone
-      let password = userInfo.isEmail ? userInfo.emailPwd : userInfo.phonePwd
-      await SMap.loginCloudLicense(username, password)
+      licenseId = licenseId || ''
+      returnId = returnId || ''
+      if (licenseId !== '' && returnId !== '') {
+        let username = userInfo.isEmail ? userInfo.email : userInfo.phone
+        let password = userInfo.isEmail ? userInfo.emailPwd : userInfo.phonePwd
+        await SMap.loginCloudLicense(username, password)
+      }
       let days = await SMap.recycleCloudLicense(licenseId, returnId)
       if (days === false) {
         Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')

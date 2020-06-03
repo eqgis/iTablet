@@ -251,6 +251,56 @@ const Analyst_Labels = {
   RESETING: 'リセット',
   GEOCOORDSYS: '地理座標系',
   PRJCOORDSYS: '投影座標系',
+  CONVERTTING: '変換中',
+  CONVERT_SUCCESS: '変換に成功しました',
+  CONVERT_FAILED: '変換に失敗しました',
+}
+
+const Convert_Unit = {
+  ///  毫米。
+  MILIMETER: 'んん',
+  /// 平方毫米。
+  SQUAREMILIMETER: 'Mm2',
+  ///  厘米。
+  CENTIMETER: 'cm',
+  /// 平方厘米。
+  SQUARECENTIMETER: 'cm2',
+  /// 英寸。
+  INCH: 'インチ',
+  /// 平方英寸。
+  SQUAREINCH: '平方インチ',
+  /// 分米。
+  DECIMETER: 'Dm',
+  /// 平方分米。
+  SQUAREDECIMETER: '平方デシメートル',
+  ///  英尺。
+  FOOT: '足',
+  ///  平方英尺。
+  SQUAREFOOT: '平方フィート',
+  ///  码。
+  YARD: 'コード',
+  ///  平方码。
+  SQUAREYARD: '平方ヤード',
+  ///  米。
+  METER: 'メーター',
+  ///  平方米。
+  SQUAREMETER: '平方メートル',
+  /// 千米。
+  KILOMETER: 'km',
+  /// 平方千米。
+  SQUAREKILOMETER: '平方キロメートル',
+  /// 平方英里。
+  MILE: '平方マイル',
+  /// 英里。
+  SQUAREMILE: 'マイル',
+  ///  秒。
+  SECOND: '二番目',
+  ///  分。
+  MINUTE: '分',
+  ///  度。
+  DEGREE: '程度',
+  /// 弧度。
+  RADIAN: 'ラジアン',
 }
 
 const Analyst_Params = {
@@ -369,4 +419,5 @@ export {
   Analyst_Labels,
   Analyst_Params,
   Analyst_Prompt,
+  Convert_Unit,
 }

@@ -14,8 +14,8 @@ const Analyst_Modules = {
   FIND_TSP_PATH: 'Find TSP Path',
   TRACING_ANALYSIS: 'Tracing Analysis',
 
-  REGISTRATION_CREATE: 'Registration Create',
-  REGISTRATION_SPEEDINESS: 'Registration Speediness',
+  REGISTRATION_CREATE: 'New Registration',
+  REGISTRATION_SPEEDINESS: 'Rapid Registration',
   PROJECTION_TRANSFORMATION: 'Projection Transformation',
 }
 
@@ -250,6 +250,56 @@ const Analyst_Labels = {
   RESETING: 'Reset',
   GEOCOORDSYS: 'Geographic coordinate system',
   PRJCOORDSYS: 'Projected coordinate system',
+  CONVERTTING: 'Convertting',
+  CONVERT_SUCCESS: 'Convert success',
+  CONVERT_FAILED: 'Convert failed',
+}
+
+const Convert_Unit = {
+  ///  毫米。
+  MILIMETER: 'Milimeter',
+  /// 平方毫米。
+  SQUAREMILIMETER: 'Mm2',
+  ///  厘米。
+  CENTIMETER: 'cm',
+  /// 平方厘米。
+  SQUARECENTIMETER: 'cm2',
+  /// 英寸。
+  INCH: 'inch',
+  /// 平方英寸。
+  SQUAREINCH: 'Square inch',
+  /// 分米。
+  DECIMETER: 'Dm',
+  /// 平方分米。
+  SQUAREDECIMETER: 'Square decimetres',
+  ///  英尺。
+  FOOT: 'Foot',
+  ///  平方英尺。
+  SQUAREFOOT: 'Square feet',
+  ///  码。
+  YARD: 'Yard',
+  ///  平方码。
+  SQUAREYARD: 'Square yard',
+  ///  米。
+  METER: 'Meter',
+  ///  平方米。
+  SQUAREMETER: 'Square meter',
+  /// 千米。
+  KILOMETER: 'km',
+  /// 平方千米。
+  SQUAREKILOMETER: 'square kilometer',
+  /// 平方英里。
+  MILE: 'Square mile',
+  /// 英里。
+  SQUAREMILE: 'mile',
+  ///  秒。
+  SECOND: 'second',
+  ///  分。
+  MINUTE: 'Minute',
+  ///  度。
+  DEGREE: 'degree',
+  /// 弧度。
+  RADIAN: 'radian',
 }
 
 const Analyst_Params = {
@@ -366,4 +416,5 @@ export {
   Analyst_Labels,
   Analyst_Params,
   Analyst_Prompt,
+  Convert_Unit,
 }

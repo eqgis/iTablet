@@ -159,6 +159,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'データソース名の設定',
   ENTER_DATASOURCE_NAME: 'データソース名の入力',
   OPEN_DATASROUCE_FAILED: 'データソースを開くのに失敗しました。',
+  DATASOURCE_TYPE: 'データのタイプ',
 
   SELECT_DATASET_EXPORT_TYPE: 'エクスポートタイプを選択してください',
   DATASET_EXPORT_NOT_SUPPORTED:

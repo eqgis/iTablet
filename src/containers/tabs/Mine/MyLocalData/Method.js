@@ -152,9 +152,6 @@ async function getOnlineData(
         if (objDataList.content[i].fileName.indexOf('friend.list') != -1) {
           objDataList.content.splice(i, 1)
           objDataList.total -= 1
-        } else if (objDataList.content[i].type === 'UDB') {
-          objDataList.content.splice(i, 1)
-          objDataList.total -= 1
         }
       }
     }
@@ -164,10 +161,6 @@ async function getOnlineData(
       const contentLength = arrDataContent.length
       for (let i = 0; i < contentLength; i++) {
         const objContent = arrDataContent[i]
-        objContent.fileName = objContent.fileName.substring(
-          0,
-          objContent.fileName.length - 4,
-        )
         objContent.id += ''
         newData.push(objContent)
       }

@@ -156,6 +156,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'Set Datasource Name',
   ENTER_DATASOURCE_NAME: 'Please enter datasource name',
   OPEN_DATASROUCE_FAILED: 'Failed to open datasource',
+  DATASOURCE_TYPE: 'Datasource type',
 
   SELECT_DATASET_EXPORT_TYPE: 'Select format for export',
   DATASET_EXPORT_NOT_SUPPORTED: 'Export of this dataset is not supported yet',
@@ -255,7 +256,7 @@ const Profile = {
   // itablet许可版本
   LICENSE_EDITION_STANDARD: 'Standard Edition',
   LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
-  LICENSE_EDITION_ADVANCED: 'ADVANCED Edition',
+  LICENSE_EDITION_ADVANCED: 'Advanced Edition',
   // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: 'Core Runtime',

@@ -12,6 +12,12 @@ function getLanguage(param) {
     case 'JA':
       language = require('./JA/index').default
       break
+    case 'FR':
+      language = require('./FR/index').default
+      break
+    case 'AR':
+      language = require('./AR/index').default
+      break
     case 'CN':
     default:
       language = require('./CN/index').default

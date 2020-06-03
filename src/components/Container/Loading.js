@@ -4,9 +4,6 @@ import { scaleSize, setSpText, Toast } from '../../utils'
 export const NORMAL = 'NORMAL'
 import { getLanguage } from '../../language/index'
 
-const INFO = getLanguage(global.language).Prompt.LOADING
-//'加载中'
-
 export default class Loading extends Component {
   props: {
     initLoading: boolean,
@@ -30,7 +27,7 @@ export default class Loading extends Component {
     indicatorColor: 'white',
     displayMode: 'NORMAL',
     indicatorMode: 'BLACK_WITH_TITLE', // BLACK_WITH_TITLE   NORMAL
-    info: INFO,
+    info: getLanguage(global.language).Prompt.LOADING,
     // timeout: 6000,
   }
 
@@ -48,6 +45,7 @@ export default class Loading extends Component {
   }
 
   setLoading = (loading, info, extra = {}) => {
+    let INFO = getLanguage(global.language).Prompt.LOADING
     if (
       loading !== this.state.animating ||
       this.state.info !== info ||

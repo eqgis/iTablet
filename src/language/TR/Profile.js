@@ -157,6 +157,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'Verikaynağı Adı Ayarla',
   ENTER_DATASOURCE_NAME: 'Lütfen verikaynağı adı girin',
   OPEN_DATASROUCE_FAILED: 'Verikaynağı açılamadı',
+  DATASOURCE_TYPE: 'veri türü',
 
   SELECT_DATASET_EXPORT_TYPE: 'Dışa Aktarma için format seçin',
   DATASET_EXPORT_NOT_SUPPORTED:

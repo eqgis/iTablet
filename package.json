@@ -20,7 +20,7 @@
   },
   "lint-staged": {
     "{src,__tests__}/**/*.js": [
-      "prettier --single-quote --print-width 200 --trailing-comma all --no-semi --write",
+      "prettier --single-quote --trailing-comma all --no-semi --write",
       "eslint --fix",
       "git add"
     ]

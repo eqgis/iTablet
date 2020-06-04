@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { color } from '../../styles'
-import { scaleSize, setSpText } from '../../utils'
+import { scaleSize } from '../../utils'
 
 class TabItem extends React.Component {
   props: {
@@ -59,7 +59,7 @@ export default connect(
 const styles = StyleSheet.create({
   tabText: {
     color: color.itemColorGray,
-    fontSize: setSpText(20),
+    fontSize: scaleSize(20),
   },
   icon: {
     width: scaleSize(60),

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import Mine from './Mine'
-import { setUser } from '../../../redux/models/user'
 import { closeWorkspace, openWorkspace } from '../../../redux/models/map'
 import Register from './Register'
 import { SelectLogin, Login, IPortalLogin } from './Login'
@@ -32,7 +31,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  setUser,
   closeWorkspace,
   openWorkspace,
 }

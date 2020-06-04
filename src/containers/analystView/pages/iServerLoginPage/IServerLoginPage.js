@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { View, ScrollView, KeyboardAvoidingView, Text } from 'react-native'
 import { Container, Input, Button } from '../../../../components'
 import { color } from '../../../../styles'
 import { Toast, scaleSize, dataUtil } from '../../../../utils'
@@ -144,7 +144,7 @@ export default class IServerLoginPage extends React.Component {
                   inputStyle={styles.input}
                   placeholder={
                     getLanguage(this.props.language).Profile
-                      .ENTER_SERVER_ADDRESS + ' eg: 10.10.0.1:8090'
+                      .ENTER_SERVER_ADDRESS
                   }
                   placeholderTextColor={color.themePlaceHolder}
                   defaultValue={this.serverUrl}
@@ -154,6 +154,7 @@ export default class IServerLoginPage extends React.Component {
                   }}
                   showClear
                 />
+                <Text style={styles.text}>{'eg: 10.10.0.1:8090'}</Text>
                 <Input
                   style={{ marginTop: scaleSize(20) }}
                   inputStyle={styles.input}

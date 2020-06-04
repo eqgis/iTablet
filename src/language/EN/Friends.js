@@ -120,7 +120,7 @@ const Friends = {
   EXIT_COWORK: 'Exit cowork',
   GO_COWORK: 'Cowork',
   ALERT_EXIT_COWORK: 'Do you want to close current cowork map?',
-  SHARE_DATASET: 'Share the dataset at the same time',
+  SHARE_DATASET: 'Share the dataset',
   // system text
   SYS_MSG_PIC: '[PICTURE]',
   SYS_MSG_MAP: '[MAP]',

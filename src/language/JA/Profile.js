@@ -326,6 +326,8 @@ const Profile = {
   COLLECT_SCENE_RENAME_SUCCEED: '名前を変更しました',
   COLLECT_SCENE_ADD_REMARK: 'メモを追加',
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'メモを追加しました',
+
+  CHOOSE_COLOR: '色の選択',
 }
 
 export { Profile }

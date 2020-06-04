@@ -117,7 +117,7 @@ const Friends = {
   EXIT_COWORK: '退出协作',
   GO_COWORK: '协作',
   ALERT_EXIT_COWORK: '是否关闭当前协作地图?',
-  SHARE_DATASET: '同时分享对应数据集',
+  SHARE_DATASET: '分享对应数据集',
   // system text
   SYS_MSG_PIC: '[图片]',
   SYS_MSG_MAP: '[地图]',

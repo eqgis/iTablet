@@ -15,6 +15,7 @@ import ColorShortcut from './ColorShortcut'
 
 import { ColorWheel } from 'react-native-color-wheel'
 import colorsys from 'colorsys'
+import { getLanguage } from '../../language'
 
 export default class ColorPickerPage extends React.Component {
   props: {
@@ -123,7 +124,12 @@ export default class ColorPickerPage extends React.Component {
         ),
       )
     }
-    rows.push(this.renderColorAttrRow('16进制', this.state.color))
+    rows.push(
+      this.renderColorAttrRow(
+        GLOBAL.language === 'CN' ? '16进制' : 'Hexadecimal',
+        this.state.color,
+      ),
+    )
     return <View style={styles.rows}>{rows}</View>
   }
 
@@ -142,8 +148,15 @@ export default class ColorPickerPage extends React.Component {
   renderBtns = () => {
     return (
       <View style={styles.btns}>
-        <Button type={Button.Type.GRAY} title={'重置'} onPress={this.reset} />
-        <Button title={'确定'} onPress={this.confirm} />
+        <Button
+          type={Button.Type.GRAY}
+          title={getLanguage(global.language).Analyst_Labels.RESET}
+          onPress={this.reset}
+        />
+        <Button
+          title={getLanguage(global.language).Analyst_Labels.CONFIRM}
+          onPress={this.confirm}
+        />
       </View>
     )
   }
@@ -153,7 +166,7 @@ export default class ColorPickerPage extends React.Component {
       <Container
         style={styles.container}
         headerProps={{
-          title: '颜色选择',
+          title: getLanguage(global.language).Profile.CHOOSE_COLOR,
           navigation: this.props.navigation,
         }}
       >

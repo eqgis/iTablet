@@ -191,7 +191,11 @@ class SelectFriend extends Component {
               this.shareDataset = !this.shareDataset
             }}
           />
-          <Text style={{ marginLeft: scaleSize(5), fontSize: scaleSize(24) }}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+            style={{ marginLeft: scaleSize(5), fontSize: scaleSize(24) }}
+          >
             {getLanguage(global.language).Friends.SHARE_DATASET}
             {/* {同时分享对应数据集}*/}
           </Text>

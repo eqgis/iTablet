@@ -320,5 +320,7 @@ const Profile = {
   COLLECT_SCENE_RENAME_SUCCEED: 'Rename succeed',
   COLLECT_SCENE_ADD_REMARK: 'Add remark',
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
+
+  CHOOSE_COLOR: 'Choose Color',
 }
 export { Profile }

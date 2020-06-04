@@ -34,7 +34,7 @@ const Analyst_Methods = {
 
 const Analyst_Labels = {
   ANALYST: 'Analyze',
-  CONFIRM: 'Confirm',
+  CONFIRM: 'Done',
   RESET: 'Reset',
   CANCEL: 'Cancel',
   NEXT: 'Next',
@@ -58,8 +58,8 @@ const Analyst_Labels = {
   MIDDLE_STATIONS: 'Middle Stations',
   SET_END_STATION: 'Set End Station',
   LOCATION: 'Location',
-  SET_AS_START_STATION: 'Set as Start Station',
-  SET_AS_END_STATION: 'Set as End Station',
+  SET_AS_START_STATION: 'Starting Point',
+  SET_AS_END_STATION: 'Destination',
   ADD_STATIONS: 'Add Stations',
   ADD_BARRIER_NODES: 'Add Barrier Nodes',
   ADD_NODES: 'Add Nodes',
@@ -203,7 +203,7 @@ const Analyst_Labels = {
   REGISTRATION_ASSOCIATION: 'Association',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
-  REGISTRATION_EXECUTE: 'Execute',
+  REGISTRATION_EXECUTE: 'Run',
   REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
   REGISTRATION_EXECUTE_FAILED: 'Execute failed',
   REGISTRATION_SAVE_AS: 'Save as',

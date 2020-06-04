@@ -29,6 +29,11 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: size.fontSize.fontSizeMd,
   },
+  text: {
+    fontSize: scaleSize(22),
+    color: 'grey',
+    marginLeft: scaleSize(20),
+  },
   loginBtn: {
     height: scaleSize(60),
     width: '50%',

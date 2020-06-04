@@ -310,9 +310,7 @@ class NewDataset extends Component {
             {/* {'数据集类型'} */}
             {getLanguage(global.language).Profile.DATASET_TYPE}
           </Text>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {this._renderDatasetType(item, DatasetType.POINT)}
             {this._renderDatasetType(item, DatasetType.LINE)}
             {this._renderDatasetType(item, DatasetType.REGION)}

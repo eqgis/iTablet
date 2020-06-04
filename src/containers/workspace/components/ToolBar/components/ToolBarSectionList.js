@@ -90,6 +90,7 @@ export default class ToolBarSectionList extends React.Component {
         selectList[section.title] &&
         section &&
         section.data &&
+        section.data.length !== 0 &&
         selectList[section.title].length === section.data.length
       ) {
         allSelected = true
@@ -254,6 +255,9 @@ export default class ToolBarSectionList extends React.Component {
     let selectImg = this.state.sectionSelected
       ? require('../../../../../assets/mapTools/icon_multi_selected.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected.png')
+    let allSelectImg = this.state.allSelected
+      ? require('../../../../../assets/mapTools/icon_multi_selected.png')
+      : require('../../../../../assets/mapTools/icon_multi_unselected.png')
     return (
       <TouchableHighlight
         activeOpacity={this.props.activeOpacity}
@@ -283,14 +287,9 @@ export default class ToolBarSectionList extends React.Component {
             />
           )}
           <Text
-            style={[
-              styles.sectionTitle,
-              this.props.device &&
-                this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-                width: scaleSize(250),
-              },
-              this.props.sectionTitleStyle,
-            ]}
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+            style={[styles.sectionTitle, this.props.sectionTitleStyle]}
           >
             {section.title}
           </Text>
@@ -318,13 +317,11 @@ export default class ToolBarSectionList extends React.Component {
               style={styles.sectionRightButton}
               onPress={() => this.sectionAllPress(section)}
             >
-              <Text style={[styles.sectionSelectedTitle]}>
-                {this.state.allSelected
-                  ? getLanguage(global.language).Map_Main_Menu.THEME_ALL_CANCEL
-                  : getLanguage(global.language).Map_Main_Menu
-                    .THEME_ALL_SELECTED}
-                {/* 全部选中 */}
-              </Text>
+              <Image
+                source={allSelectImg}
+                resizeMode={'contain'}
+                style={styles.selectImg}
+              />
             </TouchableOpacity>
           )}
           {section.buttons && section.buttons.length > 0 && (
@@ -409,6 +406,8 @@ export default class ToolBarSectionList extends React.Component {
           {(item.name || item.title) && (
             <View style={styles.itemTitleView}>
               <Text
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
                 style={[
                   item.image ? styles.imageItemTitle : styles.itemTitle,
                   selectedTextStyle,
@@ -777,6 +776,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sectionTitle: {
+    flex: 1,
     marginLeft: scaleSize(30),
     fontSize: size.fontSize.fontSizeLg,
     fontWeight: 'bold',
@@ -860,9 +860,8 @@ const styles = StyleSheet.create({
   sectionRightButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'absolute',
-    right: scaleSize(30),
     height: scaleSize(80),
+    marginRight: scaleSize(30),
   },
   dataset_type_img: {
     width: scaleSize(50),

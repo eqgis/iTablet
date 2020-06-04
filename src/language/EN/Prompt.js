@@ -2,9 +2,9 @@
 const Prompt = {
   YES: 'Yes',
   NO: 'No',
-  SAVE_TITLE: 'Do you want to save the changes to the current map?',
-  SAVE_YES: 'Yes',
-  SAVE_NO: 'No',
+  SAVE_TITLE: 'Would you like to save your changes?',
+  SAVE_YES: 'Save',
+  SAVE_NO: "Don't Save",
   CANCEL: 'Cancel',
   COMMIT: 'Commit',
   REDO: 'Redo',

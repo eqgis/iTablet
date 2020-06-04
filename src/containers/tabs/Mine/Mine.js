@@ -34,7 +34,6 @@ export default class Mine extends Component {
     workspace: Object,
     device: Object,
     mineModules: Array,
-    setUser: () => {},
     closeWorkspace: () => {},
     openWorkspace: () => {},
   }
@@ -45,20 +44,6 @@ export default class Mine extends Component {
       display: 'flex',
     }
     this.searchText = ''
-  }
-
-  componentDidMount() {
-    if (
-      this.props.user &&
-      this.props.user.currentUser &&
-      !this.props.user.currentUser.password
-    ) {
-      this.props.setUser({
-        userName: 'Customer',
-        userType: UserType.PROBATION_USER,
-        // userId: 0,
-      })
-    }
   }
 
   componentDidUpdate(previousProps) {

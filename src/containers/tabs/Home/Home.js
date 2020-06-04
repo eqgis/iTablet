@@ -64,11 +64,11 @@ export default class Home extends Component {
       dialogCheck: false,
       downloadData: null,
     }
+    this.props.setMapModule(mapModules)
   }
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.props.setMapModule(mapModules)
       if (Platform.OS === 'android') {
         this.props.setBackAction({ action: () => this.showMorePop() })
       }

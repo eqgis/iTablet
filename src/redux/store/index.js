@@ -9,7 +9,6 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'setting',
-    'user',
     'chat',
     'template',
     'symbol',
@@ -19,6 +18,7 @@ const persistConfig = {
   ],
   blacklist: [
     'nav',
+    'user',
     'collection',
     'down',
     'layers',

@@ -47,20 +47,6 @@ export default class Mine extends Component {
     this.searchText = ''
   }
 
-  componentDidMount() {
-    if (
-      this.props.user &&
-      this.props.user.currentUser &&
-      !this.props.user.currentUser.password
-    ) {
-      this.props.setUser({
-        userName: 'Customer',
-        userType: UserType.PROBATION_USER,
-        // userId: 0,
-      })
-    }
-  }
-
   componentDidUpdate(previousProps) {
     if (
       this.props.user.currentUser.userType !== UserType.PROBATION_USER &&

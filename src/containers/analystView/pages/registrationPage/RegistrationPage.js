@@ -27,6 +27,12 @@ export default class RegistrationPage extends Component {
     super(props)
     this.tempControlPoints = []
 
+    let defaultArithmetic = {
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET,
+      arithmeticMode: 4,
+    }
+    GLOBAL.RegistrationArithmeticMode = defaultArithmetic.arithmeticMode
+
     this.state = {
       isCanDo: true,
 
@@ -38,6 +44,8 @@ export default class RegistrationPage extends Component {
       showPointsData: [],
       tempPoint: {},
       isAssociat: false,
+
+      arithmetic: defaultArithmetic,
     }
   }
 
@@ -153,7 +161,6 @@ export default class RegistrationPage extends Component {
     NavigationService.goBack()
     NavigationService.goBack()
     NavigationService.goBack()
-    NavigationService.goBack()
   }
 
   confirm = async () => {
@@ -221,6 +228,18 @@ export default class RegistrationPage extends Component {
     return result
   }
 
+  toRegistrationArithmeticPage = () => {
+    NavigationService.navigate('RegistrationArithmeticPage', {
+      cb: item => {
+        GLOBAL.RegistrationArithmeticMode = item.arithmeticMode
+        this.setState({
+          arithmetic: item,
+        })
+        NavigationService.goBack()
+      },
+    })
+  }
+
   setAssociation = () => {
     let _isAssociation = this.state.isAssociat
     _isAssociation = !_isAssociation
@@ -285,7 +304,7 @@ export default class RegistrationPage extends Component {
           right: scaleSize(20),
           marginBottom: 'auto',
           marginTop: 'auto',
-          height: scaleSize(320),
+          height: scaleSize(460),
           backgroundColor: color.white,
 
           elevation: 20,
@@ -380,7 +399,60 @@ export default class RegistrationPage extends Component {
             {getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT}
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: scaleSize(80),
+            height: scaleSize(100),
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            this.toRegistrationArithmeticPage()
+          }}
+        >
+          <Image
+            style={{
+              height: scaleSize(50),
+              width: scaleSize(50),
+            }}
+            source={getPublicAssets().mapTools.tools_new_thematic_map}
+          />
+          <Text
+            style={{
+              fontSize: scaleSize(24),
+              width: scaleSize(50),
+            }}
+            numberOfLines={2}
+          >
+            {
+              getLanguage(global.language).Analyst_Labels
+                .REGISTRATION_ARITHMETIC
+            }
+          </Text>
+        </TouchableOpacity>
       </View>
+    )
+  }
+
+  renderArithmeticTitle() {
+    return (
+      <View style={styles.clickHintView}>
+        <Text style={styles.clickHintText}>
+          {this.state.arithmetic && this.state.arithmetic.title}
+        </Text>
+      </View>
+
+      // <View
+      //   style={{
+      //     width: scaleSize(160),
+      //     height: scaleSize(60),
+      //     marginTop: scaleSize(30),
+      //     marginRight: scaleSize(30),
+      //   }}
+      // >
+      //   <Text>
+      //     {this.state.arithmetic&&this.state.arithmetic.title}
+      //   </Text>
+      // </View>
     )
   }
 
@@ -792,6 +864,7 @@ export default class RegistrationPage extends Component {
             />
 
             {this.renderAssociatView()}
+            {this.renderArithmeticTitle()}
             {this.state.isEditPoint ? null : this.renderToolBar()}
             {/* {this.state.isShowDetail?this.renderPointsDetail():null} */}
           </Container>

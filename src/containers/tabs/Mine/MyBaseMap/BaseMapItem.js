@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Image, TouchableOpacity, Text } from 'react-native'
 import styles from './styles'
+import { scaleSize } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
@@ -15,6 +16,7 @@ export default class BaseMapItem extends Component {
     curUserBaseMaps: Array,
     setBaseMap: () => {},
     user: Object,
+    itemOnPress: () => {},
   }
   constructor(props) {
     super(props)
@@ -129,16 +131,15 @@ export default class BaseMapItem extends Component {
     // let selectImg = require('../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
     // let selectedImg = require('../../../../assets/mapTools/icon_multi_selected_disable_black.png')
     // console.log(Img)
-    let iTemView
     return (
       <TouchableOpacity
         style={{ flex: 1 }}
         // ref={ref => (iTemView = ref)}
-        onLongPress={() => {
-          if (this.props.item.userAdd) {
-            this._showPopover(iTemView, this.props.item)
-          }
-        }}
+        // onLongPress={() => {
+        //   if (this.props.item.userAdd) {
+        //     // this._showPopover(iTemView, this.props.item)
+        //   }
+        // }}
         onPress={() => {
           this.goToMapView()
         }}
@@ -146,6 +147,38 @@ export default class BaseMapItem extends Component {
         <View style={styles.rowView}>
           <Image source={Img} style={styles.Img} />
           <Text style={styles.title}>{this.props.item.mapName}</Text>
+          {!this.props.item.userAdd ? null : (
+            <View
+              style={{
+                justifyContent: 'center',
+                width: scaleSize(80),
+                height: '100%',
+              }}
+            >
+              <TouchableOpacity
+                onPress={event => {
+                  this.props.itemOnPress &&
+                    this.props.itemOnPress(
+                      {
+                        ...this.props.item,
+                        index: this.props.index,
+                      },
+                      event,
+                    )
+                }}
+              >
+                <Image
+                  style={{
+                    width: scaleSize(80),
+                    height: scaleSize(40),
+                    marginRight: 10,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../../../../assets/Mine/icon_more_gray.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     )

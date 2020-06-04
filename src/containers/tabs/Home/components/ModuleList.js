@@ -64,10 +64,12 @@ class ModuleList extends Component {
   async componentDidMount() {
     this.homePath = await FileTools.appendingHomeDirectory()
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
-    return JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+    return (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
   }
 
   _showAlert = (ref, downloadData, currentUserName) => {
@@ -346,7 +348,8 @@ class ModuleList extends Component {
           isShowProgressView: false,
         })
         await this.props.setCurrentMapModule(index)
-        item.action && await composeWaiting(item.action(tmpCurrentUser, latestMap))
+        item.action &&
+          (await composeWaiting(item.action(tmpCurrentUser, latestMap)))
       }
     } catch (e) {
       this.moduleItems[index].setNewState({
@@ -386,7 +389,8 @@ class ModuleList extends Component {
         setOldMapModule={this.props.setOldMapModule}
         itemAction={async _item => {
           await this.itemAction(this.props.language, { item: _item, index })
-          await this.props.setOldMapModule && this.props.setOldMapModule(_item.key)
+          ;(await this.props.setOldMapModule) &&
+            this.props.setOldMapModule(_item.key)
         }}
       />
     )

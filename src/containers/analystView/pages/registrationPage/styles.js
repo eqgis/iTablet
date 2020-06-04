@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { color, size } from '../../../../styles'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, setSpText } from '../../../../utils'
 
 export default StyleSheet.create({
   container: {
@@ -139,5 +139,28 @@ export default StyleSheet.create({
     marginLeft: scaleSize(30),
     fontSize: scaleSize(24),
     width: '100%',
+  },
+
+  clickHintView: {
+    position: 'absolute',
+    flexDirection: 'column',
+    height: scaleSize(45),
+    width: '100%',
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    top: scaleSize(10),
+    right: scaleSize(10),
+  },
+  clickHintText: {
+    height: scaleSize(45),
+    minWidth: scaleSize(300),
+    fontSize: setSpText(25),
+    // backgroundColor: '#rgba(45, 45, 47, 0.8)',
+    color: color.black,
+    paddingLeft: 5,
+    paddingRight: 5,
+    textAlign: 'right',
+    // borderRadius: scaleSize(5),
   },
 })

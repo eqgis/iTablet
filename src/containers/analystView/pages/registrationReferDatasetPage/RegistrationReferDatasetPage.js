@@ -149,7 +149,8 @@ export default class RegistrationReferDatasetPage extends Component {
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
       GLOBAL.RectifyReferDatasetInfo = _rectifyDatasetInfo
-      NavigationService.navigate('RegistrationArithmeticPage')
+      // NavigationService.navigate('RegistrationArithmeticPage')
+      NavigationService.navigate('RegistrationPage')
     } else {
       Toast.show(
         getLanguage(global.language).Analyst_Labels

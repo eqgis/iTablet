@@ -72,7 +72,9 @@ export default class Mine extends Component {
     if (!this.props.workspace || this.props.workspace.server === userPath)
       return
     this.props.closeWorkspace(() => {
-      this.props.openWorkspace({ server: userPath })
+      this.props.openWorkspace({
+        server: userPath,
+      })
     })
   }
 
@@ -240,18 +242,29 @@ export default class Mine extends Component {
               }),
           })
           break
+        // case 'MyApplet':
+        //   data.push({
+        //     title: getLanguage(this.props.language).Find.APPLET,
+        //     image: getThemeAssets().find.app,
+        //     onClick: () =>
+        //       NavigationService.navigate('MyApplet', {
+        //         title: getLanguage(this.props.language).Find.APPLET,
+        //       }),
+        //   })
+        //   break
       }
     }
     return data
   }
 
   _renderProfile = () => {
+    let hasCustomLogo = logos.logo1 || logos.logo2 || logos.logo3
     return (
       <View style={styles.profileContainer}>
-        {this._renderLogo()}
-        {this._renderMyProfile()}
+        {hasCustomLogo && this._renderLogo()}
+        {!hasCustomLogo && this._renderMyProfile()}
         {this._renderSearch()}
-        {this._renderSideItem()}
+        {!hasCustomLogo && this._renderSideItem()}
       </View>
     )
   }
@@ -280,7 +293,10 @@ export default class Mine extends Component {
           <Image
             style={[
               styles.logoImagStyle,
-              { width: fixedSize(190), height: fixedSize(70) },
+              {
+                width: fixedSize(190),
+                height: fixedSize(70),
+              },
             ]}
             source={logos.logo1}
           />
@@ -292,7 +308,12 @@ export default class Mine extends Component {
         />
         {logos.logo3 && (
           <Image
-            style={[styles.logoImagStyle, { width: fixedSize(190) }]}
+            style={[
+              styles.logoImagStyle,
+              {
+                width: fixedSize(190),
+              },
+            ]}
             source={logos.logo3}
           />
         )}
@@ -315,18 +336,24 @@ export default class Mine extends Component {
     } else {
       statusText = null
     }
+    let headerImage = !isPro
+      ? require('../../../assets/home/system_default_header_image.png')
+      : {
+        uri:
+            'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+      }
     return (
       <View style={styles.MyProfileStyle}>
-        {/* <View style={styles.profileHeadStyle}> */}
-        {/*<TouchableOpacity*/}
-        {/* disabled={!isPro}*/}
-        {/*activeOpacity={0.7}*/}
-        {/*onPress={this._onPressAvatar}*/}
-        {/*style={styles.profileAvatarStyle}*/}
-        {/*>*/}
-        {/*<Image style={styles.headImgStyle} source={headerImage} />*/}
-        {/*</TouchableOpacity> */}
-        {/* <TouchableOpacity
+        <View style={styles.profileHeadStyle}>
+          <TouchableOpacity
+            disabled={!isPro}
+            activeOpacity={0.7}
+            onPress={this._onPressAvatar}
+            style={styles.profileAvatarStyle}
+          >
+            <Image style={styles.headImgStyle} source={headerImage} />
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             activeOpacity={0.7}
             onPress={this._onPressMore}
             style={styles.moreViewStyle}
@@ -335,7 +362,7 @@ export default class Mine extends Component {
               <View style={styles.moreY} />
             </View>
           </TouchableOpacity> */}
-        {/* </View> */}
+        </View>
         <TouchableOpacity
           onPress={this._onPressMore}
           disabled={isPro}
@@ -397,7 +424,12 @@ export default class Mine extends Component {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={this._onPressSwitch}
-        style={[styles.sideItemStyle, logos.logo1 && { top: fixedSize(150) }]} // 判断是否包含定制logo
+        style={[
+          styles.sideItemStyle,
+          logos.logo1 && {
+            top: fixedSize(150),
+          },
+        ]} // 判断是否包含定制logo
       >
         <Text style={styles.SideTextStyle}>
           {getLanguage(this.props.language).Profile.SWITCH_ACCOUNT}
@@ -438,10 +470,9 @@ export default class Mine extends Component {
         onPress={item.onClick}
         style={[
           styles.itemView,
-          { width: (this.width - scaleSize(50)) / colNum },
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? styles.itemLandscapeView
-            : null,
+          {
+            width: (this.width - scaleSize(50)) / colNum,
+          },
         ]}
       >
         <Image style={styles.itemImg} source={item.image} />

@@ -279,15 +279,18 @@ function isLegalName(text = '', language = 'CN') {
       error: getLanguage(language).Prompt.ERROR_INFO_EMPTY,
     }
   }
-  const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
-  const re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
-  if (!re1.test(text)) {
+  const pattern1 = new RegExp("^[0-9`~!@#_$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
+  const pattern2 = new RegExp("[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
+  // const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
+  // const re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
+  if (pattern1.test(text[0])) {
+    // 判断首字母
     return {
       result: false,
       error: getLanguage(language).Prompt.ERROR_INFO_START_WITH_A_LETTER,
     }
   }
-  if (!re.test(text)) {
+  if (pattern2.test(text)) {
     return {
       result: false,
       error: getLanguage(language).Prompt.ERROR_INFO_ILLEGAL_CHARACTERS,

@@ -43,9 +43,11 @@ function getScreenHeight(orientation) {
   return deviceHeight
 }
 function getScreenSafeHeight() {
-  if (Platform.OS === 'ios') return getScreenHeight()
+  if (Platform.OS === 'ios') {
+    return getScreenHeight()
+  }
   let screenHeight = ExtraDimensions.getRealWindowHeight()
-  let temp = ExtraDimensions.getRealWindowWidth()
+  const temp = ExtraDimensions.getRealWindowWidth()
   if (screenHeight < temp) {
     screenHeight = temp
   }
@@ -54,7 +56,7 @@ function getScreenSafeHeight() {
 }
 
 function getRatio() {
-  let height = Math.max(deviceHeight, deviceWidth)
+  const height = Math.max(deviceHeight, deviceWidth)
   let ratio
   if (height < 700) {
     ratio = 0.75
@@ -117,10 +119,10 @@ const X_BOTTOM = 35
 
 function isIphoneX() {
   if (Platform.OS === 'ios') {
-    let isPad = Platform.isPad
+    const { isPad } = Platform
     if (!isPad) {
-      let h = getScreenHeight()
-      let w = getScreenWidth()
+      const h = getScreenHeight()
+      const w = getScreenWidth()
       if (Math.min(w, h) >= X_WIDTH && Math.max(w, h) >= X_HEIGHT) {
         return true
       }
@@ -140,9 +142,8 @@ function setOrientation(o) {
 function getOrientation() {
   if (orientation === '') {
     return getScreenHeight() > getScreenWidth() ? 'PORTRAIT' : 'LANDSCAPE'
-  } else {
-    return orientation
   }
+  return orientation
 }
 
 /**
@@ -151,7 +152,7 @@ function getOrientation() {
  */
 function getIphonePaddingTop(orientation) {
   let paddingTop = 0
-  let _orientation = orientation || getOrientation()
+  const _orientation = orientation || getOrientation()
   if (_orientation.indexOf('PORTRAIT') < 0) return paddingTop
   if (isIphoneX()) {
     // paddingTop = X_TOP
@@ -167,7 +168,7 @@ function getIphonePaddingTop(orientation) {
  */
 function getIphonePaddingBottom(orientation) {
   let paddingBottom = 0
-  let _orientation = orientation || getOrientation()
+  const _orientation = orientation || getOrientation()
   if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
     paddingBottom = X_BOTTOM
   }
@@ -179,7 +180,7 @@ function getIphonePaddingBottom(orientation) {
  * @returns {object}
  */
 function getIphonePaddingHorizontal(orientation) {
-  let paddingHorizontal = {
+  const paddingHorizontal = {
     paddingLeft: 0,
     paddingRight: 0,
   }
@@ -204,21 +205,21 @@ export function px(size) {
  * @returns {*}
  */
 export function getMapChildPageWith(orientation) {
-  let width = Dimensions.get('screen').width
+  let { width } = Dimensions.get('screen')
   orientation = orientation || getOrientation()
-  let _height = Math.max(
+  const _height = Math.max(
     Dimensions.get('screen').height,
     Dimensions.get('screen').width,
   )
-  let _width = Math.min(
+  const _width = Math.min(
     Dimensions.get('screen').height,
     Dimensions.get('screen').width,
   )
-  let ration = _height / _width
+  const ration = _height / _width
   if (orientation.indexOf('LANDSCAPE') === 0) {
-    width = width * 0.45
+    width *= 0.45
     if (!GLOBAL.isPad && ration < 1.8) {
-      width = width * 0.6
+      width *= 0.6
     }
   }
   return width

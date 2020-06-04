@@ -2,18 +2,30 @@ import { SMap, EngineType } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
-async function importWorkspace(item) {
-  const { filePath } = item
-  const index = filePath.lastIndexOf('/')
-  const path = filePath.substring(0, index)
-  const snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
-  await SMap.copyNaviSnmFile(snmFiles)
-  const type = _getWorkspaceType(filePath)
-  const data = {
-    server: filePath,
-    type,
+async function importPlotLib(item) {
+  try {
+    return await SMap.importPlotLibData(item.filePath)
+  } catch (error) {
+    return false
   }
-  await SMap.importWorkspaceInfo(data)
+}
+
+async function importWorkspace(item) {
+  try {
+    const { filePath } = item
+    const index = filePath.lastIndexOf('/')
+    const path = filePath.substring(0, index)
+    const snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
+    await SMap.copyNaviSnmFile(snmFiles)
+    const type = _getWorkspaceType(filePath)
+    const data = {
+      server: filePath,
+      type,
+    }
+    return await SMap.importWorkspaceInfo(data)
+  } catch (error) {
+    return false
+  }
 }
 
 /**
@@ -22,72 +34,95 @@ async function importWorkspace(item) {
  * 3.复制工作空间和相关文件
  */
 async function importWorkspace3D(user, item) {
-  const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/Data/Scene`,
-  )
-
-  const contentList = await FileTools.getDirectoryContent(userPath)
-
-  const workspaceName = item.fileName.substring(
-    0,
-    item.fileName.lastIndexOf('.'),
-  )
-  const workspaceFolder = _getAvailableName(
-    workspaceName,
-    contentList,
-    'directory',
-  )
-  const workspaceInfo = {
-    type: `${_getWorkspaceType(item.fileName)}`,
-    server: `${workspaceFolder}/${item.fileName}`,
-  }
-
-  for (let i = 0; i < item.wsInfo.scenes.length; i++) {
-    const scene = item.wsInfo.scenes[i]
-    const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
-    const pxpInfo = {
-      Name: scene,
-      Workspace: workspaceInfo,
-    }
-    await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
-
-    const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
-    await FileTools.createDirectory(absoluteWorkspacePath)
-    await FileTools.copyFile(
-      item.filePath,
-      `${absoluteWorkspacePath}/${item.fileName}`,
+  try {
+    const userPath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + user.userName}/Data/Scene`,
     )
 
-    for (let i = 0; i < item.relatedFiles.length; i++) {
-      const filePath = item.relatedFiles[i]
-      const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
-      await FileTools.copyFile(filePath, `${absoluteWorkspacePath}/${fileName}`)
+    const contentList = await FileTools.getDirectoryContent(userPath)
+
+    const workspaceName = item.fileName.substring(
+      0,
+      item.fileName.lastIndexOf('.'),
+    )
+    const workspaceFolder = _getAvailableName(
+      workspaceName,
+      contentList,
+      'directory',
+    )
+    const workspaceInfo = {
+      type: `${_getWorkspaceType(item.fileName)}`,
+      server: `${workspaceFolder}/${item.fileName}`,
     }
+
+    for (let i = 0; i < item.wsInfo.scenes.length; i++) {
+      const scene = item.wsInfo.scenes[i]
+      const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
+      const pxpInfo = {
+        Name: scene,
+        Workspace: workspaceInfo,
+      }
+      await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
+
+      const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
+      await FileTools.createDirectory(absoluteWorkspacePath)
+      await FileTools.copyFile(
+        item.filePath,
+        `${absoluteWorkspacePath}/${item.fileName}`,
+      )
+
+      for (let i = 0; i < item.relatedFiles.length; i++) {
+        const filePath = item.relatedFiles[i]
+        const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
+        await FileTools.copyFile(
+          filePath,
+          `${absoluteWorkspacePath}/${fileName}`,
+        )
+      }
+    }
+    return true
+  } catch (error) {
+    return false
   }
 }
 
 async function importDatasource(user, item) {
-  const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/Data/Datasource`,
-  )
+  try {
+    const userPath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + user.userName}/Data/Datasource`,
+    )
 
-  const contentList = await FileTools.getDirectoryContent(userPath)
+    const contentList = await FileTools.getDirectoryContent(userPath)
 
-  const sourceUdb = item.filePath
-  const sourceUdd = `${item.filePath.substring(
-    0,
-    item.filePath.lastIndexOf('.'),
-  )}.udd`
+    const sourceUdb = item.filePath
+    const sourceUdd = `${item.filePath.substring(
+      0,
+      item.filePath.lastIndexOf('.'),
+    )}.udd`
 
-  const datasourceName = item.fileName.substring(
-    0,
-    item.fileName.lastIndexOf('.'),
-  )
-  const udbName = _getAvailableName(datasourceName, contentList, 'file', 'udb')
-  const uddName = _getAvailableName(datasourceName, contentList, 'file', 'udd')
+    const datasourceName = item.fileName.substring(
+      0,
+      item.fileName.lastIndexOf('.'),
+    )
+    const udbName = _getAvailableName(
+      datasourceName,
+      contentList,
+      'file',
+      'udb',
+    )
+    const uddName = _getAvailableName(
+      datasourceName,
+      contentList,
+      'file',
+      'udd',
+    )
 
-  await FileTools.copyFile(sourceUdb, `${userPath}/${udbName}`)
-  await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
+    await FileTools.copyFile(sourceUdb, `${userPath}/${udbName}`)
+    await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
+    return true
+  } catch (error) {
+    return false
+  }
 }
 
 async function importSCI(user, item) {
@@ -114,7 +149,9 @@ async function importSCI(user, item) {
     // debugger
     await FileTools.copydir(item.directory, `${userPath}/${datasourceName}`)
     // debugger
+    return true
   } catch (e) {
+    return false
     // console.warn(e)
   }
 
@@ -224,11 +261,15 @@ async function _importDataset(
 }
 
 async function _copyFile(item, desDir) {
-  const fileName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
-  const fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
-  const contentList = await FileTools.getDirectoryContent(desDir)
-  const name = _getAvailableName(fileName, contentList, 'file', fileType)
-  return await FileTools.copyFile(item.filePath, `${desDir}/${name}`)
+  try {
+    const fileName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
+    const fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
+    const contentList = await FileTools.getDirectoryContent(desDir)
+    const name = _getAvailableName(fileName, contentList, 'file', fileType)
+    return await FileTools.copyFile(item.filePath, `${desDir}/${name}`)
+  } catch (error) {
+    return false
+  }
 }
 
 function _getAvailableName(name, fileList, type, ext = '') {
@@ -294,6 +335,7 @@ function _getWorkspaceType(path) {
 }
 
 export default {
+  importPlotLib,
   importWorkspace,
   importWorkspace3D,
   importDatasource,

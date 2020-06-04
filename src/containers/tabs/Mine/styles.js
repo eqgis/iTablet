@@ -53,6 +53,7 @@ export default StyleSheet.create({
     backgroundColor: '#303030',
     width: '100%',
     height: '43%',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: fixedSize(30),
   },
@@ -70,6 +71,7 @@ export default StyleSheet.create({
   profileHeadStyle: {
     alignItems: 'center',
     marginBottom: -fixedSize(30),
+    height: fixedSize(190),
   },
   profileAvatarStyle: {
     height: fixedSize(140),
@@ -135,6 +137,7 @@ export default StyleSheet.create({
     paddingHorizontal: fixedSize(20),
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: fixedSize(40),
   },
   searchImgStyle: {
     width: fixedSize(40),
@@ -178,11 +181,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'nowrap',
-  },
-  itemLandscapeView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    height: scaleSize(80),
   },
   itemImg: {
     width: scaleSize(80),

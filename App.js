@@ -16,7 +16,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import { setUser } from './src/redux/models/user'
+import { setUser, setUsers } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting ,setMap2Dto3D} from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -50,7 +50,7 @@ import { ConstPath, ConstInfo, ConstToolType, ThemeType} from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation} from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils} from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import UserType from './src/constants/UserType'
 import { getLanguage } from './src/language/index'
@@ -140,6 +140,7 @@ class AppRoot extends Component {
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
+    setUsers: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
@@ -185,6 +186,19 @@ class AppRoot extends Component {
     }
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
+    // 获取用户登录记录
+    ConfigUtils.getUsers().then(async users => {
+      if (users.length === 0) {
+        // 若没有任何用户登录，则默认Customer登录
+        this.props.setUser({
+          userName: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+      } else {
+        await this.props.setUsers(users)
+      }
+      this.login()
+    })
   }
 
   UNSAFE_componentWillMount(){
@@ -273,7 +287,6 @@ class AppRoot extends Component {
 
   componentDidMount () {
     this.inspectEnvironment()
-    this.login()
     this.reCircleLogin()
     if(this.props.peripheralDevice !== 'local') {
       SLocation.changeDevice(this.props.peripheralDevice)
@@ -339,22 +352,22 @@ class AppRoot extends Component {
 
   back = () => {
     // if (Platform.OS === 'android') {
-      // 防止初始化时，nav为空
-      let nav = this.props.nav && this.props.nav.routes
-        ? this.props.nav
-        : NavigationService.getTopLevelNavigator().state.nav
-      let current = nav.routes[nav.index]
-      let key
-      while (current.routes) {
-        current = current.routes[current.index]
-      }
-      key = current.routeName
-      if (this.props.backActions[key] && typeof this.props.backActions[key] === 'function') {
-        this.props.backActions[key]()
-        return true
-      } else {
-        return false
-      }
+    // 防止初始化时，nav为空
+    let nav = this.props.nav && this.props.nav.routes
+      ? this.props.nav
+      : NavigationService.getTopLevelNavigator().state.nav
+    let current = nav.routes[nav.index]
+    let key
+    while (current.routes) {
+      current = current.routes[current.index]
+    }
+    key = current.routeName
+    if (this.props.backActions[key] && typeof this.props.backActions[key] === 'function') {
+      this.props.backActions[key]()
+      return true
+    } else {
+      return false
+    }
     // }
   }
 
@@ -924,29 +937,34 @@ class AppRoot extends Component {
         confirmBtnTitle={getLanguage(this.props.language).Prompt.YES}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         confirmAction={async () => {
-          this.import.setDialogVisible(false)
-          GLOBAL.Loading.setLoading(
-            true,
-            getLanguage(this.props.language).Friends.IMPORT_DATA,
-          )
-          let homePath = global.homePath
-          let importPath = homePath + '/iTablet/Import'
-          let filePath = importPath + '/import.zip'
-          let isImport = false
-          if(await FileTools.fileIsExist(filePath)) {
-            await FileTools.unZipFile(filePath, importPath)
-            let dataList = await DataHandler.getExternalData(importPath)
-            //暂时只支持单个工作空间的导入
-            if(dataList.length === 1 && dataList[0].fileType === 'workspace') {
-              await DataHandler.importWorkspace(dataList[0])
-              isImport = true
+          try {
+            this.import.setDialogVisible(false)
+            GLOBAL.Loading.setLoading(
+              true,
+              getLanguage(this.props.language).Friends.IMPORT_DATA,
+            )
+            let homePath = global.homePath
+            let importPath = homePath + '/iTablet/Import'
+            let filePath = importPath + '/import.zip'
+            let isImport = false
+            if(await FileTools.fileIsExist(filePath)) {
+              await FileTools.unZipFile(filePath, importPath)
+              let dataList = await DataHandler.getExternalData(importPath)
+              let results = []
+              for(let i = 0; i < dataList.length; i++) {
+                results.push(await this._importExternalData(dataList[i]))
+              }
+              isImport = results.some(value => value === true)
             }
+            FileTools.deleteFile(importPath)
+            isImport
+              ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
+              : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+            GLOBAL.Loading.setLoading(false)
+          } catch (error) {
+            Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+            GLOBAL.Loading.setLoading(false)
           }
-          FileTools.deleteFile(importPath)
-          isImport
-            ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
-            : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-          GLOBAL.Loading.setLoading(false)
         }}
         cancelAction={ async () => {
           let homePath = global.homePath
@@ -961,6 +979,38 @@ class AppRoot extends Component {
         {this.renderImportDialogChildren()}
       </Dialog>
     )
+  }
+
+  _importExternalData = async item => {
+    let user = this.props.user.currentUser
+    let type = item.fileType
+    let result = false
+    switch (type) {
+      case 'plotting':
+        result = await DataHandler.importPlotLib(item)
+        break
+      case 'workspace':
+        result = await DataHandler.importWorkspace(item)
+        break
+      case 'workspace3d':
+        result = await DataHandler.importWorkspace3D(user, item)
+        break
+      case 'datasource':
+        result = await DataHandler.importDatasource(user, item)
+        break
+      case 'sci':
+        result = await DataHandler.importSCI(user, item)
+        break
+      case 'color':
+        result = await DataHandler.importColor(user, item)
+        break
+      case 'symbol':
+        result = await DataHandler.importSymbol(user, item)
+        break
+      default:
+        break
+    }
+    return result
   }
 
   _renderProtocolDialog = () => {
@@ -1146,6 +1196,7 @@ const mapStateToProps = state => {
 const AppRootWithRedux = connect(mapStateToProps, {
   setNav,
   setUser,
+  setUsers,
   openWorkspace,
   setShow,
   closeMap,

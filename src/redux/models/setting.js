@@ -98,6 +98,10 @@ export const setLanguage = (
       language = 'TR'
     } else if (locale.indexOf('ja-') === 0) {
       language = 'JA'
+    } else if (locale.indexOf('fr-') === 0) {
+      language = 'FR'
+    } else if (locale.indexOf('ar-') === 0) {
+      language = 'AR'
     } else {
       language = 'EN'
     }

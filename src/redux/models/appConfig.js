@@ -20,7 +20,6 @@ export const setModules = (params, cb = () => {}) => async (
     let isInit = oldMapModules.length === 0
     for (let i = 0; i < params.mapModules.length; i++) {
       let item = params.mapModules[i]
-      // if (isInit || oldMapModules.indexOf(item) < 0 && !item.isNew) {
       if (isInit|| oldMapModules.indexOf(item) >= 0) {
         params.oldMapModules.push(item)
       }

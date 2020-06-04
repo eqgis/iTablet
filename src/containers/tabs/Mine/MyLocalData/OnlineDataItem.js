@@ -61,6 +61,11 @@ export default class OnlineDataItem extends Component {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       serverUrl = this.props.user.currentUser.serverUrl
     }
+    let index = this.props.item.fileName.lastIndexOf('.')
+    let fileName = this.props.item.fileName
+    if (index !== -1) {
+      fileName = this.props.item.fileName.substring(0, index)
+    }
     return (
       <TouchableOpacity
         style={{
@@ -121,7 +126,7 @@ export default class OnlineDataItem extends Component {
                 fontSize: size.fontSize.fontSizeXl,
               }}
             >
-              {this.props.item.fileName}
+              {fileName}
             </Text>
             <Text
               ellipsizeMode={'middle'}

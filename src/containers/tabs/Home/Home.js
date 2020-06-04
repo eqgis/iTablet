@@ -74,7 +74,7 @@ export default class Home extends Component {
       }
     })
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
     return (
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||

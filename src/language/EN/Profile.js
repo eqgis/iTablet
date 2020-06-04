@@ -157,6 +157,7 @@ const Profile = {
   ENTER_DATASOURCE_NAME: 'Please enter datasource name',
   OPEN_DATASROUCE_FAILED: 'Failed to open datasource',
   DATASOURCE_TYPE: 'Datasource type',
+  SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'Select format for export',
   DATASET_EXPORT_NOT_SUPPORTED: 'Export of this dataset is not supported yet',

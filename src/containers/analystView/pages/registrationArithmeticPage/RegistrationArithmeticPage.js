@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, TextBtn } from '../../../../components'
+import { Container } from '../../../../components'
 
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -15,6 +15,8 @@ export default class RegistrationArithmeticPage extends Component {
 
   constructor(props) {
     super(props)
+    const { params } = this.props.navigation.state
+    this.cb = params && params.cb
 
     let tempData = this.getData()
 
@@ -46,9 +48,7 @@ export default class RegistrationArithmeticPage extends Component {
   }
 
   onPressItem(item) {
-    // onPressItem() {
-    GLOBAL.RegistrationArithmeticMode = item.arithmeticMode
-    NavigationService.navigate('RegistrationPage')
+    this.cb && this.cb(item)
   }
 
   exit() {
@@ -99,13 +99,13 @@ export default class RegistrationArithmeticPage extends Component {
             .REGISTRATION_ARITHMETIC,
           navigation: this.props.navigation,
           backAction: this.back,
-          headerRight: (
-            <TextBtn
-              btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
-              textStyle={styles.headerBtnTitle}
-              btnClick={this.exit}
-            />
-          ),
+          // headerRight: (
+          //   <TextBtn
+          //     btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
+          //     textStyle={styles.headerBtnTitle}
+          //     btnClick={this.exit}
+          //   />
+          // ),
         }}
       >
         {this.renderRows()}

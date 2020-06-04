@@ -4,7 +4,7 @@ import { FlatList, View, TouchableOpacity, Image } from 'react-native'
 // import { FileTools } from '../../../../native'
 // import { SMap, EngineType, SOnlineService } from 'imobile_for_reactnative'
 // import UserType from '../../../../constants/UserType'
-import { Container } from '../../../../components'
+import { Container, PopMenu } from '../../../../components'
 // import MyDataPopupModal from '../MyData/MyDataPopupModal'
 import BaseMapItem from './BaseMapItem'
 import { color } from '../../../../styles'
@@ -19,6 +19,7 @@ export default class MyBaseMap extends Component {
     navigation: Object,
     baseMaps: Object,
     setBaseMap: () => {},
+    device: Object,
   }
 
   constructor(props) {
@@ -34,6 +35,10 @@ export default class MyBaseMap extends Component {
     if (!this.curUserBaseMaps) {
       this.curUserBaseMaps = this.props.baseMaps['default']
     }
+    let count = this.curUserBaseMaps.length
+    for (let i = 0; i < count; i++) {
+      this.curUserBaseMaps[i].index = i
+    }
     this.uploadList = []
   }
 
@@ -47,12 +52,22 @@ export default class MyBaseMap extends Component {
         item={item}
         index={index}
         saveItemInfo={this.saveItemInfo}
+        itemOnPress={this.itemOnPress}
       />
     )
   }
 
   _keyExtractor = index => {
     return index
+  }
+
+  itemOnPress = (item, event) => {
+    this.itemInfo = item
+    this.BaseMapPopupModal &&
+      this.BaseMapPopupModal.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
   }
 
   // saveItemInfo = ({ item, index }) => {
@@ -98,6 +113,61 @@ export default class MyBaseMap extends Component {
     )
   }
 
+  _closeModal = () => {
+    this.BaseMapPopupModal && this.BaseMapPopupModal.setVisible(false)
+  }
+
+  deleteData = () => {
+    this._closeModal()
+    if (this.itemInfo && this.itemInfo.index !== undefined) {
+      //下标为index的item
+
+      let list = this.curUserBaseMaps
+      for (let i = 0, n = list.length; i < n; i++) {
+        if (
+          list[i].DSParams.server === this.itemInfo.DSParams.server &&
+          list[i].mapName === this.itemInfo.mapName &&
+          list[i].index === this.itemInfo.index
+        ) {
+          list.splice(i, 1)
+          break
+        }
+      }
+      let count = list.length
+      for (let i = 0; i < count; i++) {
+        list[i].index = i
+      }
+      this.props.setBaseMap &&
+        this.props.setBaseMap({
+          userId: this.props.user.currentUser.userId,
+          baseMaps: list,
+        })
+    }
+  }
+
+  getPopMenuData = () => {
+    let data = []
+    let item = this.itemInfo
+    if (item) {
+      data.push({
+        title: getLanguage(this.props.language).Profile.DELETE_DATA,
+        action: this.deleteData,
+      })
+    }
+    return data
+  }
+
+  renderPopupMenu = () => {
+    return (
+      <PopMenu
+        ref={ref => (this.BaseMapPopupModal = ref)}
+        getData={this.getPopMenuData}
+        device={this.props.device}
+        hasCancel={true}
+      />
+    )
+  }
+
   render() {
     return (
       <Container
@@ -126,6 +196,7 @@ export default class MyBaseMap extends Component {
           )}
         />
         {/*{this._showMyDataPopupModal()}*/}
+        {this.renderPopupMenu()}
       </Container>
     )
   }

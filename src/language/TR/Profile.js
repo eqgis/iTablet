@@ -158,6 +158,7 @@ const Profile = {
   ENTER_DATASOURCE_NAME: 'Lütfen verikaynağı adı girin',
   OPEN_DATASROUCE_FAILED: 'Verikaynağı açılamadı',
   DATASOURCE_TYPE: 'veri türü',
+  SERVICE_TYPE: 'Servis tipi',
 
   SELECT_DATASET_EXPORT_TYPE: 'Dışa Aktarma için format seçin',
   DATASET_EXPORT_NOT_SUPPORTED:

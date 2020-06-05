@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native'
 import ToolbarModule from '../modules/ToolbarModule'
+import { getThemeAssets } from '../../../../../assets'
 
 export default class ToolBarSectionList extends React.Component {
   props: {
@@ -252,12 +253,12 @@ export default class ToolBarSectionList extends React.Component {
     if (this.props.renderSectionHeader) {
       return this.props.renderSectionHeader({ section })
     }
-    let selectImg = this.state.sectionSelected
-      ? require('../../../../../assets/mapTools/icon_multi_selected.png')
-      : require('../../../../../assets/mapTools/icon_multi_unselected.png')
     let allSelectImg = this.state.allSelected
       ? require('../../../../../assets/mapTools/icon_multi_selected.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected.png')
+    let showSysImg = this.state.sectionSelected
+      ? getThemeAssets().attribute.icon_attribute_show
+      : getThemeAssets().attribute.icon_attribute_hide
     return (
       <TouchableHighlight
         activeOpacity={this.props.activeOpacity}
@@ -299,17 +300,17 @@ export default class ToolBarSectionList extends React.Component {
               onPress={() => this.sectionSelect(section)}
             >
               <Image
-                source={selectImg}
+                source={showSysImg}
                 resizeMode={'contain'}
-                style={styles.selectImg}
+                style={styles.showSysImg}
               />
-              <Text style={[styles.sectionSelectedTitle]}>
-                {
+              {/* <Text style={[styles.sectionSelectedTitle]}> */}
+              {/* {
                   getLanguage(global.language).Map_Main_Menu
                     .THEME_HIDE_SYSTEM_FIELDS
-                }
-                {/* 隐藏系统字段 */}
-              </Text>
+                } */}
+              {/* 隐藏系统字段 */}
+              {/* </Text> */}
             </TouchableOpacity>
           )}
           {section.allSelectType && (
@@ -851,6 +852,10 @@ const styles = StyleSheet.create({
   selectImg: {
     width: scaleSize(40),
     height: scaleSize(40),
+  },
+  showSysImg: {
+    width: scaleSize(50),
+    height: scaleSize(50),
   },
   section_dataset_type: {
     width: scaleSize(50),

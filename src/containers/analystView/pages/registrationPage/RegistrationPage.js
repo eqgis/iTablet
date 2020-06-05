@@ -414,7 +414,7 @@ export default class RegistrationPage extends Component {
               height: scaleSize(50),
               width: scaleSize(50),
             }}
-            source={getPublicAssets().mapTools.tools_new_thematic_map}
+            source={getPublicAssets().mapTools.tools_modify_thematic_map}
           />
           <Text
             style={{

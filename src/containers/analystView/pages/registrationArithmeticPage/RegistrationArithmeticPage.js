@@ -44,6 +44,10 @@ export default class RegistrationArithmeticPage extends Component {
       arithmeticMode: 4,
     })
 
+    //判断是否含有CAD图层，如果有CAD图层，屏蔽线性和二次线配准
+    if (GLOBAL.IsHaveCadDataset) {
+      data.splice(0, 2)
+    }
     return data
   }
 

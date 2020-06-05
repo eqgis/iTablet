@@ -15,7 +15,7 @@ export default class RegistrationDatasetPage extends Component {
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state
-    this.pageType = params && params.pageType
+    this.pageType = params && params.pageType //pageType等于1表示快速配准，否则是新建配准
     this.userName = params && params.userName
 
     let title = ''
@@ -122,10 +122,49 @@ export default class RegistrationDatasetPage extends Component {
     return count
   }
 
+  isHaveCadDataset(datasourceInfos) {
+    for (let i = 0; i < datasourceInfos.length; i++) {
+      let datasourceInfo = datasourceInfos[i]
+      let datasourceInfoDataLength = datasourceInfo.data.length
+      for (
+        let detasetInfoIndex = 0;
+        detasetInfoIndex < datasourceInfoDataLength;
+        detasetInfoIndex++
+      ) {
+        let tempDetasetInfoIndex = datasourceInfo.data[detasetInfoIndex]
+        let tempData = this.state.dataSourceAndSets
+        for (
+          let datasourceIndex = 0;
+          datasourceIndex < tempData.length;
+          datasourceIndex++
+        ) {
+          let tempDatasource = tempData[datasourceIndex]
+          if (datasourceInfo.datasourceName === tempDatasource.alias) {
+            for (
+              let datasetIndex = 0;
+              datasetIndex < tempDatasource.data.length;
+              datasetIndex++
+            ) {
+              if (tempDetasetInfoIndex === datasetIndex) {
+                //判断是否是CAD图层
+                if (tempDatasource.data[datasetIndex].datasetType === 149) {
+                  return true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return false
+  }
+
   confirm = () => {
     let _rectifyDatasetInfo = GLOBAL.RegistrationLinkageList.getSelectData()
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
+      let bHaveCadDataset = this.isHaveCadDataset(_rectifyDatasetInfo)
+      GLOBAL.IsHaveCadDataset = bHaveCadDataset
       GLOBAL.RectifyDatasetInfo = _rectifyDatasetInfo
       if (this.pageType && this.pageType == 1) {
         NavigationService.navigate('RegistrationFastPage', {

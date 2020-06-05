@@ -377,8 +377,8 @@ export default class Home extends Component {
         //{'取消'}
         // backgroundStyle={styles.dialogBackground}
         opacity={1}
-        opacityStyle={[styles.opacityView, { height: scaleSize(340) }]}
-        style={[styles.dialogBackground, { height: scaleSize(340) }]}
+        opacityStyle={[styles.opacityView, { height: scaleSize(370) }]}
+        style={[styles.dialogBackground, { height: scaleSize(370) }]}
         cancelAction={this.cancel}
       >
         {this.renderDialogChildren()}

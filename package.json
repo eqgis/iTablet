@@ -19,8 +19,13 @@
     "lint-fix": "eslint src --fix"
   },
   "lint-staged": {
-    "{src,__tests__}/**/*.js": [
+    "{src,__tests__}/!(language)/**/*.js": [
       "prettier --single-quote --trailing-comma all --no-semi --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "{src,__tests__}/language/**/*.js": [
+      "prettier --print-width 200 --single-quote --trailing-comma all --no-semi --write",
       "eslint --fix",
       "git add"
     ]

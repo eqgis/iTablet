@@ -31,8 +31,10 @@ const styles = StyleSheet.create({
     backgroundColor: color.separateColorGray,
   },
   title: {
+    textAlign: 'center',
     fontSize: size.fontSize.fontSizeSm,
     color: color.bgG,
+    paddingHorizontal: scaleSize(10),
   },
   btnTitle: {
     fontSize: size.fontSize.fontSizeXl,

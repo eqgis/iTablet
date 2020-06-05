@@ -490,6 +490,7 @@ const styles = StyleSheet.create({
     padding: scaleSize(5),
     borderRadius: scaleSize(5),
     marginVertical: scaleSize(10),
+    marginRight: scaleSize(20),
   },
   addStyle: {
     marginTop: scaleSize(50),

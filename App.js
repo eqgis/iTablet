@@ -35,6 +35,7 @@ import {
   setTemplate,
 } from './src/redux/models/template'
 import { setModules } from './src/redux/models/appConfig'
+import { setMapModule } from './src/redux/models/mapModules'
 import { Dialog, Loading } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
@@ -61,6 +62,7 @@ import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
 import config from './configs/config'
+import _mapModules, { mapModules } from './configs/mapModules'
 
 const {persistor, store} = ConfigStore()
 
@@ -162,6 +164,7 @@ class AppRoot extends Component {
     setMap2Dto3D: PropTypes.func,
     setCurrentLayer: PropTypes.func,
     setModules: PropTypes.func,
+    setMapModule: PropTypes.func,
     setLicenseInfo: PropTypes.func,
   }
 
@@ -170,11 +173,12 @@ class AppRoot extends Component {
     this.state = {
       sceneStyle: styles.invisibleMap,
       import: null,
+      isInit: false,
     }
     this.props.setModules(config) // 设置模块
     this.initGlobal()
     PT.initCustomPrototype()
-    this.login = this.login.bind(this)
+    // this.login = this.login.bind(this)
     this.reCircleLogin = this.reCircleLogin.bind(this)
 
     if(config.language && !this.props.configLangSet) {
@@ -186,24 +190,59 @@ class AppRoot extends Component {
     }
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
-    // 获取用户登录记录
-    ConfigUtils.getUsers().then(async users => {
-      if (users.length === 0) {
-        // 若没有任何用户登录，则默认Customer登录
-        this.props.setUser({
-          userName: 'Customer',
-          userType: UserType.PROBATION_USER,
-        })
-      } else {
-        await this.props.setUsers(users)
-      }
-      this.login()
-    })
   }
 
   UNSAFE_componentWillMount(){
     SOnlineService.init()
-    this.initOrientation()
+    // this.initOrientation()
+  }
+
+  /** 初始化用户数据 **/
+  initUser = async () => {
+    try {
+      // 获取用户登录记录
+      let users = await ConfigUtils.getUsers()
+      let userName = 'Customer'
+      if (users.length === 0) {
+        // 若没有任何用户登录，则默认Customer登录
+        this.props.setUser({
+          userName: userName,
+          userType: UserType.PROBATION_USER,
+        })
+      } else {
+        await this.props.setUsers(users)
+        userName = users[0].userName
+      }
+      await this.getUserApplets(userName)
+    } catch (e) {
+
+    }
+  }
+
+  getUserApplets = async userName => {
+    try {
+      if (userName === 'Customer') {
+        await ConfigUtils.recordApplets(userName, _mapModules)
+      }
+      // 获取当前用户的小程序
+      let applets = await ConfigUtils.getApplets(userName)
+      if (applets.length === 0) {
+        applets = _mapModules
+        await ConfigUtils.recordApplets(userName, applets)
+      }
+      let myMapModules = []
+      applets.map(key => {
+        for (let item of mapModules) {
+          if (item.key === key) {
+            myMapModules.push(item)
+            break
+          }
+        }
+      })
+      await this.props.setMapModule(myMapModules)
+    } catch (e) {
+  
+    }
   }
 
   initGlobal = () => {
@@ -254,7 +293,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  async login(){
+  login = async () => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -301,14 +340,20 @@ class AppRoot extends Component {
     ;(async function () {
       await this.initDirectories()
       await FileTools.initUserDefaultData(this.props.user.currentUser.userName || 'Customer')
+      await this.initUser()
       SOnlineService.init()
       // SOnlineService.removeCookie()
       SIPortalService.init()
-      // await this.initOrientation()
       await this.getImportState()
       await this.addImportExternalDataListener()
       await this.addGetShareResultListener()
       await this.openWorkspace()
+      await this.initOrientation()
+
+      // 显示界面，之前的为预加载
+      this.setState({isInit: true}, () => {
+        this.login()
+      })
     }).bind(this)()
 
     GLOBAL.clearMapData = () => {
@@ -327,6 +372,13 @@ class AppRoot extends Component {
 
     Platform.OS === 'android' &&
     BackHandler.addEventListener('hardwareBackPress', this.back)
+  }
+
+  componentDidUpdate(prevProps) {
+    // 切换用户，重新加载用户配置文件
+    if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
+      this.getUserApplets(this.props.user.currentUser.userName)
+    }
   }
 
   openWorkspace = async () => {
@@ -1125,6 +1177,9 @@ class AppRoot extends Component {
   }
 
   render () {
+    if (!this.state.isInit) {
+      return <Loading info="Loading"/>
+    }
     return (
       <View style={{flex: 1}}>
         <View style={[
@@ -1215,13 +1270,14 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setLanguage,
   setMap2Dto3D,
   setModules,
+  setMapModule,
   setLicenseInfo,
 })(AppRoot)
 
 const App = () =>
   <Provider store={store}>
-    <PersistGate loading={Platform.OS === 'android' ? null : <Loading info="Loading"/>} persistor={persistor}>
-      {/*<PersistGate loading={null} persistor={persistor}>*/}
+    {/*<PersistGate loading={<Loading info="Loading"/>} persistor={persistor}>*/}
+    <PersistGate loading={null} persistor={persistor}>
       <AppRootWithRedux />
     </PersistGate>
   </Provider>

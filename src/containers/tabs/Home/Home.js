@@ -64,7 +64,7 @@ export default class Home extends Component {
       dialogCheck: false,
       downloadData: null,
     }
-    this.props.setMapModule(mapModules)
+    // this.props.setMapModule(mapModules)
   }
 
   componentDidMount() {

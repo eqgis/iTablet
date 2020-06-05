@@ -253,6 +253,7 @@ const Analyst_Labels = {
   CONVERTTING: 'Convertting',
   CONVERT_SUCCESS: 'Convert success',
   CONVERT_FAILED: 'Convert failed',
+  ARITHMETIC: 'Arithmetic',
 }
 
 const Convert_Unit = {

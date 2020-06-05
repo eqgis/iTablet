@@ -11,6 +11,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   StatusBar,
+  TextInput,
 } from 'react-native'
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -63,6 +64,10 @@ import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
 import config from './configs/config'
 import _mapModules, { mapModules } from './configs/mapModules'
+
+//字体不随系统字体变化
+Text.defaultProps = Object.assign({}, Text.defaultProps, {allowFontScaling: false})
+TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false})
 
 const {persistor, store} = ConfigStore()
 

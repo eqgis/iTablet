@@ -254,6 +254,7 @@ const Analyst_Labels = {
   CONVERTTING: '変換中',
   CONVERT_SUCCESS: '変換に成功しました',
   CONVERT_FAILED: '変換に失敗しました',
+  ARITHMETIC: 'アルゴリズム',
 }
 
 const Convert_Unit = {

@@ -164,6 +164,15 @@ export default class RegistrationPage extends Component {
   }
 
   confirm = async () => {
+    //判断是否有无效点
+    let _isAllPointEffect = await SRectifyView.isAllPointEffect()
+    if (!_isAllPointEffect) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Prompt
+          .REGISTRATION_POINTS_NUMBER_ERROR,
+      )
+      return
+    }
     let controlPoints = await SRectifyView.getControlPoints()
     let result = this.checkControlPoints(controlPoints)
     if (result) {
@@ -250,6 +259,15 @@ export default class RegistrationPage extends Component {
   }
 
   export = async () => {
+    //判断是否有无效点
+    let _isAllPointEffect = await SRectifyView.isAllPointEffect()
+    if (!_isAllPointEffect) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Prompt
+          .REGISTRATION_POINTS_NUMBER_ERROR,
+      )
+      return
+    }
     //检查控制点的数量
     let controlPoints = await SRectifyView.getControlPoints()
     let result = this.checkControlPoints(controlPoints)
@@ -304,7 +322,7 @@ export default class RegistrationPage extends Component {
           right: scaleSize(20),
           marginBottom: 'auto',
           marginTop: 'auto',
-          height: scaleSize(460),
+          height: scaleSize(430),
           backgroundColor: color.white,
 
           elevation: 20,
@@ -421,12 +439,9 @@ export default class RegistrationPage extends Component {
               fontSize: scaleSize(24),
               width: scaleSize(50),
             }}
-            numberOfLines={2}
+            numberOfLines={1}
           >
-            {
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_ARITHMETIC
-            }
+            {getLanguage(global.language).Analyst_Labels.ARITHMETIC}
           </Text>
         </TouchableOpacity>
       </View>
@@ -510,15 +525,15 @@ export default class RegistrationPage extends Component {
   detalShow = async () => {
     let _controlPoints = await SRectifyView.getControlPoints()
     this.tempControlPoints = _controlPoints
-    if (
-      _controlPoints.originalPoints.length != _controlPoints.targetPoints.length
-    ) {
-      Toast.show(
-        getLanguage(global.language).Analyst_Prompt
-          .REGISTRATION_POINTS_NUMBER_ERROR,
-      )
-      return
-    }
+    // if (
+    //   _controlPoints.originalPoints.length != _controlPoints.targetPoints.length
+    // ) {
+    //   Toast.show(
+    //     getLanguage(global.language).Analyst_Prompt
+    //       .REGISTRATION_POINTS_NUMBER_ERROR,
+    //   )
+    //   return
+    // }
     let points = this.checkPoints(_controlPoints)
 
     this.setState({
@@ -549,8 +564,14 @@ export default class RegistrationPage extends Component {
         if (!this.myIsNaN(originalX)) {
           originalX = parseFloat(originalX)
         }
+        if (isNaN(originalX)) {
+          originalX = 0
+        }
         if (!this.myIsNaN(originalY)) {
           originalY = parseFloat(originalY)
+        }
+        if (isNaN(originalY)) {
+          originalY = 0
         }
         SRectifyView.setOriginalControlPoint(i, originalX, originalY)
       }
@@ -564,8 +585,14 @@ export default class RegistrationPage extends Component {
         if (!this.myIsNaN(targetX)) {
           targetX = parseFloat(targetX)
         }
+        if (isNaN(targetX)) {
+          targetX = 0
+        }
         if (!this.myIsNaN(targetY)) {
           targetY = parseFloat(targetY)
+        }
+        if (isNaN(targetY)) {
+          targetY = 0
         }
         SRectifyView.setTargetControlPoint(i, targetX, targetY)
       }
@@ -685,7 +712,13 @@ export default class RegistrationPage extends Component {
               // let originalX=text.replace(/[^\-?\d.]/g,'')
               let originalX = this.checkNum(text)
               let _showPointsData = this.state.showPointsData
-              if (_showPointsData[index].targetPoint === null) {
+              // if(_showPointsData.length<index){
+              //   let count =index - _showPointsData.length +1
+              //   for(let i=0;i<count;i++){
+              //     _showPointsData.push({targetPoint:null,originalPoint:null})
+              //   }
+              // }
+              if (_showPointsData[index].originalPoint === null) {
                 _showPointsData[index].originalPoint = { x: originalX, y: '' }
               } else {
                 _showPointsData[index].originalPoint.x = originalX
@@ -709,7 +742,7 @@ export default class RegistrationPage extends Component {
             onChangeText={text => {
               let originalY = this.checkNum(text)
               let _showPointsData = this.state.showPointsData
-              if (_showPointsData[index].targetPoint === null) {
+              if (_showPointsData[index].originalPoint === null) {
                 _showPointsData[index].originalPoint = { x: '', y: originalY }
               } else {
                 _showPointsData[index].originalPoint.y = originalY

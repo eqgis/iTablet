@@ -400,13 +400,12 @@ export default class NavigationStartButton extends React.Component {
             {getLanguage(GLOBAL.language).Map_Main_Menu.DISTANCE + length}
           </Text>
         }
-        {this.renderRoad()}
+        {!this.state.isroad && this.renderRoad()}
       </View>
     )
   }
 
   renderRoad = () => {
-    let maxHeight = this.state.isLandScape ? scaleSize(600) : scaleSize(400)
     let data = [
       {
         text: getLanguage(this.language).Map_Main_Menu.START_FROM_START_POINT,
@@ -420,23 +419,12 @@ export default class NavigationStartButton extends React.Component {
       },
     ]
     return (
-      <View>
-        {!this.state.isroad && (
-          <View
-            style={{
-              flexDirection: 'column',
-              width: '100%',
-              height: maxHeight,
-            }}
-          >
-            <FlatList
-              data={data}
-              renderItem={this.renderItem}
-              keyExtractor={(item, index) => item.toString() + index}
-            />
-          </View>
-        )}
-      </View>
+      <FlatList
+        style={{ flex: 1 }}
+        data={data}
+        renderItem={this.renderItem}
+        keyExtractor={(item, index) => item.toString() + index}
+      />
     )
   }
 
@@ -446,7 +434,7 @@ export default class NavigationStartButton extends React.Component {
         <Text
           style={{ fontSize: setSpText(24) }}
           numberOfLines={1}
-          ellipsizeMode={'tail'}
+          ellipsizeMode={'head'}
         >
           {GLOBAL.ENDNAME}
         </Text>
@@ -459,6 +447,7 @@ export default class NavigationStartButton extends React.Component {
       return (
         <Animated.View
           style={{
+            flex: 1,
             position: 'absolute',
             width: this.state.width,
             bottom: 0,
@@ -489,6 +478,7 @@ export default class NavigationStartButton extends React.Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: scaleSize(20),
+                  marginRight: scaleSize(20),
                 }}
                 onPress={() => {
                   this.changeHeight()
@@ -507,7 +497,6 @@ export default class NavigationStartButton extends React.Component {
             <TouchableOpacity
               activeOpacity={0.5}
               style={{
-                marginLeft: scaleSize(20),
                 height: scaleSize(60),
                 flex: 1,
                 borderRadius: 5,
@@ -515,6 +504,7 @@ export default class NavigationStartButton extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: scaleSize(20),
+                marginRight: scaleSize(20),
               }}
               onPress={() => {
                 this.realNavigation()
@@ -532,7 +522,6 @@ export default class NavigationStartButton extends React.Component {
             <TouchableOpacity
               activeOpacity={0.5}
               style={{
-                marginLeft: scaleSize(20),
                 height: scaleSize(60),
                 flex: 1,
                 borderRadius: 5,

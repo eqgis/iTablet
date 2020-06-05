@@ -118,7 +118,7 @@ const Friends = {
   EXIT_COWORK: 'خروج من مساحة العمل التعاونية',
   GO_COWORK: 'العمل التعاونى',
   ALERT_EXIT_COWORK: 'هل تريد غلق مساحة العمل التعاونية الحالية؟',
-  SHARE_DATASET: 'شارك مجموعة البيانات في نفس الوقت',
+  SHARE_DATASET: 'شارك مجموعة البيانات',
   // system text
   SYS_MSG_PIC: 'صورة',
   SYS_MSG_MAP: 'خريطة',

@@ -328,6 +328,8 @@ const Profile = {
   COLLECT_SCENE_RENAME_SUCCEED: '重命名成功',
   COLLECT_SCENE_ADD_REMARK: '添加备注',
   COLLECT_SCENE_ADD_REMARK_SUCCEED: '添加备注成功',
+
+  CHOOSE_COLOR: 'Sélectionner la couleur',
 }
 
 export { Profile }

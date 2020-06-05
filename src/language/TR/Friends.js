@@ -123,7 +123,7 @@ const Friends = {
   GO_COWORK: 'Ortak çalışma',
   ALERT_EXIT_COWORK:
     'Mevcut ortak çalışma haritasını kapatmak istiyor musunuz?',
-  SHARE_DATASET: 'Veri kümesini aynı anda paylaşın',
+  SHARE_DATASET: 'Veri kümesini paylaşın',
   // system text
   SYS_MSG_PIC: '[RESİM]',
   SYS_MSG_MAP: '[HARİTA]',

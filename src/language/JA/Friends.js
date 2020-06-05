@@ -120,7 +120,7 @@ const Friends = {
   EXIT_COWORK: 'コラボレーションを閉じる',
   GO_COWORK: 'コラボレーション',
   ALERT_EXIT_COWORK: '現在のコラボレーションマップを閉じますか?',
-  SHARE_DATASET: '対応データセットを同時にシェア',
+  SHARE_DATASET: '対応データセットをシェア',
   // system text
   SYS_MSG_PIC: '[画像]',
   SYS_MSG_MAP: '[マップ]',

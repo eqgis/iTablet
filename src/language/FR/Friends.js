@@ -124,7 +124,7 @@ const Friends = {
   EXIT_COWORK: 'Quitter le coworking',
   GO_COWORK: 'Coworking',
   ALERT_EXIT_COWORK: 'Voulez-vous fermer la carte de coworking actuelle?',
-  SHARE_DATASET: "Partager l'ensemble de données en même temps",
+  SHARE_DATASET: "Partager l'ensemble de données",
   // system text
   SYS_MSG_PIC: '[IMAGE]',
   SYS_MSG_MAP: 'CARTE',

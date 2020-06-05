@@ -324,5 +324,7 @@ const Profile = {
   COLLECT_SCENE_RENAME_SUCCEED: 'Başarıyla yeniden adlandırıldı',
   COLLECT_SCENE_ADD_REMARK: 'Not ekle',
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Not başarıyla eklendi',
+
+  CHOOSE_COLOR: 'Renk Seç',
 }
 export { Profile }

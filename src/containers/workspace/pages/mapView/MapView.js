@@ -1859,7 +1859,7 @@ export default class MapView extends React.Component {
         visible,
         loadingAction,
         cb,
-        this.backPositon,
+        // this.backPositon,
       )
   }
 

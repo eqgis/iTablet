@@ -253,6 +253,7 @@ const Analyst_Labels = {
   CONVERTTING: '转换中',
   CONVERT_SUCCESS: '转换成功',
   CONVERT_FAILED: '转换失败',
+  ARITHMETIC: '算法',
 }
 
 const Convert_Unit = {

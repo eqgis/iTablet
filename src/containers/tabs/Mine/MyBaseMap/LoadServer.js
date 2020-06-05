@@ -366,7 +366,7 @@ export default class LoadServer extends Component {
             }}
           >
             <Text state={styles.textRadio}>
-              {getLanguage(global.language).Profile.DATASOURCE_TYPE + ' :'}
+              {getLanguage(global.language).Profile.SERVICE_TYPE + ' :'}
             </Text>
             <TouchableOpacity
               style={[styles.itemView, { alignItems: 'center' }]}

@@ -255,6 +255,7 @@ const Analyst_Labels = {
   CONVERTTING: 'dönüştürme',
   CONVERT_SUCCESS: 'Dönüşüm başarılı',
   CONVERT_FAILED: 'Dönüştürülemedi',
+  ARITHMETIC: 'algoritması',
 }
 
 const Convert_Unit = {

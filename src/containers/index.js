@@ -18,6 +18,7 @@ import {
   MySymbol,
   MyTemplate,
   MyColor,
+  MyApplet,
   Personal,
   ToggleAccount,
   Setting,
@@ -620,6 +621,13 @@ export default function(appConfig) {
       },
       MyOnlineMap: {
         screen: MyOnlineMap,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      MyApplet: {
+        screen: MyApplet,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

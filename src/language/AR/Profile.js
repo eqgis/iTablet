@@ -115,7 +115,13 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'حذف نظام الألوان',
   BATCH_SHARE: 'مشاركة الدفعة',
   BATCH_DELETE: 'حذف الدفعة',
+  BATCH_ADD: '批量添加',
   BATCH_OPERATE: 'عمليات الدفعة',
+  AVAILABLE_APPLET: '可用小程序', // 待翻译
+  DELETE_APPLET: '删除小程序',
+  ADD_APPLET: '添加小程序',
+  MOVE_UP: '上移',
+  MOVE_DOWN: '下移',
 
   DELETE_SERVICE: 'حذف الخدمة',
   PUBLISH_SERVICE: 'نشر',

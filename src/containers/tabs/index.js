@@ -22,6 +22,7 @@ import Mine, {
   MyDataset,
   NewDataset,
   SearchMine,
+  MyApplet,
 } from './Mine'
 import Find from './Find'
 import SuperMapKnown from './Find/superMapKnown'
@@ -115,6 +116,7 @@ export {
   MyDataset,
   NewDataset,
   SearchMine,
+  MyApplet,
   /** Home */
   Setting,
   AboutITablet,

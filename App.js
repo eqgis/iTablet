@@ -221,14 +221,11 @@ class AppRoot extends Component {
 
   getUserApplets = async userName => {
     try {
-      if (userName === 'Customer') {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-      }
       // 获取当前用户的小程序
       let applets = await ConfigUtils.getApplets(userName)
-      if (applets.length === 0) {
+      if (userName === 'Customer' && applets.length === 0) {
+        await ConfigUtils.recordApplets(userName, _mapModules)
         applets = _mapModules
-        await ConfigUtils.recordApplets(userName, applets)
       }
       let myMapModules = []
       applets.map(key => {

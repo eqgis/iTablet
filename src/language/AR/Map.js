@@ -1,5 +1,4 @@
 // 制图
-
 const Map_Label = {
   // 地图底部导航
   MAP: 'خريطة',
@@ -340,8 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'شبكة/الطرق',
 
   MAP_AR_DONT_SUPPORT_DEVICE: ' لا ندعم هذا الجهاز',
-  MAP_AR_CAMERA_EXCEPTION:
-    'الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا',
+  MAP_AR_CAMERA_EXCEPTION: 'الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Municipal Collect',
@@ -578,8 +576,7 @@ const Map_Layer = {
   LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS: 'تصفية الكائنات المتداخلة الصغيرة',
   LAYERS_SHARE: 'مشاركة',
   SELECT_LAYSER_SCALE: 'من فضلك اختر المقياس',
-  LAYER_SCALE_RANGE_WRONG:
-    'يجب أن يكون المقياس المرئي الأقصى أكبر من المقياس المرئي الحد الأدنى',
+  LAYER_SCALE_RANGE_WRONG: 'يجب أن يكون المقياس المرئي الأقصى أكبر من المقياس المرئي الحد الأدنى',
 
   VISIBLE: 'مرئي',
   NOT_VISIBLE: 'غير مرئي',
@@ -843,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: 'مول',
   SUBWAY: 'مترو الانفاق',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

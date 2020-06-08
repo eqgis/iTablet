@@ -1,5 +1,4 @@
 // 制图
-
 const Map_Label = {
   // 地图底部导航
   MAP: '地图',
@@ -841,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: '商场',
   SUBWAY: '地铁',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

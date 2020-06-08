@@ -1,5 +1,6 @@
 // 制图
 const Map_Label = {
+  // 地图底部导航
   MAP: 'Harita',
   LAYER: 'Katman',
   ATTRIBUTE: 'Öznitelik',
@@ -16,6 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
+  // 地图制图及公共 开始
   START: 'Başla',
   START_OPEN_MAP: 'Haritayı Aç',
   START_NEW_MAP: 'Yeni Harita',
@@ -30,6 +32,8 @@ const Map_Main_Menu = {
   ANIMATION_NODE_NAME: 'Animasyon Nod Adı',
 
   PLOT: 'Çizim',
+
+  // 地图制图及公共 添加
   OPEN: 'Aç',
   OPEN_DATASOURCE: 'Veri Kaynağı',
   OPEN_MAP: 'Harita',
@@ -55,7 +59,7 @@ const Map_Main_Menu = {
   PROCESS: 'uğraşmak',
 
   NEW_DATASOURCE: 'Yeni Veri Kaynağı',
-
+  // 图例设置
   LEGEND_COLUMN: 'Sütun Numarası',
   LEGEND_WIDTH: 'Genişlik',
   LEGEND_HEIGHT: 'Yükseklik',
@@ -68,9 +72,11 @@ const Map_Main_Menu = {
   LEFT_BOTTOM: 'Sol alt hizalama',
   RIGHT_BOTTOM: 'Sağ alt hizalama',
 
+  // 地图制图及公共 风格
   STYLE: 'Stiller',
   STYLE_EDIT: 'Stiller düzenleme',
   STYLE_SYMBOL: 'Sembol',
+  STYLE_SIZE: 'Boyut',
   STYLE_SYMBOL_SIZE: 'Sembol Boyutu',
   STYLE_COLOR: 'Renk',
   STYLE_ROTATION: 'Döndürme',
@@ -84,7 +90,6 @@ const Map_Main_Menu = {
   STYLE_FRAME_COLOR: 'Çerçeve Rengi',
   STYLE_FRAME_SYMBOL: 'Çerçeve Sembolü',
   STYLE_FONT: 'Yazı Tipi',
-  STYLE_SIZE: 'Boyut',
   STYLE_FONT_SIZE: 'Yazı Boyutu',
   STYLE_ALIGNMENT: 'Hizalama',
   STYLE_FONT_STYLE: 'Yazı Stili',
@@ -96,13 +101,15 @@ const Map_Main_Menu = {
   STYLE_STRIKEOUT: 'Üstü Çizili',
   STYLE_OUTLINE: 'Dış Çizgi',
   STYLE_SHADOW: 'Gölge',
+  SATURATION: 'Canlılık',
+  CONTRAST: 'Kontrast',
+
   ROTATE_LEFT: 'Sola Döndür',
   ROTATE_RIGHT: 'Sağa Döndür',
   VERTICAL_FLIP: 'Dikey Çevirme',
   HORIZONTAL_FLIP: 'Yatay Çevirme',
-  SATURATION: 'Canlılık',
-  CONTRAST: 'Kontrast',
 
+  // 地图制图及公共 工具
   TOOLS: 'Araçlar',
   TOOLS_DISTANCE_MEASUREMENT: 'Mesafe Ölçümü',
   TOOLS_AREA_MEASUREMENT: 'Alan\n Ölçümü',
@@ -112,6 +119,7 @@ const Map_Main_Menu = {
   TOOLS_ROUND_SELECT: 'Yuvarlak Seçim',
   FULL_SCREEN: 'Tam Ekran',
 
+  // 标注
   PLOTS: 'İşaretle',
   DOT_LINE: 'Nokta Çizgisi',
   FREE_LINE: 'Serbest Çizgi',
@@ -131,6 +139,7 @@ const Map_Main_Menu = {
   COLLECT_TIME: 'Zaman',
   COORDINATE: 'Koordinat',
 
+  // 裁剪
   TOOLS_RECTANGLE_CLIP: 'Dikdörtgen Kırp',
   TOOLS_CIRCLE_CLIP: 'Daire Kırp',
   TOOLS_POLYGON_CLIP: 'Poligon Kırp',
@@ -140,9 +149,6 @@ const Map_Main_Menu = {
   TOOLS_EXACT_CLIP: 'Tam Kesme',
   TOOLS_TARGET_DATASOURCE: 'Hedef Veri Kaynağı',
   TOOLS_UNIFIED_SETTING: 'Birleşik Ayarlar',
-  TOOLS_MAGNIFIER: 'Büyüteç',
-  TOOLS_SELECT_ALL: 'Hepsini Seç',
-  TOOLS_SELECT_REVERSE: 'Tersini Seç',
   MAP_CLIP: 'Harita Kırpma',
   CLIP: 'Kırpma',
 
@@ -153,6 +159,11 @@ const Map_Main_Menu = {
   STYLE_TRANSFER: 'AI Kartografi',
   OBJ_EDIT: 'Nesne düzenleme',
 
+  TOOLS_MAGNIFIER: 'Büyüteç',
+  TOOLS_SELECT_ALL: 'Hepsini Seç',
+  TOOLS_SELECT_REVERSE: 'Tersini Seç',
+
+  // 三维 工具
   TOOLS_SCENE_SELECT: 'Seç',
   TOOLS_PATH_ANALYSIS: 'Yol Analizi',
   TOOLS_VISIBILITY_ANALYSIS: 'Görünürlük Analizi',
@@ -160,7 +171,7 @@ const Map_Main_Menu = {
   TOOLS_BOX_CLIP: 'Kutu Kesme',
   TOOLS_PLANE_CLIP: 'Düz Kesme',
   TOOLS_CROSS_CLIP: 'Çapraz Kesme',
-
+  // 三维 飞行
   FLY: 'Uçuş',
   FLY_ROUTE: 'Uçuş Rotası',
   FLY_ADD_STOPS: 'Durak Ekle',
@@ -184,6 +195,7 @@ const Map_Main_Menu = {
   ROTATE_SETTINGS: 'Döndürme Ayarları',
   CLIP_SURFACE_SETTING: 'Yüzey Kesme Ayarları',
   CUT_FIRST: 'Lütfen önce haritayı kesin',
+  // 专题制图 专题图
   THEME: 'Oluştur',
   THEME_UNIFORM_MAP: 'Tek Tip Harita',
   THEME_UNIQUE_VALUES_MAP: 'Benzersiz Değerler\n Harita',
@@ -251,11 +263,23 @@ const Map_Main_Menu = {
   THEME_MAX_VISIBLE_SIZE: 'Maksimum Görünürlük Boyutu',
   THEME_MIN_VISIBLE_SIZE: 'Minimum Görünürlük Boyutu',
 
+  // 自定义专题图设置
+  THEME_RANGES_LABEL_MAP_TITLE: 'Ranges Label Map', //待翻译
+  THEME_RANGES_MAP_TITLE: 'Ranges Map', //待翻译
+  THEME_UNIQUE_VALUES_MAP_TITLE: 'Unique Values Map', //待翻译
+  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: 'Unique Value Label Map', //待翻译
+  RANGE: 'Ranges', //待翻译
+  PREVIEW: 'Preview', //待翻译
+  CUSTOM_THEME_MAP: 'Custom Thematic Map', //待翻译
+  COLOR_PICKER: 'Color Picker', //待翻译
+  USER_DEFINE: 'User Defined', //待翻译
+
   DOT_VALUE: 'Nokta Değeri',
   GRADUATE_BY: 'Derecelendir',
   DATUM_VALUE: 'Datum Değeri',
   RANGE_COUNT: 'Aralık Sayısı',
 
+  // 外业采集 采集
   CREATE_WITH_SYMBOLS: 'Sembollerle Oluştur',
   CREATE_WITH_TEMPLATE: 'Şablonla Oluştur',
   POINT_SYMBOL_LIBRARY: 'Nokta Sembol Grafiği',
@@ -280,6 +304,7 @@ const Map_Main_Menu = {
   COLLECTION_PAUSE: 'Durdur',
   COLLECTION_STOP: 'Dur',
 
+  // 外业采集 编辑
   EDIT: 'Düzenle',
   EDIT_ADD_NODES: 'Nod Ekle',
   EDIT_NODES: 'Nod Düzenle',
@@ -297,6 +322,7 @@ const Map_Main_Menu = {
   OBJMOVE: 'Taşıma',
   FREE_DRAW_ERASE: 'Serbest Çizim Silme',
 
+  // 标绘
   PLOTTING: 'Çizim',
   PLOTTING_LIB_CHANGE: 'Çizim Grafiğini Değiştir',
   PLOTTING_LIB: 'Çizim\nGrafiği',
@@ -304,6 +330,7 @@ const Map_Main_Menu = {
   PLOTTING_ANIMATION_DEDUCTION: 'Animasyon Kesintisi Çizme',
   PLOTTING_ANIMATION_RESET: 'Sıfırla',
 
+  // 分享
   SHARE: 'Paylaş',
   SHARE_WECHAT: 'Wechat',
   SHARE_FRIENDS: 'Arkadaşlar',
@@ -312,8 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Yol\n Ağ',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Bu cihazı desteklemiyor',
-  MAP_AR_CAMERA_EXCEPTION:
-    'Kamera anormal, lütfen iznin açık olup olmadığını kontrol edin.',
+  MAP_AR_CAMERA_EXCEPTION: 'Kamera anormal, lütfen iznin açık olup olmadığını kontrol edin.',
   MAP_AR_AI_ASSISTANT: 'AI\n Toplama',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Özel Toplama',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Belediye Toplama',
@@ -352,17 +378,15 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: 'Yüzü kaydet',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'İzleme koleksiyonu',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Rush koleksiyonu',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT:
-    'Geçerli noktayı belirlemek için ekrana dokunun',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Geçerli noktayı belirlemek için ekrana dokunun',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
-  MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED:
-    'Sınıflandırma başarısız oldu, Tekrar deneyin',
+  MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Sınıflandırma başarısız oldu, Tekrar deneyin',
   MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS: 'Hiçbir resim seçilmedi',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT: 'Sonuç',
   MAP_AR_AI_ASSISTANT_CLASSIFY_CONFIDENCE: 'Gizlilik',
-
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_NAME: 'Nesne Adı:',
+
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_TIME: 'Zaman Sınıflandırma:',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS: 'Uyarılar:',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_PLEA_REMARKS: 'Notu doldur',
@@ -410,11 +434,13 @@ const Map_Main_Menu = {
   //导航采集
   MAP_INDOOR_NETWORK: 'Kapalı',
   MAP_OUTDOOR_NETWORK: 'Açık',
+
   MAP_INCREMENT_START: 'Başla',
   MAP_INCREMENT_STOP: 'Dur',
   MAP_INCREMENT_ADD_POINT: 'Nokta Ekle',
   MAP_INCREMENT_CANCEL: 'İptal Edildi',
   MAP_INCREMENT_COMMIT: 'Sunmak',
+
   MAP_INCREMENT_GPS_POINT: 'GPS ile noktaları toplama',
   MAP_INCREMENT_GPS_TRACK: 'GPS ile çizgileri toplama',
   MAP_INCREMENT_POINTLINE: 'Nokta Çizim',
@@ -499,13 +525,10 @@ const Map_Plotting = {
   ANIMATION_ATTRIBUTE_LINE_COLOR_START: 'Çizgi Rengi Başlangıcı',
   ANIMATION_ATTRIBUTE_LINE_COLOR_END: 'Çizgi Rengi Bitişi',
   ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH: 'Çizgi Rengi Bitişi',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_START:
-    'Çizgi Çevresi Genişliği Başlangıcı',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_END:
-    'Çizgi Çevresi Genişliği Başlangıcı',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_START: 'Çizgi Çevresi Genişliği Başlangıcı',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_END: 'Çizgi Çevresi Genişliği Başlangıcı',
   ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR: 'Çizgi Çevresi Rengi',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_START:
-    'Çizgi Çevresi Rengi Başlangıcı',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_START: 'Çizgi Çevresi Rengi Başlangıcı',
   ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_END: 'Çizgi Çevresi Rengi Bitişi',
 
   ANIMATION_NODE_EDIT: 'Animasyon Düzenleme',
@@ -553,15 +576,7 @@ const Map_Layer = {
   LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS: 'Çakışan Küçük Nesneleri Filtrele',
   LAYERS_SHARE: 'Paylaş',
   SELECT_LAYSER_SCALE: 'Lütfen bir ölçek seçin',
-  LAYER_SCALE_RANGE_WRONG:
-    'Maksimum Görünürlük Ölçeği, Minimum Görünürlük Ölçeğinden büyük olmalıdır',
-
-  LAYERS_CREATE_THEMATIC_MAP: 'Tematik Harita Oluştur',
-  LAYERS_MODIFY_THEMATIC_MAP: 'Tematik Haritayı Değiştir',
-
-  BASEMAP: 'Altlık Haritam',
-  BASEMAP_SWITH: 'Altlık haritayı değiştir',
-  MY_TERRAIN: 'Yerlerim',
+  LAYER_SCALE_RANGE_WRONG: 'Maksimum Görünürlük Ölçeği, Minimum Görünürlük Ölçeğinden büyük olmalıdır',
 
   VISIBLE: 'Görülebilir',
   NOT_VISIBLE: 'Görülebilir Değil',
@@ -571,6 +586,13 @@ const Map_Layer = {
   NOT_EDITABLE: 'Düzenlenebilir Değil',
   SNAPABLE: 'Yakalama Kullanılabilir',
   NOT_SNAPABLE: 'Yakalama Kullanılamaz',
+  // 专题图图层
+  LAYERS_CREATE_THEMATIC_MAP: 'Tematik Harita Oluştur',
+  LAYERS_MODIFY_THEMATIC_MAP: 'Tematik Haritayı Değiştir',
+
+  BASEMAP: 'Altlık Haritam',
+  BASEMAP_SWITH: 'Altlık haritayı değiştir',
+  MY_TERRAIN: 'Yerlerim',
 
   SCALE_TO_CURRENT_LAYER: 'Mevcut katına küçültün',
   ADD_A_TERRAIN_LAYER: 'Toprak katını ekle',
@@ -586,6 +608,7 @@ const Map_Layer = {
 const Map_Attribute = {
   ATTRIBUTE_SORT: 'Sınıflandırma',
   ATTRIBUTE_LOCATION: 'Konum',
+  ATTRIBUTE_CANCEL: 'Cancel', //待翻译
   ATTRIBUTE_EDIT: 'Düzenleme',
   ATTRIBUTE_STATISTIC: 'İstatistik',
   ATTRIBUTE_ASSOCIATION: 'Bağlantı',
@@ -623,6 +646,7 @@ const Map_Attribute = {
   DESCENDING: 'Azalan',
 }
 
+// 地图设置
 const Map_Setting = {
   BASIC_SETTING: 'Temel Ayarlar',
   ROTATION_GESTURE: 'Dönme Hareketi',
@@ -771,10 +795,10 @@ const Map_Settings = {
   ROTATION_ANGLE_SECONDS: 'Dönme Açısı (Saniye)',
 
   // 四级菜单 和复制提示
-  TYPE: 'Tür',
-  FORMAT: 'Format',
   DATASOURCES: 'Veri Kaynağı',
   DATASETS: 'Veri Kümesi',
+  TYPE: 'Tür',
+  FORMAT: 'Format',
   ALL_COORD_FILE: 'Desteklenen Koordinat Sistemi Dosyası',
   SHAPE_COORD_FILE: 'Shape Koordinat Sistemi Dosyası',
   MAPINFO_FILE: 'MapInfo Değişiklik Dosyası',
@@ -800,6 +824,7 @@ const Map_Tools = {
   FROM_ALBUM: 'Albümden Seç',
   VIEW: 'Görüntüle',
 }
+
 // POI title
 const Map_PoiTitle = {
   FOOD: 'Yemek',
@@ -815,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: 'AVM',
   SUBWAY: 'Metro',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

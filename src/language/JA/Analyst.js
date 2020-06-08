@@ -193,8 +193,7 @@ const Analyst_Labels = {
   REGISTRATION: '登録',
   REGISTRATION_ARITHMETIC: '登録アルゴリズム',
   REGISTRATION_LINE: '線形レジストレーション（少なくとも4つの制御点）',
-  REGISTRATION_QUADRATIC:
-    '二次多項式レジストレーション（少なくとも7つの制御点）',
+  REGISTRATION_QUADRATIC: '二次多項式レジストレーション（少なくとも7つの制御点）',
   REGISTRATION_RECTANGLE: '長方形の登録（2つの制御点）',
   REGISTRATION_OFFSET: 'オフセット登録（1制御点）',
   REGISTRATION_LINE_: '線形登録',
@@ -381,7 +380,7 @@ const Analyst_Params = {
   SEARCH_BLOCK: '块查找',
 
   // セミバリオグラム
-  SPHERICAL: '球関数	',
+  SPHERICAL: '球関数',
   EXPONENTIAL: '指数関数',
   GAUSSIAN: 'ガウス関数',
 }
@@ -394,13 +393,11 @@ const Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'iServerサーバーに接続してください',
   PLEASE_CHOOSE_INPUT_METHOD: '入力方式を選択してください',
   PLEASE_CHOOSE_DATASET: 'データセットを選択してください',
-  LOGIN_ISERVER_FAILED:
-    'iServerサーバーに接続のに失敗しました。ipアドレスとユーザー名、パスワードを確認してください',
+  LOGIN_ISERVER_FAILED: 'iServerサーバーに接続のに失敗しました。ipアドレスとユーザー名、パスワードを確認してください',
   BEING_ANALYZED: '解析中',
   ANALYZING_FAILED: '解析に失敗しました',
   LOADING_MODULE: 'モジュールをロード中',
-  LOADING_MODULE_FAILED:
-    'モジュールのロードに失敗しました。データセットを確認してください。',
+  LOADING_MODULE_FAILED: 'モジュールのロードに失敗しました。データセットを確認してください。',
   TWO_NODES_ARE_CONNECTED: 'ノード連結しています',
   TWO_NODES_ARE_NOT_CONNECTED: 'ノード連結していません。',
   NOT_FIND_SUITABLE_PATH: '適当なルートは見つかりません。',
@@ -414,11 +411,4 @@ const Analyst_Prompt = {
   REGISTRATION_POINTS_NUMBER_ERROR: 'コントロールポイントの数が一致しません',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

@@ -380,7 +380,7 @@ const Analyst_Params = {
   SEARCH_BLOCK: '块查找',
 
   // 半变异函数
-  SPHERICAL: '球函数	',
+  SPHERICAL: '球函数',
   EXPONENTIAL: '指数函数',
   GAUSSIAN: '高斯函数',
 }
@@ -411,11 +411,4 @@ const Analyst_Prompt = {
   REGISTRATION_POINTS_NUMBER_ERROR: '控制点数量不匹配',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

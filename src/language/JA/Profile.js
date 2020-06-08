@@ -45,8 +45,7 @@ const Profile = {
   REGISTER_READ_PROTOCAL: '閲読済み、受け取ります。 ',
   REGISTER_ONLINE_PROTOCAL: '《スーパーマップユーザーサービス協議 》',
   CONNECTING: '接続中',
-  CONNECT_SERVER_FAIL:
-    'サーバーに接続できません。ネットワーク、サーバーアドレスを確認してください。',
+  CONNECT_SERVER_FAIL: 'サーバーに接続できません。ネットワーク、サーバーアドレスを確認してください。',
   NEXT: '次へ',
 
   SWITCH_ACCOUNT: 'アカウントの切替',
@@ -169,8 +168,7 @@ const Profile = {
   SERVICE_TYPE: 'サービスの種類',
 
   SELECT_DATASET_EXPORT_TYPE: 'エクスポートタイプを選択してください',
-  DATASET_EXPORT_NOT_SUPPORTED:
-    '当タイプのデータセットのエクスポートをサポートしません',
+  DATASET_EXPORT_NOT_SUPPORTED: '当タイプのデータセットのエクスポートをサポートしません',
 
   // 検索
   SEARCH: '検索',
@@ -213,8 +211,7 @@ const Profile = {
   LICENSE_CLEAN_ALERT: 'ライセンスをリサイクルしますか',
   INPUT_LICENSE_SERIAL_NUMBER: 'ライセンス番号の入力',
   PLEASE_INPUT_LICENSE_SERIAL_NUMBER: 'ライセンス番号を入力してください',
-  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT:
-    '正確なライセンス番号を入力してください',
+  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT: '正確なライセンス番号を入力してください',
   LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS: 'アクティブに成功しました',
   LICENSE_REGISTER_BUY: '登録して購入',
   LICENSE_HAVE_REGISTER: 'レジスタ済',
@@ -223,19 +220,13 @@ const Profile = {
   LICENSE_MODULE_REGISTER_FAIL: 'モジュールのログインに失敗しました',
   LICENSE_EXIT: '閉じる',
   LICENSE_EXIT_FAILED: '閉じるのに失敗しました',
-  LICENSE_EXIT_CLOUD_ACTIVATE:
-    'クラウドライセンスをリサイクルしてアクティブしますか?',
-  LICENSE_EXIT_CLOUD_LOGOUT:
-    'クラウドライセンスをリサイクルしてログアウトしますか?',
+  LICENSE_EXIT_CLOUD_ACTIVATE: 'クラウドライセンスをリサイクルしてアクティブしますか?',
+  LICENSE_EXIT_CLOUD_LOGOUT: 'クラウドライセンスをリサイクルしてログアウトしますか?',
   LICENSE_CURRENT_EXPIRE: '現在ライセンスは無効です',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE:
-    '現在ライセンスに当モジュールはありません',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB:
-    '現在ライセンスに当モジュールはありません。当モジュールの機能を使用できません。',
-  LICENSE_NO_NATIVE_OFFICAL:
-    'ローカル正式ライセンスファイルはありません。/iTablet/license/フォルダにOfficial_Licenseライセンスファイルを追加してください',
-  LICENSE_NOT_ITABLET_OFFICAL:
-    '当正式ライセンスはiTablet内でアクティブするライセンスではありません。iTabletの部分の機能を使用できません。ライセンスページでライセンスをクリアして、再申請ください',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE: '現在ライセンスに当モジュールはありません',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: '現在ライセンスに当モジュールはありません。当モジュールの機能を使用できません。',
+  LICENSE_NO_NATIVE_OFFICAL: 'ローカル正式ライセンスファイルはありません。/iTablet/license/フォルダにOfficial_Licenseライセンスファイルを追加してください',
+  LICENSE_NOT_ITABLET_OFFICAL: '当正式ライセンスはiTablet内でアクティブするライセンスではありません。iTabletの部分の機能を使用できません。ライセンスページでライセンスをクリアして、再申請ください',
   LICENSE_NATIVE_EXPIRE: 'ローカルライセンス无效',
   LICENSE_LONG_EFFECTIVE: '長期有効',
   LICENSE_OFFLINE: 'オフライン　ライセンス',
@@ -303,8 +294,7 @@ const Profile = {
   SUGGESTION_FUNCTION_ABNORMAL: '機能異常:機能障害や使用不可',
   SUGGESTION_PRODUCT_ADVICE: '制品提案:使用するのが嫌で、私は提案があります',
   SUGGESTION_OTHER_PROBLEMS: 'その他の問題',
-  SUGGESTION_SELECT_PROBLEMS:
-    'あなたがフィードバックしたい問題点を選んでください',
+  SUGGESTION_SELECT_PROBLEMS: 'あなたがフィードバックしたい問題点を選んでください',
   SUGGESTION_PROBLEMS_DETAIL: '詳しい問題や意見を補充してください',
   SUGGESTION_PROBLEMS_DESCRIPTION: '問題記述を入力してください',
   SUGGESTION_CONTACT_WAY: '連絡先',
@@ -324,8 +314,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: '基点座標',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自動測位に成功',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'マップ選択に成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:
-    'スマートフォンを南に向けて[OK]をクリックしてください',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'スマートフォンを南に向けて[OK]をクリックしてください',
   MAP_AR_DATUM_SETTING: '設定する',
 
   // ar地图

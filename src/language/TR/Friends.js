@@ -32,8 +32,7 @@ const Friends = {
   // FriendList
   SET_MARK_NAME: 'İşaret Adı Ayarla',
   DEL_FRIEND: 'Arkadaş Sil',
-  ALERT_DEL_FRIEND:
-    'Arkadaşınızı ve sohbet geçmişinizi silmek istiyor musunuz?',
+  ALERT_DEL_FRIEND: 'Arkadaşınızı ve sohbet geçmişinizi silmek istiyor musunuz?',
   TEXT_CONTENT: 'Metin İçeriği',
   INPUT_MARK_NAME: 'Lütfen işaret adını girin',
   INPUT_INVALID: 'Geçersiz giriş, lütfen tekrar giriş yapın',
@@ -54,10 +53,8 @@ const Friends = {
   // FriendGroup
   LOADING: 'Yükleniyor...',
   DEL_GROUP: 'Grubu Sil',
-  DEL_GROUP_CONFIRM:
-    'Sohbet geçmişini silmek ve bu gruptan ayrılmak ister misiniz?',
-  DEL_GROUP_CONFIRM2:
-    'Sohbet geçmişini temizlemek ve bu grubu dağıtmak ister misiniz?',
+  DEL_GROUP_CONFIRM: 'Sohbet geçmişini silmek ve bu gruptan ayrılmak ister misiniz?',
+  DEL_GROUP_CONFIRM2: 'Sohbet geçmişini temizlemek ve bu grubu dağıtmak ister misiniz?',
   // Chat
   INPUT_MESSAGE: 'Giriş mesajı ...',
   SEND: 'Gönder',
@@ -67,8 +64,7 @@ const Friends = {
   IMPORT_FAIL: 'İçe aktarma başarısız oldu',
   IMPORT_CONFIRM: 'Verileri içe aktarmak istiyor musunuz?',
   RECEIVE_CONFIRM: 'Verileri indirmek istiyor musunuz?',
-  OPENCOWORKFIRST:
-    'Verileri içe aktarmadan önce lütfen ortak çalışma haritasını açın',
+  OPENCOWORKFIRST: 'Verileri içe aktarmadan önce lütfen ortak çalışma haritasını açın',
   LOCATION_COWORK_NOTIFY: 'Konum ortak çalışma modunda açılamıyor',
   LOCATION_SHARE_NOTIFY: 'Konum paylaşımda açılamıyor',
   WAIT_DOWNLOADING: 'Lütfen indirme tamamlanana kadar bekleyin',
@@ -102,8 +98,7 @@ const Friends = {
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',
-  PERMISSION_DENIED_CONTACT:
-    'Kişileri görüntülemek için lütfen iTablete izin verin',
+  PERMISSION_DENIED_CONTACT: 'Kişileri görüntülemek için lütfen iTablete izin verin',
   // ManageFriend/Group
   SEND_MESSAGE: 'Mesaj gönder',
   SET_MARKNAME: 'Takma İsim Ayarla',
@@ -121,8 +116,7 @@ const Friends = {
   COWORK: 'Harita ortak çalışması',
   EXIT_COWORK: 'Ortak çalışmadan ayrıl',
   GO_COWORK: 'Ortak çalışma',
-  ALERT_EXIT_COWORK:
-    'Mevcut ortak çalışma haritasını kapatmak istiyor musunuz?',
+  ALERT_EXIT_COWORK: 'Mevcut ortak çalışma haritasını kapatmak istiyor musunuz?',
   SHARE_DATASET: 'Veri kümesini paylaşın',
   // system text
   SYS_MSG_PIC: '[RESİM]',

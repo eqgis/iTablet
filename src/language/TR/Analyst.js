@@ -193,8 +193,7 @@ const Analyst_Labels = {
   REGISTRATION: 'kayıt',
   REGISTRATION_ARITHMETIC: 'Kayıt algoritması',
   REGISTRATION_LINE: 'Doğrusal kayıt (en az 4 kontrol noktası)',
-  REGISTRATION_QUADRATIC:
-    'İkinci dereceden polinom kaydı (en az 7 kontrol noktası)',
+  REGISTRATION_QUADRATIC: 'İkinci dereceden polinom kaydı (en az 7 kontrol noktası)',
   REGISTRATION_RECTANGLE: 'Dikdörtgen kayıt (2 kontrol noktası)',
   REGISTRATION_OFFSET: 'Ofset kaydı (1 kontrol noktası)',
   REGISTRATION_LINE_: 'Doğrusal kayıt',
@@ -231,8 +230,7 @@ const Analyst_Labels = {
   REGISTRATION_EXPORT_FILE: 'Kayıt bilgi dosyası',
   REGISTRATION_PLEASE_SELECT: 'lütfen seç',
   REGISTRATION_NOT_SETLECT_DATASET: 'Lütfen bir kayıt veri kümesi seçin',
-  REGISTRATION_NOT_SETLECT_REFER_DATASET:
-    'Lütfen bir referans veri kümesi seçin',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Lütfen bir referans veri kümesi seçin',
   //投影转换
   PROJECTION_SOURCE_COORDS: 'Kaynak koordinat sistemi',
   PROJECTION_COORDS_NAME: 'Koordinat sistemi adı',
@@ -380,6 +378,8 @@ const Analyst_Params = {
   SEARCH_VARIABLE_LENGTH: 'Değişken Uzunluk',
   SEARCH_FIXED_LENGTH: 'Sabit Uzunluk',
   SEARCH_BLOCK: 'Blok',
+
+  // 半变异函数
   SPHERICAL: 'Küresel',
   EXPONENTIAL: 'Eksponansiyel',
   GAUSSIAN: 'Gaussian',
@@ -393,8 +393,7 @@ const Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'Lüften iServer’a Bağlanın',
   PLEASE_CHOOSE_INPUT_METHOD: 'Lütfen Girdi Modelini Seçin',
   PLEASE_CHOOSE_DATASET: 'Lütfen Veri Kümesini Seçin',
-  LOGIN_ISERVER_FAILED:
-    'iServera bağlanamadı, lütfen ip, kullanıcı adı ve şifreyi kontrol edin',
+  LOGIN_ISERVER_FAILED: 'iServera bağlanamadı, lütfen ip, kullanıcı adı ve şifreyi kontrol edin',
   BEING_ANALYZED: 'Analiz Ediliyor',
   ANALYZING_FAILED: 'Analiz Başarısız',
   LOADING_MODULE: 'Modül Yükleniyor',
@@ -412,11 +411,4 @@ const Analyst_Prompt = {
   REGISTRATION_POINTS_NUMBER_ERROR: 'Kontrol noktalarının sayısı eşleşmiyor',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

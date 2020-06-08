@@ -18,10 +18,8 @@ const Friends = {
   SEND_FAIL: '送信に失敗',
   SEND_FAIL_NETWORK: 'シェアに失敗しました、ネットワークを確認してください',
   RECEIVE_SUCCESS: '受信完了',
-  RECEIVE_FAIL_EXPIRE:
-    'ダウンロードに失敗しました。ファイルは期限切れる可能性があります。',
-  RECEIVE_FAIL_NETWORK:
-    'ダウンロードに失敗しました、ネットワークを確認してください',
+  RECEIVE_FAIL_EXPIRE: 'ダウンロードに失敗しました。ファイルは期限切れる可能性があります。',
+  RECEIVE_FAIL_NETWORK: 'ダウンロードに失敗しました、ネットワークを確認してください',
   // FriendMessage
   MARK_READ: '既読にする',
   MARK_UNREAD: '未読にする',
@@ -100,8 +98,7 @@ const Friends = {
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',
-  PERMISSION_DENIED_CONTACT:
-    '携帯の設定でiTabletのアドレス帳アクセス権限を設定してください',
+  PERMISSION_DENIED_CONTACT: '携帯の設定でiTabletのアドレス帳アクセス権限を設定してください',
   // ManageFriend/Group
   SEND_MESSAGE: 'メッセージを送信',
   SET_MARKNAME: '備考名の変更',

@@ -393,13 +393,11 @@ const Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'يرجى الاتصال بـ iServer',
   PLEASE_CHOOSE_INPUT_METHOD: 'يرجى اختيار طريقة الإدخال',
   PLEASE_CHOOSE_DATASET: 'يرجى اختيار مجموعة البيانات',
-  LOGIN_ISERVER_FAILED:
-    'فشل توصيل الخادم ، يرجى التحقق من عنوان اى بى واسم المستخدم وكلمة المرو',
+  LOGIN_ISERVER_FAILED: 'فشل توصيل الخادم ، يرجى التحقق من عنوان اى بى واسم المستخدم وكلمة المرو',
   BEING_ANALYZED: 'قيد التحليل',
   ANALYZING_FAILED: 'فشل التحليل',
   LOADING_MODULE: 'تحميل الوحدة',
-  LOADING_MODULE_FAILED:
-    'فشل تحميل الوحدة النمطية ، يرجى التحقق من مجموعة البيانات',
+  LOADING_MODULE_FAILED: 'فشل تحميل الوحدة النمطية ، يرجى التحقق من مجموعة البيانات',
   TWO_NODES_ARE_CONNECTED: 'العقدتان متصلتان',
   TWO_NODES_ARE_NOT_CONNECTED: 'العقدتان غير متصلتين',
   NOT_FIND_SUITABLE_PATH: 'لم يجد المسار المناسب',
@@ -413,11 +411,4 @@ const Analyst_Prompt = {
   REGISTRATION_POINTS_NUMBER_ERROR: '控制点数量不匹配',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

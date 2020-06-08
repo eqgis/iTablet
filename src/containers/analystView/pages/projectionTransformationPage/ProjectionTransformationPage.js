@@ -447,69 +447,90 @@ export default class ProjectionTransformationPage extends Component {
           }}
         />
         <AnalystItem
-          // style={{ marginRight: scaleSize(0) }}
+          style={this.state.isSaveAs ? null : { borderBottomWidth: 0 }}
           title={
             getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS
           }
           disable={this.state.isMustSaveAs}
           value={this.state.isMustSaveAs || this.state.isSaveAs}
           onChange={value => {
-            this.setState({
-              isSaveAs: value,
-            })
+            this.isSaveChange(value)
           }}
         />
-        <AnalystItem
-          // style={{ marginRight: scaleSize(0) }}
-          title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
-          value={
-            (this.state.resultDataSource &&
-              this.state.resultDataSource.value) ||
-            ''
-          }
-          onPress={async () => {
-            this.currentPop = popTypes.ResultDataSource
-            let datasources = await this.getDataSources()
-            this.setState(
-              {
-                popData: datasources,
-                currentPopData: this.state.resultDataSource,
-              },
-              () => {
-                this.popModal && this.popModal.setVisible(true)
-              },
-            )
-          }}
-        />
-        <AnalystItem
-          style={{ borderBottomWidth: 0 }}
-          title={getLanguage(global.language).Analyst_Labels.DATA_SET}
-          value={
-            // (this.state.resultDataSet && this.state.resultDataSet.value) || ''
-            (this.state.resultDataSet &&
-              this.state.resultDataSet.datasetName) ||
-            ''
-          }
-          onPress={async () => {
-            NavigationService.navigate('InputPage', {
-              headerTitle: getLanguage(global.language).Analyst_Labels.DATA_SET,
-              value:
+        {!this.state.isSaveAs ? null : (
+          <View>
+            <AnalystItem
+              title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
+              value={
+                (this.state.resultDataSource &&
+                  this.state.resultDataSource.value) ||
+                ''
+              }
+              onPress={async () => {
+                this.currentPop = popTypes.ResultDataSource
+                let datasources = await this.getDataSources()
+                this.setState(
+                  {
+                    popData: datasources,
+                    currentPopData: this.state.resultDataSource,
+                  },
+                  () => {
+                    this.popModal && this.popModal.setVisible(true)
+                  },
+                )
+              }}
+            />
+            <AnalystItem
+              style={{ borderBottomWidth: 0 }}
+              title={getLanguage(global.language).Analyst_Labels.DATA_SET}
+              value={
+                // (this.state.resultDataSet && this.state.resultDataSet.value) || ''
                 (this.state.resultDataSet &&
                   this.state.resultDataSet.datasetName) ||
-                '',
-              placeholder: getLanguage(global.language).Analyst_Labels.DATA_SET,
-              type: 'name',
-              cb: async value => {
-                NavigationService.goBack()
-                this.setState({
-                  resultDataSet: { datasetName: value },
+                ''
+              }
+              onPress={async () => {
+                NavigationService.navigate('InputPage', {
+                  headerTitle: getLanguage(global.language).Analyst_Labels
+                    .DATA_SET,
+                  value:
+                    (this.state.resultDataSet &&
+                      this.state.resultDataSet.datasetName) ||
+                    '',
+                  placeholder: getLanguage(global.language).Analyst_Labels
+                    .DATA_SET,
+                  type: 'name',
+                  cb: async value => {
+                    NavigationService.goBack()
+                    this.setState({
+                      resultDataSet: { datasetName: value },
+                    })
+                  },
                 })
-              },
-            })
-          }}
-        />
+              }}
+            />
+          </View>
+        )}
       </View>
     )
+  }
+
+  isSaveChange = async value => {
+    if (value && this.state.dataSource && this.state.dataSet) {
+      let availableName = await SProcess.getAvailableDatasetNameByDatasource(
+        this.state.dataSource.value,
+        this.state.dataSet.value,
+      )
+      this.setState({
+        resultDataSource: this.state.dataSource,
+        resultDataSet: { datasetName: availableName },
+        isSaveAs: value,
+      })
+    } else {
+      this.setState({
+        isSaveAs: value,
+      })
+    }
   }
 
   /** 选择数据源弹出框 **/
@@ -536,7 +557,7 @@ export default class ProjectionTransformationPage extends Component {
               newStateData = {
                 dataSet: data,
                 isMustSaveAs: _isMustSaveAs,
-                resultDataSet: { datasetName: data.datasetName + '_1' },
+                // resultDataSet: { datasetName: data.datasetName + '_1' },
               }
               break
             }
@@ -548,7 +569,18 @@ export default class ProjectionTransformationPage extends Component {
               break
             }
             case popTypes.ResultDataSource:
-              newStateData = { resultDataSource: data }
+              if (this.state.dataSet) {
+                let availableName = await SProcess.getAvailableDatasetNameByDatasource(
+                  data.value,
+                  this.state.dataSet.value,
+                )
+                newStateData = {
+                  resultDataSource: data,
+                  resultDataSet: { datasetName: availableName },
+                }
+              } else {
+                newStateData = { resultDataSource: data }
+              }
               break
             case popTypes.ResultDataSet:
               newStateData = { resultDataSet: data }
@@ -568,7 +600,7 @@ export default class ProjectionTransformationPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Modules
             .PROJECTION_TRANSFORMATION,
           navigation: this.props.navigation,
           backAction: this.back,

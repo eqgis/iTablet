@@ -228,7 +228,7 @@ class AppRoot extends Component {
     try {
       // 获取当前用户的小程序
       let applets = await ConfigUtils.getApplets(userName)
-      if (userName === 'Customer' && applets.length === 0) {
+      if (applets === null || userName === 'Customer' && applets.length === 0) {
         await ConfigUtils.recordApplets(userName, _mapModules)
         applets = _mapModules
       }
@@ -243,7 +243,7 @@ class AppRoot extends Component {
       })
       await this.props.setMapModule(myMapModules)
     } catch (e) {
-  
+      console.warn(e.message)
     }
   }
 

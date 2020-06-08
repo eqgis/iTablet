@@ -28,7 +28,7 @@ class MyApplet extends MyDataPage {
   }
 
   getData = async () => {
-    let _applets = await ConfigUtils.getApplets(this.props.user.currentUser.userName)
+    let _applets = await ConfigUtils.getApplets(this.props.user.currentUser.userName) || []
     let applets = []
     let othersApplets = []
 

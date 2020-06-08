@@ -22,7 +22,6 @@ export default class TourModule extends Module {
       ],
       mapType: Module.MapType.MAP,
     })
-    this.isNew = true
   }
 
   // 首页模块数据

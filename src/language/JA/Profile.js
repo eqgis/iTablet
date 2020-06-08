@@ -114,7 +114,13 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'カラースキームの削除',
   BATCH_SHARE: 'バッチシェア',
   BATCH_DELETE: 'バッチ削除',
+  BATCH_ADD: '批量添加',
   BATCH_OPERATE: 'バッチ操作',
+  AVAILABLE_APPLET: '可用小程序', // 待翻译
+  DELETE_APPLET: '删除小程序',
+  ADD_APPLET: '添加小程序',
+  MOVE_UP: '上移',
+  MOVE_DOWN: '下移',
 
   DELETE_SERVICE: 'サービスの削除',
   PUBLISH_SERVICE: 'サービスの配信',

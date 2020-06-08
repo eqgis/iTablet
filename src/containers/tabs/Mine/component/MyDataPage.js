@@ -89,6 +89,7 @@ export default class MyDataPage extends Component {
     template: 'TEMPLATE',
     dataset: 'DATASET',
     color: 'COLOR_SCHEME',
+    applet: 'APPLETS',
   }
 
   componentDidMount() {
@@ -236,6 +237,9 @@ export default class MyDataPage extends Component {
   }
 
   _batchDelete = async (forceDelete = false) => {
+    if (this.batchDelete) {
+      this.batchDelete(forceDelete)
+    }
     try {
       let deleteArr = this._getSelectedList()
       if (!forceDelete) {
@@ -623,6 +627,10 @@ export default class MyDataPage extends Component {
   /******************************* 批量操作 *******************************************/
 
   _selectAll = () => {
+    if (this.selectAll) {
+      this.selectAll()
+      return
+    }
     let section = this.state.sectionData.clone()
     let j = 0
     for (let i = 0; i < section.length; i++) {
@@ -735,11 +743,12 @@ export default class MyDataPage extends Component {
   }
 
   _renderItemPopup = () => {
-    let data = this._getItemPopupData()
+    // let data = this._getItemPopupData()
     return (
       <PopMenu
         ref={ref => (this.ItemPopModal = ref)}
-        data={data}
+        // data={data}
+        getData={this._getItemPopupData}
         device={this.props.device}
       />
     )
@@ -808,6 +817,13 @@ export default class MyDataPage extends Component {
       dialogStyle: { width: scaleSize(500), height: scaleSize(340) },
     })
     this.SimpleDialog.setVisible(true)
+  }
+
+  _isShowCheck = info => {
+    if (this.isShowCheck) {
+      return this.isShowCheck(info)
+    }
+    return this.state.batchMode
   }
 
   /******************************* dialog end ******************************************/
@@ -911,7 +927,11 @@ export default class MyDataPage extends Component {
           img = require('../../../../assets/mapToolbar/list_type_map_black.png')
           break
         default:
-          img = require('../../../../assets/Mine/mine_my_online_data_black.png')
+          if (info.item.img) {
+            img = info.item.img
+          } else {
+            img = require('../../../../assets/Mine/mine_my_online_data_black.png')
+          }
           break
       }
     }
@@ -922,7 +942,7 @@ export default class MyDataPage extends Component {
         text={txtInfo}
         disableTouch={this.state.batchMode}
         showRight={isShowMore}
-        showCheck={this.state.batchMode}
+        showCheck={this._isShowCheck(info)}
         onPress={() => {
           if(info?.item.isDirectory){
             Toast.show(global.language==='CN' ?"not UDB data source":"")
@@ -1168,6 +1188,7 @@ export default class MyDataPage extends Component {
               enabled={true}
             />
           }
+          eatraData={this.state}
         />
         {this._renderItemPopup()}
         {this._renderPagePopup()}

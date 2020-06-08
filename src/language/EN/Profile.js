@@ -77,7 +77,13 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'Delete Color Scheme',
   BATCH_SHARE: 'Batch Share',
   BATCH_DELETE: 'Batch Delete',
+  BATCH_ADD: 'Batch Add',
   BATCH_OPERATE: 'Batch Operation',
+  AVAILABLE_APPLET: 'Available Applet',
+  DELETE_APPLET: 'Delete Applet',
+  ADD_APPLET: 'Add Applet',
+  MOVE_UP: 'Move Up',
+  MOVE_DOWN: 'Move Down',
 
   ABOUT: 'About',
   SERVICE_HOTLINE: 'Service Hotline',

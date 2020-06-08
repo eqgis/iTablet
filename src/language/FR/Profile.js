@@ -117,7 +117,13 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'Supprimer le jeu de couleurs',
   BATCH_SHARE: 'Partage par lots',
   BATCH_DELETE: 'Suppression de lot',
+  BATCH_ADD: '批量添加',
   BATCH_OPERATE: 'Opération par lots',
+  AVAILABLE_APPLET: '可用小程序', // 待翻译
+  DELETE_APPLET: '删除小程序',
+  ADD_APPLET: '添加小程序',
+  MOVE_UP: '上移',
+  MOVE_DOWN: '下移',
 
   DELETE_SERVICE: 'Supprimer le service',
   PUBLISH_SERVICE: 'Publier',

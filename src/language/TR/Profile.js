@@ -117,7 +117,13 @@ const Profile = {
   MANAGE_ACCOUNT: 'Hesabı Yönet',
   ADD_ACCOUNT: 'Hesap Ekle',
   DELETE_ACCOUNT: 'Hesap Sil',
+  BATCH_ADD: '批量添加',
   UNABLE_DELETE_SELF: 'Kullanıcı Silinemiyor',
+  AVAILABLE_APPLET: '可用小程序', // 待翻译
+  DELETE_APPLET: '删除小程序',
+  ADD_APPLET: '添加小程序',
+  MOVE_UP: '上移',
+  MOVE_DOWN: '下移',
 
   DELETE_SERVICE: 'Hizmeti Sil',
   PUBLISH_SERVICE: 'Yayınla',

@@ -242,16 +242,16 @@ export default class Mine extends Component {
               }),
           })
           break
-        // case 'MyApplet':
-        //   data.push({
-        //     title: getLanguage(this.props.language).Find.APPLET,
-        //     image: getThemeAssets().find.app,
-        //     onClick: () =>
-        //       NavigationService.navigate('MyApplet', {
-        //         title: getLanguage(this.props.language).Find.APPLET,
-        //       }),
-        //   })
-        //   break
+        case 'MyApplet':
+          data.push({
+            title: getLanguage(this.props.language).Find.APPLET,
+            image: getThemeAssets().find.app,
+            onClick: () =>
+              NavigationService.navigate('MyApplet', {
+                title: getLanguage(this.props.language).Find.APPLET,
+              }),
+          })
+          break
       }
     }
     return data

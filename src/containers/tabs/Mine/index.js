@@ -21,6 +21,7 @@ import MyBaseMap from './MyBaseMap'
 import MyDataset from './MyDatasource/MyDataset'
 import NewDataset from './MyDatasource/NewDataset'
 import SearchMine from './Search'
+import MyApplet from './MyApplet'
 // import LoadServer from './MyBaseMap'
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -62,4 +63,5 @@ export {
   MyDataset,
   NewDataset,
   SearchMine,
+  MyApplet,
 }

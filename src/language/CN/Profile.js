@@ -113,7 +113,13 @@ const Profile = {
   DELETE_COLOR_SCHEME: '删除色带',
   BATCH_SHARE: '批量分享',
   BATCH_DELETE: '批量删除',
+  BATCH_ADD: '批量添加',
   BATCH_OPERATE: '批量操作',
+  AVAILABLE_APPLET: '可用小程序',
+  DELETE_APPLET: '删除小程序',
+  ADD_APPLET: '添加小程序',
+  MOVE_UP: '上移',
+  MOVE_DOWN: '下移',
 
   DELETE_SERVICE: '删除服务',
   PUBLISH_SERVICE: '发布服务',

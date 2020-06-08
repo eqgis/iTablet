@@ -34,10 +34,13 @@ class MyApplet extends MyDataPage {
 
     // applets为有序数组
     for (let i = 0; i < _applets.length; i++) {
-      applets.push({
-        name: _applets[i],
-        img: getThemeAssets().find.app,
-      })
+      // 检测本地记录中的小程序是否在当前版本中存在
+      if (_mapModules.indexOf(_applets[i]) >= 0) {
+        applets.push({
+          name: _applets[i],
+          img: getThemeAssets().find.app,
+        })
+      }
     }
     for (let i = 0; i < _mapModules.length; i++) {
       if (_applets.indexOf(_mapModules[i]) < 0) {

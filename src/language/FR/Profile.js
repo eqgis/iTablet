@@ -25,8 +25,7 @@ const Profile = {
   LOGIN_INVALID: 'La connexion a expiré. Veuillez vous reconnecter',
   MOBILE_LOGIN: 'Connexion mobile',
   EMAIL_LOGIN: 'Connexion par e-mail',
-  ENTER_EMAIL_OR_USERNAME:
-    "Veuillez saisir votre adresse e-mail ou votre nom d'utilisateur",
+  ENTER_EMAIL_OR_USERNAME: "Veuillez saisir votre adresse e-mail ou votre nom d'utilisateur",
   ENTER_MOBILE: 'Veuillez saisir votre numéro de mobile',
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
   REGISTER: "S'inscrire",
@@ -44,11 +43,9 @@ const Profile = {
   ENTER_REALNAME: 'Veuillez saisir votre vrai nom',
   ENTER_COMPANY: 'Veuillez saisir votre entreprise',
   REGISTER_READ_PROTOCAL: "J'ai lu et j'accepte les",
-  REGISTER_ONLINE_PROTOCAL:
-    "Conditions d'utilisation et politique de confidentialité de SuperMap",
+  REGISTER_ONLINE_PROTOCAL: "Conditions d'utilisation et politique de confidentialité de SuperMap",
   CONNECTING: 'Connexion',
-  CONNECT_SERVER_FAIL:
-    "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
+  CONNECT_SERVER_FAIL: "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
   NEXT: 'Suivant',
 
   SWITCH_ACCOUNT: 'Changer de compte',
@@ -56,8 +53,7 @@ const Profile = {
 
   SWITCH_CURRENT: "Vous êtes déjà connecté avec cet utilisateur'",
   SWITCHING: "Commutation ...'",
-  SWITCH_FAIL:
-    "Le basculement a échoué, veuillez réessayer de vous connecter avec cet utilisateur'",
+  SWITCH_FAIL: "Le basculement a échoué, veuillez réessayer de vous connecter avec cet utilisateur'",
 
   // 地图服务地址
   SERVICE_ADDRESS: 'Service Address',
@@ -169,10 +165,10 @@ const Profile = {
   ENTER_DATASOURCE_NAME: 'Veuillez saisir le nom de la source de données',
   OPEN_DATASROUCE_FAILED: "Échec de l'ouverture de la source de données",
   DATASOURCE_TYPE: '数据类型',
+  SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'Sélectionnez le format à exporter',
-  DATASET_EXPORT_NOT_SUPPORTED:
-    "L'exportation de cet ensemble de données n'est pas encore prise en charge",
+  DATASET_EXPORT_NOT_SUPPORTED: "L'exportation de cet ensemble de données n'est pas encore prise en charge",
 
   // 搜索
   SEARCH: 'Chercher',
@@ -212,15 +208,11 @@ const Profile = {
   LICENSE_OFFICIAL_RETURN: '归还许可',
   LICENSE_CLEAN_CANCLE: 'Nettoyer Annuler',
   LICENSE_CLEAN_CONTINUE: 'Nettoyer Continuer',
-  LICENSE_CLEAN_ALERT:
-    'Le nombre de licences sera déduit de la prochaine activation après avoir effacé la licence. Le numéro de licence restant actuel',
+  LICENSE_CLEAN_ALERT: 'Le nombre de licences sera déduit de la prochaine activation après avoir effacé la licence. Le numéro de licence restant actuel',
   INPUT_LICENSE_SERIAL_NUMBER: "Numéro de série de la licence d'entrée",
-  PLEASE_INPUT_LICENSE_SERIAL_NUMBER:
-    'Veuillez saisir le numéro de série de la licence',
-  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT:
-    "Le numéro de série de la licence d'entrée n'est pas correct",
-  LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS:
-    "Réussite de l'activation du numéro de série",
+  PLEASE_INPUT_LICENSE_SERIAL_NUMBER: 'Veuillez saisir le numéro de série de la licence',
+  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT: "Le numéro de série de la licence d'entrée n'est pas correct",
+  LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS: "Réussite de l'activation du numéro de série",
   LICENSE_REGISTER_BUY: "S'inscrire Acheter",
   LICENSE_HAVE_REGISTER: 'suis inscrit',
   LICENSE_NOT_CONTAIN_MODULE: 'Ne pas contenir de module',
@@ -231,14 +223,10 @@ const Profile = {
   LICENSE_EXIT_CLOUD_ACTIVATE: '归还当前云许可并激活此许可?',
   LICENSE_EXIT_CLOUD_LOGOUT: '归还当前云许可并退出账号?',
   LICENSE_CURRENT_EXPIRE: 'Licence actuelle non valide',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE:
-    "Ce module n'est pas inclus dans la licence actuelle",
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB:
-    "Ce module n'est pas inclus dans la licence actuelle et certaines de ses fonctions ne seront pas disponibles",
-  LICENSE_NO_NATIVE_OFFICAL:
-    'Pas de fichier de licence officiel natif, veuillez ajouter le fichier de licence Official_License à / iTablet / license / file ',
-  LICENSE_NOT_ITABLET_OFFICAL:
-    "Cette licence officielle n'est pas activée sur iTablet, veuillez vous rendre sur la page de licence pour effacer la licence et la réactiver",
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE: "Ce module n'est pas inclus dans la licence actuelle",
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: "Ce module n'est pas inclus dans la licence actuelle et certaines de ses fonctions ne seront pas disponibles",
+  LICENSE_NO_NATIVE_OFFICAL: 'Pas de fichier de licence officiel natif, veuillez ajouter le fichier de licence Official_License à / iTablet / license / file ',
+  LICENSE_NOT_ITABLET_OFFICAL: "Cette licence officielle n'est pas activée sur iTablet, veuillez vous rendre sur la page de licence pour effacer la licence et la réactiver",
   LICENSE_NATIVE_EXPIRE: 'Licence native non valide',
   LICENSE_LONG_EFFECTIVE: '长期有效',
   LICENSE_OFFLINE: '离线许可',

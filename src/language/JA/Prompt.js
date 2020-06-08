@@ -16,8 +16,7 @@ const Prompt = {
   STOP: '停止',
   FIELD_TO_PAUSE: '一時停止に失敗しまいｓた',
   WX_NOT_INSTALLED: 'WeChatはありません',
-  WX_SHARE_FAILED:
-    'WeChatにシェアのに失敗しました。WeChatをインストールしているかどうかを確認ください',
+  WX_SHARE_FAILED: 'WeChatにシェアのに失敗しました。WeChatをインストールしているかどうかを確認ください',
   RENAME: '名前変更',
   BATCH_DELETE: 'バッチ削除',
   PREPARING: '準備中',
@@ -64,8 +63,7 @@ const Prompt = {
   PLEASE_SELECT_OBJECT: '編集オブジェクトを選択してください',
   SWITCHING_PLOT_LIB: 'アニメシンボルライブラリを切り替え中',
   NON_SELECTED_OBJ: '選択オブジェクトはありません',
-  CHANGE_BASE_MAP:
-    '現在ベースマップはありません。ベースマップを切替えてください。',
+  CHANGE_BASE_MAP: '現在ベースマップはありません。ベースマップを切替えてください。',
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',
@@ -97,8 +95,7 @@ const Prompt = {
 
   PLEASE_ENTER_TEXT: 'テキスト内容を入力してください',
   PLEASE_SELECT_THEMATIC_LAYER: '主題図レイヤーを選択してください',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED:
-    '現在レイヤーにスタイルを設定できません。レイヤーを再度選択してください。',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: '現在レイヤーにスタイルを設定できません。レイヤーを再度選択してください。',
 
   PLEASE_SELECT_PLOT_LAYER: 'マークレイヤーを選択、または新規してください',
   DONOT_SUPPORT_ARCORE: '当デバイスはARCoreをサポートしません',
@@ -110,8 +107,7 @@ const Prompt = {
 
   COLLECT_SUCCESS: 'コレクションに成功',
 
-  SELECT_TWO_MEDIAS_AT_LEAST:
-    '少なくとも2つのメディアファイルを選択してください',
+  SELECT_TWO_MEDIAS_AT_LEAST: '少なくとも2つのメディアファイルを選択してください',
 
   NETWORK_REQUEST_FAILED: 'ネットワークリクエストに失敗しました',
 
@@ -144,8 +140,7 @@ const Prompt = {
   BATCH_DELETE_CONFIRM: '現在の選択データを削除しますか？',
 
   SELECT_AT_LEAST_ONE: '少なくとも1つのデータを削除してください',
-  DELETE_MAP_RELATE_DATA:
-    'データ削除は以下のマップに影響があります\n削除しますか？',
+  DELETE_MAP_RELATE_DATA: 'データ削除は以下のマップに影響があります\n削除しますか？',
 
   LOG_IN: 'ログイン中',
   ENTER_MAP_NAME: 'マップ名を入力してください',
@@ -161,8 +156,7 @@ const Prompt = {
   CLIPPED_SUCCESS: 'クリップに成功',
   CLIP_FAILED: 'クリップに失敗',
 
-  LAYER_CANNOT_CREATE_THEMATIC_MAP:
-    '当レイヤーで主題図を作成することをサポートしません',
+  LAYER_CANNOT_CREATE_THEMATIC_MAP: '当レイヤーで主題図を作成することをサポートしません',
 
   ANALYSING: '解析中',
   CHOOSE_STARTING_POINT: '起点を入力してください',
@@ -185,8 +179,7 @@ const Prompt = {
   EXPORT_SUCCESS: 'エクスポートに成功',
   EXPORT_FAILED: 'エクスポートに失敗',
   EXPORT_TO: 'データエクスポート先：',
-  REQUIRE_PRJ_1984:
-    'データセットの投影座標系はWGS_1984に設定する必要があります',
+  REQUIRE_PRJ_1984: 'データセットの投影座標系はWGS_1984に設定する必要があります',
 
   UNDO_FAILED: '取り消すに失敗',
   REDO_FAILED: 'やり直すに失敗',
@@ -208,21 +201,19 @@ const Prompt = {
   DETECT_DUSTBIN_MODEL: 'ゴミ箱モデル',
   ROAD_MODEL: '道路モデル',
 
-  LICENSE_EXPIRED:
-    'トライアルライセンスは期限切れです。続けてトライアルしますか?',
+  LICENSE_EXPIRED: 'トライアルライセンスは期限切れです。続けてトライアルしますか?',
   APPLY_LICENSE: 'ライセンス申請',
   APPLY_LICENSE_FIRST: '有効なライセンスを取得してください',
 
   GET_LAYER_GROUP_FAILD: 'レイヤーグループの取得に失敗',
-  TYR_AGAIN_LATER: '後で再度試してださい',
+  TYR_AGAIN_LATER: '後で再度試してください',
 
   LOCATING: 'ポジショニング中',
   CANNOT_LOCATION: 'ポジショニングできません',
   INDEX_OUT_OF_BOUNDS: '位置の越境',
   PLEASE_SELECT_LICATION_INFORMATION: 'ポジショニング情報を選択してください',
   OUT_OF_MAP_BOUNDS: 'マップ範囲内にありません',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    '現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。',
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: '現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。',
 
   POI: 'POI',
 
@@ -249,8 +240,7 @@ const Prompt = {
   ROTATION_ANGLE_ERROR: '回転角度を-360°～360°に設定してください',
   MAP_SCALE_ERROR: 'スケールの入力は不正です。1つの数字を入力してください',
   VIEW_BOUNDS_ERROR: '範囲の入力は不正です。1つの数字を入力してください',
-  VIEW_BOUNDS_RANGE_ERROR:
-    'パラメータは不正です。ウィンドウの幅、高さを0以上に設定してください',
+  VIEW_BOUNDS_RANGE_ERROR: 'パラメータは不正です。ウィンドウの幅、高さを0以上に設定してください',
   MAP_CENTER_ERROR: '座標の入力は不正です。x,yを数字に設定してください',
   COPY_SUCCESS: 'コピーに成功',
   // コピー座標系
@@ -268,26 +258,21 @@ const Prompt = {
 
   ERROR_INFO_INVALID_URL: '無効なURL',
   ERROR_INFO_NOT_A_NUMBER: '数字ではありません',
-  ERROR_INFO_START_WITH_A_LETTER:
-    '最初の文字は、アルファベットまたはかな・漢字に設定する必要があります',
+  ERROR_INFO_START_WITH_A_LETTER: '最初の文字は、アルファベットまたはかな・漢字に設定する必要があります',
   ERROR_INFO_ILLEGAL_CHARACTERS: '特殊符号を含むことはできません',
   ERROR_INFO_EMPTY: '空に設定することができません',
 
-  OPEN_LOCATION:
-    'システムにポジショニングサービスを使用する機能を設定してください',
+  OPEN_LOCATION: 'システムにポジショニングサービスを使用する機能を設定してください',
   REQUEST_LOCATION: 'iTabletはポジショニング権限が必要です',
   LOCATION_ERROR: 'ポジショニング異常、後で再度試してください',
 
-  OPEN_THRID_PARTY:
-    'サードパーティのアプリケーションにジャンプしようとしています。継続しますか？',
+  OPEN_THRID_PARTY: 'サードパーティのアプリケーションにジャンプしようとしています。継続しますか？',
 
   FIELD_ILLEGAL: 'フィールドは無効です',
   PLEASE_SELECT_A_RASTER_LAYER: 'ラスタレイヤーを選択してください',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM:
-    '"統一スタイル"でデータソースを追加してください',
-  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION:
-    'ヒント:現在レイヤーは変更をサポートしません',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: '"統一スタイル"でデータソースを追加してください',
+  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'ヒント:現在レイヤーは変更をサポートしません',
 
   FAILED_TO_CREATE_POINT: 'ポイント追加に失敗',
   FAILED_TO_CREATE_TEXT: '文字に追加失敗',
@@ -299,22 +284,16 @@ const Prompt = {
   GO_HERE: 'ここへ行く',
   SHOW_MORE_RESULT: 'もっと結果を確認',
   PLEASE_SET_BASEMAP_VISIBLE: 'ベースマップ表示できるように設定してください',
-  NO_NETWORK_DATASETS:
-    '現在ワークスペースにネットワークデータセットはありません',
+  NO_NETWORK_DATASETS: '現在ワークスペースにネットワークデータセットはありません',
   NO_LINE_DATASETS: '現在ワークスペースにラインデータセットはありません',
-  NETWORK_DATASET_IS_NOT_AVAILABLE:
-    '現在道路ネットワークデータセットは使用できません。',
-  POINT_NOT_IN_BOUNDS:
-    '現在の選択ポイントは道路ネットワークデータセット範囲内にありません',
-  POSITION_OUT_OF_MAP:
-    '現在位置は不在マップナビ範囲内にありません。シミュレーションナビを使用してください',
+  NETWORK_DATASET_IS_NOT_AVAILABLE: '現在道路ネットワークデータセットは使用できません。',
+  POINT_NOT_IN_BOUNDS: '現在の選択ポイントは道路ネットワークデータセット範囲内にありません',
+  POSITION_OUT_OF_MAP: '現在位置は不在マップナビ範囲内にありません。シミュレーションナビを使用してください',
   SELECT_DATASOURCE_FOR_NAVIGATION: 'ナビルート解析のデータを選択してください',
   PLEASE_SELECT_NETWORKDATASET: 'ネットワークデータセットを選択してください',
   PLEASE_SELECT_A_POINT_INDOOR: '室内でポイントを選択してください',
-  PATH_ANALYSIS_FAILED:
-    'ルート解析に失敗しました。起点終点を再度選択してください',
-  ROAD_NETWORK_UNLINK:
-    '起点、終点の道路ネットワークは接続しません。ルート解析に失敗しました',
+  PATH_ANALYSIS_FAILED: 'ルート解析に失敗しました。起点終点を再度選択してください',
+  ROAD_NETWORK_UNLINK: '起点、終点の道路ネットワークは接続しません。ルート解析に失敗しました',
   CHANGE_TO_OUTDOOR: '室外に切り替えますか？',
   CHANGE_TO_INDOOR: '室内に切り替えますか',
   SET_START_AND_END_POINTS: '起点、終点を設定してください',
@@ -324,35 +303,28 @@ const Prompt = {
   LONG_PRESS_ADD_END: '長押し終点を追加してください',
   ROUTE_ANALYSING: 'ルート解析中',
   DISTANCE_ERROR: '現在開始ポイントの距離は近すぎです、再度選択してください',
-  USE_ONLINE_ROUTE_ANALYST:
-    '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
+  USE_ONLINE_ROUTE_ANALYST: '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
   CREATE: '新しい',
-  NO_DATASOURCE:
-    '現在のワークスペースにはデータソースがありません。最初に新しいデータソースを作成してください',
+  NO_DATASOURCE: '現在のワークスペースにはデータソースがありません。最初に新しいデータソースを作成してください',
 
   //导航增量路网
   SELECT_LINE_DATASET: '最初にラインデータセットを選択してください',
   CANT_UNDO: '元に戻すことはできません',
   CANT_REDO: 'ないやり直し',
-  DATASET_RENAME_FAILED:
-    'データセット名には、文字、数字、「_」、「@」、「＃」のみを含めることができます',
+  DATASET_RENAME_FAILED: 'データセット名には、文字、数字、「_」、「@」、「＃」のみを含めることができます',
   SWITCH_LINE: 'データを切り替える',
-  HAS_NO_ROADNAME_FIELD_DATA:
-    '道路名フィールド情報が選択されていないデータセットがあります',
+  HAS_NO_ROADNAME_FIELD_DATA: '道路名フィールド情報が選択されていないデータセットがあります',
   MERGE_SUCCESS: '正常にマージされました',
   MERGE_FAILD: 'マージに失敗しました',
-  NOT_SUPPORT_PRJCOORDSYS:
-    '次のデータセットの座標系はマージをサポートしていません',
+  NOT_SUPPORT_PRJCOORDSYS: '次のデータセットの座標系はマージをサポートしていません',
   MERGEING: 'マージ',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    'RoadNameフィールドを含まないデータセットがあります。次のデータセットの道路名フィールドを選択してください',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: 'RoadNameフィールドを含まないデータセットがあります。次のデータセットの道路名フィールドを選択してください',
   NEW_NAV_DATA: 'ナビゲーションデータを作成する',
   INPUT_MODEL_FILE_NAME: 'モデルファイル名を入力してください',
   INCREMENT_FIRST: '最初に道路ネットワークデータを収集してください',
   SELECT_DESTINATION_DATASOURCE: 'ターゲットデータソースを選択してください',
-  FILENAME_ALREADY_EXIST:
-    'ファイルは既に存在します。ファイル名を再入力してください',
+  FILENAME_ALREADY_EXIST: 'ファイルは既に存在します。ファイル名を再入力してください',
   NETWORK_BUILDING: 'ネットワークで...',
   BUILD_SUCCESS: '道路網が正常に構築されました',
   SELECT_LINE_SMOOTH: 'スムージングが必要なラインを選択してください',
@@ -365,8 +337,7 @@ const Prompt = {
   SELECT_TRIM_LINE: 'トリミングするラインを選択してください',
   SELECT_BASE_LINE: 'ベースラインを選択してください',
   SELECT_RESAMPLE_LINE: 'リサンプリングする必要があるラインを選択してください',
-  SELECT_CHANGE_DIRECTION_LINE:
-    '方向を変える必要があるラインを選択してください',
+  SELECT_CHANGE_DIRECTION_LINE: '方向を変える必要があるラインを選択してください',
   EDIT_SUCCESS: '操作は成功しました',
   EDIT_FAILED: '操作に失敗しました',
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'スムージング係数は2~10の整数である',

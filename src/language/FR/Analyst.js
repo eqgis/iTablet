@@ -43,8 +43,7 @@ const Analyst_Labels = {
   Edit: 'Modifier',
 
   // local
-  USE_AN_EXISTING_NETWORK_DATASET:
-    'Utiliser un ensemble de données réseau existant',
+  USE_AN_EXISTING_NETWORK_DATASET: 'Utiliser un ensemble de données réseau existant',
   BUILD_A_NETWORK_DATASET: 'Créer un ensemble de données réseau',
   CHOOSE_DATA: 'Choisissez les données',
   TOPOLOGY: 'Topologie',
@@ -394,8 +393,7 @@ const Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'Veuillez-vous connecter à iServer',
   PLEASE_CHOOSE_INPUT_METHOD: 'Veuillez choisir la méthode de saisie',
   PLEASE_CHOOSE_DATASET: 'Veuillez choisir un ensemble de données',
-  LOGIN_ISERVER_FAILED:
-    "Échec de connexion à iServer, veuillez vérifier l'ip, le nom d'utilisateur et le mot de passe",
+  LOGIN_ISERVER_FAILED: "Échec de connexion à iServer, veuillez vérifier l'ip, le nom d'utilisateur et le mot de passe",
   BEING_ANALYZED: "En cours d'analyse",
   ANALYZING_FAILED: "L'analyse a échoué",
   LOADING_MODULE: 'Chargement du module',
@@ -403,8 +401,7 @@ const Analyst_Prompt = {
   TWO_NODES_ARE_CONNECTED: 'Les deux nœuds sont connectés',
   TWO_NODES_ARE_NOT_CONNECTED: 'Les deux nœuds ne sont pas connectés',
   NOT_FIND_SUITABLE_PATH: "N'a pas trouvé de chemin approprié",
-  SELECT_DATA_SOURCE_FIRST:
-    "Veuillez d'abord sélectionner la source de données",
+  SELECT_DATA_SOURCE_FIRST: "Veuillez d'abord sélectionner la source de données",
   SELECT_DATA_SET_FIRST: "Veuillez d'abord sélectionner l'ensemble de données",
   PLEASE_SELECT_A_REGION: 'Veuillez sélectionner une région',
   REGISTRATION_LINE_POINTS: '请设置至少4个控制点',
@@ -414,11 +411,4 @@ const Analyst_Prompt = {
   REGISTRATION_POINTS_NUMBER_ERROR: '控制点数量不匹配',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

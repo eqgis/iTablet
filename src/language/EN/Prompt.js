@@ -33,20 +33,23 @@ const Prompt = {
   LOG_OUT: 'Are you sure you want to log out?',
   FAILED_TO_LOG: 'Failed to Login',
   INCORRECT_USER_INFO: 'Account not exist or password error',
-  INCORRECT_IPORTAL_ADDRESS:
-    'Failed to Login, Please check your server address',
+  INCORRECT_IPORTAL_ADDRESS: 'Failed to Login, Please check your server address',
 
   DELETE_STOP: 'Are you sure you want to delete stop?',
   DELETE_OBJECT: 'Are you sure you want to permanently delete the Object?',
+  PLEASE_ADD_STOP: 'Please add stop',
 
   CONFIRM: 'Confirm',
   COMPLETE: 'Complete',
+
+  OPENING: 'Opening',
 
   QUIT: 'Quit SuperMap iTablet?',
   MAP_LOADING: 'Loading',
   LOADING: 'Loading',
   THE_MAP_IS_OPENED: 'The map is opened',
   THE_SCENE_IS_OPENED: 'The scene is opened',
+  NO_SCENE_LIST: 'No data',
   SWITCHING: 'Switching',
   CLOSING: 'Closing',
   CLOSING_3D: 'Closing',
@@ -70,7 +73,6 @@ const Prompt = {
   SUPERMAP_FORUM: 'SuperMap Forum',
   SUPERMAP_KNOW: 'SuperMap Know',
   SUPERMAP_GROUP: 'SuperMap Group',
-
   INSTRUCTION_MANUAL: 'Instruction Manual',
   THE_CURRENT_LAYER: 'The current layer is',
   ENTER_KEY_WORDS: 'Please enter key words',
@@ -78,7 +80,6 @@ const Prompt = {
   SEARCHING_DEVICE_NOT_FOUND: 'No device found',
   READING_DATA: 'Reading Data',
   CREATE_SUCCESSFULLY: 'Created Successfully',
-  NO_SCENE_LIST: 'No data',
   SAVE_SUCCESSFULLY: 'Saved Successfully',
   NO_NEED_TO_SAVE: 'No need to save',
   SAVE_FAILED: 'Failed to Save',
@@ -93,10 +94,8 @@ const Prompt = {
   NO_SCENE: 'No Scene',
 
   PLEASE_ENTER_TEXT: 'Please enter text',
-
   PLEASE_SELECT_THEMATIC_LAYER: 'Please select a thematic layer',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED:
-    'The current layer cannot be styled, and please reselect another one',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'The current layer cannot be styled, and please reselect another one',
 
   PLEASE_SELECT_PLOT_LAYER: 'Please Select Plot Layer',
   DONOT_SUPPORT_ARCORE: 'This Device does not support ARCore',
@@ -112,9 +111,7 @@ const Prompt = {
 
   NETWORK_REQUEST_FAILED: 'Network Request Failed',
 
-  OPENING: 'Opening',
-
-  SAVEING: 'Saveing',
+  SAVEING: 'Saving',
   CREATING: 'Creating',
   PLEASE_ADD_DATASOURCE: 'Please Add a Datasource',
   NO_ATTRIBUTES: 'No Attributes',
@@ -148,27 +145,27 @@ const Prompt = {
   LOG_IN: 'Loading',
   ENTER_MAP_NAME: 'Please enter the map name',
   CLIP_ENTER_MAP_NAME: 'Enter the map name',
-  ENTER_NAME: 'Please enter the name',
   ENTER_SERVICE_ADDRESS: 'Please enter the Service Address',
   ENTER_ANIMATION_NAME: 'Please enter the animation name',
   ENTER_ANIMATION_NODE_NAME: 'Please enter the animation node name',
   PLEASE_SELECT_PLOT_SYMBOL: 'Please select plot symbol',
 
+  ENTER_NAME: 'Please enter the name',
+
   CLIPPING: 'Clipping',
   CLIPPED_SUCCESS: 'Clipped Successfully',
   CLIP_FAILED: 'Failed to Clip',
 
-  LAYER_CANNOT_CREATE_THEMATIC_MAP:
-    'The current layer cannot be used to create a thematic map.',
+  LAYER_CANNOT_CREATE_THEMATIC_MAP: 'The current layer cannot be used to create a thematic map.',
 
   ANALYSING: 'Analysing',
   CHOOSE_STARTING_POINT: 'Choose starting point',
   CHOOSE_DESTINATION: 'Choose destination',
 
-  LATEST: 'Latest: ',
-  GEOGRAPHIC_COORDINATE_SYSTEM: 'Geographic Coordinate System: ',
-  PROJECTED_COORDINATE_SYSTEM: 'Projected Coordinate System: ',
-  FIELD_TYPE: 'Field Type: ',
+  LATEST: 'Latest:',
+  GEOGRAPHIC_COORDINATE_SYSTEM: 'Geographic Coordinate System:',
+  PROJECTED_COORDINATE_SYSTEM: 'Projected Coordinate System:',
+  FIELD_TYPE: 'Field Type:',
 
   PLEASE_LOGIN_AND_SHARE: 'Please log in and share',
   PLEASE_LOGIN: 'Please login',
@@ -190,7 +187,6 @@ const Prompt = {
 
   SETTING_SUCCESS: 'Set Successfully',
   SETTING_FAILED: 'Failed to Set',
-
   NETWORK_ERROR: 'Network Error',
   NO_NETWORK: 'No Internet connection',
   CHOOSE_CLASSIFY_MODEL: 'Choose Classify Model',
@@ -198,15 +194,14 @@ const Prompt = {
   USING: 'Using',
   DEFAULT_MODEL: 'Default Model',
   DUSTBIN_MODEL: 'Dustbin Model',
-  LANT_MODEL: 'Lant Model',
+  PLANT_MODEL: 'Plant Model',
   CHANGING: 'Changing',
   CHANGE_SUCCESS: 'Change Success',
   CHANGE_FAULT: 'Change Fault',
   DETECT_DUSTBIN_MODEL: 'Dustbin Model',
   ROAD_MODEL: 'Road Model',
 
-  LICENSE_EXPIRED:
-    'The trial license has expired. Do you want to continue the trial?',
+  LICENSE_EXPIRED: 'The trial license has expired. Do you want to continue the trial?',
   APPLY_LICENSE: 'Apply License',
   APPLY_LICENSE_FIRST: 'Please apply a valid license first',
 
@@ -218,8 +213,7 @@ const Prompt = {
   INDEX_OUT_OF_BOUNDS: 'Index out of bounds',
   PLEASE_SELECT_LICATION_INFORMATION: 'Please set up Location',
   OUT_OF_MAP_BOUNDS: 'Out of map bounds',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    "The current location is out of map bounds so that you can't use tracking to increment road",
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: "The current location is out of map bounds so that you can't use tracking to increment road",
 
   POI: 'POI',
 
@@ -246,8 +240,7 @@ const Prompt = {
   ROTATION_ANGLE_ERROR: 'Rotation angle should be between -360° and 360°',
   MAP_SCALE_ERROR: 'Input error! Please enter a number',
   VIEW_BOUNDS_ERROR: 'Range error! Please enter a number',
-  VIEW_BOUNDS_RANGE_ERROR:
-    'Parameter error! Both height and width of the view should be greater than zero',
+  VIEW_BOUNDS_RANGE_ERROR: 'Parameter error! Both height and width of the view should be greater than zero',
   MAP_CENTER_ERROR: 'Coordinate error! Both X and Y should be numbers',
   COPY_SUCCESS: 'Coping success!',
   // 复制坐标系
@@ -279,8 +272,7 @@ const Prompt = {
   PLEASE_SELECT_A_RASTER_LAYER: 'Please select a raster layer',
 
   PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Please add the Datasource by Uniform',
-  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION:
-    'The current layer does not support modification',
+  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'The current layer does not support modification',
 
   FAILED_TO_CREATE_POINT: 'Failed to create point',
   FAILED_TO_CREATE_TEXT: 'Failed to create text',
@@ -295,58 +287,44 @@ const Prompt = {
   NO_NETWORK_DATASETS: "Current workspace doesn't contain network dataset",
   NO_LINE_DATASETS: "Current workspace doesn't contain line dataset",
   NETWORK_DATASET_IS_NOT_AVAILABLE: 'Current network dataset is not available',
-  POINT_NOT_IN_BOUNDS:
-    "The bounds of the selected network dataset donsn't contains the point",
-  POSITION_OUT_OF_MAP:
-    'Your location is out of the bounds of map, please use simulate navigation',
+  POINT_NOT_IN_BOUNDS: "The bounds of the selected network dataset donsn't contains the point",
+  POSITION_OUT_OF_MAP: 'Your location is out of the bounds of map, please use simulate navigation',
   SELECT_DATASOURCE_FOR_NAVIGATION: 'Select data for navigation',
   PLEASE_SELECT_NETWORKDATASET: 'Select a network dataset first',
   PLEASE_SELECT_A_POINT_INDOOR: 'Please select point indoor',
-  PATH_ANALYSIS_FAILED:
-    'Path analysis failed! Please re-select the start and end points',
-  ROAD_NETWORK_UNLINK:
-    'Path analysis failed due to the disconnected road network from start-point to end-point',
-
+  PATH_ANALYSIS_FAILED: 'Path analysis failed! Please re-select the start and end points',
+  ROAD_NETWORK_UNLINK: 'Path analysis failed due to the disconnected road network from start-point to end-point',
   CHANGE_TO_OUTDOOR: 'switch to outdoor?',
   CHANGE_TO_INDOOR: 'switch to indoor?',
   SET_START_AND_END_POINTS: 'Please set the start and end points first',
-  SELECT_LAYER_NEED_INCREMENTED:
-    'Please select the layer need to be incremented',
+  SELECT_LAYER_NEED_INCREMENTED: 'Please select the layer need to be incremented',
   SELECT_THE_FLOOR: 'Please select the floor which the layer is located',
   LONG_PRESS_ADD_START: 'Please long press to add starting point',
   LONG_PRESS_ADD_END: 'Please long press to add destination',
   ROUTE_ANALYSING: 'Analysing',
-  DISTANCE_ERROR:
-    'The destination is too close to the start point,please reselect!',
-  USE_ONLINE_ROUTE_ANALYST:
-    "Points are out of dataset's bounds or there are no dataset around points, do you want to use online route analyst?",
+  DISTANCE_ERROR: 'The destination is too close to the start point,please reselect!',
+  USE_ONLINE_ROUTE_ANALYST: "Points are out of dataset's bounds or there are no dataset around points, do you want to use online route analyst?",
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Online navigation is not support yet.',
   CREATE: 'New',
-  NO_DATASOURCE:
-    'There is no datasource in the current workspace, please create a new datasource first',
+  NO_DATASOURCE: 'There is no datasource in the current workspace, please create a new datasource first',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Please select a line dataset first',
   CANT_UNDO: 'Irrevocable',
   CANT_REDO: "Can't redo",
-  DATASET_RENAME_FAILED:
-    'The dataset name can only contain letters, numbers and "_", "@", "#"',
+  DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
   SWITCH_LINE: 'Switch dataset',
-  HAS_NO_ROADNAME_FIELD_DATA:
-    'There is a data set with no road name field information selected',
+  HAS_NO_ROADNAME_FIELD_DATA: 'There is a data set with no road name field information selected',
   MERGE_SUCCESS: 'Merged successfully',
   MERGE_FAILD: 'Merge failed',
-  NOT_SUPPORT_PRJCOORDSYS:
-    'The coordinate system of the following data set does not support merging',
+  NOT_SUPPORT_PRJCOORDSYS: 'The coordinate system of the following data set does not support merging',
   MERGEING: 'Merging',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    'There is a data set that does not contain the RoadName field, please select the road name field of the following dataset',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: 'There is a data set that does not contain the RoadName field, please select the road name field of the following dataset',
   NEW_NAV_DATA: 'Create Navigation Data',
   INPUT_MODEL_FILE_NAME: 'Please enter a model file name',
   INCREMENT_FIRST: 'Please collect road network data first',
   SELECT_DESTINATION_DATASOURCE: 'Please select the target datasource',
-  FILENAME_ALREADY_EXIST:
-    'The file already exists, please re-enter the file name',
+  FILENAME_ALREADY_EXIST: 'The file already exists, please re-enter the file name',
   NETWORK_BUILDING: 'Building...',
   BUILD_SUCCESS: 'Successfully built',
   SELECT_LINE_SMOOTH: 'Please select the line that needs to be smoothed',
@@ -359,18 +337,17 @@ const Prompt = {
   SELECT_TRIM_LINE: 'Please select the line to be trimmed',
   SELECT_BASE_LINE: 'Please select a baseline',
   SELECT_RESAMPLE_LINE: 'Please select the line that needs to be resampled',
-  SELECT_CHANGE_DIRECTION_LINE:
-    'Please select the line that needs to change direction',
+  SELECT_CHANGE_DIRECTION_LINE: 'Please select the line that needs to change direction',
   EDIT_SUCCESS: 'Successful operation',
   EDIT_FAILED: 'Operation failed',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
-    'Smoothing coefficient should be 2 ~ 10 integers',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
   CONFIRM_EXIT: 'Are you sure to exit?',
   TOPO_EDIT_END: 'Are you finished editing and exit?',
   // 自定义专题图
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',
   PARAMS_ERROR: 'Params error! Failed to set!',
+
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate' or 'Close'",
   SPEECH_ERROR: 'Recognize error, please try again later',
   SPEECH_NONE: "You didn't seem to speak anything",

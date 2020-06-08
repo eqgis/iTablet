@@ -242,7 +242,7 @@ const Analyst_Labels = {
   PROJECTION_CONVERT_MOTHED: 'Convert method',
   PROJECTION_PARAMETER_SETTING: 'Parameter Setting',
   BASIC_PARAMETER: 'Basic Parameter',
-  ROTATION_ANGLE_SECOND: 'Rotation Angle (second) 旋转角度(秒)',
+  ROTATION_ANGLE_SECOND: 'Rotation Angle (second)',
   OFFSET: 'Offset',
   RATIO_DIFFERENCE: 'Ratio Difference',
   TARGET_COORDS: 'Target Coords',
@@ -378,7 +378,9 @@ const Analyst_Params = {
   SEARCH_VARIABLE_LENGTH: 'Variable Length',
   SEARCH_FIXED_LENGTH: 'Fixed Length',
   SEARCH_BLOCK: 'Block',
-  SPHERICAL: 'Spherical	',
+
+  // 半变异函数
+  SPHERICAL: 'Spherical',
   EXPONENTIAL: 'Exponential',
   GAUSSIAN: 'Gaussian',
 }
@@ -391,8 +393,7 @@ const Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'Please connect to iServer',
   PLEASE_CHOOSE_INPUT_METHOD: 'Please choose input method',
   PLEASE_CHOOSE_DATASET: 'Please choose dataset',
-  LOGIN_ISERVER_FAILED:
-    'Failed to connect iServer, please check ip, username and password',
+  LOGIN_ISERVER_FAILED: 'Failed to connect iServer, please check ip, username and password',
   BEING_ANALYZED: 'Being analyzed',
   ANALYZING_FAILED: 'Analyzing failed',
   LOADING_MODULE: 'Module Loading',
@@ -407,15 +408,7 @@ const Analyst_Prompt = {
   REGISTRATION_QUADRATIC_POINTS: 'Please set at least 7 control points',
   REGISTRATION_RECTANGLE_POINTS: 'Please set 2 control points',
   REGISTRATION_OFFSET_POINTS: 'Please set 1 control point',
-  REGISTRATION_POINTS_NUMBER_ERROR:
-    'The number of control points does not match',
+  REGISTRATION_POINTS_NUMBER_ERROR: 'The number of control points does not match',
 }
 
-export {
-  Analyst_Modules,
-  Analyst_Methods,
-  Analyst_Labels,
-  Analyst_Params,
-  Analyst_Prompt,
-  Convert_Unit,
-}
+export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

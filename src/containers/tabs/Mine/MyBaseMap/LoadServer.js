@@ -360,92 +360,104 @@ export default class LoadServer extends Component {
             style={{
               flexDirection: 'row',
               marginLeft: scaleSize(25),
+              paddingRight: scaleSize(25),
               marginTop: 10,
-              height: scaleSize(60),
               alignItems: 'center',
             }}
           >
             <Text state={styles.textRadio}>
               {getLanguage(global.language).Profile.SERVICE_TYPE + ' :'}
             </Text>
-            <TouchableOpacity
-              style={[styles.itemView, { alignItems: 'center' }]}
-              activeOpacity={0.9}
-              onPress={() => {
-                this.setState({ driver: 'WMS' })
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 1,
+                alignItems: 'center',
+                flexWrap: 'wrap',
               }}
             >
-              <Image
-                style={styles.image}
-                source={this.state.driver === 'WMS' ? radio_on : radio_off}
-              />
-              <Text state={styles.textRadio}>{'WMS'}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.itemView,
+                  { alignItems: 'center', marginLeft: scaleSize(20) },
+                ]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  this.setState({ driver: 'WMS' })
+                }}
+              >
+                <Image
+                  style={styles.image}
+                  source={this.state.driver === 'WMS' ? radio_on : radio_off}
+                />
+                <Text state={styles.textRadio}>{'WMS'}</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[
-                styles.itemView,
-                { alignItems: 'center', marginLeft: scaleSize(20) },
-              ]}
-              activeOpacity={0.9}
-              onPress={() => {
-                this.setState({ driver: 'WFS' })
-              }}
-            >
-              <Image
-                style={styles.image}
-                source={this.state.driver === 'WFS' ? radio_on : radio_off}
-              />
-              <Text state={styles.textRadio}>{'WFS'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.itemView,
-                { alignItems: 'center', marginLeft: scaleSize(20) },
-              ]}
-              activeOpacity={0.9}
-              onPress={() => {
-                this.setState({ driver: 'WCS' })
-              }}
-            >
-              <Image
-                style={styles.image}
-                source={this.state.driver === 'WCS' ? radio_on : radio_off}
-              />
-              <Text state={styles.textRadio}>{'WCS'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.itemView,
-                { alignItems: 'center', marginLeft: scaleSize(20) },
-              ]}
-              activeOpacity={0.9}
-              onPress={() => {
-                this.setState({ driver: 'TMS' })
-              }}
-            >
-              <Image
-                style={styles.image}
-                source={this.state.driver === 'TMS' ? radio_on : radio_off}
-              />
-              <Text state={styles.textRadio}>{'TMS'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.itemView,
-                { alignItems: 'center', marginLeft: scaleSize(20) },
-              ]}
-              activeOpacity={0.9}
-              onPress={() => {
-                this.setState({ driver: 'WMTS' })
-              }}
-            >
-              <Image
-                style={styles.image}
-                source={this.state.driver === 'WMTS' ? radio_on : radio_off}
-              />
-              <Text state={styles.textRadio}>{'WMTS'}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.itemView,
+                  { alignItems: 'center', marginLeft: scaleSize(20) },
+                ]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  this.setState({ driver: 'WFS' })
+                }}
+              >
+                <Image
+                  style={styles.image}
+                  source={this.state.driver === 'WFS' ? radio_on : radio_off}
+                />
+                <Text state={styles.textRadio}>{'WFS'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.itemView,
+                  { alignItems: 'center', marginLeft: scaleSize(20) },
+                ]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  this.setState({ driver: 'WCS' })
+                }}
+              >
+                <Image
+                  style={styles.image}
+                  source={this.state.driver === 'WCS' ? radio_on : radio_off}
+                />
+                <Text state={styles.textRadio}>{'WCS'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.itemView,
+                  { alignItems: 'center', marginLeft: scaleSize(20) },
+                ]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  this.setState({ driver: 'TMS' })
+                }}
+              >
+                <Image
+                  style={styles.image}
+                  source={this.state.driver === 'TMS' ? radio_on : radio_off}
+                />
+                <Text state={styles.textRadio}>{'TMS'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.itemView,
+                  { alignItems: 'center', marginLeft: scaleSize(20) },
+                ]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  this.setState({ driver: 'WMTS' })
+                }}
+              >
+                <Image
+                  style={styles.image}
+                  source={this.state.driver === 'WMTS' ? radio_on : radio_off}
+                />
+                <Text state={styles.textRadio}>{'WMTS'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
 

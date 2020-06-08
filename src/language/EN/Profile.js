@@ -1,5 +1,6 @@
 // 我的、发现
 const Profile = {
+  // 我的  主页面
   LOGIN_NOW: 'Login',
   IMPORT: 'Import',
   DATA: 'Data',
@@ -44,10 +45,45 @@ const Profile = {
   REGISTER_READ_PROTOCAL: 'I have read and agree to the ',
   REGISTER_ONLINE_PROTOCAL: 'SuperMap Terms of Service and Privacy Policy',
   CONNECTING: 'Connecting',
-  CONNECT_SERVER_FAIL:
-    'Failed to connect to the server, please check the network or server address',
+  CONNECT_SERVER_FAIL: 'Failed to connect to the server, please check the network or server address',
   NEXT: 'Next',
-  //
+
+  SWITCH_ACCOUNT: 'Switch Account',
+  LOG_OUT: 'Log out',
+
+  SWITCH_CURRENT: 'You are already loged in with this user',
+  SWITCHING: 'Switching...',
+  SWITCH_FAIL: 'Switch failed, please try to login with this user again',
+
+  // 地图服务地址
+  SERVICE_ADDRESS: 'Service Address',
+  MAP_NAME: 'Map Name',
+  ENTER_SERVICE_ADDRESS: 'Please enter the Service Address',
+  SAVE: 'Save',
+
+  // 我的服务
+  SERVICE: 'Service',
+  MY_SERVICE: 'Service',
+  PRIVATE_SERVICE: 'Private Service',
+  PUBLIC_SERVICE: 'Public Service',
+
+  // 个人主页
+  MY_ACCOUNT: 'My Account',
+  PROFILE_PHOTO: 'Profile Photo',
+  USERNAME: 'Username',
+  PHONE: 'Phone',
+  E_MAIL: 'E-mail',
+  CONNECT: 'Connect',
+  MANAGE_ACCOUNT: 'Manage Account',
+  ADD_ACCOUNT: 'Add Account',
+  DELETE_ACCOUNT: 'Delete Account',
+  UNABLE_DELETE_SELF: 'Unable to delete current user',
+
+  DELETE: 'Delete',
+  SELECT_ALL: 'Select All',
+  DESELECT_ALL: 'Deselect All',
+
+  // 数据删除导出
   SHARE: 'Share',
   PATH: 'Path',
 
@@ -85,6 +121,17 @@ const Profile = {
   MOVE_UP: 'Move Up',
   MOVE_DOWN: 'Move Down',
 
+  DELETE_SERVICE: 'Delete Service',
+  PUBLISH_SERVICE: 'Publish',
+  SET_AS_PRIVATE_SERVICE: 'Set as Private Service',
+  SET_AS_PUBLIC_SERVICE: 'Set as Public Service',
+  SET_AS_PRIVATE_DATA: 'Set as Private Data',
+  SET_AS_PUBLIC_DATA: 'Set as Public Data',
+  NO_SERVICE: 'No Service',
+
+  GET_DATA_FAILED: 'Failed to get data',
+
+  // 关于
   ABOUT: 'About',
   SERVICE_HOTLINE: 'Service Hotline',
   SALES_CONSULTATION: 'Consultation',
@@ -93,55 +140,10 @@ const Profile = {
   PRIVACY_POLICY: 'Privacy Policy',
   HELP_MANUAL: 'Help Manual',
 
-  SWITCH_ACCOUNT: 'Switch Account',
-  LOG_OUT: 'Log out',
-
-  SWITCH_CURRENT: 'You are already loged in with this user',
-  SWITCHING: 'Switching...',
-  SWITCH_FAIL: 'Switch failed, please try to login with this user again',
-
-  // 地图服务地址
-  SERVICE_ADDRESS: 'Service Address',
-  MAP_NAME: 'Map Name',
-  ENTER_SERVICE_ADDRESS: 'Please enter the Service Address',
-  SAVE: 'Save',
-
-  // 我的服务
-  SERVICE: 'Service',
-  MY_SERVICE: 'Service',
-  PRIVATE_SERVICE: 'Private Service',
-  PUBLIC_SERVICE: 'Public Service',
-  DELETE: 'Delete',
-  // 个人主页
-  MY_ACCOUNT: 'My Account',
-  PROFILE_PHOTO: 'Profile Photo',
-  USERNAME: 'Username',
-  PHONE: 'Phone',
-  E_MAIL: 'E-mail',
-  CONNECT: 'Connect',
-  MANAGE_ACCOUNT: 'Manage Account',
-  ADD_ACCOUNT: 'Add Account',
-  DELETE_ACCOUNT: 'Delete Account',
-  UNABLE_DELETE_SELF: 'Unable to delete current user',
-
-  DELETE_SERVICE: 'Delete Service',
-  PUBLISH_SERVICE: 'Publish',
-  SET_AS_PRIVATE_SERVICE: 'Set as Private Service',
-  SET_AS_PUBLIC_SERVICE: 'Set as Public Service',
-  SET_AS_PRIVATE_DATA: 'Set as Private Data',
-  SET_AS_PUBLIC_DATA: 'Set as Public Data',
-
-  NO_SERVICE: 'No Service',
-
-  SELECT_ALL: 'Select All',
-  DESELECT_ALL: 'Deselect All',
-
   MAP_ONLINE: 'Online Map',
   MAP_2D: '2D Map',
   MAP_3D: '3D Map',
   BROWSE_MAP: 'Browse',
-
-  GET_DATA_FAILED: 'Failed to get data',
 
   // 创建数据集
   PLEASE_ADD_DATASET: 'Please add dataset',
@@ -184,6 +186,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'Auto',
   SETTING_LOCATION_DEVICE: 'Location Device',
   SETTING_LOCATION_LOCAL: 'This device',
+
   // 许可
   LICENSE: 'License',
   LICENSE_CURRENT: 'License Current',
@@ -208,27 +211,22 @@ const Profile = {
   LICENSE_CLEAN_ALERT: 'Sure return license?',
   INPUT_LICENSE_SERIAL_NUMBER: 'Input License Serial Number',
   PLEASE_INPUT_LICENSE_SERIAL_NUMBER: 'Please Input License Serial Number',
-  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT:
-    'The input license serial number is not correct',
+  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT: 'The input license serial number is not correct',
   LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS: 'Serial Number Activat Success',
   LICENSE_REGISTER_BUY: 'Register Buy',
   LICENSE_HAVE_REGISTER: 'Have Registerd',
   LICENSE_NOT_CONTAIN_MODULE: 'Not Contain Expand Module',
   LICENSE_MODULE_REGISTER_SUCCESS: 'Module Register Success',
+  LICENSE_MODULE_REGISTER_FAIL: 'Module Register Fail',
   LICENSE_EXIT: 'Exit',
   LICENSE_EXIT_FAILED: 'Exit Failed',
-  LICENSE_EXIT_CLOUD_ACTIVATE:
-    'Do you want recycle cloud license and activate?',
+  LICENSE_EXIT_CLOUD_ACTIVATE: 'Do you want recycle cloud license and activate?',
   LICENSE_EXIT_CLOUD_LOGOUT: 'Do you want recycle cloud license and logout?',
   LICENSE_CURRENT_EXPIRE: 'Current License Invalid',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE:
-    'This module is not included under the current license',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB:
-    'This module is not included under the current license and some of its functions will be unavailable！！！',
-  LICENSE_NO_NATIVE_OFFICAL:
-    'No native official license file,Please add license file "Official_License" to "/iTablet/license/" file',
-  LICENSE_NOT_ITABLET_OFFICAL:
-    'This official license is not activat on iTablet,Please go to the license page to clear the license and reactivate it',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE: 'This module is not included under the current license',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: 'This module is not included under the current license and some of its functions will be unavailable！！！',
+  LICENSE_NO_NATIVE_OFFICAL: 'No native official license file,Please add license file "Official_License" to "/iTablet/license/" file',
+  LICENSE_NOT_ITABLET_OFFICAL: 'This official license is not activat on iTablet,Please go to the license page to clear the license and reactivate it',
   LICENSE_NATIVE_EXPIRE: 'Native License Invalid',
   LICENSE_LONG_EFFECTIVE: 'Long Effective',
   LICENSE_OFFLINE: 'License OffLine',
@@ -293,8 +291,7 @@ const Profile = {
   GO_ACTIVATE: 'Go Activate',
 
   // 意见反馈
-  SUGGESTION_FUNCTION_ABNORMAL:
-    'Function Abnormal : Function abnormal or not can use',
+  SUGGESTION_FUNCTION_ABNORMAL: 'Function Abnormal : Function abnormal or not can use',
   SUGGESTION_PRODUCT_ADVICE: 'Product Suggestion : I have a suggestion',
   SUGGESTION_OTHER_PROBLEMS: 'Other Problems',
   SUGGESTION_SELECT_PROBLEMS: 'Please select the problems',
@@ -317,8 +314,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Datum position',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Auto location succeed',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Map select point succeed',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH:
-    'Please place your mobile phone facing south click sure',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Please place your mobile phone facing south click sure',
   MAP_AR_DATUM_SETTING: 'Setting',
 
   // ar地图
@@ -329,4 +325,5 @@ const Profile = {
 
   CHOOSE_COLOR: 'Choose Color',
 }
+
 export { Profile }

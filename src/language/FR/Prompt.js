@@ -16,8 +16,7 @@ const Prompt = {
   STOP: 'Stop',
   FIELD_TO_PAUSE: 'Échec de la pause',
   WX_NOT_INSTALLED: "Wechat non installé'",
-  WX_SHARE_FAILED:
-    "Le partage Wechat a échoué, veuillez vérifier l'installation de wechat",
+  WX_SHARE_FAILED: "Le partage Wechat a échoué, veuillez vérifier l'installation de wechat",
   RENAME: 'Renommer',
   BATCH_DELETE: 'Suppression de lot',
   PREPARING: '准备中',
@@ -34,8 +33,7 @@ const Prompt = {
   LOG_OUT: 'Êtes-vous sûr de vouloir vous déconnecter',
   FAILED_TO_LOG: 'Échec de la connexion',
   INCORRECT_USER_INFO: 'Compte inexistant ou erreur de mot de passe',
-  INCORRECT_IPORTAL_ADDRESS:
-    "Échec de la connexion, veuillez vérifier l'adresse de votre serveur",
+  INCORRECT_IPORTAL_ADDRESS: "Échec de la connexion, veuillez vérifier l'adresse de votre serveur",
 
   DELETE_STOP: 'Êtes-vous sûr de vouloir supprimer stop?',
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
@@ -88,8 +86,7 @@ const Prompt = {
   ENABLE_DYNAMIC_PROJECTION: 'Activer la projection dynamique?',
   TURN_ON: 'Activer',
   CREATE_FAILED: 'Échec de la création',
-  INVALID_DATASET_NAME:
-    'Nom de jeu de données non valide ou le nom existe déjà',
+  INVALID_DATASET_NAME: 'Nom de jeu de données non valide ou le nom existe déjà',
 
   NO_PLOTTING_DEDUCTION: 'Aucune déduction de traçage dans la carte actuelle',
   NO_FLY: 'No Fly dans la scène actuelle',
@@ -98,15 +95,13 @@ const Prompt = {
 
   PLEASE_ENTER_TEXT: "Veuillez saisir du texte'",
   PLEASE_SELECT_THEMATIC_LAYER: 'Veuillez sélectionner une couche thématique',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED:
-    'Le calque actuel ne peut pas être stylisé et veuillez en sélectionner un autre',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Le calque actuel ne peut pas être stylisé et veuillez en sélectionner un autre',
 
   PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner le calque du tracé',
   DONOT_SUPPORT_ARCORE: 'Cet appareil ne prend pas en charge ARCore',
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer un nouveau calque de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
-  SELECT_DELETE_BY_RECTANGLE:
-    "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
+  SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
 
   CHOOSE_LAYER: 'Choisir un calque',
 
@@ -142,8 +137,7 @@ const Prompt = {
   PUBLISH_SUCCESS: 'Publié avec succès',
   PUBLISH_FAILED: 'Échec de la publication',
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
-  BATCH_DELETE_CONFIRM:
-    'Voulez-vous vraiment supprimer les éléments sélectionnés?',
+  BATCH_DELETE_CONFIRM: 'Voulez-vous vraiment supprimer les éléments sélectionnés?',
 
   SELECT_AT_LEAST_ONE: 'Veuillez sélectionner au moins un élément',
   DELETE_MAP_RELATE_DATA: 'Les cartes suivantes seront affectées, continuer?',
@@ -162,8 +156,7 @@ const Prompt = {
   CLIPPED_SUCCESS: 'Coupé avec succès',
   CLIP_FAILED: 'Échec du découpage',
 
-  LAYER_CANNOT_CREATE_THEMATIC_MAP:
-    'La couche actuelle ne peut pas être utilisée pour créer une carte thématique.',
+  LAYER_CANNOT_CREATE_THEMATIC_MAP: 'La couche actuelle ne peut pas être utilisée pour créer une carte thématique.',
 
   ANALYSING: 'Analyser',
   CHOOSE_STARTING_POINT: 'Choisir le point de départ',
@@ -208,8 +201,7 @@ const Prompt = {
   DETECT_DUSTBIN_MODEL: 'Modèle de poubelle',
   ROAD_MODEL: 'Modèle de route',
 
-  LICENSE_EXPIRED:
-    "La licence d'essai a expiré. Voulez-vous continuer le procès?",
+  LICENSE_EXPIRED: "La licence d'essai a expiré. Voulez-vous continuer le procès?",
   APPLY_LICENSE: 'Appliquer la licence',
   APPLY_LICENSE_FIRST: "Veuillez d'abord appliquer une licence valide",
 
@@ -221,15 +213,13 @@ const Prompt = {
   INDEX_OUT_OF_BOUNDS: 'Index hors limites',
   PLEASE_SELECT_LICATION_INFORMATION: 'Veuillez configurer le lieu',
   OUT_OF_MAP_BOUNDS: 'Hors des limites de la carte',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    "L'emplacement actuel est hors des limites de la carte afin que vous ne puissiez pas utiliser le suivi pour incrémenter la route",
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: "L'emplacement actuel est hors des limites de la carte afin que vous ne puissiez pas utiliser le suivi pour incrémenter la route",
 
   POI: 'POI',
 
   ILLEGAL_DATA: 'Données illégales',
 
-  UNSUPPORTED_LAYER_TO_SHARE:
-    "Le partage de cette couche n'est pas encore pris en charge",
+  UNSUPPORTED_LAYER_TO_SHARE: "Le partage de cette couche n'est pas encore pris en charge",
   SELECT_DATASET_TO_SHARE: 'Veuillez sélectionner le jeu de données à partager',
   ENTER_DATA_NAME: 'Veuillez saisir le nom des données',
   SHARED_DATA_10M: 'Le fichier de plus de 10 Mo ne peut pas être partagé',
@@ -247,14 +237,11 @@ const Prompt = {
   ENTER_CORRECT_EMAIL: 'Veuillez saisir la bonne adresse e-mail',
 
   // 设置菜单提示信息
-  ROTATION_ANGLE_ERROR:
-    "L'angle de rotation doit être compris entre -360 ° et 360 °",
+  ROTATION_ANGLE_ERROR: "L'angle de rotation doit être compris entre -360 ° et 360 °",
   MAP_SCALE_ERROR: "Erreur d'entrée! Veuillez saisir un nombre",
   VIEW_BOUNDS_ERROR: 'Erreur de plage! Veuillez saisir un nombre',
-  VIEW_BOUNDS_RANGE_ERROR:
-    'Erreur de paramètre! La hauteur et la largeur de la vue doivent être supérieures à zéro »,',
-  MAP_CENTER_ERROR:
-    'Erreur de coordination! X et Y doivent tous deux être des nombres ',
+  VIEW_BOUNDS_RANGE_ERROR: 'Erreur de paramètre! La hauteur et la largeur de la vue doivent être supérieures à zéro »,',
+  MAP_CENTER_ERROR: 'Erreur de coordination! X et Y doivent tous deux être des nombres ',
   COPY_SUCCESS: 'Copier avec success',
   // 复制坐标系
   COPY_COORD_SYSTEM_SUCCESS: 'Coordonner la réplication du système avec succès',
@@ -272,26 +259,20 @@ const Prompt = {
   ERROR_INFO_INVALID_URL: "URL non valide'",
   ERROR_INFO_NOT_A_NUMBER: "Ce n'est pas un nombre",
   ERROR_INFO_START_WITH_A_LETTER: 'Le nom ne peut commencer que par une lettre',
-  ERROR_INFO_ILLEGAL_CHARACTERS:
-    'Le nom ne peut pas contenir de caractères illégaux',
+  ERROR_INFO_ILLEGAL_CHARACTERS: 'Le nom ne peut pas contenir de caractères illégaux',
   ERROR_INFO_EMPTY: 'Le nom ne peut pas être vide.',
 
-  OPEN_LOCATION:
-    'Veuillez ouvrir le service de localisation dans les paramètres système',
-  REQUEST_LOCATION:
-    "iTablet a besoin d'une autorisation de localisation pour terminer l'action'",
-  LOCATION_ERROR:
-    'La demande de localisation a échoué, veuillez réessayer plus tard',
+  OPEN_LOCATION: 'Veuillez ouvrir le service de localisation dans les paramètres système',
+  REQUEST_LOCATION: "iTablet a besoin d'une autorisation de localisation pour terminer l'action'",
+  LOCATION_ERROR: 'La demande de localisation a échoué, veuillez réessayer plus tard',
 
   OPEN_THRID_PARTY: 'Vous allez ouvrir une application à trente, continuez?',
 
   FIELD_ILLEGAL: 'Champ illégal',
   PLEASE_SELECT_A_RASTER_LAYER: 'Veuillez sélectionner une couche raster',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM:
-    'Veuillez ajouter la source de données par uniforme',
-  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION:
-    'La couche actuelle ne prend pas en charge la modification',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Veuillez ajouter la source de données par uniforme',
+  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'La couche actuelle ne prend pas en charge la modification',
 
   FAILED_TO_CREATE_POINT: 'Échec de création du point',
   FAILED_TO_CREATE_TEXT: 'Impossible de créer du texte',
@@ -303,42 +284,27 @@ const Prompt = {
   GO_HERE: 'Allez ici',
   SHOW_MORE_RESULT: 'Afficher plus de résultats',
   PLEASE_SET_BASEMAP_VISIBLE: 'Veuillez définir le fond de carte visible',
-  NO_NETWORK_DATASETS:
-    "L'espace de travail actuel ne contient pas de jeu de données réseau",
-  NO_LINE_DATASETS:
-    "L'espace de travail actuel ne contient pas de jeu de données de ligne",
-  NETWORK_DATASET_IS_NOT_AVAILABLE:
-    "L'ensemble de données réseau actuel n'est pas disponible",
-  POINT_NOT_IN_BOUNDS:
-    'Les limites du jeu de données réseau sélectionné ne contiennent pas le point',
-  POSITION_OUT_OF_MAP:
-    'Votre position est en dehors des limites de la carte, veuillez utiliser la navigation simulée',
-  SELECT_DATASOURCE_FOR_NAVIGATION:
-    'Sélectionner les données pour la navigation',
+  NO_NETWORK_DATASETS: "L'espace de travail actuel ne contient pas de jeu de données réseau",
+  NO_LINE_DATASETS: "L'espace de travail actuel ne contient pas de jeu de données de ligne",
+  NETWORK_DATASET_IS_NOT_AVAILABLE: "L'ensemble de données réseau actuel n'est pas disponible",
+  POINT_NOT_IN_BOUNDS: 'Les limites du jeu de données réseau sélectionné ne contiennent pas le point',
+  POSITION_OUT_OF_MAP: 'Votre position est en dehors des limites de la carte, veuillez utiliser la navigation simulée',
+  SELECT_DATASOURCE_FOR_NAVIGATION: 'Sélectionner les données pour la navigation',
   PLEASE_SELECT_NETWORKDATASET: "Sélectionnez d'abord un jeu de données réseau",
   PLEASE_SELECT_A_POINT_INDOOR: 'Veuillez sélectionner le point intérieur',
-  PATH_ANALYSIS_FAILED:
-    "L'analyse du chemin a échoué! Veuillez sélectionner à nouveau les points de début et de fin",
-  ROAD_NETWORK_UNLINK:
-    "L'analyse du chemin a échoué en raison du réseau routier déconnecté du point de départ au point d'arrivée",
+  PATH_ANALYSIS_FAILED: "L'analyse du chemin a échoué! Veuillez sélectionner à nouveau les points de début et de fin",
+  ROAD_NETWORK_UNLINK: "L'analyse du chemin a échoué en raison du réseau routier déconnecté du point de départ au point d'arrivée",
   CHANGE_TO_OUTDOOR: '是否切换到室外？',
   CHANGE_TO_INDOOR: '是否切换到室内？',
-  SET_START_AND_END_POINTS:
-    "Veuillez d'abord définir les points de début et de fin",
-  SELECT_LAYER_NEED_INCREMENTED:
-    'Veuillez sélectionner la couche à incrémenter',
+  SET_START_AND_END_POINTS: "Veuillez d'abord définir les points de début et de fin",
+  SELECT_LAYER_NEED_INCREMENTED: 'Veuillez sélectionner la couche à incrémenter',
   SELECT_THE_FLOOR: 'Veuillez sélectionner le sol où se trouve la couche',
-  LONG_PRESS_ADD_START:
-    'Veuillez appuyer longuement pour ajouter un point de départ',
-  LONG_PRESS_ADD_END:
-    'Veuillez appuyer longuement pour ajouter une destination',
+  LONG_PRESS_ADD_START: 'Veuillez appuyer longuement pour ajouter un point de départ',
+  LONG_PRESS_ADD_END: 'Veuillez appuyer longuement pour ajouter une destination',
   ROUTE_ANALYSING: 'Analyse',
-  DISTANCE_ERROR:
-    'La destination est trop proche du point de départ, veuillez resélectionner!',
-  USE_ONLINE_ROUTE_ANALYST:
-    "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
-  NOT_SUPPORT_ONLINE_NAVIGATION:
-    "La navigation en ligne n'est pas encore prise en charge",
+  DISTANCE_ERROR: 'La destination est trop proche du point de départ, veuillez resélectionner!',
+  USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
+  NOT_SUPPORT_ONLINE_NAVIGATION: "La navigation en ligne n'est pas encore prise en charge",
   CREATE: '新建',
   NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
 
@@ -353,8 +319,7 @@ const Prompt = {
   MERGE_FAILD: '合并失败',
   NOT_SUPPORT_PRJCOORDSYS: '以下数据集的坐标系不支持合并',
   MERGEING: '合并中',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
   NEW_NAV_DATA: '创建导航数据',
   INPUT_MODEL_FILE_NAME: '请输入模型文件名称',
   INCREMENT_FIRST: '请先采集路网数据',
@@ -389,8 +354,7 @@ const Prompt = {
 
   NOT_SUPPORT_STATISTIC: 'Le champ ne prend pas en charge les statistiques',
   ATTRIBUTE_DELETE_CONFIRM: 'Sure Delete this Attribute Field?',
-  ATTRIBUTE_DELETE_TIPS:
-    "Impossible de récupérer après suppression de l'attribut",
+  ATTRIBUTE_DELETE_TIPS: "Impossible de récupérer après suppression de l'attribut",
   ATTRIBUTE_DELETE_SUCCESS: "Réussite de la suppression du champ d'attribut",
   ATTRIBUTE_DELETE_FAILED: "Échec de la suppression du champ d'attribut",
   ATTRIBUTE_ADD_SUCCESS: 'Attribut ajouter avec success',

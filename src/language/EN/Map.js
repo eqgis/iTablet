@@ -1,5 +1,6 @@
 // 制图
 const Map_Label = {
+  // 地图底部导航
   MAP: 'Map',
   LAYER: 'Layer',
   ATTRIBUTE: 'Attribute',
@@ -16,6 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
+  // 地图制图及公共 开始
   START: 'Start',
   START_OPEN_MAP: 'Open Map',
   START_NEW_MAP: 'New Map',
@@ -30,6 +32,8 @@ const Map_Main_Menu = {
   ANIMATION_NODE_NAME: 'Animation Node Name',
 
   PLOT: 'Plot',
+
+  // 地图制图及公共 添加
   OPEN: 'Add',
   OPEN_DATASOURCE: 'Datasource',
   OPEN_MAP: 'Map',
@@ -55,22 +59,24 @@ const Map_Main_Menu = {
   PROCESS: 'Process',
 
   NEW_DATASOURCE: 'New Datasource',
-
+  // 图例设置
   LEGEND_COLUMN: 'Column Number',
   LEGEND_WIDTH: 'Width',
   LEGEND_HEIGHT: 'Height',
-  LEGEND_COLOR: 'Color',
   LEGEND_FONT: 'Fontsize',
   LEGEND_ICON: 'Image Size',
+  LEGEND_COLOR: 'Color',
   LEGEND_POSITION: 'Legend Position',
   TOP_LEFT: 'Top Left Alignment',
   TOP_RIGHT: 'Right Upper Alignment',
   LEFT_BOTTOM: 'Lower Left Alignment',
   RIGHT_BOTTOM: 'Right Bottom Alignment',
 
+  // 地图制图及公共 风格
   STYLE: 'Styles',
   STYLE_EDIT: 'Styles Edit',
   STYLE_SYMBOL: 'Symbol',
+  STYLE_SIZE: 'Size',
   STYLE_SYMBOL_SIZE: 'Symbol Size',
   STYLE_COLOR: 'Color',
   STYLE_ROTATION: 'Rotation',
@@ -84,7 +90,6 @@ const Map_Main_Menu = {
   STYLE_FRAME_COLOR: 'Frame Color',
   STYLE_FRAME_SYMBOL: 'Frame Symbol',
   STYLE_FONT: 'Font',
-  STYLE_SIZE: 'Size',
   STYLE_FONT_SIZE: 'Font Size',
   STYLE_ALIGNMENT: 'Alignment',
   STYLE_FONT_STYLE: 'Font style',
@@ -96,13 +101,15 @@ const Map_Main_Menu = {
   STYLE_STRIKEOUT: 'Strikeout',
   STYLE_OUTLINE: 'Outline',
   STYLE_SHADOW: 'Shadow',
+  SATURATION: 'Saturation',
+  CONTRAST: 'Contrast',
+
   ROTATE_LEFT: 'Rotate Left',
   ROTATE_RIGHT: 'Rotate Right',
   VERTICAL_FLIP: 'Vertical Flip',
   HORIZONTAL_FLIP: 'Horizontal Flip',
-  SATURATION: 'Saturation',
-  CONTRAST: 'Contrast',
 
+  // 地图制图及公共 工具
   TOOLS: 'Tools',
   TOOLS_DISTANCE_MEASUREMENT: 'Distance Measurement',
   TOOLS_AREA_MEASUREMENT: 'Area\n Measurement',
@@ -112,6 +119,7 @@ const Map_Main_Menu = {
   TOOLS_ROUND_SELECT: 'Round Select',
   FULL_SCREEN: 'Full-Screen',
 
+  // 标注
   PLOTS: 'Mark',
   DOT_LINE: 'Dot Line',
   FREE_LINE: 'Free Line',
@@ -131,6 +139,7 @@ const Map_Main_Menu = {
   COLLECT_TIME: 'Time',
   COORDINATE: 'Coordinate',
 
+  // 裁剪
   TOOLS_RECTANGLE_CLIP: 'Rectangle Clip',
   TOOLS_CIRCLE_CLIP: 'Circle Clip',
   TOOLS_POLYGON_CLIP: 'Polygon Clip',
@@ -140,9 +149,6 @@ const Map_Main_Menu = {
   TOOLS_EXACT_CLIP: 'Exact Clip',
   TOOLS_TARGET_DATASOURCE: 'Target Datasource',
   TOOLS_UNIFIED_SETTING: 'Unified setting',
-  TOOLS_MAGNIFIER: 'Magnifier',
-  TOOLS_SELECT_ALL: 'Select All',
-  TOOLS_SELECT_REVERSE: 'Select Reverse',
   MAP_CLIP: 'Map Clip',
   CLIP: 'Clip',
 
@@ -153,6 +159,11 @@ const Map_Main_Menu = {
   STYLE_TRANSFER: 'AI Cartography',
   OBJ_EDIT: 'Edit Object',
 
+  TOOLS_MAGNIFIER: 'Magnifier',
+  TOOLS_SELECT_ALL: 'Select All',
+  TOOLS_SELECT_REVERSE: 'Select Reverse',
+
+  // 三维 工具
   TOOLS_SCENE_SELECT: 'Select',
   TOOLS_PATH_ANALYSIS: 'Path Analysis',
   TOOLS_VISIBILITY_ANALYSIS: 'Visibility Analysis',
@@ -160,7 +171,7 @@ const Map_Main_Menu = {
   TOOLS_BOX_CLIP: 'Box Clip',
   TOOLS_PLANE_CLIP: 'Plane Clip',
   TOOLS_CROSS_CLIP: 'Cross Clip',
-
+  // 三维 飞行
   FLY: 'Fly',
   FLY_ROUTE: 'Flying Route',
   FLY_ADD_STOPS: 'Add Stops',
@@ -184,6 +195,7 @@ const Map_Main_Menu = {
   ROTATE_SETTINGS: 'Rotate settings',
   CLIP_SURFACE_SETTING: 'Clip surface settings',
   CUT_FIRST: 'Please clip map first',
+  // 专题制图 专题图
   THEME: 'Create',
   THEME_UNIFORM_MAP: 'Uniform Map',
   THEME_UNIQUE_VALUES_MAP: 'Unique Values\n Map',
@@ -267,6 +279,7 @@ const Map_Main_Menu = {
   DATUM_VALUE: 'Datum Value',
   RANGE_COUNT: 'Range Count',
 
+  // 外业采集 采集
   CREATE_WITH_SYMBOLS: 'Create with Symbols',
   CREATE_WITH_TEMPLATE: 'Create with Template',
   POINT_SYMBOL_LIBRARY: 'Marker Libarary',
@@ -291,6 +304,7 @@ const Map_Main_Menu = {
   COLLECTION_PAUSE: 'Pause',
   COLLECTION_STOP: 'Stop',
 
+  // 外业采集 编辑
   EDIT: 'Edit',
   EDIT_ADD_NODES: 'Add Nodes',
   EDIT_NODES: 'Edit Nodes',
@@ -308,6 +322,7 @@ const Map_Main_Menu = {
   OBJMOVE: 'Move',
   FREE_DRAW_ERASE: 'Free-draw Erase',
 
+  // 标绘
   PLOTTING: 'Plotting',
   PLOTTING_LIB_CHANGE: 'Change Plotting Lib',
   PLOTTING_LIB: 'Plotting Lib',
@@ -315,6 +330,7 @@ const Map_Main_Menu = {
   PLOTTING_ANIMATION_DEDUCTION: 'Situation Evolution Manager',
   PLOTTING_ANIMATION_RESET: 'Reset',
 
+  // 分享
   SHARE: 'Share',
   SHARE_WECHAT: 'Wechat',
   SHARE_FRIENDS: 'Friends',
@@ -323,8 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Road\nNetwork',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Don not support this device',
-  MAP_AR_CAMERA_EXCEPTION:
-    'The camera is abnormal, please check whether the permission is open.',
+  MAP_AR_CAMERA_EXCEPTION: 'The camera is abnormal, please check whether the permission is open.',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Municipal Collect',
@@ -363,16 +378,15 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: 'Save Region',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT:
-    'Click the screen to determine the current point',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classify Loading',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Classify failed, try Again',
   MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS: 'No images are selected',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT: 'Result',
   MAP_AR_AI_ASSISTANT_CLASSIFY_CONFIDENCE: 'Confidence',
-
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_NAME: 'Object Name:',
+
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_TIME: 'Classify Time:',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS: 'Remarks:',
   MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_PLEA_REMARKS: 'Fill in the note',
@@ -420,11 +434,13 @@ const Map_Main_Menu = {
   //导航采集
   MAP_INDOOR_NETWORK: 'Indoor',
   MAP_OUTDOOR_NETWORK: 'Outdoor',
+
   MAP_INCREMENT_START: 'Start',
   MAP_INCREMENT_STOP: 'Stop',
   MAP_INCREMENT_ADD_POINT: 'Add point',
   MAP_INCREMENT_CANCEL: 'Cancel',
   MAP_INCREMENT_COMMIT: 'Commit',
+
   MAP_INCREMENT_GPS_POINT: 'Collect Points by GPS',
   MAP_INCREMENT_GPS_TRACK: 'Collect Line by GPS',
   MAP_INCREMENT_POINTLINE: 'Point Draw',
@@ -560,15 +576,7 @@ const Map_Layer = {
   LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS: 'Filter Overlapping Small Objects',
   LAYERS_SHARE: 'Share',
   SELECT_LAYSER_SCALE: 'Please select a scale',
-  LAYER_SCALE_RANGE_WRONG:
-    'the Maximum Visible Scale must be larger than the Minimum Visible Scale',
-
-  LAYERS_CREATE_THEMATIC_MAP: 'Create Thematic Map',
-  LAYERS_MODIFY_THEMATIC_MAP: 'Modify Thematic Map',
-
-  BASEMAP: 'My Basemap',
-  BASEMAP_SWITH: 'Switch Basemap',
-  MY_TERRAIN: 'My Terrain',
+  LAYER_SCALE_RANGE_WRONG: 'Click the screen to determine the current point',
 
   VISIBLE: 'Visible',
   NOT_VISIBLE: 'Not Visible',
@@ -578,6 +586,13 @@ const Map_Layer = {
   NOT_EDITABLE: 'Not Editable',
   SNAPABLE: 'Snapable',
   NOT_SNAPABLE: 'Not Snapable',
+  // 专题图图层
+  LAYERS_CREATE_THEMATIC_MAP: 'Create Thematic Map',
+  LAYERS_MODIFY_THEMATIC_MAP: 'Modify Thematic Map',
+
+  BASEMAP: 'My Basemap',
+  BASEMAP_SWITH: 'Switch Basemap',
+  MY_TERRAIN: 'My Terrain',
 
   SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
   ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
@@ -593,6 +608,7 @@ const Map_Layer = {
 const Map_Attribute = {
   ATTRIBUTE_SORT: 'Sort',
   ATTRIBUTE_LOCATION: 'Go to',
+  ATTRIBUTE_CANCEL: 'Cancel',
   ATTRIBUTE_EDIT: 'Edit',
   ATTRIBUTE_STATISTIC: 'Statistic',
   ATTRIBUTE_ASSOCIATION: 'Associate',
@@ -630,6 +646,7 @@ const Map_Attribute = {
   DESCENDING: 'Descending',
 }
 
+// 地图设置
 const Map_Setting = {
   BASIC_SETTING: 'Basic settings',
   ROTATION_GESTURE: 'Rotation Gesture',
@@ -778,10 +795,10 @@ const Map_Settings = {
   ROTATION_ANGLE_SECONDS: 'Rotation Angle(Seconds)',
 
   // 四级菜单 和复制提示
-  TYPE: 'Type',
-  FORMAT: 'Format',
   DATASOURCES: 'Datasources',
   DATASETS: 'Datasets',
+  TYPE: 'Type',
+  FORMAT: 'Format',
   ALL_COORD_FILE: 'Supported Coordinate System File',
   SHAPE_COORD_FILE: 'Shape Coordinate System File',
   MAPINFO_FILE: 'MapInfo Change File',
@@ -807,6 +824,7 @@ const Map_Tools = {
   FROM_ALBUM: 'Choose from album',
   VIEW: 'View',
 }
+
 // POI title
 const Map_PoiTitle = {
   FOOD: 'Food',
@@ -822,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: 'Mall',
   SUBWAY: 'Subway',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

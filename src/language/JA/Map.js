@@ -1,7 +1,6 @@
 // 制图
-
 const Map_Label = {
-  // マップ底部ナビ
+  // 地图底部导航
   MAP: 'マップ',
   LAYER: 'レイヤー',
   ATTRIBUTE: '属性',
@@ -15,10 +14,10 @@ const Map_Label = {
   ENCLOSURE: 'フェンス',
 }
 
-// マップ、シーン主菜单
+// 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: '現在マップ',
-  // マップ制图及公共 開始
+  // 地图制图及公共 开始
   START: '開始',
   START_OPEN_MAP: 'マップを開く',
   START_NEW_MAP: '新規マップ',
@@ -34,7 +33,7 @@ const Map_Main_Menu = {
 
   PLOT: 'アニメシンボル',
 
-  // マップ制图及公共 追加
+  // 地图制图及公共 添加
   OPEN: '追加',
   OPEN_DATASOURCE: 'データソース',
   OPEN_MAP: 'マップ',
@@ -60,7 +59,7 @@ const Map_Main_Menu = {
   PROCESS: '扱う',
 
   NEW_DATASOURCE: '新規データソース',
-  // 凡例設定
+  // 图例设置
   LEGEND_COLUMN: '列数',
   LEGEND_WIDTH: '幅',
   LEGEND_HEIGHT: '高さ',
@@ -73,7 +72,7 @@ const Map_Main_Menu = {
   LEFT_BOTTOM: '左下揃え',
   RIGHT_BOTTOM: '右下揃え',
 
-  // マップ制图及公共 スタイル
+  // 地图制图及公共 风格
   STYLE: 'スタイル',
   STYLE_EDIT: 'スタイル 編集',
   STYLE_SYMBOL: 'シンボル',
@@ -110,7 +109,7 @@ const Map_Main_Menu = {
   VERTICAL_FLIP: '上下回転',
   HORIZONTAL_FLIP: '左右回転',
 
-  // マップ制图及公共 ツール
+  // 地图制图及公共 工具
   TOOLS: 'ツール',
   TOOLS_DISTANCE_MEASUREMENT: '距離計測',
   TOOLS_AREA_MEASUREMENT: '面積計測',
@@ -120,7 +119,7 @@ const Map_Main_Menu = {
   TOOLS_ROUND_SELECT: '円形選択',
   FULL_SCREEN: '全体表示',
 
-  // マーク
+  // 标注
   PLOTS: 'マーク',
   DOT_LINE: 'ポイントでラインを描画',
   FREE_LINE: 'ペンシルラインを描画',
@@ -140,7 +139,7 @@ const Map_Main_Menu = {
   COLLECT_TIME: 'コレクション時間',
   COORDINATE: '経度緯度',
 
-  // クリップ
+  // 裁剪
   TOOLS_RECTANGLE_CLIP: '矩形クリップ',
   TOOLS_CIRCLE_CLIP: '円形クリップ',
   TOOLS_POLYGON_CLIP: 'ポリゴンクリップ',
@@ -164,7 +163,7 @@ const Map_Main_Menu = {
   TOOLS_SELECT_ALL: 'すべて選択',
   TOOLS_SELECT_REVERSE: '選択の反転',
 
-  // 3D ツール
+  // 三维 工具
   TOOLS_SCENE_SELECT: '選択',
   TOOLS_PATH_ANALYSIS: 'ルート解析',
   TOOLS_VISIBILITY_ANALYSIS: '見通し解析',
@@ -172,13 +171,13 @@ const Map_Main_Menu = {
   TOOLS_BOX_CLIP: 'Boxクリップ',
   TOOLS_PLANE_CLIP: '平面クリップ',
   TOOLS_CROSS_CLIP: 'Crossクリップ',
-  // 3D 飛行
+  // 三维 飞行
   FLY: '飛行',
   FLY_ROUTE: '飛行軌跡',
   FLY_ADD_STOPS: '目標ポイントの追加',
   FLY_AROUND_POINT: 'ポイント旋回飛行',
 
-  // 3Dクリップ
+  // 三维裁剪
   CLIP_LAYER: 'クリップレイヤー',
   CLIP_AREA_SETTINGS: 'クリップエリアパラメータ設定',
   CLIP_AREA_SETTINGS_WIDTH: '底面幅',
@@ -196,7 +195,7 @@ const Map_Main_Menu = {
   ROTATE_SETTINGS: '回転パラメータ',
   CLIP_SURFACE_SETTING: 'クリップポリゴン設定',
   CUT_FIRST: 'クリップしてください',
-  // 专题制图 主題図
+  // 专题制图 专题图
   THEME: '主題図',
   THEME_UNIFORM_MAP: '統一スタイル',
   THEME_UNIQUE_VALUES_MAP: '個別値スタイル',
@@ -264,12 +263,23 @@ const Map_Main_Menu = {
   THEME_MAX_VISIBLE_SIZE: '最大表示値',
   THEME_MIN_VISIBLE_SIZE: '最小表示値',
 
+  // 自定义专题图设置
+  THEME_RANGES_LABEL_MAP_TITLE: 'Ranges Label Map', //待翻译
+  THEME_RANGES_MAP_TITLE: 'Ranges Map', //待翻译
+  THEME_UNIQUE_VALUES_MAP_TITLE: 'Unique Values Map', //待翻译
+  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: 'Unique Value Label Map', //待翻译
+  RANGE: 'Ranges', //待翻译
+  PREVIEW: 'Preview', //待翻译
+  CUSTOM_THEME_MAP: 'Custom Thematic Map', //待翻译
+  COLOR_PICKER: 'Color Picker', //待翻译
+  USER_DEFINE: 'User Defined', //待翻译
+
   DOT_VALUE: 'ポイント値',
   GRADUATE_BY: '値の計算方法',
   DATUM_VALUE: '基準値',
   RANGE_COUNT: '段階区分個数',
 
-  // 外业コレクション コレクション
+  // 外业采集 采集
   CREATE_WITH_SYMBOLS: '通常作成',
   CREATE_WITH_TEMPLATE: 'テンプレートで作成',
   POINT_SYMBOL_LIBRARY: 'ポイントシンボルライブラリ',
@@ -294,7 +304,7 @@ const Map_Main_Menu = {
   COLLECTION_PAUSE: '一時停止',
   COLLECTION_STOP: '停止',
 
-  // 外业コレクション 編集
+  // 外业采集 编辑
   EDIT: '編集',
   EDIT_ADD_NODES: '頂点の追加',
   EDIT_NODES: '頂点の編集',
@@ -312,7 +322,7 @@ const Map_Main_Menu = {
   OBJMOVE: '対象移動',
   FREE_DRAW_ERASE: '手動描画でイレース',
 
-  // アニメシンボル
+  // 标绘
   PLOTTING: 'アニメシンボル',
   PLOTTING_LIB_CHANGE: 'アニメシンボルライブラリの切替',
   PLOTTING_LIB: 'アニメシンボルライブラリ',
@@ -320,7 +330,7 @@ const Map_Main_Menu = {
   PLOTTING_ANIMATION_DEDUCTION: '状況展開',
   PLOTTING_ANIMATION_RESET: 'リセット',
 
-  // シェア
+  // 分享
   SHARE: 'シェア',
   SHARE_WECHAT: 'WeChat',
   SHARE_FRIENDS: '友達',
@@ -353,8 +363,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: '総長さ:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: '現在長さ:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_HISTORY: '歴史レコード:',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME:
-    'コレクション名を入力してください:',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME: 'コレクション名を入力してください:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: '歴史データはありません',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: 'レコードを開始',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: 'レコードを一時停止',
@@ -369,8 +378,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_SAVE_REGION: '顔を保存',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'トレース収集',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'ラッシュコレクション',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT:
-    '画面をタップして現在のポイントを特定します',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '画面をタップして現在のポイントを特定します',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '分類中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分類に失敗しました。再度試してください',
@@ -393,7 +401,7 @@ const Map_Main_Menu = {
   LINE: 'ライン',
   MARK: 'マーク',
 
-  // マップナビ
+  // 地图导航
   START_POINT: '起点',
   END_POINT: '終点',
   DRAW: '描画',
@@ -422,14 +430,17 @@ const Map_Main_Menu = {
   NETWORK_DATASET: '道路ネットワークデータセット',
   MODEL_FILE: 'ナビモデルファイル',
   MY_LOCATION: '私の位置',
+
   //导航采集
   MAP_INDOOR_NETWORK: '屋内',
   MAP_OUTDOOR_NETWORK: 'アウトドア',
+
   MAP_INCREMENT_START: '開始',
   MAP_INCREMENT_STOP: '停止',
   MAP_INCREMENT_ADD_POINT: 'プロット',
   MAP_INCREMENT_CANCEL: 'キャンセルする',
   MAP_INCREMENT_COMMIT: '提出する',
+
   MAP_INCREMENT_GPS_POINT: 'GPSプロット方式',
   MAP_INCREMENT_GPS_TRACK: 'GPS軌跡式',
   MAP_INCREMENT_POINTLINE: 'ポイント描画式',
@@ -456,7 +467,7 @@ const Map_Main_Menu = {
   MERGE_DATASET: 'データセットをマージ',
 }
 
-// 展開アニメーション
+// 推演动画
 const Map_Plotting = {
   PLOTTING_ANIMATION_MODE: 'アニメーションタイプ',
   PLOTTING_ANIMATION_OPERATION: '効果オプション',
@@ -523,7 +534,7 @@ const Map_Plotting = {
   ANIMATION_NODE_EDIT: 'アニメーションの編集',
 }
 
-// レイヤー
+// 图层
 const Map_Layer = {
   PLOTS: '私のマーク',
   PLOTS_IMPORT: 'マークのインポート',
@@ -565,8 +576,7 @@ const Map_Layer = {
   LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS: '希薄表示',
   LAYERS_SHARE: 'シェア',
   SELECT_LAYSER_SCALE: 'スケールを選択してください',
-  LAYER_SCALE_RANGE_WRONG:
-    '最大スケールは最小スケールより大きい値に設定する必要があります。',
+  LAYER_SCALE_RANGE_WRONG: '最大スケールは最小スケールより大きい値に設定する必要があります。',
 
   VISIBLE: 'レイヤーを表示に設定',
   NOT_VISIBLE: 'レイヤーを非表示に設定',
@@ -576,7 +586,7 @@ const Map_Layer = {
   NOT_EDITABLE: 'レイヤーを編集不可に設定',
   SNAPABLE: 'レイヤーをスナップ可能に設定',
   NOT_SNAPABLE: 'レイヤーをスナップ不可に設定',
-  // 主題図レイヤー
+  // 专题图图层
   LAYERS_CREATE_THEMATIC_MAP: '主題図の作成',
   LAYERS_MODIFY_THEMATIC_MAP: '主題図の変更',
 
@@ -622,7 +632,7 @@ const Map_Attribute = {
   CONFIRM_ADD: '追加',
 
   DETAIL: '詳細',
-  // 統計モード
+  // 统计模式
   MAX: '最大値',
   MIN: '最小値',
   AVERAGE: '平均値',
@@ -636,7 +646,7 @@ const Map_Attribute = {
   DESCENDING: '降順',
 }
 
-// マップ設定
+// 地图设置
 const Map_Setting = {
   BASIC_SETTING: '基本設定',
   ROTATION_GESTURE: 'ジェスチャー回転',
@@ -645,16 +655,16 @@ const Map_Setting = {
   COLUMN_NAV_BAR: '横持ち時ナビィバーを縦表示にする',
   REAL_TIME_SYNC: 'リアルタイム同期',
 
-  // 効果設定
+  // 效果设置
   EFFECT_SETTINGS: '効果設定',
   ANTI_ALIASING_MAP: 'アンチエイリアスマップ',
   SHOW_OVERLAYS: 'テキスト重複表示',
 
-  // 範囲設定
+  // 范围设置
   BOUNDS_SETTING: '範囲設定',
   FIX_SCALE: '固定スケール',
 
-  // 3Dシーン設定
+  // 三维场景设置
   SCENE_NAME: 'シーン名',
   FOV: 'カメラ角度',
   SCENE_OPERATION_STATUS: 'シーン操作状態',
@@ -663,7 +673,7 @@ const Map_Setting = {
   SPHERICAL: '球面',
 }
 
-// マップ設定菜单
+// 地图设置菜单
 const Map_Settings = {
   THEME_LEGEND: '凡例',
   // 一级菜单
@@ -678,7 +688,7 @@ const Map_Settings = {
   REMARKS: '備考',
   DRAWING_RANGE: '描画範囲',
 
-  // 视频マップ設定:一级菜单
+  // 视频地图设置:一级菜单
   POI_SETTING: 'POI設定',
   DETECT_TYPE: '検出タイプ',
   DETECT_STYLE: '検出ボックススタイル',
@@ -716,7 +726,7 @@ const Map_Settings = {
   DETECT_STYLE_STROKE_WIDTH: '目標描画ボックス検出のライン幅',
   COUNTRACKED: 'トラッキング個数',
 
-  // 二级菜单 基本設定
+  // 二级菜单 基本设置
   MAP_NAME: 'マップ名',
   SHOW_SCALE: '表示スケール',
   ROTATION_GESTURE: 'ジェスチャー回転',
@@ -731,19 +741,19 @@ const Map_Settings = {
   SHOW_OVERLAYS: 'テキスト重複表示',
   ENABLE_MAP_MAGNIFER: 'マップ拡大鏡を使用',
 
-  // 二级菜单 範囲設定
+  // 二级菜单 范围设置
   MAP_CENTER: 'センターポイント',
   MAP_SCALE: 'スケール',
   FIX_SCALE_LEVEL: '固定スケールレベル',
   CURRENT_VIEW_BOUNDS: '現在ウィンドウの四方範囲',
 
-  // 二级菜单 座標系設定
+  // 二级菜单 坐标系设置
   COORDINATE_SYSTEM: '座標系',
   COPY_COORDINATE_SYSTEM: '座標系のコピー',
   DYNAMIC_PROJECTION: 'アクティブ投影',
   TRANSFER_METHOD: '変換方法',
 
-  // 二级菜单 詳細設定
+  // 二级菜单 高级设置
   FLOW_VISIUALIZATION: 'フロー表示',
   SHOW_NEGATIVE_DATA: '負の値を表示',
   AUTOMATIC_AVOIDANCE: '自動回避',
@@ -755,36 +765,36 @@ const Map_Settings = {
   HISTOGRAM_STYLE: '棒グラフスタイル',
   ROSE_AND_PIE_CHART_STYLE: 'ローズグラフ、円グラフスタイル',
 
-  // 三级菜单 カラーモード
+  // 三级菜单 颜色模式
   DEFAULT_COLOR_MODE: 'デフォルトカラーモード',
   BLACK_AND_WHITE: 'モノクロモード',
   GRAY_SCALE_MODE: 'グレーモード',
   ANTI_BLACK_AND_WHITE: '白黒反転モード',
   ANTI_BLACK_AND_WHITE_2: '白黒反転、その他は保留',
 
-  // 三级菜单 窗口四至範囲
+  // 三级菜单 窗口四至范围
   LEFT: '左',
   RIGHT: '右',
   TOP: '上',
   BOTTOM: '下',
 
-  // 三级菜单 座標系設定
+  // 三级菜单 坐标系设置
   PLAN_COORDINATE_SYSTEM: '平面座標系',
   GEOGRAPHIC_COORDINATE_SYSTEM: '地理座標系',
   PROJECTED_COORDINATE_SYSTEM: '投影座標系',
 
-  // 三级菜单 コピー座標系
+  // 三级菜单 复制坐标系
   FROM_DATASOURCE: 'データソースから',
   FROM_DATASET: 'データセットから',
   FROM_FILE: 'ファイルから',
 
-  // 四级菜单 変換方法パラメータ設定
+  // 四级菜单 转换方法参数设置
   BASIC_PARAMS: '基本パラメータ',
   OFFSET: 'オフセット量',
   PROPORTIONAL_DIFFERENCE: '比例差',
   ROTATION_ANGLE_SECONDS: '回転角度(秒)',
 
-  // 四级菜单 和コピーヒント
+  // 四级菜单 和复制提示
   DATASOURCES: 'データソース',
   DATASETS: 'データセット',
   TYPE: 'タイプ',
@@ -796,7 +806,7 @@ const Map_Settings = {
   IMG_COORD_FILE: '影像フォーマット座標系ファイル',
   COORD_FILE: '座標系ファイル',
 
-  // 設定的一些パラメータ
+  // 设置的一些参数
   PERCENT: '百分率',
   OFF: '閉じる',
   CONFIRM: 'OK',
@@ -804,7 +814,7 @@ const Map_Settings = {
   COPY: 'コピー',
 }
 
-// マップツール
+// 地图工具
 const Map_Tools = {
   VIDEO: 'ビデオ',
   PHOTO: '写真',
@@ -830,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: 'デパート',
   SUBWAY: '地下鉄',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

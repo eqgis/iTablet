@@ -33,8 +33,7 @@ const Prompt = {
   LOG_OUT: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
   FAILED_TO_LOG: 'فشل فى تسجيل الدخول',
   INCORRECT_USER_INFO: 'الحساب غير موجود أو خطأ كلمة المرور',
-  INCORRECT_IPORTAL_ADDRESS:
-    'فشل فى تسجيل الدخول,من فضلك تحقق من عنوان اليرفر الخاص بك',
+  INCORRECT_IPORTAL_ADDRESS: 'فشل فى تسجيل الدخول,من فضلك تحقق من عنوان اليرفر الخاص بك',
 
   DELETE_STOP: 'هل أنت متأكد أنك تريد حذف التوقف؟',
   DELETE_OBJECT: 'هل أنت متأكد من أنك تريد حذف الكائن نهائيًا؟',
@@ -96,8 +95,7 @@ const Prompt = {
 
   PLEASE_ENTER_TEXT: 'من فضلك ادخل النص',
   PLEASE_SELECT_THEMATIC_LAYER: 'من فضلك اختر طبقة موضوعية',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED:
-    'لا يمكن تصميم الطبقة الحالية ، والرجاء إعادة تحديد طبقة أخرى',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'لا يمكن تصميم الطبقة الحالية ، والرجاء إعادة تحديد طبقة أخرى',
 
   PLEASE_SELECT_PLOT_LAYER: 'يرجى تحديد طبقة الرسم',
   DONOT_SUPPORT_ARCORE: 'هذا الجهاز لايدعم كور عربى',
@@ -139,12 +137,10 @@ const Prompt = {
   PUBLISH_SUCCESS: 'تم النشر بنجاج',
   PUBLISH_FAILED: 'فشل النشر',
   DELETE_CONFIRM: 'هل أنت متأكد أنك تريد حذف العنصر؟',
-  BATCH_DELETE_CONFIRM:
-    'هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟',
+  BATCH_DELETE_CONFIRM: 'هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟',
 
   SELECT_AT_LEAST_ONE: 'يرجى تحديد عنصر واحد على الأقل',
-  DELETE_MAP_RELATE_DATA:
-    'سوف تتأثر الخريطة (الخرائط) التالية ، هل تريد المتابعة؟',
+  DELETE_MAP_RELATE_DATA: 'سوف تتأثر الخريطة (الخرائط) التالية ، هل تريد المتابعة؟',
 
   LOG_IN: 'جارى التحميل',
   ENTER_MAP_NAME: 'من فضلك ادخل اسم الخريطة',
@@ -160,8 +156,7 @@ const Prompt = {
   CLIPPED_SUCCESS: 'تم القطع بنجاح',
   CLIP_FAILED: 'فشل فى القطع',
 
-  LAYER_CANNOT_CREATE_THEMATIC_MAP:
-    'الخريطة الحالية لايمكن استخدمها فى امشاء خريطة موضوعية',
+  LAYER_CANNOT_CREATE_THEMATIC_MAP: 'الخريطة الحالية لايمكن استخدمها فى امشاء خريطة موضوعية',
 
   ANALYSING: 'جارى التحليل',
   CHOOSE_STARTING_POINT: 'اختر نقطة البداية',
@@ -218,8 +213,7 @@ const Prompt = {
   INDEX_OUT_OF_BOUNDS: 'مؤشر خارج الحدود',
   PLEASE_SELECT_LICATION_INFORMATION: 'يرجى إعداد الموقع',
   OUT_OF_MAP_BOUNDS: 'خارج حدود الخريطة',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    'الموقع الحالي خارج حدود الخريطة بحيث لا يمكنك استخدام التتبع لزيادة الطريق',
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: 'الموقع الحالي خارج حدود الخريطة بحيث لا يمكنك استخدام التتبع لزيادة الطريق',
 
   POI: 'نقاط الاهتمام',
 
@@ -246,8 +240,7 @@ const Prompt = {
   ROTATION_ANGLE_ERROR: 'يجب أن تكون زاوية الدوران بين -360 ° و 360 °',
   MAP_SCALE_ERROR: 'خطأ في إدخال البيانات! الرجاء إدخال رقم',
   VIEW_BOUNDS_ERROR: 'خطأ في النطاق! الرجاء إدخال رقم',
-  VIEW_BOUNDS_RANGE_ERROR:
-    'خطأ في القياسات! يجب أن يكون ارتفاع وعرض الرؤية أكبر من الصفر ',
+  VIEW_BOUNDS_RANGE_ERROR: 'خطأ في القياسات! يجب أن يكون ارتفاع وعرض الرؤية أكبر من الصفر ',
   MAP_CENTER_ERROR: 'خطأ في التنسيق! يجب أن يكون كل من س و ص أرقامًا',
   COPY_SUCCESS: 'النسخ ناجح',
   // 复制坐标系
@@ -299,10 +292,8 @@ const Prompt = {
   SELECT_DATASOURCE_FOR_NAVIGATION: 'حدد البيانات للملاحة',
   PLEASE_SELECT_NETWORKDATASET: 'حدد مجموعة بيانات الشبكة أولاً',
   PLEASE_SELECT_A_POINT_INDOOR: 'يرجى تحديد نقطة داخلية',
-  PATH_ANALYSIS_FAILED:
-    'فشل تحليل المسار! يرجى إعادة تحديد نقطتي البداية والنهاية',
-  ROAD_NETWORK_UNLINK:
-    'فشل تحليل المسار بسبب انقطاع شبكة الطرق من نقطة البداية إلى نقطة النهاية',
+  PATH_ANALYSIS_FAILED: 'فشل تحليل المسار! يرجى إعادة تحديد نقطتي البداية والنهاية',
+  ROAD_NETWORK_UNLINK: 'فشل تحليل المسار بسبب انقطاع شبكة الطرق من نقطة البداية إلى نقطة النهاية',
   CHANGE_TO_OUTDOOR: '是否切换到室外？',
   CHANGE_TO_INDOOR: '是否切换到室内？',
   SET_START_AND_END_POINTS: 'يرجى تعيين نقطتي البداية والنهاية أولاً',
@@ -312,8 +303,7 @@ const Prompt = {
   LONG_PRESS_ADD_END: 'يرجى الضغط لفترة طويلة لإضافة وجهة',
   ROUTE_ANALYSING: 'جارى التحليل',
   DISTANCE_ERROR: 'الوجهة قريبة جدًا من نقطة البداية ، يرجى إعادة التحديد',
-  USE_ONLINE_ROUTE_ANALYST:
-    'النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟',
+  USE_ONLINE_ROUTE_ANALYST: 'النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'التنقل عبر الإنترنت غير متاح حتى الآن',
   CREATE: '新建',
   NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
@@ -329,8 +319,7 @@ const Prompt = {
   MERGE_FAILD: '合并失败',
   NOT_SUPPORT_PRJCOORDSYS: '以下数据集的坐标系不支持合并',
   MERGEING: '合并中',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
   NEW_NAV_DATA: '创建导航数据',
   INPUT_MODEL_FILE_NAME: '请输入模型文件名称',
   INCREMENT_FIRST: '请先采集路网数据',

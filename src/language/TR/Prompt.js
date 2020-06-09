@@ -33,20 +33,23 @@ const Prompt = {
   LOG_OUT: 'Çıkış yapmak istediğinizden emin misiniz?',
   FAILED_TO_LOG: 'Giriş başarısız',
   INCORRECT_USER_INFO: 'Hesap mevcut değil ya da şifre hatalı',
-  INCORRECT_IPORTAL_ADDRESS:
-    'Giriş Başarısız, lütfen sunucu adresinizi kontrol edin',
+  INCORRECT_IPORTAL_ADDRESS: 'Giriş Başarısız, lütfen sunucu adresinizi kontrol edin',
 
   DELETE_STOP: 'Durdurmayı silmek istediğinizden emin misiniz?',
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
+  PLEASE_ADD_STOP: 'Please add stop', //待翻译
 
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
+
+  OPENING: 'Açılıyor',
 
   QUIT: 'SuperMap iTabletten çık?',
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
   THE_MAP_IS_OPENED: 'Harita açıldı',
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
+  NO_SCENE_LIST: 'Veri Yok',
   SWITCHING: 'Değiştiriliyor',
   CLOSING: 'Kapatılıyor',
   CLOSING_3D: 'Kapatılıyor',
@@ -70,7 +73,6 @@ const Prompt = {
   SUPERMAP_FORUM: 'SuperMap Forum',
   SUPERMAP_KNOW: 'SuperMap Know',
   SUPERMAP_GROUP: 'SuperMap Grup',
-
   INSTRUCTION_MANUAL: 'Kullanım Kılavuzu',
   THE_CURRENT_LAYER: 'Geçerli Katman',
   ENTER_KEY_WORDS: 'Lütfen anahtar kelimeleri girin',
@@ -78,15 +80,13 @@ const Prompt = {
   SEARCHING_DEVICE_NOT_FOUND: 'hiçbir cihaz bulunamadı',
   READING_DATA: 'Veri Okuyor',
   CREATE_SUCCESSFULLY: 'Başarıyla oluşturuldu',
-  NO_SCENE_LIST: 'Veri Yok',
   SAVE_SUCCESSFULLY: 'Başarıyla Kaydedildi',
   NO_NEED_TO_SAVE: 'Kaydetme gereksiz',
   SAVE_FAILED: 'Kaydetme Başarısız',
   ENABLE_DYNAMIC_PROJECTION: 'Dinamik projeksiyonu etkinleştir?',
   TURN_ON: 'Aç',
   CREATE_FAILED: 'Oluşturma Başarısız',
-  INVALID_DATASET_NAME:
-    'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
+  INVALID_DATASET_NAME: 'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
 
   NO_PLOTTING_DEDUCTION: 'Mevcut haritada çizim kesintisi yok',
   NO_FLY: 'Mevcut sahnede uçuş yok',
@@ -94,10 +94,8 @@ const Prompt = {
   NO_SCENE: 'Sahne Yok',
 
   PLEASE_ENTER_TEXT: 'Lütfen metin girin',
-
   PLEASE_SELECT_THEMATIC_LAYER: 'Lütfen tematik bir katman seçin',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED:
-    'Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin',
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
   DONOT_SUPPORT_ARCORE: 'Bu cihaz ARCore desteklemiyor',
@@ -112,8 +110,6 @@ const Prompt = {
   SELECT_TWO_MEDIAS_AT_LEAST: 'Lütfen en az iki medya seçin',
 
   NETWORK_REQUEST_FAILED: 'Ağ İsteği Başarısız',
-
-  OPENING: 'Açılıyor',
 
   SAVEING: 'Kaydediyor',
   CREATING: 'Oluşturuyor',
@@ -149,27 +145,27 @@ const Prompt = {
   LOG_IN: 'Yükleniyor',
   ENTER_MAP_NAME: 'Lütfen harita adı girin',
   CLIP_ENTER_MAP_NAME: 'Harita adı girin',
-  ENTER_NAME: 'Lütfen adı girin',
   ENTER_SERVICE_ADDRESS: 'Lütfen Servis Adresi girin',
   ENTER_ANIMATION_NAME: 'Lütfen animasyon adını girin',
   ENTER_ANIMATION_NODE_NAME: 'Lütfen animasyon node adını girin',
   PLEASE_SELECT_PLOT_SYMBOL: 'Lütfen çizim sembolü seçin',
 
+  ENTER_NAME: 'Lütfen adı girin',
+
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',
   CLIP_FAILED: 'Kırpılma başarısız',
 
-  LAYER_CANNOT_CREATE_THEMATIC_MAP:
-    'Mevcut katman tematik bir harita oluşturmak için kullanılamaz.',
+  LAYER_CANNOT_CREATE_THEMATIC_MAP: 'Mevcut katman tematik bir harita oluşturmak için kullanılamaz.',
 
   ANALYSING: 'Analiz ediliyor',
   CHOOSE_STARTING_POINT: 'Başlangıç noktası seç',
   CHOOSE_DESTINATION: 'Hedef Seçin',
 
-  LATEST: 'En son: ',
-  GEOGRAPHIC_COORDINATE_SYSTEM: 'Coğrafi Koordinat Sistemi: ',
-  PROJECTED_COORDINATE_SYSTEM: 'Öngörülen (Projected) Koordinat Sistemi: ',
-  FIELD_TYPE: 'Alan Tipi: ',
+  LATEST: 'En son:',
+  GEOGRAPHIC_COORDINATE_SYSTEM: 'Coğrafi Koordinat Sistemi:',
+  PROJECTED_COORDINATE_SYSTEM: 'Öngörülen (Projected) Koordinat Sistemi:',
+  FIELD_TYPE: 'Alan Tipi:',
 
   PLEASE_LOGIN_AND_SHARE: 'Lütfen giriş yap ve paylaş',
   PLEASE_LOGIN: 'Lütfen giriş',
@@ -191,7 +187,6 @@ const Prompt = {
 
   SETTING_SUCCESS: 'Başarıyla ayarlandı',
   SETTING_FAILED: 'Ayarlama başarısız',
-
   NETWORK_ERROR: 'Ağ Hatası',
   NO_NETWORK: 'İnternet bağlantısı yok',
   CHOOSE_CLASSIFY_MODEL: 'Sınıflandırma Modeli Seç',
@@ -199,15 +194,14 @@ const Prompt = {
   USING: 'Using',
   DEFAULT_MODEL: 'Varsayılan Model',
   DUSTBIN_MODEL: 'Çöpkovası Modeli',
-  LANT_MODEL: 'Lant Modeli',
+  PLANT_MODEL: 'Plant Model', //待翻译
   CHANGING: 'Değiştiriliyor',
   CHANGE_SUCCESS: 'Değişme Başarılı',
   CHANGE_FAULT: 'Değişme Hatası',
   DETECT_DUSTBIN_MODEL: 'Çöpkovası Modeli',
   ROAD_MODEL: 'Yol Modeli',
 
-  LICENSE_EXPIRED:
-    'Deneme lisansının süresi doldu. Deneme sürümüne devam etmek istiyor musunuz?',
+  LICENSE_EXPIRED: 'Deneme lisansının süresi doldu. Deneme sürümüne devam etmek istiyor musunuz?',
   APPLY_LICENSE: 'Lisansa Başvur',
   APPLY_LICENSE_FIRST: 'Lütfen önce geçerli bir lisansa başvurun',
 
@@ -219,8 +213,7 @@ const Prompt = {
   INDEX_OUT_OF_BOUNDS: 'Sınır dışı dizin',
   PLEASE_SELECT_LICATION_INFORMATION: 'Lütfen Konum belirleyin.',
   OUT_OF_MAP_BOUNDS: 'Harita sınırları dışında',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    'Geçerli konum harita sınırları dışında, bu yüzden yolu artırmak için izlemeyi kullanamazsınız',
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: 'Geçerli konum harita sınırları dışında, bu yüzden yolu artırmak için izlemeyi kullanamazsınız',
 
   POI: 'POI',
 
@@ -247,8 +240,7 @@ const Prompt = {
   ROTATION_ANGLE_ERROR: 'Dönme açısı -360 ° ile 360 ° arasında olmalıdır',
   MAP_SCALE_ERROR: 'Giriş hatası! Lütfen bir numara girin',
   VIEW_BOUNDS_ERROR: 'Aralık hatası! Lütfen bir numara girin',
-  VIEW_BOUNDS_RANGE_ERROR:
-    'Parametre hatası! Görüşün hem yüksekliği hem de genişliği sıfırdan büyük olmalıdır',
+  VIEW_BOUNDS_RANGE_ERROR: 'Parametre hatası! Görüşün hem yüksekliği hem de genişliği sıfırdan büyük olmalıdır',
   MAP_CENTER_ERROR: 'Koordinat hatası! Hem X hem de Y sayı olmalıdır',
   COPY_SUCCESS: 'Kopyalama Başarılı!',
   // 复制坐标系
@@ -271,8 +263,7 @@ const Prompt = {
   ERROR_INFO_EMPTY: 'Ad boş bırakılamaz.',
 
   OPEN_LOCATION: 'Lütfen Sistem Ayarlarından Konum Servisini açın.',
-  REQUEST_LOCATION:
-    'iTablet işlemi tamamlamak için konum iznine ihtiyaç duyuyor',
+  REQUEST_LOCATION: 'iTablet işlemi tamamlamak için konum iznine ihtiyaç duyuyor',
   LOCATION_ERROR: 'Konum isteği başarısız, lütfen daha sonra tekrar deneyin',
 
   OPEN_THRID_PARTY: 'Üçüncü parti bir uygulama açacaksınız. Devam et?',
@@ -281,8 +272,7 @@ const Prompt = {
   PLEASE_SELECT_A_RASTER_LAYER: 'Lütfen raster katmanı seçin',
 
   PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını uniform ekleyin',
-  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION:
-    'Mevcut katman modifikasyonu desteklemiyor',
+  CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'Mevcut katman modifikasyonu desteklemiyor',
 
   FAILED_TO_CREATE_POINT: 'Nokta oluşturma başarısız',
   FAILED_TO_CREATE_TEXT: 'Metin oluşturma başarısız',
@@ -298,48 +288,38 @@ const Prompt = {
   NO_LINE_DATASETS: 'Mevcut çalışma alanı çizgi verikümesi içermiyor',
   NETWORK_DATASET_IS_NOT_AVAILABLE: 'Mevcut ağ verikümesi uygun değil',
   POINT_NOT_IN_BOUNDS: 'Seçili ağ verikümesinin sınırları nokta içermiyor',
-  POSITION_OUT_OF_MAP:
-    'Konumunuz harita sınırları dışında, lütfen navigasyonu simüle edin.',
+  POSITION_OUT_OF_MAP: 'Konumunuz harita sınırları dışında, lütfen navigasyonu simüle edin.',
   SELECT_DATASOURCE_FOR_NAVIGATION: 'Navigasyon için veri seçin',
   PLEASE_SELECT_NETWORKDATASET: 'Lütfen önce ağ verikümesi seçin',
   PLEASE_SELECT_A_POINT_INDOOR: 'Lütfen iç mekan noktasını seçin',
-  PATH_ANALYSIS_FAILED:
-    'Yol analizi başarısız oldu, lütfen başlangıç ve bitiş noktalarını tekrar seçin',
-  ROAD_NETWORK_UNLINK:
-    'Bağlantısı kesilen yol ağı nedeniyle yol analizi başlangıç noktasından bitiş noktasına kadar başarısız oldu',
+  PATH_ANALYSIS_FAILED: 'Yol analizi başarısız oldu, lütfen başlangıç ve bitiş noktalarını tekrar seçin',
+  ROAD_NETWORK_UNLINK: 'Bağlantısı kesilen yol ağı nedeniyle yol analizi başlangıç noktasından bitiş noktasına kadar başarısız oldu',
   CHANGE_TO_OUTDOOR: 'Dış mekana geçilsin mi?',
   CHANGE_TO_INDOOR: 'Evin içinde geçilsin mi?',
-  SET_START_AND_END_POINTS:
-    'Lütfen ilk önce başlangıç ve bitiş noktalarını ayarlayın',
+  SET_START_AND_END_POINTS: 'Lütfen ilk önce başlangıç ve bitiş noktalarını ayarlayın',
   SELECT_LAYER_NEED_INCREMENTED: 'Lütfen arttırılması gereken katmanı seçin',
   SELECT_THE_FLOOR: 'Lütfen katmanın konumlandığı katı seçin',
   LONG_PRESS_ADD_START: 'Lütfen başlangıç noktası eklemek için uzun basın',
   LONG_PRESS_ADD_END: 'Lütfen hedef eklemek için uzun basın',
   ROUTE_ANALYSING: 'Analiz yapılıyor',
   DISTANCE_ERROR: 'Hedef başlangıç noktasına çok yakın, lütfen yeniden seçin!',
-  USE_ONLINE_ROUTE_ANALYST:
-    'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
+  USE_ONLINE_ROUTE_ANALYST: 'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
   CREATE: 'Yeni',
-  NO_DATASOURCE:
-    'Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun',
+  NO_DATASOURCE: 'Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Lütfen önce bir satır veri kümesi seçin',
   CANT_UNDO: 'Cayılamaz',
   CANT_REDO: 'Yeniden yapamıyorum',
-  DATASET_RENAME_FAILED:
-    'Veri kümesi adı yalnızca harf, rakam, "_", "@", "#" içerebilir',
+  DATASET_RENAME_FAILED: 'Veri kümesi adı yalnızca harf, rakam, "_", "@", "#" içerebilir',
   SWITCH_LINE: 'Veri değiştirme',
-  HAS_NO_ROADNAME_FIELD_DATA:
-    'Hiçbir yol adı alanı bilgisi seçilmemiş bir veri kümesi var',
+  HAS_NO_ROADNAME_FIELD_DATA: 'Hiçbir yol adı alanı bilgisi seçilmemiş bir veri kümesi var',
   MERGE_SUCCESS: 'Başarıyla birleştirildi',
   MERGE_FAILD: 'Birleştirme başarısız oldu',
-  NOT_SUPPORT_PRJCOORDSYS:
-    'Aşağıdaki veri kümesinin koordinat sistemi birleştirmeyi desteklemiyor',
+  NOT_SUPPORT_PRJCOORDSYS: 'Aşağıdaki veri kümesinin koordinat sistemi birleştirmeyi desteklemiyor',
   MERGEING: 'birleşme',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    'YolAdı alanını içermeyen bir veri kümesi var, lütfen aşağıdaki veri kümesinin yol adı alanını seçin',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: 'YolAdı alanını içermeyen bir veri kümesi var, lütfen aşağıdaki veri kümesinin yol adı alanını seçin',
   NEW_NAV_DATA: 'Gezinme verileri oluşturma',
   INPUT_MODEL_FILE_NAME: 'Lütfen bir model dosya adı girin',
   INCREMENT_FIRST: 'Lütfen önce yol ağı verilerini toplayın',
@@ -357,12 +337,10 @@ const Prompt = {
   SELECT_TRIM_LINE: 'Lütfen kırpılacak çizgiyi seçin',
   SELECT_BASE_LINE: 'Lütfen bir taban çizgisi seçin',
   SELECT_RESAMPLE_LINE: 'Lütfen yeniden örneklenmesi gereken satırı seçin',
-  SELECT_CHANGE_DIRECTION_LINE:
-    'Lütfen yönünü değiştirmeniz gereken satırı seçin',
+  SELECT_CHANGE_DIRECTION_LINE: 'Lütfen yönünü değiştirmeniz gereken satırı seçin',
   EDIT_SUCCESS: 'Operasyon başarılı',
   EDIT_FAILED: 'İşlem başarısız oldu',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2:
-    'Düzeltme faktörü 2 ila 10 arasında bir tam sayı olmalıdır',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Düzeltme faktörü 2 ila 10 arasında bir tam sayı olmalıdır',
   CONFIRM_EXIT: 'Çıkmak istediğinden emin misin?',
   TOPO_EDIT_END: 'Düzenlemeyi ve çıkmayı bitirdiniz mi?',
   // 自定义专题图
@@ -370,8 +348,7 @@ const Prompt = {
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: 'Parametre hatası, ayar başarısız!',
 
-  SPEECH_TIP:
-    'Şunları diyebilirsiniz :\nYaklaş, Uzaklaş, Konumlandır ya da Kapat',
+  SPEECH_TIP: 'Şunları diyebilirsiniz :\nYaklaş, Uzaklaş, Konumlandır ya da Kapat',
   SPEECH_ERROR: 'Tanımlı hata, lütfen daha sonra tekrar deneyiniz',
   SPEECH_NONE: 'Hiçbir şey konuşmadınız gibi görünüyor',
 

@@ -213,8 +213,7 @@ const Prompt = {
   INDEX_OUT_OF_BOUNDS: '位置越界',
   PLEASE_SELECT_LICATION_INFORMATION: '请选择定位信息',
   OUT_OF_MAP_BOUNDS: '不在地图范围内',
-  CANT_USE_TRACK_TO_INCREMENT_ROAD:
-    '当前位置不在路网数据集范围内，无法使用轨迹增量路网',
+  CANT_USE_TRACK_TO_INCREMENT_ROAD: '当前位置不在路网数据集范围内，无法使用轨迹增量路网',
 
   POI: '兴趣点',
 
@@ -304,8 +303,7 @@ const Prompt = {
   LONG_PRESS_ADD_END: '请长按添加终点',
   ROUTE_ANALYSING: '路径分析中',
   DISTANCE_ERROR: '当前起始点距离太近，请重新选点',
-  USE_ONLINE_ROUTE_ANALYST:
-    '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
+  USE_ONLINE_ROUTE_ANALYST: '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',
   NOT_SUPPORT_ONLINE_NAVIGATION: '在线导航暂不支持',
   CREATE: '新建',
   NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
@@ -321,8 +319,7 @@ const Prompt = {
   MERGE_FAILD: '合并失败',
   NOT_SUPPORT_PRJCOORDSYS: '以下数据集的坐标系不支持合并',
   MERGEING: '合并中',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG:
-    '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
+  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
   NEW_NAV_DATA: '创建导航数据',
   INPUT_MODEL_FILE_NAME: '请输入模型文件名称',
   INCREMENT_FIRST: '请先采集路网数据',

@@ -64,8 +64,7 @@ const Friends = {
   IMPORT_FAIL: 'فشل الاستيراد',
   IMPORT_CONFIRM: 'هل تريد استيراد البيانات؟',
   RECEIVE_CONFIRM: 'هل تريد تنزيل البيانات',
-  OPENCOWORKFIRST:
-    'من فضلك أفتح مساحة العمل  التعاونية أولا قبل أستيراد البيانات',
+  OPENCOWORKFIRST: 'من فضلك أفتح مساحة العمل  التعاونية أولا قبل أستيراد البيانات',
   LOCATION_COWORK_NOTIFY: 'ال الموقع فى وضع مساحة العمل الجماعية',
   LOCATION_SHARE_NOTIFY: 'لا يمكن فتح الموقع في المشاركة',
   WAIT_DOWNLOADING: 'يرجى الانتظار حتى اكتمال التنزيل',

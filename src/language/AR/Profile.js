@@ -45,8 +45,7 @@ const Profile = {
   REGISTER_READ_PROTOCAL: 'لقد قرات ووافقت على ال',
   REGISTER_ONLINE_PROTOCAL: 'شروط خدمة سوبرماب وسياسة الخصوصية',
   CONNECTING: 'توصيل',
-  CONNECT_SERVER_FAIL:
-    'فشل الاتصال بالسيرفر ، يرجى التحقق من عنوان الشبكة أو السيرفر',
+  CONNECT_SERVER_FAIL: 'فشل الاتصال بالسيرفر ، يرجى التحقق من عنوان الشبكة أو السيرفر',
   NEXT: 'التالى',
 
   SWITCH_ACCOUNT: 'تبديل الحساب',
@@ -54,8 +53,7 @@ const Profile = {
 
   SWITCH_CURRENT: 'لقد قمت بتسجيل الدخول بالفعل مع هذا المستخدم',
   SWITCHING: 'جاري التبديل ...',
-  SWITCH_FAIL:
-    'فشل التبديل ، يرجى محاولة تسجيل الدخول مع هذا المستخدم مرة أخرى',
+  SWITCH_FAIL: 'فشل التبديل ، يرجى محاولة تسجيل الدخول مع هذا المستخدم مرة أخرى',
 
   // 地图服务地址
   SERVICE_ADDRESS: 'عنوان الخدمة',
@@ -167,6 +165,7 @@ const Profile = {
   ENTER_DATASOURCE_NAME: 'من فضلك ادخل اسم مجموعه البيانات',
   OPEN_DATASROUCE_FAILED: 'فشل فتح مجموعه البيانات',
   DATASOURCE_TYPE: '数据类型',
+  SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'أختر شكل التصدير',
   DATASET_EXPORT_NOT_SUPPORTED: 'تصدير مجموعة البيانات هذه غير متاح حتى الآن',
@@ -209,12 +208,10 @@ const Profile = {
   LICENSE_OFFICIAL_RETURN: '归还许可',
   LICENSE_CLEAN_CANCLE: 'إلغاء المسح',
   LICENSE_CLEAN_CONTINUE: 'أستمرار المسح',
-  LICENSE_CLEAN_ALERT:
-    'سيتم خصم عدد الرخيص من التنشيط التالي بعد مسح الرخص. رقم الرخص المتبقي الحالي',
+  LICENSE_CLEAN_ALERT: 'سيتم خصم عدد الرخيص من التنشيط التالي بعد مسح الرخص. رقم الرخص المتبقي الحالي',
   INPUT_LICENSE_SERIAL_NUMBER: 'أدخل الرقم التسلسلى لرخصة',
   PLEASE_INPUT_LICENSE_SERIAL_NUMBER: 'من فضلك أدخل الرقم التسلسلى لرخصة',
-  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT:
-    'الرقم التسلسلى المدخل لرخصة غير صحيح',
+  PLEASE_INPUT_LICENSE_SERIAL_NUMBER_NOT_CORRECT: 'الرقم التسلسلى المدخل لرخصة غير صحيح',
   LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS: 'تم تنشيط الرقم التسلسلى بنجاح',
   LICENSE_REGISTER_BUY: 'شراء التسجيك',
   LICENSE_HAVE_REGISTER: 'لديك تسجيل',
@@ -226,14 +223,10 @@ const Profile = {
   LICENSE_EXIT_CLOUD_ACTIVATE: '归还当前云许可并激活此许可?',
   LICENSE_EXIT_CLOUD_LOGOUT: '归还当前云许可并退出账号?',
   LICENSE_CURRENT_EXPIRE: 'الرخصة الحالية غير صالحة',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE:
-    'لم يتم تضمين هذه الوحدة بموجب الترخيص الحالي',
-  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB:
-    'هذه الوحدة ليست مدرجة تحت الترخيص الحالي ، وبعض وظائفها لن تكون متاحة ！！！',
-  LICENSE_NO_NATIVE_OFFICAL:
-    'لا يوجد ملف ترخيص رسمي أصلي ، يرجى إضافة ملف الترخيص/إلى الرخصة الرسمية/التابلت الذكى/لرخصة/الملف ',
-  LICENSE_NOT_ITABLET_OFFICAL:
-    'لم يتم تفعيل هذا الترخيص الرسمي على التابلت الذكى، يرجى الانتقال إلى صفحة الترخيص لمسح الترخيص وإعادة تنشيطه   ',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE: 'لم يتم تضمين هذه الوحدة بموجب الترخيص الحالي',
+  LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: 'هذه الوحدة ليست مدرجة تحت الترخيص الحالي ، وبعض وظائفها لن تكون متاحة ！！！',
+  LICENSE_NO_NATIVE_OFFICAL: 'لا يوجد ملف ترخيص رسمي أصلي ، يرجى إضافة ملف الترخيص/إلى الرخصة الرسمية/التابلت الذكى/لرخصة/الملف ',
+  LICENSE_NOT_ITABLET_OFFICAL: 'لم يتم تفعيل هذا الترخيص الرسمي على التابلت الذكى، يرجى الانتقال إلى صفحة الترخيص لمسح الترخيص وإعادة تنشيطه   ',
   LICENSE_NATIVE_EXPIRE: 'رخصة أصلية غير صالحة',
   LICENSE_LONG_EFFECTIVE: '长期有效',
   LICENSE_OFFLINE: '离线许可',

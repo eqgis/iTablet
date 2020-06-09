@@ -1,5 +1,4 @@
 //制图
-
 const Map_Label = {
   // 地图底部导航
   MAP: 'Carte',
@@ -340,8 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Route\nRéseau',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
-  MAP_AR_CAMERA_EXCEPTION:
-    "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
+  MAP_AR_CAMERA_EXCEPTION: "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
   MAP_AR_AI_ASSISTANT: 'IA\nCollecte',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Collecte personnalisée',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Collecte municipale',
@@ -363,12 +361,10 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: 'Distance de vue:',
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: 'Longueur totale:',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH:
-    "Jusqu'à la dernière longueur:",
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: "Jusqu'à la dernière longueur:",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_HISTORY: "Recueillir l'historique",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME: 'Remplissez le nom',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY:
-    'Aucun historique de collecte',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: 'Aucun historique de collecte',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: "Commencer l'enregistrement",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: "Arrêter l'enregistrement",
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Ligne',
@@ -529,15 +525,11 @@ const Map_Plotting = {
   ANIMATION_ATTRIBUTE_LINE_COLOR_START: 'Début de la couleur de ligne',
   ANIMATION_ATTRIBUTE_LINE_COLOR_END: 'Fin de la couleur de ligne',
   ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH: 'Largeur de la ligne de contour',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_START:
-    'Début de la largeur de la ligne contour',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_END:
-    'Fin de la largeur de la ligne contour',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_START: 'Début de la largeur de la ligne contour',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_END: 'Fin de la largeur de la ligne contour',
   ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR: 'Couleur de la ligne contour',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_START:
-    'Début de la couleur de la ligne contour',
-  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_END:
-    'Fin de la couleur de la ligne contour',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_START: 'Début de la couleur de la ligne contour',
+  ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_END: 'Fin de la couleur de la ligne contour',
 
   ANIMATION_NODE_EDIT: "Editer l'animation",
 }
@@ -581,12 +573,10 @@ const Map_Layer = {
   LAYERS_SCALE_SYMBOL: "Symbole d'échelle",
   LAYERS_SCALE: 'Échelle',
   LAYERS_MIN_OBJECT_SIZE: "Dimension minimale de l'objet",
-  LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS:
-    'Filtre de superpositions des petits objets',
+  LAYERS_FILTER_OVERLAPPING_SMALL_OBJECTS: 'Filtre de superpositions des petits objets',
   LAYERS_SHARE: 'Partager',
   SELECT_LAYSER_SCALE: 'Veuillez sélectionner une échelle',
-  LAYER_SCALE_RANGE_WRONG:
-    "l'échelle de visibilité maximale doit être supérieure à l'échelle de visibilité minimale",
+  LAYER_SCALE_RANGE_WRONG: "l'échelle de visibilité maximale doit être supérieure à l'échelle de visibilité minimale",
 
   VISIBLE: 'Visible',
   NOT_VISIBLE: 'Invisible',
@@ -850,14 +840,4 @@ const Map_PoiTitle = {
   MARKET: 'Centre commercial',
   SUBWAY: 'Métro',
 }
-export {
-  Map_Main_Menu,
-  Map_Label,
-  Map_Layer,
-  Map_Plotting,
-  Map_Attribute,
-  Map_Setting,
-  Map_Settings,
-  Map_Tools,
-  Map_PoiTitle,
-}
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }

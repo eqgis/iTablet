@@ -25,7 +25,7 @@
       "git add"
     ],
     "{src,__tests__}/language/**/*.js": [
-      "prettier --print-width 200 --single-quote --trailing-comma all --no-semi --write",
+      "prettier --print-width 500 --single-quote --trailing-comma all --no-semi --write",
       "eslint --fix",
       "git add"
     ]

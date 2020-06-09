@@ -53,10 +53,8 @@ const Friends = {
   // FriendGroup
   LOADING: 'Loading...',
   DEL_GROUP: 'Delete group',
-  DEL_GROUP_CONFIRM:
-    'Would you like to clear chat history and leave this group?',
-  DEL_GROUP_CONFIRM2:
-    'Would you like to clear chat history and disband this group?',
+  DEL_GROUP_CONFIRM: 'Would you like to clear chat history and leave this group?',
+  DEL_GROUP_CONFIRM2: 'Would you like to clear chat history and disband this group?',
   // Chat
   INPUT_MESSAGE: 'Input message...',
   SEND: 'Send',
@@ -100,8 +98,7 @@ const Friends = {
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',
-  PERMISSION_DENIED_CONTACT:
-    'Please turn on the permission of iTablet to view contacts',
+  PERMISSION_DENIED_CONTACT: 'Please turn on the permission of iTablet to view contacts',
   // ManageFriend/Group
   SEND_MESSAGE: 'Send message',
   SET_MARKNAME: 'Set Alias',

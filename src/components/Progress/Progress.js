@@ -34,11 +34,13 @@ export default class Progress extends Component {
     progressAniDuration: 300,
     //buffer进度条动画时长
     bufferAniDuration: 300,
+    progress: 0,
+    buffer: 0,
   }
 
   // eslint-disable-next-line
   componentWillMount() {
-    this.progress = this.props.progress || 0
+    this.progress = this.props.progress
     this.buffer = this.props.buffer
   }
 
@@ -46,6 +48,7 @@ export default class Progress extends Component {
     super(props)
     this._progressAni = new Animated.Value(0)
     this._bufferAni = new Animated.Value(0)
+    this.totalWidth = -1
   }
 
   _onLayout = ({

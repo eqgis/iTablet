@@ -163,7 +163,7 @@ export default class EnterDatumPoint extends Component {
 
   submit = async () => {
     let point = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
-    if (!point || point.x === 0 || point.y === 0) {
+    if (!point) {
       Toast.show(
         getLanguage(global.language).Profile
           .MAP_AR_DATUM_ENTER_CURRENT_POSITION,

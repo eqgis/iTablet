@@ -18,7 +18,7 @@ import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
 import { Container, Dialog } from '../../components'
-import { Toast } from '../../utils'
+import { Toast, scaleSize } from '../../utils'
 import { getLanguage } from '../../language'
 // import Button from '../../components/Button/Button'
 const SMeasureViewiOS = NativeModules.SMeasureView
@@ -45,6 +45,7 @@ export default class MeasureView extends React.Component {
       currentLength: 0,
       totalLength: 0,
       tolastLength: 0,
+      totalArea: 0,
       showModelViews: false,
       SearchingSurfacesSucceed: false,
     }
@@ -102,6 +103,10 @@ export default class MeasureView extends React.Component {
             this.onTotalLengthChanged,
           )
           DeviceEventEmitter.addListener(
+            'onTotalAreaChanged',
+            this.onTotalAreaChanged,
+          )
+          DeviceEventEmitter.addListener(
             'onCurrentToLastPntDstChanged',
             this.onCurrentToLastPntDstChanged,
           )
@@ -130,6 +135,10 @@ export default class MeasureView extends React.Component {
       this.onTotalLengthChanged,
     )
     DeviceEventEmitter.removeListener(
+      'onTotalAreaChanged',
+      this.onTotalAreaChanged,
+    )
+    DeviceEventEmitter.removeListener(
       'onCurrentToLastPntDstChanged',
       this.onCurrentToLastPntDstChanged,
     )
@@ -152,6 +161,12 @@ export default class MeasureView extends React.Component {
   onTotalLengthChanged = params => {
     this.setState({
       totalLength: params.total,
+    })
+  }
+
+  onTotalAreaChanged = params => {
+    this.setState({
+      totalArea: params.totalArea,
     })
   }
 
@@ -480,6 +495,19 @@ export default class MeasureView extends React.Component {
     )
   }
 
+  renderTotalAreaChangeView() {
+    return (
+      <View style={[styles.totallengthChangeView, { top: scaleSize(200) }]}>
+        <Text style={styles.titleTotal}>
+          {getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
+            this.state.totalArea +
+            'm²'}
+        </Text>
+      </View>
+    )
+  }
+
   renderCurrentLengthChangeView() {
     return (
       <View style={styles.tolastlengthChangeView}>
@@ -543,6 +571,8 @@ export default class MeasureView extends React.Component {
           this.renderCurrentLengthChangeView()}
         {this.state.SearchingSurfacesSucceed &&
           this.renderToLastLengthChangeView()}
+        {this.state.SearchingSurfacesSucceed &&
+          this.renderTotalAreaChangeView()}
         {!this.state.SearchingSurfacesSucceed && this.renderSearchingView()}
         {this.renderDialog()}
       </Container>

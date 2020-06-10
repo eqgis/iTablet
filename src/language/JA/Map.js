@@ -45,18 +45,18 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'ナビワークスペース',
   NAVIGATION_MAP: 'ナビマップ',
   NETWORK: '道路ネットワーク',
-  NETWORK_MODULE: '道路網',
+  NETWORK_MODULE: '道路ネットワーク',
   NETMODEL: 'ネットワークモデル',
   NETDATA: '道路ネットワークデータの選択',
   INDOORDATA: '室内データソース',
-  INDOOR_DATASOURCE: '室内データソース',
-  OUTDOOR_DATASETS: '屋外データセット',
-  SWITCH_DATA: 'データ切り替え',
+  INDOOR_DATASOURCE: '屋内データソース',
+  OUTDOOR_DATASETS: 'アウトドアデータセット',
+  SWITCH_DATA: 'ナビデータの切替',
   DATASET: 'データセットの選択',
   Traffic: '道路状況',
 
   ANALYSIS: '解析',
-  PROCESS: '扱う',
+  PROCESS: '処理',
 
   NEW_DATASOURCE: '新規データソース',
   // 图例设置
@@ -125,7 +125,7 @@ const Map_Main_Menu = {
   FREE_LINE: 'ペンシルラインを描画',
   DOT_REGION: 'ポイントでポリゴンを描画',
   FREE_REGION: '自由ポリゴンを描画',
-  TOOLS_3D_CREATE_POINT: '兴趣ポイント',
+  TOOLS_3D_CREATE_POINT: 'POI',
   TOOLS_CREATE_POINT: 'ポイントを描画',
   TOOLS_CREATE_LINE: 'ラインを描画',
   TOOLS_CREATE_REGION: 'ポリゴンを描画',
@@ -217,10 +217,10 @@ const Map_Main_Menu = {
   THEME_3D_STACKED_BAR: '3D積み上げ棒グラフ',
   THEME_RING: 'ドーナツグラフ',
   THEME_DOT_DENSITY_MAP: '点密度図',
-  THEME_GRADUATED_SYMBOLS_MAP: '連続的スケール記号図',
+  THEME_GRADUATED_SYMBOLS_MAP: '連続的比例記号図',
   THEME_HEATMAP: 'ヒートマップ',
-  THEME_CRID_UNIQUE: 'グリッド単一値特定のテーマ図',
-  THEME_CRID_RANGE: 'グリッドセグメントの特定のテーマ図',
+  THEME_CRID_UNIQUE: 'グリッド個別値主題図',
+  THEME_CRID_RANGE: 'グリッド段階区分の主題図',
 
   THEME_ALL_SELECTED: 'すべて選択',
   THEME_ALL_CANCEL: 'すべてキャンセル',
@@ -264,15 +264,15 @@ const Map_Main_Menu = {
   THEME_MIN_VISIBLE_SIZE: '最小表示値',
 
   // 自定义专题图设置
-  THEME_RANGES_LABEL_MAP_TITLE: 'Ranges Label Map', //待翻译
-  THEME_RANGES_MAP_TITLE: 'Ranges Map', //待翻译
-  THEME_UNIQUE_VALUES_MAP_TITLE: 'Unique Values Map', //待翻译
-  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: 'Unique Value Label Map', //待翻译
-  RANGE: 'Ranges', //待翻译
-  PREVIEW: 'Preview', //待翻译
-  CUSTOM_THEME_MAP: 'Custom Thematic Map', //待翻译
-  COLOR_PICKER: 'Color Picker', //待翻译
-  USER_DEFINE: 'User Defined', //待翻译
+  THEME_RANGES_LABEL_MAP_TITLE: '区分ラベル主題図',
+  THEME_RANGES_MAP_TITLE: '区分ラベル主題図',
+  THEME_UNIQUE_VALUES_MAP_TITLE: '個別ラベル主題図',
+  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: '個別ラベル主題図',
+  RANGE: '段数',
+  PREVIEW: 'プレビュー',
+  CUSTOM_THEME_MAP: 'カスタム主題図',
+  COLOR_PICKER: 'カラーピッカー',
+  USER_DEFINE: 'ユーザー定義',
 
   DOT_VALUE: 'ポイント値',
   GRADUATE_BY: '値の計算方法',
@@ -286,7 +286,7 @@ const Map_Main_Menu = {
   LINE_SYMBOL_LIBRARY: 'ラインシンボルライブラリ',
   REGION_SYMBOL_LIBRARY: 'ポリゴンシンボルライブラリ',
 
-  COLLECTION: 'コレクト',
+  COLLECTION: 'コレクション',
   COLLECTION_RECENT: '最近',
   COLLECTION_SYMBOL: 'シンボル',
   COLLECTION_GROUP: 'グループ',
@@ -319,7 +319,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'ドーナツの補填',
   EDIT_CANCEL_SELECTION: '選択のキャンセル',
   MOVE: '移動',
-  OBJMOVE: '対象移動',
+  OBJMOVE: 'オブジェクト移動',
   FREE_DRAW_ERASE: '手動描画でイレース',
 
   // 标绘
@@ -362,9 +362,9 @@ const Map_Main_Menu = {
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: '総長さ:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: '現在長さ:',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_HISTORY: '歴史レコード:',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_HISTORY: '履歴レコード:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME: 'コレクション名を入力してください:',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: '歴史データはありません',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: '履歴データはありません',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: 'レコードを開始',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: 'レコードを一時停止',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'ライン',
@@ -375,10 +375,10 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: '視角の切替',
   MAP_AR_AI_CLEAR: 'クリア',
   MAP_AR_AI_NEW_ROAD: '新規道路を作成してください',
-  MAP_AR_AI_SAVE_REGION: '顔を保存',
-  MAP_AR_AI_SCENE_TRACK_COLLECT: 'トレース収集',
-  MAP_AR_AI_SCENE_POINT_COLLECT: 'ラッシュコレクション',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '画面をタップして現在のポイントを特定します',
+  MAP_AR_AI_SAVE_REGION: 'ポリゴンの保存',
+  MAP_AR_AI_SCENE_TRACK_COLLECT: '軌跡式',
+  MAP_AR_AI_SCENE_POINT_COLLECT: 'プロット方式',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'スクリーンをクリックして現在のポイントに設定します',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '分類中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分類に失敗しました。再度試してください',
@@ -429,7 +429,7 @@ const Map_Main_Menu = {
   HAND_PAINTED: '手動描画で',
   NETWORK_DATASET: '道路ネットワークデータセット',
   MODEL_FILE: 'ナビモデルファイル',
-  MY_LOCATION: '私の位置',
+  MY_LOCATION: 'マイ位置',
 
   //导航采集
   MAP_INDOOR_NETWORK: '屋内',
@@ -437,34 +437,34 @@ const Map_Main_Menu = {
 
   MAP_INCREMENT_START: '開始',
   MAP_INCREMENT_STOP: '停止',
-  MAP_INCREMENT_ADD_POINT: 'プロット',
-  MAP_INCREMENT_CANCEL: 'キャンセルする',
-  MAP_INCREMENT_COMMIT: '提出する',
+  MAP_INCREMENT_ADD_POINT: 'ポイントの追加',
+  MAP_INCREMENT_CANCEL: 'キャンセル',
+  MAP_INCREMENT_COMMIT: 'サブミット',
 
   MAP_INCREMENT_GPS_POINT: 'GPSプロット方式',
   MAP_INCREMENT_GPS_TRACK: 'GPS軌跡式',
   MAP_INCREMENT_POINTLINE: 'ポイント描画式',
   MAP_INCREMENT_FREELINE: '自由式',
 
-  MAP_TOPO_ADD_NODE: 'ノードを追加',
-  MAP_TOPO_EDIT_NODE: 'ノードを編集',
-  MAP_TOPO_DELETE_NODE: 'ノードを削除する',
-  MAP_TOPO_DELETE_OBJECT: 'オブジェクトを削除',
-  MAP_TOPO_SMOOTH: 'スムーズ',
-  MAP_TOPO_SPLIT_LINE: 'ラインラインは中断しました',
-  MAP_TOPO_SPLIT: '割り込み',
-  MAP_TOPO_EXTEND: '伸ばす',
-  MAP_TOPO_TRIM: 'トリミング',
+  MAP_TOPO_ADD_NODE: 'ノードの追加',
+  MAP_TOPO_EDIT_NODE: 'ノードの編集',
+  MAP_TOPO_DELETE_NODE: 'ノードの削除',
+  MAP_TOPO_DELETE_OBJECT: 'オブジェクトの削除',
+  MAP_TOPO_SMOOTH: 'スムーズネス',
+  MAP_TOPO_SPLIT_LINE: 'ラインでライン切断',
+  MAP_TOPO_SPLIT: '切断',
+  MAP_TOPO_EXTEND: 'ライン延長',
+  MAP_TOPO_TRIM: 'ライントリミング',
   MAP_TOPO_RESAMPLE: 'リサンプリング',
-  MAP_TOPO_CHANGE_DIRECTION: '方向を変える',
-  ADD_DATASET: 'データセットを追加',
+  MAP_TOPO_CHANGE_DIRECTION: '方向を変更',
+  ADD_DATASET: 'データセットの追加',
   SELECT_ROADNAME_FIELD: '次のデータセットの道路名フィールドを選択します',
-  SELECT_FIELD: 'フィールドを選択',
-  MERGE_CANCEL: 'キャンセルする',
-  MERGE_CONFIRM: 'よし',
+  SELECT_FIELD: 'フィールドの選択',
+  MERGE_CANCEL: 'キャンセル',
+  MERGE_CONFIRM: 'OK',
   MERGE_SELECT_ALL: 'すべて選択',
   MERGE_ADD: '追加',
-  MERGE_DATASET: 'データセットをマージ',
+  MERGE_DATASET: 'データセットのマージ',
 }
 
 // 推演动画
@@ -536,13 +536,13 @@ const Map_Plotting = {
 
 // 图层
 const Map_Layer = {
-  PLOTS: '私のマーク',
+  PLOTS: 'マイマーク',
   PLOTS_IMPORT: 'マークのインポート',
   PLOTS_DELETE: 'マークの削除',
   PLOTS_EDIT: 'マークの編集',
   PLOTS_SET_AS_CURRENT: '現在マークに設定',
 
-  LAYERS: '私のレイヤー',
+  LAYERS: 'マイレイヤー',
   LAYERS_MOVE_UP: '上に移動',
   LAYERS_MOVE_DOWN: '下に移動',
   LAYERS_TOP: '最上位に移動',
@@ -590,18 +590,18 @@ const Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: '主題図の作成',
   LAYERS_MODIFY_THEMATIC_MAP: '主題図の変更',
 
-  BASEMAP: '私のベースマップ',
+  BASEMAP: 'マイベースマップ',
   BASEMAP_SWITH: 'ベースマップの切替',
-  MY_TERRAIN: '私の地形',
+  MY_TERRAIN: 'マイ地形',
 
-  SCALE_TO_CURRENT_LAYER: '現在のレイヤーにズーム',
-  ADD_A_TERRAIN_LAYER: '地形レイヤーを追加',
-  ADD_A_IMAGE_LAYER: '画像レイヤーを追加',
+  SCALE_TO_CURRENT_LAYER: '現在レイヤーにズーム',
+  ADD_A_TERRAIN_LAYER: '地形レイヤーの追加',
+  ADD_A_IMAGE_LAYER: '画像レイヤーの追加',
   REMOVE_THE_CURRENT_LAYER: '現在のレイヤーを削除',
-  ONLINE_BASE_MAP: 'オンライン地図',
+  ONLINE_BASE_MAP: 'オンラインベースマップ',
   ADD_LAYER_URL: 'オンラインレイヤーのアドレスを追加',
   TERRAIN: '地形',
-  IMAGE: 'イメージ',
+  IMAGE: '画像',
 }
 
 // 属性
@@ -652,7 +652,7 @@ const Map_Setting = {
   ROTATION_GESTURE: 'ジェスチャー回転',
   PITCH_GESTURE: 'ジェスチャー俯仰',
   THEME_LEGEND: '主題図凡例',
-  COLUMN_NAV_BAR: '横持ち時ナビィバーを縦表示にする',
+  COLUMN_NAV_BAR: '横向きの時にツールバーを縦表示',
   REAL_TIME_SYNC: 'リアルタイム同期',
 
   // 效果设置

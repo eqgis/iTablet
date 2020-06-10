@@ -91,7 +91,9 @@ export default class CoworkManagePage extends React.Component {
               },
             })
           } else {
-            NavigationService.navigate('Login')
+            NavigationService.navigate('Login', {
+              show: ['Online'],
+            })
           }
         }}
       >

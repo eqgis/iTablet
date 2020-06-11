@@ -1945,7 +1945,9 @@ export default class Friend extends Component {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            NavigationService.navigate('Login')
+            NavigationService.navigate('Login', {
+              show: ['Online'],
+            })
           }}
         >
           <View style={styles.itemView}>

@@ -6,7 +6,7 @@ const Find = {
   CONFIRM: '検索',
   RESET: 'リセット',
 
-  ALL: '全て',
+  ALL: 'すべて',
   ONLINE_WORKSPACE: 'ワークスペース',
   ONLINE_DATASOURCE: 'データソース',
   ONLINE_MAP_RESOURCE: 'マップリソース',
@@ -21,11 +21,11 @@ const Find = {
   NO_DATA: 'データを見つかりません',
   NETWORK_ERROR: 'ネット異常、後で試してください',
   NO_MORE_DATA: 'データはすべてロードしました。',
-  DOWNLOADED: 'ダウンロード完了、インポート可能です',
+  DOWNLOADED: 'ダウンロード完了、インポートできます。',
 
-  ONLINE_COWORK: 'オンライン　コラボレーション',
-  COWORK_LOGIN: 'SuperMap Onlineにログインしてください',
-  APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動します',
+  ONLINE_COWORK: 'オンラインコラボレーション',
+  COWORK_LOGIN: 'SuperMap Onlineにログインしてリストを取得してください',
+  APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動して、アプレットを起動できます',
 }
 
 export { Find }

@@ -14,8 +14,8 @@ const Analyst_Modules = {
   FIND_TSP_PATH: '巡回ルート解析',
   TRACING_ANALYSIS: 'トレース解析',
 
-  REGISTRATION_CREATE: '新規登録',
-  REGISTRATION_SPEEDINESS: 'クイック登録',
+  REGISTRATION_CREATE: '新規幾何補正',
+  REGISTRATION_SPEEDINESS: 'クイック幾何補正',
   PROJECTION_TRANSFORMATION: '投影変換',
 }
 
@@ -188,65 +188,65 @@ const Analyst_Labels = {
   SHOW_STATISTICS: '統計情報の表示',
   EXPORT_TO_ALBUM: 'アルバムに保存',
 
-  REGISTRATION_DATASET: '登録データ',
-  REGISTRATION_REFER_DATASET_ADD: '登録データソースを追加',
-  REGISTRATION: '登録',
-  REGISTRATION_ARITHMETIC: '登録アルゴリズム',
-  REGISTRATION_LINE: '線形レジストレーション（少なくとも4つの制御点）',
-  REGISTRATION_QUADRATIC: '二次多項式レジストレーション（少なくとも7つの制御点）',
-  REGISTRATION_RECTANGLE: '長方形の登録（2つの制御点）',
-  REGISTRATION_OFFSET: 'オフセット登録（1制御点）',
-  REGISTRATION_LINE_: '線形登録',
-  REGISTRATION_QUADRATIC_: '二次多項式レジストレーション',
-  REGISTRATION_RECTANGLE_: '長方形の登録',
-  REGISTRATION_OFFSET_: 'Ofset kaydı',
-  REGISTRATION_ASSOCIATION: '関連ブラウジング',
+  REGISTRATION_DATASET: '幾何補正データ',
+  REGISTRATION_REFER_DATASET_ADD: '幾何補正データソースの追加',
+  REGISTRATION: '幾何補正',
+  REGISTRATION_ARITHMETIC: '幾何補正アルゴリズム',
+  REGISTRATION_LINE: '一次近似幾何補正(参照点:4点)',
+  REGISTRATION_QUADRATIC: '二次近似幾何補正(参照点：7点)',
+  REGISTRATION_RECTANGLE: '矩形幾何補正(参照点：2点)',
+  REGISTRATION_OFFSET: 'オフセット幾何補正(参照点：1点)',
+  REGISTRATION_LINE_: '一次近似幾何補正',
+  REGISTRATION_QUADRATIC_: '二次近似幾何補正',
+  REGISTRATION_RECTANGLE_: '矩形幾何補正',
+  REGISTRATION_OFFSET_: 'オフセット幾何補正',
+  REGISTRATION_ASSOCIATION: '連動表示',
 
-  REGISTRATION_ASSOCIATION_CLOCE: 'リンクを解除',
-  REGISTRATION_EXECUTE: '実行する',
-  REGISTRATION_EXECUTE_SUCCESS: '成功した実行',
+  REGISTRATION_ASSOCIATION_CLOCE: '連動を解除',
+  REGISTRATION_EXECUTE: '実行',
+  REGISTRATION_EXECUTE_SUCCESS: '実行に成功しました',
   REGISTRATION_EXECUTE_FAILED: '実行に失敗しました',
   REGISTRATION_SAVE_AS: '名前を付けて保存',
   REGISTRATION_RESAMPLE: 'リサンプリング',
-  REGISTRATION_SAMPLE_MODE: 'サンプリングモード',
+  REGISTRATION_SAMPLE_MODE: 'リサンプリングモード',
   REGISTRATION_SAMPLE_MODE_NO: 'なし',
-  REGISTRATION_SAMPLE_MODE_NEAR: '最近傍法',
-  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'バイリニア補間',
-  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: '三次たたみ込み内挿',
-  REGISTRATION_SAMPLE_PIXEL: 'サンプリングされたピクセル',
+  REGISTRATION_SAMPLE_MODE_NEAR: '最近隣幾何補正法',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: '共1次幾何補正法',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: '3次畳み込み幾何補正法',
+  REGISTRATION_SAMPLE_PIXEL: 'サンプリングピクセル',
   REGISTRATION_RESULT_DATASET: '結果データセット',
   REGISTRATION_RESULT_DATASOURCE: '結果データソース',
-  REGISTRATION_ORIGINAL_DATASOURCE: '生データ',
-  REGISTRATION_POINTS_DETAIL: '見る',
-  REGISTRATION_EXECUTING: '進行中',
-  REGISTRATION_ENUMBER: 'シリアル番号',
-  REGISTRATION_ORIGINAL: 'ソースポイント',
-  REGISTRATION_TAREGT: '目標点',
+  REGISTRATION_ORIGINAL_DATASOURCE: '元データ',
+  REGISTRATION_POINTS_DETAIL: '表示',
+  REGISTRATION_EXECUTING: '実行中',
+  REGISTRATION_ENUMBER: '番号',
+  REGISTRATION_ORIGINAL: '原点',
+  REGISTRATION_TAREGT: 'ターゲットポイント',
   REGISTRATION_RESELECT_POINT: '再選択',
-  REGISTRATION_EXPORT: '輸出',
+  REGISTRATION_EXPORT: 'エクスポート',
   REGISTRATION_EXPORT_SUCCESS: 'エクスポートに成功しました',
   REGISTRATION_EXPORT_FAILED: 'エクスポートに失敗しました',
-  REGISTRATION_EXPORT_FILE_NAME: 'エクスポート登録情報ファイル名',
-  REGISTRATION_EXPORT_FILE: '登録情報ファイル',
-  REGISTRATION_PLEASE_SELECT: '選んでください',
-  REGISTRATION_NOT_SETLECT_DATASET: '登録データセットを選択してください',
+  REGISTRATION_EXPORT_FILE_NAME: '幾何補正情報ファイル名',
+  REGISTRATION_EXPORT_FILE: '幾何補正情報ファイル',
+  REGISTRATION_PLEASE_SELECT: '選択してください',
+  REGISTRATION_NOT_SETLECT_DATASET: '幾何補正データセットを選択してください',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: '参照データセットを選択してください',
   //投影转换
-  PROJECTION_SOURCE_COORDS: 'ソース座標系',
+  PROJECTION_SOURCE_COORDS: '元座標系',
   PROJECTION_COORDS_NAME: '座標系名',
   PROJECTION_COORDS_UNIT: '座標単位',
-  PROJECTION_GROUND_DATUM: '地面基準',
+  PROJECTION_GROUND_DATUM: '測地系',
   PROJECTION_REFERENCE_ELLIPSOID: '参照楕円体',
 
-  PROJECTION_CONVERT_SETTING: 'リファレンスシステム変換設定',
-  PROJECTION_CONVERT_MOTHED: '換算方法',
+  PROJECTION_CONVERT_SETTING: '参照系変換設定',
+  PROJECTION_CONVERT_MOTHED: '変換方法',
   PROJECTION_PARAMETER_SETTING: 'パラメータ設定',
-  BASIC_PARAMETER: '基本的なパラメータ',
+  BASIC_PARAMETER: '基本パラメータ',
   ROTATION_ANGLE_SECOND: '回転角度（秒）',
   OFFSET: 'オフセット',
   RATIO_DIFFERENCE: '比例差',
-  TARGET_COORDS: 'ターゲット座標系',
-  COPY: '写す',
+  TARGET_COORDS: '目標座標系',
+  COPY: 'コピー',
   RESETING: 'リセット',
   GEOCOORDSYS: '地理座標系',
   PRJCOORDSYS: '投影座標系',
@@ -258,13 +258,13 @@ const Analyst_Labels = {
 
 const Convert_Unit = {
   ///  毫米。
-  MILIMETER: 'んん',
+  MILIMETER: 'ミリメートル',
   /// 平方毫米。
-  SQUAREMILIMETER: 'Mm2',
+  SQUAREMILIMETER: '平方ミリメートル',
   ///  厘米。
-  CENTIMETER: 'cm',
+  CENTIMETER: 'センチメートル',
   /// 平方厘米。
-  SQUARECENTIMETER: 'cm2',
+  SQUARECENTIMETER: '平方センチメートル',
   /// 英寸。
   INCH: 'インチ',
   /// 平方英寸。
@@ -274,19 +274,19 @@ const Convert_Unit = {
   /// 平方分米。
   SQUAREDECIMETER: '平方デシメートル',
   ///  英尺。
-  FOOT: '足',
+  FOOT: 'フィート',
   ///  平方英尺。
   SQUAREFOOT: '平方フィート',
   ///  码。
-  YARD: 'コード',
+  YARD: 'ヤード',
   ///  平方码。
   SQUAREYARD: '平方ヤード',
   ///  米。
-  METER: 'メーター',
+  METER: 'メートル',
   ///  平方米。
   SQUAREMETER: '平方メートル',
   /// 千米。
-  KILOMETER: 'km',
+  KILOMETER: 'キロメートル',
   /// 平方千米。
   SQUAREKILOMETER: '平方キロメートル',
   /// 平方英里。
@@ -294,11 +294,11 @@ const Convert_Unit = {
   /// 英里。
   SQUAREMILE: 'マイル',
   ///  秒。
-  SECOND: '二番目',
+  SECOND: '秒',
   ///  分。
   MINUTE: '分',
   ///  度。
-  DEGREE: '程度',
+  DEGREE: '度',
   /// 弧度。
   RADIAN: 'ラジアン',
 }
@@ -404,11 +404,11 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: 'データソースを選択してください',
   SELECT_DATA_SET_FIRST: 'データセットを選択してください',
   PLEASE_SELECT_A_REGION: '1つのポリゴンを選択してください',
-  REGISTRATION_LINE_POINTS: '少なくとも4つの制御点を設定してください',
-  REGISTRATION_QUADRATIC_POINTS: '少なくとも7つの制御点を設定してください',
-  REGISTRATION_RECTANGLE_POINTS: '2つの制御点を設定してください',
-  REGISTRATION_OFFSET_POINTS: 'コントロールポイントを1つ設定してください',
-  REGISTRATION_POINTS_NUMBER_ERROR: 'コントロールポイントの数が一致しません',
+  REGISTRATION_LINE_POINTS: '少なくとも4つの参照点を設定してください。',
+  REGISTRATION_QUADRATIC_POINTS: '少なくとも7つの参照点を設定してください',
+  REGISTRATION_RECTANGLE_POINTS: '2つの参照点を設定してください',
+  REGISTRATION_OFFSET_POINTS: '1つの参照点を設定してください',
+  REGISTRATION_POINTS_NUMBER_ERROR: '参照点の数が一致しません',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

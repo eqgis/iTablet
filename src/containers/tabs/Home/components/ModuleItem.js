@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { fixedSize, fixedText } from '../../../../utils'
-import { getLanguage } from '../../../../language'
 
 export default class ModuleItem extends Component {
   props: {
@@ -57,39 +56,20 @@ export default class ModuleItem extends Component {
 
   _renderProgressView = () => {
     if (!this.props.downloadData) return <View />
-    // let value =
-    //   (this.props.downloadData.progress >= 0
-    //     ? ~~this.props.downloadData.progress.toFixed(0)
-    //     : 0) + '%'
     let value = this.props.downloadData.progress + '%'
-    let progress =
-      this.props.downloadData.progress >= 100
-        ? getLanguage(global.language).Prompt.IMPORTING
-        : value
     return (
       <View
         style={[
           {
             position: 'absolute',
-            width: fixedSize(200),
-            height: fixedSize(200),
-            backgroundColor: '#rgba(112, 128, 144,0.9)',
-            alignItems: 'center',
-            justifyContent: 'center',
+            width: value,
+            height: fixedSize(5),
+            backgroundColor: '#4680DF',
             borderRadius: 5,
+            bottom: 0,
           },
         ]}
-      >
-        <Text
-          style={{
-            fontSize: fixedText(25),
-            fontWeight: 'bold',
-            color: 'white',
-          }}
-        >
-          {progress}
-        </Text>
-      </View>
+      />
     )
   }
 
@@ -123,17 +103,19 @@ export default class ModuleItem extends Component {
           {/* <Image source={image} style={item.img} /> */}
           {/* <Image source={item.baseImage} style={item.style} /> */}
           <View style={styles.moduleItem}>
-            <Image
-              resizeMode={'contain'}
-              source={image}
-              style={styles.moduleImage}
-            />
+            <View style={styles.moduleImage}>
+              <Image
+                resizeMode={'contain'}
+                source={image}
+                style={styles.moduleImage}
+              />
+              {this._renderProgressView()}
+            </View>
             <Text style={[styles.title, textColor]}>{item.title}</Text>
             {this.props.oldMapModules.indexOf(item.key) < 0 && (
               <View style={styles.redDot} />
             )}
           </View>
-          {this._renderProgressView()}
         </TouchableOpacity>
       </View>
     )

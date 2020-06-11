@@ -27,6 +27,7 @@ const Profile = {
   EMAIL_LOGIN: 'Email Login',
   ENTER_EMAIL_OR_USERNAME: 'Please enter your email or username',
   ENTER_MOBILE: 'Please enter your mobile number',
+  ENTER_USERNAME_ALL: 'Please enter your phone number, email or username',
   ENTER_PASSWORD: 'Please enter your password',
   REGISTER: 'Register',
   FORGET_PASSWORD: 'Forgot password?',

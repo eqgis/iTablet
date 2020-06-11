@@ -384,12 +384,13 @@ export default class ProjectionTargetCoordsPage extends Component {
       let allGeoCoordSysTypes = []
       let allPrjCoordSysTypes = []
 
+      let tempSearchKey = searchKey.toUpperCase()
       for (let i = 0; i < this._allGeoCoordSysTypes.length; i++) {
         // if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
         if (
           this._allGeoCoordSysTypes[i].title
-            .tolocaleUpperCase()
-            .indexOf(searchKey.tolocaleUpperCase()) != -1
+            .toUpperCase()
+            .indexOf(tempSearchKey) != -1
         ) {
           allGeoCoordSysTypes.push(this._allGeoCoordSysTypes[i])
         }
@@ -397,8 +398,8 @@ export default class ProjectionTargetCoordsPage extends Component {
       for (let i = 0; i < this._allPrjCoordSysTypes.length; i++) {
         if (
           this._allPrjCoordSysTypes[i].title
-            .tolocaleUpperCase()
-            .indexOf(searchKey.tolocaleUpperCase()) != -1
+            .toUpperCase()
+            .indexOf(tempSearchKey) != -1
         ) {
           allPrjCoordSysTypes.push(this._allPrjCoordSysTypes[i])
         }

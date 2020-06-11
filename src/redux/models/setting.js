@@ -84,23 +84,29 @@ export const setMapSetting = (cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setLanguage = (
-  params,
-  isConfig = false,
-  cb = () => {},
-) => async dispatch => {
+export const setLanguage = (params, isConfig = false, cb = () => {}) => async (
+  dispatch,
+  getState,
+) => {
   if (params === 'AUTO') {
+    let supportLanguage = getState().appConfig.toJS().supportLanguage
+    if (!supportLanguage) supportLanguage = []
+    let isSupported = language => {
+      return (
+        supportLanguage.length === 0 || supportLanguage.indexOf(language) > -1
+      )
+    }
     const locale = await AppUtils.getLocale()
     let language
-    if (locale === 'zh-CN') {
+    if (locale === 'zh-CN' && isSupported('CN')) {
       language = 'CN'
-    } else if (locale.indexOf('tr-') === 0) {
+    } else if (locale.indexOf('tr-') === 0 && isSupported('TR')) {
       language = 'TR'
-    } else if (locale.indexOf('ja-') === 0) {
+    } else if (locale.indexOf('ja-') === 0 && isSupported('JA')) {
       language = 'JA'
-    } else if (locale.indexOf('fr-') === 0) {
+    } else if (locale.indexOf('fr-') === 0 && isSupported('FR')) {
       language = 'FR'
-    } else if (locale.indexOf('ar-') === 0) {
+    } else if (locale.indexOf('ar-') === 0 && isSupported('AR')) {
       language = 'AR'
     } else {
       language = 'EN'

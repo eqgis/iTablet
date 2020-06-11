@@ -5,6 +5,7 @@ import LanguageSetting from './LanguageSetting'
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   autoLanguage: state.setting.toJS().autoLanguage,
+  appConfig: state.appConfig.toJS(),
 })
 const mapDispatchToProps = {
   setLanguage,

@@ -7,6 +7,7 @@ export default {
   alias: 'iTablet',
   version: '0.0.1',
   language: 'CN',
+  supportLanguage: [],
   about: {
     isShow: true,
     url: '',

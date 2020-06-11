@@ -1,4 +1,4 @@
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, EngineType } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 
@@ -125,17 +125,17 @@ async function _getPlotDataList(user) {
   return list
 }
 
-// async function creatLabelDatasource(user, datasourcePath) {
-//   const result = await SMap.createDatasourceOfLabel({
-//     server: datasourcePath,
-//     engineType: EngineType.UDB,
-//     alias: `Label_${user.userName}#`,
-//     description: 'Label',
-//   })
-//   return result
-// }
+async function createDatasourceFile(user, datasourcePath) {
+  const result = await SMap.createDatasourceFile({
+    server: datasourcePath,
+    engineType: EngineType.UDB,
+    alias: `Label_${user.userName}#`,
+    description: 'Label',
+  })
+  return result
+}
 
 export default {
   getLocalData,
-  // creatLabelDatasource,
+  createDatasourceFile,
 }

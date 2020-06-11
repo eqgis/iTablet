@@ -67,7 +67,7 @@ class MyLabel extends MyDataPage {
       FileTools.deleteFile(archivePath)
     }
 
-    let result = await DataHandler.creatLabelDatasource(
+    let result = await DataHandler.createDatasourceFile(
       this.props.user.currentUser,
       todatasourcePath,
     )

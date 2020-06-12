@@ -27,6 +27,10 @@ const Find = {
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_REBOOT: 'Endirme tamamlandı, yüklenebilir uygulamacığı yeniden başlat',
   REBOOT: '重启', // 待翻译
+  APPLET_RESET_OLD_VERSION: '是否重置回之前的版本', // 待翻译
+  APPLET_OLD_VERSION_ALREADY: '已经是最初版本', // 待翻译
+  APPLET_RESET_FAILED: '重置失败',
+  APPLET_RESETTING: 'Rest', // 待翻译
 }
 
 export { Find }

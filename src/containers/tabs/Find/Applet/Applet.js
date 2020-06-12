@@ -1,5 +1,5 @@
 import React from 'react'
-import Container from '../../../../components/Container'
+import { Container, TextBtn } from '../../../../components'
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import {
 } from 'react-native'
 import { getLanguage } from '../../../../language'
 import styles from './styles'
-import { UserType } from '../../../../constants'
+import { UserType, ConstPath } from '../../../../constants'
+import { FileTools } from '../../../../native'
 import { OnlineServicesUtils, Toast } from '../../../../utils'
 import AppletItem from './AppletItem'
 import { getThemeAssets } from '../../../../assets'
@@ -159,7 +160,7 @@ export default class Applet extends React.Component {
   onDownloaded = result => {
     if (result) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT,
+        text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_REBOOT,
         confirmText: getLanguage(this.props.language).Find.REBOOT,
         confirmAction: () => {
           appUtilsModule.reloadBundle()
@@ -167,7 +168,41 @@ export default class Applet extends React.Component {
       })
       GLOBAL.SimpleDialog.setVisible(true)
     } else {
-      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    }
+  }
+  
+  reset = async () => {
+    try {
+      const bundleName =
+        'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle'
+      const bundlePath = GLOBAL.homePath + ConstPath.BundlesPath + bundleName
+      let bundleExist = await FileTools.fileIsExist(bundlePath)
+      if (bundleExist) {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(GLOBAL.language).Find.APPLET_RESET_OLD_VERSION,
+          confirmText: getLanguage(this.props.language).Find.RESET,
+          confirmAction: async () => {
+            this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Find.APPLET_RESETTING)
+            let result = await FileTools.deleteFile(GLOBAL.homePath + ConstPath.BundlesPath)
+            result = result && await FileTools.createDirectory(GLOBAL.homePath + ConstPath.BundlesPath)
+            if (result) {
+              setTimeout(() => {
+                this.container && this.container.setLoading(false)
+                appUtilsModule.reloadBundle()
+              }, 1000)
+            } else {
+              Toast.show(getLanguage(GLOBAL.language).Find.APPLET_RESET_FAILED)
+            }
+          },
+        })
+        GLOBAL.SimpleDialog.setVisible(true)
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).Find.APPLET_OLD_VERSION_ALREADY)
+      }
+    } catch (e) {
+      this.container && this.container.setLoading(false)
+      Toast.show(getLanguage(GLOBAL.language).Find.APPLET_RESET_FAILED)
     }
   }
 
@@ -188,9 +223,9 @@ export default class Applet extends React.Component {
   renderStatus = () => {
     let text
     if (this.state.noData) {
-      text = getLanguage(global.language).Find.NO_DATA
+      text = getLanguage(GLOBAL.language).Find.NO_DATA
     } else if (this.state.loadError) {
-      text = getLanguage(global.language).Find.NETWORK_ERROR
+      text = getLanguage(GLOBAL.language).Find.NETWORK_ERROR
     }
     if (text) {
       return (
@@ -214,7 +249,7 @@ export default class Applet extends React.Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(global.language).Friends.LOADING}
+            title={getLanguage(GLOBAL.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -254,7 +289,7 @@ export default class Applet extends React.Component {
               textAlign: 'center',
             }}
           >
-            {getLanguage(global.language).Find.NO_MORE_DATA}
+            {getLanguage(GLOBAL.language).Find.NO_MORE_DATA}
           </Text>
         </View>
       )
@@ -288,7 +323,7 @@ export default class Applet extends React.Component {
               color: 'orange',
             }}
           >
-            {getLanguage(global.language).Prompt.LOADING}
+            {getLanguage(GLOBAL.language).Prompt.LOADING}
           </Text>
         </View>
       )
@@ -296,21 +331,12 @@ export default class Applet extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.type === 'APPLET') return null
     return (
-      <View style={styles.HeaderRightContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            this.SearchMenu.setVisible(true)
-          }}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={getThemeAssets().find.filter}
-            style={styles.searchImg}
-          />
-        </TouchableOpacity>
-      </View>
+      <TextBtn
+        btnText={getLanguage(this.props.language).Find.RESET}
+        textStyle={styles.headerBtnTitle}
+        btnClick={this.reset}
+      />
     )
   }
 

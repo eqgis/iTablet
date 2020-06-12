@@ -3,6 +3,10 @@ package com.supermap.itablet;
 import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
+import com.facebook.infer.annotation.Assertions;
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactInstanceManagerBuilder;
+import com.facebook.react.common.LifecycleState;
 import com.supermap.file.CrashHandler;
 import com.facebook.react.ReactApplication;
 import com.psykar.cookiemanager.CookieManagerPackage;
@@ -37,6 +41,7 @@ import javax.annotation.Nullable;
 public class MainApplication extends MultiDexApplication implements ReactApplication {
     public static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
     private static MainApplication sInstance = null;
+    private static ReactInstanceManager mReactInstanceManager;
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
@@ -79,13 +84,42 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Nullable
         @Override
         protected String getJSBundleFile() {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
+            String path = getBundlePath();
             if (!(new File(path).exists())) {
                 path = null;
             }
             return path;
         }
+
+        @Override
+        protected ReactInstanceManager createReactInstanceManager() {
+            ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
+                    .setApplication(getApplication())
+                    .setJSMainModulePath(getJSMainModuleName())
+                    .setUseDeveloperSupport(getUseDeveloperSupport())
+                    .setRedBoxHandler(getRedBoxHandler())
+                    .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
+                    .setUIImplementationProvider(getUIImplementationProvider())
+                    .setJSIModulesPackage(getJSIModulePackage())
+                    .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
+
+            for (ReactPackage reactPackage : getPackages()) {
+                builder.addPackage(reactPackage);
+            }
+            String jsBundleFile = getJSBundleFile();
+            if (jsBundleFile != null) {
+                builder.setJSBundleFile(jsBundleFile);
+            } else {
+                builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
+            }
+            mReactInstanceManager = builder.build();
+            return mReactInstanceManager;
+        }
     };
+    
+    public static ReactInstanceManager getReactInstanceManager() {
+        return mReactInstanceManager;
+    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {
@@ -111,6 +145,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         sInstance = this;
         SoLoader.init(this, /* native exopackage */ false);
         CrashHandler.getInstance().init(getApplicationContext());
+    }
+
+    public String getBundlePath() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
     }
 
 }

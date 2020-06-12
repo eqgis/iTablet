@@ -30,6 +30,7 @@ class LanguageSetting extends React.Component {
     language: String,
     autoLanguage: Boolean,
     setLanguage: () => {},
+    appConfig: Object,
   }
 
   constructor(props) {
@@ -40,6 +41,49 @@ class LanguageSetting extends React.Component {
     this.state = {
       currentOption: this.prevOption,
     }
+  }
+
+  getData = () => {
+    let data = [
+      {
+        key: option.auto,
+        title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
+      },
+      {
+        key: option.CN,
+        title: '中文',
+      },
+      {
+        key: option.EN,
+        title: 'English',
+      },
+      {
+        key: option.FR,
+        title: 'Français',
+      },
+      {
+        key: option.TR,
+        title: 'Türkçe',
+      },
+      {
+        key: option.AR,
+        title: 'العربية',
+      },
+      {
+        key: option.JA,
+        title: '日本語',
+      },
+    ]
+    let newData = data
+    let supportedLanguage = this.props.appConfig.supportLanguage
+    if (supportedLanguage && supportedLanguage.length > 0) {
+      newData = data.filter(value => {
+        return (
+          value.key === option.auto || supportedLanguage.indexOf(value.key) > -1
+        )
+      })
+    }
+    return newData
   }
 
   changeLanguage = async () => {
@@ -74,36 +118,7 @@ class LanguageSetting extends React.Component {
   }
 
   renderList = () => {
-    let data = [
-      {
-        key: option.auto,
-        title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
-      },
-      {
-        key: option.CN,
-        title: '中文',
-      },
-      {
-        key: option.EN,
-        title: 'English',
-      },
-      {
-        key: option.FR,
-        title: 'Français',
-      },
-      {
-        key: option.TR,
-        title: 'Türkçe',
-      },
-      {
-        key: option.AR,
-        title: 'العربية',
-      },
-      {
-        key: option.JA,
-        title: '日本語',
-      },
-    ]
+    let data = this.getData()
     return (
       <View style={{ flexDirection: 'column' }}>
         <FlatList data={data} renderItem={this.renderItem} />

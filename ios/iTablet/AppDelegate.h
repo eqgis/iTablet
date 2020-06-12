@@ -11,6 +11,8 @@
 #import "FileTools.h"
 #import "WeiXinUtils.h"
 #import "JPUSHService.h"
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,JPUSHRegisterDelegate>
 
@@ -19,4 +21,5 @@
 @property (nonatomic, assign) UIInterfaceOrientationMask allowRotation;
 @property (nonatomic, unsafe_unretained) UIBackgroundTaskIdentifier taskId;
 +(void)SetSampleCodeName:(NSString*)name;
++(RCTRootView *)loadBunle:(NSDictionary *)launchOptions;
 @end

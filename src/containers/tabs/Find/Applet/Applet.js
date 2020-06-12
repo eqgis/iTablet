@@ -9,14 +9,15 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Platform,
+  NativeModules,
 } from 'react-native'
 import { getLanguage } from '../../../../language'
 import styles from './styles'
 import { UserType } from '../../../../constants'
-import { OnlineServicesUtils } from '../../../../utils'
-import DataItem from './AppletItem'
+import { OnlineServicesUtils, Toast } from '../../../../utils'
+import AppletItem from './AppletItem'
 import { getThemeAssets } from '../../../../assets'
-
+const appUtilsModule = NativeModules.AppUtils
 var JSOnlineService
 var JSIPortalService
 export default class Applet extends React.Component {
@@ -154,6 +155,22 @@ export default class Applet extends React.Component {
       }
     }, 1000)
   }
+  
+  onDownloaded = result => {
+    if (result) {
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT,
+        confirmText: getLanguage(this.props.language).Find.REBOOT,
+        isVisible: true,
+        confirmAction: () => {
+          appUtilsModule.reloadBundle()
+        },
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    }
+  }
 
   renderProgress = () => {
     if (this.state.initData) {
@@ -212,12 +229,13 @@ export default class Applet extends React.Component {
 
   renderItem = data => {
     return (
-      <DataItem
+      <AppletItem
         user={this.props.user}
         data={data.item}
         down={this.props.down}
         updateDownList={this.props.updateDownList}
         removeItemOfDownList={this.props.removeItemOfDownList}
+        onDownloaded={this.onDownloaded}
       />
     )
   }

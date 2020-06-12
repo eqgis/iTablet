@@ -13,10 +13,6 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-
-
-#import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
 //#import "VisualViewController.h"
 //#import "VCViewController.h"
 #import "RNFSManager.h"
@@ -25,7 +21,6 @@
 #import "Common/HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
-
 
 static NSString* g_sampleCodeName = @"#";;
 @implementation AppDelegate
@@ -89,26 +84,7 @@ static NSString* g_sampleCodeName = @"#";;
   
   [JPUSHService setupWithOption:launchOptions appKey:@"7d2470baad20e273cd6e53cc"
                         channel:nil apsForProduction:nil];
-  NSURL *jsCodeLocation;
-  NSString* jsBundlePath = [NSHomeDirectory() stringByAppendingString:@"/Documents/iTablet/Bundles/index.ios.bundle"];
-  NSFileManager* fileMgr = [NSFileManager defaultManager];
-  BOOL isDir = NO;
-  if ([fileMgr fileExistsAtPath:jsBundlePath isDirectory:&isDir]) {
-    jsCodeLocation = [NSURL URLWithString:jsBundlePath];
-  } else {
-    #if DEBUG
-
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-
-    #endif
-      jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  }
-  
-  NSLog(@"============== %@", jsCodeLocation);
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"iTablet"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
+  RCTRootView *rootView = [AppDelegate loadBunle:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -201,9 +177,32 @@ static NSString* g_sampleCodeName = @"#";;
 //  }
 //}
 
++(RCTRootView *)loadBunle:(NSDictionary *)launchOptions {
+  NSURL *jsCodeLocation;
+  NSString* jsBundlePath = [NSHomeDirectory() stringByAppendingString:@"/Documents/iTablet/Bundles/index.ios.bundle"];
+  NSFileManager* fileMgr = [NSFileManager defaultManager];
+  BOOL isDir = NO;
+  if ([fileMgr fileExistsAtPath:jsBundlePath isDirectory:&isDir]) {
+    jsCodeLocation = [NSURL URLWithString:jsBundlePath];
+  } else {
+    #if DEBUG
+      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
+
+    #endif
+      jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  }
+
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                              moduleName:@"iTablet"
+                                                       initialProperties:nil
+                                                           launchOptions:launchOptions];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  return rootView;
+}
+
 #pragma mark - 初始化默认数据
 - (void)initDefaultData {
-    [self initCustomWorkspace];
+  [self initCustomWorkspace];
   [self initDefaultWorkspace];
 }
 

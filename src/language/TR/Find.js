@@ -26,6 +26,7 @@ const Find = {
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_REBOOT: 'Endirme tamamlandı, yüklenebilir uygulamacığı yeniden başlat',
+  REBOOT: '重启', // 待翻译
 }
 
 export { Find }

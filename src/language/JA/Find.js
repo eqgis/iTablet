@@ -26,6 +26,7 @@ const Find = {
   ONLINE_COWORK: 'オンラインコラボレーション',
   COWORK_LOGIN: 'SuperMap Onlineにログインしてリストを取得してください',
   APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動して、アプレットを起動できます',
+  REBOOT: '重启', // 待翻译
 }
 
 export { Find }

@@ -5,7 +5,13 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
-import { View, Text, ScrollView } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native'
 
 export default class ProjectionParameterSetPage extends Component {
   props: {
@@ -103,8 +109,9 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.ratitionDifferenceItem = ref)}
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={getLanguage(global.language).Analyst_Labels.RATIO_DIFFERENCE}
-          value={this.state.ratitionDifference || ''}
+          value={this.state.ratitionDifference + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -136,8 +143,9 @@ export default class ProjectionParameterSetPage extends Component {
         <AnalystItem
           ref={ref => (this.rotationXItem = ref)}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'X'}
-          value={this.state.rotationX || ''}
+          value={this.state.rotationX + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -157,8 +165,9 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.rotationYItem = ref)}
           // style={{ borderBottomWidth: 0 }}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'Y'}
-          value={this.state.rotationY || ''}
+          value={this.state.rotationY + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -178,8 +187,9 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.rotationZItem = ref)}
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'Z'}
-          value={this.state.rotationZ || ''}
+          value={this.state.rotationZ + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
@@ -211,6 +221,7 @@ export default class ProjectionParameterSetPage extends Component {
         <AnalystItem
           ref={ref => (this.offsetXItem = ref)}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'X'}
           value={this.state.offsetX + ''}
           keyboardType={'numeric'}
@@ -232,6 +243,7 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.offsetYItem = ref)}
           // style={{ borderBottomWidth: 0 }}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'Y'}
           value={this.state.offsetY + ''}
           keyboardType={'numeric'}
@@ -253,6 +265,7 @@ export default class ProjectionParameterSetPage extends Component {
           ref={ref => (this.offsetZItem = ref)}
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
+          inputStyle={styles.inputStyle}
           title={'Z'}
           value={this.state.offsetZ + ''}
           keyboardType={'numeric'}
@@ -293,21 +306,27 @@ export default class ProjectionParameterSetPage extends Component {
           ),
         }}
       >
-        <ScrollView style={{ backgroundColor: color.background }}>
-          {this.state.paraNumber === 3 ? null : (
-            <View>
-              {this.renderBasicParamerterView()}
-              {this.renderRotationAngleView()}
-            </View>
-          )}
-          {this.renderOffsetView()}
-        </ScrollView>
-
-        {/* <ScrollView style={{backgroundColor:color.background}}>
-            {this.renderTop()}
-            {this.renderTransMethodView()}
-        </ScrollView>
-        {this.renderPopList()} */}
+        <KeyboardAvoidingView
+          enabled={true}
+          keyboardVerticalOffset={10}
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+          behavior={Platform.OS === 'ios' && 'padding'}
+        >
+          <ScrollView style={{ backgroundColor: color.background }}>
+            {this.state.paraNumber === 3 ? null : (
+              <View>
+                {this.renderBasicParamerterView()}
+                {this.renderRotationAngleView()}
+              </View>
+            )}
+            {this.renderOffsetView()}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Container>
     )
   }

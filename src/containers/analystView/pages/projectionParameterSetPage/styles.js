@@ -58,4 +58,7 @@ export default StyleSheet.create({
     marginLeft: scaleSize(30),
     backgroundColor: color.background,
   },
+  inputStyle: {
+    paddingRight: scaleSize(15),
+  },
 })

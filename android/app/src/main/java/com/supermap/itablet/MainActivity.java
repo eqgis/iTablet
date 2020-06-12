@@ -8,12 +8,16 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.JSBundleLoader;
 import com.rnfs.RNFSManager;
-//import com.supermap.RN.FileTools;
 import com.supermap.RN.appManager;
 import com.supermap.RNUtils.FileTools;
 import com.supermap.data.Environment;
@@ -23,13 +27,18 @@ import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
-import io.reactivex.functions.Consumer;
-
 import org.devio.rn.splashscreen.SplashScreen;
+import org.easydarwin.util.SPUtil;
+
+import java.io.File;
+import java.lang.reflect.Field;
+
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends ReactActivity {
     public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     public static boolean isActive;
+    private static MainActivity sInstance;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -39,42 +48,21 @@ public class MainActivity extends ReactActivity {
         return "iTablet";
     }
 
+    public static MainActivity getInstance() {
+        return sInstance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
         requestPermissions();
         initEnvironment();
-
-//        ITabletLicenseManager instace = ITabletLicenseManager.getInstance(this);
-//        instace.setPrivateServerUrl("ws://192.168.0.109:9183");
-//        instace.queryPrivateFormalLicense(new ITabletLicenseManager.privateLicQueryCallback() {
-//            @Override
-//            public void onQueryComplete(Vector<ITabletLicenseManager.privateCloudLicInfo> vecInfos) {
-//                if(vecInfos != null){
-//                    int[] ids = {19001,19006};
-//                    instace.applyPrivateFormalLicense(ids, new ITabletLicenseManager.privateLicApplyCallback() {
-//                        @Override
-//                        public void onResult(boolean success) {
-//                            Log.d("xzy","onResult "+success);
-//                        }
-//                    });
-//                }
-//            }
-//        });
         initDefaultData();
-//        if (!isTablet(this)) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
-//        }
         appManager.getAppManager().addActivity(this);
         IWXAPI iwxapi=appManager.getAppManager().registerWechat(this);
         FileTools.getUriState(this);
 
-
-
-//        SMCollector.openGPS(this);
         //注册网络状态监听广播
         RNFSManager.NetWorkChangReceiver netWorkChangReceiver = new RNFSManager.NetWorkChangReceiver();
         IntentFilter filter = new IntentFilter();
@@ -82,6 +70,7 @@ public class MainActivity extends ReactActivity {
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netWorkChangReceiver, filter);
+        sInstance = this;
     }
 
     @Override
@@ -109,57 +98,15 @@ public class MainActivity extends ReactActivity {
         return super.onKeyDown(keyCode, event);
     }
     private void initEnvironment() {
-//        String licensePath = SDCARD + "/iTablet/license/";
-//        String licenseName = "Trial_License.slm";
-//        if (!Utils.fileIsExit(licensePath + licenseName)) {
-//            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-//        }
-//        Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-//        Environment.setLicensePath(SDCARD + "/iTablet/license");
-
         Environment.initialization(this);
 
         //init itablet license
         ITabletLicenseManager.getInstance(this);
         Toolkit.ReCheackLic();
-//        LicenseStatus status = Environment.getLicenseStatus();
-//        if (status.isTrailLicense() && !status.isLicenseValid()) {
-//            Utils.copyAssetFileToSDcard(this, licensePath, licenseName);
-//            Environment.initialization(this);
-//
-//            status = Environment.getLicenseStatus();
-//        }
     }
 
     private void initDefaultData() {
         FileTools.initUserDefaultData("Customer", this);
-        // 拷贝默认的工作空间
-//        String customerWs = SDCARD + "/iTablet/User/Customer/Data";
-//        String customerWsName = "Customer.smwu";
-//        if (!Utils.fileIsExit(customerWs + customerWsName)) {
-//            Utils.copyAssetFileToSDcard(this, customerWs, customerWsName);
-//        }
-//        // 拷贝默认的配置
-//        String configName = "mapinfo.txt";
-//        if (!Utils.fileIsExit(customerWs + configName)) {
-//            Utils.copyAssetFileToSDcard(this, customerWs, configName);
-//        }
-        // 拷贝默认数据
-//        String localPath = SDCARD + "/iTablet/data/local/";
-//        String defaultZipData = "defaultData.zip";
-//        if (!Utils.fileIsExit(localPath + "Changchun")) {
-//            Utils.copyAssetFileToSDcard(this, localPath, defaultZipData);
-//            Decompressor.UnZipFolder(localPath + defaultZipData, localPath);
-//            Utils.deleteFile(localPath + defaultZipData);
-//        }
-
-//        String localPath2 = SDCARD + "/iTablet/data/local/";
-//        String defaultZipData2 = "OlympicGreen_android.zip";
-//        if (!Utils.fileIsExit(localPath2 + "OlympicGreen_android")) {
-//            Utils.copyAssetFileToSDcard(this, localPath2, defaultZipData2);
-//            Decompressor.UnZipFolder(localPath2 + defaultZipData2, localPath2);
-//            Utils.deleteFile(localPath2 + defaultZipData2);
-//        }
     }
 
     private void requestPermissions() {
@@ -191,6 +138,92 @@ public class MainActivity extends ReactActivity {
 
     private boolean isTablet(Activity context) {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    public void loadBundle() {
+        final ReactInstanceManager instanceManager;
+        try {
+
+            instanceManager = resolveInstanceManager();
+            if (instanceManager == null) {
+                return;
+            }
+
+            //获取本地的js代码 这里就不给出代码了。 如果本地没有就返回assets目录的
+//            String latestJSBundleFile = Utils.getJSBundleFileInternal();
+            String latestJSBundleFile = getJSBundleFileInternal();
+
+            setJSBundle(instanceManager, latestJSBundleFile);
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        instanceManager.recreateReactContextInBackground();
+                    } catch (Exception e) {
+                        // The recreation method threw an unknown exception
+                        // so just simply fallback to restarting the Activity (if it exists)
+                        loadBundleLegacy();
+                    }
+                }
+            });
+        }  catch (Exception e) {
+            e.printStackTrace();
+            loadBundleLegacy();
+        }
+    }
+
+    private String getJSBundleFileInternal() {
+        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
+        if (new File(path).exists()) {
+            return path;
+        }
+        return null;
+    }
+
+    private ReactInstanceManager resolveInstanceManager(){
+        ReactInstanceManager instanceManager;
+        final Activity currentActivity = MainActivity.this;
+        if (currentActivity == null) {
+            return null;
+        }
+        ReactApplication reactApplication = (ReactApplication) currentActivity.getApplication();
+        instanceManager = reactApplication.getReactNativeHost().getReactInstanceManager();
+
+        return instanceManager;
+    }
+
+    private void setJSBundle(ReactInstanceManager instanceManager, String latestJSBundleFile) throws IllegalAccessException {
+        try {
+            JSBundleLoader latestJSBundleLoader;
+            if (latestJSBundleFile.toLowerCase().startsWith("assets://")) {
+                latestJSBundleLoader = JSBundleLoader.createAssetLoader(getApplicationContext(), latestJSBundleFile, false);
+            } else {
+                latestJSBundleLoader = JSBundleLoader.createFileLoader(latestJSBundleFile);
+            }
+            Field bundleLoaderField = instanceManager.getClass().getDeclaredField("mBundleLoader");
+            bundleLoaderField.setAccessible(true);
+            bundleLoaderField.set(instanceManager, latestJSBundleLoader);
+        } catch (Exception e) {
+            throw new IllegalAccessException("Could not setJSBundle");
+        }
+    }
+
+    private void loadBundleLegacy() {
+        Log.d("loadBundleLegacy","loadBundle #3 loadBundleLegacy...");
+        final Activity currentActivity =  MainActivity.this;
+        if (currentActivity == null) {
+            // The currentActivity can be null if it is backgrounded / destroyed, so we simply
+            // no-op to prevent any null pointer exceptions.
+            return;
+        }
+        currentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.recreate();
+            }
+        });
     }
 
 }

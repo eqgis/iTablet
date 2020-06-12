@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CLLocationManager.h>
 #import "WeiXinUtils.h"
+#import "AppDelegate.h"
 
 @implementation AppUtils
 RCT_EXPORT_MODULE();
@@ -100,4 +101,20 @@ RCT_REMAP_METHOD(pause, pauseTime:(int) time resolve:(RCTPromiseResolveBlock)res
     reject(@"AppUtils", exception.reason, nil);
   }
 }
+
+RCT_REMAP_METHOD(reloadBundle, reloadBundleWithResolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+  @try {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      AppDelegate *delegate = (AppDelegate *)([UIApplication sharedApplication].delegate);
+
+      RCTRootView *rootView = [AppDelegate loadBunle:nil];
+      delegate.nav.visibleViewController.view = rootView;
+      
+    });
+  } @catch (NSException *exception) {
+    reject(@"AppUtils", exception.reason, nil);
+  }
+}
+
+
 @end

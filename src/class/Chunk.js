@@ -61,12 +61,7 @@ export default class Chunk {
     switch (this.mapType) {
       case Chunk.MapType.SCENE: {
         // 三维地图
-        let fileName = ''
-        if (Platform.OS === 'android') {
-          fileName = 'OlympicGreen_android'
-        } else {
-          fileName = 'OlympicGreen_ios'
-        }
+        let fileName = 'OlympicGreen_示范数据'
         const homePath = await FileTools.appendingHomeDirectory()
         const cachePath = homePath + ConstPath.CachePath
         const fileDirPath = cachePath + fileName
@@ -74,10 +69,7 @@ export default class Chunk {
         if (arrFile.length === 0) {
           NavigationService.navigate('Map3D', {})
         } else {
-          const name =
-            Platform.OS === 'android'
-              ? 'OlympicGreen_android'
-              : 'OlympicGreen_ios'
+          const name = 'OlympicGreen_示范数据'
           NavigationService.navigate('Map3D', { name })
         }
         break

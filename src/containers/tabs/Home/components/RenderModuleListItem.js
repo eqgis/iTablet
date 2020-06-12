@@ -45,11 +45,7 @@ export default class RenderModuleListItem extends Component {
       } else if (moduleKey === '外业采集') {
         fileName = '地理国情普查'
       } else if (moduleKey === '三维场景') {
-        if (Platform.OS === 'android') {
-          fileName = 'OlympicGreen_android'
-        } else if (Platform.OS === 'ios') {
-          fileName = 'OlympicGreen_ios'
-        }
+        fileName = 'OlympicGreen_示范数据'
       } else if (moduleKey === '导航地图') {
         fileName = 'Navigation_示范数据'
       }

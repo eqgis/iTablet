@@ -17,8 +17,7 @@ export default class Map3DConfig extends Module {
       key: Map3DConfig.key,
       is3D: true,
       example: {
-        name_ios: 'OlympicGreen_ios',
-        name_android: 'OlympicGreen_android',
+        name: 'OlympicGreen_示范数据'
       },
       functionModules: [
         start3DModule,

@@ -553,18 +553,25 @@ export default class ProjectionTransformationPage extends Component {
               if (this.isImageOrGridDataset(data)) {
                 _isMustSaveAs = true
               }
-
+              let _isSaveAs = this.state.isSaveAs
+              if (_isMustSaveAs) {
+                _isSaveAs = _isMustSaveAs
+              }
               newStateData = {
                 dataSet: data,
                 isMustSaveAs: _isMustSaveAs,
+                isSaveAs: _isSaveAs,
                 // resultDataSet: { datasetName: data.datasetName + '_1' },
               }
               break
             }
             case popTypes.TransMothodData: {
+              let _transMothodParameter = this.getDefaultParameter()
+              _transMothodParameter.paraNumber = data.paraNumber
+
               newStateData = {
                 transMothodData: data,
-                transMothodParameter: null,
+                transMothodParameter: _transMothodParameter,
               }
               break
             }

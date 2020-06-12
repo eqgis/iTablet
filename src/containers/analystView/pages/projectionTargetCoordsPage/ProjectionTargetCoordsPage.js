@@ -29,6 +29,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     const { params } = this.props.navigation.state
     // let _transMothodParameter = params.transMothodParameter
     this.cb = params && params.cb
+    this.filtVectDataset = params && params.filtVectDataset
 
     this.isLoadingData = false //是否正在加载数据
 
@@ -107,6 +108,9 @@ export default class ProjectionTargetCoordsPage extends Component {
 
     let dss = []
     let datasources = await SMap.getDatasetsByWorkspaceDatasource()
+    //过滤只保留矢量数据集
+    datasources = this.filtVectDataset && this.filtVectDataset(datasources)
+
     datasources.forEach(item => {
       item.key = item.alias
       item.value = item.key

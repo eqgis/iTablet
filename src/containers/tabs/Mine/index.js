@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import Mine from './Mine'
 import { closeWorkspace, openWorkspace } from '../../../redux/models/map'
 import Register from './Register'
-import { SelectLogin, Login, IPortalLogin } from './Login'
+import Login from './Login'
 import Personal from './Personal'
 import ToggleAccount from './ToggleAccount'
 
@@ -55,9 +55,7 @@ export {
   ScanOnlineMap,
   Personal,
   ToggleAccount,
-  SelectLogin,
   Login,
-  IPortalLogin,
   MyLabel,
   MyBaseMap,
   MyDataset,

@@ -14,9 +14,7 @@ import Mine, {
   ScanOnlineMap,
   Personal,
   ToggleAccount,
-  SelectLogin,
   Login,
-  IPortalLogin,
   MyLabel,
   MyBaseMap,
   MyDataset,
@@ -120,9 +118,7 @@ export {
   /** Home */
   Setting,
   AboutITablet,
-  SelectLogin,
   Login,
-  IPortalLogin,
   /** friend */
   Chat,
   InformMessage,

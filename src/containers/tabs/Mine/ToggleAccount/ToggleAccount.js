@@ -186,7 +186,7 @@ export default class ToggleAccount extends Component {
         />
         <TouchableOpacity
           onPress={() => {
-            NavigationService.navigate('SelectLogin')
+            NavigationService.navigate('Login')
           }}
           style={{
             height: itemHeight,

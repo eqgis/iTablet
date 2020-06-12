@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.contentColorWhite,
   },
   keyboardAvoidingStyle: {
-    padding: 9,
     alignItems: 'center',
     width: '100%',
     height: '100%',

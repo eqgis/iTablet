@@ -1,17 +1,18 @@
 import { connect } from 'react-redux'
-import SelectLoginView from './SelectLogin'
 import Login from './Login'
-import IPortalLogin from './IPortalLogin'
+import { setUser } from '../../../../redux/models/user'
 
 const mapStateToProps = state => ({
+  language: state.setting.toJS().language,
+  user: state.user.toJS(),
   appConfig: state.appConfig.toJS(),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setUser,
+}
 
-const SelectLogin = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SelectLoginView)
-
-export { SelectLogin, Login, IPortalLogin }
+)(Login)

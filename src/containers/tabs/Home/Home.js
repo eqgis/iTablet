@@ -29,7 +29,6 @@ import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
 import TabBar from '../TabBar'
-import { mapModules } from '../../../../configs/mapModules'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {
@@ -167,7 +166,7 @@ export default class Home extends Component {
 
   _onLogin = () => {
     this._closeModal()
-    NavigationService.navigate('SelectLogin')
+    NavigationService.navigate('Login')
     // NavigationService.navigate('Mine')
   }
   _onRegister = () => {

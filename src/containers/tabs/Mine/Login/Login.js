@@ -1,39 +1,105 @@
-/*
-  Copyright © SuperMap. All rights reserved.
-  Author: lu cheng dong
-  E-mail: 756355668@qq.com
-*/
-
 import * as React from 'react'
-import { NetInfo } from 'react-native'
-import { Toast, OnlineServicesUtils } from '../../../../utils/index'
+import {
+  NetInfo,
+  View,
+  TouchableOpacity,
+  Text,
+  Animated,
+  FlatList,
+  KeyboardAvoidingView,
+} from 'react-native'
+import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
-import { SOnlineService } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './Styles'
 import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
 import { getLanguage } from '../../../../language/index'
-import { setUser } from '../../../../redux/models/user'
-import { connect } from 'react-redux'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 import OnlineLoginView from './component/OnlineLoginView'
+import IPortalLoginView from './component/IPortalLoginView'
+import Orientation from 'react-native-orientation'
 
 const JSOnlineService = new OnlineServicesUtils('online')
-class Login extends React.Component {
+export default class Login extends React.Component {
   props: {
     language: string,
     navigation: Object,
     user: Object,
     setUser: () => {},
+    appConfig: Object,
   }
 
   constructor(props) {
     super(props)
+    let { params } = this.props.navigation.state
+    this.show =
+      params && params.show && params.show.length > 0 ? params.show : []
     this.state = {
-      isFirstLogin: this.props.navigation === undefined,
+      data: [],
+      type: '',
     }
+    this.scaleL = new Animated.Value(1)
+    this.scaleR = new Animated.Value(0.7)
+  }
+
+  componentDidMount() {
+    this.getData()
+    if (!global.isPad) {
+      Orientation.lockToPortrait()
+    }
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations()
+  }
+
+  getData = () => {
+    let online = {
+      key: 'Online',
+      image: require('../../../../assets/Mine/online_white.png'),
+    }
+    let iportal = {
+      key: 'iPortal',
+      image: require('../../../../assets/Mine/iportal_white.png'),
+    }
+    let data = []
+    let type
+    if (this.props.appConfig.login && this.props.appConfig.login.length > 0) {
+      for (let i = 0; i < this.props.appConfig.login.length; i++) {
+        switch (this.props.appConfig.login[i]) {
+          case 'Online':
+            if (this.show.length === 0 || this.show.indexOf('Online') > -1) {
+              data.push(online)
+              !type && (type = 'Online')
+            }
+            break
+          case 'iPortal':
+            if (this.show.length === 0 || this.show.indexOf('iPortal') > -1) {
+              data.push(iportal)
+              !type && (type = 'iPortal')
+            }
+            break
+        }
+      }
+    } else {
+      if (this.show.length === 0 || this.show.indexOf('Online') > -1) {
+        data.push(online)
+        !type && (type = 'Online')
+      }
+      if (this.show.length === 0 || this.show.indexOf('iPortal') > -1) {
+        data.push(iportal)
+        !type && (type = 'iPortal')
+      }
+    }
+    data.unshift({ key: 'start' })
+    data.push({ key: 'end' })
+    this.setState({
+      data: data,
+      type: type ? type : '',
+    })
   }
 
   // 初始用户化文件目录
@@ -62,52 +128,18 @@ class Login extends React.Component {
       Toast.show('创建用户目录失败')
     }
   }
-  /**试用*/
-  _probation = () => {
-    this.props.setUser({
-      userName: 'Customer',
-      userType: UserType.PROBATION_USER,
-    })
-    if (!this.state.isFirstLogin) {
-      // NavigationService.navigate('Mine')
-      NavigationService.popToTop('Tabs')
-    }
-  }
 
-  _login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
+  _loginOnline = async ({ isEmail, userName, password }) => {
     let result
-    let userName = ''
-    let password = ''
 
     try {
-      if (isEmail) {
-        if (!email) {
-          //请输入邮箱或昵称
-          Toast.show(
-            getLanguage(this.props.language).Profile.ENTER_EMAIL_OR_USERNAME,
-          )
-          return
-        }
-        if (!emailPwd) {
-          //请输入密码
-          Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
-          return
-        }
-        userName = email
-        password = emailPwd
-      } else {
-        if (!phone) {
-          //请输入手机号
-          Toast.show(getLanguage(this.props.language).Profile.ENTER_MOBILE)
-          return
-        }
-        if (!phonePwd) {
-          //请输入密码
-          Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
-          return
-        }
-        userName = phone
-        password = phonePwd
+      if (!userName) {
+        Toast.show(getLanguage(this.props.language).Profile.ENTER_USERNAME_ALL)
+        return
+      }
+      if (!password) {
+        Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
+        return
       }
 
       let userInfo
@@ -195,9 +227,7 @@ class Login extends React.Component {
         } else if (result) {
           global.isLogging = true
           this.props.setUser(user)
-          if (!this.state.isFirstLogin) {
-            NavigationService.popToTop('Tabs')
-          }
+          NavigationService.popToTop('Tabs')
         } else {
           Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
         }
@@ -226,8 +256,196 @@ class Login extends React.Component {
     }
   }
 
+  _loginIPortal = async ({ url, userName, password }) => {
+    try {
+      if (!url) {
+        Toast.show(
+          getLanguage(this.props.language).Profile.ENTER_SERVER_ADDRESS,
+        )
+        return
+      }
+      if (!userName) {
+        Toast.show(getLanguage(this.props.language).Profile.ENTER_USERNAME2)
+        return
+      }
+      if (!password) {
+        Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
+        return
+      }
+
+      this.container.setLoading(
+        true,
+        getLanguage(this.props.language).Prompt.LOG_IN,
+      )
+
+      let result = await SIPortalService.login(url, userName, password, true)
+      if (typeof result === 'boolean' && result) {
+        await this.initUserDirectories(userName)
+        let info = await SIPortalService.getMyAccount()
+        if (info) {
+          let userInfo = JSON.parse(info)
+          this.props.setUser({
+            serverUrl: url,
+            userName: userName,
+            password: password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            userType: UserType.IPORTAL_COMMON_USER,
+          })
+        }
+        this.container.setLoading(false)
+        NavigationService.popToTop()
+      } else {
+        this.container.setLoading(false)
+        if (result === false) {
+          Toast.show(
+            getLanguage(this.props.language).Prompt.INCORRECT_IPORTAL_ADDRESS,
+          )
+        } else if (result === '登陆失败:请检查用户名和密码') {
+          Toast.show(
+            getLanguage(this.props.language).Prompt.INCORRECT_USER_INFO,
+          )
+        } else {
+          Toast.show(result)
+        }
+      }
+    } catch (e) {
+      this.container.setLoading(false)
+      Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
+    }
+  }
+
+  renderItem = ({ item, index }) => {
+    if (!item.key || !item.image) {
+      return (
+        <View
+          style={{
+            width: scaleSize(150),
+            height: scaleSize(150),
+          }}
+        />
+      )
+    }
+    let scale =
+      index === 1
+        ? this.scaleL.interpolate({
+          inputRange: [0, 35, 70],
+          outputRange: [1, 0.8, 0.6],
+        })
+        : this.scaleR.interpolate({
+          inputRange: [0, 35, 70],
+          outputRange: [0.6, 0.8, 1],
+        })
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          if (index === 1) {
+            this.list.scrollToOffset({ offset: 0 })
+          } else {
+            this.list.scrollToOffset({ offset: 80 })
+          }
+        }}
+      >
+        <Animated.View
+          style={[
+            {
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#505050',
+              borderRadius: scaleSize(75),
+              width: scaleSize(150),
+              height: scaleSize(150),
+              transform: [{ scale: scale }],
+            },
+          ]}
+        >
+          <Animated.Image
+            style={[
+              {
+                width: scaleSize(100),
+                height: scaleSize(100),
+              },
+            ]}
+            source={item.image}
+          />
+        </Animated.View>
+      </TouchableOpacity>
+    )
+  }
+
+  renderLoginType = () => {
+    let text = ''
+    if (this.state.type === 'Online') {
+      text = 'Online'
+    } else if (this.state.type === 'iPortal') {
+      text = 'iPortal'
+    }
+    return (
+      <View
+        style={{
+          marginTop: scaleSize(30),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <View style={{ width: scaleSize(450) }}>
+          <FlatList
+            ref={ref => (this.list = ref)}
+            data={this.state.data}
+            renderItem={this.renderItem}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            onScroll={event => {
+              this.offset = event.nativeEvent.contentOffset.x
+              if (this.offset < 0) {
+                this.offset = 0
+              } else if (this.offset > 70) {
+                this.offset = 70
+              }
+              Animated.parallel([
+                Animated.timing(this.scaleL, {
+                  toValue: this.offset,
+                  duration: 0,
+                }),
+                Animated.timing(this.scaleR, {
+                  toValue: this.offset,
+                  duration: 0,
+                }),
+              ]).start()
+
+              if (this.state.data.length > 3) {
+                if (this.offset < 40) {
+                  if (this.state.type !== this.state.data[1].key) {
+                    this.setState({ type: this.state.data[1].key })
+                  }
+                } else if (this.offset > 40) {
+                  if (this.state.type !== this.state.data[2].key) {
+                    this.setState({ type: this.state.data[2].key })
+                  }
+                }
+              }
+            }}
+          />
+        </View>
+        <Text style={{ fontSize: scaleSize(26), color: 'black' }}>{text}</Text>
+      </View>
+    )
+  }
+
   renderLogin = () => {
-    return <OnlineLoginView language={global.language} login={this._login} />
+    if (this.state.type === 'Online') {
+      return (
+        <OnlineLoginView language={global.language} login={this._loginOnline} />
+      )
+    } else if (this.state.type === 'iPortal') {
+      return (
+        <IPortalLoginView
+          language={global.language}
+          login={this._loginIPortal}
+        />
+      )
+    }
   }
 
   render() {
@@ -236,27 +454,19 @@ class Login extends React.Component {
         ref={ref => (this.container = ref)}
         style={styles.container}
         headerProps={{
-          //登录
-          title: getLanguage(this.props.language).Profile.LOGIN + ' Online',
-          withoutBack: this.state.isFirstLogin,
+          title: getLanguage(this.props.language).Profile.LOGIN,
           navigation: this.props.navigation,
         }}
       >
-        {this.renderLogin()}
+        <KeyboardAvoidingView
+          enabled={true}
+          keyboardVerticalOffset={scaleSize(80)}
+          behavior={'padding'}
+        >
+          {this.renderLoginType()}
+          {this.renderLogin()}
+        </KeyboardAvoidingView>
       </Container>
     )
   }
 }
-
-const mapStateToProps = state => ({
-  language: state.setting.toJS().language,
-  user: state.user.toJS(),
-})
-
-const mapDispatchToProps = {
-  setUser,
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Login)

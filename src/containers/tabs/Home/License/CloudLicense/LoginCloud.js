@@ -84,36 +84,17 @@ class LoginCloud extends Component {
     })
   }
 
-  _login = async ({ isEmail, email, emailPwd, phone, phonePwd }) => {
+  _login = async ({ isEmail, userName, password }) => {
     let result
-    let userName = ''
-    let password = ''
 
     try {
-      if (isEmail) {
-        if (!email) {
-          Toast.show(
-            getLanguage(global.language).Profile.ENTER_EMAIL_OR_USERNAME,
-          )
-          return false
-        }
-        if (!emailPwd) {
-          Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
-          return false
-        }
-        userName = email
-        password = emailPwd
-      } else {
-        if (!phone) {
-          Toast.show(getLanguage(global.language).Profile.ENTER_MOBILE)
-          return false
-        }
-        if (!phonePwd) {
-          Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
-          return false
-        }
-        userName = phone
-        password = phonePwd
+      if (!userName) {
+        Toast.show(getLanguage(global.language).Profile.ENTER_USERNAME_ALL)
+        return
+      }
+      if (!password) {
+        Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
+        return
       }
 
       let isConnected = await NetInfo.isConnected.fetch()
@@ -150,10 +131,8 @@ class LoginCloud extends Component {
       if (result === true) {
         this.props.setCloudLicenseUser({
           isEmail,
-          email,
-          emailPwd,
-          phone,
-          phonePwd,
+          userName,
+          password,
         })
         return true
       } else {

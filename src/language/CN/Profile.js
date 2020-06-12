@@ -27,6 +27,7 @@ const Profile = {
   EMAIL_LOGIN: '邮箱登录',
   ENTER_EMAIL_OR_USERNAME: '请输入邮箱或昵称',
   ENTER_MOBILE: '请输入手机号',
+  ENTER_USERNAME_ALL: '请输入手机号、邮箱或昵称',
   ENTER_PASSWORD: '请输入密码',
   REGISTER: '注册',
   FORGET_PASSWORD: '忘记密码？',

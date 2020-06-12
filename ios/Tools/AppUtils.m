@@ -108,7 +108,7 @@ RCT_REMAP_METHOD(reloadBundle, reloadBundleWithResolve:(RCTPromiseResolveBlock)r
       AppDelegate *delegate = (AppDelegate *)([UIApplication sharedApplication].delegate);
 
       RCTRootView *rootView = [AppDelegate loadBunle:nil];
-      delegate.nav.visibleViewController.view = rootView;
+      delegate.nav.topViewController.view = rootView;
       
     });
   } @catch (NSException *exception) {

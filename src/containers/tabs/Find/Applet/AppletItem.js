@@ -18,6 +18,7 @@ export default class DataItem extends Component {
     downloadData: () => {},
     updateDownList: () => {},
     removeItemOfDownList: () => {},
+    onDownloaded: () => {},
   }
 
   constructor(props) {
@@ -26,7 +27,6 @@ export default class DataItem extends Component {
     this.exist = false
     this.downloading = false
     this.downloadingPath = false
-    this.titleName
     this.state = {
       progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
@@ -217,9 +217,12 @@ export default class DataItem extends Component {
       progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
       isDownloading: false,
     })
-    result
-      ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT)
-      : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    // result
+    //   ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT)
+    //   : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    if (this.props.onDownloaded) {
+      this.props.onDownloaded(result)
+    }
   }
 
   render() {

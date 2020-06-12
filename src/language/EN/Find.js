@@ -26,6 +26,7 @@ const Find = {
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
   APPLET_DOWNLOADED_REBOOT: 'Download completed, restart the loadable applet',
+  REBOOT: 'Reboot',
 }
 
 export { Find }

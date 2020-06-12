@@ -43,17 +43,18 @@ export default class SimpleDialog extends PureComponent {
     dialogStyle,
     showTitleImage,
     confirmText,
+    isVisible,
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
       confirm = () => {
-        this.setVisible(false)
+        !isVisible && this.setVisible(false)
         confirmAction()
       }
     }
     if (cancelAction && typeof cancelAction === 'function') {
       cancel = () => {
-        this.setVisible(false)
+        !isVisible && this.setVisible(false)
         cancelAction()
       }
     }

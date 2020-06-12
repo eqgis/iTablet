@@ -161,7 +161,7 @@ export default class Applet extends React.Component {
       GLOBAL.SimpleDialog.set({
         text: getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT,
         confirmText: getLanguage(this.props.language).Find.REBOOT,
-        isVisible: true,
+        confirmedVisible: Platform.OS === 'ios',
         confirmAction: () => {
           appUtilsModule.reloadBundle()
         },

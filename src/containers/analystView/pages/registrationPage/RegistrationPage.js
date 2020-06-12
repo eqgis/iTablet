@@ -117,6 +117,7 @@ export default class RegistrationPage extends Component {
         true,
         getLanguage(global.language).Prompt.CLOSING,
         //'正在关闭地图'
+        { bgColor: '#rgba(0, 0, 0, 0.5)' },
       )
       // Toast.show(getLanguage(global.language).Prompt.CLOSING)
       setTimeout(async function() {
@@ -155,6 +156,7 @@ export default class RegistrationPage extends Component {
       true,
       getLanguage(global.language).Prompt.CLOSING,
       //'正在关闭地图'
+      { bgColor: '#rgba(0, 0, 0, 0.5)' },
     )
 
     InteractionManager.runAfterInteractions(async () => {

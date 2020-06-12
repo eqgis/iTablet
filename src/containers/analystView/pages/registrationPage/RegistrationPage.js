@@ -14,6 +14,7 @@ import {
   Image,
   FlatList,
   TextInput,
+  InteractionManager,
 } from 'react-native'
 
 import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
@@ -155,12 +156,13 @@ export default class RegistrationPage extends Component {
       getLanguage(global.language).Prompt.CLOSING,
       //'正在关闭地图'
     )
-    await SRectifyView.dispose()
-    GLOBAL.Loading.setLoading(false)
 
-    NavigationService.goBack()
-    NavigationService.goBack()
-    NavigationService.goBack()
+    InteractionManager.runAfterInteractions(async () => {
+      await SRectifyView.dispose()
+      GLOBAL.Loading.setLoading(false)
+
+      NavigationService.goBack('RegistrationDatasetPage')
+    })
   }
 
   confirm = async () => {

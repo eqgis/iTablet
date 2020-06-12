@@ -43,12 +43,11 @@ export default class SimpleDialog extends PureComponent {
     dialogStyle,
     showTitleImage,
     confirmText,
-    confirmedVisible, // 提交之后是否继续显示提示框
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
       confirm = () => {
-        !confirmedVisible && this.setVisible(false)
+        this.setVisible(false)
         confirmAction()
       }
     }

@@ -23,6 +23,7 @@ import incrementModule from './incrementModule'
 import themeColorPickerModule from './themeColorPickerModule'
 import topoEditModule from './topoEditModule'
 import layerVisibleScaleModule from './layerVisibleScaleModule'
+import layerSettingImageModule from './layerSettingImageModule'
 export {
   startModule,
   start3DModule,
@@ -49,4 +50,5 @@ export {
   themeColorPickerModule,
   topoEditModule,
   layerVisibleScaleModule,
+  layerSettingImageModule,
 }

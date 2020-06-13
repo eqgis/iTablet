@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native'
-import { color } from '../../../../styles'
+import { color, size } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 
 export const itemWidth = Dimensions.get('window').width
@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
   ListViewStyle: {
     flex: 1,
     backgroundColor: color.content_white,
+  },
+  headerBtnTitle: {
+    color: 'white',
+    fontSize: size.fontSize.fontSizeXXl,
   },
 
   // DataItem
@@ -82,156 +86,6 @@ const styles = StyleSheet.create({
   separateViewStyle: {
     width: '100%',
     height: 2,
-  },
-
-  seperator: {
-    height: scaleSize(1),
-    backgroundColor: '#A0A0A0',
-  },
-
-  // DrowdownView
-  backgroudViewStyle: {
-    flex: 1,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-  bagroudTouchViewStyle: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-  },
-
-  // CatagoryMenu
-  listContainerStyle: {
-    width: '100%',
-  },
-  listBottonViewStyle: {
-    height: scaleSize(40),
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: scaleSize(10),
-    paddingHorizontal: scaleSize(20),
-  },
-  textStyle: {
-    fontSize: scaleSize(26),
-  },
-  ListItemContainerStyle: {
-    paddingLeft: scaleSize(20),
-    backgroundColor: color.content_white,
-  },
-  ListItemViewStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: scaleSize(80),
-  },
-  ListItemMoreViewStyle: {
-    position: 'absolute',
-    right: 0,
-    width: scaleSize(80),
-    height: scaleSize(80),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  ListItemMoreImgViewStyle: {
-    width: scaleSize(40),
-    height: scaleSize(40),
-  },
-
-  // MoreMenu
-  MoreMenuContainer: {
-    width: '40%',
-    borderRadius: scaleSize(20),
-    backgroundColor: color.content_white,
-    alignSelf: 'flex-end',
-  },
-  MenuItemContainerStyle: {
-    borderRadius: scaleSize(20),
-  },
-  MenuImageStyle: {
-    width: scaleSize(60),
-    height: scaleSize(60),
-    marginHorizontal: scaleSize(10),
-  },
-  menuSeperator: {
-    marginLeft: scaleSize(80),
-    height: scaleSize(1),
-    backgroundColor: '#A0A0A0',
-  },
-
-  // SearchMenu
-  SearchMenuContainer: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#EEEEEE',
-    justifyContent: 'center',
-  },
-  searchViewStyle: {
-    marginVertical: scaleSize(20),
-    paddingHorizontal: scaleSize(30),
-  },
-  searchBarStyle: {
-    width: '100%',
-    height: scaleSize(60),
-    backgroundColor: color.content_white,
-    borderRadius: scaleSize(30),
-    paddingHorizontal: scaleSize(20),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchImgStyle: {
-    width: scaleSize(40),
-    height: scaleSize(40),
-  },
-  searchInputStyle: {
-    flex: 1,
-    paddingVertical: 0,
-    fontSize: scaleSize(26),
-  },
-  searchButtonContainer: {
-    width: '100%',
-    height: scaleSize(100),
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderTopWidth: scaleSize(1),
-    borderTopColor: '#A0A0A0',
-  },
-  searchButton: {
-    width: scaleSize(200),
-    height: scaleSize(80),
-    borderRadius: scaleSize(40),
-    borderWidth: scaleSize(1),
-    borderColor: '#A0A0A0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  searchButtonText: {
-    fontSize: scaleSize(26),
-  },
-
-  // orderBar
-  orderView: {
-    flexDirection: 'row',
-    width: '100%',
-    paddingHorizontal: scaleSize(20),
-    justifyContent: 'space-between',
-  },
-  orderItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  orderImg: {
-    width: scaleSize(50),
-    height: scaleSize(50),
-    marginHorizontal: scaleSize(10),
-  },
-  orderText: {
-    width: scaleSize(40),
-    fontSize: scaleSize(26),
   },
 })
 export default styles

@@ -179,7 +179,7 @@ public class MainActivity extends ReactActivity {
         if (new File(path).exists()) {
             return path;
         }
-        return null;
+        return "assets://index.android.bundle";
     }
 
     private ReactInstanceManager resolveInstanceManager(){

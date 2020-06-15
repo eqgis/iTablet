@@ -14,7 +14,7 @@ import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
 import FetchUtils from '../../../../utils/FetchUtils'
 import { SMap } from 'imobile_for_reactnative'
-import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
+import { downloadFile, deleteDownloadFile, setIgnoreDownload } from '../../../../redux/models/down'
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 
@@ -42,6 +42,7 @@ class ModuleList extends Component {
     currentUser: Object,
     latestMap: Object,
     downloads: Array,
+    ignoreDownloads: Array,
     mapModules: Object,
     oldMapModules: Array,
     importWorkspace: () => {},
@@ -51,6 +52,7 @@ class ModuleList extends Component {
     deleteDownloadFile: () => {},
     setCurrentMapModule: () => {},
     setOldMapModule: () => {},
+    setIgnoreDownload: () => {},
   }
 
   constructor(props) {
@@ -100,7 +102,8 @@ class ModuleList extends Component {
           this.cancelDown,
           downloadData,
           currentUserName,
-          ref.getDialogCheck(),
+          // ref.getDialogCheck(),
+          this.props.ignoreDownloads.indexOf(downloadData.key) >= 0,
         )
       setTimeout(() => {
         this.props.showDialog && this.props.showDialog(true)
@@ -172,16 +175,19 @@ class ModuleList extends Component {
       disabled: false,
       dialogCheck: dialogCheck,
     })
+    // 若不需要下次再提醒，则记录到redux
+    dialogCheck && downloadData && this.props.setIgnoreDownload({ id: downloadData.key })
     this.props.showDialog && this.props.showDialog(false)
   }
 
-  cancelDown = (ref, dialogCheck) => {
+  cancelDown = (ref, downloadData, dialogCheck) => {
     // let item = downloadData.itemData
     ref.setNewState({
       disabled: false,
       dialogCheck: dialogCheck,
     })
-    // item.action && item.action(downloadData.tmpCurrentUser)
+    // 若不需要下次再提醒，则记录到redux
+    dialogCheck && downloadData && this.props.setIgnoreDownload({ id: downloadData.key })
     this.props.showDialog && this.props.showDialog(false)
   }
 
@@ -298,13 +304,14 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         if (
           downloadData.fileName &&
-          !(
-            this.moduleItems &&
-            this.moduleItems[index] &&
-            (this.moduleItems[index].getDialogCheck() ||
-              this.moduleItems[index].getDownloading())
-          ) &&
-          !currentDownloadData
+          // !(
+          //   this.moduleItems &&
+          //   this.moduleItems[index] &&
+          //   (this.moduleItems[index].getDialogCheck() ||
+          //     this.moduleItems[index].getDownloading())
+          // ) &&
+          this.props.ignoreDownloads.filter(item => item.id === downloadData.key).length === 0 &&
+          (!currentDownloadData || currentDownloadData && currentDownloadData.downloaded === undefined)
         ) {
           this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)
         }
@@ -471,12 +478,14 @@ class ModuleList extends Component {
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   downloads: state.down.toJS().downloads,
+  ignoreDownloads: state.down.toJS().ignoreDownloads,
 })
 const mapDispatchToProps = {
   downloadFile,
   deleteDownloadFile,
   setCurrentMapModule,
   setOldMapModule,
+  setIgnoreDownload,
 }
 export default connect(
   mapStateToProps,

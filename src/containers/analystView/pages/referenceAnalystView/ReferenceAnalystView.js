@@ -550,12 +550,15 @@ export default class ReferenceAnalystView extends Component {
                           })
                         },
                       })
-                      .then(() => {
+                      .then(params => {
                         SMap.getAction().then(type => {
                           if (type !== Action.SELECT) {
                             SMap.setAction(Action.SELECT)
                           }
                           NavigationService.goBack('ReferenceAnalystView')
+                          if (params && params.showFullMap) {
+                            params.showFullMap(true)
+                          }
                         })
                       })
                   },

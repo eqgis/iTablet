@@ -9,7 +9,7 @@ import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
 import styles from './styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
 import { getPublicAssets } from '../../../../assets'
@@ -23,7 +23,11 @@ const EDIT = 'EDIT'
  */
 export { COLLECTION, NETWORK, EDIT }
 import { getLanguage } from '../../../../language'
-import { styleModule, themeModule } from '../ToolBar/modules'
+import {
+  styleModule,
+  themeModule,
+  layerSettingImageModule,
+} from '../ToolBar/modules'
 
 // const HeaderHeight = scaleSize(88)
 const BottomHeight = scaleSize(100)
@@ -257,13 +261,15 @@ export default class FunctionToolbar extends React.Component {
     let data = []
     functionModules.forEach(item => {
       let _item = typeof item === 'function' ? item() : item
-      if (
-        type === ChunkType.MAP_THEME &&
-        _item.type === ConstToolType.MAP_STYLE
-      ) {
+      if (_item.type === ConstToolType.MAP_STYLE) {
         _item.action = () => {
           let currentLayer = this.props.currentLayer
-          if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
+          if (
+            currentLayer.type === DatasetType.IMAGE ||
+            currentLayer.type === DatasetType.MBImage
+          ) {
+            layerSettingImageModule().actions.showSetting()
+          } else if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
             styleModule().action(ConstToolType.MAP_STYLE)
           } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
             themeModule().actions.layerListAction(this.props.currentLayer)

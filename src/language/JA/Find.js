@@ -27,6 +27,10 @@ const Find = {
   COWORK_LOGIN: 'SuperMap Onlineにログインしてリストを取得してください',
   APPLET_DOWNLOADED_REBOOT: 'ダウンロードが完了しました。再起動して、アプレットを起動できます',
   REBOOT: '重启', // 待翻译
+  APPLET_RESET_OLD_VERSION: '是否重置回之前的版本', // 待翻译
+  APPLET_OLD_VERSION_ALREADY: '已经是最初版本', // 待翻译
+  APPLET_RESET_FAILED: '重置失败',
+  APPLET_RESETTING: 'Rest', // 待翻译
 }
 
 export { Find }

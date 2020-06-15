@@ -27,6 +27,10 @@ const Find = {
   COWORK_LOGIN: '请登录Online获取列表',
   APPLET_DOWNLOADED_REBOOT: '下载完成，重启可加载小程序',
   REBOOT: '重启', // 待翻译
+  APPLET_RESET_OLD_VERSION: '是否重置回之前的版本', // 待翻译
+  APPLET_OLD_VERSION_ALREADY: '已经是最初版本', // 待翻译
+  APPLET_RESET_FAILED: '重置失败', // 待翻译
+  APPLET_RESETTING: '正在重置', // 待翻译
 }
 
 export { Find }

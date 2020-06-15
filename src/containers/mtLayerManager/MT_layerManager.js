@@ -9,7 +9,12 @@ import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
 import { Container } from '../../components'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
-import { SMap, ThemeType, SMediaCollector } from 'imobile_for_reactnative'
+import {
+  SMap,
+  ThemeType,
+  SMediaCollector,
+  DatasetType,
+} from 'imobile_for_reactnative'
 import { LayerManager_item, LayerManager_tolbar } from './components'
 import {
   ConstToolType,
@@ -28,6 +33,7 @@ import { FileTools } from '../../native'
 import {
   themeModule,
   styleModule,
+  layerSettingImageModule,
 } from '../workspace/components/ToolBar/modules'
 import NavigationService from '../../containers/NavigationService'
 import { getLanguage } from '../../language'
@@ -304,7 +310,12 @@ export default class MT_layerManager extends React.Component {
           return
         }
 
-        if (data.themeType <= 0 && !data.isHeatmap) {
+        if (
+          data.type === DatasetType.IMAGE ||
+          data.type === DatasetType.MBImage
+        ) {
+          layerSettingImageModule().actions.showSetting(true)
+        } else if (data.themeType <= 0 && !data.isHeatmap) {
           // this.mapEdit(data)
           styleModule().actions.layerListAction &&
             styleModule().actions.layerListAction(data)

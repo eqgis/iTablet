@@ -602,6 +602,17 @@ const Map_Layer = {
   ADD_LAYER_URL: 'Add Layer Url',
   TERRAIN: 'Terrain',
   IMAGE: 'Image',
+
+  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode',
+  LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',
+  DISPLAY_MODE_COMPOSITE: 'Composite',
+  DISPLAY_MODE_STRETCHED: 'Stretched',
+  STRETCH_TYPE_NONE: 'None',
+  STRETCH_TYPE_STANDARDDEVIATION: 'Standard Deviation',
+  STRETCH_TYPE_MINIMUMMAXIMUM: 'Minimun Maximum',
+  STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'Histogram Equalization',
+  STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'Histogram Specification',
+  STRETCH_TYPE_GAUSSIAN: 'Gaussian',
 }
 
 // 属性

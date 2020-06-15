@@ -184,9 +184,9 @@ function getModule(type, params = {}) {
   ) {
     module = layerVisibleScaleModule()
   } else if (
-    type === 'LAYER_SETTING_IMAGE_MENU' ||
-    type === 'LAYER_SETTING_IMAGE_STRETCH_TYPE' ||
-    type === 'LAYER_SETTING_IMAGE_DISPLAY_MODE'
+    type === ConstToolType.LAYER_SETTING_IMAGE_MENU ||
+    type === ConstToolType.LAYER_SETTING_IMAGE_STRETCH_TYPE ||
+    type === ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE
   ) {
     module = layerSettingImageModule()
   } else {

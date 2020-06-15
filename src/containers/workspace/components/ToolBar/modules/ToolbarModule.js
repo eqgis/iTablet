@@ -26,6 +26,7 @@ import {
   themeColorPickerModule,
   topoEditModule,
   layerVisibleScaleModule,
+  layerSettingImageModule,
 } from '../modules'
 import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
 import ToolBarHeight from './ToolBarHeight'
@@ -182,6 +183,12 @@ function getModule(type, params = {}) {
     type === ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE
   ) {
     module = layerVisibleScaleModule()
+  } else if (
+    type === ConstToolType.LAYER_SETTING_IMAGE_MENU ||
+    type === ConstToolType.LAYER_SETTING_IMAGE_STRETCH_TYPE ||
+    type === ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE
+  ) {
+    module = layerSettingImageModule()
   } else {
     // TODO 新增自定义FunctionModule
     module = mapFunctionModules.getModule(type, params)

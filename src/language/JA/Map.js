@@ -602,6 +602,17 @@ const Map_Layer = {
   ADD_LAYER_URL: 'オンラインレイヤーのアドレスを追加',
   TERRAIN: '地形',
   IMAGE: '画像',
+
+  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode', //待翻译
+  LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',
+  DISPLAY_MODE_COMPOSITE: 'Composite',
+  DISPLAY_MODE_STRETCHED: 'Stretched',
+  STRETCH_TYPE_NONE: 'None',
+  STRETCH_TYPE_STANDARDDEVIATION: 'Standard Deviation',
+  STRETCH_TYPE_MINIMUMMAXIMUM: 'Minimun Maximum',
+  STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'Histogram Equalization',
+  STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'Histogram Specification',
+  STRETCH_TYPE_GAUSSIAN: 'Gaussian',
 }
 
 // 属性

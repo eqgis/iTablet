@@ -1,4 +1,5 @@
 import { getLanguage } from '../language'
+const Parser = require('react-native-xml2js').Parser
 
 function sortByPinYin(arr) {
   arr.sort((param1, param2) => param1.localeCompare(param2))
@@ -279,8 +280,12 @@ function isLegalName(text = '', language = 'CN') {
       error: getLanguage(language).Prompt.ERROR_INFO_EMPTY,
     }
   }
-  const pattern1 = new RegExp("^[0-9`~!@#_$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
-  const pattern2 = new RegExp("[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]")
+  const pattern1 = new RegExp(
+    "^[0-9`~!@#_$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]",
+  )
+  const pattern2 = new RegExp(
+    "[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]",
+  )
   // const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
   // const re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
   if (pattern1.test(text[0])) {
@@ -329,6 +334,22 @@ function getNameByURL(str) {
   return arr[0]
 }
 
+/**
+ * xml转js对象
+ * @param {*} xml
+ */
+async function xml2js(xml) {
+  const promise = await new Promise((resolve, reject) => {
+    const parser = new Parser({ explicitArray: false })
+
+    parser.parseString(xml, (error, result) => {
+      if (error) reject(error)
+      else resolve(result)
+    })
+  })
+  return promise
+}
+
 export default {
   sortByPinYin,
   pySegSort,
@@ -352,4 +373,5 @@ export default {
   isLegalURL,
 
   getNameByURL,
+  xml2js,
 }

@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'Arttırım',
   ENCLOSURE: 'Çevreleme',
 
+  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+
   // 我的——登录
   LOGIN: 'Giriş',
   LOGIN_TIMEOUT: 'Giriş zaman aşımı lütfen daha sonra tekrar deneyin',

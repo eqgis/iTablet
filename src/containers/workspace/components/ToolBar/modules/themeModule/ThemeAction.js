@@ -14,6 +14,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import constants from '../../../../constants'
 import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 /**
  * 统一处理方法
@@ -66,6 +67,35 @@ async function dealData(params = {}, loading = true) {
       })
     },
   })
+}
+
+/**
+ * 添加我的色带数据
+ * @param {*} data
+ */
+async function _appendMyColor(data) {
+  const _params = ToolbarModule.getParams()
+  let myColor = await DataHandler.getLocalData(
+    _params.user.currentUser,
+    'COLOR',
+  )
+  if (myColor.length > 0) {
+    myColor.forEach(item => {
+      let index = item.name.lastIndexOf('.scs')
+      let name = item.name
+      if (index) {
+        name = item.name.substring(0, index)
+      }
+      delete item.name
+      item.fileName = name
+    })
+    data.unshift({
+      title: getLanguage(global.language).Profile.MY_COLOR_SCHEME,
+      data: myColor,
+    })
+  }
+
+  return data
 }
 
 // 专题图字段表达式列表
@@ -227,7 +257,7 @@ async function getGraduatedSymbolGradutedMode(type, key = '', name = '') {
 // 统计专题图颜色方案列表
 async function getGraphThemeColorScheme(type, key = '', name = '') {
   const getData = async function() {
-    return [
+    let data = [
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
           .THEME_COLOR_SCHEME,
@@ -235,6 +265,8 @@ async function getGraphThemeColorScheme(type, key = '', name = '') {
         data: await ThemeMenuData.getThemeGraphColorScheme(),
       },
     ]
+    await _appendMyColor(data)
+    return data
   }
 
   dealData({
@@ -278,7 +310,7 @@ async function getGraphThemeColorScheme(type, key = '', name = '') {
 // 单值专题图颜色方案列表
 async function getUniqueColorScheme(type, key = '', name = '') {
   const getData = async function() {
-    return [
+    let data = [
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
           .THEME_COLOR_SCHEME,
@@ -286,6 +318,8 @@ async function getUniqueColorScheme(type, key = '', name = '') {
         data: await ThemeMenuData.getUniqueColorScheme(),
       },
     ]
+    await _appendMyColor(data)
+    return data
   }
 
   dealData({
@@ -306,7 +340,7 @@ async function getUniqueColorScheme(type, key = '', name = '') {
 
 async function getRangeColorScheme(type, key = '', name = '') {
   const getData = async function() {
-    return [
+    let data = [
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
           .THEME_COLOR_SCHEME,
@@ -314,6 +348,8 @@ async function getRangeColorScheme(type, key = '', name = '') {
         data: await ThemeMenuData.getRangeColorScheme(),
       },
     ]
+    await _appendMyColor(data)
+    return data
   }
 
   dealData({
@@ -342,7 +378,7 @@ async function rangeCustomSetting(type) {
 // 热力图颜色方案列表
 async function getAggregationColorScheme(type, key = '', name = '') {
   const getData = async function() {
-    return [
+    let data = [
       {
         title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
           .THEME_HEATMAP_COLOR,
@@ -350,6 +386,8 @@ async function getAggregationColorScheme(type, key = '', name = '') {
         data: await ThemeMenuData.getAggregationColorScheme(),
       },
     ]
+    await _appendMyColor(data)
+    return data
   }
 
   dealData({
@@ -781,18 +819,34 @@ async function listAction(type, params = {}) {
     } else {
       // 单值专题图颜色表
       ToolbarModule.addData({ themeColor: item.key })
-      const Params = {
-        ColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+      let Params
+      if (item.colors) {
+        Params = {
+          Colors: item.colors,
+          LayerName: _params.currentLayer.name,
+        }
+      } else {
+        Params = {
+          ColorScheme: item.key,
+          LayerName: _params.currentLayer.name,
+        }
       }
       await SThemeCartography.setUniqueColorScheme(Params)
     }
   } else if (type === ConstToolType.MAP_THEME_PARAM_GRID_UNIQUE_COLOR) {
     // 栅格单值专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      GridUniqueColorScheme: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        GridUniqueColorScheme: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.modifyThemeGridUniqueMap(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_RANGE_EXPRESSION) {
@@ -824,33 +878,65 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.MAP_THEME_PARAM_RANGE_COLOR) {
     // 分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      ColorScheme: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        ColorScheme: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.setRangeColorScheme(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_GRID_RANGE_COLOR) {
     // 栅格分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      GridRangeColorScheme: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        GridRangeColorScheme: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.modifyThemeGridRangeMap(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_COLOR) {
     // 统计专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      GraphColorType: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        GraphColorType: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.setThemeGraphColorScheme(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR) {
     // 热力图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      HeatmapColorScheme: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        HeatmapColorScheme: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.setHeatMapColorScheme(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
@@ -876,9 +962,17 @@ async function listAction(type, params = {}) {
       NavigationService.navigate('CustomModePage', { type })
     } else {
       ToolbarModule.addData({ themeColor: item.key })
-      const Params = {
-        ColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+      let Params
+      if (item.colors) {
+        Params = {
+          Colors: item.colors,
+          LayerName: _params.currentLayer.name,
+        }
+      } else {
+        Params = {
+          ColorScheme: item.key,
+          LayerName: _params.currentLayer.name,
+        }
       }
       await SThemeCartography.setUniqueLabelColorScheme(Params)
     }
@@ -893,9 +987,17 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_COLOR) {
     // 单值标签专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
-    const Params = {
-      ColorScheme: item.key,
-      LayerName: _params.currentLayer.name,
+    let Params
+    if (item.colors) {
+      Params = {
+        Colors: item.colors,
+        LayerName: _params.currentLayer.name,
+      }
+    } else {
+      Params = {
+        ColorScheme: item.key,
+        LayerName: _params.currentLayer.name,
+      }
     }
     await SThemeCartography.setRangeLabelColorScheme(Params)
   } else if (type === ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS) {

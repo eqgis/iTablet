@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',
 
+  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+
   // 我的——登录
   LOGIN: 'ログイン',
   LOGIN_TIMEOUT: 'ログインタイムアウト、後で再度試してださい。',

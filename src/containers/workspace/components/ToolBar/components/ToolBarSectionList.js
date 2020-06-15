@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import ToolbarModule from '../modules/ToolbarModule'
 import { getThemeAssets } from '../../../../../assets'
+import { ColorScheme } from '../../../../../components'
 
 export default class ToolBarSectionList extends React.Component {
   props: {
@@ -430,6 +431,7 @@ export default class ToolBarSectionList extends React.Component {
             item.colorScheme &&
             this.getColorSchemeItem(item)}
           {item.info && this.getInfo(item)}
+          {item.colors && this.renderMyColor(item)}
         </View>
         {item.rightView}
       </TouchableOpacity>
@@ -525,6 +527,28 @@ export default class ToolBarSectionList extends React.Component {
     )
   }
 
+  renderMyColor = item => {
+    return (
+      <View>
+        <Text
+          style={styles.colorSchemeName}
+          numberOfLines={1}
+          ellipsizeMode={'middle'}
+        >
+          {item.fileName}
+        </Text>
+        <ColorScheme
+          colors={item.colors}
+          style={{
+            marginHorizontal: scaleSize(40),
+            height: scaleSize(30),
+            width: null,
+          }}
+        />
+      </View>
+    )
+  }
+
   /**颜色方案Item */
   getColorSchemeItem = item => {
     //用户自定义单独处理
@@ -543,22 +567,19 @@ export default class ToolBarSectionList extends React.Component {
       )
     }
     return (
-      <View style={styles.item}>
-        <Text style={styles.colorSchemeName}>{item.colorSchemeName}</Text>
-        <View
-          style={{
-            flex: 1,
-            paddingLeft: scaleSize(20),
-            paddingRight: scaleSize(30),
-            paddingVertical: scaleSize(10),
-          }}
+      <View>
+        <Text
+          style={styles.colorSchemeName}
+          numberOfLines={1}
+          ellipsizeMode={'middle'}
         >
-          <Image
-            source={item.colorScheme}
-            resizeMode={'stretch'} //stretch: 拉伸图片且不维持宽高比,直到宽高都刚好填满容器
-            style={[styles.colorScheme]}
-          />
-        </View>
+          {item.colorSchemeName}
+        </Text>
+        <Image
+          source={item.colorScheme}
+          resizeMode={'stretch'} //stretch: 拉伸图片且不维持宽高比,直到宽高都刚好填满容器
+          style={[styles.colorScheme]}
+        />
       </View>
     )
   }
@@ -898,11 +919,11 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(30),
   },
   colorScheme: {
-    height: scaleSize(40),
+    height: scaleSize(30),
     width: null,
+    marginHorizontal: scaleSize(40),
   },
   colorSchemeName: {
-    width: scaleSize(220),
     marginLeft: scaleSize(40),
     fontSize: size.fontSize.fontSizeMd,
     height: scaleSize(30),

@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'Augmentation',
   ENCLOSURE: 'Coffret',
 
+  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+
   // 我的——登录
   LOGIN: 'connexion',
   LOGIN_TIMEOUT: 'Délai de connexion, veuillez réessayer plus tard',

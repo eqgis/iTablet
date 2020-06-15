@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'زيادة',
   ENCLOSURE: 'نسيج',
 
+  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+
   // 我的——登录
   LOGIN: 'تسجيل الدخول',
   LOGIN_TIMEOUT: 'نفذ وقت تسجيل الدخول,يرجى إعادة المحاولة لاحقا',

@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: '增量',
   ENCLOSURE: '围栏',
 
+  MY_COLOR_SCHEME: '我的色带',
+
   // 我的——登录
   LOGIN: '登录',
   LOGIN_TIMEOUT: '登录超时，请稍后再试',

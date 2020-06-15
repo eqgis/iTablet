@@ -1,6 +1,9 @@
+import React from 'react'
+import { View } from 'react-native'
 import { MyDataPage } from '../component'
 import DataHandler from '../DataHandler'
 import { FileTools } from '../../../../native'
+import { ColorScheme } from '../../../../components'
 
 class MyColor extends MyDataPage {
   constructor(props) {
@@ -78,6 +81,14 @@ class MyColor extends MyDataPage {
       result = await FileTools.zipFiles(archivePaths, targetPath)
     }
     return result
+  }
+
+  renderExtra = info => {
+    return (
+      <View>
+        <ColorScheme colors={info.item.colors} />
+      </View>
+    )
   }
 }
 

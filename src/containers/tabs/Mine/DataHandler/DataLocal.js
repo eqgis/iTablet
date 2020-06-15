@@ -1,6 +1,7 @@
 import { SMap, EngineType } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
+import { dataUtil } from '../../../../utils'
 
 async function getLocalData(user, type) {
   let dataList = []
@@ -9,8 +10,10 @@ async function getLocalData(user, type) {
     case 'MAP':
     case 'SCENE':
     case 'SYMBOL':
-    case 'COLOR':
       dataList = await _getListByFilter(user, type)
+      break
+    case 'COLOR':
+      dataList = await _getColorSchemeDataList(user)
       break
     case 'LABEL':
       dataList = await _getLabelDataList(user)
@@ -123,6 +126,33 @@ async function _getPlotDataList(user) {
     }
   }
   return list
+}
+
+async function _getColorSchemeDataList(user) {
+  let dataList = await _getListByFilter(user, 'COLOR')
+  for (let i = 0; i < dataList.length; i++) {
+    await _getColorFromFile(dataList[i])
+  }
+  return dataList
+}
+
+async function _getColorFromFile(item) {
+  const homePath = await FileTools.appendingHomeDirectory()
+  let colorScheme = await FileTools.readFile(homePath + item.path)
+  let resutl = await dataUtil.xml2js(colorScheme)
+  let { ColorScheme } = resutl
+  let colors = []
+  if (ColorScheme && ColorScheme.DataBlock) {
+    for (let key in ColorScheme.DataBlock) {
+      let data = ColorScheme.DataBlock[key]
+      colors.push({
+        r: parseInt(data.Red),
+        g: parseInt(data.Green),
+        b: parseInt(data.Blue),
+      })
+    }
+  }
+  item.colors = colors
 }
 
 async function createDatasourceFile(user, datasourcePath) {

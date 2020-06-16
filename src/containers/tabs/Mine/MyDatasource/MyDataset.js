@@ -1,6 +1,11 @@
 import React from 'react'
 import { MyDataPage } from '../component'
-import { SMap, EngineType, DatasetType } from 'imobile_for_reactnative'
+import {
+  SMap,
+  EngineType,
+  DatasetType,
+  SProcess,
+} from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { Toast, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
@@ -132,6 +137,111 @@ class MyDataset extends MyDataPage {
     )
 
     return result
+  }
+
+  setProjection = () => {
+    NavigationService.navigate('ProjectionTargetCoordsPage', {
+      title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
+      cb: async targetCoords => {
+        NavigationService.goBack()
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.SET_PROJECTION,
+        )
+        let result = false
+        //设置数据集投影
+        let datasetName = this.itemInfo.item.datasetName
+        result = await SProcess.setPrjCoordSys(
+          this.state.title,
+          datasetName,
+          parseInt(targetCoords.value),
+        )
+        GLOBAL.Loading.setLoading(false)
+        if (result) {
+          Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
+        } else {
+          Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
+        }
+      },
+    })
+  }
+
+  buildPyramid = () => {
+    let build = async () => {
+      try {
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.BUILDING,
+        )
+        let datasetName = this.itemInfo.item.datasetName
+        let result = await SMap.buildPyramid(this.state.title, datasetName)
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(
+          result
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
+        )
+      } catch (e) {
+        GLOBAL.Loading.setLoading(false)
+      }
+    }
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
+      confirmAction: build,
+    })
+    this.SimpleDialog.setVisible(true)
+  }
+
+  updataStatistics = async () => {
+    let build = async () => {
+      try {
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.BUILDING,
+        )
+        let datasetName = this.itemInfo.item.datasetName
+        let result = await SMap.updataStatistics(this.state.title, datasetName)
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(
+          result
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
+        )
+      } catch (e) {
+        GLOBAL.Loading.setLoading(false)
+      }
+    }
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
+      confirmAction: build,
+    })
+    this.SimpleDialog.setVisible(true)
+  }
+
+  getCustomItemPopupData = () => {
+    let data = [
+      {
+        title: getLanguage(global.language).Profile.SET_PROJECTION,
+        action: this.setProjection,
+      },
+    ]
+    if (
+      this.itemInfo &&
+      (this.itemInfo.item.datasetType === DatasetType.IMAGE ||
+        this.itemInfo.item.datasetType === DatasetType.MBImage)
+    ) {
+      data.push({
+        title: getLanguage(global.language).Profile.DATASET_BUILD_PYRAMID,
+        action: this.buildPyramid,
+      })
+      if (Platform.OS === 'android') {
+        data.push({
+          title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
+          action: this.updataStatistics,
+        })
+      }
+    }
+    return data
   }
 
   getPagePopupData = () => {

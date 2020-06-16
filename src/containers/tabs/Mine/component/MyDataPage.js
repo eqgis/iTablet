@@ -116,6 +116,11 @@ export default class MyDataPage extends Component {
     return false
   }
 
+  /**item 文字下方的view */
+  renderExtra = () => {
+    return null
+  }
+
   onItemPress = async () => {}
 
   getRelativeTempPath = () => {
@@ -738,6 +743,7 @@ export default class MyDataPage extends Component {
         ref={ref => (this.PagePopModal = ref)}
         data={data}
         device={this.props.device}
+        hasCancel={false}
       />
     )
   }
@@ -750,6 +756,7 @@ export default class MyDataPage extends Component {
         // data={data}
         getData={this._getItemPopupData}
         device={this.props.device}
+        hasCancel={false}
       />
     )
   }
@@ -940,12 +947,13 @@ export default class MyDataPage extends Component {
         item={info.item}
         image={img}
         text={txtInfo}
+        renderExtra={this.renderExtra}
         disableTouch={this.state.batchMode}
         showRight={isShowMore}
         showCheck={this._isShowCheck(info)}
         onPress={() => {
-          if(info?.item.isDirectory){
-            Toast.show(global.language==='CN' ?"not UDB data source":"")
+          if (info?.item.isDirectory) {
+            Toast.show(global.language === 'CN' ? 'not UDB data source' : '')
             return
           }
           this.itemInfo = info

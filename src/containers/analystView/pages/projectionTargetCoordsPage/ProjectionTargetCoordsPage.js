@@ -8,7 +8,7 @@ import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
 import { View, Text, SectionList, TouchableOpacity, Image } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { SMap, SProcess } from 'imobile_for_reactnative'
+import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 
 const popTypes = {
@@ -29,7 +29,8 @@ export default class ProjectionTargetCoordsPage extends Component {
     const { params } = this.props.navigation.state
     // let _transMothodParameter = params.transMothodParameter
     this.cb = params && params.cb
-    this.filtVectDataset = params && params.filtVectDataset
+    // this.filtVectDataset = params && params.filtVectDataset
+    this.title = params && params.title
 
     this.isLoadingData = false //是否正在加载数据
 
@@ -82,6 +83,10 @@ export default class ProjectionTargetCoordsPage extends Component {
         allData: allPrjCoordSysTypes,
       },
     ]
+    //如果是设置数据集投影暂时屏蔽掉地理坐标系
+    // if(this.title && this.title ===getLanguage(global.language).Analyst_Labels.PRJCOORDSYS){
+    //   _data.splice(1,1)
+    // }
     this.setState({
       coordSysData: _data,
       allGeoCoordSysTypes: allGeoCoordSysTypes,
@@ -109,7 +114,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     let dss = []
     let datasources = await SMap.getDatasetsByWorkspaceDatasource()
     //过滤只保留矢量数据集
-    datasources = this.filtVectDataset && this.filtVectDataset(datasources)
+    datasources = this.filtVectDataset(datasources)
 
     datasources.forEach(item => {
       item.key = item.alias
@@ -117,6 +122,47 @@ export default class ProjectionTargetCoordsPage extends Component {
       dss.push(item)
     })
     return dss
+  }
+
+  filtVectDataset = datasources => {
+    for (let i = 0; i < datasources.length; ) {
+      let datasource = datasources[i]
+      let datasetsData = datasource.data
+      for (let j = 0; j < datasetsData.length; ) {
+        let dataset = datasetsData[j]
+        let result = this.filtDataset(dataset)
+        if (!result) {
+          datasetsData.splice(j, 1)
+          continue
+        }
+        j++
+      }
+      if (datasetsData.length == 0) {
+        datasources.splice(i, 1)
+      } else {
+        i++
+      }
+    }
+    return datasources
+  }
+
+  filtDataset = dataset => {
+    if (
+      dataset.datasetType === DatasetType.POINT ||
+      dataset.datasetType === DatasetType.LINE ||
+      dataset.datasetType === DatasetType.Network ||
+      dataset.datasetType === DatasetType.REGION ||
+      // dataset.datasetType === DatasetType.IMAGE ||     //影像数据集
+      // dataset.datasetType === DatasetType.Grid ||      //栅格数据集
+      dataset.datasetType === DatasetType.PointZ ||
+      dataset.datasetType === DatasetType.LineZ ||
+      dataset.datasetType === DatasetType.RegionZ ||
+      dataset.datasetType === DatasetType.CAD
+      // dataset.datasetType === DatasetType.MBImage           //多波段影像
+    ) {
+      return true
+    }
+    return false
   }
 
   getDataSets = () => {
@@ -753,7 +799,8 @@ export default class ProjectionTargetCoordsPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
+          // title: getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
+          title: this.title,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (

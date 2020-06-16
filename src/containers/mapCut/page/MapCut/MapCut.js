@@ -63,6 +63,7 @@ export default class MapCut extends React.Component {
       isSelectAll: false,
       isSaveAs: false,
       saveAsName: '',
+      isLegalName: false,
       // layers: props.layers,
       layers: [],
       outLayers: [], // 未选中的图层
@@ -150,6 +151,7 @@ export default class MapCut extends React.Component {
       try {
         if (
           this.isCutting ||
+          !this.state.isLegalName ||
           (this.state.isSaveAs && this.state.saveAsName === '')
         )
           return
@@ -303,11 +305,15 @@ export default class MapCut extends React.Component {
   _onChangeText = text => {
     let { result, error } = dataUtil.isLegalName(text, this.props.language)
     if (!result && error) {
-      Toast.show(error)
+      Toast.show(error, Platform.OS === 'android' && {position: Toast.POSITION.CENTER})
+      this.setState({
+        isLegalName: result,
+      })
       return
     }
     this.setState({
       saveAsName: text,
+      isLegalName: result,
     })
   }
 
@@ -700,9 +706,17 @@ export default class MapCut extends React.Component {
         </View>
       )
     } else {
+      let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== ''
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
+          keyboardVerticalOffset={
+            Platform.select({
+              ios: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? scaleSize(50) : scaleSize(120),
+              android: 0
+            })
+          }
           enabled
         >
           <View style={[styles.bottomView, { width: '100%' }]}>
@@ -738,16 +752,8 @@ export default class MapCut extends React.Component {
             </View>
             <View style={styles.bottomRightView}>
               <Button
-                style={
-                  this.state.isSaveAs && this.state.saveAsName === ''
-                    ? styles.cutButtonDisable
-                    : styles.cutButton
-                }
-                titleStyle={
-                  this.state.isSaveAs && this.state.saveAsName === ''
-                    ? styles.cutTitleDisable
-                    : styles.cutTitle
-                }
+                style={isLegalName ? styles.cutButton : styles.cutButtonDisable}
+                titleStyle={isLegalName ? styles.cutTitle : styles.cutTitleDisable}
                 title={getLanguage(this.props.language).Map_Main_Menu.CLIP}
                 //"裁剪"
                 onPress={this.cut}

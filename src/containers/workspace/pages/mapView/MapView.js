@@ -466,7 +466,7 @@ export default class MapView extends React.Component {
         JSON.stringify(this.props.analyst.params)
       ) {
         this.toolBox &&
-          this.toolBox.setVisible(false, null, {
+          this.toolBox.setVisible(false, '', {
             cb: () => {
               if (
                 this.props.analyst.params.type ===
@@ -481,6 +481,7 @@ export default class MapView extends React.Component {
                 this.mapController && this.mapController.setVisible(false)
               }
               this.container && this.container.setBottomVisible(false)
+              this.NavIcon && this.NavIcon.setVisible(false)
               if (
                 this.props.analyst.params.title &&
                 this.props.analyst.params.title !== this.state.mapTitle
@@ -889,6 +890,7 @@ export default class MapView extends React.Component {
       this.props.setSelection([
         {
           layerInfo: event.layerInfo,
+          geometryType: event.geometryType,
           ids: [event.id],
         },
       ])
@@ -1322,7 +1324,9 @@ export default class MapView extends React.Component {
     if (!this.mapLoaded) return
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
-      this.backAction()
+      this.backAction({
+        showFullMap: this.showFullMap,
+      })
       this.backAction = null
       this.mapController && this.mapController.reset()
       return

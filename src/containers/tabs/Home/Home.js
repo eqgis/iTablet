@@ -290,7 +290,7 @@ export default class Home extends Component {
 
   cancel = () => {
     let cancel = this.dialogCancel ? this.dialogCancel : () => {}
-    cancel && cancel(this.moduleItemRef, this.state.dialogCheck)
+    cancel && cancel(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
   }
 
   showUserPop = event => {

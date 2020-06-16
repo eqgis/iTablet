@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',
 
+  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+
   // 我的——登录
   LOGIN: 'ログイン',
   LOGIN_TIMEOUT: 'ログインタイムアウト、後で再度試してださい。',
@@ -159,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: 'テキスト',
   CLEAR: 'クリア',
   CREATE: '作成',
+  DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
+  DATASET_BUILD_STATISTICS: 'Statistics Model',
+  TIME_SPEND_OPERATION: 'This operation will cost some time, would you like to continue?',
+  BUILDING: 'Building',
+  BUILD_SUCCESS: 'Build Sucessfully',
+  BUILD_FAILED: 'Build Failed',
 
   // 作成データソース
   NEW_DATASOURCE: '新規データソース',
@@ -325,6 +333,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: '備考の追加に成功しました',
 
   CHOOSE_COLOR: '色の選択',
+  SET_PROJECTION: '投影を設定する',
 }
 
 export { Profile }

@@ -6,6 +6,7 @@ import RNFS from 'react-native-fs'
 export const DOWN_SET = 'DOWN_SET'
 export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 export const DOWNLOADED_FILE_DELETE = 'DOWNLOADED_FILE_DELETE'
+export const DOWNLOADED_SET_IGNORE = 'DOWNLOADED_SET_IGNORE'
 // Actions
 // ---------------------------------.3-----------------
 export const setDownInformation = (
@@ -41,6 +42,7 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
       const data = {
         id: params.key,
         progress: value,
+        downloaded: false,
         params,
       }
       await dispatch({
@@ -59,6 +61,7 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
       const data = {
         id: params.key,
         progress: value,
+        downloaded: true,
         params,
       }
       await dispatch({
@@ -74,6 +77,13 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
 export const deleteDownloadFile = (params = {}) => async dispatch => {
   await dispatch({
     type: DOWNLOADED_FILE_DELETE,
+    payload: params,
+  })
+}
+
+export const setIgnoreDownload = (params = {}) => async dispatch => {
+  await dispatch({
+    type: DOWNLOADED_SET_IGNORE,
     payload: params,
   })
 }
@@ -106,6 +116,8 @@ const initialState = fromJS({
     },
   ],
   downloads: [],
+  downloadInfos: [],
+  ignoreDownloads: [],
 })
 
 export default handleActions(
@@ -167,6 +179,27 @@ export default handleActions(
         }
       }
       return state.setIn(['downloads'], fromJS(downloads))
+    },
+    [`${DOWNLOADED_SET_IGNORE}`]: (state, { payload }) => {
+      const { ignoreDownloads } = state.toJS()
+      if (payload.id) {
+        if (ignoreDownloads.length > 0) {
+          let isItem = false
+          for (let index = 0; index < ignoreDownloads.length; index++) {
+            const element = ignoreDownloads[index]
+            if (element.id === payload.id) {
+              isItem = true
+              break
+            }
+          }
+          if (!isItem) {
+            ignoreDownloads.push(payload)
+          }
+        } else {
+          ignoreDownloads.push(payload)
+        }
+      }
+      return state.setIn(['ignoreDownloads'], fromJS(ignoreDownloads))
     },
     // [REHYDRATE]: () => {
     //   // return payload && payload.down ? fromJS(payload.down) : state

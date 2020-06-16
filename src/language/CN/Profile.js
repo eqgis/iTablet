@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: '增量',
   ENCLOSURE: '围栏',
 
+  MY_COLOR_SCHEME: '我的色带',
+
   // 我的——登录
   LOGIN: '登录',
   LOGIN_TIMEOUT: '登录超时，请稍后再试',
@@ -159,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: '文本',
   CLEAR: '清空',
   CREATE: '创建',
+  DATASET_BUILD_PYRAMID: '构建金字塔',
+  DATASET_BUILD_STATISTICS: '生成统计模型',
+  TIME_SPEND_OPERATION: '该操作较为耗时，是否继续？',
+  BUILDING: '构建中',
+  BUILD_SUCCESS: '构建成功',
+  BUILD_FAILED: '构建失败',
 
   // 创建数据源
   NEW_DATASOURCE: '新建数据源',
@@ -325,6 +333,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: '添加备注成功',
 
   CHOOSE_COLOR: '选择颜色',
+  SET_PROJECTION: '设置投影',
 }
 
 export { Profile }

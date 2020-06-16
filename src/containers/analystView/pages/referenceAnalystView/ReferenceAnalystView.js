@@ -3,7 +3,6 @@ import { ScrollView, Text, View, InteractionManager } from 'react-native'
 import { Container } from '../../../../components'
 import styles from './styles'
 import NavigationService from '../../../NavigationService'
-// import TabNavigationService from '../../../TabNavigationService'
 import { AnalystItem, PopModalList, AnalystBar } from '../../components'
 import {
   ConstPath,
@@ -15,13 +14,13 @@ import { Toast } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
-// import { Analyst_Types } from '../../AnalystType'
 import {
   SMap,
   EngineType,
   SAnalyst,
   DatasetType,
   Action,
+  GeometryType,
 } from 'imobile_for_reactnative'
 
 const popTypes = {
@@ -145,7 +144,7 @@ export default class ReferenceAnalystView extends Component {
         if (
           this.props.selection.length > 0 &&
           this.props.selection[0].ids.length > 0 &&
-          this.props.selection[0].layerInfo.type === DatasetType.REGION
+          this.props.selection[0].geometryType === GeometryType.GEOREGION
         ) {
           optionParameter = {
             selectRegion: {
@@ -550,12 +549,15 @@ export default class ReferenceAnalystView extends Component {
                           })
                         },
                       })
-                      .then(() => {
+                      .then(params => {
                         SMap.getAction().then(type => {
                           if (type !== Action.SELECT) {
                             SMap.setAction(Action.SELECT)
                           }
                           NavigationService.goBack('ReferenceAnalystView')
+                          if (params && params.showFullMap) {
+                            params.showFullMap(true)
+                          }
                         })
                       })
                   },

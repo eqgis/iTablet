@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'Increment',
   ENCLOSURE: 'Enclosure',
 
+  MY_COLOR_SCHEME: 'My Color Scheme',
+
   // 我的——登录
   LOGIN: 'Login',
   LOGIN_TIMEOUT: 'Login timeout, please try again later',
@@ -159,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: 'text',
   CLEAR: 'Clear',
   CREATE: 'Create',
+  DATASET_BUILD_PYRAMID: 'Build Pyramid',
+  DATASET_BUILD_STATISTICS: 'Statistics Model',
+  TIME_SPEND_OPERATION: 'This operation will cost some time, would you like to continue?',
+  BUILDING: 'Building',
+  BUILD_SUCCESS: 'Build Sucessfully',
+  BUILD_FAILED: 'Build Failed',
 
   // 创建数据源
   NEW_DATASOURCE: 'Create Datasource',
@@ -325,6 +333,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
 
   CHOOSE_COLOR: 'Choose Color',
+  SET_PROJECTION: 'Set projection',
 }
 
 export { Profile }

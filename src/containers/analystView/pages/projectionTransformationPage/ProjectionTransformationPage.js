@@ -479,6 +479,7 @@ export default class ProjectionTransformationPage extends Component {
           }
           onPress={async () => {
             NavigationService.navigate('ProjectionTargetCoordsPage', {
+              title: getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
               filtVectDataset: this.filtVectDataset,
               cb: targetCoords => {
                 NavigationService.goBack()

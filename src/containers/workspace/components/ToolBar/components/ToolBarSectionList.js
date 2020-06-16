@@ -140,10 +140,12 @@ export default class ToolBarSectionList extends React.Component {
       }
       break
     }
+    let { allSelected } = this.dealSelectList(sections)
     this.setState(
       {
         sections,
         selectList,
+        allSelected,
       },
       () => {
         cb && cb(selectList)
@@ -274,6 +276,18 @@ export default class ToolBarSectionList extends React.Component {
             alignItems: 'center',
           }}
         >
+          {section.allSelectType && (
+            <TouchableOpacity
+              style={styles.selectImgView}
+              onPress={() => this.sectionAllPress(section)}
+            >
+              <Image
+                source={allSelectImg}
+                resizeMode={'contain'}
+                style={styles.selectImg}
+              />
+            </TouchableOpacity>
+          )}
           {section.datasetType && (
             <Image
               source={this.getSectionDatasetTypeImg(section)}
@@ -312,18 +326,6 @@ export default class ToolBarSectionList extends React.Component {
                 } */}
               {/* 隐藏系统字段 */}
               {/* </Text> */}
-            </TouchableOpacity>
-          )}
-          {section.allSelectType && (
-            <TouchableOpacity
-              style={styles.sectionRightButton}
-              onPress={() => this.sectionAllPress(section)}
-            >
-              <Image
-                source={allSelectImg}
-                resizeMode={'contain'}
-                style={styles.selectImg}
-              />
             </TouchableOpacity>
           )}
           {section.buttons && section.buttons.length > 0 && (

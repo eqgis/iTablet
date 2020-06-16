@@ -743,6 +743,7 @@ export default class MyDataPage extends Component {
         ref={ref => (this.PagePopModal = ref)}
         data={data}
         device={this.props.device}
+        hasCancel={false}
       />
     )
   }
@@ -755,6 +756,7 @@ export default class MyDataPage extends Component {
         // data={data}
         getData={this._getItemPopupData}
         device={this.props.device}
+        hasCancel={false}
       />
     )
   }

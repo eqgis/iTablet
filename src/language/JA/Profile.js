@@ -325,6 +325,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: '備考の追加に成功しました',
 
   CHOOSE_COLOR: '色の選択',
+  SET_PROJECTION: '投影を設定する',
 }
 
 export { Profile }

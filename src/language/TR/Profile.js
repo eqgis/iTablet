@@ -325,6 +325,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Not başarıyla eklendi',
 
   CHOOSE_COLOR: 'Renk Seç',
+  SET_PROJECTION: 'Projeksiyonu ayarla',
 }
 
 export { Profile }

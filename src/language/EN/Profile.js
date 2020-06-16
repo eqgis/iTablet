@@ -325,6 +325,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
 
   CHOOSE_COLOR: 'Choose Color',
+  SET_PROJECTION: 'Set projection',
 }
 
 export { Profile }

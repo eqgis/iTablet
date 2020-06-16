@@ -1,6 +1,11 @@
 import React from 'react'
 import { MyDataPage } from '../component'
-import { SMap, EngineType, DatasetType } from 'imobile_for_reactnative'
+import {
+  SMap,
+  EngineType,
+  DatasetType,
+  SProcess,
+} from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { Toast, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
@@ -133,6 +138,40 @@ class MyDataset extends MyDataPage {
 
     return result
   }
+
+  setProjection = () => {
+    NavigationService.navigate('ProjectionTargetCoordsPage', {
+      title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
+      cb: async targetCoords => {
+        NavigationService.goBack()
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.SET_PROJECTION,
+        )
+        let result = false
+        //设置数据集投影
+        let datasetName = this.itemInfo.item.datasetName
+        result = await SProcess.setPrjCoordSys(
+          this.state.title,
+          datasetName,
+          parseInt(targetCoords.value),
+        )
+        GLOBAL.Loading.setLoading(false)
+        if (result) {
+          Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
+        } else {
+          Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
+        }
+      },
+    })
+  }
+
+  getCustomItemPopupData = () => [
+    {
+      title: getLanguage(global.language).Profile.SET_PROJECTION,
+      action: this.setProjection,
+    },
+  ]
 
   getPagePopupData = () => {
     if (this.from === 'MapView') {

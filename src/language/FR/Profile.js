@@ -325,6 +325,7 @@ const Profile = {
   COLLECT_SCENE_ADD_REMARK_SUCCEED: '添加备注成功',
 
   CHOOSE_COLOR: 'Sélectionner la couleur',
+  SET_PROJECTION: 'Configurer la projection',
 }
 
 export { Profile }

@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
+import { ChunkType } from '../../../../constants'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
 import { ConfigUtils } from 'imobile_for_reactnative'
@@ -109,17 +110,21 @@ class MyApplet extends MyDataPage {
         },
       ]
     } else {
-      return [
-        {
-          title: getLanguage(global.language).Profile.MOVE_UP,
-          action: () => {
-            this._closeModal()
-            if (this.itemInfo.index !== 0) {
-              _section1.data[index] = _section1.data.splice(index - 1, 1, _section1.data[index])[0]
-              this.setApplets(_sectionData)
-            }
-          },
+      let defaultModules = []
+      let defaultModuleKeys = Object.keys(ChunkType)
+      for (let i = defaultModuleKeys.length - 1; i >= 0; i--) {
+        defaultModules.push(ChunkType[defaultModuleKeys[i]])
+      }
+      let popData = [{
+        title: getLanguage(global.language).Profile.MOVE_UP,
+        action: () => {
+          this._closeModal()
+          if (this.itemInfo.index !== 0) {
+            _section1.data[index] = _section1.data.splice(index - 1, 1, _section1.data[index])[0]
+            this.setApplets(_sectionData)
+          }
         },
+      },
         {
           title: getLanguage(global.language).Profile.MOVE_DOWN,
           action: () => {
@@ -129,8 +134,9 @@ class MyApplet extends MyDataPage {
               this.setApplets(_sectionData)
             }
           },
-        },
-        {
+        }]
+      if (defaultModules.indexOf(item.name) < 0) {
+        popData.push({
           title: getLanguage(global.language).Profile.DELETE_APPLET,
           action: () => {
             this._closeModal()
@@ -138,8 +144,40 @@ class MyApplet extends MyDataPage {
             _section2.data.push(item)
             this.setApplets(_sectionData)
           },
-        },
-      ]
+        })
+      }
+      return popData
+      // return [
+      //   {
+      //     title: getLanguage(global.language).Profile.MOVE_UP,
+      //     action: () => {
+      //       this._closeModal()
+      //       if (this.itemInfo.index !== 0) {
+      //         _section1.data[index] = _section1.data.splice(index - 1, 1, _section1.data[index])[0]
+      //         this.setApplets(_sectionData)
+      //       }
+      //     },
+      //   },
+      //   {
+      //     title: getLanguage(global.language).Profile.MOVE_DOWN,
+      //     action: () => {
+      //       this._closeModal()
+      //       if (index < _section1.data.length - 1) {
+      //         _section1.data[index] = _section1.data.splice(index + 1, 1, _section1.data[index])[0]
+      //         this.setApplets(_sectionData)
+      //       }
+      //     },
+      //   },
+      //   {
+      //     title: getLanguage(global.language).Profile.DELETE_APPLET,
+      //     action: () => {
+      //       this._closeModal()
+      //       _section1.data.splice(index, 1)
+      //       _section2.data.push(item)
+      //       this.setApplets(_sectionData)
+      //     },
+      //   },
+      // ]
     }
   }
 

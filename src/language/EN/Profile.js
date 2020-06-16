@@ -18,6 +18,8 @@ const Profile = {
   INCREMENT: 'Increment',
   ENCLOSURE: 'Enclosure',
 
+  MY_COLOR_SCHEME: 'My Color Scheme',
+
   // 我的——登录
   LOGIN: 'Login',
   LOGIN_TIMEOUT: 'Login timeout, please try again later',

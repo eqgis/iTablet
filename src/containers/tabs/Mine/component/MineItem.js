@@ -21,6 +21,7 @@ export default class MineItem extends Component {
     contentStyle: {},
     imageStyle: {},
     textStyle: {},
+    renderExtra: () => {},
   }
 
   static defaultProps = {
@@ -97,11 +98,13 @@ export default class MineItem extends Component {
   render() {
     return (
       <TouchableItemView
+        item={this.props.item}
         disableTouch={this.props.showCheck}
         renderLeft={this.props.showCheck ? this._renderLeft : null}
         renderRight={this.props.showRight ? this._renderRight : null}
         image={this.props.image}
         text={this.props.text}
+        renderBottomText={this.props.renderExtra}
         onPress={() => {
           this.props.onPress && this.props.onPress(this.props.item)
         }}

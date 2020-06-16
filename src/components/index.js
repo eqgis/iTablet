@@ -61,6 +61,7 @@ import MultiPicker from './MultiPicker'
 import PopMenu from './PopMenu'
 import { DropdownView } from './DropdownView'
 import SinglePicker from './SinglePicker'
+import ColorScheme from './ColorScheme'
 export {
   Container,
   BtnOne,
@@ -134,4 +135,5 @@ export {
   PopMenu,
   DropdownView,
   SinglePicker,
+  ColorScheme,
 }

@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
+import { ChunkType } from '../../constants'
 // import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------
@@ -22,6 +23,17 @@ export const setModules = (params, cb = () => {}) => async (
       let item = params.mapModules[i]
       if (isInit|| oldMapModules.indexOf(item) >= 0) {
         params.oldMapModules.push(item)
+      }
+    }
+    // 插入默认模块
+    let defaultModuleKeys = Object.keys(ChunkType)
+    for (let i = defaultModuleKeys.length - 1; i >= 0; i--) {
+      let key = ChunkType[defaultModuleKeys[i]]
+      if (params.mapModules.indexOf(key) < 0) {
+        params.mapModules.unshift(key)
+      }
+      if (params.oldMapModules.indexOf(key) < 0) {
+        params.mapModules.unshift(key)
       }
     }
   }

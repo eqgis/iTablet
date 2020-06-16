@@ -1,6 +1,7 @@
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType } from '../../../../../../constants'
+import { SMap } from 'imobile_for_reactnative'
 
 function showSetting(back = false) {
   const _params = ToolbarModule.getParams()
@@ -11,6 +12,33 @@ function showSetting(back = false) {
   if (back) {
     NavigationService.navigate('MapView')
   }
+}
+
+function setDisplayMode(item) {
+  const _params = ToolbarModule.getParams()
+  if (item) {
+    SMap.setImageDisplayMode(_params.currentLayer.path, item.value)
+  }
+  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+    showMenuDialog: true,
+  })
+}
+
+function setStretchType(item) {
+  const _params = ToolbarModule.getParams()
+  if (item) {
+    SMap.setImageStretchType(_params.currentLayer.path, item.value)
+  }
+  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+    showMenuDialog: true,
+  })
+}
+
+function onPickerCancel() {
+  const _params = ToolbarModule.getParams()
+  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+    showMenuDialog: true,
+  })
 }
 
 function close() {
@@ -36,4 +64,7 @@ export default {
   commit,
 
   showSetting,
+  setDisplayMode,
+  setStretchType,
+  onPickerCancel,
 }

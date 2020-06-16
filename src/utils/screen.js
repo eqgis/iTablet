@@ -63,7 +63,7 @@ function getRatio() {
   } else if (height < 800) {
     ratio = 0.8
   } else if (height < 1000) {
-    ratio = Math.max(deviceHeight, deviceWidth) / 1000.0
+    ratio = (Math.max(deviceHeight, deviceWidth) / 1000.0).toFixed(2)
   } else {
     ratio = 1
   }
@@ -87,7 +87,7 @@ if (deviceWidth > deviceHeight) {
  * return number dp
  */
 export function scaleSize(size) {
-  size = size * 0.7 * getRatio() + 0.5
+  size = Math.round(size * 0.7 * getRatio())
   return size
 }
 

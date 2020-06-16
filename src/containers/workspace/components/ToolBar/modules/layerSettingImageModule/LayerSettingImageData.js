@@ -4,6 +4,9 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { SinglePicker } from '../../../../../../components'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { SMap } from 'imobile_for_reactnative'
+import Data from './data'
+import LayerSettingImageAction from './LayerSettingImageAction'
+import { getLanguage } from '../../../../../../language'
 
 async function getData(type) {
   let data = []
@@ -20,32 +23,7 @@ async function getData(type) {
         let stretchType = await SMap.getImageStretchType(
           _params.currentLayer.path,
         )
-        let popData = [
-          {
-            key: '无拉伸',
-            value: 0,
-          },
-          {
-            key: '标准差拉伸',
-            value: 1,
-          },
-          {
-            key: '最值拉伸',
-            value: 2,
-          },
-          {
-            key: '直方图均衡',
-            value: 3,
-          },
-          {
-            key: '直方图规定化',
-            value: 4,
-          },
-          {
-            key: '高斯对比度拉伸',
-            value: 5,
-          },
-        ]
+        let popData = Data.getStretchType()
         let currentItem
         popData.forEach(item => {
           if (item.value === stretchType) {
@@ -56,29 +34,8 @@ async function getData(type) {
           <SinglePicker
             language={global.language}
             popData={popData}
-            confirm={item => {
-              const _params = ToolbarModule.getParams()
-              if (item) {
-                SMap.setImageStretchType(_params.currentLayer.path, item.value)
-              }
-              _params.setToolbarVisible(
-                true,
-                ConstToolType.LAYER_SETTING_IMAGE_MENU,
-                {
-                  showMenuDialog: true,
-                },
-              )
-            }}
-            cancel={() => {
-              const _params = ToolbarModule.getParams()
-              _params.setToolbarVisible(
-                true,
-                ConstToolType.LAYER_SETTING_IMAGE_MENU,
-                {
-                  showMenuDialog: true,
-                },
-              )
-            }}
+            confirm={LayerSettingImageAction.setStretchType}
+            cancel={LayerSettingImageAction.onPickerCancel}
             viewableItems={3}
             initialKey={currentItem.key}
           />
@@ -88,16 +45,7 @@ async function getData(type) {
     case ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE:
       {
         let mode = await SMap.getImageDisplayMode(_params.currentLayer.path)
-        let popData = [
-          {
-            key: '组合显示模式',
-            value: 0,
-          },
-          {
-            key: '拉伸显示模式',
-            value: 1,
-          },
-        ]
+        let popData = Data.getDisplayMode()
         let currentItem
         popData.forEach(item => {
           if (item.value === mode) {
@@ -108,29 +56,8 @@ async function getData(type) {
           <SinglePicker
             language={global.language}
             popData={popData}
-            confirm={item => {
-              const _params = ToolbarModule.getParams()
-              if (item) {
-                SMap.setImageDisplayMode(_params.currentLayer.path, item.value)
-              }
-              _params.setToolbarVisible(
-                true,
-                ConstToolType.LAYER_SETTING_IMAGE_MENU,
-                {
-                  showMenuDialog: true,
-                },
-              )
-            }}
-            cancel={() => {
-              const _params = ToolbarModule.getParams()
-              _params.setToolbarVisible(
-                true,
-                ConstToolType.LAYER_SETTING_IMAGE_MENU,
-                {
-                  showMenuDialog: true,
-                },
-              )
-            }}
+            confirm={LayerSettingImageAction.setDisplayMode}
+            cancel={LayerSettingImageAction.onPickerCancel}
             viewableItems={3}
             initialKey={currentItem.key}
           />
@@ -144,8 +71,8 @@ async function getData(type) {
 function getMenuData() {
   let data = [
     {
-      key: '显示模式',
-      selectKey: '拉伸方式',
+      key: getLanguage(global.language).Map_Layer
+        .LAYER_SETTING_IMAGE_DISPLAY_MODE,
       action: () => {
         const _params = ToolbarModule.getParams()
         _params.setToolbarVisible(
@@ -160,8 +87,8 @@ function getMenuData() {
       },
     },
     {
-      key: '拉伸方式',
-      selectKey: '拉伸方式',
+      key: getLanguage(global.language).Map_Layer
+        .LAYER_SETTING_IMAGE_STRETCH_TYPE,
       action: () => {
         const _params = ToolbarModule.getParams()
         _params.setToolbarVisible(

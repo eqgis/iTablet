@@ -900,13 +900,33 @@ export default class Friend extends Component {
     this.sendCurrentLocation()
     this.locationTimer = setInterval(() => {
       this.sendCurrentLocation()
-    }, 5000)
+    }, 3000)
+  }
+
+  getDistance = (p1, p2) => {
+    //经纬度差值转距离 单位 m
+    let R = 6371393
+    return Math.abs(
+      ((p2.longitude - p1.longitude) *
+        Math.PI *
+        R *
+        Math.cos((((p2.latitude + p1.latitude) / 2) * Math.PI) / 180)) /
+        180,
+    )
   }
 
   sendCurrentLocation = async () => {
     try {
       if (CoworkInfo.coworkId !== '') {
         let location = await SMap.getCurrentLocation()
+
+        if (
+          this.lastLocation &&
+          this.getDistance(location, this.lastLocation) < 5
+        ) {
+          return
+        }
+
         if (
           CoworkInfo.isRealTime &&
           CoworkInfo.isUserShow(this.props.user.currentUser.userId)
@@ -946,6 +966,8 @@ export default class Friend extends Component {
         }
         let msgStr = JSON.stringify(msgObj)
         await this._sendMessage(msgStr, coworkId, false)
+
+        this.lastLocation = location
       }
     } catch (error) {
       //

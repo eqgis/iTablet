@@ -161,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: '文本',
   CLEAR: '清空',
   CREATE: '创建',
+  DATASET_BUILD_PYRAMID: '构建金字塔',
+  DATASET_BUILD_STATISTICS: '生成统计模型',
+  TIME_SPEND_OPERATION: '该操作较为耗时，是否继续？',
+  BUILDING: '构建中',
+  BUILD_SUCCESS: '构建成功',
+  BUILD_FAILED: '构建失败',
 
   // 创建数据源
   NEW_DATASOURCE: '新建数据源',

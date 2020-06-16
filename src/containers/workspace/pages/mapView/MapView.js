@@ -890,6 +890,7 @@ export default class MapView extends React.Component {
       this.props.setSelection([
         {
           layerInfo: event.layerInfo,
+          geometryType: event.geometryType,
           ids: [event.id],
         },
       ])

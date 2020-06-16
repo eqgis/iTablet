@@ -703,6 +703,13 @@ export default class MapCut extends React.Component {
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
+          keyboardVerticalOffset={
+            Platform.select({
+              ios: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? scaleSize(50) : scaleSize(120),
+              android: 0
+            })
+          }
           enabled
         >
           <View style={[styles.bottomView, { width: '100%' }]}>

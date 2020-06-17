@@ -222,7 +222,7 @@ export default class OnlineServicesUtils {
 
         let result = await RNFS.uploadFiles(uploadParams).promise
         let body = JSON.parse(result.body)
-        return body.childID !== undefined
+        return body.childID
       } else {
         return false
       }

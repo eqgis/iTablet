@@ -37,6 +37,7 @@ import CoworkTouchableView from '../CoworkTouchableView'
 import ImageResizer from 'react-native-image-resizer'
 import DataHandler from '../../Mine/DataHandler'
 import 'moment/locale/zh-cn'
+import CoworkInfo from '../Cowork/CoworkInfo'
 
 let Top = scaleSize(38)
 if (Platform.OS === 'ios') {
@@ -904,6 +905,12 @@ class Chat extends React.Component {
   }
 
   importDataset = async message => {
+    if (CoworkInfo.coworkId !== '') {
+      Toast.show(
+        getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
+      )
+      return
+    }
     let mapOpen
     try {
       mapOpen = await SMap.isAnyMapOpened()
@@ -1011,6 +1018,12 @@ class Chat extends React.Component {
   }
 
   importLayer = async message => {
+    if (CoworkInfo.coworkId !== '') {
+      Toast.show(
+        getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
+      )
+      return
+    }
     let mapOpen
     try {
       mapOpen = await SMap.isAnyMapOpened()

@@ -3,9 +3,11 @@ import {
   Action,
   SMediaCollector,
   GeometryType,
+  SCollector,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { StyleUtils } from '../../../../../../utils'
+import { StyleUtils, Toast } from '../../../../../../utils'
+import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 
 async function commit(type) {
@@ -243,6 +245,29 @@ function patchHollowRegion() {
   return SMap.setAction(Action.PATCH_HOLLOW_REGION)
 }
 
+async function deleteLabel() {
+  const _params = ToolbarModule.getParams()
+  const _selection = _params.selection
+  if (_selection.length === 0) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+    return
+  }
+  
+  _selection.forEach(async item => {
+    if (item.ids.length > 0) {
+      await SCollector.removeByIds(item.ids, item.layerInfo.path)
+      await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
+    }
+  })
+  _params.setSelection()
+  const type = ConstToolType.MAP_EDIT_DEFAULT
+  
+  _params.setToolbarVisible(true, type, {
+    isFullScreen: false,
+    cb: () => SMap.setAction(Action.SELECT),
+  })
+}
+
 const actions = {
   commit,
   close,
@@ -263,5 +288,6 @@ const actions = {
   drawRegionHollowRegion,
   fillHollowRegion,
   patchHollowRegion,
+  deleteLabel,
 }
 export default actions

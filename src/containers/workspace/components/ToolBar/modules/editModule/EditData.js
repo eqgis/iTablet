@@ -3,7 +3,6 @@ import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import EditAction from './EditAction'
-import ToolAction from '../toolModule/ToolAction'
 
 /**
  * 获取编辑操作
@@ -19,32 +18,6 @@ function getData(type) {
   switch (type) {
     case ConstToolType.MAP_EDIT_POINT:
       data = [
-        // { key: '选择', action: select },
-        {
-          key: constants.DELETE,
-          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          // constants.DELETE,
-          action: EditAction.remove,
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
-        },
-        {
-          key: constants.UNDO,
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
-          action: () => EditAction.undo(type),
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
-        },
-        {
-          key: 'redo',
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
-          // '重做',
-          action: () => EditAction.redo(type),
-          size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
-        },
-        // { key: constants.REDO, action: _redo },
         {
           key: constants.MOVE,
           title: getLanguage(global.language).Map_Main_Menu.MOVE,
@@ -52,13 +25,27 @@ function getData(type) {
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
-        // {
-        //   key: constants.SUBMIT,
-        //   title: constants.SUBMIT,
-        //   action: mapSubmit,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_submit.png'),
-        // },
+        {
+          key: constants.DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
+          action: EditAction.remove,
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: () => EditAction.undo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        },
+        {
+          key: 'redo',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+          action: () => EditAction.redo(type),
+          size: 'large',
+          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+        },
       ]
       break
     case ConstToolType.MAP_EDIT_LINE:
@@ -265,7 +252,7 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
-          action: ToolAction.deleteLabel,
+          action: EditAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },

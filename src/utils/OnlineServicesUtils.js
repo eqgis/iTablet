@@ -222,7 +222,7 @@ export default class OnlineServicesUtils {
 
         let result = await RNFS.uploadFiles(uploadParams).promise
         let body = JSON.parse(result.body)
-        return body.childID !== undefined
+        return body.childID
       } else {
         return false
       }
@@ -400,9 +400,15 @@ export default class OnlineServicesUtils {
         }
       }
 
-      let response = await fetch(url, {
+      let response = fetch(url, {
         headers: headers,
       })
+      let result = await new Promise.race([response, timeout(10)])
+      if (result === 'timeout') {
+        return false
+      } else {
+        response = result
+      }
       if (response.status === 200) {
         let result = await response.json()
 
@@ -530,4 +536,13 @@ export default class OnlineServicesUtils {
       return false
     }
   }
+}
+
+//超时
+function timeout(sec) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('timeout')
+    }, 1000 * sec)
+  })
 }

@@ -379,6 +379,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_TRACK_COLLECT: '轨迹式',
   MAP_AR_AI_SCENE_POINT_COLLECT: '打点式',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '点击屏幕确定当前点',
+  MAP_AR_AI_MEASURE_LENGTH: 'قياس الطول',
+  MAP_AR_AI_MEASURE_AREA: 'منطقة القياس',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'تصنيف التحميل',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'فشل التصنيف,حاول مرة اخرى',

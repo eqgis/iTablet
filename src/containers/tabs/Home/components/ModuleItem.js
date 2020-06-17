@@ -12,7 +12,7 @@ export default class ModuleItem extends Component {
     showDialog: () => {},
     getModuleItem: () => {},
     itemAction: () => {},
-    setOldMapModulez: () => {},
+    setOldMapModule: () => {},
   }
 
   constructor(props) {

@@ -161,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: 'text',
   CLEAR: 'Clear',
   CREATE: 'Create',
+  DATASET_BUILD_PYRAMID: 'Build Pyramid',
+  DATASET_BUILD_STATISTICS: 'Statistics Model',
+  TIME_SPEND_OPERATION: 'This operation will cost some time, would you like to continue?',
+  BUILDING: 'Building',
+  BUILD_SUCCESS: 'Build Sucessfully',
+  BUILD_FAILED: 'Build Failed',
 
   // 创建数据源
   NEW_DATASOURCE: 'Create Datasource',

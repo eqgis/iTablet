@@ -161,6 +161,12 @@ const Profile = {
   DATASET_TYPE_TEXT: 'テキスト',
   CLEAR: 'クリア',
   CREATE: '作成',
+  DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
+  DATASET_BUILD_STATISTICS: 'Statistics Model',
+  TIME_SPEND_OPERATION: 'This operation will cost some time, would you like to continue?',
+  BUILDING: 'Building',
+  BUILD_SUCCESS: 'Build Sucessfully',
+  BUILD_FAILED: 'Build Failed',
 
   // 作成データソース
   NEW_DATASOURCE: '新規データソース',

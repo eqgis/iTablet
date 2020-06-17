@@ -166,12 +166,83 @@ class MyDataset extends MyDataPage {
     })
   }
 
-  getCustomItemPopupData = () => [
-    {
-      title: getLanguage(global.language).Profile.SET_PROJECTION,
-      action: this.setProjection,
-    },
-  ]
+  buildPyramid = () => {
+    let build = async () => {
+      try {
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.BUILDING,
+        )
+        let datasetName = this.itemInfo.item.datasetName
+        let result = await SMap.buildPyramid(this.state.title, datasetName)
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(
+          result
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
+        )
+      } catch (e) {
+        GLOBAL.Loading.setLoading(false)
+      }
+    }
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
+      confirmAction: build,
+    })
+    this.SimpleDialog.setVisible(true)
+  }
+
+  updataStatistics = async () => {
+    let build = async () => {
+      try {
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(global.language).Profile.BUILDING,
+        )
+        let datasetName = this.itemInfo.item.datasetName
+        let result = await SMap.updataStatistics(this.state.title, datasetName)
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(
+          result
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
+        )
+      } catch (e) {
+        GLOBAL.Loading.setLoading(false)
+      }
+    }
+    this.SimpleDialog.set({
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
+      confirmAction: build,
+    })
+    this.SimpleDialog.setVisible(true)
+  }
+
+  getCustomItemPopupData = () => {
+    let data = [
+      {
+        title: getLanguage(global.language).Profile.SET_PROJECTION,
+        action: this.setProjection,
+      },
+    ]
+    if (
+      this.itemInfo &&
+      (this.itemInfo.item.datasetType === DatasetType.IMAGE ||
+        this.itemInfo.item.datasetType === DatasetType.MBImage)
+    ) {
+      data.push({
+        title: getLanguage(global.language).Profile.DATASET_BUILD_PYRAMID,
+        action: this.buildPyramid,
+      })
+      if (Platform.OS === 'android') {
+        data.push({
+          title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
+          action: this.updataStatistics,
+        })
+      }
+    }
+    return data
+  }
 
   getPagePopupData = () => {
     if (this.from === 'MapView') {

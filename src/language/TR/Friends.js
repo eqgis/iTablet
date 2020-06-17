@@ -95,6 +95,7 @@ const Friends = {
   NO_SUCH_MAP: 'Hiçbir harita bulunamadı',
   SELF: 'Kendim',
   ONLINECOWORK_DISABLE_ADD: 'Çevrimiçi işbirliğinde eklenemiyorum',
+  ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork', //待翻译
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',

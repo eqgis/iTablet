@@ -95,6 +95,7 @@ const Friends = {
   NO_SUCH_MAP: "Didn't find this map",
   SELF: 'Me',
   ONLINECOWORK_DISABLE_ADD: 'Unable to add when online cowork',
+  ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork',
   // RecommendFriend
   FIND_NONE: 'Unable to find new frineds from your contacts',
   ALREADY_FRIEND: 'Your are already friends',

@@ -90,7 +90,8 @@ async function shareMap(type, list = [], name = '') {
             }
           }
           const onResult = async result => {
-            if (typeof result === 'boolean' && result) {
+            if (result) {
+              await JSOnlineService.setDatasShareConfig(result, true)
               ToolbarModule.getParams().setSharing({
                 module: GLOBAL.Type,
                 name: dataName,
@@ -105,7 +106,7 @@ async function shareMap(type, list = [], name = '') {
             }, 2000)
             GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
             Toast.show(
-              typeof result === 'boolean' && result
+              result
                 ? getLanguage(global.language).Prompt.SHARE_SUCCESS
                 : getLanguage(global.language).Prompt.SHARE_FAILED,
             )

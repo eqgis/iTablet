@@ -37,6 +37,8 @@ export default class ProjectionTargetCoordsPage extends Component {
     this._allGeoCoordSysTypes = undefined
     this._allPrjCoordSysTypes = undefined
 
+    this.clickAble = true // 防止重复点击
+
     this.state = {
       // currentPage: 0,
       dataSource: null, //源数据源
@@ -102,8 +104,14 @@ export default class ProjectionTargetCoordsPage extends Component {
       )
       return
     }
-    if (this.cb && typeof this.cb === 'function') {
-      this.cb(this.state.coordSysSelectItem)
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+      if (this.cb && typeof this.cb === 'function') {
+        this.cb(this.state.coordSysSelectItem)
+      }
     }
   }
 

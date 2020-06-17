@@ -20,6 +20,7 @@ import ImageButton from '../../components/ImageButton'
 import { Container, Dialog } from '../../components'
 import { Toast, scaleSize } from '../../utils'
 import { getLanguage } from '../../language'
+import { color } from '../../styles'
 // import Button from '../../components/Button/Button'
 const SMeasureViewiOS = NativeModules.SMeasureView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
@@ -48,6 +49,7 @@ export default class MeasureView extends React.Component {
       totalArea: 0,
       showModelViews: false,
       SearchingSurfacesSucceed: false,
+      showSwithchButtons: false,
     }
   }
 
@@ -150,6 +152,11 @@ export default class MeasureView extends React.Component {
       'onSearchingSurfacesSucceed',
       this.onSearchingSurfacesSucceed,
     )
+
+    //注册监听
+    if (Platform.OS !== 'ios') {
+      SMeasureView.dispose()
+    }
   }
 
   onCurrentLengthChanged = params => {
@@ -195,9 +202,15 @@ export default class MeasureView extends React.Component {
 
   /** 添加 **/
   switchModelViews = async () => {
-    this.setState({
-      showModelViews: !this.state.showModelViews,
-    })
+    if (Platform.OS === 'ios') {
+      this.setState({
+        showModelViews: !this.state.showModelViews,
+      })
+    } else {
+      this.setState({
+        showSwithchButtons: !this.state.showSwithchButtons,
+      })
+    }
   }
 
   /** 撤销 **/
@@ -247,6 +260,10 @@ export default class MeasureView extends React.Component {
 
   setFlagType = async type => {
     await SMeasureView.setFlagType(type)
+  }
+
+  setMeasureMode = async mode => {
+    await SMeasureView.setMeasureMode(mode)
   }
 
   /** 设置 */
@@ -482,6 +499,93 @@ export default class MeasureView extends React.Component {
     )
   }
 
+  renderBottomSwitchBtns = () => {
+    return (
+      <View style={styles.SwitchMeasureModeView}>
+        <View style={[styles.buttonView, { backgroundColor: color.white }]}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setMeasureMode('MEASURE_LINE')
+              this.setState({
+                showSwithchButtons: false,
+              })
+            }}
+            style={styles.iconView}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                resizeMode={'contain'}
+                source={require('../../assets/mapTools/icon_point_line_black.png')}
+                style={styles.smallIcon}
+              />
+
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_MEASURE_LENGTH
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                this.setMeasureMode('MEASURE_AREA')
+                this.setState({
+                  showSwithchButtons: false,
+                })
+              } catch (e) {
+                () => {}
+              }
+            }}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
+                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
+                source={require('../../assets/mapTools/icon_collection_region.png')}
+                style={styles.smallIcon}
+              />
+              <Text style={styles.buttonname}>
+                {
+                  getLanguage(global.language).Map_Main_Menu
+                    .MAP_AR_AI_MEASURE_AREA
+                }
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
   renderTotalLengthChangeView() {
     return (
       <View style={styles.totallengthChangeView}>
@@ -561,6 +665,7 @@ export default class MeasureView extends React.Component {
         bottomProps={{ type: 'fix' }}
       >
         <SMMeasureView ref={ref => (this.SMMeasureView = ref)} />
+        {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
         {this.renderBottomBtns()}
         {/*{this.renderCenterBtn()}*/}
         {/*{this.renderTopBtns()}*/}
@@ -573,7 +678,7 @@ export default class MeasureView extends React.Component {
           this.renderToLastLengthChangeView()}
         {this.state.SearchingSurfacesSucceed &&
           this.renderTotalAreaChangeView()}
-        {!this.state.SearchingSurfacesSucceed && this.renderSearchingView()}
+        {/* {!this.state.SearchingSurfacesSucceed && this.renderSearchingView()} */}
         {this.renderDialog()}
       </Container>
     )

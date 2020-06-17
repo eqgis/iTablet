@@ -470,7 +470,6 @@ export default class MyDataPage extends Component {
 
   shareToFriend = async fileName => {
     NavigationService.navigate('SelectFriend', {
-      user: this.props.user,
       callBack: async targetId => {
         try {
           GLOBAL.Loading.setLoading(

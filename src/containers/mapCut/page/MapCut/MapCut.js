@@ -706,7 +706,7 @@ export default class MapCut extends React.Component {
         </View>
       )
     } else {
-      let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== ''
+      let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}

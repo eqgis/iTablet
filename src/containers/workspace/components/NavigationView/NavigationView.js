@@ -59,6 +59,12 @@ export default class NavigationView extends React.Component {
           screen.getScreenWidth(props.device.orientation) * 0.45,
         )
         : new Animated.Value(screen.getScreenWidth(props.device.orientation))
+    this.clearBtnWidth =
+      props.device.orientation.indexOf('LANDSCAPE') === 0
+        ? new Animated.Value(
+          screen.getScreenWidth(props.device.orientation) * 0.45 - scaleSize(140),
+        )
+        : new Animated.Value(screen.getScreenWidth(props.device.orientation) - scaleSize(140))
   }
   componentDidUpdate(prevProps) {
     if (prevProps.device.orientation !== this.props.device.orientation) {
@@ -68,6 +74,10 @@ export default class NavigationView extends React.Component {
           : screen.getScreenWidth(this.props.device.orientation)
       Animated.timing(this.maxWidth, {
         toValue: maxWidth,
+        duration: 300,
+      }).start()
+      Animated.timing(this.clearBtnWidth, {
+        toValue: maxWidth - scaleSize(140),
         duration: 300,
       }).start()
     }
@@ -810,7 +820,7 @@ export default class NavigationView extends React.Component {
               style={{
                 backgroundColor: color.content_white,
                 height: scaleSize(70),
-                width: this.maxWidth - scaleSize(140),
+                width: this.clearBtnWidth,
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginLeft: scaleSize(90),

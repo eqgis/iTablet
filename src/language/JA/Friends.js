@@ -95,6 +95,7 @@ const Friends = {
   NO_SUCH_MAP: '当マップはありません',
   SELF: '自分',
   ONLINECOWORK_DISABLE_ADD: 'オンラインコラボ中、追加できません',
+  ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork', //待翻译
   // RecommendFriend
   FIND_NONE: '連絡先から新しいonline友達を見つかりません',
   ALREADY_FRIEND: 'あなたたちはもう友達です。 ',

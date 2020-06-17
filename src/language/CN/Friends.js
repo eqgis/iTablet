@@ -95,6 +95,7 @@ const Friends = {
   NO_SUCH_MAP: '无此地图',
   SELF: '我',
   ONLINECOWORK_DISABLE_ADD: '在线协作中，不能添加',
+  ONLINECOWORK_DISABLE_OPERATION: '在线协作中，不能进行此操作',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',

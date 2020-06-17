@@ -51,6 +51,15 @@ import { themeModule } from '../../../workspace/components/ToolBar/modules'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
 import DataHandler from '../../../tabs/Mine/DataHandler'
+import CoworkInfo from '../../../tabs/Friend/Cowork/CoworkInfo'
+import { CheckBox } from '../../../../components'
+import {
+  getThemeAssets,
+  getThemeIconByType,
+  getLayerIconByType,
+} from '../../../../assets'
+import { stat } from 'react-native-fs'
+
 /** 工具栏类型 **/
 const list = 'list'
 
@@ -871,99 +880,314 @@ export default class LayerManager_tolbar extends React.Component {
       Toast.show(getLanguage(global.language).Prompt.UNSUPPORTED_LAYER_TO_SHARE)
       return
     }
-    if (type === 'friend') {
-      let targetUser = ''
-      let Chat
-      if (GLOBAL.coworkMode) {
-        Chat = GLOBAL.getFriend().curChat
-        targetUser = Chat.targetUser
-      }
-      NavigationService.navigate('SelectFriend', {
-        user: this.props.user,
-        type: 'ShareFromLayer',
-        layerData: this.state.layerData,
-        targetUser: targetUser,
-        callBack: async (targetUser, shareDataset, sendFile) => {
-          try {
-            global.Loading.setLoading(
-              true,
-              getLanguage(global.language).Prompt.SHARING,
-            )
+    this.shareDataset = false
+    let share = async () => {
+      try {
+        global.Loading.setLoading(
+          true,
+          getLanguage(global.language).Prompt.SHARING,
+        )
 
-            let homePath = await FileTools.appendingHomeDirectory()
-            let tempPath =
-              homePath +
-              ConstPath.UserPath +
-              this.props.user.currentUser.userName +
-              '/' +
-              ConstPath.RelativePath.Temp
+        let homePath = await FileTools.appendingHomeDirectory()
+        let tempPath =
+          homePath +
+          ConstPath.UserPath +
+          this.props.user.currentUser.userName +
+          '/' +
+          ConstPath.RelativePath.Temp
 
-            let targetPath = tempPath + layerData.name + '.xml'
-            let exportName = await DataHandler.getAvailableFileName(
-              tempPath,
-              'MyExportLayer',
-              'zip',
-            )
-            let zipPath = tempPath + exportName
-            //todo 合成一个原生接口？
-            let xmlLayer = await SMap.getLayerAsXML(layerData.path)
-            if (await FileTools.fileIsExist(targetPath)) {
-              await FileTools.deleteFile(targetPath)
-            }
-            await FileTools.writeFile(targetPath, xmlLayer)
-            await FileTools.zipFile(targetPath, zipPath)
-            FileTools.deleteFile(targetPath)
+        let targetPath = tempPath + layerData.name + '.xml'
+        let exportName = await DataHandler.getAvailableFileName(
+          tempPath,
+          'MyExportLayer',
+          'zip',
+        )
+        let zipPath = tempPath + exportName
+        let xmlLayer = await SMap.getLayerAsXML(layerData.path)
+        if (await FileTools.fileIsExist(targetPath)) {
+          await FileTools.deleteFile(targetPath)
+        }
+        await FileTools.writeFile(targetPath, xmlLayer)
+        await FileTools.zipFile(targetPath, zipPath)
+        FileTools.deleteFile(targetPath)
 
-            let layerAction = {
-              name: 'onSendFile',
-              type: MsgConstant.MSG_LAYER,
-              filePath: zipPath,
-              fileName: layerData.caption,
-            }
-            let action = [layerAction]
+        let layerAction = {
+          name: 'onSendFile',
+          type: MsgConstant.MSG_LAYER,
+          filePath: zipPath,
+          fileName: layerData.caption,
+        }
+        let action = [layerAction]
 
-            if (shareDataset) {
-              let datasetPath = tempPath + layerData.datasetName + '.json'
-              let exportDatasetName = await DataHandler.getAvailableFileName(
-                tempPath,
-                'MyExportDataset',
-                'zip',
-              )
-              let datasetZipPath = tempPath + exportDatasetName
-              await SMap.getDatasetToGeoJson(
-                layerData.datasourceAlias,
-                layerData.datasetName,
-                datasetPath,
-              )
-              await FileTools.zipFile(datasetPath, datasetZipPath)
-              FileTools.deleteFile(datasetPath)
-              let datasetAction = {
-                name: 'onSendFile',
-                type: MsgConstant.MSG_DATASET,
-                filePath: datasetZipPath,
-                fileName: layerData.datasetName,
-                extraInfo: {
-                  datasourceAlias: layerData.datasourceAlias,
-                },
-              }
-              action.push(datasetAction)
-            }
-            if (GLOBAL.coworkMode) {
-              Chat = GLOBAL.getFriend().curChat
-              Chat._handleAciton(action)
-            } else {
-              action.map(item => {
-                sendFile && sendFile(item)
-              })
-            }
-            global.Loading.setLoading(false)
-            NavigationService.goBack()
-          } catch (error) {
-            global.Loading.setLoading(false)
+        if (this.shareDataset) {
+          let datasetPath = tempPath + layerData.datasetName + '.json'
+          let exportDatasetName = await DataHandler.getAvailableFileName(
+            tempPath,
+            'MyExportDataset',
+            'zip',
+          )
+          let datasetZipPath = tempPath + exportDatasetName
+          await SMap.getDatasetToGeoJson(
+            layerData.datasourceAlias,
+            layerData.datasetName,
+            datasetPath,
+          )
+          await FileTools.zipFile(datasetPath, datasetZipPath)
+          FileTools.deleteFile(datasetPath)
+          let datasetAction = {
+            name: 'onSendFile',
+            type: MsgConstant.MSG_DATASET,
+            filePath: datasetZipPath,
+            fileName: layerData.datasetName,
+            extraInfo: {
+              datasourceAlias: layerData.datasourceAlias,
+            },
           }
-        },
-      })
+          action.push(datasetAction)
+        }
+        if (GLOBAL.coworkMode && CoworkInfo.coworkId == '') {
+          let Chat = GLOBAL.getFriend().curChat
+          Chat._handleAciton(action)
+        } else {
+          action.map(item => {
+            this.onSendFile(item)
+          })
+        }
+        global.Loading.setLoading(false)
+      } catch (error) {
+        global.Loading.setLoading(false)
+      }
     }
+
+    if (type === 'friend') {
+      if (global.coworkMode) {
+        if (CoworkInfo.coworkId !== '') {
+          this.targetUser = GLOBAL.getFriend().getTargetUser(CoworkInfo.talkId)
+        } else {
+          this.targetUser = GLOBAL.getFriend().curChat.targetUser
+        }
+        global.SimpleDialog.set({
+          renderCustomeView: this.renderShare,
+          confirmAction: share,
+          dialogStyle: {
+            height: scaleSize(350),
+          },
+        })
+        global.SimpleDialog.setVisible(true)
+      } else {
+        NavigationService.navigate('SelectFriend', {
+          callBack: targetId => {
+            this.targetUser = GLOBAL.getFriend().getTargetUser(targetId)
+            global.SimpleDialog.set({
+              renderCustomeView: this.renderShare,
+              confirmAction: share,
+              dialogStyle: {
+                height: scaleSize(350),
+              },
+            })
+            global.SimpleDialog.setVisible(true)
+          },
+        })
+      }
+    }
+  }
+
+  onSendFile = async ({ type, filePath, fileName, extraInfo }) => {
+    let currentUser = this.props.user.currentUser
+    let bGroup = 1
+    let groupID = currentUser.userId
+    let groupName = ''
+    if (this.targetUser.id.indexOf('Group_') !== -1) {
+      bGroup = 2
+      groupID = this.targetUser.id
+      groupName = this.targetUser.title
+    }
+    let ctime = new Date()
+    let time = Date.parse(ctime)
+
+    fileName = fileName + '.zip'
+    let statResult = await stat(filePath)
+    //文件接收提醒
+    let informMsg = {
+      type: bGroup,
+      time: time,
+      user: {
+        name: currentUser.nickname,
+        id: currentUser.userId,
+        groupID: groupID,
+        groupName: groupName,
+      },
+      message: {
+        type: type,
+        message: {
+          // message: '[文件]',
+          fileName: fileName,
+          fileSize: statResult.size,
+          filePath: filePath,
+          progress: 0,
+        },
+      },
+    }
+    if (extraInfo) {
+      Object.assign(informMsg.message.message, extraInfo)
+    }
+
+    let msgId = GLOBAL.getFriend().getMsgId(this.targetUser.id)
+    //保存
+    GLOBAL.getFriend().storeMessage(informMsg, this.targetUser.id, msgId)
+    GLOBAL.getFriend().sendFile(
+      informMsg,
+      filePath,
+      this.targetUser.id,
+      msgId,
+      result => {
+        FileTools.deleteFile(filePath)
+        if (!result) {
+          GLOBAL.getFriend().onReceiveProgress({
+            talkId: this.state.targetUser.id,
+            msgId: msgId,
+            percentage: 0,
+          })
+          Toast.show(getLanguage(global.language).Friends.SEND_FAIL_NETWORK)
+        } else {
+          Toast.show(getLanguage(global.language).Friends.SEND_SUCCESS)
+        }
+      },
+    )
+  }
+
+  renderShare = () => {
+    let getLayerIcon = () => {
+      let item = this.state.layerData
+      if (item.themeType > 0) {
+        return getThemeIconByType(item.themeType)
+      } else if (item.isHeatmap) {
+        return getThemeAssets().themeType.heatmap
+      } else {
+        return getLayerIconByType(item.type)
+      }
+    }
+    let targetUser = this.targetUser
+    this.shareDataset = false
+    let iconImg = getLayerIcon()
+    let caption = this.state.layerData.caption || ''
+    let title = targetUser.title || ''
+    return (
+      <View
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+        }}
+      >
+        <Text
+          style={{
+            paddingLeft: scaleSize(20),
+            fontSize: setSpText(28),
+          }}
+        >
+          {global.language === 'CN' ? '发送给:' : 'Send to:'}
+        </Text>
+        <View
+          style={{
+            paddingLeft: scaleSize(20),
+            height: scaleSize(70),
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              marginLeft: scaleSize(10),
+              height: scaleSize(50),
+              width: scaleSize(50),
+              borderRadius: scaleSize(50),
+              backgroundColor: 'green',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                fontSize: setSpText(24),
+                color: 'white',
+              }}
+            >
+              {(title && title[0].toUpperCase()) || ''}
+            </Text>
+          </View>
+          <View
+            style={{
+              marginLeft: scaleSize(20),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text
+              style={{ flex: 1, fontSize: scaleSize(30), color: 'black' }}
+              numberOfLines={1}
+              ellipsizeMode={'tail'}
+            >
+              {title || ''}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            height: 1,
+            backgroundColor: '#EEEEEE',
+          }}
+        />
+        <View
+          style={{
+            width: '100%',
+            height: scaleSize(80),
+            flexDirection: 'row',
+            paddingLeft: scaleSize(80),
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            source={iconImg}
+            style={{
+              width: scaleSize(40),
+              height: scaleSize(40),
+            }}
+            resizeMode={'contain'}
+          />
+          <Text
+            style={{
+              flex: 1,
+              marginLeft: scaleSize(5),
+              fontSize: scaleSize(24),
+            }}
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+          >
+            {caption}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            height: scaleSize(80),
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingLeft: scaleSize(80),
+          }}
+        >
+          <CheckBox
+            style={{ height: scaleSize(30), width: scaleSize(30) }}
+            onChange={() => {
+              this.shareDataset = !this.shareDataset
+            }}
+          />
+          <Text style={{ marginLeft: scaleSize(5), fontSize: scaleSize(24) }}>
+            {getLanguage(global.language).Friends.SHARE_DATASET}
+          </Text>
+        </View>
+      </View>
+    )
   }
 
   renderView = () => {

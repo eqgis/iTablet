@@ -27,6 +27,7 @@ export default class SimpleDialog extends PureComponent {
       dialogStyle: {},
       showTitleImage: true,
       confirmText: getLanguage(global.language).Friends.CONFIRM,
+      renderCustomeView: undefined,
     }
   }
 
@@ -43,6 +44,7 @@ export default class SimpleDialog extends PureComponent {
     dialogStyle,
     showTitleImage,
     confirmText,
+    renderCustomeView,
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
@@ -68,6 +70,7 @@ export default class SimpleDialog extends PureComponent {
       confirmText: confirmText
         ? confirmText
         : getLanguage(global.language).Friends.CONFIRM,
+      renderCustomeView: renderCustomeView,
     })
   }
 
@@ -81,6 +84,7 @@ export default class SimpleDialog extends PureComponent {
       dialogStyle: {},
       showTitleImage: true,
       confirmText: getLanguage(global.language).Friends.CONFIRM,
+      renderCustomeView: undefined,
     })
   }
 
@@ -116,18 +120,22 @@ export default class SimpleDialog extends PureComponent {
         ]}
         disableBackTouch={this.props.disableBackTouch}
       >
-        <View style={styles.dialogHeaderView}>
-          {this.state.showTitleImage && (
-            <Image
-              source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
-              style={styles.dialogHeaderImg}
-            />
-          )}
-          <Text style={[styles.promptTtile, this.state.textStyle]}>
-            {this.state.text}
-          </Text>
-          {this.state.renderExtra()}
-        </View>
+        {this.state.renderCustomeView ? (
+          this.state.renderCustomeView()
+        ) : (
+          <View style={styles.dialogHeaderView}>
+            {this.state.showTitleImage && (
+              <Image
+                source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
+                style={styles.dialogHeaderImg}
+              />
+            )}
+            <Text style={[styles.promptTtile, this.state.textStyle]}>
+              {this.state.text}
+            </Text>
+            {this.state.renderExtra()}
+          </View>
+        )}
       </Dialog>
     )
   }

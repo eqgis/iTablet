@@ -379,6 +379,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
+  MAP_AR_AI_MEASURE_LENGTH: 'Measure length',
+  MAP_AR_AI_MEASURE_AREA: 'Measure area',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classify Loading',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Classify failed, try Again',

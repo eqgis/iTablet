@@ -379,6 +379,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'İzleme koleksiyonu',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Rush koleksiyonu',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Geçerli noktayı belirlemek için ekrana dokunun',
+  MAP_AR_AI_MEASURE_LENGTH: 'Uzunluk ölçümü',
+  MAP_AR_AI_MEASURE_AREA: 'Ölçüm alanı',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Sınıflandırma başarısız oldu, Tekrar deneyin',

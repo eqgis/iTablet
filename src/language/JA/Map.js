@@ -379,6 +379,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_TRACK_COLLECT: '軌跡式',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'プロット方式',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'スクリーンをクリックして現在のポイントに設定します',
+  MAP_AR_AI_MEASURE_LENGTH: '長さ測定',
+  MAP_AR_AI_MEASURE_AREA: '測定面積',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '分類中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分類に失敗しました。再度試してください',

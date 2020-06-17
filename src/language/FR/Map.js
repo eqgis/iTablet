@@ -379,6 +379,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_TRACK_COLLECT: '轨迹式',
   MAP_AR_AI_SCENE_POINT_COLLECT: '打点式',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '点击屏幕确定当前点',
+  MAP_AR_AI_MEASURE_LENGTH: 'Mesure de longueur',
+  MAP_AR_AI_MEASURE_AREA: 'Zone de mesure',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classifier le chargement',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Échec de la classification, réessayer',

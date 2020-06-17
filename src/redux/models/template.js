@@ -174,28 +174,28 @@ export const importPlotLib = (params, cb = () => {}) => async () => {
 }
 
 // 导入模版
-export const importTemplate = (params, cb = () => {}) => async dispatch => {
-  // 关闭所有地图
-  await SMap.closeMap()
-  // 导入工作空间
-  const result = await SMap.importWorkspace(params)
-  // // 默认打开第一幅地图
-  // let mapList = (await SMap.getMaps(0)) || []
-  // mapList.length > 0 && (await SMap.openMap(mapList.length - 1))
-  // let mapInfo = await SMap.getMapInfo()
-  // Object.assign(params, mapInfo)
-  // let payload = {
-  //   templateInfo: params,
-  //   mapInfo,
-  // }
-  const payload = params
-  await dispatch({
-    type: SET_TEMPLATE,
-    payload: payload || {},
-  })
-  cb && cb(result)
-  return result
-}
+// export const importTemplate = (params, cb = () => {}) => async dispatch => {
+//   // 关闭所有地图
+//   await SMap.closeMap()
+//   // 导入工作空间
+//   const result = await SMap.importWorkspace(params)
+//   // // 默认打开第一幅地图
+//   // let mapList = (await SMap.getMaps(0)) || []
+//   // mapList.length > 0 && (await SMap.openMap(mapList.length - 1))
+//   // let mapInfo = await SMap.getMapInfo()
+//   // Object.assign(params, mapInfo)
+//   // let payload = {
+//   //   templateInfo: params,
+//   //   mapInfo,
+//   // }
+//   const payload = params
+//   await dispatch({
+//     type: SET_TEMPLATE,
+//     payload: payload || {},
+//   })
+//   cb && cb(result)
+//   return result
+// }
 
 // 设置模版
 export const setTemplate = (params, cb = () => {}) => async dispatch => {

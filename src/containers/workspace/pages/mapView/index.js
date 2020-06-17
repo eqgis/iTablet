@@ -21,7 +21,7 @@ import {
   saveMap,
 } from '../../../../redux/models/map'
 import {
-  importTemplate,
+  // importTemplate,
   importWorkspace,
   setCurrentTemplateInfo,
   setCurrentPlotInfo,
@@ -108,7 +108,7 @@ const mapDispatchToProps = {
   setCurrentLayer,
   setCurrentAttribute,
   clearAttributeHistory,
-  importTemplate,
+  // importTemplate,
   importWorkspace,
   setCurrentTemplateInfo,
   setCurrentPlotInfo,

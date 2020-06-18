@@ -29,7 +29,8 @@ const Profile = {
   EMAIL_LOGIN: 'تسجيل الدخول للبريد الإلكترونى',
   ENTER_EMAIL_OR_USERNAME: 'من فضلك أدخل أسم المستخدم أو البريد الإلكترونى',
   ENTER_MOBILE: 'من فضلك أدخل رقم هاتفك المحمول',
-  ENTER_USERNAME_ALL: 'Please enter your phone number, email or username', //待翻译
+  USERNAME_ALL: 'phone number/email/nickname', //待翻译
+  ENTER_USERNAME_ALL: 'Please enter your phone number, email or nickname', //待翻译
   ENTER_PASSWORD: 'من فضلك أدخل رقمك السري',
   REGISTER: 'تسجيل',
   FORGET_PASSWORD: 'هل نسيت كلمة المرور؟',

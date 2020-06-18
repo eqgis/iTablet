@@ -29,6 +29,7 @@ const Profile = {
   EMAIL_LOGIN: '’E-posta Girişi',
   ENTER_EMAIL_OR_USERNAME: 'Lütfen e-postanızı ya da kullanıcı adınızı girin',
   ENTER_MOBILE: 'Lütfen cep telefon numaranızı girin',
+  USERNAME_ALL: 'phone number/email/nickname', //待翻译
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
   REGISTER: 'Kayıt ol',

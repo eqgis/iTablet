@@ -234,12 +234,10 @@ class MyDataset extends MyDataPage {
         title: getLanguage(global.language).Profile.DATASET_BUILD_PYRAMID,
         action: this.buildPyramid,
       })
-      if (Platform.OS === 'android') {
-        data.push({
-          title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
-          action: this.updataStatistics,
-        })
-      }
+      data.push({
+        title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
+        action: this.updataStatistics,
+      })
     }
     return data
   }

@@ -320,7 +320,8 @@ export default class MyLocalData extends Component {
   _onImportExternalData = async item => {
     try {
       this.onImportStart()
-      let result = await this._importExternalData(item)
+      let user = this.props.user.currentUser
+      let result = await DataHandler.importExternalData(user, item)
       Toast.show(
         result
           ? getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS
@@ -331,38 +332,6 @@ export default class MyLocalData extends Component {
     } finally {
       this.onImportEnd()
     }
-  }
-
-  _importExternalData = async item => {
-    let user = this.props.user.currentUser
-    let type = item.fileType
-    let result = false
-    switch (type) {
-      case 'plotting':
-        result = await DataHandler.importPlotLib(item)
-        break
-      case 'workspace':
-        result = await DataHandler.importWorkspace(item)
-        break
-      case 'workspace3d':
-        result = await DataHandler.importWorkspace3D(user, item)
-        break
-      case 'datasource':
-        result = await DataHandler.importDatasource(user, item)
-        break
-      case 'sci':
-        result = await DataHandler.importSCI(user, item)
-        break
-      case 'color':
-        result = await DataHandler.importColor(user, item)
-        break
-      case 'symbol':
-        result = await DataHandler.importSymbol(user, item)
-        break
-      default:
-        break
-    }
-    return result
   }
 
   _onImportDataset = async type => {
@@ -576,7 +545,9 @@ export default class MyLocalData extends Component {
           let dataList = await DataHandler.getExternalData(toPath)
           let results = []
           for (let i = 0; i < dataList.length; i++) {
-            results.push(await this._importExternalData(dataList[i]))
+            results.push(
+              await DataHandler.importExternalData(currentUser, dataList[i]),
+            )
           }
           result = results.some(value => value === true)
           FileTools.deleteFile(toPath)

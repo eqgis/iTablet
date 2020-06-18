@@ -6,13 +6,11 @@ import {
   Text,
   Animated,
   FlatList,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
-import styles from './Styles'
 import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
@@ -21,6 +19,7 @@ import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 import OnlineLoginView from './component/OnlineLoginView'
 import IPortalLoginView from './component/IPortalLoginView'
 import Orientation from 'react-native-orientation'
+import { color } from '../../../../styles'
 
 const JSOnlineService = new OnlineServicesUtils('online')
 export default class Login extends React.Component {
@@ -452,20 +451,18 @@ export default class Login extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
-        style={styles.container}
+        style={{ backgroundColor: color.contentColorWhite }}
         headerProps={{
-          title: getLanguage(this.props.language).Profile.LOGIN,
+          // title: getLanguage(this.props.language).Profile.LOGIN,
           navigation: this.props.navigation,
+          backImg: require('../../../../assets/public/left_arrow.png'),
+          headerStyle: {
+            backgroundColor: color.contentColorWhite,
+          },
         }}
       >
-        <KeyboardAvoidingView
-          enabled={true}
-          keyboardVerticalOffset={scaleSize(80)}
-          behavior={'padding'}
-        >
-          {this.renderLoginType()}
-          {this.renderLogin()}
-        </KeyboardAvoidingView>
+        {this.renderLoginType()}
+        {this.renderLogin()}
       </Container>
     )
   }

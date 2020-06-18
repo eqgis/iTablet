@@ -66,7 +66,7 @@ export default class ToolBar extends React.Component {
     setCurrentMap: () => {}, // 设置当前地图
     setCollectionInfo: () => {}, // 设置当前采集数据源信息
     setCurrentLayer: () => {}, // 设置当前图层
-    importTemplate: () => {}, // 导入模板
+    // importTemplate: () => {}, // 导入模板
     importWorkspace: () => {}, // 打开模板
     setAttributes: () => {},
     getMaps: () => {},

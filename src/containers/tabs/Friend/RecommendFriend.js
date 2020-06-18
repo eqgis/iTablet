@@ -10,18 +10,18 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-import { SOnlineService } from 'imobile_for_reactnative'
 import { Container, Dialog } from '../../../components'
 import { dialogStyles } from './Styles'
 import { scaleSize } from '../../../utils/screen'
 import { getLanguage } from '../../../language/index'
 // eslint-disable-next-line
 import Contacts from 'react-native-contacts'
-import { Toast } from '../../../utils'
+import { Toast, OnlineServicesUtils } from '../../../utils'
 import FriendListFileHandle from './FriendListFileHandle'
 import MsgConstant from './MsgConstant'
 import NavigationService from '../../NavigationService'
 
+const JSOnlineServices = new OnlineServicesUtils('online')
 class RecommendFriend extends Component {
   props: {
     navigation: Object,
@@ -127,20 +127,20 @@ class RecommendFriend extends Component {
         break
       }
       let number = this.formatPhoneNumber(val.phoneNumbers[i].number)
-      let result = await SOnlineService.getUserInfoBy(number, 0)
+      let result = await JSOnlineServices.getUserInfo(number, false)
       if (result !== false && result !== '获取用户id失败') {
         if (
-          result[0] &&
-          result[0] !== this.user.userId &&
-          !FriendListFileHandle.isFriend(result[0])
+          result.userId &&
+          result.userId !== this.user.userId &&
+          !FriendListFileHandle.isFriend(result.userId)
         ) {
           let array = this.state.contacts
           array.push({
             familyName: val.familyName,
             givenName: val.givenName,
             phoneNumbers: val.phoneNumbers[i],
-            id: result[0],
-            name: result[1],
+            id: result.userId,
+            name: result.nickname,
           })
           this.setState({
             contacts: this.state.contacts.map(item => {
@@ -151,20 +151,20 @@ class RecommendFriend extends Component {
       }
     }
     for (let i = 0; i < val.emails.length; i++) {
-      let result = await SOnlineService.getUserInfoBy(val.emails[i].email, 0)
+      let result = await JSOnlineServices.getUserInfo(val.emails[i].email, true)
       if (result !== false && result !== '获取用户id失败') {
         if (
-          result[0] &&
-          result[0] !== this.user.userId &&
-          !FriendListFileHandle.isFriend(result[0])
+          result.userId &&
+          result.userId !== this.user.userId &&
+          !FriendListFileHandle.isFriend(result.userId)
         ) {
           let array = this.state.contacts
           array.push({
             familyName: val.familyName,
             givenName: val.givenName,
             email: val.emails[i].email,
-            id: result[0],
-            name: result[1],
+            id: result.userId,
+            name: result.nickname,
           })
           this.setState({
             contacts: this.state.contacts.map(item => {

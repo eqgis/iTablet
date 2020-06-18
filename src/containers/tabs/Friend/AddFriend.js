@@ -13,18 +13,17 @@ import {
   Image,
 } from 'react-native'
 import NavigationService from '../../NavigationService'
-import { SOnlineService } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../utils/screen'
 import { Container, Dialog } from '../../../components'
 import { dialogStyles } from './Styles'
 //import Friend from './Friend'
 import FriendListFileHandle from './FriendListFileHandle'
 import { getLanguage } from '../../../language/index'
-import { Toast } from '../../../utils'
+import { Toast, OnlineServicesUtils } from '../../../utils'
 import MSGConstant from './MsgConstant'
 
 const dismissKeyboard = require('dismissKeyboard')
-
+const JSOnlineServices = new OnlineServicesUtils('online')
 class AddFriend extends Component {
   props: {
     navigation: Object,
@@ -86,9 +85,14 @@ class AddFriend extends Component {
       true,
       getLanguage(this.language).Friends.SEARCHING,
     )
-    let result = await SOnlineService.getUserInfoBy(val, 0)
+    let reg = /^[0-9]{11}$/
+    let isEmail = !reg.test(val)
+    let result = await JSOnlineServices.getUserInfo(val, isEmail)
     if (result === false || result === '获取用户id失败') {
-      result = ['0', getLanguage(this.language).Friends.SYS_NO_SUCH_USER]
+      result = {
+        userId: '0',
+        nickname: getLanguage(this.language).Friends.SYS_NO_SUCH_USER,
+      }
     }
     this.setState({
       list: [result],
@@ -197,8 +201,8 @@ class AddFriend extends Component {
 
   _renderItem(item) {
     let opacity = 1.0
-    let headStr = item[1][0].toUpperCase()
-    if (item[0] === '0') {
+    let headStr = item.nickname[0].toUpperCase()
+    if (item.userId === '0') {
       opacity = 0.3
       headStr = '无'
     }
@@ -206,16 +210,16 @@ class AddFriend extends Component {
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
         activeOpacity={0.75}
-        disabled={item[0] === '0' ? true : false}
+        disabled={item.userId === '0' ? true : false}
         onPress={() => {
-          this.target = item //[id,name]
-          if (this.target[0] == this.user.userId) {
+          this.target = item
+          if (this.target.userId == this.user.userId) {
             Toast.show(getLanguage(this.language).Friends.ADD_SELF)
             return
           }
-          if (FriendListFileHandle.isFriend(this.target[0])) {
+          if (FriendListFileHandle.isFriend(this.target.userId)) {
             NavigationService.navigate('Chat', {
-              targetId: this.target[0],
+              targetId: this.target.userId,
             })
           } else {
             this.dialog.setDialogVisible(true)
@@ -226,7 +230,7 @@ class AddFriend extends Component {
           <Text style={styles.ITemHeadTextStyle}>{headStr}</Text>
         </View>
         <View style={[styles.ITemTextViewStyle, { opacity: opacity }]}>
-          <Text style={styles.ITemTextStyle}>{item[1]}</Text>
+          <Text style={styles.ITemTextStyle}>{item.nickname}</Text>
         </View>
       </TouchableOpacity>
     )

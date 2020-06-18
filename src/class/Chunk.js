@@ -1,7 +1,6 @@
 /**
  * 首页模块基础类
  */
-import { Platform } from 'react-native'
 import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
@@ -69,7 +68,8 @@ export default class Chunk {
         if (arrFile.length === 0) {
           NavigationService.navigate('Map3D', {})
         } else {
-          const name = 'OlympicGreen_示范数据'
+          // const name = 'OlympicGreen_示范数据'
+          const name = 'OlympicGreen'
           NavigationService.navigate('Map3D', { name })
         }
         break

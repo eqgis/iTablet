@@ -434,6 +434,7 @@ export default class MyDataPage extends Component {
         fileName + '.' + ext,
         onlineDataType,
       )
+      result && JSOnlineService.setDatasShareConfig(result, true)
     } else {
       result = false
     }
@@ -453,6 +454,7 @@ export default class MyDataPage extends Component {
         fileName + '.' + ext,
         onlineDataType,
       )
+      result && JSIPortalServce.setDatasShareConfig(result, true)
     } else {
       result = false
     }

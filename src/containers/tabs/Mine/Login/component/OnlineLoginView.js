@@ -1,17 +1,9 @@
 import * as React from 'react'
-import {
-  TextInput,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Keyboard,
-} from 'react-native'
-import { scaleSize } from '../../../../../utils/index'
-import styles from '../Styles'
+import { TextInput, Text, View, TouchableOpacity, Keyboard } from 'react-native'
+import styles from './styles'
 import NavigationService from '../../../../NavigationService'
-import color from '../../../../../styles/color'
 import { getLanguage } from '../../../../../language/index'
+import { scaleSize } from '../../../../../utils'
 
 export default class OnlineLoginView extends React.Component {
   props: {
@@ -33,49 +25,47 @@ export default class OnlineLoginView extends React.Component {
 
   renderInput = () => {
     return (
-      <View key={'email'} style={{ width: '70%' }}>
-        <TextInput
-          clearButtonMode={'while-editing'}
-          keyboardType={'email-address'}
-          placeholder={
-            getLanguage(this.props.language).Profile.ENTER_USERNAME_ALL
-          }
-          placeholderTextColor={'#A7A7A7'}
-          multiline={false}
-          defaultValue={this.userName || ''}
-          style={styles.textInputStyle}
-          onChangeText={text => {
-            this.userName = text
-          }}
-        />
-        <TextInput
-          clearButtonMode={'while-editing'}
-          secureTextEntry={true}
-          placeholder={getLanguage(this.props.language).Profile.ENTER_PASSWORD}
-          placeholderTextColor={'#A7A7A7'}
-          multiline={false}
-          password={true}
-          style={styles.textInputStyle}
-          defaultValue={this.password || ''}
-          onChangeText={text => {
-            this.password = text
-          }}
-        />
+      <View>
+        <View style={styles.inputBackgroud}>
+          <TextInput
+            clearButtonMode={'while-editing'}
+            keyboardType={'email-address'}
+            placeholder={getLanguage(this.props.language).Profile.USERNAME_ALL}
+            placeholderTextColor={'#A7A7A7'}
+            multiline={false}
+            defaultValue={this.userName || ''}
+            style={styles.textInputStyle}
+            onChangeText={text => {
+              this.userName = text
+            }}
+          />
+        </View>
+        <View style={styles.inputBackgroud}>
+          <TextInput
+            clearButtonMode={'while-editing'}
+            secureTextEntry={true}
+            placeholder={
+              getLanguage(this.props.language).Profile.ENTER_PASSWORD
+            }
+            placeholderTextColor={'#A7A7A7'}
+            multiline={false}
+            password={true}
+            style={styles.textInputStyle}
+            defaultValue={this.password || ''}
+            onChangeText={text => {
+              this.password = text
+            }}
+          />
+        </View>
       </View>
     )
   }
 
   renderRegister = () => {
     return (
-      <View style={styles.viewStyle}>
+      <View style={styles.registerContainerStyle}>
         <Text
-          style={{
-            paddingLeft: 5,
-            lineHeight: 40,
-            textAlign: 'left',
-            color: color.font_color_white,
-            fontSize: scaleSize(20),
-          }}
+          style={styles.registetrText}
           onPress={() => {
             // NavigationService.navigate('Register')
             NavigationService.navigate('Protocol', { type: 'Register' })
@@ -84,13 +74,7 @@ export default class OnlineLoginView extends React.Component {
           {getLanguage(this.props.language).Profile.REGISTER}
         </Text>
         <Text
-          style={{
-            paddingRight: 5,
-            lineHeight: 40,
-            textAlign: 'right',
-            color: color.font_color_white,
-            fontSize: scaleSize(20),
-          }}
+          style={styles.registetrText}
           onPress={() => {
             NavigationService.navigate('GetBack')
           }}
@@ -118,7 +102,7 @@ export default class OnlineLoginView extends React.Component {
           })
         }}
       >
-        <Text style={[styles.titleContainerStyle]}>
+        <Text style={[styles.buttonText]}>
           {getLanguage(this.props.language).Profile.LOGIN}
         </Text>
       </TouchableOpacity>
@@ -138,19 +122,18 @@ export default class OnlineLoginView extends React.Component {
       //   // }}
       //   behavior={this.state.behavior}
       // >
-      <ScrollView
-        style={{ marginTop: scaleSize(50) }}
-        keyboardDismissMode={'on-drag'}
-        keyboardShouldPersistTaps={'handled'}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.keyboardAvoidingStyle}>
+      <View style={{ flex: 1, alignItems: 'center', marginTop: scaleSize(10) }}>
+        <View
+          style={{
+            width: '75%',
+            alignItems: 'center',
+          }}
+        >
           {this.renderInput()}
-          {this.props.showRegister && this.renderRegister()}
           {this.renderLogin()}
         </View>
-      </ScrollView>
+        {this.props.showRegister && this.renderRegister()}
+      </View>
       // </KeyboardAvoidingView>
     )
   }

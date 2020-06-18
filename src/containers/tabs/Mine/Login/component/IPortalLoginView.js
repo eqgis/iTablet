@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native'
 import { Toast } from '../../../../../utils/index'
-import styles from '../Styles'
+import styles from './styles'
 import { getLanguage } from '../../../../../language/index'
 
 export default class IPortalLoginView extends React.Component {
@@ -77,20 +77,22 @@ export default class IPortalLoginView extends React.Component {
     return (
       <View style={styles.sectionViewStyle}>
         <View style={styles.inpuViewStyle}>
-          <TextInput
-            clearButtonMode={'while-editing'}
-            keyboardType={'default'}
-            placeholder={
-              getLanguage(this.props.language).Profile.ENTER_SERVER_ADDRESS
-            }
-            placeholderTextColor={'#A7A7A7'}
-            multiline={false}
-            defaultValue={this.iportalAddress || ''}
-            style={styles.textInputStyle}
-            onChangeText={text => {
-              this.iportalAddress = text
-            }}
-          />
+          <View style={styles.inputBackgroud}>
+            <TextInput
+              clearButtonMode={'while-editing'}
+              keyboardType={'default'}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_SERVER_ADDRESS
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              defaultValue={this.iportalAddress || ''}
+              style={styles.textInputStyle}
+              onChangeText={text => {
+                this.iportalAddress = text
+              }}
+            />
+          </View>
           <Text style={styles.textStyle}>
             {'Example: http://ip:port/iportal/web'}
           </Text>
@@ -104,7 +106,7 @@ export default class IPortalLoginView extends React.Component {
             this.goNext()
           }}
         >
-          <Text style={[styles.titleContainerStyle]}>
+          <Text style={[styles.buttonText]}>
             {getLanguage(global.language).Profile.NEXT}
           </Text>
         </TouchableOpacity>
@@ -116,35 +118,39 @@ export default class IPortalLoginView extends React.Component {
     return (
       <View style={styles.sectionViewStyle}>
         <View style={styles.inpuViewStyle}>
-          <TextInput
-            clearButtonMode={'while-editing'}
-            keyboardType={'default'}
-            placeholder={
-              getLanguage(this.props.language).Profile.ENTER_USERNAME2
-            }
-            placeholderTextColor={'#A7A7A7'}
-            multiline={false}
-            defaultValue={this.iportalUser || ''}
-            style={styles.textInputStyle}
-            onChangeText={text => {
-              this.iportalUser = text
-            }}
-          />
-          <TextInput
-            clearButtonMode={'while-editing'}
-            secureTextEntry={true}
-            placeholder={
-              getLanguage(this.props.language).Profile.ENTER_PASSWORD
-            }
-            placeholderTextColor={'#A7A7A7'}
-            multiline={false}
-            password={true}
-            style={styles.textInputStyle}
-            defaultValue={this.iportalPassword || ''}
-            onChangeText={text => {
-              this.iportalPassword = text
-            }}
-          />
+          <View style={styles.inputBackgroud}>
+            <TextInput
+              clearButtonMode={'while-editing'}
+              keyboardType={'default'}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_USERNAME2
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              defaultValue={this.iportalUser || ''}
+              style={styles.textInputStyle}
+              onChangeText={text => {
+                this.iportalUser = text
+              }}
+            />
+          </View>
+          <View style={styles.inputBackgroud}>
+            <TextInput
+              clearButtonMode={'while-editing'}
+              secureTextEntry={true}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_PASSWORD
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              password={true}
+              style={styles.textInputStyle}
+              defaultValue={this.iportalPassword || ''}
+              onChangeText={text => {
+                this.iportalPassword = text
+              }}
+            />
+          </View>
         </View>
         <TouchableOpacity
           accessible={true}
@@ -159,7 +165,7 @@ export default class IPortalLoginView extends React.Component {
             })
           }}
         >
-          <Text style={[styles.titleContainerStyle]}>
+          <Text style={[styles.buttonText]}>
             {/* 登录 */}
             {getLanguage(this.props.language).Profile.LOGIN}
           </Text>

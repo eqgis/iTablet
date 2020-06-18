@@ -149,11 +149,8 @@ export default class MapCut extends React.Component {
   cut = () => {
     (async function() {
       try {
-        if (
-          this.isCutting ||
-          !this.state.isLegalName ||
-          (this.state.isSaveAs && this.state.saveAsName === '')
-        )
+        let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
+        if (this.isCutting || !isLegalName)
           return
         this.isCutting = true
 

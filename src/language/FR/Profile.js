@@ -29,6 +29,7 @@ const Profile = {
   EMAIL_LOGIN: 'Connexion par e-mail',
   ENTER_EMAIL_OR_USERNAME: "Veuillez saisir votre adresse e-mail ou votre nom d'utilisateur",
   ENTER_MOBILE: 'Veuillez saisir votre numéro de mobile',
+  USERNAME_ALL: "numéro de mobile/e-mail/nom d'utilisateur",
   ENTER_USERNAME_ALL: "Veuillez saisir votre numéro de mobile, adresse e-mail ou votre nom d'utilisateur",
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
   REGISTER: "S'inscrire",

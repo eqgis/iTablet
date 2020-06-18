@@ -23,6 +23,7 @@ export default class ProjectionParameterSetPage extends Component {
     const { params } = this.props.navigation.state
     let _transMothodParameter = params.transMothodParameter
     this.cb = params && params.cb
+    this.clickAble = true // 防止重复点击
 
     this.state = {
       paraNumber: _transMothodParameter.paraNumber,
@@ -40,6 +41,15 @@ export default class ProjectionParameterSetPage extends Component {
   }
 
   confirm = () => {
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+    } else {
+      return
+    }
+
     if (this.cb && typeof this.cb === 'function') {
       this.ratitionDifferenceItem && this.ratitionDifferenceItem._blur()
       this.rotationXItem && this.rotationXItem._blur()

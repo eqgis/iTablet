@@ -18,6 +18,8 @@ export default class RegistrationDatasetPage extends Component {
     this.pageType = params && params.pageType //pageType等于1表示快速配准，否则是新建配准
     this.userName = params && params.userName
 
+    this.clickAble = true // 防止重复点击
+
     let title = ''
     this.state = {
       title,
@@ -181,8 +183,14 @@ export default class RegistrationDatasetPage extends Component {
     }
   }
 
-  exit() {
-    NavigationService.goBack()
+  exit = () => {
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+      NavigationService.goBack()
+    }
   }
   render() {
     return (

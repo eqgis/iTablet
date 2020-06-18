@@ -20,6 +20,7 @@ export default class RegistrationReferDatasetPage extends Component {
       title,
       dataSourceAndSets: [],
     }
+    this.clickAble = true // 防止重复点击
   }
 
   componentDidMount() {
@@ -159,7 +160,16 @@ export default class RegistrationReferDatasetPage extends Component {
     }
   }
 
-  exit() {
+  exit = () => {
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+    } else {
+      return
+    }
+
     NavigationService.goBack()
     NavigationService.goBack()
   }

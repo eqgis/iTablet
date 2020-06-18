@@ -34,6 +34,7 @@ export default class RegistrationExecutePage extends Component {
       registrationArithmetic: undefined, //配准算法
       registrationFileList: [], //配准信息文件列表
     }
+    this.clickAble = true // 防止重复点击
   }
 
   componentDidMount() {
@@ -143,6 +144,15 @@ export default class RegistrationExecutePage extends Component {
   }
 
   confirm = async () => {
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+    } else {
+      return
+    }
+
     //判断是否选择配准信息文件
     if (!this.state.registrationFile) {
       Toast.show(

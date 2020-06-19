@@ -164,7 +164,8 @@ const Profile = {
   CREATE: 'Créer',
   DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
   DATASET_BUILD_STATISTICS: 'Statistics Model',
-  TIME_SPEND_OPERATION: 'This operation will cost some time, would you like to continue?',
+  TIME_SPEND_OPERATION: 'This operation may take some time, would you like to continue?',
+  IMPORT_BUILD_PYRAMID: 'Do you want to build image pyramid(may take some time)？',
   BUILDING: 'Building',
   BUILD_SUCCESS: 'Build Sucessfully',
   BUILD_FAILED: 'Build Failed',

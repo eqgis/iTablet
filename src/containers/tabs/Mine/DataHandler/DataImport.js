@@ -33,6 +33,46 @@ async function importExternalData(user, item) {
   return result
 }
 
+async function importDataset(
+  type,
+  filePath,
+  datasourceItem,
+  importParams = {},
+) {
+  let params = {}
+  let name = filePath.substr(filePath.lastIndexOf('/') + 1)
+  name = name.split('.')[0]
+  switch (type) {
+    case 'kml':
+    case 'kmz':
+      params = {
+        datasetName: name,
+        importAsCAD: true,
+      }
+      break
+    case 'dwg':
+    case 'dxf':
+      params = {
+        inverseBlackWhite: false,
+        importAsCAD: true,
+      }
+      break
+    case 'gpx':
+      params = {
+        datasetName: name,
+      }
+      break
+    case 'tif':
+    case 'shp':
+    case 'mif':
+    case 'img':
+    default:
+      break
+  }
+  importParams = Object.assign(params, importParams)
+  return await _importDataset(type, filePath, datasourceItem, importParams)
+}
+
 async function importPlotLib(item) {
   try {
     return await SMap.importPlotLibData(item.filePath)
@@ -206,61 +246,61 @@ async function importSymbol(user, item) {
   return await _copyFile(item, userPath)
 }
 
-async function importTIF(filePath, datasourceItem) {
-  return await _importDataset('tif', filePath, datasourceItem)
-}
+// async function importTIF(filePath, datasourceItem) {
+//   return await _importDataset('tif', filePath, datasourceItem)
+// }
 
-async function importSHP(filePath, datasourceItem) {
-  return await _importDataset('shp', filePath, datasourceItem)
-}
+// async function importSHP(filePath, datasourceItem) {
+//   return await _importDataset('shp', filePath, datasourceItem)
+// }
 
-async function importMIF(filePath, datasourceItem) {
-  return await _importDataset('mif', filePath, datasourceItem)
-}
+// async function importMIF(filePath, datasourceItem) {
+//   return await _importDataset('mif', filePath, datasourceItem)
+// }
 
-async function importKML(filePath, datasourceItem) {
-  let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-  name = name.split('.')[0]
-  return await _importDataset('kml', filePath, datasourceItem, {
-    datasetName: name,
-    importAsCAD: true,
-  })
-}
+// async function importKML(filePath, datasourceItem) {
+//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
+//   name = name.split('.')[0]
+//   return await _importDataset('kml', filePath, datasourceItem, {
+//     datasetName: name,
+//     importAsCAD: true,
+//   })
+// }
 
-async function importKMZ(filePath, datasourceItem) {
-  let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-  name = name.split('.')[0]
-  return await _importDataset('kmz', filePath, datasourceItem, {
-    datasetName: name,
-    importAsCAD: true,
-  })
-}
+// async function importKMZ(filePath, datasourceItem) {
+//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
+//   name = name.split('.')[0]
+//   return await _importDataset('kmz', filePath, datasourceItem, {
+//     datasetName: name,
+//     importAsCAD: true,
+//   })
+// }
 
-async function importDWG(filePath, datasourceItem) {
-  return await _importDataset('dwg', filePath, datasourceItem, {
-    inverseBlackWhite: false,
-    importAsCAD: true,
-  })
-}
+// async function importDWG(filePath, datasourceItem) {
+//   return await _importDataset('dwg', filePath, datasourceItem, {
+//     inverseBlackWhite: false,
+//     importAsCAD: true,
+//   })
+// }
 
-async function importDXF(filePath, datasourceItem) {
-  return await _importDataset('dxf', filePath, datasourceItem, {
-    inverseBlackWhite: false,
-    importAsCAD: true,
-  })
-}
+// async function importDXF(filePath, datasourceItem) {
+//   return await _importDataset('dxf', filePath, datasourceItem, {
+//     inverseBlackWhite: false,
+//     importAsCAD: true,
+//   })
+// }
 
-async function importGPX(filePath, datasourceItem) {
-  let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-  name = name.split('.')[0]
-  return await _importDataset('gpx', filePath, datasourceItem, {
-    datasetName: name,
-  })
-}
+// async function importGPX(filePath, datasourceItem) {
+//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
+//   name = name.split('.')[0]
+//   return await _importDataset('gpx', filePath, datasourceItem, {
+//     datasetName: name,
+//   })
+// }
 
-async function importIMG(filePath, datasourceItem) {
-  return await _importDataset('img', filePath, datasourceItem)
-}
+// async function importIMG(filePath, datasourceItem) {
+//   return await _importDataset('img', filePath, datasourceItem)
+// }
 
 async function _importDataset(
   type,
@@ -368,6 +408,8 @@ function _getWorkspaceType(path) {
 
 export default {
   importExternalData,
+  importDataset,
+
   importPlotLib,
   importWorkspace,
   importWorkspace3D,
@@ -375,13 +417,13 @@ export default {
   importSCI,
   importColor,
   importSymbol,
-  importTIF,
-  importSHP,
-  importMIF,
-  importKML,
-  importKMZ,
-  importDWG,
-  importDXF,
-  importGPX,
-  importIMG,
+  // importTIF,
+  // importSHP,
+  // importMIF,
+  // importKML,
+  // importKMZ,
+  // importDWG,
+  // importDXF,
+  // importGPX,
+  // importIMG,
 }

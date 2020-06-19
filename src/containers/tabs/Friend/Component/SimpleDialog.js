@@ -27,6 +27,7 @@ export default class SimpleDialog extends PureComponent {
       dialogStyle: {},
       showTitleImage: true,
       confirmText: getLanguage(global.language).Friends.CONFIRM,
+      cancelText: getLanguage(global.language).Friends.CANCEL,
       renderCustomeView: undefined,
     }
   }
@@ -44,6 +45,7 @@ export default class SimpleDialog extends PureComponent {
     dialogStyle,
     showTitleImage,
     confirmText,
+    cancelText,
     renderCustomeView,
   }) => {
     let confirm, cancel
@@ -70,6 +72,9 @@ export default class SimpleDialog extends PureComponent {
       confirmText: confirmText
         ? confirmText
         : getLanguage(global.language).Friends.CONFIRM,
+      cancelText: cancelText
+        ? cancelText
+        : getLanguage(global.language).Friends.CANCEL,
       renderCustomeView: renderCustomeView,
     })
   }
@@ -108,7 +113,7 @@ export default class SimpleDialog extends PureComponent {
         ref={ref => (this.Dialog = ref)}
         type={'modal'}
         confirmBtnTitle={this.state.confirmText}
-        cancelBtnTitle={getLanguage(global.language).Friends.CANCEL}
+        cancelBtnTitle={this.state.cancelText}
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}
         opacity={1}

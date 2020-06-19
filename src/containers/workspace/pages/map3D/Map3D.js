@@ -608,8 +608,13 @@ export default class Map3D extends React.Component {
           bottom: 0,
           ...padding,
           backgroundColor: color.transOverlay,
+          flexDirection: 'row',
         }}
       >
+        <View style={styles.addAndSubText}>
+          <Text style={styles.subText}>{'－'}</Text>
+        </View>
+
         <PanResponderView
           onHandleMove={this._onHandleMove}
           onHandleMoveEnd={this._onHandleMoveEnd}
@@ -623,6 +628,10 @@ export default class Map3D extends React.Component {
             </View>
           )}
         </PanResponderView>
+
+        <View style={styles.addAndSubText}>
+          <Text style={styles.addText}>{'＋'}</Text>
+        </View>
       </View>
     )
   }

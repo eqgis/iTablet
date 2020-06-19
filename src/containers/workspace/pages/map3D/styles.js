@@ -88,4 +88,18 @@ export default StyleSheet.create({
     zIndex: zIndexLevel.FIVE,
     backgroundColor: '#rgba(0, 0, 0, 0.3)',
   },
+  addText: {
+    fontSize: setSpText(60),
+    color: color.blue1,
+    paddingRight: scaleSize(20),
+  },
+  subText: {
+    fontSize: setSpText(80),
+    color: color.blue1,
+    paddingLeft: scaleSize(20),
+  },
+  addAndSubText: {
+    height: scaleSize(60),
+    justifyContent: 'center',
+  },
 })

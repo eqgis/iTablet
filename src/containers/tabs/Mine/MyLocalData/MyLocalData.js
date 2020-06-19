@@ -335,82 +335,55 @@ export default class MyLocalData extends Component {
   }
 
   _onImportDataset = async type => {
+    let importDataset = async (datasourceItem, importParams = {}) => {
+      try {
+        this.onImportStart()
+        let result = await DataHandler.importDataset(
+          type,
+          this.itemInfo.item.filePath,
+          datasourceItem,
+          importParams,
+        )
+        Toast.show(
+          result
+            ? getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS
+            : getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT,
+        )
+      } catch (error) {
+        Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
+      } finally {
+        this.onImportEnd()
+      }
+    }
+
     NavigationService.navigate('MyDatasource', {
       title: getLanguage(this.props.language).Profile.DATA,
       getItemCallback: async ({ item }) => {
-        try {
-          NavigationService.goBack()
-          this.onImportStart()
-          let result
-          switch (type) {
-            case 'tif':
-              result = await DataHandler.importTIF(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'shp':
-              result = await DataHandler.importSHP(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'mif':
-              result = await DataHandler.importMIF(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'kml':
-              result = await DataHandler.importKML(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'kmz':
-              result = await DataHandler.importKMZ(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'dwg':
-              result = await DataHandler.importDWG(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'dxf':
-              result = await DataHandler.importDXF(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'gpx':
-              result = await DataHandler.importGPX(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            case 'img':
-              result = await DataHandler.importIMG(
-                this.itemInfo.item.filePath,
-                item,
-              )
-              break
-            default:
-              break
-          }
-          result
-            ? Toast.show(
-              getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS,
-            )
-            : Toast.show(
-              getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT,
-            )
-        } catch (error) {
-          Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-        } finally {
-          this.onImportEnd()
+        NavigationService.goBack()
+        if (type === 'tif' || type === 'mif' || type === 'img') {
+          global.SimpleDialog.set({
+            text: getLanguage(global.language).Profile.IMPORT_BUILD_PYRAMID,
+            confirmText: getLanguage(global.language).Prompt.YES,
+            cancelText: getLanguage(global.language).Prompt.NO,
+            confirmAction: async () => {
+              try {
+                GLOBAL.Loading.setLoading(
+                  true,
+                  getLanguage(global.language).Prompt.IMPORTING,
+                )
+                await importDataset(item, { buildPyramid: true })
+                GLOBAL.Loading.setLoading(false)
+              } catch (error) {
+                GLOBAL.Loading.setLoading(false)
+              }
+            },
+            cancelAction: () => {
+              importDataset(item)
+            },
+          })
+          global.SimpleDialog.setVisible(true)
+        } else {
+          importDataset(item)
         }
       },
     })

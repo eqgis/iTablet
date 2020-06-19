@@ -165,6 +165,7 @@ const Profile = {
   DATASET_BUILD_PYRAMID: '构建金字塔',
   DATASET_BUILD_STATISTICS: '生成统计模型',
   TIME_SPEND_OPERATION: '该操作较为耗时，是否继续？',
+  IMPORT_BUILD_PYRAMID: '是否构建影像金字塔（耗时操作）？',
   BUILDING: '构建中',
   BUILD_SUCCESS: '构建成功',
   BUILD_FAILED: '构建失败',

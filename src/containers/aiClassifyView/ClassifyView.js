@@ -226,11 +226,12 @@ export default class ClassifyView extends React.Component {
         .MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING,
     )
     const options = {
-      quality: 0.7,
+      quality: 1,
       base64: true,
       pauseAfterCapture: true,
       orientation: 'portrait',
       fixOrientation: true,
+      notCropImage: true,
     }
     let data = await this.camera.takePictureAsync(options)
     this.setState({

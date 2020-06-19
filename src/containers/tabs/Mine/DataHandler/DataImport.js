@@ -2,6 +2,37 @@ import { SMap, EngineType } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
+async function importExternalData(user, item) {
+  let type = item.fileType
+  let result = false
+  switch (type) {
+    case 'plotting':
+      result = await importPlotLib(item)
+      break
+    case 'workspace':
+      result = await importWorkspace(item)
+      break
+    case 'workspace3d':
+      result = await importWorkspace3D(user, item)
+      break
+    case 'datasource':
+      result = await importDatasource(user, item)
+      break
+    case 'sci':
+      result = await importSCI(user, item)
+      break
+    case 'color':
+      result = await importColor(user, item)
+      break
+    case 'symbol':
+      result = await importSymbol(user, item)
+      break
+    default:
+      break
+  }
+  return result
+}
+
 async function importPlotLib(item) {
   try {
     return await SMap.importPlotLibData(item.filePath)
@@ -22,7 +53,8 @@ async function importWorkspace(item) {
       server: filePath,
       type,
     }
-    return await SMap.importWorkspaceInfo(data)
+    let result = await SMap.importWorkspaceInfo(data)
+    return result ? result.length > 0 : false
   } catch (error) {
     return false
   }
@@ -335,6 +367,7 @@ function _getWorkspaceType(path) {
 }
 
 export default {
+  importExternalData,
   importPlotLib,
   importWorkspace,
   importWorkspace3D,

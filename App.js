@@ -1006,7 +1006,7 @@ class AppRoot extends Component {
               let dataList = await DataHandler.getExternalData(importPath)
               let results = []
               for(let i = 0; i < dataList.length; i++) {
-                results.push(await this._importExternalData(dataList[i]))
+                results.push(await DataHandler.importExternalData(this.props.user.currentUser, dataList[i]))
               }
               isImport = results.some(value => value === true)
             }
@@ -1033,38 +1033,6 @@ class AppRoot extends Component {
         {this.renderImportDialogChildren()}
       </Dialog>
     )
-  }
-
-  _importExternalData = async item => {
-    let user = this.props.user.currentUser
-    let type = item.fileType
-    let result = false
-    switch (type) {
-      case 'plotting':
-        result = await DataHandler.importPlotLib(item)
-        break
-      case 'workspace':
-        result = await DataHandler.importWorkspace(item)
-        break
-      case 'workspace3d':
-        result = await DataHandler.importWorkspace3D(user, item)
-        break
-      case 'datasource':
-        result = await DataHandler.importDatasource(user, item)
-        break
-      case 'sci':
-        result = await DataHandler.importSCI(user, item)
-        break
-      case 'color':
-        result = await DataHandler.importColor(user, item)
-        break
-      case 'symbol':
-        result = await DataHandler.importSymbol(user, item)
-        break
-      default:
-        break
-    }
-    return result
   }
 
   _renderProtocolDialog = () => {

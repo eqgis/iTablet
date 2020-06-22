@@ -59,7 +59,7 @@ class LicenseJoinCloud extends Component {
         text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
-          if (result !== false) {
+          if (result > -1) {
             cb()
           }
         },
@@ -81,7 +81,7 @@ class LicenseJoinCloud extends Component {
         text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_LOGOUT,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
-          if (result !== false) {
+          if (result > -1) {
             this.logout(true)
           }
         },

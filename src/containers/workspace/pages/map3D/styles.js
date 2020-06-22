@@ -89,17 +89,22 @@ export default StyleSheet.create({
     backgroundColor: '#rgba(0, 0, 0, 0.3)',
   },
   addText: {
-    fontSize: setSpText(60),
+    fontSize: scaleSize(30),
     color: color.blue1,
-    paddingRight: scaleSize(20),
   },
   subText: {
-    fontSize: setSpText(80),
+    fontSize: scaleSize(30),
     color: color.blue1,
-    paddingLeft: scaleSize(20),
+  },
+  textBackground: {
+    height: scaleSize(30),
+    width: scaleSize(30),
+    backgroundColor: color.white,
+    borderRadius: scaleSize(30),
+    justifyContent: 'center',
   },
   addAndSubText: {
-    height: scaleSize(60),
+    height: scaleSize(70),
     justifyContent: 'center',
   },
 })

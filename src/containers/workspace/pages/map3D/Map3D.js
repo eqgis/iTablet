@@ -612,7 +612,9 @@ export default class Map3D extends React.Component {
         }}
       >
         <View style={styles.addAndSubText}>
-          <Text style={styles.subText}>{'－'}</Text>
+          <View style={[styles.textBackground, { marginLeft: scaleSize(15) }]}>
+            <Text style={styles.subText}>{'－'}</Text>
+          </View>
         </View>
 
         <PanResponderView
@@ -630,7 +632,9 @@ export default class Map3D extends React.Component {
         </PanResponderView>
 
         <View style={styles.addAndSubText}>
-          <Text style={styles.addText}>{'＋'}</Text>
+          <View style={[styles.textBackground, { marginRight: scaleSize(15) }]}>
+            <Text style={styles.addText}>{'＋'}</Text>
+          </View>
         </View>
       </View>
     )

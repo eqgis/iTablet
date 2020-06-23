@@ -348,7 +348,7 @@ const initialState = fromJS({
   openOnlineMap: false,
   isAgreeToProtocol: false,
   navigationhistory: [],
-  mapColumnNavBar: true,
+  mapColumnNavBar: false,
   navBarDisplay: false,
 })
 

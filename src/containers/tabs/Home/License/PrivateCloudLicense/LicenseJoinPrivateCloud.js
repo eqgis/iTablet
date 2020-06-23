@@ -53,7 +53,7 @@ class LicenseJoinPrivateCloud extends Component {
         text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
           let result = await global.recycleCloudLicense()
-          if (result !== false) {
+          if (result > -1) {
             this.activate(true)
           }
         },

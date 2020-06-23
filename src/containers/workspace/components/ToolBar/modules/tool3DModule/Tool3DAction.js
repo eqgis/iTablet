@@ -309,7 +309,7 @@ function clearMeasure(type) {
         isFinished: true,
       })
       break
-    case ConstToolType.MAP3D_BOX_CLIP:
+    // case ConstToolType.MAP3D_BOX_CLIP:
     case ConstToolType.MAP3D_CROSS_CLIP:
     case ConstToolType.MAP3D_PLANE_CLIP:
     case ConstToolType.MAP3D_CLIP_SHOW:
@@ -324,6 +324,15 @@ function clearMeasure(type) {
       _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
         isFullScreen: false,
         // height: 0,
+      })
+      break
+    case ConstToolType.MAP3D_BOX_CLIP:
+      // 清除裁剪面 返回上个界面
+      _params.clearClip && _params.clearClip()
+      SScene.clipSenceClear()
+      GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
+      _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
+        isFullScreen: false,
       })
       break
     default:

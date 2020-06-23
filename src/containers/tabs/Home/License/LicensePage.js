@@ -97,7 +97,7 @@ class LicensePage extends Component {
             this._recycleCloudLicense()
           },
         })
-        return false
+        return -1
       }
       GLOBAL.Loading.setLoading(
         true,
@@ -110,12 +110,12 @@ class LicensePage extends Component {
       licenseId = licenseId || ''
       returnId = returnId || ''
       if (licenseId !== '' && returnId !== '') {
-        let username = userInfo.isEmail ? userInfo.email : userInfo.phone
-        let password = userInfo.isEmail ? userInfo.emailPwd : userInfo.phonePwd
+        let username = userInfo.userName
+        let password = userInfo.password
         await SMap.loginCloudLicense(username, password)
       }
       let days = await SMap.recycleCloudLicense(licenseId, returnId)
-      if (days === false) {
+      if (days < 0) {
         Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       } else {
         AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, '')
@@ -128,7 +128,7 @@ class LicensePage extends Component {
       this.getLicenseInfo()
       Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       GLOBAL.Loading.setLoading(false)
-      return false
+      return -1
     }
   }
 

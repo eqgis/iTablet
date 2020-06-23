@@ -75,6 +75,7 @@ export default class Layer3DManager extends Component {
           index={index}
           overlayView={this.OverlayView}
           setCurrentLayer3d={this.props.setCurrentLayer3d}
+          onRefresh={this.props.refreshLayer3dList}
         />
       )
     } else {

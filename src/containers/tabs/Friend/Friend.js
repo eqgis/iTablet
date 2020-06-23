@@ -1378,6 +1378,10 @@ export default class Friend extends Component {
       if (this.props.user.userType !== UserType.PROBATION_USER) {
         SOnlineService.logout()
       }
+      global.coworkMode = false
+      if (CoworkInfo.coworkId !== '') {
+        this.leaveCowork()
+      }
       this.props.closeWorkspace(async () => {
         SOnlineService.removeCookie()
         let customPath = await FileTools.appendingHomeDirectory(

@@ -1,6 +1,7 @@
 /**
  * 功能模块基础类
  */
+import { Platform } from 'react-native'
 import Chunk from './Chunk'
 import { MapTabs } from '../constants'
 export default class Module {
@@ -46,6 +47,63 @@ export default class Module {
           ]
           break
       }
+    }
+  }
+  
+  getExampleName = (language = '') => {
+    let _example, name = '', mapName = ''
+  
+    switch (language) {
+      case 'AR':
+        _example = this.example.AR
+        break
+      case 'CN':
+        _example = this.example.CN
+        break
+      case 'EN':
+        _example = this.example.EN
+        break
+      case 'FR':
+        _example = this.example.FR
+        break
+      case 'JA':
+        _example = this.example.JA
+        break
+      case 'TR':
+        _example = this.example.TR
+        break
+      default:
+        _example = this.example.DEFAULT
+    }
+    if (!_example) {
+      if (this.example.DEFAULT) {
+        _example = this.example.DEFAULT
+      } else {
+        return {
+          name,
+          mapName,
+        }
+      }
+    }
+    if (Platform.OS === 'ios' && _example.name_ios) {
+      name = _example.name_ios
+      mapName = _example.mapName_ios || name
+    } else if (Platform.OS === 'android' && _example.name_android) {
+      name = _example.name_android
+      mapName = _example.mapName_android || name
+    } else {
+      name = _example.name
+      mapName = _example.mapName || name
+    }
+  
+    if (name === '' || name === undefined) {
+      _example = _example.DEFAULT
+      name = _example.name
+      mapName = _example.mapName || name
+    }
+    return {
+      name,
+      mapName,
     }
   }
 

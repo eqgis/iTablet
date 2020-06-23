@@ -17,8 +17,18 @@ export default class MapEditConfig extends Module {
     super({
       key: MapEditConfig.key,
       example: {
-        name_en: 'LosAngeles',
-        name_cn: '湖南',
+        EN: {
+          name: 'PrecipitationOfUSA',
+          mapName: 'LosAngeles',
+        },
+        DEFAULT: {
+          name: '湖南',
+          mapName: '湖南',
+        },
+        JA: {
+          name: 'YamanashiMap_示范数据',
+          mapName: 'yamanashi',
+        },
       },
       functionModules: [
         startModule,
@@ -37,7 +47,7 @@ export default class MapEditConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_EDIT,
       moduleImage: getThemeAssets().nav.icon_map_edit,
       moduleImageTouch: getThemeAssets().nav.icon_map_edit_touch,
-      defaultMapName: language === 'CN' ? '湖南' : 'LosAngeles',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 3,
       licenceType: 0x01,

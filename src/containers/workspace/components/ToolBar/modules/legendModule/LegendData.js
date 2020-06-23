@@ -84,16 +84,10 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR,
       action: () => {
-        // let height
-        // let column
-        // if (_params.device.orientation.indexOf('PORTRAIT') >= 0) {
-        //   height = ConstToolType.THEME_HEIGHT[3]
-        //   column = 8
-        // } else {
-        //   height = ConstToolType.THEME_HEIGHT[2]
-        //   column = 16
-        // }
-        GLOBAL.toolBox && GLOBAL.toolBox.menu()
+        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+          type: ConstToolType.LEGEND,
+          selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR
+        })
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
             containerType: ToolbarType.colorTable,
@@ -197,8 +191,6 @@ function getMenuData(type) {
           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND_POSITION, {
             containerType: ToolbarType.picker,
             isFullScreen: false,
-            // buttons,
-            // height: Height.TABLE_ROW_HEIGHT_1 * 4,
             selectName: getLanguage(_params.language).Map_Main_Menu
               .LEGEND_POSITION,
             selectKey: getLanguage(_params.language).Map_Main_Menu

@@ -149,8 +149,7 @@ function menu(type, selectKey, params = {}) {
         type === ConstToolType.REGIONBORDERCOLOR_SET ||
         type === ConstToolType.TEXTCOLOR_SET ||
         type === ConstToolType.TEXTFONT ||
-        type === ConstToolType.LEGEND) &&
-        isBoxShow)
+        type === ConstToolType.LEGEND))
     ) {
       params.showBox && params.showBox()
     }

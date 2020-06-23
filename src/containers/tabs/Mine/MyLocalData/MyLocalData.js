@@ -360,7 +360,7 @@ export default class MyLocalData extends Component {
       title: getLanguage(this.props.language).Profile.DATA,
       getItemCallback: async ({ item }) => {
         NavigationService.goBack()
-        if (type === 'tif' || type === 'mif' || type === 'img') {
+        if (type === 'tif' || type === 'img') {
           global.SimpleDialog.set({
             text: getLanguage(global.language).Profile.IMPORT_BUILD_PYRAMID,
             confirmText: getLanguage(global.language).Prompt.YES,

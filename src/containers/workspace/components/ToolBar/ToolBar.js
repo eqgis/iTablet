@@ -475,14 +475,14 @@ export default class ToolBar extends React.Component {
     return ToolbarModule
   }
 
-  menu = () => {
+  menu = (params = {}) => {
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.menu
     ) {
       ToolbarModule.getData().actions.menu(
-        this.state.type,
-        this.state.selectKey,
+        params.type || this.state.type,
+        params.selectKey || this.state.selectKey,
         {
           showBox: height => {
             if (height !== undefined) this.getContentViewHeight(height)
@@ -516,14 +516,14 @@ export default class ToolBar extends React.Component {
     })
   }
 
-  showMenuBox = () => {
+  showMenuBox = (params = {}) => {
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.showMenuBox
     ) {
       ToolbarModule.getData().actions.showMenuBox(
-        this.state.type,
-        this.state.selectKey,
+        params.type || this.state.type,
+        params.selectKey || this.state.selectKey,
         {
           showBox: (params = {}) => {
             // this.isBoxShow = !this.isBoxShow

@@ -99,13 +99,13 @@ export default class ToolbarBottomButtons extends React.Component {
   /** 菜单 **/
   menu = () => {
     // 关系到上层组件state变化，交给上层处理
-    this.props.menu && this.props.menu(this.props.type)
+    this.props.menu && this.props.menu({type: this.props.type})
   }
 
   /** 菜单和Box切换显示 **/
   showMenuBox = () => {
     // 关系到上层组件state变化，交给上层处理
-    this.props.showMenuBox && this.props.showMenuBox(this.props.type)
+    this.props.showMenuBox && this.props.showMenuBox({type: this.props.type})
   }
 
   /** 显示属性 **/

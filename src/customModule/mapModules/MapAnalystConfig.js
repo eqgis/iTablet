@@ -18,7 +18,10 @@ export default class MapAnalystConfig extends Module {
     super({
       key: MapAnalystConfig.key,
       example: {
-        name: '数据分析数据',
+        DEFAULT: {
+          name: '数据分析数据',
+          mapName: 'TracingAnalysis',
+        },
       },
       functionModules: [
         startModule,
@@ -40,7 +43,7 @@ export default class MapAnalystConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_ANALYST,
       moduleImage: getThemeAssets().nav.icon_map_analysis,
       moduleImageTouch: getThemeAssets().nav.icon_map_analysis_touch,
-      defaultMapName: 'TracingAnalysis',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       mapType: this.mapType,

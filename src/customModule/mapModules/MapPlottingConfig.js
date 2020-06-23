@@ -18,7 +18,10 @@ export default class MapPlottingConfig extends Module {
     super({
       key: MapPlottingConfig.key,
       example: {
-        name: '福建_示范数据',
+        DEFAULT: {
+          name: '福建_示范数据',
+          mapName: 'TourLine',
+        },
       },
       functionModules: [
         startModule,
@@ -40,7 +43,7 @@ export default class MapPlottingConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_PLOTTING,
       moduleImage: getThemeAssets().nav.icon_map_plot,
       moduleImageTouch: getThemeAssets().nav.icon_map_plot_touch,
-      defaultMapName: 'TourLine',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       licenceType: 0x80,

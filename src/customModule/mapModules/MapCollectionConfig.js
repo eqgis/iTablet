@@ -18,7 +18,14 @@ export default class MapCollectionConfig extends Module {
     super({
       key: MapCollectionConfig.key,
       example: {
-        name: '地理国情普查_示范数据',
+        DEFAULT: {
+          name: '地理国情普查_示范数据',
+          mapName: '地理国情普查',
+        },
+        JA: {
+          name: 'KibanchizuKihonMinato_示范数据',
+          mapName: '基盤地図情報_基本項目',
+        },
       },
       functionModules: [
         startModule,
@@ -39,7 +46,7 @@ export default class MapCollectionConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_COLLECTION,
       moduleImage: getThemeAssets().nav.icon_map_collection,
       moduleImageTouch: getThemeAssets().nav.icon_map_collection_touch,
-      defaultMapName: '国情普查_示范数据',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       licenceType: 0x08,

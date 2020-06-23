@@ -192,27 +192,10 @@ class ModuleList extends Component {
   }
 
   getDownloadData = (language, item, index) => {
-    let example = this.props.mapModules.modules[index].example
+    let module = this.props.mapModules.modules[index]
+    let example = module.example
     let moduleKey = item.key
-    let getNameFromConfig = function(example) {
-      if (example) {
-        if (example.name) {
-          return example.name
-        }
-        if (language === 'CN' && example.name_cn) {
-          return example.name_cn
-        } else if (example.name_en) {
-          return example.name_en
-        }
-        if (Platform.OS === 'ios' && example.name_ios) {
-          return example.name_ios
-        } else if (Platform.OS === 'android' && example.name_android) {
-          return example.name_android
-        }
-      }
-      return ''
-    }
-    let fileName = getNameFromConfig(example)
+    let fileName = module.getExampleName(language).name
 
     let tmpCurrentUser = this.props.currentUser
 
@@ -310,7 +293,7 @@ class ModuleList extends Component {
           //   (this.moduleItems[index].getDialogCheck() ||
           //     this.moduleItems[index].getDownloading())
           // ) &&
-          this.props.ignoreDownloads.filter(item => item.id === downloadData.key).length === 0 &&
+          this.props.ignoreDownloads.filter(_item => _item.id === downloadData.key).length === 0 &&
           (!currentDownloadData || currentDownloadData && currentDownloadData.downloaded === undefined)
         ) {
           this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)

@@ -18,8 +18,18 @@ export default class MapThemeConfig extends Module {
     super({
       key: MapThemeConfig.key,
       example: {
-        name_en: 'PrecipitationOfUSA',
-        name_cn: '湖北',
+        EN: {
+          name: 'PrecipitationOfUSA',
+          mapName: 'PrecipitationOfUSA',
+        },
+        DEFAULT: {
+          name: '湖北',
+          mapName: 'LandBuild',
+        },
+        JA: {
+          name: 'YamanashiMap_示范数据',
+          mapName: '土地利用・植生図',
+        },
       },
       functionModules: [
         startModule,
@@ -40,8 +50,7 @@ export default class MapThemeConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_THEME,
       moduleImage: getThemeAssets().nav.icon_map_theme,
       moduleImageTouch: getThemeAssets().nav.icon_map_theme_touch,
-      defaultMapName:
-        GLOBAL.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 3,
       licenceType: 0x04,

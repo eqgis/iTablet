@@ -19,7 +19,10 @@ export default class MapNavigationConfig extends Module {
     super({
       key: MapNavigationConfig.key,
       example: {
-        name: 'Navigation_示范数据',
+        DEFAULT: {
+          name: 'Navigation_示范数据',
+          mapName: 'beijing',
+        },
       },
       functionModules: [
         startModule,
@@ -41,7 +44,7 @@ export default class MapNavigationConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_NAVIGATION,
       moduleImage: getThemeAssets().nav.icon_map_navigation,
       moduleImageTouch: getThemeAssets().nav.icon_map_navigation_touch,
-      defaultMapName: 'beijing',
+      defaultMapName: this.getExampleName(language).mapName,
       baseMapSource: { ...ConstOnline.Google },
       baseMapIndex: 1,
       licenceType: 0x20,

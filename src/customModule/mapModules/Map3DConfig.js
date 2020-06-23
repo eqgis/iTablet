@@ -17,7 +17,10 @@ export default class Map3DConfig extends Module {
       key: Map3DConfig.key,
       is3D: true,
       example: {
-        name: 'OlympicGreen_示范数据'
+        DEFAULT: {
+          name: 'OlympicGreen_示范数据',
+          mapName: 'OlympicGreen',
+        },
       },
       functionModules: [
         start3DModule,
@@ -36,7 +39,7 @@ export default class Map3DConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_3D,
       moduleImage: getThemeAssets().nav.icon_map_3d,
       moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
-      defaultMapName: language === 'CN' ? '湖南' : 'LosAngeles',
+      defaultMapName: this.getExampleName(language).mapName,
       mapType: this.mapType,
       licenceType: 0x02,
     })

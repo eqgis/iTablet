@@ -254,7 +254,7 @@ export default class EnterDatumPoint extends Component {
       GLOBAL.isswitch = false
       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
     }
-    NavigationService.goBack()
+    NavigationService.goBack('EnterDatumPoint')
     return true
   }
 

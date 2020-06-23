@@ -134,7 +134,7 @@ export default class LayerAttributeStatistic extends React.Component {
   }
 
   complete = () => {
-    NavigationService.goBack()
+    NavigationService.goBack('LayerAttributeStatistic')
   }
 
   _keyExtractor = item => item.key

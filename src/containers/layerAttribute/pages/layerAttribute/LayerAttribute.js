@@ -1135,32 +1135,9 @@ export default class LayerAttribute extends React.Component {
         cancelAction={() => {
           this.deleteFieldDialog.setDialogVisible(false)
         }}
-      >
-        <View
-          style={{
-            paddingTop: scaleSize(30),
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingHorizontal: scaleSize(10),
-          }}
-        >
-          <Text
-            style={{
-              fontSize: size.fontSize.fontSizeLg,
-              color: color.theme_white,
-              marginTop: scaleSize(5),
-              marginLeft: scaleSize(10),
-              marginRight: scaleSize(10),
-              textAlign: 'center',
-            }}
-          >
-            {getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_CONFIRM +
-              '\n\n' +
-              getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_TIPS}
-          </Text>
-        </View>
-      </Dialog>
+        title={getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_CONFIRM}
+        info={getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_TIPS}
+      />
     )
   }
 

@@ -62,7 +62,7 @@ async function showDatasetsList(type, filter = {}) {
         }
         list.push(item)
       })
-      if (list.length === 0) return
+      if (list.length === 0) continue
       data.push({
         title: datalist.datasource.alias,
         image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),

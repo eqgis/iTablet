@@ -670,7 +670,8 @@ export default class LayerAttribute extends React.Component {
     }
     let tempStr = fieldInfo.caption.toLowerCase()
     let isSystemField = tempStr.substring(0, 2) === 'sm'
-    if (!fieldInfo.isSystemField && !isSystemField) {
+    // 系统字段或者多媒体路径字段不能删除
+    if (!fieldInfo.isSystemField && !isSystemField && fieldInfo.name !== 'MediaFilePaths') {
       items.push({
         title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {

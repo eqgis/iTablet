@@ -19,6 +19,7 @@ export default class Layer3DItem extends Component {
     getlayer3dToolbar: () => {},
     setCurrentLayer3d: () => {},
     overlayView: () => {},
+    onRefresh: () => {},
   }
   constructor(props) {
     super(props)
@@ -66,6 +67,7 @@ export default class Layer3DItem extends Component {
       SScene.setVisible(this.props.item.name, newState.visible)
     }
     this.setState(newState)
+    this.props.onRefresh()
   }
 
   /*
@@ -177,6 +179,7 @@ const layer3dSettingCanNotSelect = param => [
 
   changeState = canSelectable => {
     this.setState({ selectable: canSelectable })
+    this.props.onRefresh()
   }
   getIconType = item => {
     let layerIcon

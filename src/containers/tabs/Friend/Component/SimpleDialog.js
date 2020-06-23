@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
   },
   promptTtile: {
     fontSize: scaleSize(24),
+    lineHeight: scaleSize(32),
     color: color.theme_white,
     marginTop: scaleSize(5),
     marginHorizontal: scaleSize(10),

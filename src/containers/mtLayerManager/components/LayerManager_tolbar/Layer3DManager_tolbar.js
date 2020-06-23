@@ -561,7 +561,12 @@ export default class LayerManager_tolbar extends React.Component {
   render() {
     let containerStyle = styles.fullContainer
     return (
-      <Animated.View style={[containerStyle, { bottom: this.state.bottom }]}>
+      <Animated.View
+        style={[
+          containerStyle,
+          { height: this.props.device.height, bottom: this.state.bottom },
+        ]}
+      >
         {
           <TouchableOpacity
             activeOpacity={1}

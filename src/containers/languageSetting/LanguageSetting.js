@@ -46,10 +46,6 @@ class LanguageSetting extends React.Component {
   getData = () => {
     let data = [
       {
-        key: option.auto,
-        title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
-      },
-      {
         key: option.CN,
         title: '中文',
       },
@@ -74,16 +70,25 @@ class LanguageSetting extends React.Component {
         title: '日本語',
       },
     ]
-    let newData = data
     let supportedLanguage = this.props.appConfig.supportLanguage
-    if (supportedLanguage && supportedLanguage.length > 0) {
-      newData = data.filter(value => {
-        return (
-          value.key === option.auto || supportedLanguage.indexOf(value.key) > -1
-        )
-      })
-    }
-    return newData
+    if (!supportedLanguage) supportedLanguage = []
+    const allSupportLanguage = data.map(item => {
+      return item.key
+    })
+    supportedLanguage = supportedLanguage.filter(item => {
+      return allSupportLanguage.indexOf(item) > -1
+    })
+    data = data.filter(value => {
+      return (
+        supportedLanguage.length === 0 ||
+        supportedLanguage.indexOf(value.key) > -1
+      )
+    })
+    data.unshift({
+      key: option.auto,
+      title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
+    })
+    return data
   }
 
   changeLanguage = async () => {

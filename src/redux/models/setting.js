@@ -91,6 +91,10 @@ export const setLanguage = (params, isConfig = false, cb = () => {}) => async (
   if (params === 'AUTO') {
     let supportLanguage = getState().appConfig.toJS().supportLanguage
     if (!supportLanguage) supportLanguage = []
+    const allSupportLanguage = ['CN', 'EN', 'TR', 'JA', 'FR', 'AR']
+    supportLanguage = supportLanguage.filter(item => {
+      return allSupportLanguage.indexOf(item) > -1
+    })
     let isSupported = language => {
       return (
         supportLanguage.length === 0 || supportLanguage.indexOf(language) > -1
@@ -100,6 +104,8 @@ export const setLanguage = (params, isConfig = false, cb = () => {}) => async (
     let language
     if (locale === 'zh-CN' && isSupported('CN')) {
       language = 'CN'
+    } else if (locale.indexOf('en-') === 0 && isSupported('EN')) {
+      language = 'EN'
     } else if (locale.indexOf('tr-') === 0 && isSupported('TR')) {
       language = 'TR'
     } else if (locale.indexOf('ja-') === 0 && isSupported('JA')) {
@@ -109,7 +115,7 @@ export const setLanguage = (params, isConfig = false, cb = () => {}) => async (
     } else if (locale.indexOf('ar-') === 0 && isSupported('AR')) {
       language = 'AR'
     } else {
-      language = 'EN'
+      language = supportLanguage.length > 0 ? supportLanguage[0] : 'EN'
     }
     await SLanguage.setLanguage(language)
     await dispatch({

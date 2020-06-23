@@ -140,7 +140,7 @@ const Prompt = {
   BATCH_DELETE_CONFIRM: '現在の選択データを削除しますか？',
 
   SELECT_AT_LEAST_ONE: '少なくとも1つのデータを削除してください',
-  DELETE_MAP_RELATE_DATA: 'データ削除は以下のマップに影響があります\n削除しますか？',
+  DELETE_MAP_RELATE_DATA: 'データ削除は以下のマップに影響があります。削除しますか？',
 
   LOG_IN: 'ログイン中',
   ENTER_MAP_NAME: 'マップ名を入力してください',

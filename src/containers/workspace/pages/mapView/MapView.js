@@ -3337,19 +3337,19 @@ export default class MapView extends React.Component {
         {/*/>*/}
         {/*)}*/}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {/* {global.isLicenseValid && this.state.showAIDetect && ( */}
-        <SMAIDetectView
-          ref={ref => (GLOBAL.SMAIDetectView = ref)}
-          style={
-            screen.isIphoneX() && {
-              paddingBottom: screen.getIphonePaddingBottom(),
+        {global.isLicenseValid && GLOBAL.Type === ChunkType.MAP_AR && (
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
+              }
             }
-          }
-          customStyle={this.state.showAIDetect ? null : styles.hidden}
-          onArObjectClick={this._onArObjectClick}
-          language={this.props.language}
-        />
-        {/* )} */}
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            onArObjectClick={this._onArObjectClick}
+            language={this.props.language}
+          />
+        )}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}

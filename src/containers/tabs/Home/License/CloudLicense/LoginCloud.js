@@ -10,7 +10,9 @@ import {
   setCloudLicenseUser,
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
-import { getThemeAssets } from '../../../../../assets'
+import { getPublicAssets } from '../../../../../assets'
+import { color } from '../../../../../styles'
+import Orientation from 'react-native-orientation'
 
 class LoginCloud extends Component {
   props: {
@@ -34,6 +36,13 @@ class LoginCloud extends Component {
 
   componentDidMount() {
     this.reLogin()
+    if (!global.isPad) {
+      Orientation.lockToPortrait()
+    }
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations()
   }
 
   reLogin = async () => {
@@ -233,10 +242,48 @@ class LoginCloud extends Component {
         }}
       >
         <Image
-          source={getThemeAssets().collection.icon_collection_change}
+          source={getPublicAssets().navigation.icon_increment_change_direction}
           style={{ width: scaleSize(size), height: scaleSize(size) }}
         />
       </TouchableOpacity>
+    )
+  }
+
+  renderLoginType = () => {
+    return (
+      <View
+        style={{
+          marginTop: scaleSize(30),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={[
+            {
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#505050',
+              borderRadius: scaleSize(75),
+              width: scaleSize(150),
+              height: scaleSize(150),
+            },
+          ]}
+        >
+          <Image
+            style={[
+              {
+                width: scaleSize(100),
+                height: scaleSize(100),
+              },
+            ]}
+            source={require('../../../../../assets/Mine/online_white.png')}
+          />
+        </View>
+        <Text style={{ fontSize: scaleSize(26), color: 'black' }}>
+          {'Online'}
+        </Text>
+      </View>
     )
   }
 
@@ -255,11 +302,16 @@ class LoginCloud extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Profile.LOGIN,
+          // title: getLanguage(global.language).Profile.LOGIN,
+          backImg: require('../../../../../assets/public/left_arrow.png'),
+          headerStyle: {
+            backgroundColor: color.contentColorWhite,
+          },
           navigation: this.props.navigation,
           headerRight: !this.state.reLogin && this.renderRight(),
         }}
       >
+        {!this.state.reLogin && this.renderLoginType()}
         {!this.state.reLogin && this.renderLogin()}
         {this.renderPopMenu()}
       </Container>

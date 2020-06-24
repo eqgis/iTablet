@@ -53,10 +53,17 @@ export default StyleSheet.create({
   addressView: {
     width: '100%',
     alignItems: 'center',
-    paddingTop: '20%',
+    paddingTop: scaleSize(150),
   },
-  inpuViewStyle: {
+  inputBackgroud: {
     width: '75%',
+    backgroundColor: '#EFEFEF',
+    height: scaleSize(90),
+    borderRadius: scaleSize(40),
+    paddingHorizontal: scaleSize(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: scaleSize(20),
   },
   textInputStyle: {
     width: '100%',
@@ -64,8 +71,8 @@ export default StyleSheet.create({
     fontSize: scaleSize(26),
     borderBottomColor: color.borderLight,
     color: 'black',
-    borderBottomWidth: 1,
     marginTop: 10,
+    textAlign: 'center',
   },
   connectStyle: {
     height: scaleSize(60),

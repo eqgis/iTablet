@@ -34,7 +34,7 @@ function pickerConfirm(item) {
     _params.setToolbarVisible(false)
     _params.existFullMap()
     SMap.setMapScale(1 / preScale)
-    NavigationService.navigate('LayerManager')
+    // NavigationService.navigate('LayerManager')
   }
 }
 

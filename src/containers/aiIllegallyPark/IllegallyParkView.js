@@ -96,7 +96,7 @@ export default class IllegallyParkView extends React.Component {
   }
 
   back = () => {
-    NavigationService.goBack()
+    NavigationService.goBack('IllegallyParkView')
     return true
   }
 

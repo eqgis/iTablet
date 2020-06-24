@@ -23,6 +23,8 @@ export default class Progress extends Component {
     progressAniDuration: PropTypes.number,
     //buffer动画时长
     bufferAniDuration: PropTypes.number,
+    //进度条高度
+    height: PropTypes.number,
   }
 
   static defaultProps = {
@@ -53,7 +55,7 @@ export default class Progress extends Component {
 
   _onLayout = ({
     nativeEvent: {
-      layout: { width, height },
+      layout: { width },
     },
   }) => {
     //防止多次调用,当第一次获取后,后面就不再去获取了
@@ -68,13 +70,13 @@ export default class Progress extends Component {
       //给progress控件设置高度
       progress.setNativeProps({
         style: {
-          height: height,
+          height: this.props.height,
         },
       })
       //给buffer控件设置高度
       buffer.setNativeProps({
         style: {
-          height: height,
+          height: this.props.height,
         },
       })
       //开始执行进度条动画
@@ -120,7 +122,11 @@ export default class Progress extends Component {
   render() {
     return (
       <View
-        style={[styles.container, this.props.style]}
+        style={[
+          styles.container,
+          this.props.style,
+          this.props.height >= 0 && {height: this.props.height},
+        ]}
         onLayout={this._onLayout}
       >
         <Animated.View
@@ -128,6 +134,7 @@ export default class Progress extends Component {
           style={{
             position: 'absolute',
             width: this._progressAni,
+            height: this.props.height,
             backgroundColor: this.props.progressColor,
           }}
         />
@@ -136,6 +143,7 @@ export default class Progress extends Component {
           style={{
             position: 'absolute',
             width: this._bufferAni,
+            height: this.props.height,
             backgroundColor: this.props.bufferColor,
           }}
         />

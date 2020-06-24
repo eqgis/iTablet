@@ -64,7 +64,7 @@ class ConnectServer extends Component {
   renderAddress = () => {
     return (
       <View style={styles.addressView}>
-        <View style={styles.inpuViewStyle}>
+        <View style={styles.inputBackgroud}>
           <TextInput
             clearButtonMode={'while-editing'}
             keyboardType={'default'}

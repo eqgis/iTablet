@@ -20,10 +20,17 @@ async function getData(type) {
       break
     case ConstToolType.LAYER_SETTING_IMAGE_STRETCH_TYPE:
       {
+        let mode = await SMap.getImageDisplayMode(_params.currentLayer.path)
         let stretchType = await SMap.getImageStretchType(
           _params.currentLayer.path,
         )
         let popData = Data.getStretchType()
+        //暂时屏蔽
+        if (mode === 1) {
+          popData = popData.filter(item => {
+            return item.value !== 3
+          })
+        }
         let currentItem
         popData.forEach(item => {
           if (item.value === stretchType) {
@@ -37,7 +44,7 @@ async function getData(type) {
             confirm={LayerSettingImageAction.setStretchType}
             cancel={LayerSettingImageAction.onPickerCancel}
             viewableItems={3}
-            initialKey={currentItem.key}
+            initialKey={currentItem && currentItem.key}
           />
         )
       }
@@ -45,7 +52,16 @@ async function getData(type) {
     case ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE:
       {
         let mode = await SMap.getImageDisplayMode(_params.currentLayer.path)
+        let stretchType = await SMap.getImageStretchType(
+          _params.currentLayer.path,
+        )
         let popData = Data.getDisplayMode()
+        //暂时屏蔽
+        if (stretchType === 3) {
+          popData = popData.filter(item => {
+            return item.value !== 1
+          })
+        }
         let currentItem
         popData.forEach(item => {
           if (item.value === mode) {
@@ -59,7 +75,7 @@ async function getData(type) {
             confirm={LayerSettingImageAction.setDisplayMode}
             cancel={LayerSettingImageAction.onPickerCancel}
             viewableItems={3}
-            initialKey={currentItem.key}
+            initialKey={currentItem && currentItem.key}
           />
         )
       }

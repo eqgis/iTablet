@@ -3,7 +3,7 @@
 import { StackActions, NavigationActions } from 'react-navigation'
 
 let _navigator
-let preRoute
+let tempRoute
 
 function getTopLevelNavigator() {
   return _navigator
@@ -15,8 +15,8 @@ function setTopLevelNavigator(navigatorRef) {
 
 function navigate(routeName, params) {
   (async function() {
-    if (routeName === preRoute) return
-    preRoute = routeName
+    if (routeName === tempRoute) return
+    tempRoute = routeName
     await _navigator.dispatch(
       NavigationActions.navigate({
         type: NavigationActions.NAVIGATE,
@@ -25,7 +25,7 @@ function navigate(routeName, params) {
       }),
     )
     setTimeout(() => {
-      preRoute = undefined
+      tempRoute = undefined
     }, 2000)
   })()
 }
@@ -78,13 +78,31 @@ function goBack(routeName, immediate) {
         }
       }
     }
-    if (routeName && !key) return
+    if (
+      routeName && !key ||
+      routeName !== undefined &&
+      routeName !== '' &&
+      routeName === tempRoute ||
+      tempRoute === 'temp'
+    ) {
+      return
+    } else if (routeName) {
+      tempRoute = routeName
+    } else {
+      tempRoute = 'temp'
+    }
+    
     await _navigator.dispatch(
       NavigationActions.back({
         key,
         immediate,
       }),
     )
+    if (tempRoute) {
+      setTimeout(() => {
+        tempRoute = undefined
+      }, 2000)
+    }
   })()
 }
 

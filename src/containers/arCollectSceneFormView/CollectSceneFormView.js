@@ -346,7 +346,7 @@ export default class CollectSceneFormView extends React.Component {
         },
       })
       await SCollectSceneFormView.closeCurrentDatasource()
-      NavigationService.goBack()
+      NavigationService.goBack('CollectSceneFormView')
       return true
     }
   }

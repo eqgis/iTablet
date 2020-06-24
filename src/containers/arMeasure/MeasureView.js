@@ -245,7 +245,7 @@ export default class MeasureView extends React.Component {
   confirm = () => {}
 
   back = () => {
-    NavigationService.goBack()
+    NavigationService.goBack('MeasureView')
     return true
   }
 

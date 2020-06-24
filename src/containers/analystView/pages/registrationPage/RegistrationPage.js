@@ -861,14 +861,11 @@ export default class RegistrationPage extends Component {
     return (
       <View style={[styles.container, { backgroundColor: color.transView }]}>
         <View
-          style={{
-            height: this.state.isShowDetail ? 0 : '100%',
-          }}
+          style={this.state.isShowDetail ? styles.hidden : { height: '100%' }}
         >
           <Container
-            // style={styles.container}
             style={{
-              height: this.state.isShowDetail ? 0 : '100%',
+              height: '100%',
             }}
             ref={ref => (this.container = ref)}
             showFullInMap={true}

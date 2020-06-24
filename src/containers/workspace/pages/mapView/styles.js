@@ -204,7 +204,7 @@ export default StyleSheet.create({
     marginRight: scaleSize(10),
     textAlign: 'center',
   },
-  promptTitleSmallText:{
+  promptTitleSmallText: {
     fontSize: size.fontSize.fontSizeLg,
     color: color.theme_white,
     marginTop: scaleSize(5),
@@ -249,27 +249,33 @@ export default StyleSheet.create({
     color: color.white,
     padding: scaleSize(10),
   },
-  incrementContent:{
-    width:scaleSize(500),
-    height:scaleSize(300),
-    backgroundColor:color.background,
-    borderRadius:5,
-    flexDirection:'row',
+  incrementContent: {
+    width: scaleSize(500),
+    height: scaleSize(300),
+    backgroundColor: color.background,
+    borderRadius: 5,
+    flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop:scaleSize(20),
+    paddingTop: scaleSize(20),
   },
-  incrementButton:{
-    width:scaleSize(200),
-    height:scaleSize(260),
-    flexDirection:'column',
+  incrementButton: {
+    width: scaleSize(200),
+    height: scaleSize(260),
+    flexDirection: 'column',
     justifyContent: 'space-around',
-    alignItems:'center',
+    alignItems: 'center',
   },
-  incrementImage:{
-    width:scaleSize(200),
-    height:scaleSize(200),
+  incrementImage: {
+    width: scaleSize(200),
+    height: scaleSize(200),
   },
   incrementText: {
     fontSize: scaleSize(20),
+  },
+  hidden: {
+    position: 'absolute',
+    left: -99999,
+    height: '100%',
+    width: '100%',
   },
 })

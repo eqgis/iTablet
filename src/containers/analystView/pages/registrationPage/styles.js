@@ -163,4 +163,10 @@ export default StyleSheet.create({
     textAlign: 'right',
     // borderRadius: scaleSize(5),
   },
+  hidden: {
+    position: 'absolute',
+    left: -99999,
+    height: '100%',
+    width: '100%',
+  },
 })

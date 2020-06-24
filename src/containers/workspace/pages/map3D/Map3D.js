@@ -885,10 +885,11 @@ export default class Map3D extends React.Component {
     return (
       <Progress
         ref={ref => (this.mProgress = ref)}
-        style={[styles.progressView, {
-          height: Platform.OS === 'ios' &&
-          this.props.device.orientation.indexOf('PORTRAIT') === 0 ? 20 : 8,
-        }]}
+        style={styles.progressView}
+        height={
+          Platform.OS === 'ios' &&
+          this.props.device.orientation.indexOf('PORTRAIT') === 0 ? 20 : 8
+        }
         progressAniDuration={0}
         progressColor={color.item_selected_bg}
       />

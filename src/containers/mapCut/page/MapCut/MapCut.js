@@ -84,8 +84,7 @@ export default class MapCut extends React.Component {
           datasources = datasources.filter(
             item =>
               !item.alias.match(reg) &&
-              item.engineType === EngineType.UDB &&
-            itemz,
+              item.engineType === EngineType.UDB
           )
           this.setState({
             datasources,

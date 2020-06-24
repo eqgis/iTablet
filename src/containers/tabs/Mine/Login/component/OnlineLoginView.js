@@ -40,6 +40,7 @@ export default class OnlineLoginView extends React.Component {
             }}
           />
         </View>
+        {global.isPad && <View style={{ width: '100%', height: 15 }} />}
         <View style={styles.inputBackgroud}>
           <TextInput
             clearButtonMode={'while-editing'}

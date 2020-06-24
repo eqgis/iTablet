@@ -1320,7 +1320,7 @@ export default class MapView extends React.Component {
     return arr
   }
 
-  back = () => {
+  back = async () => {
     if (!this.mapLoaded) return
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
@@ -1374,41 +1374,44 @@ export default class MapView extends React.Component {
     //     this.setLoading(false)
     //   }
     // }
-    SMap.mapIsModified().then(async result => {
-      if (result && !this.isExample) {
-        this.setSaveViewVisible(true, null, async () => {
-          this._removeGeometrySelectedListener()
-          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners()
-          }
-        })
-      } else {
-        try {
-          this.setLoading(
-            true,
-            getLanguage(this.props.language).Prompt.CLOSING,
-            //'正在关闭地图'
-          )
-          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners().then(() => {
-              SMap.clearPoint()
-              SMap.stopGuide()
-              this.props.setMap2Dto3D(false)
-            })
-          }
-          await this.props.closeMap()
-          await this._removeGeometrySelectedListener()
-          GLOBAL.Type = null
-          GLOBAL.clearMapData()
+    let result = await SMap.mapIsModified()
+    if (result && !this.isExample) {
+      this.setSaveViewVisible(true, null, async () => {
+        this.props.setCurrentAttribute({})
+        // this.setState({ showScaleView: false })
+        this._removeGeometrySelectedListener()
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+          this._removeNavigationListeners()
+        }
+      })
+    } else {
+      try {
+        this.setLoading(
+          true,
+          getLanguage(this.props.language).Prompt.CLOSING,
+          //'正在关闭地图'
+        )
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+          this._removeNavigationListeners().then(() => {
+            SMap.clearPoint()
+            SMap.stopGuide()
+            this.props.setMap2Dto3D(false)
+          })
+        }
+        await this.props.closeMap()
+        await this._removeGeometrySelectedListener()
+        await this.props.setCurrentAttribute({})
+        // this.setState({ showScaleView: false })
+        GLOBAL.Type = null
+        GLOBAL.clearMapData()
+        setTimeout(() => {
           this.setLoading(false)
           NavigationService.goBack()
-        } catch (e) {
-          this.setLoading(false)
-        }
+        }, 1000)
+      } catch (e) {
+        this.setLoading(false)
       }
-    })
-    this.props.setCurrentAttribute({})
-    this.setState({ showScaleView: false })
+    }
     // this.props.getAttributes({})
     return true
   }
@@ -2657,16 +2660,13 @@ export default class MapView extends React.Component {
     return (
       <Progress
         ref={ref => (this.mProgress = ref)}
-        style={[
-          styles.progressView,
-          {
-            height:
-              Platform.OS === 'ios' &&
-              this.props.device.orientation.indexOf('PORTRAIT') === 0
-                ? 20
-                : 8,
-          },
-        ]}
+        style={styles.progressView}
+        height={
+          Platform.OS === 'ios' &&
+          this.props.device.orientation.indexOf('PORTRAIT') === 0
+            ? 20
+            : 8
+        }
         progressAniDuration={0}
         progressColor={color.item_selected_bg}
       />

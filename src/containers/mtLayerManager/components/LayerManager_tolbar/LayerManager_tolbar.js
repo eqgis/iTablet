@@ -489,6 +489,7 @@ export default class LayerManager_tolbar extends React.Component {
       //'移除'
       (async function() {
         await SMap.removeLayer(this.state.layerData.path)
+        await SMap.refreshMap()
         await this.props.getLayers()
         await this._refreshParentList()
       }.bind(this)())

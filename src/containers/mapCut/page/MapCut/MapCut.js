@@ -83,7 +83,8 @@ export default class MapCut extends React.Component {
           let reg = /^Label_(.*)((#$)|(#_\d+$)|(##\d+$))/
           datasources = datasources.filter(
             item =>
-              !item.alias.match(reg) && item.engineType === EngineType.UDB,
+              !item.alias.match(reg) &&
+              item.engineType === EngineType.UDB
           )
           this.setState({
             datasources,
@@ -92,6 +93,7 @@ export default class MapCut extends React.Component {
         let _layers = await this.getAllLayers(layers)
         _layers = _layers.filter(item => {
           if (item.isVisible) {
+            if (item.type === DatasetType.Network) return false
             let data = this.state.extraData.get(item.name)
             if (!data || data.datasourceName === '') {
               data = {

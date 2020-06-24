@@ -287,7 +287,9 @@ export default class extends React.PureComponent {
   }
 
   _onWindowChanged = () => {
-    this.forceUpdate()
+    setTimeout(() => {
+      this.forceUpdate()
+    }, 100)
   }
 }
 

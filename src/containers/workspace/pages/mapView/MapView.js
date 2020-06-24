@@ -2663,7 +2663,9 @@ export default class MapView extends React.Component {
         style={styles.progressView}
         height={
           Platform.OS === 'ios' &&
-          this.props.device.orientation.indexOf('PORTRAIT') === 0 ? 20 : 8
+          this.props.device.orientation.indexOf('PORTRAIT') === 0
+            ? 20
+            : 8
         }
         progressAniDuration={0}
         progressColor={color.item_selected_bg}
@@ -2711,20 +2713,20 @@ export default class MapView extends React.Component {
           image={getThemeAssets().ar.switch_ar_light}
           onPress={() => {
             this.currentTime = new Date().getTime()
-            if (this.currentTime - this.lastClickTime < 1500) {
-              return
-            }
+            // if (this.currentTime - this.lastClickTime < 1500) {
+            //   return
+            // }
             this.lastClickTime = this.currentTime
-            this.container.setLoading(
-              true,
-              getLanguage(this.props.language).Prompt.LOADING,
-            )
-            setTimeout(() => {
-              this.container.setLoading(
-                false,
-                getLanguage(this.props.language).Prompt.LOADING,
-              )
-            }, 3000)
+            // this.container.setLoading(
+            //   true,
+            //   getLanguage(this.props.language).Prompt.LOADING,
+            // )
+            // setTimeout(() => {
+            //   this.container.setLoading(
+            //     false,
+            //     getLanguage(this.props.language).Prompt.LOADING,
+            //   )
+            // }, 3000)
             this.switchAr()
           }}
           activeOpacity={0.5}
@@ -3335,18 +3337,19 @@ export default class MapView extends React.Component {
         {/*/>*/}
         {/*)}*/}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {global.isLicenseValid && this.state.showAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
-              }
+        {/* {global.isLicenseValid && this.state.showAIDetect && ( */}
+        <SMAIDetectView
+          ref={ref => (GLOBAL.SMAIDetectView = ref)}
+          style={
+            screen.isIphoneX() && {
+              paddingBottom: screen.getIphonePaddingBottom(),
             }
-            onArObjectClick={this._onArObjectClick}
-            language={this.props.language}
-          />
-        )}
+          }
+          customStyle={this.state.showAIDetect ? null : styles.hidden}
+          onArObjectClick={this._onArObjectClick}
+          language={this.props.language}
+        />
+        {/* )} */}
         {this._renderAIDetectChange()}
         {/*{this._renderCheckAIDetec()}*/}
         {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}

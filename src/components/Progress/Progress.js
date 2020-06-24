@@ -125,7 +125,7 @@ export default class Progress extends Component {
         style={[
           styles.container,
           this.props.style,
-          this.props.height >= 0 && {height: this.props.height},
+          this.props.height >= 0 && { height: this.props.height },
         ]}
         onLayout={this._onLayout}
       >

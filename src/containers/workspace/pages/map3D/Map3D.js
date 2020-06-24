@@ -888,7 +888,9 @@ export default class Map3D extends React.Component {
         style={styles.progressView}
         height={
           Platform.OS === 'ios' &&
-          this.props.device.orientation.indexOf('PORTRAIT') === 0 ? 20 : 8
+          this.props.device.orientation.indexOf('PORTRAIT') === 0
+            ? 20
+            : 8
         }
         progressAniDuration={0}
         progressColor={color.item_selected_bg}

@@ -290,7 +290,8 @@ export default class Home extends Component {
 
   cancel = () => {
     let cancel = this.dialogCancel ? this.dialogCancel : () => {}
-    cancel && cancel(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
+    cancel &&
+      cancel(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
   }
 
   showUserPop = event => {
@@ -376,8 +377,8 @@ export default class Home extends Component {
         //{'取消'}
         // backgroundStyle={styles.dialogBackground}
         opacity={1}
-        opacityStyle={[styles.opacityView, { height: scaleSize(370) }]}
-        style={[styles.dialogBackground, { height: scaleSize(370) }]}
+        // opacityStyle={[styles.opacityView, { height: scaleSize(380) }]}
+        style={[styles.dialogBackground, { height: scaleSize(380) }]}
         cancelAction={this.cancel}
       >
         {this.renderDialogChildren()}

@@ -169,7 +169,13 @@ export default class CreateNavDataPage extends Component {
           GLOBAL.BUILD_NETWORK_LISTENER = SMap.addBuildNetworkListener({
             success: networkName => {
               if (networkName) {
-                Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+                setTimeout(
+                  () =>
+                    Toast.show(
+                      getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS,
+                    ),
+                  2000,
+                )
                 GLOBAL.BUILD_NETWORK_LISTENER.remove()
               }
             },

@@ -136,12 +136,12 @@ class AddFriend extends Component {
     }
     let messageStr = JSON.stringify(message) //message.toJSONString();
 
-    if (this.target[0] === this.user.userId) {
+    if (item.userId === this.user.userId) {
       Toast.show(getLanguage(this.language).Friends.ADD_SELF)
       return
     }
-    this.friend._sendMessage(messageStr, item[0], true)
-    AddFriend.acceptFriendAdd([this.target[0], this.target[1]], 2)
+    this.friend._sendMessage(messageStr, item.userId, true)
+    AddFriend.acceptFriendAdd([item.userId, item.nickname], 2)
   }
   renderSearchButton = () => {
     let text = this.state.text.trim()

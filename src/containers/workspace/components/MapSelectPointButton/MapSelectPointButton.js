@@ -114,7 +114,6 @@ export default class MapSelectPointButton extends React.Component {
 
   routeAnalyst = async () => {
     if (GLOBAL.STARTX !== undefined && GLOBAL.ENDX !== undefined) {
-      GLOBAL.TouchType = TouchType.NORMAL
       this.props.setLoading(
         true,
         getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING,

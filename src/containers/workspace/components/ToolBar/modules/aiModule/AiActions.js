@@ -16,6 +16,7 @@ function illegallyParkCollect() {
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (dataList.length > 0) {
       if (GLOBAL.showAIDetect) {
         GLOBAL.isswitch = true
@@ -98,6 +99,7 @@ function arMeasureCollect() {
     GLOBAL.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -156,6 +158,7 @@ function aiClassify() {
         (await FileTools.fileIsExist(this.dustbin_model)) &&
         (await FileTools.fileIsExist(this.dustbin_txt))
       if (isDustbin) {
+        GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
           GLOBAL.isswitch = true
           ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -252,6 +255,7 @@ function _downloadData(downloadData) {
 function aiDetect() {
   (async function() {
     const _params = ToolbarModule.getParams()
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -298,6 +302,7 @@ function polymerizeCollect() {
     // await SAIDetectView.setProjectionModeEnable(true)
     // await SAIDetectView.setDrawTileEnable(false)
     await SAIDetectView.setIsPolymerize(true)
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
     if (!GLOBAL.showAIDetect) {
       (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -317,6 +322,7 @@ function collectSceneForm() {
       return
     }
 
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()

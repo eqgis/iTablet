@@ -230,6 +230,7 @@ export default class MapView extends React.Component {
       canBeUndo: false,
       canBeRedo: false,
       showAIDetect: GLOBAL.Type === ChunkType.MAP_AR,
+      bGoneAIDetect: false,
       showRoadView: true,
       showArModeIcon: true,
       showIncrement: false,
@@ -2334,6 +2335,7 @@ export default class MapView extends React.Component {
         setInputDialogVisible={this.setInputDialogVisible}
         showMeasureResult={this.showMeasureResult}
         switchAr={this.switchAr}
+        removeAIDetect={this.removeAIDetect}
         {...this.props}
       />
     )
@@ -2692,6 +2694,12 @@ export default class MapView extends React.Component {
     }
   }
 
+  removeAIDetect = bGone => {
+    this.setState({
+      bGoneAIDetect: bGone,
+    })
+  }
+
   _renderArModeIcon = () => {
     let right
     if (
@@ -2727,6 +2735,11 @@ export default class MapView extends React.Component {
             //     getLanguage(this.props.language).Prompt.LOADING,
             //   )
             // }, 3000)
+            if (!this.state.showAIDetect) {
+              this.setState({
+                bGoneAIDetect: false,
+              })
+            }
             this.switchAr()
           }}
           activeOpacity={0.5}
@@ -3337,7 +3350,9 @@ export default class MapView extends React.Component {
         {/*/>*/}
         {/*)}*/}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {global.isLicenseValid && GLOBAL.Type === ChunkType.MAP_AR && (
+        {global.isLicenseValid &&
+          GLOBAL.Type === ChunkType.MAP_AR &&
+          !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
             style={

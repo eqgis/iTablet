@@ -100,6 +100,7 @@ export default class ToolBar extends React.Component {
     setMapNavigation: () => {},
     setMap2Dto3D: () => {},
     switchAr: () => {},
+    removeAIDetect: () => {},
     setOpenOnlineMap: () => {},
     downloads: Array,
     downloadFile: () => {},
@@ -227,6 +228,10 @@ export default class ToolBar extends React.Component {
     this.props.switchAr && this.props.switchAr()
   }
 
+  removeAIDetect = bGone => {
+    this.props.removeAIDetect && this.props.removeAIDetect(bGone)
+  }
+
   existFullMap = () => {
     this.props.existFullMap && this.props.existFullMap()
   }
@@ -309,7 +314,7 @@ export default class ToolBar extends React.Component {
       params.selectKey !== this.state.selectKey ||
       params.isTouchProgress !== this.state.isTouchProgress
     ) {
-      ;(async function() {
+      (async function() {
         let data = params.data
         let buttons = params.buttons
         let customView = params.customView
@@ -806,39 +811,36 @@ export default class ToolBar extends React.Component {
             : { bottom: this.state.bottom },
           (this.state.isFullScreen || this.state.isTouchProgress) &&
             this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
-              paddingTop: screen.isIphoneX()
-                ? screen.X_TOP + screen.X_BOTTOM
-                : Platform.OS === 'ios'
-                  ? 20
-                  : 0,
-            },
+            paddingTop: screen.isIphoneX()
+              ? screen.X_TOP + screen.X_BOTTOM
+              : Platform.OS === 'ios'
+                ? 20
+                : 0,
+          },
           size,
         ]}
         pointerEvents={'box-none'}
       >
-        {!this.state.isTouchProgress &&
-          !this.state.showMenuDialog && (
-            <View style={styles.themeoverlay} pointerEvents={'box-none'} />
-          )}
-        {this.state.isTouchProgress &&
-          this.state.isFullScreen && (
-            <TouchProgress
-              device={this.props.device}
-              selectName={this.state.selectName}
-              showMenu={() => {
-                // 智能配图选择器，唤起选择器菜单
-                if (
-                  this.state.type ===
-                  ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER
-                ) {
-                  this.showPicker()
-                  return
-                } else {
-                  this.menu()
-                }
-              }}
-            />
-          )}
+        {!this.state.isTouchProgress && !this.state.showMenuDialog && (
+          <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+        )}
+        {this.state.isTouchProgress && this.state.isFullScreen && (
+          <TouchProgress
+            device={this.props.device}
+            selectName={this.state.selectName}
+            showMenu={() => {
+              // 智能配图选择器，唤起选择器菜单
+              if (
+                this.state.type === ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER
+              ) {
+                this.showPicker()
+                return
+              } else {
+                this.menu()
+              }
+            }}
+          />
+        )}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.type === ConstToolType.MAP_TOOL_TAGGING_SETTING ? (
           <KeyboardAvoidingView

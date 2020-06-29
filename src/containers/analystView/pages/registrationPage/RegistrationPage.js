@@ -861,7 +861,11 @@ export default class RegistrationPage extends Component {
     return (
       <View style={[styles.container, { backgroundColor: color.transView }]}>
         <View
-          style={this.state.isShowDetail ? styles.hidden : { height: '100%' }}
+          style={{
+            position: 'absolute',
+            height: this.state.isShowDetail ? 100 : '100%',
+            width: '100%',
+          }}
         >
           <Container
             style={{

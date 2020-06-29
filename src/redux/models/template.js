@@ -144,8 +144,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
         data = {
           server: params.path,
           type,
-          name_for_map: params.mapName,
-          name_for_data: params.mapName,
+          mapName: params.mapName,
         }
       } else {
         data = { server: params.path, type }

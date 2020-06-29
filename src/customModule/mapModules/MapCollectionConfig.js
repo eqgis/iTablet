@@ -20,7 +20,7 @@ export default class MapCollectionConfig extends Module {
       example: {
         DEFAULT: {
           name: '地理国情普查_示范数据',
-          mapName: '地理国情普查',
+          mapName: '国情普查_示范数据',
         },
         JA: {
           name: 'KibanchizuKihonMinato_示范数据',

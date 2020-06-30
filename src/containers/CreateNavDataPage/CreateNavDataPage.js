@@ -150,7 +150,6 @@ export default class CreateNavDataPage extends Component {
           this.props.currentUser.userName +
           '/' +
           ConstPath.RelativePath.Datasource +
-          '/' +
           fileName +
           '.snm',
       )

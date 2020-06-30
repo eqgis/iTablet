@@ -99,7 +99,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
                     .setUseDeveloperSupport(getUseDeveloperSupport())
                     .setRedBoxHandler(getRedBoxHandler())
                     .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-                    .setUIImplementationProvider(getUIImplementationProvider())
+//                    .setUIImplementationProvider(getUIImplementationProvider())
                     .setJSIModulesPackage(getJSIModulePackage())
                     .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
 

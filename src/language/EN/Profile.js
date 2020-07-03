@@ -258,6 +258,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: 'Show details',
   LICENSE_QUERY_NONE: 'Unable to get license information',
   LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
+  LICENSE_EDUCATION: 'Education License',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'Education license connect fail',
   LICENSE_QUERY: 'Query License',
   LICENSE_QUERYING: 'Quering',
   LICENSE_QUERY_FAIL: 'Query failed. Please check the server setting',

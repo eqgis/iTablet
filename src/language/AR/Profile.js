@@ -258,6 +258,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: '显示详细信息',
   LICENSE_QUERY_NONE: '未查询到许可信息',
   LICENSE_PRIVATE_CLOUD_SERVER: '私有云许可地址',
+  LICENSE_EDUCATION: 'رخصة تعليمية',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'فشل اتصال الخدمة',
   LICENSE_QUERY: '查询许可',
   LICENSE_QUERYING: '查询中',
   LICENSE_QUERY_FAIL: '查询失败，请检查服务器设置',

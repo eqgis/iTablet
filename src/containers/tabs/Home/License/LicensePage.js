@@ -20,6 +20,7 @@ const LicenseType = {
   cloud: 1,
   privateCloud: 2,
   trial: 3,
+  education: 4, //教育许可
 }
 
 class LicensePage extends Component {

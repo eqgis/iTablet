@@ -17,6 +17,8 @@ import PropTypes from 'prop-types'
 import PoiData from './PoiData'
 import color from '../../styles/color'
 import { TouchType, ChunkType } from '../../constants'
+import LocateUtils from './LocateUtils'
+
 export default class PointAnalyst extends Component {
   props: {
     navigation: Object,
@@ -377,92 +379,19 @@ export default class PointAnalyst extends Component {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
-  getDistance = (p1, p2) => {
-    //经纬度差值转距离 单位 m
-    let R = 6371393
-    return Math.abs(
-      ((p2.x - p1.x) *
-        Math.PI *
-        R *
-        Math.cos((((p2.y + p1.y) / 2) * Math.PI) / 180)) /
-        180,
-    )
-  }
-
-  //属性排序
-  compare = prop => (a, b) => {
-    return a[prop] - b[prop]
-  }
-
   getSearchResult = params => {
-    let searchStr = ''
-    let keys = Object.keys(params)
-    keys.map(key => {
-      searchStr += `&${key}=${params[key]}`
-    })
-    let url = `http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
-    //console.warn(url)
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
-        } else {
-          let poiInfos = data.poiInfos
-          if (poiInfos.length < 10) {
-            this.radius = 50000
-            fetch(url.replace('radius=5000', 'radius=50000'))
-              .then(response => response.json())
-              .then(data2 => {
-                poiInfos = data2.poiInfos
-                let searchData = poiInfos.map(item => {
-                  return {
-                    pointName: item.name,
-                    x: item.location.x,
-                    y: item.location.y,
-                    address: item.address,
-                    distance: this.getDistance(item.location, this.location),
-                  }
-                })
-                searchData
-                  .sort(this.compare('distance'))
-                  .forEach((item, index) => {
-                    searchData[index].distance =
-                      item.distance > 1000
-                        ? (item.distance / 1000).toFixed(2) + 'km'
-                        : ~~item.distance + 'm'
-                  })
-                this.setState({
-                  searchData,
-                  poiInfos,
-                  showList: false,
-                })
-              })
-          } else {
-            let searchData = poiInfos.map(item => {
-              return {
-                pointName: item.name,
-                x: item.location.x,
-                y: item.location.y,
-                address: item.address,
-                distance: this.getDistance(item.location, this.location),
-              }
-            })
-            searchData.sort(this.compare('distance')).forEach((item, index) => {
-              searchData[index].distance =
-                item.distance > 1000
-                  ? (item.distance / 1000).toFixed(2) + 'km'
-                  : ~~item.distance + 'm'
-            })
-            this.setState({
-              searchData,
-              poiInfos,
-              showList: false,
-            })
-          }
-        }
+    LocateUtils.getSearchResult(params, this.location, res => {
+      this.setState({
+        searchData: res.searchData,
+        poiInfos: res.poiInfos,
+        showList: false,
       })
+      if (res && res.radius) {
+        this.radius = res.radius
+      }
+    })
   }
+
   renderSearchBar = () => {
     return (
       <SearchBar
@@ -553,28 +482,13 @@ export default class PointAnalyst extends Component {
     return (
       <TouchableOpacity
         onPress={async () => {
-          if (!this.is3D) {
-            let location = await SMap.getMapcenterPosition()
+          LocateUtils.SearchCategories({
+            ...item,
+            radius: this.radius,
+            is3D: this.is3D,
+          }, async () => {
             this.location = location
-            if (GLOBAL.PoiInfoContainer) {
-              GLOBAL.PoiInfoContainer.setState({
-                showList: true,
-                location: this.location,
-              })
-              GLOBAL.PoiInfoContainer.getSearchResult(
-                {
-                  keyWords: item.title,
-                  location: JSON.stringify(location),
-                  radius: this.radius,
-                },
-                () => {
-                  NavigationService.navigate('MapView')
-                  GLOBAL.PoiInfoContainer.setVisible(true)
-                  GLOBAL.PoiTopSearchBar.setVisible(true)
-                  GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.title })
-                },
-              )
-
+            if (!this.is3D) {
               if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
                 GLOBAL.TouchType = TouchType.NORMAL
                 await SMap.clearTrackingLayer()
@@ -585,15 +499,7 @@ export default class PointAnalyst extends Component {
                 })
               }
             }
-          } else {
-            let location = await SScene.getSceneCenter()
-            this.location = location
-            this.getSearchResult({
-              keyWords: item.title,
-              location: JSON.stringify(location),
-              radius: this.radius,
-            })
-          }
+          })
         }}
         style={styles.searchIconWrap}
       >

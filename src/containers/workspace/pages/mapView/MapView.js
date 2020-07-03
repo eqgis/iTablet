@@ -1288,39 +1288,6 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
-  renderHeaderBtns = () => {
-    if (this.isExample) return null
-    let arr = []
-    let headerBtnData = [
-      {
-        key: 'search',
-        image: require('../../../../assets/header/Frenchgrey/icon_search.png'),
-        action: () => {
-          this.toolBox.setVisible(true, 'list')
-        },
-      },
-      {
-        key: 'audio',
-        image: require('../../../../assets/header/Frenchgrey/icon_audio.png'),
-        action: () => {
-          this.toolBox.setVisible(true, 'table')
-        },
-      },
-    ]
-    headerBtnData.forEach(({ key, image, action }) => {
-      arr.push(
-        <MTBtn
-          key={key}
-          textColor={'white'}
-          size={MTBtn.Size.SMALL}
-          image={image}
-          onPress={action}
-        />,
-      )
-    })
-    return arr
-  }
-
   back = async () => {
     if (!this.mapLoaded) return
     // 优先处理其他界面跳转到MapView传来的返回事件
@@ -2560,7 +2527,7 @@ export default class MapView extends React.Component {
               image: getPublicAssets().common.icon_audio,
               action: () => {
                 // SSpeechRecognizer.start()
-                this.AudioDialog.setVisible(true)
+                GLOBAL.AudioDialog.setVisible(true)
               },
             }
             break
@@ -3296,7 +3263,6 @@ export default class MapView extends React.Component {
         headerProps={{
           title: this.state.mapTitle,
           navigation: this.props.navigation,
-          // headerRight: this.renderHeaderBtns(),
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
@@ -3504,7 +3470,7 @@ export default class MapView extends React.Component {
         {/*  </PopView>*/}
         {/*)}*/}
         <AudioDialog
-          ref={ref => (this.AudioDialog = ref)}
+          ref={ref => (GLOBAL.AudioDialog = ref)}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
           device={this.props.device}
           language={this.props.language}

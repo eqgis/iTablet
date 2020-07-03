@@ -381,9 +381,9 @@ async function create() {
           `${userPath +
             ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
         )
-        await SMap.importSymbolLibrary(fillLibPath) // 导入面符号库
-        await SMap.importSymbolLibrary(lineLibPath) // 导入线符号库
-        await SMap.importSymbolLibrary(markerLibPath) // 导入点符号库
+        await SMap.importSymbolLibrary(value, fillLibPath) // 导入面符号库
+        await SMap.importSymbolLibrary(value, lineLibPath) // 导入线符号库
+        await SMap.importSymbolLibrary(value, markerLibPath) // 导入点符号库
         // await ToolbarModule.getParams().setCurrentMap()
         // await SMap.removeAllLayer() // 移除所有图层
         // await SMap.closeDatasource(-1) // 关闭所有数据源

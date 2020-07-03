@@ -127,17 +127,19 @@ export default class TreeListItem extends React.Component {
             style={[styles.icon, this.props.iconStyle]}
           />
         )}
-        <Text
-          style={[
-            styles.title,
-            icon && { marginLeft: scaleSize(20) },
-            this.props.textColor && { color: this.props.textColor },
-            this.props.textSize && { color: this.props.textSize },
-          ]}
-        >
-          {this.props.data.name ||
-            this.props.data.$.code + ' ' + this.props.data.$.name}
-        </Text>
+        {(this.props.data.name || this.props.data.$) && (
+          <Text
+            style={[
+              styles.title,
+              icon && { marginLeft: scaleSize(20) },
+              this.props.textColor && { color: this.props.textColor },
+              this.props.textSize && { color: this.props.textSize },
+            ]}
+          >
+            {this.props.data.name ||
+              this.props.data.$.code + ' ' + this.props.data.$.name}
+          </Text>
+        )}
       </TouchableOpacity>
     )
   }

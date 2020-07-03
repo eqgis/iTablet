@@ -95,6 +95,18 @@ async function listAction(type, params = {}) {
         }
         _params.setToolbarVisible(false)
       })
+    } else if (
+      params.section &&
+      params.section.title === getLanguage(_params.language).Profile.SYMBOL
+    ) {
+      let filePath = GLOBAL.homePath + params.item.path
+      ToolbarModule.addData({
+        currentSymbolFile: filePath,
+        lastData: ToolbarModule.getData().data,
+      })
+      _params.setToolbarVisible(true, 'ADD_SYMBOL_PATH', {
+        containerType: ToolbarType.list,
+      })
     }
   } else if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
     // 数据集列表点击事件
@@ -112,32 +124,38 @@ async function listSelectableAction({ selectList }) {
   ToolbarModule.addData({ selectList })
 }
 
-/**
- * 返回从添加数据集列表->数据源和地图列表
- */
-function toolbarBack() {
+function toolbarBack(type) {
   const _params = ToolbarModule.getParams()
   if (!_params) return
-  const _data = ToolbarModule.getData()
-  const lastData = _data.lastData || {}
-  const { selectList } = _data
-  _params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
-    isFullScreen: true,
-    isTouchProgress: false,
-    showMenuDialog: false,
-    containerType: ToolbarType.list,
-    data: lastData.data,
-    buttons: lastData.buttons,
-    // height: _data.height,
-  })
+  if (type === 'ADD_SYMBOL_SYMBOLS') {
+    ToolbarModule.addData({
+      currentSymbolPath: '',
+    })
+    _params.setToolbarVisible(true, 'ADD_SYMBOL_PATH', {
+      containerType: ToolbarType.list,
+    })
+  } else {
+    const _data = ToolbarModule.getData()
+    const lastData = _data.lastData || {}
+    const { selectList } = _data
+    _params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
+      isFullScreen: true,
+      isTouchProgress: false,
+      showMenuDialog: false,
+      containerType: ToolbarType.list,
+      data: lastData.data,
+      buttons: lastData.buttons,
+      // height: _data.height,
+    })
 
-  ToolbarModule.setData({
-    type: ConstToolType.MAP_ADD,
-    getData: AddData.getData,
-    data: lastData,
-    actions,
-    selectList,
-  })
+    ToolbarModule.addData({
+      type: ConstToolType.MAP_ADD,
+      getData: AddData.getData,
+      data: lastData,
+      actions,
+      selectList,
+    })
+  }
 }
 
 async function commit() {
@@ -192,10 +210,28 @@ async function commit() {
   }
 }
 
+let onSelectPath = path => {
+  const _params = ToolbarModule.getParams()
+  let { currentSymbolPath } = ToolbarModule.getData()
+  if (!currentSymbolPath) {
+    currentSymbolPath = ''
+  }
+  let symbolPath = currentSymbolPath + '/' + path
+  ToolbarModule.addData({
+    currentSymbolPath: symbolPath,
+  })
+
+  _params.setToolbarVisible(true, 'ADD_SYMBOL_SYMBOLS', {
+    containerType: ToolbarType.symbol,
+  })
+}
+
 const actions = {
   listAction,
   listSelectableAction,
   toolbarBack,
   commit,
+
+  onSelectPath,
 }
 export default actions

@@ -27,6 +27,7 @@ import {
   topoEditModule,
   layerVisibleScaleModule,
   layerSettingImageModule,
+  addModule,
 } from '../modules'
 import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
 import ToolBarHeight from './ToolBarHeight'
@@ -92,7 +93,9 @@ function getToolbarSize(type, additional = {}) {
 
 function getModule(type, params = {}) {
   let module
-  if (
+  if (type === 'ADD_SYMBOL_PATH' || type === 'ADD_SYMBOL_SYMBOLS') {
+    module = addModule()
+  } else if (
     type === ConstToolType.MAP_SYMBOL ||
     type === ConstToolType.MAP_COLLECTION_POINT ||
     type === ConstToolType.MAP_COLLECTION_LINE ||

@@ -11,9 +11,10 @@ import {
   SMap,
   SScene,
 } from 'imobile_for_reactnative'
-import { AudioKeywords, ChunkType } from '../constants'
-import { getLanguage } from '../language'
-import { Toast } from '.'
+import { AudioKeywords, ChunkType } from '../../constants/index'
+import { getLanguage } from '../../language/index'
+import { Toast } from '../index'
+import AudioSearch from './AudioSearch'
 
 const { keywords } = AudioKeywords
 // let workspace
@@ -63,31 +64,6 @@ function analyst(content = '') {
     }
   }
   switch (value) {
-    // case keywords.Baidu:
-    //   GLOBAL.AudioDialog.setVisible(false)
-    //   goToMapView('Baidu')
-    //   break
-    // case keywords.Google:
-    //   GLOBAL.AudioDialog.setVisible(false)
-    //   goToMapView('Google')
-    //   break
-    // case keywords.OSM:
-    //   GLOBAL.AudioDialog.setVisible(false)
-    //   goToMapView('OSM')
-    //   break
-    // case keywords.TD:
-    //   GLOBAL.AudioDialog.setVisible(false)
-    //   goToMapView('TD')
-    //   break
-    // case keywords.THEME:
-    //   index = getIndex(content)
-    //   if (index >= 0) {
-    //     type = getThemeType(content)
-    //     setThemeByIndex(index, type)
-    //   } else {
-    //     openThemeByLayer(obj.layer)
-    //   }
-    //   break
     case keywords.LOCATION:
       (async function() {
         if (GLOBAL.Type === ChunkType.MAP_3D) {
@@ -114,6 +90,7 @@ function analyst(content = '') {
       SMap.zoom(0.5)
       break
   }
+  AudioSearch.search(content)
 }
 
 // function getIndex(content) {

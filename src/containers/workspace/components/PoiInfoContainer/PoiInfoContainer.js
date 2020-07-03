@@ -20,6 +20,7 @@ import Toast from '../../../../utils/Toast'
 import { getLanguage } from '../../../../language'
 import { ChunkType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
+import LocateUtils from '../../../pointAnalyst/LocateUtils'
 
 export default class PoiInfoContainer extends React.PureComponent {
   props: {
@@ -230,82 +231,23 @@ export default class PoiInfoContainer extends React.PureComponent {
 
   //online返回存在的缺陷，没有直接返回楼层，地址中包含有楼层，但格式不统一，无法拿到，后续导航无法到正确楼层
   getSearchResult = (params, cb) => {
-    let location = this.state.location
-    let searchStr = ''
-    let keys = Object.keys(params)
-    keys.map(key => {
-      searchStr += `&${key}=${params[key]}`
-    })
-    let url = `http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
-    fetch(url)
-      .then(response => response.json())
-      .then(async data => {
-        if (data.error) {
-          Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
-        } else {
-          let poiInfos = data.poiInfos
-          if (poiInfos.length < 10 && url.indexOf('radius=5000') !== -1) {
-            url = url.replace('radius=5000', 'radius=50000')
-            fetch(url)
-              .then(response => response.json())
-              .then(async data => {
-                if (data.error || data.poiInfos.length === 0) {
-                  Toast.show(
-                    getLanguage(global.language).Prompt.NO_SEARCH_RESULTS,
-                  )
-                } else {
-                  let poiInfos = data.poiInfos
-                  let resultList = poiInfos.map(item => {
-                    return {
-                      pointName: item.name,
-                      x: item.location.x,
-                      y: item.location.y,
-                      address: item.address,
-                      distance: this.getDistance(item.location, location),
-                    }
-                  })
-                  resultList
-                    .sort(this.compare('distance'))
-                    .forEach((item, index) => {
-                      resultList[index].distance =
-                        item.distance > 1000
-                          ? (item.distance / 1000).toFixed(2) + 'km'
-                          : ~~item.distance + 'm'
-                    })
-                  this.setState(
-                    { resultList, radius: 50000, showList: true },
-                    async () => {
-                      this.show()
-                      await SMap.addCallouts(resultList)
-                      cb && cb()
-                    },
-                  )
-                }
-              })
-          } else {
-            let resultList = poiInfos.map(item => {
-              return {
-                pointName: item.name,
-                x: item.location.x,
-                y: item.location.y,
-                address: item.address,
-                distance: this.getDistance(item.location, location),
-              }
-            })
-            resultList.sort(this.compare('distance')).forEach((item, index) => {
-              resultList[index].distance =
-                item.distance > 1000
-                  ? (item.distance / 1000).toFixed(2) + 'km'
-                  : ~~item.distance + 'm'
-            })
-            this.setState({ resultList, showList: true }, async () => {
-              this.show()
-              await SMap.addCallouts(resultList)
-              cb && cb()
-            })
-          }
+    LocateUtils.getSearchResult(params, this.state.location, data => {
+      if (data) {
+        let newState = {resultList: data.resultList, radius: 50000, showList: true}
+        if (data.radius !== undefined) {
+          newState.radius = data.radius
         }
-      })
+        this.setState(newState,
+          async () => {
+            this.show()
+            await SMap.addCallouts(data.resultList)
+            cb && cb(data)
+          },
+        )
+      } else {
+        cb && cb()
+      }
+    })
   }
 
   //搜索结果列表点击事件

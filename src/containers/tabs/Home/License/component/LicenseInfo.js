@@ -11,6 +11,7 @@ const LicenseType = {
   cloud: 1,
   privateCloud: 2,
   trial: 3,
+  education: 4, //教育许可
 }
 
 export default class LicenseInfo extends Component {
@@ -155,6 +156,8 @@ export default class LicenseInfo extends Component {
     } else if (licenseType === LicenseType.privateCloud) {
       licenseTypeTitle = getLanguage(global.language).Profile
         .LICENSE_PRIVATE_CLOUD
+    } else if (licenseType === LicenseType.education) {
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_EDUCATION
     } else if (licenseType === LicenseType.none) {
       licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_NONE
     }

@@ -258,6 +258,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: '詳細の表示',
   LICENSE_QUERY_NONE: 'ライセンス情報が見つかりませんでした',
   LICENSE_PRIVATE_CLOUD_SERVER: 'プライベートクラウドサーバーアドレス',
+  LICENSE_EDUCATION: '教育ライセンス',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'サービス接続に失敗しました',
   LICENSE_QUERY: 'ライセンス取得',
   LICENSE_QUERYING: '取得中',
   LICENSE_QUERY_FAIL: '取得に失敗しました。サーバの設定を確認してください',

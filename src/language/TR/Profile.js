@@ -258,6 +258,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: 'detayları göster',
   LICENSE_QUERY_NONE: 'Lisans Sorgu Başarısız',
   LICENSE_PRIVATE_CLOUD_SERVER: 'özel bulut sunucu',
+  LICENSE_EDUCATION: 'Eğitim lisansı',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'Hizmet bağlantısı başarısız oldu',
   LICENSE_QUERY: 'Sorgu',
   LICENSE_QUERYING: 'Sorgu',
   LICENSE_QUERY_FAIL: 'Sorgu başarısız, ',

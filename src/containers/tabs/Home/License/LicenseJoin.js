@@ -98,6 +98,17 @@ class LicenseJoin extends Component {
     }
   }
 
+  _checkEdutionLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 4
+    ) {
+      SMap.closeEduLicense()
+    }
+  }
+
   reloadLocalLicense = async (confirm = false) => {
     try {
       let serialNumber = await SMap.initSerialNumber('')
@@ -107,6 +118,7 @@ class LicenseJoin extends Component {
           return
         }
         this._checkPrivateCloudLicense()
+        this._checkEdutionLicense()
         GLOBAL.Loading.setLoading(
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
@@ -149,6 +161,7 @@ class LicenseJoin extends Component {
           return
         }
         this._checkPrivateCloudLicense()
+        this._checkEdutionLicense()
         GLOBAL.Loading.setLoading(
           true,
           global.language === 'CN' ? '许可申请中...' : 'Applying',

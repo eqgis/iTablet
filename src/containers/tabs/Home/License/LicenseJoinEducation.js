@@ -13,20 +13,23 @@ import { Toast } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { setLicenseInfo } from '../../../../redux/models/license'
+import {
+  setLicenseInfo,
+  setEducationServer,
+} from '../../../../redux/models/license'
 
 class LicenseJoinEducation extends Component {
   props: {
     navigation: Object,
     licenseInfo: Object,
-    privateLicenseServer: String,
-    setPrivateLicenseServer: () => {},
+    educationServer: String,
+    setEducationServer: () => {},
     setLicenseInfo: () => {},
   }
 
   constructor(props) {
     super(props)
-    this.server = this.props.privateLicenseServer || ''
+    this.server = this.props.educationServer || ''
   }
 
   _checkPrivateCloudLicense = () => {
@@ -68,11 +71,8 @@ class LicenseJoinEducation extends Component {
         Toast.show(getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS)
         return
       }
-      if (
-        this.server.indexOf('ws://') !== 0 &&
-        this.server.indexOf('http') !== 0
-      ) {
-        this.server = 'ws://' + this.server
+      if (this.server.indexOf('http') !== 0) {
+        this.server = 'https://' + this.server
       }
       let bConnect = await SMap.checkConnectEduLicense(this.server)
 
@@ -113,6 +113,7 @@ class LicenseJoinEducation extends Component {
         })
 
         let info = await SMap.getEnvironmentStatus()
+        this.props.setEducationServer(this.server)
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(2)
       } else {
@@ -232,10 +233,12 @@ class LicenseJoinEducation extends Component {
 
 const mapStateToProps = state => ({
   licenseInfo: state.license.toJS().licenseInfo,
+  educationServer: state.license.toJS().educationServer,
 })
 
 const mapDispatchToProps = {
   setLicenseInfo,
+  setEducationServer,
 }
 export default connect(
   mapStateToProps,

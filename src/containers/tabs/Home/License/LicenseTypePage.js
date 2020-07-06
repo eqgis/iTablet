@@ -14,6 +14,7 @@ import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
+import { Login } from '../../Mine'
 
 const LicenseType = {
   local: 0,
@@ -77,7 +78,7 @@ class LicenseTypePage extends Component {
         type: LicenseType.trial,
       },
     ]
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === 'android') {
       data.splice(3, 1)
     }
     return data

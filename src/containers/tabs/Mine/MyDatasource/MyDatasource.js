@@ -5,6 +5,7 @@ import { getLanguage } from '../../../../language/index'
 import { ConstPath } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { SMap, EngineType } from 'imobile_for_reactnative'
+import { Toast } from '../../../../utils'
 
 class MyDatasource extends MyDataPage {
   constructor(props) {
@@ -131,6 +132,10 @@ class MyDatasource extends MyDataPage {
   ]
 
   onItemPress = info => {
+    if (info?.item.isDirectory) {
+      Toast.show(global.language === 'CN' ? 'not UDB data source' : '')
+      return
+    }
     this.itemInfo = info
     this._openDatasource()
   }

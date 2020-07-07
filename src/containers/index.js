@@ -19,6 +19,7 @@ import {
   MyTemplate,
   MyColor,
   MyApplet,
+  MyAIModel,
   Personal,
   ToggleAccount,
   Setting,
@@ -613,6 +614,13 @@ export default function(appConfig) {
       },
       MyApplet: {
         screen: MyApplet,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      MyAIModel: {
+        screen: MyAIModel,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

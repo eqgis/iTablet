@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: '设置',
   COLOR_SCHEME: '色带',
   TEMPLATE: '模板',
+  AIMODEL: 'AI模型',
   COLLECTION_TEMPLATE: '采集模板',
   PLOTTING_TEMPLATE: '标绘模板',
   NAVIGATION: '导航',

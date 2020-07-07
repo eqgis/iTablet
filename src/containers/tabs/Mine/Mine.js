@@ -252,6 +252,16 @@ export default class Mine extends Component {
               }),
           })
           break
+        case 'AIModel':
+          data.push({
+            title: getLanguage(this.props.language).Profile.AIMODEL,
+            image: getThemeAssets().find.app,
+            onClick: () =>
+              NavigationService.navigate('MyAIModel', {
+                title: getLanguage(this.props.language).Profile.AIMODEL,
+              }),
+          })
+          break
       }
     }
     return data

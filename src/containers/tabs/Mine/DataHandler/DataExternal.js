@@ -35,6 +35,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let IMG = []
     let COLOR = []
     let SYMBOL = []
+    let AIMODEL = []
 
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
@@ -57,6 +58,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     IMG = getIMGList(path, contentList, uncheckedChildFileList)
     COLOR = getColorList(path, contentList)
     SYMBOL = getSymbolList(path, contentList)
+    AIMODEL = getAIModelList(path, contentList)
     resultList = resultList
       .concat(PL)
       .concat(WS)
@@ -74,6 +76,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(IMG)
       .concat(COLOR)
       .concat(SYMBOL)
+      .concat(AIMODEL)
     return resultList
   } catch (e) {
     // console.log(e)
@@ -635,6 +638,43 @@ function getSymbolList(path, contentList) {
   }
 }
 
+function getAIModelList(path, contentList) {
+  let AIModel = []
+  const relatedFiles = []
+  try {
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        if (_isAIModel(contentList[i].name)) {
+          contentList[i].check = true
+          _checkRelatedAIModel(
+            relatedFiles,
+            contentList[i].name,
+            path,
+            contentList,
+          )
+          AIModel.push({
+            directory: path,
+            fileName: contentList[i].name,
+            filePath: `${path}/${contentList[i].name}`,
+            fileType: 'aimodel',
+            relatedFiles,
+          })
+        }
+      } else if (!contentList[i].check && contentList[i].type === 'directory') {
+        AIModel = AIModel.concat(
+          getAIModelList(
+            `${path}/${contentList[i].name}`,
+            contentList[i].contentList,
+          ),
+        )
+      }
+    }
+    return AIModel
+  } catch (error) {
+    return AIModel
+  }
+}
+
 /** 标绘模版 */
 async function _getPlottingList(path) {
   const arrFile = []
@@ -808,6 +848,19 @@ function _checkRelatedMIF(relatedFiles, name, path, contentList) {
   }
 }
 
+function _checkRelatedAIModel(relatedFiles, name, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (
+      !contentList[i].check &&
+      contentList[i].type === 'file' &&
+      _isRelatedAIModel(name, contentList[i].name)
+    ) {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+    }
+  }
+}
+
 function _isType(name, types = []) {
   name = name.toLowerCase()
   const index = name.lastIndexOf('.')
@@ -844,7 +897,7 @@ function _isWorkspace(name) {
  */
 
 function _isSCIDatasource(name) {
-  return _isType(name, ['SCI','sci'])
+  return _isType(name, ['SCI', 'sci'])
 }
 
 function _isDatasource2(name) {
@@ -936,6 +989,23 @@ function _isColor(name) {
 
 function _isFlyingFile(name) {
   return _isType(name, ['fpf'])
+}
+
+function _isAIModel(name) {
+  return _isType(name, ['tflite'])
+}
+
+function _isSubAIModel(name) {
+  return _isType(name, ['txt'])
+}
+
+function _isRelatedAIModel(name, checkName) {
+  if (_isSubAIModel(checkName)) {
+    name = name.substring(0, name.lastIndexOf('.'))
+    checkName = checkName.substring(0, checkName.lastIndexOf('.'))
+    return checkName.indexOf(name) === 0
+  }
+  return false
 }
 
 async function _getLocalWorkspaceInfo(serverPath) {

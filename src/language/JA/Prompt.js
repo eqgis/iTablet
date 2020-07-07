@@ -64,6 +64,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'アニメシンボルライブラリを切り替え中',
   NON_SELECTED_OBJ: '選択オブジェクトはありません',
   CHANGE_BASE_MAP: '現在ベースマップはありません。ベースマップを切替えてください。',
+  OVERRIDE_SYMBOL: 'Do you want to override the symbol with same id?', //待翻译
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',

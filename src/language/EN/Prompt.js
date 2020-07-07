@@ -64,6 +64,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'Switching',
   NON_SELECTED_OBJ: 'No object selected',
   CHANGE_BASE_MAP: 'Empty base map, please change first',
+  OVERRIDE_SYMBOL: 'Do you want to override the symbol with same id?',
 
   SET_ALL_MAP_VISIBLE: 'All visible',
   SET_ALL_MAP_INVISIBLE: 'All invisible',

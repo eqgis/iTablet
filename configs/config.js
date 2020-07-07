@@ -27,6 +27,7 @@ export default {
     {key: 'TEMPLATE'},
     {key: 'MyColor'},
     {key: 'MyApplet'},
+    {key: 'AIModel'},
   ],
   infoServer: {
     url: 'https://www.supermapol.com/web/datas/235674088/download',

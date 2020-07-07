@@ -33,6 +33,7 @@ const RelativePath = {
   Map: `${Data}Map/`,
   Color: `${Data}Color/`,
   Temp: `${Data}Temp/`, // 临时文件
+  AIModel: `${Data}AIModel/`,
 }
 
 const RelativeFilePath = {

@@ -27,6 +27,9 @@ async function importExternalData(user, item) {
     case 'symbol':
       result = await importSymbol(user, item)
       break
+    case 'aimodel':
+      result = await importAIModel(user, item)
+      break
     default:
       break
   }
@@ -246,6 +249,17 @@ async function importSymbol(user, item) {
   return await _copyFile(item, userPath)
 }
 
+async function importAIModel(user, item) {
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/Data/AIModel`,
+  )
+  const contentList = await FileTools.getDirectoryContent(userPath)
+  let name = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
+  name = _getAvailableName(name, contentList, 'directory')
+  await FileTools.createDirectory(`${userPath}/${name}`)
+  return await _copyFile(item, `${userPath}/${name}`)
+}
+
 // async function importTIF(filePath, datasourceItem) {
 //   return await _importDataset('tif', filePath, datasourceItem)
 // }
@@ -338,7 +352,24 @@ async function _copyFile(item, desDir) {
     const fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
     const contentList = await FileTools.getDirectoryContent(desDir)
     const name = _getAvailableName(fileName, contentList, 'file', fileType)
-    return await FileTools.copyFile(item.filePath, `${desDir}/${name}`)
+    await FileTools.copyFile(item.filePath, `${desDir}/${name}`)
+    if (item.relatedFiles) {
+      for (let i = 0; i < item.relatedFiles.length; i++) {
+        let relatedFileName = item.relatedFiles[i].substring(
+          item.relatedFiles[i].lastIndexOf('/') + 1,
+        )
+        let itemName = relatedFileName.substring(
+          0,
+          item.fileName.lastIndexOf('.'),
+        )
+        let itemType = relatedFileName.substring(
+          item.fileName.lastIndexOf('.') + 1,
+        )
+        let sname = _getAvailableName(itemName, contentList, 'file', itemType)
+        await FileTools.copyFile(item.relatedFiles[i], `${desDir}/${sname}`)
+      }
+    }
+    return true
   } catch (error) {
     return false
   }

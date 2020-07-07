@@ -232,7 +232,7 @@ async function getSymbolsFromFile() {
             addSymbol(mapName, currentSymbolFile, data.id, false)
           } else {
             GLOBAL.SimpleDialog.set({
-              text: '是否覆盖相同id符号？',
+              text: getLanguage(global.language).Prompt.OVERRIDE_SYMBOL,
               confirmAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, true),
               cancelAction: () =>

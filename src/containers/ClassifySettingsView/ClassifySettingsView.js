@@ -244,16 +244,19 @@ export default class ClassifySettingsView extends React.Component {
   renderMyModel = () => {
     return (
       <View style={styles.ModelItemView}>
-        <Image source={getThemeAssets().ar.classify_plant} style={styles.img} />
+        <Image
+          source={getThemeAssets().ar.classify_normal}
+          style={styles.img}
+        />
         <Button
           style={styles.btnSwitchModelsView}
           titleStyle={styles.txtBtnSwitchModelsView}
-          title={'选择模型'}
+          title={getLanguage(this.props.language).Profile.SELECT_MODEL}
           type={'BLUE'}
           activeOpacity={0.5}
           onPress={() =>
             NavigationService.navigate('MyAIModel', {
-              title: '我的模型',
+              title: getLanguage(this.props.language).Profile.MY_MODEL,
               getItemCallback: async ({ item }) => {
                 let params = {}
                 params.ModelType = 'ABSOLUTE_FILE_PATH'
@@ -283,7 +286,9 @@ export default class ClassifySettingsView extends React.Component {
             })
           }
         />
-        <Text style={styles.titleSwitchModelsView}>{'我的模型'}</Text>
+        <Text style={styles.titleSwitchModelsView}>
+          {getLanguage(this.props.language).Profile.MY_MODEL}
+        </Text>
         <View style={styles.DividingLine} />
       </View>
     )

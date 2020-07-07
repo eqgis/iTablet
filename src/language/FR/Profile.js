@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'Paramètres',
   COLOR_SCHEME: 'Schéma de couleur',
   TEMPLATE: 'Modèle',
+  AIMODEL: 'AI Model', //待翻译
   COLLECTION_TEMPLATE: "Modèle d'arpentage",
   PLOTTING_TEMPLATE: 'Modèle de traçage',
   NAVIGATION: 'Navigation',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'Coffret',
 
   MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+  MY_MODEL: 'My Model', //待翻译
+
+  SELECT_MODEL: 'Select Model', //待翻译
 
   // 我的——登录
   LOGIN: 'connexion',

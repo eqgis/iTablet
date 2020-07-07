@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'Ayarlar',
   COLOR_SCHEME: 'Renk Şeması',
   TEMPLATE: 'Taslak',
+  AIMODEL: 'AI Model', //待翻译
   COLLECTION_TEMPLATE: 'Ölçme Taslağı',
   PLOTTING_TEMPLATE: 'Çizim Şablonu',
   NAVIGATION: 'Navigasyon',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'Çevreleme',
 
   MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+  MY_MODEL: 'My Model', //待翻译
+
+  SELECT_MODEL: 'Select Model', //待翻译
 
   // 我的——登录
   LOGIN: 'Giriş',

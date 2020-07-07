@@ -20,6 +20,9 @@ const Profile = {
   ENCLOSURE: '围栏',
 
   MY_COLOR_SCHEME: '我的色带',
+  MY_MODEL: '我的模型',
+
+  SELECT_MODEL: '选择模型',
 
   // 我的——登录
   LOGIN: '登录',

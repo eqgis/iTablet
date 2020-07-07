@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'Settings',
   COLOR_SCHEME: 'Color Scheme',
   TEMPLATE: 'Template',
+  AIMODEL: 'AI Model',
   COLLECTION_TEMPLATE: 'Surveying Template',
   PLOTTING_TEMPLATE: 'Plotting Template',
   NAVIGATION: 'Navigation',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'Enclosure',
 
   MY_COLOR_SCHEME: 'My Color Scheme',
+  MY_MODEL: 'My Model',
+
+  SELECT_MODEL: 'Select Model',
 
   // 我的——登录
   LOGIN: 'Login',

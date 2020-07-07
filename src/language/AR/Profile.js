@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'إعدادات',
   COLOR_SCHEME: 'نظام الألوان',
   TEMPLATE: 'تنسيق الملف',
+  AIMODEL: 'AI Model', //待翻译
   COLLECTION_TEMPLATE: 'تنسيق ملف مسح الاراضى',
   PLOTTING_TEMPLATE: 'تنسيق ملف توقيع النقاط',
   NAVIGATION: 'ملاحى',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'نسيج',
 
   MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+  MY_MODEL: 'My Model', //待翻译
+
+  SELECT_MODEL: 'Select Model', //待翻译
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',

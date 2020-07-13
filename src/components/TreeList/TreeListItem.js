@@ -139,7 +139,7 @@ export default class TreeListItem extends React.Component {
               styles.title,
               icon && { marginLeft: scaleSize(20) },
               this.props.textColor && { color: this.props.textColor },
-              this.props.fontSize && { fontSize: this.props.fontSize, height: this.props.fontSize + setSpText(2) },
+              this.props.fontSize && { fontSize: this.props.fontSize, height: this.props.fontSize + setSpText(4) },
             ]}
           >
             {this.props.data.title ||this.props.data.name ||
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     color: 'white',
     // fontSize: size.fontSize.fontSizeSm,
     fontSize: setSpText(20),
-    height: setSpText(22),
+    height: setSpText(24),
     backgroundColor: 'transparent',
   },
   arrowImg: {

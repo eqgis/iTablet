@@ -24,6 +24,7 @@ import themeColorPickerModule from './themeColorPickerModule'
 import topoEditModule from './topoEditModule'
 import layerVisibleScaleModule from './layerVisibleScaleModule'
 import layerSettingImageModule from './layerSettingImageModule'
+import templateModule from './templateModule'
 export {
   startModule,
   start3DModule,
@@ -51,4 +52,5 @@ export {
   topoEditModule,
   layerVisibleScaleModule,
   layerSettingImageModule,
+  templateModule,
 }

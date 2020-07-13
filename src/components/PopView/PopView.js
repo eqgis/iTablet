@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '100%',
-    maxHeight: scaleSize(720),
+    // maxHeight: scaleSize(720),
     minHeight: scaleSize(80),
     backgroundColor: color.contentWhite,
   },

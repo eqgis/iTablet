@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ConstOnline, ChunkType, ConstToolType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -10,6 +10,7 @@ import {
   editModule,
   toolModule,
   shareModule,
+  templateModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapCollectionConfig extends Module {
@@ -31,10 +32,11 @@ export default class MapCollectionConfig extends Module {
         startModule,
         addModule,
         markModule,
-        collectionModule,
+        () => collectionModule(ConstToolType.COLLECTION),
         editModule,
         toolModule,
         shareModule,
+        () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),
       ],
       mapType: Module.MapType.MAP,
     })

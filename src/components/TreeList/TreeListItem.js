@@ -21,11 +21,13 @@ const ROW_HEIGHT = scaleSize(40)
 export default class TreeListItem extends React.Component {
   props: {
     key: string,
+    parent: Object,
     data: Object,
     index: number,
-    textSize?: number,
+    fontSize?: number,
     textColor?: string,
-    children: Object,
+    children?: Object,
+    rightView?: Object,
     separator?: boolean,
     separatorStyle?: Object,
     // childrenData: Array,
@@ -58,7 +60,7 @@ export default class TreeListItem extends React.Component {
     if (this.props.data.childGroups && this.props.data.childGroups.length > 0) {
       return (
         <TouchableOpacity
-          style={[styles.btn]}
+          style={styles.btn}
           onPress={() => this.showChild(!this.state.isVisible)}
         >
           <Animated.Image
@@ -82,10 +84,12 @@ export default class TreeListItem extends React.Component {
       )
     } else {
       return (
-        <Image
-          style={styles.circleImg}
-          source={getPublicAssets().common.icon_circle_dot}
-        />
+        <View style={styles.btn}>
+          <Image
+            style={styles.circleImg}
+            source={getPublicAssets().common.icon_circle_dot}
+          />
+        </View>
       )
     }
   }
@@ -109,38 +113,41 @@ export default class TreeListItem extends React.Component {
       }
     }
     return (
-      <TouchableOpacity
-        activeOpacity={1}
+      <View
         style={[styles.row, this.props.style]}
-        onPress={() =>
-          this._onPress({
-            data: this.props.data,
-            index: this.props.index,
-          })
-        }
       >
-        {this.renderIcon()}
-        {icon && (
-          <Image
-            resizeMode={'contain'}
-            source={icon}
-            style={[styles.icon, this.props.iconStyle]}
-          />
-        )}
-        {(this.props.data.name || this.props.data.$) && (
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.row}
+          onPress={() =>
+            this._onPress({
+              data: this.props.data,
+              index: this.props.index,
+            })
+          }
+        >
+          {this.renderIcon()}
+          {icon && (
+            <Image
+              resizeMode={'contain'}
+              source={icon}
+              style={[styles.icon, this.props.iconStyle]}
+            />
+          )}
           <Text
             style={[
               styles.title,
               icon && { marginLeft: scaleSize(20) },
               this.props.textColor && { color: this.props.textColor },
-              this.props.textSize && { color: this.props.textSize },
+              this.props.fontSize && { fontSize: this.props.fontSize, height: this.props.fontSize + setSpText(2) },
             ]}
           >
-            {this.props.data.name ||
-              this.props.data.$.code + ' ' + this.props.data.$.name}
+            {this.props.data.title ||this.props.data.name ||
+            this.props.data.$.code + ' ' + this.props.data.$.name}
           </Text>
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+        {this.props.rightView && this.props.rightView({data: this.props.data, index: this.props.index})}
+      </View>
     )
   }
 
@@ -153,10 +160,11 @@ export default class TreeListItem extends React.Component {
     for (let i = 0; i < childGroups.length; i++) {
       let data = childGroups[i]
       if (this.props.renderChild) {
-        children.push(this.props.renderChild({ data, index: i }))
+        children.push(this.props.renderChild({ data, index: i, parent: this.props.data }))
       } else {
         children.push(
           <TreeListItem
+            parent={this.props.data}
             key={data.key || data.path || (data.$ && data.$.name) || i}
             data={data}
             style={this.props.style}
@@ -226,6 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: ROW_HEIGHT,
     justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   children: {
     flex: 1,
@@ -233,15 +242,17 @@ const styles = StyleSheet.create({
     paddingLeft: scaleSize(30),
   },
   btn: {
-    paddingVertical: scaleSize(20),
+    // paddingVertical: scaleSize(20),
     width: scaleSize(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
+    flex: 1,
     color: 'white',
     // fontSize: size.fontSize.fontSizeSm,
     fontSize: setSpText(20),
+    height: setSpText(22),
     backgroundColor: 'transparent',
   },
   arrowImg: {

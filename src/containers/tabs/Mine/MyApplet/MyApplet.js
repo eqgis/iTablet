@@ -37,14 +37,14 @@ class MyApplet extends MyDataPage {
     for (let i = 0; i < _applets.length; i++) {
       // 检测本地记录中的小程序是否在当前版本中存在
       if (_mapModules.indexOf(_applets[i]) >= 0) {
-        applets.push({
+        !ChunkType[_applets[i]] && applets.push({
           name: _applets[i],
           img: getThemeAssets().find.app,
         })
       }
     }
     for (let i = 0; i < _mapModules.length; i++) {
-      if (_applets.indexOf(_mapModules[i]) < 0) {
+      if (_applets.indexOf(_mapModules[i]) < 0 && !ChunkType[_mapModules[i]]) {
         othersApplets.push({
           name: _mapModules[i],
           img: getThemeAssets().find.app,
@@ -71,6 +71,18 @@ class MyApplet extends MyDataPage {
     })
     let applets = []  // redux使用的对象数组
     let _applets = [] // 本地文件的字符串数组
+  
+    // 添加系统默认模块
+    Object.keys(ChunkType).map(key => {
+      for (let i = 0; i < mapModules.length; i++) {
+        if (ChunkType[key] === mapModules[i].key) {
+          applets.push(mapModules[i])
+          _applets.push(mapModules[i].key)
+        }
+      }
+    })
+    
+    // 添加自定义已添加小程序
     sectionData[0].data.map(item => {
       for (let i = 0; i < mapModules.length; i++) {
         if (item.name === mapModules[i].key) {

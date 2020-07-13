@@ -156,6 +156,7 @@ import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
 import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
+import { TemplateManager, TemplateDetail, TemplateSource } from './templateManager/pages'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -424,6 +425,24 @@ export default function(appConfig) {
       },
       AnimationNodeEditRotateView: {
         screen: AnimationNodeEditRotateView,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateManager: {
+        screen: TemplateManager,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateDetail: {
+        screen: TemplateDetail,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateSource: {
+        screen: TemplateSource,
         navigationOptions: {
           header: null,
         },

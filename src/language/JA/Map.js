@@ -853,4 +853,22 @@ const Map_PoiTitle = {
   MARKET: 'デパート',
   SUBWAY: '地下鉄',
 }
-export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }
+
+const Template = { // 待翻译
+  COLLECTION_TEMPLATE_MANAGEMENT: '模板管理', // 待翻译
+  COLLECTION_TEMPLATE_CREATE: '模板创建',
+  COLLECTION_TEMPLATE_NAME: '模板名称',
+  ELEMENT_SETTINGS: '要素设置',
+  ELEMENT_STORAGE: '要素储存',
+  ATTRIBUTE_SETTINGS: '属性设置',
+  CURRENT_TEMPLATE: '当前模板',
+  
+  ELEMENT_NAME: '要素名称',
+  ELEMENT_CODE: '要素编码',
+  
+  CREATE_ROOT_NODE: '新建根结点',
+  CREATE_CHILD_NODE: '新建子结点',
+  INSERT_NODE: '插入结点',
+}
+
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

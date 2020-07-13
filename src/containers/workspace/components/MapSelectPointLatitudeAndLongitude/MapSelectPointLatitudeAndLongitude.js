@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, TextInput } from 'react-native'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class MapSelectPointLatitudeAndLongitude extends React.Component {
   props: {
@@ -19,6 +20,16 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
       latitude: '',
       longitude: '',
     }
+  }
+
+  componentDidMount = async () => {
+    let position
+    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
+      position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
+    } else {
+      position = await SMap.getCurrentPosition()
+    }
+    this.updateLatitudeAndLongitude(position)
   }
 
   setVisible = iShow => {
@@ -69,7 +80,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
           <View style={{ backgroundColor: color.background }}>
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}
+                {getLanguage(global.language).Profile.X_COORDINATE}
               </Text>
               <TextInput
                 editable={this.state.isEdit}
@@ -90,7 +101,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}
+                {getLanguage(global.language).Profile.Y_COORDINATE}
               </Text>
               <TextInput
                 editable={this.state.isEdit}

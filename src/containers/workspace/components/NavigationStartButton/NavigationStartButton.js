@@ -13,6 +13,7 @@ import color from '../../../../styles/color'
 import { SMap } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
+import NavigationService from '../../../NavigationService'
 const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(225) : scaleSize(205)
 export default class NavigationStartButton extends React.Component {
   props: {
@@ -529,6 +530,7 @@ export default class NavigationStartButton extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: scaleSize(20),
+                marginRight: scaleSize(20),
               }}
               onPress={() => {
                 this.simulatedNavigation()
@@ -546,6 +548,43 @@ export default class NavigationStartButton extends React.Component {
                 }
               </Text>
             </TouchableOpacity>
+            {Platform.OS === 'ios' && (
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{
+                  height: scaleSize(60),
+                  flex: 1,
+                  borderRadius: 5,
+                  backgroundColor: color.blue1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: scaleSize(20),
+                  marginRight: scaleSize(20),
+                }}
+                onPress={() => {
+                  if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+                    NavigationService.navigate('ARNavigationView')
+                  } else {
+                    GLOBAL.EnterDatumPointType = 'arNavigation'
+                    //隐藏导航界面
+                    GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(false)
+                    GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(false)
+                    NavigationService.navigate('EnterDatumPoint', {
+                      type: 'ARNAVIGATION_INDOOR',
+                    })
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: setSpText(20),
+                    color: color.white,
+                  }}
+                >
+                  {getLanguage(global.language).Prompt.AR_NAVIGATION}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </Animated.View>
       )

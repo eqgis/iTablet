@@ -333,6 +333,8 @@ const Profile = {
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
   MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
   MAP_AR_DATUM_SETTING: 'Kurulum',
+  X_COORDINATE: 'X Coordinate', //待翻译
+  Y_COORDINATE: 'Y Coordinate',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

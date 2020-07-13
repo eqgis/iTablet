@@ -64,6 +64,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'Commutation',
   NON_SELECTED_OBJ: 'Aucun objet sélectionné',
   CHANGE_BASE_MAP: "Carte de base vide, veuillez d'abord changer",
+  OVERRIDE_SYMBOL: 'Do you want to override the symbol with same id?', //待翻译
 
   SET_ALL_MAP_VISIBLE: 'Tout visible',
   SET_ALL_MAP_INVISIBLE: 'Tout invisible',

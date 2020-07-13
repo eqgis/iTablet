@@ -64,6 +64,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'Değiştiriliyor',
   NON_SELECTED_OBJ: 'Seçili nesne yok',
   CHANGE_BASE_MAP: 'Altlık harita boş, lütfen ilk önce değiştirin',
+  OVERRIDE_SYMBOL: 'Do you want to override the symbol with same id?', //待翻译
 
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
   SET_ALL_MAP_INVISIBLE: 'Tamamı Görünmez',

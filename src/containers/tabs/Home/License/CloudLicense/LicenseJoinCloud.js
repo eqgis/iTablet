@@ -103,6 +103,17 @@ class LicenseJoinCloud extends Component {
     }
   }
 
+  _checkEdutionLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 4
+    ) {
+      SMap.closeEduLicense()
+    }
+  }
+
   activate = async (confirm = false) => {
     try {
       if (!confirm) {
@@ -112,6 +123,7 @@ class LicenseJoinCloud extends Component {
         return
       }
       this._checkPrivateCloudLicense()
+      this._checkEdutionLicense()
       let licenseId = this.state.currentLicense.id
       if (licenseId) {
         this.container &&
@@ -151,6 +163,7 @@ class LicenseJoinCloud extends Component {
         return
       }
       this._checkPrivateCloudLicense()
+      this._checkEdutionLicense()
 
       this.container &&
         this.container.setLoading(

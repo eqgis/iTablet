@@ -64,6 +64,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'تبديل',
   NON_SELECTED_OBJ: 'لم يتم اختيار كائن',
   CHANGE_BASE_MAP: 'خريطة أساسية فارغة ، يرجى التغيير أولاً ',
+  OVERRIDE_SYMBOL: 'Do you want to override the symbol with same id?', //待翻译
 
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',

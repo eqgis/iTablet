@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: '设置',
   COLOR_SCHEME: '色带',
   TEMPLATE: '模板',
+  AIMODEL: 'AI模型',
   COLLECTION_TEMPLATE: '采集模板',
   PLOTTING_TEMPLATE: '标绘模板',
   NAVIGATION: '导航',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: '围栏',
 
   MY_COLOR_SCHEME: '我的色带',
+  MY_MODEL: '我的模型',
+
+  SELECT_MODEL: '选择模型',
 
   // 我的——登录
   LOGIN: '登录',
@@ -258,6 +262,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: '显示详细信息',
   LICENSE_QUERY_NONE: '未查询到许可信息',
   LICENSE_PRIVATE_CLOUD_SERVER: '私有云许可地址',
+  LICENSE_EDUCATION: '教育许可',
+  LICENSE_EDUCATION_CONNECT_FAIL: '服务连接失败',
   LICENSE_QUERY: '查询许可',
   LICENSE_QUERYING: '查询中',
   LICENSE_QUERY_FAIL: '查询失败，请检查服务器设置',

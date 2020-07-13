@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: '設定',
   COLOR_SCHEME: 'カラースキーム',
   TEMPLATE: 'テンプレート',
+  AIMODEL: 'AI Model', //待翻译
   COLLECTION_TEMPLATE: 'コレクションテンプレート',
   PLOTTING_TEMPLATE: 'アニメシンボルテンプレート',
   NAVIGATION: 'ナビ',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'フェンス',
 
   MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+  MY_MODEL: 'My Model', //待翻译
+
+  SELECT_MODEL: 'Select Model', //待翻译
 
   // 我的——登录
   LOGIN: 'ログイン',
@@ -258,6 +262,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: '詳細の表示',
   LICENSE_QUERY_NONE: 'ライセンス情報が見つかりませんでした',
   LICENSE_PRIVATE_CLOUD_SERVER: 'プライベートクラウドサーバーアドレス',
+  LICENSE_EDUCATION: '教育ライセンス',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'サービス接続に失敗しました',
   LICENSE_QUERY: 'ライセンス取得',
   LICENSE_QUERYING: '取得中',
   LICENSE_QUERY_FAIL: '取得に失敗しました。サーバの設定を確認してください',

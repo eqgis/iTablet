@@ -42,6 +42,17 @@ class LicenseJoinPrivateCloud extends Component {
     this.getData()
   }
 
+  _checkEdutionLicense = () => {
+    let licenseInfo = this.props.licenseInfo
+    if (
+      licenseInfo &&
+      licenseInfo.isLicenseValid &&
+      licenseInfo.licenseType === 4
+    ) {
+      SMap.closeEduLicense()
+    }
+  }
+
   _checkCloudLicense = () => {
     let licenseInfo = this.props.licenseInfo
     if (
@@ -74,6 +85,7 @@ class LicenseJoinPrivateCloud extends Component {
         let ids = []
         ids.push(this.state.selectEdition.id)
         ids = ids.concat(this.state.selectModule)
+        this._checkEdutionLicense()
         this.container &&
           this.container.setLoading(
             true,

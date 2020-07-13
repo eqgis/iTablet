@@ -90,6 +90,7 @@ export default class MyDataPage extends Component {
     dataset: 'DATASET',
     color: 'COLOR_SCHEME',
     applet: 'APPLETS',
+    aimodel: 'AIMODEL',
   }
 
   componentDidMount() {
@@ -703,7 +704,9 @@ export default class MyDataPage extends Component {
   //项目公共选项
   getCommonItemPopupData = () => [
     {
-      title: getLanguage(global.language).Profile[`UPLOAD_${this.type}`],
+      title:
+        getLanguage(global.language).Profile[`UPLOAD_${this.type}`] ||
+        getLanguage(global.language).Profile.UPLOAD_DATA,
       action: () => {
         this._closeModal()
         this.exportType = ''
@@ -711,7 +714,9 @@ export default class MyDataPage extends Component {
       },
     },
     {
-      title: getLanguage(global.language).Profile[`DELETE_${this.type}`],
+      title:
+        getLanguage(global.language).Profile[`DELETE_${this.type}`] ||
+        getLanguage(global.language).Profile.DELETE_DATA,
       action: this._onDeleteData,
     },
   ]
@@ -953,10 +958,6 @@ export default class MyDataPage extends Component {
         showRight={isShowMore}
         showCheck={this._isShowCheck(info)}
         onPress={() => {
-          if (info?.item.isDirectory) {
-            Toast.show(global.language === 'CN' ? 'not UDB data source' : '')
-            return
-          }
           this.itemInfo = info
           if (this.chatCallback) {
             this._onShareData('chat')

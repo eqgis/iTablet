@@ -1,13 +1,20 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath, UserType } from '../../../../../../constants'
+import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
+import { ConstToolType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
-import { dataUtil } from '../../../../../../utils'
+import { dataUtil, scaleSize } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import { TreeList } from '../../../../../../components'
+import React from 'react'
+import { color } from '../../../../../../styles'
+import { View } from 'react-native'
+import AddAction from './AddAction'
+import Toast from 'react-native-root-toast'
 
 /**
  * 获取数据源和地图菜单
@@ -16,140 +23,88 @@ import ToolbarModule from '../ToolbarModule'
 async function getUDBsAndMaps() {
   let data = []
   const buttons = [ToolbarBtnType.CANCEL]
-  let userUDBPath
-  let userUDBs
   // 过滤掉标注和标绘匹配正则
   const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/
-  if (
-    ToolbarModule.getParams().user &&
-    ToolbarModule.getParams().user.currentUser.userName &&
-    ToolbarModule.getParams().user.currentUser.userType !==
-      UserType.PROBATION_USER
-  ) {
-    const userPath = `${(await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath,
-    )) + ToolbarModule.getParams().user.currentUser.userName}/`
+  let user = ToolbarModule.getParams().user.currentUser
 
-    userUDBPath = userPath + ConstPath.RelativePath.Datasource
-    userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
-      extension: 'udb,sci',
-      type: 'file',
-    })
+  let userUDBs = await DataHandler.getLocalData(user, 'DATA')
+  // 过滤掉标注和标绘
+  const filterUDBs = userUDBs.filter(item => {
+    item.name = dataUtil.getNameByURL(item.path)
+    return !item.name.match(checkLabelAndPlot)
+  })
+  filterUDBs.map(item => {
+    item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+    if (item.isDirectory) {
+      item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+    }
+    item.info = {
+      infoType: 'mtime',
+      lastModifiedDate: item.mtime,
+    }
+  })
 
-    // 过滤掉标注和标绘
-    const filterUDBs = userUDBs.filter(item => {
-      item.name = dataUtil.getNameByURL(item.path)
-      return !item.name.match(checkLabelAndPlot)
-    })
-    filterUDBs.map(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
-      if (item.isDirectory) {
-        item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
-      }
-      item.info = {
-        infoType: 'mtime',
-        lastModifiedDate: item.mtime,
-      }
-    })
+  let mapData = await DataHandler.getLocalData(user, 'MAP')
+  mapData.forEach(item => {
+    item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+    item.info = {
+      infoType: 'mtime',
+      lastModifiedDate: item.mtime,
+    }
+    item.name = dataUtil.getNameByURL(item.path)
+  })
 
-    const mapData = await FileTools.getPathListByFilter(
-      userPath + ConstPath.RelativePath.Map,
-      {
-        extension: 'xml',
-        type: 'file',
-      },
-    )
-    mapData.forEach(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
-      item.info = {
-        infoType: 'mtime',
-        lastModifiedDate: item.mtime,
-      }
-      item.name = dataUtil.getNameByURL(item.path)
-    })
+  let symbol = await DataHandler.getLocalData(user, 'SYMBOL')
+  symbol.forEach(item => {
+    let name = item.name.substring(0, item.name.lastIndexOf('.'))
+    let type = item.name.substring(item.name.lastIndexOf('.') + 1).toLowerCase()
+    let image
+    switch (type) {
+      case 'sym':
+        image = require('../../../../../../assets/map/icon-shallow-dot_black.png')
+        break
+      case 'lsl':
+        image = require('../../../../../../assets/map/icon-shallow-line_black.png')
+        break
+      case 'bru':
+        image = require('../../../../../../assets/map/icon-shallow-polygon_black.png')
+        break
+      default:
+        image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+        break
+    }
+    item.name = name
+    item.image = image
+    item.info = {
+      infoType: 'mtime',
+      lastModifiedDate: item.mtime,
+    }
+  })
 
-    data = [
-      // {
-      //   title: Const.PUBLIC_DATA_SOURCE,
-      //   data: customerUDBs,
-      // },
-      {
-        title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-          .OPEN_DATASOURCE,
-        // Const.DATA_SOURCE,
-        image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
-        data: filterUDBs,
-        addDatasource: true,
-        getDatasource: getUDBsAndMaps,
-      },
-      {
-        title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-          .OPEN_MAP,
-        // Const.MAP,
-        image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
-        data: mapData,
-      },
-    ]
-  } else {
-    const customerUDBPath = await FileTools.appendingHomeDirectory(
-      ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
-    )
-    const customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
-      extension: 'udb,sci',
-      type: 'file',
-    })
-    // 过滤掉标注和标绘
-    const filterUDBs = customerUDBs.filter(item => {
-      item.name = dataUtil.getNameByURL(item.path)
-      return !item.name.match(checkLabelAndPlot)
-    })
-    filterUDBs.map(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
-      if (item.isDirectory) {
-        item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
-      }
-      item.info = {
-        infoType: 'mtime',
-        lastModifiedDate: item.mtime,
-      }
-    })
-    const customerPath = await FileTools.appendingHomeDirectory(
-      ConstPath.CustomerPath,
-    )
-    const mapData = await FileTools.getPathListByFilter(
-      customerPath + ConstPath.RelativePath.Map,
-      {
-        extension: 'xml',
-        type: 'file',
-      },
-    )
-    mapData.forEach(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
-      item.info = {
-        infoType: 'mtime',
-        lastModifiedDate: item.mtime,
-      }
-      item.name = dataUtil.getNameByURL(item.path)
-    })
-    data = [
-      {
-        title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-          .OPEN_DATASOURCE,
-        // Const.DATA_SOURCE,
-        image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
-        data: filterUDBs,
-        addDatasource: true,
-        getDatasource: getUDBsAndMaps,
-      },
-      {
-        title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-          .OPEN_MAP,
-        // Const.MAP,
-        image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
-        data: mapData,
-      },
-    ]
-  }
+  data = [
+    {
+      title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
+        .OPEN_DATASOURCE,
+      // Const.DATA_SOURCE,
+      image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      data: filterUDBs,
+      addDatasource: true,
+      getDatasource: getUDBsAndMaps,
+    },
+    {
+      title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
+        .OPEN_MAP,
+      // Const.MAP,
+      image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
+      data: mapData,
+    },
+    {
+      title: getLanguage(ToolbarModule.getParams().language).Profile.SYMBOL,
+      image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      data: symbol,
+    },
+  ]
+
   return { data, buttons }
 }
 
@@ -199,12 +154,111 @@ async function getDatasets(type, params = {}) {
   return { data, buttons }
 }
 
+async function getSymbolPath() {
+  let buttons = [ToolbarBtnType.TOOLBAR_BACK]
+
+  let filePath = ToolbarModule.getData().currentSymbolFile
+  let groups = await SMap.findAllSymbolGroupFromFile(filePath)
+
+  let customView = () => (
+    <TreeList
+      style={{
+        flex: 1,
+        paddingHorizontal: scaleSize(30),
+        backgroundColor: color.bgW,
+      }}
+      itemTextColor={color.themeText2}
+      itemTextSize={color.themeText2}
+      data={groups}
+      onPress={({ data }) => {
+        AddAction.onSelectPath(data.path)
+      }}
+    />
+  )
+
+  return { buttons, customView }
+}
+
+async function getSymbolsFromFile() {
+  let { currentSymbolFile, currentSymbolPath } = ToolbarModule.getData()
+  let params = ToolbarModule.getParams()
+  let buttons = [ToolbarBtnType.TOOLBAR_BACK]
+  let customView = () => (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: color.bgW,
+      }}
+    >
+      <SMSymbolTable
+        style={{
+          flex: 1,
+          paddingHorizontal: scaleSize(30),
+          alignItems: 'center',
+          backgroundColor: color.bgW,
+        }}
+        source={{
+          filePath: currentSymbolFile,
+          path: currentSymbolPath,
+        }}
+        tableStyle={{
+          orientation: 1,
+          textSize: 15,
+          lineSpacing: 10,
+          imageSize: 40,
+          count: params.device.orientation.indexOf('LANDSCAPE') === 0 ? 3 : 4,
+          legendBackgroundColor: dataUtil.colorRgba(color.bgW),
+          textColor: dataUtil.colorRgba(color.font_color_white),
+        }}
+        onSymbolClick={async data => {
+          let params = ToolbarModule.getParams()
+          let mapName = params.map.currentMap.name
+          let isEixst = await SMap.isInSymbolLib(data.type, data.id)
+          let addSymbol = async (mapName, filePath, id, isReplace) => {
+            let result = await SMap.addSymbolFromFile(
+              mapName,
+              filePath,
+              id,
+              isReplace,
+            )
+            Toast.show(
+              result
+                ? getLanguage(global.language).Prompt.ADD_SUCCESS
+                : getLanguage(global.language).Prompt.ADD_FAILED,
+            )
+          }
+          if (!isEixst) {
+            addSymbol(mapName, currentSymbolFile, data.id, false)
+          } else {
+            GLOBAL.SimpleDialog.set({
+              text: getLanguage(global.language).Prompt.OVERRIDE_SYMBOL,
+              confirmAction: () =>
+                addSymbol(mapName, currentSymbolFile, data.id, true),
+              cancelAction: () =>
+                addSymbol(mapName, currentSymbolFile, data.id, false),
+              cancelText: getLanguage(global.language).Prompt.NO,
+            })
+            GLOBAL.SimpleDialog.setVisible(true)
+          }
+        }}
+      />
+    </View>
+  )
+
+  return { buttons, customView }
+}
+
 async function getData(type, params = {}) {
   switch (type) {
     case ConstToolType.MAP_THEME_ADD_DATASET:
       return getDatasets(type, params)
     case ConstToolType.MAP_ADD:
       return await getUDBsAndMaps()
+    case 'ADD_SYMBOL_PATH':
+      return await getSymbolPath()
+    case 'ADD_SYMBOL_SYMBOLS':
+      return await getSymbolsFromFile()
   }
 }
 

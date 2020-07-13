@@ -21,6 +21,7 @@ import Mine, {
   NewDataset,
   SearchMine,
   MyApplet,
+  MyAIModel,
 } from './Mine'
 import Find from './Find'
 import SuperMapKnown from './Find/superMapKnown'
@@ -115,6 +116,7 @@ export {
   NewDataset,
   SearchMine,
   MyApplet,
+  MyAIModel,
   /** Home */
   Setting,
   AboutITablet,

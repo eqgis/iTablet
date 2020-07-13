@@ -239,6 +239,59 @@ export default class AIDetecSettingsView extends React.Component {
     )
   }
 
+  renderMyModel = () => {
+    return (
+      <View style={styles.ModelItemView}>
+        <Image
+          source={getThemeAssets().ar.classify_normal}
+          style={styles.img}
+        />
+        <Button
+          style={styles.btnSwitchModelsView}
+          titleStyle={styles.txtBtnSwitchModelsView}
+          title={getLanguage(this.props.language).Profile.SELECT_MODEL}
+          type={'BLUE'}
+          activeOpacity={0.5}
+          onPress={() =>
+            NavigationService.navigate('MyAIModel', {
+              title: getLanguage(this.props.language).Profile.MY_MODEL,
+              getItemCallback: async ({ item }) => {
+                let params = {}
+                params.ModelType = 'ABSOLUTE_FILE_PATH'
+                params.ModelPath =
+                  global.homePath + item.path + '/' + item.tflite
+                params.LabelPath =
+                  global.homePath + item.path + '/' + item.labels[0]
+                let result = await SAIDetectView.setDetectInfo(params)
+                NavigationService.goBack()
+                setTimeout(() => {
+                  this.setState({
+                    currentModel: 'MyAIModel',
+                    defaultBtx: getLanguage(this.props.language).Prompt
+                      .USED_IMMEDIATELY,
+                    dustbinBtx: getLanguage(this.props.language).Prompt
+                      .USED_IMMEDIATELY,
+                    plantBtx: getLanguage(this.props.language).Prompt
+                      .USED_IMMEDIATELY,
+                  })
+                  Toast.show(
+                    result
+                      ? getLanguage(this.props.language).Prompt.CHANGE_SUCCESS
+                      : getLanguage(this.props.language).Prompt.CHANGE_FAULT,
+                  )
+                }, 1000)
+              },
+            })
+          }
+        />
+        <Text style={styles.titleSwitchModelsView}>
+          {getLanguage(this.props.language).Profile.MY_MODEL}
+        </Text>
+        <View style={styles.DividingLine} />
+      </View>
+    )
+  }
+
   renderSwitchModels = () => {
     return (
       <View style={styles.container}>
@@ -251,6 +304,7 @@ export default class AIDetecSettingsView extends React.Component {
           {this.renderModelItemFirst()}
           {this.renderModelItemSecond()}
           {this.renderModelItemThird()}
+          {this.renderMyModel()}
         </ScrollView>
       </View>
     )

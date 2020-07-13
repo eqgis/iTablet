@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'Settings',
   COLOR_SCHEME: 'Color Scheme',
   TEMPLATE: 'Template',
+  AIMODEL: 'AI Model',
   COLLECTION_TEMPLATE: 'Surveying Template',
   PLOTTING_TEMPLATE: 'Plotting Template',
   NAVIGATION: 'Navigation',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'Enclosure',
 
   MY_COLOR_SCHEME: 'My Color Scheme',
+  MY_MODEL: 'My Model',
+
+  SELECT_MODEL: 'Select Model',
 
   // 我的——登录
   LOGIN: 'Login',
@@ -258,6 +262,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: 'Show details',
   LICENSE_QUERY_NONE: 'Unable to get license information',
   LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
+  LICENSE_EDUCATION: 'Education License',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'Education license connect fail',
   LICENSE_QUERY: 'Query License',
   LICENSE_QUERYING: 'Quering',
   LICENSE_QUERY_FAIL: 'Query failed. Please check the server setting',

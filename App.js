@@ -334,7 +334,7 @@ class AppRoot extends Component {
     }
     if(Platform.OS === 'android') {
     //  this.initSpeechManager()
-      SSpeechRecognizer.init('5a45b65c')
+      SSpeechRecognizer.init('5dafb910')
     } else {
       SSpeechRecognizer.init('5b63b509')
     }

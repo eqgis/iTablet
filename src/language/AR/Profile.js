@@ -12,6 +12,7 @@ const Profile = {
   SETTINGS: 'إعدادات',
   COLOR_SCHEME: 'نظام الألوان',
   TEMPLATE: 'تنسيق الملف',
+  AIMODEL: 'AI Model', //待翻译
   COLLECTION_TEMPLATE: 'تنسيق ملف مسح الاراضى',
   PLOTTING_TEMPLATE: 'تنسيق ملف توقيع النقاط',
   NAVIGATION: 'ملاحى',
@@ -19,6 +20,9 @@ const Profile = {
   ENCLOSURE: 'نسيج',
 
   MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
+  MY_MODEL: 'My Model', //待翻译
+
+  SELECT_MODEL: 'Select Model', //待翻译
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',
@@ -258,6 +262,8 @@ const Profile = {
   LICENSE_SHOW_DETAIL: '显示详细信息',
   LICENSE_QUERY_NONE: '未查询到许可信息',
   LICENSE_PRIVATE_CLOUD_SERVER: '私有云许可地址',
+  LICENSE_EDUCATION: 'رخصة تعليمية',
+  LICENSE_EDUCATION_CONNECT_FAIL: 'فشل اتصال الخدمة',
   LICENSE_QUERY: '查询许可',
   LICENSE_QUERYING: '查询中',
   LICENSE_QUERY_FAIL: '查询失败，请检查服务器设置',

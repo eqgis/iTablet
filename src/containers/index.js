@@ -19,6 +19,7 @@ import {
   MyTemplate,
   MyColor,
   MyApplet,
+  MyAIModel,
   Personal,
   ToggleAccount,
   Setting,
@@ -95,6 +96,7 @@ import {
   LicenseJoin,
   LicenseJoinCloud,
   LicenseJoinPrivateCloud,
+  LicenseJoinEducation,
 } from './tabs/Home/License'
 import SuggestionFeedback from './tabs/Home/SuggestionFeedback/SuggestionFeedback'
 import PointAnalyst from './pointAnalyst'
@@ -636,6 +638,13 @@ export default function(appConfig) {
           gesturesEnabled: true,
         },
       },
+      MyAIModel: {
+        screen: MyAIModel,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
       ScanOnlineMap: {
         screen: ScanOnlineMap,
         navigationOptions: {
@@ -695,6 +704,13 @@ export default function(appConfig) {
       },
       LicenseJoinPrivateCloud: {
         screen: LicenseJoinPrivateCloud,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      LicenseJoinEducation: {
+        screen: LicenseJoinEducation,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

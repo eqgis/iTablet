@@ -473,23 +473,8 @@ export default class ToolBarSectionList extends React.Component {
     // }
     let info
     if (item.info.infoType === 'mtime') {
-      info = getLanguage(global.language).Prompt.LATEST
-      if (global.language === 'CN') info = info + item.info.lastModifiedDate
-      else if (global.language === 'EN') {
-        let day = item.info.lastModifiedDate
-          .replace(/年|月|日/g, '/')
-          .split('  ')[0]
-          .split('/')
-        info =
-          info +
-          day[2] +
-          '/' +
-          day[1] +
-          '/' +
-          day[0] +
-          '  ' +
-          item.info.lastModifiedDate.split('  ')[1]
-      }
+      info =
+        getLanguage(global.language).Prompt.LATEST + item.info.lastModifiedDate
     } else if (item.info.infoType === 'fieldType') {
       info =
         getLanguage(global.language).Prompt.FIELD_TYPE + item.info.fieldType

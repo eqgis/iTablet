@@ -27,6 +27,9 @@ async function getLocalData(user, type) {
         ConstPath.Module.Collection,
       )
       break
+    case 'AIMODEL':
+      dataList = await _getAIModelDataList(user)
+      break
   }
   return dataList
 }
@@ -70,6 +73,12 @@ async function _getListByFilter(user, type) {
       filter = {
         extension: 'scs',
         type: 'file',
+      }
+      break
+    case 'AIMODEL':
+      path = userPath + ConstPath.RelativePath.AIModel
+      filter = {
+        type: 'Directory',
       }
       break
   }
@@ -153,6 +162,38 @@ async function _getColorFromFile(item) {
     }
   }
   item.colors = colors
+}
+
+async function _getAIModelDataList(user) {
+  let list = []
+  const homePath = await FileTools.appendingHomeDirectory()
+  let dataList = await _getListByFilter(user, 'AIMODEL')
+  for (let n = 0; n < dataList.length; n++) {
+    let item = dataList[n]
+    let contentList = await FileTools.getDirectoryContent(homePath + item.path)
+    let tflite
+    let labels = []
+    for (let i = 0; i < contentList.length; i++) {
+      if (contentList[i].type === 'file') {
+        let index = contentList[i].name.lastIndexOf('.')
+        if (index > 0) {
+          let type = contentList[i].name.substring(index + 1).toLowerCase()
+          if (type === 'tflite') {
+            tflite = contentList[i].name
+          } else if (type === 'txt') {
+            labels.push(contentList[i].name)
+          }
+        }
+      }
+    }
+    if (tflite && labels.length > 0) {
+      item.tflite = tflite
+      item.labels = labels
+      list.push(item)
+    }
+  }
+
+  return list
 }
 
 async function createDatasourceFile(user, datasourcePath) {

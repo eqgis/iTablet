@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  FlatList,
+  Platform,
+} from 'react-native'
 import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
@@ -7,12 +14,14 @@ import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
+import { Login } from '../../Mine'
 
 const LicenseType = {
   local: 0,
   clould: 1,
   privateClould: 2,
   trial: 3,
+  education: 4, //教育许可
 }
 
 class LicenseTypePage extends Component {
@@ -38,6 +47,10 @@ class LicenseTypePage extends Component {
     NavigationService.navigate('LicenseJoinPrivateCloud')
   }
 
+  joinEducationLicense = () => {
+    NavigationService.navigate('LicenseJoinEducation')
+  }
+
   getType = () => {
     let data = [
       {
@@ -56,13 +69,18 @@ class LicenseTypePage extends Component {
         onPress: this.joinPrivateCloud,
       },
       {
+        title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
+        type: LicenseType.education,
+        onPress: this.joinEducationLicense,
+      },
+      {
         title: getLanguage(global.language).Profile.LICENSE_TRIAL,
         type: LicenseType.trial,
       },
     ]
-    // if (Platform.OS === 'ios') {
-    //   data.splice(2, 1)
-    // }
+    if (Platform.OS === 'android') {
+      data.splice(3, 1)
+    }
     return data
   }
 

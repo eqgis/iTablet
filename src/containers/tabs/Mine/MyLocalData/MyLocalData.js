@@ -414,7 +414,8 @@ export default class MyLocalData extends Component {
         fileType === 'datasource' ||
         fileType === 'sci' ||
         fileType === 'color' ||
-        fileType === 'symbol'
+        fileType === 'symbol' ||
+        fileType === 'aimodel'
       ) {
         this._onImportExternalData(this.itemInfo.item)
       } else if (

@@ -29,8 +29,13 @@ export default class MapSelectPoint extends React.Component {
   }
 
   renderBottom() {
-    return this.props.headerProps.selectPointType &&
-      this.props.headerProps.selectPointType === 'selectPoint' ? (
+    if (
+      this.props.headerProps.selectPointType &&
+      (this.props.headerProps.selectPointType === 'selectPoint' ||
+        this.props.headerProps.selectPointType ===
+          'SELECTPOINTFORARNAVIGATION_INDOOR')
+    ) {
+      return (
         <MapSelectPointLatitudeAndLongitude
           style={{
             alignItems: 'flex-end',
@@ -38,9 +43,10 @@ export default class MapSelectPoint extends React.Component {
           ref={ref => (this.pointLatitudeAndLongitude = ref)}
           isEdit={false}
         />
-      ) : (
-        <View />
       )
+    } else {
+      return <View />
+    }
   }
 
   render() {

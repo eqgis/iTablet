@@ -3001,7 +3001,10 @@ export default class MapView extends React.Component {
     return this.searchClickedInfo
   }
   _renderMapSelectPointHeaderRight = () => {
-    if (GLOBAL.MapSelectPointType === 'selectPoint') {
+    if (
+      GLOBAL.MapSelectPointType === 'selectPoint' ||
+      GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+    ) {
       return (
         <TouchableOpacity
           key={'search'}
@@ -3040,6 +3043,25 @@ export default class MapView extends React.Component {
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
               )
               return
+            } else if (
+              GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+            ) {
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.TouchType = TouchType.NORMAL
+              SMap.deleteMarker(118081)
+              NavigationService.navigate('EnterDatumPoint', {
+                type: 'ARNAVIGATION_INDOOR',
+              })
+              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE &&
+                GLOBAL.DATUMPOINTVIEW &&
+                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
+                )
+              GLOBAL.MapSelectPointType = undefined
+              Toast.show(
+                getLanguage(global.language).Profile
+                  .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
+              )
             }
           }}
         >
@@ -3134,6 +3156,17 @@ export default class MapView extends React.Component {
                 GLOBAL.isswitch = false
                 this.switchAr()
               }
+              return
+            } else if (
+              GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+            ) {
+              NavigationService.navigate('EnterDatumPoint', {
+                type: 'ARNAVIGATION_INDOOR',
+              })
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.TouchType = TouchType.NORMAL
+              GLOBAL.MapSelectPointType = undefined
+              SMap.deleteMarker(118081)
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)

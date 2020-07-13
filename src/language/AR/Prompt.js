@@ -308,6 +308,10 @@ const Prompt = {
   NOT_SUPPORT_ONLINE_NAVIGATION: 'التنقل عبر الإنترنت غير متاح حتى الآن',
   CREATE: '新建',
   NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
+  FLOOR: 'Floor', //待翻译
+  AR_NAVIGATION: 'AR Navi',
+  ARRIVE_DESTINATION: 'Arrived the destination',
+  DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
   //导航增量路网
   SELECT_LINE_DATASET: '请先选择一个线数据集',

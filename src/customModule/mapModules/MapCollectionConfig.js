@@ -34,9 +34,9 @@ export default class MapCollectionConfig extends Module {
         markModule,
         () => collectionModule(ConstToolType.COLLECTION),
         editModule,
+        () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),
         toolModule,
         shareModule,
-        () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),
       ],
       mapType: Module.MapType.MAP,
     })

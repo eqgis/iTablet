@@ -862,6 +862,7 @@ const Template = { // 待翻译
   ELEMENT_STORAGE: '要素储存',
   ATTRIBUTE_SETTINGS: '属性设置',
   CURRENT_TEMPLATE: '当前模板',
+  DEFAULT_TEMPLATE: '默认模版',
   
   ELEMENT_NAME: '要素名称',
   ELEMENT_CODE: '要素编码',

@@ -16,7 +16,7 @@ import {
   InputDialog,
 } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
-import { screen } from '../../../../utils'
+import { screen, scaleSize } from '../../../../utils'
 import { ConstToolType } from '../../../../constants'
 import { size, color } from '../../../../styles'
 import { ListSeparator, TreeList, TreeListItem } from '../../../../components'
@@ -403,6 +403,8 @@ export default class TemplateDetail extends React.Component {
             <TextBtn
               btnText={getLanguage(this.props.language).Prompt.COMPLETE}
               textStyle={styles.headerBtnTitle}
+              width={scaleSize(80)}
+              height={scaleSize(40)}
               btnClick={this.confirm}
             />
           ),

@@ -862,6 +862,7 @@ const Template = {
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
   CURRENT_TEMPLATE: 'Current Template',
+  DEFAULT_TEMPLATE: 'Default Template',
   
   ELEMENT_NAME: 'Element Name',
   ELEMENT_CODE: 'Element Code',

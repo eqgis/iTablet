@@ -20,12 +20,12 @@ import { ListSeparator } from '../../../../components'
 import NavigationService from '../../../../containers/NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
+import { scaleSize } from '../../../../utils'
 import ConstPath from '../../../../constants/ConstPath'
 import { XMLUtil } from '../../utils'
 
 import fs from 'react-native-fs'
 import xml2js from 'react-native-xml2js'
-const parser = new xml2js.Parser()
 
 export default class TemplateManager extends React.Component {
   props: {
@@ -37,6 +37,7 @@ export default class TemplateManager extends React.Component {
     currentUser: string,
     layers: Array,
     getLayers: () => {},
+    setCurrentMap: () => {},
   }
   
   state = {
@@ -57,6 +58,14 @@ export default class TemplateManager extends React.Component {
     for (let i = 0; i < templateList.length; i++) {
       templateList[i].name = templateList[i].name.slice(0, templateList[i].name.lastIndexOf('.'))
     }
+    if (
+      templateList.length === 0 ||
+      templateList[0].name !== getLanguage(this.props.language).Template.DEFAULT_TEMPLATE
+    ) {
+      templateList.unshift({
+        name: getLanguage(this.props.language).Template.DEFAULT_TEMPLATE,
+      })
+    }
     this.setState({
       data: templateList,
     }, () => {
@@ -73,14 +82,38 @@ export default class TemplateManager extends React.Component {
   }
   
   onItemPress = async ({ item, index }) => {
-    let path = await FileTools.appendingHomeDirectory(item.path)
-    XMLUtil.readXML(path, data => {
-      NavigationService.navigate('TemplateDetail', {
-        title: item.name,
-        data,
-        path,
+    if (item.name === getLanguage(this.props.language).Template.DEFAULT_TEMPLATE) {
+      const homePath = await FileTools.appendingHomeDirectory()
+      const mapExp = homePath + this.props.map.currentMap.path
+      const expFilePath = `${mapExp.substr(
+        0,
+        mapExp.lastIndexOf('.'),
+      )}.exp`
+      // let templatePath = FileTools.appendingHomeDirectory(
+      //   ConstPath.UserPath + this.props.user.currentUser.name + '/' + this.props.map.currentMap.Template
+      // )
+      const expIsExist = await FileTools.fileIsExist(expFilePath)
+      if (expIsExist) {
+        let expData = JSON.parse(await fs.readFile(expFilePath))
+        // 若exp文件中Template不为空，则改写文件
+        if (expData && expData.Template !== '') {
+          let map = JSON.parse(JSON.stringify(this.props.map.currentMap))
+          map.Template = ''
+          this.props.setCurrentMap(map)
+          expData.Template = ''
+          await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
+        }
+      }
+    } else {
+      let path = await FileTools.appendingHomeDirectory(item.path)
+      XMLUtil.readXML(path, data => {
+        NavigationService.navigate('TemplateDetail', {
+          title: item.name,
+          data,
+          path,
+        })
       })
-    })
+    }
   }
   
   renderItem = ({ item, index }) => {
@@ -103,7 +136,10 @@ export default class TemplateManager extends React.Component {
           {item.name || item}
         </Text>
         {
-          templateName && templateName === item.name &&
+          (
+            templateName && templateName === item.name ||
+            templateName === '' && index === 0
+          ) &&
           <View style={styles.currentView}>
             <Text style={styles.currentText}>
               {getLanguage(this.props.language).Template.CURRENT_TEMPLATE}
@@ -131,6 +167,8 @@ export default class TemplateManager extends React.Component {
             <TextBtn
               btnText={getLanguage(this.props.language).Prompt.CREATE}
               textStyle={styles.headerBtnTitle}
+              width={scaleSize(80)}
+              height={scaleSize(40)}
               btnClick={this.create}
             />
           ),

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import TemplateManager from './TemplateManager'
+import { setCurrentMap } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -10,7 +11,9 @@ const mapStateToProps = state => ({
   currentUser: state.user.toJS().currentUser,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setCurrentMap,
+}
 
 export default connect(
   mapStateToProps,

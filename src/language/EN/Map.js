@@ -853,4 +853,22 @@ const Map_PoiTitle = {
   MARKET: 'Mall',
   SUBWAY: 'Subway',
 }
-export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle }
+
+const Template = {
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',
+  COLLECTION_TEMPLATE_CREATE: 'Create Template',
+  COLLECTION_TEMPLATE_NAME: 'Template Name',
+  ELEMENT_SETTINGS: 'Element Settings',
+  ELEMENT_STORAGE: 'Element Storage',
+  ATTRIBUTE_SETTINGS: 'Attribute Settings',
+  CURRENT_TEMPLATE: 'Current Template',
+  
+  ELEMENT_NAME: 'Element Name',
+  ELEMENT_CODE: 'Element Code',
+  
+  CREATE_ROOT_NODE: 'Create Root Node',
+  CREATE_CHILD_NODE: 'Create Chile Node',
+  INSERT_NODE: 'Insert Node',
+}
+
+export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

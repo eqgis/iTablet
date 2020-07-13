@@ -33,7 +33,7 @@ import {
 import LayerItem from './LayerItem'
 import { Progress, PieProgress } from './Progress'
 import TableList from './TableList'
-import TreeList from './TreeList'
+import { TreeList, TreeListItem } from './TreeList'
 import SaveDialog from './SaveDialog'
 import SaveMapNameDialog from './SaveMapNameDialog'
 import PanResponderView from './PanResPonderView'
@@ -106,6 +106,7 @@ export {
   PieProgress,
   TableList,
   TreeList,
+  TreeListItem,
   SaveDialog,
   SaveMapNameDialog,
   // ColorTableList,

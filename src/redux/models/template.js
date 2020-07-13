@@ -497,6 +497,26 @@ export const getSymbolTemplates = (params, cb = () => {}) => async (
   }
 }
 
+// 设置模板符号
+export const setSymbolTemplates = (params, cb = () => {}) => async (
+  dispatch,
+) => {
+  try {
+    await dispatch({
+      type: GET_SYMBOL_TEMPLATES,
+      payload: {
+        symbols: params.data.featureSymbol.template[0].feature || [],
+        path: params.path,
+        name: params.name || '',
+      },
+    })
+    cb && cb(params)
+    return
+  } catch (e) {
+    cb && cb(params)
+  }
+}
+
 // 设置当前标绘库
 export const setCurrentPlotList = (params, cb = () => {}) => async dispatch => {
   try {
@@ -568,7 +588,7 @@ const initialState = fromJS({
     path: '',
     name: '',
   }, // 当前使用的模板
-  templates: [], // 是用的模板列表，最近使用的在前面
+  templates: [], // 使用的模板列表，最近使用的在前面
   currentTemplateInfo: {},
   currentTemplateList: [],
   latestTemplateSymbols: [],
@@ -642,20 +662,59 @@ export default handleActions(
     // },
     [`${GET_SYMBOL_TEMPLATES}`]: (state, { payload }) => {
       const newData = state.toJS().templates || []
+      const oldTemplate = state.toJS().template || []
+      const latestTemplateSymbols = state.toJS().latestTemplateSymbols || []
+      const currentTemplateInfo = state.toJS().currentTemplateInfo || {}
+      const currentTemplateList = state.toJS().currentTemplateList || []
+      let isExist = false
       if (newData.length > 0) {
         for (let i = 0; i < newData.length; i++) {
           if (!newData[i].path || newData[i].path === payload.path) {
+            isExist = true
             Object.assign(newData[i], payload)
             // Object.assign(template, payload)
             break
           }
         }
-      } else {
+      }
+      if (!isExist) {
         newData.push(payload)
+      }
+      let _latestTemplateSymbols = latestTemplateSymbols
+      let _currentTemplateList = currentTemplateList
+      let _currentTemplateInfo = currentTemplateInfo
+      if (oldTemplate.path !== payload.path) {
+        let _firstData = payload.symbols && payload.symbols.length > 0 ? payload.symbols[0] : {}
+  
+        let _list = []
+        if (_firstData) {
+          if (_firstData.$.datasetName && _firstData.$.type !== 'Unknown') {
+            _list = [{ ..._firstData.$, field: _firstData.fields[0].field }]
+          }
+          const getData = function(data) {
+            if (!data.feature || data.feature.length === 0) return
+            for (let i = 0; i < data.feature.length; i++) {
+              const item = data.feature[i]
+              _list.push({ ...item.$, field: item.fields[0].field })
+              if (item.feature && item.feature.length > 0) {
+                getData(item)
+              }
+            }
+          }
+          
+          getData(_firstData)
+          _currentTemplateList = _list
+        }
+        
+        _latestTemplateSymbols = []
+        _currentTemplateInfo = {}
       }
       return state
         .setIn(['templates'], fromJS(newData))
         .setIn(['template'], fromJS(payload))
+        .setIn(['latestTemplateSymbols'], fromJS(_latestTemplateSymbols))
+        .setIn(['currentTemplateList'], fromJS(_currentTemplateList))
+        .setIn(['currentTemplateInfo'], fromJS(_currentTemplateInfo))
     },
 
     [`${SET_CURRENT_PLOT_INFO}`]: (state, { payload }) => {

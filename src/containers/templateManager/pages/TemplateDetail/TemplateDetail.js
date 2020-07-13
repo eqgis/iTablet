@@ -93,7 +93,11 @@ export default class TemplateDetail extends React.Component {
       {
         title: getLanguage(this.props.language).Template.CREATE_CHILD_NODE,
         action: () => {
-          let newId = '_' + (this.currentItem.childGroups.length ? this.currentItem.childGroups.length : 0)
+          let newId = '_' + (
+            this.currentItem.childGroups && this.currentItem.childGroups.length
+              ? this.currentItem.childGroups.length : 0
+            )
+          if (!this.currentItem.childGroups) this.currentItem.childGroups = []
           this.currentItem.childGroups.push({
             // code: this.dealCode(this.currentItem.code, newId),
             code: '0100' + newId,
@@ -133,7 +137,7 @@ export default class TemplateDetail extends React.Component {
           }
   
           _data.splice(index + 1, 0 ,{
-            code: this.dealCode(this.currentItem.code, newId),
+            code: this.currentItem.code + newId,
             name: 'NewFeature' + newId,
             datasourceAlias: '',
             datasetName: '',
@@ -142,7 +146,7 @@ export default class TemplateDetail extends React.Component {
             childGroups: [],
           })
           this.setState({
-            data: _data,
+            data: this.state.data.concat(),
           })
         },
       },

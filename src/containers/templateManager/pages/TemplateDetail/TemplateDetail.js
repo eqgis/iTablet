@@ -28,6 +28,18 @@ import ConstPath from '../../../../constants/ConstPath'
 import fs from 'react-native-fs'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 
+const defaultData = [
+  {
+    code: '0100',
+    name: 'NewFeature',
+    datasourceAlias: '',
+    datasetName: '',
+    type: '',
+    fields: [],
+    childGroups: [],
+  },
+]
+
 export default class TemplateDetail extends React.Component {
   props: {
     language: string,
@@ -44,18 +56,6 @@ export default class TemplateDetail extends React.Component {
   constructor(props) {
     super(props)
     let params = this.props.navigation.state.params || {}
-
-    let defaultData = [
-      {
-        code: '0100',
-        name: 'NewFeature',
-        datasourceAlias: '',
-        datasetName: '',
-        type: '',
-        fields: [],
-        childGroups: [],
-      },
-    ]
 
     this.path = params.path || ''
     this.oldData = params.data || {}
@@ -182,8 +182,9 @@ export default class TemplateDetail extends React.Component {
         break
       }
     }
+    let newData = _data.length > 0 ? this.state.data.concat() : defaultData
     this.setState({
-      data: this.state.data.concat(),
+      data: newData,
     })
     this.deleteDialog && this.deleteDialog.setDialogVisible(false)
   }

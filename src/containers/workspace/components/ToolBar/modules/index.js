@@ -25,6 +25,7 @@ import topoEditModule from './topoEditModule'
 import layerVisibleScaleModule from './layerVisibleScaleModule'
 import layerSettingImageModule from './layerSettingImageModule'
 import templateModule from './templateModule'
+import arMeasureModule from './arMeasure'
 export {
   startModule,
   start3DModule,
@@ -53,4 +54,5 @@ export {
   layerVisibleScaleModule,
   layerSettingImageModule,
   templateModule,
+  arMeasureModule,
 }

@@ -18,6 +18,7 @@ export default class MapToolbar extends React.Component {
     layerManager: PropTypes.func,
     style: PropTypes.any,
     mapModules: PropTypes.object,
+    ARView: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -180,10 +181,16 @@ export default class MapToolbar extends React.Component {
   }
 
   _renderItem = ({ item, index }) => {
+    let title
+    if (item.key === MapTabs.MapView) {
+      title = this.props.ARView
+        ? getLanguage(global.language).Map_Label.ARMAP
+        : getLanguage(global.language).Map_Label.MAP
+    }
     return (
       <MTBtn
         key={item.key}
-        title={item.title}
+        title={title || item.title}
         textColor={'#505050'}
         textStyle={{ fontSize: setSpText(20) }}
         selected={this.state.currentIndex === index}

@@ -11,21 +11,19 @@ import {
   Image,
   ScrollView,
   AsyncStorage,
-  Platform,
 } from 'react-native'
 import { Container } from '../../../components'
 import NavigationService from '../../NavigationService'
 import { color, size } from '../../../styles'
 import Toast from '../../../utils/Toast'
 import { scaleSize, OnlineServicesUtils } from '../../../utils'
-import { UserType } from '../../../constants'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
-var APPLET_UPDATE_TIME = 'APPLET_UPDATE_TIME'
+// var APPLET_UPDATE_TIME = 'APPLET_UPDATE_TIME'
 
 var superMapKnownTime
 var superMapGroupTime
@@ -99,57 +97,59 @@ export default class Find extends Component {
       // console.log(error)
     }
   }
-  
+
   /**
    * 获取小程序数据，判断是否有新的小程序
    **/
-  _getAppletData = async () => {
-    let data = []
-    let searchParams = {
-      currentPage: this.currentPage,
-      keywords: (Platform.OS === 'ios' ? 'ios.' : 'android.') + 'bundle',
-    }
-    if (!UserType.isIPortalUser(this.props.user.currentUser)) {
-      if (!this.JSOnlineService) {
-        this.JSOnlineService = new OnlineServicesUtils('online')
-      }
-      data = await this.JSOnlineService.getPublicDataByTypes(
-        this.dataTypes,
-        searchParams,
-      )
-    } else {
-      if (!this.JSIPortalService) {
-        this.JSIPortalService = new OnlineServicesUtils('iportal')
-      }
-      data = await this.JSIPortalService.getPublicDataByTypes(
-        this.dataTypes,
-        searchParams,
-      )
-    }
-    let localUpdateTimes = await AsyncStorage.getItem(
-      APPLET_UPDATE_TIME,
-    ) || []
-    let isNew = false
-    if (data.total) {
-      let applets = data.content
-      for (let i = 0; i < data.total; i++) {
-        let isExist = false
-        for (let j = 0; j < localUpdateTimes.length; j++) {
-          if (localUpdateTimes[j].fileName === applets[i].fileName) {
-            if (localUpdateTimes[j].lastModfiedTime < applets[i].lastModfiedTime) isNew = true
-            isExist = true
-          }
-        }
-        applets[i].lastModfiedTime
-      }
-    }
-    if (isNew !== this.state.appletInfo) {
-      this.setState({
-        appletInfo: isNew,
-      })
-    }
-    await AsyncStorage.setItem(APPLET_UPDATE_TIME, visibleValue)
-  }
+  // _getAppletData = async () => {
+  //   let data = []
+  //   let searchParams = {
+  //     currentPage: this.currentPage,
+  //     keywords: (Platform.OS === 'ios' ? 'ios.' : 'android.') + 'bundle',
+  //   }
+  //   if (!UserType.isIPortalUser(this.props.user.currentUser)) {
+  //     if (!this.JSOnlineService) {
+  //       this.JSOnlineService = new OnlineServicesUtils('online')
+  //     }
+  //     data = await this.JSOnlineService.getPublicDataByTypes(
+  //       this.dataTypes,
+  //       searchParams,
+  //     )
+  //   } else {
+  //     if (!this.JSIPortalService) {
+  //       this.JSIPortalService = new OnlineServicesUtils('iportal')
+  //     }
+  //     data = await this.JSIPortalService.getPublicDataByTypes(
+  //       this.dataTypes,
+  //       searchParams,
+  //     )
+  //   }
+  //   let localUpdateTimes =
+  //     (await AsyncStorage.getItem(APPLET_UPDATE_TIME)) || []
+  //   let isNew = false
+  //   if (data.total) {
+  //     let applets = data.content
+  //     for (let i = 0; i < data.total; i++) {
+  //       let isExist = false
+  //       for (let j = 0; j < localUpdateTimes.length; j++) {
+  //         if (localUpdateTimes[j].fileName === applets[i].fileName) {
+  //           if (
+  //             localUpdateTimes[j].lastModfiedTime < applets[i].lastModfiedTime
+  //           )
+  //             isNew = true
+  //           isExist = true
+  //         }
+  //       }
+  //       applets[i].lastModfiedTime
+  //     }
+  //   }
+  //   if (isNew !== this.state.appletInfo) {
+  //     this.setState({
+  //       appletInfo: isNew,
+  //     })
+  //   }
+  //   await AsyncStorage.setItem(APPLET_UPDATE_TIME, visibleValue)
+  // }
 
   goToSuperMapForum = () => {
     NavigationService.navigate('Protocol', { type: 'superMapForum' })
@@ -157,6 +157,10 @@ export default class Find extends Component {
 
   goToSuperMap = () => {
     NavigationService.navigate('Protocol', { type: 'supermap' })
+  }
+
+  goToGISAcademy = () => {
+    NavigationService.navigate('Protocol', { type: 'GISAcademy' })
   }
 
   _renderItem = (
@@ -347,6 +351,12 @@ export default class Find extends Component {
             leftImagePath: getThemeAssets().find.forum,
             isInformSpot: false,
             onClick: this.goToSuperMapForum,
+          })}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Find.GIS_ACADEMY,
+            leftImagePath: getThemeAssets().find.contact_map,
+            isInformSpot: false,
+            onClick: this.goToGISAcademy,
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.APPLET,

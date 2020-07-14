@@ -35,8 +35,8 @@ class AIModule extends FunctionModule {
 export default function() {
   return new AIModule({
     type: ConstToolType.MAP_AR_AI_ASSISTANT,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT,
+    key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
     size: 'large',
     image: getThemeAssets().ar.icon_ai_assistant,
     getData: AiData.getData,

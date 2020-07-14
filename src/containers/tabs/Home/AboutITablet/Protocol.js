@@ -281,6 +281,10 @@ export default class protocol extends Component {
         }
         title = getLanguage(global.language).Profile.SERVICE_AGREEMENT
         break
+      case 'GISAcademy':
+        source = { uri: `https://edu.supermap.com` }
+        title = getLanguage(global.language).Find.GIS_ACADEMY
+        break
       default:
         break
     }

@@ -255,7 +255,7 @@ export default class Mine extends Component {
         case 'AIModel':
           data.push({
             title: getLanguage(this.props.language).Profile.AIMODEL,
-            image: getThemeAssets().find.app,
+            image: require('../../../assets/Find/find_publicmap.png'),
             onClick: () =>
               NavigationService.navigate('MyAIModel', {
                 title: getLanguage(this.props.language).Profile.AIMODEL,

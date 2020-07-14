@@ -1912,6 +1912,7 @@ export default class MapView extends React.Component {
         mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
+        ARView={this.state.showAIDetect}
       />
     )
   }
@@ -2061,6 +2062,7 @@ export default class MapView extends React.Component {
         setMap2Dto3D={this.props.setMap2Dto3D}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
+        ARView={this.state.showAIDetect}
       />
     )
   }
@@ -3313,7 +3315,6 @@ export default class MapView extends React.Component {
         }}
         bottomBar={
           this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-          !this.state.showAIDetect &&
           !this.isExample &&
           !this.props.analyst.params &&
           this.renderToolBar()

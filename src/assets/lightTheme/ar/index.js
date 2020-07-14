@@ -23,6 +23,7 @@ const navi_model_pin_bowling = require('./navi_model_pin_bowling.png')
 const navi_model_red_flag = require('./navi_model_red_flag.png')
 const icon_ar_camera_circle_bg = require('./icon_ar_camera_circle_bg.png')
 const navi_object_classify_capture = require('./navi_object_classify_capture.png')
+const ar_view_mode = require('./toolbar/ar_view_mode_black.png')
 
 export default {
   functiontoolbar,
@@ -49,4 +50,5 @@ export default {
   navi_model_red_flag,
   icon_ar_camera_circle_bg,
   navi_object_classify_capture,
+  ar_view_mode,
 }

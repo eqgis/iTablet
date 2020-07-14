@@ -1,45 +1,42 @@
-/**
- * AI助手
- */
-import AiData from './AiData'
-import AiActions from './AiActions'
+import ARMeasureAction from './ARMeasureAction'
+import ARMeasureData from './ARMeasureData'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { getThemeAssets } from '../../../../../../assets'
-import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 
-class AIModule extends FunctionModule {
+class LayerSettingImageModule extends FunctionModule {
   constructor(props) {
     super(props)
   }
 
-  action = async () => {
+  action = () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
-    const _data = AiData.getData()
+    const _data = ARMeasureData.getData()
     const containerType = ToolbarType.table
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
-    this.setModuleData(this.type)
     params.showFullMap && params.showFullMap(true)
     params.setToolbarVisible(true, this.type, {
       containerType,
       isFullScreen: true,
+      data: _data.data,
       ...data,
     })
   }
 }
 
 export default function() {
-  return new AIModule({
-    type: ConstToolType.MAP_AR_AI_ASSISTANT,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
+  return new LayerSettingImageModule({
+    type: ConstToolType.MAP_AR_MEASURE,
+    key: ConstToolType.MAP_AR_MEASURE,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MEASURE,
     size: 'large',
-    image: getThemeAssets().analyst.analysis_online_query,
-    getData: AiData.getData,
-    actions: AiActions,
+    image: getThemeAssets().analyst.analysis_stop,
+    getData: ARMeasureData.getData,
+    actions: ARMeasureAction,
   })
 }

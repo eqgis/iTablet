@@ -9,6 +9,8 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
+  Animated,
 } from 'react-native'
 import { Container, Dialog } from '../../../components'
 import { dialogStyles } from './Styles'
@@ -35,6 +37,7 @@ class RecommendFriend extends Component {
     this.friend = this.props.navigation.getParam('friend')
     this.user = this.props.navigation.getParam('user')
     this.state = {
+      loading: false,
       contacts: [],
     }
     this.language = this.props.navigation.getParam('language')
@@ -42,6 +45,7 @@ class RecommendFriend extends Component {
     this._renderItem = this._renderItem.bind(this)
     this.addFriendRequest = this.addFriendRequest.bind(this)
     this.exit = false
+    this.loadingHeight = new Animated.Value(0)
   }
 
   componentDidMount() {
@@ -86,31 +90,61 @@ class RecommendFriend extends Component {
     }
   }
 
+  setLoadingVisible = visible => {
+    Animated.timing(this.loadingHeight, {
+      toValue: visible ? 40 : 0,
+      duration: 800,
+    }).start()
+    this.setState({
+      loading: visible,
+    })
+  }
+
   getContacts = async () => {
     Contacts.getAll(async (err, contacts) => {
       if (err === 'denied') {
         this.permissionDeniedDialog.setDialogVisible(true)
       } else {
-        GLOBAL.Loading.setLoading(
-          true,
-          getLanguage(this.language).Friends.SEARCHING,
-        )
-        for (let i = 0, len = contacts.length; i < len; i++) {
-          let item = contacts[i]
-          if (item.phoneNumbers.length > 0 || item.emailAddresses.length > 0) {
-            await this.search({
-              familyName: item.familyName,
-              givenName: item.givenName,
-              phoneNumbers: item.phoneNumbers,
-              emails: item.emailAddresses,
-            })
-            if (this.exit) {
-              GLOBAL.Loading.setLoading(false)
-              return
+        this.setLoadingVisible(true)
+        let contactsArr = []
+        let subContacts = []
+        contacts.forEach((item, index) => {
+          subContacts.push(item)
+          if (index > 0 && (index + 1) % 5 === 0) {
+            contactsArr.push(subContacts)
+            subContacts = []
+          }
+          if (index === contacts.length - 1 && subContacts.length > 0) {
+            contactsArr.push(subContacts)
+          }
+        })
+        for (let n = 0; n < contactsArr.length; n++) {
+          let results = []
+          let subArr = contactsArr[n]
+          //5个一组同时查询
+          for (let i = 0; i < subArr.length; i++) {
+            let item = subArr[i]
+            if (
+              item.phoneNumbers.length > 0 ||
+              item.emailAddresses.length > 0
+            ) {
+              results.push(
+                this.search({
+                  familyName: item.familyName,
+                  givenName: item.givenName,
+                  phoneNumbers: item.phoneNumbers,
+                  emails: item.emailAddresses,
+                }),
+              )
+              if (this.exit) {
+                GLOBAL.Loading.setLoading(false)
+                return
+              }
             }
           }
+          await Promise.all(results)
         }
-        GLOBAL.Loading.setLoading(false)
+        this.setLoadingVisible(false)
         if (this.state.contacts.length === 0) {
           Toast.show(getLanguage(this.language).Friends.FIND_NONE)
         }
@@ -132,7 +166,8 @@ class RecommendFriend extends Component {
         if (
           result.userId &&
           result.userId !== this.user.userId &&
-          !FriendListFileHandle.isFriend(result.userId)
+          !FriendListFileHandle.isFriend(result.userId) &&
+          result.nickname
         ) {
           let array = this.state.contacts
           array.push({
@@ -156,7 +191,8 @@ class RecommendFriend extends Component {
         if (
           result.userId &&
           result.userId !== this.user.userId &&
-          !FriendListFileHandle.isFriend(result.userId)
+          !FriendListFileHandle.isFriend(result.userId) &&
+          result.nickname
         ) {
           let array = this.state.contacts
           array.push({
@@ -219,6 +255,29 @@ class RecommendFriend extends Component {
           navigation: this.props.navigation,
         }}
       >
+        <Animated.View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: this.loadingHeight,
+          }}
+        >
+          {this.state.loading && (
+            <ActivityIndicator size="small" color="#505050" />
+          )}
+          {this.state.loading && (
+            <Text
+              style={{
+                marginLeft: 10,
+                fontSize: scaleSize(24),
+                color: 'black',
+              }}
+            >
+              {getLanguage(this.language).Friends.SEARCHING}
+            </Text>
+          )}
+        </Animated.View>
         <FlatList
           style={{
             top: scaleSize(10),

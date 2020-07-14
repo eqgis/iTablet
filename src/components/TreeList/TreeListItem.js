@@ -113,9 +113,7 @@ export default class TreeListItem extends React.Component {
       }
     }
     return (
-      <View
-        style={[styles.row, this.props.style]}
-      >
+      <View style={[styles.row, this.props.style]}>
         <TouchableOpacity
           activeOpacity={1}
           style={styles.row}
@@ -139,14 +137,22 @@ export default class TreeListItem extends React.Component {
               styles.title,
               icon && { marginLeft: scaleSize(20) },
               this.props.textColor && { color: this.props.textColor },
-              this.props.fontSize && { fontSize: this.props.fontSize, height: this.props.fontSize + setSpText(4) },
+              this.props.fontSize && {
+                fontSize: this.props.fontSize,
+                height: this.props.fontSize + setSpText(4),
+              },
             ]}
           >
-            {this.props.data.title ||this.props.data.name ||
-            this.props.data.$.code + ' ' + this.props.data.$.name}
+            {this.props.data.title ||
+              this.props.data.name ||
+              this.props.data.$.code + ' ' + this.props.data.$.name}
           </Text>
         </TouchableOpacity>
-        {this.props.rightView && this.props.rightView({data: this.props.data, index: this.props.index})}
+        {this.props.rightView &&
+          this.props.rightView({
+            data: this.props.data,
+            index: this.props.index,
+          })}
       </View>
     )
   }
@@ -160,7 +166,9 @@ export default class TreeListItem extends React.Component {
     for (let i = 0; i < childGroups.length; i++) {
       let data = childGroups[i]
       if (this.props.renderChild) {
-        children.push(this.props.renderChild({ data, index: i, parent: this.props.data }))
+        children.push(
+          this.props.renderChild({ data, index: i, parent: this.props.data }),
+        )
       } else {
         children.push(
           <TreeListItem

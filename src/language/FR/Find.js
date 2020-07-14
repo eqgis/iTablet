@@ -1,6 +1,7 @@
 const Find = {
   PUBLIC_DATA: 'Données publiques',
   APPLET: '小程序',
+  GIS_ACADEMY: 'GIS Academy', //待翻译
   SEARCH_RESULT: '搜索结果',
   BACK: 'Retour',
   CONFIRM: '确定',

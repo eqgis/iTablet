@@ -5,12 +5,10 @@ import { Module } from '../../class'
 import {
   startModule,
   addModule,
-  markModule,
   collectionModule,
   editModule,
   toolModule,
   shareModule,
-  templateModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class MapCollectionConfig extends Module {
@@ -31,7 +29,6 @@ export default class MapCollectionConfig extends Module {
       functionModules: [
         startModule,
         addModule,
-        markModule,
         () => collectionModule(ConstToolType.COLLECTION),
         editModule,
         () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),

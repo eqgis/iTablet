@@ -339,6 +339,8 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Route\nRéseau',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
+  MAP_AR_MEASURE: 'AR Measure', //待翻译
+  MAP_AR_ANALYZE: 'AR Analyze', //待翻译
   MAP_AR_CAMERA_EXCEPTION: "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
   MAP_AR_AI_ASSISTANT: 'IA\nCollecte',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Collecte personnalisée',
@@ -854,7 +856,8 @@ const Map_PoiTitle = {
   SUBWAY: 'Métro',
 }
 
-const Template = { // 待翻译
+// 采集模板
+const Template = {
   COLLECTION_TEMPLATE_MANAGEMENT: '模板管理', // 待翻译
   COLLECTION_TEMPLATE_CREATE: '模板创建',
   COLLECTION_TEMPLATE_NAME: '模板名称',
@@ -863,10 +866,10 @@ const Template = { // 待翻译
   ATTRIBUTE_SETTINGS: '属性设置',
   CURRENT_TEMPLATE: '当前模板',
   DEFAULT_TEMPLATE: '默认模版',
-  
+
   ELEMENT_NAME: '要素名称',
   ELEMENT_CODE: '要素编码',
-  
+
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',

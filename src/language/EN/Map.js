@@ -339,6 +339,8 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Road\nNetwork',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Don not support this device',
+  MAP_AR_MEASURE: 'AR Measure',
+  MAP_AR_ANALYZE: 'AR Analyze',
   MAP_AR_CAMERA_EXCEPTION: 'The camera is abnormal, please check whether the permission is open.',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
@@ -854,6 +856,7 @@ const Map_PoiTitle = {
   SUBWAY: 'Subway',
 }
 
+// 采集模板
 const Template = {
   COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',
   COLLECTION_TEMPLATE_CREATE: 'Create Template',
@@ -863,10 +866,10 @@ const Template = {
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
   CURRENT_TEMPLATE: 'Current Template',
   DEFAULT_TEMPLATE: 'Default Template',
-  
+
   ELEMENT_NAME: 'Element Name',
   ELEMENT_CODE: 'Element Code',
-  
+
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',

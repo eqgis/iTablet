@@ -339,6 +339,8 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: '路网',
 
   MAP_AR_DONT_SUPPORT_DEVICE: '不支持此设备',
+  MAP_AR_MEASURE: 'AR测量',
+  MAP_AR_ANALYZE: 'AR分析',
   MAP_AR_CAMERA_EXCEPTION: '摄像头异常, 请检查权限是否开启',
   MAP_AR_AI_ASSISTANT: 'AI助手',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: '通用采集',
@@ -864,10 +866,10 @@ const Template = {
   ATTRIBUTE_SETTINGS: '属性设置',
   CURRENT_TEMPLATE: '当前模板',
   DEFAULT_TEMPLATE: '默认模版',
-  
+
   ELEMENT_NAME: '要素名称',
   ELEMENT_CODE: '要素编码',
-  
+
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',

@@ -189,24 +189,26 @@ class FriendList extends Component {
             />
           }
         />
-        <View style={styles.FlatListViewStyle}>
-          <FlatList
-            data={letterArr}
-            keyExtractor={(item, index) => index.toString()} //不重复的key
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                style={styles.FlatListItemViewStyle}
-                onPress={() => {
-                  this._onSectionselect(index)
-                }}
-              >
-                <Text style={{ fontSize: scaleSize(25) }}>
-                  {item.toUpperCase()}
-                </Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
+        {this.state.sections.length > 30 && (
+          <View style={styles.FlatListViewStyle}>
+            <FlatList
+              data={letterArr}
+              keyExtractor={(item, index) => index.toString()} //不重复的key
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  style={styles.FlatListItemViewStyle}
+                  onPress={() => {
+                    this._onSectionselect(index)
+                  }}
+                >
+                  <Text style={{ fontSize: scaleSize(25) }}>
+                    {item.toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        )}
       </View>
     )
   }

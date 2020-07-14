@@ -12,18 +12,24 @@ export default class MapExample extends Module {
   constructor () {
     super({
       key: 'MapExample',
-      // example: {
-      //   name_en: 'PrecipitationOfUSA', // 英文数据名称
-      //   name_cn: '湖北', // 中文数据名称
-      // },
+      example: {
+        DEFAULT: { // 默认/中文数据名称
+          name: '湖北',
+          mapName: 'LandBuild',
+        },
+        EN: { // 英文数据名称
+          name: 'PrecipitationOfUSA',
+          mapName: 'LosAngeles',
+        },
+      },
       //工具条加载项
       functionModules: [
-        startModule(),
-        // addModule(),
-        markModule(),
-        toolModule(),
-        shareModule(),
-        functionExample(),
+        startModule,
+        // addModule,
+        markModule,
+        toolModule,
+        shareModule,
+        functionExample,
       ],
       mapType: Module.MapType.MAP,
       //  tabModules: [mapTabModules.MapView, mapTabModules.LayerManager, mapTabModules.LayerAttribute, mapTabModules.MapSetting]

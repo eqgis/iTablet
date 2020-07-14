@@ -1,4 +1,4 @@
-import { SMeasureView, SAIDetectView, SMap } from 'imobile_for_reactnative'
+import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
 import { Toast, LayerUtils } from '../../../../../../utils'
@@ -11,7 +11,7 @@ import ToolAction from '../../../../../../containers/workspace/components/ToolBa
 
 // 违章采集
 function illegallyParkCollect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -54,59 +54,6 @@ function illegallyParkCollect() {
   })()
 }
 
-// 户型图采集
-function arMeasureCollect() {
-  (async function() {
-    const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
-      return
-    }
-    let currentLayer = GLOBAL.currentLayer
-    let isTaggingLayer = false
-    if (currentLayer) {
-      let layerType = LayerUtils.getLayerType(currentLayer)
-      isTaggingLayer = layerType === 'TAGGINGLAYER'
-    }
-    if (!isTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
-      if (!hasDefaultTagging) {
-        let data = await SMap.newTaggingDataset(
-          'Default_Tagging',
-          _params.user.currentUser.userName,
-        )
-        GLOBAL.TaggingDatasetName = data && data.datasetName
-      }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
-        datasourceAlias,
-        datasetName,
-      }
-    } else {
-      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-      const datasetName = currentLayer.datasetName // 标注图层名称
-      GLOBAL.MeasureCollectData = {
-        datasourceAlias,
-        datasetName,
-      }
-    }
-
-    // NavigationService.navigate('MeasureView', GLOBAL.MeasureCollectData)
-    GLOBAL.EnterDatumPointType = 'arMeasureCollect'
-    NavigationService.navigate('EnterDatumPoint')
-
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
-  })()
-}
-
 async function getTaggingLayerData() {
   const _params = ToolbarModule.getParams()
   let currentLayer = GLOBAL.currentLayer
@@ -145,7 +92,7 @@ async function getTaggingLayerData() {
 
 // AI分类
 function aiClassify() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
@@ -209,7 +156,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -253,7 +200,7 @@ function _downloadData(downloadData) {
 
 // 目标采集
 function aiDetect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
@@ -298,75 +245,23 @@ function aiDetect() {
 
 // 态势采集(聚合模式)
 function polymerizeCollect() {
-  (async function() {
+  ;(async function() {
     // await SAIDetectView.setProjectionModeEnable(true)
     // await SAIDetectView.setDrawTileEnable(false)
     await SAIDetectView.setIsPolymerize(true)
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
     if (!GLOBAL.showAIDetect) {
-      (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     // await SAIDetectView.startCountTrackedObjs(true)
   })()
 }
 
-// 高精度采集
-function collectSceneForm() {
-  (async function() {
-    const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
-      return
-    }
-
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
-
-    // let time = await SCollectSceneFormView.getSystemTime()
-    // GLOBAL.mapView.setState({ map: { height: 0 } })
-    // GLOBAL.newcollectData = time
-    // const datasourceAlias = time
-    // const datasetName = 'CollectSceneForm'
-    // const datasetPointName = 'CollectPointSceneForm'
-    // NavigationService.navigate('CollectSceneFormView', {
-    //   datasourceAlias,
-    //   datasetName,
-    //   datasetPointName,
-    // })
-
-    GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
-    NavigationService.navigate('EnterDatumPoint')
-
-    // NavigationService.navigate('InputPage', {
-    //   headerTitle: getLanguage(global.language).Map_Main_Menu
-    //     .MAP_AR_AI_ASSISTANT_NEWDATA,
-    //   value: '',
-    //   placeholder: getLanguage(global.language).Map_Main_Menu
-    //     .MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME,
-    //   type: 'name',
-    //   cb: async value => {
-    //     NavigationService.goBack()
-    //   },
-    //   backcb: () => {
-    //     NavigationService.goBack()
-    //     if (GLOBAL.isswitch) {
-    //       GLOBAL.isswitch = false
-    //       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
-    //     }
-    //   },
-    // })
-  })()
-}
-
 // AR投射
 function arCastModelOperate() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -382,14 +277,11 @@ function arCastModelOperate() {
     NavigationService.navigate('ARProjectModeView')
   })()
 }
-
 export default {
   illegallyParkCollect,
-  arMeasureCollect,
   aiClassify,
   _downloadData,
   aiDetect,
   polymerizeCollect,
-  collectSceneForm,
   arCastModelOperate,
 }

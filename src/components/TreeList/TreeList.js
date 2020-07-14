@@ -16,6 +16,8 @@ export default class TreeList extends React.Component {
     numColumns?: number,
     itemTextColor?: string,
     itemTextSize?: number,
+    itemStyle?: Object,
+    itemRightView?: Object,
     separator?: boolean,
     separatorStyle?: any,
     style?: Object,
@@ -46,20 +48,31 @@ export default class TreeList extends React.Component {
     return rows
   }
 
-  renderRow = ({ data, index }) => {
+  renderRow = ({ data, index, parent }) => {
     if (this.props.renderItem) {
-      return this.props.renderItem({ data, index })
+      return this.props.renderItem({ data, index, parent })
+    }
+    let key = index
+    if (parent) {
+      if (parent.key !== undefined && data.code !== undefined) {
+        key = parent.key + '_' + data.code
+      } else {
+        key = parent.key
+      }
+    } else {
+      key = data.code || data.id
     }
     return (
       <TreeListItem
+        key={key}
         data={data}
         index={index}
-        key={'row-' + index}
-        style={[styles.row]}
+        style={[styles.row, this.props.itemStyle]}
         textColor={this.props.itemTextColor}
-        textSize={this.props.itemTextSize}
+        fontSize={this.props.itemTextSize}
         separatorStyle={this.props.separatorStyle}
         separator={this.props.separator}
+        rightView={this.props.itemRightView}
         childrenStyle={[styles.children]}
         // childrenData={row.childGroups}
         keyExtractor={data => data.path}
@@ -69,20 +82,31 @@ export default class TreeList extends React.Component {
     )
   }
 
-  renderChild = ({ data, index }) => {
+  renderChild = ({ data, index, parent }) => {
     if (this.props.renderItem) {
-      return this.props.renderChild({ data, index })
+      return this.props.renderChild({ data, index, parent })
+    }
+    let key = index
+    if (parent) {
+      if (parent.key !== undefined && data.code !== undefined) {
+        key = parent.key + '_' + data.code
+      } else {
+        key = parent.key
+      }
+    } else {
+      key = data.code || data.id
     }
     return (
       <TreeListItem
+        key={key}
         data={data}
         index={index}
-        key={'row-' + (data.path || (data.$ && data.$.name) || index)}
-        style={[styles.row]}
+        style={[styles.row, this.props.itemStyle]}
         textColor={this.props.itemTextColor}
-        textSize={this.props.itemTextSize}
+        fontSize={this.props.itemTextSize}
         separatorStyle={this.props.separatorStyle}
         separator={this.props.separator}
+        rightView={this.props.itemRightView}
         childrenStyle={[styles.children]}
         iconStyle={this.props.iconStyle}
         // childrenData={item.childGroups}

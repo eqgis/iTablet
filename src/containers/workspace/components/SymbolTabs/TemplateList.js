@@ -144,9 +144,6 @@ export default class TemplateList extends React.Component {
       <TreeList
         style={[styles.container, this.props.style]}
         itemTextColor={color.themeText2}
-        itemTextSize={color.themeText2}
-        separator={true}
-        // data={this.props.template.template.symbols}
         data={this.state.data}
         onPress={this.action}
       />

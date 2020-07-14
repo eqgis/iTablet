@@ -50,9 +50,9 @@ export default class ImageButton extends React.Component {
           this.props.containerStyle,
         ]}
         activeOpacity={this.props.activeOpacity}
-        onPress={() => {
+        onPress={event => {
           if (this.props.enabled) {
-            this.props.onPress && this.props.onPress()
+            this.props.onPress && this.props.onPress(event)
           }
         }}
       >

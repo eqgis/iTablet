@@ -1,11 +1,10 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ConstOnline, ChunkType, ConstToolType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
 import {
   startModule,
   addModule,
-  markModule,
   collectionModule,
   editModule,
   toolModule,
@@ -30,9 +29,9 @@ export default class MapCollectionConfig extends Module {
       functionModules: [
         startModule,
         addModule,
-        markModule,
-        collectionModule,
+        () => collectionModule(ConstToolType.COLLECTION),
         editModule,
+        () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),
         toolModule,
         shareModule,
       ],

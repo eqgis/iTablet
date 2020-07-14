@@ -308,6 +308,10 @@ const Prompt = {
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
   CREATE: '新規',
   NO_DATASOURCE: '現在のワークスペースにはデータソースがありません。新規データソースを作成してください',
+  FLOOR: 'Floor', //待翻译
+  AR_NAVIGATION: 'AR Navi',
+  ARRIVE_DESTINATION: 'Arrived the destination',
+  DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'ラインデータセットを選択してください',

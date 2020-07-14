@@ -13,6 +13,7 @@ import color from '../../../../styles/color'
 import { SMap } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
+import NavigationService from '../../../NavigationService'
 const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(225) : scaleSize(205)
 export default class NavigationStartButton extends React.Component {
   props: {
@@ -38,14 +39,14 @@ export default class NavigationStartButton extends React.Component {
       height:
         props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(
-            screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT,
-          )
+              screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT,
+            )
           : new Animated.Value(scaleSize(200)),
       width:
         props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(
-            screen.getScreenWidth(props.device.orientation) / 2,
-          )
+              screen.getScreenWidth(props.device.orientation) / 2,
+            )
           : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
       length: '',
       path: props.path || [],
@@ -53,49 +54,49 @@ export default class NavigationStartButton extends React.Component {
     this.directions =
       GLOBAL.language === 'CN'
         ? [
-          '直行',
-          '左前转弯',
-          '右前转弯',
-          '左转弯',
-          '右转弯',
-          '左后转弯',
-          '右后转弯',
-          '调头',
-          '右转弯绕行至左',
-          '直角斜边右转弯',
-          '进入环岛',
-          '出环岛',
-          '到达目的地',
-          '电梯上行',
-          '电梯下行',
-          '扶梯上行',
-          '扶梯下行',
-          '楼梯上行',
-          '楼梯下行',
-          '到达途径点',
-        ]
+            '直行',
+            '左前转弯',
+            '右前转弯',
+            '左转弯',
+            '右转弯',
+            '左后转弯',
+            '右后转弯',
+            '调头',
+            '右转弯绕行至左',
+            '直角斜边右转弯',
+            '进入环岛',
+            '出环岛',
+            '到达目的地',
+            '电梯上行',
+            '电梯下行',
+            '扶梯上行',
+            '扶梯下行',
+            '楼梯上行',
+            '楼梯下行',
+            '到达途径点',
+          ]
         : [
-          'Going straight',
-          'front-left turn',
-          'front-right turn',
-          'turn left',
-          'turn right',
-          'back-left turn',
-          'back-right turn',
-          'U-turn',
-          'turn right and turn around to the left',
-          'right angle bevel right turn',
-          'enter the roundabout',
-          'going out the roundabout',
-          'arrive at the destination',
-          'take the elevator up',
-          'take the elevator down',
-          'take the escalator up',
-          'take the escalator down',
-          'take the stairs up',
-          'take the stairs down',
-          'arrival route point',
-        ]
+            'Going straight',
+            'front-left turn',
+            'front-right turn',
+            'turn left',
+            'turn right',
+            'back-left turn',
+            'back-right turn',
+            'U-turn',
+            'turn right and turn around to the left',
+            'right angle bevel right turn',
+            'enter the roundabout',
+            'going out the roundabout',
+            'arrive at the destination',
+            'take the elevator up',
+            'take the elevator down',
+            'take the escalator up',
+            'take the escalator down',
+            'take the stairs up',
+            'take the stairs down',
+            'arrival route point',
+          ]
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.path.length === 0 || nextProps.path.length !== 0) {
@@ -529,6 +530,7 @@ export default class NavigationStartButton extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: scaleSize(20),
+                marginRight: scaleSize(20),
               }}
               onPress={() => {
                 this.simulatedNavigation()
@@ -546,6 +548,43 @@ export default class NavigationStartButton extends React.Component {
                 }
               </Text>
             </TouchableOpacity>
+            {Platform.OS === 'ios' && (
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{
+                  height: scaleSize(60),
+                  flex: 1,
+                  borderRadius: 5,
+                  backgroundColor: color.blue1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: scaleSize(20),
+                  marginRight: scaleSize(20),
+                }}
+                onPress={() => {
+                  if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+                    NavigationService.navigate('ARNavigationView')
+                  } else {
+                    GLOBAL.EnterDatumPointType = 'arNavigation'
+                    //隐藏导航界面
+                    GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(false)
+                    GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(false)
+                    NavigationService.navigate('EnterDatumPoint', {
+                      type: 'ARNAVIGATION_INDOOR',
+                    })
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: setSpText(20),
+                    color: color.white,
+                  }}
+                >
+                  {getLanguage(global.language).Prompt.AR_NAVIGATION}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </Animated.View>
       )

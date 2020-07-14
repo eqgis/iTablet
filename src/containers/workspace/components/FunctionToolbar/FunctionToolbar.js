@@ -70,6 +70,7 @@ export default class FunctionToolbar extends React.Component {
     //弹出模型、路网弹窗
     setMap2Dto3D: () => {},
     openOnlineMap: boolean,
+    ARView: Boolean,
   }
 
   static defaultProps = {
@@ -112,7 +113,8 @@ export default class FunctionToolbar extends React.Component {
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
-      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
+      this.props.ARView !== nextProps.ARView
     ) {
       return true
     }
@@ -331,16 +333,16 @@ export default class FunctionToolbar extends React.Component {
           this.props.online.share[0] &&
           GLOBAL.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
-          <Bar
-            style={styles.progress}
-            // indeterminate={true}
-            progress={
-              this.props.online.share[this.props.online.share.length - 1]
-                .progress
-            }
-            width={scaleSize(60)}
-          />
-        )}
+            <Bar
+              style={styles.progress}
+              // indeterminate={true}
+              progress={
+                this.props.online.share[this.props.online.share.length - 1]
+                  .progress
+              }
+              width={scaleSize(60)}
+            />
+          )}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
         {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
@@ -373,13 +375,22 @@ export default class FunctionToolbar extends React.Component {
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? {}
         : {
-          maxHeight: this.m_maxHeight,
-        }
+            maxHeight: this.m_maxHeight,
+          }
+    let filterData = this.state.data.filter(item => {
+      if (this.props.ARView) {
+        if (item.type === ConstToolType.MAP_TOOLS) return false
+      } else {
+        if (item.type === ConstToolType.MAP_AR_MEASURE) return false
+        if (item.type === ConstToolType.MAP_AR_AI_ASSISTANT) return false
+      }
+      return true
+    })
     return (
       <FlatList
         ref={ref => (this.list = ref)}
         style={style}
-        data={this.state.data}
+        data={filterData}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
         onScroll={event => {

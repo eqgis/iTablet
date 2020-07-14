@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   AsyncStorage,
+  FlatList,
 } from 'react-native'
 import { Container, Button } from '../../components'
 
@@ -25,6 +26,8 @@ export default class EnterDatumPoint extends Component {
 
   constructor(props) {
     super(props)
+    let params = this.props.navigation.state.params || {}
+    let type = params.type || ''
 
     let problemItems = []
     problemItems.push({
@@ -40,6 +43,8 @@ export default class EnterDatumPoint extends Component {
       checked: false,
     })
     this.state = {
+      type: type,
+      floorData: [],
       problemItems: problemItems,
       selectProblemItems: [],
       problemsDetail: '',
@@ -47,12 +52,21 @@ export default class EnterDatumPoint extends Component {
 
       longitude: '',
       latitude: '',
+      selectFloor: 0,
     }
   }
 
-  componentDidMount = async () => {
-    let map = await SMap.getCurrentPosition()
-    GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(map)
+  componentDidMount() {
+    if (this.state.type === 'ARNAVIGATION_INDOOR') {
+      this.getFloorData()
+    }
+  }
+
+  getFloorData = async () => {
+    let result = await SMap.getFloorData()
+    this.setState({
+      floorData: result.data,
+    })
   }
 
   getCurrentPosition = async () => {
@@ -71,50 +85,63 @@ export default class EnterDatumPoint extends Component {
   }
 
   mapSelectPoint = async () => {
-    //暂存点，返回地图选点时使用
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
+    if (this.state.type === 'ARNAVIGATION_INDOOR') {
+      //暂存点，返回地图选点时使用
+      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
 
-    GLOBAL.MapSelectPointType = 'selectPoint'
-    GLOBAL.OverlayView.setVisible(false)
+      GLOBAL.MapSelectPointType = 'SELECTPOINTFORARNAVIGATION_INDOOR'
 
-    GLOBAL.ToolBar.setVisible(false)
+      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+      GLOBAL.MAPSELECTPOINT.setVisible(true)
 
-    GLOBAL.MapXmlStr = await SMap.mapToXml()
+      NavigationService.navigate('MapView')
+      SMap.setAction(Action.PAN)
+    } else {
+      //暂存点，返回地图选点时使用
+      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
 
-    GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-    GLOBAL.MAPSELECTPOINT.setVisible(true)
+      GLOBAL.MapSelectPointType = 'selectPoint'
+      GLOBAL.OverlayView.setVisible(false)
 
-    //导航选点 全屏时保留mapController
-    GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+      GLOBAL.ToolBar.setVisible(false)
 
-    GLOBAL.toolBox.showFullMap(true)
-    GLOBAL.toolBox.showFullMap(false)
-    GLOBAL.toolBox.showFullMap(true)
+      GLOBAL.MapXmlStr = await SMap.mapToXml()
 
-    let map = await SMap.getCurrentPosition()
-    let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
-    wsData.layerIndex = 3
-    let licenseStatus = await SMap.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
-    NavigationService.navigate('MapView', {
-      // NavigationService.navigate('MapViewSingle', {
-      wsData,
-      isExample: true,
-      noLegend: true,
-      // mapName: message.originMsg.message.message.message,
-      showMarker: {
+      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+      GLOBAL.MAPSELECTPOINT.setVisible(true)
+
+      //导航选点 全屏时保留mapController
+      GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+
+      GLOBAL.toolBox.showFullMap(true)
+      GLOBAL.toolBox.showFullMap(false)
+      GLOBAL.toolBox.showFullMap(true)
+
+      let map = await SMap.getCurrentPosition()
+      let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
+      wsData.layerIndex = 3
+      let licenseStatus = await SMap.getEnvironmentStatus()
+      global.isLicenseValid = licenseStatus.isLicenseValid
+      NavigationService.navigate('MapView', {
+        // NavigationService.navigate('MapViewSingle', {
+        wsData,
+        isExample: true,
+        noLegend: true,
+        // mapName: message.originMsg.message.message.message,
+        showMarker: {
+          x: map.x,
+          y: map.y,
+        },
+      })
+      GLOBAL.toolBox.showFullMap(true)
+      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+      let point = {
         x: map.x,
         y: map.y,
-      },
-    })
-    GLOBAL.toolBox.showFullMap(true)
-    GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-    let point = {
-      x: map.x,
-      y: map.y,
+      }
+      GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
+      SMap.setAction(Action.PAN)
     }
-    GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
-    SMap.setAction(Action.PAN)
   }
 
   renderButtons() {
@@ -211,6 +238,14 @@ export default class EnterDatumPoint extends Component {
           })
         })
         .catch(() => {})
+    } else if (GLOBAL.EnterDatumPointType === 'arNavigation') {
+      GLOBAL.EnterDatumPointType = undefined
+      GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(true)
+      GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(true)
+      NavigationService.replace('ARNavigationView', {
+        point: point,
+        floorID: this.state.floorData[this.state.selectFloor].id,
+      })
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()
@@ -254,6 +289,9 @@ export default class EnterDatumPoint extends Component {
       GLOBAL.isswitch = false
       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
     }
+    GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(true)
+    GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(true)
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = undefined
     NavigationService.goBack('EnterDatumPoint')
     return true
   }
@@ -271,6 +309,52 @@ export default class EnterDatumPoint extends Component {
     )
   }
 
+  renderFloorItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.setState({
+            selectFloor: index,
+          })
+        }}
+        style={[
+          { padding: 10, marginHorizontal: 20 },
+          this.state.selectFloor === index && { backgroundColor: color.blue2 },
+        ]}
+      >
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderFloor() {
+    if (this.state.type === 'ARNAVIGATION_INDOOR') {
+      return (
+        <View
+          style={{
+            height: scaleSize(80),
+            backgroundColor: color.content_white,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ marginLeft: scaleSize(15) }}>
+            {getLanguage(global.language).Prompt.FLOOR}
+          </Text>
+          <FlatList
+            data={this.state.floorData}
+            renderItem={this.renderFloorItem}
+            keyExtractor={(item, key) => key.toString()}
+            horizontal={true}
+            extraData={this.state.selectFloor}
+          />
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+
   renderContent() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.background }}>
@@ -278,6 +362,7 @@ export default class EnterDatumPoint extends Component {
           <View style={{ height: 10 }} />
 
           {this.renderTitle()}
+          {this.renderFloor()}
           {this.renderButtons()}
 
           {this.renderButton()}

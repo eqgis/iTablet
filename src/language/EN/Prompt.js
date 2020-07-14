@@ -308,6 +308,10 @@ const Prompt = {
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Online navigation is not support yet.',
   CREATE: 'New',
   NO_DATASOURCE: 'There is no datasource in the current workspace, please create a new datasource first',
+  FLOOR: 'Floor',
+  AR_NAVIGATION: 'AR Navi',
+  ARRIVE_DESTINATION: 'Arrived the destination',
+  DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Please select a line dataset first',

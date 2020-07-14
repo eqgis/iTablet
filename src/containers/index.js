@@ -144,6 +144,7 @@ import IllegallyParkView from './aiIllegallyPark'
 import AIDetecSettingsView from './AIDetecSettingsView'
 import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
+import ARNavigationView from './arNavigationView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
@@ -156,6 +157,11 @@ import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
 import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
+import {
+  TemplateManager,
+  TemplateDetail,
+  TemplateSource,
+} from './templateManager/pages'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -424,6 +430,24 @@ export default function(appConfig) {
       },
       AnimationNodeEditRotateView: {
         screen: AnimationNodeEditRotateView,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateManager: {
+        screen: TemplateManager,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateDetail: {
+        screen: TemplateDetail,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      TemplateSource: {
+        screen: TemplateSource,
         navigationOptions: {
           header: null,
         },
@@ -898,6 +922,13 @@ export default function(appConfig) {
       },
       CastModelOperateView: {
         screen: CastModelOperateView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARNavigationView: {
+        screen: ARNavigationView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

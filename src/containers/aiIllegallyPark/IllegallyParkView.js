@@ -44,11 +44,11 @@ export default class IllegallyParkView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {}.bind(this)())
+      ;(async function() {}.bind(this)())
     })
 
     {
-      (async function() {
+      ;(async function() {
         let targetPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +
@@ -108,7 +108,7 @@ export default class IllegallyParkView extends React.Component {
         ref={ref => (this.Container = ref)}
         headerProps={{
           title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT,
+            .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

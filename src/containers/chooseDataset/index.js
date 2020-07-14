@@ -1,8 +1,6 @@
 import { connect } from 'react-redux'
 import MTDataCollection from './ChooseDataset'
 
-import { setMapView } from '../../redux/models/map'
-
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),
   workspace: state.map.toJS().workspace,
@@ -10,9 +8,7 @@ const mapStateToProps = state => ({
   mapControl: state.map.toJS().mapControl,
 })
 
-const mapDispatchToProps = {
-  setMapView,
-}
+const mapDispatchToProps = {}
 
 export default connect(
   mapStateToProps,

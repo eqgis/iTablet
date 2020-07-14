@@ -169,13 +169,13 @@ export default class protocol extends Component {
           source =
             global.language === 'CN'
               ? {
-                uri:
+                  uri:
                     'file:///android_asset/SuperMapUserServiceAgreement_CN.html',
-              }
+                }
               : {
-                uri:
+                  uri:
                     'file:///android_asset/SuperMapUserServiceAgreement_EN.html',
-              }
+                }
         } else {
           source =
             global.language === 'CN'
@@ -189,13 +189,13 @@ export default class protocol extends Component {
           source =
             global.language === 'CN'
               ? {
-                uri:
+                  uri:
                     'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
-              }
+                }
               : {
-                uri:
+                  uri:
                     'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
-              }
+                }
         } else {
           source =
             global.language === 'CN'
@@ -280,6 +280,10 @@ export default class protocol extends Component {
           }
         }
         title = getLanguage(global.language).Profile.SERVICE_AGREEMENT
+        break
+      case 'GISAcademy':
+        source = { uri: `https://edu.supermap.com` }
+        title = getLanguage(global.language).Find.GIS_ACADEMY
         break
       default:
         break

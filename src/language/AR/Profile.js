@@ -333,6 +333,8 @@ const Profile = {
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: '地图选点成功',
   MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '请把手机垂直于地面面向正南点击确定',
   MAP_AR_DATUM_SETTING: '设置',
+  X_COORDINATE: 'X Coordinate', //待翻译
+  Y_COORDINATE: 'Y Coordinate',
 
   // ar地图
   COLLECT_SCENE_RENAME: '重命名',

@@ -64,8 +64,6 @@ export default class GroupTab extends React.Component {
       <TreeList
         style={styles.container}
         itemTextColor={color.themeText2}
-        // itemTextSize={color.themeText2}
-        separator={true}
         data={this.state.data}
         onPress={this._onPress}
       />

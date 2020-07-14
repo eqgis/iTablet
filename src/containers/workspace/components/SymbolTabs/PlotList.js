@@ -74,9 +74,6 @@ export default class PlotList extends React.Component {
       <TreeList
         style={[styles.container, this.props.style]}
         itemTextColor={color.themeText2}
-        // itemTextSize={color.themeText2}
-        separator={true}
-        // data={this.state.data}
         data={this.getData()}
         onPress={this.action}
       />

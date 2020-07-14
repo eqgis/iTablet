@@ -78,9 +78,9 @@ class LicenseTypePage extends Component {
         type: LicenseType.trial,
       },
     ]
-    if (Platform.OS === 'android') {
-      data.splice(3, 1)
-    }
+    // if (Platform.OS === 'ios') {
+    //   data.splice(3, 1)
+    // }
     return data
   }
 

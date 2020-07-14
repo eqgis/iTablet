@@ -56,15 +56,6 @@ function getData() {
     //   size: 'large',
     //   image: getThemeAssets().ar.icon_ar,
     // },
-    {
-      //AR投射
-      key: 'arCastModelOperate',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-      action: AiActions.arCastModelOperate,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_cast,
-    },
   ]
   if (Platform.OS === 'ios') {
     data.splice(5, 1)

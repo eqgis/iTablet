@@ -23,6 +23,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
     },
+    {
+      //AR投射
+      key: 'arCastModelOperate',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
+      action: ARMeasureAction.arCastModelOperate,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_cast,
+    },
   ]
 
   return { data }

@@ -4,9 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import {
-  View,
-} from 'react-native'
+import { View } from 'react-native'
 import {
   Container,
   TextBtn,
@@ -16,7 +14,7 @@ import {
   InputDialog,
 } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
-import { screen } from '../../../../utils'
+import { screen, scaleSize } from '../../../../utils'
 import { ConstToolType } from '../../../../constants'
 import { size, color } from '../../../../styles'
 import { ListSeparator, TreeList, TreeListItem } from '../../../../components'
@@ -42,35 +40,38 @@ export default class TemplateDetail extends React.Component {
     getLayers: () => {},
     setSymbolTemplates: () => {},
   }
-  
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     let params = this.props.navigation.state.params || {}
-    
-    let defaultData = [{
-      code: '0100',
-      name: 'NewFeature',
-      datasourceAlias: '',
-      datasetName: '',
-      type: '',
-      fields: [],
-      childGroups: [],
-    }]
-    
+
+    let defaultData = [
+      {
+        code: '0100',
+        name: 'NewFeature',
+        datasourceAlias: '',
+        datasetName: '',
+        type: '',
+        fields: [],
+        childGroups: [],
+      },
+    ]
+
     this.path = params.path || ''
     this.oldData = params.data || {}
     this.state = {
-      title: params.title || getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_CREATE,
+      title:
+        params.title ||
+        getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_CREATE,
       data: params.data || defaultData,
       datasources: [],
       datasets: [],
       popData: [],
     }
   }
-  
-  componentDidMount() {
-  }
-  
+
+  componentDidMount() {}
+
   _getItemPopupData = () => {
     return [
       {
@@ -93,7 +94,12 @@ export default class TemplateDetail extends React.Component {
       {
         title: getLanguage(this.props.language).Template.CREATE_CHILD_NODE,
         action: () => {
-          let newId = '_' + (this.currentItem.childGroups.length ? this.currentItem.childGroups.length : 0)
+          let newId =
+            '_' +
+            (this.currentItem.childGroups && this.currentItem.childGroups.length
+              ? this.currentItem.childGroups.length
+              : 0)
+          if (!this.currentItem.childGroups) this.currentItem.childGroups = []
           this.currentItem.childGroups.push({
             // code: this.dealCode(this.currentItem.code, newId),
             code: '0100' + newId,
@@ -105,7 +111,7 @@ export default class TemplateDetail extends React.Component {
             childGroups: [],
           })
           let newData = this.state.data.concat()
-          
+
           this.setState({
             data: newData,
           })
@@ -114,10 +120,11 @@ export default class TemplateDetail extends React.Component {
       {
         title: getLanguage(this.props.language).Template.INSERT_NODE,
         action: () => {
-          let newId = '', _data = []
+          let newId = '',
+            _data = []
           if (this.currentItem.parent) {
             _data = this.currentItem.parent.childGroups
-            newId = _data.length ? ('_' + _data.length) : ''
+            newId = _data.length ? '_' + _data.length : ''
           } else {
             _data = this.state.data
             newId = _data.length
@@ -131,9 +138,9 @@ export default class TemplateDetail extends React.Component {
               index = i
             }
           }
-  
-          _data.splice(index + 1, 0 ,{
-            code: this.dealCode(this.currentItem.code, newId),
+
+          _data.splice(index + 1, 0, {
+            code: this.currentItem.code + newId,
             name: 'NewFeature' + newId,
             datasourceAlias: '',
             datasetName: '',
@@ -142,37 +149,35 @@ export default class TemplateDetail extends React.Component {
             childGroups: [],
           })
           this.setState({
-            data: _data,
+            data: this.state.data.concat(),
           })
         },
       },
     ]
   }
-  
+
   dealCode = (code = 0, id = 0) => {
     let newCode = parseInt(code) + parseInt(id) + ''
     if (newCode.length < 4) {
       let zeros = ''
-      for (let i = 0; i < (4 - newCode.length); i++) {
+      for (let i = 0; i < 4 - newCode.length; i++) {
         zeros += '0'
       }
       newCode = zeros + newCode
     }
     return newCode
   }
-  
+
   deleteItem = () => {
-    let _data = [], data = this.currentItem
+    let _data = [],
+      data = this.currentItem
     if (data.parent) {
       _data = data.parent.childGroups
     } else {
       _data = this.state.data
     }
     for (let i = 0; i < _data.length; i++) {
-      if (
-        _data[i].code === data.code &&
-        _data[i].name === data.name
-      ) {
+      if (_data[i].code === data.code && _data[i].name === data.name) {
         _data.splice(i, 1)
         break
       }
@@ -182,7 +187,7 @@ export default class TemplateDetail extends React.Component {
     })
     this.deleteDialog && this.deleteDialog.setDialogVisible(false)
   }
-  
+
   confirm = async () => {
     let params = this.props.navigation.state.params || {}
     if (params.title) {
@@ -194,15 +199,20 @@ export default class TemplateDetail extends React.Component {
       this.dialog && this.dialog.setDialogVisible(true)
     }
   }
-  
+
   goBack = async (data = {}) => {
     let path = this.path
     if (data.title) {
-      path = await FileTools.appendingHomeDirectory(ConstPath.UserPath)
-        + this.props.currentUser.userName + '/' + ConstPath.RelativePath.Template + data.title + '.xml'
+      path =
+        (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
+        this.props.currentUser.userName +
+        '/' +
+        ConstPath.RelativePath.Template +
+        data.title +
+        '.xml'
     }
     let xmlObj
-    
+
     if (data.data) {
       // 编辑已有的template文件
       let oldXmlObj = XMLUtil.obj2Xml(data.title, this.oldData)
@@ -221,31 +231,31 @@ export default class TemplateDetail extends React.Component {
         xmlObj = res.xmlObj
       }
     }
-    
+
     if (xmlObj) {
       const homePath = await FileTools.appendingHomeDirectory()
       const mapXml = homePath + this.props.map.currentMap.path
-      const expFilePath = `${mapXml.substr(
-        0,
-        mapXml.lastIndexOf('.'),
-      )}.exp`
+      const expFilePath = `${mapXml.substr(0, mapXml.lastIndexOf('.'))}.exp`
       const expIsExist = await FileTools.fileIsExist(expFilePath)
       let relativeTemplatePath
       if (expIsExist) {
         let expData = JSON.parse(await fs.readFile(expFilePath))
         relativeTemplatePath = path.replace(homePath + ConstPath.UserPath, '')
         // 若exp文件中Template不存在，或者和当前模板目录不相同，则改写文件
-        if (expData && (!expData.Template || expData.Template !== relativeTemplatePath)) {
+        if (
+          expData &&
+          (!expData.Template || expData.Template !== relativeTemplatePath)
+        ) {
           expData.Template = relativeTemplatePath
           await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
         }
       }
-  
+
       let params = this.props.navigation.state.params
       if (params && params.cb && typeof params.cb === 'function') {
         params.cb()
       }
-  
+
       NavigationService.goBack('TemplateManager')
       // 修改地图信息中的Template
       let map = this.props.map.currentMap
@@ -265,7 +275,7 @@ export default class TemplateDetail extends React.Component {
       }
     }
   }
-  
+
   popViewConfirm = data => {
     // 要素设置
     this.currentItem.name = data[0].data[0].value
@@ -279,13 +289,13 @@ export default class TemplateDetail extends React.Component {
     // this.currentItem.data = data[1].data[1].data
     // 属性设置
     this.currentItem.fields = data[2].data
-    
+
     this.setState({
       data: this.state.data.concat(),
     })
     this.popView && this.popView.setVisible(false)
   }
-  
+
   onItemPress = ({ data, index }) => {
     this.currentItem = data
     let popData = [
@@ -323,29 +333,27 @@ export default class TemplateDetail extends React.Component {
         data: data.fields,
       },
     ]
-    this.setState({
-      popData: popData,
-    }, () => this.popView && this.popView.setVisible(true))
+    this.setState(
+      {
+        popData: popData,
+      },
+      () => this.popView && this.popView.setVisible(true),
+    )
   }
 
   _renderItemSeparatorComponent = () => {
     return <ListSeparator />
   }
-  
+
   renderList = () => {
-    return (
-      <TreeList
-        data={this.state.data}
-        renderItem={this.renderItem}
-      />
-    )
+    return <TreeList data={this.state.data} renderItem={this.renderItem} />
   }
-  
+
   renderItem = ({ data, index, parent }) => {
     data.title = `${data.code} ${data.name}`
     data.parent = parent
-    data.id = parent ? ((parent.id || parent.code) + '_' + data.code) : data.code
-    let key = parent ? (parent.code + '_' + data.code) : data.code
+    data.id = parent ? (parent.id || parent.code) + '_' + data.code : data.code
+    let key = parent ? parent.code + '_' + data.code : data.code
     return (
       <TreeListItem
         parent={parent}
@@ -390,7 +398,7 @@ export default class TemplateDetail extends React.Component {
       />
     )
   }
-  
+
   render() {
     return (
       <Container
@@ -403,6 +411,8 @@ export default class TemplateDetail extends React.Component {
             <TextBtn
               btnText={getLanguage(this.props.language).Prompt.COMPLETE}
               textStyle={styles.headerBtnTitle}
+              width={scaleSize(80)}
+              height={scaleSize(40)}
               btnClick={this.confirm}
             />
           ),
@@ -410,10 +420,12 @@ export default class TemplateDetail extends React.Component {
       >
         {this.renderList()}
         <TemplatePopView
-          ref={ref => this.popView = ref}
+          ref={ref => (this.popView = ref)}
           data={this.state.popData}
           language={this.props.language}
-          height={screen.getScreenHeight(this.props.device.orientation) * 3 / 4}
+          height={
+            (screen.getScreenHeight(this.props.device.orientation) * 3) / 4
+          }
           confirm={this.popViewConfirm}
         />
         <PopMenu
@@ -434,7 +446,9 @@ export default class TemplateDetail extends React.Component {
         />
         <InputDialog
           ref={ref => (this.dialog = ref)}
-          title={getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME}
+          title={
+            getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME
+          }
           confirmAction={async value => {
             await this.goBack({
               title: value,

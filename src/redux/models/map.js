@@ -14,7 +14,6 @@ import { getLanguage } from '../../language'
 export const OPEN_WORKSPACE = 'OPEN_WORKSPACE'
 export const GET_MAPS = 'GET_MAPS'
 export const SET_LATEST_MAP = 'SET_LATEST_MAP'
-export const SET_MAP_VIEW = 'SET_MAP_VIEW'
 export const SET_CURRENT_MAP = 'SET_CURRENT_MAP'
 export const SET_BASEMAP = 'SET_BASEMAP'
 let isExporting = false
@@ -230,14 +229,6 @@ export const setLatestMap = (params, cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setMapView = (params, cb = () => {}) => async dispatch => {
-  await dispatch({
-    type: SET_MAP_VIEW,
-    payload: params || {},
-  })
-  cb && cb()
-}
-
 export const setCurrentMap = (params, cb = () => {}) => async dispatch => {
   // let result = params && await SMap.importWorkspace(params)
   await dispatch({
@@ -443,18 +434,6 @@ export default handleActions(
         newData.unshift(payload)
       }
       return state.setIn(['latestMap'], fromJS(newData))
-    },
-    [`${SET_MAP_VIEW}`]: (state, { payload }) => {
-      if (payload.workspace) {
-        state.setIn(['workspace'], fromJS(payload.workspace))
-      }
-      if (payload.map) {
-        state.setIn(['map'], fromJS(payload.map))
-      }
-      if (payload.mapControl) {
-        state.setIn(['mapControl'], fromJS(payload.mapControl))
-      }
-      return state
     },
     [`${GET_MAPS}`]: (state, { payload }) =>
       state.setIn(['maps'], fromJS(payload)),

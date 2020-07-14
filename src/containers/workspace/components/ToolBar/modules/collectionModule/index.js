@@ -15,7 +15,7 @@ class CollectionModule extends FunctionModule {
 
   action = async () => {
     this.setModuleData(this.type)
-    
+
     if (this.type === ConstToolType.MAP_TEMPLATE_CREATE) {
       this.setModuleData(this.type)
       NavigationService.navigate('TemplateManager')
@@ -37,7 +37,6 @@ export default function(type = ConstToolType.COLLECTION) {
         getData: CollectionData.getData,
         actions: CollectionAction,
       })
-      break
     case ConstToolType.COLLECTION:
       return new CollectionModule({
         type,
@@ -48,6 +47,5 @@ export default function(type = ConstToolType.COLLECTION) {
         getData: CollectionData.getData,
         actions: CollectionAction,
       })
-      break
   }
 }

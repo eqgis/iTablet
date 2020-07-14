@@ -1,6 +1,7 @@
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import AiActions from './AiActions'
+import { Platform } from 'react-native'
 
 function getData() {
   const buttons = []
@@ -74,19 +75,19 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
     },
-    // {
-    //   //AR投放
-    //   key: 'arCastModelOperate',
-    //   title: getLanguage(global.language).Map_Main_Menu
-    //     .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-    //   action: arCastModelOperate,
-    //   size: 'large',
-    //   image: getThemeAssets().ar.functiontoolbar.ar_cast,
-    // },
+    {
+      //AR投射
+      key: 'arCastModelOperate',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
+      action: AiActions.arCastModelOperate,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_cast,
+    },
   ]
-  // if (Platform.OS === 'ios') {
-  //   data.splice(4, 1)
-  // }
+  if (Platform.OS === 'ios') {
+    data.splice(5, 1)
+  }
   return { data, buttons }
 }
 

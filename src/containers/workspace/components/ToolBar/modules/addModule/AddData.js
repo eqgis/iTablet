@@ -168,7 +168,6 @@ async function getSymbolPath() {
         backgroundColor: color.bgW,
       }}
       itemTextColor={color.themeText2}
-      itemTextSize={color.themeText2}
       data={groups}
       onPress={({ data }) => {
         AddAction.onSelectPath(data.path)

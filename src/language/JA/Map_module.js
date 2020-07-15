@@ -8,5 +8,7 @@ const Map_Module = {
   MAP_COLLECTION: 'フィールド',
   MAP_PLOTTING: 'アニメシンボル',
   MAP_ANALYST: 'データ処理',
+  
+  APPLET_ADD: '添加\n您的小程序', // 待翻译
 }
 export { Map_Module }

@@ -8,5 +8,7 @@ const Map_Module = {
   MAP_COLLECTION: '外业采集',
   MAP_PLOTTING: '应急标绘',
   MAP_ANALYST: '数据处理',
+  
+  APPLET_ADD: '添加\n您的小程序',
 }
 export { Map_Module }

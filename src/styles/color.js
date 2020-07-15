@@ -45,6 +45,8 @@ const lightTheme = {
   itemColorWhite: '#FBFBFB',
   itemColorBlack: '#303030',
   itemColorGray: '#505050',
+  itemColorGray2: '#EFEFEF',
+  itemColorGray3: '#D6D6D6',
 
   contentColorWhite: '#FBFBFB',
   contentWhite: '#FBFBFB',
@@ -56,6 +58,7 @@ const lightTheme = {
 
   // separateColorGray: '#A0A0A0',
   separateColorGray: '#EEEEEE',
+  separateColorGray2: '#6C7B8A',
 
   imageColorBlack: '#303030',
   imageColorWhite: '#FBFBFB',

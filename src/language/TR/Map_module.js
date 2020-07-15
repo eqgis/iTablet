@@ -8,5 +8,7 @@ const Map_Module = {
   MAP_COLLECTION: 'Ölçme',
   MAP_PLOTTING: 'Çizim',
   MAP_ANALYST: 'Veri Analizi',
+  
+  APPLET_ADD: '添加\n您的小程序', // 待翻译
 }
 export { Map_Module }

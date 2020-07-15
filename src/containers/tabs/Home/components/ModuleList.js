@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import {
   View,
-  FlatList,
   StyleSheet,
-  Platform,
   NetInfo,
-  // NativeModules,
-  // PermissionsAndroid,
+  ScrollView,
 } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
-import { fixedSize, screen } from '../../../../utils'
+import { scaleSize, Toast, FetchUtils } from '../../../../utils'
+import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import Toast from '../../../../utils/Toast'
-import FetchUtils from '../../../../utils/FetchUtils'
 import { SMap } from 'imobile_for_reactnative'
 import { downloadFile, deleteDownloadFile, setIgnoreDownload } from '../../../../redux/models/down'
 import { setOldMapModule } from '../../../../redux/models/appConfig'
@@ -20,16 +16,14 @@ import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
-import ModuleItem from './ModuleItem'
-import { TAB_BAR_HEIGHT_P } from '../../TabBar'
-// let AppUtils = NativeModules.AppUtils
+import ModuleItem, { itemWidth_P, itemWidth_L, itemGap } from './ModuleItem'
 
 let isWaiting = false // 防止重复点击
 
 async function composeWaiting(action) {
   if (isWaiting) return
   isWaiting = true
-  if (action && typeof action === 'function') {
+  if (action) {
     await action()
   }
   isWaiting = false
@@ -113,17 +107,6 @@ class ModuleList extends Component {
 
   _downloadModuleData = async (ref, downloadData) => {
     ref.setDownloading(true)
-    // let keyword
-    // if (downloadData.fileName.indexOf('_示范数据') !== -1) {
-    //   keyword = downloadData.fileName
-    // } else {
-    //   keyword = downloadData.fileName + '_示范数据'
-    // }
-    // let dataUrl = await FetchUtils.getFindUserDataUrl(
-    //   'xiezhiyan123',
-    //   keyword,
-    //   '.zip',
-    // )
     let cachePath = downloadData.cachePath
     let fileDirPath = cachePath + downloadData.fileName
     try {
@@ -194,6 +177,7 @@ class ModuleList extends Component {
   getDownloadData = (language, item, index) => {
     let module = this.props.mapModules.modules[index]
     let example = module.example
+    if (!example) return null
     let moduleKey = item.key
     let fileName = module.getExampleName(language).name
 
@@ -262,24 +246,7 @@ class ModuleList extends Component {
 
       let downloadData = this.getDownloadData(language, item, index)
 
-      // let keyword
-      // if (downloadData.fileName.indexOf('_示范数据') !== -1) {
-      //   keyword = downloadData.fileName
-      // } else {
-      //   keyword = downloadData.fileName + '_示范数据'
-      // }
-      // let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
-      // if (isConnected && !downloadData.url) {
-      //   let downloadInfo = await FetchUtils.getDataInfoByUrl(
-      //     downloadData,
-      //     keyword,
-      //     '.zip',
-      //   )
-      //   downloadData.size = downloadInfo.size
-      //   downloadData.url = downloadInfo.url
-      // }
       let currentDownloadData = this.getCurrentDownloadData(downloadData)
-      // let toPath = this.homePath + ConstPath.CachePath + downloadData.fileName
 
       let cachePath = this.homePath + ConstPath.CachePath
       let fileDirPath = cachePath + downloadData.fileName
@@ -287,12 +254,6 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         if (
           downloadData.fileName &&
-          // !(
-          //   this.moduleItems &&
-          //   this.moduleItems[index] &&
-          //   (this.moduleItems[index].getDialogCheck() ||
-          //     this.moduleItems[index].getDownloading())
-          // ) &&
           this.props.ignoreDownloads.filter(_item => _item.id === downloadData.key).length === 0 &&
           (!currentDownloadData || currentDownloadData && currentDownloadData.downloaded === undefined)
         ) {
@@ -330,7 +291,6 @@ class ModuleList extends Component {
         }
         let isExist = await FileTools.fileIsExist(filePath2)
         if (!isExist) {
-          // await this.props.importWorkspace(filePath, toPath, true)
           await this.props.importWorkspace(filePath)
         }
         this.moduleItems[index].setNewState({
@@ -354,6 +314,7 @@ class ModuleList extends Component {
   }
 
   getCurrentDownloadData = downloadData => {
+    if (!downloadData) return null
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
         if (this.props.downloads[i].id === downloadData.key) {
@@ -368,7 +329,15 @@ class ModuleList extends Component {
     let downloadData = this.getDownloadData(global.language, item, index)
     return (
       <ModuleItem
+        key={item.key}
         item={item}
+        showStar={index === 0}
+        style={index === 0 && {
+          width: (
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? itemWidth_L : itemWidth_P
+          ) * 2 + itemGap,
+          backgroundColor: color.itemColorGray3,
+        }}
         device={this.props.device}
         oldMapModules={this.props.oldMapModules}
         downloadData={this.getCurrentDownloadData(downloadData)}
@@ -385,6 +354,55 @@ class ModuleList extends Component {
       />
     )
   }
+  
+  /** 获取竖屏数据 **/
+  _renderPortraitRows = data => {
+    let _list = [], _row = [], column = 2
+    for (let index = 0; index < data.length; index++) {
+      let itemView = this._renderItem({item: data[index], index})
+      if (index === 0) {
+        _list.push(itemView)
+      } else {
+        _row.push(itemView)
+        if (_row.length === column) {
+          let row = <View style={styles.row}>{_row}</View>
+          _list.push(row)
+          _row = []
+        } else if (index === data.length - 1) {
+          _list.push(itemView)
+        }
+      }
+    }
+    return _list
+  }
+  
+  /** 获取横屏数据 **/
+  _renderLandscapeColumns = data => {
+    let _list = [], _column = [], row = 2
+    let _subRow = []
+    for (let index = 0; index < data.length; index++) {
+      let itemView = this._renderItem({item: data[index], index})
+      if (index === 1 || index === 2) {
+        _subRow.push(itemView)
+        if (_subRow.length === row) {
+          let rowView = <View style={styles.row}>{_subRow}</View>
+          _column.push(rowView)
+        } else if (index === data.length - 1) {
+          _column.push(_subRow)
+        }
+      } else {
+        _column.push(itemView)
+      }
+      if (_column.length === row) {
+        let column = <View style={styles.column}>{_column}</View>
+        _list.push(column)
+        _column = []
+      } else if (index === data.length - 1) {
+        _list.push(itemView)
+      }
+    }
+    return _list
+  }
 
   render() {
     let data = []
@@ -396,62 +414,29 @@ class ModuleList extends Component {
         break
       }
     }
-    //模块个数为单数时高度处理
-    let heightNum = data.length % 2 === 0 ? data.length : data.length + 1
-    let height = (fixedSize(220) * heightNum) / 2
-    let windowHeight
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      windowHeight = Math.min(screen.getScreenHeight(), screen.getScreenWidth())
-    } else {
-      windowHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth())
-    }
-    let contentH = windowHeight - screen.getHeaderHeight() - TAB_BAR_HEIGHT_P
-    let scrollEnabled = false
-    if (height >= contentH) {
-      height = contentH
-      scrollEnabled = true
-    }
-    let spaceHeight =
-      (windowHeight - fixedSize(157) * 2 - screen.getHeaderHeight()) / 3 -
-      fixedSize(70)
-    if (spaceHeight < 0) {
-      spaceHeight = 0
-    }
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+        paddingBottom: scaleSize(64),
+      }]}>
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>
-            <FlatList
-              key={'landscapeList'}
-              data={data}
-              ItemSeparatorComponent={() => {
-                return <View style={{ height: spaceHeight }} />
-              }}
-              contentContainerStyle={{
-                justifyContent: 'center',
-              }}
-              downloads={this.props.downloads}
-              renderItem={this._renderItem}
-              numColumns={4}
+            <ScrollView
+              horizontal={true}
               keyboardShouldPersistTaps={'always'}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-            />
+            >
+              {this._renderLandscapeColumns(data)}
+            </ScrollView>
           </View>
         ) : (
-          <View style={{ width: '100%', height: height }}>
-            <FlatList
-              key={'list'}
-              style={styles.flatList}
-              data={data}
-              renderItem={this._renderItem}
-              scrollEnabled={scrollEnabled}
-              horizontal={false}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps={'always'}
-            />
-          </View>
+          <ScrollView
+            keyboardShouldPersistTaps={'always'}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          >
+            {this._renderPortraitRows(data)}
+          </ScrollView>
         )}
       </View>
     )
@@ -482,12 +467,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-  },
-  flatList: {
-    alignSelf: 'center',
-    flex: 1,
+    marginTop: scaleSize(20),
+    
   },
   flatListView: {
-    height: fixedSize(220),
+    height: scaleSize(224),
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  column: {
+    flexDirection: 'column',
   },
 })

@@ -8,5 +8,7 @@ const Map_Module = {
   MAP_COLLECTION: 'مسح الأراضى',
   MAP_PLOTTING: 'توقيع النقاط',
   MAP_ANALYST: 'تحليل البيانات',
+  
+  APPLET_ADD: '添加\n您的小程序', // 待翻译
 }
 export { Map_Module }

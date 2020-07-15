@@ -24,7 +24,7 @@ import ConstPath from '../../../constants/ConstPath'
 import NavigationService from '../../NavigationService'
 import UserType from '../../../constants/UserType'
 import { getLanguage } from '../../../language'
-import { getThemeAssets } from '../../../assets'
+import { getThemeAssets, getPublicAssets } from '../../../assets'
 import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
@@ -53,7 +53,6 @@ export default class Home extends Component {
     setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
-    setMapModule: () => {},
   }
 
   constructor(props) {
@@ -63,7 +62,6 @@ export default class Home extends Component {
       dialogCheck: false,
       downloadData: null,
     }
-    // this.props.setMapModule(mapModules)
   }
 
   componentDidMount() {
@@ -247,7 +245,7 @@ export default class Home extends Component {
   }
 
   showDialog = value => {
-    this.dialog.setDialogVisible(value)
+    this.dialog && this.dialog.setDialogVisible(value)
   }
 
   getModuleItem = (
@@ -469,86 +467,71 @@ export default class Home extends Component {
   _renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
+  
+  renderHeader = () => {
+    return (
+      <View style={[
+        styles.header, {
+          paddingTop: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? scaleSize(64)
+            : scaleSize(50),
+        }]}>
+        <TouchableOpacity
+          style={styles.userView}
+          onPress={event => this.showUserPop(event)}
+        >
+          <Image
+            source={getPublicAssets().common.icon_avatar}
+            style={styles.userImg}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headTitle}>{this.props.appConfig.name}</Text>
+        <TouchableOpacity
+          onPress={event => this.showMorePop(event)}
+          style={styles.moreView}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getPublicAssets().common.icon_more}
+            style={styles.moreImg}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   renderTabBar = () => {
     return <TabBar navigation={this.props.navigation} />
   }
 
   render() {
-    let userImg =
-      this.props.user.currentUser.userType === UserType.PROBATION_USER ||
-      typeof this.props.user.currentUser.userType === 'undefined'
-        ? getThemeAssets().tabBar.icon_home_photo
-        : {
-          uri:
-              'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-        }
-    let moreImg = require('../../../assets/home/Frenchgrey/icon_else_selected.png')
-    let imgSize = scaleSize(60)
-    if (this.props.device) {
-      imgSize =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? scaleSize(40)
-          : scaleSize(60)
-    }
     return (
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
         showFullInMap={true}
-        headerProps={{
-          title: this.props.appConfig.name,
-          headerLeft: (
-            <TouchableOpacity
-              style={styles.userView}
-              onPress={event => this.showUserPop(event)}
-            >
-              <Image
-                source={userImg}
-                style={[styles.userImg, { width: imgSize, height: imgSize }]}
-              />
-            </TouchableOpacity>
-          ),
-          headerRight: (
-            <TouchableOpacity
-              onPress={event => this.showMorePop(event)}
-              style={styles.moreView}
-            >
-              <Image
-                resizeMode={'contain'}
-                source={moreImg}
-                style={[styles.moreImg, { width: imgSize, height: imgSize }]}
-              />
-            </TouchableOpacity>
-          ),
-        }}
+        withoutHeader
         style={styles.container}
         bottomBar={this.renderTabBar()}
       >
+        {this.renderHeader()}
         <View
           style={{
             flex: 1,
             width: '100%',
-            alignSelf: 'center',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: color.contentWhite,
+            backgroundColor: color.white,
           }}
         >
           <ModuleList
-            ref={ref => (this.modulelist = ref)}
             importWorkspace={this._onImportWorkspace}
             setDownInformation={this.props.setDownInformation}
             currentUser={this.props.currentUser}
-            styles={styles.modulelist}
             device={this.props.device}
             showDialog={this.showDialog}
             getModuleItem={this.getModuleItem}
             latestMap={this.props.latestMap}
             oldMapModules={this.props.appConfig.oldMapModules}
             mapModules={this.props.mapModules}
-            // setCurrentMapModule={this.props.setCurrentMapModule}
-            // setOldMapModule={this.props.setOldMapModule}
           />
           {this.renderPopMenu()}
           {this.renderDialog()}

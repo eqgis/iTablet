@@ -54,7 +54,7 @@ export default class TreeList extends React.Component {
     }
     let key = index
     if (parent) {
-      if (parent.key !== undefined &&  data.code !== undefined) {
+      if (parent.key !== undefined && data.code !== undefined) {
         key = parent.key + '_' + data.code
       } else {
         key = parent.key
@@ -88,7 +88,7 @@ export default class TreeList extends React.Component {
     }
     let key = index
     if (parent) {
-      if (parent.key !== undefined &&  data.code !== undefined) {
+      if (parent.key !== undefined && data.code !== undefined) {
         key = parent.key + '_' + data.code
       } else {
         key = parent.key

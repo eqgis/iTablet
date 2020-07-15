@@ -63,7 +63,8 @@ export default class TemplateDetail extends React.Component {
       title:
         params.title ||
         getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_CREATE,
-      data: params.data && JSON.parse(JSON.stringify(params.data)) || defaultData,
+      data:
+        (params.data && JSON.parse(JSON.stringify(params.data))) || defaultData,
       datasources: [],
       datasets: [],
       popData: [],

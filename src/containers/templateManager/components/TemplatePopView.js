@@ -80,20 +80,20 @@ export default class TemplatePopView extends React.Component {
     height?: number, // PopView高度
     itemOnPress?: () => {}, // 自定义点击Item事件
   }
-  
+
   static defaultProps = {
     data: [],
     height: -1,
   }
-  
+
   constructor(props) {
     super(props)
-    
+
     this.state = {
       data: props.data,
     }
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.props.language !== nextProps.language ||
@@ -101,7 +101,7 @@ export default class TemplatePopView extends React.Component {
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     )
   }
-  
+
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({
@@ -109,23 +109,22 @@ export default class TemplatePopView extends React.Component {
       })
     }
   }
-  
+
   setVisible = (visible, cb) => {
     this.popModal && this.popModal.setVisible(visible, cb)
   }
-  
+
   _renderSectionHeader = ({ section }) => {
     return (
       <View style={styles.subTitleView}>
-        <Text style={styles.subTitle}>
-          {section.title}
-        </Text>
+        <Text style={styles.subTitle}>{section.title}</Text>
       </View>
     )
   }
-  
+
   _renderItem = ({ item, index, section }) => {
-    let title = '', value = ''
+    let title = '',
+      value = ''
     if (item.caption !== undefined) {
       title = item.caption
     } else if (item.name !== undefined) {
@@ -141,15 +140,22 @@ export default class TemplatePopView extends React.Component {
         title={title}
         value={value}
         rightType={item.rightType}
-        rightStyle={index === section.data.length - 1 && {borderBottomWidth: 0}}
-        inputStyle={{flex: 1}}
+        rightStyle={
+          index === section.data.length - 1 && { borderBottomWidth: 0 }
+        }
+        inputStyle={{ flex: 1 }}
         onPress={async () => {
-          if (this.props.itemOnPress && typeof this.props.itemOnPress === 'function') {
-            this.props.itemOnPress && this.props.itemOnPress({ item, index, section })
+          if (
+            this.props.itemOnPress &&
+            typeof this.props.itemOnPress === 'function'
+          ) {
+            this.props.itemOnPress &&
+              this.props.itemOnPress({ item, index, section })
             return
           }
           if (
-            item.name === getLanguage(this.props.language).Map_Settings.DATASETS &&
+            item.name ===
+              getLanguage(this.props.language).Map_Settings.DATASETS &&
             !this.state.data[1].data[0].value
           ) {
             Toast.show(
@@ -158,17 +164,20 @@ export default class TemplatePopView extends React.Component {
             )
             return
           }
-          if (item.name === getLanguage(this.props.language).Map_Settings.DATASOURCES) {
+          if (
+            item.name ===
+            getLanguage(this.props.language).Map_Settings.DATASOURCES
+          ) {
             NavigationService.navigate('TemplateSource', {
               type: 'datasource',
-              cb: ({data, type}) => {
+              cb: ({ data, type }) => {
                 let newData = JSON.parse(JSON.stringify(this.state.data))
                 // 数据源更改时，清除数据集和属性
                 if (data.alias !== this.state.data[1].data[0].value) {
                   newData[1].data[1].value = ''
                   newData[2].data = []
                 }
-                
+
                 newData[1].data[0].data = data
                 newData[1].data[0].value = data.alias
                 this.setState({
@@ -176,16 +185,18 @@ export default class TemplatePopView extends React.Component {
                 })
               },
             })
-          } else if (item.name === getLanguage(this.props.language).Map_Settings.DATASETS) {
+          } else if (
+            item.name === getLanguage(this.props.language).Map_Settings.DATASETS
+          ) {
             let datasourceAlias = this.state.data[1].data[0].value
             NavigationService.navigate('TemplateSource', {
               type: 'dataset',
               datasource: { alias: datasourceAlias },
-              cb: async ({data, type}) => {
+              cb: async ({ data, type }) => {
                 let newData = JSON.parse(JSON.stringify(this.state.data))
                 newData[1].data[1].type = data.datasetType
                 newData[1].data[1].value = data.datasetName
-        
+
                 // TODO 获取数据集属性
                 let fieldInfos = await SMap.getFieldInfos({
                   alias: datasourceAlias,
@@ -199,7 +210,7 @@ export default class TemplatePopView extends React.Component {
                   }
                 })
                 newData[2].data = fields
-        
+
                 this.setState({
                   data: newData,
                 })
@@ -217,7 +228,7 @@ export default class TemplatePopView extends React.Component {
       />
     )
   }
-  
+
   renderList = () => {
     return (
       <SectionList
@@ -227,8 +238,12 @@ export default class TemplatePopView extends React.Component {
         renderItem={this._renderItem}
         sections={this.state.data}
         keyExtractor={item => item.name}
-        SectionSeparatorComponent={_props =>{
-          if (!_props.trailingItem && _props.leadingItem && _props.trailingSection) {
+        SectionSeparatorComponent={_props => {
+          if (
+            !_props.trailingItem &&
+            _props.leadingItem &&
+            _props.trailingSection
+          ) {
             return (
               <View
                 style={{
@@ -239,12 +254,12 @@ export default class TemplatePopView extends React.Component {
               />
             )
           }
-          return <View/>
+          return <View />
         }}
       />
     )
   }
-  
+
   renderBottom = () => {
     return (
       <View style={[styles.btnsView, { width: '100%' }]}>
@@ -259,8 +274,8 @@ export default class TemplatePopView extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.cancelTitle ||
-            getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
-              .CANCEL}
+              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+                .CANCEL}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -276,14 +291,14 @@ export default class TemplatePopView extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.confirmTitle ||
-            getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
-              .CONFIRM}
+              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+                .CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
     )
   }
-  
+
   render() {
     return (
       <PopView ref={ref => (this.popModal = ref)}>
@@ -292,11 +307,13 @@ export default class TemplatePopView extends React.Component {
           keyboardVerticalOffset={0}
           behavior={Platform.OS === 'ios' && 'padding'}
         >
-          <View style={[
-            styles.popView,
-            // { width: '100%' },
-            this.props.height >=0 && { height: this.props.height },
-          ]}>
+          <View
+            style={[
+              styles.popView,
+              // { width: '100%' },
+              this.props.height >= 0 && { height: this.props.height },
+            ]}
+          >
             {this.renderBottom()}
             {this.renderList()}
           </View>

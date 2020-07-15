@@ -117,6 +117,25 @@ function arMeasureCollect() {
   })()
 }
 
+// AR投射
+function arCastModelOperate() {
+  (async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.navigate('ARProjectModeView')
+  })()
+}
+
 export default {
   close,
   memu,
@@ -125,4 +144,5 @@ export default {
 
   collectSceneForm,
   arMeasureCollect,
+  arCastModelOperate,
 }

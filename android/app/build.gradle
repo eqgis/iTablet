@@ -230,6 +230,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
+    // Sceneform
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.11.0'
+    implementation 'com.google.ar.sceneform:animation:1.11.0'
+
+    implementation 'de.javagl:obj:0.2.1'
+    implementation 'org.rajawali3d:rajawali:1.0.325@aar'
 }
 
 // Run this once to be able to run the application with BUCK

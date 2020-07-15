@@ -15,7 +15,7 @@ import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
 
-function openTemplate (type) {
+function openTemplate(type) {
   const params = ToolbarModule.getParams()
   const _data = CollectionData.getData(type)
   const containerType = ToolbarType.tabs
@@ -186,8 +186,8 @@ async function createCollector(type, layerName) {
   } else {
     const datasetName = ToolbarModule.getParams().symbol.currentSymbol.type
       ? `${ToolbarModule.getParams().symbol.currentSymbol.type}_${
-        ToolbarModule.getParams().symbol.currentSymbol.id
-      }`
+          ToolbarModule.getParams().symbol.currentSymbol.id
+        }`
       : ''
     const datasourcePath =
       ToolbarModule.getParams().collection.datasourceParentPath ||
@@ -197,8 +197,8 @@ async function createCollector(type, layerName) {
           ToolbarModule.getParams().user.currentUser.name
           ? `${ConstPath.UserPath +
               ToolbarModule.getParams().user.currentUser.name}/${
-            ConstPath.RelativePath.Datasource
-          }`
+              ConstPath.RelativePath.Datasource
+            }`
           : ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
       ))
 
@@ -307,7 +307,7 @@ async function close(type) {
 
 export default {
   close,
-  
+
   openTemplate,
   changeCollection,
   showCollection,

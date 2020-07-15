@@ -11,17 +11,17 @@ import { DatasetType } from 'imobile_for_reactnative'
  * @param cb    回调函数，返回解析后的对象
  * @returns {Promise.<boolean>}
  */
-async function readXML (path, cb = () => {}) {
+async function readXML(path, cb = () => {}) {
   try {
     let data = await fs.readFile(path)
     parser.parseString(data, async (err, result) => {
       let feature = result.featureSymbol.template[0].feature
-    
-      function getData (arr) {
+
+      function getData(arr) {
         let _arr = []
         for (let i = 0; i < arr.length; i++) {
           let _data = arr[i].$
-        
+
           // 属性
           let fields = []
           if (arr[i].fields[0].field) {
@@ -30,19 +30,19 @@ async function readXML (path, cb = () => {}) {
             }
           }
           _data.fields = fields
-        
+
           // 子模板
           if (arr[i].feature && arr[i].feature.length > 0) {
             _data.childGroups = getData(arr[i].feature)
           }
-        
+
           _arr.push(_data)
         }
         return _arr
       }
-    
+
       let _data = getData(feature)
-    
+
       if (cb && typeof cb === 'function') {
         cb(_data)
       }
@@ -59,13 +59,13 @@ async function readXML (path, cb = () => {}) {
  * @param array  被写入的未处理的数据
  * @returns {Promise.<*>}
  */
-async function writeXML (path, array) {
+async function writeXML(path, array) {
   try {
     if (!path) {
       return false
     }
     let fileName = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
-  
+
     let xmlObj = obj2Xml(fileName, array)
 
     let xml = builder.buildObject(xmlObj)
@@ -86,7 +86,7 @@ async function writeXML (path, array) {
  * @param array  被写入处理过的数据
  * @returns {Promise.<*>}
  */
-async function writeXML2 (path, xmlObj) {
+async function writeXML2(path, xmlObj) {
   try {
     if (!path) {
       return false
@@ -103,8 +103,8 @@ async function writeXML2 (path, xmlObj) {
   }
 }
 
-function obj2Xml (fileName, array) {
-  function getFeature (arr) {
+function obj2Xml(fileName, array) {
+  function getFeature(arr) {
     let _arr = []
     for (let i = 0; i < arr.length; i++) {
       let field = [] // 属性
@@ -112,7 +112,7 @@ function obj2Xml (fileName, array) {
       if (arr[i].childGroups && arr[i].childGroups.length > 0) {
         feature = getFeature(arr[i].childGroups)
       }
-      
+
       for (let j = 0; j < arr[i].fields.length; j++) {
         let _field = arr[i].fields[j]
         let value = ''
@@ -126,13 +126,13 @@ function obj2Xml (fileName, array) {
             name: _field.name,
             caption: _field.caption,
             value,
-            DataType: "Default",
-            KeyField: "True",
+            DataType: 'Default',
+            KeyField: 'True',
           },
         }
         field.push(_temp)
       }
-      
+
       let type = arr[i].type
       if (!isNaN(type)) {
         switch (type) {
@@ -150,7 +150,7 @@ function obj2Xml (fileName, array) {
             break
         }
       }
-      
+
       let _data = {
         $: {
           code: arr[i].code,
@@ -159,29 +159,33 @@ function obj2Xml (fileName, array) {
           datasourceAlias: arr[i].datasourceAlias,
           datasetName: arr[i].datasetName,
         },
-        fields: [{
-          field,
-        }],
+        fields: [
+          {
+            field,
+          },
+        ],
         feature,
       }
-      
+
       _arr.push(_data)
     }
     return _arr
   }
-  
+
   let xmlObj = {
     featureSymbol: {
       $: {
-        xmlns: 'http://www.supermap.com.cn/desktop'
+        xmlns: 'http://www.supermap.com.cn/desktop',
       },
-      template: [{
-        $: {
-          name: fileName,
+      template: [
+        {
+          $: {
+            name: fileName,
+          },
+          feature: getFeature(array),
         },
-        feature: getFeature(array),
-      }],
-    }
+      ],
+    },
   }
   return xmlObj
 }

@@ -1,5 +1,3 @@
 import XMLUtil from './XMLUtil'
 
-export {
-  XMLUtil,
-}
+export { XMLUtil }

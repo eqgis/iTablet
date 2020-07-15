@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
 import { ChunkType } from '../../../../constants'
@@ -29,7 +24,8 @@ class MyApplet extends MyDataPage {
   }
 
   getData = async () => {
-    let _applets = await ConfigUtils.getApplets(this.props.user.currentUser.userName) || []
+    let _applets =
+      (await ConfigUtils.getApplets(this.props.user.currentUser.userName)) || []
     let applets = []
     let othersApplets = []
 
@@ -37,10 +33,11 @@ class MyApplet extends MyDataPage {
     for (let i = 0; i < _applets.length; i++) {
       // 检测本地记录中的小程序是否在当前版本中存在
       if (_mapModules.indexOf(_applets[i]) >= 0) {
-        !ChunkType[_applets[i]] && applets.push({
-          name: _applets[i],
-          img: getThemeAssets().find.app,
-        })
+        !ChunkType[_applets[i]] &&
+          applets.push({
+            name: _applets[i],
+            img: getThemeAssets().find.app,
+          })
       }
     }
     for (let i = 0; i < _mapModules.length; i++) {
@@ -69,9 +66,9 @@ class MyApplet extends MyDataPage {
     this.setState({
       sectionData: sectionData,
     })
-    let applets = []  // redux使用的对象数组
+    let applets = [] // redux使用的对象数组
     let _applets = [] // 本地文件的字符串数组
-  
+
     // 添加系统默认模块
     Object.keys(ChunkType).map(key => {
       for (let i = 0; i < mapModules.length; i++) {
@@ -81,7 +78,7 @@ class MyApplet extends MyDataPage {
         }
       }
     })
-    
+
     // 添加自定义已添加小程序
     sectionData[0].data.map(item => {
       for (let i = 0; i < mapModules.length; i++) {
@@ -127,26 +124,36 @@ class MyApplet extends MyDataPage {
       for (let i = defaultModuleKeys.length - 1; i >= 0; i--) {
         defaultModules.push(ChunkType[defaultModuleKeys[i]])
       }
-      let popData = [{
-        title: getLanguage(global.language).Profile.MOVE_UP,
-        action: () => {
-          this._closeModal()
-          if (this.itemInfo.index !== 0) {
-            _section1.data[index] = _section1.data.splice(index - 1, 1, _section1.data[index])[0]
-            this.setApplets(_sectionData)
-          }
+      let popData = [
+        {
+          title: getLanguage(global.language).Profile.MOVE_UP,
+          action: () => {
+            this._closeModal()
+            if (this.itemInfo.index !== 0) {
+              _section1.data[index] = _section1.data.splice(
+                index - 1,
+                1,
+                _section1.data[index],
+              )[0]
+              this.setApplets(_sectionData)
+            }
+          },
         },
-      },
         {
           title: getLanguage(global.language).Profile.MOVE_DOWN,
           action: () => {
             this._closeModal()
             if (index < _section1.data.length - 1) {
-              _section1.data[index] = _section1.data.splice(index + 1, 1, _section1.data[index])[0]
+              _section1.data[index] = _section1.data.splice(
+                index + 1,
+                1,
+                _section1.data[index],
+              )[0]
               this.setApplets(_sectionData)
             }
           },
-        }]
+        },
+      ]
       if (defaultModules.indexOf(item.name) < 0) {
         popData.push({
           title: getLanguage(global.language).Profile.DELETE_APPLET,
@@ -209,7 +216,7 @@ class MyApplet extends MyDataPage {
       return false
     }
   }
-  
+
   selectAll = () => {
     let section = this.state.sectionData.clone()
     let j = 0
@@ -233,7 +240,9 @@ class MyApplet extends MyDataPage {
     try {
       let index = 0
       for (let i in this.state.sectionData[0].data) {
-        if (this.itemInfo.item.name === this.state.sectionData[0].data[i].name) {
+        if (
+          this.itemInfo.item.name === this.state.sectionData[0].data[i].name
+        ) {
           index = parseInt(i)
           break
         }
@@ -257,7 +266,9 @@ class MyApplet extends MyDataPage {
     try {
       let index = 0
       for (let i in this.state.sectionData[1].data) {
-        if (this.itemInfo.item.name === this.state.sectionData[1].data[i].name) {
+        if (
+          this.itemInfo.item.name === this.state.sectionData[1].data[i].name
+        ) {
           index = parseInt(i)
           break
         }
@@ -276,7 +287,7 @@ class MyApplet extends MyDataPage {
       return false
     }
   }
-  
+
   /**
    * 批量添加
    * @returns {Promise.<void>}
@@ -312,7 +323,7 @@ class MyApplet extends MyDataPage {
       Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
     }
   }
-  
+
   /**
    * 批量删除
    * @param forceDelete
@@ -344,7 +355,9 @@ class MyApplet extends MyDataPage {
       for (let i = 0; i < deleteArr.length; i++) {
         let index = 0
         for (let j in this.state.sectionData[0].data) {
-          if (deleteArr[i].item.name === this.state.sectionData[0].data[j].name) {
+          if (
+            deleteArr[i].item.name === this.state.sectionData[0].data[j].name
+          ) {
             index = parseInt(j)
             break
           }
@@ -411,8 +424,8 @@ class MyApplet extends MyDataPage {
           style={styles.bottomItemStyle}
           onPress={() => action()}
         >
-          {
-            img && <Image
+          {img && (
+            <Image
               style={{
                 height: scaleSize(50),
                 width: scaleSize(50),
@@ -420,10 +433,8 @@ class MyApplet extends MyDataPage {
               }}
               source={img}
             />
-          }
-          <Text style={{ fontSize: scaleSize(20) }}>
-            {title}
-          </Text>
+          )}
+          <Text style={{ fontSize: scaleSize(20) }}>{title}</Text>
         </TouchableOpacity>
       </View>
     )

@@ -498,9 +498,7 @@ export const getSymbolTemplates = (params, cb = () => {}) => async (
 }
 
 // 设置模板符号
-export const setSymbolTemplates = (params, cb = () => {}) => async (
-  dispatch,
-) => {
+export const setSymbolTemplates = (params, cb = () => {}) => async dispatch => {
   try {
     await dispatch({
       type: GET_SYMBOL_TEMPLATES,
@@ -684,8 +682,11 @@ export default handleActions(
       let _currentTemplateList = currentTemplateList
       let _currentTemplateInfo = currentTemplateInfo
       if (oldTemplate.path !== payload.path) {
-        let _firstData = payload.symbols && payload.symbols.length > 0 ? payload.symbols[0] : {}
-  
+        let _firstData =
+          payload.symbols && payload.symbols.length > 0
+            ? payload.symbols[0]
+            : {}
+
         let _list = []
         if (_firstData) {
           if (_firstData.$.datasetName && _firstData.$.type !== 'Unknown') {
@@ -701,11 +702,11 @@ export default handleActions(
               }
             }
           }
-          
+
           getData(_firstData)
           _currentTemplateList = _list
         }
-        
+
         _latestTemplateSymbols = []
         _currentTemplateInfo = {}
       }

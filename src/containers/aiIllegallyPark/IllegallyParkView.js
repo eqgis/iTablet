@@ -44,11 +44,11 @@ export default class IllegallyParkView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {}.bind(this)())
+      ;(async function() {}.bind(this)())
     })
 
     {
-      (async function() {
+      ;(async function() {
         let targetPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
             this.props.user.currentUser.userName +

@@ -143,6 +143,7 @@ import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AIDetecSettingsView from './AIDetecSettingsView'
 import CastModelOperateView from './arCastModelOperateView'
+import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
@@ -156,7 +157,11 @@ import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
 import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
-import { TemplateManager, TemplateDetail, TemplateSource } from './templateManager/pages'
+import {
+  TemplateManager,
+  TemplateDetail,
+  TemplateSource,
+} from './templateManager/pages'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -833,6 +838,13 @@ export default function(appConfig) {
       },
       MeasureView: {
         screen: MeasureView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARProjectModeView: {
+        screen: ARProjectModeView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

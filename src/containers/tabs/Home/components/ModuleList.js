@@ -23,7 +23,7 @@ let isWaiting = false // 防止重复点击
 async function composeWaiting(action) {
   if (isWaiting) return
   isWaiting = true
-  if (action) {
+  if (action && typeof action === 'function') {
     await action()
   }
   isWaiting = false

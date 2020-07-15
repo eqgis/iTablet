@@ -78,9 +78,9 @@ class LicenseTypePage extends Component {
         type: LicenseType.trial,
       },
     ]
-    if (Platform.OS === 'android') {
-      data.splice(3, 1)
-    }
+    // if (Platform.OS === 'ios') {
+    //   data.splice(3, 1)
+    // }
     return data
   }
 
@@ -106,11 +106,11 @@ class LicenseTypePage extends Component {
           >
             {this.props.licenseInfo &&
               this.props.licenseInfo.licenseType === item.type && (
-              <Image
-                source={require('../../../../assets/public/settings_selected.png')}
-                style={{ height: scaleSize(55), width: scaleSize(55) }}
-              />
-            )}
+                <Image
+                  source={require('../../../../assets/public/settings_selected.png')}
+                  style={{ height: scaleSize(55), width: scaleSize(55) }}
+                />
+              )}
           </View>
           <View
             style={{

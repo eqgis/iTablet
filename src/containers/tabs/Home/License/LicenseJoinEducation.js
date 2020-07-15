@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TextInput,
+  Platform,
 } from 'react-native'
 import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language'
@@ -94,32 +95,41 @@ class LicenseJoinEducation extends Component {
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
       let result = await SMap.applyEduLicense(this.server)
-      this.container && this.container.setLoading(false)
+      
       if (result) {
+        this.container && this.container.setLoading(false)
         Toast.show(
           getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
-
-        await SMap.setEducationConnectCallback(async result => {
-          if (!result) {
-            Toast.show(
-              global.language === 'CN'
-                ? '教育许可的连接已断开!'
-                : 'Lost connection with education license server!',
-            )
-            let info = await SMap.getEnvironmentStatus()
-            this.props.setLicenseInfo(info)
-          }
-        })
-
+        debugger
+        if(Platform.OS === 'android') {
+          await SMap.setEducationConnectCallback(async result => {
+            if (!result) {
+              Toast.show(
+                global.language === 'CN'
+                  ? '教育许可的连接已断开!'
+                  : 'Lost connection with education license server!',
+              )
+              let info = await SMap.getEnvironmentStatus()
+              this.props.setLicenseInfo(info)
+            }
+          })
+        }
+       debugger
         let info = await SMap.getEnvironmentStatus()
+        debugger
         this.props.setEducationServer(this.server)
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(2)
+        debugger
+        
       } else {
+        debugger
+        this.container && this.container.setLoading(false)
         Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       }
     } catch (e) {
+      debugger
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }

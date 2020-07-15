@@ -115,21 +115,15 @@ class LicenseJoinEducation extends Component {
             }
           })
         }
-       debugger
         let info = await SMap.getEnvironmentStatus()
-        debugger
         this.props.setEducationServer(this.server)
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(2)
-        debugger
-        
       } else {
-        debugger
         this.container && this.container.setLoading(false)
         Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       }
     } catch (e) {
-      debugger
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }

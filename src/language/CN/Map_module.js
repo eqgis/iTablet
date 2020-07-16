@@ -2,7 +2,7 @@
 const Map_Module = {
   MAP_EDIT: '地图浏览',
   MAP_3D: '三维浏览',
-  MAP_AR: 'AR采集',
+  MAP_AR: 'AR地图',
   MAP_NAVIGATION: '导航采集',
   MAP_THEME: '专题制图',
   MAP_COLLECTION: '外业采集',

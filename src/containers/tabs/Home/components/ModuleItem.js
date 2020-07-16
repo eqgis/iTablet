@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native'
-import { fixedSize } from '../../../../utils'
+import { scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
 
-export const itemWidth_P = fixedSize(308)
-export const itemHeight_P = fixedSize(208)
-export const itemWidth_L = fixedSize(240)
-export const itemHeight_L = fixedSize(224)
-export const itemGap = fixedSize(24)
+export const itemWidth_P = scaleSize(308)
+export const itemHeight_P = scaleSize(208)
+export const itemWidth_L = scaleSize(240)
+export const itemHeight_L = scaleSize(224)
+export const itemGap = scaleSize(24)
 
 export default class ModuleItem extends Component {
   props: {
@@ -89,10 +89,10 @@ export default class ModuleItem extends Component {
       <View
         style={[
           {
-            marginTop: fixedSize(20),
+            marginTop: scaleSize(20),
             position: 'absolute',
             width: value,
-            height: fixedSize(5),
+            height: scaleSize(5),
             backgroundColor: '#4680DF',
             borderRadius: 5,
             bottom: 0,
@@ -206,19 +206,19 @@ export default class ModuleItem extends Component {
 
 const styles = StyleSheet.create({
   moduleImageView: {
-    marginTop: fixedSize(25),
+    marginTop: scaleSize(25),
   },
   moduleImage: {
-    marginTop: fixedSize(25),
-    width: fixedSize(88),
-    height: fixedSize(88),
+    marginTop: scaleSize(25),
+    width: scaleSize(88),
+    height: scaleSize(88),
   },
   starImage: {
     position: 'absolute',
-    right: fixedSize(24),
-    top: fixedSize(24),
-    width: fixedSize(36),
-    height: fixedSize(36),
+    right: scaleSize(24),
+    top: scaleSize(24),
+    width: scaleSize(36),
+    height: scaleSize(36),
   },
   moduleView_P: {
     alignItems: 'center',
@@ -232,14 +232,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: fixedSize(16),
+    borderRadius: scaleSize(16),
     backgroundColor: color.itemColorGray2,
   },
   moduleViewL: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: fixedSize(12),
+    borderRadius: scaleSize(12),
     backgroundColor: color.itemColorGray2,
   },
   moduleItemP: {
@@ -252,16 +252,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: size.fontSize.fontSizeLg,
     color: '#5E5E5E',
-    left: fixedSize(20),
-    bottom: fixedSize(8),
+    left: scaleSize(20),
+    bottom: scaleSize(8),
   },
   redDot: {
     position: 'absolute',
-    left: fixedSize(40),
-    top: fixedSize(24),
-    width: fixedSize(16),
-    height: fixedSize(16),
-    borderRadius: fixedSize(8),
+    left: scaleSize(40),
+    top: scaleSize(24),
+    width: scaleSize(16),
+    height: scaleSize(16),
+    borderRadius: scaleSize(8),
     backgroundColor: 'red',
   },
 })

@@ -887,6 +887,8 @@ const Template = {
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',
+  
+  TEMPLATE_ERROR: '地图未保存，无法使用模板',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

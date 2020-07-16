@@ -58,6 +58,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   tabText: {
+    marginTop: scaleSize(14),
     color: color.itemColorGray,
     fontSize: scaleSize(20),
   },

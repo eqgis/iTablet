@@ -183,7 +183,7 @@ export default class TemplateDetail extends React.Component {
         break
       }
     }
-    let newData = _data.length > 0 ? this.state.data.concat() : defaultData
+    let newData = _data.length > 0 ? this.state.data.concat() : JSON.parse(JSON.stringify(defaultData))
     this.setState({
       data: newData,
     })
@@ -369,7 +369,7 @@ export default class TemplateDetail extends React.Component {
           return (
             <View style={styles.itemRightView}>
               <ImageButton
-                iconBtnStyle={styles.bottomBtnView}
+                iconBtnStyle={styles.itemBtnView}
                 iconStyle={styles.selectImg}
                 icon={getPublicAssets().plot.plot_add}
                 onPress={event => {
@@ -381,7 +381,7 @@ export default class TemplateDetail extends React.Component {
                 }}
               />
               <ImageButton
-                iconBtnStyle={styles.bottomBtnView}
+                iconBtnStyle={styles.itemBtnView}
                 iconStyle={styles.selectImg}
                 icon={getThemeAssets().attribute.icon_delete}
                 onPress={() => {

@@ -220,11 +220,12 @@ export default class Container extends Component {
 
   renderHeader = fixHeader => {
     return this.props.withoutHeader ? (
-      Platform.OS === 'ios' ? (
-        <View style={styles.iOSPadding} />
-      ) : (
-        <View />
-      )
+      // Platform.OS === 'ios' ? (
+      //   <View style={styles.iOSPadding} />
+      // ) : (
+      //   <View />
+      // )
+      null
     ) : this.props.header ? (
       <AnimatedView
         style={[fixHeader && styles.fixHeader, { top: this.state.top }]}

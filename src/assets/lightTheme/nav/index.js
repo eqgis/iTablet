@@ -20,6 +20,7 @@ const icon_map_vedio_touch = require('./icon_map_vedio_touch.png')
 const icon_map_navigation = require('./icon_map_navigation.png')
 const icon_map_navigation_touch = require('./icon_map_navigation_touch.png')
 const icon_navi_set_endpoint = require('./navi_set_endpoint_light.png')
+const icon_map_add = require('./icon_map_add.png')
 
 export default {
   icon_map_edit,
@@ -39,4 +40,5 @@ export default {
   icon_map_navigation,
   icon_map_navigation_touch,
   icon_navi_set_endpoint,
+  icon_map_add,
 }

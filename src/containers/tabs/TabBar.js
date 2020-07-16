@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Platform } from 'react-native'
 import { scaleSize } from '../../utils'
+import { color } from '../../styles'
 import PropTypes from 'prop-types'
 import { getThemeAssets } from '../../assets'
 import TabItem from './TabItem'
@@ -171,27 +172,27 @@ export default connect(
   mapDispatchToProps,
 )(TabBar)
 
-export const TAB_BAR_HEIGHT_P = scaleSize(96)
-export const TAB_BAR_WIDTH_L = scaleSize(96)
 const styles = StyleSheet.create({
   containerP: {
     width: '100%',
-    height: TAB_BAR_HEIGHT_P,
-    backgroundColor: '#EEEEEE',
+    height: scaleSize(120),
+    backgroundColor: color.white,
     alignSelf: 'center',
-    borderStyle: 'solid',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderTopWidth: scaleSize(3),
+    borderColor: color.itemColorGray2,
   },
   containerL: {
-    width: TAB_BAR_WIDTH_L,
+    width: scaleSize(96),
     height: '100%',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: color.white,
     alignSelf: 'center',
-    borderStyle: 'solid',
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderLeftWidth: scaleSize(3),
+    borderColor: color.itemColorGray2,
   },
 })

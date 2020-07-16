@@ -332,8 +332,8 @@ class ModuleList extends Component {
       <ModuleItem
         key={item.key}
         item={item}
-        showStar={index === 0}
-        style={index === 0 && {
+        showStar={item.key === ChunkType.MAP_AR}
+        style={item.key === ChunkType.MAP_AR && {
           width: (
             this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? itemWidth_L : itemWidth_P
           ) * 2 + itemGap,
@@ -359,9 +359,11 @@ class ModuleList extends Component {
   /** 获取竖屏数据 **/
   _renderPortraitRows = data => {
     let _list = [], _row = [], column = 2
+    let arIndex = -1
     for (let index = 0; index < data.length; index++) {
+      if (data[index].key === ChunkType.MAP_AR) arIndex = index
       let itemView = this._renderItem({item: data[index], index})
-      if (index === 0) {
+      if (index === arIndex) {
         _list.push(itemView)
       } else {
         _row.push(itemView)
@@ -381,9 +383,11 @@ class ModuleList extends Component {
   _renderLandscapeColumns = data => {
     let _list = [], _column = [], row = 2
     let _subRow = []
+    let arIndex = -1
     for (let index = 0; index < data.length; index++) {
+      if (data[index].key === ChunkType.MAP_AR) arIndex = index
       let itemView = this._renderItem({item: data[index], index})
-      if (index === 1 || index === 2) {
+      if (arIndex >= 0 && ((index === arIndex + 1) || (index === arIndex + 2))) {
         _subRow.push(itemView)
         if (_subRow.length === row) {
           let rowView = <View style={styles.row}>{_subRow}</View>

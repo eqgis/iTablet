@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: color.itemColorGray2,
   },
   containerL: {
-    width: scaleSize(120),
+    width: scaleSize(96),
     height: '100%',
     backgroundColor: color.white,
     alignSelf: 'center',

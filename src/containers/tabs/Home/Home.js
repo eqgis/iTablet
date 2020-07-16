@@ -473,7 +473,7 @@ export default class Home extends Component {
       <View style={[
         styles.header, {
           paddingTop: this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? scaleSize(64)
+            ? (Platform.isPad ? scaleSize(64) : scaleSize(10))
             : scaleSize(50),
         }]}>
         <TouchableOpacity

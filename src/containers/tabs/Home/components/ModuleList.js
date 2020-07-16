@@ -4,6 +4,7 @@ import {
   StyleSheet,
   NetInfo,
   ScrollView,
+  Platform,
 } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
@@ -415,9 +416,14 @@ class ModuleList extends Component {
       }
     }
     return (
-      <View style={[styles.container, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-        paddingBottom: scaleSize(64),
-      }]}>
+      <View style={[
+        styles.container,
+        { marginTop: scaleSize(20) },
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+          paddingBottom: Platform.isPad ? scaleSize(64) : 0,
+          marginTop: Platform.isPad ? scaleSize(20) : 0
+        }
+      ]}>
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>
             <ScrollView
@@ -431,6 +437,7 @@ class ModuleList extends Component {
           </View>
         ) : (
           <ScrollView
+            style={{ width: '100%' }}
             keyboardShouldPersistTaps={'always'}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
@@ -467,8 +474,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: scaleSize(20),
-    
   },
   flatListView: {
     height: scaleSize(224),

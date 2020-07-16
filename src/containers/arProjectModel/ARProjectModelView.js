@@ -164,7 +164,7 @@ export default class ARProjectModeView extends React.Component {
       >
         <TouchableOpacity
           style={{
-            backgroundColor: color.overlay,
+            backgroundColor: color.transOverlay,
             height: '60%',
           }}
           onPress={() => {

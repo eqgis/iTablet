@@ -15,6 +15,8 @@ const persistConfig = {
     'map',
     'histories',
     'appConfig',
+    'license',
+    'cowork',
   ],
   blacklist: [
     'nav',

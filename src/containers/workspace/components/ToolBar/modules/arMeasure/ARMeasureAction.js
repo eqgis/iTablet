@@ -136,6 +136,161 @@ function arCastModelOperate() {
   })()
 }
 
+// AR测量面积
+function arMeasureArea() {
+  (async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'measureArea',
+    })
+  })()
+}
+
+// AR测量距离
+function arMeasureLength() {
+  (async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'measureLength',
+    })
+  })()
+}
+
+// AR画线
+function arDrawLine() {
+  (async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
+    let currentLayer = GLOBAL.currentLayer
+    let isTaggingLayer = false
+    if (currentLayer) {
+      let layerType = LayerUtils.getLayerType(currentLayer)
+      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    }
+    if (!isTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        let data = await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+      const datasetName = currentLayer.datasetName // 标注图层名称
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+
+    GLOBAL.MeasureCollectData.measureType = 'drawLine'
+
+    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+  })()
+}
+
+// AR画面
+function arDrawArea() {
+  (async function() {
+    const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
+    let currentLayer = GLOBAL.currentLayer
+    let isTaggingLayer = false
+    if (currentLayer) {
+      let layerType = LayerUtils.getLayerType(currentLayer)
+      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    }
+    if (!isTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        let data = await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+      const datasetName = currentLayer.datasetName // 标注图层名称
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+
+    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
+    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+  })()
+}
+
 export default {
   close,
   memu,
@@ -145,4 +300,8 @@ export default {
   collectSceneForm,
   arMeasureCollect,
   arCastModelOperate,
+  arMeasureArea,
+  arMeasureLength,
+  arDrawLine,
+  arDrawArea,
 }

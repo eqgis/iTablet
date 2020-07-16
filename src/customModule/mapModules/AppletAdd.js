@@ -19,7 +19,7 @@ export default class AppletAdd extends Module {
       moduleImage: getThemeAssets().nav.icon_map_add,
       moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
       action: () => {
-        NavigationService.navigate('Applet', { type: 'APPLET' })
+        NavigationService.navigate('MyApplet', { type: 'APPLET' })
       },
     })
   }

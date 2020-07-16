@@ -1,6 +1,7 @@
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ARMeasureAction from './ARMeasureAction'
+import { Platform } from 'react-native'
 
 function getData() {
   let data = [
@@ -32,7 +33,47 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_cast,
     },
+    {
+      //AR面积
+      key: 'arMeasureArea',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
+      action: ARMeasureAction.arMeasureArea,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
+    },
+    {
+      //AR测距
+      key: 'arMeasureArea',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
+      action: ARMeasureAction.arMeasureLength,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
+    },
+    {
+      //AR画线
+      key: 'arDrawLine',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+      action: ARMeasureAction.arDrawLine,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
+    },
+    {
+      //AR画面
+      key: 'arDrawArea',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA,
+      action: ARMeasureAction.arDrawArea,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
+    },
   ]
+
+  if (Platform.OS === 'ios') {
+    data.splice(2, 5)
+  }
 
   return { data }
 }

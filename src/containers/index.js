@@ -133,6 +133,7 @@ import {
 import MediaEdit from './mediaEdit'
 import Camera from './camera'
 import MeasureView from './arMeasure'
+import { MeasureAreaView } from './arMeasure/pages'
 import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
@@ -838,6 +839,13 @@ export default function(appConfig) {
       },
       MeasureView: {
         screen: MeasureView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      MeasureAreaView: {
+        screen: MeasureAreaView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

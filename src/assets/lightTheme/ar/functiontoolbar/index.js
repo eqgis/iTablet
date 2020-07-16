@@ -5,6 +5,10 @@ const rightbar_ai_layout_light = require('./rightbar_ai_layout_light.png')
 const rightbar_ai_poi_light = require('./rightbar_ai_poi_light.png')
 const rightbar_ai_violation_light = require('./rightbar_ai_violation_light.png')
 const ar_cast = require('./ar_cast.png')
+const ar_analyst_length = require('./icon_analystLien.png')
+const ar_analyst_area = require('./icon_analystSuerface.png')
+const ar_draw_line = require('./icon_collection_line.png')
+const ar_draw_area = require('./icon_collection_region.png')
 
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
@@ -14,4 +18,8 @@ export default {
   rightbar_ai_poi_light, // poi地图
   rightbar_ai_violation_light, // 违章采集
   ar_cast,
+  ar_analyst_length, //ar测距
+  ar_analyst_area, //ar测面
+  ar_draw_line, //ar画线
+  ar_draw_area, //ar画面
 }

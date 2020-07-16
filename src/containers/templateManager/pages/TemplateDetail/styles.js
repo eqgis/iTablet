@@ -30,6 +30,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  itemBtnView: {
+    width: scaleSize(80),
+    height: scaleSize(80),
+  },
   selectImg: {
     width: scaleSize(40),
     height: scaleSize(40),

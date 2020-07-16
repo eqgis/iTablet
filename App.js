@@ -226,6 +226,7 @@ class AppRoot extends Component {
 
   getUserApplets = async userName => {
     try {
+      // TODO 配置文件中新增的模块记录到本地文件中
       // 获取当前用户的小程序
       let applets = await ConfigUtils.getApplets(userName)
       if (applets === null || userName === 'Customer' && applets.length === 0) {

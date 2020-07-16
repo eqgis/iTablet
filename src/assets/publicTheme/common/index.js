@@ -29,6 +29,9 @@ const icon_circle_dot = require('./icon_circle_dot.png')
 const icon_drag = require('./icon_drag.png')
 const icon_audio = require('./icon_audio.png')
 const icon_arrow_down = require('./arrow_down.png')
+const icon_more = require('./icon_more.png')
+const icon_avatar = require('./icon_avatar.png')
+const icon_star = require('./icon_star.png')
 
 export default {
   icon_undo,
@@ -62,4 +65,7 @@ export default {
   icon_drag,
   icon_audio,
   icon_arrow_down,
+  icon_more,
+  icon_avatar,
+  icon_star,
 }

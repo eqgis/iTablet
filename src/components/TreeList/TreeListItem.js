@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     // paddingVertical: scaleSize(20),
+    height: scaleSize(80),
     width: scaleSize(80),
     justifyContent: 'center',
     alignItems: 'center',

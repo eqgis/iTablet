@@ -183,7 +183,7 @@ export default class TemplateDetail extends React.Component {
         break
       }
     }
-    let newData = _data.length > 0 ? this.state.data.concat() : defaultData
+    let newData = _data.length > 0 ? this.state.data.concat() : JSON.parse(JSON.stringify(defaultData))
     this.setState({
       data: newData,
     })

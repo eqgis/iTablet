@@ -24,6 +24,10 @@ export default class ModuleItem extends Component {
     itemAction: () => {},
     setOldMapModule: () => {},
   }
+  
+  static defaultProps = {
+    style: {},
+  }
 
   constructor(props) {
     super(props)
@@ -106,7 +110,7 @@ export default class ModuleItem extends Component {
   render() {
     let item = this.props.item
     let size = this.getSize()
-    let itemStyle = JSON.parse(JSON.stringify(this.props.style))
+    let itemStyle = JSON.parse(JSON.stringify(this.props.style)) || {}
     if (itemStyle) {
       if (itemStyle.width) delete itemStyle.width
       if (itemStyle.height) delete itemStyle.height

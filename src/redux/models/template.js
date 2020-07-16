@@ -681,7 +681,10 @@ export default handleActions(
       let _latestTemplateSymbols = latestTemplateSymbols
       let _currentTemplateList = currentTemplateList
       let _currentTemplateInfo = currentTemplateInfo
-      if (oldTemplate.path !== payload.path) {
+      if (
+        oldTemplate.path !== payload.path ||
+        JSON.stringify(oldTemplate.symbols) !== JSON.stringify(payload.symbols)
+      ) {
         let _firstData =
           payload.symbols && payload.symbols.length > 0
             ? payload.symbols[0]

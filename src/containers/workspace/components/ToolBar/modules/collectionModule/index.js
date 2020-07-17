@@ -5,8 +5,10 @@ import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { Toast } from '../../../../../../utils'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'
+import ToolbarModule from '../ToolbarModule'
 
 class CollectionModule extends FunctionModule {
   constructor(props) {
@@ -15,10 +17,14 @@ class CollectionModule extends FunctionModule {
 
   action = async () => {
     this.setModuleData(this.type)
-
+    const params = ToolbarModule.getParams()
     if (this.type === ConstToolType.MAP_TEMPLATE_CREATE) {
-      this.setModuleData(this.type)
-      NavigationService.navigate('TemplateManager')
+      if (params && params.map && params.map.currentMap.path) {
+        this.setModuleData(this.type)
+        NavigationService.navigate('TemplateManager')
+      } else {
+        Toast.show(getLanguage(params.language).Template.TEMPLATE_ERROR)
+      }
     } else {
       CollectionAction.openTemplate(this.type)
     }

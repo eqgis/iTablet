@@ -3,11 +3,9 @@ import { Container, TextBtn } from '../../../../components'
 import {
   View,
   Text,
-  Image,
   FlatList,
   RefreshControl,
   ActivityIndicator,
-  TouchableOpacity,
   Platform,
   NativeModules,
 } from 'react-native'
@@ -17,7 +15,6 @@ import { UserType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { OnlineServicesUtils, Toast } from '../../../../utils'
 import AppletItem from './AppletItem'
-import { getThemeAssets } from '../../../../assets'
 const appUtilsModule = NativeModules.AppUtils
 var JSOnlineService
 var JSIPortalService
@@ -43,7 +40,8 @@ export default class Applet extends React.Component {
       loadMore: false,
       isRefresh: false,
     }
-    ;(this.count = 0), (this.currentPage = 1)
+    this.count = 0
+    this.currentPage = 1
     this.totalPage = 0
     this.dataTypes = this.getAllDataTypes() //查询数据类型
     this.searchParams = undefined //其他查询参数

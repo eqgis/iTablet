@@ -175,8 +175,8 @@ public class MainActivity extends ReactActivity {
     }
 
     private String getJSBundleFileInternal() {
-        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
-        if (new File(path).exists()) {
+        String path = FileTools.getBundleFile();
+        if (path != null && new File(path).exists()) {
             return path;
         }
         return "assets://index.android.bundle";

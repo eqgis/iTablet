@@ -887,6 +887,8 @@ const Template = {
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
+  
+  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

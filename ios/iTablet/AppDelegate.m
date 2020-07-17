@@ -13,11 +13,7 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-//#import "VisualViewController.h"
-//#import "VCViewController.h"
 #import "RNFSManager.h"
-//#import "SuperMap/LogInfoService.h"
-//#import "RNSplashScreen.h"
 #import "Common/HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
@@ -179,15 +175,12 @@ static NSString* g_sampleCodeName = @"#";;
 
 +(RCTRootView *)loadBunle:(NSDictionary *)launchOptions {
   NSURL *jsCodeLocation;
-  NSString* jsBundlePath = [NSHomeDirectory() stringByAppendingString:@"/Documents/iTablet/Bundles/index.ios.bundle"];
-  NSFileManager* fileMgr = [NSFileManager defaultManager];
-  BOOL isDir = NO;
-  if ([fileMgr fileExistsAtPath:jsBundlePath isDirectory:&isDir]) {
+  NSString* jsBundlePath = [FileTools getBundleFile];
+  if (![jsBundlePath isEqualToString:@""]) {
     jsCodeLocation = [NSURL URLWithString:jsBundlePath];
   } else {
     #if DEBUG
-//      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.65.195"];
+      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

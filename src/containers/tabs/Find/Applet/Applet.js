@@ -3,11 +3,9 @@ import { Container, TextBtn } from '../../../../components'
 import {
   View,
   Text,
-  Image,
   FlatList,
   RefreshControl,
   ActivityIndicator,
-  TouchableOpacity,
   Platform,
   NativeModules,
 } from 'react-native'
@@ -17,7 +15,6 @@ import { UserType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { OnlineServicesUtils, Toast } from '../../../../utils'
 import AppletItem from './AppletItem'
-import { getThemeAssets } from '../../../../assets'
 const appUtilsModule = NativeModules.AppUtils
 var JSOnlineService
 var JSIPortalService

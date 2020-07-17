@@ -19,12 +19,10 @@
 
 //NSString *USER_NAME;
 static BOOL hasImportedData = NO;
+extern NSString *const BUNDLE_VERSION;
 
 @interface FileTools : RCTEventEmitter<RCTBridgeModule>
-//@property(nonatomic) id<SSZipArchiveDelegate> zipArchiveDelegate;
-
-
-
++(NSString *)getBundleFile;
 +(BOOL)zipFile:(NSString *)archivePath targetPath:(NSString *)targetPath;
 +(BOOL)zipFiles:(NSArray *)archivePaths targetPath:(NSString *)targetPath;
 +(BOOL)unZipFile:(NSString *)archivePath targetPath:(NSString *)targetPath;

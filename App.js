@@ -48,13 +48,12 @@ import { SaveView } from './src/containers/workspace/components'
 import { scaleSize, Toast, screen } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
-import { ConstPath, ConstInfo, ConstToolType, ThemeType} from './src/constants'
+import { ConstPath, ConstInfo, ConstToolType, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
 import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils} from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
-import UserType from './src/constants/UserType'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
 import constants from './src/containers/workspace/constants'
@@ -226,14 +225,18 @@ class AppRoot extends Component {
 
   getUserApplets = async userName => {
     try {
-      // TODO 配置文件中新增的模块记录到本地文件中
       // 获取当前用户的小程序
       let applets = await ConfigUtils.getApplets(userName)
+      let myMapModules = []
       if (applets === null || userName === 'Customer' && applets.length === 0) {
         await ConfigUtils.recordApplets(userName, _mapModules)
         applets = _mapModules
+      } else {
+        // APP默认模块不能改动
+        let defaultValues = Object.values(ChunkType)
+        let tempArr = defaultValues.concat(applets)
+        applets = Array.from(new Set(tempArr))
       }
-      let myMapModules = []
       applets.map(key => {
         for (let item of mapModules) {
           if (item.key === key) {

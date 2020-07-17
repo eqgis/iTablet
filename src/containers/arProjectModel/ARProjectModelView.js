@@ -43,7 +43,7 @@ export default class ARProjectModeView extends React.Component {
 
       moduleListData: _moduleListData,
       bmoduleListDataShow: false,
-      showSandTable: false,
+      showSandTable: true,
     }
 
     this.flage = false
@@ -206,6 +206,9 @@ export default class ARProjectModeView extends React.Component {
     SProjectModelView.onPause()
 
     NavigationService.goBack('ARProjectModeView')
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
   }
 
   renderBottomBtns = () => {

@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   containerP: {
     width: '100%',
     height: scaleSize(96),
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'white',
     alignSelf: 'center',
     borderStyle: 'solid',
     flexDirection: 'row',
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   containerL: {
     width: scaleSize(96),
     height: '100%',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'white',
     alignSelf: 'center',
     borderStyle: 'solid',
     flexDirection: 'column',

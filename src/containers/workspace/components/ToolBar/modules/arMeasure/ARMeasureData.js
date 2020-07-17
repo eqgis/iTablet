@@ -69,6 +69,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
+    // {
+    //   //AR画点
+    //   key: 'arDrawArea',
+    //   title: getLanguage(global.language).Map_Main_Menu
+    //     .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA,
+    //   action: ARMeasureAction.arDrawPoint,
+    //   size: 'large',
+    //   image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
+    // },
   ]
 
   if (Platform.OS === 'ios') {

@@ -246,6 +246,9 @@ export default class MeasureView extends React.Component {
 
   back = () => {
     NavigationService.goBack('MeasureView')
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
     return true
   }
 

@@ -75,7 +75,7 @@ export default class ARProjectModeView extends React.Component {
   // }
 
   componentWillUnmount() {
-    SProjectModelView.onDestory()
+    // SProjectModelView.onDestory()
     // AppState.removeEventListener('change', this._handleAppStateChange)
   }
 

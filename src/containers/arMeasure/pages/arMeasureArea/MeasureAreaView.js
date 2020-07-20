@@ -58,7 +58,7 @@ export default class MeasureAreaView extends React.Component {
       } else if (this.measureType === 'arDrawPoint') {
         this.title = getLanguage(
           global.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
       }
 
       if (

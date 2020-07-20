@@ -69,19 +69,19 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
-    // {
-    //   //AR画点
-    //   key: 'arDrawArea',
-    //   title: getLanguage(global.language).Map_Main_Menu
-    //     .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA,
-    //   action: ARMeasureAction.arDrawPoint,
-    //   size: 'large',
-    //   image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
-    // },
+    {
+      //AR画点
+      key: 'arDrawArea',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
+      action: ARMeasureAction.arDrawPoint,
+      size: 'large',
+      image: getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point,
+    },
   ]
 
   if (Platform.OS === 'ios') {
-    data.splice(2, 5)
+    data.splice(2, 6)
   }
 
   return { data }

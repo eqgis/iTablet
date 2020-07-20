@@ -359,6 +359,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR Ranging',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR Line',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR Picture',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR Draw Point',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'New Data',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Fill in the name',
 
@@ -887,7 +888,7 @@ const Template = {
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
-  
+
   TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 

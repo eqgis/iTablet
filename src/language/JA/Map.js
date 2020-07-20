@@ -359,6 +359,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'ARレンジング',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR線画',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR画像',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',
 
@@ -887,7 +888,7 @@ const Template = {
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',
-  
+
   TEMPLATE_ERROR: '地图未保存，无法使用模板',
 }
 

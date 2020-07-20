@@ -4,7 +4,8 @@ import { scaleSize, setSpText } from '../../../../utils'
 import { ListSeparator, MTBtn } from '../../../../components'
 import { ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
-import { getLanguage } from '../../../../language/index'
+import { getLanguage } from '../../../../language'
+import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 
 export default class MapToolbar extends React.Component {
@@ -247,6 +248,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderTopWidth: scaleSize(3),
+    borderColor: color.itemColorGray2,
   },
   containerL: {
     width: scaleSize(96),
@@ -257,5 +260,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderLeftWidth: scaleSize(3),
+    borderColor: color.itemColorGray2,
   },
 })

@@ -202,15 +202,15 @@ export default class MeasureView extends React.Component {
 
   /** 添加 **/
   switchModelViews = async () => {
-    if (Platform.OS === 'ios') {
-      this.setState({
-        showModelViews: !this.state.showModelViews,
-      })
-    } else {
-      this.setState({
-        showSwithchButtons: !this.state.showSwithchButtons,
-      })
-    }
+    // if (Platform.OS === 'ios') {
+    //   this.setState({
+    //     showModelViews: !this.state.showModelViews,
+    //   })
+    // } else {
+    this.setState({
+      showSwithchButtons: !this.state.showSwithchButtons,
+    })
+    //    }
   }
 
   /** 撤销 **/

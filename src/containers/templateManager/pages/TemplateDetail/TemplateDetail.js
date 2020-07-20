@@ -305,6 +305,7 @@ export default class TemplateDetail extends React.Component {
     this.currentItem = data
     let popData = [
       {
+        id: data.id,
         title: getLanguage(this.props.language).Template.ELEMENT_SETTINGS,
         data: [
           {

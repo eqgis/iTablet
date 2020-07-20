@@ -5,7 +5,7 @@ import {
   Image,
   Text,
   FlatList,
-  AppState,
+  // AppState,
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
@@ -15,6 +15,7 @@ import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { scaleSize } from '../../utils'
+import Orientation from 'react-native-orientation'
 
 /*
  * AR投射页面
@@ -49,28 +50,33 @@ export default class ARProjectModeView extends React.Component {
     this.flage = false
   }
 
+  // eslint-disable-next-line
+  componentWillMount() {
+    Orientation.lockToPortrait()
+  }
+
   componentDidMount() {
     this.getModuleShowState()
 
     // SProjectModelView.onResume()
-    AppState.addEventListener('change', this._handleAppStateChange)
+    // AppState.addEventListener('change', this._handleAppStateChange)
   }
 
-  _handleAppStateChange = nextAppState => {
-    if (nextAppState != null && nextAppState === 'active') {
-      if (this.flage) {
-        SProjectModelView.onResume()
-      }
-      this.flage = false
-    } else if (nextAppState != null && nextAppState === 'background') {
-      this.flage = true
-      SProjectModelView.onPause()
-    }
-  }
+  // _handleAppStateChange = nextAppState => {
+  //   if (nextAppState != null && nextAppState === 'active') {
+  //     if (this.flage) {
+  //       SProjectModelView.onResume()
+  //     }
+  //     this.flage = false
+  //   } else if (nextAppState != null && nextAppState === 'background') {
+  //     this.flage = true
+  //     SProjectModelView.onPause()
+  //   }
+  // }
 
   componentWillUnmount() {
     SProjectModelView.onDestory()
-    AppState.removeEventListener('change', this._handleAppStateChange)
+    // AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   getModuleShowState = async () => {

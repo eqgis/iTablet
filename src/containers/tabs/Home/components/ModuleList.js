@@ -4,7 +4,6 @@ import {
   StyleSheet,
   NetInfo,
   ScrollView,
-  Platform,
 } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
@@ -17,7 +16,8 @@ import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
-import ModuleItem, { itemWidth_P, itemWidth_L, itemGap } from './ModuleItem'
+import ModuleItem from './ModuleItem'
+import SizeUtil from '../SizeUtil'
 
 let isWaiting = false // 防止重复点击
 
@@ -332,11 +332,10 @@ class ModuleList extends Component {
       <ModuleItem
         key={item.key}
         item={item}
+        // showStar={index === 0}
         showStar={item.key === ChunkType.MAP_AR}
         style={item.key === ChunkType.MAP_AR && {
-          width: (
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? itemWidth_L : itemWidth_P
-          ) * 2 + itemGap,
+          width: SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap(),
           backgroundColor: color.itemColorGray3,
         }}
         device={this.props.device}
@@ -424,14 +423,18 @@ class ModuleList extends Component {
         styles.container,
         { marginTop: scaleSize(20) },
         this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-          paddingBottom: Platform.isPad ? scaleSize(64) : 0,
-          marginTop: Platform.isPad ? scaleSize(20) : 0
+          // paddingBottom: GLOBAL.isPad ? scaleSize(64) : 0,
+          // marginTop: GLOBAL.isPad ? scaleSize(20) : 0,
+          paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+          // paddingRight: GLOBAL.isPad ? scaleSize(72) : 0,
         }
       ]}>
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>
             <ScrollView
+              style={{ height: '100%' }}
               horizontal={true}
+              contentContainerStyle={styles.contentContainer}
               keyboardShouldPersistTaps={'always'}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
@@ -442,6 +445,7 @@ class ModuleList extends Component {
         ) : (
           <ScrollView
             style={{ width: '100%' }}
+            contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps={'always'}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
@@ -474,7 +478,14 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  contentContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -484,6 +495,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   column: {
     flexDirection: 'column',

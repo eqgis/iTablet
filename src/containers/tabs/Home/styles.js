@@ -14,8 +14,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginTop: scaleSize(50),
-    paddingHorizontal: scaleSize(40),
     zIndex: zIndexLevel.FOUR,
     backgroundColor: color.white,
   },
@@ -30,6 +28,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headTitle: {
+    flex: 1,
     height: scaleSize(60),
     color: color.black,
     textAlign: 'center',

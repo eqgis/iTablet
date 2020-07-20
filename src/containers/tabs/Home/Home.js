@@ -24,7 +24,7 @@ import ConstPath from '../../../constants/ConstPath'
 import NavigationService from '../../NavigationService'
 import UserType from '../../../constants/UserType'
 import { getLanguage } from '../../../language'
-import { getThemeAssets, getPublicAssets } from '../../../assets'
+import { getPublicAssets } from '../../../assets'
 import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
@@ -471,11 +471,18 @@ export default class Home extends Component {
   renderHeader = () => {
     return (
       <View style={[
-        styles.header, {
-          paddingTop: this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? (Platform.isPad ? scaleSize(64) : scaleSize(10))
-            : scaleSize(50),
-        }]}>
+        styles.header,
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? {
+            paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+            paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
+            paddingTop: (GLOBAL.isPad ? scaleSize(64) : scaleSize(10)),
+          }
+          : {
+            paddingHorizontal: scaleSize(40),
+            paddingTop: scaleSize(50),
+          },
+        ]}>
         <TouchableOpacity
           style={styles.userView}
           onPress={event => this.showUserPop(event)}

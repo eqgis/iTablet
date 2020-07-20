@@ -359,6 +359,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR aralığı',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR çizgi çizme',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR resmi',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR çekme noktaları',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',
 
@@ -887,7 +888,7 @@ const Template = {
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',
-  
+
   TEMPLATE_ERROR: '地图未保存，无法使用模板',
 }
 

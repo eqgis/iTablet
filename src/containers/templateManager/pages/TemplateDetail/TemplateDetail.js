@@ -311,12 +311,10 @@ export default class TemplateDetail extends React.Component {
           {
             name: getLanguage(this.props.language).Template.ELEMENT_NAME,
             value: data.name,
-            rightType: 'input',
           },
           {
             name: getLanguage(this.props.language).Template.ELEMENT_CODE,
             value: data.code,
-            rightType: 'input',
           },
         ],
       },
@@ -326,11 +324,13 @@ export default class TemplateDetail extends React.Component {
           {
             name: getLanguage(this.props.language).Map_Settings.DATASOURCES,
             value: data.datasourceAlias,
+            rightType: 'text',
           },
           {
             name: getLanguage(this.props.language).Map_Settings.DATASETS,
             value: data.datasetName,
             type: data.type,
+            rightType: 'text',
           },
         ],
       },
@@ -428,6 +428,7 @@ export default class TemplateDetail extends React.Component {
         <TemplatePopView
           ref={ref => (this.popView = ref)}
           data={this.state.popData}
+          device={this.props.device}
           language={this.props.language}
           height={
             (screen.getScreenHeight(this.props.device.orientation) * 3) / 4

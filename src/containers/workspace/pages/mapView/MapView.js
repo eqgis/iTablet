@@ -3425,8 +3425,8 @@ export default class MapView extends React.Component {
           GLOBAL.Type === ChunkType.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
-        {this.renderMapNavIcon()}
-        {this.renderMapNavMenu()}
+        {!this.isExample && this.renderMapNavIcon()}
+        {!this.isExample && this.renderMapNavMenu()}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}

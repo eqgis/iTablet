@@ -94,13 +94,13 @@ export default class TemplatePopView extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.props.language !== nextProps.language ||
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
-    )
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return (
+  //     this.props.language !== nextProps.language ||
+  //     JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+  //     JSON.stringify(this.state) !== JSON.stringify(nextState)
+  //   )
+  // }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Animated, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native'
 import { fixedSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
+import { ChunkType } from '../../../../constants'
 import SizeUtil from '../SizeUtil'
 
 export default class ModuleItem extends Component {
@@ -185,9 +186,12 @@ export default class ModuleItem extends Component {
             />
             {this._renderProgressView()}
             <Text style={styles.title}>{item.title}</Text>
-            {this.props.oldMapModules.indexOf(item.key) < 0 && (
-              <View style={styles.redDot} />
-            )}
+            {
+              this.props.oldMapModules.indexOf(item.key) < 0 &&
+              item.key !== ChunkType.APPLET_ADD && (
+                <View style={styles.redDot} />
+              )
+            }
             {
               this.props.showStar &&
               <Image

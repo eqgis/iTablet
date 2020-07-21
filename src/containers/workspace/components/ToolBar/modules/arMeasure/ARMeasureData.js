@@ -76,7 +76,7 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
       action: ARMeasureAction.arDrawPoint,
       size: 'large',
-      image: getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point,
+      image: getThemeAssets().ar.toolbar.point,
     },
     {
       //AR测高

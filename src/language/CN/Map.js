@@ -339,7 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: '路网',
 
   MAP_AR_DONT_SUPPORT_DEVICE: '不支持此设备',
-  MAP_AR_MEASURE: 'AR测量',
+  MAP_AR_MEASURE: 'AR测图',
   MAP_AR_ANALYZE: 'AR分析',
   MAP_AR_CAMERA_EXCEPTION: '摄像头异常, 请检查权限是否开启',
   MAP_AR_AI_ASSISTANT: 'AI助手',

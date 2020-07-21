@@ -59,6 +59,10 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
+      } else if (this.measureType === 'arMeasureHeight') {
+        this.title = getLanguage(
+          global.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       }
 
       if (
@@ -109,6 +113,8 @@ export default class MeasureAreaView extends React.Component {
             SMeasureAreaView.setMeasureMode('DRAW_AREA')
           } else if (this.measureType === 'arDrawPoint') {
             SMeasureAreaView.setMeasureMode('DRAW_POINT')
+          } else if (this.measureType === 'arMeasureHeight') {
+            SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
           }
         }
 

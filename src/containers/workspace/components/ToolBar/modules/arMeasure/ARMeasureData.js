@@ -91,8 +91,6 @@ function getData() {
 
   if (Platform.OS === 'ios') {
     data.splice(2, 1)
-  } else {
-    data.splice(8, 1)
   }
 
   return { data }

@@ -78,11 +78,21 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point,
     },
+    {
+      //AR测高
+      key: 'arMeasureHeitht',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
+      action: ARMeasureAction.arMeasureHeight,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
+    },
   ]
 
   if (Platform.OS === 'ios') {
-    data.splice(7, 1)
     data.splice(2, 1)
+  } else {
+    data.splice(8, 1)
   }
 
   return { data }

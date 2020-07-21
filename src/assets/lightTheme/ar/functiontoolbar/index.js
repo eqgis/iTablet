@@ -9,6 +9,7 @@ const ar_analyst_length = require('./icon_analystLien.png')
 const ar_analyst_area = require('./icon_analystSuerface.png')
 const ar_draw_line = require('./icon_collection_line.png')
 const ar_draw_area = require('./icon_collection_region.png')
+const ar_measure_height = require('./icon_analystLien_height.png')
 
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
@@ -22,4 +23,5 @@ export default {
   ar_analyst_area, //ar测面
   ar_draw_line, //ar画线
   ar_draw_area, //ar画面
+  ar_measure_height, //ar测高
 }

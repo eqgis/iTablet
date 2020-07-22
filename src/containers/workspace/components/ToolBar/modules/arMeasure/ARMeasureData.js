@@ -88,9 +88,9 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
     // {
-    //   //AR视屏
+    //   //AR视频
     //   key: 'arVideo',
-    //   title: 'AR视屏',
+    //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
     //   action: ARMeasureAction.arVideo,
     //   size: 'large',
     //   image: getThemeAssets().themeType.theme_graphmap,

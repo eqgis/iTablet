@@ -5,6 +5,7 @@ import { Container, ImagePicker } from '../../components'
 import { Toast, scaleSize } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { getPublicAssets } from '../../assets'
+import { getLanguage } from '../../language'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -64,7 +65,11 @@ export default class ARVideoView extends React.Component {
                 if (data && data.length > 0) {
                   let path = data[0].uri
                   SARVideoView.setVideoPath(path)
-                  Toast.show('点击平面添加视屏')
+                  Toast.show(
+                    global.language === 'CN'
+                      ? '点击平面添加视频'
+                      : 'Tap plane to add video',
+                  )
                 }
               },
             })
@@ -84,7 +89,7 @@ export default class ARVideoView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: 'AR视屏',
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
           type: 'fix',
         }}

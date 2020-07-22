@@ -390,7 +390,7 @@ class ModuleList extends Component {
   
   /** 获取横屏数据 **/
   _renderLandscapeColumns = data => {
-    let height = SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap()
+    let height = SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap() * 2
     let columnStyle = [styles.column, {height}]
     let _list = [], _column = [], row = 2
     let _subRow = []
@@ -440,13 +440,11 @@ class ModuleList extends Component {
     return (
       <View style={[
         styles.container,
-        { marginTop: scaleSize(20) },
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
-          // paddingBottom: GLOBAL.isPad ? scaleSize(64) : 0,
-          // marginTop: GLOBAL.isPad ? scaleSize(20) : 0,
-          paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-          // paddingRight: GLOBAL.isPad ? scaleSize(72) : 0,
-        }
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+          ? {
+            paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+          }
+          : { marginTop: scaleSize(20) },
       ]}>
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>

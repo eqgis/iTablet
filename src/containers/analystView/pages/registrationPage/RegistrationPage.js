@@ -15,6 +15,7 @@ import {
   FlatList,
   TextInput,
   InteractionManager,
+  Platform,
 } from 'react-native'
 
 import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
@@ -63,6 +64,9 @@ export default class RegistrationPage extends Component {
           await SRectifyView.setTransformationMode(
             GLOBAL.RegistrationArithmeticMode,
           )
+        }
+        if (Platform.OS === 'android') {
+          await SRectifyView.setSplit(0.49)
         }
       }, 500)
     } catch (e) {

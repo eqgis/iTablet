@@ -339,7 +339,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: '路网',
 
   MAP_AR_DONT_SUPPORT_DEVICE: '不支持此设备',
-  MAP_AR_MEASURE: 'AR测量',
+  MAP_AR_MEASURE: 'AR测图',
   MAP_AR_ANALYZE: 'AR分析',
   MAP_AR_CAMERA_EXCEPTION: '摄像头异常, 请检查权限是否开启',
   MAP_AR_AI_ASSISTANT: 'AI助手',
@@ -359,6 +359,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR测距',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR画线',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR画面',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR画点',
+  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR测高',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新建',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: '请输入数据源名称',
 
@@ -887,6 +889,8 @@ const Template = {
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',
+
+  TEMPLATE_ERROR: '地图未保存，无法使用模板',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

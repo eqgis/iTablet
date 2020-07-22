@@ -10,7 +10,6 @@ import {
   Text,
   StyleSheet,
   SectionList,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
@@ -55,11 +54,11 @@ const styles = StyleSheet.create({
   subTitleView: {
     flexDirection: 'row',
     height: scaleSize(60),
-    marginHorizontal: scaleSize(30),
+    paddingHorizontal: scaleSize(30),
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // backgroundColor: color.bgW,
-    backgroundColor: 'transparent',
+    backgroundColor: color.bgW,
+    // backgroundColor: 'transparent',
   },
   subTitle: {
     fontSize: size.fontSize.fontSizeMd,
@@ -77,6 +76,7 @@ export default class TemplatePopView extends React.Component {
     confirmTitle?: String, // 自定义确定Title
     cancelTitle?: String, // 自定义取消Title
     data: Array, // 数据
+    device: Object, // 数据
     height?: number, // PopView高度
     itemOnPress?: () => {}, // 自定义点击Item事件
   }
@@ -94,13 +94,13 @@ export default class TemplatePopView extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.props.language !== nextProps.language ||
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
-    )
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return (
+  //     this.props.language !== nextProps.language ||
+  //     JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+  //     JSON.stringify(this.state) !== JSON.stringify(nextState)
+  //   )
+  // }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
@@ -303,14 +303,20 @@ export default class TemplatePopView extends React.Component {
     return (
       <PopView ref={ref => (this.popModal = ref)}>
         <KeyboardAvoidingView
-          enabled={true}
-          keyboardVerticalOffset={0}
-          behavior={Platform.OS === 'ios' && 'padding'}
+          behavior={
+            Platform.OS === 'ios' &&
+            (this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? 'position'
+              : 'padding')
+          }
+          contentContainerStyle={[
+            styles.popView,
+            this.props.height >= 0 && { height: this.props.height },
+          ]}
         >
           <View
             style={[
               styles.popView,
-              // { width: '100%' },
               this.props.height >= 0 && { height: this.props.height },
             ]}
           >

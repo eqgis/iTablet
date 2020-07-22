@@ -63,7 +63,7 @@ export default class MeasureView extends React.Component {
 
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         SMeasureView.initMeasureCollector(
           this.datasourceAlias,
           this.datasetName,
@@ -202,15 +202,15 @@ export default class MeasureView extends React.Component {
 
   /** 添加 **/
   switchModelViews = async () => {
-    if (Platform.OS === 'ios') {
-      this.setState({
-        showModelViews: !this.state.showModelViews,
-      })
-    } else {
-      this.setState({
-        showSwithchButtons: !this.state.showSwithchButtons,
-      })
-    }
+    // if (Platform.OS === 'ios') {
+    //   this.setState({
+    //     showModelViews: !this.state.showModelViews,
+    //   })
+    // } else {
+    this.setState({
+      showSwithchButtons: !this.state.showSwithchButtons,
+    })
+    //    }
   }
 
   /** 撤销 **/
@@ -246,6 +246,9 @@ export default class MeasureView extends React.Component {
 
   back = () => {
     NavigationService.goBack('MeasureView')
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
     return true
   }
 
@@ -540,7 +543,7 @@ export default class MeasureView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

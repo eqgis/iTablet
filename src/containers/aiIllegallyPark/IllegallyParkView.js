@@ -97,6 +97,9 @@ export default class IllegallyParkView extends React.Component {
 
   back = () => {
     NavigationService.goBack('IllegallyParkView')
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
     return true
   }
 

@@ -55,11 +55,20 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+      } else if (this.measureType === 'arDrawPoint') {
+        this.title = getLanguage(
+          global.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
+      } else if (this.measureType === 'arMeasureHeight') {
+        this.title = getLanguage(
+          global.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       }
 
       if (
         this.measureType === 'drawLine' ||
-        this.measureType === 'arDrawArea'
+        this.measureType === 'arDrawArea' ||
+        this.measureType === 'arDrawPoint'
       ) {
         this.isDrawing = true
 
@@ -88,16 +97,24 @@ export default class MeasureAreaView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
-            SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+            // SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+            SMeasureAreaView.setMeasureMode('DRAW_AREA')
           } else if (this.measureType === 'measureLength') {
             SMeasureAreaView.setMeasureMode('MEASURE_LINE')
           } else if (this.measureType === 'drawLine') {
             SMeasureAreaView.setMeasureMode('DRAW_LINE')
-          } else if (this.measureType === 'arDrawArea') {
-            SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+          } else if (
+            this.measureType === 'arDrawArea' ||
+            this.measureType === 'arArea'
+          ) {
+            SMeasureAreaView.setMeasureMode('DRAW_AREA')
+          } else if (this.measureType === 'arDrawPoint') {
+            SMeasureAreaView.setMeasureMode('DRAW_POINT')
+          } else if (this.measureType === 'arMeasureHeight') {
+            SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
           }
         }
 
@@ -174,6 +191,10 @@ export default class MeasureAreaView extends React.Component {
 
   back = () => {
     NavigationService.goBack('MeasureAreaView')
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
+
     return true
   }
 
@@ -449,7 +470,7 @@ export default class MeasureAreaView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

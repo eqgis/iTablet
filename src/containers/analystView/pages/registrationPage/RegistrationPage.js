@@ -15,6 +15,7 @@ import {
   FlatList,
   TextInput,
   InteractionManager,
+  Platform,
 } from 'react-native'
 
 import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
@@ -63,6 +64,9 @@ export default class RegistrationPage extends Component {
           await SRectifyView.setTransformationMode(
             GLOBAL.RegistrationArithmeticMode,
           )
+        }
+        if (Platform.OS === 'android') {
+          await SRectifyView.setSplit(0.49)
         }
       }, 500)
     } catch (e) {
@@ -130,7 +134,7 @@ export default class RegistrationPage extends Component {
 
   sure = async () => {
     if (this.state.isEditPoint) {
-      (async function() {
+      ;(async function() {
         let _controlPoints = await SRectifyView.getControlPoints()
         let points = this.checkPoints(_controlPoints)
         let point = points[this.state.currentIndex]
@@ -489,9 +493,9 @@ export default class RegistrationPage extends Component {
           title={
             this.state.isAssociat
               ? getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_ASSOCIATION_CLOCE
+                  .REGISTRATION_ASSOCIATION_CLOCE
               : getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_ASSOCIATION
+                  .REGISTRATION_ASSOCIATION
           }
           ref={ref => (this.sureButton = ref)}
           type={'BLUE'}

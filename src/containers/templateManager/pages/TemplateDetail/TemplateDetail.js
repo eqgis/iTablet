@@ -64,7 +64,8 @@ export default class TemplateDetail extends React.Component {
         params.title ||
         getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_CREATE,
       data:
-        (params.data && JSON.parse(JSON.stringify(params.data))) || defaultData,
+        (params.data && JSON.parse(JSON.stringify(params.data))) ||
+        JSON.parse(JSON.stringify(defaultData)),
       datasources: [],
       datasets: [],
       popData: [],
@@ -158,6 +159,9 @@ export default class TemplateDetail extends React.Component {
   }
 
   dealCode = (code = 0, id = 0) => {
+    if (isNaN(code) || isNaN(id)) {
+      return code + id
+    }
     let newCode = parseInt(code) + parseInt(id) + ''
     if (newCode.length < 4) {
       let zeros = ''
@@ -178,12 +182,19 @@ export default class TemplateDetail extends React.Component {
       _data = this.state.data
     }
     for (let i = 0; i < _data.length; i++) {
-      if (_data[i].code === data.code && _data[i].name === data.name) {
+      if (
+        _data[i].code === data.code &&
+        _data[i].name === data.name &&
+        _data[i].id === data.id
+      ) {
         _data.splice(i, 1)
         break
       }
     }
-    let newData = _data.length > 0 ? this.state.data.concat() : JSON.parse(JSON.stringify(defaultData))
+    let newData =
+      this.state.data.length > 0
+        ? this.state.data.concat()
+        : JSON.parse(JSON.stringify(defaultData))
     this.setState({
       data: newData,
     })
@@ -302,17 +313,16 @@ export default class TemplateDetail extends React.Component {
     this.currentItem = data
     let popData = [
       {
+        id: data.id,
         title: getLanguage(this.props.language).Template.ELEMENT_SETTINGS,
         data: [
           {
             name: getLanguage(this.props.language).Template.ELEMENT_NAME,
             value: data.name,
-            rightType: 'input',
           },
           {
             name: getLanguage(this.props.language).Template.ELEMENT_CODE,
             value: data.code,
-            rightType: 'input',
           },
         ],
       },
@@ -322,11 +332,13 @@ export default class TemplateDetail extends React.Component {
           {
             name: getLanguage(this.props.language).Map_Settings.DATASOURCES,
             value: data.datasourceAlias,
+            rightType: 'text',
           },
           {
             name: getLanguage(this.props.language).Map_Settings.DATASETS,
             value: data.datasetName,
             type: data.type,
+            rightType: 'text',
           },
         ],
       },
@@ -424,6 +436,7 @@ export default class TemplateDetail extends React.Component {
         <TemplatePopView
           ref={ref => (this.popView = ref)}
           data={this.state.popData}
+          device={this.props.device}
           language={this.props.language}
           height={
             (screen.getScreenHeight(this.props.device.orientation) * 3) / 4

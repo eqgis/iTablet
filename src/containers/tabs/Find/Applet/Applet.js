@@ -3,11 +3,9 @@ import { Container, TextBtn } from '../../../../components'
 import {
   View,
   Text,
-  Image,
   FlatList,
   RefreshControl,
   ActivityIndicator,
-  TouchableOpacity,
   Platform,
   NativeModules,
 } from 'react-native'
@@ -17,7 +15,6 @@ import { UserType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { OnlineServicesUtils, Toast } from '../../../../utils'
 import AppletItem from './AppletItem'
-import { getThemeAssets } from '../../../../assets'
 const appUtilsModule = NativeModules.AppUtils
 var JSOnlineService
 var JSIPortalService
@@ -43,7 +40,8 @@ export default class Applet extends React.Component {
       loadMore: false,
       isRefresh: false,
     }
-    ;(this.count = 0), (this.currentPage = 1)
+    this.count = 0
+    this.currentPage = 1
     this.totalPage = 0
     this.dataTypes = this.getAllDataTypes() //查询数据类型
     this.searchParams = undefined //其他查询参数
@@ -156,7 +154,7 @@ export default class Applet extends React.Component {
       }
     }, 1000)
   }
-  
+
   onDownloaded = result => {
     if (result) {
       GLOBAL.SimpleDialog.set({
@@ -171,7 +169,7 @@ export default class Applet extends React.Component {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
     }
   }
-  
+
   reset = async () => {
     try {
       const bundleName =
@@ -183,9 +181,19 @@ export default class Applet extends React.Component {
           text: getLanguage(GLOBAL.language).Find.APPLET_RESET_OLD_VERSION,
           confirmText: getLanguage(this.props.language).Find.RESET,
           confirmAction: async () => {
-            this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Find.APPLET_RESETTING)
-            let result = await FileTools.deleteFile(GLOBAL.homePath + ConstPath.BundlesPath)
-            result = result && await FileTools.createDirectory(GLOBAL.homePath + ConstPath.BundlesPath)
+            this.container &&
+              this.container.setLoading(
+                true,
+                getLanguage(GLOBAL.language).Find.APPLET_RESETTING,
+              )
+            let result = await FileTools.deleteFile(
+              GLOBAL.homePath + ConstPath.BundlesPath,
+            )
+            result =
+              result &&
+              (await FileTools.createDirectory(
+                GLOBAL.homePath + ConstPath.BundlesPath,
+              ))
             if (result) {
               setTimeout(() => {
                 this.container && this.container.setLoading(false)

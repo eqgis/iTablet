@@ -7,6 +7,7 @@ import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.common.LifecycleState;
+import com.supermap.RNUtils.FileTools;
 import com.supermap.file.CrashHandler;
 import com.facebook.react.ReactApplication;
 import com.psykar.cookiemanager.CookieManagerPackage;
@@ -84,7 +85,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Nullable
         @Override
         protected String getJSBundleFile() {
-            String path = getBundlePath();
+            String path = FileTools.getBundleFile();
             if (!(new File(path).exists())) {
                 path = null;
             }
@@ -145,10 +146,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         sInstance = this;
         SoLoader.init(this, /* native exopackage */ false);
         CrashHandler.getInstance().init(getApplicationContext());
-    }
-
-    public String getBundlePath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/iTablet/Bundles/index.android.bundle";
     }
 
 }

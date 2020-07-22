@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated,
+} from 'react-native'
 import { fixedSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
-
-export const itemWidth_P = fixedSize(256)
-export const itemHeight_P = fixedSize(180)
-export const itemWidth_L = fixedSize(220)
-export const itemHeight_L = fixedSize(200)
-export const itemGap = fixedSize(20)
+import { ChunkType } from '../../../../constants'
+import SizeUtil from '../SizeUtil'
 
 export default class ModuleItem extends Component {
   props: {
@@ -24,7 +27,7 @@ export default class ModuleItem extends Component {
     itemAction: () => {},
     setOldMapModule: () => {},
   }
-  
+
   static defaultProps = {
     style: {},
   }
@@ -59,7 +62,7 @@ export default class ModuleItem extends Component {
     if (!data) return
     this.setState(data)
   }
-  
+
   isLandscape = () => {
     return this.props.device.orientation.indexOf('LANDSCAPE') === 0
   }
@@ -71,17 +74,19 @@ export default class ModuleItem extends Component {
   getDownloading = () => {
     return this.downloading
   }
-  
+
   getSize = () => {
-    let width = this.props.style && this.props.style.width
-      ? this.props.style.width
-      : (this.isLandscape() ? itemWidth_L : itemWidth_P)
-    let height = this.props.style && this.props.style.height
-      ? this.props.style.height
-      : (this.isLandscape() ? itemHeight_L : itemHeight_P)
+    let width =
+      this.props.style && this.props.style.width
+        ? this.props.style.width
+        : SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad)
+    let height =
+      this.props.style && this.props.style.height
+        ? this.props.style.height
+        : SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad)
     return { width, height }
   }
-  
+
   setDownloading = (downloading = false) => {
     this.downloading = downloading
   }
@@ -127,11 +132,11 @@ export default class ModuleItem extends Component {
         onPressIn={() => {
           Animated.parallel([
             Animated.timing(this.itemWidth, {
-              toValue: width + itemGap,
+              toValue: width + SizeUtil.getItemGap(),
               duration: 100,
             }),
             Animated.timing(this.itemHeight, {
-              toValue: height + itemGap,
+              toValue: height + SizeUtil.getItemGap(),
               duration: 100,
             }),
             Animated.timing(this.itemBorderWidth, {
@@ -162,8 +167,8 @@ export default class ModuleItem extends Component {
           this.isLandscape() ? styles.moduleView_L : styles.moduleView_P,
           {
             backgroundColor: 'transparent',
-            width: width + itemGap,
-            height: height + itemGap,
+            width: width + SizeUtil.getItemGap(),
+            height: height + SizeUtil.getItemGap(),
           },
         ]}
       >
@@ -179,10 +184,12 @@ export default class ModuleItem extends Component {
             },
           ]}
         >
-          <View style={[
-            this.isLandscape() ? styles.moduleItemL : styles.moduleItemP,
-            { width, height },
-          ]}>
+          <View
+            style={[
+              this.isLandscape() ? styles.moduleItemL : styles.moduleItemP,
+              { width, height },
+            ]}
+          >
             <Image
               resizeMode={'contain'}
               source={item.moduleImage}
@@ -190,17 +197,17 @@ export default class ModuleItem extends Component {
             />
             {this._renderProgressView()}
             <Text style={styles.title}>{item.title}</Text>
-            {this.props.oldMapModules.indexOf(item.key) < 0 && (
-              <View style={styles.redDot} />
-            )}
-            {
-              this.props.showStar &&
+            {this.props.oldMapModules.indexOf(item.key) < 0 &&
+              item.key !== ChunkType.APPLET_ADD && (
+                <View style={styles.redDot} />
+              )}
+            {this.props.showStar && (
               <Image
                 resizeMode={'contain'}
                 source={getPublicAssets().common.icon_star}
                 style={styles.starImage}
               />
-            }
+            )}
           </View>
         </Animated.View>
       </TouchableOpacity>
@@ -214,15 +221,15 @@ const styles = StyleSheet.create({
   },
   moduleImage: {
     marginTop: fixedSize(25),
-    width: fixedSize(88),
-    height: fixedSize(88),
+    width: SizeUtil.getImageSize(),
+    height: SizeUtil.getImageSize(),
   },
   starImage: {
     position: 'absolute',
     right: fixedSize(24),
     top: fixedSize(24),
-    width: fixedSize(36),
-    height: fixedSize(36),
+    width: SizeUtil.getStarImageSize(),
+    height: SizeUtil.getStarImageSize(),
   },
   moduleView_P: {
     alignItems: 'center',
@@ -258,6 +265,8 @@ const styles = StyleSheet.create({
     color: '#5E5E5E',
     left: fixedSize(20),
     bottom: fixedSize(8),
+    minWidth: fixedSize(100),
+    textAlign: 'left',
   },
   redDot: {
     position: 'absolute',

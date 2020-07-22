@@ -122,7 +122,7 @@ export default class TemplateItem extends PureComponent {
   }
 
   static defaultProps = {
-    rightType: 'text', // text || input || number_counter
+    rightType: 'input', // text || input || number_counter
     keyboardType: 'default', // TextInput keyboardType
     returnKeyLabel: '完成', // TextInput returnKeyLabel
     returnKeyType: 'done', // TextInput returnKeyType

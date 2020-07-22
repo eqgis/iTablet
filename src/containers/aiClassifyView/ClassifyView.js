@@ -75,7 +75,7 @@ export default class ClassifyView extends React.Component {
     this.Loading.setLoading(true)
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         await SAIClassifyView.initAIClassify(
           this.datasourceAlias,
           this.datasetName,
@@ -256,7 +256,7 @@ export default class ClassifyView extends React.Component {
 
   save = async () => {
     //保存数据->跳转
-    (async function() {
+    ;(async function() {
       let currentLayer = GLOBAL.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -333,6 +333,9 @@ export default class ClassifyView extends React.Component {
 
   back = () => {
     NavigationService.goBack()
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
     return true
   }
 

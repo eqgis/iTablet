@@ -359,6 +359,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR allant',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'Dessin au trait AR',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR photo',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'Points de tirage AR',
+  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Mesure de hauteur AR',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Nouvelles données',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Remplissez le nom',
 
@@ -887,6 +889,8 @@ const Template = {
   CREATE_ROOT_NODE: '新建根结点',
   CREATE_CHILD_NODE: '新建子结点',
   INSERT_NODE: '插入结点',
+
+  TEMPLATE_ERROR: '地图未保存，无法使用模板',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

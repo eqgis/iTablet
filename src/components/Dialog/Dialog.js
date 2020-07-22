@@ -242,29 +242,23 @@ export default class Dialog extends PureComponent {
   renderNonModal = () => {
     if (this.state.visible) {
       return (
-        <View
-          // activeOpacity={1}
-          // onPress={this.cancel}
-          style={[styles.nonModalContainer, this.props.backgroundStyle]}
-        >
+        <View style={[styles.nonModalContainer, this.props.backgroundStyle]}>
           {this.props.header}
-          <KeyboardAvoidingView
-            style={[styles.dialogStyle, this.props.style]}
-            contentContainerStyle={[styles.dialogStyle, this.props.style]}
-            behavior={Platform.OS === 'ios' && 'position'}
-          >
-            {this.props.title && (
-              <Text style={[styles.title, this.props.titleStyle]}>
-                {this.props.title}
-              </Text>
-            )}
-            {this.props.info && (
-              <Text style={[styles.info, this.props.infoStyle]}>
-                {this.props.info}
-              </Text>
-            )}
-            <View style={styles.childrenContainer}>{this.props.children}</View>
-            {this.renderBtns()}
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
+            <View style={[styles.dialogStyle, this.props.style]}>
+              {this.props.title && (
+                <Text style={[styles.title, this.props.titleStyle]}>
+                  {this.props.title}
+                </Text>
+              )}
+              {this.props.info && (
+                <Text style={[styles.info, this.props.infoStyle]}>
+                  {this.props.info}
+                </Text>
+              )}
+              <View style={styles.childrenContainer}>{this.props.children}</View>
+              {this.renderBtns()}
+            </View>
           </KeyboardAvoidingView>
         </View>
       )

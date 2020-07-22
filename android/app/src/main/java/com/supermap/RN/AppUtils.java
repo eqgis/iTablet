@@ -22,6 +22,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.supermap.containts.EventConst;
+import com.supermap.interfaces.utils.SLocation;
 import com.supermap.itablet.MainActivity;
 import com.supermap.itablet.MainApplication;
 
@@ -45,6 +46,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void AppExit(){
+        SLocation.closeGPS();
         appManager.getAppManager().AppExit(getReactApplicationContext());
 
     }

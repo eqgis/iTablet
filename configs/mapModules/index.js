@@ -15,7 +15,6 @@ const mapModules = [
   AppModule.MapPlottingConfig,
   AppModule.MapAnalystConfig,
   // MapExample,
-  AppModule.AppletAdd,
 ]
 
 export default (function () {

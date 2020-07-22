@@ -13,6 +13,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { downloadFile, deleteDownloadFile, setIgnoreDownload } from '../../../../redux/models/down'
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
+import { AppletAdd } from '../../../../customModule/mapModules'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
@@ -176,9 +177,10 @@ class ModuleList extends Component {
   }
 
   getDownloadData = (language, item, index) => {
+    if (index > this.props.mapModules.modules.length - 1) return {}
     let module = this.props.mapModules.modules[index]
     let example = module.example
-    if (!example) return null
+    if (!example) return {}
     let moduleKey = item.key
     let fileName = module.getExampleName(language).name
 
@@ -250,8 +252,11 @@ class ModuleList extends Component {
       let currentDownloadData = this.getCurrentDownloadData(downloadData)
 
       let cachePath = this.homePath + ConstPath.CachePath
-      let fileDirPath = cachePath + downloadData.fileName
-      let arrFile = await FileTools.getFilterFiles(fileDirPath)
+      let arrFile = []
+      if (downloadData) {
+        let fileDirPath = cachePath + downloadData.fileName
+        arrFile = await FileTools.getFilterFiles(fileDirPath)
+      }
       if (arrFile.length === 0) {
         if (
           downloadData.fileName &&
@@ -357,21 +362,25 @@ class ModuleList extends Component {
   
   /** 获取竖屏数据 **/
   _renderPortraitRows = data => {
+    let width = SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap() * 2
+    let rowStyle = [styles.row, {width}]
     let _list = [], _row = [], column = 2
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
       if (data[index].key === ChunkType.MAP_AR) arIndex = index
       let itemView = this._renderItem({item: data[index], index})
       if (index === arIndex) {
-        _list.push(itemView)
+        let row = <View style={rowStyle}>{itemView}</View>
+        _list.push(row)
       } else {
         _row.push(itemView)
         if (_row.length === column) {
-          let row = <View style={styles.row}>{_row}</View>
+          let row = <View style={rowStyle}>{_row}</View>
           _list.push(row)
           _row = []
         } else if (index === data.length - 1) {
-          _list.push(itemView)
+          let row = <View style={rowStyle}>{itemView}</View>
+          _list.push(row)
         }
       }
     }
@@ -380,6 +389,8 @@ class ModuleList extends Component {
   
   /** 获取横屏数据 **/
   _renderLandscapeColumns = data => {
+    let height = SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap()
+    let columnStyle = [styles.column, {height}]
     let _list = [], _column = [], row = 2
     let _subRow = []
     let arIndex = -1
@@ -398,11 +409,12 @@ class ModuleList extends Component {
         _column.push(itemView)
       }
       if (_column.length === row) {
-        let column = <View style={styles.column}>{_column}</View>
+        let column = <View style={columnStyle}>{_column}</View>
         _list.push(column)
         _column = []
       } else if (index === data.length - 1) {
-        _list.push(itemView)
+        let column = <View style={columnStyle}>{itemView}</View>
+        _list.push(column)
       }
     }
     return _list
@@ -417,6 +429,12 @@ class ModuleList extends Component {
         data = []
         break
       }
+    }
+    if (
+      data.length > 0 && data[data.length - 1].key !== AppletAdd.key ||
+      data.length === 0
+    ) {
+      data.push(new AppletAdd().getChunk(this.props.language))
     }
     return (
       <View style={[
@@ -496,8 +514,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   column: {
     flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
 })

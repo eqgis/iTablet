@@ -28,7 +28,7 @@ async function composeWaiting(action) {
   if (action && typeof action === 'function') {
     await action()
   }
-  isWaiting = false
+  setTimeout(() => isWaiting = false, 2000)
 }
 
 class ModuleList extends Component {
@@ -235,14 +235,14 @@ class ModuleList extends Component {
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(() => {
-          item.action && composeWaiting(item.action(tmpCurrentUser, latestMap))
+          item.action && item.action(tmpCurrentUser, latestMap)
         })
         return
       }
 
       if (item.key === ChunkType.MAP_AR) {
         this.props.setCurrentMapModule(index).then(() => {
-          item.action && composeWaiting(item.action(tmpCurrentUser, latestMap))
+          item.action && item.action(tmpCurrentUser, latestMap)
         })
         return
       }
@@ -266,7 +266,7 @@ class ModuleList extends Component {
           this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)
         }
         this.props.setCurrentMapModule(index).then(() => {
-          item.action && composeWaiting(item.action(tmpCurrentUser, latestMap))
+          item.action && item.action(tmpCurrentUser, latestMap)
         })
       } else {
         let filePath2
@@ -304,8 +304,7 @@ class ModuleList extends Component {
           isShowProgressView: false,
         })
         await this.props.setCurrentMapModule(index)
-        item.action &&
-          (await composeWaiting(item.action(tmpCurrentUser, latestMap)))
+        item.action && (await item.action(tmpCurrentUser, latestMap))
       }
     } catch (e) {
       this.moduleItems[index].setNewState({
@@ -352,9 +351,11 @@ class ModuleList extends Component {
         getModuleItem={this.props.getModuleItem}
         setOldMapModule={this.props.setOldMapModule}
         itemAction={async _item => {
-          await this.itemAction(this.props.language, { item: _item, index })
-          ;(await this.props.setOldMapModule) &&
+          await composeWaiting(async () => {
+            await this.itemAction(this.props.language, { item: _item, index })
+            ;(await this.props.setOldMapModule) &&
             this.props.setOldMapModule(_item.key)
+          })
         }}
       />
     )
@@ -370,16 +371,16 @@ class ModuleList extends Component {
       if (data[index].key === ChunkType.MAP_AR) arIndex = index
       let itemView = this._renderItem({item: data[index], index})
       if (index === arIndex) {
-        let row = <View style={rowStyle}>{itemView}</View>
+        let row = <View key={'r_' + index} style={rowStyle}>{itemView}</View>
         _list.push(row)
       } else {
         _row.push(itemView)
         if (_row.length === column) {
-          let row = <View style={rowStyle}>{_row}</View>
+          let row = <View key={'r_' + index} style={rowStyle}>{_row}</View>
           _list.push(row)
           _row = []
         } else if (index === data.length - 1) {
-          let row = <View style={rowStyle}>{itemView}</View>
+          let row = <View key={'r_' + index} style={rowStyle}>{itemView}</View>
           _list.push(row)
         }
       }
@@ -400,7 +401,7 @@ class ModuleList extends Component {
       if (arIndex >= 0 && ((index === arIndex + 1) || (index === arIndex + 2))) {
         _subRow.push(itemView)
         if (_subRow.length === row) {
-          let rowView = <View style={styles.row}>{_subRow}</View>
+          let rowView = <View key={'c_r_' + index} style={styles.row}>{_subRow}</View>
           _column.push(rowView)
         } else if (index === data.length - 1) {
           _column.push(_subRow)
@@ -409,11 +410,11 @@ class ModuleList extends Component {
         _column.push(itemView)
       }
       if (_column.length === row) {
-        let column = <View style={columnStyle}>{_column}</View>
+        let column = <View key={'c_' + index} style={columnStyle}>{_column}</View>
         _list.push(column)
         _column = []
       } else if (index === data.length - 1) {
-        let column = <View style={columnStyle}>{itemView}</View>
+        let column = <View key={'c_' + index} style={columnStyle}>{itemView}</View>
         _list.push(column)
       }
     }

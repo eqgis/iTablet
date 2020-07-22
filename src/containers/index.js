@@ -146,6 +146,7 @@ import AIDetecSettingsView from './AIDetecSettingsView'
 import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
+import ARVideoView from './arVideoView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
@@ -937,6 +938,13 @@ export default function(appConfig) {
       },
       ARNavigationView: {
         screen: ARNavigationView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARVideoView: {
+        screen: ARVideoView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

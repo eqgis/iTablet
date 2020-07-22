@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SMeasureView } from 'imobile_for_reactnative'
 import { getPublicAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -39,14 +39,14 @@ export default class NavigationStartButton extends React.Component {
       height:
         props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(
-              screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT,
-            )
+            screen.getScreenHeight(props.device.orientation) - HEADER_HEIGHT,
+          )
           : new Animated.Value(scaleSize(200)),
       width:
         props.device.orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(
-              screen.getScreenWidth(props.device.orientation) / 2,
-            )
+            screen.getScreenWidth(props.device.orientation) / 2,
+          )
           : new Animated.Value(screen.getScreenWidth(props.device.orientation)),
       length: '',
       path: props.path || [],
@@ -54,49 +54,49 @@ export default class NavigationStartButton extends React.Component {
     this.directions =
       GLOBAL.language === 'CN'
         ? [
-            '直行',
-            '左前转弯',
-            '右前转弯',
-            '左转弯',
-            '右转弯',
-            '左后转弯',
-            '右后转弯',
-            '调头',
-            '右转弯绕行至左',
-            '直角斜边右转弯',
-            '进入环岛',
-            '出环岛',
-            '到达目的地',
-            '电梯上行',
-            '电梯下行',
-            '扶梯上行',
-            '扶梯下行',
-            '楼梯上行',
-            '楼梯下行',
-            '到达途径点',
-          ]
+          '直行',
+          '左前转弯',
+          '右前转弯',
+          '左转弯',
+          '右转弯',
+          '左后转弯',
+          '右后转弯',
+          '调头',
+          '右转弯绕行至左',
+          '直角斜边右转弯',
+          '进入环岛',
+          '出环岛',
+          '到达目的地',
+          '电梯上行',
+          '电梯下行',
+          '扶梯上行',
+          '扶梯下行',
+          '楼梯上行',
+          '楼梯下行',
+          '到达途径点',
+        ]
         : [
-            'Going straight',
-            'front-left turn',
-            'front-right turn',
-            'turn left',
-            'turn right',
-            'back-left turn',
-            'back-right turn',
-            'U-turn',
-            'turn right and turn around to the left',
-            'right angle bevel right turn',
-            'enter the roundabout',
-            'going out the roundabout',
-            'arrive at the destination',
-            'take the elevator up',
-            'take the elevator down',
-            'take the escalator up',
-            'take the escalator down',
-            'take the stairs up',
-            'take the stairs down',
-            'arrival route point',
-          ]
+          'Going straight',
+          'front-left turn',
+          'front-right turn',
+          'turn left',
+          'turn right',
+          'back-left turn',
+          'back-right turn',
+          'U-turn',
+          'turn right and turn around to the left',
+          'right angle bevel right turn',
+          'enter the roundabout',
+          'going out the roundabout',
+          'arrive at the destination',
+          'take the elevator up',
+          'take the elevator down',
+          'take the escalator up',
+          'take the escalator down',
+          'take the stairs up',
+          'take the stairs down',
+          'arrival route point',
+        ]
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.path.length === 0 || nextProps.path.length !== 0) {
@@ -561,7 +561,14 @@ export default class NavigationStartButton extends React.Component {
                   marginTop: scaleSize(20),
                   marginRight: scaleSize(20),
                 }}
-                onPress={() => {
+                onPress={async () => {
+                  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+                  if (!isSupportedARCore) {
+                    Toast.show(
+                      getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE,
+                    )
+                    return
+                  }
                   if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
                     NavigationService.navigate('ARNavigationView')
                   } else {

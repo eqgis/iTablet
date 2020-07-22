@@ -69,10 +69,18 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
+    {
+      //AR视屏
+      key: 'arDrawArea',
+      title: 'AR视屏',
+      action: ARMeasureAction.arVideo,
+      size: 'large',
+      image: getThemeAssets().themeType.theme_graphmap,
+    },
   ]
 
   if (Platform.OS === 'ios') {
-    data.splice(2, 5)
+    data.splice(2, 6)
   }
 
   return { data }

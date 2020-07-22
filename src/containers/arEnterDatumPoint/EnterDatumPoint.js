@@ -246,6 +246,11 @@ export default class EnterDatumPoint extends Component {
         point: point,
         floorID: this.state.floorData[this.state.selectFloor].id,
       })
+    } else if (GLOBAL.EnterDatumPointType === 'arVideo') {
+      GLOBAL.EnterDatumPointType = undefined
+      NavigationService.replace('ARVideoView', {
+        point: point,
+      })
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()

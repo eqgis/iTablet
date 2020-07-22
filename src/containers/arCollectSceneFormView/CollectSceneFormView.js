@@ -864,7 +864,7 @@ export default class CollectSceneFormView extends React.Component {
                   isClickCollect: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={styles.iconView}
@@ -900,7 +900,7 @@ export default class CollectSceneFormView extends React.Component {
                   isClickCollect: true,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

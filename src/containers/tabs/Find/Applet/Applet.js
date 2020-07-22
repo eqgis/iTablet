@@ -154,7 +154,7 @@ export default class Applet extends React.Component {
       }
     }, 1000)
   }
-  
+
   onDownloaded = result => {
     if (result) {
       GLOBAL.SimpleDialog.set({
@@ -169,7 +169,7 @@ export default class Applet extends React.Component {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
     }
   }
-  
+
   reset = async () => {
     try {
       const bundleName =
@@ -181,9 +181,19 @@ export default class Applet extends React.Component {
           text: getLanguage(GLOBAL.language).Find.APPLET_RESET_OLD_VERSION,
           confirmText: getLanguage(this.props.language).Find.RESET,
           confirmAction: async () => {
-            this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Find.APPLET_RESETTING)
-            let result = await FileTools.deleteFile(GLOBAL.homePath + ConstPath.BundlesPath)
-            result = result && await FileTools.createDirectory(GLOBAL.homePath + ConstPath.BundlesPath)
+            this.container &&
+              this.container.setLoading(
+                true,
+                getLanguage(GLOBAL.language).Find.APPLET_RESETTING,
+              )
+            let result = await FileTools.deleteFile(
+              GLOBAL.homePath + ConstPath.BundlesPath,
+            )
+            result =
+              result &&
+              (await FileTools.createDirectory(
+                GLOBAL.homePath + ConstPath.BundlesPath,
+              ))
             if (result) {
               setTimeout(() => {
                 this.container && this.container.setLoading(false)

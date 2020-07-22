@@ -467,22 +467,24 @@ export default class Home extends Component {
   _renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
-  
+
   renderHeader = () => {
     return (
-      <View style={[
-        styles.header,
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? {
-            paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-            paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
-            paddingTop: (GLOBAL.isPad ? scaleSize(64) : scaleSize(10)),
-          }
-          : {
-            paddingHorizontal: scaleSize(40),
-            paddingTop: scaleSize(50),
-          },
-        ]}>
+      <View
+        style={[
+          styles.header,
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? {
+                paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+                paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
+                paddingTop: GLOBAL.isPad ? scaleSize(64) : scaleSize(10),
+              }
+            : {
+                paddingHorizontal: scaleSize(40),
+                paddingTop: scaleSize(50),
+              },
+        ]}
+      >
         <TouchableOpacity
           style={styles.userView}
           onPress={event => this.showUserPop(event)}

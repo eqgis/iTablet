@@ -87,11 +87,24 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
+    // {
+    //   //AR视屏
+    //   key: 'arVideo',
+    //   title: 'AR视屏',
+    //   action: ARMeasureAction.arVideo,
+    //   size: 'large',
+    //   image: getThemeAssets().themeType.theme_graphmap,
+    // },
   ]
 
-  if (Platform.OS === 'ios') {
-    data.splice(2, 1)
-  }
+  data = data.filter(item => {
+    if (Platform.OS === 'ios') {
+      if (item.key === 'arCastModelOperate' || item.key === 'arVideo') {
+        return false
+      }
+    }
+    return true
+  })
 
   return { data }
 }

@@ -63,7 +63,7 @@ export default class MeasureView extends React.Component {
 
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         SMeasureView.initMeasureCollector(
           this.datasourceAlias,
           this.datasetName,
@@ -543,7 +543,7 @@ export default class MeasureView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

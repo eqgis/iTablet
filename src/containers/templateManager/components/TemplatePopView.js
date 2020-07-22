@@ -304,9 +304,10 @@ export default class TemplatePopView extends React.Component {
       <PopView ref={ref => (this.popModal = ref)}>
         <KeyboardAvoidingView
           behavior={
-            Platform.OS === 'ios' && (
-              this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'position' : 'padding'
-            )
+            Platform.OS === 'ios' &&
+            (this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? 'position'
+              : 'padding')
           }
           contentContainerStyle={[
             styles.popView,

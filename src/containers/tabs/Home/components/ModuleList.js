@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
-import {
-  View,
-  StyleSheet,
-  NetInfo,
-  ScrollView,
-} from 'react-native'
+import { View, StyleSheet, NetInfo, ScrollView } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
 import { SMap } from 'imobile_for_reactnative'
-import { downloadFile, deleteDownloadFile, setIgnoreDownload } from '../../../../redux/models/down'
+import {
+  downloadFile,
+  deleteDownloadFile,
+  setIgnoreDownload,
+} from '../../../../redux/models/down'
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { AppletAdd } from '../../../../customModule/mapModules'
@@ -28,7 +27,7 @@ async function composeWaiting(action) {
   if (action && typeof action === 'function') {
     await action()
   }
-  setTimeout(() => isWaiting = false, 2000)
+  setTimeout(() => (isWaiting = false), 2000)
 }
 
 class ModuleList extends Component {
@@ -71,7 +70,7 @@ class ModuleList extends Component {
   }
 
   _showAlert = (ref, downloadData, currentUserName) => {
-    (async function() {
+    ;(async function() {
       // TODO 获取
       let keyword
       if (downloadData.fileName.indexOf('_示范数据') !== -1) {
@@ -161,7 +160,9 @@ class ModuleList extends Component {
       dialogCheck: dialogCheck,
     })
     // 若不需要下次再提醒，则记录到redux
-    dialogCheck && downloadData && this.props.setIgnoreDownload({ id: downloadData.key })
+    dialogCheck &&
+      downloadData &&
+      this.props.setIgnoreDownload({ id: downloadData.key })
     this.props.showDialog && this.props.showDialog(false)
   }
 
@@ -172,7 +173,9 @@ class ModuleList extends Component {
       dialogCheck: dialogCheck,
     })
     // 若不需要下次再提醒，则记录到redux
-    dialogCheck && downloadData && this.props.setIgnoreDownload({ id: downloadData.key })
+    dialogCheck &&
+      downloadData &&
+      this.props.setIgnoreDownload({ id: downloadData.key })
     this.props.showDialog && this.props.showDialog(false)
   }
 
@@ -260,8 +263,12 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         if (
           downloadData.fileName &&
-          this.props.ignoreDownloads.filter(_item => _item.id === downloadData.key).length === 0 &&
-          (!currentDownloadData || currentDownloadData && currentDownloadData.downloaded === undefined)
+          this.props.ignoreDownloads.filter(
+            _item => _item.id === downloadData.key,
+          ).length === 0 &&
+          (!currentDownloadData ||
+            (currentDownloadData &&
+              currentDownloadData.downloaded === undefined))
         ) {
           this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)
         }
@@ -338,10 +345,18 @@ class ModuleList extends Component {
         item={item}
         // showStar={index === 0}
         showStar={item.key === ChunkType.MAP_AR}
-        style={item.key === ChunkType.MAP_AR && {
-          width: SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap(),
-          backgroundColor: color.itemColorGray3,
-        }}
+        style={
+          item.key === ChunkType.MAP_AR && {
+            width:
+              SizeUtil.getItemWidth(
+                this.props.device.orientation,
+                GLOBAL.isPad,
+              ) *
+                2 +
+              SizeUtil.getItemGap(),
+            backgroundColor: color.itemColorGray3,
+          }
+        }
         device={this.props.device}
         oldMapModules={this.props.oldMapModules}
         downloadData={this.getCurrentDownloadData(downloadData)}
@@ -354,54 +369,78 @@ class ModuleList extends Component {
           await composeWaiting(async () => {
             await this.itemAction(this.props.language, { item: _item, index })
             ;(await this.props.setOldMapModule) &&
-            this.props.setOldMapModule(_item.key)
+              this.props.setOldMapModule(_item.key)
           })
         }}
       />
     )
   }
-  
+
   /** 获取竖屏数据 **/
   _renderPortraitRows = data => {
-    let width = SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap() * 2
-    let rowStyle = [styles.row, {width}]
-    let _list = [], _row = [], column = 2
+    let width =
+      SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 +
+      SizeUtil.getItemGap() * 2
+    let rowStyle = [styles.row, { width }]
+    let _list = [],
+      _row = [],
+      column = 2
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
       if (data[index].key === ChunkType.MAP_AR) arIndex = index
-      let itemView = this._renderItem({item: data[index], index})
+      let itemView = this._renderItem({ item: data[index], index })
       if (index === arIndex) {
-        let row = <View key={'r_' + index} style={rowStyle}>{itemView}</View>
+        let row = (
+          <View key={'r_' + index} style={rowStyle}>
+            {itemView}
+          </View>
+        )
         _list.push(row)
       } else {
         _row.push(itemView)
         if (_row.length === column) {
-          let row = <View key={'r_' + index} style={rowStyle}>{_row}</View>
+          let row = (
+            <View key={'r_' + index} style={rowStyle}>
+              {_row}
+            </View>
+          )
           _list.push(row)
           _row = []
         } else if (index === data.length - 1) {
-          let row = <View key={'r_' + index} style={rowStyle}>{itemView}</View>
+          let row = (
+            <View key={'r_' + index} style={rowStyle}>
+              {itemView}
+            </View>
+          )
           _list.push(row)
         }
       }
     }
     return _list
   }
-  
+
   /** 获取横屏数据 **/
   _renderLandscapeColumns = data => {
-    let height = SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 + SizeUtil.getItemGap() * 2
-    let columnStyle = [styles.column, {height}]
-    let _list = [], _column = [], row = 2
+    let height =
+      SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 +
+      SizeUtil.getItemGap() * 2
+    let columnStyle = [styles.column, { height }]
+    let _list = [],
+      _column = [],
+      row = 2
     let _subRow = []
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
       if (data[index].key === ChunkType.MAP_AR) arIndex = index
-      let itemView = this._renderItem({item: data[index], index})
-      if (arIndex >= 0 && ((index === arIndex + 1) || (index === arIndex + 2))) {
+      let itemView = this._renderItem({ item: data[index], index })
+      if (arIndex >= 0 && (index === arIndex + 1 || index === arIndex + 2)) {
         _subRow.push(itemView)
         if (_subRow.length === row) {
-          let rowView = <View key={'c_r_' + index} style={styles.row}>{_subRow}</View>
+          let rowView = (
+            <View key={'c_r_' + index} style={styles.row}>
+              {_subRow}
+            </View>
+          )
           _column.push(rowView)
         } else if (index === data.length - 1) {
           _column.push(_subRow)
@@ -410,11 +449,19 @@ class ModuleList extends Component {
         _column.push(itemView)
       }
       if (_column.length === row) {
-        let column = <View key={'c_' + index} style={columnStyle}>{_column}</View>
+        let column = (
+          <View key={'c_' + index} style={columnStyle}>
+            {_column}
+          </View>
+        )
         _list.push(column)
         _column = []
       } else if (index === data.length - 1) {
-        let column = <View key={'c_' + index} style={columnStyle}>{itemView}</View>
+        let column = (
+          <View key={'c_' + index} style={columnStyle}>
+            {itemView}
+          </View>
+        )
         _list.push(column)
       }
     }
@@ -432,20 +479,22 @@ class ModuleList extends Component {
       }
     }
     if (
-      data.length > 0 && data[data.length - 1].key !== AppletAdd.key ||
+      (data.length > 0 && data[data.length - 1].key !== AppletAdd.key) ||
       data.length === 0
     ) {
       data.push(new AppletAdd().getChunk(this.props.language))
     }
     return (
-      <View style={[
-        styles.container,
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? {
-            paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-          }
-          : { marginTop: scaleSize(20) },
-      ]}>
+      <View
+        style={[
+          styles.container,
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? {
+                paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+              }
+            : { marginTop: scaleSize(20) },
+        ]}
+      >
         {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>
             <ScrollView

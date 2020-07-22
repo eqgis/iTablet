@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated,
+} from 'react-native'
 import { fixedSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
@@ -20,7 +27,7 @@ export default class ModuleItem extends Component {
     itemAction: () => {},
     setOldMapModule: () => {},
   }
-  
+
   static defaultProps = {
     style: {},
   }
@@ -55,7 +62,7 @@ export default class ModuleItem extends Component {
     if (!data) return
     this.setState(data)
   }
-  
+
   isLandscape = () => {
     return this.props.device.orientation.indexOf('LANDSCAPE') === 0
   }
@@ -67,17 +74,19 @@ export default class ModuleItem extends Component {
   getDownloading = () => {
     return this.downloading
   }
-  
+
   getSize = () => {
-    let width = this.props.style && this.props.style.width
-      ? this.props.style.width
-      : SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad)
-    let height = this.props.style && this.props.style.height
-      ? this.props.style.height
-      : SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad)
+    let width =
+      this.props.style && this.props.style.width
+        ? this.props.style.width
+        : SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad)
+    let height =
+      this.props.style && this.props.style.height
+        ? this.props.style.height
+        : SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad)
     return { width, height }
   }
-  
+
   setDownloading = (downloading = false) => {
     this.downloading = downloading
   }
@@ -175,10 +184,12 @@ export default class ModuleItem extends Component {
             },
           ]}
         >
-          <View style={[
-            this.isLandscape() ? styles.moduleItemL : styles.moduleItemP,
-            { width, height },
-          ]}>
+          <View
+            style={[
+              this.isLandscape() ? styles.moduleItemL : styles.moduleItemP,
+              { width, height },
+            ]}
+          >
             <Image
               resizeMode={'contain'}
               source={item.moduleImage}
@@ -186,20 +197,17 @@ export default class ModuleItem extends Component {
             />
             {this._renderProgressView()}
             <Text style={styles.title}>{item.title}</Text>
-            {
-              this.props.oldMapModules.indexOf(item.key) < 0 &&
+            {this.props.oldMapModules.indexOf(item.key) < 0 &&
               item.key !== ChunkType.APPLET_ADD && (
                 <View style={styles.redDot} />
-              )
-            }
-            {
-              this.props.showStar &&
+              )}
+            {this.props.showStar && (
               <Image
                 resizeMode={'contain'}
                 source={getPublicAssets().common.icon_star}
                 style={styles.starImage}
               />
-            }
+            )}
           </View>
         </Animated.View>
       </TouchableOpacity>

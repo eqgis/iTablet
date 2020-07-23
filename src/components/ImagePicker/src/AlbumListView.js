@@ -92,10 +92,12 @@ export default class extends React.PureComponent {
       } else {
         data = await this.getPhotos(this.props.assetType)
       }
-      data.unshift({
-        name: 'iTablet',
-        value: images,
-      })
+      if (this.props.assetType !== 'Videos') {
+        data.unshift({
+          name: 'iTablet',
+          value: images,
+        })
+      }
       this.setState({ data })
     }.bind(this)())
   }

@@ -64,7 +64,8 @@ export default class TemplateDetail extends React.Component {
         params.title ||
         getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_CREATE,
       data:
-        (params.data && JSON.parse(JSON.stringify(params.data))) || JSON.parse(JSON.stringify(defaultData)),
+        (params.data && JSON.parse(JSON.stringify(params.data))) ||
+        JSON.parse(JSON.stringify(defaultData)),
       datasources: [],
       datasets: [],
       popData: [],
@@ -181,12 +182,19 @@ export default class TemplateDetail extends React.Component {
       _data = this.state.data
     }
     for (let i = 0; i < _data.length; i++) {
-      if (_data[i].code === data.code && _data[i].name === data.name && _data[i].id === data.id) {
+      if (
+        _data[i].code === data.code &&
+        _data[i].name === data.name &&
+        _data[i].id === data.id
+      ) {
         _data.splice(i, 1)
         break
       }
     }
-    let newData = this.state.data.length > 0 ? this.state.data.concat() : JSON.parse(JSON.stringify(defaultData))
+    let newData =
+      this.state.data.length > 0
+        ? this.state.data.concat()
+        : JSON.parse(JSON.stringify(defaultData))
     this.setState({
       data: newData,
     })

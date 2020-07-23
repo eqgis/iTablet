@@ -133,7 +133,7 @@ export default class TouchProgress extends Component {
     this.backLine && this.backLine.setNativeProps(this._BackLine)
   }
 
-  //初始化时去对应Toolbar的module找getTouchProgressInfo这个方法 获取信息
+  // 初始化时去对应Toolbar的module找getTouchProgressInfo这个方法 获取信息
   _initialization = async value => {
     let layerType = this.props.currentLayer.type
     let themeType = this.props.currentLayer.themeType
@@ -790,10 +790,15 @@ export default class TouchProgress extends Component {
     // evt, gestureState
     return true
   }
-
-  _handleMoveShouldSetPanResponder = () => {
-    // evt, gestureState
-    return true
+  
+  _handleMoveShouldSetPanResponder = (evt, gestureState) => {
+    // 解决PanResponder中的onPress无作用
+    // 当大于5时才进入移动事件，有的情况下需要将onStartShouldSetPanResponderCapture设为false
+    if (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5) {
+      return true;
+    } else if (Math.abs(gestureState.dx) === 0 || Math.abs(gestureState.dy) === 0) {
+      return false;
+    }
   }
 
   _handlePanResponderMove = (evt, gestureState) => {

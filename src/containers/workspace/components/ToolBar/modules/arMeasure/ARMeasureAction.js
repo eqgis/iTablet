@@ -14,7 +14,7 @@ function commit() {}
 
 // 高精度采集
 function collectSceneForm() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -66,7 +66,7 @@ function collectSceneForm() {
 
 // 户型图采集
 function arMeasureCollect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -119,7 +119,7 @@ function arMeasureCollect() {
 
 // AR投射
 function arCastModelOperate() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -138,7 +138,7 @@ function arCastModelOperate() {
 
 // AR测量面积
 function arMeasureArea() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -159,7 +159,7 @@ function arMeasureArea() {
 
 // AR测量距离
 function arMeasureLength() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -180,7 +180,7 @@ function arMeasureLength() {
 
 // AR测量距离
 function arMeasureHeight() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -201,7 +201,7 @@ function arMeasureHeight() {
 
 // AR画线
 function arDrawLine() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -258,7 +258,7 @@ function arDrawLine() {
 
 // AR画面
 function arDrawArea() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -314,7 +314,7 @@ function arDrawArea() {
 
 // AR画点
 function arDrawPoint() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -368,6 +368,22 @@ function arDrawPoint() {
   })()
 }
 
+async function arVideo() {
+  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  if (!isSupportedARCore) {
+    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    return
+  }
+
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
+  GLOBAL.EnterDatumPointType = 'arVideo'
+  NavigationService.navigate('EnterDatumPoint')
+}
+
 export default {
   close,
   memu,
@@ -383,4 +399,5 @@ export default {
   arDrawArea,
   arDrawPoint,
   arMeasureHeight,
+  arVideo,
 }

@@ -311,9 +311,9 @@ export default class ARProjectModeView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.showSandTable
                   ? getLanguage(global.language).Map_Main_Menu
-                    .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
+                      .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
                   : getLanguage(global.language).Map_Main_Menu
-                    .MAP_AR_AI_ASSISTANT_SAND_TABLE}
+                      .MAP_AR_AI_ASSISTANT_SAND_TABLE}
               </Text>
             </View>
           </TouchableOpacity>

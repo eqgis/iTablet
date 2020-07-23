@@ -361,6 +361,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR photo',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'Points de tirage AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Mesure de hauteur AR',
+  MAP_AR_VIDEO: 'AR Video', //待翻译
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Nouvelles données',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Remplissez le nom',
 

@@ -320,8 +320,8 @@ export default class LayerAttribute extends React.Component {
           let currentIndex = resetCurrent
             ? -1
             : others.currentIndex !== undefined
-              ? others.currentIndex
-              : this.state.currentIndex
+            ? others.currentIndex
+            : this.state.currentIndex
           let relativeIndex =
             resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
           // : currentIndex - startIndex - 1
@@ -633,7 +633,7 @@ export default class LayerAttribute extends React.Component {
       {
         title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
-          (async function() {
+          ;(async function() {
             NavigationService.navigate('LayerAttributeAdd', {
               defaultParams: { fieldInfo },
               isDetail: true,
@@ -671,7 +671,11 @@ export default class LayerAttribute extends React.Component {
     let tempStr = fieldInfo.caption.toLowerCase()
     let isSystemField = tempStr.substring(0, 2) === 'sm'
     // 系统字段或者多媒体路径字段不能删除
-    if (!fieldInfo.isSystemField && !isSystemField && fieldInfo.name !== 'MediaFilePaths') {
+    if (
+      !fieldInfo.isSystemField &&
+      !isSystemField &&
+      fieldInfo.name !== 'MediaFilePaths'
+    ) {
       items.push({
         title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {
@@ -1213,11 +1217,11 @@ export default class LayerAttribute extends React.Component {
         tableHead={
           this.state.attributes.data.length === 1
             ? [
-              getLanguage(this.props.language).Map_Label.NAME,
-              getLanguage(this.props.language).Map_Label.ATTRIBUTE,
-              //'名称'
-              //'属性值'
-            ]
+                getLanguage(this.props.language).Map_Label.NAME,
+                getLanguage(this.props.language).Map_Label.ATTRIBUTE,
+                //'名称'
+                //'属性值'
+              ]
             : this.state.attributes.head
         }
         widthArr={this.state.attributes.data.length === 1 && [100, 100]}
@@ -1425,9 +1429,9 @@ export default class LayerAttribute extends React.Component {
           {showContent
             ? this.renderMapLayerAttribute()
             : this.renderInfoView({
-              title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
-              //'暂无属性',
-            })}
+                title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
+                //'暂无属性',
+              })}
           {/* {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()} */}
           <LocationView
             ref={ref => (this.locationView = ref)}

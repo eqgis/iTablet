@@ -385,7 +385,19 @@ class LicenseJoinCloud extends Component {
   renderActive = () => {
     let title
     let enable
-    if (this.licenseCount === 0 && this.hasTrial) {
+    let showTrial = false
+    if (this.hasTrial) {
+      if (this.licenseCount === 0) {
+        showTrial = true
+      } else {
+        for (let i = 0; i < this.licenseCount; i++) {
+          let license = this.state.licenses[i]
+          showTrial = license.remainDays === 0
+          if (!showTrial) break
+        }
+      }
+    }
+    if (showTrial) {
       title = getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY
       enable = true
     } else {
@@ -399,7 +411,7 @@ class LicenseJoinCloud extends Component {
         style={styles.activeButton}
         titleStyle={{ fontSize: scaleSize(24) }}
         onPress={() => {
-          if (this.licenseCount === 0 && this.hasTrial) {
+          if (showTrial) {
             this.activateTrail(false)
           } else {
             this.activate(false)

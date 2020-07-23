@@ -97,7 +97,7 @@ export default class MeasureAreaView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
             SMeasureAreaView.setMeasureMode('MEASURE_AREA')
@@ -488,7 +488,7 @@ export default class MeasureAreaView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

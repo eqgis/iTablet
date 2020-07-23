@@ -37,6 +37,8 @@ import {
   SMediaCollector,
   FieldType,
   DatasetType,
+  TextStyle,
+  GeometryType,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { color, size } from '../../../../styles'
@@ -760,6 +762,17 @@ export default class LayerAttribute extends React.Component {
     geoStyle.setMarkerHeight(5)
     geoStyle.setMarkerWidth(5)
     geoStyle.setMarkerSize(10)
+    // 检查是否是文本对象，若是，则使用TextStyle
+    for (let j = 0; j < this.state.currentFieldInfo.length; j++) {
+      if (
+        this.state.currentFieldInfo[j].name === 'SmGeoType' &&
+        this.state.currentFieldInfo[j].value === GeometryType.GEOTEXT
+      ) {
+        geoStyle = new TextStyle()
+        geoStyle.setForeColor(0, 255, 0, 0.5)
+        break
+      }
+    }
     SMap.setTrackingLayer(
       [
         {

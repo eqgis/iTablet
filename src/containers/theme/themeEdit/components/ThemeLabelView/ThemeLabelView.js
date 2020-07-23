@@ -10,7 +10,7 @@ import {
   TextAlignment,
   ThemeLabel,
   Action,
-  TextStyle,
+  // TextStyle,
 } from 'imobile_for_reactnative'
 import { Button, Row } from '../../../../../components'
 import { Toast, dataUtil } from '../../../../../utils'
@@ -139,17 +139,17 @@ export default class ThemeLabelView extends React.Component {
       try {
         this.themeLabel =
           this.themeLabel._SMThemeId || (await new ThemeLabel().createObj())
-        let textStyle = await new TextStyle().createObj()
-        await this.themeLabel.setLabelExpression(this.state.data.expression)
-        let rgba = dataUtil.colorRgba(this.state.data.fontColor)
-
-        await textStyle.setForeColor(rgba.r, rgba.g, rgba.b, rgba.a)
-        await textStyle.setFontName(this.state.data.fontName)
-        await textStyle.setAlignment(this.state.data.align)
-        await textStyle.setFontHeight(this.state.data.fontSize)
-        await textStyle.setFontWidth(this.state.data.fontSize)
-
-        await this.themeLabel.setUniformStyle(textStyle)
+        // let textStyle = await new TextStyle().createObj()
+        // await this.themeLabel.setLabelExpression(this.state.data.expression)
+        // let rgba = dataUtil.colorRgba(this.state.data.fontColor)
+        //
+        // await textStyle.setForeColor(rgba.r, rgba.g, rgba.b, rgba.a)
+        // await textStyle.setFontName(this.state.data.fontName)
+        // await textStyle.setAlignment(this.state.data.align)
+        // await textStyle.setFontHeight(this.state.data.fontSize)
+        // await textStyle.setFontWidth(this.state.data.fontSize)
+        //
+        // await this.themeLabel.setUniformStyle(textStyle)
         let dataset = await this.props.layer.getDataset()
         if (this.props.isThemeLayer) {
           await this.props.map.removeLayer(this.props.layer.index)

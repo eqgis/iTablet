@@ -16,7 +16,7 @@ import DefaultTabBar from './DefaultTabBar'
 import { LayerTopBar, DrawerBar, LocationView } from '../../components'
 import LayerSelectionAttribute from './LayerSelectionAttribute'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { SMap, Action, GeoStyle } from 'imobile_for_reactnative'
+import { SMap, Action, GeoStyle, TextStyle, GeometryType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 
@@ -386,8 +386,17 @@ export default class LayerAttributeTabs extends React.Component {
     geoStyle.setMarkerHeight(5)
     geoStyle.setMarkerWidth(5)
     geoStyle.setMarkerSize(10)
+    // 检查是否是文本对象，若是，则使用TextStyle
     for (let i = 0; i < this.props.selection.length; i++) {
       if (this.props.selection[i].layerInfo.path === layerPath) {
+        for (let j = 0; j < selection.data.length; j++) {
+          if (selection.data[j].name === 'SmGeoType' && selection.data[j].value === GeometryType.GEOTEXT) {
+            geoStyle = new TextStyle()
+            geoStyle.setForeColor(0, 255, 0, 0.5)
+            break
+          }
+        }
+        
         objs.push({
           layerPath: layerPath,
           // ids: [selection.data[0].value],

@@ -100,8 +100,8 @@ export default class MeasureAreaView extends React.Component {
       (async function() {
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
-            // SMeasureAreaView.setMeasureMode('MEASURE_AREA')
-            SMeasureAreaView.setMeasureMode('DRAW_AREA')
+            SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+            // SMeasureAreaView.setMeasureMode('DRAW_AREA')
           } else if (this.measureType === 'measureLength') {
             SMeasureAreaView.setMeasureMode('MEASURE_LINE')
           } else if (this.measureType === 'drawLine') {
@@ -135,9 +135,9 @@ export default class MeasureAreaView extends React.Component {
 
   componentWillUnmount() {
     //注册监听
-    if (Platform.OS !== 'ios') {
-      SMeasureAreaView.dispose()
-    }
+    // if (Platform.OS !== 'ios') {
+    SMeasureAreaView.dispose()
+    // }
   }
 
   /** 添加 **/
@@ -161,6 +161,11 @@ export default class MeasureAreaView extends React.Component {
   /** 撤销 **/
   undo = async () => {
     await SMeasureAreaView.undoDraw()
+  }
+
+  /** 连续测量 **/
+  continuousDraw = async () => {
+    await SMeasureAreaView.continuousDraw()
   }
 
   /** 清除 **/
@@ -286,6 +291,19 @@ export default class MeasureAreaView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
+
+          {!this.isDrawing && (
+            <TouchableOpacity
+              onPress={() => this.continuousDraw()}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
           {this.isDrawing && (
             <TouchableOpacity
               onPress={() => this.save()}

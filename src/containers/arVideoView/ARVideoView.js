@@ -2,9 +2,10 @@ import * as React from 'react'
 import { SMARVideoView, SARVideoView } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container, ImagePicker } from '../../components'
-import { Toast, scaleSize } from '../../utils'
+import { scaleSize } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { getPublicAssets } from '../../assets'
+import { getLanguage } from '../../language'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -63,8 +64,7 @@ export default class ARVideoView extends React.Component {
               callback: async data => {
                 if (data && data.length > 0) {
                   let path = data[0].uri
-                  SARVideoView.setVideoPath(path)
-                  Toast.show('点击平面添加视屏')
+                  SARVideoView.addVideoAtCurrentPosition(path)
                 }
               },
             })
@@ -84,7 +84,7 @@ export default class ARVideoView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: 'AR视屏',
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
           type: 'fix',
         }}

@@ -172,11 +172,9 @@ export default class Applet extends React.Component {
 
   reset = async () => {
     try {
-      const bundleName =
-        'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle'
-      const bundlePath = GLOBAL.homePath + ConstPath.BundlesPath + bundleName
-      let bundleExist = await FileTools.fileIsExist(bundlePath)
-      if (bundleExist) {
+      const bundlePath = GLOBAL.homePath + ConstPath.BundlesPath
+      let fileList = await FileTools.getPathList(bundlePath)
+      if (fileList.length > 0) {
         GLOBAL.SimpleDialog.set({
           text: getLanguage(GLOBAL.language).Find.APPLET_RESET_OLD_VERSION,
           confirmText: getLanguage(this.props.language).Find.RESET,

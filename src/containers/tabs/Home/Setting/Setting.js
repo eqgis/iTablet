@@ -18,6 +18,7 @@ import FetchUtils from '../../../../../src/utils/FetchUtils'
 import { FileTools } from '../../../../native'
 import RNFS from 'react-native-fs'
 
+
 export default class Setting extends Component {
   props: {
     navigation: Object,
@@ -28,6 +29,7 @@ export default class Setting extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.user = params && params.user
+    this.System = "x64"
     this.state = {
       bOpenLicense: false,
       isRefresh: false,
@@ -111,7 +113,7 @@ export default class Setting extends Component {
   }
   //检查更新
   onCheckUpdate = () => {
-    Toast.show(global.APP_VERSION)
+    Toast.show(global.APP_VERSION+"_"+global.SYSTEM_VERSION)
   }
   //意见反馈
   suggestionFeedback = () => {
@@ -209,7 +211,7 @@ export default class Setting extends Component {
 
             <View style={{ marginRight: 20, alignItems: 'center' }}>
               <Text style={{ fontSize: scaleSize(24), marginLeft: 15 }}>
-                {global.APP_VERSION}
+                {global.APP_VERSION+"_"+global.SYSTEM_VERSION}
               </Text>
             </View>
           </View>

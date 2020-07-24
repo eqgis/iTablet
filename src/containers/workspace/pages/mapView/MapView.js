@@ -2633,7 +2633,7 @@ export default class MapView extends React.Component {
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
         height={
-          Platform.OS === 'ios' &&
+          Platform.OS === 'ios' && !screen.isIphoneX() &&
           this.props.device.orientation.indexOf('PORTRAIT') === 0
             ? 20
             : 8

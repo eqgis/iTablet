@@ -178,8 +178,8 @@ export default class Applet extends React.Component {
   onDownloaded = result => {
     if (result) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_REBOOT,
-        confirmText: getLanguage(this.props.language).Find.REBOOT,
+        text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_RELOAD,
+        confirmText: getLanguage(this.props.language).Find.RELOAD,
         confirmAction: () => {
           appUtilsModule.reloadBundle()
         },

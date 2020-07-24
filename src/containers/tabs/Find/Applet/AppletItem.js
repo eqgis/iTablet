@@ -218,7 +218,7 @@ export default class DataItem extends Component {
       isDownloading: false,
     })
     // result
-    //   ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_REBOOT)
+    //   ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_RELOAD)
     //   : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
     if (this.props.onDownloaded) {
       this.props.onDownloaded(result)

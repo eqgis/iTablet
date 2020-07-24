@@ -100,9 +100,9 @@ class ModuleList extends Component {
           // ref.getDialogCheck(),
           this.props.ignoreDownloads.indexOf(downloadData.key) >= 0,
         )
-      setTimeout(() => {
+      InteractionManager.runAfterInteractions(() => {
         this.props.showDialog && this.props.showDialog(true)
-      }, 1500)
+      })
     }.bind(this)())
   }
 

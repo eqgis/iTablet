@@ -75,7 +75,7 @@ export default class TemplateSource extends React.Component {
     if (cb && typeof cb === 'function') {
       cb({ data: item, index, type: this.type })
     }
-    NavigationService.goBack()
+    NavigationService.goBack('TemplateSource')
   }
 
   renderItem = ({ item, index }) => {

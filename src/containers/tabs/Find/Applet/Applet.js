@@ -59,10 +59,10 @@ export default class Applet extends React.Component {
         loadError: false,
       })
       this.currentPage = 1
-      let data = {}
+      let data = {}, keywords = (Platform.OS === 'ios' ? 'ios.' : 'android.') + 'bundle'
       let searchParams = {
         currentPage: this.currentPage,
-        keywords: (Platform.OS === 'ios' ? 'ios.' : 'android.') + 'bundle',
+        keywords,
       }
       if (this.searchParams) {
         Object.assign(searchParams, this.searchParams)
@@ -89,11 +89,31 @@ export default class Applet extends React.Component {
       if (data.total === 0) {
         this.setState({ data: [], initData: false, noData: true })
       } else {
-        this.totalPage = data.totalPage
-        this.setState({
-          data: data.content,
-          initData: false,
+        let version = await FileTools.getBundleVersion()
+        let _data = []
+        data.content.map(item => {
+          let bundleVersion, buildVersion
+          if (item.fileName.endsWith(keywords + '.zip')) {
+            let fileName = item.fileName.replace('.' + keywords + '.zip', '')
+            let arr = fileName.split('_')
+            if (arr.length >= 3) {
+              bundleVersion = arr[arr.length - 2]
+              buildVersion = arr[arr.length - 1]
+              if (bundleVersion === version.BundleVersion && buildVersion > version.BundleBuildVersion) {
+                _data.push(item)
+              }
+            }
+          }
         })
+        if (_data.length === 0) {
+          this.setState({ data: [], initData: false, noData: true })
+        } else {
+          this.totalPage = Math.ceil(_data.length / data.pageSize)
+          this.setState({
+            data: _data,
+            initData: false,
+          })
+        }
       }
     } catch (error) {
       this.setState({ data: [], initData: false, loadError: true })

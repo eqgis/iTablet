@@ -125,9 +125,9 @@ export default class DataItem extends Component {
     }
   }
   _downloadFile = async () => {
-    // let fileName = this.props.data.fileName
-    let fileName =
-      'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
+    let fileName = this.props.data.fileName
+    // let fileName =
+    //   'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
     let dataId = this.props.data.id
     let path = global.homePath + ConstPath.BundlesPath + fileName
     let dataUrl

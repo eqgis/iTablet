@@ -292,6 +292,7 @@ export default class MapView extends React.Component {
       currentDataset: {}, //当前使用的数据集
     }
     this.floorHiddenListener = null
+    this.isNotfirst = false //控制第一次进地图页面加载地图
   }
 
   addFloorHiddenListener = () => {
@@ -883,7 +884,11 @@ export default class MapView extends React.Component {
 
   _onGetInstance = async mapView => {
     this.mapView = mapView
+    if (this.isNotfirst) {
+      return
+    }
     this._addMap()
+    this.isNotfirst = true
   }
 
   geometrySelected = async event => {
@@ -2665,10 +2670,17 @@ export default class MapView extends React.Component {
     }
   }
 
+  //移除ai相机和地图
   removeAIDetect = bGone => {
     this.setState({
       bGoneAIDetect: bGone,
+      showMap: !bGone,
     })
+    if (bGone) {
+      SMap.beginArSceneView()
+    } else {
+      SMap.endArSceneView()
+    }
   }
 
   _renderArModeIcon = () => {

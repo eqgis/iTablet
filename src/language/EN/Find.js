@@ -26,8 +26,8 @@ const Find = {
 
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
-  APPLET_DOWNLOADED_REBOOT: 'Download completed, restart the loadable applet',
-  REBOOT: 'Reboot',
+  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
+  RELOAD: 'Reload',
   APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
   APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
   APPLET_RESET_FAILED: 'Failed to reset', // 待翻译

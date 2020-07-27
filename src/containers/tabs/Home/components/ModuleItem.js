@@ -20,7 +20,7 @@ export default class ModuleItem extends Component {
     style: Object,
     device: Object,
     showStar?: boolean,
-    oldMapModules: Array,
+    isNew?: boolean,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
@@ -30,6 +30,7 @@ export default class ModuleItem extends Component {
 
   static defaultProps = {
     style: {},
+    isNew: false,
   }
 
   constructor(props) {
@@ -197,8 +198,7 @@ export default class ModuleItem extends Component {
             />
             {this._renderProgressView()}
             <Text style={styles.title}>{item.title}</Text>
-            {this.props.oldMapModules.indexOf(item.key) < 0 &&
-              item.key !== ChunkType.APPLET_ADD && (
+            {this.props.isNew && (
                 <View style={styles.redDot} />
               )}
             {this.props.showStar && (

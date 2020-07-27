@@ -113,10 +113,10 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.supermap.itablet"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 28
-        versionCode 11
-        versionName "3.1.0"
+        versionCode 21
+        versionName "3.1.1"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "7d2470baad20e273cd6e53cc",
                 APP_CHANNEL : "default"
@@ -124,6 +124,7 @@ android {
 
         ndk {
             abiFilters "armeabi-v7a"
+//            abiFilters "arm64-v8a"
         }
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true

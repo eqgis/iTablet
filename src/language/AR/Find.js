@@ -26,8 +26,8 @@ const Find = {
 
   ONLINE_COWORK: '在线协作',
   COWORK_LOGIN: '请登录Online获取列表',
-  APPLET_DOWNLOADED_REBOOT: '下载完成，重启可加载小程序',
-  REBOOT: '重启', // 待翻译
+  APPLET_DOWNLOADED_RELOAD: '下载完成，重新加载小程序',
+  RELOAD: '重载', // 待翻译
   APPLET_RESET_OLD_VERSION: '是否重置回之前的版本', // 待翻译
   APPLET_OLD_VERSION_ALREADY: '已经是最初版本', // 待翻译
   APPLET_RESET_FAILED: '重置失败', // 待翻译

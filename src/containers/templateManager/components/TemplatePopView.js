@@ -267,6 +267,9 @@ export default class TemplatePopView extends React.Component {
           style={[styles.btnView, { justifyContent: 'flex-start' }]}
           onPress={() => {
             this.popModal && this.popModal.setVisible(false)
+            if (JSON.stringify(this.props.data) !== JSON.stringify(this.state.data)) {
+              this.setState({data: this.props.data})
+            }
             if (this.props.cancel && typeof this.props.cancel === 'function') {
               this.props.cancel()
             }

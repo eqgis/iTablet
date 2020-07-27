@@ -267,6 +267,7 @@ class AppRoot extends Component {
     GLOBAL.scaleView = null
     GLOBAL.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
     this.setIsPad()
+    this._getIs64System()
     GLOBAL.isDownload = true //目标分类默认文件下载判断
     GLOBAL.getDevice = this.getDevice
     GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
@@ -274,6 +275,19 @@ class AppRoot extends Component {
 
   getDevice = () => {
     return this.props.device
+  }
+
+  _getIs64System = async () =>{
+    try {
+      global.SYSTEM_VERSION = "x64"
+      if (Platform.OS === 'android') {
+        let b64 = await AppUtils.is64Bit()
+        if(b64 === false){
+          global.SYSTEM_VERSION = "x32"
+        }
+      }
+    }catch (e) {
+    }
   }
 
   setIsPad = async () => {

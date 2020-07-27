@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, NetInfo, ScrollView } from 'react-native'
+import { View, StyleSheet, NetInfo, ScrollView, InteractionManager } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { color } from '../../../../styles'
@@ -70,7 +70,7 @@ class ModuleList extends Component {
   }
 
   _showAlert = (ref, downloadData, currentUserName) => {
-    ;(async function() {
+    (async function() {
       // TODO 获取
       let keyword
       if (downloadData.fileName.indexOf('_示范数据') !== -1) {
@@ -100,9 +100,9 @@ class ModuleList extends Component {
           // ref.getDialogCheck(),
           this.props.ignoreDownloads.indexOf(downloadData.key) >= 0,
         )
-      setTimeout(() => {
+      InteractionManager.runAfterInteractions(() => {
         this.props.showDialog && this.props.showDialog(true)
-      }, 1500)
+      })
     }.bind(this)())
   }
 
@@ -358,7 +358,7 @@ class ModuleList extends Component {
           }
         }
         device={this.props.device}
-        oldMapModules={this.props.oldMapModules}
+        isNew={this.props.oldMapModules.indexOf(item.key) < 0 && item.key !== ChunkType.APPLET_ADD}
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}
         importWorkspace={this.props.importWorkspace}
@@ -368,8 +368,11 @@ class ModuleList extends Component {
         itemAction={async _item => {
           await composeWaiting(async () => {
             await this.itemAction(this.props.language, { item: _item, index })
-            ;(await this.props.setOldMapModule) &&
+            InteractionManager.runAfterInteractions(async () => {
+              _item.key !== ChunkType.APPLET_ADD &&
+              this.props.setOldMapModule &&
               this.props.setOldMapModule(_item.key)
+            })
           })
         }}
       />

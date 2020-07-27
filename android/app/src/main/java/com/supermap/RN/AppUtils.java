@@ -61,6 +61,16 @@ public class AppUtils extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void is64Bit(Promise promise) {
+        try {
+            Boolean res =  android.os.Process.is64Bit();
+            promise.resolve(res);
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
      @ReactMethod
      public void getLocale(Promise promise) {
         try {

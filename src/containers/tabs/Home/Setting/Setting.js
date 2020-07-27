@@ -28,6 +28,7 @@ export default class Setting extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.user = params && params.user
+    this.System = 'x64'
     this.state = {
       bOpenLicense: false,
       isRefresh: false,
@@ -111,7 +112,7 @@ export default class Setting extends Component {
   }
   //检查更新
   onCheckUpdate = () => {
-    Toast.show(global.APP_VERSION)
+    Toast.show(global.APP_VERSION + '_' + global.SYSTEM_VERSION)
   }
   //意见反馈
   suggestionFeedback = () => {
@@ -131,14 +132,6 @@ export default class Setting extends Component {
           this.onLocation,
           getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
         )}
-        {this.props.appConfig.about &&
-          this.props.appConfig.about.isShow &&
-          this.renderItemView(
-            this.onAbout,
-            getLanguage(global.language).Profile.SETTING_ABOUT +
-              this.props.appConfig.alias +
-              getLanguage(global.language).Profile.SETTING_ABOUT_AFTER,
-          )}
         {this.renderItemCheckVersion(
           this.onCheckUpdate,
           getLanguage(global.language).Profile.SETTING_CHECK_VERSION,
@@ -147,6 +140,15 @@ export default class Setting extends Component {
           this.suggestionFeedback,
           getLanguage(global.language).Profile.SETTING_SUGGESTION_FEEDBACK,
         )}
+        {/** 关于放在最后 */}
+        {this.props.appConfig.about &&
+          this.props.appConfig.about.isShow &&
+          this.renderItemView(
+            this.onAbout,
+            getLanguage(global.language).Profile.SETTING_ABOUT +
+              this.props.appConfig.alias +
+              getLanguage(global.language).Profile.SETTING_ABOUT_AFTER,
+          )}
       </View>
     )
   }
@@ -209,7 +211,7 @@ export default class Setting extends Component {
 
             <View style={{ marginRight: 20, alignItems: 'center' }}>
               <Text style={{ fontSize: scaleSize(24), marginLeft: 15 }}>
-                {global.APP_VERSION}
+                {global.APP_VERSION + '_' + global.SYSTEM_VERSION}
               </Text>
             </View>
           </View>

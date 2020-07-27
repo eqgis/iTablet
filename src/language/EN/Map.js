@@ -623,6 +623,7 @@ const Map_Layer = {
   ADD_LAYER_URL: 'Add Layer Url',
   TERRAIN: 'Terrain',
   IMAGE: 'Image',
+  IS_ADD_NOTATION_LAYER: 'Do you want to add the notation layer',
 
   LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode',
   LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',

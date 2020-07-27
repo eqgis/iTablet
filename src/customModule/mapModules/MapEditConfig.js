@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -9,6 +9,7 @@ import {
   toolModule,
   shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
+import { LayerUtils } from '../../utils'
 
 export default class MapEditConfig extends Module {
   static key = ChunkType.MAP_EDIT
@@ -48,7 +49,7 @@ export default class MapEditConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_edit,
       moduleImageTouch: getThemeAssets().nav.icon_map_edit_touch,
       defaultMapName: this.getExampleName(language).mapName,
-      baseMapSource: { ...ConstOnline.Google },
+      baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,
       licenceType: 0x01,
       mapType: this.mapType,

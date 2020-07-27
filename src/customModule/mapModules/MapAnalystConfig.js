@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -11,6 +11,7 @@ import {
   toolModule,
   shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
+import { LayerUtils } from '../../utils'
 
 export default class MapAnalystConfig extends Module {
   static key = ChunkType.MAP_ANALYST
@@ -44,7 +45,7 @@ export default class MapAnalystConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_analysis,
       moduleImageTouch: getThemeAssets().nav.icon_map_analysis_touch,
       defaultMapName: this.getExampleName(language).mapName,
-      baseMapSource: { ...ConstOnline.Google },
+      baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       mapType: this.mapType,
       licenceType: 0x40,

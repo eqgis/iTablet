@@ -141,4 +141,100 @@ export default {
     layerIndex: 0,
     mapName: 'TrafficMap',
   },
+  tianditu: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/vec_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tianditu',
+    },
+    layerIndex: 0,
+    mapName: 'tianditu',
+  },
+  tiandituCN: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/cva_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituCN',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituCN',
+  },
+  tiandituEN: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/eva_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituEN',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituEN',
+  },
+  tiandituImg: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/img_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImg',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImg',
+  },
+  tiandituImgCN: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/cia_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImgCN',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImgCN',
+  },
+  tiandituImgEN: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/eia_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImgEN',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImgEN',
+  },
+  tiandituTer: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/ter_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituTer',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituTer',
+  },
+  tiandituTerCN: {
+    type: 'Datasource',
+    DSParams: {
+      server:
+        'http://t0.tianditu.gov.cn/cta_c/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituTerCN',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituTerCN',
+  },
 }

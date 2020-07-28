@@ -209,7 +209,8 @@ export default class ARProjectModeView extends React.Component {
   }
 
   back = () => {
-    NavigationService.goBack('ARProjectModeView')
+    // NavigationService.goBack('ARProjectModeView')
+    NavigationService.goBack()
     //不移出相机，显示地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
   }

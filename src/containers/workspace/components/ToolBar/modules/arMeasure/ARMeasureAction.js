@@ -23,7 +23,7 @@ function collectSceneForm() {
     }
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -110,7 +110,7 @@ function arMeasureCollect() {
     GLOBAL.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -148,10 +148,10 @@ function arMeasureArea() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
     NavigationService.navigate('MeasureAreaView', {
       measureType: 'measureArea',
     })
@@ -170,10 +170,10 @@ function arMeasureLength() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
     NavigationService.navigate('MeasureAreaView', {
       measureType: 'measureLength',
     })
@@ -192,10 +192,10 @@ function arMeasureHeight() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
     NavigationService.navigate('MeasureAreaView', {
       measureType: 'arMeasureHeight',
     })
@@ -253,10 +253,10 @@ function arDrawLine() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
   })()
 }
 
@@ -310,10 +310,10 @@ function arDrawArea() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
   })()
 }
 
@@ -367,10 +367,10 @@ function arDrawPoint() {
 
     //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.isswitch = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
   })()
 }
 
@@ -382,7 +382,11 @@ async function arVideo() {
   }
 
   //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
   GLOBAL.EnterDatumPointType = 'arVideo'
   NavigationService.navigate('EnterDatumPoint')
 }

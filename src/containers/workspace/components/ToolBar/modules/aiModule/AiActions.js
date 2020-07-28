@@ -18,10 +18,6 @@ function illegallyParkCollect() {
     )
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (dataList.length > 0) {
-      if (GLOBAL.showAIDetect) {
-        GLOBAL.isswitch = true
-        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-      }
       let taggingLayerData = await getTaggingLayerData()
       const dataList = await SMap.getTaggingLayers(
         _params.user.currentUser.userName,

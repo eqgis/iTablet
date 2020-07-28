@@ -76,6 +76,12 @@ export default class MeasureAreaView extends React.Component {
         this.datasetName = params.datasetName
         this.point = params.point
       }
+      if (
+        this.measureType === 'measureLength' ||
+        this.measureType === 'measureArea'
+      ) {
+        this.canContinuousDraw = true
+      }
     }
 
     this.state = {
@@ -292,7 +298,7 @@ export default class MeasureAreaView extends React.Component {
             />
           </TouchableOpacity>
 
-          {!this.isDrawing && (
+          {this.canContinuousDraw && (
             <TouchableOpacity
               onPress={() => this.continuousDraw()}
               style={styles.iconView}

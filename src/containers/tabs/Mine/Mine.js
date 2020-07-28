@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
+  ImageBackground,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -21,6 +22,7 @@ import { UserType } from '../../../constants'
 import { screen, scaleSize, fixedSize } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
+import { MineHeader } from './component'
 import styles from './styles'
 import TabBar from '../TabBar'
 const Customer = 'Customer'
@@ -78,14 +80,6 @@ export default class Mine extends Component {
     })
   }
 
-  goToLogin = () => {
-    NavigationService.navigate('Login')
-  }
-
-  goToPersonal = () => {
-    NavigationService.navigate('Personal')
-  }
-
   goToMyLocalData = () => {
     let userName =
       this.props.user.currentUser.userType === UserType.PROBATION_USER
@@ -138,18 +132,6 @@ export default class Mine extends Component {
 
   goToMyService = () => {
     NavigationService.navigate('MyService')
-  }
-
-  _onPressAvatar = () => {
-    this.goToPersonal()
-  }
-
-  _onPressMore = () => {
-    this.goToLogin()
-  }
-
-  _onPressSwitch = () => {
-    NavigationService.navigate('ToggleAccount')
   }
 
   _getItems = () => {
@@ -245,7 +227,7 @@ export default class Mine extends Component {
         case 'MyApplet':
           data.push({
             title: getLanguage(this.props.language).Find.APPLET,
-            image: getThemeAssets().find.app,
+            image: getThemeAssets().mine.my_applets,
             onClick: () =>
               NavigationService.navigate('MyApplet', {
                 title: getLanguage(this.props.language).Find.APPLET,
@@ -255,7 +237,7 @@ export default class Mine extends Component {
         case 'AIModel':
           data.push({
             title: getLanguage(this.props.language).Profile.AIMODEL,
-            image: require('../../../assets/Find/find_publicmap.png'),
+            image: getThemeAssets().mine.my_ai,
             onClick: () =>
               NavigationService.navigate('MyAIModel', {
                 title: getLanguage(this.props.language).Profile.AIMODEL,
@@ -268,191 +250,27 @@ export default class Mine extends Component {
   }
 
   _renderProfile = () => {
-    let hasCustomLogo = logos.logo1 || logos.logo2 || logos.logo3
     return (
-      <View style={styles.profileContainer}>
-        {hasCustomLogo && this._renderLogo()}
-        {!hasCustomLogo && this._renderMyProfile()}
-        {this._renderSearch()}
-        {!hasCustomLogo && this._renderSideItem()}
-      </View>
-    )
-  }
-
-  /**
-   * 定制logo
-   * 如果assets/custom/logo中存在logo1，logo2，logo3，则会一次显示在'我的'顶部图片
-   * logo2会代替原本的用户头像
-   */
-  _renderLogo = () => {
-    let isPro = !UserType.isProbationUser(this.props.user.currentUser)
-    let logo
-    if (logos.logo2) {
-      logo = logos.logo2
-    } else {
-      logo = isPro
-        ? {
-            uri:
-              'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-          }
-        : require('../../../assets/home/system_default_header_image.png')
-    }
-    return (
-      <View style={styles.logoView}>
-        {logos.logo1 && (
-          <Image
-            style={[
-              styles.logoImagStyle,
-              {
-                width: fixedSize(190),
-                height: fixedSize(70),
-              },
-            ]}
-            source={logos.logo1}
-          />
-        )}
-        <Image
-          resizeMode={'contain'}
-          style={styles.logoImagStyle}
-          source={logo}
-        />
-        {logos.logo3 && (
-          <Image
-            style={[
-              styles.logoImagStyle,
-              {
-                width: fixedSize(190),
-              },
-            ]}
-            source={logos.logo3}
-          />
-        )}
-      </View>
-    )
-  }
-
-  _renderMyProfile = () => {
-    let isPro = !UserType.isProbationUser(this.props.user.currentUser)
-    let headerTitle = isPro
-      ? this.props.user.currentUser.userName
-        ? this.props.user.currentUser.userName
-        : Customer
-      : getLanguage(this.props.language).Profile.LOGIN_NOW
-    let statusText
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      statusText = 'Online'
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-      statusText = 'iPortal'
-    } else {
-      statusText = null
-    }
-    let headerImage = !isPro
-      ? require('../../../assets/home/system_default_header_image.png')
-      : {
-          uri:
-            'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-        }
-    return (
-      <View style={styles.MyProfileStyle}>
-        <View style={styles.profileHeadStyle}>
-          <TouchableOpacity
-            disabled={!isPro}
-            activeOpacity={0.7}
-            onPress={this._onPressAvatar}
-            style={styles.profileAvatarStyle}
-          >
-            <Image style={styles.headImgStyle} source={headerImage} />
-          </TouchableOpacity>
-          {/* <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={this._onPressMore}
-            style={styles.moreViewStyle}
-          >
-            <View style={styles.moreX}>
-              <View style={styles.moreY} />
-            </View>
-          </TouchableOpacity> */}
-        </View>
-        <TouchableOpacity
-          onPress={this._onPressMore}
-          disabled={isPro}
-          style={[
-            styles.profileTextStyle,
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0
-              ? styles.profileTextLandscapeStyle
-              : null,
-          ]}
-        >
-          <Text numberOfLines={1} style={styles.userNameStyle}>
-            {headerTitle}
-          </Text>
-          <Text style={styles.statusTextStyle}>{statusText}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  _renderSearch = () => {
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      return null
-    }
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          NavigationService.navigate('SearchMine')
-        }}
-        activeOpacity={1}
-        style={styles.searchViewStyle}
-      >
-        <Image
-          style={styles.searchImgStyle}
-          source={getPublicAssets().common.icon_search_a0}
-        />
-        {/* <TextInput
-          ref={ref => (this.searchBar = ref)}
-          style={styles.searchInputStyle}
-          placeholder={getLanguage(this.props.language).Profile.SEARCH}
-          placeholderTextColor={'#A7A7A7'}
-          returnKeyType={'search'}
-          onSubmitEditing={this._onSearch}
-          onChangeText={value => {
-            this.searchText = value
-          }}
-        /> */}
-        <Text style={styles.searchInputStyle}>
-          {getLanguage(this.props.language).Profile.SEARCH}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  _renderSideItem = () => {
-    if (UserType.isProbationUser(this.props.user.currentUser)) {
-      return null
-    }
-    return (
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={this._onPressSwitch}
-        style={[
-          styles.sideItemStyle,
-          logos.logo1 && {
-            top: fixedSize(150),
-          },
-        ]} // 判断是否包含定制logo
-      >
-        <Text style={styles.SideTextStyle}>
-          {getLanguage(this.props.language).Profile.SWITCH_ACCOUNT}
-        </Text>
-      </TouchableOpacity>
+      <MineHeader
+        language={this.props.language}
+        user={this.props.user}
+        device={this.props.device}
+      />
     )
   }
 
   _renderDatas = () => {
     return (
       <View style={styles.datasContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.scrollContentStyle}>{this._renderItems()}</View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? styles.scrollContentStyleL
+              : styles.scrollContentStyleP
+          }
+        >
+          {this._renderItems()}
         </ScrollView>
       </View>
     )
@@ -460,7 +278,7 @@ export default class Mine extends Component {
 
   _renderItems = () => {
     let colNum =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4
     let items = this._getItems()
     let renderItems = []
     let key = 0
@@ -481,7 +299,7 @@ export default class Mine extends Component {
         style={[
           styles.itemView,
           {
-            width: (this.width - scaleSize(50)) / colNum,
+            width: this.width / colNum,
           },
         ]}
       >
@@ -514,18 +332,14 @@ export default class Mine extends Component {
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      this.width = this.width - scaleSize(96)
+      this.width = this.width - scaleSize(96) - scaleSize(160)
     }
     return (
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
         showFullInMap={true}
-        withoutHeader={this.props.device.orientation.indexOf('LANDSCAPE') < 0}
-        headerProps={{
-          title: '', //getLanguage(this.props.language).Navigator_Label.PROFILE,
-          withoutBack: true,
-        }}
+        withoutHeader={true}
         bottomBar={this.renderTabBar()}
       >
         <View style={styles.mineContainer}>

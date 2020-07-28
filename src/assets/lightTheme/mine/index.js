@@ -1,13 +1,16 @@
 const mine_my_plot_new = require('./mine_my_plot_new_light.png')
-const my_import = require('./my_import.png')
-const my_service = require('./my_service.png')
-const my_data = require('./my_data.png')
-const my_plot = require('./my_plot.png')
-const my_map = require('./my_map.png')
-const my_scene = require('./my_scene.png')
-const my_basemap = require('./my_basemap.png')
-const my_symbol = require('./my_symbol.png')
-const my_color = require('./my_color.png')
+
+const my_import = require('./icon_my_import.png')
+const my_service = require('./icon_my_service.png')
+const my_data = require('./icon_my_data.png')
+const my_plot = require('./icon_my_tagging.png')
+const my_map = require('./icon_my_map.png')
+const my_scene = require('./icon_my_scene.png')
+const my_basemap = require('./icon_my_basemap.png')
+const my_symbol = require('./icon_my_symbol.png')
+const my_color = require('./icon_my_color.png')
+const my_applets = require('./icon_my_applets.png')
+const my_ai = require('./icon_my_ai.png')
 
 const my_import_plot = require('./mine_import_plot_light.png')
 const my_import_ws = require('./mine_import_smwu_light.png')
@@ -25,6 +28,9 @@ const my_import_img = require('./mine_import_img_light.png')
 
 const my_local_data = require('./mine_my_local_data_light.png')
 
+const bg_my = require('./bg_my.png')
+const bg_my_transverse = require('./bg_my_transverse.png')
+
 export default {
   mine_my_plot_new,
   my_import,
@@ -36,6 +42,8 @@ export default {
   my_basemap,
   my_symbol,
   my_color,
+  my_applets,
+  my_ai,
 
   my_import_plot,
   my_import_ws,
@@ -52,4 +60,7 @@ export default {
   my_import_img,
 
   my_local_data,
+
+  bg_my,
+  bg_my_transverse,
 }

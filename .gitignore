@@ -127,3 +127,5 @@ ios/SDKExport/WXApi.h
 .gitattributes
 android/local.properties
 .watchmanconfig
+
+bundles/

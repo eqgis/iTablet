@@ -2512,9 +2512,9 @@ export default class MapView extends React.Component {
     if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
       return null
     let itemWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 80 : 65
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 50 : 60
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
     const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type

@@ -311,11 +311,11 @@ export default class Container extends Component {
         )}
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
-          {!fixHeader && this.renderHeader(fixHeader)}
+          {/*{!fixHeader && this.renderHeader(fixHeader)}*/}
           <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
+              {this.renderHeader(fixHeader)}
               {this.props.children}
-              {fixHeader && this.renderHeader(fixHeader)}
               {fixBottom && this.renderBottom(fixBottom)}
             </ContainerView>
             {!fixBottom && this.renderBottom(fixBottom)}

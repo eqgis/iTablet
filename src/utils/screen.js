@@ -225,7 +225,7 @@ export function getMapChildPageWith(orientation) {
   return width
 }
 
-const HEADER_HEIGHT = scaleSize(88)
+const HEADER_HEIGHT = scaleSize(100)
 const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
 function getHeaderHeight(orientation) {
   let height = HEADER_HEIGHT

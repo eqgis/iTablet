@@ -13,8 +13,8 @@ const icon_min = require('./icon_attribute_min.png')
 const icon_count = require('./icon_attribute_count.png')
 const icon_std = require('./icon_attribute_Std.png')
 const icon_variance = require('./icon_attribute_variance.png')
-const icon_attribute_show = require('./icon_attribute_show.png')
-const icon_attribute_hide = require('./icon_attribute_hide.png')
+const icon_attribute_show = require('./icon_nav_visible.png')
+const icon_attribute_hide = require('./icon_nav_invisible.png')
 
 export default {
   attribute_statistics,

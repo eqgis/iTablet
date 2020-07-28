@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { Text, View, Image, TouchableOpacity, Animated } from 'react-native'
 import styles from './styles'
 import { scaleSize, setSpText, screen } from '../../utils'
+import { getPublicAssets } from '../../assets'
 
 class NavigationHeader extends Component {
   props: {
@@ -129,10 +130,7 @@ class NavigationHeader extends Component {
         : scaleSize(60)
 
     let backBtnSource =
-      backImg || require('../../assets/public/Frenchgrey/icon-back-white.png')
-    // backBtnType === 'white'
-    //   ? require('../../assets/common/icon-back-white.png')
-    //   : require('../../assets/common/icon-back-gray.png')
+      backImg || getPublicAssets().common.icon_back
     let backBtn = (
       <TouchableOpacity
         accessible={true}

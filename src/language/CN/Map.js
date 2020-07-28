@@ -623,6 +623,7 @@ const Map_Layer = {
   ADD_LAYER_URL: '添加在线图层地址',
   TERRAIN: '地形',
   IMAGE: '影像',
+  IS_ADD_NOTATION_LAYER: '是否添加注记图层？',
 
   LAYER_SETTING_IMAGE_DISPLAY_MODE: '显示模式',
   LAYER_SETTING_IMAGE_STRETCH_TYPE: '拉伸方式',

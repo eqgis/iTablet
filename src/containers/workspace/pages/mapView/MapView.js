@@ -1444,6 +1444,7 @@ export default class MapView extends React.Component {
                 await this._openDatasource(
                   this.wsData[i],
                   this.wsData[i].layerIndex,
+                  false,
                 )
                 bDatasourceOPen = true
                 // debugger
@@ -1740,14 +1741,14 @@ export default class MapView extends React.Component {
     }
   }
 
-  _openDatasource = async (wsData, index = -1) => {
+  _openDatasource = async (wsData, index = -1, toHead = true) => {
     if (!wsData.DSParams || !wsData.DSParams.server) {
       this.setLoading(false)
       Toast.show('没有找到地图')
       return
     }
     try {
-      await SMap.openDatasource(wsData.DSParams, index)
+      await SMap.openDatasource(wsData.DSParams, index, toHead)
     } catch (e) {
       this.setLoading(false)
     }
@@ -2638,7 +2639,8 @@ export default class MapView extends React.Component {
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
         height={
-          Platform.OS === 'ios' && !screen.isIphoneX() &&
+          Platform.OS === 'ios' &&
+          !screen.isIphoneX() &&
           this.props.device.orientation.indexOf('PORTRAIT') === 0
             ? 20
             : 8

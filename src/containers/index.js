@@ -147,6 +147,8 @@ import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
 import ARVideoView from './arVideoView'
+import ARWeatherView from './arWeatherView'
+import ChooseWeather from './chooseWeather'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
@@ -945,6 +947,20 @@ export default function(appConfig) {
       },
       ARVideoView: {
         screen: ARVideoView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARWeatherView: {
+        screen: ARWeatherView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ChooseWeather: {
+        screen: ChooseWeather,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

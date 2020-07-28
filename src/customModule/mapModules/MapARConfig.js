@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -14,6 +14,7 @@ import {
   toolModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
+import { LayerUtils } from '../../utils'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
@@ -39,7 +40,7 @@ export default class MapARConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_AR,
       moduleImage: getThemeAssets().nav.icon_map_vedio,
       moduleImageTouch: getThemeAssets().nav.icon_map_vedio_touch,
-      baseMapSource: { ...ConstOnline.Google },
+      baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       openDefaultMap: false,
       mapType: this.mapType,

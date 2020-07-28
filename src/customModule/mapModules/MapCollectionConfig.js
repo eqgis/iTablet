@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType, ConstToolType } from '../../constants'
+import { ChunkType, ConstToolType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -10,6 +10,7 @@ import {
   toolModule,
   shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
+import { LayerUtils } from '../../utils'
 
 export default class MapCollectionConfig extends Module {
   static key = ChunkType.MAP_COLLECTION
@@ -46,7 +47,7 @@ export default class MapCollectionConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_collection,
       moduleImageTouch: getThemeAssets().nav.icon_map_collection_touch,
       defaultMapName: this.getExampleName(language).mapName,
-      baseMapSource: { ...ConstOnline.Google },
+      baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       licenceType: 0x08,
       mapType: this.mapType,

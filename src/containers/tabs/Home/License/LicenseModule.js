@@ -95,8 +95,8 @@ export default class LicenseModule extends Component {
         ids = ids.concat([
           Platform.OS === 'ios' ? '18004' : '19004',
           Platform.OS === 'ios' ? '18005' : '19005',
-          Platform.OS === 'ios' ? '18006' : '19006',
-          Platform.OS === 'ios' ? '18007' : '19007',
+          // Platform.OS === 'ios' ? '18006' : '19006',
+          // Platform.OS === 'ios' ? '18007' : '19007',
         ])
       }
     }

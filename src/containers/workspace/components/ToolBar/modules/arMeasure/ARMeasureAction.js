@@ -391,6 +391,22 @@ async function arVideo() {
   NavigationService.navigate('EnterDatumPoint')
 }
 
+async function arWeather() {
+  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  if (!isSupportedARCore) {
+    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    return
+  }
+
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
+
+  NavigationService.navigate('ARWeatherView')
+}
+
 export default {
   close,
   memu,
@@ -407,4 +423,5 @@ export default {
   arDrawPoint,
   arMeasureHeight,
   arVideo,
+  arWeather,
 }

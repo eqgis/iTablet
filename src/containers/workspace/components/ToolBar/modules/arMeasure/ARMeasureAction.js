@@ -398,7 +398,7 @@ async function arWeather() {
     return
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   if (GLOBAL.showAIDetect) {
     GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()

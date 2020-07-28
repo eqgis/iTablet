@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'تبديل الحساب',
   LOG_OUT: 'تسجيل خروج',
 
+  SWITCH: 'Switch', //待翻译
   SWITCH_CURRENT: 'لقد قمت بتسجيل الدخول بالفعل مع هذا المستخدم',
   SWITCHING: 'جاري التبديل ...',
   SWITCH_FAIL: 'فشل التبديل ، يرجى محاولة تسجيل الدخول مع هذا المستخدم مرة أخرى',

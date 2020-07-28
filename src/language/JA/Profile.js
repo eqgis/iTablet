@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'アカウントの切替',
   LOG_OUT: 'ログアウト',
 
+  SWITCH: '切替',
   SWITCH_CURRENT: '現在ユーザーを使用中、切替できません',
   SWITCHING: '切替中...',
   SWITCH_FAIL: '切替に失敗しました。当ユーザーを再度ログインしてください。',

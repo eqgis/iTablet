@@ -362,6 +362,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'نقاط رسم AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
   MAP_AR_VIDEO: 'AR Video', //待翻译
+  MAP_AR_WEATHER: 'AR Weather',
+  MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'بيانات جديدة',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'ادخل الاسم',
 

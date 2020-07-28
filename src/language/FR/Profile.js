@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'Changer de compte',
   LOG_OUT: 'Déconnexion',
 
+  SWITCH: 'Switch', //待翻译
   SWITCH_CURRENT: "Vous êtes déjà connecté avec cet utilisateur'",
   SWITCHING: "Commutation ...'",
   SWITCH_FAIL: "Le basculement a échoué, veuillez réessayer de vous connecter avec cet utilisateur'",

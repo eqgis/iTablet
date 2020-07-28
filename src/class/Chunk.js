@@ -4,7 +4,7 @@
 import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
-import { SMap, SLocation } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class Chunk {
   static MapType = {
@@ -129,17 +129,6 @@ export default class Chunk {
           wsData = wsData.concat(data)
         } else {
           wsData.push(data)
-        }
-        for (let i = 0; i < wsData.length; i++) {
-          let item = wsData[i]
-          if (item.type === 'Datasource' && item.DSParams) {
-            if (item.DSParams.alias === 'GoogleMaps') {
-              SLocation.rectify(false)
-              break
-            } else {
-              SLocation.rectify(true)
-            }
-          }
         }
         let param = {
           wsData,

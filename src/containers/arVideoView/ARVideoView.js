@@ -89,8 +89,7 @@ export default class ARVideoView extends React.Component {
           navigation: this.props.navigation,
           type: 'fix',
           backAction: () => {
-            GLOBAL.toolBox.switchAr()
-            NavigationService.goBack('ARVideoView')
+            NavigationService.goBack()
             //不移出相机，显示地图
             GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
           },

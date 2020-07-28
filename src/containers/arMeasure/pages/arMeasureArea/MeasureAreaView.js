@@ -76,13 +76,6 @@ export default class MeasureAreaView extends React.Component {
         this.datasetName = params.datasetName
         this.point = params.point
       }
-
-      if (
-        this.measureType === 'measureLength' ||
-        this.measureType === 'measureArea'
-      ) {
-        this.canContinuousDraw = true
-      }
     }
 
     this.state = {
@@ -202,11 +195,10 @@ export default class MeasureAreaView extends React.Component {
   confirm = () => {}
 
   back = () => {
-    // NavigationService.goBack('MeasureAreaView')
-    NavigationService.goBack()
+    NavigationService.goBack('MeasureAreaView')
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    // GLOBAL.toolBox.switchAr()
+    GLOBAL.toolBox.switchAr()
 
     return true
   }
@@ -300,7 +292,7 @@ export default class MeasureAreaView extends React.Component {
             />
           </TouchableOpacity>
 
-          {this.canContinuousDraw && (
+          {!this.isDrawing && (
             <TouchableOpacity
               onPress={() => this.continuousDraw()}
               style={styles.iconView}

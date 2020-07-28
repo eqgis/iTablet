@@ -1,3 +1,16 @@
+import { connect } from 'react-redux'
 import ChooseWeather from './ChooseWeather'
+import { downloadFile } from '../../redux/models/down'
 
-export default ChooseWeather
+const mapStateToProps = state => ({
+  downloads: state.down.toJS().downloads,
+})
+
+const mapDispatchToProps = {
+  downloadFile,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ChooseWeather)

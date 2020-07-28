@@ -362,6 +362,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'ARの高さ測定',
   MAP_AR_VIDEO: 'AR Video', //待翻译
+  MAP_AR_WEATHER: 'AR Weather',
+  MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',
 

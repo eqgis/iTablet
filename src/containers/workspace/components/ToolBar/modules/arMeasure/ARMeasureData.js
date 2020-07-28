@@ -6,6 +6,14 @@ import { Platform } from 'react-native'
 function getData() {
   let data = [
     {
+      //AR天气
+      key: 'arWeather',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
+      action: ARMeasureAction.arWeather,
+      size: 'large',
+      image: getThemeAssets().plot.plot_animation_appear,
+    },
+    {
       // 高精度采集
       key: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
@@ -95,19 +103,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().themeType.theme_graphmap,
     },
-    {
-      //AR天气
-      key: 'arVideo',
-      title: '天气特效',
-      action: ARMeasureAction.arWeather,
-      size: 'large',
-      image: getThemeAssets().themeType.theme_graphmap,
-    },
   ]
 
   data = data.filter(item => {
     if (Platform.OS === 'ios') {
-      if (item.key === 'arCastModelOperate' || item.key === 'arVideo') {
+      if (
+        item.key === 'arCastModelOperate' ||
+        item.key === 'arVideo' ||
+        item.key === 'arWeather'
+      ) {
         return false
       }
     }

@@ -362,6 +362,8 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR Draw Point',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR Measure Height',
   MAP_AR_VIDEO: 'AR Video',
+  MAP_AR_WEATHER: 'AR Weather',
+  MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'New Data',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Fill in the name',
 

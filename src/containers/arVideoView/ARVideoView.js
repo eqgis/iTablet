@@ -6,7 +6,6 @@ import { scaleSize } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { getPublicAssets } from '../../assets'
 import { getLanguage } from '../../language'
-import NavigationService from '../../containers/NavigationService'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -88,11 +87,6 @@ export default class ARVideoView extends React.Component {
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
           type: 'fix',
-          backAction: () => {
-            NavigationService.goBack()
-            //不移出相机，显示地图
-            GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-          },
         }}
         bottomProps={{ type: 'fix' }}
       >

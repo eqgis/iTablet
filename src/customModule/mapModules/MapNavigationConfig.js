@@ -1,4 +1,4 @@
-import { ConstOnline, ChunkType } from '../../constants'
+import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -12,6 +12,7 @@ import {
   toolModule,
   shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
+import { LayerUtils } from '../../utils'
 
 export default class MapNavigationConfig extends Module {
   static key = ChunkType.MAP_NAVIGATION
@@ -45,7 +46,7 @@ export default class MapNavigationConfig extends Module {
       moduleImage: getThemeAssets().nav.icon_map_navigation,
       moduleImageTouch: getThemeAssets().nav.icon_map_navigation_touch,
       defaultMapName: this.getExampleName(language).mapName,
-      baseMapSource: { ...ConstOnline.Google },
+      baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       licenceType: 0x20,
       mapType: this.mapType,

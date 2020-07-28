@@ -76,6 +76,13 @@ export default class MeasureAreaView extends React.Component {
         this.datasetName = params.datasetName
         this.point = params.point
       }
+
+      if (
+        this.measureType === 'measureLength' ||
+        this.measureType === 'measureArea'
+      ) {
+        this.canContinuousDraw = true
+      }
     }
 
     this.state = {
@@ -97,7 +104,7 @@ export default class MeasureAreaView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      ;(async function() {
+      (async function() {
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
             SMeasureAreaView.setMeasureMode('MEASURE_AREA')
@@ -195,10 +202,11 @@ export default class MeasureAreaView extends React.Component {
   confirm = () => {}
 
   back = () => {
-    NavigationService.goBack('MeasureAreaView')
+    // NavigationService.goBack('MeasureAreaView')
+    NavigationService.goBack()
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    // GLOBAL.toolBox.switchAr()
 
     return true
   }
@@ -292,7 +300,7 @@ export default class MeasureAreaView extends React.Component {
             />
           </TouchableOpacity>
 
-          {!this.isDrawing && (
+          {this.canContinuousDraw && (
             <TouchableOpacity
               onPress={() => this.continuousDraw()}
               style={styles.iconView}
@@ -488,7 +496,7 @@ export default class MeasureAreaView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                ;() => {}
+                () => {}
               }
             }}
             style={{

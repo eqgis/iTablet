@@ -63,7 +63,7 @@ export default class MeasureView extends React.Component {
 
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      ;(async function() {
+      (async function() {
         SMeasureView.initMeasureCollector(
           this.datasourceAlias,
           this.datasetName,
@@ -245,10 +245,11 @@ export default class MeasureView extends React.Component {
   confirm = () => {}
 
   back = () => {
+    GLOBAL.toolBox.switchAr()
     NavigationService.goBack('MeasureView')
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    // GLOBAL.toolBox.switchAr()
     return true
   }
 
@@ -543,7 +544,7 @@ export default class MeasureView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                ;() => {}
+                () => {}
               }
             }}
             style={{

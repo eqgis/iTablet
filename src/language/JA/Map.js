@@ -623,6 +623,7 @@ const Map_Layer = {
   ADD_LAYER_URL: 'オンラインレイヤーのアドレスを追加',
   TERRAIN: '地形',
   IMAGE: '画像',
+  IS_ADD_NOTATION_LAYER: 'Do you want to add the notation layer', //待翻译
 
   LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode', //待翻译
   LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',

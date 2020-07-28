@@ -29,7 +29,7 @@ export default class Chunk {
 
     this.preAction = props.preAction // action之前的检测，返回false则不执行之后的action
 
-    this.baseMapSource = { ...props.baseMapSource } // 默认地图资源
+    this.baseMapSource = props.baseMapSource // 默认地图资源
 
     this.baseMapIndex = props.baseMapIndex // 默认地图资源对应的地图index
 
@@ -124,8 +124,12 @@ export default class Chunk {
             DSParams: { server: wsPath },
             type: 'Workspace',
           },
-          data,
         ]
+        if (data instanceof Array) {
+          wsData = wsData.concat(data)
+        } else {
+          wsData.push(data)
+        }
         let param = {
           wsData,
           mapTitle: this.title,

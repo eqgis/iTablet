@@ -211,6 +211,14 @@ const baseMapsOrigin = [
   'quanguo@SuperMapCloud',
   'roadmap_cn@bingMap',
   'baseMap',
+  'vec@tianditu',
+  'cva@tiandituCN',
+  'eva@tiandituEN',
+  'img@tiandituImg',
+  'cia@tiandituImgCN',
+  'eia@tiandituImgEN',
+  'ter@tiandituTer',
+  'cta@tiandituTerCN',
 ]
 let baseMaps = [...baseMapsOrigin]
 function isBaseLayer(layer) {
@@ -293,7 +301,7 @@ async function addBaseMap(
 ) {
   if (getBaseLayers(layers).length === 0) {
     if (data instanceof Array) {
-      for (let i = data.length - 1; i >= 0; i--) {
+      for (let i = 0; i < data.length; i++) {
         await SMap.openDatasource(
           data[i].DSParams,
           index !== undefined ? index : data[i].layerIndex,
@@ -311,6 +319,19 @@ async function addBaseMap(
       )
       GLOBAL.BaseMapSize = 1
     }
+  }
+}
+
+async function openDefaultBaseMap() {
+  let data = getDefaultBaseMapData()
+  await addBaseMap([], data)
+}
+
+function getDefaultBaseMapData(language = global.language) {
+  if (language === 'CN') {
+    return [ConstOnline.tiandituCN, ConstOnline.tianditu]
+  } else {
+    return { ...ConstOnline.Google, layerIndex: 1 }
   }
 }
 
@@ -407,6 +428,8 @@ export default {
   isBaseLayer,
   addBaseMap,
   setBaseMap,
+  openDefaultBaseMap,
+  getDefaultBaseMapData,
   getLayerType,
   getFieldTypeText,
 }

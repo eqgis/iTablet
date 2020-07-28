@@ -330,26 +330,42 @@ export default class CollectSceneFormView extends React.Component {
       setTimeout(() => {
         this.clickAble = true
       }, 1500)
-      // if (GLOBAL.isswitch) {
-      //   GLOBAL.isswitch = false
-      //   GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
-      // }
-      GLOBAL.mapView.setState({
-        map: {
-          flex: 1,
-          alignSelf: 'stretch',
-          backgroundColor: '#ffbcbc',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          flexDirection: 'column',
-        },
-      })
-      await SCollectSceneFormView.closeCurrentDatasource()
+      if (GLOBAL.isswitch) {
+        GLOBAL.isswitch = false
+        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+      }
+      // GLOBAL.mapView.setState({
+      //   map: {
+      //     flex: 1,
+      //     alignSelf: 'stretch',
+      //     backgroundColor: '#ffbcbc',
+      //     alignItems: 'center',
+      //     justifyContent: 'center',
+      //     overflow: 'hidden',
+      //     flexDirection: 'column',
+      //   },
+      // })
+      // await SCollectSceneFormView.closeCurrentDatasource()
       NavigationService.goBack('CollectSceneFormView')
 
       GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-      GLOBAL.toolBox.switchAr()
+      // GLOBAL.toolBox.switchAr()
+
+      setTimeout(() => {
+        GLOBAL.mapView.setState({
+          map: {
+            flex: 1,
+            alignSelf: 'stretch',
+            backgroundColor: '#ffbcbc',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            flexDirection: 'column',
+          },
+        })
+        SCollectSceneFormView.closeCurrentDatasource()
+      }, 500)
+
       return true
     }
   }
@@ -864,7 +880,7 @@ export default class CollectSceneFormView extends React.Component {
                   isClickCollect: false,
                 })
               } catch (e) {
-                ;() => {}
+                () => {}
               }
             }}
             style={styles.iconView}
@@ -900,7 +916,7 @@ export default class CollectSceneFormView extends React.Component {
                   isClickCollect: true,
                 })
               } catch (e) {
-                ;() => {}
+                () => {}
               }
             }}
             style={{

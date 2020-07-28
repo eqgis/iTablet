@@ -15,15 +15,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
     },
-    {
-      // 户型图采集
-      key: 'arMeasureCollect',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT,
-      action: ARMeasureAction.arMeasureCollect,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
-    },
+    // {
+    //   // 户型图采集
+    //   key: 'arMeasureCollect',
+    //   title: getLanguage(global.language).Map_Main_Menu
+    //     .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT,
+    //   action: ARMeasureAction.arMeasureCollect,
+    //   size: 'large',
+    //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
+    // },
     {
       //AR投射
       key: 'arCastModelOperate',
@@ -92,6 +92,14 @@ function getData() {
       key: 'arVideo',
       title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
       action: ARMeasureAction.arVideo,
+      size: 'large',
+      image: getThemeAssets().themeType.theme_graphmap,
+    },
+    {
+      //AR天气
+      key: 'arVideo',
+      title: '天气特效',
+      action: ARMeasureAction.arWeather,
       size: 'large',
       image: getThemeAssets().themeType.theme_graphmap,
     },

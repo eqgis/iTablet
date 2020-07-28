@@ -5,11 +5,11 @@ import { ConstToolType, ToolbarType } from '.'
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils } from '../utils'
 
-async function OpenData(data, index) {
+async function OpenData(data, index, callback) {
   const layers = await SMap.getLayersByType()
   let isOpen
   if (data instanceof Array) {
-    for (let i = data.length - 1; i >= 0; i--) {
+    for (let i = 0; i < data.length; i++) {
       isOpen = await SMap.isDatasourceOpen(data[i].DSParams)
     }
   } else {
@@ -26,13 +26,19 @@ async function OpenData(data, index) {
       }
     }
     if (data instanceof Array) {
-      for (let i = data.length - 1; i >= 0; i--) {
+      for (let i = 0; i < data.length; i++) {
         await SMap.openDatasource(data[i].DSParams, index, false)
       }
       GLOBAL.BaseMapSize = data.length
+      if (callback && typeof callback === 'function') {
+        callback()
+      }
     } else {
       await SMap.openDatasource(data.DSParams, index, false)
       GLOBAL.BaseMapSize = 1
+      if (callback && typeof callback === 'function') {
+        callback()
+      }
     }
   } else {
     Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
@@ -211,6 +217,80 @@ function layerManagerData() {
     {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Tianditu',
+      action: callback => {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
+          confirmAction: () => {
+            let data = []
+            if (GLOBAL.language === 'CN') {
+              data.push(ConstOnline.tiandituCN)
+            } else {
+              data.push(ConstOnline.tiandituEN)
+            }
+            data.push(ConstOnline.tianditu)
+            OpenData(data, 0, callback)
+          },
+          cancelAction: () => OpenData(ConstOnline.tianditu, 0, callback),
+        })
+        GLOBAL.SimpleDialog.setVisible(true)
+      },
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Tianditu Image',
+      action: callback => {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
+          confirmAction: () => {
+            let data = []
+            if (GLOBAL.language === 'CN') {
+              data.push(ConstOnline.tiandituImgCN)
+            } else {
+              data.push(ConstOnline.tiandituImgEN)
+            }
+            data.push(ConstOnline.tiandituImg)
+            OpenData(data, 0, callback)
+          },
+          cancelAction: () => OpenData(ConstOnline.tiandituImg, 0, callback),
+        })
+        GLOBAL.SimpleDialog.setVisible(true)
+      },
+      data: [],
+      image: require('../assets/map/icon-shallow-image_black.png'),
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'Tianditu Terrain',
+      action: callback => {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
+          confirmAction: () => {
+            let data = []
+            data.push(ConstOnline.tiandituTerCN)
+            data.push(ConstOnline.tiandituTer)
+            OpenData(data, 0, callback)
+          },
+          cancelAction: () => OpenData(ConstOnline.tiandituTer, 0, callback),
+        })
+        GLOBAL.SimpleDialog.setVisible(true)
+      },
       data: [],
       image: require('../assets/map/icon-shallow-image_black.png'),
       type: DatasetType.IMAGE,

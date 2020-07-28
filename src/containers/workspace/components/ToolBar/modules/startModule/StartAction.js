@@ -388,11 +388,7 @@ async function create() {
         // await SMap.removeAllLayer() // 移除所有图层
         // await SMap.closeDatasource(-1) // 关闭所有数据源
 
-        await SMap.openDatasource(
-          ConstOnline.Google.DSParams,
-          // ConstOnline['Google'].layerIndex,
-          1,
-        )
+        LayerUtils.openDefaultBaseMap()
         await SMap.openTaggingDataset(
           ToolbarModule.getParams().user.currentUser.userName,
         )
@@ -910,11 +906,7 @@ async function headerAction(type, section = {}) {
             wsPath = await FileTools.appendingHomeDirectory(customerPath)
           }
           await params.openWorkspace({ server: wsPath })
-          await SMap.openDatasource(
-            ConstOnline.Google.DSParams,
-            // ConstOnline['Google'].layerIndex,
-            1,
-          )
+          LayerUtils.openDefaultBaseMap()
 
           const layers = await params.getLayers()
           await SMap.openTaggingDataset(params.user.currentUser.userName)

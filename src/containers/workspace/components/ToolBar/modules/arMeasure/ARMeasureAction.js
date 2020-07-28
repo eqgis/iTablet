@@ -14,7 +14,7 @@ function commit() {}
 
 // 高精度采集
 function collectSceneForm() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -22,7 +22,6 @@ function collectSceneForm() {
       return
     }
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -67,7 +66,7 @@ function collectSceneForm() {
 
 // 户型图采集
 function arMeasureCollect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -120,7 +119,7 @@ function arMeasureCollect() {
 
 // AR投射
 function arCastModelOperate() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -128,17 +127,18 @@ function arCastModelOperate() {
       return
     }
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    setTimeout(() => {
-      NavigationService.navigate('ARProjectModeView')
-    }, 500)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.navigate('ARProjectModeView')
   })()
 }
 
 // AR测量面积
 function arMeasureArea() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -146,7 +146,6 @@ function arMeasureArea() {
       return
     }
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -160,7 +159,7 @@ function arMeasureArea() {
 
 // AR测量距离
 function arMeasureLength() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -168,7 +167,6 @@ function arMeasureLength() {
       return
     }
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -182,7 +180,7 @@ function arMeasureLength() {
 
 // AR测量距离
 function arMeasureHeight() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -190,7 +188,6 @@ function arMeasureHeight() {
       return
     }
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -204,7 +201,7 @@ function arMeasureHeight() {
 
 // AR画线
 function arDrawLine() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -251,7 +248,6 @@ function arDrawLine() {
 
     NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -262,7 +258,7 @@ function arDrawLine() {
 
 // AR画面
 function arDrawArea() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -308,7 +304,6 @@ function arDrawArea() {
     GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
     NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -319,7 +314,7 @@ function arDrawArea() {
 
 // AR画点
 function arDrawPoint() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -365,7 +360,6 @@ function arDrawPoint() {
     GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
     NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
 
-    //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -381,8 +375,11 @@ async function arVideo() {
     return
   }
 
-  //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
   GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
   GLOBAL.EnterDatumPointType = 'arVideo'
   NavigationService.navigate('EnterDatumPoint')
 }

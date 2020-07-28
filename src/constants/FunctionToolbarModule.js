@@ -1,4 +1,4 @@
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap, SLocation, DatasetType } from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
 import { ConstToolType, ToolbarType } from '.'
@@ -28,6 +28,11 @@ async function OpenData(data, index, callback) {
     if (data instanceof Array) {
       for (let i = 0; i < data.length; i++) {
         await SMap.openDatasource(data[i].DSParams, index, false)
+        if (data[i].DSParams.alias === 'GoogleMaps') {
+          SLocation.rectify(false)
+        } else {
+          SLocation.rectify(true)
+        }
       }
       GLOBAL.BaseMapSize = data.length
       if (callback && typeof callback === 'function') {
@@ -35,6 +40,11 @@ async function OpenData(data, index, callback) {
       }
     } else {
       await SMap.openDatasource(data.DSParams, index, false)
+      if (data.DSParams.alias === 'GoogleMaps') {
+        SLocation.rectify(false)
+      } else {
+        SLocation.rectify(true)
+      }
       GLOBAL.BaseMapSize = 1
       if (callback && typeof callback === 'function') {
         callback()

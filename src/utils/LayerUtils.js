@@ -1,4 +1,9 @@
-import { SMap, DatasetType, FieldType } from 'imobile_for_reactnative'
+import {
+  SMap,
+  SLocation,
+  DatasetType,
+  FieldType,
+} from 'imobile_for_reactnative'
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
 
@@ -308,6 +313,11 @@ async function addBaseMap(
           false,
           visible,
         )
+        if (data[i].DSParams.alias === 'GoogleMaps') {
+          SLocation.rectify(false)
+        } else {
+          SLocation.rectify(true)
+        }
       }
       GLOBAL.BaseMapSize = data.length
     } else {
@@ -317,6 +327,11 @@ async function addBaseMap(
         false,
         visible,
       )
+      if (data.DSParams.alias === 'GoogleMaps') {
+        SLocation.rectify(false)
+      } else {
+        SLocation.rectify(true)
+      }
       GLOBAL.BaseMapSize = 1
     }
   }

@@ -17,6 +17,7 @@ import {
   // SMMapSuspension,
   SAIDetectView,
   SSpeechRecognizer,
+  SLocation,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -591,6 +592,7 @@ export default class MapView extends React.Component {
 
   componentWillUnmount() {
     SMap.setCurrentModule(0)
+    SLocation.rectify(true)
     if (GLOBAL.Type === ChunkType.MAP_AR) {
       Orientation.unlockAllOrientations()
     }

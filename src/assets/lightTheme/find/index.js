@@ -8,6 +8,8 @@ const public_map = require('./icon_find_public_map.png')
 const public_data = require('./icon_find_publicdata.png')
 const supermapkonw = require('./icon_find_knows.png')
 const forum = require('./icon_find_forum.png')
+const onlineCowork = require('./icon_find_online.png')
+const college = require('./icon_find_college.png')
 const contact_map = require('./icon_contact_map_light.png')
 const contact_location = require('./icon_discover_contactlocation_light.png')
 const bus_location = require('./icon_discover_buslocation_light.png')
@@ -24,6 +26,8 @@ export default {
   public_data,
   supermapkonw,
   forum,
+  college,
+  onlineCowork,
   contact_map,
   contact_location,
   bus_location,

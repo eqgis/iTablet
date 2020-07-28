@@ -269,7 +269,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.GIS_ACADEMY,
-            leftImagePath: getThemeAssets().find.contact_map,
+            leftImagePath: getThemeAssets().find.college,
             isInformSpot: false,
             onClick: this.goToGISAcademy,
           })}
@@ -283,7 +283,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
-            leftImagePath: getThemeAssets().friend.friend_map,
+            leftImagePath: getThemeAssets().find.onlineCowork,
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('CoworkManagePage')

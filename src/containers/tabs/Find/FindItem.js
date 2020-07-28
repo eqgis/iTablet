@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import { color, size } from '../../../styles'
 import { scaleSize } from '../../../utils'
+import { getPublicAssets } from '../../../assets'
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -47,8 +48,8 @@ const styles = StyleSheet.create({
   },
   rightImage: {
     flexDirection: 'row',
-    width: scaleSize(26),
-    height: scaleSize(26),
+    width: scaleSize(44),
+    height: scaleSize(44),
     alignItems: 'center',
     tintColor: color.imageColorBlack,
   },
@@ -121,7 +122,7 @@ export default class Find extends PureComponent {
             <Image
               style={styles.rightImage}
               resizeMode={'contain'}
-              source={rightImagePath || require('../../../assets/Mine/mine_my_arrow.png')}
+              source={rightImagePath || getPublicAssets().common.icon_move}
             />
           </View>
         </TouchableOpacity>

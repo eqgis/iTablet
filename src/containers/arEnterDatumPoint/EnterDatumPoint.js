@@ -199,8 +199,6 @@ export default class EnterDatumPoint extends Component {
     }
 
     if (GLOBAL.EnterDatumPointType === 'arMeasureCollect') {
-      //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
       GLOBAL.MeasureCollectData.point = point
       NavigationService.replace('MeasureView', GLOBAL.MeasureCollectData)
       GLOBAL.EnterDatumPointType = undefined
@@ -230,10 +228,6 @@ export default class EnterDatumPoint extends Component {
           // GLOBAL.newcollectData = time
           GLOBAL.newcollectData = datasourceAlias
           // const datasourceAlias = time
-
-          //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
-          GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-
           const datasetName = 'CollectSceneForm'
           const datasetPointName = 'CollectPointSceneForm'
           NavigationService.replace('CollectSceneFormView', {
@@ -253,17 +247,10 @@ export default class EnterDatumPoint extends Component {
         floorID: this.state.floorData[this.state.selectFloor].id,
       })
     } else if (GLOBAL.EnterDatumPointType === 'arVideo') {
-      //参数为true移除ai检测相机，移除地图，参数为false添加ai检测相机，添加地图
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
       GLOBAL.EnterDatumPointType = undefined
-      setTimeout(() => {
-        NavigationService.replace('ARVideoView', {
-          point: point,
-        })
-      }, 500)
-      // NavigationService.replace('ARVideoView', {
-      //   point: point,
-      // })
+      NavigationService.replace('ARVideoView', {
+        point: point,
+      })
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()

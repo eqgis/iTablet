@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: '切换账号',
   LOG_OUT: '退出登录',
 
+  SWITCH: '切换',
   SWITCH_CURRENT: '处于当前用户下，不可切换',
   SWITCHING: '切换中...',
   SWITCH_FAIL: '切换失败，请尝试重新登录此用户',

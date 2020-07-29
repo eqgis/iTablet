@@ -6,6 +6,7 @@ import { scaleSize } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { getThemeAssets } from '../../assets'
 import NavigationService from '../NavigationService'
+import { getLanguage } from '../../language'
 
 export default class ARWeatherView extends React.Component {
   props: {
@@ -69,7 +70,7 @@ export default class ARWeatherView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: '天气特效',
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
           navigation: this.props.navigation,
           type: 'fix',
         }}

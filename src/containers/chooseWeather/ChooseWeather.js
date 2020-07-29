@@ -5,14 +5,13 @@ import { scaleSize, OnlineServicesUtils, Toast } from '../../utils'
 import { View, TouchableOpacity, FlatList, Text } from 'react-native'
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
-import RNFS from 'react-native-fs'
+import { getLanguage } from '../../language'
 
 export default class ChooseWeather extends React.Component {
   props: {
     navigation: Object,
-    language: String,
-    user: Object,
-    nav: Object,
+    downloads: Object,
+    downloadFile: () => {},
   }
 
   constructor(props) {
@@ -26,25 +25,31 @@ export default class ChooseWeather extends React.Component {
 
   weatherData = [
     {
-      title: '春天',
+      title: global.language === 'CN' ? '春天' : 'spring',
       key: 'spring',
     },
     {
-      title: '夏天',
+      title: global.language === 'CN' ? '夏天' : 'summer',
       key: 'summer',
     },
     {
-      title: '秋天',
+      title: global.language === 'CN' ? '秋天' : 'autumn',
       key: 'autumn',
     },
     {
-      title: '冬天',
+      title: global.language === 'CN' ? '冬天' : 'winter',
       key: 'winter',
     },
   ]
 
   renderItem = ({ item }) => {
-    return <WeatherItem item={item} />
+    return (
+      <WeatherItem
+        item={item}
+        downloads={this.props.downloads}
+        downloadFile={this.props.downloadFile}
+      />
+    )
   }
 
   renderWeather = () => {
@@ -53,7 +58,7 @@ export default class ChooseWeather extends React.Component {
         data={this.state.data}
         renderItem={this.renderItem}
         keyExtractor={item => item.key}
-        extraData={this.state.count}
+        extraData={this.props.downloads}
       />
     )
   }
@@ -63,7 +68,8 @@ export default class ChooseWeather extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: '选择特效',
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_SELECT_EFFECT,
           navigation: this.props.navigation,
         }}
         bottomProps={{ type: 'fix' }}
@@ -78,6 +84,8 @@ class WeatherItem extends React.Component {
   props: {
     item: Object,
     currentItemKey: String,
+    downloads: Object,
+    downloadFile: () => {},
   }
 
   constructor(props) {
@@ -95,22 +103,49 @@ class WeatherItem extends React.Component {
     this.getStatus()
   }
 
+  componentWillUnmount() {
+    this.removeDownloadListner()
+  }
+
   getStatus = async () => {
-    let isExist = await FileTools.fileIsExist(this.path)
-    if (!isExist) {
-      this.setState({
-        status: 0,
-      })
+    if (this.state.status !== 2) {
+      let progress = this.getDownloadProgress()
+      if (progress > 0) {
+        this.setState({
+          status: 3,
+        })
+        this.addDownloadListner()
+      } else {
+        let isExist = await FileTools.fileIsExist(this.path)
+        if (!isExist) {
+          this.setState({
+            status: 0,
+          })
+        }
+      }
     }
+  }
+
+  getDownloadProgress = () => {
+    let downloads = this.props.downloads
+    if (downloads.length > 0) {
+      for (let i = 0; i < downloads.length; i++) {
+        if (
+          downloads[i].id === this.props.item.key &&
+          !downloads[i].downloaded
+        ) {
+          return downloads[i].progress
+        }
+      }
+    }
+    return -1
   }
 
   download = async () => {
     this.setState({
       status: 3,
     })
-    Toast.show('开始下载')
     try {
-      let result = false
       let path = global.homePath + '/iTablet/Common/Weather/'
       await FileTools.createDirectory(path)
       let onlineservice = new OnlineServicesUtils('online')
@@ -122,83 +157,118 @@ class WeatherItem extends React.Component {
         let dataId = item.id
         let dataUrl =
           'https://www.supermapol.com/web/datas/' + dataId + '/download'
-        let preProgress = 0
-        await RNFS.downloadFile({
+        await this.props.downloadFile({
+          key: this.props.item.key,
           fromUrl: dataUrl,
           toFile: this.path,
           background: true,
-          progress: res => {
-            let value = ~~res.progress.toFixed(0)
-            if (value !== preProgress) {
-              preProgress = value
-            }
-          },
-        }).promise
-        result = true
+        })
+        this.addDownloadListner()
       }
-
-      this.setState({
-        status: result ? 1 : 0,
-      })
-      Toast.show(result ? '下载成功' : '下载失败')
     } catch (e) {
       this.setState({
         status: 0,
       })
-      Toast.show('下载失败')
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
+    }
+  }
+
+  addDownloadListner = () => {
+    this.timer = setInterval(() => {
+      let downloaded = false
+      let downloads = this.props.downloads
+      if (downloads.length > 0) {
+        for (let i = 0; i < downloads.length; i++) {
+          if (downloads[i].id === this.props.item.key) {
+            downloaded = downloads[i].downloaded
+            break
+          }
+        }
+      }
+      if (downloaded) {
+        this.setState({
+          status: 1,
+        })
+        this.removeDownloadListner()
+      }
+    }, 2000)
+  }
+
+  removeDownloadListner() {
+    if (this.timer !== null) {
+      clearInterval(this.timer)
+      this.timer = null
     }
   }
 
   render() {
     let text = ''
     let color = { backgroundColor: '#1296db' }
+    let progress
     switch (this.state.status) {
       case 0:
-        text = '下载'
+        text = getLanguage(global.language).Prompt.DOWNLOAD
         break
       case 1:
-        text = '切换'
+        text = getLanguage(global.language).Profile.SWITCH
         break
       case 2:
-        text = '切换'
+        text = getLanguage(global.language).Profile.SWITCH
         color = { backgroundColor: 'grey' }
         break
       case 3:
-        text = '下载中'
+        text = getLanguage(global.language).Prompt.DOWNLOADING
+        progress = this.getDownloadProgress()
+        if (progress > -1) {
+          text = progress + '%'
+        }
         break
     }
     return (
-      <View
-        style={{
-          height: 80,
-          flexDirection: 'row',
-          flex: 1,
-          paddingHorizontal: 20,
-        }}
-      >
-        <Text style={{ flex: 1, color: 'black' }}>{this.props.item.title}</Text>
-        <TouchableOpacity
-          style={[
-            {
-              height: scaleSize(60),
-              width: scaleSize(100),
-              borderRadius: scaleSize(10),
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            color,
-          ]}
-          onPress={() => {
-            if (this.state.status === 1) {
-              SARWeather.setWeather(this.path)
-              NavigationService.goBack()
-            } else if (this.state.status === 0) {
-              this.download(this.props.item.key)
-            }
+      <View>
+        <View
+          style={{
+            height: scaleSize(100),
+            flexDirection: 'row',
+            flex: 1,
+            paddingHorizontal: 25,
+            alignItems: 'center',
           }}
         >
-          <Text style={{ color: 'white' }}>{text}</Text>
-        </TouchableOpacity>
+          <Text style={{ flex: 1, color: 'black', fontSize: scaleSize(26) }}>
+            {this.props.item.title}
+          </Text>
+          <TouchableOpacity
+            style={[
+              {
+                height: scaleSize(60),
+                width: scaleSize(100),
+                borderRadius: scaleSize(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+              color,
+            ]}
+            onPress={() => {
+              if (this.state.status === 1) {
+                SARWeather.setWeather(this.path)
+                NavigationService.goBack()
+              } else if (this.state.status === 0) {
+                this.download(this.props.item.key)
+              }
+            }}
+          >
+            <Text style={{ color: 'white' }}>{text}</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            marginLeft: 25,
+            height: 1,
+            flex: 1,
+            backgroundColor: '#EFEFEF',
+          }}
+        />
       </View>
     )
   }

@@ -209,10 +209,12 @@ export default class ARProjectModeView extends React.Component {
   }
 
   back = () => {
-    // NavigationService.goBack('ARProjectModeView')
-    NavigationService.goBack()
-    //不移出相机，显示地图
+    SProjectModelView.onPause()
+
+    NavigationService.goBack('ARProjectModeView')
+
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
   }
 
   renderBottomBtns = () => {
@@ -309,9 +311,9 @@ export default class ARProjectModeView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.showSandTable
                   ? getLanguage(global.language).Map_Main_Menu
-                    .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
+                      .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
                   : getLanguage(global.language).Map_Main_Menu
-                    .MAP_AR_AI_ASSISTANT_SAND_TABLE}
+                      .MAP_AR_AI_ASSISTANT_SAND_TABLE}
               </Text>
             </View>
           </TouchableOpacity>

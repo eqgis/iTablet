@@ -76,7 +76,6 @@ export default class MeasureAreaView extends React.Component {
         this.datasetName = params.datasetName
         this.point = params.point
       }
-
       if (
         this.measureType === 'measureLength' ||
         this.measureType === 'measureArea'
@@ -202,11 +201,10 @@ export default class MeasureAreaView extends React.Component {
   confirm = () => {}
 
   back = () => {
-    // NavigationService.goBack('MeasureAreaView')
-    NavigationService.goBack()
+    NavigationService.goBack('MeasureAreaView')
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    // GLOBAL.toolBox.switchAr()
+    GLOBAL.toolBox.switchAr()
 
     return true
   }

@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'Hesap Değiştir',
   LOG_OUT: 'Oturumu Kapat',
 
+  SWITCH: 'Switch', //待翻译
   SWITCH_CURRENT: 'Bu kullanıcı ile zaten giriş yaptınız',
   SWITCHING: 'Değiştiriliyor...',
   SWITCH_FAIL: 'Geçiş başarısız, lütfen bu kullanıcıyla tekrar giriş yapmayı deneyin',

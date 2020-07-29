@@ -59,6 +59,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'Switch Account',
   LOG_OUT: 'Log out',
 
+  SWITCH: 'Switch',
   SWITCH_CURRENT: 'You are already loged in with this user',
   SWITCHING: 'Switching...',
   SWITCH_FAIL: 'Switch failed, please try to login with this user again',

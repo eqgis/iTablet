@@ -140,7 +140,7 @@ class LanguageSetting extends React.Component {
     if (this.state.currentOption === this.prevOption) {
       textColor = '#A0A0A0'
     } else {
-      textColor = '#FFFFFF'
+      textColor = '#000000'
     }
     return (
       <View>

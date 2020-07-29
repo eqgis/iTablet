@@ -25,6 +25,7 @@ import { SMessageService, SOnlineService, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../NavigationService'
 import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
+import { size } from '../../../styles'
 import { styles } from './Styles'
 
 import { getThemeAssets } from '../../../assets'
@@ -53,8 +54,6 @@ import CoworkInfo from './Cowork/CoworkInfo'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
-// let searchImg = getThemeAssets().friend.friend_search
-let addFriendImg = getThemeAssets().friend.friend_addMenu
 
 let g_connectService = false
 export default class Friend extends Component {
@@ -1820,7 +1819,7 @@ export default class Friend extends Component {
         showFullInMap={true}
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
-          headerLeft:
+          headerRight:
             this.props.user.currentUser.userType === UserType.COMMON_USER ? (
               <TouchableOpacity
                 style={styles.addFriendView}
@@ -1828,26 +1827,9 @@ export default class Friend extends Component {
                   this.setState({ showPop: true })
                 }}
               >
-                <Image source={addFriendImg} style={styles.addFriendImg} />
+                <Image source={getThemeAssets().friend.add_friends} style={styles.addFriendImg} />
               </TouchableOpacity>
             ) : null,
-          // headerRight:
-          //   this.state.bHasUserInfo === true ? (
-          //     <TouchableOpacity
-          //       onPress={() => {
-          //         {
-          //           //  let usr = this.props.user
-          //         }
-          //       }}
-          //       style={styles.searchView}
-          //     >
-          //       <Image
-          //         resizeMode={'contain'}
-          //         source={searchImg}
-          //         style={styles.searchImg}
-          //       />
-          //     </TouchableOpacity>
-          //   ) : null,
           withoutBack: true,
           navigation: this.props.navigation,
         }}
@@ -1873,7 +1855,7 @@ export default class Friend extends Component {
         <ScrollableTabView
           renderTabBar={() => (
             <DefaultTabBar
-              style={{ height: scaleSize(60) }}
+              style={{ height: scaleSize(80), marginTop: scaleSize(20), borderWidth: 0 }}
               renderTab={(name, page, isTabActive, onPressHandler) => {
                 let activeTextColor = 'rgba(70,128,223,1.0)'
                 let inactiveTextColor = 'black'
@@ -1884,44 +1866,38 @@ export default class Friend extends Component {
 
                 return (
                   <TouchableOpacity
-                    style={{ flex: 1 }}
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      paddingTop: scaleSize(20),
+                      paddingBottom: scaleSize(10),
+                    }}
                     key={name}
                     accessible={true}
                     accessibilityLabel={name}
                     accessibilityTraits="button"
                     onPress={() => onPressHandler(page)}
                   >
-                    <View
+                    <Text
                       style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        paddingVertical: scaleSize(10),
+                        color: textColor,
+                        fontWeight,
+                        fontSize: size.fontSize.fontSizeLg,
+                        textAlign: 'center',
                       }}
                     >
-                      <View>
-                        <Text
-                          style={{
-                            color: textColor,
-                            fontWeight,
-                            fontSize: scaleSize(25),
-                            textAlign: 'center',
-                          }}
-                        >
-                          {name}
-                        </Text>
-                        {name ===
-                          getLanguage(this.props.language).Friends.MESSAGES && (
-                          <InformSpot
-                            style={{
-                              top: scaleSize(-5),
-                              right: scaleSize(-15),
-                            }}
-                          />
-                        )}
-                      </View>
-                    </View>
+                      {name}
+                    </Text>
+                    {name ===
+                    getLanguage(this.props.language).Friends.MESSAGES && (
+                      <InformSpot
+                        style={{
+                          top: scaleSize(-5),
+                          right: scaleSize(-15),
+                        }}
+                      />
+                    )}
                   </TouchableOpacity>
                 )
               }}
@@ -1931,9 +1907,11 @@ export default class Friend extends Component {
           prerenderingSiblingsNumber={1}
           tabBarUnderlineStyle={{
             backgroundColor: 'rgba(70,128,223,1.0)',
-            height: scaleSize(3),
-            width: scaleSize(30),
-            marginLeft: this._getWidth() / 3 / 2 - 10,
+            height: scaleSize(6),
+            width: scaleSize(6),
+            borderRadius: scaleSize(3),
+            marginLeft: this._getWidth() / 3 / 2 - 3,
+            marginBottom: scaleSize(12),
           }}
         >
           <FriendMessage

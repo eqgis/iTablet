@@ -42,6 +42,7 @@ const lightTheme = {
   fontColorBlack: '#181818',
   fontColorGray: '#A0A0A0',
   fontColorGray2: '#9C9C9C',
+  fontColorGray3: '#8A8A8F',
 
   itemColorWhite: '#FBFBFB',
   itemColorBlack: '#181818',

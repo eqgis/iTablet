@@ -148,7 +148,7 @@ export default StyleSheet.create({
   sideItemStyle: {
     position: 'absolute',
     right: 0,
-    top: scaleSize(30),
+    top: scaleSize(40),
     backgroundColor: '#ED372E',
     paddingVertical: fixedSize(10),
     paddingHorizontal: fixedSize(20),

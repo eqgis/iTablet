@@ -167,6 +167,7 @@ export default class Find extends Component {
   _renderItem = (
     itemRequire = {
       title: '',
+      subTitle: '',
       leftImagePath: '',
       rightImagePath: '',
       isInformSpot: false,
@@ -175,10 +176,11 @@ export default class Find extends Component {
       },
     },
   ) => {
-    const { title, leftImagePath, rightImagePath, isInformSpot, onClick } = itemRequire
+    const { title, subTitle, leftImagePath, rightImagePath, isInformSpot, onClick } = itemRequire
     return (
       <FindItem
         title={title}
+        subTitle={subTitle}
         leftImagePath={leftImagePath}
         isInformSpot={isInformSpot}
         onClick={onClick}
@@ -202,6 +204,7 @@ export default class Find extends Component {
         >
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.PUBLIC_MAP,
+            subTitle: getLanguage(this.props.language).Find.PUBLIC_MAP_INFO,
             leftImagePath: getThemeAssets().find.public_map,
             isInformSpot: false,
             onClick: () => {
@@ -210,6 +213,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.PUBLIC_DATA,
+            subTitle: getLanguage(this.props.language).Find.PUBLIC_DATA_INFO,
             leftImagePath: getThemeAssets().find.public_data,
             isInformSpot: false,
             onClick: () => {
@@ -225,6 +229,7 @@ export default class Find extends Component {
           })} */}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_GROUP,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_INFO,
             leftImagePath: getThemeAssets().find.supermap,
             isInformSpot: this.state.superMapGroup,
             onClick: () => {
@@ -244,6 +249,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_KNOW_INFO,
             leftImagePath: getThemeAssets().find.supermapkonw,
             isInformSpot: this.state.superMapKnown,
             onClick: () => {
@@ -263,18 +269,22 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_FORUM_INFO,
             leftImagePath: getThemeAssets().find.forum,
             isInformSpot: false,
             onClick: this.goToSuperMapForum,
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.GIS_ACADEMY,
+            subTitle: getLanguage(this.props.language).Find.GIS_ACADEMY_INFO,
             leftImagePath: getThemeAssets().find.college,
             isInformSpot: false,
             onClick: this.goToGISAcademy,
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.APPLET,
+            subTitle: getLanguage(this.props.language).Find.APPLET,
+            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
             leftImagePath: getThemeAssets().mine.my_applets,
             isInformSpot: this.state.appletInfo,
             onClick: () => {
@@ -283,6 +293,8 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
+            subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK,
+            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
             leftImagePath: getThemeAssets().find.onlineCowork,
             isInformSpot: false,
             onClick: () => {

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     paddingLeft: scaleSize(38),
     paddingRight: scaleSize(16),
-    paddingVertical: scaleSize(20),
+    // paddingVertical: scaleSize(20),
     ...Platform.select({
       android: {
         elevation: 3,
@@ -71,23 +71,32 @@ const styles = StyleSheet.create({
   },
   content: {
     marginLeft: 15,
-    flexDirection: 'row',
+    flexDirection: 'column',
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
   },
   text: {
-    // lineHeight: scaleSize(90),
-    flex: 1,
     textAlign: 'left',
     fontSize: size.fontSize.fontSizeXl,
     color: color.fontColorBlack,
     padding: 0,
+    backgroundColor: 'transparent',
+  },
+  subText: {
+    marginTop: scaleSize(8),
+    textAlign: 'left',
+    fontSize: size.fontSize.fontSizeMd,
+    color: color.fontColorGray3,
+    padding: 0,
+    backgroundColor: 'transparent',
   },
 })
 
 export default class Find extends PureComponent {
   props: {
     title: string,
+    subTitle: string,
     leftImagePath?: string,
     isInformSpot?: boolean,
     onClick: () => {},
@@ -99,7 +108,7 @@ export default class Find extends PureComponent {
   }
 
   render() {
-    const { title, leftImagePath, isInformSpot, onClick, rightImagePath } = this.props
+    const { title, leftImagePath, isInformSpot, onClick, rightImagePath, subTitle } = this.props
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity
@@ -119,12 +128,13 @@ export default class Find extends PureComponent {
           }
           <View style={styles.content}>
             <Text style={styles.text}>{title}</Text>
-            <Image
-              style={styles.rightImage}
-              resizeMode={'contain'}
-              source={rightImagePath || getPublicAssets().common.icon_move}
-            />
+            <Text style={styles.subText}>{subTitle}</Text>
           </View>
+          <Image
+            style={styles.rightImage}
+            resizeMode={'contain'}
+            source={rightImagePath || getPublicAssets().common.icon_move}
+          />
         </TouchableOpacity>
       </View>
     )

@@ -28,7 +28,7 @@ import { DatasetType, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
-import { getThemeAssets } from '../../../../assets'
+import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
 import styles from './styles'
 
@@ -1022,7 +1022,7 @@ export default class MyDataPage extends Component {
         </TouchableOpacity>
       )
     }
-    let moreImg = require('../../../../assets/home/Frenchgrey/icon_else_selected.png')
+    let moreImg = getPublicAssets().common.icon_nav_imove
     return (
       <TouchableOpacity
         onPress={event => {

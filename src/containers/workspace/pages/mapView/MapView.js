@@ -2599,7 +2599,7 @@ export default class MapView extends React.Component {
         <MTBtn
           key={'CoworkMember'}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          image={require('../../../../assets/home/Frenchgrey/icon_else_selected.png')}
+          image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {
             NavigationService.navigate('CoworkMember')
           }}

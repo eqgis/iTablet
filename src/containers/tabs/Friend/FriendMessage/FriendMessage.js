@@ -174,8 +174,12 @@ class FriendMessage extends Component {
       >
         {this._renderInformItem()}
         <FlatList
-          ItemSeparatorComponent={() => {
-            return <View style={styles.SectionSeparaLineStyle} />
+          ItemSeparatorComponent={item => {
+            if (item.leadingItem && item.leadingItem.message.length > 0) {
+              return <View style={styles.SectionSeparaLineStyle}/>
+            } else {
+              return null
+            }
           }}
           data={this.state.data}
           renderItem={({ item, index }) => this._renderItem(item, index)}

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   dialogStyle: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? scaleSize(120) : scaleSize(100),
+    top: Platform.OS === 'ios' ? scaleSize(150) : scaleSize(130),
     borderRadius: scaleSize(20),
     maxHeight: scaleSize(200),
     backgroundColor: 'white',

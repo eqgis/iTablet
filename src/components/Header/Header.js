@@ -8,6 +8,7 @@ import { Text, View, Image, TouchableOpacity, Animated } from 'react-native'
 import styles from './styles'
 import { scaleSize, setSpText, screen } from '../../utils'
 import { getPublicAssets } from '../../assets'
+import { color } from '../../styles'
 
 class NavigationHeader extends Component {
   props: {
@@ -226,7 +227,7 @@ class NavigationHeader extends Component {
       <Animated.View
         style={[
           currentHeaderStyle,
-          { height: this.state.headerHeight },
+          { height: this.state.headerHeight, borderBottomWidth: 1, borderBottomColor: color.borderLight },
           headerStyle,
           padding,
           { opacity: opacity, top: this.state.headerTop },

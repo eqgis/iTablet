@@ -34,6 +34,7 @@ const icon_avatar = require('./icon_avatar.png')
 const icon_star = require('./icon_star.png')
 const icon_move = require('./icon_move.png')
 const icon_nav_imove = require('./icon_nav_imove.png')
+const icon_nav_close = require('./icon_nav_close.png')
 
 export default {
   icon_undo,
@@ -72,4 +73,5 @@ export default {
   icon_star,
   icon_move,
   icon_nav_imove,
+  icon_nav_close,
 }

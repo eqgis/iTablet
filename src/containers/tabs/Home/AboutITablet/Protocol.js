@@ -290,20 +290,19 @@ class Protocol extends Component {
       default:
         break
     }
-  
-    let itemWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
+
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
     let webBackOpacity = this.state.backButtonEnabled ? 1 : 0
-    let buttons = [
+    let headerLeft = [
       <MTBtn
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
         style={{
           height: size,
-          width: size,
-          marginLeft: scaleSize(0),
+          width: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         onPress={() => {
           this.props.navigation.goBack()
@@ -315,26 +314,15 @@ class Protocol extends Component {
         style={{
           opacity: webBackOpacity,
           height: size,
-          width: size,
-          marginLeft: scaleSize(0),
+          width: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         onPress={() => {
           this.webView.goBack()
         }}
       />,
     ]
-    let headerLeft = (
-      <View
-        style={{
-          width: scaleSize(itemWidth * buttons.length),
-          flexDirection: 'row',
-          justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        {buttons}
-      </View>
-    )
     return (
       <Container
         headerProps={{

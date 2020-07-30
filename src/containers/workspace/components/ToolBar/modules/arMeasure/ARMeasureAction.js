@@ -119,7 +119,7 @@ function arMeasureCollect() {
 
 // AR投射
 function arCastModelOperate() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -132,6 +132,7 @@ function arCastModelOperate() {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
+    await SMap.onPauseMap()
     NavigationService.navigate('ARProjectModeView')
   })()
 }

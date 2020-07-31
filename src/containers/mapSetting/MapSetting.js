@@ -5,27 +5,22 @@ import { MapToolbar } from '../workspace/components'
 import {
   View,
   FlatList,
-  Text,
-  TouchableOpacity,
-  Image,
   Platform,
-  Switch,
 } from 'react-native'
 import styles from './styles'
 import {
-  getlegendSetting,
   getThematicMapSettings,
-  // getnavigationSetting,
   getMapARSettings,
 } from './settingData'
-import SettingSection from './SettingSection'
-import { getLanguage } from '../../language/index'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
 import { ChunkType } from '../../constants'
-import { legendModule } from '../workspace/components/ToolBar/modules'
 import { scaleSize } from '../../utils'
-import size from '../../styles/size'
 import color from '../../styles/color'
 import CoworkInfo from '../tabs/Friend/Cowork/CoworkInfo'
+import MapSettingItem from './MapSettingItem'
+import { legendModule } from '../workspace/components/ToolBar/modules'
+
 export default class MapSetting extends Component {
   props: {
     nav: string,
@@ -75,16 +70,12 @@ export default class MapSetting extends Component {
   }
 
   getData = async () => {
-    let newData = getThematicMapSettings().concat(getlegendSetting())
+    let newData = getThematicMapSettings()
     if (GLOBAL.Type === ChunkType.MAP_AR) {
       newData = newData.concat(getMapARSettings())
-      //ios先暂时屏蔽POI设置和检测类型
-      if (Platform.OS === 'ios') {
-        newData.splice(4, 1)
-      }
     }
     // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-    //   newData = newData.concat(getnavigationSetting())
+    //   newData = newData.concat(getNavigationSetting())
     // }
     this.setState({
       data: newData,
@@ -116,193 +107,36 @@ export default class MapSetting extends Component {
       GLOBAL.SaveMapView.setVisible(visible, this.setLoading)
   }
 
-  // _onValueChange = ({ value, index, section }) => {
-  //   let newData = JSON.parse(JSON.stringify(this.state.data))
-  //   let sectionIndex = 0
-  //   for (let i = 0; i < newData.length; i++) {
-  //     if (newData[i].title === section.title) {
-  //       sectionIndex = i
-  //       break
-  //     }
-  //   }
-  //   newData[sectionIndex].data[index].value = value
-  //   switch (newData[sectionIndex].data[index].name) {
-  //     case getLanguage(this.props.language).Map_Setting.ROTATION_GESTURE:
-  //       //'手势旋转':
-  //       SMap.enableRotateTouch(value)
-  //       break
-  //     case getLanguage(this.props.language).Map_Setting.PITCH_GESTURE:
-  //       //'手势俯仰':
-  //       SMap.enableSlantTouch(value)
-  //       break
-  //     case getLanguage(this.props.language).Map_Setting.ANTI_ALIASING_MAP:
-  //       //'反走样地图':
-  //       SMap.setAntialias(value)
-  //       break
-  //     case getLanguage(this.props.language).Map_Setting.SHOW_OVERLAYS:
-  //       //'显示压盖对象':
-  //       SMap.setOverlapDisplayed(value)
-  //       break
-  //     case getLanguage(this.props.language).Map_Setting.FIX_SCALE:
-  //       //'固定比例尺':
-  //       SMap.setVisibleScalesEnabled(value)
-  //       break
-  //     case getLanguage(this.props.language).Map_Setting.THEME_LEGEND:
-  //       this.props.setMapLegend(value)
-  //       if (value) {
-  //         GLOBAL.toolBox &&
-  //           GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
-  //             containerType: 'colorTable',
-  //             column: 8,
-  //             tableType: 'scroll',
-  //             isFullScreen: false,
-  //             height: ConstToolType.THEME_HEIGHT[3],
-  //           })
-  //         GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-  //         this.props.navigation.navigate('MapView')
-  //       }
-  //       break
-  //   }
-  //   this.setState({
-  //     data: newData.concat(),
-  //   })
-  // }
-
-  renderListSectionHeader = ({ section }) => {
-    return (
-      <SettingSection
-        data={section}
-        onPress={data => this.headerAction(data)}
-      />
-    )
+  _renderItemSeparatorComponent = () => {
+    return <View style={styles.itemSeparator} />
   }
-
-  // renderListItem = ({ item, index, section }) => {
-  //   if (!section.visible) return <View />
-  //   return (
-  //     <SettingItem
-  //       device={this.props.device}
-  //       section={section}
-  //       data={item}
-  //       index={index}
-  //       onPress={data => this._onValueChange(data)}
-  //     />
-  //   )
-  // }
-
-  _renderItemSeparatorComponent = ({ section }) => {
-    return section.visible ? <View style={styles.itemSeparator} /> : null
-  }
-
-  flatListPressHandle = title => {
-    //图例单独处理
-    if (
-      title === getLanguage(this.props.language).Map_Settings.LEGEND_SETTING
-    ) {
-      legendModule().action()
-      // let mapLegend = this.props.mapLegend
-      // if (mapLegend[GLOBAL.Type].isShow) {
-      //   mapLegend[GLOBAL.Type] = {
-      //     isShow: true,
-      //     backgroundColor: mapLegend[GLOBAL.Type].backgroundColor,
-      //     column: mapLegend[GLOBAL.Type].column,
-      //     widthPercent: mapLegend[GLOBAL.Type].widthPercent,
-      //     heightPercent: mapLegend[GLOBAL.Type].heightPercent,
-      //   }
-      // } else {
-      //   mapLegend[GLOBAL.Type] = {
-      //     isShow: true,
-      //     backgroundColor: 'white',
-      //     column: 2,
-      //     widthPercent: 80,
-      //     heightPercent: 80,
-      //   }
-      // }
-      // this.props.setMapLegend(mapLegend)
-      // GLOBAL.toolBox &&
-      //   GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
-      //     containerType: 'colorTable',
-      //     column: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 16 : 8,
-      //     isFullScreen: false,
-      //     height:
-      //       this.props.device.orientation.indexOf('LANDSCAPE') === 0
-      //         ? ConstToolType.THEME_HEIGHT[2]
-      //         : ConstToolType.THEME_HEIGHT[3],
-      //   })
-      // GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-      // this.props.navigation.navigate('MapView')
-    } else {
-      //根据title跳转
-      NavigationService.navigate('SecondMapSettings', {
-        title,
-        language: this.props.language,
-        //
-        device: this.props.device,
-      })
-    }
-  }
+  
   renderFlatListItem = ({ item }) => {
-    const styles = {
-      itemWidth: '100%',
-      itemHeight: scaleSize(90),
-      fontSize: size.fontSize.fontSizeXl,
-      imageWidth: scaleSize(45),
-      imageHeight: scaleSize(45),
-      rightImagePath: require('../../assets/Mine/mine_my_arrow.png'),
-    }
-    let imageColor = color.imageColorBlack
-    let txtColor = color.fontColorBlack
-    let title = item.title
     return (
-      <View style={{ flex: 1 }} display={this.state.display}>
-        <TouchableOpacity
-          onPress={() => {
-            if (item.action) {
-              item.action()
-            } else {
-              this.flatListPressHandle(title)
-            }
-          }}
-          style={{
-            flexDirection: 'row',
-            width: styles.itemWidth,
-            height: styles.itemHeight,
-            alignItems: 'center',
-            paddingLeft: 10,
-            paddingRight: 10,
-          }}
-        >
-          <Text
-            style={{
-              lineHeight: styles.itemHeight,
-              flex: 1,
-              textAlign: 'left',
-              fontSize: styles.fontSize,
-              color: txtColor,
-              paddingLeft: 5,
-            }}
-          >
-            {title}
-          </Text>
-          <Image
-            style={{
-              width: styles.imageWidth - 5,
-              height: styles.imageHeight - 5,
-              tintColor: imageColor,
-            }}
-            resizeMode={'contain'}
-            source={styles.rightImagePath}
-          />
-        </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            height: 1,
-            marginHorizontal: 10,
-            backgroundColor: color.separateColorGray,
-          }}
-        />
-      </View>
+      <MapSettingItem
+        title={item.title}
+        style={this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {}}
+        action={() => {
+          //图例单独处理
+          if (
+            item.title === getLanguage(this.props.language).Map_Settings.LEGEND_SETTING
+          ) {
+            legendModule().action()
+          } else {
+            //根据title跳转
+            NavigationService.navigate('SecondMapSettings', {
+              title: item.title,
+              language: this.props.language,
+              //
+              device: this.props.device,
+            })
+          }
+        }}
+        rightAction={item.rightAction}
+        leftImage={item.leftImage}
+        rightImage={item.rightImage}
+        type={item.type}
+      />
     )
   }
 
@@ -313,6 +147,7 @@ export default class MapSetting extends Component {
       <FlatList
         style={{ backgroundColor: color.contentWhite }}
         renderItem={this.renderFlatListItem}
+        ItemSeparatorComponent={this._renderItemSeparatorComponent}
         data={this.state.data}
         keyExtractor={(item, index) => item.title + index}
         numColumns={1}
@@ -324,87 +159,30 @@ export default class MapSetting extends Component {
   renderFooterComponent = () => {
     return (
       <View>
-        {this.renderFlatListItem({
-          item: {
-            title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
-            action: () => {
-              NavigationService.navigate('LocationSetting')
-            },
-          },
-        })}
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            height: scaleSize(80),
-            paddingHorizontal: 15,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingRight: 10,
+        {this._renderItemSeparatorComponent()}
+        <MapSettingItem
+          title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}
+          type={'switch'}
+          rightAction={value => {
+            this.props.setColumnNavBar(value)
           }}
-        >
-          <Text style={styles.itemName}>
-            {getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}
-          </Text>
-          <Switch
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={this.props.mapColumnNavBar ? color.bgW : color.bgW}
-            ios_backgroundColor={
-              this.props.mapColumnNavBar ? color.switch : color.bgG
-            }
-            value={this.props.mapColumnNavBar}
-            onValueChange={value => {
-              this.props.setColumnNavBar(value)
-            }}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            height: 1,
-            marginHorizontal: 10,
-            backgroundColor: color.separateColorGray,
-          }}
+          value={this.props.mapColumnNavBar}
+          leftImage={getThemeAssets().setting.icon_horizontal_screen}
         />
-        {CoworkInfo.coworkId !== '' && (
-          <View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                height: scaleSize(80),
-                paddingHorizontal: 15,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingRight: 10,
-              }}
-            >
-              <Text style={styles.itemName}>
-                {getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
-              </Text>
-              <Switch
-                trackColor={{ false: color.bgG, true: color.switch }}
-                thumbColor={this.state.isRealTime ? color.bgW : color.bgW}
-                ios_backgroundColor={
-                  this.state.isRealTime ? color.switch : color.bgG
-                }
-                value={this.state.isRealTime}
-                onValueChange={value => {
-                  CoworkInfo.setIsRealTime(value)
-                  this.setState({ isRealTime: value })
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-                height: 1,
-                marginHorizontal: 10,
-                backgroundColor: color.separateColorGray,
-              }}
-            />
-          </View>
-        )}
+        {this._renderItemSeparatorComponent()}
+        {
+          CoworkInfo.coworkId !== '' &&
+          <MapSettingItem
+            title={getLanguage(global.language).Profile.REAL_TIME_SYNC}
+            rightAction={value => {
+              CoworkInfo.setIsRealTime(value)
+              this.setState({ isRealTime: value })
+            }}
+            value={this.state.isRealTime}
+            leftImage={getThemeAssets().setting.icon_horizontal_screen}
+          />
+        }
+        {this._renderItemSeparatorComponent()}
       </View>
     )
   }
@@ -426,14 +204,10 @@ export default class MapSetting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title:
-            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            this.props.mapModules.modules[
-              this.props.mapModules.currentMapModule
+          title: this.props.mapModules.modules[
+            this.props.mapModules.currentMapModule
             ].chunk.title,
           navigation: this.props.navigation,
-          // backAction: this.back,
-          // backImg: require('../../assets/mapTools/icon_close.png'),
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),

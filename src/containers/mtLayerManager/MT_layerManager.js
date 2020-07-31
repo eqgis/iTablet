@@ -1024,7 +1024,6 @@ export default class MT_layerManager extends React.Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title:
-            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
             this.props.mapModules.modules[
               this.props.mapModules.currentMapModule
             ].chunk.title,

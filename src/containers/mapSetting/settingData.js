@@ -1,6 +1,8 @@
 import { SMap } from 'imobile_for_reactnative'
-import { getLanguage } from '../../language/index'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
+import NavigationService from '../NavigationService'
 
 function getMapSettings() {
   const data = [
@@ -127,25 +129,34 @@ function getMapSettings() {
 const getThematicMapSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
+    leftImage: getThemeAssets().setting.icon_basic,
   },
   {
     title: getLanguage(global.language).Map_Settings.RANGE_SETTING,
+    leftImage: getThemeAssets().setting.icon_range,
   },
   {
     title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
+    leftImage: getThemeAssets().setting.icon_coordinate,
   },
   // 高级设置 暂时屏蔽
   // {
   //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
   // },
-]
-const getlegendSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.LEGEND_SETTING,
+    leftImage: getThemeAssets().setting.icon_legend,
+  },
+  {
+    title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+    leftImage: getThemeAssets().setting.icon_location,
+    action: () => {
+      NavigationService.navigate('LocationSetting')
+    },
   },
 ]
 
-const getnavigationSetting = () => [
+const getNavigationSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.ENCLOSURE_NAME,
   },
@@ -166,35 +177,13 @@ const getnavigationSetting = () => [
 // 视频地图设置
 const getMapARSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.POI_SETTING,
-  },
-  {
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
   },
   {
     title: getLanguage(global.language).Map_Settings.DETECT_STYLE,
   },
 ]
-// POI设置
-const getPOISettings = () => [
-  {
-    title: getLanguage(global.language).Map_Settings
-      .POI_SETTING_PROJECTION_MODE,
-    value: true,
-    iconType: 'switch',
-  },
-  {
-    title: getLanguage(global.language).Map_Settings.POI_SETTING_OVERLAP_MODE,
-    value: false,
-    iconType: 'switch',
-  },
-  // {
-  //   title: getLanguage(global.language).Map_Settings
-  //     .POI_SETTING_POLYMERIZE_MODE,
-  //   value: false,
-  //   iconType: 'switch',
-  // },
-]
+
 // 检测类型设置
 const getDetectTypesSettings = () => [
   {
@@ -824,7 +813,6 @@ const colorMode = () => [
 export {
   getMapSettings,
   getThematicMapSettings,
-  getlegendSetting,
   basicSettings,
   rangeSettings,
   coordinateSystemSettings,
@@ -838,9 +826,8 @@ export {
   colorMode,
   fourRanges,
   transferData,
-  getnavigationSetting,
+  getNavigationSetting,
   getMapARSettings,
-  getPOISettings,
   getDetectTypesSettings,
   getDetectStyleSettings,
 }

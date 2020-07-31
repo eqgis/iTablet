@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
-// import { color } from '../../styles'
+import { color } from '../../styles'
+
 export default StyleSheet.create({
   container: {
     backgroundColor: '#FBFBFB',
@@ -46,8 +47,8 @@ export default StyleSheet.create({
     fontSize: setSpText(22),
   },
   itemSeparator: {
-    height: 1,
-    backgroundColor: '#A0A0A0',
-    marginHorizontal: scaleSize(16),
+    height: scaleSize(2),
+    backgroundColor: color.itemColorGray2,
+    marginLeft: scaleSize(150),
   },
 })

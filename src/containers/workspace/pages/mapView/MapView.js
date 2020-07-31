@@ -50,11 +50,11 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import { share3DModule, shareModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
   Dialog,
-  SaveMapNameDialog,
   SaveDialog,
   InputDialog,
   PopView,
@@ -69,7 +69,6 @@ import {
 } from '../../../../components'
 import {
   Toast,
-  jsonUtil,
   scaleSize,
   StyleUtils,
   setSpText,
@@ -2283,6 +2282,7 @@ export default class MapView extends React.Component {
       return item.key === this.type
     })
     let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
+      MapHeaderButton.Share,
       MapHeaderButton.Search,
       MapHeaderButton.Undo,
       MapHeaderButton.Audio,
@@ -2292,6 +2292,19 @@ export default class MapView extends React.Component {
       let info
       if (typeof buttonInfos[i] === 'string') {
         switch (buttonInfos[i]) {
+          case MapHeaderButton.Share:
+            info = {
+              key: MapHeaderButton.Share,
+              image: getPublicAssets().common.icon_nav_share,
+              action: () => {
+                if (GLOBAL.Type === ChunkType.MAP_3D) {
+                  share3DModule().action()
+                } else {
+                  shareModule().action()
+                }
+              },
+            }
+            break
           case MapHeaderButton.Audio:
             info = {
               key: MapHeaderButton.Audio,

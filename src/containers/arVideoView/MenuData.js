@@ -1,6 +1,7 @@
 import { SARVideoView } from 'imobile_for_reactnative'
 import { ImagePicker } from '../../components'
 import { Toast } from '../../utils'
+import { getLanguage } from '../../language'
 
 function getPage(page, bottomBar = undefined) {
   let data = []
@@ -10,14 +11,17 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'add',
+          title: getLanguage(global.language).Analyst_Labels.ADD,
           image: require('../../assets/mapTools/icon_add_white.png'),
         },
         {
           key: 'modify',
+          title: getLanguage(global.language).Analyst_Labels.Edit,
           image: require('../../assets/mapTools/edit_white.png'),
         },
         {
           key: 'delete',
+          title: getLanguage(global.language).Analyst_Labels.DELETE,
           image: require('../../assets/mapTools/icon_delete_white.png'),
           action: () => {
             Toast.show(
@@ -38,15 +42,20 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'main',
+          title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
           key: 'addAtCurrent',
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
           action: onAddVideo,
         },
         {
           key: 'addAtPlane',
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_SELECT_POINT_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
           action: () => onAddVideoAtPlane(bottomBar),
         },
@@ -60,6 +69,7 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'add',
+          title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -68,6 +78,7 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'main',
+          title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -90,10 +101,13 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'modify',
+          title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
           key: 'modifyToCurrent',
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
           action: () => {
             SARVideoView.modifyVideoToCurrentPosition()
@@ -104,6 +118,8 @@ function getPage(page, bottomBar = undefined) {
         },
         {
           key: 'modifyToPlane',
+          title: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_SELECT_POINT_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
         },
       ]
@@ -116,6 +132,7 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'modify_selected',
+          title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]

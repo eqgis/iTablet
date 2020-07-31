@@ -39,8 +39,8 @@ const btn_increment_topo_edit = require('./btn_increment_topo_edit.png')
 const btn_increment_merge_dataset = require('./btn_increment_merge_dataset.png')
 const btn_increment_change_type = require('./btn_increment_change_type.png')
 
-const increment_indoor = require('./increment_indoor.png')
-const increment_outdoor = require('./increment_outdoor.png')
+const increment_indoor = require('./icon_navi_indoor.png')
+const increment_outdoor = require('./icon_navi_outdoor.png')
 
 const icon_datasource = require('./icon_datasource.png')
 const icon_datasource_white = require('./icon_datasource_white.png')

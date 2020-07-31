@@ -4,6 +4,7 @@ import Orientation from 'react-native-orientation'
 import { Container, BottomBar } from '../../components'
 import { getLanguage } from '../../language'
 import MenuData from './MenuData'
+import NavigationService from '../NavigationService'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -34,6 +35,12 @@ export default class ARVideoView extends React.Component {
 
   componentWillUnmount() {}
 
+  back = () => {
+    NavigationService.goBack()
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
+  }
+
   renderBottom = () => {
     return <BottomBar getData={MenuData.getPage} />
   }
@@ -45,6 +52,7 @@ export default class ARVideoView extends React.Component {
         headerProps={{
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
+          backAction: this.back,
           type: 'fix',
         }}
         bottomProps={{ type: 'fix' }}

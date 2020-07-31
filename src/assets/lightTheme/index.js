@@ -16,6 +16,7 @@ import nav from './nav'
 import mapTools from './mapTools'
 import share from './share'
 import find from './find'
+import setting from './setting'
 
 export default {
   publicAssets,
@@ -36,4 +37,5 @@ export default {
   mapTools,
   share,
   find,
+  setting,
 }

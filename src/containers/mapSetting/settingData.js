@@ -1,6 +1,8 @@
 import { SMap } from 'imobile_for_reactnative'
-import { getLanguage } from '../../language/index'
+import { getLanguage } from '../../language'
+import { getThemeAssets } from '../../assets'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
+import NavigationService from '../NavigationService'
 
 function getMapSettings() {
   const data = [
@@ -127,25 +129,34 @@ function getMapSettings() {
 const getThematicMapSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
+    leftImage: getThemeAssets().setting.icon_basic,
   },
   {
     title: getLanguage(global.language).Map_Settings.RANGE_SETTING,
+    leftImage: getThemeAssets().setting.icon_range,
   },
   {
     title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
+    leftImage: getThemeAssets().setting.icon_coordinate,
   },
   // 高级设置 暂时屏蔽
   // {
   //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
   // },
-]
-const getlegendSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.LEGEND_SETTING,
+    leftImage: getThemeAssets().setting.icon_legend,
+  },
+  {
+    title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+    leftImage: getThemeAssets().setting.icon_location,
+    action: () => {
+      NavigationService.navigate('LocationSetting')
+    },
   },
 ]
 
-const getnavigationSetting = () => [
+const getNavigationSetting = () => [
   {
     title: getLanguage(global.language).Map_Settings.ENCLOSURE_NAME,
   },
@@ -824,7 +835,6 @@ const colorMode = () => [
 export {
   getMapSettings,
   getThematicMapSettings,
-  getlegendSetting,
   basicSettings,
   rangeSettings,
   coordinateSystemSettings,
@@ -838,7 +848,7 @@ export {
   colorMode,
   fourRanges,
   transferData,
-  getnavigationSetting,
+  getNavigationSetting,
   getMapARSettings,
   getPOISettings,
   getDetectTypesSettings,

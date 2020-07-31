@@ -3,6 +3,7 @@ import Tool3DAction from './Tool3DAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class Tool3DModule extends FunctionModule {
@@ -34,7 +35,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_tool.png'),
+    image: getThemeAssets().functionBar.icon_tool_tools,
     getData: Tool3DData.getData,
     actions: Tool3DAction,
   })

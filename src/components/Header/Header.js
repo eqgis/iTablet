@@ -227,7 +227,7 @@ class NavigationHeader extends Component {
       <Animated.View
         style={[
           currentHeaderStyle,
-          { height: this.state.headerHeight, borderBottomWidth: 1, borderBottomColor: color.borderLight },
+          { height: this.state.headerHeight, borderBottomWidth: 2, borderBottomColor: color.itemColorGray2 },
           headerStyle,
           padding,
           { opacity: opacity, top: this.state.headerTop },

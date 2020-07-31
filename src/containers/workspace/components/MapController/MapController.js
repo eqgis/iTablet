@@ -13,7 +13,7 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 
 const DEFAULT_BOTTOM = scaleSize(135)
-const DEFAULT_BOTTOM_LAND = scaleSize(45)
+const DEFAULT_BOTTOM_LAND = scaleSize(26)
 const DEFAULT_LEFT = scaleSize(34)
 
 export default class MapController extends React.Component {
@@ -297,8 +297,6 @@ export default class MapController extends React.Component {
           { bottom: this.state.bottom },
         ]}
       >
-        {this.renderLocation()}
-        {this.renderCompass()}
         <View style={[styles.topView, styles.shadow]}>
           <MTBtn
             style={styles.btn}
@@ -321,6 +319,8 @@ export default class MapController extends React.Component {
             onPressOut={this.cloestimer}
           />
         </View>
+        {this.renderLocation()}
+        {this.renderCompass()}
       </Animated.View>
     )
   }

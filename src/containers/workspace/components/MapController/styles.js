@@ -13,17 +13,19 @@ export default StyleSheet.create({
   topView: {
     flexDirection: 'column',
     backgroundColor: 'white',
-    borderRadius: scaleSize(4),
+    borderRadius: scaleSize(8),
   },
   btn: {
     backgroundColor: 'white',
-    borderRadius: scaleSize(4),
+    borderRadius: scaleSize(8),
+    width: scaleSize(64),
+    height: scaleSize(64),
   },
   compass: {
-    borderRadius: scaleSize(4),
+    borderRadius: scaleSize(8),
   },
   separator: {
-    marginBottom: scaleSize(30),
+    marginTop: scaleSize(30),
     // backgroundColor:"red",
     // top:scaleSize(-80),
     // position:'absolute',
@@ -37,9 +39,9 @@ export default StyleSheet.create({
     // position:'absolute',
     width: scaleSize(60),
     height: scaleSize(60),
-    borderRadius: scaleSize(4),
+    borderRadius: scaleSize(8),
     backgroundColor: 'white',
-    marginBottom: scaleSize(30),
+    marginTop: scaleSize(30),
     // marginBottom: scaleSize(25),
   },
   shadow: {

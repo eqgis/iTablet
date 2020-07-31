@@ -52,10 +52,10 @@ export default function(type) {
   let image, title
   if (type === ConstToolType.MAP_ANALYSIS) {
     title = getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS
-    image = getThemeAssets().functionBar.rightbar_analysis
+    image = getThemeAssets().functionBar.icon_tool_analysis
   } else if (type === ConstToolType.MAP_PROCESS) {
     title = getLanguage(GLOBAL.language).Map_Main_Menu.PROCESS
-    image = getThemeAssets().analyst.analysis_traveling
+    image = getThemeAssets().functionBar.icon_tool_handle
   }
   return new AnalysisModule({
     type: type,
@@ -74,7 +74,7 @@ export default function(type) {
 //     key: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
 //     title: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
 //     size: 'large',
-//     image: getThemeAssets().functionBar.rightbar_analysis,
+//     image: getThemeAssets().functionBar.icon_tool_analysis,
 //     getData: AnalysisData.getData,
 //     actions: AnalysisAction,
 //   })

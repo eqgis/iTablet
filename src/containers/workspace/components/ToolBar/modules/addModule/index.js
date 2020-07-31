@@ -9,6 +9,7 @@ import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import { Toast } from '../../../../../../utils'
+import { getThemeAssets } from '../../../../../../assets'
 
 class AddModule extends FunctionModule {
   constructor(props) {
@@ -56,7 +57,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_add.png'),
+    image: getThemeAssets().functionBar.icon_tool_add,
     getData: AddData.getData,
     actions: AddAction,
   })

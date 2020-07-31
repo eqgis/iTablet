@@ -4,6 +4,7 @@ import ThemeData from './ThemeData'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class ThemeModule extends FunctionModule {
@@ -48,7 +49,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_theme_create.png'),
+    image: getThemeAssets().functionBar.icon_tool_thematic,
     getData: ThemeData.getData,
     getMenuData: ThemeData.getMenuData,
     actions: ThemeAction,

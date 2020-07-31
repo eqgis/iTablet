@@ -7,6 +7,7 @@ import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
+import { getThemeAssets } from '../../../../../../assets'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
@@ -40,7 +41,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_edit.png'),
+    image: getThemeAssets().functionBar.icon_tool_edit,
     getData: EditData.getData,
     actions: EditAction,
   })

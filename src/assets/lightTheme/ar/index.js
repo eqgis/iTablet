@@ -2,7 +2,8 @@ import functiontoolbar from './functiontoolbar'
 import toolbar from './toolbar'
 
 const icon_ar = require('./icon_ar.png')
-const icon_ai_assistant = require('./icon_ai_assistant.png')
+// const icon_ai_assistant = require('./icon_ai_assistant.png')
+const icon_ai_assistant = require('./icon_tool_ai_assistant.png')
 const icon_ar_measure_cancel = require('./cancel.png')
 const icon_ar_measure_clear = require('./clear.png')
 const icon_ar_measure_add = require('./add.png')

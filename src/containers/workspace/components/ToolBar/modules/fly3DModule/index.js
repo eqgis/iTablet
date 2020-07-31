@@ -7,6 +7,7 @@ import Fly3DAction from './Fly3DAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class Fly3DModule extends FunctionModule {
@@ -39,7 +40,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
     size: 'large',
-    image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png'),
+    image: getThemeAssets().functionBar.icon_tool_flight,
     getData: Fly3DData.getData,
     actions: Fly3DAction,
   })

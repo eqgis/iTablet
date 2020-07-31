@@ -15,7 +15,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: zIndexLevel.FOUR + 1,
-    width: '100%',
+    // width: '100%',
     backgroundColor: color.white,
     flexDirection: 'row',
     alignItems: 'center',

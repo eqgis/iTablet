@@ -260,9 +260,9 @@ export default class Container extends Component {
         style.push(styles.flexBottomBar)
       }
     }
-    if (isLandscape && fixBottom) {
-      style.push({ top: screen.getHeaderHeight() })
-    }
+    // if (isLandscape && fixBottom) {
+    //   style.push({ top: screen.getHeaderHeight() })
+    // }
     if (this.props.bottomProps && this.props.bottomProps.style) {
       style.push(this.props.bottomProps.style)
     }
@@ -316,9 +316,9 @@ export default class Container extends Component {
             <ContainerView style={[styles.container, this.props.style]}>
               {this.renderHeader(fixHeader)}
               {this.props.children}
-              {fixBottom && this.renderBottom(fixBottom)}
+              {/*{fixBottom && this.renderBottom(fixBottom)}*/}
             </ContainerView>
-            {!fixBottom && this.renderBottom(fixBottom)}
+            {this.renderBottom(fixBottom)}
           </View>
           <Loading
             ref={ref => (this.loading = ref)}

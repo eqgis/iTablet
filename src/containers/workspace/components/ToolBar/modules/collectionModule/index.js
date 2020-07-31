@@ -6,6 +6,7 @@ import CollectionAction from './CollectionAction'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'
 import ToolbarModule from '../ToolbarModule'
@@ -39,7 +40,7 @@ export default function(type = ConstToolType.COLLECTION) {
         key: getLanguage(GLOBAL.language).Profile.TEMPLATE,
         title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
         size: 'large',
-        image: require('../../../../../../assets/function/icon_function_module.png'),
+        image: getThemeAssets().functionBar.icon_tool_template,
         getData: CollectionData.getData,
         actions: CollectionAction,
       })
@@ -49,7 +50,7 @@ export default function(type = ConstToolType.COLLECTION) {
         key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         size: 'large',
-        image: require('../../../../../../assets/function/icon_function_symbol.png'),
+        image: getThemeAssets().functionBar.icon_tool_collection,
         getData: CollectionData.getData,
         actions: CollectionAction,
       })

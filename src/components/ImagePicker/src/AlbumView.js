@@ -11,11 +11,11 @@ import {
   View,
 } from 'react-native'
 import * as RNFS from 'react-native-fs'
-import PageKeys from './PageKeys'
+// import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
 import { scaleSize } from '../../../utils'
-import { size } from '../../../styles'
+import { size, color } from '../../../styles'
 
 export default class extends React.PureComponent {
   props: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerRight: {
-    color: 'white',
+    color: color.content,
     width: scaleSize(100),
     fontSize: size.fontSize.fontSizeXXl,
     textAlign: 'right',

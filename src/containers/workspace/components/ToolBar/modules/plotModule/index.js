@@ -5,6 +5,7 @@ import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class PlotModule extends FunctionModule {
@@ -63,10 +64,10 @@ export default function(type) {
   let image, title
   if (type === ConstToolType.PLOTTING_ANIMATION) {
     title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING_ANIMATION
-    image = require('../../../../../../assets/function/icon_function_theme_param.png')
+    image = getThemeAssets().functionBar.icon_tool_deduction
   } else {
     title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOT
-    image = require('../../../../../../assets/function/icon_function_symbol.png')
+    image = getThemeAssets().functionBar.icon_tool_plotting
   }
   return new PlotModule({
     type: type,

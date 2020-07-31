@@ -7,6 +7,7 @@
 import IncrementData from './IncrementData'
 import IncrementAction from './IncrementAction'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class IncrementModule extends FunctionModule {
@@ -26,7 +27,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_symbol.png'),
+    image: getThemeAssets().functionBar.icon_tool_collection,
     getData: IncrementData.getData,
     actions: IncrementAction,
   })

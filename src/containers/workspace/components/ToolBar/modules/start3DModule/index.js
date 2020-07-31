@@ -3,6 +3,7 @@ import Start3DAction from './Start3DAction'
 import ToolbarModule from '../ToolbarModule'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class Start3DModule extends FunctionModule {
@@ -34,7 +35,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.START,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_start.png'),
+    image: getThemeAssets().functionBar.icon_tool_start,
     getData: Star3DtData.getData,
     actions: Start3DAction,
   })

@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { SMARWeatherView } from 'imobile_for_reactnative'
+import { SARWeather, SMARWeatherView } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { scaleSize } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
-import { getThemeAssets } from '../../assets'
+import { getThemeAssets, getPublicAssets } from '../../assets'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
+import { FileTools } from '../../native'
 
 export default class ARWeatherView extends React.Component {
   props: {
@@ -20,6 +21,10 @@ export default class ARWeatherView extends React.Component {
     super(props)
     let params = this.props.navigation.state.params || {}
     this.point = params.point
+    this.state = {
+      current: '',
+      visible: true,
+    }
   }
 
   // eslint-disable-next-line
@@ -27,9 +32,33 @@ export default class ARWeatherView extends React.Component {
     Orientation.lockToPortrait()
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    setTimeout(this.showDefault, 500)
+  }
 
   componentWillUnmount() {}
+
+  setCurrent = key => {
+    this.setState({
+      current: key,
+    })
+  }
+
+  setVisible = () => {
+    let visible = !this.state.visible
+    SARWeather.showWeather(visible)
+    this.setState({
+      visible: visible,
+    })
+  }
+
+  showDefault = async () => {
+    let path = global.homePath + '/iTablet/Common/Weather/winter.mp4'
+    if (await FileTools.fileIsExist(path)) {
+      SARWeather.setWeather(path)
+      this.setCurrent('winter')
+    }
+  }
 
   renderBottom = () => {
     return (
@@ -41,8 +70,10 @@ export default class ARWeatherView extends React.Component {
           width: '100%',
           height: scaleSize(80),
           backgroundColor: 'black',
-          justifyContent: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
+          paddingHorizontal: scaleSize(40),
         }}
       >
         <TouchableOpacity
@@ -53,7 +84,10 @@ export default class ARWeatherView extends React.Component {
             width: scaleSize(80),
           }}
           onPress={() => {
-            NavigationService.navigate('ChooseWeather')
+            NavigationService.navigate('ChooseWeather', {
+              currentItemKey: this.state.current,
+              onSelectCallback: key => this.setCurrent(key),
+            })
           }}
         >
           <Image
@@ -61,6 +95,28 @@ export default class ARWeatherView extends React.Component {
             style={{ width: scaleSize(60), height: scaleSize(60) }}
           />
         </TouchableOpacity>
+        {this.state.current !== '' && (
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: scaleSize(80),
+            }}
+            onPress={() => {
+              this.setVisible()
+            }}
+          >
+            <Image
+              source={
+                this.state.visible
+                  ? getPublicAssets().mapTools.tools_legend_off
+                  : getPublicAssets().mapTools.tools_legend_on
+              }
+              style={{ width: scaleSize(60), height: scaleSize(60) }}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     )
   }

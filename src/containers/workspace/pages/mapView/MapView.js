@@ -1071,6 +1071,7 @@ export default class MapView extends React.Component {
     this.props.setMap2Dto3D(false)
 
     if (Platform.OS === 'android') {
+      await SMap.onPauseMap()
       if (this.toolBox && this.toolBox.getState().isShow) {
         this.toolBox.close()
         return true
@@ -1157,7 +1158,8 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    ;(async function() {
+    (async function() {
+      // await SMap.onResumeMap()
       let bWorkspcaOpen = true
       let bDatasourceOPen = true
       let bMapOPen = true

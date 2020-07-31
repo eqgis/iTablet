@@ -46,7 +46,8 @@ export default class BottomBar extends React.Component {
       <TouchableOpacity
         key={item.key}
         style={{
-          flexDirection: 'row',
+          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
         onPress={() => {
@@ -60,7 +61,11 @@ export default class BottomBar extends React.Component {
           source={item.image}
           style={{ width: scaleSize(60), height: scaleSize(60) }}
         />
-        {item.title && <Text style={{ color: 'white' }}>{item.title}</Text>}
+        {item.title && (
+          <Text style={{ color: 'white', fontSize: scaleSize(20) }}>
+            {item.title}
+          </Text>
+        )}
       </TouchableOpacity>
     )
   }
@@ -73,7 +78,7 @@ export default class BottomBar extends React.Component {
           left: 0,
           bottom: 0,
           width: '100%',
-          height: scaleSize(80),
+          height: scaleSize(96),
           backgroundColor: 'black',
           justifyContent: 'space-between',
           flexDirection: 'row',

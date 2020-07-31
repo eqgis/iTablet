@@ -60,6 +60,12 @@ export default class ARWeatherView extends React.Component {
     }
   }
 
+  back = () => {
+    NavigationService.goBack()
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
+  }
+
   renderBottom = () => {
     return (
       <View
@@ -128,6 +134,7 @@ export default class ARWeatherView extends React.Component {
         headerProps={{
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
           navigation: this.props.navigation,
+          backAction: this.back,
           type: 'fix',
         }}
         bottomProps={{ type: 'fix' }}

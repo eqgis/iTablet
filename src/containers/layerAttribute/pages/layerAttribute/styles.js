@@ -11,7 +11,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {

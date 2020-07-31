@@ -12,7 +12,7 @@ export default StyleSheet.create({
     backgroundColor: color.bgW,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
 

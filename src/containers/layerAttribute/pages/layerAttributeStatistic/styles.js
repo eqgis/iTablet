@@ -9,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
   headerView: {

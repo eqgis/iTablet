@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
   btnsView: {

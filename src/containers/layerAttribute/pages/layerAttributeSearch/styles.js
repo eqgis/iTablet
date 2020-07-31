@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils'
-import { size } from '../../../../styles'
+import { size, color } from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {

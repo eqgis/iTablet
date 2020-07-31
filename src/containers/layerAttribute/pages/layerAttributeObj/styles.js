@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize } from '../../../../utils/index'
+import { scaleSize } from '../../../../utils'
+import { color } from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {

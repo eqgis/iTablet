@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: color.bgW,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   listItem: {

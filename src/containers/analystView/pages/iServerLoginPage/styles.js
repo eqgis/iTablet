@@ -14,7 +14,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     width: scaleSize(100),
     textAlign: 'right',
     fontSize: size.fontSize.fontSizeXXl,

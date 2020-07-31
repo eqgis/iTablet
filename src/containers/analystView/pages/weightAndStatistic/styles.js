@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { size } from '../../../../styles'
+import { size, color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 
 export default StyleSheet.create({
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
   plusBtnView: {

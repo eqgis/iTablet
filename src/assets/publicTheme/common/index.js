@@ -43,6 +43,7 @@ const icon_navigation = require('./icon_navigation.png')
 const icon_narrow = require('./icon_narrow.png')
 const icon_location = require('./icon_location.png')
 const icon_enlarge = require('./icon_enlarge.png')
+const icon_nav_option = require('./icon_nav_option.png')
 
 export default {
   icon_undo,
@@ -90,4 +91,5 @@ export default {
   icon_narrow,
   icon_location,
   icon_enlarge,
+  icon_nav_option,
 }

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     // alignItems: 'center',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {

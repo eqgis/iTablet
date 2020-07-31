@@ -1761,7 +1761,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.contentColorWhite,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     // width: scaleSize(150),
     // textAlign: 'right',
     fontSize: size.fontSize.fontSizeXXl,

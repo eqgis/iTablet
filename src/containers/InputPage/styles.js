@@ -14,7 +14,7 @@ export default StyleSheet.create({
     backgroundColor: color.separateColorGray,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     // width: scaleSize(150),
     // textAlign: 'right',
     fontSize: size.fontSize.fontSizeXXl,

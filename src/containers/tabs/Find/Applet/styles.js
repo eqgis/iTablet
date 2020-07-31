@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.content_white,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
 

@@ -7,7 +7,7 @@ export default StyleSheet.create({
     backgroundColor: color.white,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   subContainer: {

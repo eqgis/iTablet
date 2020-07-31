@@ -177,35 +177,13 @@ const getNavigationSetting = () => [
 // 视频地图设置
 const getMapARSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.POI_SETTING,
-  },
-  {
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
   },
   {
     title: getLanguage(global.language).Map_Settings.DETECT_STYLE,
   },
 ]
-// POI设置
-const getPOISettings = () => [
-  {
-    title: getLanguage(global.language).Map_Settings
-      .POI_SETTING_PROJECTION_MODE,
-    value: true,
-    iconType: 'switch',
-  },
-  {
-    title: getLanguage(global.language).Map_Settings.POI_SETTING_OVERLAP_MODE,
-    value: false,
-    iconType: 'switch',
-  },
-  // {
-  //   title: getLanguage(global.language).Map_Settings
-  //     .POI_SETTING_POLYMERIZE_MODE,
-  //   value: false,
-  //   iconType: 'switch',
-  // },
-]
+
 // 检测类型设置
 const getDetectTypesSettings = () => [
   {
@@ -850,7 +828,6 @@ export {
   transferData,
   getNavigationSetting,
   getMapARSettings,
-  getPOISettings,
   getDetectTypesSettings,
   getDetectStyleSettings,
 }

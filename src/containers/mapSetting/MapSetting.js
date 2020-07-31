@@ -73,10 +73,6 @@ export default class MapSetting extends Component {
     let newData = getThematicMapSettings()
     if (GLOBAL.Type === ChunkType.MAP_AR) {
       newData = newData.concat(getMapARSettings())
-      //ios先暂时屏蔽POI设置和检测类型
-      if (Platform.OS === 'ios') {
-        newData.splice(4, 1)
-      }
     }
     // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
     //   newData = newData.concat(getNavigationSetting())

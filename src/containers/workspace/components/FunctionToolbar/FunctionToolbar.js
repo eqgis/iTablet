@@ -165,7 +165,7 @@ export default class FunctionToolbar extends React.Component {
   }
 
   handlePosition = () => {
-    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE')
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') >= 0
     let contentHeight = this.list && this.list._listRef._totalCellLength || 0
     let offset = this.offset
     let visibleHeight

@@ -8,6 +8,7 @@ import { View, Animated } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { Const } from '../../../../constants'
 import { scaleSize, Toast, screen } from '../../../../utils'
+import { getPublicAssets } from '../../../../assets'
 import { SMap, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -255,10 +256,11 @@ export default class MapController extends React.Component {
           <Animated.View style={{ transform: [{ rotate: spin }] }}>
             <MTBtn
               style={styles.compass}
+              imageStyle={styles.btnImg}
               key={'controller_minus'}
               textColor={'black'}
               size={MTBtn.Size.NORMAL}
-              image={require('../../../../assets/mapEdit/Frenchgrey/icon_compass.png')}
+              image={getPublicAssets().common.icon_navigation}
               onPress={this.location}
             />
           </Animated.View>
@@ -276,10 +278,11 @@ export default class MapController extends React.Component {
       return (
         <MTBtn
           style={[styles.btn, styles.separator, styles.shadow]}
+          imageStyle={styles.btnImg}
           key={'controller_location'}
           textColor={'black'}
           size={MTBtn.Size.NORMAL}
-          image={require('../../../../assets/mapTool/Frenchgrey/icon_location.png')}
+          image={getPublicAssets().common.icon_location}
           onPress={this.location}
         />
       )
@@ -300,20 +303,22 @@ export default class MapController extends React.Component {
         <View style={[styles.topView, styles.shadow]}>
           <MTBtn
             style={styles.btn}
+            imageStyle={styles.btnImg}
             key={'controller_plus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={require('../../../../assets/mapTool/Frenchgrey/icon_plus.png')}
+            image={getPublicAssets().common.icon_enlarge}
             onPress={this.plus}
             onPressIn={this.map3Dplus}
             onPressOut={this.cloestimer}
           />
           <MTBtn
             style={styles.btn}
+            imageStyle={styles.btnImg}
             key={'controller_minus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={require('../../../../assets/mapTool/Frenchgrey/icon_minus.png')}
+            image={getPublicAssets().common.icon_narrow}
             onPress={this.minus}
             onPressIn={this.map3Dminus}
             onPressOut={this.cloestimer}

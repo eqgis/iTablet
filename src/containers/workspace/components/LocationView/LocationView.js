@@ -8,6 +8,7 @@ import * as React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
 
 import { constUtil, FetchUtils, scaleSize } from '../../../../utils'
+import { getPublicAssets } from '../../../../assets'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -60,7 +61,7 @@ export default class LocationView extends React.Component {
 
   render() {
     if (!this.state.visible) return null
-    let locationImg = require('../../../../assets/mapTool/Frenchgrey/icon_location.png')
+    let locationImg = getPublicAssets().common.icon_location
     return (
       <Animated.View style={styles.container}>
         <TouchableOpacity

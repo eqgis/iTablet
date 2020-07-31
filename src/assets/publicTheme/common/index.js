@@ -39,6 +39,10 @@ const icon_slide_up = require('./icon_slide_up.png')
 const icon_slide_down = require('./icon_slide_down.png')
 const icon_slide_left = require('./icon_slide_left.png')
 const icon_slide_right = require('./icon_slide.png')
+const icon_navigation = require('./icon_navigation.png')
+const icon_narrow = require('./icon_narrow.png')
+const icon_location = require('./icon_location.png')
+const icon_enlarge = require('./icon_enlarge.png')
 
 export default {
   icon_undo,
@@ -82,4 +86,8 @@ export default {
   icon_slide_down,
   icon_slide_left,
   icon_slide_right,
+  icon_navigation,
+  icon_narrow,
+  icon_location,
+  icon_enlarge,
 }

@@ -366,6 +366,8 @@ const Map_Main_Menu = {
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Nouvelles données',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Remplissez le nom',
+  MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
+  MAP_AR_SELECT_POINT_PLANE: 'to Plane',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Tournez à gauche',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Tournez à droite',

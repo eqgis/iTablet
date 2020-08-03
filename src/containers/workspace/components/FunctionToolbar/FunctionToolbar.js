@@ -416,6 +416,7 @@ export default class FunctionToolbar extends React.Component {
           this.handlePosition()
         }}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     )
   }

@@ -45,6 +45,16 @@ const icon_location = require('./icon_location.png')
 const icon_enlarge = require('./icon_enlarge.png')
 const icon_nav_option = require('./icon_nav_option.png')
 const icon_nav_share = require('./icon_nav_share.png')
+const icon_visible = require('./icon_visible.png')
+const icon_invisible = require('./icon_invisible.png')
+const icon_select = require('./icon_select.png')
+const icon_highlight_select = require('./icon_highlight_select.png')
+const icon_more_v = require('./icon_more_v.png')
+const icon_highlight_more_v = require('./icon_highlight_more_v.png')
+const icon_disable_select = require('./icon_disable_select.png')
+const icon_none = require('./icon_none.png')
+const icon_highlight_none = require('./icon_highlight_none.png')
+const icon_disable_none = require('./icon_disable_none.png')
 
 export default {
   icon_undo,
@@ -94,4 +104,14 @@ export default {
   icon_enlarge,
   icon_nav_option,
   icon_nav_share,
+  icon_visible,
+  icon_invisible,
+  icon_select,
+  icon_highlight_select,
+  icon_disable_select,
+  icon_none,
+  icon_highlight_none,
+  icon_disable_none,
+  icon_more_v,
+  icon_highlight_more_v,
 }

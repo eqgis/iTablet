@@ -300,8 +300,8 @@ export default class ProjectionTargetCoordsPage extends Component {
   }
   renderSection = ({ section }) => {
     let image = section.visible
-      ? getThemeAssets().publicAssets.icon_arrow_down
-      : getThemeAssets().publicAssets.icon_arrow_right_2
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
     return (
       <TouchableOpacity
         style={{

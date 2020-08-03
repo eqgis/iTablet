@@ -7,7 +7,6 @@ import {
   addModule,
   markModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -36,7 +35,6 @@ export default class MapEditConfig extends Module {
         addModule,
         markModule,
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

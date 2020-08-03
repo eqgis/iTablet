@@ -50,7 +50,7 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import { share3DModule, shareModule } from '../../components/ToolBar/modules'
+import { shareModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
@@ -2298,13 +2298,7 @@ export default class MapView extends React.Component {
             info = {
               key: MapHeaderButton.Share,
               image: getPublicAssets().common.icon_nav_share,
-              action: () => {
-                if (GLOBAL.Type === ChunkType.MAP_3D) {
-                  share3DModule().action()
-                } else {
-                  shareModule().action()
-                }
-              },
+              action: shareModule().action,
             }
             break
           case MapHeaderButton.Audio:
@@ -2397,6 +2391,7 @@ export default class MapView extends React.Component {
       </View>
     )
   }
+
   renderProgress = () => {
     let data
     if (this.props.downloads.length > 0) {
@@ -2768,25 +2763,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  _renderCheckAIDetec = () => {
-    return (
-      <MapSelectPoint
-        ref={ref => (GLOBAL.CHECKAIDETEC = ref)}
-        headerProps={{
-          title: '查看',
-          navigation: this.props.navigation,
-          type: 'fix',
-          backAction: async () => {
-            GLOBAL.CHECKAIDETEC.setVisible(false)
-            this.showFullMap(false)
-          },
-        }}
-      />
-    )
-  }
   getSearchClickedInfo = () => {
     return this.searchClickedInfo
   }
+
   _renderMapSelectPointHeaderRight = () => {
     if (
       GLOBAL.MapSelectPointType === 'selectPoint' ||
@@ -3103,7 +3083,7 @@ export default class MapView extends React.Component {
         }}
         bottomBar={
           // this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-          // !this.isExample &&
+          !this.isExample &&
           // !this.props.analyst.params &&
           this.renderToolBar()
         }

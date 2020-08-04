@@ -92,9 +92,9 @@ public class MainActivity extends ReactActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
-            return true;
-        } 
+//        if(keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
+//            return true;
+//        }
         return super.onKeyDown(keyCode, event);
     }
     private void initEnvironment() {

@@ -67,7 +67,7 @@ export default class Home extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       if (Platform.OS === 'android') {
-        this.props.setBackAction({ action: () => this.showMorePop() })
+        this.props.setBackAction({ action: this.showMorePop })
       }
     })
   }
@@ -302,10 +302,19 @@ export default class Home extends Component {
 
   showMorePop = event => {
     this.side = 'right'
-    this.popup.setVisible(true, {
-      x: event.nativeEvent.pageX,
-      y: event.nativeEvent.pageY,
-    })
+    if (event) {
+      this.popup.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
+    } else {
+      this.moreBtn.measure((x,y,width,height,pageX,pageY) => {
+        this.popup.setVisible(true, {
+          x: pageX,
+          y: pageY,
+        })
+      })
+    }
   }
 
   renderDialogChildren = () => {
@@ -496,6 +505,7 @@ export default class Home extends Component {
         </TouchableOpacity>
         <Text style={styles.headTitle}>{this.props.appConfig.name}</Text>
         <TouchableOpacity
+          ref={ref => this.moreBtn = ref }
           onPress={event => this.showMorePop(event)}
           style={styles.moreView}
         >

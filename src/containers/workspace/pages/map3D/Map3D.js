@@ -11,6 +11,7 @@ import {
   View,
   Text,
   TextInput,
+  BackHandler,
 } from 'react-native'
 import { SMSceneView, Point3D, Camera, SScene } from 'imobile_for_reactnative'
 import {
@@ -43,6 +44,7 @@ import { getLanguage } from '../../../../language'
 import SurfaceView from '../../../../components/SurfaceView'
 import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import { BackHandlerUtil } from '../../util'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -64,6 +66,7 @@ export default class Map3D extends React.Component {
     device: Object,
     appConfig: Object,
     mapModules: Object,
+    backActions: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     setToolbarStatus: () => {},
@@ -140,6 +143,7 @@ export default class Map3D extends React.Component {
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
+      BackHandler.addEventListener('hardwareBackPress', this.backHandler)
     } else {
       global.SimpleDialog.set({
         text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
@@ -179,6 +183,11 @@ export default class Map3D extends React.Component {
     this.circleFlyListen && this.circleFlyListen.remove()
     this.unsubscribeFocus && this.unsubscribeFocus.remove()
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
+  }
+  
+  backHandler = () => {
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   getLayers = async () => {

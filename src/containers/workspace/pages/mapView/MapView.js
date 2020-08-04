@@ -97,6 +97,7 @@ import {
   // InteractionManager,
   Image,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -105,6 +106,7 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
+import { BackHandlerUtil } from '../../util'
 
 const markerTag = 118081
 
@@ -132,6 +134,7 @@ export default class MapView extends React.Component {
     appConfig: PropTypes.object,
     mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
+    backActions: PropTypes.object,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -296,7 +299,9 @@ export default class MapView extends React.Component {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
-
+  
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+    
     if (global.isLicenseValid) {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
@@ -339,7 +344,7 @@ export default class MapView extends React.Component {
 
       this.props.setBackAction({
         key: 'MapView',
-        action: () => this.back(),
+        action: this.back,
       })
 
       SMediaCollector.setCalloutTapListener(info => {
@@ -595,6 +600,8 @@ export default class MapView extends React.Component {
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
+    
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
   addSpeechRecognizeListener = () => {
@@ -1053,6 +1060,10 @@ export default class MapView extends React.Component {
         Toast.show('删除失败')
       }
     }.bind(this)())
+  }
+  
+  backHandler = () => {
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   back = async () => {

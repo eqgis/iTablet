@@ -367,6 +367,8 @@ const Map_Main_Menu = {
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'بيانات جديدة',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'ادخل الاسم',
+  MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
+  MAP_AR_SELECT_POINT_PLANE: 'to Plane',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',

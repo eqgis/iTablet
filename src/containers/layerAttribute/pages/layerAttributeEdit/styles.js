@@ -8,7 +8,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {

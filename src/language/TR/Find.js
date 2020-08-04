@@ -26,11 +26,11 @@ const Find = {
 
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
-  APPLET_DOWNLOADED_RELOAD: '下载完成，重新加载小程序',
-  RELOAD: '重载', // 待翻译
-  APPLET_RESET_OLD_VERSION: '是否重置回之前的版本', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: '已经是最初版本', // 待翻译
-  APPLET_RESET_FAILED: '重置失败',
+  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
+  RELOAD: 'Reload',
+  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
+  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
+  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
   APPLET_RESETTING: 'Rest', // 待翻译
 }
 

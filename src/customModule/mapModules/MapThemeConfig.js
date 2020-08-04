@@ -9,7 +9,6 @@ import {
   themeModule,
   styleModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -39,7 +38,6 @@ export default class MapThemeConfig extends Module {
         themeModule,
         styleModule,
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

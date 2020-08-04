@@ -8,6 +8,7 @@ import NavigationService from '../../../../../NavigationService'
 import RoadNetData from './RoadNetData'
 import ToolbarModule from '../ToolbarModule'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class RoadNetModule extends FunctionModule {
@@ -79,6 +80,6 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODULE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODULE,
     size: 'large',
-    image: require('../../../../../../assets/Navigation/network.png'),
+    image: getThemeAssets().functionBar.icon_tool_network,
   })
 }

@@ -28,7 +28,6 @@ import {
   MapController,
   ToolBar,
   MenuAlertDialog,
-  AlertDialog,
   OverlayView,
   BackgroundOverlay,
   AnalystMapButtons,
@@ -51,11 +50,11 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import { shareModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
   Dialog,
-  SaveMapNameDialog,
   SaveDialog,
   InputDialog,
   PopView,
@@ -70,7 +69,6 @@ import {
 } from '../../../../components'
 import {
   Toast,
-  jsonUtil,
   scaleSize,
   StyleUtils,
   setSpText,
@@ -250,34 +248,6 @@ export default class MapView extends React.Component {
       isClicked: false,
       title: '',
     }
-    this.closeInfo = [
-      {
-        btnTitle: '是',
-        action: () => {
-          this.saveMap(NavigationService.goBack(this.props.nav.routes[1].key))
-          //this.saveMapAndClose()
-          //this.mapType = 'DEFAULT'
-          this.AlertDialog.setDialogVisible(false)
-        },
-      },
-      {
-        btnTitle: '否',
-        action: () => {
-          this.closeWorkspace(() =>
-            NavigationService.goBack(this.props.nav.routes[1].key),
-          )
-          // SMap.closeMap()
-          //this.mapType = 'DEFAULT'
-          this.AlertDialog.setDialogVisible(false)
-        },
-      },
-      {
-        btnTitle: '取消',
-        action: () => {
-          this.AlertDialog.setDialogVisible(false)
-        },
-      },
-    ]
 
     this.mapLoaded = false // 判断地图是否加载完成
     this.fullMap = false
@@ -1043,209 +1013,6 @@ export default class MapView extends React.Component {
     } catch (e) {
       this.setLoading(false)
     }
-  }
-
-  // 地图保存为xml(fileName, cb)
-  saveMapToXML = mapTitle => {
-    this.setLoading(true, '正在保存')
-    ;(async function() {
-      try {
-        const filePath =
-          (await FileTools.appendingHomeDirectory(ConstPath.CustomerPath)) +
-          mapTitle +
-          '.xml'
-        let config = await jsonUtil.readConfig()
-        SMap.saveMapToXML(filePath).then(result => {
-          if (!result) {
-            Toast.show('保存失败')
-            this.setLoading(false)
-          } else {
-            Toast.show('保存成功')
-            this.setLoading(false)
-            //获取数据源
-            //修改数据
-            SMap.getMapDatasourcesAlias().then(dataSourceAlias => {
-              let data = []
-              for (let i = 0; i < dataSourceAlias.length; i++) {
-                data[i] = dataSourceAlias[i].title
-              }
-
-              for (let i = 0; i < config.data[0].maps.length; i++) {
-                if (config.data[0].maps[i].mapTitle === mapTitle + '.xml') {
-                  config.data[0].maps[i].UDBName = data
-                  break
-                }
-              }
-              ;(async function() {
-                await jsonUtil.updateMapInfo(config)
-              }.bind(this)())
-            })
-          }
-        })
-      } catch (e) {
-        Toast.show('保存失败')
-        this.saveXMLDialog.setDialogVisible(false)
-        this.setLoading(false)
-      }
-    }.bind(this)())
-  }
-
-  // 地图保存为xml(fileName, cb)
-  saveMapToXMLWithDialog = ({ mapTitle }) => {
-    // this.setLoading(true, '正在保存')
-    ;(async function() {
-      try {
-        const filePath =
-          (await FileTools.appendingHomeDirectory(ConstPath.CustomerPath)) +
-          mapTitle +
-          '.xml'
-        let config = await jsonUtil.readConfig()
-        SMap.saveMapToXML(filePath).then(result => {
-          if (!result) {
-            Toast.show('保存失败')
-            this.saveXMLDialog.setDialogVisible(false)
-            // this.setLoading(false)
-          } else {
-            Toast.show('保存成功')
-            this.saveXMLDialog.setDialogVisible(false)
-            // this.setLoading(false)
-            this.mapType = 'LOAD'
-            //获取数据源
-            SMap.getMapDatasourcesAlias().then(dataSourceAlias => {
-              let data = []
-              for (let i = 0; i < dataSourceAlias.length; i++) {
-                data[i] = dataSourceAlias[i].title
-              }
-
-              jsonUtil.saveMapInfo(config, mapTitle, data)
-            })
-          }
-        })
-      } catch (e) {
-        Toast.show('保存失败')
-        this.saveXMLDialog.setDialogVisible(false)
-        // this.setLoading(false)
-      }
-    }.bind(this)())
-  }
-
-  // 地图保存
-  saveMapWithNoWorkspace = async () => {
-    SMap.isModified().then(result => {
-      if (result) {
-        //有修改
-        if (this.mapType === 'DEFAULT' || this.mapType === 'CREATE') {
-          //默认地图和创建地图
-          //输入地图名字，弹出保存框
-          this.saveXMLDialog.setDialogVisible(true)
-        } else {
-          try {
-            ;(async function() {
-              let mapTitle = await SMap.getMapName()
-              await this.saveMapToXML(mapTitle)
-            }.bind(this)())
-          } catch (e) {
-            Toast.show('保存失败')
-          }
-        }
-      }
-    })
-  }
-
-  // 地图保存为xml 同时 关闭地图
-  saveMapToXMLAndClose = () => {
-    // this.setLoading(true, '正在保存')
-    ;(async function() {
-      try {
-        let mapTitle = await SMap.getMapName()
-        const filePath =
-          (await FileTools.appendingHomeDirectory(ConstPath.CustomerPath)) +
-          mapTitle +
-          '.xml'
-        let config = await jsonUtil.readConfig()
-
-        SMap.saveMapToXML(filePath).then(result => {
-          if (!result) {
-            Toast.show('保存失败')
-            this.saveMapDialog.setDialogVisible(false)
-            this.setLoading(false)
-          } else {
-            Toast.show('保存成功')
-            this.setLoading(false)
-            this.saveMapDialog.setDialogVisible(false)
-            //获取数据源
-            //修改数据
-            SMap.getMapDatasourcesAlias().then(dataSourceAlias => {
-              let data = []
-              for (let i = 0; i < dataSourceAlias.length; i++) {
-                data[i] = dataSourceAlias[i].title
-              }
-
-              jsonUtil.saveMapInfo(config, mapTitle, data)
-            })
-          }
-        })
-      } catch (e) {
-        Toast.show('保存失败')
-        this.saveMapDialog.setDialogVisible(false)
-        this.setLoading(false)
-      }
-    }.bind(this)())
-  }
-
-  // 地图保存 同时 关闭地图
-  saveMapAndClose = () => {
-    this.container.setLoading(
-      true,
-      getLanguage(this.props.language).Prompt.SAVING,
-    )
-    ;(async function() {
-      try {
-        let mapTitle = await SMap.getMapName()
-        const filePath =
-          (await FileTools.appendingHomeDirectory(ConstPath.CustomerPath)) +
-          mapTitle +
-          '.xml'
-        let config = await jsonUtil.readConfig()
-
-        SMap.saveMapToXML(filePath).then(result => {
-          if (!result) {
-            Toast.show('保存失败')
-            this.AlertDialog.setDialogVisible(false)
-            this.setLoading(false)
-          } else {
-            Toast.show(
-              getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
-            )
-            this.container.setLoading(false)
-            this.AlertDialog.setDialogVisible(false)
-            //获取数据源
-            //修改数据
-            SMap.getMapDatasourcesAlias().then(dataSourceAlias => {
-              let data = []
-              for (let i = 0; i < dataSourceAlias.length; i++) {
-                data[i] = dataSourceAlias[i].title
-              }
-
-              for (let i = 0; i < config.data[0].maps.length; i++) {
-                if (config.data[0].maps[i].mapTitle === mapTitle + '.xml') {
-                  config.data[0].maps[i].UDBName = data
-                  break
-                }
-              }
-              SMap.closeMap()
-              ;(async function() {
-                await jsonUtil.updateMapInfo(config)
-              }.bind(this)())
-            })
-          }
-        })
-      } catch (e) {
-        Toast.show('保存失败')
-        this.AlertDialog.setDialogVisible(false)
-        this.setLoading(false)
-      }
-    }.bind(this)())
   }
 
   // 删除图层中指定对象
@@ -2444,7 +2211,7 @@ export default class MapView extends React.Component {
   //   //         title: getLanguage(this.props.language).Map_Main_Menu
   //   //           .NETWORK_MODEL_FILE,
   //   //         visible: true,
-  //   //         image: getThemeAssets().functionBar.rightbar_network_model,
+  //   //         image: getThemeAssets().functionBar.icon_tool_network,
   //   //         data: models || [],
   //   //       },
   //   //     ]
@@ -2507,23 +2274,31 @@ export default class MapView extends React.Component {
     if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
       return null
     let itemWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 80 : 65
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 50 : 60
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
     const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type
     })
     let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
-      MapHeaderButton.Audio,
-      MapHeaderButton.Undo,
+      MapHeaderButton.Share,
       MapHeaderButton.Search,
+      MapHeaderButton.Undo,
+      MapHeaderButton.Audio,
     ]
     let buttons = []
     for (let i = 0; i < buttonInfos.length; i++) {
       let info
       if (typeof buttonInfos[i] === 'string') {
         switch (buttonInfos[i]) {
+          case MapHeaderButton.Share:
+            info = {
+              key: MapHeaderButton.Share,
+              image: getPublicAssets().common.icon_nav_share,
+              action: shareModule().action,
+            }
+            break
           case MapHeaderButton.Audio:
             info = {
               key: MapHeaderButton.Audio,
@@ -2594,7 +2369,7 @@ export default class MapView extends React.Component {
         <MTBtn
           key={'CoworkMember'}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          image={require('../../../../assets/home/Frenchgrey/icon_else_selected.png')}
+          image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {
             NavigationService.navigate('CoworkMember')
           }}
@@ -2614,6 +2389,7 @@ export default class MapView extends React.Component {
       </View>
     )
   }
+
   renderProgress = () => {
     let data
     if (this.props.downloads.length > 0) {
@@ -2985,25 +2761,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  _renderCheckAIDetec = () => {
-    return (
-      <MapSelectPoint
-        ref={ref => (GLOBAL.CHECKAIDETEC = ref)}
-        headerProps={{
-          title: '查看',
-          navigation: this.props.navigation,
-          type: 'fix',
-          backAction: async () => {
-            GLOBAL.CHECKAIDETEC.setVisible(false)
-            this.showFullMap(false)
-          },
-        }}
-      />
-    )
-  }
   getSearchClickedInfo = () => {
     return this.searchClickedInfo
   }
+
   _renderMapSelectPointHeaderRight = () => {
     if (
       GLOBAL.MapSelectPointType === 'selectPoint' ||
@@ -3304,6 +3065,9 @@ export default class MapView extends React.Component {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
+          headerStyle: {
+            right: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? scaleSize(96) : 0,
+          },
           backAction: event => {
             this.backPositon = {
               x: event.nativeEvent.pageX,
@@ -3316,9 +3080,9 @@ export default class MapView extends React.Component {
           headerRight: this.renderHeaderRight(),
         }}
         bottomBar={
-          this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
+          // this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
           !this.isExample &&
-          !this.props.analyst.params &&
+          // !this.props.analyst.params &&
           this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
@@ -3344,13 +3108,6 @@ export default class MapView extends React.Component {
           )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
-        {/*{this.props.map2Dto3D && (*/}
-        {/*<Map2Dto3D*/}
-        {/*mapIs3D={this.props.mapIs3D}*/}
-        {/*openMap={this.props.openMap}*/}
-        {/*openWorkspace={this.props.openWorkspace}*/}
-        {/*/>*/}
-        {/*)}*/}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {global.isLicenseValid &&
           GLOBAL.Type === ChunkType.MAP_AR &&
@@ -3368,23 +3125,11 @@ export default class MapView extends React.Component {
             />
           )}
         {this._renderAIDetectChange()}
-        {/*{this._renderCheckAIDetec()}*/}
-        {/*{this.state.showAIDetect && (<AIMapSuspensionDialog ref={ref => (GLOBAL.AIMapSuspensionDialog = ref)}/>)}*/}
-        {/*{this.state.showAIDetect && (<View style={{height: '100%', width: '100%'}}><SMMapSuspension*/}
-        {/*ref={ref => (GLOBAL.SMMapSuspension = ref)}/></View>)}*/}
-        {/*{!this.isExample &&*/}
-        {/*!this.props.analyst.params &&*/}
-        {/*this.state.showAIDetect &&*/}
-        {/*this.renderAIFunctionToolbar()}*/}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
         {!this.state.showAIDetect && this.renderMapController()}
-        {/*{!this.isExample &&*/}
-        {/*GLOBAL.Type === ChunkType.MAP_NAVIGATION &&*/}
-        {/*this.props.mapNavigation.isPointShow &&*/}
-        {/*this._renderNavigationView()}*/}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
@@ -3427,8 +3172,8 @@ export default class MapView extends React.Component {
           GLOBAL.Type === ChunkType.MAP_AR &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
-        {!this.isExample && this.renderMapNavIcon()}
-        {!this.isExample && this.renderMapNavMenu()}
+        {/*{!this.isExample && this.renderMapNavIcon()}*/}
+        {/*{!this.isExample && this.renderMapNavMenu()}*/}
         {!this.state.showAIDetect && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
@@ -3455,23 +3200,6 @@ export default class MapView extends React.Component {
           confirmBtnTitle={getLanguage(this.props.language).Prompt.DELETE}
           cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         />
-        <SaveMapNameDialog
-          ref={ref => (this.saveXMLDialog = ref)}
-          confirmAction={this.saveMapToXMLWithDialog}
-          showWsName={this.showDialogCaption}
-          mapTitle={this.state.mapTitle}
-        />
-        <SaveMapNameDialog
-          ref={ref => (this.saveMapDialog = ref)}
-          confirmAction={this.saveMapToXMLAndClose}
-          showWsName={this.showDialogCaption}
-          mapTitle={this.state.mapTitle}
-        />
-        <AlertDialog
-          ref={ref => (this.AlertDialog = ref)}
-          childrens={this.closeInfo}
-          Alerttitle={getLanguage(this.props.language).Prompt.SAVE_TITLE}
-        />
         <SaveDialog
           ref={ref => (this.SaveDialog = ref)}
           confirmAction={data => this.saveAsMap(data.mapTitle)}
@@ -3497,14 +3225,6 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
-        {/*{GLOBAL.Type === ChunkType.MAP_NAVIGATION && (*/}
-        {/*  <PopView*/}
-        {/*    showFullMap={this.showFullMap}*/}
-        {/*    ref={ref => (this.selectList = ref)}*/}
-        {/*  >*/}
-        {/*    {this.renderNetworkSelectList()}*/}
-        {/*  </PopView>*/}
-        {/*)}*/}
         <AudioDialog
           ref={ref => (GLOBAL.AudioDialog = ref)}
           defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
@@ -3559,16 +3279,6 @@ export default class MapView extends React.Component {
             </View>
           </Dialog>
         )}
-        {/*{GLOBAL.Type === ChunkType.MAP_NAVIGATION && (*/}
-        {/*    <InputDialog*/}
-        {/*        ref={ref=>(GLOBAL.SMOOTHDIALOG = ref)}*/}
-        {/*        cancelAction={()=>{GLOBAL.SMOOTHDIALOG.setDialogVisible(false)}}*/}
-        {/*        confirmAction={()=>{console.warn('confirm()')}}*/}
-        {/*        keyboardType={'numeric'}*/}
-        {/*        value={2}*/}
-        {/*        placeholder={'平滑系数'}*/}
-        {/*    />*/}
-        {/*)}*/}
         {this.renderMessageMenu()}
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}

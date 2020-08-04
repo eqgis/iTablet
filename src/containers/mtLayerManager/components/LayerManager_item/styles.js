@@ -20,20 +20,14 @@ export default StyleSheet.create({
     height: scaleSize(80),
   },
   rowOne: {
-    // flex: 1,
-    paddingLeft: scaleSize(14),
-    height: scaleSize(80),
-    padding: scaleSize(6),
+    height: scaleSize(98),
+    paddingHorizontal: scaleSize(20),
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent:'space-between',
   },
   btn_container: {
-    // height: scaleSize(80),
-    // width:46*3,
     alignItems: 'center',
     flexDirection: 'row',
-    // justifyContent:'space-between',
   },
   btn: {
     height: scaleSize(50),
@@ -50,16 +44,20 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   btn_image: {
-    height: scaleSize(40),
-    width: scaleSize(40),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
-  btn_image_samll: {
+  btn_image_small: {
     height: scaleSize(30),
     width: scaleSize(30),
   },
+  btn_image_big: {
+    height: scaleSize(52),
+    width: scaleSize(52),
+  },
   more_image: {
-    height: scaleSize(60),
-    width: scaleSize(60),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
   btnImage: {
     // height: scaleSize(40),
@@ -89,7 +87,7 @@ export default StyleSheet.create({
     width: constUtil.WIDTH,
     backgroundColor: 'white',
   },
-  samllImage: {
+  smallImage: {
     width: scaleSize(60),
     height: scaleSize(60),
   },

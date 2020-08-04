@@ -18,6 +18,8 @@ export default class ChooseWeather extends React.Component {
     super(props)
     let params = this.props.navigation.state.params || {}
     this.point = params.point
+    this.currentItemKey = params.currentItemKey || ''
+    this.onSelectCallback = params.onSelectCallback
     this.state = {
       data: this.weatherData,
     }
@@ -48,6 +50,8 @@ export default class ChooseWeather extends React.Component {
         item={item}
         downloads={this.props.downloads}
         downloadFile={this.props.downloadFile}
+        currentItemKey={this.currentItemKey}
+        onSelectCallback={this.onSelectCallback}
       />
     )
   }
@@ -86,6 +90,7 @@ class WeatherItem extends React.Component {
     currentItemKey: String,
     downloads: Object,
     downloadFile: () => {},
+    onSelectCallback: () => {},
   }
 
   constructor(props) {
@@ -252,6 +257,8 @@ class WeatherItem extends React.Component {
             onPress={() => {
               if (this.state.status === 1) {
                 SARWeather.setWeather(this.path)
+                this.props.onSelectCallback &&
+                  this.props.onSelectCallback(this.props.item.key)
                 NavigationService.goBack()
               } else if (this.state.status === 0) {
                 this.download(this.props.item.key)

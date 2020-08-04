@@ -13,10 +13,11 @@ const Analyst_Modules = {
   CONNECTIVITY_ANALYSIS: 'Analyse de connectivité',
   FIND_TSP_PATH: 'Rechercher le chemin TSP',
   TRACING_ANALYSIS: 'Analyse de traçage',
-
-  REGISTRATION_CREATE: '新建配准',
-  REGISTRATION_SPEEDINESS: '快速配准',
-  PROJECTION_TRANSFORMATION: '投影转换',
+  
+  // 待翻译
+  REGISTRATION_CREATE: 'New Registration',
+  REGISTRATION_SPEEDINESS: 'Rapid Registration',
+  PROJECTION_TRANSFORMATION: 'Projection Transformation',
 }
 
 const Analyst_Methods = {
@@ -187,120 +188,122 @@ const Analyst_Labels = {
   FUNCTION: 'Fonction',
   SHOW_STATISTICS: 'Afficher les statistiques',
   EXPORT_TO_ALBUM: "Exporter vers l'album",
-
-  REGISTRATION_DATASET: '配准数据',
-  REGISTRATION_REFER_DATASET_ADD: '添加参考数据',
-  REGISTRATION: '配准',
-  REGISTRATION_ARITHMETIC: '配准算法',
-  REGISTRATION_LINE: '线性配准（至少4个控制点）',
-  REGISTRATION_QUADRATIC: '二次多项式配准（至少7个控制点）',
-  REGISTRATION_RECTANGLE: '矩形配准（2个控制点）',
-  REGISTRATION_OFFSET: '偏移配准（1个控制点）',
-  REGISTRATION_LINE_: '线性配准',
-  REGISTRATION_QUADRATIC_: '二次多项式配准',
-  REGISTRATION_RECTANGLE_: '矩形配准',
-  REGISTRATION_OFFSET_: '偏移配准',
-  REGISTRATION_ASSOCIATION: '关联浏览',
-
-  REGISTRATION_ASSOCIATION_CLOCE: '取消关联',
-  REGISTRATION_EXECUTE: '执行',
-  REGISTRATION_EXECUTE_SUCCESS: '执行成功',
-  REGISTRATION_EXECUTE_FAILED: '执行失败',
-  REGISTRATION_SAVE_AS: '另存',
-  REGISTRATION_RESAMPLE: '结果重采样',
-  REGISTRATION_SAMPLE_MODE: '采样模式',
-  REGISTRATION_SAMPLE_MODE_NO: '无',
-  REGISTRATION_SAMPLE_MODE_NEAR: '最邻近法',
-  REGISTRATION_SAMPLE_MODE_BILINEARITY: '双线性内插法',
-  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: '三次卷积内插法',
-  REGISTRATION_SAMPLE_PIXEL: '采样像素',
-  REGISTRATION_RESULT_DATASET: '目标数据集',
-  REGISTRATION_RESULT_DATASOURCE: '目标数据源',
-  REGISTRATION_ORIGINAL_DATASOURCE: '原始数据',
-  REGISTRATION_POINTS_DETAIL: '查看',
-  REGISTRATION_EXECUTING: '执行中',
-  REGISTRATION_ENUMBER: '序号',
-  REGISTRATION_ORIGINAL: '源点',
-  REGISTRATION_TAREGT: '目标点',
-  REGISTRATION_RESELECT_POINT: '重新选点',
-  REGISTRATION_EXPORT: '导出',
-  REGISTRATION_EXPORT_SUCCESS: '导出成功',
-  REGISTRATION_EXPORT_FAILED: '导出失败',
-  REGISTRATION_EXPORT_FILE_NAME: '配准信息文件名称',
-  REGISTRATION_EXPORT_FILE: '配准信息文件',
-  REGISTRATION_PLEASE_SELECT: '请选择',
-  REGISTRATION_NOT_SETLECT_DATASET: '请选择配准数据集',
-  REGISTRATION_NOT_SETLECT_REFER_DATASET: '请选择参考数据集',
+  
+  // 待翻译
+  REGISTRATION_DATASET: 'Registration dataset',
+  REGISTRATION_REFER_DATASET_ADD: 'Registration refer dataset add',
+  REGISTRATION: 'Registration',
+  REGISTRATION_ARITHMETIC: 'Registration arithmetic',
+  REGISTRATION_LINE: 'Registration line (at least 4 control points)',
+  REGISTRATION_QUADRATIC: 'Registration quadratic (at least 7 control points)',
+  REGISTRATION_RECTANGLE: 'Registration rectangle (2 control points)',
+  REGISTRATION_OFFSET: 'Registration offset (1 control points)',
+  REGISTRATION_LINE_: 'Registration line',
+  REGISTRATION_QUADRATIC_: 'Registration quadratic',
+  REGISTRATION_RECTANGLE_: 'Registration rectangle',
+  REGISTRATION_OFFSET_: 'Registration offset',
+  REGISTRATION_ASSOCIATION: 'Association',
+  
+  REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
+  REGISTRATION_EXECUTE: 'Run',
+  REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
+  REGISTRATION_EXECUTE_FAILED: 'Execute failed',
+  REGISTRATION_SAVE_AS: 'Save as',
+  REGISTRATION_RESAMPLE: 'Result resampling',
+  REGISTRATION_SAMPLE_MODE: 'Sampling mode',
+  REGISTRATION_SAMPLE_MODE_NO: 'No',
+  REGISTRATION_SAMPLE_MODE_NEAR: 'The method of adjacent',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilinear interpolation',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Cubic convolution interpolation',
+  REGISTRATION_SAMPLE_PIXEL: 'Sample pixel',
+  REGISTRATION_RESULT_DATASET: 'Result dataset',
+  REGISTRATION_RESULT_DATASOURCE: 'Result datasource',
+  REGISTRATION_ORIGINAL_DATASOURCE: 'Original dataset',
+  REGISTRATION_POINTS_DETAIL: 'Detail',
+  REGISTRATION_EXECUTING: 'In progress',
+  REGISTRATION_ENUMBER: 'Serial number',
+  REGISTRATION_ORIGINAL: 'Source',
+  REGISTRATION_TAREGT: 'Target',
+  REGISTRATION_RESELECT_POINT: 'Reselect point',
+  REGISTRATION_EXPORT: 'Export',
+  REGISTRATION_EXPORT_SUCCESS: 'Export success',
+  REGISTRATION_EXPORT_FAILED: 'Export failed',
+  REGISTRATION_EXPORT_FILE_NAME: 'Export file name',
+  REGISTRATION_EXPORT_FILE: 'Registration info file',
+  REGISTRATION_PLEASE_SELECT: 'Please select',
+  REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
   //投影转换
-  PROJECTION_SOURCE_COORDS: '源坐标系',
-  PROJECTION_COORDS_NAME: '坐标系名称',
-  PROJECTION_COORDS_UNIT: '坐标单位',
-  PROJECTION_GROUND_DATUM: '大地基准面',
-  PROJECTION_REFERENCE_ELLIPSOID: '参考椭球体',
-
-  PROJECTION_CONVERT_SETTING: '参考系转换设置',
-  PROJECTION_CONVERT_MOTHED: '转换方法',
-  PROJECTION_PARAMETER_SETTING: '参数设置',
-  BASIC_PARAMETER: '基本参数',
-  ROTATION_ANGLE_SECOND: '旋转角度(秒)',
-  OFFSET: '偏移量',
-  RATIO_DIFFERENCE: '比例差',
-  TARGET_COORDS: '目标坐标系',
-  COPY: '复制',
-  RESETING: '重设',
-  GEOCOORDSYS: '地理坐标系',
-  PRJCOORDSYS: '投影坐标系',
-  CONVERTTING: '转换中',
-  CONVERT_SUCCESS: '转换成功',
-  CONVERT_FAILED: '转换失败',
+  PROJECTION_SOURCE_COORDS: 'Source Coords',
+  PROJECTION_COORDS_NAME: 'Coords Name',
+  PROJECTION_COORDS_UNIT: 'Coords Unit',
+  PROJECTION_GROUND_DATUM: 'Ground Datum',
+  PROJECTION_REFERENCE_ELLIPSOID: 'Reference Ellipsoid',
+  
+  PROJECTION_CONVERT_SETTING: 'Reference system conversion settings',
+  PROJECTION_CONVERT_MOTHED: 'Convert method',
+  PROJECTION_PARAMETER_SETTING: 'Parameter Setting',
+  BASIC_PARAMETER: 'Basic Parameter',
+  ROTATION_ANGLE_SECOND: 'Rotation Angle (second)',
+  OFFSET: 'Offset',
+  RATIO_DIFFERENCE: 'Ratio Difference',
+  TARGET_COORDS: 'Target Coords',
+  COPY: 'Copy',
+  RESETING: 'Reset',
+  GEOCOORDSYS: 'Geographic coordinate system',
+  PRJCOORDSYS: 'Projected coordinate system',
+  CONVERTTING: 'Convertting',
+  CONVERT_SUCCESS: 'Convert success',
+  CONVERT_FAILED: 'Convert failed',
   ARITHMETIC: 'algorithme',
 }
 
+// 待翻译
 const Convert_Unit = {
   ///  毫米。
-  MILIMETER: '毫米',
+  MILIMETER: 'Milimeter',
   /// 平方毫米。
-  SQUAREMILIMETER: '平方毫米',
+  SQUAREMILIMETER: 'Mm2',
   ///  厘米。
-  CENTIMETER: '厘米',
+  CENTIMETER: 'cm',
   /// 平方厘米。
-  SQUARECENTIMETER: '平方厘米',
+  SQUARECENTIMETER: 'cm2',
   /// 英寸。
-  INCH: '英寸',
+  INCH: 'inch',
   /// 平方英寸。
-  SQUAREINCH: '平方英寸',
+  SQUAREINCH: 'Square inch',
   /// 分米。
-  DECIMETER: '分米',
+  DECIMETER: 'Dm',
   /// 平方分米。
-  SQUAREDECIMETER: '平方分米',
+  SQUAREDECIMETER: 'Square decimetres',
   ///  英尺。
-  FOOT: '英尺',
+  FOOT: 'Foot',
   ///  平方英尺。
-  SQUAREFOOT: '平方英尺',
+  SQUAREFOOT: 'Square feet',
   ///  码。
-  YARD: '码',
+  YARD: 'Yard',
   ///  平方码。
-  SQUAREYARD: '平方码',
+  SQUAREYARD: 'Square yard',
   ///  米。
-  METER: '米',
+  METER: 'Meter',
   ///  平方米。
-  SQUAREMETER: '平方米',
+  SQUAREMETER: 'Square meter',
   /// 千米。
-  KILOMETER: '千米',
+  KILOMETER: 'km',
   /// 平方千米。
-  SQUAREKILOMETER: '平方千米',
+  SQUAREKILOMETER: 'square kilometer',
   /// 平方英里。
-  MILE: '平方英里',
+  MILE: 'Square mile',
   /// 英里。
-  SQUAREMILE: '英里',
+  SQUAREMILE: 'mile',
   ///  秒。
-  SECOND: '秒',
+  SECOND: 'second',
   ///  分。
-  MINUTE: '分',
+  MINUTE: 'Minute',
   ///  度。
-  DEGREE: '度',
+  DEGREE: 'degree',
   /// 弧度。
-  RADIAN: '弧度',
+  RADIAN: 'radian',
 }
 
 const Analyst_Params = {
@@ -404,11 +407,12 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: "Veuillez d'abord sélectionner la source de données",
   SELECT_DATA_SET_FIRST: "Veuillez d'abord sélectionner l'ensemble de données",
   PLEASE_SELECT_A_REGION: 'Veuillez sélectionner une région',
-  REGISTRATION_LINE_POINTS: '请设置至少4个控制点',
-  REGISTRATION_QUADRATIC_POINTS: '请设置至少7个控制点',
-  REGISTRATION_RECTANGLE_POINTS: '请设置2个控制点',
-  REGISTRATION_OFFSET_POINTS: '请设置1个控制点',
-  REGISTRATION_POINTS_NUMBER_ERROR: '控制点数量不匹配',
+  // 待翻译
+  REGISTRATION_LINE_POINTS: 'Please set at least 4 control points',
+  REGISTRATION_QUADRATIC_POINTS: 'Please set at least 7 control points',
+  REGISTRATION_RECTANGLE_POINTS: 'Please set 2 control points',
+  REGISTRATION_OFFSET_POINTS: 'Please set 1 control point',
+  REGISTRATION_POINTS_NUMBER_ERROR: 'The number of control points does not match',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

@@ -32,6 +32,14 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: '已经是最初版本',
   APPLET_RESETTING: '正在重置',
   APPLET_RESET_FAILED: '重置失败',
+  
+  PUBLIC_MAP_INFO: '提供用户公开发布的地图服务',
+  PUBLIC_DATA_INFO: '提供用户公开发布的多类型数据',
+  SUPERMAP_INFO: '分享公司最新动态及品牌活动',
+  SUPERMAP_KNOW_INFO: '获取专业的技术服务与业务咨询',
+  SUPERMAP_FORUM_INFO: '欢迎来到SuperMap技术问答社区',
+  GIS_ACADEMY_INFO: '提供海量SuperMap GIS相关课程',
+  ONLINE_COWORK_INFO: '我再想想',
 }
 
 export { Find }

@@ -2,6 +2,7 @@ import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
 class MarkModule extends FunctionModule {
@@ -23,6 +24,6 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
     size: 'large',
-    image: require('../../../../../../assets/Navigation/navi_icon.png'),
+    image: getThemeAssets().functionBar.icon_tool_navigation,
   })
 }

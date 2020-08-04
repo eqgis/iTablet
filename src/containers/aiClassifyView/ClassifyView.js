@@ -12,7 +12,7 @@ import {
   AppState,
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
-import { getThemeAssets } from '../../assets'
+import { getThemeAssets, getPublicAssets } from '../../assets'
 import { SAIClassifyView, SMediaCollector } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { getLanguage } from '../../language'
@@ -741,7 +741,7 @@ export default class ClassifyView extends React.Component {
           headerRight: [
             <MTBtn
               key={'settings'}
-              image={getThemeAssets().ar.toolbar.icon_classify_settings}
+              image={getPublicAssets().common.icon_nav_option}
               imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
               onPress={() => this.openAlbum()}
             />,

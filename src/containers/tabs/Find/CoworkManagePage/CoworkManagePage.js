@@ -8,6 +8,7 @@ import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import { UserType } from '../../../../constants'
+import { color } from '../../../../styles'
 
 export default class CoworkManagePage extends React.Component {
   props: {
@@ -97,7 +98,7 @@ export default class CoworkManagePage extends React.Component {
           }
         }}
       >
-        <Text style={{ fontSize: scaleSize(24), color: 'white' }}>
+        <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
           {getLanguage(global.language).Prompt.CREATE}
         </Text>
       </TouchableOpacity>

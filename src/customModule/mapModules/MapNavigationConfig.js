@@ -10,7 +10,6 @@ import {
   roadNetModule,
   incrementModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -33,7 +32,6 @@ export default class MapNavigationConfig extends Module {
         roadNetModule,
         incrementModule,
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

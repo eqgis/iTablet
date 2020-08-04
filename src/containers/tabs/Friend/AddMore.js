@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     // width: scaleSize(300),
     // height: scaleSize(170),
     position: 'absolute',
-    left: scaleSize(25),
+    right: scaleSize(25),
     top: Top,
     paddingVertical: scaleSize(5),
     paddingLeft: scaleSize(20),

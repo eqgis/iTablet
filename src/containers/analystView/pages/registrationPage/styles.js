@@ -9,7 +9,7 @@ export default StyleSheet.create({
     height: '100%',
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
   headerBtnTitleDisable: {

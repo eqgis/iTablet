@@ -32,7 +32,7 @@ const lightTheme = {
   transOverlay: 'rgba(0, 0, 0, 0)',
   transView: 'rgba(240, 240, 240, 0.85)',
   blackBg: '#353537',
-  bgW: '#FBFBFB',
+  bgW: '#F9F9F9',
   bgG: '#A0A0A0',
   switch: '#4680DF',
   // selected: '#4680DF',
@@ -42,6 +42,7 @@ const lightTheme = {
   fontColorBlack: '#181818',
   fontColorGray: '#A0A0A0',
   fontColorGray2: '#9C9C9C',
+  fontColorGray3: '#8A8A8F',
 
   itemColorWhite: '#FBFBFB',
   itemColorBlack: '#181818',

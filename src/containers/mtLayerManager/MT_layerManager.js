@@ -25,6 +25,7 @@ import {
 } from '../../constants'
 import { color, size } from '../../styles'
 import {
+  getPublicAssets,
   getThemeAssets,
   getLayerIconByType,
   getThemeIconByType,
@@ -37,6 +38,7 @@ import {
 } from '../workspace/components/ToolBar/modules'
 import NavigationService from '../../containers/NavigationService'
 import { getLanguage } from '../../language'
+import styles from './styles'
 
 export default class MT_layerManager extends React.Component {
   props: {
@@ -776,140 +778,53 @@ export default class MT_layerManager extends React.Component {
 
   renderSection = ({ section }) => {
     let image = section.visible
-      ? getThemeAssets().publicAssets.icon_arrow_down
-      : getThemeAssets().publicAssets.icon_arrow_right_2
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
+    let action, rightIcon
     if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
-      return (
-        <TouchableOpacity
-          style={{
-            height: scaleSize(80),
-            backgroundColor: color.bgW,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            this.refreshList(section)
-          }}
-        >
-          <Image
-            source={image}
-            style={{
-              width: scaleSize(40),
-              height: scaleSize(40),
-              marginLeft: scaleSize(20),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: scaleSize(25),
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: size.fontSize.fontSizeXXl,
-              color: color.content,
-            }}
-          >
-            {section.title}
-          </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                height: scaleSize(50),
-                width: scaleSize(60),
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: scaleSize(10),
-              }}
-              onPress={this.tool_row}
-            >
-              <Image
-                resizeMode={'contain'}
-                style={{ height: scaleSize(60), width: scaleSize(60) }}
-                source={getThemeAssets().mine.mine_my_plot_new}
-              />
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      )
+      action = this.tool_row
+      rightIcon = getThemeAssets().publicAssets.icon_edit
     } else {
-      return (
-        <TouchableOpacity
-          style={{
-            height: scaleSize(80),
-            backgroundColor: color.bgW,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            this.refreshList(section)
-          }}
-        >
-          <Image
-            source={image}
-            style={{
-              width: scaleSize(40),
-              height: scaleSize(40),
-              marginLeft: scaleSize(20),
-            }}
-          />
-          <Text
-            style={{
-              marginLeft: scaleSize(25),
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: size.fontSize.fontSizeXXl,
-              color: color.content,
-            }}
-          >
+      action = () => this.setAllLayersVisible(section)
+      rightIcon = this.state.allLayersVisible
+        ? getPublicAssets().common.icon_invisible
+        : getPublicAssets().common.icon_visible
+    }
+    return (
+      <TouchableOpacity
+        style={styles.sectionHeader}
+        onPress={() => {
+          this.refreshList(section)
+        }}
+      >
+        <Image
+          resizeMode={'contain'}
+          source={image}
+          style={styles.icon_big}
+        />
+        <View style={styles.sectionContent}>
+          <Text style={styles.sectionTitle}>
             {section.title}
           </Text>
           {section.title ===
-            getLanguage(this.props.language).Map_Layer.LAYERS && (
-            <Text
-              style={{
-                fontSize: scaleSize(20),
-                color: '#A0A0A0',
-              }}
-            >
+          getLanguage(this.props.language).Map_Layer.LAYERS && (
+            <Text style={styles.sectionSubTitle}>
               {getLanguage(global.language).Prompt.LONG_PRESS_TO_SORT}
             </Text>
           )}
-          {section.title ===
-            getLanguage(this.props.language).Map_Layer.LAYERS && (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  height: scaleSize(80),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: scaleSize(10),
-                }}
-                onPress={() => this.setAllLayersVisible(section)}
-              >
-                <Text style={{ fontSize: scaleSize(24), color: '#A0A0A0' }}>
-                  {this.state.allLayersVisible
-                    ? getLanguage(global.language).Prompt.SET_ALL_MAP_INVISIBLE
-                    : getLanguage(global.language).Prompt.SET_ALL_MAP_VISIBLE}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+        </View>
+        <TouchableOpacity
+          style={styles.rightIconView}
+          onPress={action}
+        >
+          <Image
+            resizeMode={'contain'}
+            style={styles.icon}
+            source={rightIcon}
+          />
         </TouchableOpacity>
-      )
-    }
+      </TouchableOpacity>
+    )
   }
 
   renderToolBar = () => {
@@ -939,7 +854,7 @@ export default class MT_layerManager extends React.Component {
           getItemLayout={this.getItemLayout}
           keyExtractor={(item, index) => index.toString()}
           initialNumToRender={15}
-          ItemSeparatorComponent={this.renderItemSeparator}
+          // ItemSeparatorComponent={this.renderItemSeparator}
           renderSectionFooter={this.renderSectionFooter}
         />
       </View>
@@ -988,7 +903,7 @@ export default class MT_layerManager extends React.Component {
           flexDirection: 'column',
           width: '100%',
           height: scaleSize(10),
-          backgroundColor: color.separateColorGray,
+          backgroundColor: color.bgW,
         }}
       />
     )
@@ -1024,7 +939,6 @@ export default class MT_layerManager extends React.Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           title:
-            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
             this.props.mapModules.modules[
               this.props.mapModules.currentMapModule
             ].chunk.title,

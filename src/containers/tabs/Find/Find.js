@@ -20,6 +20,7 @@ import { scaleSize, OnlineServicesUtils } from '../../../utils'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
+import FindItem from './FindItem'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
@@ -166,104 +167,25 @@ export default class Find extends Component {
   _renderItem = (
     itemRequire = {
       title: '',
+      subTitle: '',
       leftImagePath: '',
+      rightImagePath: '',
       isInformSpot: false,
       onClick: () => {
         Toast.show('test')
       },
     },
-    itemOptions = {
-      itemWidth: '100%',
-      itemHeight: scaleSize(90),
-      fontSize: size.fontSize.fontSizeXl,
-      imageWidth: scaleSize(45),
-      imageHeight: scaleSize(45),
-      rightImagePath: require('../../../assets/Mine/mine_my_arrow.png'),
-    },
   ) => {
-    const { title, leftImagePath, isInformSpot, onClick } = itemRequire
-    const {
-      itemWidth,
-      itemHeight,
-      fontSize,
-      imageWidth,
-      imageHeight,
-      rightImagePath,
-    } = itemOptions
-    let imageColor = color.imageColorBlack
-    let txtColor = color.fontColorBlack
+    const { title, subTitle, leftImagePath, rightImagePath, isInformSpot, onClick } = itemRequire
     return (
-      <View style={{ flex: 1 }} display={this.state.display}>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            width: itemWidth,
-            height: itemHeight,
-            alignItems: 'center',
-            paddingLeft: 15,
-          }}
-          onPress={onClick}
-        >
-          <View>
-            <Image
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-                tintColor: imageColor,
-              }}
-              resizeMode={'contain'}
-              source={leftImagePath}
-            />
-            {isInformSpot ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  backgroundColor: 'red',
-                  height: scaleSize(15),
-                  width: scaleSize(15),
-                  borderRadius: scaleSize(15),
-                  right: scaleSize(0),
-                  top: scaleSize(-5),
-                }}
-              />
-            ) : null}
-          </View>
-          <View
-            style={{
-              marginLeft: 15,
-              flexDirection: 'row',
-              flex: 1,
-              // justifyContent:"center",
-              alignItems: 'center',
-              // backgroundColor: 'blue',
-              borderBottomWidth: 1,
-              borderBottomColor: color.separateColorGray,
-            }}
-          >
-            <Text
-              style={{
-                lineHeight: itemHeight,
-                flex: 1,
-                textAlign: 'left',
-                fontSize: fontSize,
-                color: txtColor,
-              }}
-            >
-              {title}
-            </Text>
-            <Image
-              style={{
-                width: imageWidth - 5,
-                height: imageHeight - 6,
-                tintColor: imageColor,
-                marginRight: 15,
-              }}
-              resizeMode={'contain'}
-              source={rightImagePath}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <FindItem
+        title={title}
+        subTitle={subTitle}
+        leftImagePath={leftImagePath}
+        isInformSpot={isInformSpot}
+        onClick={onClick}
+        rightImagePath={rightImagePath}
+      />
     )
   }
 
@@ -271,7 +193,7 @@ export default class Find extends Component {
     return (
       <View
         opacity={1}
-        style={{ flex: 1, backgroundColor: color.contentWhite }}
+        style={{ flex: 1, backgroundColor: color.bgW }}
       >
         <ScrollView
           style={{ flex: 1 }}
@@ -280,10 +202,9 @@ export default class Find extends Component {
           overScrollMode={'always'}
           bounces={true}
         >
-          {/* {this._renderLine()} */}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.PUBLIC_MAP,
-            //  Const.PUBLICMAP,
+            subTitle: getLanguage(this.props.language).Find.PUBLIC_MAP_INFO,
             leftImagePath: getThemeAssets().find.public_map,
             isInformSpot: false,
             onClick: () => {
@@ -292,6 +213,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.PUBLIC_DATA,
+            subTitle: getLanguage(this.props.language).Find.PUBLIC_DATA_INFO,
             leftImagePath: getThemeAssets().find.public_data,
             isInformSpot: false,
             onClick: () => {
@@ -307,6 +229,7 @@ export default class Find extends Component {
           })} */}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_GROUP,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_INFO,
             leftImagePath: getThemeAssets().find.supermap,
             isInformSpot: this.state.superMapGroup,
             onClick: () => {
@@ -326,11 +249,10 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
-            // Const.SUPERMAPKNOWN,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_KNOW_INFO,
             leftImagePath: getThemeAssets().find.supermapkonw,
             isInformSpot: this.state.superMapKnown,
             onClick: () => {
-              // NavigationService.navigate('SuperMapKnown')
               NavigationService.navigate('SuperMapKnown', {
                 type: 'SuperMapKnow',
                 callback: this.state.superMapKnown
@@ -347,20 +269,23 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
-            //Const.FORUMOFSUPERMAP,
+            subTitle: getLanguage(this.props.language).Find.SUPERMAP_FORUM_INFO,
             leftImagePath: getThemeAssets().find.forum,
             isInformSpot: false,
             onClick: this.goToSuperMapForum,
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.GIS_ACADEMY,
-            leftImagePath: getThemeAssets().find.contact_map,
+            subTitle: getLanguage(this.props.language).Find.GIS_ACADEMY_INFO,
+            leftImagePath: getThemeAssets().find.college,
             isInformSpot: false,
             onClick: this.goToGISAcademy,
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.APPLET,
-            leftImagePath: getThemeAssets().find.app,
+            subTitle: getLanguage(this.props.language).Find.APPLET,
+            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
+            leftImagePath: getThemeAssets().mine.my_applets,
             isInformSpot: this.state.appletInfo,
             onClick: () => {
               NavigationService.navigate('Applet', { type: 'APPLET' })
@@ -368,31 +293,14 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
-            leftImagePath: getThemeAssets().friend.friend_map,
+            subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK,
+            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
+            leftImagePath: getThemeAssets().find.onlineCowork,
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('CoworkManagePage')
             },
           })}
-        </ScrollView>
-      </View>
-    )
-  }
-
-  _render = () => {
-    return (
-      <View
-        opacity={1}
-        style={{ flex: 1, backgroundColor: color.contentColorWhite }}
-      >
-        <ScrollView
-          style={{ flex: 1 }}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          overScrollMode={'always'}
-          bounces={true}
-        >
-          {/* {this._renderLine()} */}
         </ScrollView>
       </View>
     )
@@ -412,6 +320,9 @@ export default class Find extends Component {
           title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
           withoutBack: true,
           navigation: this.props.navigation,
+          headerStyle: {
+          
+          },
         }}
         bottomBar={this.renderTabBar()}
       >

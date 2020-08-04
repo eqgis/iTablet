@@ -9,7 +9,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXl,
   },
   tableView: {

@@ -4,6 +4,7 @@ import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
@@ -73,7 +74,7 @@ export default function(action) {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
     size: 'large',
-    image: require('../../../../../../assets/function/icon_function_style.png'),
+    image: getThemeAssets().functionBar.icon_tool_style,
     getData: StyleData.getData,
     actions: StyleAction,
     action,

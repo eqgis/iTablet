@@ -67,6 +67,7 @@ export default class LayerAttributeTabs extends React.Component {
     currentAttribute: Object,
     currentLayer: Object,
     map: Object,
+    device: Object,
     selection: Array,
     attributesHistory: Array,
     setCurrentAttribute: () => {},
@@ -740,6 +741,53 @@ export default class LayerAttributeTabs extends React.Component {
       </View>
     )
   }
+  
+  _renderHeader = () => {
+    let itemWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+    
+    let buttons = []
+    if (this.type !== 'MAP_3D') {
+      buttons = [
+        <MTBtn
+          key={'attribute'}
+          image={
+            this.state.isShowSystemFields
+              ? getThemeAssets().attribute.icon_attribute_hide
+              : getThemeAssets().attribute.icon_attribute_show
+          }
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          onPress={this.showSystemFields}
+        />,
+        <MTBtn
+          key={'undo'}
+          image={getPublicAssets().common.icon_undo}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          onPress={this.showUndoView}
+        />,
+        <MTBtn
+          key={'search'}
+          image={getPublicAssets().common.icon_search}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          onPress={this.goToSearch}
+        />,
+      ]
+    }
+    return (
+      <View
+        style={{
+          width: scaleSize(itemWidth * buttons.length),
+          flexDirection: 'row',
+          justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {buttons}
+      </View>
+    )
+  }
 
   render() {
     return (
@@ -754,30 +802,7 @@ export default class LayerAttributeTabs extends React.Component {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
-          headerRight: [
-            <MTBtn
-              key={'hide'}
-              image={
-                this.state.isShowSystemFields
-                  ? getThemeAssets().attribute.icon_attribute_hide
-                  : getThemeAssets().attribute.icon_attribute_show
-              }
-              imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
-              onPress={this.showSystemFields}
-            />,
-            <MTBtn
-              key={'undo'}
-              image={getPublicAssets().common.icon_undo}
-              imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
-              onPress={this.showUndoView}
-            />,
-            <MTBtn
-              key={'search'}
-              image={getPublicAssets().common.icon_search}
-              imageStyle={styles.headerBtn}
-              onPress={this.goToSearch}
-            />,
-          ],
+          headerRight: this._renderHeader(),
         }}
         style={styles.container}
       >

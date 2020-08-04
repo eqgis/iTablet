@@ -15,7 +15,7 @@ import Container from '../../Container'
 import { InputDialog } from '../../Dialog'
 import { getLanguage } from '../../../language'
 import { scaleSize } from '../../../utils'
-import { size } from '../../../styles'
+import { size, color } from '../../../styles'
 import { FileTools } from '../../../native'
 import { ConstPath } from '../../../constants'
 
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerRight: {
-    color: 'white',
+    color: color.content,
     width: scaleSize(100),
     fontSize: size.fontSize.fontSizeXXl,
     textAlign: 'right',

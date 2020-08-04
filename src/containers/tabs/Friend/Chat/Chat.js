@@ -27,7 +27,8 @@ import CustomActions from './CustomActions'
 import CustomView from './CustomView'
 import { ConstPath, ConstOnline } from '../../../../constants'
 import { FileTools } from '../../../../native'
-import { Toast, LayerUtils } from '../../../../utils/index'
+import { Toast, LayerUtils } from '../../../../utils'
+import { getPublicAssets } from '../../../../assets'
 import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../MsgConstant'
 import { getLanguage } from '../../../../language/index'
@@ -1096,7 +1097,7 @@ class Chat extends React.Component {
   }
 
   render() {
-    let moreImg = require('../../../../assets/home/Frenchgrey/icon_else_selected.png')
+    let moreImg = getPublicAssets().common.icon_nav_imove
     return (
       <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
         <Container

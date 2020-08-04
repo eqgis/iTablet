@@ -138,7 +138,7 @@ export default class Home extends Component {
   }
   headRender() {
     let userImg = require('../../../assets/home/icon_mine_select.png')
-    let moreImg = require('../../../assets/home/icon_else_selected.png')
+    let moreImg = getPublicAssets().common.icon_nav_imove
     const title = 'SuperMap iTablet'
     return (
       <View style={styles.header}>

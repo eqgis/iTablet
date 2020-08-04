@@ -9,6 +9,10 @@ export default StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'black',
   },
+  headerBtn: {
+    width: scaleSize(44),
+    height: scaleSize(44),
+  },
   newcontainer: {
     position: 'absolute',
     flexDirection: 'column',

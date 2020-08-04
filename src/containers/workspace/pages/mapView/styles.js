@@ -93,7 +93,7 @@ export default StyleSheet.create({
     marginLeft: scaleSize(40),
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: size.fontSize.fontSizeXXl,
   },
 

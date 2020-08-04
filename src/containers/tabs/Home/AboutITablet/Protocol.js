@@ -7,6 +7,7 @@ import {
   UIManager,
   LayoutAnimation,
 } from 'react-native'
+import { connect } from 'react-redux'
 import { Container, MTBtn } from '../../../../components'
 import { Toast, scaleSize, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
@@ -14,9 +15,10 @@ import { getPublicAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../native'
 
-export default class protocol extends Component {
+class Protocol extends Component {
   props: {
     navigation: Object,
+    device: Object,
   }
   constructor(props) {
     super(props)
@@ -289,15 +291,18 @@ export default class protocol extends Component {
         break
     }
 
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
     let webBackOpacity = this.state.backButtonEnabled ? 1 : 0
     let headerLeft = [
       <MTBtn
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
         style={{
-          height: scaleSize(60),
-          width: scaleSize(60),
-          marginLeft: scaleSize(0),
+          height: size,
+          width: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         onPress={() => {
           this.props.navigation.goBack()
@@ -305,19 +310,19 @@ export default class protocol extends Component {
       />,
       <MTBtn
         key={'webClose'}
-        image={getPublicAssets().common.icon_close}
+        image={getPublicAssets().common.icon_nav_close}
         style={{
           opacity: webBackOpacity,
-          height: scaleSize(60),
-          width: scaleSize(60),
-          marginLeft: scaleSize(0),
+          height: size,
+          width: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         onPress={() => {
           this.webView.goBack()
         }}
       />,
     ]
-    // headerLeft = this.state.backButtonEnabled ? headerLeft : null
     return (
       <Container
         headerProps={{
@@ -371,3 +376,13 @@ export default class protocol extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  language: state.setting.toJS().language,
+  device: state.device.toJS().device,
+})
+const mapDispatchToProps = {}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Protocol)

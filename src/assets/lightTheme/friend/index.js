@@ -10,6 +10,8 @@ const friend_scan = require('./icon_contact_scan_light.png')
 const friend_shareCon = require('./icon_contact_sharecon_light.png')
 const friend_group = require('./icon_group.png')
 const add_contacts = require('./contact_add_contacts_light.png')
+const add_friends = require('./icon_nav_add_friends.png')
+const contact_photo = require('./icon_contact_photo.png')
 const new_chat = require('./contact_new_chat_light.png')
 
 export default {
@@ -25,5 +27,7 @@ export default {
   friend_shareCon,
   friend_group,
   add_contacts,
+  add_friends,
+  contact_photo,
   new_chat,
 }

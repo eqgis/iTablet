@@ -15,7 +15,7 @@ import { ConstPath, UserType } from '../../constants'
 import { FileTools } from '../../native'
 import { Toast, dataUtil, scaleSize, screen } from '../../utils'
 import { SCollectSceneFormView } from 'imobile_for_reactnative'
-import { getThemeAssets } from '../../assets'
+import { getThemeAssets, getPublicAssets } from '../../assets'
 import { color } from '../../styles'
 import { PopView, Button } from '../../components'
 import { BatchHeadBar } from '../../containers/tabs/Mine/component'
@@ -816,7 +816,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
                   width: scaleSize(60),
                   height: scaleSize(60),
                 }}
-                source={require('../../assets/home/Frenchgrey/icon_else_selected.png')}
+                source={getPublicAssets().common.icon_nav_imove}
               />
             </TouchableOpacity>
           )}

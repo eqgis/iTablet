@@ -24,7 +24,7 @@ export default function(type, title) {
     key: title,
     title,
     size: 'large',
-    image: getThemeAssets().functionBar.rightbar_mark,
+    image: getThemeAssets().functionBar.icon_tool_mark,
     getData: TopoEditData.getData,
     actions: TopoEditAction,
     setModuleData: setModuleData,

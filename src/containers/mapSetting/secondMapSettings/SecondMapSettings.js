@@ -34,8 +34,6 @@ import {
   transferData,
   coordMenuData,
   coordMenuTitle,
-  getPOISettings,
-  getDetectTypesSettings,
   getDetectStyleSettings,
 } from '../settingData'
 import { SMap, SAIDetectView } from 'imobile_for_reactnative'
@@ -145,12 +143,6 @@ export default class SecondMapSettings extends Component {
           //"shp,prj,mif,tab,tif,img,sit,xml"
           'xml,prj',
         )
-        break
-      case getLanguage(GLOBAL.language).Map_Settings.POI_SETTING:
-        data = getPOISettings()
-        data[0].value = await SAIDetectView.isProjectionModeEnable()
-        data[1].value = await SAIDetectView.isPOIOverlapEnable()
-        // data[2].value = await SAIDetectView.isPolymerize()
         break
       case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE:
         data = await this.getDetectTypesSettings()

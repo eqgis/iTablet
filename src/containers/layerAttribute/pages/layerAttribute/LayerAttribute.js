@@ -1358,17 +1358,16 @@ export default class LayerAttribute extends React.Component {
   //     </View>
   //   )
   // }
-
-  render() {
-    let showContent =
-      this.state.showTable &&
-      this.state.attributes &&
-      this.state.attributes.head &&
-      this.state.attributes.head.length > 0
-
-    let headerRight = []
+  
+  _renderHeader = () => {
+    let itemWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+  
+    let buttons = []
     if (this.type !== 'MAP_3D') {
-      headerRight = [
+      buttons = [
         <MTBtn
           key={'attribute'}
           image={
@@ -1376,23 +1375,43 @@ export default class LayerAttribute extends React.Component {
               ? getThemeAssets().attribute.icon_attribute_hide
               : getThemeAssets().attribute.icon_attribute_show
           }
-          imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           onPress={this.showSystemFields}
         />,
         <MTBtn
           key={'undo'}
           image={getPublicAssets().common.icon_undo}
-          imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           onPress={this.showUndoView}
         />,
         <MTBtn
           key={'search'}
           image={getPublicAssets().common.icon_search}
-          imageStyle={styles.headerBtn}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           onPress={this.goToSearch}
         />,
       ]
     }
+    return (
+      <View
+        style={{
+          width: scaleSize(itemWidth * buttons.length),
+          flexDirection: 'row',
+          justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {buttons}
+      </View>
+    )
+  }
+
+  render() {
+    let showContent =
+      this.state.showTable &&
+      this.state.attributes &&
+      this.state.attributes.head &&
+      this.state.attributes.head.length > 0
 
     return (
       <Container
@@ -1410,7 +1429,7 @@ export default class LayerAttribute extends React.Component {
             marginLeft: scaleSize(80),
           },
           withoutBack: true,
-          headerRight,
+          headerRight: this._renderHeader(),
         }}
         bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
         style={styles.container}

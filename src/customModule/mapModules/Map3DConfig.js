@@ -7,7 +7,6 @@ import {
   mark3DModule,
   fly3DModule,
   tool3DModule,
-  share3DModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class Map3DConfig extends Module {
@@ -27,7 +26,6 @@ export default class Map3DConfig extends Module {
         mark3DModule,
         fly3DModule,
         tool3DModule,
-        share3DModule,
       ],
       mapType: Module.MapType.SCENE,
     })

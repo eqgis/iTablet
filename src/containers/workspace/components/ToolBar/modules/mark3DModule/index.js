@@ -42,7 +42,7 @@ export default function() {
     key: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
     size: 'large',
-    image: getThemeAssets().functionBar.rightbar_mark,
+    image: getThemeAssets().functionBar.icon_tool_mark,
     getData: Mark3DData.getData,
     actions: Mark3DAction,
   })

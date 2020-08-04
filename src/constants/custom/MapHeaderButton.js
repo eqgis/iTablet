@@ -2,9 +2,11 @@
 const Audio = 'audio' // 首页
 const Undo = 'undo' // 通讯录
 const Search = 'search' // 发现
+const Share = 'share' // 分享
 
 export default {
   Audio,
   Undo,
   Search,
+  Share,
 }

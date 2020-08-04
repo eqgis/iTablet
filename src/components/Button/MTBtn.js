@@ -5,7 +5,7 @@
 */
 
 import * as React from 'react'
-import { StyleSheet, Image, TouchableHighlight, Text, View } from 'react-native'
+import { StyleSheet, Image, TouchableHighlight, TouchableOpacity, Text, View } from 'react-native'
 import { constUtil, scaleSize } from '../../utils/index'
 import { size } from '../../styles/index'
 
@@ -29,6 +29,7 @@ export default class MTBtn extends React.Component {
     separator?: number, // 图片和文字的间距
     onPressIn?: () => {}, // 按下时的事件
     onPressOut?: () => {}, // 松开时的事件
+    opacity?: number, // 点击后透明度，若无，在为TouchableHighlight，反之为TouchableOpacity
   }
 
   static defaultProps = {
@@ -121,9 +122,11 @@ export default class MTBtn extends React.Component {
     } else {
       image = this.props.image
     }
+    
+    let TouchBtn = this.props.opacity >= 0 ? TouchableOpacity : TouchableHighlight
 
     return (
-      <TouchableHighlight
+      <TouchBtn
         ref={ref => (this.mtBtn = ref)}
         accessible={true}
         activeOpacity={this.props.activeOpacity}
@@ -155,7 +158,7 @@ export default class MTBtn extends React.Component {
             </Text>
           )}
         </View>
-      </TouchableHighlight>
+      </TouchBtn>
     )
   }
 }

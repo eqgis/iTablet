@@ -4,15 +4,25 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Dimensions } from 'react-native'
+import { View, Animated, FlatList, Dimensions, Image } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
-import styles from './styles'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
 import { getPublicAssets } from '../../../../assets'
+import styles, {
+  MAX_VISIBLE_NUMBER,
+  ITEM_VIEW_WIDTH_L,
+  ITEM_VIEW_HEIGHT_P,
+  ITEM_VIEW_HEIGHT_L,
+  INDICATOR_VIEW_SIZE,
+  MAX_WIDTH_L,
+  MAX_HEIGHT_P,
+  BOTTOM_LANDSCAPE,
+  PADDING_L,
+} from './styles'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'
@@ -36,7 +46,6 @@ const RIGHT = scaleSize(20)
 const RIGHT_LANDSCAPE = 0
 const TOP = scaleSize(143)
 const TOP_LANDSCAPE = screen.HEADER_HEIGHT_LANDSCAPE
-const BOTTOM_LANDSCAPE = 0
 export default class FunctionToolbar extends React.Component {
   props: {
     navigation: Object,
@@ -86,22 +95,16 @@ export default class FunctionToolbar extends React.Component {
     this.state = {
       type: props.type,
       data: data,
-      top:
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? new Animated.Value(TOP_LANDSCAPE)
-          : new Animated.Value(TOP + screen.getIphonePaddingTop()),
-      right:
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? new Animated.Value(RIGHT_LANDSCAPE)
-          : new Animated.Value(RIGHT),
+      top: new Animated.Value(TOP + screen.getIphonePaddingTop()),
+      right: new Animated.Value(RIGHT),
+      bottom: new Animated.Value(BOTTOM_LANDSCAPE),
     }
     this.visible = true
     this.offset = 0
-    this.m_maxHeight = 400
-    this.onTop = true
-    this.onBottom = true
-    this.topOpacity = new Animated.Value(0)
-    this.bottomOpacity = new Animated.Value(0)
+    this.onPrevious = true
+    this.onNext = true
+    this.previousOpacity = new Animated.Value(0)
+    this.nextOpacity = new Animated.Value(0)
   }
 
   componentDidMount() {
@@ -162,50 +165,51 @@ export default class FunctionToolbar extends React.Component {
   }
 
   handlePosition = () => {
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') >= 0
     let contentHeight = this.list && this.list._listRef._totalCellLength || 0
     let offset = this.offset
     let visibleHeight
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      let indicatorHeight = scaleSize(15) * 2
-      let windowHeight = Math.min(
-        Dimensions.get('window').height,
-        Dimensions.get('window').width,
-      )
-      let headerHeight = screen.HEADER_HEIGHT_LANDSCAPE
-      let moreHeight = scaleSize(80) + 1
-      visibleHeight = windowHeight - headerHeight - moreHeight - indicatorHeight
+    if (isLandscape) {
+      // let indicatorHeight = scaleSize(15) * 2
+      // let windowHeight = Math.min(
+      //   Dimensions.get('window').height,
+      //   Dimensions.get('window').width,
+      // )
+      // let headerHeight = screen.HEADER_HEIGHT_LANDSCAPE
+      // let moreHeight = scaleSize(80) + 1
+      visibleHeight = ITEM_VIEW_WIDTH_L * MAX_VISIBLE_NUMBER
     } else {
       // let maxHeight =
       //   this.props.device.height - HeaderHeight - BottomHeight - scaleSize(300)
-      visibleHeight = this.m_maxHeight
+      visibleHeight = ITEM_VIEW_HEIGHT_P * MAX_VISIBLE_NUMBER
     }
-    let onTop, onBottom
+    let onPrevious, onNext
     if (visibleHeight < contentHeight) {
       if (offset === 0) {
-        onTop = true
-        onBottom = false
+        onPrevious = true
+        onNext = false
       } else if (offset + visibleHeight + 3 > contentHeight) {
-        onTop = false
-        onBottom = true
+        onPrevious = false
+        onNext = true
       } else {
-        onTop = false
-        onBottom = false
+        onPrevious = false
+        onNext = false
       }
     } else {
-      onTop = true
-      onBottom = true
+      onPrevious = true
+      onNext = true
     }
-    if (onTop !== this.onTop) {
-      this.onTop = onTop
-      Animated.timing(this.topOpacity, {
-        toValue: onTop ? 0 : 0.6,
+    if (onPrevious !== this.onPrevious) {
+      this.onPrevious = onPrevious
+      Animated.timing(this.previousOpacity, {
+        toValue: onPrevious ? 0 : 1,
         duration: 150,
       }).start()
     }
-    if (onBottom !== this.onBottom) {
-      this.onBottom = onBottom
-      Animated.timing(this.bottomOpacity, {
-        toValue: onBottom ? 0 : 0.6,
+    if (onNext !== this.onNext) {
+      this.onNext = onNext
+      Animated.timing(this.nextOpacity, {
+        toValue: onNext ? 0 : 1,
         duration: 150,
       }).start()
     }
@@ -217,10 +221,16 @@ export default class FunctionToolbar extends React.Component {
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? RIGHT_LANDSCAPE
         : RIGHT
-    Animated.timing(this.state.right, {
-      toValue: visible ? right : scaleSize(-100),
-      duration: immediately ? 0 : Const.ANIMATED_DURATION,
-    }).start()
+    Animated.parallel([
+      Animated.timing(this.state.bottom, {
+        toValue: visible ? BOTTOM_LANDSCAPE : scaleSize(-120),
+        duration: immediately ? 0 : Const.ANIMATED_DURATION,
+      }).start(),
+      Animated.timing(this.state.right, {
+        toValue: visible ? RIGHT : scaleSize(-100),
+        duration: immediately ? 0 : Const.ANIMATED_DURATION,
+      }).start(),
+    ]).start()
     this.visible = visible
   }
 
@@ -316,13 +326,21 @@ export default class FunctionToolbar extends React.Component {
 
   _renderItem = ({ item, index }) => {
     return (
-      <View style={styles.btnView} key={this._keyExtractor(item, index)}>
+      <View
+        style={
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? styles.btnViewL
+            : styles.btnViewP
+        }
+        key={this._keyExtractor(item, index)}
+      >
         <MTBtn
           style={styles.btn}
+          imageStyle={styles.btnImage}
           key={index}
           title={item.title}
           textColor={'black'}
-          textStyle={{ fontSize: setSpText(20) }}
+          textStyle={{ fontSize: setSpText(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={item.image}
           onPress={item.action}
@@ -366,17 +384,8 @@ export default class FunctionToolbar extends React.Component {
   }
 
   _keyExtractor = (item, index) => index + '-' + item.title
-
-  renderList = () => {
-    this.m_maxHeight =
-      (this.props.device.height - screen.getHeaderHeight() - BottomHeight) * 0.6
-    // maxHeightN < 4
-    let style =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? {}
-        : {
-          maxHeight: this.m_maxHeight,
-        }
+  
+  getCurrentData = () => {
     let filterData = this.state.data.filter(item => {
       if (this.props.ARView) {
         if (item.type === ConstToolType.MAP_STYLE) return false
@@ -388,18 +397,26 @@ export default class FunctionToolbar extends React.Component {
       }
       return true
     })
+    return filterData || []
+  }
+
+  renderList = () => {
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    let filterData = this.getCurrentData()
     return (
       <FlatList
         ref={ref => (this.list = ref)}
-        style={style}
+        style={isLandscape ? {height: ITEM_VIEW_HEIGHT_L} : {}}
         data={filterData}
+        horizontal={isLandscape}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
         onScroll={event => {
-          this.offset = event.nativeEvent.contentOffset.y
+          this.offset = isLandscape ? event.nativeEvent.contentOffset.x : event.nativeEvent.contentOffset.y
           this.handlePosition()
         }}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     )
   }
@@ -409,22 +426,34 @@ export default class FunctionToolbar extends React.Component {
   }
 
   renderIndicator = location => {
-    let style
-    if (location === 'top') {
-      style = {
-        opacity: this.topOpacity,
-        transform: [{ rotateX: '180deg' }],
-      }
+    if (this.getCurrentData().length <= MAX_VISIBLE_NUMBER) {
+      return <View />
+    }
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    let source
+    let style = {
+      opacity: location === 'previous' ? this.previousOpacity : this.nextOpacity,
+    }
+    if (isLandscape) {
+      source = location === 'previous'
+        ? getPublicAssets().common.icon_slide_left
+        : getPublicAssets().common.icon_slide_right
     } else {
-      style = {
-        opacity: this.bottomOpacity,
-      }
+      source = location === 'previous'
+        ? getPublicAssets().common.icon_slide_up
+        : getPublicAssets().common.icon_slide_down
     }
     return (
-      <View style={styles.indicatorView}>
+      <View
+        style={
+          isLandscape
+            ? styles.indicatorViewL
+            : styles.indicatorViewP
+        }>
         <Animated.Image
-          style={[styles.indicatorImage, style]}
-          source={getPublicAssets().common.icon_arrow_down}
+          resizeMode={'contain'}
+          style={[isLandscape ? styles.indicatorImageL : styles.indicatorImageP, style]}
+          source={source}
         />
       </View>
     )
@@ -434,33 +463,43 @@ export default class FunctionToolbar extends React.Component {
     if (this.props.hide) {
       return null
     }
-    let bottom
+    let containerStyle = []
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      bottom = {
-        bottom: BOTTOM_LANDSCAPE,
-      }
+      let dataLength = this.getCurrentData().length
+      dataLength = dataLength > MAX_VISIBLE_NUMBER ? MAX_VISIBLE_NUMBER : dataLength
+      let width = dataLength * ITEM_VIEW_WIDTH_L + PADDING_L* 2
+        + (dataLength > MAX_VISIBLE_NUMBER ? (INDICATOR_VIEW_SIZE * 2) : 0)
+      containerStyle = [
+        styles.containerL,
+        this.state.data.length > 0 && styles.containerShadow,
+        this.props.style,
+        {
+          bottom: this.state.bottom,
+          left: '50%',
+          marginLeft: -(width / 2),
+        }
+      ]
+    } else {
+      containerStyle = [
+        styles.containerP,
+        this.state.data.length > 0 && styles.containerShadow,
+        this.props.style,
+        {
+          top: this.state.top,
+          right: this.state.right,
+        }
+      ]
     }
     return (
-      <Animated.View
-        style={[
-          styles.container,
-          this.state.data.length > 0 && styles.containerShadow,
-          bottom,
-          this.props.style,
-          {
-            top: this.state.top,
-            right: this.state.right,
-          },
-        ]}
-      >
-        {this.state.data.length > 0 && this.renderIndicator('top')}
+      <Animated.View style={containerStyle}>
+        {this.state.data.length > 0 && this.renderIndicator('previous')}
         {this.renderList()}
-        {this.state.data.length > 0 && this.renderIndicator('bottom')}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (
-          <View style={{ height: 1, backgroundColor: '#EEEEEE' }} />
-        )}
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-          this.renderMore()}
+        {this.state.data.length > 0 && this.renderIndicator('next')}
+        {/*{this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (*/}
+          {/*<View style={{ height: 1, backgroundColor: '#EEEEEE' }} />*/}
+        {/*)}*/}
+        {/*{this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&*/}
+          {/*this.renderMore()}*/}
       </Animated.View>
     )
   }

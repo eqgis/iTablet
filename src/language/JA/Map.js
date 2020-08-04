@@ -367,6 +367,8 @@ const Map_Main_Menu = {
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',
+  MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
+  MAP_AR_SELECT_POINT_PLANE: 'to Plane',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: '左折してください',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: '右に曲がる',

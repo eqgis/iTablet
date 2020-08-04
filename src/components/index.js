@@ -62,6 +62,7 @@ import PopMenu from './PopMenu'
 import { DropdownView } from './DropdownView'
 import SinglePicker from './SinglePicker'
 import ColorScheme from './ColorScheme'
+import BottomBar from './BottomBar'
 export {
   Container,
   BtnOne,
@@ -137,4 +138,5 @@ export {
   DropdownView,
   SinglePicker,
   ColorScheme,
+  BottomBar,
 }

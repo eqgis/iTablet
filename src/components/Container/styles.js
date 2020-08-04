@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: color.content_white,
+    backgroundColor: color.white,
   },
   overlay: {
     flex: 1,

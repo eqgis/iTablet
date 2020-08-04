@@ -9,6 +9,6 @@ const Map_Module = {
   MAP_PLOTTING: 'アニメシンボル',
   MAP_ANALYST: 'データ処理',
   
-  APPLET_ADD: '添加\n您的小程序', // 待翻译
+  APPLET_ADD: 'Add Applets', // 待翻译
 }
 export { Map_Module }

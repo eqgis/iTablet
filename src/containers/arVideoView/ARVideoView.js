@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { SMARVideoView, SARVideoView } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
-import { Container, ImagePicker } from '../../components'
-import { scaleSize } from '../../utils'
-import { View, TouchableOpacity, Image } from 'react-native'
-import { getPublicAssets } from '../../assets'
+import { Container, BottomBar } from '../../components'
 import { getLanguage } from '../../language'
+import MenuData from './MenuData'
+import NavigationService from '../NavigationService'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -36,47 +35,14 @@ export default class ARVideoView extends React.Component {
 
   componentWillUnmount() {}
 
+  back = () => {
+    NavigationService.goBack()
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    GLOBAL.toolBox.switchAr()
+  }
+
   renderBottom = () => {
-    return (
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: '100%',
-          height: scaleSize(80),
-          backgroundColor: 'black',
-          justifyContent: 'center',
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            marginLeft: scaleSize(40),
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            ImagePicker.AlbumListView.defaultProps.showDialog = false
-            ImagePicker.AlbumListView.defaultProps.assetType = 'Videos'
-            ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
-            ImagePicker.getAlbum({
-              maxSize: 1,
-              callback: async data => {
-                if (data && data.length > 0) {
-                  let path = data[0].uri
-                  SARVideoView.addVideoAtCurrentPosition(path)
-                }
-              },
-            })
-          }}
-        >
-          <Image
-            source={getPublicAssets().common.icon_album}
-            style={{ width: scaleSize(60), height: scaleSize(60) }}
-          />
-        </TouchableOpacity>
-      </View>
-    )
+    return <BottomBar getData={MenuData.getPage} />
   }
 
   render() {
@@ -86,6 +52,7 @@ export default class ARVideoView extends React.Component {
         headerProps={{
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
+          backAction: this.back,
           type: 'fix',
         }}
         bottomProps={{ type: 'fix' }}

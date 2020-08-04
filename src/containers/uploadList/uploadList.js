@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(30),
   },
   headerBtnTitle: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: 17,
   },
   select: {

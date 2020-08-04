@@ -784,7 +784,7 @@ export default class MT_layerManager extends React.Component {
     if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
       action = this.tool_row
       rightIcon = getThemeAssets().publicAssets.icon_edit
-    } else {
+    } else if (section.title === getLanguage(this.props.language).Map_Layer.LAYERS) {
       action = () => this.setAllLayersVisible(section)
       rightIcon = this.state.allLayersVisible
         ? getPublicAssets().common.icon_invisible

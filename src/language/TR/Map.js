@@ -346,6 +346,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Özel Toplama',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Belediye Toplama',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'İhlal Toplama',
+  MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'Yol Toplama',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'POI Haritası',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'AR Ölçme',
@@ -402,6 +403,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Geçerli noktayı belirlemek için ekrana dokunun',
   MAP_AR_AI_MEASURE_LENGTH: 'Uzunluk ölçümü',
   MAP_AR_AI_MEASURE_AREA: 'Ölçüm alanı',
+  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
+  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan', //待翻译
+  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook', //待翻译
+  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look', //待翻译
+  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'Switch Camera', //待翻译
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'Association Map', //待翻译
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'Association Cancel', //待翻译
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Sınıflandırma başarısız oldu, Tekrar deneyin',

@@ -259,10 +259,27 @@ function polymerizeCollect() {
   })()
 }
 
+// 人体姿态
+function poseEstimation() {
+  (async function() {
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    setTimeout(async () => {
+      NavigationService.navigate('AIPoseEstimationView')
+    }, 500)
+  })()
+}
+
 export default {
   illegallyParkCollect,
   aiClassify,
   _downloadData,
   aiDetect,
   polymerizeCollect,
+  poseEstimation,
 }

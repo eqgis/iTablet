@@ -346,6 +346,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Collecte personnalisée',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Collecte municipale',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'Collecte des violations',
+  MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'Collecte de route',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'Carte POI',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'Mesure IA',
@@ -404,6 +405,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '点击屏幕确定当前点',
   MAP_AR_AI_MEASURE_LENGTH: 'Mesure de longueur',
   MAP_AR_AI_MEASURE_AREA: 'Zone de mesure',
+  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
+  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan', //待翻译
+  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook', //待翻译
+  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look', //待翻译
+  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'Switch Camera', //待翻译
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'Association Map', //待翻译
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'Association Cancel', //待翻译
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classifier le chargement',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Échec de la classification, réessayer',

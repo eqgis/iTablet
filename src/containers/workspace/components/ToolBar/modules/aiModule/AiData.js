@@ -46,6 +46,14 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_violation_light,
     },
+    {
+      // 人体姿态
+      key: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+      action: AiActions.poseEstimation,
+      size: 'large',
+      image: getThemeAssets().search.search_icon_toilet,
+    },
     // {
     //   //路面采集
     //   key: getLanguage(global.language).Map_Main_Menu

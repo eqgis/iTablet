@@ -73,6 +73,7 @@ export default class CollectSceneFormView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 
@@ -115,6 +116,7 @@ export default class CollectSceneFormView extends React.Component {
   }
 
   componentWillUnmount() {
+    SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
     SCollectSceneFormView.onDestroy()
     //移除监听

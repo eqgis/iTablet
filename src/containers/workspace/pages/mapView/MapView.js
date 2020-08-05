@@ -108,7 +108,7 @@ import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessage
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 
-const markerTag = 118081
+const markerTag = 118082
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -2442,12 +2442,14 @@ export default class MapView extends React.Component {
         showAIDetect: false,
       })
       GLOBAL.showAIDetect = false
+      SMap.setDynamicviewsetVisible(true)
       Orientation.unlockAllOrientations()
     } else {
       this.setState({
         showAIDetect: true,
       })
       GLOBAL.showAIDetect = true
+      SMap.setDynamicviewsetVisible(false)
       Orientation.lockToPortrait()
     }
   }

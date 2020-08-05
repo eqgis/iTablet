@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SARImage, SMARImageView } from 'imobile_for_reactnative'
+import { SARImage, SMARImageView,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container, BottomBar } from '../../components'
 import { getLanguage } from '../../language'
@@ -22,6 +22,7 @@ export default class ARImageView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
-import { SMProjectModelView, SProjectModelView } from 'imobile_for_reactnative'
+import { SMProjectModelView, SProjectModelView,SMap  } from 'imobile_for_reactnative'
 import styles from './styles'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
@@ -52,6 +52,7 @@ export default class ARProjectModeView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

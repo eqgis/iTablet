@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SARWeather, SMARWeatherView } from 'imobile_for_reactnative'
+import { SARWeather, SMARWeatherView ,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { scaleSize } from '../../utils'
@@ -29,6 +29,7 @@ export default class ARWeatherView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

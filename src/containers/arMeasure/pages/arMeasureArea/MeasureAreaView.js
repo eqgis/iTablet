@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import NavigationService from '../../../../containers/NavigationService'
 import { getThemeAssets } from '../../../../assets'
-import { SMMeasureAreaView, SMeasureAreaView } from 'imobile_for_reactnative'
+import { SMMeasureAreaView, SMeasureAreaView ,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
@@ -97,6 +97,7 @@ export default class MeasureAreaView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

@@ -11,7 +11,7 @@ import { FileTools } from '../../native'
 import Toast from '../../utils/Toast'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
-import { SAIClassifyView } from 'imobile_for_reactnative'
+import { SAIClassifyView ,SMap } from 'imobile_for_reactnative'
 
 const DEFAULT_MODEL = 'mobilenet_quant_224' //默认模型
 const DUSTBIN_MODEL = 'citycase' //垃圾箱模型
@@ -50,6 +50,7 @@ export default class ClassifySettingsView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

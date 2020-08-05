@@ -3,7 +3,7 @@ import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
 import Toast from '../../utils/Toast'
-import { SAIDetectView } from 'imobile_for_reactnative'
+import { SAIDetectView,SMap  } from 'imobile_for_reactnative'
 import {
   startModule,
   addModule,
@@ -67,6 +67,7 @@ export default class MapARConfig extends Module {
           )
           return false
         }
+        SMap.setDynamicviewsetVisible(false)
         Orientation.lockToPortrait()
         return isAvailable
       },

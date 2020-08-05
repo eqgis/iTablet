@@ -82,25 +82,6 @@ export default class ARWeatherView extends React.Component {
           paddingHorizontal: scaleSize(40),
         }}
       >
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: scaleSize(80),
-          }}
-          onPress={() => {
-            NavigationService.navigate('ChooseWeather', {
-              currentItemKey: this.state.current,
-              onSelectCallback: key => this.setCurrent(key),
-            })
-          }}
-        >
-          <Image
-            source={getThemeAssets().collection.icon_collection_change}
-            style={{ width: scaleSize(60), height: scaleSize(60) }}
-          />
-        </TouchableOpacity>
         {this.state.current !== '' && (
           <TouchableOpacity
             style={{
@@ -123,6 +104,25 @@ export default class ARWeatherView extends React.Component {
             />
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: scaleSize(80),
+          }}
+          onPress={() => {
+            NavigationService.navigate('ChooseWeather', {
+              currentItemKey: this.state.current,
+              onSelectCallback: key => this.setCurrent(key),
+            })
+          }}
+        >
+          <Image
+            source={getThemeAssets().collection.icon_collection_change}
+            style={{ width: scaleSize(60), height: scaleSize(60) }}
+          />
+        </TouchableOpacity>
       </View>
     )
   }

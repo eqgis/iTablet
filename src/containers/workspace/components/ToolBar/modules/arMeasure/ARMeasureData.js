@@ -103,6 +103,14 @@ function getData() {
       size: 'large',
       image: getThemeAssets().themeType.theme_graphmap,
     },
+    {
+      //AR图片
+      key: 'arImage',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
+      action: ARMeasureAction.arImage,
+      size: 'large',
+      image: getThemeAssets().layerType.layer_type_image,
+    },
   ]
 
   data = data.filter(item => {
@@ -110,6 +118,7 @@ function getData() {
       if (
         item.key === 'arCastModelOperate' ||
         item.key === 'arVideo' ||
+        item.key === 'arImage' ||
         item.key === 'arWeather'
       ) {
         return false

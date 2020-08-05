@@ -251,6 +251,11 @@ export default class EnterDatumPoint extends Component {
       NavigationService.replace('ARVideoView', {
         point: point,
       })
+    } else if (GLOBAL.EnterDatumPointType === 'arImage') {
+      GLOBAL.EnterDatumPointType = undefined
+      NavigationService.replace('ARImageView', {
+        point: point,
+      })
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()

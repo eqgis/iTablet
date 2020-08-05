@@ -17,6 +17,7 @@ export default class BottomBar extends React.Component {
     this.state = {
       data: this.props.data,
     }
+    this._data = {}
   }
 
   componentDidMount() {
@@ -31,6 +32,14 @@ export default class BottomBar extends React.Component {
       })
       pageAction(this)
     }
+  }
+
+  getData = () => {
+    return this._data
+  }
+
+  addData = data => {
+    Object.assign(this._data, data)
   }
 
   renderItems = () => {

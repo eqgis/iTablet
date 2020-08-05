@@ -23,7 +23,7 @@ import {
   UserType,
   ChunkType,
 } from '../../constants'
-import { color, size } from '../../styles'
+import { color } from '../../styles'
 import {
   getPublicAssets,
   getThemeAssets,
@@ -141,8 +141,12 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
-          baseMap = [allLayers[allLayers.length - 1]]
-          allLayers.splice(allLayers.length - 1, 1)
+          baseMap = allLayers.filter(layer => {
+            return LayerUtils.isBaseLayer(layer)
+          })
+          allLayers = allLayers.filter(layer => {
+            return !LayerUtils.isBaseLayer(layer)
+          })
         }
       } else if (allLayers.length === 0) {
         await SMap.openDatasource(
@@ -155,6 +159,16 @@ export default class MT_layerManager extends React.Component {
         )
         allLayers = await this.props.getLayers()
         baseMap = allLayers.length > 0 ? [allLayers[allLayers.length - 1]] : []
+      }
+
+      //baseMap只显示一个，其他的放到subLayers内，删除和显示隐藏时用
+      if (baseMap.length > 1) {
+        let subLayers = []
+        for (let i = 1; i < baseMap.length; i++) {
+          subLayers.push(baseMap[i])
+        }
+        baseMap[0].subLayers = subLayers
+        baseMap.splice(1)
       }
 
       let taggingLayers = [] // 标注图层
@@ -356,10 +370,11 @@ export default class MT_layerManager extends React.Component {
     }
   }
 
-  onToolBasePress = async ({ data }) => {
+  onToolBasePress = async ({ data, section }) => {
     this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_STYLE, {
       height: ConstToolType.TOOLBAR_HEIGHT[1],
       layerData: data,
+      section: section,
       resetToolModuleData: true,
     })
   }
@@ -647,7 +662,7 @@ export default class MT_layerManager extends React.Component {
       type: 'name',
       cb: async value => {
         if (value !== '') {
-          ;(async function() {
+          (async function() {
             await SMap.setLabelColor()
             let data = await SMap.newTaggingDataset(
               value,

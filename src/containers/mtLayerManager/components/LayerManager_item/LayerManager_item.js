@@ -147,7 +147,7 @@ export default class LayerManager_item extends React.Component {
   }
 
   getData = (data = this.props.data) => {
-    ;(async function() {
+    (async function() {
       let options = this.getOptions(data)
       let { showLevelOne, isVectorLayer } = this.getValidate(data)
       this.setState({
@@ -274,6 +274,14 @@ export default class LayerManager_item extends React.Component {
   _visible_change = async () => {
     let oldVisibe = this.state.visible
     let rel = await this.props.setLayerVisible(this.props.data, !oldVisibe)
+    if (this.props.data.subLayers) {
+      for (let i = 0; i < this.props.data.subLayers.length; i++) {
+        await this.props.setLayerVisible(
+          this.props.data.subLayers[i],
+          !oldVisibe,
+        )
+      }
+    }
     if (rel) {
       this.setState(() => {
         let newState = {}
@@ -485,7 +493,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_UP,
         onPress: () => {
-          ;(async function() {
+          (async function() {
             await SMap.moveUpLayer(layer.path)
             if (this.props.parentData) {
               this.props.refreshParent &&
@@ -528,7 +536,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_DOWN,
         onPress: () => {
-          ;(async function() {
+          (async function() {
             await SMap.moveDownLayer(layer.path)
             if (this.props.parentData) {
               this.props.refreshParent &&
@@ -575,7 +583,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_TOP,
         onPress: () => {
-          ;(async function() {
+          (async function() {
             await SMap.moveToTop(layer.path)
             if (layer.path.indexOf('/') === -1) {
               let count = await SMap.getTaggingLayerCount(
@@ -599,7 +607,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_BOTTOM,
         onPress: () => {
-          ;(async function() {
+          (async function() {
             await SMap.moveToBottom(layer.path)
             if (layer.path.indexOf('/') === -1 && this.props.hasBaseMap) {
               SMap.moveUpLayer(layer.path)

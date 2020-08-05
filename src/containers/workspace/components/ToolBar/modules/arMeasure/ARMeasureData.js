@@ -6,14 +6,6 @@ import { Platform } from 'react-native'
 function getData() {
   let data = [
     {
-      //AR天气
-      key: 'arWeather',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
-      action: ARMeasureAction.arWeather,
-      size: 'large',
-      image: getThemeAssets().plot.plot_animation_appear,
-    },
-    {
       // 高精度采集
       key: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
@@ -32,15 +24,6 @@ function getData() {
     //   size: 'large',
     //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
     // },
-    {
-      //AR投射
-      key: 'arCastModelOperate',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-      action: ARMeasureAction.arCastModelOperate,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_cast,
-    },
     {
       //AR面积
       key: 'arMeasureArea',
@@ -94,6 +77,23 @@ function getData() {
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
+    },
+    {
+      //AR投射
+      key: 'arCastModelOperate',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
+      action: ARMeasureAction.arCastModelOperate,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_cast,
+    },
+    {
+      //AR天气
+      key: 'arWeather',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
+      action: ARMeasureAction.arWeather,
+      size: 'large',
+      image: getThemeAssets().plot.plot_animation_appear,
     },
     {
       //AR视频

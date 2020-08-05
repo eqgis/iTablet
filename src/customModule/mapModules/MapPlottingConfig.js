@@ -9,7 +9,6 @@ import {
   plotModule,
   editModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -32,7 +31,6 @@ export default class MapPlottingConfig extends Module {
         editModule,
         () => plotModule('PLOTTING_ANIMATION'),
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

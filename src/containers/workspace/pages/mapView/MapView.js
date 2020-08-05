@@ -50,7 +50,7 @@ import {
   IncrementRoadDialog,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import { share3DModule, shareModule } from '../../components/ToolBar/modules'
+import { shareModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
@@ -97,6 +97,7 @@ import {
   // InteractionManager,
   Image,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -105,6 +106,7 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
+import { BackHandlerUtil } from '../../util'
 
 const markerTag = 118081
 
@@ -132,6 +134,7 @@ export default class MapView extends React.Component {
     appConfig: PropTypes.object,
     mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
+    backActions: PropTypes.object,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -297,6 +300,8 @@ export default class MapView extends React.Component {
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
 
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+
     if (global.isLicenseValid) {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
@@ -339,7 +344,7 @@ export default class MapView extends React.Component {
 
       this.props.setBackAction({
         key: 'MapView',
-        action: () => this.back(),
+        action: this.back,
       })
 
       SMediaCollector.setCalloutTapListener(info => {
@@ -595,6 +600,8 @@ export default class MapView extends React.Component {
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
+
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
   addSpeechRecognizeListener = () => {
@@ -1053,6 +1060,10 @@ export default class MapView extends React.Component {
         Toast.show('删除失败')
       }
     }.bind(this)())
+  }
+
+  backHandler = () => {
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   back = async () => {
@@ -2296,13 +2307,7 @@ export default class MapView extends React.Component {
             info = {
               key: MapHeaderButton.Share,
               image: getPublicAssets().common.icon_nav_share,
-              action: () => {
-                if (GLOBAL.Type === ChunkType.MAP_3D) {
-                  share3DModule().action()
-                } else {
-                  shareModule().action()
-                }
-              },
+              action: shareModule().action,
             }
             break
           case MapHeaderButton.Audio:
@@ -2395,6 +2400,7 @@ export default class MapView extends React.Component {
       </View>
     )
   }
+
   renderProgress = () => {
     let data
     if (this.props.downloads.length > 0) {
@@ -2766,25 +2772,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  _renderCheckAIDetec = () => {
-    return (
-      <MapSelectPoint
-        ref={ref => (GLOBAL.CHECKAIDETEC = ref)}
-        headerProps={{
-          title: '查看',
-          navigation: this.props.navigation,
-          type: 'fix',
-          backAction: async () => {
-            GLOBAL.CHECKAIDETEC.setVisible(false)
-            this.showFullMap(false)
-          },
-        }}
-      />
-    )
-  }
   getSearchClickedInfo = () => {
     return this.searchClickedInfo
   }
+
   _renderMapSelectPointHeaderRight = () => {
     if (
       GLOBAL.MapSelectPointType === 'selectPoint' ||
@@ -3086,7 +3077,10 @@ export default class MapView extends React.Component {
             marginLeft: scaleSize(80),
           },
           headerStyle: {
-            right: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? scaleSize(96) : 0,
+            right:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? scaleSize(96)
+                : 0,
           },
           backAction: event => {
             this.backPositon = {
@@ -3101,7 +3095,7 @@ export default class MapView extends React.Component {
         }}
         bottomBar={
           // this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-          // !this.isExample &&
+          !this.isExample &&
           // !this.props.analyst.params &&
           this.renderToolBar()
         }

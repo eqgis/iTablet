@@ -19,6 +19,7 @@ import {
   getLayerIconByType,
   getLayerWhiteIconByType,
   getThemeAssets,
+  getPublicAssets,
 } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 
@@ -146,7 +147,7 @@ export default class LayerManager_item extends React.Component {
   }
 
   getData = (data = this.props.data) => {
-    (async function() {
+    ;(async function() {
       let options = this.getOptions(data)
       let { showLevelOne, isVectorLayer } = this.getValidate(data)
       this.setState({
@@ -484,7 +485,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_UP,
         onPress: () => {
-          (async function() {
+          ;(async function() {
             await SMap.moveUpLayer(layer.path)
             if (this.props.parentData) {
               this.props.refreshParent &&
@@ -527,7 +528,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_DOWN,
         onPress: () => {
-          (async function() {
+          ;(async function() {
             await SMap.moveDownLayer(layer.path)
             if (this.props.parentData) {
               this.props.refreshParent &&
@@ -574,7 +575,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_TOP,
         onPress: () => {
-          (async function() {
+          ;(async function() {
             await SMap.moveToTop(layer.path)
             if (layer.path.indexOf('/') === -1) {
               let count = await SMap.getTaggingLayerCount(
@@ -598,7 +599,7 @@ export default class LayerManager_item extends React.Component {
       {
         title: getLanguage(global.language).Map_Layer.LAYERS_BOTTOM,
         onPress: () => {
-          (async function() {
+          ;(async function() {
             await SMap.moveToBottom(layer.path)
             if (layer.path.indexOf('/') === -1 && this.props.hasBaseMap) {
               SMap.moveUpLayer(layer.path)
@@ -641,14 +642,11 @@ export default class LayerManager_item extends React.Component {
   renderItem = () => {
     let name = this.state.data.caption
     const visibleImgWhite = this.state.visible
-      ? require('../../../../assets/mapTools/icon_multi_selected_disable.png')
-      : require('../../../../assets/mapTools/icon_multi_unselected_disable.png')
+      ? getPublicAssets().common.icon_disable_select
+      : getPublicAssets().common.icon_disable_none
     const visibleImgBlack = this.state.visible
-      ? require('../../../../assets/mapTools/icon_multi_selected_disable_black.png')
-      : require('../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
-    const arrowImg = this.state.rowShow
-      ? require('../../../../assets/mapEdit/icon-arrow-down.png')
-      : require('../../../../assets/mapEdit/icon-arrow-left.png')
+      ? getPublicAssets().common.icon_select
+      : getPublicAssets().common.icon_none
     let leftView = this.props.hasSelected ? (
       this.renderRadioBtn()
     ) : this.state.data.groupName ? (
@@ -657,18 +655,24 @@ export default class LayerManager_item extends React.Component {
     let select = 'transparent'
     let selectcolor = color.black
     let visibleImg = visibleImgBlack
-    let moreImg = require('../../../../assets/function/icon_shallow_more_gray.png')
+    let moreImg, arrowImg
     let image = this.getStyleIconByType(this.state.data)
     if (this.props.isSelected) {
       select = '#4680df'
       selectcolor = color.white
       visibleImg = visibleImgWhite
-      moreImg = require('../../../../assets/function/icon_shallow_more.png')
+      moreImg = getPublicAssets().common.icon_highlight_more_v
+      arrowImg = this.state.rowShow
+        ? getThemeAssets().publicAssets.icon_drop_down_white
+        : getThemeAssets().publicAssets.icon_drop_up_white
     } else {
       select = 'transparent'
       selectcolor = color.black
       visibleImg = visibleImgBlack
-      moreImg = require('../../../../assets/function/icon_shallow_more_gray.png')
+      moreImg = getPublicAssets().common.icon_more_v
+      arrowImg = this.state.rowShow
+        ? getThemeAssets().publicAssets.icon_drop_down
+        : getThemeAssets().publicAssets.icon_drop_up
     }
 
     let iTemView
@@ -693,7 +697,7 @@ export default class LayerManager_item extends React.Component {
             <TouchableOpacity style={styles.btn} onPress={this._arrow_pop_row}>
               <Image
                 resizeMode={'contain'}
-                style={styles.btn_image_samll}
+                style={styles.btn_image_big}
                 source={arrowImg}
               />
             </TouchableOpacity>
@@ -715,7 +719,7 @@ export default class LayerManager_item extends React.Component {
               style={[
                 this.state.data.type === DatasetType.POINT &&
                 this.state.data.themeType <= 0
-                  ? styles.samllImage
+                  ? styles.smallImage
                   : styles.btn_image,
               ]}
               source={image}
@@ -741,10 +745,7 @@ export default class LayerManager_item extends React.Component {
       <SwipeOut
         style={styles.container}
         close={this.state.isClose}
-        // left={rowData.left}
         right={this.state.options}
-        // rowID={this.state.rowID}
-        // sectionID={this.state.sectionID}
         autoClose={true}
         backgroundColor={'white'}
         onOpen={() => {
@@ -752,8 +753,6 @@ export default class LayerManager_item extends React.Component {
           this.props.onOpen && this.props.onOpen(this.state.data)
         }}
         buttonWidth={scaleSize(100)}
-        // onClose={() => console.log('===close') }
-        // scroll={event => console.log('scroll event') }
       >
         {this.renderItem()}
       </SwipeOut>

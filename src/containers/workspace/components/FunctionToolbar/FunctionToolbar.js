@@ -166,7 +166,7 @@ export default class FunctionToolbar extends React.Component {
 
   handlePosition = () => {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-    let contentHeight = this.list && this.list._listRef._totalCellLength || 0
+    let contentHeight = (this.list && this.list._listRef._totalCellLength) || 0
     let offset = this.offset
     let visibleHeight
     if (isLandscape) {
@@ -351,16 +351,16 @@ export default class FunctionToolbar extends React.Component {
           this.props.online.share[0] &&
           GLOBAL.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
-          <Bar
-            style={styles.progress}
-            // indeterminate={true}
-            progress={
-              this.props.online.share[this.props.online.share.length - 1]
-                .progress
-            }
-            width={scaleSize(60)}
-          />
-        )}
+            <Bar
+              style={styles.progress}
+              // indeterminate={true}
+              progress={
+                this.props.online.share[this.props.online.share.length - 1]
+                  .progress
+              }
+              width={scaleSize(60)}
+            />
+          )}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
         {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
@@ -384,7 +384,7 @@ export default class FunctionToolbar extends React.Component {
   }
 
   _keyExtractor = (item, index) => index + '-' + item.title
-  
+
   getCurrentData = () => {
     let filterData = this.state.data.filter(item => {
       if (this.props.ARView) {
@@ -406,16 +406,19 @@ export default class FunctionToolbar extends React.Component {
     return (
       <FlatList
         ref={ref => (this.list = ref)}
-        style={isLandscape ? {height: ITEM_VIEW_HEIGHT_L} : {}}
+        style={isLandscape ? { height: ITEM_VIEW_HEIGHT_L } : {}}
         data={filterData}
         horizontal={isLandscape}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
         onScroll={event => {
-          this.offset = isLandscape ? event.nativeEvent.contentOffset.x : event.nativeEvent.contentOffset.y
+          this.offset = isLandscape
+            ? event.nativeEvent.contentOffset.x
+            : event.nativeEvent.contentOffset.y
           this.handlePosition()
         }}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     )
   }
@@ -431,27 +434,28 @@ export default class FunctionToolbar extends React.Component {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let source
     let style = {
-      opacity: location === 'previous' ? this.previousOpacity : this.nextOpacity,
+      opacity:
+        location === 'previous' ? this.previousOpacity : this.nextOpacity,
     }
     if (isLandscape) {
-      source = location === 'previous'
-        ? getPublicAssets().common.icon_slide_left
-        : getPublicAssets().common.icon_slide_right
+      source =
+        location === 'previous'
+          ? getPublicAssets().common.icon_slide_left
+          : getPublicAssets().common.icon_slide_right
     } else {
-      source = location === 'previous'
-        ? getPublicAssets().common.icon_slide_up
-        : getPublicAssets().common.icon_slide_down
+      source =
+        location === 'previous'
+          ? getPublicAssets().common.icon_slide_up
+          : getPublicAssets().common.icon_slide_down
     }
     return (
-      <View
-        style={
-          isLandscape
-            ? styles.indicatorViewL
-            : styles.indicatorViewP
-        }>
+      <View style={isLandscape ? styles.indicatorViewL : styles.indicatorViewP}>
         <Animated.Image
           resizeMode={'contain'}
-          style={[isLandscape ? styles.indicatorImageL : styles.indicatorImageP, style]}
+          style={[
+            isLandscape ? styles.indicatorImageL : styles.indicatorImageP,
+            style,
+          ]}
           source={source}
         />
       </View>
@@ -465,9 +469,12 @@ export default class FunctionToolbar extends React.Component {
     let containerStyle = []
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       let dataLength = this.getCurrentData().length
-      dataLength = dataLength > MAX_VISIBLE_NUMBER ? MAX_VISIBLE_NUMBER : dataLength
-      let width = dataLength * ITEM_VIEW_WIDTH_L + PADDING_L* 2
-        + (dataLength > MAX_VISIBLE_NUMBER ? (INDICATOR_VIEW_SIZE * 2) : 0)
+      dataLength =
+        dataLength > MAX_VISIBLE_NUMBER ? MAX_VISIBLE_NUMBER : dataLength
+      let width =
+        dataLength * ITEM_VIEW_WIDTH_L +
+        PADDING_L * 2 +
+        (dataLength > MAX_VISIBLE_NUMBER ? INDICATOR_VIEW_SIZE * 2 : 0)
       containerStyle = [
         styles.containerL,
         this.state.data.length > 0 && styles.containerShadow,
@@ -476,7 +483,7 @@ export default class FunctionToolbar extends React.Component {
           bottom: this.state.bottom,
           left: '50%',
           marginLeft: -(width / 2),
-        }
+        },
       ]
     } else {
       containerStyle = [
@@ -486,7 +493,7 @@ export default class FunctionToolbar extends React.Component {
         {
           top: this.state.top,
           right: this.state.right,
-        }
+        },
       ]
     }
     return (
@@ -495,10 +502,10 @@ export default class FunctionToolbar extends React.Component {
         {this.renderList()}
         {this.state.data.length > 0 && this.renderIndicator('next')}
         {/*{this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (*/}
-          {/*<View style={{ height: 1, backgroundColor: '#EEEEEE' }} />*/}
+        {/*<View style={{ height: 1, backgroundColor: '#EEEEEE' }} />*/}
         {/*)}*/}
         {/*{this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&*/}
-          {/*this.renderMore()}*/}
+        {/*this.renderMore()}*/}
       </Animated.View>
     )
   }

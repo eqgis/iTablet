@@ -191,12 +191,14 @@ export default class MapToolbar extends React.Component {
     return (
       <MTBtn
         key={item.key}
+        opacity={1}
         title={title || item.title}
         textColor={'#505050'}
         textStyle={{ fontSize: setSpText(20) }}
         selected={this.state.currentIndex === index}
         image={item.image}
-        style={{ width: scaleSize(120) }}
+        // style={{ width: scaleSize(120) }}
+        style={styles.btn}
         selectedImage={item.selectedImage}
         onPress={() => {
           let current = this.props.initIndex

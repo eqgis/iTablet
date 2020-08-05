@@ -7,7 +7,6 @@ import {
   addModule,
   markModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -31,13 +30,7 @@ export default class MapEditConfig extends Module {
           mapName: 'yamanashi',
         },
       },
-      functionModules: [
-        startModule,
-        addModule,
-        markModule,
-        toolModule,
-        shareModule,
-      ],
+      functionModules: [startModule, addModule, markModule, toolModule],
       mapType: Module.MapType.MAP,
     })
   }

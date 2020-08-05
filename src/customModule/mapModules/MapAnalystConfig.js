@@ -9,7 +9,6 @@ import {
   analysisModule,
   styleModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -32,7 +31,6 @@ export default class MapAnalystConfig extends Module {
         () => analysisModule('MAP_PROCESS'),
         styleModule,
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

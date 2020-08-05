@@ -14,4 +14,9 @@ export default StyleSheet.create({
   separator: {
     marginTop: scaleSize(10),
   },
+  btn: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

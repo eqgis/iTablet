@@ -7,7 +7,6 @@ import {
   mark3DModule,
   fly3DModule,
   tool3DModule,
-  share3DModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 
 export default class Map3DConfig extends Module {
@@ -22,13 +21,7 @@ export default class Map3DConfig extends Module {
           mapName: 'OlympicGreen',
         },
       },
-      functionModules: [
-        start3DModule,
-        mark3DModule,
-        fly3DModule,
-        tool3DModule,
-        share3DModule,
-      ],
+      functionModules: [start3DModule, mark3DModule, fly3DModule, tool3DModule],
       mapType: Module.MapType.SCENE,
     })
   }
@@ -45,5 +38,3 @@ export default class Map3DConfig extends Module {
     })
   }
 }
-
-

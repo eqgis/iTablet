@@ -112,8 +112,8 @@ export default class SimpleSelectList extends React.Component {
   }
   renderHeader = ({ section }) => {
     let image = section.visible
-      ? getThemeAssets().publicAssets.icon_arrow_down
-      : getThemeAssets().publicAssets.icon_arrow_right_2
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
     return (
       <View style={styles.wrapper}>
         <TouchableOpacity
@@ -145,8 +145,8 @@ export default class SimpleSelectList extends React.Component {
       : require('../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
     if (item.data) {
       let image = item.visible
-        ? getThemeAssets().publicAssets.icon_arrow_down
-        : getThemeAssets().publicAssets.icon_arrow_right_2
+        ? getThemeAssets().publicAssets.icon_drop_down
+        : getThemeAssets().publicAssets.icon_drop_up
       return (
         <View>
           <View style={styles.wrapper}>

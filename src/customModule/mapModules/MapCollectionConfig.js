@@ -8,7 +8,6 @@ import {
   collectionModule,
   editModule,
   toolModule,
-  shareModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -34,7 +33,6 @@ export default class MapCollectionConfig extends Module {
         editModule,
         () => collectionModule(ConstToolType.MAP_TEMPLATE_CREATE),
         toolModule,
-        shareModule,
       ],
       mapType: Module.MapType.MAP,
     })

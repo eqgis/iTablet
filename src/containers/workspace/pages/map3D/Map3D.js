@@ -11,8 +11,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
-  Image,
+  BackHandler,
 } from 'react-native'
 import { SMSceneView, Point3D, Camera, SScene } from 'imobile_for_reactnative'
 import {
@@ -22,6 +21,7 @@ import {
   MenuDialog,
   PanResponderView,
   Progress,
+  MTBtn,
 } from '../../../../components'
 import {
   FunctionToolbar,
@@ -33,14 +33,18 @@ import {
   MapNavIcon,
   BackgroundOverlay,
 } from '../../components'
+import { MapHeaderButton } from '../../../../constants'
+import { getPublicAssets } from '../../../../assets'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
+import { share3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import SurfaceView from '../../../../components/SurfaceView'
 import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+import { BackHandlerUtil } from '../../util'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -62,6 +66,7 @@ export default class Map3D extends React.Component {
     device: Object,
     appConfig: Object,
     mapModules: Object,
+    backActions: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     setToolbarStatus: () => {},
@@ -138,6 +143,7 @@ export default class Map3D extends React.Component {
           this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
         },
       )
+      BackHandler.addEventListener('hardwareBackPress', this.backHandler)
     } else {
       global.SimpleDialog.set({
         text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
@@ -177,6 +183,11 @@ export default class Map3D extends React.Component {
     this.circleFlyListen && this.circleFlyListen.remove()
     this.unsubscribeFocus && this.unsubscribeFocus.remove()
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
+  }
+
+  backHandler = () => {
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   getLayers = async () => {
@@ -298,14 +309,14 @@ export default class Map3D extends React.Component {
   }
 
   _flyToPoint = () => {
-    (async function() {
+    ;(async function() {
       let point = await new Point3D().createObj(116.5, 39.9, 500)
       this.scene.flyToPoint(point)
     }.bind(this)())
   }
 
   _flyToCamera = () => {
-    (async function() {
+    ;(async function() {
       let camera = await new Camera().createObj(
         116.467575,
         39.91542777777778,
@@ -318,7 +329,7 @@ export default class Map3D extends React.Component {
   }
 
   _changeLayerColor = () => {
-    (async function() {
+    ;(async function() {
       let layers3ds = await this.scene.getLayer3Ds()
       let layer3D = await layers3ds.get(4)
       layer3D.setObjectsColor(1, 255, 0, 0, 0.8)
@@ -733,6 +744,7 @@ export default class Map3D extends React.Component {
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
         initIndex={0}
+        type={this.type}
         layerManager={this._layer_manager}
       />
     )
@@ -898,6 +910,70 @@ export default class Map3D extends React.Component {
     )
   }
 
+  renderHeaderRight = () => {
+    let itemWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+
+    const currentMapModule = this.props.mapModules.modules.find(item => {
+      return item.key === this.type
+    })
+    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
+      MapHeaderButton.Share,
+      MapHeaderButton.Search,
+    ]
+    let buttons = []
+    for (let i = 0; i < buttonInfos.length; i++) {
+      let info
+      if (typeof buttonInfos[i] === 'string') {
+        switch (buttonInfos[i]) {
+          case MapHeaderButton.Share:
+            info = {
+              key: MapHeaderButton.Share,
+              image: getPublicAssets().common.icon_nav_share,
+              action: share3DModule().action,
+            }
+            break
+          case MapHeaderButton.Search:
+            info = {
+              key: MapHeaderButton.Search,
+              image: getPublicAssets().common.icon_search,
+              action: () => {
+                NavigationService.navigate('PointAnalyst', {
+                  type: 'pointSearch',
+                })
+              },
+            }
+            break
+        }
+      } else {
+        info = buttonInfos[i]
+      }
+      info &&
+        buttons.push(
+          <MTBtn
+            key={info.key}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            image={info.image}
+            onPress={info.action}
+          />,
+        )
+    }
+    return (
+      <View
+        style={{
+          width: scaleSize(itemWidth * buttons.length),
+          flexDirection: 'row',
+          justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {buttons}
+      </View>
+    )
+  }
+
   renderContainer = () => {
     return (
       <Container
@@ -913,26 +989,17 @@ export default class Map3D extends React.Component {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
-          headerRight: (
-            <TouchableOpacity
-              onPress={() => {
-                NavigationService.navigate('PointAnalyst', {
-                  type: 'pointSearch',
-                })
-              }}
-              style={styles.moreView}
-            >
-              <Image
-                resizeMode={'contain'}
-                source={require('../../../../assets/header/icon_search.png')}
-                style={styles.search}
-              />
-            </TouchableOpacity>
-          ),
+          headerStyle: {
+            right:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? scaleSize(96)
+                : 0,
+          },
+          headerRight: this.renderHeaderRight(),
           type: 'fix',
         }}
         bottomBar={
-          this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
+          // this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
           this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
@@ -953,8 +1020,8 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
-        {this.renderMapNavIcon()}
-        {this.renderMapNavMenu()}
+        {/*{this.renderMapNavIcon()}*/}
+        {/*{this.renderMapNavMenu()}*/}
         {this.renderBackgroundOverlay()}
       </Container>
     )

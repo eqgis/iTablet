@@ -160,15 +160,15 @@ export default class MapSetting extends Component {
     return (
       <View>
         {this._renderItemSeparatorComponent()}
-        <MapSettingItem
-          title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}
-          type={'switch'}
-          rightAction={value => {
-            this.props.setColumnNavBar(value)
-          }}
-          value={this.props.mapColumnNavBar}
-          leftImage={getThemeAssets().setting.icon_horizontal_screen}
-        />
+        {/*<MapSettingItem*/}
+          {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
+          {/*type={'switch'}*/}
+          {/*rightAction={value => {*/}
+            {/*this.props.setColumnNavBar(value)*/}
+          {/*}}*/}
+          {/*value={this.props.mapColumnNavBar}*/}
+          {/*leftImage={getThemeAssets().setting.icon_horizontal_screen}*/}
+        {/*/>*/}
         {this._renderItemSeparatorComponent()}
         {
           CoworkInfo.coworkId !== '' &&

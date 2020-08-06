@@ -100,6 +100,7 @@ export default class PopView extends PureComponent {
       >
         <TouchableOpacity
           style={[styles.themeoverlay, overLayer]}
+          activeOpacity={1}
           onPress={() => {
             this.setVisible(false, () => {
               this.props.showFullMap && this.props.showFullMap(false)

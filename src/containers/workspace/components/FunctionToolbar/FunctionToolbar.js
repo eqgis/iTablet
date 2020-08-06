@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { View, Animated, FlatList, Dimensions, Image } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { ConstToolType, Const, ChunkType } from '../../../../constants'
+import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
@@ -476,7 +476,7 @@ export default class FunctionToolbar extends React.Component {
         {
           bottom: this.state.bottom,
           left: '50%',
-          marginLeft: -(width / 2),
+          marginLeft: -((width + Height.TOOLBAR_BUTTONS) / 2),
         }
       ]
     } else {

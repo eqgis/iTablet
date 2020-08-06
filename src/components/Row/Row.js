@@ -3,7 +3,7 @@
  Author: Yang Shanglong
  E-mail: yangshanglong@supermap.com
  */
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import RadioGroup from './RadioGroup'
 import Radio from './Radio'
@@ -13,14 +13,15 @@ import ChooseColor from './ChooseColor'
 import styles from './styles'
 import { Input } from '../../components'
 
-export default class Row extends PureComponent {
+export default class Row extends Component {
   props: {
     style?: Object, // 自定义Row样式
     titleStyle?: Object, // 左侧文字样式
     customRightStyle?: Object, // 右侧内容样式
+    disableStyle?: Object, // 右侧内容不可用样式
     title: string, // 左侧文字
     defaultValue?: any, // 默认值
-    customRightView?: any, // 自定义右侧内容
+    renderRightView?: any, // 自定义右侧内容
     type?: string, // Row.Type
     inputType?: string, // Row.InputType
     value?: any, // 值
@@ -51,6 +52,29 @@ export default class Row extends PureComponent {
       disable: this.props.disable,
     }
   }
+  
+  shouldComponentUpdate(prevProps, prevState) {
+    if (
+      JSON.stringify(prevProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(prevState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.defaultValue !== this.props.defaultValue ||
+      this.state.defaultValue !== prevState.defaultValue
+    ) {
+      this.setState({
+        value: this.props.value || this.props.defaultValue,
+        defaultValue: this.props.defaultValue || '',
+        disable: this.props.disable,
+      })
+    }
+  }
 
   labelChange = text => {
     if (this.props.disable) return
@@ -79,8 +103,8 @@ export default class Row extends PureComponent {
 
   renderRight = () => {
     let right = <View />
-    if (this.props.customRightView) {
-      right = this.props.customRightView
+    if (this.props.renderRightView) {
+      right = this.props.renderRightView()
     } else if (this.props.type === 'input') {
       right = (
         <View style={styles.inputView}>
@@ -97,21 +121,18 @@ export default class Row extends PureComponent {
             underlineColorAndroid="transparent"
             onChangeText={this.labelChange}
           />
-          {this.props.disable && <View style={styles.inputOverLayer} />}
+          {this.props.disable && <View style={[styles.inputOverLayer, this.props.disableStyle]} />}
         </View>
       )
     } else if (this.props.type === 'input_wrap') {
       right = (
-        <View style={[styles.inputWrap, styles.inputView]}>
+        <View style={[styles.inputView]}>
           <Input
             inputStyle={this.props.customRightStyle}
             style={this.props.customRightStyle}
             accessible={true}
             accessibilityLabel={'输入框'}
-            // placeholder={this.state.placeholder}
-            // placeholderTextColor={color.themePlaceHolder}
             value={this.state.value + ''}
-            // onChangeText={this.labelChange}
             onChangeText={text => {
               this.labelChange(text)
             }}
@@ -121,7 +142,7 @@ export default class Row extends PureComponent {
             returnKeyType={'done'}
             showClear={!this.props.disable}
           />
-          {this.props.disable && <View style={styles.inputOverLayer} />}
+          {this.props.disable && <View style={[styles.inputOverLayer, this.props.disableStyle]} />}
         </View>
       )
     } else if (this.props.type === 'radio_group') {
@@ -152,6 +173,7 @@ export default class Row extends PureComponent {
     } else if (this.props.type === 'text_btn') {
       right = (
         <LabelBtn
+          style={this.props.customRightStyle}
           title={this.props.title}
           value={this.props.value}
           getValue={this.getValue}
@@ -176,7 +198,7 @@ export default class Row extends PureComponent {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <Text style={styles.rowLabel}>{this.props.title}</Text>
+        <Text style={[styles.rowLabel, this.props.titleStyle]}>{this.props.title}</Text>
         {this.renderRight()}
       </View>
     )

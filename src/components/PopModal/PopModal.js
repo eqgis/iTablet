@@ -9,6 +9,7 @@ export default class PopModal extends PureComponent {
   props: {
     children: any,
     type?: string,
+    contentStyle?: Object,
     onCloseModal: () => {},
   }
 
@@ -40,6 +41,10 @@ export default class PopModal extends PureComponent {
       },
     )
   }
+  
+  getVisible = () => {
+    return this.state.modalVisible
+  }
 
   _onRequestClose = () => {
     if (Platform.OS === 'android') {
@@ -59,60 +64,16 @@ export default class PopModal extends PureComponent {
     })
   }
 
-  _renderSeparatorLine = () => {
-    return (
-      <View
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: color.separateColorGray,
-        }}
-      />
-    )
-  }
-  _renderItem = (label, onClick: () => {}) => {
-    let fontSize = size.fontSize.fontSizeXl
-    let height = scaleSize(80)
-    return (
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: color.contentColorWhite,
-          // paddingLeft: scaleSize(16),
-          // paddingRight: scaleSize(16),
-        }}
-      >
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={{
-            width: '100%',
-            height: height,
-            backgroundColor: color.contentColorWhite,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            onClick()
-          }}
-        >
-          <Text style={{ fontSize: fontSize, color: color.fontColorBlack }}>
-            {label}
-          </Text>
-        </TouchableOpacity>
-        {this._renderSeparatorLine()}
-      </View>
-    )
-  }
-
   _renderContent = () => {
     return (
       <View
-        style={{
-          width: '100%',
-          maxHeight: ConstToolType.HEIGHT[3] + Const.BOTTOM_HEIGHT,
-          minHeight: Const.BOTTOM_HEIGHT,
-          backgroundColor: color.contentColorWhite,
-        }}
+        style={[{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: '#rgba(0, 0, 0, 0)',
+        }, this.props.contentStyle]}
       >
         {this.props.children}
       </View>

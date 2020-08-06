@@ -33,8 +33,11 @@ const lightTheme = {
   transView: 'rgba(240, 240, 240, 0.85)',
   blackBg: '#353537',
   bgW: '#F9F9F9',
+  bgW2: '#E1E1E1',
   bgG: '#A0A0A0',
+  bgG2: '#F3F4F8',
   switch: '#4680DF',
+  selected_blue: '#007AFF',
   // selected: '#4680DF',
   selected: 'rgba(70, 128, 223, 0.5)',
 

@@ -10,7 +10,6 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
   rowLabel: {
-    flex: 1,
     fontSize: size.fontSize.fontSizeLg,
     backgroundColor: 'transparent',
     textAlign: 'left',
@@ -28,6 +27,11 @@ export default StyleSheet.create({
   radioContainer: {
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  radioImg: {
+    height: scaleSize(30),
+    width: scaleSize(30),
+    backgroundColor: 'transparent',
   },
   radioView: {
     height: scaleSize(30),

@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorGray2,
   },
-  SectionSeparaLineStyle: {
+  SectionSeparatorLineStyle: {
     height: scaleSize(1),
     backgroundColor: 'rgba(160,160,160,1.0)',
     marginHorizontal: scaleSize(10),

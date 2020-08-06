@@ -320,9 +320,7 @@ export default class Find extends Component {
           title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
           withoutBack: true,
           navigation: this.props.navigation,
-          headerStyle: {
-          
-          },
+          headerStyle: { borderBottomWidth: 0 },
         }}
         bottomBar={this.renderTabBar()}
       >

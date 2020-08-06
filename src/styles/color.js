@@ -64,6 +64,7 @@ const lightTheme = {
   // separateColorGray: '#A0A0A0',
   separateColorGray: '#EEEEEE',
   separateColorGray2: '#6C7B8A',
+  separateColorGray3: '#F1F3F8',
 
   imageColorBlack: '#181818',
   imageColorWhite: '#FBFBFB',

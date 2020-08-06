@@ -144,7 +144,7 @@ export default class InformMessage extends React.Component {
           }}
           data={this.state.messageInfo}
           ItemSeparatorComponent={() => {
-            return <View style={styles.SectionSeparaLineStyle} />
+            return <View style={styles.SectionSeparatorLineStyle} />
           }}
           // extraData={this.state}
           // eslint-disable-next-line

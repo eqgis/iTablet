@@ -1438,6 +1438,7 @@ export default class LayerAttribute extends React.Component {
       >
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
+            orientation={this.props.device.orientation}
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canAddField={

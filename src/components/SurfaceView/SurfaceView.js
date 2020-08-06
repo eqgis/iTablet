@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react'
 import { View, ART, PanResponder, Dimensions } from 'react-native'
-// import { SMap } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { color } from '../../styles'
 import styles from './styles'

@@ -108,7 +108,7 @@ function getPage(page, bottomBar = undefined) {
           action: () => {
             SARImage.modifyImageToCurrentPosition()
             if (bottomBar) {
-              bottomBar.goto('modify')
+              bottomBar.goto('main')
             }
           },
         },
@@ -141,7 +141,7 @@ function getPage(page, bottomBar = undefined) {
         SARImage.setPlaneVisible(true)
         SARImage.setOnImageModifyListener(() => {
           if (bottomBar) {
-            bottomBar.goto('modify')
+            bottomBar.goto('main')
           }
         })
       }

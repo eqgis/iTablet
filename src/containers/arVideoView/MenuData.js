@@ -113,7 +113,7 @@ function getPage(page, bottomBar = undefined) {
           action: () => {
             SARVideoView.modifyVideoToCurrentPosition()
             if (bottomBar) {
-              bottomBar.goto('modify')
+              bottomBar.goto('main')
             }
           },
         },
@@ -147,7 +147,7 @@ function getPage(page, bottomBar = undefined) {
         SARVideoView.setPlaneVisible(true)
         SARVideoView.setOnVideoModifyListener(() => {
           if (bottomBar) {
-            bottomBar.goto('modify')
+            bottomBar.goto('main')
           }
         })
       }

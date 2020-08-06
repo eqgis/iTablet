@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   sectionView: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.contentColorGray,
+    backgroundColor: color.bgW2,
     height: scaleSize(80),
   },
   section: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     flex: 1,
-    color: color.fontColorWhite,
+    color: color.fontColorBlack,
     paddingLeft: 10,
     fontSize: size.fontSize.fontSizeXl,
     fontWeight: 'bold',
@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
   sectionImg: {
     tintColor: color.fontColorWhite,
     marginLeft: 10,
-    width: scaleSize(30),
-    height: scaleSize(30),
+    width: scaleSize(52),
+    height: scaleSize(52),
   },
   item: {
     flex: 1,

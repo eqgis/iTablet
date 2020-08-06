@@ -846,8 +846,8 @@ export default class MyDataPage extends Component {
   renderSectionHeader = ({ section }) => {
     let title = section.title
     let imageSource = section.isShowItem
-      ? require('../../../../assets/Mine/local_data_open.png')
-      : require('../../../../assets/Mine/local_data_close.png')
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
     return (
       <TouchableOpacity
         style={styles.sectionView}

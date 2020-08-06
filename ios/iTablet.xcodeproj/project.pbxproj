@@ -25,7 +25,6 @@
 		0A13B49D22A66F37005E4AEC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */; };
 		0A13B49E22A66F37005E4AEC /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A147442223F6A7B006663C7 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A147441223F6A7B006663C7 /* libc++.1.tbd */; };
-		0A177FE721F0A8B900EA39D6 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A177FBC21F0A8B900EA39D6 /* resources.bundle */; };
 		0A177FE921F7092E00EA39D6 /* Workspace.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0A177FE821F7092D00EA39D6 /* Workspace.zip */; };
 		0A1A204B22D6BCF40014058A /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1A201B22D5E62E0014058A /* libRCTCameraRoll.a */; };
 		0A25E342226182950009CB35 /* libAsHttpRequest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A25E33E226182950009CB35 /* libAsHttpRequest.a */; };
@@ -91,6 +90,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		4E045E34246AC6A9009F64CE /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4E045DD9246AC6A9009F64CE /* python2.7.zip */; };
 		4E045E36246AC6C6009F64CE /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E045E35246AC6C6009F64CE /* PIL */; };
+		4E0D303E24DA9980001AE116 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4E0D303D24DA9980001AE116 /* resources.bundle */; };
 		4E51DC0F37A544EEAA87110D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161B72053D084F8288A022CA /* Foundation.framework */; };
 		4EE4616E239A497C00775A76 /* labelmap_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4616D239A497C00775A76 /* labelmap_cn.txt */; };
 		4EFB3DE123BBF28700688642 /* libiconv.2.4.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */; };
@@ -357,34 +357,6 @@
 			remoteGlobalIDString = 6456441F1EB8DA9100672408;
 			remoteInfo = "RNFS-tvOS";
 		};
-		0AEE2C8A24A9955900C9734E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D3CD90B1DE5FBD600167DC4;
-			remoteInfo = jschelpers;
-		};
-		0AEE2C8C24A9955900C9734E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
-			remoteInfo = "jschelpers-tvOS";
-		};
-		0AEE2C8E24A9955900C9734E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9936F3131F5F2E4B0010BF04;
-			remoteInfo = privatedata;
-		};
-		0AEE2C9024A9955900C9734E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
-			remoteInfo = "privatedata-tvOS";
-		};
 		0AF348D62270653B004D6D09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3C729742C5A43198594C430 /* RCTContacts.xcodeproj */;
@@ -624,7 +596,6 @@
 		0A13B46522A66D37005E4AEC /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A147441223F6A7B006663C7 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
-		0A177FBC21F0A8B900EA39D6 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		0A177FE821F7092D00EA39D6 /* Workspace.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Workspace.zip; sourceTree = "<group>"; };
 		0A1A200E22D5E62D0014058A /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		0A25E33E226182950009CB35 /* libAsHttpRequest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAsHttpRequest.a; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/libAsHttpRequest.a; sourceTree = "<group>"; };
@@ -706,6 +677,7 @@
 		4E045B72246AC08A009F64CE /* FileTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTools.h; sourceTree = "<group>"; };
 		4E045DD9246AC6A9009F64CE /* python2.7.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = python2.7.zip; sourceTree = "<group>"; };
 		4E045E35246AC6C6009F64CE /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
+		4E0D303D24DA9980001AE116 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		4E1ADBD1246ABBAE00F11C42 /* NativeUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeUtil.h; sourceTree = "<group>"; };
 		4EE4616D239A497C00775A76 /* labelmap_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap_cn.txt; sourceTree = "<group>"; };
 		4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.4.0.tbd; path = usr/lib/libiconv.2.4.0.tbd; sourceTree = SDKROOT; };
@@ -967,6 +939,7 @@
 		0A16C40221AC0AB700A515FA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				4E0D303D24DA9980001AE116 /* resources.bundle */,
 				4E045E35246AC6C6009F64CE /* PIL */,
 				4E045DD9246AC6A9009F64CE /* python2.7.zip */,
 				2A15229623979C1700CBC452 /* SuperMapAR.bundle */,
@@ -979,7 +952,6 @@
 				0A11D9E621F9641700AFE6D6 /* icon.png */,
 				0A11D9E821F9641D00AFE6D6 /* logo.png */,
 				0A177FE821F7092D00EA39D6 /* Workspace.zip */,
-				0A177FBC21F0A8B900EA39D6 /* resources.bundle */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -1821,34 +1793,6 @@
 			remoteRef = 0A95738921BFA38500B5853A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0AEE2C8B24A9955900C9734E /* libjschelpers.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libjschelpers.a;
-			remoteRef = 0AEE2C8A24A9955900C9734E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0AEE2C8D24A9955900C9734E /* libjschelpers.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libjschelpers.a;
-			remoteRef = 0AEE2C8C24A9955900C9734E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0AEE2C8F24A9955900C9734E /* libprivatedata.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libprivatedata.a;
-			remoteRef = 0AEE2C8E24A9955900C9734E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0AEE2C9124A9955900C9734E /* libprivatedata-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libprivatedata-tvOS.a";
-			remoteRef = 0AEE2C9024A9955900C9734E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		0AF348D72270653B004D6D09 /* libRCTContacts.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2074,10 +2018,10 @@
 				614D856D23C71A1900BDEC31 /* HorizonalFinemapping.prototxt in Resources */,
 				0AEE2CA024A9978E00C9734E /* Template.zip in Resources */,
 				2ABCAA1C2386616D0052EB6B /* labelmap.txt in Resources */,
+				4E0D303E24DA9980001AE116 /* resources.bundle in Resources */,
 				2ABCAA1B2386616D0052EB6B /* detect.tflite in Resources */,
 				4EE4616E239A497C00775A76 /* labelmap_cn.txt in Resources */,
 				0AECCF782328E034004F84A4 /* Images.zip in Resources */,
-				0A177FE721F0A8B900EA39D6 /* resources.bundle in Resources */,
 				4E045E36246AC6C6009F64CE /* PIL in Resources */,
 				0A11D9E721F9641700AFE6D6 /* icon.png in Resources */,
 				2A15229923979D9F00CBC452 /* SuperMapAR.bundle in Resources */,
@@ -2256,7 +2200,7 @@
 					"$(PROJECT_DIR)/SDKExport/",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2359,7 +2303,7 @@
 					"$(PROJECT_DIR)/SDKExport/",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

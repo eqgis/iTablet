@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 
 import styles from './styles'
 
@@ -13,6 +13,7 @@ export default class ChooseColor extends PureComponent {
     title: string,
     value: any,
     defaultValue: any,
+    style?: StyleSheet,
     getValue?: () => {},
   }
 
@@ -32,18 +33,11 @@ export default class ChooseColor extends PureComponent {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        style={styles.chooseColorContainer}
+        style={[styles.chooseColorContainer, this.props.style, { backgroundColor: this.props.value }]}
         accessible={true}
         accessibilityLabel={this.props.title}
         onPress={() => this.getValue()}
-      >
-        <View
-          style={[
-            styles.subChooseColorContainer,
-            { backgroundColor: this.props.value },
-          ]}
-        />
-      </TouchableOpacity>
+      />
     )
   }
 }

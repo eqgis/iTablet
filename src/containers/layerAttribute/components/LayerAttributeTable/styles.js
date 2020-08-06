@@ -57,13 +57,13 @@ export default StyleSheet.create({
   },
   indexCell: {
     height: ROW_HEIGHT,
-    backgroundColor: color.itemColorGray,
+    backgroundColor: color.bgW2,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',
   },
   indexCellText: {
-    color: color.fontColorWhite,
+    color: color.itemColorBlack,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },
@@ -83,7 +83,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   cellText: {
-    color: color.themeText2,
+    color: color.itemColorBlack,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },

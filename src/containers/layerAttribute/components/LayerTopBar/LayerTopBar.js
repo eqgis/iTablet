@@ -75,12 +75,12 @@ export default class LayerTopBar extends React.Component {
     }
   }
 
-  addAttributeFieldAction = feildInfo => {
+  addAttributeFieldAction = fieldInfo => {
     if (
       this.props.addFieldAction &&
       typeof this.props.addFieldAction === 'function'
     ) {
-      this.props.addFieldAction(feildInfo)
+      this.props.addFieldAction(fieldInfo)
     }
   }
 
@@ -88,7 +88,7 @@ export default class LayerTopBar extends React.Component {
     return (
       <ImageButton
         key={key}
-        containerStyle={[styles.btn, { flex: 1 }]}
+        containerStyle={styles.btn}
         iconBtnStyle={styles.imgBtn}
         titleStyle={enabled ? styles.enableBtnTitle : styles.btnTitle}
         icon={icon}
@@ -129,7 +129,6 @@ export default class LayerTopBar extends React.Component {
             enabled: this.props.canTabs,
             style: styles.tabBtn,
           })}
-        {/*<ScrollView horizontal style={styles.rightList}>*/}
         <View style={styles.rightList}>
           {this.renderBtn({
             icon: this.props.canAddField
@@ -139,17 +138,7 @@ export default class LayerTopBar extends React.Component {
             title: getLanguage(global.language).Map_Attribute
               .ATTRIBUTE_FIELD_ADD,
             //'添加',
-            action: () => {
-              GLOBAL.ToolBar.showFullMap(true)
-              NavigationService.navigate('LayerAttributeAdd', {
-                defaultParams:
-                  this.props.attributesData.length > 1 &&
-                  this.props.attributesData[
-                    this.props.attributesData.length - 1
-                  ],
-                callBack: this.addAttributeFieldAction,
-              })
-            },
+            action: this.addAttributeFieldAction,
             enabled: this.props.canAddField,
           })}
           {this.renderBtn({

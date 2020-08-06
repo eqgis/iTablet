@@ -57,7 +57,7 @@ import {
   Dialog,
   SaveDialog,
   InputDialog,
-  PopView,
+  PopModal,
   SurfaceView,
   // SearchBar,
   Progress,
@@ -3200,9 +3200,9 @@ export default class MapView extends React.Component {
           />
         )}
         <BubblePane ref={ref => (GLOBAL.bubblePane = ref)} maxSize={1} />
-        <PopView ref={ref => (this.popModal = ref)}>
+        <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
-        </PopView>
+        </PopModal>
         {this.renderDialog()}
         <Dialog
           ref={ref => (GLOBAL.removeObjectDialog = ref)}

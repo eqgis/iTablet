@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { color } from '../../styles'
+import { getPublicAssets } from '../../assets'
 import styles from './styles'
 
 export default class Input extends PureComponent {
@@ -105,7 +106,7 @@ export default class Input extends PureComponent {
         <Image
           style={styles.clearImg}
           resizeMode={'contain'}
-          source={require('../../assets/public/icon_input_clear.png')}
+          source={getPublicAssets().common.icon_close}
         />
       </TouchableOpacity>
     )

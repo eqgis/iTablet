@@ -244,15 +244,15 @@ function arDrawLine() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.MeasureCollectData.measureType = 'drawLine'
-
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+   
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
+    GLOBAL.MeasureCollectData.measureType = 'drawLine'
+    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
   })()
 }
 
@@ -301,14 +301,14 @@ function arDrawArea() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
-
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
+
+    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
+    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
   })()
 }
 
@@ -357,14 +357,14 @@ function arDrawPoint() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
-
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
+
+    GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
+    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
   })()
 }
 

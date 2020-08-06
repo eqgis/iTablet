@@ -818,6 +818,7 @@ export default class LayerAttributeTabs extends React.Component {
       >
         <LayerTopBar
           hasTabBtn
+          orientation={this.props.device.orientation}
           tabsAction={this.showDrawer}
           canLocated={this.state.attributes.data.length > 1}
           canRelated={this.state.currentIndex >= 0}

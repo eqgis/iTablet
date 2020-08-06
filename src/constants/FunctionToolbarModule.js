@@ -184,7 +184,7 @@ const layerAdd = [
 // ]
 
 function layerManagerData() {
-  return [
+  let data = [
     {
       title: 'Google RoadMap',
       action: () => OpenData(ConstOnline.Google, 0),
@@ -370,6 +370,20 @@ function layerManagerData() {
     //   themeType: -1,
     // },
   ]
+  data = data.filter(item => {
+    if (
+      global.language === 'CN' &&
+      (item.title === 'Google RoadMap' ||
+        item.title === 'Google Satellite' ||
+        item.title === 'Google Terrain' ||
+        item.title === 'Google Hybrid')
+    ) {
+      return false
+    }
+    return true
+  })
+
+  return data
 }
 
 // const openData = [

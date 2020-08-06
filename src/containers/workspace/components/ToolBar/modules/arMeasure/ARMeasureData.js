@@ -43,13 +43,13 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
     },
     {
-      //AR画线
-      key: 'arDrawLine',
+      //AR测高
+      key: 'arMeasureHeitht',
       title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
-      action: ARMeasureAction.arDrawLine,
+        .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
+      action: ARMeasureAction.arMeasureHeight,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
+      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
     {
       //AR画面
@@ -61,6 +61,15 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
     {
+      //AR画线
+      key: 'arDrawLine',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+      action: ARMeasureAction.arDrawLine,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
+    },
+    {
       //AR画点
       key: 'arDrawArea',
       title: getLanguage(global.language).Map_Main_Menu
@@ -68,15 +77,6 @@ function getData() {
       action: ARMeasureAction.arDrawPoint,
       size: 'large',
       image: getThemeAssets().ar.toolbar.point,
-    },
-    {
-      //AR测高
-      key: 'arMeasureHeitht',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
-      action: ARMeasureAction.arMeasureHeight,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
     {
       //AR投射

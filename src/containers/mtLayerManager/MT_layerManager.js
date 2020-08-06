@@ -104,7 +104,7 @@ export default class MT_layerManager extends React.Component {
   }
 
   componentDidMount() {
-    this.getData(true)
+    this.getData()
   }
 
   setRefreshing = refreshing => {
@@ -114,11 +114,11 @@ export default class MT_layerManager extends React.Component {
     })
   }
 
-  getData = async (isInit = false) => {
+  getData = async () => {
     // this.container.setLoading(true)
     try {
       this.itemRefs = {}
-      let allLayers = isInit ? this.props.layers : await this.props.getLayers()
+      let allLayers = await this.props.getLayers()
 
       let baseMap = []
       if (

@@ -17,6 +17,9 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: scaleSize(40),
   },
+  rightScrollList: {
+    paddingHorizontal: scaleSize(40),
+  },
   imgBtn: {
     flexDirection: 'row',
     height: size.imageSize.large,

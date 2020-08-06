@@ -7,6 +7,7 @@
 import * as React from 'react'
 import { ConstInfo, ConstToolType } from '../../../../constants'
 import { Toast, LayerUtils, scaleSize } from '../../../../utils'
+import { color } from '../../../../styles'
 import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -1012,6 +1013,7 @@ export default class LayerSelectionAttribute extends React.Component {
             ? -1
             : this.state.startIndex + 1
         }
+        contentContainerStyle={{backgroundColor: color.bgW}}
         selectRow={this.selectRow}
         buttonNameFilter={buttonNameFilter}
         buttonActions={buttonActions}

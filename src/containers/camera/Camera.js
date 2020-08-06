@@ -15,7 +15,7 @@ import NavigationService from '../../containers/NavigationService'
 import { getPublicAssets } from '../../assets'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
 import { RNCamera } from 'react-native-camera'
-import { SMediaCollector } from 'imobile_for_reactnative'
+import { SMediaCollector,SMap  } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { getLanguage } from '../../language'
 
@@ -64,6 +64,7 @@ export default class Camera extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     global.isPad && Orientation.lockToPortrait()
   }
 
@@ -72,6 +73,7 @@ export default class Camera extends React.Component {
       clearInterval(this.recordTimer)
       this.recordTimer = null
     }
+    SMap.setDynamicviewsetVisible(true)
     global.isPad && Orientation.unlockAllOrientations()
   }
 

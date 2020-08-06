@@ -1,9 +1,8 @@
 import NavigationService from '../../NavigationService'
 
 function backHandler(nav, backActions) {
-  let _nav = nav && nav.routes
-    ? nav
-    : NavigationService.getTopLevelNavigator().state.nav
+  let _nav =
+    nav && nav.routes ? nav : NavigationService.getTopLevelNavigator().state.nav
   let current = _nav.routes[_nav.index]
   let key
   while (current.routes) {

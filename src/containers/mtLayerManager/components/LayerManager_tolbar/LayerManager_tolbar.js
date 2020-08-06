@@ -105,6 +105,7 @@ export default class LayerManager_tolbar extends React.Component {
       type: props.type, // 当前传入的类型
       containerType: props.containerProps.containerType,
       data: [],
+      section: {},
       bottom: new Animated.Value(
         -Math.max(this.props.device.height, this.props.device.width),
       ),
@@ -378,11 +379,13 @@ export default class LayerManager_tolbar extends React.Component {
     if (isShow) {
       this.refreshParentList = params.refreshParentList
     }
+    let section = params.section ? params.section : {}
     this.setState(
       {
         type: type,
         index: params.index,
         isGroup,
+        section,
         ...newState,
       },
       () => {
@@ -490,7 +493,25 @@ export default class LayerManager_tolbar extends React.Component {
     ) {
       //'移除'
       (async function() {
-        await SMap.removeLayer(this.state.layerData.path)
+        if (
+          this.state.section.title ===
+          getLanguage(global.language).Map_Layer.BASEMAP
+        ) {
+          let layers = []
+          layers.push(this.state.layerData)
+          if (this.state.layerData.subLayers) {
+            layers = layers.concat(this.state.layerData.subLayers)
+          }
+          for (let i = 0; i < layers.length; i++) {
+            await SMap.removeLayer(layers[i].path)
+          }
+          for (let i = 0; i < layers.length; i++) {
+            await SMap.closeDatasource(layers[i].datasourceAlias)
+          }
+          GLOBAL.BaseMapSize = 0
+        } else {
+          await SMap.removeLayer(this.state.layerData.path)
+        }
         await SMap.refreshMap()
         await this.props.getLayers()
         await this._refreshParentList()

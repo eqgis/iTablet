@@ -24,6 +24,7 @@ export default class Row extends Component {
     renderRightView?: any, // 自定义右侧内容
     type?: string, // Row.Type
     inputType?: string, // Row.InputType
+    orientation?: string, // 横竖屏
     value?: any, // 值
     radioArr?: Array, // 单选框组[{title, value}]
     radioColumn?: number, // 单选框组列数

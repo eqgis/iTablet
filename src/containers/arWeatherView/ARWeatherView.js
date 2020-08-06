@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SARWeather, SMARWeatherView } from 'imobile_for_reactnative'
+import { SARWeather, SMARWeatherView ,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { scaleSize } from '../../utils'
@@ -29,6 +29,7 @@ export default class ARWeatherView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 
@@ -82,25 +83,6 @@ export default class ARWeatherView extends React.Component {
           paddingHorizontal: scaleSize(40),
         }}
       >
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: scaleSize(80),
-          }}
-          onPress={() => {
-            NavigationService.navigate('ChooseWeather', {
-              currentItemKey: this.state.current,
-              onSelectCallback: key => this.setCurrent(key),
-            })
-          }}
-        >
-          <Image
-            source={getThemeAssets().collection.icon_collection_change}
-            style={{ width: scaleSize(60), height: scaleSize(60) }}
-          />
-        </TouchableOpacity>
         {this.state.current !== '' && (
           <TouchableOpacity
             style={{
@@ -123,6 +105,25 @@ export default class ARWeatherView extends React.Component {
             />
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: scaleSize(80),
+          }}
+          onPress={() => {
+            NavigationService.navigate('ChooseWeather', {
+              currentItemKey: this.state.current,
+              onSelectCallback: key => this.setCurrent(key),
+            })
+          }}
+        >
+          <Image
+            source={getThemeAssets().collection.icon_collection_change}
+            style={{ width: scaleSize(60), height: scaleSize(60) }}
+          />
+        </TouchableOpacity>
       </View>
     )
   }

@@ -108,7 +108,7 @@ import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessage
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 
-const markerTag = 118081
+const markerTag = 118082
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -299,9 +299,9 @@ export default class MapView extends React.Component {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
-  
+
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
-    
+
     if (global.isLicenseValid) {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
@@ -600,7 +600,7 @@ export default class MapView extends React.Component {
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
-    
+
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
@@ -1061,7 +1061,7 @@ export default class MapView extends React.Component {
       }
     }.bind(this)())
   }
-  
+
   backHandler = () => {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
@@ -2442,12 +2442,14 @@ export default class MapView extends React.Component {
         showAIDetect: false,
       })
       GLOBAL.showAIDetect = false
+      SMap.setDynamicviewsetVisible(true)
       Orientation.unlockAllOrientations()
     } else {
       this.setState({
         showAIDetect: true,
       })
       GLOBAL.showAIDetect = true
+      SMap.setDynamicviewsetVisible(false)
       Orientation.lockToPortrait()
     }
   }
@@ -3077,7 +3079,10 @@ export default class MapView extends React.Component {
             marginLeft: scaleSize(80),
           },
           headerStyle: {
-            right: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? scaleSize(96) : 0,
+            right:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? scaleSize(96)
+                : 0,
           },
           backAction: event => {
             this.backPositon = {

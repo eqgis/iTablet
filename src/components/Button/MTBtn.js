@@ -5,7 +5,14 @@
 */
 
 import * as React from 'react'
-import { StyleSheet, Image, TouchableHighlight, TouchableOpacity, Text, View } from 'react-native'
+import {
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  Text,
+  View,
+} from 'react-native'
 import { constUtil, scaleSize } from '../../utils/index'
 import { size } from '../../styles/index'
 
@@ -122,8 +129,9 @@ export default class MTBtn extends React.Component {
     } else {
       image = this.props.image
     }
-    
-    let TouchBtn = this.props.opacity >= 0 ? TouchableOpacity : TouchableHighlight
+
+    let TouchBtn =
+      this.props.opacity >= 0 ? TouchableOpacity : TouchableHighlight
 
     return (
       <TouchBtn

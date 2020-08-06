@@ -17,12 +17,15 @@ async function OpenData(data, index, callback) {
   }
   // Layer index = 0 为顶层
   if (isOpen) {
-    for (let i = 1; i <= GLOBAL.BaseMapSize; i++) {
-      if (
-        layers.length > 0 &&
-        LayerUtils.isBaseLayer(layers[layers.length - i])
-      ) {
-        await SMap.removeLayer(layers.length - i)
+    if (layers.length > 0) {
+      let baseMap = layers.filter(layer => {
+        return LayerUtils.isBaseLayer(layer)
+      })
+      for (let i = 0; i < baseMap.length; i++) {
+        await SMap.removeLayer(baseMap[i].path)
+      }
+      for (let i = 0; i < baseMap.length; i++) {
+        await SMap.closeDatasource(baseMap[i].datasourceAlias)
       }
     }
     if (data instanceof Array) {

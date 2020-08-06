@@ -42,6 +42,7 @@ export default class AIPoseEstimationView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 
@@ -113,9 +114,9 @@ export default class AIPoseEstimationView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.associationMap
                   ? getLanguage(global.language).Map_Main_Menu
-                    .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
+                      .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
                   : getLanguage(global.language).Map_Main_Menu
-                    .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
+                      .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
               </Text>
             </View>
           </TouchableOpacity>
@@ -145,9 +146,9 @@ export default class AIPoseEstimationView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.poseOverLook
                   ? getLanguage(global.language).Map_Main_Menu
-                    .MAP_AI_POSE_ESTIMATION_LOOK
+                      .MAP_AI_POSE_ESTIMATION_LOOK
                   : getLanguage(global.language).Map_Main_Menu
-                    .MAP_AI_POSE_ESTIMATION_OVERLOOK}
+                      .MAP_AI_POSE_ESTIMATION_OVERLOOK}
               </Text>
             </View>
           </TouchableOpacity>

@@ -23,7 +23,7 @@ import {
   UserType,
   ChunkType,
 } from '../../constants'
-import { color, size } from '../../styles'
+import { color } from '../../styles'
 import {
   getPublicAssets,
   getThemeAssets,
@@ -141,8 +141,12 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
-          baseMap = [allLayers[allLayers.length - 1]]
-          allLayers.splice(allLayers.length - 1, 1)
+          baseMap = allLayers.filter(layer => {
+            return LayerUtils.isBaseLayer(layer)
+          })
+          allLayers = allLayers.filter(layer => {
+            return !LayerUtils.isBaseLayer(layer)
+          })
         }
       } else if (allLayers.length === 0) {
         await SMap.openDatasource(
@@ -155,6 +159,16 @@ export default class MT_layerManager extends React.Component {
         )
         allLayers = await this.props.getLayers()
         baseMap = allLayers.length > 0 ? [allLayers[allLayers.length - 1]] : []
+      }
+
+      //baseMap只显示一个，其他的放到subLayers内，删除和显示隐藏时用
+      if (baseMap.length > 1) {
+        let subLayers = []
+        for (let i = 1; i < baseMap.length; i++) {
+          subLayers.push(baseMap[i])
+        }
+        baseMap[0].subLayers = subLayers
+        baseMap.splice(1)
       }
 
       let taggingLayers = [] // 标注图层
@@ -356,10 +370,11 @@ export default class MT_layerManager extends React.Component {
     }
   }
 
-  onToolBasePress = async ({ data }) => {
+  onToolBasePress = async ({ data, section }) => {
     this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_STYLE, {
       height: ConstToolType.TOOLBAR_HEIGHT[1],
       layerData: data,
+      section: section,
       resetToolModuleData: true,
     })
   }
@@ -784,7 +799,9 @@ export default class MT_layerManager extends React.Component {
     if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
       action = this.tool_row
       rightIcon = getThemeAssets().publicAssets.icon_edit
-    } else if (section.title === getLanguage(this.props.language).Map_Layer.LAYERS) {
+    } else if (
+      section.title === getLanguage(this.props.language).Map_Layer.LAYERS
+    ) {
       action = () => this.setAllLayersVisible(section)
       rightIcon = this.state.allLayersVisible
         ? getPublicAssets().common.icon_invisible
@@ -797,26 +814,17 @@ export default class MT_layerManager extends React.Component {
           this.refreshList(section)
         }}
       >
-        <Image
-          resizeMode={'contain'}
-          source={image}
-          style={styles.icon_big}
-        />
+        <Image resizeMode={'contain'} source={image} style={styles.icon_big} />
         <View style={styles.sectionContent}>
-          <Text style={styles.sectionTitle}>
-            {section.title}
-          </Text>
+          <Text style={styles.sectionTitle}>{section.title}</Text>
           {section.title ===
-          getLanguage(this.props.language).Map_Layer.LAYERS && (
+            getLanguage(this.props.language).Map_Layer.LAYERS && (
             <Text style={styles.sectionSubTitle}>
               {getLanguage(global.language).Prompt.LONG_PRESS_TO_SORT}
             </Text>
           )}
         </View>
-        <TouchableOpacity
-          style={styles.rightIconView}
-          onPress={action}
-        >
+        <TouchableOpacity style={styles.rightIconView} onPress={action}>
           <Image
             resizeMode={'contain'}
             style={styles.icon}
@@ -938,10 +946,9 @@ export default class MT_layerManager extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title:
-            this.props.mapModules.modules[
-              this.props.mapModules.currentMapModule
-            ].chunk.title,
+          title: this.props.mapModules.modules[
+            this.props.mapModules.currentMapModule
+          ].chunk.title,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

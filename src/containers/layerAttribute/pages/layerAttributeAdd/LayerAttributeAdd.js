@@ -473,12 +473,13 @@ export default class LayerAttributeAdd extends React.Component {
         />
         <Row
           style={{ marginTop: scaleSize(30), alignItems: 'flex-start' }}
-          titleStyle={styles.titleStyle}
+          titleStyle={[styles.titleStyle, { marginTop: scaleSize(22) }]}
           key={'类型'}
           type={Row.Type.RADIO_GROUP}
           title={getLanguage(global.language).Map_Attribute.TYPE}
           defaultValue={this.state.type}
           disable={this.state.isEdit}
+          orientation={this.props.device.orientation}
           renderRightView={this.renderTypeSelect}
         />
         <Row

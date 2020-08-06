@@ -308,7 +308,7 @@ export default class Home extends Component {
         y: event.nativeEvent.pageY,
       })
     } else {
-      this.moreBtn.measure((x,y,width,height,pageX,pageY) => {
+      this.moreBtn.measure((x, y, width, height, pageX, pageY) => {
         this.popup.setVisible(true, {
           x: pageX,
           y: pageY,
@@ -505,7 +505,7 @@ export default class Home extends Component {
         </TouchableOpacity>
         <Text style={styles.headTitle}>{this.props.appConfig.name}</Text>
         <TouchableOpacity
-          ref={ref => this.moreBtn = ref }
+          ref={ref => (this.moreBtn = ref)}
           onPress={event => this.showMorePop(event)}
           style={styles.moreView}
         >

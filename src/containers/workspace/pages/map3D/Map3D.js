@@ -185,7 +185,7 @@ export default class Map3D extends React.Component {
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
-  
+
   backHandler = () => {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
@@ -309,14 +309,14 @@ export default class Map3D extends React.Component {
   }
 
   _flyToPoint = () => {
-    (async function() {
+    ;(async function() {
       let point = await new Point3D().createObj(116.5, 39.9, 500)
       this.scene.flyToPoint(point)
     }.bind(this)())
   }
 
   _flyToCamera = () => {
-    (async function() {
+    ;(async function() {
       let camera = await new Camera().createObj(
         116.467575,
         39.91542777777778,
@@ -329,7 +329,7 @@ export default class Map3D extends React.Component {
   }
 
   _changeLayerColor = () => {
-    (async function() {
+    ;(async function() {
       let layers3ds = await this.scene.getLayer3Ds()
       let layer3D = await layers3ds.get(4)
       layer3D.setObjectsColor(1, 255, 0, 0, 0.8)
@@ -915,14 +915,14 @@ export default class Map3D extends React.Component {
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
-    
+
     const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type
     })
     let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
-        MapHeaderButton.Share,
-        MapHeaderButton.Search,
-      ]
+      MapHeaderButton.Share,
+      MapHeaderButton.Search,
+    ]
     let buttons = []
     for (let i = 0; i < buttonInfos.length; i++) {
       let info
@@ -951,14 +951,14 @@ export default class Map3D extends React.Component {
         info = buttonInfos[i]
       }
       info &&
-      buttons.push(
-        <MTBtn
-          key={info.key}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          image={info.image}
-          onPress={info.action}
-        />,
-      )
+        buttons.push(
+          <MTBtn
+            key={info.key}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            image={info.image}
+            onPress={info.action}
+          />,
+        )
     }
     return (
       <View
@@ -990,7 +990,10 @@ export default class Map3D extends React.Component {
             marginLeft: scaleSize(80),
           },
           headerStyle: {
-            right: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? scaleSize(96) : 0,
+            right:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? scaleSize(96)
+                : 0,
           },
           headerRight: this.renderHeaderRight(),
           type: 'fix',

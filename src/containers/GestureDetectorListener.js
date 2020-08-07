@@ -161,8 +161,8 @@ async function touchCallback(event) {
     case TouchType.MAP_SELECT_POINT: {
       const point = await SMap.pixelPointToMap(event.screenPoint)
       GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
-      SMap.deleteMarker(118081)
-      SMap.showMarker(point.x, point.y, 118081)
+      // SMap.deleteMarker(GLOBAL.markerTag)
+      SMap.showMarker(point.x, point.y, GLOBAL.markerTag)
       break
     }
     case TouchType.MAP_TOPO_SPLIT_BY_POINT: {

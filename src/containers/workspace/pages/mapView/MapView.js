@@ -1400,6 +1400,7 @@ export default class MapView extends React.Component {
         this.setState({ showScaleView: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
 
+        SMap.setDynamicviewsetVisible(true)
         this.showMarker &&
           SMap.showMarker(
             this.showMarker.longitude,

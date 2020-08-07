@@ -512,6 +512,9 @@ export default class MapView extends React.Component {
         if (this.props.downloads[i].id === 'mobilenet_quant_224') {
           data = this.props.downloads[i]
         }
+        if (this.props.downloads[i].id === 'gltf') {
+          data = this.props.downloads[i]
+        }
       }
       if (data && this.mProgress) {
         this.mProgress.progress = data.progress / 100
@@ -519,7 +522,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
+      (async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -564,7 +567,7 @@ export default class MapView extends React.Component {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
+      (async function() {
         await SMap.destroySpeakPlugin()
       })()
     }
@@ -624,7 +627,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                ;(async function() {
+                (async function() {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
@@ -1017,7 +1020,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    ;(async function() {
+    (async function() {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1156,7 +1159,7 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    ;(async function() {
+    (async function() {
       let bWorkspcaOpen = true
       let bDatasourceOPen = true
       let bMapOPen = true
@@ -1935,7 +1938,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    ;(async function() {
+    (async function() {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -1949,7 +1952,7 @@ export default class MapView extends React.Component {
   //多媒体采集
   captureImage = params => {
     //保存数据->跳转
-    ;(async function() {
+    (async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -2083,7 +2086,7 @@ export default class MapView extends React.Component {
   }
 
   confirm = () => {
-    ;(async function() {
+    (async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.dialog.setDialogVisible(false)
@@ -2401,6 +2404,9 @@ export default class MapView extends React.Component {
         if (this.props.downloads[i].id === 'mobilenet_quant_224') {
           data = this.props.downloads[i]
           break
+        }
+        if (this.props.downloads[i].id === 'gltf') {
+          data = this.props.downloads[i]
         }
       }
     }
@@ -3066,7 +3072,10 @@ export default class MapView extends React.Component {
             marginLeft: scaleSize(80),
           },
           headerStyle: {
-            right: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? scaleSize(96) : 0,
+            right:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? scaleSize(96)
+                : 0,
           },
           backAction: event => {
             this.backPositon = {
@@ -3098,32 +3107,32 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-            <RNLegendView
-              setMapLegend={this.props.setMapLegend}
-              legendSettings={this.props.mapLegend}
-              device={this.props.device}
-              language={this.props.language}
-              ref={ref => (GLOBAL.legend = ref)}
-            />
-          )}
+          <RNLegendView
+            setMapLegend={this.props.setMapLegend}
+            legendSettings={this.props.mapLegend}
+            device={this.props.device}
+            language={this.props.language}
+            ref={ref => (GLOBAL.legend = ref)}
+          />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {global.isLicenseValid &&
           GLOBAL.Type === ChunkType.MAP_AR &&
           !this.state.bGoneAIDetect && (
-            <SMAIDetectView
-              ref={ref => (GLOBAL.SMAIDetectView = ref)}
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
               }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              onArObjectClick={this._onArObjectClick}
-              language={this.props.language}
-            />
-          )}
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            onArObjectClick={this._onArObjectClick}
+            language={this.props.language}
+          />
+        )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}

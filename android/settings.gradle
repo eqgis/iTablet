@@ -40,4 +40,9 @@ include ':app'
 include ':imobile_for_reactnative'
 project(':imobile_for_reactnative').projectDir = new File(rootProject.projectDir, '../node_modules/imobile_for_reactnative/android')
 
+include ':sceneform'
+project(':sceneform').projectDir=new File('sceneformsrc/sceneform')
+
+include ':sceneformux'
+project(':sceneformux').projectDir=new File('sceneformux/ux')
 //include ':app', ':imobile_for_reactnative'

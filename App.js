@@ -269,6 +269,7 @@ class AppRoot extends Component {
     this.setIsPad()
     this._getIs64System()
     GLOBAL.isDownload = true //目标分类默认文件下载判断
+    GLOBAL.isProjectModelDownload = true //ar沙盘模型文件下载判断
     GLOBAL.getDevice = this.getDevice
     GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
   }

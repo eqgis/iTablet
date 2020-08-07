@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#303030',
+    backgroundColor: color.white,
   },
   previewButton: {
     marginLeft: 10,

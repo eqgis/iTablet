@@ -363,12 +363,17 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR çekme noktaları',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR çekme noktaları',
   MAP_AR_VIDEO: 'AR Video', //待翻译
+  MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_WEATHER: 'AR Weather',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',
   MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
   MAP_AR_SELECT_POINT_PLANE: 'to Plane',
+  MAP_AR_ADD_TO_CURRENT_POSITION: 'to Current',
+  MAP_AR_ADD_TO_PLANE: 'to Current',
+  MAP_AR_MOVE_TO_CURRENT_POSITION: 'to Current',
+  MAP_AR_MOVE_TO_PLANE: 'to Current',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Sola çevirin',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Sağa dönün',

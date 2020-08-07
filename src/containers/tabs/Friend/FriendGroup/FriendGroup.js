@@ -11,16 +11,16 @@ import {
   Dimensions,
   FlatList,
   RefreshControl,
+  Image,
 } from 'react-native'
 
 import NavigationService from '../../../NavigationService'
-import { Toast } from '../../../../utils/index'
-import { scaleSize } from '../../../../utils/screen'
-// import { getPinYinFirstCharacter } from '../../../../utils/pinyin'
+import { Toast, scaleSize } from '../../../../utils'
+import { size, color } from '../../../../styles'
+import { getThemeAssets } from '../../../../assets'
 import FriendListFileHandle from '../FriendListFileHandle'
 // eslint-disable-next-line
 import { ActionPopover } from 'teaset'
-// import { styles } from './../Styles'
 import { getLanguage } from '../../../../language/index'
 
 class FriendGroup extends Component {
@@ -117,8 +117,9 @@ class FriendGroup extends Component {
         }}
       >
         <FlatList
+          style={styles.list}
           ItemSeparatorComponent={() => {
-            return <View style={styles.SectionSeparaLineStyle} />
+            return <View style={styles.itemSeparator} />
           }}
           data={this.state.data}
           renderItem={({ item, index }) => this._renderItem(item, index)}
@@ -146,21 +147,26 @@ class FriendGroup extends Component {
         activeOpacity={0.75}
         onPress={() => this._onSectionselect(item)}
       >
-        <View style={styles.ITemHeadTextViewStyle}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {this._renderItemHeadView(item)}
-          </View>
-        </View>
-        <View style={styles.ITemTextViewStyle}>
+        {/*<View style={styles.ITemHeadTextViewStyle}>*/}
+          {/*<View*/}
+            {/*style={{*/}
+              {/*alignItems: 'center',*/}
+              {/*justifyContent: 'center',*/}
+              {/*flexDirection: 'row',*/}
+              {/*flexWrap: 'wrap',*/}
+            {/*}}*/}
+          {/*>*/}
+            {/*{this._renderItemHeadView(item)}*/}
+          {/*</View>*/}
+        {/*</View>*/}
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
+        {/*<View style={styles.ITemTextViewStyle}>*/}
           <Text style={styles.ITemTextStyle}>{item.groupName}</Text>
-        </View>
+        {/*</View>*/}
       </TouchableOpacity>
     )
   }
@@ -194,27 +200,12 @@ class FriendGroup extends Component {
   }
 }
 const styles = StyleSheet.create({
-  HeadViewStyle: {
-    height: scaleSize(35),
-    backgroundColor: 'rgba(160,160,160,1.0)',
-    paddingHorizontal: scaleSize(10),
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: scaleSize(10),
-    marginRight: scaleSize(10),
-  },
-  HeadTextStyle: {
-    fontSize: scaleSize(22),
-    color: 'white',
-    marginLeft: scaleSize(20),
-  },
   ItemViewStyle: {
-    paddingLeft: scaleSize(20),
-    paddingRight: scaleSize(30),
-    height: scaleSize(90),
+    height: scaleSize(114),
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    // justifyContent: 'space-around',
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   ITemHeadTextViewStyle: {
     marginLeft: scaleSize(20),
@@ -237,14 +228,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   ITemTextStyle: {
+    marginLeft: scaleSize(32),
     fontSize: scaleSize(30),
     color: 'black',
-  },
-  SectionSeparaLineStyle: {
-    height: scaleSize(1),
-    backgroundColor: 'rgba(160,160,160,1.0)',
-    marginHorizontal: scaleSize(10),
-    marginLeft: scaleSize(120),
   },
   FlatListViewStyle: {
     position: 'absolute',
@@ -261,6 +247,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  itemSeparator: {
+    height: scaleSize(2),
+    backgroundColor: color.separateColorGray3,
+    marginLeft: scaleSize(150),
+  },
+  itemImg: {
+    marginLeft: scaleSize(44),
+    height: scaleSize(60),
+    width: scaleSize(60),
+    borderRadius: scaleSize(30),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  list: {
+    borderTopLeftRadius: scaleSize(36),
+    borderTopRightRadius: scaleSize(36),
+    backgroundColor: color.bgW,
+  },
+  timeStr: {
+    marginRight: scaleSize(44),
+    fontSize: size.fontSize.fontSizeSm,
+    color: 'grey',
+    textAlign: 'right',
   },
 })
 export default FriendGroup

@@ -35,7 +35,7 @@ export default class ImageButton extends React.Component {
   }
 
   render() {
-    if (!this.props.icon) {
+    if (!this.props.icon && !this.props.title) {
       return null
     }
 
@@ -43,44 +43,50 @@ export default class ImageButton extends React.Component {
       <TouchableOpacity
         enabled={this.props.enabled}
         accessible={true}
+        underlayColor={'white'}
         accessibilityLabel={'图片按钮'}
-        style={[
-          styles.container,
-          { flexDirection: this.props.direction },
-          this.props.containerStyle,
-        ]}
         activeOpacity={this.props.activeOpacity}
         onPress={event => {
           if (this.props.enabled) {
             this.props.onPress && this.props.onPress(event)
           }
         }}
+        style={[
+          styles.container,
+          { flexDirection: this.props.direction },
+          this.props.containerStyle,
+        ]}
       >
-        <View
-          style={[
-            // this.props.type === 'normal' ? styles.iconBgNormal : styles.iconBg,
-            styles.iconBg,
-            this.props.iconBtnStyle,
-          ]}
-        >
-          <Image
-            resizeMode={this.props.resizeMode}
-            style={[styles.icon, this.props.iconStyle]}
-            source={this.props.icon}
-          />
-        </View>
-        {this.props.title && (
-          <Text
-            numberOfLines={2}
+        {
+          this.props.icon &&
+          <View
             style={[
-              styles.iconTitle,
-              this.props.direction === 'column' && { marginTop: scaleSize(10) },
-              this.props.titleStyle,
+              // this.props.type === 'normal' ? styles.iconBgNormal : styles.iconBg,
+              styles.iconBg,
+              this.props.iconBtnStyle,
             ]}
           >
-            {this.props.title}
-          </Text>
-        )}
+            <Image
+              resizeMode={this.props.resizeMode}
+              style={[styles.icon, this.props.iconStyle]}
+              source={this.props.icon}
+            />
+          </View>
+        }
+        {
+          this.props.title && (
+            <Text
+              numberOfLines={2}
+              style={[
+                styles.iconTitle,
+                // this.props.direction === 'column' && { marginTop: scaleSize(10) },
+                this.props.titleStyle,
+              ]}
+            >
+              {this.props.title}
+            </Text>
+          )
+        }
       </TouchableOpacity>
     )
   }
@@ -91,14 +97,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'transparent',
   },
   iconBg: {
-    // borderRadius: scaleSize(80),
-    height: scaleSize(80),
-    width: scaleSize(80),
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: color.white,
     backgroundColor: 'transparent',
   },
   icon: {

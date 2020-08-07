@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native'
 import NavigationService from '../../../NavigationService'
-import { Container, Row, Button } from '../../../../components'
+import { ImageButton, Row, Header, PopModal } from '../../../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { PopModalList } from '../../../analystView/components'
 import { getLanguage } from '../../../../language'
@@ -42,59 +42,92 @@ let typeStr = [
 export default class LayerAttributeAdd extends React.Component {
   props: {
     navigation: Object,
+    device: Object,
+    data: Object,
     currentAttribute: Object,
+    isDetail?: boolean,
+    contentStyle?: Object,
     setCurrentAttribute: () => {},
+    addAttributeField: () => {},
   }
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
-    params.data = params.defaultParams && params.defaultParams.fieldInfo
-    if (params.data && params.data.type === 1) {
-      params.data.defaultValue = params.data.defaultValue === '1'
-    }
-    let isDetail = !!params.isDetail
+    let newData = this.dealData(this.props.data, this.props.isDetail)
     this.state = {
-      isEdit: isDetail,
-      callBack: params.callBack,
-      defaultParams: params.defaultParams,
-      data: params.data,
-      dataset: params.dataset,
-      name:
-        (params.data &&
-          (isDetail
-            ? params.data.name
-            : this.getTrimSmStr(params.data.name) + '_1')) ||
-        '',
-      caption:
-        (params.data &&
-          (isDetail
-            ? params.data.caption
-            : this.getTrimSmStr(params.data.caption) + '_1')) ||
-        '',
-      type: (params.data && params.data.type) || '',
-      maxLength: this.getDefaultMaxLength(params.data.type),
-      defaultValue:
-        (params.data && params.data.defaultValue) ||
-        typeof params.data.defaultValue === 'boolean'
-          ? params.data.defaultValue
-          : '',
-      isRequired:
-        params.data && typeof params.data.isRequired === 'boolean'
-          ? params.data.isRequired
-          : '',
-      // 弹出框数据
-      popData: [],
-      currentPopData: this.getTypeDataByType(params.data.type),
-      //缺省值是否能编辑
-      isDefaultValueCanEdit: true,
+      ...newData,
     }
   }
 
   componentDidMount() {}
+  
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.data) !==
+      JSON.stringify(this.props.data) ||
+      prevProps.isDetail !== this.props.isDetail
+    ) {
+      let data = this.dealData(this.props.data, this.props.isDetail)
+      this.setState(data)
+    }
+  }
+  
+  dealData = (data, isDetail = this.props.isDetail) => {
+    let _data = data && data.fieldInfo
+    if (!_data) return {}
+    if (_data && _data.type === 1) {
+      _data.defaultValue = _data.defaultValue === '1'
+    }
+    let _isDetail = !!isDetail
+    let newState = {
+      data: _data,
+      name:
+        (_data &&
+        (_isDetail
+          ? _data.name
+          : this.getTrimSmStr(_data.name) + '_1')) ||
+        '',
+      caption:
+        (_data &&
+        (_isDetail
+          ? _data.caption
+          : this.getTrimSmStr(_data.caption) + '_1')) ||
+        '',
+      type: (_data && _data.type) || '',
+      maxLength: this.getDefaultMaxLength(_data.type),
+      defaultValue:
+        (_data && _data.defaultValue) ||
+        typeof _data.defaultValue === 'boolean'
+          ? _data.defaultValue
+          : '',
+      isRequired:
+        _data && typeof _data.isRequired === 'boolean'
+          ? _data.isRequired
+          : '',
+      isEdit: _isDetail,
+      //缺省值是否能编辑
+      isDefaultValueCanEdit: true,
+    }
+    return newState
+  }
+  
+  setVisible = (visible, params) => {
+    this.addPopModal && this.addPopModal.setVisible(visible)
+    if (params && params.data) {
+      let _data = this.dealData(params.data, params.isDetail)
+      if (JSON.stringify(_data) !== JSON.stringify(this.state)) {
+        this.setState(_data)
+      }
+    } else if (!params) {
+      let _data = this.dealData(this.props.data, this.props.isDetail)
+      if (JSON.stringify(_data) !== JSON.stringify(this.state)) {
+        this.setState(_data)
+      }
+    }
+  }
 
   confirmValidate = () => {
-    let isConfrim = false
+    let isConfirm = false
     if (!this.state.name || this.state.name === '') {
       Toast.show(global.language === 'CN' ? '请输入名称' : 'Please input name')
     } else if (!this.state.caption || this.state.caption === '') {
@@ -131,9 +164,9 @@ export default class LayerAttributeAdd extends React.Component {
         getLanguage(global.language).Prompt.ATTRIBUTE_DEFAULT_VALUE_IS_NULL,
       )
     } else {
-      isConfrim = true
+      isConfirm = true
     }
-    return isConfrim
+    return isConfirm
   }
 
   //确认
@@ -151,7 +184,7 @@ export default class LayerAttributeAdd extends React.Component {
     if (result.required) {
       result.defaultValue = this.state.defaultValue
     }
-    this.state.callBack && this.state.callBack(result)
+    this.props.addAttributeField && this.props.addAttributeField(result)
     if (isContinue) {
       let tempName = this.state.name + '_1'
       let tempCaption = this.state.caption + '_1'
@@ -160,7 +193,7 @@ export default class LayerAttributeAdd extends React.Component {
         caption: tempCaption,
       })
     } else {
-      NavigationService.goBack()
+      this.setVisible(false)
     }
   }
 
@@ -239,30 +272,31 @@ export default class LayerAttributeAdd extends React.Component {
       return null
     }
     return (
-      <View style={styles.btns}>
-        <Button
+      <View style={[
+        styles.btns,
+        {
+          paddingBottom: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+            ? scaleSize(30)
+            : scaleSize(100),
+        }
+      ]}>
+        <ImageButton
           title={getLanguage(global.language).Map_Attribute.CONFIRM_ADD}
-          style={{
-            width: '94%',
-            height: scaleSize(60),
-          }}
-          titleStyle={{ fontSize: scaleSize(24) }}
+          titleStyle={styles.text1}
+          containerStyle={[styles.btn, styles.btn1]}
+          direction={'row'}
           onPress={() => this.confirm(false)}
         />
-        <TouchableOpacity onPress={() => this.confirm(true)}>
-          <View style={styles.saveAndContinueView2}>
-            <Image
-              source={require('../../../../assets/publicTheme/plot/plot_add.png')}
-              style={styles.saveAndContinueImage}
-            />
-            <Text style={styles.saveAndContinueText}>
-              {
-                getLanguage(global.language).Map_Plotting
-                  .PLOTTING_ANIMATION_CONTINUE
-              }
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <ImageButton
+          title={getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_CONTINUE}
+          titleStyle={styles.text2}
+          containerStyle={[styles.btn, styles.btn2]}
+          direction={'row'}
+          iconBtnStyle={styles.selectImgView}
+          iconStyle={styles.selectImg}
+          icon={require('../../../../assets/publicTheme/plot/plot_add.png')}
+          onPress={() => this.confirm(true)}
+        />
       </View>
     )
   }
@@ -286,27 +320,6 @@ export default class LayerAttributeAdd extends React.Component {
     return checkFlag
   }
 
-  getDataType() {
-    let data = []
-    let length = typeStr.length
-    for (let i = 0; i < length; i++) {
-      data.push({
-        key: global.language === 'CN' ? typeStr[i][0] : typeStr[i][1],
-        value: typeStr[i][2],
-      })
-    }
-    return data
-  }
-  //长度是否能编辑
-  maxLengthCanEdit() {
-    let canEdit = false
-    switch (this.state.type) {
-      case 10:
-      case 127:
-        canEdit = true
-    }
-    return canEdit
-  }
   //获取默认长度
   getDefaultMaxLength(type) {
     for (let i = 0; i < typeStr.length; i++) {
@@ -316,18 +329,7 @@ export default class LayerAttributeAdd extends React.Component {
     }
     return 0
   }
-  //根据类型获取popData数据
-  getTypeDataByType(type) {
-    for (let i = 0; i < typeStr.length; i++) {
-      if (type === typeStr[i][2]) {
-        return {
-          key: global.language === 'CN' ? typeStr[i][0] : typeStr[i][1],
-          value: typeStr[i][2],
-        }
-      }
-    }
-    return null
-  }
+
   getSelected = ({ title, selected, index, value }) => {
     this.getType({
       labelTitle: title,
@@ -350,74 +352,95 @@ export default class LayerAttributeAdd extends React.Component {
     return defaultValue
   }
 
-  renderPopList = () => {
-    return (
-      <PopModalList
-        ref={ref => (this.popModal = ref)}
-        language={global.language}
-        type={'finger'}
-        popData={this.getDataType()}
-        currentPopData={this.state.currentPopData}
-        confirm={data => {
-          let tempLength = this.getDefaultMaxLength(data.value)
-          let defaultValue = this.getDefaultValue(data.value)
-          this.setState({
-            currentPopData: data,
-            type: data.value,
-            defaultValue: defaultValue,
-            maxLength: tempLength,
-          })
-          this.popModal.setVisible(false)
-        }}
-      />
-    )
-  }
-
   renderDefaultValue = () => {
     let defaultValueTile = getLanguage(global.language).Map_Attribute.DEFAULT
     return !this.state.isRequired ? null : this.state.type === 1 ? (
-      <View style={styles.defaultValueItem}>
-        <Text style={styles.rowLabel}>{defaultValueTile}</Text>
-        <RadioGroup
-          data={[
-            { title: getLanguage(global.language).Prompt.YES, value: true },
-            { title: getLanguage(global.language).Prompt.NO, value: false },
-          ]}
-          column={2}
-          getSelected={result => {
+      <Row
+        style={{ marginTop: scaleSize(15) }}
+        titleStyle={styles.titleStyle}
+        key={'缺省值'}
+        type={Row.Type.RADIO_GROUP}
+        title={defaultValueTile}
+        disable={this.state.isEdit && this.state.isDefaultValueCanEdit}
+        defaultValue={this.state.defaultValue}
+        radioArr={[
+          { title: getLanguage(global.language).Prompt.YES, value: true },
+          { title: getLanguage(global.language).Prompt.NO, value: false },
+        ]}
+        radioColumn={2}
+        getValue={this.getType}
+      />
+    ) : (
+      <Row
+        style={{ marginTop: scaleSize(30) }}
+        titleStyle={styles.titleStyle}
+        customRightStyle={styles.customRightStyle}
+        disableStyle={styles.disableStyle}
+        key={'缺省值'}
+        disable={this.state.isEdit && this.state.isDefaultValueCanEdit}
+        defaultValue={this.state.defaultValue + ''}
+        type={Row.Type.INPUT_WRAP}
+        title={defaultValueTile}
+        getValue={this.getInputValue}
+      />
+    )
+  }
+  
+  renderHeader = () => {
+    return (
+      <Header
+        navigation={this.props.navigation}
+        title={
+          this.state.isEdit
+            ? getLanguage(global.language).Map_Attribute.ATTRIBUTE_DETAIL
+            : getLanguage(global.language).Map_Attribute.ATTRIBUTE_ADD
+        }
+        backAction={() => {
+          this.props.backAction && this.props.backAction()
+        }}
+        headerStyle={[
+          { borderBottomWidth: 0 },
+          this.props.device.orientation.indexOf('LANDSCAPE') < 0 && styles.containerP,
+        ]}
+      />
+    )
+  }
+  
+  renderTypeSelect = () => {
+    let types = [], row = [], column = this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? 2 : 3
+    for (let i = 0; i < typeStr.length; i++) {
+      let value = typeStr[i][2]
+      row.push(
+        <TouchableOpacity
+          key={typeStr[i][1]}
+          style={[styles.typeView, this.state.type === value && { borderColor: color.selected_blue }]}
+          onPress={() => {
+            if (this.state.isEdit) return
+            let tempLength = this.getDefaultMaxLength(value)
+            let defaultValue = this.getDefaultValue(value)
             this.setState({
-              defaultValue: result.value,
+              type: value,
+              defaultValue: defaultValue,
+              maxLength: tempLength,
             })
           }}
-          disable={this.state.isEdit && this.state.isDefaultValueCanEdit}
-          defaultValue={this.state.defaultValue}
-        />
-      </View>
-    ) : (
-      <View style={styles.defaultValueItem}>
-        <Text style={styles.rowLabel}>{defaultValueTile}</Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.input}
-            accessible={true}
-            value={this.state.defaultValue + ''}
-            underlineColorAndroid="transparent"
-            onChangeText={text => {
-              this.setState({
-                defaultValue: text,
-              })
-            }}
-          />
-          {this.state.isEdit && this.state.isDefaultValueCanEdit && (
-            <View style={styles.inputOverLayer} />
-          )}
-        </View>
+        >
+          <Text style={styles.typeText}>{global.language === 'CN' ? typeStr[i][0] : typeStr[i][1]}</Text>
+        </TouchableOpacity>
+      )
+      if (row.length === column || i === typeStr.length - 1) {
+        types.push(<View key={'typeRow-' + Math.ceil((i + 1) / column)} style={styles.typeRow} >{row}</View>)
+        row = []
+      }
+    }
+    return (
+      <View style={styles.typeRows}>
+        {types}
       </View>
     )
   }
 
   renderRows = () => {
-    let maxLengthCanEdit = this.maxLengthCanEdit()
     return (
       <ScrollView
         style={styles.rows}
@@ -426,7 +449,9 @@ export default class LayerAttributeAdd extends React.Component {
       >
         <Row
           style={{ marginTop: scaleSize(30) }}
+          titleStyle={styles.titleStyle}
           customRightStyle={styles.customRightStyle}
+          disableStyle={styles.disableStyle}
           key={'名称'}
           disable={this.state.isEdit}
           defaultValue={this.state.name}
@@ -436,7 +461,9 @@ export default class LayerAttributeAdd extends React.Component {
         />
         <Row
           style={{ marginTop: scaleSize(15) }}
+          titleStyle={styles.titleStyle}
           customRightStyle={styles.customRightStyle}
+          disableStyle={styles.disableStyle}
           key={'别名'}
           disable={this.state.isEdit}
           defaultValue={this.state.caption}
@@ -445,87 +472,31 @@ export default class LayerAttributeAdd extends React.Component {
           getValue={this.getInputValue}
         />
         <Row
-          style={{ marginTop: scaleSize(30) }}
+          style={{ marginTop: scaleSize(30), alignItems: 'flex-start' }}
+          titleStyle={[styles.titleStyle, { marginTop: scaleSize(22) }]}
           key={'类型'}
           type={Row.Type.RADIO_GROUP}
           title={getLanguage(global.language).Map_Attribute.TYPE}
           defaultValue={this.state.type}
           disable={this.state.isEdit}
-          customRightView={
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-              onPress={
-                this.state.isEdit
-                  ? null
-                  : () => {
-                    Keyboard.dismiss()
-                    this.popModal && this.popModal.setVisible(true)
-                  }
-              }
-            >
-              <Text style={{ fontSize: scaleSize(24), color: color.gray }}>
-                {this.state.currentPopData
-                  ? this.state.currentPopData.key
-                  : null}
-              </Text>
-              <Image
-                source={require('../../../../assets/Mine/mine_my_arrow.png')}
-                style={{ height: scaleSize(28), width: scaleSize(28) }}
-              />
-            </TouchableOpacity>
-          }
+          orientation={this.props.device.orientation}
+          renderRightView={this.renderTypeSelect}
         />
         <Row
           style={{ marginTop: scaleSize(25) }}
-          customRightStyle={{ height: scaleSize(50) }}
+          titleStyle={styles.titleStyle}
+          customRightStyle={styles.customRightStyle}
+          disableStyle={styles.disableStyle}
           key={'长度'}
           type={Row.Type.TEXT_BTN}
           title={getLanguage(global.language).Map_Attribute.LENGTH}
-          customRightView={
-            <View
-              style={{
-                paddingHorizontal: scaleSize(15),
-                paddingVertical: scaleSize(1),
-                borderWidth: 1,
-                borderRadius: scaleSize(8),
-                flexDirection: 'row',
-                flex: 2,
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <TextInput
-                style={{
-                  height: scaleSize(60),
-                  ...Platform.select({
-                    android: {
-                      padding: 0,
-                    },
-                  }),
-                  fontSize: scaleSize(20),
-                  color: color.black,
-                  width: scaleSize(150),
-                }}
-                value={this.state.maxLength ? this.state.maxLength + '' : null}
-                editable={maxLengthCanEdit && !this.state.isEdit}
-                onChangeText={text => {
-                  let length = Number(text.replace(/[^0-9]*/g, ''))
-                  this.setState({
-                    maxLength: length,
-                  })
-                }}
-                keyboardType="numeric"
-              />
-            </View>
-          }
+          disable={true}
+          value={this.state.maxLength ? this.state.maxLength + '' : null}
         />
 
         <Row
           style={{ marginTop: scaleSize(15) }}
+          titleStyle={styles.titleStyle}
           key={'必填'}
           type={Row.Type.RADIO_GROUP}
           title={getLanguage(global.language).Map_Attribute.REQUIRED}
@@ -545,21 +516,20 @@ export default class LayerAttributeAdd extends React.Component {
 
   render() {
     return (
-      <Container
-        ref={ref => (this.container = ref)}
-        style={styles.container}
-        // scrollable
-        headerProps={{
-          title: this.state.isEdit
-            ? getLanguage(global.language).Map_Attribute.ATTRIBUTE_DETAIL
-            : getLanguage(global.language).Map_Attribute.ATTRIBUTE_ADD,
-          navigation: this.props.navigation,
-        }}
+      <PopModal
+        ref={ref => (this.addPopModal = ref)}
+        modalVisible={this.state.addControllerVisible}
+        contentStyle={this.props.contentStyle}
       >
-        {this.renderRows()}
-        {this.renderBtns()}
-        {this.renderPopList()}
-      </Container>
+        <View style={[
+          styles.container,
+          this.props.device.orientation.indexOf('LANDSCAPE') < 0 && styles.containerP,
+        ]}>
+          {this.renderHeader()}
+          {this.renderRows()}
+          {this.renderBtns()}
+        </View>
+      </PopModal>
     )
   }
 }

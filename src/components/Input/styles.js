@@ -36,15 +36,15 @@ export default StyleSheet.create({
   },
 
   clearBtn: {
-    width: scaleSize(40),
-    height: scaleSize(40),
+    width: scaleSize(52),
+    height: scaleSize(52),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
 
   clearImg: {
-    width: scaleSize(23),
-    height: scaleSize(23),
+    width: scaleSize(52),
+    height: scaleSize(52),
   },
 })

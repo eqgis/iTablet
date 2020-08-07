@@ -12,7 +12,7 @@ const icon_radio_unselected_disable = require('./icon_radio_unselected_disable.p
 const icon_about_itablet_more = require('./icon_aboutitablet_more.png')
 const icon_back = require('./icon_nav_back.png')
 const icon_next = require('./icon-next-white.png')
-const icon_close = require('./icon-close.png')
+// const icon_close = require('./icon-close.png')
 const icon_album = require('./icon_album.png')
 const icon_rephotograph = require('./icon_rephotograph.png')
 const icon_confirm = require('./icon_confirm.png')
@@ -47,14 +47,20 @@ const icon_nav_option = require('./icon_nav_option.png')
 const icon_nav_share = require('./icon_nav_share.png')
 const icon_visible = require('./icon_visible.png')
 const icon_invisible = require('./icon_invisible.png')
-const icon_select = require('./icon_select.png')
-const icon_highlight_select = require('./icon_highlight_select.png')
 const icon_more_v = require('./icon_more_v.png')
 const icon_highlight_more_v = require('./icon_highlight_more_v.png')
+const icon_add = require('./icon_add_gray.png')
+const icon_close = require('./icon_close.png')
+
+const icon_select = require('./icon_select.png')
+const icon_highlight_select = require('./icon_highlight_select.png')
 const icon_disable_select = require('./icon_disable_select.png')
 const icon_none = require('./icon_none.png')
 const icon_highlight_none = require('./icon_highlight_none.png')
 const icon_disable_none = require('./icon_disable_none.png')
+const icon_single_check = require('./icon_single_check.png')
+const icon_disable_single_check = require('./icon_disable_single_check.png')
+const icon_highlight_single_check = require('./icon_highlight_single_check.png')
 
 export default {
   icon_undo,
@@ -71,7 +77,6 @@ export default {
   icon_about_itablet_more,
   icon_back,
   icon_next,
-  icon_close,
   icon_album,
   icon_rephotograph,
   icon_confirm,
@@ -106,12 +111,18 @@ export default {
   icon_nav_share,
   icon_visible,
   icon_invisible,
+  icon_more_v,
+  icon_highlight_more_v,
+  icon_add,
+  icon_close,
+
   icon_select,
   icon_highlight_select,
   icon_disable_select,
   icon_none,
   icon_highlight_none,
   icon_disable_none,
-  icon_more_v,
-  icon_highlight_more_v,
+  icon_single_check,
+  icon_disable_single_check,
+  icon_highlight_single_check,
 }

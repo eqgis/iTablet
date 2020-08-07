@@ -30,12 +30,7 @@ export default class MapEditConfig extends Module {
           mapName: 'yamanashi',
         },
       },
-      functionModules: [
-        startModule,
-        addModule,
-        markModule,
-        toolModule,
-      ],
+      functionModules: [startModule, addModule, markModule, toolModule],
       mapType: Module.MapType.MAP,
     })
   }

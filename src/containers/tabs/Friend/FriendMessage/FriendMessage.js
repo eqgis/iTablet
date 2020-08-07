@@ -20,7 +20,8 @@ import { styles } from './Styles'
 import { dialogStyles } from './../Styles'
 import FriendListFileHandle from '../FriendListFileHandle'
 import MessageDataHandle from './../MessageDataHandle'
-import { getLanguage } from '../../../../language/index'
+import { getLanguage } from '../../../../language'
+import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import moment from 'moment'
 // import Friend from './../Friend'
 
@@ -173,13 +174,11 @@ class FriendMessage extends Component {
         }}
       >
         {this._renderInformItem()}
+        <View style={styles.itemSeparator} />
         <FlatList
+          style={styles.list}
           ItemSeparatorComponent={item => {
-            if (item.leadingItem && item.leadingItem.message.length > 0) {
-              return <View style={styles.SectionSeparaLineStyle}/>
-            } else {
-              return null
-            }
+            return <View style={styles.itemSeparator} />
           }}
           data={this.state.data}
           renderItem={({ item, index }) => this._renderItem(item, index)}
@@ -261,10 +260,7 @@ class FriendMessage extends Component {
     let iTemView
     return (
       <TouchableOpacity
-        style={[
-          styles.ItemViewStyle,
-          { borderBottomWidth: 1, borderColor: 'rgba(213,213,213,1.0)' },
-        ]}
+        style={styles.listHeader}
         ref={ref => (iTemView = ref)}
         activeOpacity={0.75}
         onLongPress={() => {
@@ -284,62 +280,58 @@ class FriendMessage extends Component {
           })
         }}
       >
-        <View
-          style={[styles.ITemHeadTextViewStyle, { backgroundColor: 'orange' }]}
-        >
-          {this.state.hasInformMsg > 0 ? (
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'red',
-                justifyContent: 'center',
-                height: scaleSize(25),
-                width: scaleSize(25),
-                borderRadius: scaleSize(25),
-                top: scaleSize(-6),
-                right: scaleSize(-12),
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: scaleSize(20),
-                  color: 'white',
-                  textAlign: 'center',
-                }}
-              >
-                {this.state.hasInformMsg}
-              </Text>
-            </View>
-          ) : null}
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Text style={styles.ITemHeadTextStyle}>通</Text>
-          </View>
-        </View>
+        {/*<View*/}
+          {/*style={[styles.ITemHeadTextViewStyle, { backgroundColor: 'orange' }]}*/}
+        {/*>*/}
+          {/*{this.state.hasInformMsg > 0 ? (*/}
+            {/*<View*/}
+              {/*style={{*/}
+                {/*position: 'absolute',*/}
+                {/*backgroundColor: 'red',*/}
+                {/*justifyContent: 'center',*/}
+                {/*height: scaleSize(25),*/}
+                {/*width: scaleSize(25),*/}
+                {/*borderRadius: scaleSize(25),*/}
+                {/*top: scaleSize(-6),*/}
+                {/*right: scaleSize(-12),*/}
+              {/*}}*/}
+            {/*>*/}
+              {/*<Text*/}
+                {/*style={{*/}
+                  {/*fontSize: scaleSize(20),*/}
+                  {/*color: 'white',*/}
+                  {/*textAlign: 'center',*/}
+                {/*}}*/}
+              {/*>*/}
+                {/*{this.state.hasInformMsg}*/}
+              {/*</Text>*/}
+            {/*</View>*/}
+          {/*) : null}*/}
+          {/*<View*/}
+            {/*style={{*/}
+              {/*alignItems: 'center',*/}
+              {/*justifyContent: 'center',*/}
+              {/*flexDirection: 'row',*/}
+              {/*flexWrap: 'wrap',*/}
+            {/*}}*/}
+          {/*>*/}
+            {/*<Text style={styles.ITemHeadTextStyle}>通</Text>*/}
+          {/*</View>*/}
+        {/*</View>*/}
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.icon_notice}
+        />
         <View style={styles.ITemTextViewStyle}>
           <Text style={styles.ITemTextStyle}>
             {getLanguage(this.props.language).Friends.NOTIFICATION}
           </Text>
         </View>
-        <View
-          style={{
-            marginRight: scaleSize(20),
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            flexGrow: 1,
-          }}
-        >
-          <Image
-            source={require('../../../../assets/lightTheme/friend/app_friend_arrow.png')}
-            style={{ width: scaleSize(30), height: scaleSize(30) }}
-          />
-        </View>
+        <Image
+          source={getPublicAssets().common.icon_move}
+          style={styles.rightImg}
+        />
       </TouchableOpacity>
     )
   }
@@ -375,42 +367,47 @@ class FriendMessage extends Component {
             this._showPopover(iTemView, item)
           }}
         >
-          <View style={styles.ITemHeadTextViewStyle}>
-            {item.unReadMsg > 0 ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  backgroundColor: 'red',
-                  justifyContent: 'center',
-                  height: scaleSize(25),
-                  width: scaleSize(25),
-                  borderRadius: scaleSize(25),
-                  top: scaleSize(-6),
-                  right: scaleSize(-12),
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: scaleSize(20),
-                    color: 'white',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.unReadMsg}
-                </Text>
-              </View>
-            ) : null}
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}
-            >
-              {this._renderItemHeadView(item)}
-            </View>
-          </View>
+          {/*<View style={styles.ITemHeadTextViewStyle}>*/}
+            {/*{item.unReadMsg > 0 ? (*/}
+              {/*<View*/}
+                {/*style={{*/}
+                  {/*position: 'absolute',*/}
+                  {/*backgroundColor: 'red',*/}
+                  {/*justifyContent: 'center',*/}
+                  {/*height: scaleSize(25),*/}
+                  {/*width: scaleSize(25),*/}
+                  {/*borderRadius: scaleSize(25),*/}
+                  {/*top: scaleSize(-6),*/}
+                  {/*right: scaleSize(-12),*/}
+                {/*}}*/}
+              {/*>*/}
+                {/*<Text*/}
+                  {/*style={{*/}
+                    {/*fontSize: scaleSize(20),*/}
+                    {/*color: 'white',*/}
+                    {/*textAlign: 'center',*/}
+                  {/*}}*/}
+                {/*>*/}
+                  {/*{item.unReadMsg}*/}
+                {/*</Text>*/}
+              {/*</View>*/}
+            {/*) : null}*/}
+            {/*<View*/}
+              {/*style={{*/}
+                {/*alignItems: 'center',*/}
+                {/*justifyContent: 'center',*/}
+                {/*flexDirection: 'row',*/}
+                {/*flexWrap: 'wrap',*/}
+              {/*}}*/}
+            {/*>*/}
+              {/*{this._renderItemHeadView(item)}*/}
+            {/*</View>*/}
+          {/*</View>*/}
+          <Image
+            style={styles.itemImg}
+            resizeMode={'contain'}
+            source={getThemeAssets().friend.contact_photo}
+          />
           <View style={styles.ITemTextViewStyle}>
             {this._renderItemTitleView(item)}
             <Text
@@ -423,23 +420,9 @@ class FriendMessage extends Component {
               {lastMessage.text.replace(/[\r\n]/g, '')}
             </Text>
           </View>
-          <View
-            style={{
-              // width: scaleSize(110),
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: scaleSize(20),
-                color: 'grey',
-                textAlign: 'right',
-              }}
-            >
-              {timeString}
-            </Text>
-          </View>
+          <Text style={styles.timeStr}>
+            {timeString}
+          </Text>
         </TouchableOpacity>
       )
     }

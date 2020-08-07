@@ -35,6 +35,8 @@ export default class LayerAttributeTable extends React.Component {
     buttonNameFilter?: Array, // Cell 为button的列的filter
     buttonActions?: Array, // Cell 为button的列的点击事件
     buttonTitles?: Array, // Cell 为button列对应的title, buttonTitles必须不为空，buttonIndexes才生效
+  
+    contentContainerStyle?: Object,
 
     selectable: boolean,
     stickySectionHeadersEnabled?: boolean,
@@ -559,8 +561,16 @@ export default class LayerAttributeTable extends React.Component {
     }
     return (
       <Row
-        style={{ backgroundColor: color.itemColorGray }}
-        cellTextStyle={{ color: color.fontColorWhite }}
+        style={{
+          backgroundColor: color.bgW2,
+          borderTopRightRadius: scaleSize(12),
+          borderTopLeftRadius: scaleSize(12),
+        }}
+        cellStyle={{
+          borderRightWidth: 0,
+          borderBottomWidth: 0,
+        }}
+        cellTextStyle={{ color: '#3C3C3C' }}
         data={titles}
         hasInputText={false}
         onPress={this.onPressHeader}
@@ -590,8 +600,9 @@ export default class LayerAttributeTable extends React.Component {
     return (
       <ScrollView
         ref={ref => (this.horizontalTable = ref)}
-        style={{ flex: 1 }}
+        style={[{ flex: 1 }, this.props.contentContainerStyle]}
         horizontal={true}
+        contentContainerStyle={[{paddingHorizontal: scaleSize(40)}, this.props.contentContainerStyle]}
       >
         <SectionList
           ref={ref => (this.table = ref)}
@@ -623,7 +634,7 @@ export default class LayerAttributeTable extends React.Component {
       <SectionList
         ref={ref => (this.table = ref)}
         refreshing={this.state.refreshing}
-        style={styles.container}
+        style={[styles.container, {marginHorizontal: scaleSize(40)}]}
         sections={this.state.tableData}
         // renderItem={this._renderSingleDataItem}
         renderItem={this._renderItem}

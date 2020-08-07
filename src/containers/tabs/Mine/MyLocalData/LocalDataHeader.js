@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 //eslint-disable-next-line
 import { color, size } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
+import { getThemeAssets } from '../../../../assets'
 
 export default class LocalDtaHeader extends Component {
   props: {
@@ -17,9 +18,9 @@ export default class LocalDtaHeader extends Component {
     let title = this.props.info.section.title
     if (title !== undefined) {
       let imageSource = this.props.info.section.isShowItem
-        ? require('../../../../assets/Mine/local_data_open.png')
-        : require('../../../../assets/Mine/local_data_close.png')
-      let imageWidth = scaleSize(30)
+        ? getThemeAssets().publicAssets.icon_drop_down
+        : getThemeAssets().publicAssets.icon_drop_up
+      let imageWidth = scaleSize(52)
       let height = scaleSize(80)
       let fontSize = size.fontSize.fontSizeXl
       return (
@@ -31,7 +32,7 @@ export default class LocalDtaHeader extends Component {
           style={{
             width: '100%',
             height: height,
-            backgroundColor: color.contentColorGray,
+            backgroundColor: color.bgW2,
             alignItems: 'center',
             flexDirection: 'row',
           }}
@@ -49,7 +50,7 @@ export default class LocalDtaHeader extends Component {
           <Text
             style={[
               {
-                color: color.fontColorWhite,
+                color: color.fontColorBlack,
                 paddingLeft: 15,
                 fontSize: fontSize,
                 fontWeight: 'bold',

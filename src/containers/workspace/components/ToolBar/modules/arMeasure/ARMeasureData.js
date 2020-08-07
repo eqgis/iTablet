@@ -6,14 +6,6 @@ import { Platform } from 'react-native'
 function getData() {
   let data = [
     {
-      //AR天气
-      key: 'arWeather',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
-      action: ARMeasureAction.arWeather,
-      size: 'large',
-      image: getThemeAssets().plot.plot_animation_appear,
-    },
-    {
       // 高精度采集
       key: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
@@ -33,15 +25,6 @@ function getData() {
     //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
     // },
     {
-      //AR投射
-      key: 'arCastModelOperate',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-      action: ARMeasureAction.arCastModelOperate,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_cast,
-    },
-    {
       //AR面积
       key: 'arMeasureArea',
       title: getLanguage(global.language).Map_Main_Menu
@@ -60,13 +43,13 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
     },
     {
-      //AR画线
-      key: 'arDrawLine',
+      //AR测高
+      key: 'arMeasureHeitht',
       title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
-      action: ARMeasureAction.arDrawLine,
+        .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
+      action: ARMeasureAction.arMeasureHeight,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
+      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
     {
       //AR画面
@@ -78,6 +61,15 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
     {
+      //AR画线
+      key: 'arDrawLine',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+      action: ARMeasureAction.arDrawLine,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
+    },
+    {
       //AR画点
       key: 'arDrawArea',
       title: getLanguage(global.language).Map_Main_Menu
@@ -87,13 +79,21 @@ function getData() {
       image: getThemeAssets().ar.toolbar.point,
     },
     {
-      //AR测高
-      key: 'arMeasureHeitht',
+      //AR投射
+      key: 'arCastModelOperate',
       title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
-      action: ARMeasureAction.arMeasureHeight,
+        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
+      action: ARMeasureAction.arCastModelOperate,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
+      image: getThemeAssets().ar.functiontoolbar.ar_cast,
+    },
+    {
+      //AR天气
+      key: 'arWeather',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
+      action: ARMeasureAction.arWeather,
+      size: 'large',
+      image: getThemeAssets().plot.plot_animation_appear,
     },
     {
       //AR视频
@@ -103,6 +103,14 @@ function getData() {
       size: 'large',
       image: getThemeAssets().themeType.theme_graphmap,
     },
+    {
+      //AR图片
+      key: 'arImage',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
+      action: ARMeasureAction.arImage,
+      size: 'large',
+      image: getThemeAssets().layerType.layer_type_image,
+    },
   ]
 
   data = data.filter(item => {
@@ -110,6 +118,7 @@ function getData() {
       if (
         item.key === 'arCastModelOperate' ||
         item.key === 'arVideo' ||
+        item.key === 'arImage' ||
         item.key === 'arWeather'
       ) {
         return false

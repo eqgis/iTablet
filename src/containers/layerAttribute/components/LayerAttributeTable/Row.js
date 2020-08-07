@@ -209,13 +209,13 @@ export default class Row extends Component {
           activeOpacity={1}
           key={index}
           style={[
-            cellStyle,
             width ? { width } : { flex: 1 },
             {
               borderRightWidth: 1,
               borderBottomWidth: 1,
               borderColor: this.props.separatorColor,
             },
+            cellStyle,
             // { width },
           ]}
           onPress={() =>

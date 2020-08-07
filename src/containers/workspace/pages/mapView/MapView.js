@@ -57,7 +57,7 @@ import {
   Dialog,
   SaveDialog,
   InputDialog,
-  PopView,
+  PopModal,
   SurfaceView,
   // SearchBar,
   Progress,
@@ -97,6 +97,7 @@ import {
   // InteractionManager,
   Image,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -105,8 +106,9 @@ import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
+import { BackHandlerUtil } from '../../util'
 
-const markerTag = 118081
+const markerTag = 118082
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -132,6 +134,7 @@ export default class MapView extends React.Component {
     appConfig: PropTypes.object,
     mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
+    backActions: PropTypes.object,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -297,6 +300,8 @@ export default class MapView extends React.Component {
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
 
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+
     if (global.isLicenseValid) {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
@@ -339,7 +344,7 @@ export default class MapView extends React.Component {
 
       this.props.setBackAction({
         key: 'MapView',
-        action: () => this.back(),
+        action: this.back,
       })
 
       SMediaCollector.setCalloutTapListener(info => {
@@ -598,6 +603,8 @@ export default class MapView extends React.Component {
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
+
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
   addSpeechRecognizeListener = () => {
@@ -1056,6 +1063,10 @@ export default class MapView extends React.Component {
         Toast.show('删除失败')
       }
     }.bind(this)())
+  }
+
+  backHandler = () => {
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   back = async () => {
@@ -2437,12 +2448,14 @@ export default class MapView extends React.Component {
         showAIDetect: false,
       })
       GLOBAL.showAIDetect = false
+      SMap.setDynamicviewsetVisible(true)
       Orientation.unlockAllOrientations()
     } else {
       this.setState({
         showAIDetect: true,
       })
       GLOBAL.showAIDetect = true
+      SMap.setDynamicviewsetVisible(false)
       Orientation.lockToPortrait()
     }
   }
@@ -3193,9 +3206,9 @@ export default class MapView extends React.Component {
           />
         )}
         <BubblePane ref={ref => (GLOBAL.bubblePane = ref)} maxSize={1} />
-        <PopView ref={ref => (this.popModal = ref)}>
+        <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
-        </PopView>
+        </PopModal>
         {this.renderDialog()}
         <Dialog
           ref={ref => (GLOBAL.removeObjectDialog = ref)}

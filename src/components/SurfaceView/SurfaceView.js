@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react'
 import { View, ART, PanResponder, Dimensions } from 'react-native'
-// import { SMap } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { color } from '../../styles'
 import styles from './styles'
@@ -153,11 +153,14 @@ export default class SurfaceView extends Component {
     }
     if (newState.isShow) {
       if (this.props.orientation.indexOf('LANDSCAPE') === 0) {
+        SMap.setDynamicviewsetVisible(true)
         Orientation.lockToLandscape()
       } else {
+        SMap.setDynamicviewsetVisible(true)
         Orientation.lockToPortrait()
       }
     } else {
+      SMap.setDynamicviewsetVisible(false)
       Orientation.unlockAllOrientations()
     }
     this.setState(newState)

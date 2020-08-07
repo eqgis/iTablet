@@ -4,30 +4,76 @@ import { color, size } from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    flexDirection: 'column',
     backgroundColor: 'white',
-    // padding: scaleSize(20),
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
+  },
+  containerP: {
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
   },
   headerBtnTitle: {
     color: color.fontColorBlack,
     fontSize: 17,
   },
   btns: {
-    // height: scaleSize(60),
-    // width: '90%',
-    // flexDirection: 'row',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    // marginHorizontal: scaleSize(150),
     alignItems: 'center',
     paddingVertical: scaleSize(30),
+    paddingHorizontal: scaleSize(80),
+    width: '100%',
+  },
+  btn: {
+    height: scaleSize(80),
+    width: '100%',
+    borderRadius: scaleSize(45),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn1: {
+    backgroundColor: color.itemColorGray,
+  },
+  btn2: {
+    marginTop: scaleSize(32),
+    borderColor: color.itemColorGray,
+    borderWidth: scaleSize(2),
+    backgroundColor: color.white,
+  },
+  text1: {
+    color: color.white,
+    fontSize: size.fontSize.fontSizeLg,
+  },
+  text2: {
+    color: color.itemColorGray,
+    fontSize: size.fontSize.fontSizeLg,
   },
   rows: {
     flex: 1,
     flexDirection: 'column',
+    marginHorizontal: scaleSize(80),
+    backgroundColor: 'transparent',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'column',
     marginHorizontal: scaleSize(60),
+    backgroundColor: 'transparent',
+  },
+  titleStyle: {
+    width: scaleSize(86),
+    textAlign: 'left',
+    color: color.contentColorGray,
+    fontSize: size.fontSize.fontSizeLg,
+  },
+  customRightStyle: {
+    flex: 1,
+    height: scaleSize(72),
+    borderRadius: scaleSize(20),
+    backgroundColor: color.bgG2,
+  },
+  disableStyle: {
+    borderRadius: scaleSize(20),
     backgroundColor: 'transparent',
   },
   saveAndContinueImage: {
@@ -81,9 +127,29 @@ export default StyleSheet.create({
   inputView: {
     flex: 2,
   },
-  customRightStyle: {
-    height: scaleSize(50),
-    textAlign: 'left',
-    fontSize: scaleSize(20),
+  typeRows: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  typeView: {
+    width: scaleSize(144),
+    height: scaleSize(60),
+    borderRadius: scaleSize(6),
+    borderColor: color.bgG2,
+    borderWidth: scaleSize(2),
+    backgroundColor: color.w,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  typeRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: scaleSize(8)
+  },
+  typeText: {
+    fontSize: size.fontSize.fontSizeMd,
+    color: color.contentColorGray,
   },
 })

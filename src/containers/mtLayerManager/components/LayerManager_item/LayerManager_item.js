@@ -274,6 +274,14 @@ export default class LayerManager_item extends React.Component {
   _visible_change = async () => {
     let oldVisibe = this.state.visible
     let rel = await this.props.setLayerVisible(this.props.data, !oldVisibe)
+    if (this.props.data.subLayers) {
+      for (let i = 0; i < this.props.data.subLayers.length; i++) {
+        await this.props.setLayerVisible(
+          this.props.data.subLayers[i],
+          !oldVisibe,
+        )
+      }
+    }
     if (rel) {
       this.setState(() => {
         let newState = {}

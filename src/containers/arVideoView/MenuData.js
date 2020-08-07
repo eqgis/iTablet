@@ -10,9 +10,10 @@ function getPage(page, bottomBar = undefined) {
     case 'main':
       data = [
         {
-          key: 'add',
+          key: 'selectToAdd',
           title: getLanguage(global.language).Analyst_Labels.ADD,
           image: require('../../assets/mapTools/icon_add_white.png'),
+          action: () => selectVideo(bottomBar),
         },
         {
           key: 'modify',
@@ -42,20 +43,19 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'main',
-          title: getLanguage(global.language).Find.BACK,
+          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
           key: 'addAtCurrent',
           title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_TO_CURRENT_POSITION,
+            .MAP_AR_ADD_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
-          action: onAddVideo,
+          action: () => onAddVideo(bottomBar),
         },
         {
           key: 'addAtPlane',
-          title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_SELECT_POINT_PLANE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
           action: () => onAddVideoAtPlane(bottomBar),
         },
@@ -63,13 +63,14 @@ function getPage(page, bottomBar = undefined) {
       pageAction = () => {
         SARVideoView.setTapAction('NONE')
         SARVideoView.setPlaneVisible(false)
+        selectVideo(bottomBar)
       }
       break
     case 'addAtPlane':
       data = [
         {
-          key: 'add',
-          title: getLanguage(global.language).Find.BACK,
+          key: 'main',
+          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -78,7 +79,7 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'main',
-          title: getLanguage(global.language).Find.BACK,
+          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -101,25 +102,25 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'modify',
-          title: getLanguage(global.language).Find.BACK,
+          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
           key: 'modifyToCurrent',
           title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_TO_CURRENT_POSITION,
+            .MAP_AR_MOVE_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
           action: () => {
             SARVideoView.modifyVideoToCurrentPosition()
             if (bottomBar) {
-              bottomBar.goto('modify')
+              bottomBar.goto('main')
             }
           },
         },
         {
           key: 'modifyToPlane',
           title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_SELECT_POINT_PLANE,
+            .MAP_AR_MOVE_TO_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
         },
       ]
@@ -132,7 +133,7 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'modify_selected',
-          title: getLanguage(global.language).Find.BACK,
+          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -146,7 +147,7 @@ function getPage(page, bottomBar = undefined) {
         SARVideoView.setPlaneVisible(true)
         SARVideoView.setOnVideoModifyListener(() => {
           if (bottomBar) {
-            bottomBar.goto('modify')
+            bottomBar.goto('main')
           }
         })
       }
@@ -156,7 +157,7 @@ function getPage(page, bottomBar = undefined) {
   return { data, pageAction }
 }
 
-function onAddVideo() {
+function selectVideo(bottomBar) {
   ImagePicker.AlbumListView.defaultProps.showDialog = false
   ImagePicker.AlbumListView.defaultProps.assetType = 'Videos'
   ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
@@ -165,36 +166,26 @@ function onAddVideo() {
     callback: async data => {
       if (data && data.length > 0) {
         let path = data[0].uri
-        SARVideoView.addVideoAtCurrentPosition(path)
+        bottomBar.addData({ path: path })
+        bottomBar.goto('add')
       }
     },
   })
 }
 
+function onAddVideo(bottomBar) {
+  let { path } = bottomBar.getData()
+  SARVideoView.addVideoAtCurrentPosition(path)
+  bottomBar.goto('main')
+}
+
 function onAddVideoAtPlane(bottomBar) {
-  ImagePicker.AlbumListView.defaultProps.showDialog = false
-  ImagePicker.AlbumListView.defaultProps.assetType = 'Videos'
-  ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
-  ImagePicker.getAlbum({
-    maxSize: 1,
-    callback: async data => {
-      if (data && data.length > 0) {
-        let path = data[0].uri
-        Toast.show(
-          global.language === 'CN'
-            ? '请点击平面添加视频'
-            : 'Tap the plane to add video',
-        )
-        SARVideoView.setTapAction('ADD')
-        SARVideoView.setVideoPath(path)
-        SARVideoView.setPlaneVisible(true)
-        SARVideoView.setOnVideoAddListener(() => {
-          bottomBar.goto('add')
-        })
-      } else if (bottomBar) {
-        bottomBar.goto('add')
-      }
-    },
+  let { path } = bottomBar.getData()
+  SARVideoView.setTapAction('ADD')
+  SARVideoView.setVideoPath(path)
+  SARVideoView.setPlaneVisible(true)
+  SARVideoView.setOnVideoAddListener(() => {
+    bottomBar.goto('main')
   })
 }
 

@@ -7,6 +7,7 @@
 import * as React from 'react'
 import { ConstInfo, ConstToolType } from '../../../../constants'
 import { Toast, LayerUtils, scaleSize } from '../../../../utils'
+import { color } from '../../../../styles'
 import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -31,9 +32,10 @@ export default class LayerSelectionAttribute extends React.Component {
     setLoading: () => {},
     selectAction: () => {},
     setAttributeHistory: () => {},
+    showAddModal: () => {},
     onGetAttribute?: () => {},
     onGetToolVisible?: () => {},
-    onAttributeFeildDelete?: () => {},
+    onAttributeFieldDelete?: () => {},
     isShowSystemFields: boolean,
   }
 
@@ -648,8 +650,13 @@ export default class LayerSelectionAttribute extends React.Component {
         title: global.language === 'CN' ? '详情' : 'Detail',
         onPress: () => {
           (async function() {
-            NavigationService.navigate('LayerAttributeAdd', {
-              defaultParams: { fieldInfo },
+            // NavigationService.navigate('LayerAttributeAdd', {
+            //   defaultParams: { fieldInfo },
+            //   isDetail: true,
+            // })
+  // TODO this.addPopModal
+            this.props.showAddModal && this.props.showAddModal(true, {
+              data: {fieldInfo},
               isDetail: true,
             })
           }.bind(this)())
@@ -663,10 +670,10 @@ export default class LayerSelectionAttribute extends React.Component {
         title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {
           if (
-            this.props.onAttributeFeildDelete &&
-            typeof this.props.onAttributeFeildDelete === 'function'
+            this.props.onAttributeFieldDelete &&
+            typeof this.props.onAttributeFieldDelete === 'function'
           ) {
-            this.props.onAttributeFeildDelete(fieldInfo)
+            this.props.onAttributeFieldDelete(fieldInfo)
           }
         },
       })
@@ -1006,6 +1013,7 @@ export default class LayerSelectionAttribute extends React.Component {
             ? -1
             : this.state.startIndex + 1
         }
+        contentContainerStyle={{backgroundColor: color.bgW}}
         selectRow={this.selectRow}
         buttonNameFilter={buttonNameFilter}
         buttonActions={buttonActions}

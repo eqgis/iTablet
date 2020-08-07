@@ -178,9 +178,11 @@ const getNavigationSetting = () => [
 const getMapARSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
+    leftImage: getThemeAssets().setting.icon_detection_type,
   },
   {
     title: getLanguage(global.language).Map_Settings.DETECT_STYLE,
+    leftImage: getThemeAssets().setting.icon_checkbox_style,
   },
 ]
 

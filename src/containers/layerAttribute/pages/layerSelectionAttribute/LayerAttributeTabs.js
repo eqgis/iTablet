@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { Container, MTBtn, PopView, Dialog } from '../../../../components'
+import { Container, MTBtn, PopView, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
 import { Toast, scaleSize, StyleUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -19,10 +19,12 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import { SMap, Action, GeoStyle, TextStyle, GeometryType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
+import LayerAttributeAdd from '../layerAttributeAdd'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
+    // backgroundColor: 'transparent',
+    backgroundColor: color.bgW,
     flex: 1,
   },
   drawerOverlay: {
@@ -326,13 +328,19 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   /** 删除属性字段 **/
-  onAttributeFeildDelete = async fieldInfo => {
+  onAttributeFieldDelete = async fieldInfo => {
     if (!fieldInfo) {
       return
     }
     this.deleteFieldData = fieldInfo
     this.deleteFieldDialog.setDialogVisible(true)
   }
+  
+  showLayerAddView = (visible, params) => {
+    // GLOBAL.ToolBar.showFullMap(true)
+    this.addPopModal && this.addPopModal.setVisible(visible, params)
+  }
+  
   /** 添加属性字段 **/
   addAttributeField = async fieldInfo => {
     if (this.state.attributes.data.length > 0) {
@@ -672,6 +680,7 @@ export default class LayerAttributeTabs extends React.Component {
         }}
         key={index}
         tabLabel={data.layerInfo.name || ('图层' + index >= 0 ? index + 1 : '')}
+        contentContainerStyle={{backgroundColor: color.bgW}}
         // currentAttribute={this.props.currentAttribute}
         // currentLayer={this.props.currentLayer}
         map={this.props.map}
@@ -684,7 +693,8 @@ export default class LayerAttributeTabs extends React.Component {
         selectAction={this.selectAction}
         onGetAttribute={this.onGetAttribute}
         onGetToolVisible={this.onGetToolVisible}
-        onAttributeFeildDelete={this.onAttributeFeildDelete}
+        onAttributeFieldDelete={this.onAttributeFieldDelete}
+        showAddModal={this.showLayerAddView}
         isShowSystemFields={this.state.isShowSystemFields}
       />
     )
@@ -808,13 +818,14 @@ export default class LayerAttributeTabs extends React.Component {
       >
         <LayerTopBar
           hasTabBtn
+          orientation={this.props.device.orientation}
           tabsAction={this.showDrawer}
           canLocated={this.state.attributes.data.length > 1}
           canRelated={this.state.currentIndex >= 0}
           relateAction={this.relateAction}
           locateAction={this.showLocationView}
           canAddField={true}
-          addFieldAction={this.addAttributeField}
+          addFieldAction={() => this.showLayerAddView(true)}
           attributesData={this.state.attributes.head}
         />
         {this.state.isShowView && (
@@ -858,12 +869,36 @@ export default class LayerAttributeTabs extends React.Component {
             onPress={() => this.showDrawer(false)}
           />
         )}
-        <PopView
+        <PopModal
           ref={ref => (this.popModal = ref)}
           modalVisible={this.state.editControllerVisible}
         >
           {this.renderEditControllerView()}
-        </PopView>
+        </PopModal>
+  
+        <LayerAttributeAdd
+          ref={ref => (this.addPopModal = ref)}
+          contentStyle={{
+            height: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? '100%' : '80%',
+            width: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? '40%' : '100%',
+            right: 0,
+            left: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? '60%' : 0,
+          }}
+          navigation={this.props.navigation}
+          device={this.props.device}
+          currentAttribute={this.props.currentAttribute}
+          setCurrentAttribute={this.props.setCurrentAttribute}
+          data={
+            this.state.attributes.head.length > 1 &&
+            this.state.attributes.head[this.state.attributes.head.length - 1]
+          }
+          addAttributeField={this.addAttributeField}
+          backAction={() => {
+            this.addPopModal && this.addPopModal.setVisible(false)
+          }}
+        />
         <DrawerBar
           ref={ref => (this.drawer = ref)}
           data={this.props.selection}

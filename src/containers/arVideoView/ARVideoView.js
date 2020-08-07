@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SMARVideoView, SARVideoView } from 'imobile_for_reactnative'
+import { SMARVideoView, SARVideoView ,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container, BottomBar } from '../../components'
 import { getLanguage } from '../../language'
@@ -22,6 +22,7 @@ export default class ARVideoView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 

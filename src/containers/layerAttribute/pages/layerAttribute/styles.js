@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
-    backgroundColor: '#FBFBFB',
+    backgroundColor: color.bgW,
     width: '100%',
   },
   headerBtnTitle: {

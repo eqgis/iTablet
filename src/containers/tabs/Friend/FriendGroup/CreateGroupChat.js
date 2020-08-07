@@ -277,7 +277,7 @@ class CreateGroupChat extends Component {
             ref={ref => (this.SectionList = ref)}
             renderSectionHeader={this._renderSectionHeader}
             ItemSeparatorComponent={() => {
-              return <View style={styles.SectionSeparaLineStyle} />
+              return <View style={styles.SectionSeparatorLineStyle} />
             }}
             sections={sections}
             keyExtractor={(item, index) => index}
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(30),
     color: 'black',
   },
-  SectionSeparaLineStyle: {
+  SectionSeparatorLineStyle: {
     height: scaleSize(1),
     backgroundColor: 'rgba(160,160,160,1.0)',
     marginHorizontal: scaleSize(10),

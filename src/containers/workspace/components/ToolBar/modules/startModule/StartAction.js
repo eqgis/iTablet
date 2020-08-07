@@ -8,7 +8,6 @@ import {
   ConstInfo,
   ConstPath,
   UserType,
-  ConstOnline,
   ToolbarType,
   ChunkType,
 } from '../../../../../../constants'
@@ -1049,17 +1048,9 @@ async function openTemplate(item) {
               await params.getLayers(-1, async layers => {
                 params.setCurrentLayer(layers.length > 0 && layers[0])
 
-                if (
-                  !LayerUtils.isBaseLayer(layers[layers.length - 1].caption)
-                ) {
-                  await LayerUtils.addBaseMap(
-                    layers,
-                    ConstOnline.Google,
-                    GLOBAL.Type === ChunkType.MAP_COLLECTION
-                      ? 1
-                      : ConstOnline.Google.layerIndex,
-                    false,
-                  )
+                if (!LayerUtils.isBaseLayer(layers[layers.length - 1])) {
+                  LayerUtils.openDefaultBaseMap()
+                  params.getLayers(-1)
                 }
 
                 // // 若没有底图，默认添加地图

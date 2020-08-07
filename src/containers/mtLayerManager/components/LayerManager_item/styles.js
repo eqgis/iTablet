@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { constUtil, scaleSize, setSpText } from '../../../../utils'
-import { color } from '../../../../styles'
+import { color, size } from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -48,16 +48,16 @@ export default StyleSheet.create({
     width: scaleSize(44),
   },
   btn_image_small: {
-    height: scaleSize(30),
-    width: scaleSize(30),
+    height: size.imageSize.small,
+    width: size.imageSize.small,
   },
   btn_image_big: {
-    height: scaleSize(52),
-    width: scaleSize(52),
+    height: size.imageSize.large,
+    width: size.imageSize.large,
   },
   more_image: {
-    height: scaleSize(44),
-    width: scaleSize(44),
+    height: size.imageSize.middle,
+    width: size.imageSize.middle,
   },
   btnImage: {
     // height: scaleSize(40),

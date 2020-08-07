@@ -41,7 +41,7 @@ export default class LabelBtn extends PureComponent {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        style={styles.textBtnContainer}
+        style={[styles.textBtnContainer, this.props.style]}
         accessible={true}
         accessibilityLabel={this.props.title}
         onPress={() => this.getValue()}

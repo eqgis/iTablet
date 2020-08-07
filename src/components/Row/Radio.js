@@ -11,8 +11,10 @@ import {
   StyleSheet,
   TextInput,
   Platform,
+  Image,
 } from 'react-native'
 import { color } from '../../styles'
+import { getPublicAssets } from '../../assets'
 
 import styles from './styles'
 
@@ -190,11 +192,22 @@ export default class Radio extends PureComponent {
   }
 
   render() {
-    let viewStyle = styles.radioView,
-      dotStyle = styles.radioSelected
-    if (!this.props.selectable) {
-      viewStyle = styles.radioViewGray
-      dotStyle = styles.radioSelectedGray
+    // let viewStyle = styles.radioView,
+    //   dotStyle = styles.radioSelected
+    // if (!this.props.selectable) {
+    //   viewStyle = styles.radioViewGray
+    //   dotStyle = styles.radioSelectedGray
+    // }
+
+    let dotImg = getPublicAssets().common.icon_single_check
+    if (this.props.selectable) {
+      dotImg = this.state.selected
+        ? getPublicAssets().common.icon_single_check
+        : getPublicAssets().common.icon_none
+    } else {
+      dotImg = this.state.selected
+        ? getPublicAssets().common.icon_disable_single_check
+        : getPublicAssets().common.icon_disable_none
     }
 
     if (this.props.selectable) {
@@ -206,9 +219,10 @@ export default class Radio extends PureComponent {
           accessibilityLabel={this.props.title}
           onPress={() => this.selectAction()}
         >
-          <View style={viewStyle}>
-            {this.state.selected && <View style={dotStyle} />}
-          </View>
+          {/*<View style={viewStyle}>*/}
+            {/*{this.state.selected && <View style={dotStyle} />}*/}
+          {/*</View>*/}
+          <Image style={styles.radioImg} source={dotImg}/>
           {this.props.title && (
             <Text style={[styles.radioTitle, this.props.titleStyle]}>
               {this.props.title}
@@ -251,9 +265,10 @@ export default class Radio extends PureComponent {
     } else {
       return (
         <View style={[styles.radioContainer, this.props.style]}>
-          <View style={viewStyle}>
-            {this.state.selected && <View style={dotStyle} />}
-          </View>
+          {/*<View style={viewStyle}>*/}
+            {/*{this.state.selected && <View style={dotStyle} />}*/}
+          {/*</View>*/}
+          <Image style={styles.radioImg} source={dotImg}/>
           {this.props.title && (
             <Text style={[styles.radioTitle, this.props.titleStyle]}>
               {this.props.title}

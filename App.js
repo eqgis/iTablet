@@ -63,6 +63,7 @@ import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
 import config from './configs/config'
 import _mapModules, { mapModules } from './configs/mapModules'
+import { BackHandlerUtil } from './src/containers/workspace/util'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, {allowFontScaling: false})
@@ -402,6 +403,10 @@ class AppRoot extends Component {
     }
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.back)
+  }
+
   openWorkspace = async () => {
     let wsPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN'], path = ''
     if (
@@ -424,24 +429,7 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    // if (Platform.OS === 'android') {
-    // 防止初始化时，nav为空
-    let nav = this.props.nav && this.props.nav.routes
-      ? this.props.nav
-      : NavigationService.getTopLevelNavigator().state.nav
-    let current = nav.routes[nav.index]
-    let key
-    while (current.routes) {
-      current = current.routes[current.index]
-    }
-    key = current.routeName
-    if (this.props.backActions[key] && typeof this.props.backActions[key] === 'function') {
-      this.props.backActions[key]()
-      return true
-    } else {
-      return false
-    }
-    // }
+    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
   onInvalidModule = () => {

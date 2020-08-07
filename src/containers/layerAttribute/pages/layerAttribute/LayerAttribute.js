@@ -5,12 +5,12 @@
  */
 
 import * as React from 'react'
-import { View, InteractionManager, Text } from 'react-native'
+import { View, InteractionManager } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
   MTBtn,
-  PopView,
+  PopModal,
   InfoView,
   Dialog,
 } from '../../../../components'
@@ -41,10 +41,11 @@ import {
   GeometryType,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-import { color, size } from '../../../../styles'
+import { color } from '../../../../styles'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
+import LayerAttributeAdd from '../layerAttributeAdd'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30
@@ -87,6 +88,7 @@ export default class LayerAttribute extends React.Component {
       },
       showTable: false,
       editControllerVisible: false,
+      addControllerVisible: false,
       currentFieldInfo: [],
       relativeIndex: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
       currentIndex: -1,
@@ -636,8 +638,8 @@ export default class LayerAttribute extends React.Component {
         title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
           ;(async function() {
-            NavigationService.navigate('LayerAttributeAdd', {
-              defaultParams: { fieldInfo },
+            this.addPopModal && this.addPopModal.setVisible(true, {
+              data: {fieldInfo},
               isDetail: true,
             })
           }.bind(this)())
@@ -736,6 +738,11 @@ export default class LayerAttribute extends React.Component {
       return
     }
     this._showPopover(pressView, index, fieldInfo)
+  }
+  
+  showLayerAddView = () => {
+    // GLOBAL.ToolBar.showFullMap(true)
+    this.addPopModal && this.addPopModal.setVisible(true)
   }
 
   /** 添加属性字段 **/
@@ -1170,12 +1177,6 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderMapLayerAttribute = () => {
-    // if (
-    //   !this.state.attributes ||
-    //   (!this.state.attributes.data && this.state.attributes.data.length === 0)
-    // )
-    //   return null
-
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
       buttonTitles = [getLanguage(global.language).Map_Tools.VIEW]
     let buttonActions = [
@@ -1251,6 +1252,7 @@ export default class LayerAttribute extends React.Component {
             ? -1
             : this.state.startIndex + 1
         }
+        contentContainerStyle={{backgroundColor: color.bgW}}
         hasInputText={this.state.attributes.data.length > 1}
         selectRow={this.selectRow}
         refresh={cb => this.refresh(cb)}
@@ -1436,6 +1438,7 @@ export default class LayerAttribute extends React.Component {
       >
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
+            orientation={this.props.device.orientation}
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canAddField={
@@ -1446,7 +1449,7 @@ export default class LayerAttribute extends React.Component {
             }
             locateAction={this.showLocationView}
             relateAction={this.relateAction}
-            addFieldAction={this.addAttributeField}
+            addFieldAction={this.showLayerAddView}
             attributesData={this.state.attributes.head}
           />
         )}
@@ -1455,7 +1458,7 @@ export default class LayerAttribute extends React.Component {
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            backgroundColor: color.contentWhite,
+            backgroundColor: color.bgW,
           }}
         >
           {showContent
@@ -1474,12 +1477,35 @@ export default class LayerAttribute extends React.Component {
             locateToPosition={this.locateToPosition}
           />
         </View>
-        <PopView
+        <PopModal
           ref={ref => (this.popModal = ref)}
           modalVisible={this.state.editControllerVisible}
         >
           {this.renderEditControllerView()}
-        </PopView>
+        </PopModal>
+        <LayerAttributeAdd
+          ref={ref => (this.addPopModal = ref)}
+          contentStyle={{
+            height: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? '100%' : '80%',
+            width: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ? '40%' : '100%',
+            right: 0,
+            left: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? '60%' : 0,
+          }}
+          navigation={this.props.navigation}
+          device={this.props.device}
+          currentAttribute={this.props.currentAttribute}
+          setCurrentAttribute={this.props.setCurrentAttribute}
+          data={
+            this.state.attributes.head.length > 1 &&
+            this.state.attributes.head[this.state.attributes.head.length - 1]
+          }
+          addAttributeField={this.addAttributeField}
+          backAction={() => {
+            this.addPopModal && this.addPopModal.setVisible(false)
+          }}
+        />
         {this.renderDeleteFieldDialog()}
       </Container>
     )

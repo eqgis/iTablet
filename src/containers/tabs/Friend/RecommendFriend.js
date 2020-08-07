@@ -398,7 +398,7 @@ class RecommendFriend extends Component {
 
 // eslint-disable-next-line no-unused-vars
 var styles = StyleSheet.create({
-  SectionSeparaLineStyle: {
+  SectionSeparatorLineStyle: {
     height: scaleSize(1),
     backgroundColor: 'rgba(160,160,160,1.0)',
     marginHorizontal: scaleSize(10),

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SMARNavigationView, SARNavigationView } from 'imobile_for_reactnative'
+import { SMARNavigationView, SARNavigationView,SMap  } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { Toast } from '../../utils'
@@ -23,6 +23,7 @@ export default class ARNavigationView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 
@@ -40,6 +41,7 @@ export default class ARNavigationView extends React.Component {
   }
 
   componentWillUnmount() {
+    SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
     SARNavigationView.removeListener()
   }

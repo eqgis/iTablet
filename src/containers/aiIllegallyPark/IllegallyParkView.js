@@ -38,6 +38,7 @@ export default class IllegallyParkView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
+    SMap.setDynamicviewsetVisible(false)
     Orientation.lockToPortrait()
   }
 
@@ -91,6 +92,7 @@ export default class IllegallyParkView extends React.Component {
   }
 
   componentWillUnmount() {
+    SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
     //移除监听
   }

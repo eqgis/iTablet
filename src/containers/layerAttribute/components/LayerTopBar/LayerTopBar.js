@@ -5,12 +5,17 @@
  */
 
 import * as React from 'react'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { ImageButton } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import styles from './styles'
-import { getLanguage } from '../../../../language/index'
-import NavigationService from '../../../NavigationService'
+import { getLanguage } from '../../../../language'
+import { screen, scaleSize } from '../../../../utils'
+
+const itemWidth = scaleSize(220)
+const tabBtnWidth = scaleSize(110)
+const itemGap = scaleSize(20)
+const itemHorizontal = scaleSize(40)
 
 export default class LayerTopBar extends React.Component {
   props: {
@@ -26,6 +31,7 @@ export default class LayerTopBar extends React.Component {
     canRelated?: boolean, // 是否可点击关联
     hasTabBtn?: boolean, // 是否可点击关联
     canAddField?: boolean, // 是否可点击添加属性
+    orientation?: String,
   }
 
   static defaultProps = {
@@ -75,20 +81,94 @@ export default class LayerTopBar extends React.Component {
     }
   }
 
-  addAttributeFieldAction = feildInfo => {
+  addAttributeFieldAction = fieldInfo => {
     if (
       this.props.addFieldAction &&
       typeof this.props.addFieldAction === 'function'
     ) {
-      this.props.addFieldAction(feildInfo)
+      this.props.addFieldAction(fieldInfo)
+    }
+  }
+  
+  renderContentView = () => {
+    let data = [
+      {
+        icon: this.props.canAddField
+          ? getPublicAssets().common.icon_plus
+          : getPublicAssets().common.icon_plus_gray,
+        key: '添加',
+        title: getLanguage(global.language).Map_Attribute
+          .ATTRIBUTE_FIELD_ADD,
+        action: this.addAttributeFieldAction,
+        enabled: this.props.canAddField,
+      },
+      {
+        icon: this.props.canLocated
+          ? getThemeAssets().attribute.attribute_location
+          : getThemeAssets().attribute.attribute_location,
+        key: '定位',
+        title: getLanguage(global.language).Map_Attribute
+          .ATTRIBUTE_LOCATION,
+        action: this.locateAction,
+        enabled: this.props.canLocated,
+      },
+      {
+        icon: this.props.canRelated
+          ? getThemeAssets().attribute.icon_attribute_browse
+          : getPublicAssets().attribute.icon_attribute_browse,
+        key: '关联',
+        title: getLanguage(global.language).Map_Attribute
+          .ATTRIBUTE_ASSOCIATION,
+        action: this.relateAction,
+        enabled: this.props.canRelated,
+      }
+    ]
+  
+    let contentWidth = itemWidth * data.length
+      + itemGap * (data.length - 1)
+      + itemHorizontal * 2
+  
+    if (this.props.hasTabBtn) {
+      contentWidth += tabBtnWidth + itemGap
+    }
+    let isScroll = screen.getScreenWidth(this.props.orientation) < contentWidth
+    
+    let items = []
+    data.forEach((item, index) => {
+      if (index !== 0 && isScroll) {
+        item = Object.assign(item, {
+          containerStyle: {
+            marginLeft: itemGap
+          },
+        })
+      }
+      items.push(this.renderBtn(item))
+    })
+    
+    if (isScroll) {
+      return (
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={styles.rightScrollList}
+          showsHorizontalScrollIndicator={false}
+        >
+          {items}
+        </ScrollView>
+      )
+    } else {
+      return (
+        <View style={styles.rightList}>
+          {items}
+        </View>
+      )
     }
   }
 
-  renderBtn = ({ key, icon, title, action, enabled }) => {
+  renderBtn = ({ key, icon, title, action, enabled, containerStyle }) => {
     return (
       <ImageButton
         key={key}
-        containerStyle={[styles.btn, { flex: 1 }]}
+        containerStyle={[styles.btn, containerStyle]}
         iconBtnStyle={styles.imgBtn}
         titleStyle={enabled ? styles.enableBtnTitle : styles.btnTitle}
         icon={icon}
@@ -129,61 +209,7 @@ export default class LayerTopBar extends React.Component {
             enabled: this.props.canTabs,
             style: styles.tabBtn,
           })}
-        {/*<ScrollView horizontal style={styles.rightList}>*/}
-        <View style={styles.rightList}>
-          {this.renderBtn({
-            icon: this.props.canAddField
-              ? getPublicAssets().common.icon_plus
-              : getPublicAssets().common.icon_plus_gray,
-            key: '添加',
-            title: getLanguage(global.language).Map_Attribute
-              .ATTRIBUTE_FIELD_ADD,
-            //'添加',
-            action: () => {
-              GLOBAL.ToolBar.showFullMap(true)
-              NavigationService.navigate('LayerAttributeAdd', {
-                defaultParams:
-                  this.props.attributesData.length > 1 &&
-                  this.props.attributesData[
-                    this.props.attributesData.length - 1
-                  ],
-                callBack: this.addAttributeFieldAction,
-              })
-            },
-            enabled: this.props.canAddField,
-          })}
-          {this.renderBtn({
-            icon: this.props.canLocated
-              ? getThemeAssets().attribute.attribute_location
-              : getThemeAssets().attribute.attribute_location,
-            key: '定位',
-            title: getLanguage(global.language).Map_Attribute
-              .ATTRIBUTE_LOCATION,
-            //'定位',
-            action: this.locateAction,
-            enabled: this.props.canLocated,
-          })}
-          {/*{this.renderBtn({*/}
-          {/*icon: this.props.canUndo*/}
-          {/*? require('../../../../assets/public/icon_upload_selected.png')*/}
-          {/*: require('../../../../assets/public/icon_upload_unselected.png'),*/}
-          {/*key: '撤销',*/}
-          {/*title: '撤销',*/}
-          {/*action: this.undoAction,*/}
-          {/*enabled: this.props.canUndo,*/}
-          {/*})}*/}
-          {this.renderBtn({
-            icon: this.props.canRelated
-              ? getThemeAssets().attribute.icon_attribute_browse
-              : getPublicAssets().attribute.icon_attribute_browse,
-            key: '关联',
-            title: getLanguage(global.language).Map_Attribute
-              .ATTRIBUTE_ASSOCIATION,
-            //'关联',
-            action: this.relateAction,
-            enabled: this.props.canRelated,
-          })}
-        </View>
+        {this.renderContentView()}
       </View>
     )
   }

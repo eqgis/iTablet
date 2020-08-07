@@ -268,7 +268,7 @@ class AddFriend extends Component {
           }}
           data={this.state.list}
           ItemSeparatorComponent={() => {
-            return <View style={styles.SectionSeparaLineStyle} />
+            return <View style={styles.SectionSeparatorLineStyle} />
           }}
           // extraData={this.state}
           renderItem={({ item }) => this._renderItem(item)}
@@ -339,7 +339,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  SectionSeparaLineStyle: {
+  SectionSeparatorLineStyle: {
     height: scaleSize(1),
     backgroundColor: 'rgba(160,160,160,1.0)',
     marginHorizontal: scaleSize(10),

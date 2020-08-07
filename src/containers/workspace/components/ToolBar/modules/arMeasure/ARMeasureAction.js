@@ -176,7 +176,7 @@ function _downloadData(downloadData) {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
-      'imobile1234',
+      'xiezhiyan123',
       keyword,
       '.zip',
     )
@@ -321,8 +321,6 @@ function arDrawLine() {
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
-
-   
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {

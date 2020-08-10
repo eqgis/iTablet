@@ -151,6 +151,7 @@ import ARWeatherView from './arWeatherView'
 import ChooseWeather from './chooseWeather'
 import ARImageView from './arImageView'
 import AIPoseEstimationView from './aiPoseEstimationView'
+import ARWebView from './arWebView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
@@ -977,6 +978,13 @@ export default function(appConfig) {
       },
       ChooseWeather: {
         screen: ChooseWeather,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARWebView: {
+        screen: ARWebView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

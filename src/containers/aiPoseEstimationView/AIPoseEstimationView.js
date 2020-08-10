@@ -2,6 +2,7 @@ import * as React from 'react'
 import {
   SMAIPoseEstimationView,
   SPoseEstimationView,
+  SMap,
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
@@ -38,18 +39,22 @@ export default class AIPoseEstimationView extends React.Component {
 
     this.state = {
       associationMap: false, //关联地图
-      poseOverLook: false, //忽略姿态
-      poseTitle: '', //姿态标题
+      poseOverLook: true, //忽略姿态
+      poseTitle: getLanguage(global.language).Map_Main_Menu
+        .MAP_AI_POSE_ESTIMATION_PAN, //姿态标题
 
       poseData: this.poseData,
       poseMode: 'MODE_PAN', //默认漫游姿态
       selectPoseMode: false, //是否是选择姿态模式
+
+      poseCallBackData: [],
     }
   }
 
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
+    SPoseEstimationView.setOperMode(this.state.poseMode)
     Orientation.lockToPortrait()
   }
 
@@ -66,24 +71,82 @@ export default class AIPoseEstimationView extends React.Component {
   }
 
   onPoseChanged = info => {
-    let title = null
-    if (info.poseType === 'ZOOM') {
-      title = getLanguage(global.language).Map_Main_Menu
-        .MAP_AI_POSE_ESTIMATION_ZOOM
-    } else if (info.poseType === 'PAN') {
-      title = getLanguage(global.language).Map_Main_Menu
-        .MAP_AI_POSE_ESTIMATION_PAN
-    } else {
-      title = ''
+    // let title = null
+    // if (info.poseType === 'ZOOM') {
+    //   title = getLanguage(global.language).Map_Main_Menu
+    //     .MAP_AI_POSE_ESTIMATION_ZOOM
+    // } else if (info.poseType === 'PAN') {
+    //   title = getLanguage(global.language).Map_Main_Menu
+    //     .MAP_AI_POSE_ESTIMATION_PAN
+    // } else {
+    //   title = ''
+    // }
+    // this.setState({
+    //   poseTitle: title,
+    // })
+    // setTimeout(() => {
+    //   this.setState({
+    //     poseTitle: '',
+    //   })
+    // }, 1000)
+
+    let poseCallBack = info.poseType
+    let _poseCallBackData = this.state.poseCallBackData
+
+    let _poseTitle = this.getPoseSubTitle(poseCallBack)
+
+    if (this.state.poseMode === 'MODE_ZOOM') {
+      _poseCallBackData.push(
+        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ZOOM +
+          ':' +
+          _poseTitle,
+      )
+    } else if (this.state.poseMode === 'MODE_PAN') {
+      _poseCallBackData.push(
+        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_PAN +
+          ':' +
+          _poseTitle,
+      )
+    }
+    if (_poseCallBackData.length > 5) {
+      _poseCallBackData.shift()
     }
     this.setState({
-      poseTitle: title,
+      poseCallBackData: _poseCallBackData,
     })
-    setTimeout(() => {
-      this.setState({
-        poseTitle: '',
-      })
-    }, 1000)
+  }
+
+  getPoseSubTitle(subPoseTitle) {
+    let arrStrs = subPoseTitle.split(',')
+    let _poseTitle = ''
+    switch (arrStrs[0]) {
+      case 'up':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP
+        break
+      case 'down':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN
+        break
+      case 'left':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT
+        break
+      case 'right':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT
+        break
+      case 'shrink':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK
+        break
+      case 'magnify':
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
+          .MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY
+        break
+    }
+
+    return _poseTitle + '->' + arrStrs[1]
   }
 
   back = () => {
@@ -102,6 +165,7 @@ export default class AIPoseEstimationView extends React.Component {
               SPoseEstimationView.setAssociationMap(!this.state.associationMap)
               this.setState({
                 associationMap: !this.state.associationMap,
+                selectPoseMode: false,
               })
             }}
             style={styles.iconView}
@@ -121,18 +185,18 @@ export default class AIPoseEstimationView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.associationMap
                   ? getLanguage(global.language).Map_Main_Menu
-                      .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
+                    .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
                   : getLanguage(global.language).Map_Main_Menu
-                      .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
+                    .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
               </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              SPoseEstimationView.setPoseOverlook(!this.state.poseOverLook)
+              // SPoseEstimationView.setPoseOverlook(!this.state.poseOverLook)
               this.setState({
-                poseOverLook: !this.state.poseOverLook,
-                // selectPoseMode: !this.state.selectPoseMode,
+                // poseOverLook: !this.state.poseOverLook,
+                selectPoseMode: !this.state.selectPoseMode,
               })
             }}
             style={{
@@ -154,15 +218,18 @@ export default class AIPoseEstimationView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.poseOverLook
                   ? getLanguage(global.language).Map_Main_Menu
-                      .MAP_AI_POSE_ESTIMATION_LOOK
+                    .MAP_AI_POSE_ESTIMATION_LOOK
                   : getLanguage(global.language).Map_Main_Menu
-                      .MAP_AI_POSE_ESTIMATION_OVERLOOK}
+                    .MAP_AI_POSE_ESTIMATION_OVERLOOK}
               </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               SPoseEstimationView.switchCamera()
+              this.setState({
+                selectPoseMode: false,
+              })
             }}
             style={{
               justifyContent: 'center',
@@ -193,12 +260,28 @@ export default class AIPoseEstimationView extends React.Component {
     )
   }
 
+  renderPoseTitleItem = ({ item, index }) => {
+    let _color =
+      index === this.state.poseCallBackData.length - 1
+        ? color.selected_blue
+        : 'black'
+    return (
+      <Text style={{ fontSize: setSpText(24), color: _color }}>{item}</Text>
+    )
+  }
+
   renderPoseTitle() {
     return (
-      <View style={styles.titlePose}>
-        <Text style={{ fontSize: setSpText(30), color: 'black' }}>
-          {this.state.poseTitle}
-        </Text>
+      <View style={styles.titlePose} pointerEvents="none">
+        {/* <Text style={{ fontSize: setSpText(30), color: 'black' }}>
+          {this.state.poseTitle + (this.state.poseCallBackData.length >0 ? this.state.poseCallBackData[0] : '')}
+        </Text> */}
+        <FlatList
+          style={{ height: '100%' }}
+          data={this.state.poseCallBackData}
+          renderItem={this.renderPoseTitleItem}
+          keyExtractor={(item, index) => String(index)}
+        />
       </View>
     )
   }
@@ -225,8 +308,11 @@ export default class AIPoseEstimationView extends React.Component {
   ]
   onPressItem = item => {
     SPoseEstimationView.setOperMode(item.mode)
+    // let _poseData = this.state.poseData.concat()
     this.setState({
       poseMode: item.mode,
+      poseTitle: item.title,
+      // poseData: _poseData,
     })
   }
 
@@ -241,7 +327,7 @@ export default class AIPoseEstimationView extends React.Component {
           <Image
             style={styles.image}
             source={
-              item.poseMode === this.state.poseMode
+              item.mode === this.state.poseMode
                 ? getPublicAssets().common.icon_check
                 : getPublicAssets().common.icon_uncheck
             }
@@ -336,8 +422,8 @@ export default class AIPoseEstimationView extends React.Component {
               bottomProps={{ type: 'fix' }}
             >
               <SMAIPoseEstimationView style={{ flex: 1 }} />
-              {this.state.associationMap &&
-                !this.state.poseOverLook &&
+              {// this.state.associationMap &&
+              // !this.state.poseOverLook &&
                 this.renderPoseTitle()}
               {/* {this.renderBottomBtns()} */}
             </Container>

@@ -9,6 +9,12 @@ export default StyleSheet.create({
     // backgroundColor: color.subTheme,
     backgroundColor: color.white,
   },
+  listContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: scaleSize(2),
+    borderColor: color.gray6,
+    borderRadius: scaleSize(12)
+  },
   head: {
     height: scaleSize(60),
     // backgroundColor: color.theme,
@@ -57,7 +63,8 @@ export default StyleSheet.create({
   },
   indexCell: {
     height: ROW_HEIGHT,
-    backgroundColor: color.bgW2,
+    // backgroundColor: color.bgW2,
+    backgroundColor: color.gray7,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',
@@ -77,7 +84,8 @@ export default StyleSheet.create({
   disableCellStyle: {
     height: ROW_HEIGHT,
     // backgroundColor: color.bgW,
-    backgroundColor: 'rgba(230, 230, 230, 0.85)',
+    // backgroundColor: 'rgba(230, 230, 230, 0.85)',
+    backgroundColor: color.itemColorGray2,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',

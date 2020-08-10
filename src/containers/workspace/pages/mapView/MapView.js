@@ -1342,17 +1342,6 @@ export default class MapView extends React.Component {
           },
         )
 
-        // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-        SMap.getTaggingLayers(this.props.user.currentUser.userName).then(
-          dataList => {
-            dataList.forEach(item => {
-              if (item.isVisible) {
-                SMediaCollector.showMedia(item.name)
-              }
-            })
-          },
-        )
-
         this.mapLoaded = true
         this._addGeometrySelectedListener()
 
@@ -1375,20 +1364,27 @@ export default class MapView extends React.Component {
                     this.props.user.currentUser.userName,
                   )
                 }
-                // debugger
                 SMap.getCurrentTaggingLayer(
                   this.props.user.currentUser.userName,
-                ).then(layer => {
+                ).then(async layer => {
                   if (layer) {
-                    // debugger
                     GLOBAL.TaggingDatasetName = layer.name
-                    SMap.setLayerEditable(layer.name, true)
-                    SMap.setLayerVisible(layer.name, true)
+                    await SMap.setLayerEditable(layer.name, true)
+                    await SMap.setLayerVisible(layer.name, true)
                     this.props.setCurrentLayer(layer)
 
                     bCreateTag = true
                     if (hasMap) SMap.saveMap('', false, false)
-                    // debugger
+                    // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
+                    SMap.getTaggingLayers(this.props.user.currentUser.userName).then(
+                      dataList => {
+                        dataList.forEach(item => {
+                          if (item.isVisible) {
+                            SMediaCollector.showMedia(item.name)
+                          }
+                        })
+                      },
+                    )
                   }
                 })
               },

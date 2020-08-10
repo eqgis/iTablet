@@ -109,6 +109,8 @@ export default {
   gray3: '#dbdfe5',
   gray4: '#DBDFE5',
   gray5: '#E9E9EF',
+  gray6: '#D4D4D4',
+  gray7: '#C0C0C0',
   grayLight: '#e2e2e2',
   grayLight2: '#BCC3CE',
   // border: '#e0e0e0',

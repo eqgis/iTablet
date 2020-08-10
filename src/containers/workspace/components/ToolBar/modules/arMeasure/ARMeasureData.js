@@ -111,6 +111,14 @@ function getData() {
       size: 'large',
       image: getThemeAssets().layerType.layer_type_image,
     },
+    {
+      //AR网页
+      key: 'arWebView',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+      action: ARMeasureAction.arWebView,
+      size: 'large',
+      image: require('../../../../../../assets/mapToolbar/screen.png'),
+    },
   ]
 
   data = data.filter(item => {
@@ -119,7 +127,8 @@ function getData() {
         item.key === 'arCastModelOperate' ||
         item.key === 'arVideo' ||
         item.key === 'arImage' ||
-        item.key === 'arWeather'
+        item.key === 'arWeather' ||
+        item.key === 'arWebView'
       ) {
         return false
       }

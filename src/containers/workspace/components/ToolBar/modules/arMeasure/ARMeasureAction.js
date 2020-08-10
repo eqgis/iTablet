@@ -322,8 +322,6 @@ function arDrawLine() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-   
-
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
@@ -494,6 +492,22 @@ async function arWeather() {
   NavigationService.navigate('ARWeatherView')
 }
 
+async function arWebView() {
+  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  if (!isSupportedARCore) {
+    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    return
+  }
+
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
+  GLOBAL.EnterDatumPointType = 'arWebView'
+  NavigationService.navigate('EnterDatumPoint')
+}
+
 export default {
   close,
   memu,
@@ -512,4 +526,5 @@ export default {
   arVideo,
   arImage,
   arWeather,
+  arWebView,
 }

@@ -134,7 +134,7 @@ function getPage(page, bottomBar = undefined) {
       pageAction = () => {
         Toast.show(
           global.language === 'CN'
-            ? '请点击需平面修改位置'
+            ? '请点击平面修改位置'
             : 'Tap the plane to modify location',
         )
         SARImage.setTapAction('MODIFY')

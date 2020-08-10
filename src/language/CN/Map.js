@@ -365,6 +365,7 @@ const Map_Main_Menu = {
   MAP_AR_VIDEO: 'AR视频',
   MAP_AR_IMAGE: 'AR图片',
   MAP_AR_WEATHER: '天气特效',
+  MAP_AR_WEBVIEW: 'AR网页',
   MAP_AR_SELECT_EFFECT: '选择特效',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新建',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: '请输入数据源名称',

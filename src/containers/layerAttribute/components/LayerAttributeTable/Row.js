@@ -88,7 +88,7 @@ export default class Row extends Component {
   }
 
   static defaultProps = {
-    separatorColor: color.separateColorGray,
+    separatorColor: color.gray6,
     indexColumn: -1,
     hasInputText: true,
     isShowSystemFields: true,
@@ -203,6 +203,18 @@ export default class Row extends Component {
       cellStyle = [styles.selectedCell, this.props.selectedCellStyle]
       textStyle = [styles.selectedCellText, this.props.selectedCellTextStyle]
     }
+    let isLastCell = false
+    if (this.props.data instanceof Array) {
+      isLastCell = (this.props.data.length - 1) === index
+    } else {
+      isLastCell = index === 2
+    }
+    let borderStyle = {
+      // borderLeftWidth: index === 0 ? 1 : 0,
+      borderRightWidth: isLastCell ? 0 : 1,
+      borderBottomWidth: 1,
+      borderColor: this.props.separatorColor,
+    }
     if (isButton) {
       return (
         <TouchableOpacity
@@ -210,11 +222,7 @@ export default class Row extends Component {
           key={index}
           style={[
             width ? { width } : { flex: 1 },
-            {
-              borderRightWidth: 1,
-              borderBottomWidth: 1,
-              borderColor: this.props.separatorColor,
-            },
+            borderStyle,
             cellStyle,
             // { width },
           ]}
@@ -256,13 +264,9 @@ export default class Row extends Component {
           activeOpacity={1}
           key={index}
           style={[
-            cellStyle,
             width ? { width } : { flex: 1 },
-            {
-              borderRightWidth: 1,
-              borderBottomWidth: 1,
-              borderColor: this.props.separatorColor,
-            },
+            borderStyle,
+            cellStyle,
             // { width },
           ]}
           onPress={() => this._action(iTemView, index)}
@@ -282,11 +286,7 @@ export default class Row extends Component {
             cellStyle,
             this.props.cellStyle,
             width ? { width } : { flex: 1 },
-            {
-              borderRightWidth: 1,
-              borderBottomWidth: 1,
-              borderColor: this.props.separatorColor,
-            },
+            borderStyle,
             // { width },
           ]}
           textStyle={[

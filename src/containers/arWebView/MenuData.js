@@ -1,7 +1,7 @@
-import { SARVideoView } from 'imobile_for_reactnative'
-import { ImagePicker } from '../../components'
+import { SARWebView } from 'imobile_for_reactnative'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
+import NavigationService from '../NavigationService'
 
 function getPage(page, bottomBar = undefined) {
   let data = []
@@ -10,10 +10,10 @@ function getPage(page, bottomBar = undefined) {
     case 'main':
       data = [
         {
-          key: 'selectToAdd',
+          key: 'inputToAdd',
           title: getLanguage(global.language).Analyst_Labels.ADD,
           image: require('../../assets/mapTools/icon_add_white.png'),
-          action: () => selectVideo(bottomBar),
+          action: () => inputUrl(bottomBar),
         },
         {
           key: 'modify',
@@ -27,23 +27,22 @@ function getPage(page, bottomBar = undefined) {
           action: () => {
             Toast.show(
               global.language === 'CN'
-                ? '请点击需要删除的视频'
-                : 'Tap the video to delete',
+                ? '请点击需要删除的网页'
+                : 'Tap the web page to delete',
             )
-            SARVideoView.setTapAction('DELETE')
+            SARWebView.setTapAction('DELETE')
           },
         },
       ]
       pageAction = () => {
-        SARVideoView.setTapAction('NONE')
-        SARVideoView.setPlaneVisible(false)
+        SARWebView.setTapAction('NONE')
+        SARWebView.setPlaneVisible(false)
       }
       break
     case 'add':
       data = [
         {
           key: 'main',
-          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
@@ -51,25 +50,36 @@ function getPage(page, bottomBar = undefined) {
           title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_ADD_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
-          action: () => onAddVideo(bottomBar),
+          action: () => {
+            let { url } = bottomBar.getData()
+            SARWebView.addWebViewAtCurrentPosition(url)
+            bottomBar.goto('main')
+          },
         },
         {
           key: 'addAtPlane',
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
-          action: () => onAddVideoAtPlane(bottomBar),
+          action: () => {
+            let { url } = bottomBar.getData()
+            SARWebView.setTapAction('ADD')
+            SARWebView.setUrl(url)
+            SARWebView.setPlaneVisible(true)
+            SARWebView.setOnWebViewAddListener(() => {
+              bottomBar.goto('main')
+            })
+          },
         },
       ]
       pageAction = () => {
-        SARVideoView.setTapAction('NONE')
-        SARVideoView.setPlaneVisible(false)
+        SARWebView.setTapAction('NONE')
+        SARWebView.setPlaneVisible(false)
       }
       break
     case 'addAtPlane':
       data = [
         {
-          key: 'main',
-          // title: getLanguage(global.language).Find.BACK,
+          key: 'add',
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
@@ -78,30 +88,28 @@ function getPage(page, bottomBar = undefined) {
       data = [
         {
           key: 'main',
-          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
       pageAction = () => {
         Toast.show(
           global.language === 'CN'
-            ? '请点击需要修改的视频'
-            : 'Tap the video to modify',
+            ? '请点击需要修改的网页'
+            : 'Tap the web page to modify',
         )
-        SARVideoView.setTapAction('SELECT')
-        SARVideoView.setOnVideoTapListener(() => {
+        SARWebView.setTapAction('SELECT')
+        SARWebView.setOnWebViewTapListener(() => {
           if (bottomBar) {
             bottomBar.goto('modify_selected')
           }
         })
-        SARVideoView.setPlaneVisible(false)
+        SARWebView.setPlaneVisible(false)
       }
       break
     case 'modify_selected':
       data = [
         {
           key: 'modify',
-          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
         {
@@ -110,7 +118,7 @@ function getPage(page, bottomBar = undefined) {
             .MAP_AR_MOVE_TO_CURRENT_POSITION,
           image: require('../../assets/mapTools/collect_point_normal.png'),
           action: () => {
-            SARVideoView.modifyVideoToCurrentPosition()
+            SARWebView.modifyWebViewToCurrentPosition()
             if (bottomBar) {
               bottomBar.goto('main')
             }
@@ -124,27 +132,26 @@ function getPage(page, bottomBar = undefined) {
         },
       ]
       pageAction = () => {
-        SARVideoView.setTapAction('NONE')
-        SARVideoView.setPlaneVisible(false)
+        SARWebView.setTapAction('NONE')
+        SARWebView.setPlaneVisible(false)
       }
       break
     case 'modifyToPlane':
       data = [
         {
           key: 'modify_selected',
-          // title: getLanguage(global.language).Find.BACK,
           image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
         },
       ]
       pageAction = () => {
         Toast.show(
           global.language === 'CN'
-            ? '请点击平面修改视频位置'
+            ? '请点击平面修改位置'
             : 'Tap the plane to modify location',
         )
-        SARVideoView.setTapAction('MODIFY')
-        SARVideoView.setPlaneVisible(true)
-        SARVideoView.setOnVideoModifyListener(() => {
+        SARWebView.setTapAction('MODIFY')
+        SARWebView.setPlaneVisible(true)
+        SARWebView.setOnWebViewModifyListener(() => {
           if (bottomBar) {
             bottomBar.goto('main')
           }
@@ -156,35 +163,15 @@ function getPage(page, bottomBar = undefined) {
   return { data, pageAction }
 }
 
-function selectVideo(bottomBar) {
-  ImagePicker.AlbumListView.defaultProps.showDialog = false
-  ImagePicker.AlbumListView.defaultProps.assetType = 'Videos'
-  ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
-  ImagePicker.getAlbum({
-    maxSize: 1,
-    callback: async data => {
-      if (data && data.length > 0) {
-        let path = data[0].uri
-        bottomBar.addData({ path: path })
-        bottomBar.goto('add')
-      }
+function inputUrl(bottomBar) {
+  NavigationService.navigate('InputPage', {
+    type: 'http',
+    placeholder: 'http://',
+    cb: result => {
+      NavigationService.goBack()
+      bottomBar.addData({ url: result })
+      bottomBar.goto('add')
     },
-  })
-}
-
-function onAddVideo(bottomBar) {
-  let { path } = bottomBar.getData()
-  SARVideoView.addVideoAtCurrentPosition(path)
-  bottomBar.goto('main')
-}
-
-function onAddVideoAtPlane(bottomBar) {
-  let { path } = bottomBar.getData()
-  SARVideoView.setTapAction('ADD')
-  SARVideoView.setVideoPath(path)
-  SARVideoView.setPlaneVisible(true)
-  SARVideoView.setOnVideoAddListener(() => {
-    bottomBar.goto('main')
   })
 }
 

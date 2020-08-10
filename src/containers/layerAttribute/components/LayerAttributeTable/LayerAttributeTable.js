@@ -562,13 +562,13 @@ export default class LayerAttributeTable extends React.Component {
     return (
       <Row
         style={{
-          backgroundColor: color.bgW2,
-          borderTopRightRadius: scaleSize(12),
-          borderTopLeftRadius: scaleSize(12),
+          backgroundColor: color.gray7,
+          borderTopRightRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
+          borderTopLeftRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
         }}
         cellStyle={{
-          borderRightWidth: 0,
-          borderBottomWidth: 0,
+          // borderRightWidth: 0,
+          // borderBottomWidth: 0,
         }}
         cellTextStyle={{ color: '#3C3C3C' }}
         data={titles}
@@ -607,7 +607,7 @@ export default class LayerAttributeTable extends React.Component {
         <SectionList
           ref={ref => (this.table = ref)}
           refreshing={this.state.refreshing}
-          style={styles.container}
+          style={styles.listContainer}
           sections={this.state.tableData}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
@@ -634,7 +634,7 @@ export default class LayerAttributeTable extends React.Component {
       <SectionList
         ref={ref => (this.table = ref)}
         refreshing={this.state.refreshing}
-        style={[styles.container, {marginHorizontal: scaleSize(40)}]}
+        style={[styles.listContainer, {marginHorizontal: scaleSize(40)}]}
         sections={this.state.tableData}
         // renderItem={this._renderSingleDataItem}
         renderItem={this._renderItem}

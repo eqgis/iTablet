@@ -365,6 +365,7 @@ const Map_Main_Menu = {
   MAP_AR_VIDEO: 'AR Video', //待翻译
   MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_WEATHER: 'AR Weather',
+  MAP_AR_WEBVIEW: 'AR WebPage',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',

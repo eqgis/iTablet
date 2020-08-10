@@ -108,7 +108,7 @@ import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessage
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 
-const markerTag = 118082
+GLOBAL.markerTag = 118082
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -594,7 +594,7 @@ export default class MapView extends React.Component {
     // 移除多媒体采集Callout
     GLOBAL.mapView && SMediaCollector.removeMedias()
 
-    this.showMarker && SMap.deleteMarker(markerTag)
+    this.showMarker && SMap.deleteMarker(GLOBAL.markerTag)
 
     if (GLOBAL.MapTabNavigator) {
       GLOBAL.MapTabNavigator = null
@@ -1400,11 +1400,12 @@ export default class MapView extends React.Component {
         this.setState({ showScaleView: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
 
+        SMap.setDynamicviewsetVisible(true)
         this.showMarker &&
           SMap.showMarker(
             this.showMarker.longitude,
             this.showMarker.latitude,
-            markerTag,
+            GLOBAL.markerTag,
           )
 
         SMap.setIsMagnifierEnabled(true)
@@ -2832,7 +2833,7 @@ export default class MapView extends React.Component {
             ) {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.TouchType = TouchType.NORMAL
-              SMap.deleteMarker(118081)
+              SMap.deleteMarker(GLOBAL.markerTag)
               NavigationService.navigate('EnterDatumPoint', {
                 type: 'ARNAVIGATION_INDOOR',
               })
@@ -2950,7 +2951,7 @@ export default class MapView extends React.Component {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.TouchType = TouchType.NORMAL
               GLOBAL.MapSelectPointType = undefined
-              SMap.deleteMarker(118081)
+              SMap.deleteMarker(GLOBAL.markerTag)
               return
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
@@ -3058,7 +3059,7 @@ export default class MapView extends React.Component {
   _openSelectPointMap = async (data, point) => {
     await SMap.removeAllLayer() // 移除所有图层
     await this._openDatasource(data, data.layerIndex)
-    point && SMap.showMarker(point.x, point.y, markerTag)
+    point && SMap.showMarker(point.x, point.y, GLOBAL.markerTag)
     GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
     this.setState({ showScaleView: false })
   }

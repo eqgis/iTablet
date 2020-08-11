@@ -35,6 +35,7 @@ import {
   coordMenuData,
   coordMenuTitle,
   getDetectStyleSettings,
+  getDetectTypesSettings,
 } from '../settingData'
 import { SMap, SAIDetectView } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../utils'
@@ -193,7 +194,6 @@ export default class SecondMapSettings extends Component {
     let index = 0
     let dataset
     try {
-
       for (let item of data) {
         let datasets = []
         dataset = await SMap.getDatasetsByDatasource(
@@ -213,8 +213,7 @@ export default class SecondMapSettings extends Component {
         })
         result[index++].data = datasets
       }
-
-    }catch (e) {
+    } catch (e) {
       return result
     }
 

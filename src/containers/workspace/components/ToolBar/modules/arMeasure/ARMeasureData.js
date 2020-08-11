@@ -125,8 +125,8 @@ function getData() {
     if (Platform.OS === 'ios') {
       if (
         item.key === 'arCastModelOperate' ||
-        item.key === 'arVideo' ||
-        item.key === 'arImage' ||
+        //item.key === 'arVideo' ||
+        //item.key === 'arImage' ||
         item.key === 'arWeather' ||
         item.key === 'arWebView'
       ) {

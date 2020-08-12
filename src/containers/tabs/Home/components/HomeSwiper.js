@@ -56,22 +56,14 @@ export default class HomeSwiper extends React.Component {
           activeOpacity={this.props.activeOpacity}
           style={styles.ImageContainaer}
         >
-          <Image
-            resizeMode="stretch"
-            style={styles.scrollImage}
-            source={require('../../../../assets/home/home_scroll1.jpg')}
-          />
+  
         </TouchableOpacity>,
         <TouchableOpacity
           key={'home_swiper_1'}
           activeOpacity={this.props.activeOpacity}
           style={styles.ImageContainaer}
         >
-          <Image
-            resizeMode="stretch"
-            style={styles.scrollImage}
-            source={require('../../../../assets/home/home_scroll2.jpg')}
-          />
+         
         </TouchableOpacity>,
       ]
     }

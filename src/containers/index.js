@@ -2,7 +2,6 @@ import { createStackNavigator } from 'react-navigation'
 // eslint-disable-next-line
 // import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
 // 主页
-import MapLoad from './mapLoad'
 
 // 我的
 import {
@@ -72,7 +71,7 @@ import {
 } from './layerAttribute'
 import { ThemeEntry, ThemeEdit, ChoosePage, ThemeStyle } from './theme'
 import workspaceFlieList from './workspaceFileList'
-import dataSourcelist from './dataSourcelist'
+// import dataSourcelist from './dataSourcelist'
 import dataSets from './dataSets'
 import ColorPickerPage from './colorPickerPage'
 import UpLoadList from './uploadList'
@@ -179,12 +178,7 @@ export default function(appConfig) {
           header: null,
         },
       },
-      MapLoad: {
-        screen: MapLoad,
-        navigationOptions: {
-          header: null,
-        },
-      },
+
       MapStack: {
         screen: MapStack,
         navigationOptions: {
@@ -370,12 +364,6 @@ export default function(appConfig) {
       },
       WorkspaceFileList: {
         screen: workspaceFlieList,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      DataSourcelist: {
-        screen: dataSourcelist,
         navigationOptions: {
           header: null,
         },

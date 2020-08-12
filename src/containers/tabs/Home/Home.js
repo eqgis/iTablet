@@ -136,28 +136,28 @@ export default class Home extends Component {
       // }
     }
   }
-  headRender() {
-    let userImg = require('../../../assets/home/icon_mine_select.png')
-    let moreImg = getPublicAssets().common.icon_nav_imove
-    const title = 'SuperMap iTablet'
-    return (
-      <View style={styles.header}>
-        <View style={{ flex: 1 }} />
-        <TouchableOpacity style={styles.userView}>
-          <Image source={userImg} style={styles.userImg} />
-        </TouchableOpacity>
-        <Text style={styles.headTitle}>{title}</Text>
-        <TouchableOpacity>
-          <Image
-            resizeMode={'contain'}
-            source={moreImg}
-            style={styles.moreImg}
-          />
-        </TouchableOpacity>
-        <View style={{ flex: 1 }} />
-      </View>
-    )
-  }
+  // headRender() {
+  //   let userImg = require('../../../assets/home/icon_mine_select.png')
+  //   let moreImg = getPublicAssets().common.icon_nav_imove
+  //   const title = 'SuperMap iTablet'
+  //   return (
+  //     <View style={styles.header}>
+  //       <View style={{ flex: 1 }} />
+  //       <TouchableOpacity style={styles.userView}>
+  //         <Image source={userImg} style={styles.userImg} />
+  //       </TouchableOpacity>
+  //       <Text style={styles.headTitle}>{title}</Text>
+  //       <TouchableOpacity>
+  //         <Image
+  //           resizeMode={'contain'}
+  //           source={moreImg}
+  //           style={styles.moreImg}
+  //         />
+  //       </TouchableOpacity>
+  //       <View style={{ flex: 1 }} />
+  //     </View>
+  //   )
+  // }
   _closeModal = () => {
     this.popup.setVisible(false)
   }

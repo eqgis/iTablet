@@ -29,23 +29,27 @@ async function commit(type) {
     try {
       await SMap.submit()
       await SMap.setAction(Action.SELECT)
-
-      // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
-      if (ToolbarModule.getData().fieldInfo) {
-        const fieldInfo = ToolbarModule.getData().fieldInfo || []
-        const layerInfo = ToolbarModule.getData().layerInfo || {}
-        let geoID = -1
-        for (let i = 0; i < fieldInfo.length; i++) {
-          if (
-            fieldInfo[i].name === 'MediaFilePaths' &&
-            fieldInfo[i].value !== ''
-          ) {
-            geoID = fieldInfo[0].value
+      const fieldInfo = ToolbarModule.getData().fieldInfo || []
+      const layerInfo = ToolbarModule.getData().layerInfo || {}
+      if (layerInfo.name && await SMediaCollector.isTourLayer(layerInfo.name)) {
+        // 编辑旅行轨迹对象后，更新位置
+        await SMediaCollector.updateTour(params.selection[0].layerInfo.name)
+      } else {
+        // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
+        if (ToolbarModule.getData().fieldInfo) {
+          let geoID = -1
+          for (let i = 0; i < fieldInfo.length; i++) {
+            if (
+              fieldInfo[i].name === 'MediaFilePaths' &&
+              fieldInfo[i].value !== ''
+            ) {
+              geoID = fieldInfo[0].value
+            }
           }
-        }
-        layerInfo.name !== undefined &&
+          layerInfo.name !== undefined &&
           geoID > -1 &&
           (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
+        }
       }
       //协作时同步编辑对象
       if (global.coworkMode && global.getFriend) {

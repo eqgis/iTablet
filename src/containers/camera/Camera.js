@@ -42,6 +42,7 @@ export default class Camera extends React.Component {
     language: String,
     user: Object,
     nav: Object,
+    currentLayer: Object,
   }
 
   constructor(props) {
@@ -188,6 +189,9 @@ export default class Camera extends React.Component {
       datasetName: this.datasetName,
       mediaPaths,
     })
+    if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
+      result = await SMediaCollector.updateTour(this.props.currentLayer.name)
+    }
     return result
   }
 

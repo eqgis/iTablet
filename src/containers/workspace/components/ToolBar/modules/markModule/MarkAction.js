@@ -185,7 +185,7 @@ function commit(type) {
         }
       })
     } else {
-      SMap.submit().then(() => {
+      SMap.submit().then(async () => {
         const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
 
         if (global.coworkMode && global.getFriend) {
@@ -200,6 +200,14 @@ function commit(type) {
               event.geometryType,
             )
           }
+        }
+        
+        if (
+          _params.selection[0] && _params.selection[0].layerInfo &&
+          await SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
+        ) {
+          // 编辑旅行轨迹对象后，更新位置
+          await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
         }
 
         _params.setToolbarVisible(true, type, {

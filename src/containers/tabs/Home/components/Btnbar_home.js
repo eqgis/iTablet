@@ -22,26 +22,26 @@ export default class Btnbar_home extends React.Component {
     super(props)
     this.state = {
       data: [
-        {
-          title: '地图加载',
-          action: props.mapLoad,
-          image: require('../../../../assets/home/icon-map-load.png'),
-        },
-        {
-          // title: '我的地图',
-          action: props.myMap,
-          image: require('../../../../assets/home/icon-my-map.png'),
-        },
-        {
-          // title: '地图分享',
-          action: props.mapShare,
-          image: require('../../../../assets/home/icon-map-share.png'),
-        },
-        {
-          // title: '轨迹记录',
-          action: props.track,
-          image: require('../../../../assets/home/icon-trail-mannagement.png'),
-        },
+        // {
+        //   title: '地图加载',
+        //   action: props.mapLoad,
+        //   image: require('../../../../assets/home/icon-map-load.png'),
+        // },
+        // {
+        //   // title: '我的地图',
+        //   action: props.myMap,
+        //   image: require('../../../../assets/home/icon-my-map.png'),
+        // },
+        // {
+        //   // title: '地图分享',
+        //   action: props.mapShare,
+        //   image: require('../../../../assets/home/icon-map-share.png'),
+        // },
+        // {
+        //   // title: '轨迹记录',
+        //   action: props.track,
+        //   image: require('../../../../assets/home/icon-trail-mannagement.png'),
+        // },
       ],
     }
   }

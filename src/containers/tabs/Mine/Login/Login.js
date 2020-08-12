@@ -458,6 +458,7 @@ export default class Login extends React.Component {
           backImg: require('../../../../assets/public/left_arrow.png'),
           headerStyle: {
             backgroundColor: color.contentColorWhite,
+            borderBottomWidth: 0,
           },
         }}
       >

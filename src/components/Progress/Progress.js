@@ -38,6 +38,7 @@ export default class Progress extends Component {
     bufferAniDuration: 300,
     progress: 0,
     buffer: 0,
+    height: '100%',
   }
 
   // eslint-disable-next-line
@@ -55,7 +56,7 @@ export default class Progress extends Component {
 
   _onLayout = ({
     nativeEvent: {
-      layout: { width },
+      layout: { width, height },
     },
   }) => {
     //防止多次调用,当第一次获取后,后面就不再去获取了
@@ -70,13 +71,13 @@ export default class Progress extends Component {
       //给progress控件设置高度
       progress.setNativeProps({
         style: {
-          height: this.props.height,
+          height: this.props.height !== undefined ? this.props.height : height,
         },
       })
       //给buffer控件设置高度
       buffer.setNativeProps({
         style: {
-          height: this.props.height,
+          height: this.props.height !== undefined ? this.props.height : height,
         },
       })
       //开始执行进度条动画

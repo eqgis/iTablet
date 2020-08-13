@@ -109,14 +109,14 @@ android {
             v2SigningEnabled true
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.supermap.itablet"
         minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 23
-        versionName "10.0.2"
+        targetSdkVersion 29
+        versionCode 24
+        versionName "10.0.3"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "7d2470baad20e273cd6e53cc",
                 APP_CHANNEL : "default"

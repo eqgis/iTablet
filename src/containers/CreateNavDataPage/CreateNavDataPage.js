@@ -112,20 +112,48 @@ export default class CreateNavDataPage extends Component {
       true,
       getLanguage(GLOBAL.language).Prompt.CREATING,
     )
-    let rel = await SMap.createNavDatasource(datasourceName)
+    let datasourcePath =
+      global.homePath +
+      ConstPath.UserPath +
+      this.props.currentUser.userName +
+      '/' +
+      ConstPath.RelativePath.Datasource
+    let availableName = await this._getAvailableFileName(
+      datasourcePath,
+      datasourceName,
+      'udb',
+    )
+    availableName = availableName.substring(0, availableName.lastIndexOf('.'))
+    let rel = await SMap.createNavDatasource(availableName)
     if (rel) {
       let data = await SMap.getDatasourceAndDataset()
-      this.setState(
-        {
-          data,
-          selectedDatasource: data[1].default,
-        },
-        () => {
-          this.container.setLoading(false)
-        },
-      )
+      this.setState({
+        data,
+        selectedDatasource: data[1].default,
+      })
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
     }
+    this.container.setLoading(false)
     return true
+  }
+
+  _getAvailableFileName = async (path, name, ext) => {
+    let result = await FileTools.fileIsExist(path)
+    if (!result) {
+      await FileTools.createDirectory(path)
+    }
+    let availableName = name + '.' + ext
+    if (await FileTools.fileIsExist(path + '/' + availableName)) {
+      for (let i = 1; ; i++) {
+        availableName = name + '_' + i + '.' + ext
+        if (!(await FileTools.fileIsExist(path + '/' + availableName))) {
+          return availableName
+        }
+      }
+    } else {
+      return availableName
+    }
   }
 
   _dialogConfirm = async fileName => {

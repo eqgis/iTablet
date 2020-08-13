@@ -6,7 +6,9 @@ import { Toast } from '../../../src/utils'
 import { getLanguage } from '../../../src/language'
 import { ImagePicker } from '../../../src/components'
 import ToolbarModule from '../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule'
-
+/**
+ * 右侧创建轨迹事件
+ */
 function tour() {
   (async function() {
     const _params = ToolbarModule.getParams()

@@ -306,7 +306,7 @@ class ModuleList extends Component {
         if (!isExist) {
           await this.props.importWorkspace(filePath)
         }
-        this.moduleItems[index].setNewState({
+        this.moduleItems[index] && this.moduleItems[index].setNewState({
           disabled: false,
           isShowProgressView: false,
         })
@@ -314,7 +314,7 @@ class ModuleList extends Component {
         item.action && (await item.action(tmpCurrentUser, latestMap))
       }
     } catch (e) {
-      this.moduleItems[index].setNewState({
+      this.moduleItems[index] && this.moduleItems[index].setNewState({
         disabled: false,
         isShowProgressView: false,
       })
@@ -367,11 +367,11 @@ class ModuleList extends Component {
         setOldMapModule={this.props.setOldMapModule}
         itemAction={async _item => {
           await composeWaiting(async () => {
-            await this.itemAction(this.props.language, { item: _item, index })
             InteractionManager.runAfterInteractions(async () => {
               _item.key !== ChunkType.APPLET_ADD &&
               this.props.setOldMapModule &&
               this.props.setOldMapModule(_item.key)
+              this.itemAction(this.props.language, { item: _item, index })
             })
           })
         }}

@@ -7,6 +7,11 @@ import { MTBtn } from '../../../src/components'
 import { LayerUtils, scaleSize } from '../../../src/utils'
 import { getLanguage } from '../../../src/language'
 
+/**
+ * 获取自定义弹出框中的数据和自定义组件
+ * @param type
+ * @returns {Promise.<{data: Array, buttons: Array, customView: *}>}
+ */
 async function getData(type) {
   let data = []
   let buttons = []
@@ -19,7 +24,7 @@ async function getData(type) {
     case 'TourCreate':
     default:
       buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
-      customView = _props => <TourEditView {..._props} />
+      customView = _props => <TourEditView {..._props} /> // 自定义地图弹出框界面
       break
   }
 
@@ -66,7 +71,7 @@ async function getTours () {
       return item
     },
   )
-  const buttons = []
+  const buttons = [] // 底部按钮
   buttons.push(
     <TouchableOpacity
       key="newButton"

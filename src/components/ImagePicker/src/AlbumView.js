@@ -14,12 +14,14 @@ import * as RNFS from 'react-native-fs'
 // import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
-import { scaleSize } from '../../../utils'
+import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
+import Orientation from 'react-native-orientation'
 
-export default class extends React.PureComponent {
+export default class AlbumView extends React.PureComponent {
   props: {
     column: number,
+    device: Object,
   }
 
   static defaultProps = {
@@ -30,6 +32,7 @@ export default class extends React.PureComponent {
     super(props)
     this.state = {
       selectedItems: [...this.props.selectedItems],
+      orientation: screen.getOrientation(),
     }
   }
 
@@ -39,6 +42,12 @@ export default class extends React.PureComponent {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this._onWindowChanged)
+  }
+
+  componentDidUpdate() {
+    Orientation.getSpecificOrientation((e, orientation) => {
+      this.setState({orientation: orientation})
+    })
   }
 
   render() {
@@ -66,6 +75,13 @@ export default class extends React.PureComponent {
               </Text>
             </TouchableOpacity>,
           ],
+          headerStyle: {
+            paddingTop: this.state.orientation.indexOf('LANDSCAPE') !== 0 && (
+              screen.isIphoneX()
+                ? screen.X_TOP
+                : (Platform.OS === 'ios' ? 20 : 0)
+            )
+          },
         }}
       >
         {/*<NaviBar*/}

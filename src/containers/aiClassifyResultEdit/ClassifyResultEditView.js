@@ -13,7 +13,7 @@ import Orientation from 'react-native-orientation'
 import styles from './styles'
 import { Container } from '../../components'
 import Button from '../../components/Button/Button'
-import { SAIClassifyView } from 'imobile_for_reactnative'
+import { SAIClassifyView,SMap } from 'imobile_for_reactnative'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
 

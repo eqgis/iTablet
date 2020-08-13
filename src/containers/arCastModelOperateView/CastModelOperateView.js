@@ -7,6 +7,7 @@ import { getLanguage } from '../../language'
 import {
   // SMediaCollector,
   SMCastModelOperateView,
+  SMap,
   // SCastModelOperateView,
 } from 'imobile_for_reactnative'
 // import { ConstPath } from '../../constants'

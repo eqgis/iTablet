@@ -15,6 +15,7 @@ import { getThemeAssets } from '../../assets'
 import {
   SMCollectSceneFormView,
   SCollectSceneFormView,
+  SMap,
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'

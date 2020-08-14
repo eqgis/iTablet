@@ -86,6 +86,7 @@ import MapToolbarSetting from './workspace/components/MapToolbarSetting'
 import TouchProgress from './workspace/components/TouchProgress'
 import AnimationNodeEditView from './workspace/components/AnimationNodeEditView'
 import AnimationNodeEditRotateView from './workspace/components/AnimationNodeEditRotateView'
+import AddOnlineScense from './workspace/components/AddOnlineScense'
 import InputPage from './InputPage'
 import protocol from './tabs/Home/AboutITablet/Protocol'
 import {
@@ -425,6 +426,12 @@ export default function(appConfig) {
       },
       AnimationNodeEditRotateView: {
         screen: AnimationNodeEditRotateView,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      AddOnlineScense: {
+        screen: AddOnlineScense,
         navigationOptions: {
           header: null,
         },

@@ -366,6 +366,7 @@ const Map_Main_Menu = {
   MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_WEATHER: 'AR Weather',
   MAP_AR_WEBVIEW: 'AR WebPage',
+  MAP_AR_TEXT: 'AR Text',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'New Data',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Fill in the name',

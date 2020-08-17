@@ -110,6 +110,10 @@ export default class InputPage extends React.Component {
     return res
   }
 
+  renderExtra = () => {
+    return null
+  }
+
   render() {
     return (
       <Container
@@ -193,6 +197,7 @@ export default class InputPage extends React.Component {
               <Text style={styles.errorInfo}>{this.state.errorInfo}</Text>
             </View>
           )}
+          {this.renderExtra()}
         </View>
       </Container>
     )

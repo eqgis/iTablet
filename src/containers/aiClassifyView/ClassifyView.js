@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
-import { SAIClassifyView, SMediaCollector } from 'imobile_for_reactnative'
+import { SAIClassifyView, SMediaCollector,SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { getLanguage } from '../../language'
 import { Container, ImagePicker, Loading, MTBtn } from '../../components'

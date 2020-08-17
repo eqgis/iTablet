@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',
   NO_SCENE: 'シーン表示無し',
+  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
 
   PLEASE_ENTER_TEXT: 'テキスト内容を入力してください',
   PLEASE_SELECT_THEMATIC_LAYER: '主題図レイヤーを選択してください',

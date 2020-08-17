@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: 'لايوجد طيران فى المشهد الحالى',
   PLEASE_OPEN_SCENE: 'من فضلك افتح المشهد',
   NO_SCENE: 'لا يوجد مشهد',
+  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
 
   PLEASE_ENTER_TEXT: 'من فضلك ادخل النص',
   PLEASE_SELECT_THEMATIC_LAYER: 'من فضلك اختر طبقة موضوعية',

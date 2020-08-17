@@ -14,12 +14,13 @@ import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { InputDialog } from '../../Dialog'
 import { getLanguage } from '../../../language'
-import { scaleSize } from '../../../utils'
+import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
 import { FileTools } from '../../../native'
 import { ConstPath } from '../../../constants'
+import Orientation from 'react-native-orientation'
 
-export default class extends React.PureComponent {
+export default class AlbumListView extends React.PureComponent {
   props: {
     maxSize: number,
     autoConvertPath: boolean,
@@ -29,6 +30,7 @@ export default class extends React.PureComponent {
     cancelLabel: String,
     callback: String,
     navigation: Object,
+    device: Object,
     showDialog?: boolean,
 
     callback: () => {},
@@ -48,6 +50,7 @@ export default class extends React.PureComponent {
     this.state = {
       data: [],
       selectedItems: [],
+      orientation: screen.getOrientation(),
     }
   }
 
@@ -71,11 +74,11 @@ export default class extends React.PureComponent {
         delete item.path
       })
       if (Platform.OS === 'android' && this.props.assetType === 'All') {
-        let photots = await this.getPhotos('Photos')
+        let photos = await this.getPhotos('Photos')
         let videos = await this.getPhotos('Videos')
 
         data = JSON.parse(JSON.stringify(videos))
-        photots.forEach((photoDir, index) => {
+        photos.forEach((photoDir, index) => {
           let exist = false
           for (let i = 0; i < videos.length; i++) {
             if (photoDir.name === videos[i].name) {
@@ -105,6 +108,14 @@ export default class extends React.PureComponent {
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this._onWindowChanged)
   }
+  
+  componentDidUpdate() {
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.setState({orientation: orientation})
+      })
+    }
+  }
 
   render() {
     // const safeArea = getSafeAreaInset()
@@ -115,7 +126,20 @@ export default class extends React.PureComponent {
     // }
     return (
       <Container
-        style={styles.view}
+        style={[
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+              this.state.orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              this.state.orientation,
+            ),
+          },
+          styles.view,
+        ]}
         showFullInMap={true}
         ref={ref => (this.container = ref)}
         headerProps={{
@@ -129,6 +153,13 @@ export default class extends React.PureComponent {
               </Text>
             </TouchableOpacity>,
           ],
+          headerStyle: {
+            paddingTop: this.state.orientation.indexOf('LANDSCAPE') !== 0 && (
+              screen.isIphoneX()
+                ? screen.X_TOP
+                : (Platform.OS === 'ios' ? 20 : 0)
+            )
+          },
         }}
       >
         {/*<NaviBar*/}
@@ -271,7 +302,7 @@ export default class extends React.PureComponent {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#201F20',
   },
   headerRight: {
     color: color.content,
@@ -284,6 +315,7 @@ const styles = StyleSheet.create({
   },
   listView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   cell: {
     height: scaleSize(80),

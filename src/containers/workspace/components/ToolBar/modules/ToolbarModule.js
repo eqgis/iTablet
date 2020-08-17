@@ -213,7 +213,7 @@ async function getToolBarData(type, params = {}) {
 
   let module = getModule(type, params)
   if (module && module.getData) {
-    toolBarData = module.getData(type, params)
+    toolBarData = await module.getData(type, params)
   } else if (type === ConstToolType.MAP_PLOTTING_ANIMATION_ITEM) {
     toolBarData = getPlotAnimationData(type)
   }
@@ -241,6 +241,7 @@ function getMenuDialogData(type, ...others) {
 }
 
 function getPlotAnimationData(type) {
+  // TODO 移动到对应模块下
   let data = []
   let buttons = []
   // if (type.indexOf('MAP3D_') === -1) return { data, buttons }

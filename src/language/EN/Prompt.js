@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: 'No Fly in the current scene',
   PLEASE_OPEN_SCENE: 'Please open a scene',
   NO_SCENE: 'No Scene',
+  ADD_ONLINE_SCENE: 'Add Online Scene',
 
   PLEASE_ENTER_TEXT: 'Please enter text',
   PLEASE_SELECT_THEMATIC_LAYER: 'Please select a thematic layer',

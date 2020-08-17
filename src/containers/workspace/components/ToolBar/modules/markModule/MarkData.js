@@ -14,13 +14,14 @@ import MarkAction from './MarkAction'
 import constants from '../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import { colors, colorsWithNull, line, point, region, text } from './data'
+import { SMediaCollector } from 'imobile_for_reactnative'
 
-function getData(type, params) {
+async function getData(type, params) {
   let data = []
   let buttons = []
   ToolbarModule.setParams(params)
   GLOBAL.MapToolType = type
-  let layerType = ''
+  let layerType = '', isTourLayer = false
   // if (type.indexOf(ConstToolType.MAP_TOOL) === -1) return { data, buttons }
   switch (type) {
     case ConstToolType.MAP_MARKS_DRAW:
@@ -54,6 +55,7 @@ function getData(type, params) {
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,
       )
+      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
       data = [
         {
           key: constants.POINT,
@@ -64,12 +66,14 @@ function getData(type, params) {
             (layerType !== 'TAGGINGLAYER' &&
               layerType !== 'CADLAYER' &&
               layerType !== 'POINTLAYER') ||
+            isTourLayer ||
             ToolbarModule.getParams().currentLayer.isHeatmap,
           size: 'large',
           image:
             (layerType !== 'TAGGINGLAYER' &&
               layerType !== 'CADLAYER' &&
               layerType !== 'POINTLAYER') ||
+            isTourLayer ||
             ToolbarModule.getParams().currentLayer.isHeatmap
               ? getThemeAssets().mapTools.icon_point_disable
               : require('../../../../../../assets/mapTools/icon_point_black.png'),
@@ -84,11 +88,13 @@ function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'TEXTLAYER',
+            layerType !== 'TEXTLAYER' ||
+            isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'TEXTLAYER'
+            layerType !== 'TEXTLAYER' ||
+            isTourLayer
               ? getThemeAssets().mapTools.icon_text_disable
               : require('../../../../../../assets/mapTools/icon_words_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_words_black.png'),
@@ -102,11 +108,13 @@ function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER',
+            layerType !== 'LINELAYER' ||
+            isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER'
+            layerType !== 'LINELAYER' ||
+            isTourLayer
               ? getThemeAssets().mapTools.icon_point_line_disable
               : require('../../../../../../assets/mapTools/icon_point_line_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_point_line_black.png'),
@@ -120,11 +128,13 @@ function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER',
+            layerType !== 'LINELAYER' ||
+            isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'LINELAYER'
+            layerType !== 'LINELAYER' ||
+            isTourLayer
               ? getThemeAssets().mapTools.icon_free_line_disable
               : require('../../../../../../assets/mapTools/icon_free_line_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_free_line_black.png'),
@@ -138,11 +148,13 @@ function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER',
+            layerType !== 'REGIONLAYER' ||
+            isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER'
+            layerType !== 'REGIONLAYER' ||
+            isTourLayer
               ? getThemeAssets().mapTools.icon_region_disable
               : require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
@@ -156,11 +168,13 @@ function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER',
+            layerType !== 'REGIONLAYER' ||
+            isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
-            layerType !== 'REGIONLAYER'
+            layerType !== 'REGIONLAYER' ||
+            isTourLayer
               ? getThemeAssets().mapTools.icon_free_region_disable
               : require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
           selectedImage: require('../../../../../../assets/mapTools/icon_free_cover_black.png'),

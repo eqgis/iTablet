@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: '当前场景无飞行轨迹',
   PLEASE_OPEN_SCENE: '请打开场景',
   NO_SCENE: '无场景显示',
+  ADD_ONLINE_SCENE: '添加在线三维场景',
 
   PLEASE_ENTER_TEXT: '请输入文本内容',
   PLEASE_SELECT_THEMATIC_LAYER: '请先选择专题图层',

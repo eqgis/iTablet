@@ -14,12 +14,14 @@ import * as RNFS from 'react-native-fs'
 // import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
-import { scaleSize } from '../../../utils'
+import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
+import Orientation from 'react-native-orientation'
 
-export default class extends React.PureComponent {
+export default class AlbumView extends React.PureComponent {
   props: {
     column: number,
+    device: Object,
   }
 
   static defaultProps = {
@@ -30,6 +32,7 @@ export default class extends React.PureComponent {
     super(props)
     this.state = {
       selectedItems: [...this.props.selectedItems],
+      orientation: screen.getOrientation(),
     }
   }
 
@@ -41,6 +44,14 @@ export default class extends React.PureComponent {
     Dimensions.removeEventListener('change', this._onWindowChanged)
   }
 
+  componentDidUpdate() {
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.setState({orientation: orientation})
+      })
+    }
+  }
+
   render() {
     // const safeArea = getSafeAreaInset()
     // const style = {
@@ -49,7 +60,20 @@ export default class extends React.PureComponent {
     // }
     return (
       <Container
-        style={styles.view}
+        style={[
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+              this.state.orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              this.state.orientation,
+            ),
+          },
+          styles.view,
+        ]}
         showFullInMap={true}
         ref={ref => (this.container = ref)}
         headerProps={{
@@ -66,6 +90,13 @@ export default class extends React.PureComponent {
               </Text>
             </TouchableOpacity>,
           ],
+          headerStyle: {
+            paddingTop: this.state.orientation.indexOf('LANDSCAPE') !== 0 && (
+              screen.isIphoneX()
+                ? screen.X_TOP
+                : (Platform.OS === 'ios' ? 20 : 0)
+            )
+          },
         }}
       >
         {/*<NaviBar*/}
@@ -296,7 +327,7 @@ export default class extends React.PureComponent {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#201F20',
   },
   headerRight: {
     color: color.content,
@@ -309,6 +340,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    backgroundColor: 'white',
   },
   selectView: {
     position: 'absolute',

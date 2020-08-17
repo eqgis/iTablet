@@ -5,21 +5,26 @@ import { getPublicAssets } from '../../src/assets'
 import {
   startModule,
   addModule,
+  markModule,
 } from '../../src/containers/workspace/components/ToolBar/modules'
 import { Tour } from '../mapFunctionModules'
 
+/**
+ * 首页显示的旅行轨迹模块
+ */
 export default class TourModule extends Module {
   static key = 'Tour'
   constructor () {
     super({
       key: TourModule.key,
-      //工具条加载项
+      // 右侧工具条加载项
       functionModules: [
-        startModule(),
-        addModule(),
-        Tour('TourCreate'),
-        // Tour('TourBrowse'),
+        startModule(),      // 开始
+        addModule(),        // 添加
+        markModule(),       // 标注
+        Tour(),             // 创建轨迹
       ],
+      // 地图类型（三维/二维）
       mapType: Module.MapType.MAP,
     })
   }

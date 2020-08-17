@@ -8,6 +8,25 @@ import { SScene } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
+import NavigationService from '../../../../../NavigationService'
+import { getThemeAssets } from '../../../../../../assets'
+
+let onlineScenceData = [
+  // {
+  //   name: 'SKYCBD_webp',
+  //   server: 'http://10.10.45.151:8090/iserver/services/3D-SKYCBD_webp/rest/realspace',
+  //   mtime: '',
+  //   isOnlineScence: true,
+  //   image : getThemeAssets().share.online,
+  // },
+  // {
+  //   name: 'SunCBD_webp',
+  //   server: 'http://10.10.45.151:8090/iserver/services/3D-SunCBD_webp/rest/realspace',
+  //   mtime: '',
+  //   isOnlineScence: true,
+  //   image : getThemeAssets().share.online,
+  // }
+]
 
 async function getSceneData() {
   const params = ToolbarModule.getParams()
@@ -57,6 +76,25 @@ async function getSceneData() {
   } catch (error) {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
+
+  let _extraData = {
+    title: getLanguage(params.language).Prompt.ADD_ONLINE_SCENE,
+    image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+    action: addOnlineScene,
+  }
+  data[0].extraData = _extraData
+  if (onlineScenceData.length > 0) {
+    for (let i = 0; i < onlineScenceData.length; i++) {
+      data[0].data.push({
+        name: onlineScenceData[i].name,
+        server: onlineScenceData[i].server,
+        mtime: '',
+        isOnlineScence: true,
+        image: getThemeAssets().share.online,
+      })
+    }
+  }
+
   const type = ConstToolType.MAP3D_WORKSPACE_LIST
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     containerType: ToolbarType.list,
@@ -68,7 +106,7 @@ async function getSceneData() {
 
 function openScene(item) {
   const _params = ToolbarModule.getParams()
-  if (item.name === GLOBAL.sceneName) {
+  if (item.name === GLOBAL.sceneName && !item.isOnlineScence) {
     Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
     // '场景已打开,请勿重复打开场景')
     return
@@ -92,15 +130,65 @@ function openScene(item) {
   })
 }
 
+//打开在线场景
+function openOnlineScene(item) {
+  const _params = ToolbarModule.getParams()
+  if (item.name === GLOBAL.sceneName) {
+    Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
+    // '场景已打开,请勿重复打开场景')
+    return
+  }
+  SScene.openOnlineScene(item.name, item.server).then(result => {
+    // SScene.openOnlineScene(name,server).then((result) => {
+
+    if (!result) {
+      Toast.show(getLanguage(_params.language).Prompt.NO_SCENE)
+      return
+    }
+
+    SScene.setNavigationControlVisible(false)
+    SScene.setListener()
+    SScene.getAttribute()
+    SScene.setCircleFly()
+    SScene.setAction('PAN3D')
+    SScene.changeBaseLayer(1)
+    GLOBAL.action3d = 'PAN3D'
+    GLOBAL.openWorkspace = true
+    GLOBAL.sceneName = item.name
+    _params.refreshLayer3dList && _params.refreshLayer3dList()
+    _params.existFullMap && _params.existFullMap(true)
+    _params.setToolbarVisible(false)
+    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+
+    _params.changeLayerList && _params.changeLayerList()
+  })
+}
+
 async function listAction(type, params = {}) {
   switch (type) {
     case ConstToolType.MAP3D_WORKSPACE_LIST:
+      if (params.item.isOnlineScence) {
+        openOnlineScene(params.item)
+        return
+      }
       openScene(params.item)
       break
   }
 }
 
+//添加在线三维场景
+async function addOnlineScene() {
+  NavigationService.navigate('AddOnlineScense', {
+    cb: _onlineScenseData => {
+      onlineScenceData.push(_onlineScenseData)
+      getSceneData()
+      NavigationService.goBack()
+    },
+  })
+}
+
 export default {
   listAction,
   getSceneData,
+  addOnlineScene,
 }

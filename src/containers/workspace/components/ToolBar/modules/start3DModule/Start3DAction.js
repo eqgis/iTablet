@@ -10,7 +10,6 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { getThemeAssets } from '../../../../../../assets'
-import { Platform } from 'react-native'
 
 let onlineScenceData = [
   // {
@@ -83,9 +82,7 @@ async function getSceneData() {
     image: require('../../../../../../assets/mapTools/icon_add_white.png'),
     action: addOnlineScene,
   }
-  if (Platform.OS !== 'ios') {
-    data[0].extraData = _extraData
-  }
+  data[0].extraData = _extraData
   if (onlineScenceData.length > 0) {
     for (let i = 0; i < onlineScenceData.length; i++) {
       data[0].data.push({

@@ -1,7 +1,6 @@
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ARMeasureAction from './ARMeasureAction'
-import { Platform } from 'react-native'
 
 function getData() {
   let data = [
@@ -76,74 +75,9 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
       action: ARMeasureAction.arDrawPoint,
       size: 'large',
-      image: getThemeAssets().ar.toolbar.point,
-    },
-    {
-      //AR投射
-      key: 'arCastModelOperate',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-      action: ARMeasureAction.arCastModelOperate,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_cast,
-    },
-    {
-      //AR天气
-      key: 'arWeather',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEATHER,
-      action: ARMeasureAction.arWeather,
-      size: 'large',
-      image: getThemeAssets().plot.plot_animation_appear,
-    },
-    {
-      //AR视频
-      key: 'arVideo',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
-      action: ARMeasureAction.arVideo,
-      size: 'large',
-      image: getThemeAssets().themeType.theme_graphmap,
-    },
-    {
-      //AR图片
-      key: 'arImage',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
-      action: ARMeasureAction.arImage,
-      size: 'large',
-      image: getThemeAssets().layerType.layer_type_image,
-    },
-    {
-      //AR网页
-      key: 'arWebView',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-      action: ARMeasureAction.arWebView,
-      size: 'large',
-      image: require('../../../../../../assets/mapToolbar/screen.png'),
-    },
-    {
-      //AR文字
-      key: 'arText',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TEXT,
-      action: ARMeasureAction.arText,
-      size: 'large',
-      image: require('../../../../../../assets/mapToolbar/screen.png'),
+      image: getThemeAssets().ar.functiontoolbar.ar_draw_point,
     },
   ]
-
-  data = data.filter(item => {
-    if (Platform.OS === 'ios') {
-      if (
-        item.key === 'arCastModelOperate' ||
-        //item.key === 'arVideo' ||
-        //item.key === 'arImage' ||
-        item.key === 'arWeather' ||
-        item.key === 'arWebView' ||
-        item.key === 'arText'
-      ) {
-        return false
-      }
-    }
-    return true
-  })
 
   return { data }
 }

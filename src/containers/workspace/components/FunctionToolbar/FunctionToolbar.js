@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Dimensions, Image } from 'react-native'
+import { View, Animated, FlatList } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
@@ -18,8 +18,6 @@ import styles, {
   ITEM_VIEW_HEIGHT_P,
   ITEM_VIEW_HEIGHT_L,
   INDICATOR_VIEW_SIZE,
-  MAX_WIDTH_L,
-  MAX_HEIGHT_P,
   BOTTOM_LANDSCAPE,
   PADDING_L,
 } from './styles'
@@ -217,10 +215,10 @@ export default class FunctionToolbar extends React.Component {
 
   setVisible = (visible, immediately = false) => {
     if (this.visible === visible) return
-    let right =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? RIGHT_LANDSCAPE
-        : RIGHT
+    // let right =
+    //   this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    //     ? RIGHT_LANDSCAPE
+    //     : RIGHT
     Animated.parallel([
       Animated.timing(this.state.bottom, {
         toValue: visible ? BOTTOM_LANDSCAPE : scaleSize(-120),
@@ -351,16 +349,16 @@ export default class FunctionToolbar extends React.Component {
           this.props.online.share[0] &&
           GLOBAL.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
-            <Bar
-              style={styles.progress}
-              // indeterminate={true}
-              progress={
-                this.props.online.share[this.props.online.share.length - 1]
-                  .progress
-              }
-              width={scaleSize(60)}
-            />
-          )}
+          <Bar
+            style={styles.progress}
+            // indeterminate={true}
+            progress={
+              this.props.online.share[this.props.online.share.length - 1]
+                .progress
+            }
+            width={scaleSize(60)}
+          />
+        )}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
         {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
@@ -394,6 +392,7 @@ export default class FunctionToolbar extends React.Component {
       } else {
         if (item.type === ConstToolType.MAP_AR_MEASURE) return false
         if (item.type === ConstToolType.MAP_AR_AI_ASSISTANT) return false
+        if (item.type === ConstToolType.MAP_AR_TOOL) return false
       }
       return true
     })
@@ -483,7 +482,7 @@ export default class FunctionToolbar extends React.Component {
           bottom: this.state.bottom,
           left: '50%',
           marginLeft: -((width + Height.TOOLBAR_BUTTONS) / 2),
-        }
+        },
       ]
     } else {
       containerStyle = [

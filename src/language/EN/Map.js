@@ -341,6 +341,7 @@ const Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: 'Don not support this device',
   MAP_AR_MEASURE: 'AR Measure',
   MAP_AR_ANALYZE: 'AR Analyze',
+  MAP_AR_TOOL: 'AR Tool',
   MAP_AR_CAMERA_EXCEPTION: 'The camera is abnormal, please check whether the permission is open.',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',

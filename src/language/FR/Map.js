@@ -341,6 +341,7 @@ const Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
   MAP_AR_MEASURE: 'AR Measure', //待翻译
   MAP_AR_ANALYZE: 'AR Analyze', //待翻译
+  MAP_AR_TOOL: 'AR Tool', //待翻译
   MAP_AR_CAMERA_EXCEPTION: "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
   MAP_AR_AI_ASSISTANT: 'IA\nCollecte',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Collecte personnalisée',

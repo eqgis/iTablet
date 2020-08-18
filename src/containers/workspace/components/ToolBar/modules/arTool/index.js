@@ -1,45 +1,42 @@
-/**
- * AI助手
- */
-import AiData from './AiData'
-import AiActions from './AiActions'
+import ARToolData from './ARToolData'
+import ARToolAction from './ARToolAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { getThemeAssets } from '../../../../../../assets'
-import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 
-class AIModule extends FunctionModule {
+class arTool extends FunctionModule {
   constructor(props) {
     super(props)
   }
 
-  action = async () => {
+  action = () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
-    const _data = AiData.getData()
+    const _data = ARToolData.getData()
     const containerType = ToolbarType.table
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
-    this.setModuleData(this.type)
     params.showFullMap && params.showFullMap(true)
     params.setToolbarVisible(true, this.type, {
       containerType,
       isFullScreen: true,
+      data: _data.data,
       ...data,
     })
   }
 }
 
 export default function() {
-  return new AIModule({
-    type: ConstToolType.MAP_AR_AI_ASSISTANT,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ANALYZE,
+  return new arTool({
+    type: ConstToolType.MAP_AR_TOOL,
+    key: ConstToolType.MAP_AR_TOOL,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TOOL,
     size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_ar_analysis,
-    getData: AiData.getData,
-    actions: AiActions,
+    image: getThemeAssets().functionBar.icon_tool_tools,
+    getData: ARToolData.getData,
+    actions: ARToolAction,
   })
 }

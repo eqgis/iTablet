@@ -19,14 +19,21 @@ export const setModules = (params, cb = () => {}) => async (
     params.oldMapModules = []
     let oldMapModules = getState().appConfig.toJS().oldMapModules || []
     let isInit = oldMapModules.length === 0
+    let defaultModuleKeys = Object.keys(ChunkType)
+    let defaultModule = defaultModuleKeys.map(key => {
+      return ChunkType[key]
+    })
     for (let i = 0; i < params.mapModules.length; i++) {
       let item = params.mapModules[i]
-      if (isInit|| oldMapModules.indexOf(item) >= 0) {
+      if (
+        isInit ||
+        oldMapModules.indexOf(item) >= 0 ||
+        defaultModule.indexOf(item) >= 0
+      ) {
         params.oldMapModules.push(item)
       }
     }
     // 插入默认模块
-    let defaultModuleKeys = Object.keys(ChunkType)
     for (let i = defaultModuleKeys.length - 1; i >= 0; i--) {
       let key = ChunkType[defaultModuleKeys[i]]
       if (params.mapModules.indexOf(key) < 0) {

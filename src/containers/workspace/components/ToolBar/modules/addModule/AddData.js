@@ -2,7 +2,7 @@
  * 添加 数据
  */
 import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil, scaleSize } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -10,6 +10,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { TreeList } from '../../../../../../components'
+import NavigationService from '../../../../../NavigationService'
 import React from 'react'
 import { color } from '../../../../../../styles'
 import { View } from 'react-native'
@@ -89,7 +90,31 @@ async function getUDBsAndMaps() {
       image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
       data: filterUDBs,
       addDatasource: true,
-      getDatasource: getUDBsAndMaps,
+      // getDatasource: getUDBsAndMaps,
+      extraData: {
+        image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+        action: () => {
+          NavigationService.navigate('MyDatasource', {
+            title: getLanguage(global.language).Profile.DATA,
+            from: 'MapView',
+            exitCallback: async () => {
+              const params = ToolbarModule.getParams()
+              const _data = await getUDBsAndMaps()
+              const containerType = ToolbarType.list
+              const data = ToolbarModule.getToolbarSize(containerType, {})
+              params.showFullMap && params.showFullMap(true)
+              params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
+                containerType,
+                isFullScreen: true,
+                isTouchProgress: false,
+                showMenuDialog: false,
+                ...data,
+                ..._data,
+              })
+            },
+          })
+        },
+      },
     },
     {
       title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu

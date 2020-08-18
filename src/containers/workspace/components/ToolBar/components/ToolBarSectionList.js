@@ -331,30 +331,6 @@ export default class ToolBarSectionList extends React.Component {
           {section.buttons && section.buttons.length > 0 && (
             <View style={styles.sectionButtons}>{section.buttons}</View>
           )}
-          {section.addDatasource && (
-            <TouchableOpacity
-              style={styles.sectionRightButton}
-              onPress={() =>
-                NavigationService.navigate('MyDatasource', {
-                  title: getLanguage(global.language).Profile.DATA,
-                  from: 'MapView',
-                  exitCallback: async () => {
-                    let data = await section.getDatasource()
-                    this.setState({ sections: data.data })
-                    ToolbarModule.addData({
-                      data: data,
-                    })
-                  },
-                })
-              }
-            >
-              <Image
-                source={require('../../../../../assets/mapTools/icon_add_white.png')}
-                resizeMode={'contain'}
-                style={styles.selectImg}
-              />
-            </TouchableOpacity>
-          )}
           {section.extraData && (
             <TouchableOpacity
               style={styles.sectionRightButton}

@@ -54,6 +54,7 @@ class ModuleList extends Component {
     super(props)
     this.state = {
       isShowProgressView: false,
+      data: this.getData(),
     }
     this.moduleItems = []
   }
@@ -67,6 +68,35 @@ class ModuleList extends Component {
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       JSON.stringify(nextState) !== JSON.stringify(this.state)
     )
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.mapModules) !== JSON.stringify(this.props.mapModules)
+    ) {
+      this.setState({
+        data: this.getData(),
+      })
+    }
+  }
+  
+  getData = () => {
+    let data = []
+    for (let item of this.props.mapModules.modules) {
+      if (item && item.getChunk) {
+        data.push(item.getChunk(this.props.language))
+      } else {
+        data = []
+        break
+      }
+    }
+    if (
+      (data.length > 0 && data[data.length - 1].key !== AppletAdd.key) ||
+      data.length === 0
+    ) {
+      data.push(new AppletAdd().getChunk(this.props.language))
+    }
+    return data
   }
 
   _showAlert = (ref, downloadData, currentUserName) => {
@@ -380,7 +410,8 @@ class ModuleList extends Component {
   }
 
   /** 获取竖屏数据 **/
-  _renderPortraitRows = data => {
+  _renderPortraitRows = () => {
+    let data = this.state.data
     let width =
       SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 +
       SizeUtil.getItemGap() * 2
@@ -423,7 +454,8 @@ class ModuleList extends Component {
   }
 
   /** 获取横屏数据 **/
-  _renderLandscapeColumns = data => {
+  _renderLandscapeColumns = () => {
+    let data = this.state.data
     let height =
       SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 +
       SizeUtil.getItemGap() * 2
@@ -472,21 +504,6 @@ class ModuleList extends Component {
   }
 
   render() {
-    let data = []
-    for (let item of this.props.mapModules.modules) {
-      if (item && item.getChunk) {
-        data.push(item.getChunk(this.props.language))
-      } else {
-        data = []
-        break
-      }
-    }
-    if (
-      (data.length > 0 && data[data.length - 1].key !== AppletAdd.key) ||
-      data.length === 0
-    ) {
-      data.push(new AppletAdd().getChunk(this.props.language))
-    }
     return (
       <View
         style={[
@@ -508,7 +525,7 @@ class ModuleList extends Component {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
             >
-              {this._renderLandscapeColumns(data)}
+              {this._renderLandscapeColumns()}
             </ScrollView>
           </View>
         ) : (
@@ -519,7 +536,7 @@ class ModuleList extends Component {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
           >
-            {this._renderPortraitRows(data)}
+            {this._renderPortraitRows()}
           </ScrollView>
         )}
       </View>

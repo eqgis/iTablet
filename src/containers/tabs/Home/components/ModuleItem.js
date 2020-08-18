@@ -10,7 +10,6 @@ import {
 import { fixedSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
-import { ChunkType } from '../../../../constants'
 import SizeUtil from '../SizeUtil'
 
 export default class ModuleItem extends Component {

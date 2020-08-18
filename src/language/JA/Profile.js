@@ -124,7 +124,8 @@ const Profile = {
   BATCH_DELETE: 'バッチ削除',
   BATCH_ADD: 'バッチ追加',
   BATCH_OPERATE: 'バッチ操作',
-  AVAILABLE_APPLET: '使用できるアプレット',
+  MY_APPLET: '使用できるアプレット',
+  UN_DOWNLOADED_APPLET: 'Undownloaded Applet', // 带下载
   DELETE_APPLET: 'アプレットの削除',
   ADD_APPLET: 'アプレットの追加',
   MOVE_UP: '上へ',

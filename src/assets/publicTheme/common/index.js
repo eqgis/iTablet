@@ -62,6 +62,8 @@ const icon_single_check = require('./icon_single_check.png')
 const icon_disable_single_check = require('./icon_disable_single_check.png')
 const icon_highlight_single_check = require('./icon_highlight_single_check.png')
 
+const icon_administration = require('./icon_administration.png')
+
 export default {
   icon_undo,
   icon_search,
@@ -125,4 +127,6 @@ export default {
   icon_single_check,
   icon_disable_single_check,
   icon_highlight_single_check,
+  
+  icon_administration,
 }

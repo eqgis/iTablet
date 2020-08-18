@@ -10,6 +10,7 @@ const my_basemap = require('./icon_my_basemap.png')
 const my_symbol = require('./icon_my_symbol.png')
 const my_color = require('./icon_my_color.png')
 const my_applets = require('./icon_my_applets.png')
+const my_applets_default = require('./icon_default_applet.png')
 const my_ai = require('./icon_my_ai.png')
 
 const my_import_plot = require('./mine_import_plot_light.png')
@@ -43,6 +44,7 @@ export default {
   my_symbol,
   my_color,
   my_applets,
+  my_applets_default,
   my_ai,
 
   my_import_plot,

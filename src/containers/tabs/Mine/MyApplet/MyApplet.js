@@ -55,7 +55,7 @@ class MyApplet extends MyDataPage {
       isShowItem: true,
     })
     sectionData.push({
-      title: getLanguage(global.language).Profile.AVAILABLE_APPLET,
+      title: getLanguage(global.language).Profile.MY_APPLET,
       data: othersApplets || [],
       isShowItem: true,
     })

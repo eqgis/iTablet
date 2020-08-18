@@ -124,7 +124,8 @@ const Profile = {
   BATCH_DELETE: 'Toplu Sil',
   BATCH_ADD: '批量添加',
   BATCH_OPERATE: 'Toplu İşlem',
-  AVAILABLE_APPLET: '可用小程序', // 待翻译
+  MY_APPLET: 'My Applet', // 待翻译
+  UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
   DELETE_APPLET: '删除小程序',
   ADD_APPLET: '添加小程序',
   MOVE_UP: '上移',

@@ -238,14 +238,20 @@ class AppRoot extends Component {
         let tempArr = defaultValues.concat(applets)
         applets = Array.from(new Set(tempArr))
       }
+      let needToUpdate = false
       applets.map(key => {
         for (let item of mapModules) {
-          if (item.key === key) {
+          needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
+          if (item.key === key || needToUpdate) {
             myMapModules.push(item)
             break
           }
         }
       })
+      // 添加新的小程序后，直接显示在首页，并记录到本地文件
+      if (needToUpdate) {
+        await ConfigUtils.recordApplets(userName, _mapModules)
+      }
       await this.props.setMapModule(myMapModules)
     } catch (e) {
       console.warn(e.message)

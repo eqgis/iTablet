@@ -9,7 +9,6 @@ import {
   ScrollView,
   Animated,
   StatusBar,
-  Platform,
   TouchableOpacity,
   Dimensions,
 } from 'react-native'

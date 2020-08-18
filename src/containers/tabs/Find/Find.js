@@ -281,16 +281,16 @@ export default class Find extends Component {
             isInformSpot: false,
             onClick: this.goToGISAcademy,
           })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Find.APPLET,
-            subTitle: getLanguage(this.props.language).Find.APPLET,
-            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
-            leftImagePath: getThemeAssets().mine.my_applets,
-            isInformSpot: this.state.appletInfo,
-            onClick: () => {
-              NavigationService.navigate('Applet', { type: 'APPLET' })
-            },
-          })}
+          {/*{this._renderItem({*/}
+            {/*title: getLanguage(this.props.language).Find.APPLET,*/}
+            {/*subTitle: getLanguage(this.props.language).Find.APPLET,*/}
+            {/*// subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,*/}
+            {/*leftImagePath: getThemeAssets().mine.my_applets,*/}
+            {/*isInformSpot: this.state.appletInfo,*/}
+            {/*onClick: () => {*/}
+              {/*NavigationService.navigate('Applet', { type: 'APPLET' })*/}
+            {/*},*/}
+          {/*})}*/}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
             subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK,

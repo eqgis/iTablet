@@ -168,6 +168,8 @@ import {
   TemplateDetail,
   TemplateSource,
 } from './templateManager/pages'
+import AppletManagement from './applet/appletManagement'
+import AppletList from './applet/appletList'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -634,6 +636,20 @@ export default function(appConfig) {
       },
       MyApplet: {
         screen: MyApplet,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      AppletManagement: {
+        screen: AppletManagement,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      AppletList: {
+        screen: AppletList,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

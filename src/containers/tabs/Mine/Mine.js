@@ -229,9 +229,7 @@ export default class Mine extends Component {
             title: getLanguage(this.props.language).Find.APPLET,
             image: getThemeAssets().mine.my_applets,
             onClick: () =>
-              NavigationService.navigate('MyApplet', {
-                title: getLanguage(this.props.language).Find.APPLET,
-              }),
+              NavigationService.navigate('AppletManagement'),
           })
           break
         case 'AIModel':

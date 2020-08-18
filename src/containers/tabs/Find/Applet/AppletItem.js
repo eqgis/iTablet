@@ -10,7 +10,7 @@ import { color } from '../../../../styles'
 import UserType from '../../../../constants/UserType'
 import { getLanguage } from '../../../../language'
 
-export default class DataItem extends Component {
+export default class AppletItem extends Component {
   props: {
     data: Object,
     user: Object,

@@ -261,6 +261,11 @@ export default class EnterDatumPoint extends Component {
       NavigationService.replace('ARWebView', {
         point: point,
       })
+    } else if (GLOBAL.EnterDatumPointType === 'arText') {
+      GLOBAL.EnterDatumPointType = undefined
+      NavigationService.replace('ARTextView', {
+        point: point,
+      })
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()

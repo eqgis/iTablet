@@ -119,6 +119,14 @@ function getData() {
       size: 'large',
       image: require('../../../../../../assets/mapToolbar/screen.png'),
     },
+    {
+      //AR文字
+      key: 'arText',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TEXT,
+      action: ARMeasureAction.arText,
+      size: 'large',
+      image: require('../../../../../../assets/mapToolbar/screen.png'),
+    },
   ]
 
   data = data.filter(item => {
@@ -128,7 +136,8 @@ function getData() {
         //item.key === 'arVideo' ||
         //item.key === 'arImage' ||
         item.key === 'arWeather' ||
-        item.key === 'arWebView'
+        item.key === 'arWebView' ||
+        item.key === 'arText'
       ) {
         return false
       }

@@ -86,7 +86,9 @@ import MapToolbarSetting from './workspace/components/MapToolbarSetting'
 import TouchProgress from './workspace/components/TouchProgress'
 import AnimationNodeEditView from './workspace/components/AnimationNodeEditView'
 import AnimationNodeEditRotateView from './workspace/components/AnimationNodeEditRotateView'
+import AddOnlineScense from './workspace/components/AddOnlineScense'
 import InputPage from './InputPage'
+import InputStyledText from './InputStyledText'
 import protocol from './tabs/Home/AboutITablet/Protocol'
 import {
   LicensePage,
@@ -151,6 +153,7 @@ import ChooseWeather from './chooseWeather'
 import ARImageView from './arImageView'
 import AIPoseEstimationView from './aiPoseEstimationView'
 import ARWebView from './arWebView'
+import ARTextView from './arTextView'
 
 import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
@@ -419,6 +422,12 @@ export default function(appConfig) {
           header: null,
         },
       },
+      InputStyledText: {
+        screen: InputStyledText,
+        navigationOptions: {
+          header: null,
+        },
+      },
       AnimationNodeEditView: {
         screen: AnimationNodeEditView,
         navigationOptions: {
@@ -427,6 +436,12 @@ export default function(appConfig) {
       },
       AnimationNodeEditRotateView: {
         screen: AnimationNodeEditRotateView,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      AddOnlineScense: {
+        screen: AddOnlineScense,
         navigationOptions: {
           header: null,
         },
@@ -989,6 +1004,13 @@ export default function(appConfig) {
       },
       ARWebView: {
         screen: ARWebView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARTextView: {
+        screen: ARTextView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

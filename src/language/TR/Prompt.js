@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: 'Mevcut sahnede uçuş yok',
   PLEASE_OPEN_SCENE: 'Lütfen bir sahne açın',
   NO_SCENE: 'Sahne Yok',
+  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
 
   PLEASE_ENTER_TEXT: 'Lütfen metin girin',
   PLEASE_SELECT_THEMATIC_LAYER: 'Lütfen tematik bir katman seçin',

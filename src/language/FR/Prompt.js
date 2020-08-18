@@ -93,6 +93,7 @@ const Prompt = {
   NO_FLY: 'No Fly dans la scène actuelle',
   PLEASE_OPEN_SCENE: 'Veuillez ouvrir une scène',
   NO_SCENE: 'Aucune scène',
+  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
 
   PLEASE_ENTER_TEXT: "Veuillez saisir du texte'",
   PLEASE_SELECT_THEMATIC_LAYER: 'Veuillez sélectionner une couche thématique',

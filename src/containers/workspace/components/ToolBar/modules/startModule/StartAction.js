@@ -713,7 +713,8 @@ async function changeMap(item) {
       getLanguage(params.language).Prompt.SWITCHING,
       // ConstInfo.MAP_CHANGING
     )
-    if (params.map.currentMap.name) {
+    //if (params.map.currentMap.name)
+    {
       await SMap.removeLegendListener()
       await params.closeMap()
     }

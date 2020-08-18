@@ -347,6 +347,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Belediye Toplama',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'İhlal Toplama',
   MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
+  MAP_AI_GESTURE_BONE: 'Gesture Bone', //待翻译
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'Yol Toplama',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'POI Haritası',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'AR Ölçme',
@@ -366,6 +367,7 @@ const Map_Main_Menu = {
   MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_WEATHER: 'AR Weather',
   MAP_AR_WEBVIEW: 'AR WebPage',
+  MAP_AR_TEXT: 'AR Text',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',

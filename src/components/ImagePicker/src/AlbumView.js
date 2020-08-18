@@ -45,9 +45,11 @@ export default class AlbumView extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    Orientation.getSpecificOrientation((e, orientation) => {
-      this.setState({orientation: orientation})
-    })
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.setState({orientation: orientation})
+      })
+    }
   }
 
   render() {
@@ -58,7 +60,20 @@ export default class AlbumView extends React.PureComponent {
     // }
     return (
       <Container
-        style={styles.view}
+        style={[
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+              this.state.orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              this.state.orientation,
+            ),
+          },
+          styles.view,
+        ]}
         showFullInMap={true}
         ref={ref => (this.container = ref)}
         headerProps={{
@@ -312,7 +327,7 @@ export default class AlbumView extends React.PureComponent {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#201F20',
   },
   headerRight: {
     color: color.content,
@@ -325,6 +340,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    backgroundColor: 'white',
   },
   selectView: {
     position: 'absolute',

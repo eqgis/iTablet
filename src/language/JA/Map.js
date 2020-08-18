@@ -347,6 +347,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: '市政コレクション',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: '交通違反コレクション',
   MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
+  MAP_AI_GESTURE_BONE: 'Gesture Bone', //待翻译
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: '道路コレクション',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'POIマップ',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'AR計測',
@@ -366,6 +367,7 @@ const Map_Main_Menu = {
   MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_WEATHER: 'AR Weather',
   MAP_AR_WEBVIEW: 'AR WebPage',
+  MAP_AR_TEXT: 'AR Text',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',

@@ -7,35 +7,27 @@ import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import {
   startModule,
   addModule,
-  styleModule,
   aiModule,
   arMeasureModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
 
-export default class MapARConfig extends Module {
-  static key = ChunkType.MAP_AR
+export default class MapARMeasure extends Module {
+  static key = ChunkType.MAP_AR_MEASURE
   constructor() {
     super({
-      key: MapARConfig.key,
-      functionModules: [
-        startModule,
-        addModule,
-        styleModule,
-        arMeasureModule,
-        aiModule,
-      ],
+      key: MapARMeasure.key,
+      functionModules: [startModule, addModule, arMeasureModule, aiModule],
       mapType: Module.MapType.MAP,
     })
   }
 
   getChunk = language => {
     return this.createChunk(language, {
-      key: MapARConfig.key,
-      title: getLanguage(language).Map_Module.MAP_AR,
-      moduleImage: getThemeAssets().nav.icon_map_vedio,
-      moduleImageTouch: getThemeAssets().nav.icon_map_vedio_touch,
+      key: MapARMeasure.key,
+      title: getLanguage(language).Map_Module.MAP_AR_MEASURE,
+      moduleImage: getThemeAssets().nav.icon_map_ar_measure,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       openDefaultMap: false,

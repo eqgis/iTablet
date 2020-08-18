@@ -43,6 +43,7 @@ import TrafficView from './TrafficView'
 import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
 import IncrementRoadDialog from './IncrementRoadDialog'
+import AddOnlineScense from './AddOnlineScense'
 export {
   MapNavMenu,
   MapNavIcon,
@@ -87,4 +88,5 @@ export {
   RNFloorListView,
   PreviewHeader,
   IncrementRoadDialog,
+  AddOnlineScense,
 }

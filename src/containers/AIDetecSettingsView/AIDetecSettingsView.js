@@ -11,7 +11,7 @@ import { FileTools } from '../../native'
 import Toast from '../../utils/Toast'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
-import { SAIDetectView } from 'imobile_for_reactnative'
+import { SAIDetectView,SMap } from 'imobile_for_reactnative'
 
 const DEFAULT_MODEL = 'detect' //默认模型
 const DETECT_DUSTBIN_MODEL = 'detect_lajixiang_300' //垃圾箱模型

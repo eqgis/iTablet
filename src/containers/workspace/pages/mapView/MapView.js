@@ -230,7 +230,10 @@ export default class MapView extends React.Component {
       // changeLayerBtnBottom: scaleSize(200),
       canBeUndo: false,
       canBeRedo: false,
-      showAIDetect: GLOBAL.Type === ChunkType.MAP_AR,
+      showAIDetect:
+        GLOBAL.Type === ChunkType.MAP_AR ||
+        GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
+        GLOBAL.Type === ChunkType.MAP_AR_MEASURE,
       bGoneAIDetect: false,
       showRoadView: true,
       showArModeIcon: true,
@@ -255,7 +258,7 @@ export default class MapView extends React.Component {
     this.mapLoaded = false // 判断地图是否加载完成
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
-    GLOBAL.showAIDetect = GLOBAL.Type === ChunkType.MAP_AR
+    GLOBAL.showAIDetect = this.state.showAIDetect
     this.lastClickTime = 0
     //  导航选中的数据
     this.selectedData = {
@@ -568,7 +571,11 @@ export default class MapView extends React.Component {
 
   componentWillUnmount() {
     SMap.setCurrentModule(0)
-    if (GLOBAL.Type === ChunkType.MAP_AR) {
+    if (
+      GLOBAL.Type === ChunkType.MAP_AR ||
+      GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
+      GLOBAL.Type === ChunkType.MAP_AR_MEASURE
+    ) {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
@@ -1376,15 +1383,15 @@ export default class MapView extends React.Component {
                     bCreateTag = true
                     if (hasMap) SMap.saveMap('', false, false)
                     // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-                    SMap.getTaggingLayers(this.props.user.currentUser.userName).then(
-                      dataList => {
-                        dataList.forEach(item => {
-                          if (item.isVisible) {
-                            SMediaCollector.showMedia(item.name)
-                          }
-                        })
-                      },
-                    )
+                    SMap.getTaggingLayers(
+                      this.props.user.currentUser.userName,
+                    ).then(dataList => {
+                      dataList.forEach(item => {
+                        if (item.isVisible) {
+                          SMediaCollector.showMedia(item.name)
+                        }
+                      })
+                    })
                   }
                 })
               },
@@ -2005,7 +2012,7 @@ export default class MapView extends React.Component {
   }
 
   _onArObjectClick = data => {
-    if (GLOBAL.Type === ChunkType.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
       let params = {
         ID: data.id,
         mediaName: data.name,
@@ -3143,6 +3150,36 @@ export default class MapView extends React.Component {
             language={this.props.language}
           />
         )}
+        {global.isLicenseValid &&
+          GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS &&
+          !this.state.bGoneAIDetect && (
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
+              }
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            onArObjectClick={this._onArObjectClick}
+            language={this.props.language}
+          />
+        )}
+        {global.isLicenseValid &&
+          GLOBAL.Type === ChunkType.MAP_AR_MEASURE &&
+          !this.state.bGoneAIDetect && (
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
+              }
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            onArObjectClick={this._onArObjectClick}
+            language={this.props.language}
+          />
+        )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
@@ -3188,7 +3225,9 @@ export default class MapView extends React.Component {
           !this.props.analyst.params &&
           this.renderMeasureLabel()}
         {!this.isExample &&
-          GLOBAL.Type === ChunkType.MAP_AR &&
+          (GLOBAL.Type === ChunkType.MAP_AR ||
+            GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
+            GLOBAL.Type === ChunkType.MAP_AR_MEASURE) &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}

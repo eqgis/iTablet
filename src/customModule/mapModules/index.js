@@ -7,6 +7,8 @@ import MapNavigationConfig from './MapNavigationConfig'
 import MapPlottingConfig from './MapPlottingConfig'
 import MapThemeConfig from './MapThemeConfig'
 import AppletAdd from './AppletAdd'
+import MapARAnalysis from './MapARAnalysis'
+import MapARMeasure from './MapARMeasure'
 
 /** 自定义模块 **/
 // import MapExample from './MapExample'
@@ -23,4 +25,6 @@ export {
   MapPlottingConfig,
   MapAnalystConfig,
   AppletAdd,
+  MapARAnalysis,
+  MapARMeasure,
 }

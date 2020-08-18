@@ -507,6 +507,21 @@ async function arWebView() {
   GLOBAL.EnterDatumPointType = 'arWebView'
   NavigationService.navigate('EnterDatumPoint')
 }
+async function arText() {
+  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  if (!isSupportedARCore) {
+    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    return
+  }
+
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
+  GLOBAL.EnterDatumPointType = 'arText'
+  NavigationService.navigate('EnterDatumPoint')
+}
 
 export default {
   close,
@@ -527,4 +542,5 @@ export default {
   arImage,
   arWeather,
   arWebView,
+  arText,
 }

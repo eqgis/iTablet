@@ -355,6 +355,31 @@ export default class ToolBarSectionList extends React.Component {
               />
             </TouchableOpacity>
           )}
+          {section.extraData && (
+            <TouchableOpacity
+              style={styles.sectionRightButton}
+              onPress={() =>
+                section.extraData.action && section.extraData.action()
+              }
+            >
+              {section.extraData.title && (
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
+                  style={styles.subSectionTitle}
+                >
+                  {section.extraData.title}
+                </Text>
+              )}
+              {section.extraData.image && (
+                <Image
+                  source={section.extraData.image}
+                  resizeMode={'contain'}
+                  style={styles.selectImg}
+                />
+              )}
+            </TouchableOpacity>
+          )}
         </View>
       </TouchableHighlight>
     )
@@ -791,6 +816,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: color.section_text,
     textAlign: 'left',
+    textAlignVertical: 'center',
+  },
+  subSectionTitle: {
+    marginLeft: scaleSize(60),
+    fontSize: size.fontSize.fontSizeMd,
+    height: scaleSize(30),
+    backgroundColor: 'transparent',
+    color: color.section_text,
     textAlignVertical: 'center',
   },
   sectionButtons: {

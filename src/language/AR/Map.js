@@ -347,6 +347,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Municipal Collect',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'Violation Collect',
   MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
+  MAP_AI_GESTURE_BONE: 'Gesture Bone', //待翻译
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'جمع الطرق',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'خريطة نقاط الاهتمام',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'قياس الذكاء الاصطناعى',

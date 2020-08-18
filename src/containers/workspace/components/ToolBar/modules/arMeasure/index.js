@@ -35,7 +35,7 @@ export default function() {
     key: ConstToolType.MAP_AR_MEASURE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MEASURE,
     size: 'large',
-    image: getThemeAssets().analyst.analysis_stop,
+    image: getThemeAssets().functionBar.icon_tool_ar_mapping,
     getData: ARMeasureData.getData,
     actions: ARMeasureAction,
   })

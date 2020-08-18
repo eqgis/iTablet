@@ -52,7 +52,7 @@ function getData() {
       title: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
       action: AiActions.poseEstimation,
       size: 'large',
-      image: getThemeAssets().search.search_icon_toilet,
+      image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
     },
     // {
     //   //路面采集

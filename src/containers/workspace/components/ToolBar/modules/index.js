@@ -26,6 +26,7 @@ import layerVisibleScaleModule from './layerVisibleScaleModule'
 import layerSettingImageModule from './layerSettingImageModule'
 import templateModule from './templateModule'
 import arMeasureModule from './arMeasure'
+import arToolModule from './arTool'
 export {
   startModule,
   start3DModule,
@@ -55,4 +56,5 @@ export {
   layerSettingImageModule,
   templateModule,
   arMeasureModule,
+  arToolModule,
 }

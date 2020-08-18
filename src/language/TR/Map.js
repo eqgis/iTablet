@@ -341,6 +341,7 @@ const Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: 'Bu cihazı desteklemiyor',
   MAP_AR_MEASURE: 'AR Measure', //待翻译
   MAP_AR_ANALYZE: 'AR Analyze', //待翻译
+  MAP_AR_TOOL: 'AR Tool', //待翻译
   MAP_AR_CAMERA_EXCEPTION: 'Kamera anormal, lütfen iznin açık olup olmadığını kontrol edin.',
   MAP_AR_AI_ASSISTANT: 'AI\n Toplama',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Özel Toplama',

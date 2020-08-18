@@ -207,7 +207,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0A11D99721F885A400AFE6D6 /* ART.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 323A12871E5F266B004975B8;ios/iTablet.xcodeproj/project.pbxproj
+			remoteGlobalIDString = 323A12871E5F266B004975B8;
 			remoteInfo = "ART-tvOS";
 		};
 		0A15C0E9228E83F60027AB33 /* PBXContainerItemProxy */ = {

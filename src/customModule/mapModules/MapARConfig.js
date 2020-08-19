@@ -13,19 +13,24 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
+import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
   constructor() {
+    let modules = [
+      startModule,
+      addModule,
+      styleModule,
+      arEffecModule,
+      arToolModule,
+    ]
+    if (Platform.OS === 'ios') {
+      modules.splice(3, 1)
+    }
     super({
       key: MapARConfig.key,
-      functionModules: [
-        startModule,
-        addModule,
-        styleModule,
-        arEffecModule,
-        arToolModule,
-      ],
+      functionModules: modules,
       mapType: Module.MapType.MAP,
     })
   }

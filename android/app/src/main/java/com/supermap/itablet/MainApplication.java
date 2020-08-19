@@ -1,43 +1,44 @@
 package com.supermap.itablet;
 
-import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
+import com.beefe.picker.PickerViewPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.infer.annotation.Assertions;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
-import com.facebook.react.common.LifecycleState;
-import com.supermap.RNUtils.FileTools;
-import com.supermap.file.CrashHandler;
-import com.facebook.react.ReactApplication;
-import com.psykar.cookiemanager.CookieManagerPackage;
-import fr.bamlab.rnimageresizer.ImageResizerPackage;
-import com.reactnative.photoview.PhotoViewPackage;
-import com.beefe.picker.PickerViewPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import com.ocetnik.timer.BackgroundTimerPackage;
-import org.reactnative.camera.RNCameraPackage;
-import cn.jpush.reactnativejpush.JPushPackage;
-import com.brentvatne.react.ReactVideoPackage;
-import com.rt2zz.reactnativecontacts.ReactNativeContacts;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.rnfs.RNFSPackage;
-import cn.qiuxiang.react.geolocation.AMapGeolocationPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.github.yamill.orientation.OrientationPackage;
-import com.supermap.SupermapFullPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.common.LifecycleState;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.github.yamill.orientation.OrientationPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
+import com.psykar.cookiemanager.CookieManagerPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.reactnative.photoview.PhotoViewPackage;
+import com.rnfs.RNFSPackage;
+import com.rt2zz.reactnativecontacts.ReactNativeContacts;
+import com.supermap.RNUtils.AppInfo;
+import com.supermap.SupermapFullPackage;
+import com.supermap.file.CrashHandler;
 import com.supermap.rnsupermap.BuildConfig;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import org.reactnative.camera.RNCameraPackage;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import cn.jpush.reactnativejpush.JPushPackage;
+import cn.qiuxiang.react.geolocation.AMapGeolocationPackage;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
     public static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
@@ -85,7 +86,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Nullable
         @Override
         protected String getJSBundleFile() {
-            String path = FileTools.getBundleFile();
+            String path = AppInfo.getBundleFile();
             if (!(new File(path).exists())) {
                 path = null;
             }

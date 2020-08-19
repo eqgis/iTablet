@@ -22,7 +22,6 @@ static BOOL hasImportedData = NO;
 extern NSString *const BUNDLE_VERSION;
 
 @interface FileTools : RCTEventEmitter<RCTBridgeModule>
-+(NSString *)getBundleFile;
 +(BOOL)zipFile:(NSString *)archivePath targetPath:(NSString *)targetPath;
 +(BOOL)zipFiles:(NSArray *)archivePaths targetPath:(NSString *)targetPath;
 +(BOOL)unZipFile:(NSString *)archivePath targetPath:(NSString *)targetPath;

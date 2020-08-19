@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FileTools.h"
+#import "AppInfo.h"
 #import "WeiXinUtils.h"
 #import "JPUSHService.h"
 #import <React/RCTBundleURLProvider.h>

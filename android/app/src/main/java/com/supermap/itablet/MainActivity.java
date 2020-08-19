@@ -19,6 +19,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.JSBundleLoader;
 import com.rnfs.RNFSManager;
 import com.supermap.RN.appManager;
+import com.supermap.RNUtils.AppInfo;
 import com.supermap.RNUtils.FileTools;
 import com.supermap.data.Environment;
 import com.supermap.data.ITabletLicenseManager;
@@ -28,7 +29,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import org.devio.rn.splashscreen.SplashScreen;
-import org.easydarwin.util.SPUtil;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -175,7 +175,7 @@ public class MainActivity extends ReactActivity {
     }
 
     private String getJSBundleFileInternal() {
-        String path = FileTools.getBundleFile();
+        String path = AppInfo.getBundleFile();
         if (path != null && new File(path).exists()) {
             return path;
         }

@@ -607,6 +607,7 @@
 		0A61803D22A51A3500E3D69B /* RSKImageCropper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RSKImageCropper.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/iTablet-fpwwspvlpqkvcrhauagxetirlcrf/Build/Products/Debug-iphoneos/RSKImageCropper.framework"; sourceTree = "<group>"; };
 		0A64601821FEB82C00928DAD /* AppUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppUtils.h; path = Tools/AppUtils.h; sourceTree = SOURCE_ROOT; };
 		0A64601921FEB82C00928DAD /* AppUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppUtils.m; path = Tools/AppUtils.m; sourceTree = SOURCE_ROOT; };
+		0A69973E24ECF5B500751651 /* AppInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInfo.h; sourceTree = "<group>"; };
 		0A7E6C8B22437A7100936CE4 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "../../../../../../../Volumes/WNMNG/Xcode10/iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
 		0A7E6C8D22437A9A00936CE4 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "../../../../../../../Volumes/WNMNG/Xcode10/iPhoneSimulator/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
 		0A8EEDF221104C7100F206BB /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = ../../iTablet/ios/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
@@ -1353,6 +1354,7 @@
 		D83ED3B621704BA600683BB3 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				0A69973E24ECF5B500751651 /* AppInfo.h */,
 				4E045B72246AC08A009F64CE /* FileTools.h */,
 				4E1ADBD1246ABBAE00F11C42 /* NativeUtil.h */,
 				0ABCB8C22246056500992994 /* WeiXinUtils.h */,

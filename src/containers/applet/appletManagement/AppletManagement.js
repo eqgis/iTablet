@@ -16,8 +16,8 @@ import {
   Container,
   MTBtn,
 } from '../../../components'
-import { ConfigUtils } from 'imobile_for_reactnative'
-import _mapModules, { mapModules } from '../../../../configs/mapModules'
+import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
+import _mapModules from '../../../../configs/mapModules'
 import NavigationService from '../../NavigationService'
 import AppletItem from './AppletItem'
 
@@ -90,7 +90,7 @@ export default class AppletManagement extends React.Component {
         )
       }
       if (data.total > 0) {
-        let version = await FileTools.getBundleVersion()
+        let version = await AppInfo.getBundleVersion()
         data.content.map(item => {
           let bundleVersion, buildVersion
           if (item.fileName.endsWith(keywords + '.zip')) {

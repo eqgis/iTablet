@@ -4,7 +4,7 @@ const Map_Module = {
   MAP_3D: 'Scene View',
   MAP_AR: 'AR Collection',
   MAP_AR_ANALYSIS: 'AR Analysis',
-  MAP_AR_MEASURE: 'AR Measure',
+  MAP_AR_MAPPING: 'AR Mapping',
   MAP_NAVIGATION: 'Navigation',
   MAP_THEME: 'Thematic Map',
   MAP_COLLECTION: 'Surveying',

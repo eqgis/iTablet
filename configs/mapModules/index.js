@@ -8,7 +8,7 @@ import * as AppModule from '../../src/customModule/mapModules'
 const mapModules = [
   AppModule.MapARConfig,
   AppModule.MapARAnalysis,
-  AppModule.MapARMeasure,
+  AppModule.MapARMapping,
   AppModule.MapEditConfig,
   AppModule.Map3DConfig,
   AppModule.MapCollectionConfig,

@@ -4,7 +4,7 @@ const Map_Module = {
   MAP_3D: 'シーン表示',
   MAP_AR: 'AR',
   MAP_AR_ANALYSIS: 'AR Analysis', //待翻译
-  MAP_AR_MEASURE: 'AR Measure',
+  MAP_AR_MAPPING: 'AR Mapping',
   MAP_NAVIGATION: 'ナビ',
   MAP_THEME: '主題図',
   MAP_COLLECTION: 'フィールド',

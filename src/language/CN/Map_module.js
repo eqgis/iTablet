@@ -4,7 +4,7 @@ const Map_Module = {
   MAP_3D: '三维浏览',
   MAP_AR: 'AR地图',
   MAP_AR_ANALYSIS: 'AR分析',
-  MAP_AR_MEASURE: 'AR测图',
+  MAP_AR_MAPPING: 'AR测图',
   MAP_NAVIGATION: '导航采集',
   MAP_THEME: '专题制图',
   MAP_COLLECTION: '外业采集',

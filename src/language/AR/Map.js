@@ -341,6 +341,7 @@ const Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: ' لا ندعم هذا الجهاز',
   MAP_AR_MEASURE: 'AR Measure', //待翻译
   MAP_AR_ANALYZE: 'AR Analyze', //待翻译
+  MAP_AR_MAPPING: 'AR Mapping',
   MAP_AR_TOOL: 'AR Tool', //待翻译
   MAP_AR_CAMERA_EXCEPTION: 'الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
@@ -366,7 +367,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
   MAP_AR_VIDEO: 'AR Video', //待翻译
   MAP_AR_IMAGE: 'AR Picture',
-  MAP_AR_WEATHER: 'AR Weather',
+  MAP_AR_EFFECT: 'AR Effect',
   MAP_AR_WEBVIEW: 'AR WebPage',
   MAP_AR_TEXT: 'AR Text',
   MAP_AR_SELECT_EFFECT: 'Select Effect',

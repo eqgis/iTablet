@@ -22,7 +22,7 @@ const icon_map_navigation = require('./icon_map_navigation.png')
 const icon_navi_set_endpoint = require('./navi_set_endpoint_light.png')
 const icon_map_add = require('./icon_map_add.png')
 const icon_map_ar_analysis = require('./icon_ar_analysis.png')
-const icon_map_ar_measure = require('./icon_armapping.png')
+const icon_map_ar_mapping = require('./icon_armapping.png')
 
 export default {
   icon_map_edit,
@@ -44,5 +44,5 @@ export default {
   icon_navi_set_endpoint,
   icon_map_add,
   icon_map_ar_analysis,
-  icon_map_ar_measure,
+  icon_map_ar_mapping,
 }

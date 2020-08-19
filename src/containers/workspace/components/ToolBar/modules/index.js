@@ -27,6 +27,8 @@ import layerSettingImageModule from './layerSettingImageModule'
 import templateModule from './templateModule'
 import arMeasureModule from './arMeasure'
 import arToolModule from './arTool'
+import arEffecModule from './arEffect'
+import arMappingModule from './arMapping'
 export {
   startModule,
   start3DModule,
@@ -57,4 +59,6 @@ export {
   templateModule,
   arMeasureModule,
   arToolModule,
+  arEffecModule,
+  arMappingModule,
 }

@@ -7,10 +7,17 @@ import {
   Text,
   ScrollView,
   Platform,
+  DeviceEventEmitter,
+  NativeModules,
+  NativeEventEmitter,
 } from 'react-native'
 import NavigationService from '../../../../containers/NavigationService'
 import { getThemeAssets } from '../../../../assets'
-import { SMMeasureAreaView, SMeasureAreaView ,SMap } from 'imobile_for_reactnative'
+import {
+  SMMeasureAreaView,
+  SMeasureAreaView,
+  SMap,
+} from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
@@ -18,6 +25,8 @@ import { Container, Dialog } from '../../../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
+const SMeasureViewiOS = NativeModules.SMeasureAreaView
+const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
 
 /*
  * AR高精度采集界面
@@ -92,6 +101,9 @@ export default class MeasureAreaView extends React.Component {
       showModelViews: false,
       SearchingSurfacesSucceed: false,
       showSwithchButtons: false,
+
+      showCurrentHeightView: false,
+      currentHeight: '0m',
     }
   }
 
@@ -122,6 +134,9 @@ export default class MeasureAreaView extends React.Component {
             SMeasureAreaView.setMeasureMode('DRAW_POINT')
           } else if (this.measureType === 'arMeasureHeight') {
             SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+            this.setState({
+              showCurrentHeightView: true,
+            })
           }
         }
 
@@ -136,15 +151,39 @@ export default class MeasureAreaView extends React.Component {
             SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
           }, 1000)
         }
+
+        //注册监听
+        if (Platform.OS === 'ios') {
+          iOSEventEmi.addListener(
+            'onCurrentHeightChanged',
+            this.onCurrentHeightChanged,
+          )
+        } else {
+          DeviceEventEmitter.addListener(
+            'onCurrentHeightChanged',
+            this.onCurrentHeightChanged,
+          )
+        }
       }.bind(this)())
     })
   }
 
   componentWillUnmount() {
-    //注册监听
+    //移除监听
+    DeviceEventEmitter.removeListener(
+      'onCurrentHeightChanged',
+      this.onCurrentHeightChanged,
+    )
     // if (Platform.OS !== 'ios') {
     SMeasureAreaView.dispose()
     // }
+  }
+
+  /**高度变化 */
+  onCurrentHeightChanged = params => {
+    this.setState({
+      currentHeight: params.currentHeight,
+    })
   }
 
   /** 添加 **/
@@ -204,7 +243,9 @@ export default class MeasureAreaView extends React.Component {
   back = () => {
     NavigationService.goBack('MeasureAreaView')
 
+    // eslint-disable-next-line
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    // eslint-disable-next-line
     GLOBAL.toolBox.switchAr()
 
     return true
@@ -604,6 +645,16 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
+  renderCurrentHeightChangeView() {
+    return (
+      <View style={styles.currentHeightChangeView}>
+        <Text style={styles.titleCurrentHeight}>
+          {this.state.currentHeight}
+        </Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -628,6 +679,8 @@ export default class MeasureAreaView extends React.Component {
           this.renderToLastLengthChangeView()}
         {this.state.SearchingSurfacesSucceed &&
           this.renderTotalAreaChangeView()}
+        {this.state.showCurrentHeightView &&
+          this.renderCurrentHeightChangeView()}
       </Container>
     )
   }

@@ -393,6 +393,8 @@ export default class FunctionToolbar extends React.Component {
         if (item.type === ConstToolType.MAP_AR_MEASURE) return false
         if (item.type === ConstToolType.MAP_AR_AI_ASSISTANT) return false
         if (item.type === ConstToolType.MAP_AR_TOOL) return false
+        if (item.type === ConstToolType.MAP_AR_EFFECT) return false
+        if (item.type === ConstToolType.MAP_AR_MAPPING) return false
       }
       return true
     })

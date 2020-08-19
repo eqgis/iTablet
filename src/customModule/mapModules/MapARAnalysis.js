@@ -8,7 +8,6 @@ import {
   startModule,
   addModule,
   aiModule,
-  arMeasureModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
@@ -18,7 +17,7 @@ export default class MapARAnalysis extends Module {
   constructor() {
     super({
       key: MapARAnalysis.key,
-      functionModules: [startModule, addModule, arMeasureModule, aiModule],
+      functionModules: [startModule, addModule, aiModule],
       mapType: Module.MapType.MAP,
     })
   }

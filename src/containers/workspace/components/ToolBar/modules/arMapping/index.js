@@ -1,12 +1,12 @@
-import ARMeasureAction from './ARMeasureAction'
-import ARMeasureData from './ARMeasureData'
+import ARMappingAction from './ARMappingAction'
+import ARMappingData from './ARMappingData'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 
-class ArMeasure extends FunctionModule {
+class arMapping extends FunctionModule {
   constructor(props) {
     super(props)
   }
@@ -14,7 +14,7 @@ class ArMeasure extends FunctionModule {
   action = () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
-    const _data = ARMeasureData.getData()
+    const _data = ARMappingData.getData()
     const containerType = ToolbarType.table
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
@@ -30,13 +30,13 @@ class ArMeasure extends FunctionModule {
 }
 
 export default function() {
-  return new ArMeasure({
-    type: ConstToolType.MAP_AR_MEASURE,
-    key: ConstToolType.MAP_AR_MEASURE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MEASURE,
+  return new arMapping({
+    type: ConstToolType.MAP_AR_MAPPING,
+    key: ConstToolType.MAP_AR_MAPPING,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MAPPING,
     size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_ar_measure,
-    getData: ARMeasureData.getData,
-    actions: ARMeasureAction,
+    image: getThemeAssets().functionBar.icon_tool_ar_mapping,
+    getData: ARMappingData.getData,
+    actions: ARMappingAction,
   })
 }

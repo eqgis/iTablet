@@ -98,6 +98,16 @@ export default StyleSheet.create({
     top: scaleSize(100),
     left: scaleSize(20),
   },
+  currentHeightChangeView: {
+    position: 'absolute',
+    flexDirection: 'column',
+    height: scaleSize(140),
+    minWidth: '100%',
+    backgroundColor: '#rgba(200, 200, 200, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: scaleSize(100),
+  },
   tolastlengthChangeView: {
     position: 'absolute',
     flexDirection: 'column',
@@ -123,6 +133,16 @@ export default StyleSheet.create({
     paddingRight: 5,
     textAlign: 'left',
     borderRadius: scaleSize(5),
+  },
+  titleCurrentHeight: {
+    height: scaleSize(45),
+    // minWidth: scaleSize(180),
+    fontSize: setSpText(42),
+    // backgroundColor: '#rgba(45, 45, 47, 0.5)',
+    color: '#FFFFFF',
+    paddingLeft: 5,
+    paddingRight: 5,
+    textAlign: 'left',
   },
   currentLengthChangeView: {
     position: 'absolute',

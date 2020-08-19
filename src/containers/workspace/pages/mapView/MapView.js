@@ -233,7 +233,7 @@ export default class MapView extends React.Component {
       showAIDetect:
         GLOBAL.Type === ChunkType.MAP_AR ||
         GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
-        GLOBAL.Type === ChunkType.MAP_AR_MEASURE,
+        GLOBAL.Type === ChunkType.MAP_AR_MAPPING,
       bGoneAIDetect: false,
       showRoadView: true,
       showArModeIcon: true,
@@ -574,7 +574,7 @@ export default class MapView extends React.Component {
     if (
       GLOBAL.Type === ChunkType.MAP_AR ||
       GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
-      GLOBAL.Type === ChunkType.MAP_AR_MEASURE
+      GLOBAL.Type === ChunkType.MAP_AR_MAPPING
     ) {
       Orientation.unlockAllOrientations()
     }
@@ -3146,8 +3146,8 @@ export default class MapView extends React.Component {
               }
             }
             customStyle={this.state.showAIDetect ? null : styles.hidden}
-            onArObjectClick={this._onArObjectClick}
             language={this.props.language}
+            isDetect={false}
           />
         )}
         {global.isLicenseValid &&
@@ -3166,7 +3166,7 @@ export default class MapView extends React.Component {
           />
         )}
         {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR_MEASURE &&
+          GLOBAL.Type === ChunkType.MAP_AR_MAPPING &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
@@ -3176,8 +3176,8 @@ export default class MapView extends React.Component {
               }
             }
             customStyle={this.state.showAIDetect ? null : styles.hidden}
-            onArObjectClick={this._onArObjectClick}
             language={this.props.language}
+            isDetect={false}
           />
         )}
         {this._renderAIDetectChange()}
@@ -3227,7 +3227,7 @@ export default class MapView extends React.Component {
         {!this.isExample &&
           (GLOBAL.Type === ChunkType.MAP_AR ||
             GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
-            GLOBAL.Type === ChunkType.MAP_AR_MEASURE) &&
+            GLOBAL.Type === ChunkType.MAP_AR_MAPPING) &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}

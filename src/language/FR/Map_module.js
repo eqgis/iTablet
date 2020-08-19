@@ -4,7 +4,7 @@ const Map_Module = {
   MAP_3D: 'Paysage',
   MAP_AR: 'Collection RA',
   MAP_AR_ANALYSIS: 'AR Analysis', //待翻译
-  MAP_AR_MEASURE: 'AR Measure',
+  MAP_AR_MAPPING: 'AR Mapping',
   MAP_NAVIGATION: 'Navigation',
   MAP_THEME: 'Carte thématique',
   MAP_COLLECTION: 'Arpentage',

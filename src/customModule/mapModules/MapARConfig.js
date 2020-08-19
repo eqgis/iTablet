@@ -8,6 +8,7 @@ import {
   startModule,
   addModule,
   styleModule,
+  arEffecModule,
   arToolModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
@@ -18,7 +19,13 @@ export default class MapARConfig extends Module {
   constructor() {
     super({
       key: MapARConfig.key,
-      functionModules: [startModule, addModule, styleModule, arToolModule],
+      functionModules: [
+        startModule,
+        addModule,
+        styleModule,
+        arEffecModule,
+        arToolModule,
+      ],
       mapType: Module.MapType.MAP,
     })
   }

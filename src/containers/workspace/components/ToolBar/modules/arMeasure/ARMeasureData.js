@@ -5,34 +5,6 @@ import ARMeasureAction from './ARMeasureAction'
 function getData() {
   let data = [
     {
-      // 高精度采集
-      key: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-      action: ARMeasureAction.collectSceneForm,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
-    },
-    // {
-    //   // 户型图采集
-    //   key: 'arMeasureCollect',
-    //   title: getLanguage(global.language).Map_Main_Menu
-    //     .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT,
-    //   action: ARMeasureAction.arMeasureCollect,
-    //   size: 'large',
-    //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
-    // },
-    {
-      //AR面积
-      key: 'arMeasureArea',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
-      action: ARMeasureAction.arMeasureArea,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
-    },
-    {
       //AR测距
       key: 'arMeasureArea',
       title: getLanguage(global.language).Map_Main_Menu
@@ -51,31 +23,13 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
     },
     {
-      //AR画面
-      key: 'arDrawArea',
+      //AR面积
+      key: 'arMeasureArea',
       title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA,
-      action: ARMeasureAction.arDrawArea,
+        .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
+      action: ARMeasureAction.arMeasureArea,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
-    },
-    {
-      //AR画线
-      key: 'arDrawLine',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
-      action: ARMeasureAction.arDrawLine,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_line,
-    },
-    {
-      //AR画点
-      key: 'arDrawArea',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
-      action: ARMeasureAction.arDrawPoint,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_point,
+      image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
     },
   ]
 

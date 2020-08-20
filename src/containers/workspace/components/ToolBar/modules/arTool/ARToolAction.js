@@ -16,10 +16,15 @@ function showMenuBox() {}
 
 function commit() {}
 
-// AR投射
+// AR沙盘
 function arCastModelOperate() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      return
+    }
     if (GLOBAL.isProjectModelDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
       const dustbinPath =
@@ -30,12 +35,12 @@ function arCastModelOperate() {
       const isDustbin = await FileTools.fileIsExist(dustbinPath)
 
       if (isDustbin) {
-        const _params = ToolbarModule.getParams()
-        const isSupportedARCore = await SMeasureView.isSupportedARCore()
-        if (!isSupportedARCore) {
-          Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
-          return
-        }
+        // const _params = ToolbarModule.getParams()
+        // const isSupportedARCore = await SMeasureView.isSupportedARCore()
+        // if (!isSupportedARCore) {
+        //   Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+        //   return
+        // }
 
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
@@ -67,7 +72,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(

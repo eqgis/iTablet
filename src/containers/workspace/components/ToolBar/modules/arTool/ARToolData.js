@@ -6,7 +6,7 @@ import { Platform } from 'react-native'
 function getData() {
   let data = [
     {
-      //AR投射
+      //AR沙盘
       key: 'arCastModelOperate',
       title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,

@@ -175,12 +175,12 @@ static NSString* g_sampleCodeName = @"#";;
 
 +(RCTRootView *)loadBunle:(NSDictionary *)launchOptions {
   NSURL *jsCodeLocation;
-  NSString* jsBundlePath = [FileTools getBundleFile];
+  NSString* jsBundlePath = [AppInfo getBundleFile];
   if (![jsBundlePath isEqualToString:@""]) {
     jsCodeLocation = [NSURL URLWithString:jsBundlePath];
   } else {
     #if DEBUG
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.20"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

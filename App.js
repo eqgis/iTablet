@@ -52,7 +52,7 @@ import { ConstPath, ConstInfo, ConstToolType, ThemeType, ChunkType, UserType } f
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils} from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
@@ -372,6 +372,7 @@ class AppRoot extends Component {
       SOnlineService.init()
       // SOnlineService.removeCookie()
       SIPortalService.init()
+      await this.getVersion()
       await this.getImportState()
       await this.addImportExternalDataListener()
       await this.addGetShareResultListener()
@@ -411,6 +412,14 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
+  }
+  
+  getVersion = async () => {
+    global.language = 'CN'
+    let appInfo = await AppInfo.getAppInfo()
+    let bundleInfo = await AppInfo.getBundleVersion()
+    global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
+      + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
   }
 
   openWorkspace = async () => {

@@ -63,6 +63,7 @@ function analyst(content = '') {
       break
     }
   }
+  let isMapControl = false
   switch (value) {
     case keywords.LOCATION:
       (async function() {
@@ -78,19 +79,23 @@ function analyst(content = '') {
               )
           })
         }
+        isMapControl = true
       }.bind(this)())
       break
     case keywords.CLOSE:
       GLOBAL.back && GLOBAL.back()
+      isMapControl = true
       break
     case keywords.ZOOM_IN:
       SMap.zoom(2)
+      isMapControl = true
       break
     case keywords.ZOOM_OUT:
       SMap.zoom(0.5)
+      isMapControl = true
       break
   }
-  AudioSearch.search(content)
+  !isMapControl && AudioSearch.search(content)
 }
 
 // function getIndex(content) {

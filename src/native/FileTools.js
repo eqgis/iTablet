@@ -372,18 +372,6 @@ async function getThumbnail(path = '') {
   }
 }
 
-/**
- * 获取App支持Bundle的版本号。
- * @returns {Promise.<*>}
- */
-async function getBundleVersion() {
-  try {
-    return await FileTools.getBundleVersion()
-  } catch (e) {
-    return e
-  }
-}
-
 export default {
   getHomeDirectory,
   appendingHomeDirectory,
@@ -416,5 +404,4 @@ export default {
   getImportState,
   getThumbnail,
   getPathListByFilterDeep,
-  getBundleVersion,
 }

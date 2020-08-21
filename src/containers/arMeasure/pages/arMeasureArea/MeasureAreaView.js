@@ -116,7 +116,7 @@ export default class MeasureAreaView extends React.Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      (async function() {
+      ;(async function() {
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
             SMeasureAreaView.setMeasureMode('MEASURE_AREA')
@@ -217,6 +217,11 @@ export default class MeasureAreaView extends React.Component {
   /** 清除 **/
   clearAll = async () => {
     await SMeasureAreaView.clearAll()
+    if (this.measureType === 'arMeasureHeight') {
+      this.setState({
+        currentHeight: '0m',
+      })
+    }
   }
 
   /** 保存 **/
@@ -536,7 +541,7 @@ export default class MeasureAreaView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                ;() => {}
               }
             }}
             style={{

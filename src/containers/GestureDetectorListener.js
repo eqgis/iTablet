@@ -167,14 +167,14 @@ async function touchCallback(event) {
     }
     case TouchType.MAP_TOPO_SPLIT_BY_POINT: {
       const data = ToolbarModule.getData()
-      const point = event.LLPoint
+      const point = event.screenPoint
       data?.actions?.pointSplitLine(point)
       break
     }
     case TouchType.MAP_TOPO_TRIM_LINE:
     case TouchType.MAP_TOPO_EXTEND_LINE: {
       // const data = ToolbarModule.getData()
-      const point = event.LLPoint
+      const point = event.screenPoint
       ToolbarModule.addData({ point })
       let params = {
         point,

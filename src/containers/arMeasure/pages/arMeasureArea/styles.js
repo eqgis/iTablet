@@ -135,7 +135,7 @@ export default StyleSheet.create({
     borderRadius: scaleSize(5),
   },
   titleCurrentHeight: {
-    height: scaleSize(45),
+    // height: scaleSize(45),
     // minWidth: scaleSize(180),
     fontSize: setSpText(42),
     // backgroundColor: '#rgba(45, 45, 47, 0.5)',

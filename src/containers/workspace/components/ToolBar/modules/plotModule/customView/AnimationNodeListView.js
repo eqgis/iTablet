@@ -8,7 +8,7 @@ import {
   Text,
   SectionList,
 } from 'react-native'
-import { color } from '../../../../../../../styles'
+import { color, size } from '../../../../../../../styles'
 import { Toast, scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
 import { SMap } from 'imobile_for_reactnative'
@@ -155,7 +155,8 @@ export default class AnimationNodeListView extends React.Component {
                   source={require('../../../../assets/function/Frenchgrey/icon_symbolFly_white.png')}
                   style={styles.sceneImg}
                 /> */}
-          <Text style={styles.sceneTitle}>{section.title}</Text>
+          {/* <Text style={styles.sceneTitle}>{section.title}</Text> */}
+          <Text style={styles.sectionTitle}>{section.title}</Text>
         </View>
       </View>
     )
@@ -217,6 +218,13 @@ const styles = StyleSheet.create({
     fontSize: setSpText(28),
     color: '#FBFBFB',
     paddingLeft: scaleSize(30),
+  },
+  sectionTitle: {
+    marginLeft: scaleSize(30),
+    fontSize: size.fontSize.fontSizeLg,
+    fontWeight: 'bold',
+    color: color.section_text,
+    textAlign: 'left',
   },
   Separator: {
     flex: 1,

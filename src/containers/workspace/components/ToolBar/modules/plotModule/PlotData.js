@@ -124,8 +124,7 @@ function getAnimationNodeListData() {
   const animationNodeList = []
   const data = [
     {
-      title: getLanguage(global.language).Map_Main_Menu
-        .PLOTTING_ANIMATION_DEDUCTION,
+      title: getLanguage(global.language).Map_Plotting.ANIMATION_NODE_EDIT,
       // '态势推演列表',
       data: animationNodeList,
     },

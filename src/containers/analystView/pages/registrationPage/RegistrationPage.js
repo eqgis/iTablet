@@ -867,8 +867,12 @@ export default class RegistrationPage extends Component {
         <View
           style={{
             position: 'absolute',
-            height: this.state.isShowDetail ? 100 : '100%',
-            width: '100%',
+            // height: this.state.isShowDetail ? 100 : '100%',
+            // width: '100%',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
           }}
         >
           <Container
@@ -894,20 +898,34 @@ export default class RegistrationPage extends Component {
               ),
             }}
           >
-            <SMRectifyView
-              ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            <View
               style={{
-                flex: 1,
-                paddingHorizontal: scaleSize(30),
-                alignItems: 'center',
-                backgroundColor: color.bgW,
+                backgroundColor: 'white',
+                position: 'absolute',
+                top: scaleSize(100),
+                bottom: 0,
+                left: 0,
+                right: 0,
               }}
-              language={global.language}
-            />
+            >
+              <SMRectifyView
+                style={{
+                  flex: 1,
+                  paddingHorizontal: scaleSize(30),
+                  alignItems: 'center',
+                  backgroundColor: color.bgW,
+                }}
+                language={global.language}
+              />
 
-            {this.renderAssociatView()}
+              {this.renderAssociatView()}
+              {this.renderArithmeticTitle()}
+              {this.state.isEditPoint ? null : this.renderToolBar()}
+            </View>
+
+            {/* {this.renderAssociatView()}
             {this.renderArithmeticTitle()}
-            {this.state.isEditPoint ? null : this.renderToolBar()}
+            {this.state.isEditPoint ? null : this.renderToolBar()} */}
             {/* {this.state.isShowDetail?this.renderPointsDetail():null} */}
           </Container>
         </View>

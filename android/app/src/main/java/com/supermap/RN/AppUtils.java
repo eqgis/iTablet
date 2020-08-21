@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -61,13 +62,32 @@ public class AppUtils extends ReactContextBaseJavaModule {
         }
     }
 
+
+    private  boolean is64bitCPU() {
+        String CPU_ABI = null;
+        if (Build.VERSION.SDK_INT >= 21) {
+            String[] CPU_ABIS = Build.SUPPORTED_ABIS;
+            if (CPU_ABIS.length > 0) {
+                CPU_ABI = CPU_ABIS[0];
+            }
+        } else {
+            CPU_ABI = Build.CPU_ABI;
+        }
+
+        if (CPU_ABI != null && CPU_ABI.contains("arm64")) {
+            return true;
+        }
+
+        return false;
+    }
+
     @ReactMethod
     public void is64Bit(Promise promise) {
         try {
-            Boolean res =  android.os.Process.is64Bit();
+            Boolean res =  is64bitCPU();//android.os.Process.is64Bit();
             promise.resolve(res);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 

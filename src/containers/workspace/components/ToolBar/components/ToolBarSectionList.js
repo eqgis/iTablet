@@ -2,7 +2,6 @@ import React from 'react'
 import { color, size } from '../../../../../styles'
 import { scaleSize, setSpText } from '../../../../../utils'
 import { getLanguage } from '../../../../../language'
-import NavigationService from '../../../../NavigationService'
 import {
   StyleSheet,
   TouchableOpacity,
@@ -12,8 +11,7 @@ import {
   Image,
   View,
 } from 'react-native'
-import ToolbarModule from '../modules/ToolbarModule'
-import { getThemeAssets } from '../../../../../assets'
+import { getPublicAssets } from '../../../../../assets'
 import { ColorScheme } from '../../../../../components'
 
 export default class ToolBarSectionList extends React.Component {
@@ -260,8 +258,8 @@ export default class ToolBarSectionList extends React.Component {
       ? require('../../../../../assets/mapTools/icon_multi_selected.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected.png')
     let showSysImg = this.state.sectionSelected
-      ? getThemeAssets().attribute.icon_attribute_show
-      : getThemeAssets().attribute.icon_attribute_hide
+      ? getPublicAssets().mapTools.tools_legend_on
+      : getPublicAssets().mapTools.tools_legend_off
     return (
       <TouchableHighlight
         activeOpacity={this.props.activeOpacity}

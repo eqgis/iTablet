@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
   },
   rightText: {
     fontSize: setSpText(20),
-    color: color.white,
+    color: color.fontColorBlack,
   },
   //page
   pageContainer: {

@@ -173,6 +173,7 @@ import {
 } from './templateManager/pages'
 import AppletManagement from './applet/appletManagement'
 import AppletList from './applet/appletList'
+import SampleMap from './sampleMap'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -686,6 +687,13 @@ export default function(appConfig) {
       },
       Personal: {
         screen: Personal,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      SampleMap: {
+        screen: SampleMap,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

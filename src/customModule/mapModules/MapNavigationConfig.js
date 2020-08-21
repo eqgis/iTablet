@@ -43,7 +43,7 @@ export default class MapNavigationConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_NAVIGATION,
       moduleImage: getThemeAssets().nav.icon_map_navigation,
       moduleImageTouch: getThemeAssets().nav.icon_map_navigation_touch,
-      defaultMapName: this.getExampleName(language).mapName,
+      defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       licenceType: 0x20,

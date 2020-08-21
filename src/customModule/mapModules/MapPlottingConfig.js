@@ -42,7 +42,7 @@ export default class MapPlottingConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_PLOTTING,
       moduleImage: getThemeAssets().nav.icon_map_plot,
       moduleImageTouch: getThemeAssets().nav.icon_map_plot_touch,
-      defaultMapName: this.getExampleName(language).mapName,
+      defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       licenceType: 0x80,

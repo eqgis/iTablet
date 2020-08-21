@@ -42,7 +42,7 @@ export default class MapAnalystConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_ANALYST,
       moduleImage: getThemeAssets().nav.icon_map_analysis,
       moduleImageTouch: getThemeAssets().nav.icon_map_analysis_touch,
-      defaultMapName: this.getExampleName(language).mapName,
+      defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       mapType: this.mapType,

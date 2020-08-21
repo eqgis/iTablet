@@ -254,7 +254,7 @@ class AppRoot extends Component {
       }
       await this.props.setMapModule(myMapModules)
     } catch (e) {
-      console.warn(e.message)
+      await ConfigUtils.recordApplets(userName, _mapModules)
     }
   }
 

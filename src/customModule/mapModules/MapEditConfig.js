@@ -41,7 +41,7 @@ export default class MapEditConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_EDIT,
       moduleImage: getThemeAssets().nav.icon_map_edit,
       moduleImageTouch: getThemeAssets().nav.icon_map_edit_touch,
-      defaultMapName: this.getExampleName(language).mapName,
+      defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,
       licenceType: 0x01,

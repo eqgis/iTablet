@@ -111,11 +111,13 @@ class ModuleList extends Component {
       let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
-        let downloadInfo = await FetchUtils.getDataInfoByUrl(
+        let result = await FetchUtils.getDataInfoByUrl(
           downloadData,
           keyword,
           '.zip',
         )
+        // TODO 测试模块下载
+        let downloadInfo = result.content[0]
         downloadData.size = downloadInfo.size
         downloadData.url = downloadInfo.url
       }
@@ -215,7 +217,7 @@ class ModuleList extends Component {
     let example = module.example
     if (!example) return {}
     let moduleKey = item.key
-    let fileName = module.getExampleName(language).name
+    let fileName = module.getExampleName(language)[0].name
 
     let tmpCurrentUser = this.props.currentUser
 

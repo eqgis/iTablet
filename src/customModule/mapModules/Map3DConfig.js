@@ -32,7 +32,7 @@ export default class Map3DConfig extends Module {
       title: getLanguage(language).Map_Module.MAP_3D,
       moduleImage: getThemeAssets().nav.icon_map_3d,
       moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
-      defaultMapName: this.getExampleName(language).mapName,
+      defaultMapName: this.getExampleName(language)[0].mapName,
       mapType: this.mapType,
       licenceType: 0x02,
     })

@@ -90,7 +90,6 @@ async function getUDBsAndMaps() {
       image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
       data: filterUDBs,
       addDatasource: true,
-      // getDatasource: getUDBsAndMaps,
       extraData: {
         image: require('../../../../../../assets/mapTools/icon_add_white.png'),
         action: () => {

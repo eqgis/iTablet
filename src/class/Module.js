@@ -51,7 +51,7 @@ export default class Module {
   }
   
   getExampleName = (language = '') => {
-    let _example, name = '', mapName = ''
+    let _example, names = []
   
     switch (language) {
       case 'AR':
@@ -79,32 +79,45 @@ export default class Module {
       if (this.example.DEFAULT) {
         _example = this.example.DEFAULT
       } else {
-        return {
-          name,
-          mapName,
-        }
+        return [{
+          name: '',
+          mapName: '',
+        }]
       }
     }
-    if (Platform.OS === 'ios' && _example.name_ios) {
-      name = _example.name_ios
-      mapName = _example.mapName_ios || name
-    } else if (Platform.OS === 'android' && _example.name_android) {
-      name = _example.name_android
-      mapName = _example.mapName_android || name
-    } else {
-      name = _example.name
-      mapName = _example.mapName || name
+    
+    let getNames = function (data) {
+      let _name = '', _mapName = ''
+      if (Platform.OS === 'ios' && data.name_ios) {
+        _name = data.name_ios
+        _mapName = data.mapName_ios || _name
+      } else if (Platform.OS === 'android' && data.name_android) {
+        _name = data.name_android
+        _mapName = data.mapName_android || _name
+      } else {
+        _name = data.name
+        _mapName = data.mapName || _name
+      }
+      if (_name === '' || _name === undefined) {
+        data = data.DEFAULT
+        _name = data.name
+        _mapName = data.mapName || _name
+      }
+      return {
+        name: _name,
+        mapName: _mapName,
+      }
     }
   
-    if (name === '' || name === undefined) {
-      _example = _example.DEFAULT
-      name = _example.name
-      mapName = _example.mapName || name
+    if (_example instanceof Array) {
+      for (let i = 0; i < _example.length; i++) {
+        names.push(getNames(_example[i]))
+      }
+    } else {
+      names = [getNames(_example)]
     }
-    return {
-      name,
-      mapName,
-    }
+    
+    return names
   }
 
   createChunk = (language, params) => {

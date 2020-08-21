@@ -490,7 +490,7 @@ export default class PublicMap extends Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={'刷新中...'}
+            title={getLanguage(global.language).Friends.LOADING}
             enabled={true}
           />
         }

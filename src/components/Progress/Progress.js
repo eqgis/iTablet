@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import { View, Animated, Easing } from 'react-native'
 import PropTypes from 'prop-types'
+import { color } from '../../styles'
 import styles from './styles'
 
 export default class Progress extends Component {
@@ -29,7 +30,8 @@ export default class Progress extends Component {
 
   static defaultProps = {
     //进度条颜色
-    progressColor: 'yellow',
+    // progressColor: 'yellow',
+    progressColor: color.item_selected_bg,
     //buffer进度条颜色
     bufferColor: 'rgba(255,0,0,0.7)',
     //进度条动画时长
@@ -129,6 +131,7 @@ export default class Progress extends Component {
           this.props.height >= 0 && { height: this.props.height },
         ]}
         onLayout={this._onLayout}
+        // removeClippedSubviews={true}
       >
         <Animated.View
           ref={ref => (this.mProgress = ref)}
@@ -137,6 +140,7 @@ export default class Progress extends Component {
             width: this._progressAni,
             height: this.props.height,
             backgroundColor: this.props.progressColor,
+            // overflow: 'hidden',
           }}
         />
         <Animated.View
@@ -146,6 +150,7 @@ export default class Progress extends Component {
             width: this._bufferAni,
             height: this.props.height,
             backgroundColor: this.props.bufferColor,
+            // overflow: 'hidden',
           }}
         />
       </View>

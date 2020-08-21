@@ -14,6 +14,7 @@ import styles from './styles'
 import { UserType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { OnlineServicesUtils, Toast } from '../../../../utils'
+import { AppInfo } from 'imobile_for_reactnative'
 import AppletItem from './AppletItem'
 const appUtilsModule = NativeModules.AppUtils
 var JSOnlineService
@@ -89,7 +90,7 @@ export default class Applet extends React.Component {
       if (data.total === 0) {
         this.setState({ data: [], initData: false, noData: true })
       } else {
-        let version = await FileTools.getBundleVersion()
+        let version = await AppInfo.getBundleVersion()
         let _data = []
         data.content.map(item => {
           let bundleVersion, buildVersion

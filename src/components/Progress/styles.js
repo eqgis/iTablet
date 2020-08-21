@@ -6,5 +6,6 @@ export default StyleSheet.create({
     width: '100%',
     height: scaleSize(8),
     // backgroundColor: 'black',
+    overflow: 'hidden',
   },
 })

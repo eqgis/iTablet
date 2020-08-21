@@ -171,6 +171,15 @@ function openMap() {
       // '我的地图',
       image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
       data: userFileList || [],
+      extraData: {
+        title: getLanguage(global.language).Profile.SAMPLEDATA,
+        action: () => {
+          NavigationService.navigate('SampleMap', {
+            from: 'MapView',
+            refreshAction: openMap,
+          })
+        },
+      },
     })
     _params.setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
       containerType: ToolbarType.list,

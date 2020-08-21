@@ -43,36 +43,47 @@ export default class FetchUtils {
   /**
    * 获取用户数据的下载详情
    * @param downloadData   查询数据结果
-   * @param keyword        获取数据结果的关键字
+   * @param keywords       获取数据结果的关键字  String | Array
    * @param type
    * @returns {Promise.<{}>}
    */
-  static getDataInfoByUrl = async (downloadData, keyword, type) => {
-    let dataInfo = {}
+  static getDataInfoByUrl = async (downloadData = {}, keywords, type) => {
+    let resultData = {}
+    let arr = []
     try {
       let time = new Date().getTime()
+      let _keywords = ''
+      if (keywords instanceof Array) {
+        keywords.forEach((item, index) => {
+          _keywords += '\"' + item + '\"' + (index < keywords.length ? ',' : '')
+        })
+      } else {
+        _keywords = keywords
+      }
       let uri = downloadData.checkUrl // 查询数据结果url
-        ? downloadData.checkUrl + keyword
-        : `https://www.supermapol.com/web/datas.json?currentPage=1&keywords=["${keyword}"]&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&t=${time}`
-      let objFindUserZipData = await FetchUtils.getObjJson(uri)
-      let arrContent = objFindUserZipData.content
+        ? downloadData.checkUrl + _keywords
+        : `https://www.supermapol.com/web/datas.json?currentPage=1&keywords=[${_keywords}]&filterFields=%5B%22FILENAME%22%5D&orderBy=LASTMODIFIEDTIME&orderType=DESC&t=${time}`
+      resultData = await FetchUtils.getObjJson(uri)
+      let arrContent = resultData.content
       for (let i = 0; i < arrContent.length; i++) {
-        let fileName = keyword + type
+        // let fileName = keyword + type
         if (
-          downloadData.nickname === arrContent[i].nickname &&
-          fileName === arrContent[i].fileName
+          (downloadData.nickname === arrContent[i].nickname || !downloadData.nickname) &&
+          // fileName === arrContent[i].fileName &&
+          (type && arrContent[i].fileName.lastIndexOf(type) >= 0 || !type)
         ) {
-          dataInfo = arrContent[i]
-          dataInfo.url =
+          arrContent[i].url =
             downloadData.downloadUrl ||
-            `https://www.supermapol.com/web/datas/${dataInfo.id}/download`
-          break
+            `https://www.supermapol.com/web/datas/${arrContent[i].id}/download`
+          // break
+          arr.push(arrContent[i])
         }
       }
+      resultData.content = arr
     } catch (e) {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     }
-    return dataInfo
+    return resultData
   }
 
   /** 获取用户数据的下载url*/

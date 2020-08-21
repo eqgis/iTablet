@@ -72,7 +72,8 @@ class ModuleList extends Component {
   
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(prevProps.mapModules) !== JSON.stringify(this.props.mapModules)
+      JSON.stringify(prevProps.mapModules) !== JSON.stringify(this.props.mapModules) ||
+      JSON.stringify(prevProps.language) !== JSON.stringify(this.props.language)
     ) {
       this.setState({
         data: this.getData(),

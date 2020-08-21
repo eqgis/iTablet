@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerRightTextStyle: {
-    color: '#FBFBFB',
+    color: color.fontColorBlack,
     fontSize: scaleSize(26),
   },
   // moreImg: {

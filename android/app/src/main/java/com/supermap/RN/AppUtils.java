@@ -65,26 +65,21 @@ public class AppUtils extends ReactContextBaseJavaModule {
 
     private  boolean is64bitCPU() {
         String CPU_ABI = null;
-        if (Build.VERSION.SDK_INT >= 21) {
-            String[] CPU_ABIS = Build.SUPPORTED_ABIS;
-            if (CPU_ABIS.length > 0) {
-                CPU_ABI = CPU_ABIS[0];
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                return android.os.Process.is64Bit();
+            } else {
+                return false;
             }
-        } else {
-            CPU_ABI = Build.CPU_ABI;
+        }catch (Exception e) {
+            return false;
         }
-
-        if (CPU_ABI != null && CPU_ABI.contains("arm64")) {
-            return true;
-        }
-
-        return false;
     }
 
     @ReactMethod
     public void is64Bit(Promise promise) {
         try {
-            Boolean res =  is64bitCPU();//android.os.Process.is64Bit();
+            Boolean res =  is64bitCPU();//
             promise.resolve(res);
         } catch (Exception e) {
             promise.resolve(false);

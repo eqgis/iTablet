@@ -4,7 +4,7 @@
 import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
-import { dataUtil, scaleSize } from '../../../../../../utils'
+import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
@@ -15,7 +15,6 @@ import React from 'react'
 import { color } from '../../../../../../styles'
 import { View } from 'react-native'
 import AddAction from './AddAction'
-import Toast from 'react-native-root-toast'
 
 /**
  * 获取数据源和地图菜单

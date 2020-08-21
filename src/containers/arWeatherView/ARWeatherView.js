@@ -2,7 +2,7 @@ import * as React from 'react'
 import { SARWeather, SMARWeatherView, SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { getThemeAssets, getPublicAssets } from '../../assets'
 import NavigationService from '../NavigationService'
@@ -54,10 +54,10 @@ export default class ARWeatherView extends React.Component {
   }
 
   showDefault = async () => {
-    let path = global.homePath + '/iTablet/Common/Weather/winter.mp4'
+    let path = global.homePath + '/iTablet/Common/Weather/Snow.mp4'
     if (await FileTools.fileIsExist(path)) {
       SARWeather.setWeather(path)
-      this.setCurrent('winter')
+      this.setCurrent('Snow')
     }
   }
 
@@ -140,7 +140,7 @@ export default class ARWeatherView extends React.Component {
         }}
         bottomProps={{ type: 'fix' }}
       >
-        <SMARWeatherView style={{ flex: 1 }} />
+        <SMARWeatherView style={{ top: screen.getHeaderHeight() }} />
         {this.renderBottom()}
       </Container>
     )

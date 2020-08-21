@@ -28,19 +28,27 @@ export default class ChooseWeather extends React.Component {
   weatherData = [
     {
       title: global.language === 'CN' ? '春天' : 'spring',
-      key: 'spring',
+      key: 'SpringFlower',
     },
     {
       title: global.language === 'CN' ? '夏天' : 'summer',
-      key: 'summer',
+      key: 'CloudLightening',
     },
     {
       title: global.language === 'CN' ? '秋天' : 'autumn',
-      key: 'autumn',
+      key: 'AutumnLeave',
     },
     {
       title: global.language === 'CN' ? '冬天' : 'winter',
-      key: 'winter',
+      key: 'Snow',
+    },
+    {
+      title: global.language === 'CN' ? '雪花' : 'snow',
+      key: 'CartoonSnow',
+    },
+    {
+      title: global.language === 'CN' ? '云' : 'Clouds',
+      key: 'Clouds',
     },
   ]
 

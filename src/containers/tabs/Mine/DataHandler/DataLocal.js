@@ -59,7 +59,8 @@ async function _getListByFilter(user, type) {
     case 'SCENE':
       path = userPath + ConstPath.RelativePath.Scene
       filter = {
-        type: 'Directory',
+        // type: 'Directory',
+        type: 'file',
       }
       break
     case 'SYMBOL':

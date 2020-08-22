@@ -34,6 +34,7 @@
         android:label="@string/app_full_name"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:label">
         <uses-library android:name="org.apache.http.legacy" android:required="false" />

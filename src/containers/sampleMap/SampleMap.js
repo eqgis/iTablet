@@ -6,10 +6,8 @@ import {
   Dimensions,
 } from 'react-native'
 import styles from './styles'
-import color from '../../styles/color'
 import { FileTools } from '../../native'
-import { Toast } from '../../utils'
-import FetchUtils from '../../utils/FetchUtils'
+import { Toast, scaleSize, FetchUtils } from '../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
@@ -121,7 +119,11 @@ export default class SampleMap extends Component {
       <SampleMapItem
         user={this.props.user}
         data={item}
-        style={styles.itemView}
+        style={{
+          marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? scaleSize(10)
+            : scaleSize(20)
+        }}
         downloadData={this._getCurrentDownloadData(item)}
         downloadFile={this._downloadFile}
         // downloads={this.props.downloads}
@@ -142,8 +144,12 @@ export default class SampleMap extends Component {
       >
         <FlatList
           style={[
-            styles.haveDataViewStyle,
-            { backgroundColor: color.bgW2 },
+            styles.list,
+            {
+              paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? scaleSize(20)
+                : scaleSize(32)
+            },
           ]}
           numColumns={2}
           data={this.state.data}

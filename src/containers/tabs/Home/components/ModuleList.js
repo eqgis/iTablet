@@ -102,13 +102,9 @@ class ModuleList extends Component {
 
   _showAlert = (ref, downloadData, currentUserName) => {
     (async function() {
-      // TODO 获取
-      let keyword
-      if (downloadData.fileName.indexOf('_示范数据') !== -1) {
-        keyword = downloadData.fileName
-      } else {
-        keyword = downloadData.fileName + '_示范数据'
-      }
+      if (!downloadData.example || downloadData.example.length === 0) return
+      let item = downloadData.example[0] // 默认下载第一个示范数据
+      let keyword = item.name.endsWith('_示范数据') ? item.name : (item.name + '_示范数据')
       let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
@@ -119,8 +115,8 @@ class ModuleList extends Component {
         )
         // TODO 测试模块下载
         let downloadInfo = result.content[0]
-        downloadData.size = downloadInfo.size
-        downloadData.url = downloadInfo.url
+        item.size = downloadInfo.size
+        item.url = downloadInfo.url
       }
 
       this.props.getModuleItem &&
@@ -142,15 +138,16 @@ class ModuleList extends Component {
   _downloadModuleData = async (ref, downloadData) => {
     ref.setDownloading(true)
     let cachePath = downloadData.cachePath
-    let fileDirPath = cachePath + downloadData.fileName
+    let item = downloadData.example[0] // 默认下载第一个示范数据
+    let fileDirPath = cachePath + item.name
     try {
       let fileCachePath = fileDirPath + '.zip'
       let downloadOptions = {
         // fromUrl: dataUrl,
-        fromUrl: downloadData.url,
+        fromUrl: item.url,
         toFile: fileCachePath,
         background: true,
-        fileName: downloadData.fileName,
+        fileName: item.name,
         progressDivider: 1,
         key: downloadData.key,
       }
@@ -215,14 +212,15 @@ class ModuleList extends Component {
   getDownloadData = (language, item, index) => {
     if (index > this.props.mapModules.modules.length - 1) return {}
     let module = this.props.mapModules.modules[index]
-    let example = module.example
+    // let example = module.example
+    let example = module.getExampleName(language)
     if (!example) return {}
     let moduleKey = item.key
-    let fileName = module.getExampleName(language)[0].name
+    // let fileName = module.getExampleName(language)[0].name
 
     let tmpCurrentUser = this.props.currentUser
 
-    let toPath = this.homePath + ConstPath.CachePath + fileName
+    // let toPath = this.homePath + ConstPath.CachePath + fileName
 
     let cachePath = this.homePath + ConstPath.CachePath
     let defaultExample = {}
@@ -240,13 +238,13 @@ class ModuleList extends Component {
     }
     return {
       key: moduleKey,
-      fileName: fileName,
+      // fileName: fileName,
       cachePath: cachePath,
-      copyFilePath: toPath,
+      // copyFilePath: toPath,
       itemData: item,
       tmpCurrentUser: tmpCurrentUser,
-      ...example,
-      ...defaultExample,
+      example,
+      defaultExample,
     }
   }
 
@@ -289,13 +287,20 @@ class ModuleList extends Component {
 
       let cachePath = this.homePath + ConstPath.CachePath
       let arrFile = []
-      if (downloadData) {
-        let fileDirPath = cachePath + downloadData.fileName
-        arrFile = await FileTools.getFilterFiles(fileDirPath)
+      if (downloadData && downloadData.example) {
+        for (let i = 0; i < downloadData.example.length; i++) {
+          let fileDirPath = cachePath + downloadData.example[i].name
+          let tempArr = []
+          tempArr = await FileTools.getFilterFiles(fileDirPath)
+          if (tempArr.length > 0) {
+            arrFile = arrFile.concat(tempArr)
+          }
+        }
       }
       if (arrFile.length === 0) {
         if (
-          downloadData.fileName &&
+          downloadData.example &&
+          downloadData.example.length > 0 &&
           this.props.ignoreDownloads.filter(
             _item => _item.id === downloadData.key,
           ).length === 0 &&

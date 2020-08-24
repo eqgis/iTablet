@@ -320,12 +320,11 @@ export default class Home extends Component {
   renderDialogChildren = () => {
     let storage = null
     let fileName = null
-    if (this.state.downloadData !== null) {
-      fileName = this.state.downloadData.fileName
-      storage =
-        (this.state.downloadData.size === undefined
-          ? 0
-          : (this.state.downloadData.size / 1024 / 1024).toFixed(2)) + 'MB'
+    let downloadData = this.state.downloadData
+    if (downloadData && downloadData.example && downloadData.example.length > 0) {
+      let item = downloadData.example[0]
+      fileName = item.name
+      storage = (item.size === undefined ? 0 : (item.size / 1024 / 1024).toFixed(2)) + 'MB'
     }
     let Img = this.state.dialogCheck
       ? require('../../../assets/home/Frenchgrey/icon_check_selected.png')

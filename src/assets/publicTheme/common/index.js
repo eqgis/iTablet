@@ -64,6 +64,10 @@ const icon_highlight_single_check = require('./icon_highlight_single_check.png')
 
 const icon_administration = require('./icon_administration.png')
 
+const icon_download = require('./icon_download.png')
+const icon_downloading = require('./icon_downloading.png')
+const icon_complete = require('./icon_complete.png')
+
 export default {
   icon_undo,
   icon_search,
@@ -129,4 +133,8 @@ export default {
   icon_highlight_single_check,
   
   icon_administration,
+  
+  icon_download,
+  icon_downloading,
+  icon_complete,
 }

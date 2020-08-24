@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Text, TouchableOpacity, ImageBackground, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View, Animated, Easing } from 'react-native'
 import styles from './styles'
 import { scaleSize } from '../../utils'
 import { Progress } from '../../components'
@@ -8,6 +8,7 @@ import { FileTools } from '../../native'
 import ConstPath from '../../constants/ConstPath'
 import UserType from '../../constants/UserType'
 import { getLanguage } from '../../language'
+import { getPublicAssets } from '../../assets'
 
 export default class SampleMapItem extends Component {
   props: {
@@ -30,6 +31,7 @@ export default class SampleMapItem extends Component {
       progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
+      rotateValue: new Animated.Value(0),
     }
 
     this.unZipFile = this.unZipFile.bind(this)
@@ -66,11 +68,23 @@ export default class SampleMapItem extends Component {
     return false
   }
   
-  componentDidUpdate() {
-    if (this.mProgress) {
-      this.mProgress.progress = this.props.downloadData.progress / 100
-    }
+  // componentDidUpdate() {
+  //   if (this.mProgress) {
+  //     this.mProgress.progress = this.props.downloadData.progress / 100
+  //   }
+  // }
+  
+  spin = () => {
+    this.state.rotateValue.setValue(0)
+    const aniMotion = Animated.timing(this.state.rotateValue,{
+      toValue: this.state.rotateValue._value === 0 ? 1 : 0,
+      duration: 800,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    });
+    Animated.loop(aniMotion).start()
   }
+  
   
   _downloadFile = async () => {
     if (this.state.isDownloading || this.state.downloaded) return
@@ -96,6 +110,7 @@ export default class SampleMapItem extends Component {
             isDownloading: true,
           })
         }
+        this.spin()
         let fileName = this.props.data.fileName.replace('.zip', '')
         let result = await this.props.downloadFile({
           id: this.props.data.id,
@@ -147,43 +162,84 @@ export default class SampleMapItem extends Component {
     return result
   }
   
-  _renderDownloadButton = () => {
-    let size = (this.props.data.size / 1024 / 1024).toFixed(2) + ' MB'
-    return (
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.itemDownloadView}
-        onPress={this._downloadFile}
-      >
-        {
-          this.props.downloadData && this.state.isDownloading &&
-          <Progress
-            ref={ref => (this.mProgress = ref)}
-            style={styles.progress}
-            // progress={this.props.downloadData.progress / 100}
-            height={scaleSize(44)}
-          />
-        }
-        <Text style={[styles.itemName, { marginLeft: scaleSize(22) }]}>{size}</Text>
-        <Image
-          resizeMode={'contain'}
-          source={require('../../assets/tabBar/find_download.png')}
-          style={styles.itemDownload}
-        />
-      </TouchableOpacity>
-    )
-  }
+  // _renderDownloadButton = () => {
+  //   // let size = (this.props.data.size / 1024 / 1024).toFixed(2) + ' MB'
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={1}
+  //       style={styles.itemDownloadView}
+  //       onPress={this._downloadFile}
+  //     >
+  //       {
+  //         this.props.downloadData && this.state.isDownloading &&
+  //         <Progress
+  //           ref={ref => (this.mProgress = ref)}
+  //           style={styles.progress}
+  //           // progress={this.props.downloadData.progress / 100}
+  //           height={scaleSize(44)}
+  //         />
+  //       }
+  //       {/*<Text style={[styles.itemName, { marginLeft: scaleSize(22) }]}>{size}</Text>*/}
+  //       <Image
+  //         resizeMode={'contain'}
+  //         source={require('../../assets/tabBar/find_download.png')}
+  //         style={styles.itemDownload}
+  //       />
+  //     </TouchableOpacity>
+  //   )
+  // }
+  //
+  // _renderDownloadedButton = () => {
+  //   return (
+  //     <View
+  //       style={[styles.itemDownloadView, styles.itemDownloadedView]}
+  //     >
+  //       <Text style={[styles.itemName, { marginHorizontal: scaleSize(22) }]}>
+  //         {getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY}
+  //       </Text>
+  //     </View>
+  //   )
+  // }
   
-  _renderDownloadedButton = () => {
-    return (
-      <View
-        style={[styles.itemDownloadView, styles.itemDownloadedView]}
-      >
-        <Text style={[styles.itemName, { marginHorizontal: scaleSize(22) }]}>
-          {getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY}
-        </Text>
-      </View>
-    )
+  _renderDownload = () => {
+    if (
+      this.props.downloadData &&
+      (
+        this.props.downloadData.progress <= 100 || this.props.downloadData.progress >= 0
+      )
+    ) {
+      return (
+        <Animated.Image
+          resizeMode={'contain'}
+          style={[
+            styles.downloadImg,
+            {
+              transform: [{rotate: this.state.rotateValue
+                .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']})
+              }]
+            }
+          ]}
+          source={getPublicAssets().common.icon_downloading}
+        />
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={this._downloadFile}
+        >
+          <Image
+            resizeMode={'cover'}
+            source={
+              this.state.downloaded
+                ? getPublicAssets().common.icon_complete
+                : getPublicAssets().common.icon_download
+            }
+            style={styles.downloadImg}
+          />
+        </TouchableOpacity>
+      )
+    }
   }
   
   render() {
@@ -195,19 +251,24 @@ export default class SampleMapItem extends Component {
           ? this.props.data.fileName
           : this.props.data.fileName.substring(0, index)
     }
+    let size = (this.props.data.size / 1024 / 1024).toFixed(2) + ' MB'
     return (
-      <ImageBackground
-        resizeMode={'cover'}
-        source={{ uri: this.props.data.thumbnail }}
-        style={[styles.itemBg, this.props.style]}
-      >
-        <View style={styles.itemNameView}>
-          <Text style={styles.itemName}>{titleName}</Text>
+      <View style={[styles.itemView, this.props.style]}>
+        <View style={styles.itemImageView}>
+          <Image
+            resizeMode={'cover'}
+            source={{ uri: this.props.data.thumbnail }}
+            style={styles.itemImage}
+          />
         </View>
-        {
-          this.state.downloaded ? this._renderDownloadedButton() : this._renderDownloadButton()
-        }
-      </ImageBackground>
+        <View style={styles.itemBottom}>
+          <Text style={styles.itemName}>{titleName}</Text>
+          <View style={styles.itemBottomContent}>
+            <Text style={styles.sizeText}>{size}</Text>
+            {this._renderDownload()}
+          </View>
+        </View>
+      </View>
     )
   }
 }

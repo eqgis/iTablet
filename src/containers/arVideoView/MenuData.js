@@ -137,11 +137,6 @@ function getPage(page, bottomBar = undefined) {
         },
       ]
       pageAction = () => {
-        Toast.show(
-          global.language === 'CN'
-            ? '请点击平面修改视频位置'
-            : 'Tap the plane to modify location',
-        )
         SARVideoView.setTapAction('MODIFY')
         SARVideoView.setPlaneVisible(true)
         SARVideoView.setOnVideoModifyListener(() => {

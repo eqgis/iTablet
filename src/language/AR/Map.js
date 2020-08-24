@@ -376,9 +376,9 @@ const Map_Main_Menu = {
   MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
   MAP_AR_SELECT_POINT_PLANE: 'to Plane',
   MAP_AR_ADD_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_ADD_TO_PLANE: 'to Current',
+  MAP_AR_ADD_TO_PLANE: 'Select Point',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_MOVE_TO_PLANE: 'to Current',
+  MAP_AR_MOVE_TO_PLANE: 'Select Point',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',

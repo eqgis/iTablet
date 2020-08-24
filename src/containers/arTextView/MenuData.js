@@ -144,11 +144,6 @@ function getPage(page, bottomBar = undefined) {
         },
       ]
       pageAction = () => {
-        Toast.show(
-          global.language === 'CN'
-            ? '请点击平面修改位置'
-            : 'Tap the plane to modify location',
-        )
         SARText.setTapAction('MODIFY')
         SARText.setPlaneVisible(true)
         SARText.setOnTextModifyListener(() => {

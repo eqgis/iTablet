@@ -49,6 +49,11 @@ export default class PublicData extends React.Component {
     this.getData()
   }
 
+  componentWillUnmount() {
+    JSOnlineService = undefined
+    JSIPortalService = undefined
+  }
+
   getData = async () => {
     try {
       this.setState({
@@ -321,6 +326,7 @@ export default class PublicData extends React.Component {
           title: this.state.title,
           navigation: this.props.navigation,
           headerRight: this.renderHeaderRight(),
+          headerOnTop: true,
         }}
       >
         {this.renderProgress()}

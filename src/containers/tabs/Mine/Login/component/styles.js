@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
   // iPortalLogin
   loginSectionView: {
     flexDirection: 'row',
-    width: '200%',
+    width: '100%',
     marginTop: scaleSize(10),
   },
   sectionViewStyle: {
-    width: '50%',
+    width: '100%',
     alignItems: 'center',
   },
   inpuViewStyle: {

@@ -1,5 +1,4 @@
 import functionExample from './FunctionExample'
-import Tour from './Tour'
 
 function getModule (type) {
   let module = {}
@@ -7,8 +6,6 @@ function getModule (type) {
     case 'FunctionExample':
       module = functionExample()
       break
-    case 'TourCreate': // 右侧FunctionToolbar入口
-      module = Tour()
   }
   return module
 }
@@ -19,5 +16,5 @@ export default {
 
 export {
   functionExample,
-  Tour,
+  // Tour,
 }

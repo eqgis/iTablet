@@ -49,6 +49,11 @@ export default class PublicData extends React.Component {
     this.getData()
   }
 
+  componentWillUnmount() {
+    JSOnlineService = undefined
+    JSIPortalService = undefined
+  }
+
   getData = async () => {
     try {
       this.setState({

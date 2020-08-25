@@ -27,6 +27,7 @@ export default class IPortalLoginView extends React.Component {
     this.state = {
       behavior: 'padding',
       left: new Animated.Value(0),
+      showServer: true,
     }
   }
 
@@ -57,6 +58,7 @@ export default class IPortalLoginView extends React.Component {
       if (status === 405) {
         setTimeout(() => {
           global.Loading.setLoading(false)
+          this.setState({ showServer: false })
           Animated.timing(this.state.left, {
             toValue: -this.screenWidth,
             duration: 500,
@@ -175,16 +177,16 @@ export default class IPortalLoginView extends React.Component {
   }
 
   renderLoginSection = () => {
-    let left = this.state.left
+    // let left = this.state.left
     return (
       <Animated.View
         style={[
           styles.loginSectionView,
-          { left: left._value === 0 ? left : -this.screenWidth },
+          // { left: left._value === 0 ? left : -this.screenWidth },
         ]}
       >
-        {this._renderServer()}
-        {this._renderUser()}
+        {this.state.showServer && this._renderServer()}
+        {!this.state.showServer && this._renderUser()}
       </Animated.View>
     )
   }

@@ -326,6 +326,7 @@ export default class PublicData extends React.Component {
           title: this.state.title,
           navigation: this.props.navigation,
           headerRight: this.renderHeaderRight(),
+          headerOnTop: true,
         }}
       >
         {this.renderProgress()}

@@ -156,7 +156,7 @@ export default class DataItem extends Component {
         progress: getLanguage(global.language).Prompt.DOWNLOADING,
         isDownloading: true,
       })
-      if (UserType.isIPortalUser(this.props.user)) {
+      if (UserType.isIPortalUser(this.props.user.currentUser)) {
         let url = this.props.user.currentUser.serverUrl
         if (url.indexOf('http') !== 0) {
           url = 'http://' + url

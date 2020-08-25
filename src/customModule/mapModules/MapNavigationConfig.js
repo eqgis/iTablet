@@ -20,7 +20,7 @@ export default class MapNavigationConfig extends Module {
       key: MapNavigationConfig.key,
       example: {
         DEFAULT: {
-          name: 'Navigation_示范数据',
+          name: 'Navigation',
           mapName: 'beijing',
         },
       },

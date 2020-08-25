@@ -4,6 +4,7 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  View,
 } from 'react-native'
 import styles from './styles'
 import { FileTools } from '../../native'
@@ -45,16 +46,18 @@ export default class SampleMap extends Component {
     let keywords = []
     for (let i = 0; i < examples.length; i++) {
       let _name = examples[i].name
-      if (!_name.endsWith('_示范数据')) {
-        _name += '_示范数据'
+      if (!_name.endsWith('_EXAMPLE')) {
+        _name += '_EXAMPLE'
       }
       keywords.push(_name)
     }
     FetchUtils.getDataInfoByUrl({
       nickname: 'xiezhiyan123',
     }, keywords, '.zip').then(result => {
+      let arr = result.content
+      if (arr.length % 2 === 1) arr.push({})
       this.setState({
-        data: result.content,
+        data: arr,
       })
     })
   }
@@ -114,7 +117,8 @@ export default class SampleMap extends Component {
     }
   }
   
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item}) => {
+    if (!item.fileName) return <View style={{flex: 1}} />
     return (
       <SampleMapItem
         user={this.props.user}

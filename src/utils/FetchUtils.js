@@ -58,7 +58,7 @@ export default class FetchUtils {
           _keywords += '\"' + item + '\"' + (index < keywords.length ? ',' : '')
         })
       } else {
-        _keywords = keywords
+        _keywords = '\"' + keywords + '\"'
       }
       let uri = downloadData.checkUrl // 查询数据结果url
         ? downloadData.checkUrl + _keywords

@@ -103,8 +103,8 @@ class ModuleList extends Component {
   _showAlert = (ref, downloadData, currentUserName) => {
     (async function() {
       if (!downloadData.example || downloadData.example.length === 0) return
-      let item = downloadData.example[0] // 默认下载第一个示范数据
-      let keyword = item.name.endsWith('_示范数据') ? item.name : (item.name + '_示范数据')
+      let item = downloadData.example[0] // 默认下载第一个EXAMPLE
+      let keyword = item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE')
       let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
@@ -138,8 +138,8 @@ class ModuleList extends Component {
   _downloadModuleData = async (ref, downloadData) => {
     ref.setDownloading(true)
     let cachePath = downloadData.cachePath
-    let item = downloadData.example[0] // 默认下载第一个示范数据
-    let fileDirPath = cachePath + item.name
+    let item = downloadData.example[0] // 默认下载第一个EXAMPLE
+    let fileDirPath = cachePath + (item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE'))
     try {
       let fileCachePath = fileDirPath + '.zip'
       let downloadOptions = {
@@ -290,6 +290,9 @@ class ModuleList extends Component {
       if (downloadData && downloadData.example) {
         for (let i = 0; i < downloadData.example.length; i++) {
           let fileDirPath = cachePath + downloadData.example[i].name
+          if (!fileDirPath.endsWith('_EXAMPLE')) {
+            fileDirPath += '_EXAMPLE'
+          }
           let tempArr = []
           tempArr = await FileTools.getFilterFiles(fileDirPath)
           if (tempArr.length > 0) {

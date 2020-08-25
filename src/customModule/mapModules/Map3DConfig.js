@@ -17,7 +17,7 @@ export default class Map3DConfig extends Module {
       is3D: true,
       example: {
         DEFAULT: {
-          name: 'OlympicGreen_示范数据',
+          name: 'OlympicGreen',
           mapName: 'OlympicGreen',
         },
       },

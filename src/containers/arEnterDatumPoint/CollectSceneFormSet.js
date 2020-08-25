@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   textConfirm: {
     fontSize: scaleSize(22),
-    color: color.white,
+    color: color.black,
     padding: scaleSize(10),
   },
 })

@@ -25,7 +25,9 @@ export default StyleSheet.create({
     shadowRadius: 2,
   },
   itemBottom: {
+    flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: color.white,
     paddingVertical: scaleSize(16),
     paddingHorizontal: scaleSize(20),
@@ -57,6 +59,7 @@ export default StyleSheet.create({
     borderTopRightRadius: scaleSize(20),
     borderTopLeftRadius: scaleSize(20),
     overflow: 'hidden',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   itemImage: {
     flex: 1,

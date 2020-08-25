@@ -45,9 +45,9 @@ export default class RenderModuleListItem extends Component {
       } else if (moduleKey === '外业采集') {
         fileName = '地理国情普查'
       } else if (moduleKey === '三维场景') {
-        fileName = 'OlympicGreen_示范数据'
+        fileName = 'OlympicGreen_EXAMPLE'
       } else if (moduleKey === '导航地图') {
-        fileName = 'Navigation_示范数据'
+        fileName = 'Navigation_EXAMPLE'
       }
       let homePath = await FileTools.appendingHomeDirectory()
       let cachePath = homePath + ConstPath.CachePath

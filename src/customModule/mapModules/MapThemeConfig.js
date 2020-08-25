@@ -18,16 +18,44 @@ export default class MapThemeConfig extends Module {
     super({
       key: MapThemeConfig.key,
       example: {
-        EN: {
-          name: 'PrecipitationOfUSA',
-          mapName: 'PrecipitationOfUSA',
-        },
-        DEFAULT: {
-          name: '湖北',
-          mapName: 'LandBuild',
-        },
+        EN: [
+          {
+            name: 'PrecipitationOfUSA',
+            mapName: 'PrecipitationOfUSA',
+          },
+          {
+            name: 'SanFrancisco',
+            mapName: 'SanFrancisco',
+          },
+        ],
+        DEFAULT: [
+          {
+            name: '湖北',
+            mapName: 'LandBuild',
+          },
+          {
+            name: '长江三角洲区域图',
+            mapName: '长江三角洲区域图',
+          },
+          {
+            name: '中国省级区划图',
+            mapName: 'China1',
+          },
+          {
+            name: '北京统计专题地图',
+            mapName: '北京统计专题',
+          },
+          {
+            name: '江苏',
+            mapName: '江苏省级黑色风格',
+          },
+          {
+            name: '江苏餐馆分布格网图',
+            mapName: '餐馆密度网格图',
+          },
+        ],
         JA: {
-          name: 'YamanashiMap_示范数据',
+          name: 'YamanashiMap',
           mapName: '土地利用・植生図',
         },
       },

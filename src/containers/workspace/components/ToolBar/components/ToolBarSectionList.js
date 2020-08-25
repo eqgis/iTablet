@@ -53,6 +53,16 @@ export default class ToolBarSectionList extends React.Component {
       allSelected, // 判断是 全部选中 还是 全部取消，只在section.allSelectType = true时生效
     }
   }
+  
+  shouldComponentUpdate(prevProps, prevState) {
+    if (
+      JSON.stringify(prevProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(prevState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
 
   componentDidUpdate(prevProps) {
     if (
@@ -761,7 +771,14 @@ export default class ToolBarSectionList extends React.Component {
     return (
       <SectionList
         ref={ref => (this.sectionList = ref)}
-        style={[this.props.style]}
+        style={[
+          this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {
+            overflow: 'hidden',
+            borderTopLeftRadius: scaleSize(32),
+            borderTopRightRadius: scaleSize(32),
+          },
+          this.props.style,
+        ]}
         sections={this.state.sections}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderSection}
@@ -793,12 +810,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   subSectionTitle: {
-    marginLeft: scaleSize(60),
     fontSize: size.fontSize.fontSizeMd,
     height: scaleSize(30),
     backgroundColor: 'transparent',
     color: color.section_text,
     textAlignVertical: 'center',
+    textAlign: 'right',
   },
   sectionButtons: {
     flex: 1,

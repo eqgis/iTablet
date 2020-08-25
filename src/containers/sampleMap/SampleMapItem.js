@@ -42,10 +42,10 @@ export default class SampleMapItem extends Component {
       let fileCachePath = GLOBAL.homePath + ConstPath.CachePath
       let fileName = this.props.data.fileName.substr(0, this.props.data.fileName.lastIndexOf('.zip'))
       let fileName2 = ''
-      if (fileName.endsWith('_示范数据')) {
-        fileName2 = fileName.substr(0, fileName.lastIndexOf('_示范数据'))
+      if (fileName.endsWith('_EXAMPLE')) {
+        fileName2 = fileName.substr(0, fileName.lastIndexOf('_EXAMPLE'))
       } else {
-        fileName2 = fileName + '_示范数据'
+        fileName2 = fileName + '_EXAMPLE'
       }
       if (
         await FileTools.fileIsExist(fileCachePath + fileName) ||
@@ -245,7 +245,13 @@ export default class SampleMapItem extends Component {
   render() {
     let titleName = ''
     if (this.props.data.fileName) {
-      let index = this.props.data.fileName.lastIndexOf('.')
+      let index = -1
+      if (this.props.data.fileName.toUpperCase().indexOf('_EXAMPLE') > 0) {
+        index = this.props.data.fileName.lastIndexOf('_EXAMPLE')
+      } else {
+        index = this.props.data.fileName.lastIndexOf('.')
+      }
+      
       titleName =
         index === -1
           ? this.props.data.fileName

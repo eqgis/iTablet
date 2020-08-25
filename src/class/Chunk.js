@@ -60,7 +60,7 @@ export default class Chunk {
     switch (this.mapType) {
       case Chunk.MapType.SCENE: {
         // 三维地图
-        let fileName = 'OlympicGreen_示范数据'
+        let fileName = 'OlympicGreen_EXAMPLE'
         const homePath = await FileTools.appendingHomeDirectory()
         const cachePath = homePath + ConstPath.CachePath
         const fileDirPath = cachePath + fileName
@@ -68,7 +68,7 @@ export default class Chunk {
         if (arrFile.length === 0) {
           NavigationService.navigate('Map3D', {})
         } else {
-          // const name = 'OlympicGreen_示范数据'
+          // const name = 'OlympicGreen_EXAMPLE'
           const name = 'OlympicGreen'
           NavigationService.navigate('Map3D', { name })
         }

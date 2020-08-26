@@ -3137,7 +3137,7 @@ export default class MapView extends React.Component {
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {!this.isExample &&
           global.isLicenseValid &&
-          GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
+          GLOBAL.Type && GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}

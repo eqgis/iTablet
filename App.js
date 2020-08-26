@@ -415,7 +415,7 @@ class AppRoot extends Component {
   }
   
   getVersion = async () => {
-    global.language = 'CN'
+    global.language = this.props.language
     let appInfo = await AppInfo.getAppInfo()
     let bundleInfo = await AppInfo.getBundleVersion()
     global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode

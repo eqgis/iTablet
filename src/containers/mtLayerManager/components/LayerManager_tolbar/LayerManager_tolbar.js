@@ -408,6 +408,7 @@ export default class LayerManager_tolbar extends React.Component {
 
   //更新菜单按钮状态
   updateMenuState = (data, layerData) => {
+    data = JSON.parse(JSON.stringify(data))
     let newState = { layerData }
     if (data && data[0] && data[0].headers && GLOBAL.Type !== 'MAP_3D') {
       let tempheader0 = layerData.isVisible

@@ -436,6 +436,7 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
     backgroundColor: color.bgW,
+    overflow: 'hidden',
   },
   temple: {
     paddingHorizontal: scaleSize(30),

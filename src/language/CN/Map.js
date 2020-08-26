@@ -507,7 +507,7 @@ const Map_Main_Menu = {
   MAP_TOPO_RESAMPLE: '重采样',
   MAP_TOPO_CHANGE_DIRECTION: '变方向',
   ADD_DATASET: '追加数据集',
-  SELECT_ROADNAME_FIELD: '选择以下数据集的道路名称字段',
+  SELECT_ROADNAME_FIELD: '请选择道路名称字段',
   SELECT_FIELD: '选择字段',
   MERGE_CANCEL: '取消',
   MERGE_CONFIRM: '确定',

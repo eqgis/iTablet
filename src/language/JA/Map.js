@@ -507,7 +507,7 @@ const Map_Main_Menu = {
   MAP_TOPO_RESAMPLE: 'リサンプリング',
   MAP_TOPO_CHANGE_DIRECTION: '方向を変更',
   ADD_DATASET: 'データセットの追加',
-  SELECT_ROADNAME_FIELD: '次のデータセットの道路名フィールドを選択します',
+  SELECT_ROADNAME_FIELD: '道路名フィールドを選択してくかえる',
   SELECT_FIELD: 'フィールドの選択',
   MERGE_CANCEL: 'キャンセル',
   MERGE_CONFIRM: 'OK',
@@ -538,7 +538,7 @@ const Map_Plotting = {
   PLOTTING_ANIMATION_CONTINUE: '続けて作成',
   PLOTTING_ANIMATION_WAY_SET: 'パス設定',
   PLOTTING_ANIMATION_SAVE: '保存',
-  PLOTTING_ANIMATION_BACK: '返す',
+  PLOTTING_ANIMATION_BACK: '戻る',
 
   ANIMATION_ATTRIBUTE_STR: 'アニメーション属性',
   ANIMATION_WAY: 'パスアニメーション',

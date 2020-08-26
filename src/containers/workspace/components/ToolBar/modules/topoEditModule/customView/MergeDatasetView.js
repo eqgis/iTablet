@@ -10,7 +10,6 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  FlatList,
   StyleSheet,
   SectionList,
 } from 'react-native'
@@ -18,19 +17,11 @@ import { scaleSize, setSpText, Toast } from '../../../../../../../utils'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
 import { ToolbarType } from '../../../../../../../constants'
-import {
-  getLayerIconByType,
-  getLayerWhiteIconByType,
-  getPublicAssets,
-  getThemeAssets,
-} from '../../../../../../../assets'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
+import { SMap } from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 
-const VIEW_STATUS_MERGE = 'VIEW_STATUS_MERGE'
-const VIEW_STATUS_ADD_NEW = 'VIEW_STATUS_ADD_NEW'
-const VIEW_STATUS_NEED_SELECT = 'VIEW_STATUS_NEED_SELECT'
 export default class MergeDatasetView extends Component {
   props: {
     data: Array,
@@ -38,12 +29,29 @@ export default class MergeDatasetView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: props.data || [],
-      selectAll: false,
-      needChangeData: [],
-      selectedItem: {},
-      ViewStatus: VIEW_STATUS_MERGE,
+      lineDataset: [],
     }
+  }
+
+  componentDidMount() {
+    this._add()
+  }
+
+  _add = async () => {
+    let lineDataset = await SMap.getAllLineDatasets()
+    let { datasetName, datasourceName } = GLOBAL.INCREMENT_DATA
+    let filterData = lineDataset.filter(item => {
+      if (item.title === datasourceName) {
+        item.data = item.data.filter(data => {
+          return data.datasetName !== datasetName
+        })
+        return item.data.length > 0
+      }
+      return true
+    })
+    this.setState({
+      lineDataset: filterData,
+    })
   }
 
   _cancel = () => {
@@ -56,53 +64,31 @@ export default class MergeDatasetView extends Component {
     })
   }
 
-  _onSelect = index => {
-    let data = JSON.parse(JSON.stringify(this.state.data))
-    let selected = !data[index].selected
-    data[index].selected = selected
-    let selectAll = !selected ? selected : this.state.selectAll
-    this.setState({
-      data,
-      selectAll,
-    })
-  }
-
-  _onSelectAll = () => {
-    let preData = JSON.parse(JSON.stringify(this.state.data))
-    let selectAll = !this.state.selectAll
-    let data = preData.map(item => {
-      item.selected = selectAll
-      return item
-    })
-    this.setState({
-      data,
-      selectAll,
-    })
-  }
-
-  _add = async () => {
-    let lineDataset = await SMap.getAllLineDatasets()
-    this.setState({
-      ViewStatus: VIEW_STATUS_ADD_NEW,
-      lineDataset,
-    })
-  }
-
-  _confirm = async () => {
-    let selectedDatas = this.state.data.filter(item => item.selected)
-    // let {datasetName,datasourceName} = GLOBAL.INCREMENT_DATA
-    // await SMap.deleteDatasetAndLayer({})
-    let needChangeData = await SMap.queryFieldInfos(selectedDatas)
-    if (needChangeData.length > 0) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA_DIALOG,
-      )
-      this.setState({
-        needChangeData,
-        ViewStatus: VIEW_STATUS_NEED_SELECT,
+  confirm = () => {
+    let data = JSON.parse(JSON.stringify(this.state.lineDataset))
+    let selectedData = []
+    data.map(item => {
+      item.data.map(data => {
+        if (data.selected) {
+          selectedData.push(data)
+        }
       })
+    })
+    if (selectedData.length === 0) {
+      Toast.show(
+        getLanguage(global.language).Analyst_Prompt.PLEASE_CHOOSE_DATASET,
+      )
+      return
+    }
+    let filterData = selectedData.filter(item => {
+      return item.fieldInfo.length > 0 && !item.selectedFieldInfo
+    })
+    if (filterData.length > 0) {
+      Toast.show(
+        getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+      )
     } else {
-      this.mergeData(selectedDatas)
+      this.mergeData(selectedData)
     }
   }
 
@@ -141,18 +127,6 @@ export default class MergeDatasetView extends Component {
     }
   }
 
-  _selectItem = ({ item }) => {
-    let selectedItem = this.state.selectedItem
-    if (
-      selectedItem.datasetName !== item.datasetName ||
-      selectedItem.datasourceName !== item.datasourceName
-    ) {
-      this.setState({
-        selectedItem: item,
-      })
-    }
-  }
-
   _onTitlePress = section => {
     let lineDataset = JSON.parse(JSON.stringify(this.state.lineDataset))
     let currentIndex
@@ -168,160 +142,9 @@ export default class MergeDatasetView extends Component {
     })
   }
 
-  _confirmAdd = () => {
-    let selectedItem = this.state.selectedItem
-    let data = JSON.parse(JSON.stringify(this.state.data))
-    selectedItem.datasetName && data.push(this.state.selectedItem)
-    this.setState({
-      ViewStatus: VIEW_STATUS_MERGE,
-      data,
-      selectedItem: {},
-    })
-  }
-
-  _cancelAdd = () => {
-    this.setState({
-      ViewStatus: VIEW_STATUS_MERGE,
-      selectedItem: {},
-    })
-  }
-
-  //用户选择了字段  不需要刷新View
-  _itemSelected = (value, index) => {
-    let needChangeData = this.state.needChangeData
-    needChangeData[index].selectedFieldInfo = value
-    this.setState({
-      needChangeData,
-    })
-  }
-
-  _confirmSelect = () => {
-    let needChangeData = this.state.needChangeData
-    if (needChangeData.every(item => item.selectedFieldInfo)) {
-      let selectedData = this.state.data.filter(item => item.selected)
-      let datas = selectedData.map(item => {
-        let data = needChangeData.filter(
-          val =>
-            val.datasetName === item.datasetName &&
-            val.datasourceName === item.datasourceName,
-        )
-        return data[0]
-      })
-      datas = datas.filter(item => item)
-      this.mergeData(datas)
-    } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
-    }
-  }
-  _renderDropMenu = () => {
-    let renderItem = ({ item, index }) => {
-      return (
-        <View style={styles.row}>
-          <Text style={styles.text}>{item.datasetName}</Text>
-          <ModalDropdown
-            style={styles.dropDownStyle}
-            textStyle={{
-              fontSize: setSpText(18),
-            }}
-            onSelect={(selectIndex, value) => {
-              this._itemSelected(value, index)
-            }}
-            defaultValue={
-              getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_FIELD
-            }
-            options={item.fieldName}
-          />
-        </View>
-      )
-    }
-    return (
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <View style={styles.actionView}>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._cancelAdd}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Find.BACK}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.titleTxt}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD}
-          </Text>
-          <View style={styles.actionView}>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._confirmSelect}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <FlatList
-          style={styles.padding}
-          keyExtractor={(item, index) => item.toString() + index}
-          data={this.state.needChangeData}
-          renderItem={renderItem}
-        />
-      </View>
-    )
-  }
-
-  _renderItem = ({ item, index }) => {
-    let selectedImg = item.selected
-      ? getPublicAssets().common.icon_check
-      : getPublicAssets().common.icon_uncheck
-    return (
-      <View style={styles.row}>
-        <TouchableOpacity
-          style={styles.imageWrap}
-          onPress={() => this._onSelect(index)}
-        >
-          <Image
-            source={selectedImg}
-            resizeMode={'contain'}
-            style={styles.image}
-          />
-        </TouchableOpacity>
-        <Image />
-        <Text style={styles.text}>{item.datasetName}</Text>
-      </View>
-    )
-  }
-
-  _renderSectionItem = ({ section, item }) => {
+  renderItem = ({ section, item }) => {
     if (!section.visible) return null
-    let extraStyle, extraTxtStyle, lineImg
-    let selectedItem = this.state.selectedItem
-    if (
-      selectedItem.datasetName === item.datasetName &&
-      selectedItem.datasourceName === item.datasourceName
-    ) {
-      extraStyle = { backgroundColor: color.item_selected_bg }
-      extraTxtStyle = { color: color.white }
-      lineImg = getLayerWhiteIconByType(DatasetType.LINE)
-    } else {
-      extraStyle = {}
-      extraTxtStyle = {}
-      lineImg = getLayerIconByType(DatasetType.LINE)
-    }
-    return (
-      <TouchableOpacity
-        style={[styles.row, extraStyle]}
-        onPress={() => {
-          this._selectItem({ item })
-        }}
-      >
-        <View style={styles.imageWrap}>
-          <Image source={lineImg} resizeMode={'contain'} style={styles.image} />
-        </View>
-        <Text style={[styles.text, extraTxtStyle]}>{item.datasetName}</Text>
-      </TouchableOpacity>
-    )
+    return <Item item={item} />
   }
 
   _renderSectionHeader = ({ section }) => {
@@ -347,14 +170,14 @@ export default class MergeDatasetView extends Component {
     )
   }
 
-  _renderAddNew = () => {
+  render = () => {
     return (
       <View style={styles.container}>
         <View style={styles.title}>
           <View style={styles.actionView}>
             <TouchableOpacity
               style={styles.titleTxtWrap}
-              onPress={this._cancelAdd}
+              onPress={this._cancel}
             >
               <Text style={styles.actionTxt}>
                 {getLanguage(GLOBAL.language).Find.BACK}
@@ -367,7 +190,7 @@ export default class MergeDatasetView extends Component {
           <View style={styles.actionView}>
             <TouchableOpacity
               style={styles.titleTxtWrap}
-              onPress={this._confirmAdd}
+              onPress={this.confirm}
             >
               <Text style={styles.actionTxt}>
                 {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
@@ -380,78 +203,81 @@ export default class MergeDatasetView extends Component {
           keyExtractor={(item, index) => item.toString() + index}
           sections={this.state.lineDataset}
           renderSectionHeader={this._renderSectionHeader}
-          renderItem={this._renderSectionItem}
+          renderItem={this.renderItem}
         />
       </View>
     )
   }
+}
 
-  _renderMerge = () => {
-    return (
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <View style={styles.actionView}>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._cancel}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CANCEL}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._onSelectAll}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_SELECT_ALL}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.titleTxt}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_DATASET}
-          </Text>
-          <View style={styles.actionView}>
-            <TouchableOpacity style={styles.titleTxtWrap} onPress={this._add}>
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_ADD}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._confirm}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <FlatList
-          style={styles.padding}
-          keyExtractor={(item, index) => item.toString() + index}
-          data={this.state.data}
-          renderItem={this._renderItem}
-          getItemLayout={(data, index) => {
-            return {
-              length: scaleSize(61),
-              offset: scaleSize(61) * index,
-              index,
-            }
-          }}
-        />
-      </View>
-    )
+class Item extends Component {
+  props: {
+    item: Object,
+    data: Array,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: false,
+    }
+  }
+
+  onSelect = async () => {
+    this.props.item.selected = !this.state.selected
+    let datasetName = this.props.item.datasetName
+    let datasourceName = this.props.item.datasourceName
+    if (!this.props.item.fieldInfo) {
+      let needChangeData = await SMap.queryFieldInfos([
+        { datasetName, datasourceName },
+      ])
+      if (needChangeData.length > 0) {
+        this.props.item.fieldInfo = needChangeData[0].fieldName
+      } else {
+        this.props.item.fieldInfo = []
+      }
+    }
+    this.setState({
+      selected: !this.state.selected,
+    })
   }
 
   render() {
-    if (this.state.ViewStatus === VIEW_STATUS_NEED_SELECT) {
-      return this._renderDropMenu()
-    } else if (this.state.ViewStatus === VIEW_STATUS_ADD_NEW) {
-      return this._renderAddNew()
-    } else {
-      return this._renderMerge()
-    }
+    let selectedImg = this.state.selected
+      ? getPublicAssets().common.icon_check
+      : getPublicAssets().common.icon_uncheck
+    return (
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.imageWrap}
+          onPress={() => this.onSelect()}
+        >
+          <Image
+            source={selectedImg}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <Image />
+        <Text style={styles.text}>{this.props.item.datasetName}</Text>
+        {this.state.selected && this.props.item.fieldInfo?.length > 0 && (
+          <ModalDropdown
+            style={styles.dropDownStyle}
+            textStyle={{
+              fontSize: setSpText(18),
+            }}
+            onSelect={(selectIndex, value) => {
+              this.props.item.selectedFieldInfo = value
+            }}
+            defaultValue={
+              this.props.item.selectedFieldInfo ||
+              getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+            }
+            options={this.props.item.fieldInfo}
+          />
+        )}
+      </View>
+    )
   }
 }
 

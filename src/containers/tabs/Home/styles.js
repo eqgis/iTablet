@@ -51,8 +51,6 @@ export default StyleSheet.create({
   },
   dialog: {
     flexDirection: 'column',
-    // alignItems: 'center',
-    // backgroundColor: 'yellow',
     height: scaleSize(464),
     width: scaleSize(392),
     borderRadius: scaleSize(40),
@@ -65,7 +63,6 @@ export default StyleSheet.create({
   },
   
   dialogHeader: {
-    // width: '100%',
     height: scaleSize(64),
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -75,7 +72,7 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeXXl,
     color: color.theme_white,
     textAlign: 'center',
-  
+    fontWeight: 'bold',
     position: 'absolute',
     right: 0,
     left: 0,
@@ -101,19 +98,18 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: size.fontSize.fontSizeXl,
     color: color.fontColorBlack,
+    fontWeight: 'bold',
   },
   dialogSize: {
     textAlign: 'center',
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorGray3,
-    marginTop: scaleSize(6),
+    marginTop: scaleSize(10),
   },
   dialogButtons: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    // marginVertical: scaleSize(24),
     marginHorizontal: scaleSize(64),
   },
   dialogButton: {
@@ -133,8 +129,6 @@ export default StyleSheet.create({
     color: '#303030',
   },
   checkView: {
-    // flex: 1,
-    height: scaleSize(60),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

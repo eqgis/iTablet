@@ -47,10 +47,16 @@ export default class SampleMapItem extends Component {
       } else {
         fileName2 = fileName + '_EXAMPLE'
       }
-      if (
-        await FileTools.fileIsExist(fileCachePath + fileName) ||
-        await FileTools.fileIsExist(fileCachePath + fileName2)
-      ) {
+      
+      let path = fileCachePath + fileName
+      let exist = await FileTools.fileIsExist(path)
+      if (!exist) {
+        path = fileCachePath + fileName2
+        exist = await FileTools.fileIsExist(path)
+      }
+      
+      if (exist && (await FileTools.getFilterFiles(path)).length > 0) {
+        
         this.setState({
           downloaded: true,
         })

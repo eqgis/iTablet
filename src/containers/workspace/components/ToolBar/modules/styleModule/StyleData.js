@@ -47,7 +47,7 @@ function getData(type, params) {
       data = colorsWithNull
       break
     case ConstToolType.TEXTFONT:
-      data = font
+      data = font(GLOBAL.language)
       break
   }
   ToolbarModule.setParams(params)

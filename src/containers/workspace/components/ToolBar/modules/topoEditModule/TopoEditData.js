@@ -12,7 +12,6 @@ import TopoEditAction from './TopoEditAction'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import MergeDatasetView from './customView/MergeDatasetView'
-import { SMap } from 'imobile_for_reactnative'
 
 async function getData(type) {
   let data = []
@@ -162,13 +161,9 @@ async function getData(type) {
       break
     case ConstToolType.MAP_TOPO_MERGE_DATASET:
       {
-        let datas = await SMap.getLineDataset()
         data = []
         buttons = []
-        datas = datas.filter(
-          item => item.datasetName !== GLOBAL.INCREMENT_DATA.datasetName,
-        )
-        customView = () => <MergeDatasetView data={datas} />
+        customView = () => <MergeDatasetView />
       }
       break
     case ConstToolType.MAP_TOPO_SPLIT_LINE:

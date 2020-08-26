@@ -3135,8 +3135,9 @@ export default class MapView extends React.Component {
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR &&
+        {!this.isExample &&
+          global.isLicenseValid &&
+          GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
@@ -3147,37 +3148,8 @@ export default class MapView extends React.Component {
             }
             customStyle={this.state.showAIDetect ? null : styles.hidden}
             language={this.props.language}
-            isDetect={false}
-          />
-        )}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS &&
-          !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
-              }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
             onArObjectClick={this._onArObjectClick}
-            language={this.props.language}
-          />
-        )}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR_MAPPING &&
-          !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
-              }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
-            language={this.props.language}
-            isDetect={false}
           />
         )}
         {this._renderAIDetectChange()}

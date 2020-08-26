@@ -1200,6 +1200,7 @@ class AppRoot extends Component {
         </View>
         <SaveView
           ref={ref => GLOBAL.SaveMapView = ref}
+          language={this.props.language}
           save={this.saveMap}
           device={this.props.device}
           notSave={this.closeMapHandler}

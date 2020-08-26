@@ -22,6 +22,7 @@ const Prompt = {
   PREPARING: 'Preparing',
 
   DOWNLOAD_SAMPLE_DATA: 'Download the sample data?',
+  DOWNLOAD_DATA: 'Data Download',
   DOWNLOAD: 'Download',
   DOWNLOADING: 'Loading',
   DOWNLOAD_SUCCESSFULLY: 'Done',

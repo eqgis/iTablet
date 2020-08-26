@@ -9,7 +9,7 @@ import {
   Platform,
   NetInfo,
 } from 'react-native'
-import { Container, Dialog, PopMenu } from '../../../components'
+import { Container, Dialog, PopMenu, Button } from '../../../components'
 import { ModuleList } from './components'
 import styles from './styles'
 import Toast from '../../../utils/Toast'
@@ -29,6 +29,7 @@ import color from '../../../styles/color'
 import { scaleSize } from '../../../utils'
 import { SimpleDialog } from '../Friend'
 import TabBar from '../TabBar'
+import ImageButton from '../../../components/ImageButton'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {
@@ -317,7 +318,22 @@ export default class Home extends Component {
     }
   }
 
-  renderDialogChildren = () => {
+  renderExitDialogChildren = () => {
+    return (
+      <View style={styles.dialogHeaderView}>
+        <Image
+          source={require('../../../assets/home/Frenchgrey/icon_prompt.png')}
+          style={styles.dialogHeaderImg}
+        />
+        <Text style={styles.promptTitle}>
+          {getLanguage(this.props.language).Prompt.QUIT}
+          {/* 确定退出SuperMap iTablet ？ */}
+        </Text>
+      </View>
+    )
+  }
+
+  renderDialog = () => {
     let storage = null
     let fileName = null
     let downloadData = this.state.downloadData
@@ -327,23 +343,54 @@ export default class Home extends Component {
       storage = (item.size === undefined ? 0 : (item.size / 1024 / 1024).toFixed(2)) + 'MB'
     }
     let Img = this.state.dialogCheck
-      ? require('../../../assets/home/Frenchgrey/icon_check_selected.png')
-      : require('../../../assets/home/Frenchgrey/icon_check.png')
+      ? getPublicAssets().common.icon_select
+      : getPublicAssets().common.icon_none
     return (
-      <View style={styles.dialogHeaderView}>
-        <Image
-          source={require('../../../assets/home/Frenchgrey/icon_prompt.png')}
-          style={styles.dialogHeaderImg}
-        />
-        <Text style={styles.promptTtile}>
-          {getLanguage(this.props.language).Prompt.DOWNLOAD_SAMPLE_DATA}
-        </Text>
-        <Text style={styles.depict}>{fileName + '  ' + storage}</Text>
+      <Dialog
+        ref={ref => (this.dialog = ref)}
+        type={'modal'}
+        showBtns={false}
+        opacity={1}
+        style={styles.dialog}
+      >
+        <View style={styles.dialogHeader}>
+          <Text style={styles.promptTitle}>
+            {getLanguage(this.props.language).Prompt.DOWNLOAD_DATA}
+          </Text>
+          <ImageButton
+            iconBtnStyle={styles.dialogHeaderBtnView}
+            iconStyle={styles.dialogHeaderBtn}
+            icon={getPublicAssets().common.icon_nav_imove}
+            onPress={() => {
+              this.showDialog(false)
+              NavigationService.navigate('SampleMap')
+            }}
+          />
+        </View>
+        <View style={styles.dialogContent}>
+          <Text style={styles.dialogInfo}>{fileName}</Text>
+          <Text style={styles.dialogSize}>{storage}</Text>
+        </View>
+        <View style={styles.dialogButtons}>
+          <Button
+            title={getLanguage(this.props.language).Prompt.DOWNLOAD}
+            onPress={this.confirm}
+            style={[styles.dialogButton, {backgroundColor: color.itemColorGray}]}
+            titleStyle={{color: color.white}}
+          />
+          <Button
+            title={getLanguage(this.props.language).Prompt.CANCEL}
+            onPress={this.cancel}
+            style={[styles.dialogButton, {backgroundColor: color.itemColorGray2, marginTop: scaleSize(22)}]}
+            titleStyle={{color: color.contentColorGray}}
+          />
+        </View>
         <TouchableOpacity
+          activeOpacity={1}
           style={styles.checkView}
           onPress={() => {
-            let newdialogCheck = !this.state.dialogCheck
-            this.setState({ dialogCheck: newdialogCheck })
+            let newDialogCheck = !this.state.dialogCheck
+            this.setState({ dialogCheck: newDialogCheck })
           }}
         >
           <Image source={Img} style={styles.checkImg} />
@@ -352,42 +399,6 @@ export default class Home extends Component {
             {/* 不再提示 */}
           </Text>
         </TouchableOpacity>
-      </View>
-    )
-  }
-
-  renderExitDialogChildren = () => {
-    return (
-      <View style={styles.dialogHeaderView}>
-        <Image
-          source={require('../../../assets/home/Frenchgrey/icon_prompt.png')}
-          style={styles.dialogHeaderImg}
-        />
-        <Text style={styles.promptTtile}>
-          {getLanguage(this.props.language).Prompt.QUIT}
-          {/* 确定退出SuperMap iTablet ？ */}
-        </Text>
-      </View>
-    )
-  }
-
-  renderDialog = () => {
-    return (
-      <Dialog
-        ref={ref => (this.dialog = ref)}
-        type={'modal'}
-        confirmAction={this.confirm}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.DOWNLOAD}
-        //{'下载'}
-        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
-        //{'取消'}
-        // backgroundStyle={styles.dialogBackground}
-        opacity={1}
-        // opacityStyle={[styles.opacityView, { height: scaleSize(380) }]}
-        style={[styles.dialogBackground, { height: scaleSize(380) }]}
-        cancelAction={this.cancel}
-      >
-        {this.renderDialogChildren()}
       </Dialog>
     )
   }

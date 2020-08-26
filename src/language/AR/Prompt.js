@@ -22,6 +22,7 @@ const Prompt = {
   PREPARING: '准备中',
 
   DOWNLOAD_SAMPLE_DATA: 'تنزيل البيانات النموذجية؟',
+  DOWNLOAD_DATA: '数据下载', // 待翻译
   DOWNLOAD: 'تنزيل',
   DOWNLOADING: 'تحميل',
   DOWNLOAD_SUCCESSFULLY: 'تم',

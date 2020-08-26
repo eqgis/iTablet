@@ -175,7 +175,6 @@ function openMap() {
         title: getLanguage(global.language).Profile.SAMPLEDATA,
         action: () => {
           NavigationService.navigate('SampleMap', {
-            from: 'MapView',
             refreshAction: openMap,
           })
         },

@@ -22,6 +22,7 @@ const Prompt = {
   PREPARING: '准备中',
 
   DOWNLOAD_SAMPLE_DATA: '是否下载样例数据？',
+  DOWNLOAD_DATA: '数据下载',
   DOWNLOAD: '下载',
   DOWNLOADING: '下载中',
   DOWNLOAD_SUCCESSFULLY: '已下载',

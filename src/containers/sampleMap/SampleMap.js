@@ -124,6 +124,7 @@ export default class SampleMap extends Component {
         user={this.props.user}
         data={item}
         style={{
+          flex: 1,
           marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? scaleSize(10)
             : scaleSize(20)
@@ -147,14 +148,11 @@ export default class SampleMap extends Component {
         }}
       >
         <FlatList
-          style={[
-            styles.list,
-            {
-              paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                ? scaleSize(20)
-                : scaleSize(32)
-            },
-          ]}
+          style={{
+            marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? scaleSize(20)
+              : scaleSize(32)
+          }}
           numColumns={2}
           data={this.state.data}
           renderItem={this._renderItem}

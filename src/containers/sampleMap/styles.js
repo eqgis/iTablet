@@ -18,7 +18,7 @@ export default StyleSheet.create({
     borderRadius: scaleSize(20),
     backgroundColor: 'white',
     // overflow: 'hidden',
-    elevation: 10,
+    elevation: 5,
     shadowOffset: { width: 5, height: 5 },
     shadowColor: color.itemColorGray2,
     shadowOpacity: 1,

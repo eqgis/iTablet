@@ -320,12 +320,12 @@ export default class Home extends Component {
 
   renderExitDialogChildren = () => {
     return (
-      <View style={styles.dialogHeaderView}>
+      <View style={styles.exitDialogHeaderView}>
         <Image
           source={require('../../../assets/home/Frenchgrey/icon_prompt.png')}
-          style={styles.dialogHeaderImg}
+          style={styles.exitDialogHeaderImg}
         />
-        <Text style={styles.promptTitle}>
+        <Text style={styles.exitDialogTile}>
           {getLanguage(this.props.language).Prompt.QUIT}
           {/* 确定退出SuperMap iTablet ？ */}
         </Text>

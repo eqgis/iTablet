@@ -56,10 +56,26 @@ export default StyleSheet.create({
     borderRadius: scaleSize(40),
     paddingVertical: scaleSize(20),
   },
-  dialogHeaderImg: {
+  
+  // ExitDialog
+  exitDialogHeaderView: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: scaleSize(30),
+  },
+  exitDialogHeaderImg: {
     width: scaleSize(80),
     height: scaleSize(80),
     opacity: 1,
+  },
+  exitDialogTile: {
+    fontSize: size.fontSize.fontSizeXXl,
+    color: color.theme_white,
+    marginTop: scaleSize(5),
+    marginLeft: scaleSize(10),
+    marginRight: scaleSize(10),
+    textAlign: 'center',
   },
   
   dialogHeader: {

@@ -27,14 +27,13 @@ export default class SampleMapItem extends Component {
     this.exist = false
     this.downloading = false
     this.downloadingPath = false
+    this.aniMotion = null
     this.state = {
       progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
       rotateValue: new Animated.Value(0),
     }
-
-    this.unZipFile = this.unZipFile.bind(this)
   }
 
   componentDidMount() {
@@ -61,6 +60,18 @@ export default class SampleMapItem extends Component {
           downloaded: true,
         })
       }
+      if (
+        this.props.downloadData &&
+        (
+          this.props.downloadData.progress <= 100 || this.props.downloadData.progress >= 0
+        )
+      ) {
+        this.setState({
+          isDownloading: true,
+        }, () => {
+          this.spin()
+        })
+      }
     }.bind(this)())
   }
   
@@ -74,21 +85,32 @@ export default class SampleMapItem extends Component {
     return false
   }
   
-  // componentDidUpdate() {
-  //   if (this.mProgress) {
-  //     this.mProgress.progress = this.props.downloadData.progress / 100
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    this.spin()
+    if (
+      this.props.downloadData && this.props.downloadData.progress === 100 &&
+      prevProps.downloadData && prevProps.downloadData.progress < 100 &&
+      !prevState.downloaded && prevState.isDownloading &&
+      !this.state.downloaded && this.state.isDownloading
+    ) {
+      this.setState({
+        isDownloading: false,
+        downloaded: true,
+      })
+    }
+  }
   
   spin = () => {
-    this.state.rotateValue.setValue(0)
-    const aniMotion = Animated.timing(this.state.rotateValue,{
-      toValue: this.state.rotateValue._value === 0 ? 1 : 0,
-      duration: 800,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    });
-    Animated.loop(aniMotion).start()
+    if (!this.aniMotion && this.state.isDownloading) {
+      this.state.rotateValue.setValue(0)
+      this.aniMotion = Animated.timing(this.state.rotateValue,{
+        toValue: this.state.rotateValue._value === 0 ? 1 : 0,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      });
+      Animated.loop(this.aniMotion).start()
+    }
   }
   
   
@@ -114,9 +136,8 @@ export default class SampleMapItem extends Component {
         if (!this.state.isDownloading) {
           this.setState({
             isDownloading: true,
-          })
+          }, () => this.spin())
         }
-        this.spin()
         let fileName = this.props.data.fileName.replace('.zip', '')
         let result = await this.props.downloadFile({
           id: this.props.data.id,
@@ -130,12 +151,13 @@ export default class SampleMapItem extends Component {
           ...defaultExample,
         })
   
-        setTimeout(() => {
-          this.setState({
-            isDownloading: false,
-            downloaded: !!result,
-          })
-        }, 1000)
+        // setTimeout(() => {
+        this.aniMotion = null
+        this.setState({
+          isDownloading: false,
+          downloaded: !!result,
+        })
+        // }, 1000)
       }
     } catch (e) {
       this.setState({
@@ -144,7 +166,7 @@ export default class SampleMapItem extends Component {
     }
   }
 
-  async unZipFile() {
+  unZipFile = async () => {
     let appHome = await FileTools.appendingHomeDirectory()
     let userName =
       this.props.user.currentUser.userType === UserType.PROBATION_USER

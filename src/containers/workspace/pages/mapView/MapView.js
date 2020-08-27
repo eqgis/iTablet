@@ -514,7 +514,8 @@ export default class MapView extends React.Component {
     ) {
       let data
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        // if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (this.props.downloads[i].id && this.props.downloads[i].params.module === GLOBAL.Type) {
           data = this.props.downloads[i]
         }
         if (this.props.downloads[i].id === 'mobilenet_quant_224') {
@@ -2412,7 +2413,11 @@ export default class MapView extends React.Component {
     let data
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        // if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
           break
         }

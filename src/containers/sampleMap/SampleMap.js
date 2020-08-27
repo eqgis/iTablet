@@ -6,9 +6,9 @@ import {
   Dimensions,
   View,
 } from 'react-native'
-import styles from './styles'
 import { FileTools } from '../../native'
 import { Toast, scaleSize, FetchUtils } from '../../utils'
+import NavigationService from '../NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
@@ -80,7 +80,7 @@ export default class SampleMap extends Component {
     let fileDirPath = cachePath + fileName
     let fileCachePath = fileDirPath + '.zip'
     
-    Toast.show(getLanguage(this.props.language).Prompt.DOWNLOAD + ' ' + fileName)
+    Toast.show(getLanguage(this.props.language).Prompt.DOWNLOAD + ' ' + fileName.replace('_EXAMPLE', ''))
     try {
       let downloadOptions = {
         fromUrl: downloadData.url,
@@ -89,6 +89,7 @@ export default class SampleMap extends Component {
         fileName: fileName,
         progressDivider: 1,
         key: downloadData.id,
+        module: GLOBAL.Type,
       }
       await this.props.downloadFile(downloadOptions)
       await FileTools.unZipFile(fileCachePath, cachePath)
@@ -102,12 +103,8 @@ export default class SampleMap extends Component {
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)
       this.props.deleteDownloadFile({id: downloadData.id})
-      
-      if (this.refreshAction && typeof this.refreshAction === 'function') {
-        this.refreshAction()
-      }
   
-      Toast.show(fileName + ' ' + getLanguage(this.props.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(fileName.replace('_EXAMPLE', '') + ' ' + getLanguage(this.props.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return true
     } catch (e) {
       Toast.show(getLanguage(this.props.language).Prompt.NETWORK_ERROR)
@@ -145,6 +142,12 @@ export default class SampleMap extends Component {
           title: getLanguage(global.language).Profile.SAMPLEDATA,
           //'公共地图',
           navigation: this.props.navigation,
+          backAction: () => {
+            if (this.refreshAction && typeof this.refreshAction === 'function') {
+              this.refreshAction()
+            }
+            NavigationService.goBack()
+          },
         }}
       >
         <FlatList

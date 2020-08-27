@@ -12,21 +12,23 @@ import {
   TouchableOpacity,
   SectionList,
   StyleSheet,
-  Animated,
   Platform,
+  FlatList,
 } from 'react-native'
 import { Container, CustomInputDialog } from '../../components'
 import {
   getLayerIconByType,
   getLayerWhiteIconByType,
   getPublicAssets,
+  getThemeAssets,
 } from '../../assets'
-import { dataUtil, scaleSize, screen, setSpText, Toast } from '../../utils'
+import { dataUtil, scaleSize, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
+import ModalDropdown from 'react-native-modal-dropdown'
 
 export default class CreateNavDataPage extends Component {
   props: {
@@ -37,22 +39,44 @@ export default class CreateNavDataPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
+      lineDataset: [],
+      datasource: [],
       selectedDataset: {},
       selectedDatasource: {},
     }
-    this.maxWidth = new Animated.Value(
-      screen.getScreenWidth(this.props.device.orientation),
-    )
-    this.maxHeight =
-      screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
   }
-  async componentDidMount() {
-    let data = await SMap.getDatasourceAndDataset()
-    if (data.length === 0 || data[0]?.data?.length === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.INCREMENT_FIRST)
-      this.props.navigation.goBack()
-    } else if (data[1]?.data?.length === 0) {
+
+  componentDidMount() {
+    this.getLineDatasets()
+    this.getDatasource()
+  }
+
+  getLineDatasets = async () => {
+    let lineDataset = await SMap.getAllLineDatasets()
+    this.setState({
+      lineDataset: lineDataset,
+    })
+  }
+
+  getDatasource = async () => {
+    let datasource = await SMap.getDatasources()
+    let data = []
+    datasource.map(item => {
+      if (
+        item.engineType === 219 &&
+        item.alias.indexOf('Label_') !== 0 &&
+        item.alias.indexOf('default_increment_datasource@') !== 0
+      ) {
+        data.push({
+          datasourceName: item.alias,
+        })
+      }
+    })
+    if (data.length > 0) {
+      this.setState({
+        datasource: data,
+      })
+    } else {
       Toast.show(getLanguage(GLOBAL.language).Prompt.NO_DATASOURCE)
       setTimeout(() => {
         this.dialog.setDialogVisible(true, {
@@ -66,35 +90,30 @@ export default class CreateNavDataPage extends Component {
           confirmAction: this._createDatasource,
         })
       }, 1000)
-    } else {
-      this.setState({
-        data,
-        selectedDatasource: data[1].default,
-      })
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.device.orientation !== this.props.device.orientation) {
-      this.maxHeight =
-        screen.getScreenHeight(this.props.device.orientation) - scaleSize(200)
-      let maxWidth = screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.maxWidth, {
-        toValue: maxWidth,
-        duration: 300,
-      }).start()
-    }
-  }
-
-  _onPressRow = ({ section, item }) => {
-    let name =
-      section.title === 'dataset' ? 'selectedDataset' : 'selectedDatasource'
-    this.setState({
-      [name]: item,
-    })
   }
 
   _confirm = () => {
+    let { selectedDatasource, selectedDataset } = this.state
+    if (!selectedDataset.datasetName) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      return
+    }
+    if (
+      selectedDataset.fieldInfo.length > 0 &&
+      !selectedDataset.selectedFieldInfo
+    ) {
+      Toast.show(
+        getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+      )
+      return
+    }
+    if (!selectedDatasource.datasourceName) {
+      Toast.show(
+        getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
+      )
+      return
+    }
     this.dialog.setDialogVisible(true, {
       title: getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME,
       value: this.state.selectedDataset.datasetName,
@@ -126,11 +145,7 @@ export default class CreateNavDataPage extends Component {
     availableName = availableName.substring(0, availableName.lastIndexOf('.'))
     let rel = await SMap.createNavDatasource(availableName)
     if (rel) {
-      let data = await SMap.getDatasourceAndDataset()
-      this.setState({
-        data,
-        selectedDatasource: data[1].default,
-      })
+      this.getDatasource()
     } else {
       Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
     }
@@ -158,16 +173,6 @@ export default class CreateNavDataPage extends Component {
 
   _dialogConfirm = async fileName => {
     let { selectedDatasource, selectedDataset } = this.state
-    if (!selectedDataset.datasetName) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
-      return true
-    }
-    if (!selectedDatasource.datasourceName) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
-      )
-      return true
-    }
     let { result, error } = dataUtil.isLegalName(fileName)
     if (!result) {
       Toast.show(error)
@@ -185,92 +190,169 @@ export default class CreateNavDataPage extends Component {
       if (isFileExist) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
       } else {
+        this.dialog.setDialogVisible(false)
+        let sourceDataset = {
+          sourceDatasourceName: selectedDataset.datasourceName,
+          sourceDatasetName: selectedDataset.datasetName,
+        }
+        if (selectedDataset.selectedFieldInfo) {
+          sourceDataset.sourceDatasetFiled = selectedDataset.selectedFieldInfo
+        }
+        GLOBAL.Loading.setLoading(
+          true,
+          getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING,
+        )
         let rel = await SMap.buildOutdoorNetwork({
-          ...selectedDataset,
+          ...sourceDataset,
           ...selectedDatasource,
           filePath,
         })
-        if (rel) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING)
-          this.dialog.setDialogVisible(false)
-          GLOBAL.BUILD_NETWORK_LISTENER = SMap.addBuildNetworkListener({
-            success: networkName => {
-              if (networkName) {
-                setTimeout(
-                  () =>
-                    Toast.show(
-                      getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS,
-                    ),
-                  2000,
-                )
-                GLOBAL.BUILD_NETWORK_LISTENER.remove()
-              }
-            },
-          })
-          this.props.navigation.goBack()
-          return true
-        }
+        setTimeout(() => {
+          GLOBAL.Loading.setLoading(false)
+          rel && Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+        }, 1000)
       }
     }
   }
-  _renderSectionHeader = ({ section }) => {
-    let title =
-      section.title === 'dataset'
-        ? getLanguage(GLOBAL.language).Prompt.LINE_DATASET
-        : getLanguage(GLOBAL.language).Prompt.DESTINATION_DATASOURCE
+
+  onPressDatasetHeader = section => {
+    let lineDataset = JSON.parse(JSON.stringify(this.state.lineDataset))
+    let currentIndex
+    for (let i = 0; i < lineDataset.length; i++) {
+      if (lineDataset[i].title === section.title) {
+        currentIndex = i
+        break
+      }
+    }
+    lineDataset[currentIndex].visible = !lineDataset[currentIndex].visible
+    this.setState({
+      lineDataset,
+    })
+  }
+
+  renderDatasetSectionHeader = ({ section }) => {
+    let arrowImg = section.visible
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
     return (
-      <View style={styles.section}>
-        <Text style={styles.title}>{title}</Text>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 20,
+          height: scaleSize(60),
+          borderBottomWidth: 1,
+          borderBottomColor: color.USUAL_SEPARATORCOLOR,
+        }}
+        onPress={() => {
+          this.onPressDatasetHeader(section)
+        }}
+      >
+        <Image source={arrowImg} style={styles.image} resizeMode={'contain'} />
+        <Text style={styles.text}>{section.title}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderItem = ({ section, item }) => {
+    if (!section.visible) return null
+    let selected =
+      this.state.selectedDataset.datasourceName === item.datasourceName &&
+      this.state.selectedDataset.datasetName === item.datasetName
+    return (
+      <Item
+        item={item}
+        selected={selected}
+        onSelect={item => {
+          this.setState({ selectedDataset: item })
+        }}
+      />
+    )
+  }
+
+  renderDatasets = () => {
+    return (
+      <View style={{ flex: 1, marginHorizontal: 10 }}>
+        <View
+          style={{
+            justifyContent: 'center',
+            height: scaleSize(80),
+            borderBottomWidth: 1,
+            borderBottomColor: color.USUAL_SEPARATORCOLOR,
+            backgroundColor: color.content_white,
+          }}
+        >
+          <Text>{getLanguage(GLOBAL.language).Prompt.LINE_DATASET}</Text>
+        </View>
+        <SectionList
+          keyExtractor={(item, index) => item.toString() + index}
+          sections={this.state.lineDataset}
+          renderSectionHeader={this.renderDatasetSectionHeader}
+          renderItem={this.renderItem}
+        />
       </View>
     )
   }
-  _renderItem = ({ section, item }) => {
-    let img,
+
+  renderDatasourceItem = ({ item }) => {
+    let img = getPublicAssets().navigation.icon_datasource,
       extraTxt = {},
       extraBack = {},
-      name
-    if (section.title === 'dataset') {
-      name = item.datasetName
-      let hasExtra = this.state.selectedDataset.datasetName === item.datasetName
-      if (hasExtra) {
-        img = getLayerWhiteIconByType(DatasetType.LINE)
-        extraTxt = {
-          color: color.white,
-        }
-        extraBack = {
-          backgroundColor: color.item_selected_bg,
-        }
-      } else {
-        img = getLayerIconByType(DatasetType.LINE)
-      }
-    } else {
-      let hasExtra =
-        this.state.selectedDatasource.datasourceName === item.datasourceName
       name = item.datasourceName
-      if (hasExtra) {
-        img = getPublicAssets().navigation.icon_datasource_white
-        extraTxt = {
-          color: color.white,
-        }
-        extraBack = {
-          backgroundColor: color.item_selected_bg,
-        }
-      } else {
-        img = getPublicAssets().navigation.icon_datasource
+    let selected = this.state.selectedDatasource.datasourceName === name
+    if (selected) {
+      img = getPublicAssets().navigation.icon_datasource_white
+      extraTxt = {
+        color: color.white,
+      }
+      extraBack = {
+        backgroundColor: color.item_selected_bg,
       }
     }
-
     return (
       <TouchableOpacity
         style={[styles.row, extraBack]}
-        onPress={() => this._onPressRow({ section, item })}
+        onPress={() => this.setState({ selectedDatasource: item })}
       >
         <Image source={img} style={styles.image} resizeMode={'contain'} />
         <Text style={[styles.name, extraTxt]}>{name}</Text>
       </TouchableOpacity>
     )
   }
-  _renderContainer = () => {
+
+  renderDatasource = () => {
+    return (
+      <View
+        style={{ flex: 1, marginHorizontal: 10, marginBottom: scaleSize(130) }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            height: scaleSize(80),
+            borderBottomWidth: 1,
+            borderBottomColor: color.USUAL_SEPARATORCOLOR,
+            backgroundColor: color.content_white,
+          }}
+        >
+          <Text>
+            {getLanguage(GLOBAL.language).Prompt.DESTINATION_DATASOURCE}
+          </Text>
+        </View>
+        <FlatList
+          keyExtractor={(item, index) => item.toString() + index}
+          data={this.state.datasource}
+          renderItem={this.renderDatasourceItem}
+          extraData={this.state.selectedDatasource}
+        />
+      </View>
+    )
+  }
+
+  _renderDialog = () => {
+    return <CustomInputDialog ref={ref => (this.dialog = ref)} />
+  }
+
+  render = () => {
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -279,39 +361,110 @@ export default class CreateNavDataPage extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <SectionList
-          style={{ maxHeight: this.maxHeight }}
-          sections={this.state.data}
-          renderSectionHeader={this._renderSectionHeader}
-          renderItem={this._renderItem}
-          keyExtractor={(item, index) => item.toString() + index}
-          getItemLayout={(data, index) => ({
-            length: scaleSize(81),
-            offset: scaleSize(81) * index,
-            index,
-          })}
-        />
-        {this.state.data.length > 0 && (
+        {this.renderDatasets()}
+        {this.renderDatasource()}
+        {this.state.datasource.length > 0 && (
           <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
             <Text style={styles.confirmTxt}>
               {getLanguage(GLOBAL.language).Prompt.CONFIRM}
             </Text>
           </TouchableOpacity>
         )}
+        {this._renderDialog()}
       </Container>
     )
   }
+}
 
-  _renderDialog = () => {
-    return <CustomInputDialog ref={ref => (this.dialog = ref)} />
+class Item extends Component {
+  props: {
+    item: Object,
+    selected: Boolean,
+    onSelect: () => {},
+  }
+
+  constructor(props) {
+    super(props)
+  }
+
+  onSelect = async () => {
+    let datasetName = this.props.item.datasetName
+    let datasourceName = this.props.item.datasourceName
+    if (!this.props.item.fieldInfo) {
+      let needChangeData = await SMap.queryFieldInfos([
+        { datasetName, datasourceName },
+      ])
+      if (needChangeData.length > 0) {
+        this.props.item.fieldInfo = needChangeData[0].fieldName
+      } else {
+        this.props.item.fieldInfo = []
+      }
+    }
+    this.props.onSelect && this.props.onSelect(this.props.item)
   }
 
   render() {
+    let img = getLayerIconByType(DatasetType.LINE)
+    let backgroundColor = {}
+    let fontColor = {}
+    let selected = this.props.selected
+    if (selected) {
+      img = getLayerWhiteIconByType(DatasetType.LINE)
+      backgroundColor = { backgroundColor: color.item_selected_bg }
+      fontColor = { color: color.white }
+    }
     return (
-      <Animated.View style={[styles.container, { width: this.maxWidth }]}>
-        {this._renderContainer()}
-        {this._renderDialog()}
-      </Animated.View>
+      <View>
+        <TouchableOpacity
+          onPress={async () => {
+            this.onSelect()
+          }}
+          style={[
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 40,
+              height: scaleSize(80),
+              borderBottomWidth: 1,
+              borderBottomColor: color.USUAL_SEPARATORCOLOR,
+            },
+            backgroundColor,
+          ]}
+        >
+          <Image source={img} style={styles.image} resizeMode={'contain'} />
+          <Text style={[{ fontSize: setSpText(18) }, fontColor]}>
+            {this.props.item.datasetName}
+          </Text>
+        </TouchableOpacity>
+        {selected && this.props.item.fieldInfo?.length > 0 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 60,
+              height: scaleSize(60),
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              borderBottomWidth: 1,
+              borderBottomColor: color.USUAL_SEPARATORCOLOR,
+            }}
+          >
+            <ModalDropdown
+              textStyle={{
+                color: color.item_selected_bg,
+                fontSize: setSpText(18),
+              }}
+              onSelect={(selectIndex, value) => {
+                this.props.item.selectedFieldInfo = value
+              }}
+              defaultValue={
+                this.props.item.selectedFieldInfo ||
+                getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+              }
+              options={this.props.item.fieldInfo}
+            />
+          </View>
+        )}
+      </View>
     )
   }
 }

@@ -213,7 +213,6 @@ export default class MergeDatasetView extends Component {
 class Item extends Component {
   props: {
     item: Object,
-    data: Array,
   }
 
   constructor(props) {
@@ -264,6 +263,7 @@ class Item extends Component {
           <ModalDropdown
             style={styles.dropDownStyle}
             textStyle={{
+              color: color.item_selected_bg,
               fontSize: setSpText(18),
             }}
             onSelect={(selectIndex, value) => {

@@ -12,18 +12,17 @@ export default (function() {
   }
   
   function deepClone(obj, hash = new WeakMap()) {
-    if (!isObject(obj)) {
+    if (!isObject(obj) || typeof obj === 'function') {
       return obj
     }
     // 查表
     if (hash.has(obj)) return hash.get(obj)
-  
+
     let isArray = Array.isArray(obj)
-    let isFunction = typeof obj === 'function'
-    let cloneObj = isFunction ? obj : (isArray ? [] : {})
+    let cloneObj = isArray ? [] : {}
     // 哈希表设值
     hash.set(obj, cloneObj)
-  
+
     let result = Object.keys(obj).map(key => {
       return {
         [key]: deepClone(obj[key], hash)

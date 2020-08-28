@@ -39,7 +39,7 @@ const Find = {
   SUPERMAP_KNOW_INFO: '获取专业的技术服务与业务咨询',
   SUPERMAP_FORUM_INFO: '欢迎来到SuperMap技术问答社区',
   GIS_ACADEMY_INFO: '提供海量SuperMap GIS相关课程',
-  ONLINE_COWORK_INFO: '我再想想',
+  ONLINE_COWORK_INFO: '支持多人实时协同操作',
 }
 
 export { Find }

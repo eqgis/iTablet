@@ -27,9 +27,10 @@ import {
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
-import { Const, ToolbarType } from '../../../../../../../constants'
+import { Const, ToolbarType, Height } from '../../../../../../../constants'
 import IncrementData from '../IncrementData'
 import { getLanguage } from '../../../../../../../language'
+import MergeDatasetView from '../../topoEditModule/customView/MergeDatasetView'
 
 export default class LineList extends Component {
   props: {
@@ -139,6 +140,22 @@ export default class LineList extends Component {
       })
   }
 
+  onMerge = item => {
+    const params = ToolbarModule.getParams()
+    params.setToolbarVisible &&
+      params.setToolbarVisible(true, 'MERGE_DATASET', {
+        containerType: ToolbarType.list,
+        isFullScreen: false,
+        height:
+          params.device.orientation === 'PORTRAIT'
+            ? Height.LIST_HEIGHT_P
+            : Height.LIST_HEIGHT_L,
+        data: [],
+        buttons: [],
+        customView: () => <MergeDatasetView sourceData={item} />,
+      })
+  }
+
   _onEditPress = ({ item }) => {
     let editingItem = this.state.editingItem
     if (
@@ -226,16 +243,18 @@ export default class LineList extends Component {
       this.state.selectedItem.datasourceName === item.datasourceName &&
       this.state.selectedItem.datasetName === item.datasetName
     let extraStyle, extraTxtStyle, lineImg
-    let renameImg, deleteImg
+    let renameImg, deleteImg, addImage
     if (hasExtra) {
       renameImg = getPublicAssets().navigation.icon_increment_rename_white
       deleteImg = getPublicAssets().navigation.icon_increment_delete_white
+      addImage = require('../../../../../../../assets/map/Frenchgrey/scene_addfly_light.png')
       extraStyle = { backgroundColor: color.item_selected_bg }
       extraTxtStyle = { color: color.white }
       lineImg = getLayerWhiteIconByType(DatasetType.LINE)
     } else {
       renameImg = getPublicAssets().navigation.icon_increment_rename
       deleteImg = getPublicAssets().navigation.icon_increment_delete
+      addImage = getPublicAssets().common.icon_add
       extraStyle = {}
       extraTxtStyle = {}
       lineImg = getLayerIconByType(DatasetType.LINE)
@@ -267,6 +286,18 @@ export default class LineList extends Component {
         ) : (
           <Text style={[styles.text, extraTxtStyle]}>{item.datasetName}</Text>
         )}
+        <TouchableOpacity
+          style={styles.imageWrap}
+          onPress={() => {
+            this.onMerge(item)
+          }}
+        >
+          <Image
+            source={addImage}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.imageWrap}
           onPress={() => {

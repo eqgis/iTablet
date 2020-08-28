@@ -373,6 +373,18 @@ export default class MapView extends React.Component {
         },
       )
 
+      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+      this.unsubscribeDidFocus = this.props.navigation.addListener(
+        'didFocus',
+        () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
+
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
@@ -515,7 +527,10 @@ export default class MapView extends React.Component {
       let data
       for (let i = 0; i < this.props.downloads.length; i++) {
         // if (this.props.downloads[i].id === GLOBAL.Type) {
-        if (this.props.downloads[i].id && this.props.downloads[i].params.module === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
         }
         if (this.props.downloads[i].id === 'mobilenet_quant_224') {
@@ -609,6 +624,7 @@ export default class MapView extends React.Component {
     }
     this.unsubscribeFocus && this.unsubscribeFocus.remove()
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    this.unsubscribeDidFocus && this.unsubscribeDidFocus.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
 
@@ -3142,7 +3158,8 @@ export default class MapView extends React.Component {
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {!this.isExample &&
           global.isLicenseValid &&
-          GLOBAL.Type && GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
+          GLOBAL.Type &&
+          GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}

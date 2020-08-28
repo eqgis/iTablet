@@ -6,7 +6,7 @@
  */
 import {
   ConstToolType,
-  Height,
+  // Height,
   ToolbarType,
   TouchType,
 } from '../../../../../../constants'
@@ -165,19 +165,19 @@ function dialogConfirm() {
 /**
  * 合并数据集
  */
-function showMerge() {
-  const _params = ToolbarModule.getParams()
-  let preType = _params.type
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_MERGE_DATASET, {
-    isFullScreen: false,
-    containerType: ToolbarType.list,
-    height:
-      _params.device.orientation === 'PORTRAIT'
-        ? Height.LIST_HEIGHT_P
-        : Height.LIST_HEIGHT_L,
-  })
-  ToolbarModule.addData({ preType })
-}
+// function showMerge() {
+//   const _params = ToolbarModule.getParams()
+//   let preType = _params.type
+//   _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_MERGE_DATASET, {
+//     isFullScreen: false,
+//     containerType: ToolbarType.list,
+//     height:
+//       _params.device.orientation === 'PORTRAIT'
+//         ? Height.LIST_HEIGHT_P
+//         : Height.LIST_HEIGHT_L,
+//   })
+//   ToolbarModule.addData({ preType })
+// }
 
 //切换编辑方式
 async function changeEditType() {
@@ -542,7 +542,7 @@ export default {
   commit,
   geometrySelected,
 
-  showMerge,
+  // showMerge,
   changeEditType,
   changeAction,
   switchType,

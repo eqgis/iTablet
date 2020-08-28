@@ -16,7 +16,11 @@ import {
 import { scaleSize, setSpText, Toast } from '../../../../../../../utils'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
-import { ToolbarType } from '../../../../../../../constants'
+import {
+  ToolbarType,
+  ConstToolType,
+  Height,
+} from '../../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
 import { SMap } from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -25,6 +29,11 @@ import { getLanguage } from '../../../../../../../language'
 export default class MergeDatasetView extends Component {
   props: {
     data: Array,
+    sourceData: Object,
+  }
+
+  static defaultProps = {
+    sourceData: GLOBAL.INCREMENT_DATA,
   }
   constructor(props) {
     super(props)
@@ -39,7 +48,7 @@ export default class MergeDatasetView extends Component {
 
   _add = async () => {
     let lineDataset = await SMap.getAllLineDatasets()
-    let { datasetName, datasourceName } = GLOBAL.INCREMENT_DATA
+    let { datasetName, datasourceName } = this.props.sourceData
     let filterData = lineDataset.filter(item => {
       if (item.title === datasourceName) {
         item.data = item.data.filter(data => {
@@ -56,12 +65,18 @@ export default class MergeDatasetView extends Component {
 
   _cancel = () => {
     const _params = ToolbarModule.getParams()
-    let preType = ToolbarModule.getData().preType
-    let containerType = ToolbarType.table
-    _params.setToolbarVisible(true, preType, {
-      containerType,
-      isFullScreen: false,
-    })
+    _params.setToolbarVisible(
+      true,
+      ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,
+      {
+        isFullScreen: false,
+        containerType: ToolbarType.list,
+        height:
+          _params.device.orientation === 'PORTRAIT'
+            ? Height.LIST_HEIGHT_P
+            : Height.LIST_HEIGHT_L,
+      },
+    )
   }
 
   confirm = () => {
@@ -99,7 +114,10 @@ export default class MergeDatasetView extends Component {
       true,
       getLanguage(GLOBAL.language).Prompt.MERGEING,
     )
-    let result = await SMap.mergeDataset(GLOBAL.INCREMENT_DATA, selectedDatas)
+    let result = await SMap.mergeDataset(
+      { ...this.props.sourceData },
+      selectedDatas,
+    )
     if (result) {
       _params.setContainerLoading(false)
       if (result instanceof Array) {
@@ -230,6 +248,7 @@ class Item extends Component {
       let needChangeData = await SMap.queryFieldInfos([
         { datasetName, datasourceName },
       ])
+      //TODO 处理没有RoadName字段也没有其他字符型字段的情况
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
       } else {

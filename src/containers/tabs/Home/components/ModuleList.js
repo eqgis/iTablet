@@ -254,7 +254,9 @@ class ModuleList extends Component {
   checkData = async (index) => {
     let moduleKey
     let module = this.props.mapModules.modules[index]
-    let fileName = module.getExampleName(language)[0].name
+    let examples = module.getExampleName(language)
+    if (!examples || examples.length === 0) return ''
+    let fileName = examples[0].name
     if (!fileName.endsWith('_EXAMPLE')) fileName += '_EXAMPLE'
     let result = await FetchUtils.getDataInfoByUrl({
       nickname: 'xiezhiyan123',

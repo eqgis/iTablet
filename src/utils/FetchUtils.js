@@ -91,8 +91,10 @@ export default class FetchUtils {
   static getFindUserDataUrl = async (nickname, keyword, type) => {
     let url
     try {
-      let obj = await FetchUtils.getDataInfoByUrl({ nickname }, keyword, type)
-      url = obj && obj.url
+      let arr = await FetchUtils.getDataInfoByUrl({ nickname }, keyword, type)
+      if (arr.content && arr.content.length > 0) {
+        url = arr.content[0].url
+      }
     } catch (e) {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     }

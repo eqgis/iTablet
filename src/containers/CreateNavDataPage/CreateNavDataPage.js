@@ -396,11 +396,22 @@ class Item extends Component {
       ])
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
+        if (this.props.item.fieldInfo.indexOf('RoadName') > -1) {
+          this.props.item.fieldInfo = []
+          this.props.item.hasRoadName = true
+        }
       } else {
         this.props.item.fieldInfo = []
       }
     }
-    this.props.onSelect && this.props.onSelect(this.props.item)
+    if (
+      this.props.item.fieldInfo.length === 0 &&
+      !this.props.item.hasRoadName
+    ) {
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+    } else {
+      this.props.onSelect && this.props.onSelect(this.props.item)
+    }
   }
 
   render() {

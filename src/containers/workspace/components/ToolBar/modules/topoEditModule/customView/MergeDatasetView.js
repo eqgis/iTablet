@@ -241,23 +241,33 @@ class Item extends Component {
   }
 
   onSelect = async () => {
-    this.props.item.selected = !this.state.selected
     let datasetName = this.props.item.datasetName
     let datasourceName = this.props.item.datasourceName
     if (!this.props.item.fieldInfo) {
       let needChangeData = await SMap.queryFieldInfos([
         { datasetName, datasourceName },
       ])
-      //TODO 处理没有RoadName字段也没有其他字符型字段的情况
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
+        if (this.props.item.fieldInfo.indexOf('RoadName') > -1) {
+          this.props.item.fieldInfo = []
+          this.props.item.hasRoadName = true
+        }
       } else {
         this.props.item.fieldInfo = []
       }
     }
-    this.setState({
-      selected: !this.state.selected,
-    })
+    if (
+      this.props.item.fieldInfo.length === 0 &&
+      !this.props.item.hasRoadName
+    ) {
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+    } else {
+      this.props.item.selected = !this.state.selected
+      this.setState({
+        selected: !this.state.selected,
+      })
+    }
   }
 
   render() {

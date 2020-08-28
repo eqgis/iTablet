@@ -15,13 +15,12 @@ import {
 
 import Container from '../../../../components/Container'
 import NavigationService from '../../../NavigationService'
-import { Toast } from '../../../../utils/index'
+import { Toast } from '../../../../utils'
+import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils/screen'
 import { getPinYinFirstCharacter } from '../../../../utils/pinyin'
 import FriendListFileHandle from '../FriendListFileHandle'
 import { getLanguage } from '../../../../language/index'
-// import ConstPath from '../../../../constants/ConstPath'
-// import { FileTools } from '../../../../native'
 
 class CreateGroupChat extends Component {
   props: {
@@ -254,7 +253,7 @@ class CreateGroupChat extends Component {
             >
               <Text
                 style={{
-                  color: 'white',
+                  color: color.fontColorBlack,
                   fontSize: scaleSize(25),
                   textAlign: 'center',
                 }}

@@ -11,7 +11,7 @@ import {
   TouchType,
 } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
-import { Toast } from '../../../../../../utils'
+import { Toast, LayerUtils } from '../../../../../../utils'
 import { DatasetType, SMap, Action } from 'imobile_for_reactnative'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
@@ -149,15 +149,7 @@ function dialogConfirm() {
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers
-  let currentLayer = _params.layers.currentLayer
-  layers.map(
-    async layer => await SMap.setLayerSelectable(layer.path, layer.selectable),
-  )
-  if (currentLayer.name) {
-    _params.setCurrentLayer(currentLayer)
-    SMap.setLayerEditable(currentLayer.name, true)
-    SMap.setLayerVisible(currentLayer.name, true)
-  }
+  LayerUtils.setLayersSelectable(layers, true, true)
   GLOBAL.FloorListView?.setVisible(true)
   GLOBAL.mapController?.setVisible(true)
   GLOBAL.TouchType = TouchType.NORMAL

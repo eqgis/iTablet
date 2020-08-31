@@ -8,9 +8,9 @@ import {
   ChunkType,
 } from '../../../../constants'
 import TouchProgress from '../TouchProgress'
-import * as ExtraDimensions from 'react-native-extra-dimensions-android'
+// import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModule from './modules/ToolbarModule'
-import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Animated, Platform, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -160,13 +160,13 @@ export default class ToolBar extends React.Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      ExtraDimensions.addSoftMenuBarWidthChangeListener({
-        softBarPositionChange: val => {
-          this.setState({ hasSoftMenuBottom: val })
-        },
-      })
-    }
+    // if (Platform.OS === 'android') {
+    //   ExtraDimensions.addSoftMenuBarWidthChangeListener({
+    //     softBarPositionChange: val => {
+    //       this.setState({ hasSoftMenuBottom: val })
+    //     },
+    //   })
+    // }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -782,18 +782,18 @@ export default class ToolBar extends React.Component {
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.fullContainerLandscape
         : styles.fullContainer
-    let size = { height: this.props.device.height }
-    if (this.state.isFullScreen && this.state.isTouchProgress) {
-      let softBarHeight = 0
-      if (Platform.OS === 'android') {
-        softBarHeight = this.state.hasSoftMenuBottom
-          ? ExtraDimensions.getSoftMenuBarHeight()
-          : 0
-      }
-
-      size = { height: screen.getScreenSafeHeight() - softBarHeight }
-    }
-    size.width = this.props.device.width
+    // let size = { height: this.props.device.height }
+    // if (this.state.isFullScreen && this.state.isTouchProgress) {
+    //   let softBarHeight = 0
+    //   if (Platform.OS === 'android') {
+    //     softBarHeight = this.state.hasSoftMenuBottom
+    //       ? ExtraDimensions.getSoftMenuBarHeight()
+    //       : 0
+    //   }
+    //
+    //   size = { height: screen.getScreenSafeHeight() - softBarHeight }
+    // }
+    // size.width = this.props.device.width
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =
@@ -807,8 +807,8 @@ export default class ToolBar extends React.Component {
         style={[
           containerStyle,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? { right: this.state.right }
-            : { bottom: this.state.bottom },
+            ? { right: this.state.right, height:  '100%' }
+            : { bottom: this.state.bottom, width: '100%' },
           (this.state.isFullScreen || this.state.isTouchProgress) &&
             this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
             paddingTop: screen.isIphoneX()
@@ -817,7 +817,7 @@ export default class ToolBar extends React.Component {
                 ? 20
                 : 0,
           },
-          size,
+          // size,
         ]}
         pointerEvents={'box-none'}
       >

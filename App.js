@@ -532,11 +532,9 @@ class AppRoot extends Component {
   orientation = o => {
     this.showStatusBar(o)
     // iOS横屏时为LANDSCAPE-LEFT 或 LANDSCAPE-RIGHT，此时平放，o为LANDSCAPE，此时不做处理
-    if (Platform.OS === 'ios' && o !== 'LANDSCAPE' || Platform.OS === 'android') {
-      this.props.setShow({
-        orientation: o,
-      })
-    }
+    this.props.setShow({
+      orientation: o,
+    })
   }
   //初始化横竖屏显示方式
   initOrientation = async () => {

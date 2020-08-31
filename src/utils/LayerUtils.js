@@ -416,6 +416,27 @@ function getFieldTypeText(intType, language = 'CN') {
   return text
 }
 
+/**
+ * @param {*} layers
+ * @param {*} selectable
+ * @param {*} modifyTrue 仅修改selectable为true的图层，在某些操作需要设置所有图层为false之后再恢复原来设置时很有用
+ */
+function setLayersSelectable(layers, selectable, modifyTrue = false) {
+  layers.map(layer => {
+    if (layer.type === 'layerGroup') {
+      setLayersSelectable(layer.child, selectable, modifyTrue)
+    } else {
+      if (!modifyTrue) {
+        SMap.setLayerSelectable(layer.path, selectable)
+      } else {
+        if (layer.isSelectable) {
+          SMap.setLayerSelectable(layer.path, selectable)
+        }
+      }
+    }
+  })
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -432,4 +453,6 @@ export default {
   getDefaultBaseMapData,
   getLayerType,
   getFieldTypeText,
+
+  setLayersSelectable,
 }

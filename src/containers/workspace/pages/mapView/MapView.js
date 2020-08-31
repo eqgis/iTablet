@@ -2733,7 +2733,7 @@ export default class MapView extends React.Component {
     }
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
     let layers = this.props.layers.layers
-    layers.map(async layer => await SMap.setLayerSelectable(layer.path, false))
+    LayerUtils.setLayersSelectable(layers, false, true)
     GLOBAL.TouchType = TouchType.NULL
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }

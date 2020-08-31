@@ -14,7 +14,7 @@ import {
 import { getPublicAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
 import { SMap, Action } from 'imobile_for_reactnative'
-import { Toast } from '../../../../../../utils'
+import { Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 
 async function start() {
@@ -223,13 +223,7 @@ function dialogConfirm() {
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers
-  let currentLayer = _params.layers.currentLayer
-  layers.map(layer => SMap.setLayerSelectable(layer.path, false))
-  if (currentLayer.name) {
-    _params.setCurrentLayer(currentLayer)
-    SMap.setLayerEditable(currentLayer.name, true)
-    SMap.setLayerVisible(currentLayer.name, true)
-  }
+  LayerUtils.setLayersSelectable(layers, true, true)
   GLOBAL.FloorListView?.setVisible(true)
   GLOBAL.mapController?.setVisible(true)
   GLOBAL.TouchType = TouchType.NORMAL

@@ -220,7 +220,7 @@ const Prompt = {
 
   POI: 'POI',
 
-  ILLEGAL_DATA: 'データは無効です!',
+  ILLEGAL_DATA: 'データは無効です',
 
   UNSUPPORTED_LAYER_TO_SHARE: '当レイヤーのシェアをサポートしません',
   SELECT_DATASET_TO_SHARE: 'シェアするデータセットを選択してください',

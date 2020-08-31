@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     height: ROW_HEIGHT,
     backgroundColor: color.white,
     flexDirection: 'row',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: color.gray7,
     // borderBottomWidth: 1,
     //borderBottomColor: color.bgG,
   },
@@ -207,13 +210,14 @@ export default class Row extends Component {
     if (this.props.data instanceof Array) {
       isLastCell = (this.props.data.length - 1) === index
     } else {
-      isLastCell = index === 2
+      isLastCell = index === 1
     }
     let borderStyle = {
       // borderLeftWidth: index === 0 ? 1 : 0,
       borderRightWidth: isLastCell ? 0 : 1,
       borderBottomWidth: 1,
       borderColor: this.props.separatorColor,
+      overflow: 'hidden',
     }
     if (isButton) {
       return (

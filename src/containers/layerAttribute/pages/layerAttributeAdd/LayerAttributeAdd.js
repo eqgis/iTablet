@@ -10,17 +10,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  Image,
-  Keyboard,
-  TextInput,
-  Platform,
 } from 'react-native'
-import NavigationService from '../../../NavigationService'
 import { ImageButton, Row, Header, PopModal } from '../../../../components'
 import { Toast, scaleSize } from '../../../../utils'
-import { PopModalList } from '../../../analystView/components'
 import { getLanguage } from '../../../../language'
-import RadioGroup from '../../../../components/Row/RadioGroup'
 
 import styles from './styles'
 import { color } from '../../../../styles'

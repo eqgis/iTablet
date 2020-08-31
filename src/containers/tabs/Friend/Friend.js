@@ -1894,8 +1894,8 @@ export default class Friend extends Component {
                     getLanguage(this.props.language).Friends.MESSAGES && (
                       <InformSpot
                         style={{
-                          top: scaleSize(-5),
-                          right: scaleSize(-15),
+                          top: scaleSize(15),
+                          right: '38%',
                         }}
                       />
                     )}

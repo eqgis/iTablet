@@ -367,47 +367,37 @@ class FriendMessage extends Component {
             this._showPopover(iTemView, item)
           }}
         >
-          {/*<View style={styles.ITemHeadTextViewStyle}>*/}
-            {/*{item.unReadMsg > 0 ? (*/}
-              {/*<View*/}
-                {/*style={{*/}
-                  {/*position: 'absolute',*/}
-                  {/*backgroundColor: 'red',*/}
-                  {/*justifyContent: 'center',*/}
-                  {/*height: scaleSize(25),*/}
-                  {/*width: scaleSize(25),*/}
-                  {/*borderRadius: scaleSize(25),*/}
-                  {/*top: scaleSize(-6),*/}
-                  {/*right: scaleSize(-12),*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*<Text*/}
-                  {/*style={{*/}
-                    {/*fontSize: scaleSize(20),*/}
-                    {/*color: 'white',*/}
-                    {/*textAlign: 'center',*/}
-                  {/*}}*/}
-                {/*>*/}
-                  {/*{item.unReadMsg}*/}
-                {/*</Text>*/}
-              {/*</View>*/}
-            {/*) : null}*/}
-            {/*<View*/}
-              {/*style={{*/}
-                {/*alignItems: 'center',*/}
-                {/*justifyContent: 'center',*/}
-                {/*flexDirection: 'row',*/}
-                {/*flexWrap: 'wrap',*/}
-              {/*}}*/}
-            {/*>*/}
-              {/*{this._renderItemHeadView(item)}*/}
-            {/*</View>*/}
-          {/*</View>*/}
-          <Image
-            style={styles.itemImg}
-            resizeMode={'contain'}
-            source={getThemeAssets().friend.contact_photo}
-          />
+          <View>
+            <Image
+              style={styles.itemImg}
+              resizeMode={'contain'}
+              source={getThemeAssets().friend.contact_photo}
+            />
+            {item.unReadMsg > 0 ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  height: scaleSize(25),
+                  width: scaleSize(25),
+                  borderRadius: scaleSize(25),
+                  top: scaleSize(-6),
+                  right: scaleSize(-12),
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: scaleSize(20),
+                    color: 'white',
+                    textAlign: 'center',
+                  }}
+                >
+                  {item.unReadMsg}
+                </Text>
+              </View>
+            ) : null}
+          </View>
           <View style={styles.ITemTextViewStyle}>
             {this._renderItemTitleView(item)}
             <Text

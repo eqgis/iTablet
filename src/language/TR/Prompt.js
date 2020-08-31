@@ -220,7 +220,7 @@ const Prompt = {
 
   POI: 'POI',
 
-  ILLEGAL_DATA: 'Yasadışı Veri!',
+  ILLEGAL_DATA: 'Yasadışı Veri',
 
   UNSUPPORTED_LAYER_TO_SHARE: 'Bu katmanın paylaşımı henüz desteklenmiyor',
   SELECT_DATASET_TO_SHARE: 'Lütfen paylaşmak için verikümesi seçin',

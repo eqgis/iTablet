@@ -220,7 +220,7 @@ const Prompt = {
 
   POI: 'POI',
 
-  ILLEGAL_DATA: 'Illegal Data!',
+  ILLEGAL_DATA: 'Unsupported Data',
 
   UNSUPPORTED_LAYER_TO_SHARE: 'Sharing of this layer is not supported yet',
   SELECT_DATASET_TO_SHARE: 'Please select the data set to share',

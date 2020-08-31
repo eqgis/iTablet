@@ -220,7 +220,7 @@ const Prompt = {
 
   POI: '兴趣点',
 
-  ILLEGAL_DATA: '数据非法!',
+  ILLEGAL_DATA: '无效数据',
 
   UNSUPPORTED_LAYER_TO_SHARE: '暂不支持此图层的分享',
   SELECT_DATASET_TO_SHARE: '请选择要分享的数据集',

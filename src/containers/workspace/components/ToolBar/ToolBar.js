@@ -793,7 +793,9 @@ export default class ToolBar extends React.Component {
 
       size = { height: screen.getScreenSafeHeight() - softBarHeight }
     }
-    // size.width = this.props.device.width
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      size.width = this.props.device.width
+    }
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =

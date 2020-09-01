@@ -847,7 +847,7 @@ export default class ToolBar extends React.Component {
         {this.state.type === ConstToolType.MAP_TOOL_TAGGING_SETTING ? (
           <KeyboardAvoidingView
             keyboardVerticalOffset={keyboardVerticalOffset}
-            behavior={'position'}
+            behavior={Platform.OS === 'ios' && 'position'}
           >
             <View
               style={[

@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, KeyboardAvoidingView } from 'react-native'
+import { View, Text, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import Dialog from './Dialog'
 import { color } from '../../styles'
 import styles from './styles'
@@ -144,7 +144,7 @@ export default class InputDialog extends PureComponent {
         cancelBtnTitle={this.props.cancelBtnTitle}
         confirmBtnDisable={!this.state.isLegalName}
       >
-        <KeyboardAvoidingView behavior="padding" enabled>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' && "padding"} enabled>
           {this.renderInput()}
           {!this.state.isLegalName && this.state.errorInfo && (
             <View style={styles.errorView}>

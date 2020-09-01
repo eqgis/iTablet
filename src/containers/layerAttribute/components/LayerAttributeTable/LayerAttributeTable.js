@@ -681,8 +681,7 @@ export default class LayerAttributeTable extends React.Component {
     if (Platform.OS === 'android') {
       return (
         <KeyboardAvoidingView
-          // behavior={this.state.behavior}
-          behavior="padding"
+          behavior={Platform.OS === 'ios' && "padding"}
           enabled
           style={[styles.container, this.props.contentContainerStyle]}
         >

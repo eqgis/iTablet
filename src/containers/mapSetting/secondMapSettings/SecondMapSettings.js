@@ -1311,7 +1311,7 @@ export default class SecondMapSettings extends Component {
           <ScrollView>
             <KeyboardAvoidingView
               enabled={this.itemPos > 0}
-              behavior={'position'}
+              behavior={Platform.OS === 'ios' && 'padding'}
               keyboardVerticalOffset={keyboardVerticalOffset}
             >
               {this.state.data.map((item, index) => {

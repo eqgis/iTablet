@@ -3,6 +3,7 @@ import {
   ScrollView,
   Text,
   View,
+  Platform,
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native'
@@ -812,7 +813,7 @@ export default class InterpolationAnalystDetailView extends Component {
       >
         <KeyboardAvoidingView
           style={{ marginBottom: Const.BOTTOM_HEIGHT }}
-          behavior="padding"
+          behavior={Platform.OS === 'ios' && 'padding'}
           keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
         >
           <ScrollView

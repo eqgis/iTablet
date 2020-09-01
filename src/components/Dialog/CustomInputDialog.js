@@ -5,7 +5,7 @@
  * https://github.com/AsortKeven
  */
 import React, { PureComponent } from 'react'
-import { View, TextInput, KeyboardAvoidingView } from 'react-native'
+import { View, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import Dialog from './Dialog'
 import { color } from '../../styles'
 import styles from './styles'
@@ -178,7 +178,7 @@ export default class CustomInputDialog extends PureComponent {
         confirmBtnTitle={this.state.confirmBtnTitle}
         cancelBtnTitle={this.state.cancelBtnTitle}
       >
-        <KeyboardAvoidingView behavior="padding" enabled>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'} enabled>
           {this.renderInput()}
         </KeyboardAvoidingView>
       </Dialog>

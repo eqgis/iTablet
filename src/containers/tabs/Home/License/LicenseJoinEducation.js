@@ -226,7 +226,7 @@ class LicenseJoinEducation extends Component {
         <KeyboardAvoidingView
           enabled={true}
           keyboardVerticalOffset={0}
-          behavior={'padding'}
+          behavior={Platform.OS === 'ios' && 'padding'}
         >
           {this.renderAddress()}
         </KeyboardAvoidingView>

@@ -179,6 +179,14 @@ export default StyleSheet.create({
   popView: {
     backgroundColor: color.bgW,
   },
+  popTopView: {
+    flexDirection: 'row',
+    height: ROW_HEIGHT,
+    paddingLeft: scaleSize(20),
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: color.bgW,
+  },
   dsList: {
     maxHeight: (scaleSize(ROW_HEIGHT) + 1) * 6, // 最多6条
     backgroundColor: 'transparent',

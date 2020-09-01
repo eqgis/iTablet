@@ -51,6 +51,7 @@ export default class SampleMap extends Component {
       }
       keywords.push(_name)
     }
+    if (keywords.length === 0) return
     FetchUtils.getDataInfoByUrl({
       nickname: 'xiezhiyan123',
     }, keywords, '.zip').then(result => {

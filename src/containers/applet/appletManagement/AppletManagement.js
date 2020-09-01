@@ -9,7 +9,6 @@ import { ScrollView, View, Text, RefreshControl, NativeModules, Platform } from 
 import { scaleSize, OnlineServicesUtils, Toast } from '../../../utils'
 import { color } from '../../../styles'
 import { getLanguage } from '../../../language'
-import { FileTools } from '../../../native'
 import { UserType, ChunkType } from '../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
 import {
@@ -255,7 +254,6 @@ export default class AppletManagement extends React.Component {
         }}
       >
         <ScrollView
-          contentContainerStyle={{flex: 1}}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl

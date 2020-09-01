@@ -42,7 +42,7 @@ import styles from './styles'
 import { SMap, DatasetType, SMCollectorType } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
-import { Toast, scaleSize, setSpText } from '../../../../utils'
+import { Toast, scaleSize, setSpText, dataUtil } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
@@ -618,18 +618,21 @@ export default class LayerManager_tolbar extends React.Component {
       section.title ===
       getLanguage(global.language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER
     ) {
-      //'设置为当前图层'
       (async function() {
+        // 设置为当前图层，若该图层为不可见，则设置为可见
         await SMap.setLayerVisible(this.state.layerData.path, true)
         await SMap.setLayerEditable(this.state.layerData.path, true)
+        let newLayerData = dataUtil.deepClone(this.state.layerData)
+        newLayerData.isVisible = true
+        newLayerData.isVisible = true
         let newState = this.updateMenuState(
           this.state.data,
-          this.state.layerData,
+          newLayerData,
         )
         this.setState(newState, async () => {
-          // this.props.updateData && (await this.props.updateData())
           this.props.setCurrentLayer &&
             this.props.setCurrentLayer(this.state.layerData)
+          this.props.updateData && (await this.props.updateData())
           this.setThislayer()
         })
         Toast.show(

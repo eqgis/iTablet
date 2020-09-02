@@ -1841,6 +1841,7 @@ export default class Friend extends Component {
           : this.renderNOFriend()}
         <AddMore
           show={this.state.showPop}
+          device={this.props.device}
           closeModal={show => {
             this.setState({ showPop: show })
           }}

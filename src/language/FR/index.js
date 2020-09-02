@@ -8,7 +8,7 @@ import * as Unit from './Unit'
 
 import * as Map from './Map'
 import { Prompt } from './Prompt'
-import { Protocol } from './Common'
+import * as Common from './Common'
 
 export default {
   Navigator_Label,
@@ -20,5 +20,5 @@ export default {
   Find,
   ...Analyst,
   ...Unit,
-  Protocol,
+  ...Common,
 }

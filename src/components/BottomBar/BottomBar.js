@@ -16,6 +16,7 @@ export default class BottomBar extends React.Component {
     super(props)
     this.state = {
       data: this.props.data,
+      customView: undefined,
     }
     this._data = {}
   }
@@ -25,10 +26,11 @@ export default class BottomBar extends React.Component {
   }
 
   goto = pageKey => {
-    let { data, pageAction } = this.props.getData(pageKey, this)
+    let { data, pageAction, customView } = this.props.getData(pageKey, this)
     if (data.length > 0) {
       this.setState({
         data: data,
+        customView,
       })
       pageAction(this)
     }
@@ -81,20 +83,23 @@ export default class BottomBar extends React.Component {
 
   render() {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: '100%',
-          height: scaleSize(96),
-          backgroundColor: 'black',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingHorizontal: scaleSize(40),
-        }}
-      >
-        {this.renderItems()}
+      <View style={{ flex: 1 }}>
+        {this.state.customView || null}
+        <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            width: '100%',
+            height: scaleSize(96),
+            backgroundColor: 'black',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            paddingHorizontal: scaleSize(40),
+          }}
+        >
+          {this.renderItems()}
+        </View>
       </View>
     )
   }

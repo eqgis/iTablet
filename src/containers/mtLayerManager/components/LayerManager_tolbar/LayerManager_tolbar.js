@@ -498,6 +498,10 @@ export default class LayerManager_tolbar extends React.Component {
           this.state.section.title ===
           getLanguage(global.language).Map_Layer.BASEMAP
         ) {
+          if (this.state.layerData.caption === 'baseMap') {
+            // 没有底图时，不能移除
+            return
+          }
           let layers = []
           layers.push(this.state.layerData)
           if (this.state.layerData.subLayers) {

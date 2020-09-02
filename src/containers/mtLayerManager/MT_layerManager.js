@@ -749,6 +749,7 @@ export default class MT_layerManager extends React.Component {
               return this.itemRefs[item.name]
             }}
             // swipeEnabled={true}
+            device={this.props.device}
             user={this.props.user}
             data={item}
             parentData={parentData}

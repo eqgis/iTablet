@@ -89,6 +89,7 @@ export default class LayerManager_item extends React.Component {
       sectionID: props.sectionID || 0,
       rowID: props.rowID || 0,
     }
+    this.popKey = ''
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -104,6 +105,10 @@ export default class LayerManager_item extends React.Component {
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.getData(this.props.data)
+    }
+    if (this.props.device.orientation !== prevProps.device.orientation && this.popKey) {
+      ActionPopover.hide(this.popKey)
+      this.popKey = ''
     }
   }
 
@@ -165,15 +170,6 @@ export default class LayerManager_item extends React.Component {
       })
     }.bind(this)())
   }
-
-  // updateEditable = () => {
-  //   (async function() {
-  //     let idEditable = await this.props.layer.getEditable()
-  //     this.setState({
-  //       editable: idEditable,
-  //     })
-  //   }.bind(this)())
-  // }
 
   getOptions = data => {
     let { isThemeLayer, isVectorLayer } = this.getValidate(data)
@@ -295,72 +291,6 @@ export default class LayerManager_item extends React.Component {
       })
     }
   }
-
-  // _openTheme = () => {
-  //   let title = '',
-  //     themeType = ''
-  //   switch (this.state.data.themeType) {
-  //     case ThemeType.LABEL:
-  //       title = Const.LABEL
-  //       break
-  //     case ThemeType.UNIQUE:
-  //       title = Const.UNIQUE
-  //       break
-  //     case ThemeType.RANGE:
-  //       title = Const.RANGE
-  //       break
-  //   }
-  //   if (this.state.data.type === DatasetType.CAD) {
-  //     title = Const.LABEL
-  //     themeType = ThemeType.LABEL
-  //   }
-  //   if (title) {
-  //     let editLayer = this.props.layer
-  //     Object.assign(editLayer, {
-  //       index: this.state.data.index,
-  //       themeType: themeType || this.state.data.themeType,
-  //       name: this.state.data.name,
-  //       caption: this.state.data.caption,
-  //     })
-  //     NavigationService.navigate('ThemeEdit', {
-  //       title,
-  //       layer: this.props.layer,
-  //       map: this.props.map,
-  //       mapControl: this.props.mapControl,
-  //       isThemeLayer: !themeType,
-  //     })
-  //   } else {
-  //     NavigationService.navigate('ThemeEntry', {
-  //       layer: this.props.layer,
-  //       map: this.props.map,
-  //       mapControl: this.props.mapControl,
-  //     })
-  //   }
-  // }
-
-  // _openStyle = () => {
-  //   NavigationService.navigate('ThemeStyle', {
-  //     layer: this.props.layer,
-  //     map: this.props.map,
-  //     mapControl: this.props.mapControl,
-  //     type: this.state.data.type,
-  //   })
-  // }
-
-  // _rename = () => {
-  //   this.props.showRenameDialog &&
-  //     this.props.showRenameDialog(true, this.props.layer)
-  // }
-
-  // _remove = () => {
-  //   this.props.showRemoveDialog &&
-  //     this.props.showRemoveDialog(true, this.state.data, '是否要删除该图层？')
-  // }
-
-  // _unGroup = () => {
-  //   this.props.showRemoveDialog &&
-  //     this.props.showRemoveDialog(true, this.state.data, '是否要解散该图层组？')
-  // }
 
   _pop_row = async () => {
     if (this.props.onPress) {
@@ -504,8 +434,8 @@ export default class LayerManager_item extends React.Component {
             let { px, py, width, height } = this.PressViewPosition
             if (layer.index > 0) {
               py = py - height
-              py >= scaleSize(180) &&
-                ActionPopover.show(
+              if (py >= scaleSize(180)) {
+                this.popKey = ActionPopover.show(
                   {
                     x: px,
                     y: py,
@@ -514,13 +444,16 @@ export default class LayerManager_item extends React.Component {
                   },
                   items,
                 )
+              } else {
+                this.popKey = ''
+              }
               layer.index -= 1
               this.setState({
                 data: layer,
               })
               this.PressViewPosition = { px, py, width, height }
             } else {
-              ActionPopover.show(
+              this.popKey = ActionPopover.show(
                 {
                   x: px,
                   y: py,
@@ -547,12 +480,12 @@ export default class LayerManager_item extends React.Component {
             let { px, py, width, height } = this.PressViewPosition
             if (layer.index < layer.layerCount - 1) {
               py = py + height
-              py <
-                screen.getScreenHeight() -
-                  scaleSize(
-                    screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
-                  ) &&
-                ActionPopover.show(
+              if (
+                py < screen.getScreenHeight() - scaleSize(
+                  screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
+                )
+              ) {
+                this.popKey = ActionPopover.show(
                   {
                     x: px,
                     y: py,
@@ -561,13 +494,16 @@ export default class LayerManager_item extends React.Component {
                   },
                   items,
                 )
+              } else {
+                this.popKey = ''
+              }
               layer.index += 1
               this.setState({
                 data: layer,
               })
               this.PressViewPosition = { px, py, width, height }
             } else {
-              ActionPopover.show(
+              this.popKey = ActionPopover.show(
                 {
                   x: px,
                   y: py,
@@ -584,6 +520,7 @@ export default class LayerManager_item extends React.Component {
         title: getLanguage(global.language).Map_Layer.LAYERS_TOP,
         onPress: () => {
           (async function() {
+            this.popKey = ''
             await SMap.moveToTop(layer.path)
             if (layer.path.indexOf('/') === -1) {
               let count = await SMap.getTaggingLayerCount(
@@ -608,6 +545,7 @@ export default class LayerManager_item extends React.Component {
         title: getLanguage(global.language).Map_Layer.LAYERS_BOTTOM,
         onPress: () => {
           (async function() {
+            this.popKey = ''
             await SMap.moveToBottom(layer.path)
             if (layer.path.indexOf('/') === -1 && this.props.hasBaseMap) {
               SMap.moveUpLayer(layer.path)
@@ -630,7 +568,7 @@ export default class LayerManager_item extends React.Component {
       },
     ]
     pressView.measure((ox, oy, width, height, px, py) => {
-      ActionPopover.show(
+      this.popKey = ActionPopover.show(
         {
           x: px,
           y: py,

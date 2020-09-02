@@ -29,9 +29,9 @@ export default class MapARConfig extends Module {
       arToolModule,
       toolModule,
     ]
-    if (Platform.OS === 'ios') {
-      modules.splice(4, 1)
-    }
+//    if (Platform.OS === 'ios') {
+//      modules.splice(4, 1)
+//    }
     super({
       key: MapARConfig.key,
       functionModules: modules,

@@ -9,6 +9,8 @@ import {
   addModule,
   arMappingModule,
   arMeasureModule,
+  markModule,
+  toolModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
@@ -21,8 +23,10 @@ export default class MapARMapping extends Module {
       functionModules: [
         startModule,
         addModule,
+        markModule,
         arMeasureModule,
         arMappingModule,
+        toolModule,
       ],
       mapType: Module.MapType.MAP,
     })

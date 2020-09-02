@@ -22,7 +22,7 @@ const Prompt = {
   PREPARING: 'Hazırlamak',
 
   DOWNLOAD_SAMPLE_DATA: 'Örnek veri indir?',
-  DOWNLOAD_DATA: '数据下载', // 待翻译
+  DOWNLOAD_DATA: 'Data Download', // 待翻译
   DOWNLOAD: 'İndir',
   DOWNLOADING: 'Yükleniyor',
   DOWNLOAD_SUCCESSFULLY: 'Tamamlandı',

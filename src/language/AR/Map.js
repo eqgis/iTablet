@@ -409,10 +409,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: 'تغيير',
   MAP_AR_AI_CLEAR: 'مسح',
   MAP_AR_AI_NEW_ROAD: 'من فضلك انشاء خط جديد',
-  MAP_AR_AI_SAVE_REGION: '保存面',
-  MAP_AR_AI_SCENE_TRACK_COLLECT: '轨迹式',
-  MAP_AR_AI_SCENE_POINT_COLLECT: '打点式',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: '点击屏幕确定当前点',
+  
+  // 待翻译
+  MAP_AR_AI_SAVE_REGION: 'Save Region',
+  MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
+  MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
+
   MAP_AR_AI_MEASURE_LENGTH: 'قياس الطول',
   MAP_AR_AI_MEASURE_AREA: 'منطقة القياس',
   MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
@@ -643,14 +646,15 @@ const Map_Layer = {
   BASEMAP_SWITH: 'تبديل خريطة الأساس',
   MY_TERRAIN: 'تضاريس بلادي',
 
-  SCALE_TO_CURRENT_LAYER: '缩放至当前图层',
-  ADD_A_TERRAIN_LAYER: '添加地形图层',
-  ADD_A_IMAGE_LAYER: '添加影像图层',
-  REMOVE_THE_CURRENT_LAYER: '移除当前图层',
-  ONLINE_BASE_MAP: '在线底图',
-  ADD_LAYER_URL: '添加在线图层地址',
-  TERRAIN: '地形',
-  IMAGE: '影像',
+  //待翻译
+  SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
+  ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
+  ADD_A_IMAGE_LAYER: 'Add a image layer',
+  REMOVE_THE_CURRENT_LAYER: 'Remove the current layer',
+  ONLINE_BASE_MAP: 'Online BaseMap',
+  ADD_LAYER_URL: 'Add Layer Url',
+  TERRAIN: 'Terrain',
+  IMAGE: 'Image',
   IS_ADD_NOTATION_LAYER: 'Do you want to add the notation layer', //待翻译
 
   LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode', //待翻译
@@ -904,23 +908,23 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: '模板管理', // 待翻译
-  COLLECTION_TEMPLATE_CREATE: '模板创建',
-  COLLECTION_TEMPLATE_NAME: '模板名称',
-  ELEMENT_SETTINGS: '要素设置',
-  ELEMENT_STORAGE: '要素储存',
-  ATTRIBUTE_SETTINGS: '属性设置',
-  CURRENT_TEMPLATE: '当前模板',
-  DEFAULT_TEMPLATE: '默认模版',
-
-  ELEMENT_NAME: '要素名称',
-  ELEMENT_CODE: '要素编码',
-
-  CREATE_ROOT_NODE: '新建根结点',
-  CREATE_CHILD_NODE: '新建子结点',
-  INSERT_NODE: '插入结点',
-
-  TEMPLATE_ERROR: '地图未保存，无法使用模板',
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',  // 待翻译
+  COLLECTION_TEMPLATE_CREATE: 'Create Template',
+  COLLECTION_TEMPLATE_NAME: 'Template Name',
+  ELEMENT_SETTINGS: 'Element Settings',
+  ELEMENT_STORAGE: 'Element Storage',
+  ATTRIBUTE_SETTINGS: 'Attribute Settings',
+  CURRENT_TEMPLATE: 'Current Template',
+  DEFAULT_TEMPLATE: 'Default Template',
+  
+  ELEMENT_NAME: 'Element Name',
+  ELEMENT_CODE: 'Element Code',
+  
+  CREATE_ROOT_NODE: 'Create Root Node',
+  CREATE_CHILD_NODE: 'Create Chile Node',
+  INSERT_NODE: 'Insert Node',
+  
+  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

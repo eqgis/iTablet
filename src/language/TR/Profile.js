@@ -122,14 +122,16 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'Renk Şemasını Sil',
   BATCH_SHARE: 'Toplu Paylaş',
   BATCH_DELETE: 'Toplu Sil',
-  BATCH_ADD: '批量添加',
+  BATCH_ADD: 'Batch Add', // 待翻译
   BATCH_OPERATE: 'Toplu İşlem',
   MY_APPLET: 'My Applet', // 待翻译
+  
+  // 待翻译
   UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
-  DELETE_APPLET: '删除小程序',
-  ADD_APPLET: '添加小程序',
-  MOVE_UP: '上移',
-  MOVE_DOWN: '下移',
+  DELETE_APPLET: 'Delete Applet',
+  ADD_APPLET: 'Add Applet',
+  MOVE_UP: 'Move Up',
+  MOVE_DOWN: 'Move Down',
 
   DELETE_SERVICE: 'Hizmeti Sil',
   PUBLISH_SERVICE: 'Yayınla',
@@ -218,7 +220,7 @@ const Profile = {
   LICENSE_CONTAIN_MODULE: 'Lisans Modülü İçerir',
   LICENSE_CONTAIN_EXPAND_MODULE: 'Lisans Modülü İçerir',
   LICENSE_USER_NAME: 'Kullanıcı Adı',
-  LICENSE_REMIND_NUMBER: '剩余许可数量',
+  LICENSE_REMIND_NUMBER: 'License Remind Number', //待翻译
   LICENSE_OFFICIAL_INPUT: 'Resmi Lisans Girişi',
   LICENSE_TRIAL_APPLY: 'Deneme Lisansı Başvurusu',
   LICENSE_OFFICIAL_CLEAN: 'Resmi Lisans Dönüş',

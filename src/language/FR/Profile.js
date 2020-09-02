@@ -122,14 +122,16 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'Supprimer le jeu de couleurs',
   BATCH_SHARE: 'Partage par lots',
   BATCH_DELETE: 'Suppression de lot',
-  BATCH_ADD: '批量添加',
+  BATCH_ADD: 'Batch Add', // 待翻译
   BATCH_OPERATE: 'Opération par lots',
   MY_APPLET: 'My Applet', // 待翻译
+  
+  // 待翻译
   UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
-  DELETE_APPLET: '删除小程序',
-  ADD_APPLET: '添加小程序',
-  MOVE_UP: '上移',
-  MOVE_DOWN: '下移',
+  DELETE_APPLET: 'Delete Applet',
+  ADD_APPLET: 'Add Applet',
+  MOVE_UP: 'Move Up',
+  MOVE_DOWN: 'Move Down',
 
   DELETE_SERVICE: 'Supprimer le service',
   PUBLISH_SERVICE: 'Publier',
@@ -181,7 +183,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'Définir le nom de la source de données',
   ENTER_DATASOURCE_NAME: 'Veuillez saisir le nom de la source de données',
   OPEN_DATASROUCE_FAILED: "Échec de l'ouverture de la source de données",
-  DATASOURCE_TYPE: '数据类型',
+  DATASOURCE_TYPE: 'Datasource type',  //待翻译
   SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'Sélectionnez le format à exporter',
@@ -195,14 +197,14 @@ const Profile = {
   STATUSBAR_HIDE: "Barre d'état Masquer",
   SETTING_LICENSE: 'License',
   SETTING_ABOUT_ITABLET: "À propos d'iTablet",
-  SETTING_ABOUT: '关于',
+  SETTING_ABOUT: 'About ', //待翻译
   SETTING_ABOUT_AFTER: '',
   SETTING_CHECK_VERSION: 'Vérifier la version',
-  SETTING_SUGGESTION_FEEDBACK: '意见反馈',
+  SETTING_SUGGESTION_FEEDBACK: 'Suggestion Feedback', //待翻译
   SETTING_LANGUAGE: 'Langue',
   SETTING_LANGUAGE_AUTO: 'Auto',
-  SETTING_LOCATION_DEVICE: '定位设备',
-  SETTING_LOCATION_LOCAL: '此设备',
+  SETTING_LOCATION_DEVICE: 'Location Device',//待翻译
+  SETTING_LOCATION_LOCAL: 'This device',//待翻译
 
   // 许可
   LICENSE: '许可',
@@ -212,17 +214,17 @@ const Profile = {
   LICENSE_OFFICIAL: 'License Official',
   LICENSE_STATE: 'État de licence',
   LICENSE_SURPLUS: 'License Surplus',
-  LICENSE_YEAR: '年',
+  LICENSE_YEAR: 'YEAR', //待翻译
   LICENSE_DAY: 'Jour',
-  LICENSE_PERMANENT: '永久',
+  LICENSE_PERMANENT: 'Permanent',//待翻译
   LICENSE_CONTAIN_MODULE: 'License Contain Module',
-  LICENSE_CONTAIN_EXPAND_MODULE: '所含拓展模块',
-  LICENSE_USER_NAME: '用户名',
-  LICENSE_REMIND_NUMBER: '剩余许可数量',
+  LICENSE_CONTAIN_EXPAND_MODULE: 'License Contain Expand Module', //待翻译
+  LICENSE_USER_NAME: 'User Name', //待翻译
+  LICENSE_REMIND_NUMBER: 'License Remind Number', //待翻译
   LICENSE_OFFICIAL_INPUT: 'Entrée officielle de licence',
   LICENSE_TRIAL_APPLY: "Essai de licence s'applique",
   LICENSE_OFFICIAL_CLEAN: 'License Official Clean',
-  LICENSE_OFFICIAL_RETURN: '归还许可',
+  LICENSE_OFFICIAL_RETURN: 'License Return', //待翻译
   LICENSE_CLEAN_CANCLE: 'Nettoyer Annuler',
   LICENSE_CLEAN_CONTINUE: 'Nettoyer Continuer',
   LICENSE_CLEAN_ALERT: 'Le nombre de licences sera déduit de la prochaine activation après avoir effacé la licence. Le numéro de licence restant actuel',
@@ -234,53 +236,59 @@ const Profile = {
   LICENSE_HAVE_REGISTER: 'suis inscrit',
   LICENSE_NOT_CONTAIN_MODULE: 'Ne pas contenir de module',
   LICENSE_MODULE_REGISTER_SUCCESS: 'Module Register Success',
-  LICENSE_MODULE_REGISTER_FAIL: '模块登记失败',
+  LICENSE_MODULE_REGISTER_FAIL: 'Module Register Fail', //待翻译
   LICENSE_EXIT: 'Quitter',
   LICENSE_EXIT_FAILED: 'Échec de la sortie',
-  LICENSE_EXIT_CLOUD_ACTIVATE: '归还当前云许可并激活此许可?',
-  LICENSE_EXIT_CLOUD_LOGOUT: '归还当前云许可并退出账号?',
+  LICENSE_EXIT_CLOUD_ACTIVATE: 'Do you want recycle cloud license and activate?', //待翻译
+  LICENSE_EXIT_CLOUD_LOGOUT: 'Do you want recycle cloud license and logout?', //待翻译
   LICENSE_CURRENT_EXPIRE: 'Licence actuelle non valide',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE: "Ce module n'est pas inclus dans la licence actuelle",
   LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: "Ce module n'est pas inclus dans la licence actuelle et certaines de ses fonctions ne seront pas disponibles",
   LICENSE_NO_NATIVE_OFFICAL: 'Pas de fichier de licence officiel natif, veuillez ajouter le fichier de licence Official_License à / iTablet / license / file ',
   LICENSE_NOT_ITABLET_OFFICAL: "Cette licence officielle n'est pas activée sur iTablet, veuillez vous rendre sur la page de licence pour effacer la licence et la réactiver",
   LICENSE_NATIVE_EXPIRE: 'Licence native non valide',
-  LICENSE_LONG_EFFECTIVE: '长期有效',
-  LICENSE_OFFLINE: '离线许可',
-  LICENSE_CLOUD: '云许可',
-  LICENSE_PRIVATE_CLOUD: '私有云许可',
-  LICENSE_NONE: '没有许可',
-  LICENSE_EDITION: '许可版本',
-  LICENSE_EDITION_CURRENT: '当前版本',
-  LICENSE_IN_TRIAL: '试用中',
-  LICENSE_TRIAL_END: '试用结束',
-  LICENSE_MODULE: '扩展模块',
-  LICENSE_ACTIVATE: '激活许可',
-  LICENSE_ACTIVATING: '激活中',
-  LICENSE_ACTIVATION_SUCCESS: '激活成功',
-  LICENSE_ACTIVATION_FAIL: '激活失败',
-  LICENSE_SELECT_LICENSE: '选择许可',
-  LICENSE_REAMIN_DAYS: '剩余天数',
-  LICENSE_SHOW_DETAIL: '显示详细信息',
-  LICENSE_QUERY_NONE: '未查询到许可信息',
-  LICENSE_PRIVATE_CLOUD_SERVER: '私有云许可地址',
+  
+  // 待翻译
+  LICENSE_LONG_EFFECTIVE: 'Long Effective',
+  LICENSE_OFFLINE: 'License OffLine',
+  LICENSE_CLOUD: 'License Cloud',
+  LICENSE_PRIVATE_CLOUD: 'License Private Cloud',
+  LICENSE_NONE: 'None',
+  LICENSE_EDITION: 'License Edition',
+  LICENSE_EDITION_CURRENT: 'Current Edition',
+  LICENSE_IN_TRIAL: 'in Trial',
+  LICENSE_TRIAL_END: 'Trial End',
+  LICENSE_MODULE: 'Expand Module',
+  LICENSE_ACTIVATE: 'Activate',
+  LICENSE_ACTIVATING: 'Activating',
+  LICENSE_ACTIVATION_SUCCESS: 'Activate Success',
+  LICENSE_ACTIVATION_FAIL: 'Activate Failed',
+  LICENSE_SELECT_LICENSE: 'Select License',
+  LICENSE_REAMIN_DAYS: 'Remain Days',
+  LICENSE_SHOW_DETAIL: 'Show details',
+  LICENSE_QUERY_NONE: 'Unable to get license information',
+  LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
+  
   LICENSE_EDUCATION: 'Licence pédagogique',
   LICENSE_EDUCATION_CONNECT_FAIL: 'Échec de la connexion au service',
-  LICENSE_QUERY: '查询许可',
-  LICENSE_QUERYING: '查询中',
-  LICENSE_QUERY_FAIL: '查询失败，请检查服务器设置',
-  LICENSE_SELECT_MODULE: '选择模块',
-  LICENSE_SELECT_EDITION: '选择版本',
-  LICENSE_TOTAL_NUM: '总套数',
-  LICENSE_REMIAN_NUM: '可用套数',
-  LICENSE_DUE_DATE: '到期时间',
-  LICENSE_CLOUD_SITE_SWITCH: '切换',
-  LICENSE_CLOUD_SITE_DEFAULT: '默认站点',
-  LICENSE_CLOUD_SITE_JP: '日本站点',
+  
+  // 待翻译
+  LICENSE_QUERY: 'Query License',
+  LICENSE_QUERYING: 'Quering',
+  LICENSE_QUERY_FAIL: 'Query failed. Please check the server setting',
+  LICENSE_SELECT_MODULE: 'Select Module',
+  LICENSE_SELECT_EDITION: 'Select Edition',
+  LICENSE_TOTAL_NUM: 'Total Numbers',
+  LICENSE_REMIAN_NUM: 'Remain Numbers',
+  LICENSE_DUE_DATE: 'Expire at',
+  LICENSE_CLOUD_SITE_SWITCH: 'Switch',
+  LICENSE_CLOUD_SITE_DEFAULT: 'Default Site',
+  LICENSE_CLOUD_SITE_JP: 'Japan Site',
   // itablet许可版本
-  LICENSE_EDITION_STANDARD: '标准版',
-  LICENSE_EDITION_PROFESSIONAL: '专业版',
-  LICENSE_EDITION_ADVANCED: '高级版',
+  LICENSE_EDITION_STANDARD: 'Standard Edition',
+  LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
+  LICENSE_EDITION_ADVANCED: 'Advanced Edition',
+  
   // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: "Durée d'exécution principale",
@@ -300,49 +308,50 @@ const Profile = {
   Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
   Realspace_Effect_Dev: 'Realspace Effect Dev',
   Realspace_Effect_Runtime: "Temps d'exécution réel de l'espace",
-  // itablet许可模块
-  ITABLET_ARMAP: 'AR地图',
-  ITABLET_NAVIGATIONMAP: '导航地图',
-  ITABLET_DATAANALYSIS: '数据分析',
-  ITABLET_PLOTTING: '应急标绘',
-  INVALID_MODULE: '当前模块许可无效，不能进行此操作。',
-  INVALID_LICENSE: '许可无效，不能进行此操作。',
-  GO_ACTIVATE: '前往激活',
-
-  // 意见反馈
-  SUGGESTION_FUNCTION_ABNORMAL: '功能异常：功能故障或不可用',
-  SUGGESTION_PRODUCT_ADVICE: '产品建议：用得不爽，我有建议',
-  SUGGESTION_OTHER_PROBLEMS: '其他问题',
-  SUGGESTION_SELECT_PROBLEMS: '请选择你想反馈的问题点',
-  SUGGESTION_PROBLEMS_DETAIL: '请补充详细问题和意见',
-  SUGGESTION_PROBLEMS_DESCRIPTION: '请输入问题描述',
-  SUGGESTION_CONTACT_WAY: '联系方式',
-  SUGGESTION_CONTACT_WAY_INPUT: '请输入联系方式',
-  SUGGESTION_SUBMIT: '提交',
-  SUGGESTION_SUBMIT_SUCCEED: '提交成功',
-  SUGGESTION_SUBMIT_FAILED: '提交失败',
-
-  // ar地图校准
-  MAP_AR_DATUM_LONGITUDE: '经度',
-  MAP_AR_DATUM_LATITUDE: '纬度',
-  MAP_AR_DATUM_ENTER_CURRENT_POSITION: '请输入当前位置坐标',
-  MAP_AR_DATUM_AUTO_LOCATION: '自动定位',
-  MAP_AR_DATUM_MAP_SELECT_POINT: '地图选点',
-  MAP_AR_DATUM_SURE: '确定',
-  MAP_AR_DATUM_AUTO_LOCATIONING: '定位中',
-  MAP_AR_DATUM_POSITION: '基点坐标',
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: '自动定位成功',
-  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: '地图选点成功',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: '请把手机垂直于地面面向正南点击确定',
-  MAP_AR_DATUM_SETTING: '设置',
-  X_COORDINATE: 'X Coordinate', //待翻译
+  
+  // itablet许可模块 待翻译
+  ITABLET_ARMAP: 'Ar Map',
+  ITABLET_NAVIGATIONMAP: 'Navigation Map',
+  ITABLET_DATAANALYSIS: 'Data Analysis',
+  ITABLET_PLOTTING: 'Plotting',
+  INVALID_MODULE: 'Invalid module. Unable to continue.',
+  INVALID_LICENSE: 'Invalid license. Unable to continue.',
+  GO_ACTIVATE: 'Go Activate',
+  
+  // 意见反馈 待翻译
+  SUGGESTION_FUNCTION_ABNORMAL: 'Function Abnormal : Function abnormal or not can use',
+  SUGGESTION_PRODUCT_ADVICE: 'Product Suggestion : I have a suggestion',
+  SUGGESTION_OTHER_PROBLEMS: 'Other Problems',
+  SUGGESTION_SELECT_PROBLEMS: 'Please select the problems',
+  SUGGESTION_PROBLEMS_DETAIL: 'Please provide detailed problems and suggestion',
+  SUGGESTION_PROBLEMS_DESCRIPTION: 'Plese input problem description',
+  SUGGESTION_CONTACT_WAY: 'Contact Way',
+  SUGGESTION_CONTACT_WAY_INPUT: 'Please input contact way',
+  SUGGESTION_SUBMIT: 'Submit',
+  SUGGESTION_SUBMIT_SUCCEED: 'Submit Succeed',
+  SUGGESTION_SUBMIT_FAILED: 'Submit Failed',
+  
+  // ar地图校准 待翻译
+  MAP_AR_DATUM_LONGITUDE: 'Longitude',
+  MAP_AR_DATUM_LATITUDE: 'Latitude',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'Please enter current position',
+  MAP_AR_DATUM_AUTO_LOCATION: 'Auto location',
+  MAP_AR_DATUM_MAP_SELECT_POINT: 'Map select point',
+  MAP_AR_DATUM_SURE: 'Sure',
+  MAP_AR_DATUM_AUTO_LOCATIONING: 'Locationing',
+  MAP_AR_DATUM_POSITION: 'Datum position',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Auto location succeed',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Map select point succeed',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Please place your mobile phone facing south click sure',
+  MAP_AR_DATUM_SETTING: 'Setting',
+  X_COORDINATE: 'X Coordinate',
   Y_COORDINATE: 'Y Coordinate',
-
-  // ar地图
-  COLLECT_SCENE_RENAME: '重命名',
-  COLLECT_SCENE_RENAME_SUCCEED: '重命名成功',
-  COLLECT_SCENE_ADD_REMARK: '添加备注',
-  COLLECT_SCENE_ADD_REMARK_SUCCEED: '添加备注成功',
+  
+  // ar地图 待翻译
+  COLLECT_SCENE_RENAME: 'Rename',
+  COLLECT_SCENE_RENAME_SUCCEED: 'Rename succeed',
+  COLLECT_SCENE_ADD_REMARK: 'Add remark',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
 
   CHOOSE_COLOR: 'Sélectionner la couleur',
   SET_PROJECTION: 'Configurer la projection',

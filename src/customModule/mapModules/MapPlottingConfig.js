@@ -19,7 +19,7 @@ export default class MapPlottingConfig extends Module {
       key: MapPlottingConfig.key,
       example: {
         DEFAULT: {
-          name: '福建_示范数据',
+          name: '福建',
           mapName: 'TourLine',
         },
       },

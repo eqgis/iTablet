@@ -482,57 +482,61 @@ const text = param => [
   },
 ]
 
-const font = [
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
-    // action: StyleAction.setTextFont,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_bold.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_bold.png'),
-  },
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_italic.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_italic.png'),
-  },
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_underline.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_underline.png'),
-  },
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
-  },
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_shadow.png'),
-  },
-  {
-    key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
-    title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
-    action: StyleAction.setTextFont,
-    size: 'large',
-    image: require('../../../../../../assets/mapTools/style_font_outline.png'),
-    selectedImage: require('../../../../../../assets/mapTools/style_font_outline.png'),
-  },
-]
+const font = function (language) {
+  return (
+    [
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
+        title: getLanguage(language).Map_Main_Menu.STYLE_BOLD,
+        // action: StyleAction.setTextFont,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_bold.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_bold.png'),
+      },
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
+        title: getLanguage(language).Map_Main_Menu.STYLE_ITALIC,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_italic.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_italic.png'),
+      },
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
+        title: getLanguage(language).Map_Main_Menu.STYLE_UNDERLINE,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_underline.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_underline.png'),
+      },
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
+        title: getLanguage(language).Map_Main_Menu.STYLE_STRIKEOUT,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
+      },
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
+        title: getLanguage(language).Map_Main_Menu.STYLE_SHADOW,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_shadow.png'),
+      },
+      {
+        key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
+        title: getLanguage(language).Map_Main_Menu.STYLE_OUTLINE,
+        action: StyleAction.setTextFont,
+        size: 'large',
+        image: require('../../../../../../assets/mapTools/style_font_outline.png'),
+        selectedImage: require('../../../../../../assets/mapTools/style_font_outline.png'),
+      },
+    ]
+  )
+}
 
 const colors = [
   '#FFFFFF',

@@ -79,10 +79,7 @@ export default class Module {
       if (this.example.DEFAULT) {
         _example = this.example.DEFAULT
       } else {
-        return [{
-          name: '',
-          mapName: '',
-        }]
+        return []
       }
     }
     

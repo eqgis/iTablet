@@ -56,7 +56,7 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             if (file.exists() && file.isDirectory()) {
                 File[] tempsArray = file.listFiles();
                 for (int i = 0; i < tempsArray.length; i++) {
-                    if (tempsArray[i].getName().contains("_示范数据")) continue;
+                    if (tempsArray[i].getName().contains("_EXAMPLE")) continue;
                     if (tempsArray[i].isDirectory()) {
                         File[] tempArray = tempsArray[i].listFiles();
                         WritableMap tempInfo = Arguments.createMap();

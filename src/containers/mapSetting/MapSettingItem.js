@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     height: scaleSize(60),
   },
   itemText: {
-    lineHeight: scaleSize(112),
+    lineHeight: scaleSize(28),
     flex: 1,
     textAlign: 'left',
     fontSize: size.fontSize.fontSizeXl,
@@ -98,10 +98,14 @@ export default class MapSettingItem extends PureComponent {
             source={this.props.leftImage}
           />
         }
-        <Text style={[
-          styles.itemText,
-          this.props.leftImage && { marginLeft: scaleSize(46) },
-        ]}>
+        <Text
+          style={[
+            styles.itemText,
+            this.props.leftImage && { marginLeft: scaleSize(46) },
+          ]}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+        >
           {this.props.title}
         </Text>
         {this._renderRightView()}

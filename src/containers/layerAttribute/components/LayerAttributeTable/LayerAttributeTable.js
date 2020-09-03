@@ -520,7 +520,7 @@ export default class LayerAttributeTable extends React.Component {
         selected={item[0] ? !!this.state.selected.get(item[0].value) : false}
         index={index}
         disableCellStyle={styles.disableCellStyle}
-        // cellTextStyle={cellTextStyle}
+        // cellStyle={{ borderLeftWidth: scaleSize(2) }}
         indexColumn={this.props.indexColumn}
         indexCellStyle={[indexCellStyle, this.props.indexCellStyle]}
         indexCellTextStyle={[indexCellTextStyle, this.props.indexCellTextStyle]}
@@ -565,9 +565,10 @@ export default class LayerAttributeTable extends React.Component {
           backgroundColor: color.gray7,
           borderTopRightRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
           borderTopLeftRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
+          borderWidth: 0,
         }}
         cellStyle={{
-          // borderRightWidth: 0,
+          borderLeftWidth: 0,
           // borderBottomWidth: 0,
         }}
         cellTextStyle={{ color: '#3C3C3C' }}
@@ -680,10 +681,9 @@ export default class LayerAttributeTable extends React.Component {
     if (Platform.OS === 'android') {
       return (
         <KeyboardAvoidingView
-          // behavior={this.state.behavior}
-          behavior="padding"
+          behavior={Platform.OS === 'ios' && "padding"}
           enabled
-          style={styles.container}
+          style={[styles.container, this.props.contentContainerStyle]}
         >
           {/*<View style={styles.container}>*/}
           {this.props.type === 'MULTI_DATA' && this.state.isMultiData

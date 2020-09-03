@@ -509,7 +509,7 @@ const Map_Main_Menu = {
   MAP_TOPO_RESAMPLE: 'Re-sampling',
   MAP_TOPO_CHANGE_DIRECTION: 'Change Direction',
   ADD_DATASET: 'Append Dataset',
-  SELECT_ROADNAME_FIELD: 'Select the road name field of the following dataset',
+  SELECT_ROADNAME_FIELD: 'Select the Road Name Field',
   SELECT_FIELD: 'Select Field',
   MERGE_CANCEL: 'Cancel',
   MERGE_CONFIRM: 'Confirm',

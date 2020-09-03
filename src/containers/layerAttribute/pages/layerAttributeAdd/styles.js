@@ -21,7 +21,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: scaleSize(30),
-    paddingHorizontal: scaleSize(80),
+    paddingHorizontal: scaleSize(60),
     width: '100%',
   },
   btn: {
@@ -51,7 +51,7 @@ export default StyleSheet.create({
   rows: {
     flex: 1,
     flexDirection: 'column',
-    marginHorizontal: scaleSize(80),
+    marginHorizontal: scaleSize(60),
     backgroundColor: 'transparent',
   },
   row: {

@@ -4,25 +4,24 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-import React from 'react'
+// import React from 'react'
 import { ConstToolType } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getPublicAssets } from '../../../../../../assets'
 import TopoEditAction from './TopoEditAction'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import MergeDatasetView from './customView/MergeDatasetView'
-import { SMap } from 'imobile_for_reactnative'
+// import MergeDatasetView from './customView/MergeDatasetView'
 
 async function getData(type) {
   let data = []
   let buttons = [
     ToolbarBtnType.CANCEL,
-    {
-      type: ToolbarBtnType.MENU,
-      image: getPublicAssets().navigation.btn_increment_merge_dataset,
-      action: TopoEditAction.showMerge,
-    },
+    // {
+    //   type: ToolbarBtnType.MENU,
+    //   image: getPublicAssets().navigation.btn_increment_merge_dataset,
+    //   action: TopoEditAction.showMerge,
+    // },
     {
       type: ConstToolType.MAP_INCREMENT_CHANGE_METHOD,
       image: getPublicAssets().navigation.btn_increment_change_type,
@@ -160,17 +159,13 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_TOPO_MERGE_DATASET:
-      {
-        let datas = await SMap.getLineDataset()
-        data = []
-        buttons = []
-        datas = datas.filter(
-          item => item.datasetName !== GLOBAL.INCREMENT_DATA.datasetName,
-        )
-        customView = () => <MergeDatasetView data={datas} />
-      }
-      break
+    // case ConstToolType.MAP_TOPO_MERGE_DATASET:
+    //   {
+    //     data = []
+    //     buttons = []
+    //     customView = () => <MergeDatasetView />
+    //   }
+    //   break
     case ConstToolType.MAP_TOPO_SPLIT_LINE:
     case ConstToolType.MAP_TOPO_EXTEND_LINE:
     case ConstToolType.MAP_TOPO_TRIM_LINE:

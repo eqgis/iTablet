@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   listContainer: {
     backgroundColor: 'transparent',
-    borderWidth: scaleSize(2),
+    // borderWidth: scaleSize(2),
     borderColor: color.gray6,
     borderRadius: scaleSize(12)
   },

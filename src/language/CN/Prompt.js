@@ -22,6 +22,7 @@ const Prompt = {
   PREPARING: '准备中',
 
   DOWNLOAD_SAMPLE_DATA: '是否下载样例数据？',
+  DOWNLOAD_DATA: '数据下载',
   DOWNLOAD: '下载',
   DOWNLOADING: '下载中',
   DOWNLOAD_SUCCESSFULLY: '已下载',
@@ -219,7 +220,7 @@ const Prompt = {
 
   POI: '兴趣点',
 
-  ILLEGAL_DATA: '数据非法!',
+  ILLEGAL_DATA: '无效数据',
 
   UNSUPPORTED_LAYER_TO_SHARE: '暂不支持此图层的分享',
   SELECT_DATASET_TO_SHARE: '请选择要分享的数据集',
@@ -320,15 +321,13 @@ const Prompt = {
   CANT_REDO: '无法重做',
   DATASET_RENAME_FAILED: '数据集名称只能包含字母、数字和"_"、"@"、"#"',
   SWITCH_LINE: '切换数据',
-  HAS_NO_ROADNAME_FIELD_DATA: '存在未选择道路名称字段信息的数据集',
+  HAS_NO_ROADNAME_FIELD_DATA: '该数据集不包含道路名称字段',
   MERGE_SUCCESS: '合并成功',
   MERGE_FAILD: '合并失败',
   NOT_SUPPORT_PRJCOORDSYS: '以下数据集的坐标系不支持合并',
   MERGEING: '合并中',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: '存在不包含RoadName字段的数据集,请选择以下数据集的道路名称字段',
   NEW_NAV_DATA: '创建导航数据',
   INPUT_MODEL_FILE_NAME: '请输入模型文件名称',
-  INCREMENT_FIRST: '请先采集路网数据',
   SELECT_DESTINATION_DATASOURCE: '请选择目标数据源',
   FILENAME_ALREADY_EXIST: '文件已存在,请重新输入文件名',
   NETWORK_BUILDING: '构网中...',

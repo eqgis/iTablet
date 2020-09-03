@@ -4,4 +4,15 @@ const Protocol = {
   READ_AND_AGREE: '閲読済み、受け取ります。',
 }
 
-export { Protocol }
+const Common = {
+  UP: '上',
+  DOWN: '下',
+  LEFT: '左',
+  RIGHT: '右',
+  FRONT: '前',
+  BACK: '後',
+
+  PARAMETER: 'パラメタ',
+}
+
+export { Protocol, Common }

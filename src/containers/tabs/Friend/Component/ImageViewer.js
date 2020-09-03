@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 
 export default class ChatImageViewer extends React.Component {
@@ -70,7 +70,10 @@ export default class ChatImageViewer extends React.Component {
 
   renderHeader = () => {
     return (
-      <TouchableOpacity style={styles.headerStyle} onPress={this.close}>
+      <TouchableOpacity
+        style={[styles.headerStyle, { top: screen.getIphonePaddingTop() }]}
+        onPress={this.close}
+      >
         <Image
           source={require('../../../../assets/public/Frenchgrey/icon-back-white.png')}
           style={styles.image}

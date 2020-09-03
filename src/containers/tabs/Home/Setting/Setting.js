@@ -18,6 +18,10 @@ import FetchUtils from '../../../../../src/utils/FetchUtils'
 import { FileTools } from '../../../../native'
 import RNFS from 'react-native-fs'
 
+import {
+  SMap
+} from 'imobile_for_reactnative'
+
 export default class Setting extends Component {
   props: {
     navigation: Object,
@@ -41,43 +45,15 @@ export default class Setting extends Component {
 
   _checkOpenLicense = async () => {
     try {
-      if (Platform.OS === 'android') {
-        this.setState({
-          bOpenLicense: true,
-          isRefresh: false,
-        })
-        return
-      }
-      let fileCachePath = await FileTools.appendingHomeDirectory(
-        '/iTablet/license/Open_License.ol',
-      )
-      let bRes = await RNFS.exists(fileCachePath)
-      if (bRes) {
-        await RNFS.unlink(fileCachePath)
-      }
-      let dataUrl = await FetchUtils.getFindUserDataUrl(
-        'xiezhiyan123',
-        'Open_License',
-        '.geojson',
-      )
-      let downloadOptions = {
-        fromUrl: dataUrl,
-        toFile: fileCachePath,
-        background: true,
-        fileName: 'Open_License.ol',
-        progressDivider: 1,
-      }
-      const ret = RNFS.downloadFile(downloadOptions)
-      ret.promise.then(async () => {
-        let bRes = await RNFS.readFile(fileCachePath)
-        if (parseInt(bRes) === 1) {
-          //检查许可接口入口是否开放
-          this.setState({
-            bOpenLicense: true,
-            isRefresh: false,
-          })
-        }
+      let bOpen = true
+      bOpen = await SMap.isAudit()
+      bOpen = !bOpen
+      
+      this.setState({
+        bOpenLicense: bOpen,
+        isRefresh: false,
       })
+      return
     } catch (e) {
       this.setState({
         bOpenLicense: false,

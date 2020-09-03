@@ -41,7 +41,7 @@ RCT_REMAP_METHOD(getTemplates, getTemplatesByUserName:(NSString *)userName strMo
     BOOL hasTemplate = NO;
     
     for (NSString* fileName in tempsArray) {
-      if ([fileName containsString:@"_示范数据"]) continue;
+      if ([fileName containsString:@"_EXAMPLE"]) continue;
       if (templateInfo == nil) {
         templateInfo = [[NSMutableDictionary alloc] init];
       }

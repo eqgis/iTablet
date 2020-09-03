@@ -4,14 +4,11 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { TouchableOpacity, FlatList, Image, Text, View } from 'react-native'
-import { Container, TextBtn } from '../../../../components'
-import { NativeMethod } from '../../../../native'
+import { TouchableOpacity, FlatList, Image, Text, View, InteractionManager } from 'react-native'
+import { Container } from '../../../../components'
 import { getLayerIconByType } from '../../../../assets'
-import { screen } from '../../../../utils'
 import { ListSeparator } from '../../../../components'
 import NavigationService from '../../../../containers/NavigationService'
-import { TemplatePopView } from '../../components'
 import { DatasetType } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -35,7 +32,9 @@ export default class TemplateSource extends React.Component {
   }
 
   componentDidMount() {
-    this.getSources()
+    InteractionManager.runAfterInteractions(() => {
+      this.getSources()
+    })
   }
 
   getSources = async () => {
@@ -58,7 +57,12 @@ export default class TemplateSource extends React.Component {
       }
     } else {
       // 选择数据源
-      data = await SMap.getDatasources()
+      let _data = await SMap.getDatasources()
+      for (let item of _data) {
+        if (!(item.alias.startsWith('Label_') && item.alias.endsWith('#'))) {
+          data.push(item)
+        }
+      }
     }
     this.setState({
       data,
@@ -75,7 +79,7 @@ export default class TemplateSource extends React.Component {
     if (cb && typeof cb === 'function') {
       cb({ data: item, index, type: this.type })
     }
-    NavigationService.goBack('TemplateSource')
+    NavigationService.goBack()
   }
 
   renderItem = ({ item, index }) => {

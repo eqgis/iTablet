@@ -181,7 +181,7 @@ export default class LayerAttributeSearch extends React.Component {
       typeof this.props.setLayerAttributes === 'function'
     ) {
       // 单个对象属性和多个对象属性数据有区别
-      let isSingleData = typeof data.cellData !== 'object'
+      let isSingleData = this.state.attributes.data.length === 1
       this.props.setLayerAttributes([
         {
           mapName: this.props.map.currentMap.name,

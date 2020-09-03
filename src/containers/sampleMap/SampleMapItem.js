@@ -27,14 +27,13 @@ export default class SampleMapItem extends Component {
     this.exist = false
     this.downloading = false
     this.downloadingPath = false
+    this.aniMotion = null
     this.state = {
       progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
       rotateValue: new Animated.Value(0),
     }
-
-    this.unZipFile = this.unZipFile.bind(this)
   }
 
   componentDidMount() {
@@ -42,17 +41,35 @@ export default class SampleMapItem extends Component {
       let fileCachePath = GLOBAL.homePath + ConstPath.CachePath
       let fileName = this.props.data.fileName.substr(0, this.props.data.fileName.lastIndexOf('.zip'))
       let fileName2 = ''
-      if (fileName.endsWith('_示范数据')) {
-        fileName2 = fileName.substr(0, fileName.lastIndexOf('_示范数据'))
+      if (fileName.endsWith('_EXAMPLE')) {
+        fileName2 = fileName.substr(0, fileName.lastIndexOf('_EXAMPLE'))
       } else {
-        fileName2 = fileName + '_示范数据'
+        fileName2 = fileName + '_EXAMPLE'
       }
-      if (
-        await FileTools.fileIsExist(fileCachePath + fileName) ||
-        await FileTools.fileIsExist(fileCachePath + fileName2)
-      ) {
+      
+      let path = fileCachePath + fileName
+      let exist = await FileTools.fileIsExist(path)
+      if (!exist) {
+        path = fileCachePath + fileName2
+        exist = await FileTools.fileIsExist(path)
+      }
+      
+      if (exist && (await FileTools.getFilterFiles(path)).length > 0) {
+        
         this.setState({
           downloaded: true,
+        })
+      }
+      if (
+        this.props.downloadData &&
+        (
+          this.props.downloadData.progress <= 100 || this.props.downloadData.progress >= 0
+        )
+      ) {
+        this.setState({
+          isDownloading: true,
+        }, () => {
+          this.spin()
         })
       }
     }.bind(this)())
@@ -68,21 +85,32 @@ export default class SampleMapItem extends Component {
     return false
   }
   
-  // componentDidUpdate() {
-  //   if (this.mProgress) {
-  //     this.mProgress.progress = this.props.downloadData.progress / 100
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    this.spin()
+    if (
+      this.props.downloadData && this.props.downloadData.progress === 100 &&
+      prevProps.downloadData && prevProps.downloadData.progress < 100 &&
+      !prevState.downloaded && prevState.isDownloading &&
+      !this.state.downloaded && this.state.isDownloading
+    ) {
+      this.setState({
+        isDownloading: false,
+        downloaded: true,
+      })
+    }
+  }
   
   spin = () => {
-    this.state.rotateValue.setValue(0)
-    const aniMotion = Animated.timing(this.state.rotateValue,{
-      toValue: this.state.rotateValue._value === 0 ? 1 : 0,
-      duration: 800,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    });
-    Animated.loop(aniMotion).start()
+    if (!this.aniMotion && this.state.isDownloading) {
+      this.state.rotateValue.setValue(0)
+      this.aniMotion = Animated.timing(this.state.rotateValue,{
+        toValue: this.state.rotateValue._value === 0 ? 1 : 0,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      });
+      Animated.loop(this.aniMotion).start()
+    }
   }
   
   
@@ -108,9 +136,8 @@ export default class SampleMapItem extends Component {
         if (!this.state.isDownloading) {
           this.setState({
             isDownloading: true,
-          })
+          }, () => this.spin())
         }
-        this.spin()
         let fileName = this.props.data.fileName.replace('.zip', '')
         let result = await this.props.downloadFile({
           id: this.props.data.id,
@@ -124,12 +151,13 @@ export default class SampleMapItem extends Component {
           ...defaultExample,
         })
   
-        setTimeout(() => {
-          this.setState({
-            isDownloading: false,
-            downloaded: !!result,
-          })
-        }, 1000)
+        // setTimeout(() => {
+        this.aniMotion = null
+        this.setState({
+          isDownloading: false,
+          downloaded: !!result,
+        })
+        // }, 1000)
       }
     } catch (e) {
       this.setState({
@@ -138,7 +166,7 @@ export default class SampleMapItem extends Component {
     }
   }
 
-  async unZipFile() {
+  unZipFile = async () => {
     let appHome = await FileTools.appendingHomeDirectory()
     let userName =
       this.props.user.currentUser.userType === UserType.PROBATION_USER
@@ -245,7 +273,13 @@ export default class SampleMapItem extends Component {
   render() {
     let titleName = ''
     if (this.props.data.fileName) {
-      let index = this.props.data.fileName.lastIndexOf('.')
+      let index = -1
+      if (this.props.data.fileName.toUpperCase().indexOf('_EXAMPLE') > 0) {
+        index = this.props.data.fileName.lastIndexOf('_EXAMPLE')
+      } else {
+        index = this.props.data.fileName.lastIndexOf('.')
+      }
+      
       titleName =
         index === -1
           ? this.props.data.fileName

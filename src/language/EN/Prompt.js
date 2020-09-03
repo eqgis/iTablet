@@ -22,6 +22,7 @@ const Prompt = {
   PREPARING: 'Preparing',
 
   DOWNLOAD_SAMPLE_DATA: 'Download the sample data?',
+  DOWNLOAD_DATA: 'Data Download',
   DOWNLOAD: 'Download',
   DOWNLOADING: 'Loading',
   DOWNLOAD_SUCCESSFULLY: 'Done',
@@ -219,7 +220,7 @@ const Prompt = {
 
   POI: 'POI',
 
-  ILLEGAL_DATA: 'Illegal Data!',
+  ILLEGAL_DATA: 'Unsupported Data',
 
   UNSUPPORTED_LAYER_TO_SHARE: 'Sharing of this layer is not supported yet',
   SELECT_DATASET_TO_SHARE: 'Please select the data set to share',
@@ -320,15 +321,13 @@ const Prompt = {
   CANT_REDO: "Can't redo",
   DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
   SWITCH_LINE: 'Switch dataset',
-  HAS_NO_ROADNAME_FIELD_DATA: 'There is a data set with no road name field information selected',
+  HAS_NO_ROADNAME_FIELD_DATA: 'Dataset without road name field info',
   MERGE_SUCCESS: 'Merged successfully',
   MERGE_FAILD: 'Merge failed',
   NOT_SUPPORT_PRJCOORDSYS: 'The coordinate system of the following data set does not support merging',
   MERGEING: 'Merging',
-  HAS_NO_ROADNAME_FIELD_DATA_DIALOG: 'There is a data set that does not contain the RoadName field, please select the road name field of the following dataset',
   NEW_NAV_DATA: 'Create Navigation Data',
   INPUT_MODEL_FILE_NAME: 'Please enter a model file name',
-  INCREMENT_FIRST: 'Please collect road network data first',
   SELECT_DESTINATION_DATASOURCE: 'Please select the target datasource',
   FILENAME_ALREADY_EXIST: 'The file already exists, please re-enter the file name',
   NETWORK_BUILDING: 'Building...',

@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TextInput,
+  Platform,
 } from 'react-native'
 import { Container } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
@@ -110,7 +111,7 @@ class ConnectServer extends Component {
         <KeyboardAvoidingView
           enabled={true}
           keyboardVerticalOffset={0}
-          behavior={'padding'}
+          behavior={Platform.OS === 'ios' && "padding"}
         >
           {this.renderAddress()}
         </KeyboardAvoidingView>

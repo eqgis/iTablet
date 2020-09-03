@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, KeyboardAvoidingView } from 'react-native'
+import { ScrollView, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
 import { Container, TextBtn } from '../../../../components'
 import styles from './styles'
 import NavigationService from '../../../NavigationService'
@@ -767,8 +767,7 @@ export default class InterpolationAnalystView extends Component {
         }}
       >
         <KeyboardAvoidingView
-          // style={{ marginBottom: Const.BOTTOM_HEIGHT }}
-          behavior="padding"
+          behavior={Platform.OS === 'ios' && 'padding'}
           keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
         >
           <ScrollView

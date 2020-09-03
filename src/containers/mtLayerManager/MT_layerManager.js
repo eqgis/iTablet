@@ -249,6 +249,7 @@ export default class MT_layerManager extends React.Component {
           this.props.clearAttributeHistory && this.props.clearAttributeHistory()
         })
     } else {
+      if (!data.isVisible) return
       this.props.setCurrentLayer &&
         this.props.setCurrentLayer(data, () => {
           // 切换图层，清除历史记录
@@ -574,6 +575,12 @@ export default class MT_layerManager extends React.Component {
       } else {
         // 隐藏多媒体callouts
         SMediaCollector.hideMedia(data.name)
+        if (data.name === this.props.currentLayer.name) {
+          this.props.setCurrentLayer(null, () => {
+            // 取消当前地图，清除历史记录
+            this.props.clearAttributeHistory && this.props.clearAttributeHistory()
+          })
+        }
       }
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.CHANGE_BASE_MAP)
@@ -742,6 +749,7 @@ export default class MT_layerManager extends React.Component {
               return this.itemRefs[item.name]
             }}
             // swipeEnabled={true}
+            device={this.props.device}
             user={this.props.user}
             data={item}
             parentData={parentData}

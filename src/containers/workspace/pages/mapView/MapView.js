@@ -373,6 +373,18 @@ export default class MapView extends React.Component {
         },
       )
 
+      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+      this.unsubscribeDidFocus = this.props.navigation.addListener(
+        'didFocus',
+        () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
+
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
@@ -514,7 +526,11 @@ export default class MapView extends React.Component {
     ) {
       let data
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        // if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
         }
         if (this.props.downloads[i].id === 'mobilenet_quant_224') {
@@ -608,6 +624,7 @@ export default class MapView extends React.Component {
     }
     this.unsubscribeFocus && this.unsubscribeFocus.remove()
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    this.unsubscribeDidFocus && this.unsubscribeDidFocus.remove()
     //移除手势监听
     GLOBAL.mapView && SMap.deleteGestureDetector()
 
@@ -2412,7 +2429,11 @@ export default class MapView extends React.Component {
     let data
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        // if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
           break
         }
@@ -2712,7 +2733,7 @@ export default class MapView extends React.Component {
     }
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
     let layers = this.props.layers.layers
-    layers.map(async layer => await SMap.setLayerSelectable(layer.path, false))
+    LayerUtils.setLayersSelectable(layers, false, true)
     GLOBAL.TouchType = TouchType.NULL
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
@@ -3135,8 +3156,10 @@ export default class MapView extends React.Component {
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR &&
+        {!this.isExample &&
+          global.isLicenseValid &&
+          GLOBAL.Type &&
+          GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
             ref={ref => (GLOBAL.SMAIDetectView = ref)}
@@ -3147,37 +3170,8 @@ export default class MapView extends React.Component {
             }
             customStyle={this.state.showAIDetect ? null : styles.hidden}
             language={this.props.language}
-            isDetect={false}
-          />
-        )}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS &&
-          !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
-              }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
             onArObjectClick={this._onArObjectClick}
-            language={this.props.language}
-          />
-        )}
-        {global.isLicenseValid &&
-          GLOBAL.Type === ChunkType.MAP_AR_MAPPING &&
-          !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
-              }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
-            language={this.props.language}
-            isDetect={false}
           />
         )}
         {this._renderAIDetectChange()}

@@ -304,7 +304,7 @@ export default class CustomModePage extends Component {
     }
     let color = `rgb(${item.color.r},${item.color.g},${item.color.b})`
     return (
-      <KeyboardAvoidingView behavior={'position'}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
         <View style={styles.itemRow}>
           <View style={styles.left}>
             <TouchableOpacity

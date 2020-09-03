@@ -49,18 +49,27 @@ export default StyleSheet.create({
     height: scaleSize(300),
     backgroundColor: color.content_white,
   },
-  dialogHeaderView: {
+  dialog: {
+    flexDirection: 'column',
+    height: scaleSize(464),
+    width: scaleSize(392),
+    borderRadius: scaleSize(40),
+    paddingVertical: scaleSize(20),
+  },
+  
+  // ExitDialog
+  exitDialogHeaderView: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: scaleSize(30),
   },
-  dialogHeaderImg: {
+  exitDialogHeaderImg: {
     width: scaleSize(80),
     height: scaleSize(80),
     opacity: 1,
   },
-  promptTtile: {
+  exitDialogTile: {
     fontSize: size.fontSize.fontSizeXXl,
     color: color.theme_white,
     marginTop: scaleSize(5),
@@ -68,12 +77,65 @@ export default StyleSheet.create({
     marginRight: scaleSize(10),
     textAlign: 'center',
   },
-  depict: {
+  
+  dialogHeader: {
+    height: scaleSize(64),
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  promptTitle: {
+    fontSize: size.fontSize.fontSizeXXl,
+    color: color.theme_white,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    position: 'absolute',
+    right: 0,
+    left: 0,
+  },
+  dialogHeaderBtnView: {
+    marginRight: scaleSize(36),
+    width: scaleSize(64),
+    height: scaleSize(64),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialogHeaderBtn: {
+    width: scaleSize(44),
+    height: scaleSize(44),
+  },
+  dialogContent: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginVertical: scaleSize(40),
+  },
+  dialogInfo: {
+    textAlign: 'center',
+    fontSize: size.fontSize.fontSizeXl,
+    color: color.fontColorBlack,
+    fontWeight: 'bold',
+  },
+  dialogSize: {
     textAlign: 'center',
     fontSize: size.fontSize.fontSizeLg,
-    color: color.theme_white,
-    marginTop: scaleSize(2),
+    color: color.fontColorGray3,
+    marginTop: scaleSize(10),
   },
+  dialogButtons: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginHorizontal: scaleSize(64),
+  },
+  dialogButton: {
+    width: scaleSize(264),
+    height: scaleSize(64),
+    borderRadius: scaleSize(32),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
   opacityView: {
     height: scaleSize(300),
     backgroundColor: color.content_white,
@@ -83,17 +145,18 @@ export default StyleSheet.create({
     color: '#303030',
   },
   checkView: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: scaleSize(20),
+    justifyContent: 'center',
+    marginTop: scaleSize(22),
   },
   checkImg: {
-    width: scaleSize(60),
-    height: scaleSize(60),
+    width: scaleSize(32),
+    height: scaleSize(32),
   },
   dialogCheck: {
-    fontSize: size.fontSize.fontSizeMd,
-    color: color.theme_white,
+    marginLeft: scaleSize(12),
+    fontSize: size.fontSize.fontSizeSm,
+    color: color.fontColorGray2,
   },
 })

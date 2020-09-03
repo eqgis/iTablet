@@ -77,7 +77,8 @@ export default class ColorTable extends React.Component {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       size = GLOBAL.toolBox?.height
     } else {
-      size = event.nativeEvent.layout.width
+      // size = event.nativeEvent.layout.width
+      size = this.props.device.width
     }
 
     if (
@@ -124,7 +125,7 @@ export default class ColorTable extends React.Component {
         style={{
           flex: 1,
           maxHeight: this.state.itemSize,
-          maxWidth: this.state.itemSize,
+          // maxWidth: this.state.itemSize,
           backgroundColor: typeof item === 'string' ? item : item.key,
           borderWidth: scaleSize(2),
           borderColor: color.gray,

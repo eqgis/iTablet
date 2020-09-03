@@ -1,11 +1,15 @@
+import * as React from 'react'
 import { SARVideoView } from 'imobile_for_reactnative'
 import { ImagePicker } from '../../components'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
+import XYZSlide from '../../components/XYZSlide'
 
 function getPage(page, bottomBar = undefined) {
   let data = []
   let pageAction = () => {}
+  let customView = null
+
   switch (page) {
     case 'main':
       data = [
@@ -122,6 +126,11 @@ function getPage(page, bottomBar = undefined) {
             .MAP_AR_MOVE_TO_PLANE,
           image: require('../../assets/mapEdit/icon_action3d.png'),
         },
+        {
+          key: 'modifyBy',
+          title: getLanguage(global.language).Common.PARAMETER,
+          image: require('../../assets/mapEdit/icon_function_theme_param_menu.png'),
+        },
       ]
       pageAction = () => {
         SARVideoView.setTapAction('NONE')
@@ -146,9 +155,78 @@ function getPage(page, bottomBar = undefined) {
         })
       }
       break
+    case 'modifyBy':
+      data = [
+        {
+          key: 'modify_selected',
+          image: require('../../assets/public/Frenchgrey/icon-back-white.png'),
+          action: () => {
+            if (bottomBar) {
+              SARVideoView.move(0, 0, 0)
+            }
+          },
+        },
+        {
+          key: 'modify_confirm',
+          image: require('../../assets/mapEdit/commit.png'),
+          action: () => {
+            if (bottomBar) {
+              let { currentX, currentY, currentZ } = bottomBar.getData()
+              currentX = currentX === undefined ? 0 : currentX
+              currentY = currentY === undefined ? 0 : currentY
+              currentZ = currentZ === undefined ? 0 : currentZ
+              SARVideoView.move(currentX, currentY, currentZ, true)
+              bottomBar.goto('main')
+            }
+          },
+        },
+      ]
+      pageAction = () => {
+        SARVideoView.setTapAction('NONE')
+        SARVideoView.setPlaneVisible(false)
+        if (bottomBar) {
+          bottomBar.addData({
+            currentX: undefined,
+            currentY: undefined,
+            currentZ: undefined,
+          })
+        }
+      }
+      customView = (
+        <XYZSlide
+          rangeX={[-20, 20]}
+          rangeY={[-20, 20]}
+          rangeZ={[-20, 20]}
+          onMoveX={value => {
+            let currentX = value / 10
+            bottomBar.addData({ currentX })
+            let { currentY, currentZ } = bottomBar.getData()
+            currentY = currentY === undefined ? 0 : currentY
+            currentZ = currentZ === undefined ? 0 : currentZ
+            SARVideoView.move(currentX, currentY, currentZ)
+          }}
+          onMoveY={value => {
+            let currentY = value / 10
+            bottomBar.addData({ currentY })
+            let { currentX, currentZ } = bottomBar.getData()
+            currentX = currentX === undefined ? 0 : currentX
+            currentZ = currentZ === undefined ? 0 : currentZ
+            SARVideoView.move(currentX, currentY, currentZ)
+          }}
+          onMoveZ={value => {
+            let currentZ = value / 10
+            bottomBar.addData({ currentZ })
+            let { currentX, currentY } = bottomBar.getData()
+            currentX = currentX === undefined ? 0 : currentX
+            currentY = currentY === undefined ? 0 : currentY
+            SARVideoView.move(currentX, currentY, currentZ)
+          }}
+        />
+      )
+      break
   }
 
-  return { data, pageAction }
+  return { data, pageAction, customView }
 }
 
 function selectVideo(bottomBar) {

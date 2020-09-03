@@ -293,8 +293,7 @@ export default class Find extends Component {
           {/*})}*/}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
-            subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK,
-            // subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
+            subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
             leftImagePath: getThemeAssets().find.onlineCowork,
             isInformSpot: false,
             onClick: () => {

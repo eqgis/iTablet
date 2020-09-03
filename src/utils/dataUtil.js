@@ -350,6 +350,36 @@ async function xml2js(xml) {
   return promise
 }
 
+/**
+ * 数据深拷贝
+ * @param obj
+ * @param hash
+ * @returns {*}
+ */
+function deepClone(obj, hash = new WeakMap()) {
+  if (!isObject(obj) || typeof obj === 'function') {
+    return obj
+  }
+  // 查表
+  if (hash.has(obj)) return hash.get(obj)
+  
+  let isArray = Array.isArray(obj)
+  let cloneObj = isArray ? [] : {}
+  // 哈希表设值
+  hash.set(obj, cloneObj)
+  
+  let result = Object.keys(obj).map(key => {
+    return {
+      [key]: deepClone(obj[key], hash)
+    }
+  })
+  return Object.assign(cloneObj, ...result)
+}
+
+function isObject(o) {
+  return (typeof o === 'object' || typeof o === 'function') && o !== null
+}
+
 export default {
   sortByPinYin,
   pySegSort,
@@ -374,4 +404,6 @@ export default {
 
   getNameByURL,
   xml2js,
+  
+  deepClone,
 }

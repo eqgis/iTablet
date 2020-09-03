@@ -103,8 +103,8 @@ class ModuleList extends Component {
   _showAlert = (ref, downloadData, currentUserName) => {
     (async function() {
       if (!downloadData.example || downloadData.example.length === 0) return
-      let item = downloadData.example[0] // 默认下载第一个示范数据
-      let keyword = item.name.endsWith('_示范数据') ? item.name : (item.name + '_示范数据')
+      let item = downloadData.example[0] // 默认下载第一个EXAMPLE
+      let keyword = item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE')
       let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
@@ -138,8 +138,8 @@ class ModuleList extends Component {
   _downloadModuleData = async (ref, downloadData) => {
     ref.setDownloading(true)
     let cachePath = downloadData.cachePath
-    let item = downloadData.example[0] // 默认下载第一个示范数据
-    let fileDirPath = cachePath + item.name
+    let item = downloadData.example[0] // 默认下载第一个EXAMPLE
+    let fileDirPath = cachePath + (item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE'))
     try {
       let fileCachePath = fileDirPath + '.zip'
       let downloadOptions = {
@@ -150,6 +150,7 @@ class ModuleList extends Component {
         fileName: item.name,
         progressDivider: 1,
         key: downloadData.key,
+        module: GLOBAL.Type,
       }
       this.props
         .downloadFile(downloadOptions)
@@ -214,9 +215,8 @@ class ModuleList extends Component {
     let module = this.props.mapModules.modules[index]
     // let example = module.example
     let example = module.getExampleName(language)
-    if (!example) return {}
+    if (!example || example.length === 0) return {}
     let moduleKey = item.key
-    // let fileName = module.getExampleName(language)[0].name
 
     let tmpCurrentUser = this.props.currentUser
 
@@ -238,14 +238,39 @@ class ModuleList extends Component {
     }
     return {
       key: moduleKey,
-      // fileName: fileName,
       cachePath: cachePath,
-      // copyFilePath: toPath,
       itemData: item,
       tmpCurrentUser: tmpCurrentUser,
       example,
       defaultExample,
     }
+  }
+  
+  /**
+   * 检测数据在online上是否存在
+   * @param index
+   * @returns {Promise.<*>}
+   */
+  checkData = async (index) => {
+    let moduleKey
+    let module = this.props.mapModules.modules[index]
+    let examples = module && module.getExampleName && module.getExampleName(language)
+    if (!examples || examples.length === 0) return ''
+    let fileName = examples[0].name
+    if (!fileName.endsWith('_EXAMPLE')) fileName += '_EXAMPLE'
+    let result = await FetchUtils.getDataInfoByUrl({
+      nickname: 'xiezhiyan123',
+    }, fileName, '.zip')
+    if (result.content.length > 0) {
+      for (let _item of result.content) {
+        let _itemFileName = _item.fileName.replace('.zip', '')
+        if (_itemFileName === fileName) {
+          moduleKey = _item.id
+          break
+        }
+      }
+    }
+    return moduleKey
   }
 
   itemAction = async (language, { item, index }) => {
@@ -255,14 +280,13 @@ class ModuleList extends Component {
         ? tmpCurrentUser.userName
         : 'Customer'
 
-      let module = item.key
       let latestMap
       if (
         this.props.latestMap[currentUserName] &&
-        this.props.latestMap[currentUserName][module] &&
-        this.props.latestMap[currentUserName][module].length > 0
+        this.props.latestMap[currentUserName][item.key] &&
+        this.props.latestMap[currentUserName][item.key].length > 0
       ) {
-        latestMap = this.props.latestMap[currentUserName][module][0]
+        latestMap = this.props.latestMap[currentUserName][item.key][0]
       }
 
       let licenseStatus = await SMap.getEnvironmentStatus()
@@ -282,6 +306,13 @@ class ModuleList extends Component {
       }
 
       let downloadData = this.getDownloadData(language, item, index)
+  
+      let moduleKey = await this.checkData(index)
+      if (moduleKey) {
+        downloadData.key = moduleKey
+      } else {
+        downloadData = {}
+      }
 
       let currentDownloadData = this.getCurrentDownloadData(downloadData)
 
@@ -290,6 +321,9 @@ class ModuleList extends Component {
       if (downloadData && downloadData.example) {
         for (let i = 0; i < downloadData.example.length; i++) {
           let fileDirPath = cachePath + downloadData.example[i].name
+          if (!fileDirPath.endsWith('_EXAMPLE')) {
+            fileDirPath += '_EXAMPLE'
+          }
           let tempArr = []
           tempArr = await FileTools.getFilterFiles(fileDirPath)
           if (tempArr.length > 0) {
@@ -364,10 +398,10 @@ class ModuleList extends Component {
   }
 
   getCurrentDownloadData = downloadData => {
-    if (!downloadData) return null
+    if (!downloadData || !downloadData.key) return null
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === downloadData.key) {
+        if (this.props.downloads[i].id && this.props.downloads[i].params.module === downloadData.key) {
           return this.props.downloads[i]
         }
       }
@@ -405,12 +439,12 @@ class ModuleList extends Component {
         setOldMapModule={this.props.setOldMapModule}
         itemAction={async _item => {
           await composeWaiting(async () => {
-            InteractionManager.runAfterInteractions(async () => {
-              _item.key !== ChunkType.APPLET_ADD &&
-              this.props.setOldMapModule &&
-              this.props.setOldMapModule(_item.key)
-              this.itemAction(this.props.language, { item: _item, index })
-            })
+            // InteractionManager.runAfterInteractions(async () => {
+            _item.key !== ChunkType.APPLET_ADD &&
+            this.props.setOldMapModule &&
+            this.props.setOldMapModule(_item.key)
+            this.itemAction(this.props.language, { item: _item, index })
+            // })
           })
         }}
       />

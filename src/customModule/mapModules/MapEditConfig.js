@@ -17,16 +17,32 @@ export default class MapEditConfig extends Module {
     super({
       key: MapEditConfig.key,
       example: {
-        EN: {
-          name: 'PrecipitationOfUSA',
-          mapName: 'LosAngeles',
-        },
-        DEFAULT: {
-          name: '湖南',
-          mapName: '湖南',
-        },
+        EN: [
+          {
+            name: 'PrecipitationOfUSA',
+            mapName: 'LosAngeles',
+          },
+          {
+            name: 'USA',
+            mapName: 'USA',
+          },
+          {
+            name: 'LosAngles',
+            mapName: 'LosAngles',
+          },
+        ],
+        DEFAULT: [
+          {
+            name: '湖南',
+            mapName: '湖南',
+          },
+          {
+            name: '浙江省黑色风格',
+            mapName: '浙江省',
+          },
+        ],
         JA: {
-          name: 'YamanashiMap_示范数据',
+          name: 'YamanashiMap',
           mapName: 'yamanashi',
         },
       },

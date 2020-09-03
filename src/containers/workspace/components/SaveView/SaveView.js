@@ -6,6 +6,7 @@
 
 import * as React from 'react'
 import { PopMenu } from '../../../../components'
+import { getLanguage } from '../../../../language'
 
 export default class SaveView extends React.Component {
   props: {
@@ -15,6 +16,7 @@ export default class SaveView extends React.Component {
     device?: Object,
     backHide?: boolean,
     animated?: boolean,
+    language: string,
   }
 
   static defaultProps = {
@@ -26,10 +28,10 @@ export default class SaveView extends React.Component {
     super(props)
     this.state = {
       visible: false,
-      title: '是否保存当前地图？',
-      save_yes: '保存',
-      save_no: '不保存',
-      cancel: '取消',
+      title: getLanguage(this.props.language).Prompt.SAVE_TITLE,
+      save_yes: getLanguage(this.props.language).Prompt.SAVE_YES,
+      save_no: getLanguage(this.props.language).Prompt.SAVE_NO,
+      cancel: getLanguage(this.props.language).Prompt.CANCEL,
       position: {},
     }
     this.cb = () => {}

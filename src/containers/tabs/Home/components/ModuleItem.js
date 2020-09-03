@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     left: fixedSize(20),
     bottom: fixedSize(8),
     minWidth: fixedSize(100),
+    lineHeight: fixedSize(26),
     textAlign: 'left',
   },
   redDot: {

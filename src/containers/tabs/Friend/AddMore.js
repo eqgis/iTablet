@@ -29,6 +29,7 @@ if (Platform.OS === 'ios') {
 export default class AddMore extends React.Component {
   props: {
     show: Boolean,
+    device: Object,
     closeModal: () => {},
     addMore: () => {},
   }
@@ -95,7 +96,17 @@ export default class AddMore extends React.Component {
             onPress={() => this.closeModal()}
           />
 
-          <View style={styles.modal}>
+          <View style={[
+            styles.modal,
+            {
+              right: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? scaleSize(120)
+                : scaleSize(25),
+              top: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? scaleSize(60)
+                : Top,
+            }
+          ]}>
             <TouchableOpacity
               onPress={() => {
                 this.props.addMore(1), this.closeModal()
@@ -164,8 +175,6 @@ const styles = StyleSheet.create({
     // width: scaleSize(300),
     // height: scaleSize(170),
     position: 'absolute',
-    right: scaleSize(25),
-    top: Top,
     paddingVertical: scaleSize(5),
     paddingLeft: scaleSize(20),
     paddingRight: scaleSize(40),

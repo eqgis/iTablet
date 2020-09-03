@@ -509,7 +509,7 @@ const Map_Main_Menu = {
   MAP_TOPO_RESAMPLE: 'リサンプリング',
   MAP_TOPO_CHANGE_DIRECTION: '方向を変更',
   ADD_DATASET: 'データセットの追加',
-  SELECT_ROADNAME_FIELD: '次のデータセットの道路名フィールドを選択します',
+  SELECT_ROADNAME_FIELD: '道路名フィールドを選択してくかえる',
   SELECT_FIELD: 'フィールドの選択',
   MERGE_CANCEL: 'キャンセル',
   MERGE_CONFIRM: 'OK',
@@ -540,7 +540,7 @@ const Map_Plotting = {
   PLOTTING_ANIMATION_CONTINUE: '続けて作成',
   PLOTTING_ANIMATION_WAY_SET: 'パス設定',
   PLOTTING_ANIMATION_SAVE: '保存',
-  PLOTTING_ANIMATION_BACK: '返す',
+  PLOTTING_ANIMATION_BACK: '戻る',
 
   ANIMATION_ATTRIBUTE_STR: 'アニメーション属性',
   ANIMATION_WAY: 'パスアニメーション',
@@ -906,23 +906,23 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: '模板管理', // 待翻译
-  COLLECTION_TEMPLATE_CREATE: '模板创建',
-  COLLECTION_TEMPLATE_NAME: '模板名称',
-  ELEMENT_SETTINGS: '要素设置',
-  ELEMENT_STORAGE: '要素储存',
-  ATTRIBUTE_SETTINGS: '属性设置',
-  CURRENT_TEMPLATE: '当前模板',
-  DEFAULT_TEMPLATE: '默认模版',
-
-  ELEMENT_NAME: '要素名称',
-  ELEMENT_CODE: '要素编码',
-
-  CREATE_ROOT_NODE: '新建根结点',
-  CREATE_CHILD_NODE: '新建子结点',
-  INSERT_NODE: '插入结点',
-
-  TEMPLATE_ERROR: '地图未保存，无法使用模板',
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',// 待翻译
+  COLLECTION_TEMPLATE_CREATE: 'Create Template',
+  COLLECTION_TEMPLATE_NAME: 'Template Name',
+  ELEMENT_SETTINGS: 'Element Settings',
+  ELEMENT_STORAGE: 'Element Storage',
+  ATTRIBUTE_SETTINGS: 'Attribute Settings',
+  CURRENT_TEMPLATE: 'Current Template',
+  DEFAULT_TEMPLATE: 'Default Template',
+  
+  ELEMENT_NAME: 'Element Name',
+  ELEMENT_CODE: 'Element Code',
+  
+  CREATE_ROOT_NODE: 'Create Root Node',
+  CREATE_CHILD_NODE: 'Create Chile Node',
+  INSERT_NODE: 'Insert Node',
+  
+  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

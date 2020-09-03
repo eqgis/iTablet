@@ -10,7 +10,7 @@ import {
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModule from './modules/ToolbarModule'
-import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Animated, Platform, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -793,7 +793,9 @@ export default class ToolBar extends React.Component {
 
       size = { height: screen.getScreenSafeHeight() - softBarHeight }
     }
-    size.width = this.props.device.width
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      size.width = this.props.device.width
+    }
     let keyboardVerticalOffset
     if (Platform.OS === 'android') {
       keyboardVerticalOffset =
@@ -807,8 +809,8 @@ export default class ToolBar extends React.Component {
         style={[
           containerStyle,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? { right: this.state.right }
-            : { bottom: this.state.bottom },
+            ? { right: this.state.right, height:  '100%' }
+            : { bottom: this.state.bottom, width: '100%' },
           (this.state.isFullScreen || this.state.isTouchProgress) &&
             this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
             paddingTop: screen.isIphoneX()
@@ -845,7 +847,7 @@ export default class ToolBar extends React.Component {
         {this.state.type === ConstToolType.MAP_TOOL_TAGGING_SETTING ? (
           <KeyboardAvoidingView
             keyboardVerticalOffset={keyboardVerticalOffset}
-            behavior={'position'}
+            behavior={Platform.OS === 'ios' && 'position'}
           >
             <View
               style={[

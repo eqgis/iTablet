@@ -12,6 +12,7 @@ import {
   SectionList,
   KeyboardAvoidingView,
   Platform,
+  InteractionManager,
 } from 'react-native'
 import { PopView, ListSeparator } from '../../../components'
 import TemplateItem from './TemplateItem'
@@ -210,7 +211,6 @@ export default class TemplatePopView extends React.Component {
                   }
                 })
                 newData[2].data = fields
-
                 this.setState({
                   data: newData,
                 })

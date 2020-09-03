@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize, screen } from '../../utils'
+import { scaleSize } from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
@@ -218,26 +218,22 @@ export default class Container extends Component {
   }
 
   renderHeader = fixHeader => {
-    return this.props.withoutHeader ? (
-      // Platform.OS === 'ios' ? (
-      //   <View style={styles.iOSPadding} />
-      // ) : (
-      //   <View />
-      // )
-      null
-    ) : this.props.header ? (
-      <AnimatedView
-        style={[fixHeader && styles.fixHeader, { top: this.state.top }]}
-      >
-        {this.props.header}
-      </AnimatedView>
-    ) : (
-      <Header
-        ref={ref => (this.containerHeader = ref)}
-        navigation={this.props.navigation}
-        {...this.props.headerProps}
-      />
-    )
+    return this.props.withoutHeader ? // ) : ( //   <View style={styles.iOSPadding} /> // Platform.OS === 'ios' ? (
+    //   <View />
+    // )
+      null : this.props.header ? (
+        <AnimatedView
+          style={[fixHeader && styles.fixHeader, { top: this.state.top }]}
+        >
+          {this.props.header}
+        </AnimatedView>
+      ) : (
+        <Header
+          ref={ref => (this.containerHeader = ref)}
+          navigation={this.props.navigation}
+          {...this.props.headerProps}
+        />
+      )
   }
 
   renderBottom = fixBottom => {
@@ -283,6 +279,8 @@ export default class Container extends Component {
       this.props.headerProps && this.props.headerProps.type === 'fix'
     let fixBottom =
       this.props.bottomProps && this.props.bottomProps.type === 'fix'
+    let headerOnTop =
+      (this.props.headerProps && this.props.headerProps.headerOnTop) || false
     let direction = {
       flexDirection:
         GLOBAL.getDevice() &&
@@ -310,10 +308,10 @@ export default class Container extends Component {
         )}
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
-          {/*{!fixHeader && this.renderHeader(fixHeader)}*/}
+          {headerOnTop && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1 }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
-              {this.renderHeader(fixHeader)}
+              {!headerOnTop && this.renderHeader(fixHeader)}
               {this.props.children}
               {/*{fixBottom && this.renderBottom(fixBottom)}*/}
             </ContainerView>

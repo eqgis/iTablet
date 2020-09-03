@@ -483,39 +483,39 @@ const Map_Main_Menu = {
   MY_LOCATION: 'Konumum',
 
   //导航采集
-  MAP_INDOOR_NETWORK: 'Kapalı',
-  MAP_OUTDOOR_NETWORK: 'Açık',
+  MAP_INDOOR_NETWORK: 'Indoor', //待翻译
+  MAP_OUTDOOR_NETWORK: 'Outdoor',
 
-  MAP_INCREMENT_START: 'Başla',
-  MAP_INCREMENT_STOP: 'Dur',
-  MAP_INCREMENT_ADD_POINT: 'Nokta Ekle',
-  MAP_INCREMENT_CANCEL: 'İptal Edildi',
-  MAP_INCREMENT_COMMIT: 'Sunmak',
+  MAP_INCREMENT_START: 'Start',
+  MAP_INCREMENT_STOP: 'Stop',
+  MAP_INCREMENT_ADD_POINT: 'Add point',
+  MAP_INCREMENT_CANCEL: 'Cancel',
+  MAP_INCREMENT_COMMIT: 'Commit',
 
-  MAP_INCREMENT_GPS_POINT: 'GPS ile noktaları toplama',
-  MAP_INCREMENT_GPS_TRACK: 'GPS ile çizgileri toplama',
-  MAP_INCREMENT_POINTLINE: 'Nokta Çizim',
-  MAP_INCREMENT_FREELINE: 'Serbest Çizim',
+  MAP_INCREMENT_GPS_POINT: 'Collect Points by GPS',
+  MAP_INCREMENT_GPS_TRACK: 'Collect Line by GPS',
+  MAP_INCREMENT_POINTLINE: 'Point Draw',
+  MAP_INCREMENT_FREELINE: 'Free Draw',
 
-  MAP_TOPO_ADD_NODE: 'Düğüm Ekle',
-  MAP_TOPO_EDIT_NODE: 'Düğümü düzenle',
-  MAP_TOPO_DELETE_NODE: 'Bir düğümü silme',
-  MAP_TOPO_DELETE_OBJECT: 'Nesneyi sil',
-  MAP_TOPO_SMOOTH: 'Pürüzsüz',
-  MAP_TOPO_SPLIT_LINE: 'Satır sonu',
-  MAP_TOPO_SPLIT: 'Mola',
-  MAP_TOPO_EXTEND: 'Uzatmak',
+  MAP_TOPO_ADD_NODE: 'Add Node',
+  MAP_TOPO_EDIT_NODE: 'Edit node',
+  MAP_TOPO_DELETE_NODE: 'Delete node',
+  MAP_TOPO_DELETE_OBJECT: 'Delete object',
+  MAP_TOPO_SMOOTH: 'Smooth',
+  MAP_TOPO_SPLIT_LINE: 'Line Split',
+  MAP_TOPO_SPLIT: 'Interrupt',
+  MAP_TOPO_EXTEND: 'Extend',
   MAP_TOPO_TRIM: 'Trim',
-  MAP_TOPO_RESAMPLE: 'Yeniden örnekleme',
-  MAP_TOPO_CHANGE_DIRECTION: 'Yönü değiştir',
-  ADD_DATASET: 'Veri kümesini ekle',
-  SELECT_ROADNAME_FIELD: 'Aşağıdaki veri kümesinin yol adı alanını seçin',
-  SELECT_FIELD: 'Alan seçin',
-  MERGE_CANCEL: 'Iptal edildi',
-  MERGE_CONFIRM: 'Belirlemek',
-  MERGE_SELECT_ALL: 'Tümünü seç',
-  MERGE_ADD: 'Ek',
-  MERGE_DATASET: 'Veri kümesini birleştir',
+  MAP_TOPO_RESAMPLE: 'Re-sampling',
+  MAP_TOPO_CHANGE_DIRECTION: 'Change Direction',
+  ADD_DATASET: 'Append Dataset',
+  SELECT_ROADNAME_FIELD: 'Select the Road Name Field',
+  SELECT_FIELD: 'Select Field',
+  MERGE_CANCEL: 'Cancel',
+  MERGE_CONFIRM: 'Confirm',
+  MERGE_SELECT_ALL: 'Select All',
+  MERGE_ADD: 'Append',
+  MERGE_DATASET: 'Merge Datasets',
 }
 
 // 推演动画
@@ -906,23 +906,23 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: '模板管理', // 待翻译
-  COLLECTION_TEMPLATE_CREATE: '模板创建',
-  COLLECTION_TEMPLATE_NAME: '模板名称',
-  ELEMENT_SETTINGS: '要素设置',
-  ELEMENT_STORAGE: '要素储存',
-  ATTRIBUTE_SETTINGS: '属性设置',
-  CURRENT_TEMPLATE: '当前模板',
-  DEFAULT_TEMPLATE: '默认模版',
-
-  ELEMENT_NAME: '要素名称',
-  ELEMENT_CODE: '要素编码',
-
-  CREATE_ROOT_NODE: '新建根结点',
-  CREATE_CHILD_NODE: '新建子结点',
-  INSERT_NODE: '插入结点',
-
-  TEMPLATE_ERROR: '地图未保存，无法使用模板',
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',// 待翻译
+  COLLECTION_TEMPLATE_CREATE: 'Create Template',
+  COLLECTION_TEMPLATE_NAME: 'Template Name',
+  ELEMENT_SETTINGS: 'Element Settings',
+  ELEMENT_STORAGE: 'Element Storage',
+  ATTRIBUTE_SETTINGS: 'Attribute Settings',
+  CURRENT_TEMPLATE: 'Current Template',
+  DEFAULT_TEMPLATE: 'Default Template',
+  
+  ELEMENT_NAME: 'Element Name',
+  ELEMENT_CODE: 'Element Code',
+  
+  CREATE_ROOT_NODE: 'Create Root Node',
+  CREATE_CHILD_NODE: 'Create Chile Node',
+  INSERT_NODE: 'Insert Node',
+  
+  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

@@ -175,7 +175,6 @@ function openMap() {
         title: getLanguage(global.language).Profile.SAMPLEDATA,
         action: () => {
           NavigationService.navigate('SampleMap', {
-            from: 'MapView',
             refreshAction: openMap,
           })
         },
@@ -930,7 +929,9 @@ async function headerAction(type, section = {}) {
             },
           )
           // 隐藏底图
-          await SMap.setLayerVisible(layers[layers.length - 1].path, true)
+          if (layers.length > 0) {
+            await SMap.setLayerVisible(layers[layers.length - 1].path, true)
+          }
 
           const moveToCurrentResult = await SMap.moveToCurrent()
           if (!moveToCurrentResult) {

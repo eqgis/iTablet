@@ -32,6 +32,14 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
   APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
   APPLET_RESETTING: 'Rest', // 待翻译
+  
+  PUBLIC_MAP_INFO: 'Provides public services published by users',
+  PUBLIC_DATA_INFO: 'Provides various public data published by users',
+  SUPERMAP_INFO: 'Shares the latest news and brand activities',
+  SUPERMAP_KNOW_INFO: 'Get professional technical services and consultation',
+  SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
+  GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
+  ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
 }
 
 export { Find }

@@ -9,7 +9,7 @@ import {View, Image, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react
 import Slider from 'react-native-slider'
 import ToolbarModule from "../../ToolbarModule"
 import { SThemeCartography } from 'imobile_for_reactnative'
-import { color } from '../../../../../../../styles'
+import { color, size } from '../../../../../../../styles'
 import { scaleSize, setSpText, Toast } from '../../../../../../../utils'
 import { ColorWheel } from 'react-native-color-wheel'
 import colorsys from 'colorsys'
@@ -212,15 +212,16 @@ export default class PreviewColorPicker extends Component {
         },
         colorWheelStyle = {},
         colorPickerTextStyle = {
-          fontSize: setSpText(16),
-          paddingLeft: scaleSize(10),
+          fontSize: size.fontSize.fontSizeMd,
           paddingVertical: scaleSize(30),
+          textAlign: 'center',
         }
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         colorPickerTextStyle = {
-          fontSize: setSpText(16),
+          fontSize: size.fontSize.fontSizeMd,
           paddingLeft: scaleSize(10),
           paddingVertical: scaleSize(10),
+          textAlign: 'center',
         }
         extraContainerStyle ={
           flexDirection: 'column',

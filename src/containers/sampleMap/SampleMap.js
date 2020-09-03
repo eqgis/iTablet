@@ -4,10 +4,11 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  View,
 } from 'react-native'
-import styles from './styles'
 import { FileTools } from '../../native'
 import { Toast, scaleSize, FetchUtils } from '../../utils'
+import NavigationService from '../NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
@@ -45,16 +46,19 @@ export default class SampleMap extends Component {
     let keywords = []
     for (let i = 0; i < examples.length; i++) {
       let _name = examples[i].name
-      if (!_name.endsWith('_示范数据')) {
-        _name += '_示范数据'
+      if (!_name.endsWith('_EXAMPLE')) {
+        _name += '_EXAMPLE'
       }
       keywords.push(_name)
     }
+    if (keywords.length === 0) return
     FetchUtils.getDataInfoByUrl({
       nickname: 'xiezhiyan123',
     }, keywords, '.zip').then(result => {
+      let arr = result.content
+      if (arr.length % 2 === 1) arr.push({})
       this.setState({
-        data: result.content,
+        data: arr,
       })
     })
   }
@@ -77,7 +81,7 @@ export default class SampleMap extends Component {
     let fileDirPath = cachePath + fileName
     let fileCachePath = fileDirPath + '.zip'
     
-    Toast.show(getLanguage(this.props.language).Prompt.DOWNLOAD + ' ' + fileName)
+    Toast.show(getLanguage(this.props.language).Prompt.DOWNLOAD + ' ' + fileName.replace('_EXAMPLE', ''))
     try {
       let downloadOptions = {
         fromUrl: downloadData.url,
@@ -86,6 +90,7 @@ export default class SampleMap extends Component {
         fileName: fileName,
         progressDivider: 1,
         key: downloadData.id,
+        module: GLOBAL.Type,
       }
       await this.props.downloadFile(downloadOptions)
       await FileTools.unZipFile(fileCachePath, cachePath)
@@ -99,12 +104,8 @@ export default class SampleMap extends Component {
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)
       this.props.deleteDownloadFile({id: downloadData.id})
-      
-      if (this.refreshAction && typeof this.refreshAction === 'function') {
-        this.refreshAction()
-      }
   
-      Toast.show(fileName + ' ' + getLanguage(this.props.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(fileName.replace('_EXAMPLE', '') + ' ' + getLanguage(this.props.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return true
     } catch (e) {
       Toast.show(getLanguage(this.props.language).Prompt.NETWORK_ERROR)
@@ -114,12 +115,14 @@ export default class SampleMap extends Component {
     }
   }
   
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item}) => {
+    if (!item.fileName) return <View style={{flex: 1}} />
     return (
       <SampleMapItem
         user={this.props.user}
         data={item}
         style={{
+          flex: 1,
           marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? scaleSize(10)
             : scaleSize(20)
@@ -140,17 +143,20 @@ export default class SampleMap extends Component {
           title: getLanguage(global.language).Profile.SAMPLEDATA,
           //'公共地图',
           navigation: this.props.navigation,
+          backAction: () => {
+            if (this.refreshAction && typeof this.refreshAction === 'function') {
+              this.refreshAction()
+            }
+            NavigationService.goBack()
+          },
         }}
       >
         <FlatList
-          style={[
-            styles.list,
-            {
-              paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                ? scaleSize(20)
-                : scaleSize(32)
-            },
-          ]}
+          style={{
+            marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? scaleSize(20)
+              : scaleSize(32)
+          }}
           numColumns={2}
           data={this.state.data}
           renderItem={this._renderItem}

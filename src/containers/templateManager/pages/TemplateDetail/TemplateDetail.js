@@ -260,6 +260,7 @@ export default class TemplateDetail extends React.Component {
           (!expData.Template || expData.Template !== relativeTemplatePath)
         ) {
           expData.Template = relativeTemplatePath
+          await fs.unlink(expFilePath)
           await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
         }
       }

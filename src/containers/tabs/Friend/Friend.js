@@ -1841,6 +1841,7 @@ export default class Friend extends Component {
           : this.renderNOFriend()}
         <AddMore
           show={this.state.showPop}
+          device={this.props.device}
           closeModal={show => {
             this.setState({ showPop: show })
           }}
@@ -1894,8 +1895,8 @@ export default class Friend extends Component {
                     getLanguage(this.props.language).Friends.MESSAGES && (
                       <InformSpot
                         style={{
-                          top: scaleSize(-5),
-                          right: scaleSize(-15),
+                          top: scaleSize(15),
+                          right: '38%',
                         }}
                       />
                     )}

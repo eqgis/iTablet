@@ -55,10 +55,10 @@ export default class FetchUtils {
       let _keywords = ''
       if (keywords instanceof Array) {
         keywords.forEach((item, index) => {
-          _keywords += '\"' + item + '\"' + (index < keywords.length ? ',' : '')
+          _keywords += '"' + item + '"' + (index < keywords.length ? ',' : '')
         })
       } else {
-        _keywords = keywords
+        _keywords = '"' + keywords + '"'
       }
       let uri = downloadData.checkUrl // 查询数据结果url
         ? downloadData.checkUrl + _keywords
@@ -68,9 +68,10 @@ export default class FetchUtils {
       for (let i = 0; i < arrContent.length; i++) {
         // let fileName = keyword + type
         if (
-          (downloadData.nickname === arrContent[i].nickname || !downloadData.nickname) &&
+          (downloadData.nickname === arrContent[i].nickname ||
+            !downloadData.nickname) &&
           // fileName === arrContent[i].fileName &&
-          (type && arrContent[i].fileName.lastIndexOf(type) >= 0 || !type)
+          ((type && arrContent[i].fileName.lastIndexOf(type) >= 0) || !type)
         ) {
           arrContent[i].url =
             downloadData.downloadUrl ||
@@ -90,8 +91,10 @@ export default class FetchUtils {
   static getFindUserDataUrl = async (nickname, keyword, type) => {
     let url
     try {
-      let obj = await FetchUtils.getDataInfoByUrl({ nickname }, keyword, type)
-      url = obj && obj.url
+      let arr = await FetchUtils.getDataInfoByUrl({ nickname }, keyword, type)
+      if (arr.content && arr.content.length > 0) {
+        url = arr.content[0].url
+      }
     } catch (e) {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     }
@@ -117,7 +120,7 @@ export default class FetchUtils {
     try {
       let url = `http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China/geodecoding.json?location={"x":${x},"y":${y}}&key=fvV2osxwuZWlY0wJb8FEb2i5`
       let rel = await FetchUtils.getObjJson(url, 2000)
-      if (rel.formatedAddress) {
+      if (rel.formatedAddress != '[]') {
         data = rel.formatedAddress
       }
     } catch (e) {

@@ -360,6 +360,12 @@ function deepClone(obj, hash = new WeakMap()) {
   if (!isObject(obj) || typeof obj === 'function') {
     return obj
   }
+  if (typeof o === 'object' && Object.keys(obj).length === 0) {
+    if (obj instanceof Array) {
+      return []
+    }
+    return {}
+  }
   // 查表
   if (hash.has(obj)) return hash.get(obj)
   

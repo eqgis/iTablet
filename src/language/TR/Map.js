@@ -428,6 +428,8 @@ const Map_Main_Menu = {
   MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'Right', //待翻译
   MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'Shrink', //待翻译
   MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'Magnify', //待翻译
+  MAP_AI_GESTURE_BONE_DETAIL: 'Gesture detail', //待翻译
+  MAP_AI_GESTURE_BONE_CLOSE: 'Close', //待翻译
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Yüklemeyi Sınıflandır',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Sınıflandırma başarısız oldu, Tekrar deneyin',

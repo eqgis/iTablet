@@ -275,6 +275,53 @@ function poseEstimation() {
   })()
 }
 
+// 手势骨骼
+function gestureBone() {
+  ;(async function() {
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    setTimeout(async () => {
+      // NavigationService.navigate('AIGestureBoneView')
+      let info = {}
+      info.gestureTitle = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_GESTURE_BONE //放大
+      info.zoom = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY //放大
+      info.shrink = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK //缩小
+      info.full = getLanguage(global.language).Map_Main_Menu.FULL_SCREEN //全幅
+      info.associationCancel = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL //取消关联
+      info.association = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION //关联地图
+      info.switchCamera = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA //切换相机
+      info.location = getLanguage(
+        global.language,
+      ).Map_Attribute.ATTRIBUTE_LOCATION //定位
+      info.gestureDetail = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_GESTURE_BONE_DETAIL //手势详情
+      info.close = getLanguage(
+        global.language,
+      ).Map_Main_Menu.MAP_AI_GESTURE_BONE_CLOSE //关闭
+      // SMap.toGestureBoneView(getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
+      SMap.toGestureBoneView(info)
+    }, 500)
+  })()
+}
+
 export default {
   illegallyParkCollect,
   aiClassify,
@@ -282,4 +329,5 @@ export default {
   aiDetect,
   polymerizeCollect,
   poseEstimation,
+  gestureBone,
 }

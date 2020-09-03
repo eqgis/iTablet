@@ -2,8 +2,10 @@ package com.supermap.itablet;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
@@ -21,6 +23,7 @@ import com.rnfs.RNFSManager;
 import com.supermap.RN.appManager;
 import com.supermap.RNUtils.AppInfo;
 import com.supermap.RNUtils.FileTools;
+import com.supermap.component.activity.AiGestureBoneActivity;
 import com.supermap.data.Environment;
 import com.supermap.data.ITabletLicenseManager;
 import com.supermap.data.Toolkit;
@@ -33,12 +36,18 @@ import org.devio.rn.splashscreen.SplashScreen;
 import java.io.File;
 import java.lang.reflect.Field;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends ReactActivity {
     public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     public static boolean isActive;
     private static MainActivity sInstance;
+    private boolean isFirstOnResume = true;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -71,6 +80,19 @@ public class MainActivity extends ReactActivity {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netWorkChangReceiver, filter);
         sInstance = this;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isFirstOnResume){
+            SharedPreferences shared=this.getSharedPreferences("gestureBoneCamera", Context.MODE_PRIVATE);   //获取操作类
+            boolean isBackground = shared.getBoolean("isGestureBoneAct",false);
+            if(isBackground){
+                this.startActivity(new Intent(this, AiGestureBoneActivity.class));
+            }
+        }
+        isFirstOnResume = false;
     }
 
     @Override

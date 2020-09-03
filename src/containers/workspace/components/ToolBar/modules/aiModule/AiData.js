@@ -54,6 +54,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
     },
+    {
+      // 手势骨骼
+      key: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+      action: AiActions.gestureBone,
+      size: 'large',
+      // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
+      image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
+    },
     // {
     //   //路面采集
     //   key: getLanguage(global.language).Map_Main_Menu

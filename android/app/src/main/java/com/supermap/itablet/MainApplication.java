@@ -1,6 +1,6 @@
 package com.supermap.itablet;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.beefe.picker.PickerViewPackage;
 import com.brentvatne.react.ReactVideoPackage;

@@ -152,6 +152,7 @@ import ARWeatherView from './arWeatherView'
 import ChooseWeather from './chooseWeather'
 import ARImageView from './arImageView'
 import AIPoseEstimationView from './aiPoseEstimationView'
+import AIGestureBoneView from './aiGestureBoneView'
 import ARWebView from './arWebView'
 import ARTextView from './arTextView'
 
@@ -956,6 +957,13 @@ export default function(appConfig) {
       },
       AIPoseEstimationView: {
         screen: AIPoseEstimationView,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      AIGestureBoneView: {
+        screen: AIGestureBoneView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

@@ -4,4 +4,15 @@ const Protocol = {
   READ_AND_AGREE: '我已阅读并同意上述条款',
 }
 
-export { Protocol }
+const Common = {
+  UP: '上',
+  DOWN: '下',
+  LEFT: '左',
+  RIGHT: '右',
+  FRONT: '前',
+  BACK: '后',
+
+  PARAMETER: '参数',
+}
+
+export { Protocol, Common }

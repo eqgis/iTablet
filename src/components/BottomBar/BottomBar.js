@@ -83,7 +83,11 @@ export default class BottomBar extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View
+       style={{position: 'absolute',
+      left: 0,
+      bottom: 0,  height: scaleSize(96) , width: '100%'}}
+      >
         {this.state.customView || null}
         <View
           style={{

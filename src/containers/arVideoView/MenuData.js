@@ -4,6 +4,7 @@ import { ImagePicker } from '../../components'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
 import XYZSlide from '../../components/XYZSlide'
+import { Platform } from 'react-native'
 
 function getPage(page, bottomBar = undefined) {
   let data = []
@@ -132,6 +133,9 @@ function getPage(page, bottomBar = undefined) {
           image: require('../../assets/mapEdit/icon_function_theme_param_menu.png'),
         },
       ]
+      if (Platform.OS === 'ios') {
+        data.splice(3, 1)
+      }
       pageAction = () => {
         SARVideoView.setTapAction('NONE')
         SARVideoView.setPlaneVisible(false)

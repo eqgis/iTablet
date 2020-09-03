@@ -145,6 +145,13 @@ export default class InputPage extends React.Component {
             placeholder={this.state.placeholder}
             placeholderTextColor={color.themePlaceHolder}
             value={this.state.value + ''}
+            onFocus={() => {
+              if (this.state.type === 'http' && this.state.value === '') {
+                this.setState({
+                  value: 'http://',
+                })
+              }
+            }}
             onChangeText={text => {
               // if (this.state.keyboardType === 'numeric') {
               //   this.setState({

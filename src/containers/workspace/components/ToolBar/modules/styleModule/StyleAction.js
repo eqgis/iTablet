@@ -21,7 +21,7 @@ async function commit() {
 
   ToolbarModule.setData()
 
-  _params.setToolbarVisible(false, {
+  _params.setToolbarVisible(false, '', {
     isTouchProgress: false,
     showMenuDialog: false,
     selectKey: '',

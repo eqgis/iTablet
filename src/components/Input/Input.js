@@ -35,6 +35,7 @@ export default class Input extends PureComponent {
     secureTextEntry?: boolean, // 密码
     onChangeText?: () => {}, // 输入回调
     onClear?: () => {}, // 自定义清除事件
+    onFocus?: () => {},
   }
 
   static defaultProps = {
@@ -146,6 +147,7 @@ export default class Input extends PureComponent {
           keyboardAppearance={this.props.keyboardAppearance}
           returnKeyType={this.props.returnKeyType}
           keyboardType={this.props.keyboardType}
+          onFocus={this.props.onFocus}
         />
         {this.props.showClear && this.renderClearBtn()}
       </View>

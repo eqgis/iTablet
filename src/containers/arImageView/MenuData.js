@@ -128,9 +128,9 @@ function getPage(page, bottomBar = undefined) {
           image: require('../../assets/mapEdit/icon_function_theme_param_menu.png'),
         },
       ]
-      if (Platform.OS === 'ios') {
-        data.splice(3, 1)
-      }
+      // if (Platform.OS === 'ios') {
+      //   data.splice(3, 1)
+      // }
       pageAction = () => {
         SARImage.setTapAction('NONE')
         SARImage.setPlaneVisible(false)

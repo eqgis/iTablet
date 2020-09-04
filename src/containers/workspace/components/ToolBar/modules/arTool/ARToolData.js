@@ -55,7 +55,7 @@ function getData() {
         //item.key === 'arVideo' ||
         //item.key === 'arImage' ||
         item.key === 'arWeather' ||
-        item.key === 'arWebView' ||
+        //item.key === 'arWebView' ||
         item.key === 'arText'
       ) {
         return false

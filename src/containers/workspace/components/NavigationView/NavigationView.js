@@ -622,6 +622,7 @@ export default class NavigationView extends React.Component {
       await SMap.moveToPoint({ x: GLOBAL.STARTX, y: GLOBAL.STARTY })
     } else {
       Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+      this.loading.setLoading(false)
     }
     if (pathLength && path) {
       //设置MapView的路径信息

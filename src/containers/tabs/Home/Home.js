@@ -488,6 +488,12 @@ export default class Home extends Component {
   }
 
   renderHeader = () => {
+    let avatar = !UserType.isProbationUser(this.props.user.currentUser)
+      ? {
+        uri:
+          'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+      }
+      : getPublicAssets().common.icon_avatar
     return (
       <View
         style={[
@@ -509,7 +515,7 @@ export default class Home extends Component {
           onPress={event => this.showUserPop(event)}
         >
           <Image
-            source={getPublicAssets().common.icon_avatar}
+            source={avatar}
             style={styles.userImg}
           />
         </TouchableOpacity>

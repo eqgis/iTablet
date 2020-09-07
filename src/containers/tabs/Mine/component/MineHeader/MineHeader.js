@@ -164,12 +164,13 @@ export default class MineHeader extends Component {
           style={[
             profileTextStyle,
             isLandscape && {
-              // width: GLOBAL.isPad ? fixedSize(200) : fixedSize(200),
+              flex: 1,
               marginLeft: GLOBAL.isPad ? fixedSize(30) : fixedSize(30),
             },
           ]}
         >
-          <Text numberOfLines={1} style={styles.userNameStyle}>
+          <Text numberOfLines={1} style={styles.userNameStyle}
+                ellipsizeMode={'tail'}>
             {headerTitle}
           </Text>
           <Text style={styles.statusTextStyle}>{statusText}</Text>

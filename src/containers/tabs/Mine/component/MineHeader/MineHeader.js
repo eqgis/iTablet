@@ -164,7 +164,7 @@ export default class MineHeader extends Component {
           style={[
             profileTextStyle,
             isLandscape && {
-              width: GLOBAL.isPad ? fixedSize(200) : fixedSize(200),
+              // width: GLOBAL.isPad ? fixedSize(200) : fixedSize(200),
               marginLeft: GLOBAL.isPad ? fixedSize(30) : fixedSize(30),
             },
           ]}
@@ -174,15 +174,6 @@ export default class MineHeader extends Component {
           </Text>
           <Text style={styles.statusTextStyle}>{statusText}</Text>
         </TouchableOpacity>
-        {
-          isLandscape &&
-          <View style={[
-            isLandscape && styles.searchContainerL,
-            { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
-          ]}>
-            {this._renderSearch()}
-          </View>
-        }
       </View>
     )
   }
@@ -265,7 +256,16 @@ export default class MineHeader extends Component {
           <View style={styles.profileContainerL}>
             {hasCustomLogo && this._renderLogo()}
             {!hasCustomLogo && this._renderMyProfile()}
-            {!hasCustomLogo && this._renderSideItem()}
+            {/*{!hasCustomLogo && this._renderSideItem()}*/}
+            {
+              isLandscape &&
+              <View style={[
+                isLandscape && styles.searchContainerL,
+                { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
+              ]}>
+                {this._renderSearch()}
+              </View>
+            }
           </View>
         </ImageBackground>
       )
@@ -279,7 +279,7 @@ export default class MineHeader extends Component {
           >
             {hasCustomLogo && this._renderLogo()}
             {!hasCustomLogo && this._renderMyProfile()}
-            {!hasCustomLogo && this._renderSideItem()}
+            {/*{!hasCustomLogo && this._renderSideItem()}*/}
           </ImageBackground>
           {this._renderSearch()}
         </View>

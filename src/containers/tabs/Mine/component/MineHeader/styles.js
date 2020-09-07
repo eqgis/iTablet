@@ -83,11 +83,15 @@ export default StyleSheet.create({
   },
   // search
   searchContainerL: {
-    flex: 1,
+    // flex: 1,
+    position: 'absolute',
     flexDirection: 'column',
-    height: '100%',
+    // height: '100%',
+    height: scaleSize(80),
     justifyContent: 'flex-end',
-    marginLeft: fixedSize(72),
+    // marginLeft: fixedSize(72),
+    bottom: scaleSize(-40),
+    right: scaleSize(40),
   },
   searchViewStyleP: {
     position: 'absolute',
@@ -122,17 +126,17 @@ export default StyleSheet.create({
     paddingHorizontal: scaleSize(20),
     flexDirection: 'row',
     alignItems: 'center',
-    // ...Platform.select({
-    //   android: {
-    //     elevation: 5,
-    //   },
-    //   ios: {
-    //     shadowOffset: { width: 5, height: 5 },
-    //     shadowColor: '#eee',
-    //     shadowOpacity: 1,
-    //     shadowRadius: 2,
-    //   },
-    // }),
+    ...Platform.select({
+      android: {
+        elevation: 5,
+      },
+      ios: {
+        shadowOffset: { width: 5, height: 5 },
+        shadowColor: '#eee',
+        shadowOpacity: 1,
+        shadowRadius: 2,
+      },
+    }),
   },
   searchImgStyle: {
     width: scaleSize(40),

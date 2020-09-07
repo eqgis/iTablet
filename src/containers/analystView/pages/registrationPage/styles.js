@@ -136,9 +136,11 @@ export default StyleSheet.create({
     width: scaleSize(120),
   },
   textInputStyle: {
+    flex: 1,
+    height: scaleSize(60),
     marginLeft: scaleSize(30),
     fontSize: scaleSize(24),
-    width: '100%',
+    padding: 0,
   },
 
   clickHintView: {

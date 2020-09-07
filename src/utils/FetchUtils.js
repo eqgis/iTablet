@@ -109,7 +109,7 @@ export default class FetchUtils {
       let url = `http://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
       data = await FetchUtils.getObjJson(url)
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      // Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     }
     return data
   }

@@ -15,6 +15,7 @@ import {
   Image,
 } from 'react-native'
 import { Container, PopMenu } from '../../../../components'
+import { getThemeAssets } from '../../../../assets'
 import RenderServiceItem from './RenderServiceItem'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './Styles'
@@ -301,15 +302,15 @@ export default class MyService extends Component {
   _renderSectionHeader(section) {
     let title = section.section.title
     let imageSource = section.section.isShowItem
-      ? require('../../../../assets/Mine/local_data_open.png')
-      : require('../../../../assets/Mine/local_data_close.png')
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
     if (title !== undefined) {
       let height = scaleSize(80)
       let fontSize = size.fontSize.fontSizeXl
       return (
         <TouchableOpacity
           style={{
-            backgroundColor: color.contentColorGray,
+            backgroundColor: color.bgW2,
             // justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
@@ -325,16 +326,17 @@ export default class MyService extends Component {
             style={{
               tintColor: color.imageColorWhite,
               marginLeft: 10,
-              width: scaleSize(30),
-              height: scaleSize(30),
+              width: scaleSize(52),
+              height: scaleSize(52),
             }}
           />
           <Text
             style={{
-              color: color.fontColorWhite,
+              color: color.fontColorBlack,
               fontSize: fontSize,
               fontWeight: 'bold',
               paddingLeft: 15,
+              backgroundColor: 'transparent',
             }}
           >
             {title}

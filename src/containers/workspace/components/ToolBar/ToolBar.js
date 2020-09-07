@@ -163,7 +163,9 @@ export default class ToolBar extends React.Component {
     if (Platform.OS === 'android') {
       ExtraDimensions.addSoftMenuBarWidthChangeListener({
         softBarPositionChange: val => {
-          this.setState({ hasSoftMenuBottom: val })
+          if (this.state.hasSoftMenuBottom !== val) {
+            this.setState({ hasSoftMenuBottom: val })
+          }
         },
       })
     }
@@ -174,14 +176,12 @@ export default class ToolBar extends React.Component {
     let tempthis = Object.assign({}, this.props)
     tempNext.nav && delete tempNext.nav
     tempthis.nav && delete tempthis.nav
-    if (
-      JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
+    let shouldUpdate = JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
-    ) {
+    if (shouldUpdate) {
       this.setToolbarParams(nextProps, nextState)
-      return true
     }
-    return false
+    return shouldUpdate
   }
 
   componentWillUnmount() {

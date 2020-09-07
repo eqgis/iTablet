@@ -54,9 +54,9 @@ function getData() {
         item.key === 'arCastModelOperate' ||
         //item.key === 'arVideo' ||
         //item.key === 'arImage' ||
-        item.key === 'arWeather' ||
+        item.key === 'arWeather'
         //item.key === 'arWebView' ||
-        item.key === 'arText'
+        // item.key === 'arText'
       ) {
         return false
       }

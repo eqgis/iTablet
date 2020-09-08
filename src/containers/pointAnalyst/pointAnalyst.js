@@ -417,7 +417,7 @@ export default class PointAnalyst extends Component {
           this.getSearchResult({ keyWords: searchKey })
         }}
         placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
-        //{'请输入搜索关键字'}
+        placeholderTextColor={color.fontColorGray}
       />
     )
   }

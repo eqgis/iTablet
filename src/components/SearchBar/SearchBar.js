@@ -105,7 +105,7 @@ export default class SearchBar extends PureComponent {
           defaultValue={this.props.defaultValue}
           editable={this.props.editable}
           placeholder={this.props.placeholder}
-          placeholderTextColor={this.props.placeholder}
+          placeholderTextColor={this.props.placeholderTextColor}
           style={styles.input}
           onBlur={this._onBlur}
           onFocus={this._onFocus}

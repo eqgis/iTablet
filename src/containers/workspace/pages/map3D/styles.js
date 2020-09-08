@@ -40,9 +40,9 @@ export default StyleSheet.create({
     marginLeft: scaleSize(30),
     fontSize: setSpText(18),
     color: 'red',
-    // width: scaleSize(160),
   },
   textInputStyle: {
+    paddingHorizontal: scaleSize(10),
     marginTop: scaleSize(25),
     height: scaleSize(70),
     flex: 1,

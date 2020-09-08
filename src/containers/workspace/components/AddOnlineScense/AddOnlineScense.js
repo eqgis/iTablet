@@ -71,7 +71,7 @@ export default class AddOnlineScense extends Component {
         <TextInput
           value={this.state.name}
           placeholder={getLanguage(global.language).Map_Setting.SCENE_NAME}
-          // {'地图名称'}
+          placeholderTextColor={color.fontColorGray}
           style={styles.textInput}
           ref={ref => (this.name = ref)}
           //   onChangeText={text => this.setState({ name: text })}
@@ -86,7 +86,7 @@ export default class AddOnlineScense extends Component {
           placeholder={
             getLanguage(global.language).Profile.ENTER_SERVICE_ADDRESS
           }
-          //{'请输入服务地址'}
+          placeholderTextColor={color.fontColorGray}
           style={[styles.textInput, { marginTop: 20 }]}
           ref={ref => (this.server = ref)}
           onChangeText={text => {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 10,
     borderWidth: 1,
-    borderColor: color.bgG,
+    borderColor: color.fontColorGray,
   },
   text: {
     fontSize: size.fontSize.fontSizeLg,

@@ -51,6 +51,8 @@ export default StyleSheet.create({
   pointAnalystView: {
     backgroundColor: color.contentColorWhite2,
     width: '100%',
+    paddingHorizontal: scaleSize(40),
+    paddingVertical: scaleSize(10),
     height: scaleSize(150),
     flexDirection: 'row',
     justifyContent: 'center',
@@ -59,8 +61,14 @@ export default StyleSheet.create({
     borderColor: color.separateColorGray,
     // backgroundColor:"red",
   },
+  pointAnalystRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   onInput: {
-    width: scaleSize(450),
+    flex: 1,
+    // width: scaleSize(450),
     height: scaleSize(55),
     fontSize: scaleSize(20),
     padding: (0, 0, 0, scaleSize(15)),
@@ -73,8 +81,9 @@ export default StyleSheet.create({
     borderRadius: scaleSize(5),
   },
   secondInput: {
+    flex: 1,
     padding: (0, 0, 0, scaleSize(15)),
-    width: scaleSize(450),
+    // width: scaleSize(450),
     height: scaleSize(55),
     fontSize: scaleSize(20),
     // textAlign:"center",

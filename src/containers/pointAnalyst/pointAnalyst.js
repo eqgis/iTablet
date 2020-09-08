@@ -23,6 +23,7 @@ export default class PointAnalyst extends Component {
   props: {
     navigation: Object,
     mapSearchHistory: Array,
+    language: String,
     setMapSearchHistory: () => {},
   }
 
@@ -275,8 +276,8 @@ export default class PointAnalyst extends Component {
     return (
       <View>
         <View style={styles.pointAnalystView}>
-          <View style={{ flexDirection: 'column' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', flex: 1 }}>
+            <View style={styles.pointAnalystRow}>
               <Image
                 resizeMode={'contain'}
                 source={require('../../assets/mapToolbar/icon_scene_tool_start.png')}
@@ -297,10 +298,10 @@ export default class PointAnalyst extends Component {
                 placeholder={
                   getLanguage(global.language).Prompt.CHOOSE_STARTING_POINT
                 }
-                //{'请输入起点'}
+                placeholderTextColor={color.fontColorGray}
               />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.pointAnalystRow}>
               <Image
                 resizeMode={'contain'}
                 source={require('../../assets/mapToolbar/icon_scene_tool_end.png')}
@@ -321,7 +322,7 @@ export default class PointAnalyst extends Component {
                 placeholder={
                   getLanguage(global.language).Prompt.CHOOSE_DESTINATION
                 }
-                // {'请输入终点'}
+                placeholderTextColor={color.fontColorGray}
               />
             </View>
           </View>
@@ -521,7 +522,9 @@ export default class PointAnalyst extends Component {
         ref={ref => (this.container = ref)}
         initWithLoading={false}
         headerProps={{
-          title: this.type === 'pointSearch' ? '位置搜索' : '路径分析',
+          title: this.type === 'pointSearch'
+            ? ''
+            : getLanguage(this.props.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS,
           // navigation: this.props.navigation,
           backAction: () => {
             // if (this.searchClickedInfo.isClicked) {
@@ -531,7 +534,7 @@ export default class PointAnalyst extends Component {
             GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
           },
           headerCenter:
-            this.type === 'pointSearch' ? this.renderSearchBar() : <View />,
+            this.type === 'pointSearch' ? this.renderSearchBar() : null,
         }}
       >
         {this.type === 'pointSearch' &&

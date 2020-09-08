@@ -850,7 +850,7 @@ export default class Map3D extends React.Component {
             placeholder={
               getLanguage(this.props.language).Prompt.PLEASE_ENTER_TEXT
             }
-            // {'请输入文本内容'}
+            placeholderTextColor={color.fontColorGray}
             style={styles.textInputStyle}
           />
         </View>

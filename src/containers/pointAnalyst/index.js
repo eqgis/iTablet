@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   mapNavigation: state.setting.toJS().mapNavigation,
   navigationChangeAR: state.setting.toJS().navigationChangeAR,
   mapSearchHistory: state.histories.toJS().mapSearchHistory,
+  language: state.setting.toJS().language,
 })
 const mapDispatchToProps = {
   setMapNavigation,

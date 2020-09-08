@@ -7,26 +7,40 @@
 
 import TopoEditData from './TopoEditData'
 import TopoEditAction from './TopoEditAction'
-import ToolbarModule from '../ToolbarModule'
-import { getThemeAssets } from '../../../../../../assets'
+import FunctionModule from '../../../../../../class/FunctionModule'
+import { ConstToolType } from '../../../../../../constants'
 
-function setModuleData(type) {
-  ToolbarModule.setData({
-    type,
+// function setModuleData(type) {
+//   ToolbarModule.setData({
+//     type,
+//     getData: TopoEditData.getData,
+//     actions: TopoEditAction,
+//   })
+// }
+
+// export default function(type, title) {
+//   setModuleData(type)
+//   return {
+//     key: title,
+//     title,
+//     size: 'large',
+//     image: getThemeAssets().functionBar.icon_tool_mark,
+//     getData: TopoEditData.getData,
+//     actions: TopoEditAction,
+//     setModuleData: setModuleData,
+//   }
+// }
+
+class TopoEditModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+}
+
+export default function() {
+  return new TopoEditModule({
+    type: ConstToolType.MAP_TOPO_EDIT,
     getData: TopoEditData.getData,
     actions: TopoEditAction,
   })
-}
-
-export default function(type, title) {
-  setModuleData(type)
-  return {
-    key: title,
-    title,
-    size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_mark,
-    getData: TopoEditData.getData,
-    actions: TopoEditAction,
-    setModuleData: setModuleData,
-  }
 }

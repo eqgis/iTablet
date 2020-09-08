@@ -96,16 +96,18 @@ export default class ToolbarBottomButtons extends React.Component {
     // ToolbarModule.setData() // 关闭Toolbar清除临时数据
   }
 
+  back = () => this.props.back(this.props.type)
+
   /** 菜单 **/
   menu = () => {
     // 关系到上层组件state变化，交给上层处理
-    this.props.menu && this.props.menu({type: this.props.type})
+    this.props.menu && this.props.menu({ type: this.props.type })
   }
 
   /** 菜单和Box切换显示 **/
   showMenuBox = () => {
     // 关系到上层组件state变化，交给上层处理
-    this.props.showMenuBox && this.props.showMenuBox({type: this.props.type})
+    this.props.showMenuBox && this.props.showMenuBox({ type: this.props.type })
   }
 
   /** 显示属性 **/
@@ -241,7 +243,7 @@ export default class ToolbarBottomButtons extends React.Component {
         case ToolbarBtnType.TOOLBAR_BACK:
           //返回上一级
           image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
-          action = () => this.props.back(this.props.type)
+          action = action || this.back
           break
       }
 

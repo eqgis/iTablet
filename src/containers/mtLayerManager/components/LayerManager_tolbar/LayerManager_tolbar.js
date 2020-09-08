@@ -561,6 +561,7 @@ export default class LayerManager_tolbar extends React.Component {
         _params.setToolbarVisible(true, ConstToolType.MAP_LAYER_VISIBLE_SCALE, {
           containerType: ToolbarType.multiPicker,
           isFullScreen: false,
+          resetToolModuleData: true,
         })
       }.bind(this)())
     } else if (
@@ -629,10 +630,7 @@ export default class LayerManager_tolbar extends React.Component {
         let newLayerData = dataUtil.deepClone(this.state.layerData)
         newLayerData.isVisible = true
         newLayerData.isVisible = true
-        let newState = this.updateMenuState(
-          this.state.data,
-          newLayerData,
-        )
+        let newState = this.updateMenuState(this.state.data, newLayerData)
         this.setState(newState, async () => {
           this.props.setCurrentLayer &&
             this.props.setCurrentLayer(this.state.layerData)

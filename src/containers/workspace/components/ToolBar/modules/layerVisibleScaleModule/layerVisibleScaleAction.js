@@ -14,7 +14,7 @@ import NavigationService from '../../../../../NavigationService'
 
 //判断两数相等，小数点五位以后忽略不计
 function isSimilar(num1, num2) {
-  return num1 - num2 < 0.00001
+  return Math.abs(num1 - num2) < 0.00001
 }
 function pickerConfirm(item) {
   const _params = ToolbarModule.getParams()

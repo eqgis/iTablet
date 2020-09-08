@@ -1,10 +1,12 @@
 import * as React from 'react'
-import { SMARVideoView, SARVideoView ,SMap } from 'imobile_for_reactnative'
+import { SMARVideoView, SARVideoView, SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
-import { Container, BottomBar } from '../../components'
+import { Container } from '../../components'
 import { getLanguage } from '../../language'
-import MenuData from './MenuData'
 import NavigationService from '../NavigationService'
+import { ToolBar } from '../workspace/components'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import arVideoModule from './arVideoModule'
 
 export default class ARVideoView extends React.Component {
   props: {
@@ -27,6 +29,11 @@ export default class ARVideoView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule.add(arVideoModule)
+    ToolbarModule.setToolBarData('ARVIDEOMODULE')
+    this.toolbar.setVisible(true, 'ARVIDEOMODULE', {
+      type: 'table',
+    })
     setTimeout(async () => {
       if (this.point) {
         await SARVideoView.setPosition(this.point.x, this.point.y)
@@ -42,8 +49,8 @@ export default class ARVideoView extends React.Component {
     GLOBAL.toolBox.switchAr()
   }
 
-  renderBottom = () => {
-    return <BottomBar getData={MenuData.getPage} />
+  renderToolbar = () => {
+    return <ToolBar ref={ref => (this.toolbar = ref)} />
   }
 
   render() {
@@ -59,7 +66,7 @@ export default class ARVideoView extends React.Component {
         bottomProps={{ type: 'fix' }}
       >
         <SMARVideoView style={{ flex: 1 }} />
-        {this.renderBottom()}
+        {this.renderToolbar()}
       </Container>
     )
   }

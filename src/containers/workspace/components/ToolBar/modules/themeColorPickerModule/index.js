@@ -7,7 +7,8 @@
 import ThemeColorPickerData from './ThemeColorPickerData'
 import ThemeColorPickerAction from './ThemeColorPickerAction'
 import ToolbarModule from '../ToolbarModule'
-import {ConstToolType} from "../../../../../../constants"
+import { ConstToolType } from '../../../../../../constants'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
 function setModuleData(type) {
   let customModeData = ToolbarModule.getData().customModeData
@@ -19,19 +20,35 @@ function setModuleData(type) {
     getData: ThemeColorPickerData.getData,
     actions: ThemeColorPickerAction,
   })
-  if(customModeData && index !== undefined){
-    ToolbarModule.addData({customModeData,index,customType,mapXml})
+  if (customModeData && index !== undefined) {
+    ToolbarModule.addData({ customModeData, index, customType, mapXml })
   }
 }
 
-export default function(type,title) {
-  setModuleData(ConstToolType.MAP_COLOR_PICKER)
-  return {
-    key: title,
-    title,
-    size: 'large',
+// export default function(type,title) {
+//   setModuleData(ConstToolType.MAP_COLOR_PICKER)
+//   return {
+//     key: title,
+//     title,
+//     size: 'large',
+//     getData: ThemeColorPickerData.getData,
+//     actions: ThemeColorPickerAction,
+//     setModuleData,
+//   }
+// }
+
+class themeColorPickerModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  setModuleData = setModuleData
+}
+
+export default function() {
+  return new themeColorPickerModule({
+    type: ConstToolType.MAP_COLOR_PICKER,
     getData: ThemeColorPickerData.getData,
     actions: ThemeColorPickerAction,
-    setModuleData,
-  }
+  })
 }

@@ -10,7 +10,7 @@ import {
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModule from './modules/ToolbarModule'
-import { View, Animated, Platform, KeyboardAvoidingView, Dimensions } from 'react-native'
+import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -156,6 +156,7 @@ export default class ToolBar extends React.Component {
     // this.isBoxShow = false
     this.lastState = {}
 
+    this.prevParams = ToolbarModule.getParams()
     this.setToolbarParams(props, this.state)
   }
 
@@ -187,7 +188,7 @@ export default class ToolBar extends React.Component {
   componentWillUnmount() {
     this.buttonView = null
     this.contentView = null
-    ToolbarModule.setParams({})
+    ToolbarModule.setParams(this.prevParams)
   }
 
   getContentViewHeight = () => {
@@ -318,11 +319,16 @@ export default class ToolBar extends React.Component {
         let data = params.data
         let buttons = params.buttons
         let customView = params.customView
+        let pageAction = params.pageAction
         if (data === undefined || buttons === undefined) {
           let _data = await this.getData(type)
           data = data || _data.data
           buttons = buttons || _data.buttons
           customView = customView || _data.customView
+          pageAction = pageAction || _data.pageAction
+        }
+        if (pageAction) {
+          pageAction()
         }
         // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
         if (this.state.type !== type && params.resetToolModuleData) {
@@ -809,7 +815,7 @@ export default class ToolBar extends React.Component {
         style={[
           containerStyle,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? { right: this.state.right, height:  '100%' }
+            ? { right: this.state.right, height: '100%' }
             : { bottom: this.state.bottom, width: '100%' },
           (this.state.isFullScreen || this.state.isTouchProgress) &&
             this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {

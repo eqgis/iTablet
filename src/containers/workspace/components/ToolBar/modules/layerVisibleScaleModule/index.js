@@ -8,8 +8,8 @@ import LayerVisibleScaleData from './layerVisibleScaleData'
 import LayerVisibleScaleAction from './layerVisibleScaleAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, Height, ToolbarType } from '../../../../../../constants'
-import { getThemeAssets } from '../../../../../../assets'
 import { screen } from '../../../../../../utils'
+import FunctionModule from '../../../../../../class/FunctionModule'
 
 function setModuleData(type) {
   //需要存储之前的一些数据 图层数据 选中的最小比例尺 最大比例尺等
@@ -44,16 +44,33 @@ function getToolbarSize(type, orientation) {
   return { height, animationTime }
 }
 
-export default function(type, title) {
-  setModuleData(ConstToolType.MAP_LAYER_VISIBLE_SCALE)
-  return {
-    key: title,
-    title,
-    size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_mark,
+// export default function(type, title) {
+//   setModuleData(ConstToolType.MAP_LAYER_VISIBLE_SCALE)
+//   return {
+//     key: title,
+//     title,
+//     size: 'large',
+//     image: getThemeAssets().functionBar.icon_tool_mark,
+//     getData: LayerVisibleScaleData.getData,
+//     actions: LayerVisibleScaleAction,
+//     setModuleData,
+//     getToolbarSize,
+//   }
+// }
+
+class layerVisibleScaleModule extends FunctionModule {
+  constructor(props) {
+    super(props)
+  }
+
+  setModuleData = setModuleData
+  getToolbarSize = getToolbarSize
+}
+
+export default function() {
+  return new layerVisibleScaleModule({
+    type: ConstToolType.MAP_LAYER_VISIBLE_SCALE,
     getData: LayerVisibleScaleData.getData,
     actions: LayerVisibleScaleAction,
-    setModuleData,
-    getToolbarSize,
-  }
+  })
 }

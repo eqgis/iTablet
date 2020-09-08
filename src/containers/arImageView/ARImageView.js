@@ -1,10 +1,12 @@
 import * as React from 'react'
-import { SARImage, SMARImageView,SMap } from 'imobile_for_reactnative'
+import { SARImage, SMARImageView, SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
-import { Container, BottomBar } from '../../components'
+import { Container } from '../../components'
 import { getLanguage } from '../../language'
-import MenuData from './MenuData'
 import NavigationService from '../NavigationService'
+import { ToolBar } from '../workspace/components'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import arImageModule from './arImageModule'
 
 export default class ARImageView extends React.Component {
   props: {
@@ -27,6 +29,11 @@ export default class ARImageView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule.add(arImageModule)
+    ToolbarModule.setToolBarData('ARIMAGEMODULE')
+    this.toolbar.setVisible(true, 'ARIMAGEMODULE', {
+      type: 'table',
+    })
     setTimeout(async () => {
       if (this.point) {
         await SARImage.setPosition(this.point.x, this.point.y)
@@ -42,8 +49,8 @@ export default class ARImageView extends React.Component {
     GLOBAL.toolBox.switchAr()
   }
 
-  renderBottom = () => {
-    return <BottomBar getData={MenuData.getPage} />
+  renderToolbar = () => {
+    return <ToolBar ref={ref => (this.toolbar = ref)} />
   }
 
   render() {
@@ -59,7 +66,7 @@ export default class ARImageView extends React.Component {
         bottomProps={{ type: 'fix' }}
       >
         <SMARImageView style={{ flex: 1 }} />
-        {this.renderBottom()}
+        {this.renderToolbar()}
       </Container>
     )
   }

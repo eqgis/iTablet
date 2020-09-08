@@ -209,6 +209,7 @@ export default class CustomModePage extends Component {
       _params.setToolbarVisible(true, type, {
         isFullScreen: false,
         containerType: ToolbarType.colorPicker,
+        resetToolModuleData: true,
       })
     this.props.navigation.goBack()
   }

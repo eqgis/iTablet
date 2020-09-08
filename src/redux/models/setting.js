@@ -248,6 +248,26 @@ export const setNavBarDisplay = (params = {}) => async dispatch => {
   })
 }
 
+let defaultMapLegend = (() => {
+  let _mapLegend = {}
+  let legendConfig = {
+    isShow: false,
+    backgroundColor: 'white',
+    column: 2,
+    widthPercent: 80,
+    heightPercent: 80,
+    fontPercent: 50,
+    imagePercent: 50,
+    legendPosition: 'topLeft',
+  }
+  
+  let moduleKeys = Object.keys(ChunkType)
+  moduleKeys.map(item => {
+    _mapLegend[item] =  {...legendConfig}
+  })
+  return _mapLegend
+})()
+
 const initialState = fromJS({
   buffer: {
     endType: 1,
@@ -270,78 +290,7 @@ const initialState = fromJS({
   autoLanguage: true,
   configLangSet: false,
   peripheralDevice: 'local',
-  mapLegend: {
-    [ChunkType.MAP_EDIT]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_THEME]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_PLOTTING]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_NAVIGATION]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_ANALYST]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_COLLECTION]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-    [ChunkType.MAP_AR]: {
-      isShow: false,
-      backgroundColor: 'white',
-      column: 2,
-      widthPercent: 80,
-      heightPercent: 80,
-      fontPercent: 50,
-      imagePercent: 50,
-      legendPosition: 'topLeft',
-    },
-  },
+  mapLegend: {...defaultMapLegend},
   mapNavigation: {
     isShow: false,
     name: '',
@@ -433,78 +382,7 @@ export default handleActions(
       if (payload) {
         data = payload
       } else {
-        data = {
-          [ChunkType.MAP_EDIT]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_THEME]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_PLOTTING]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_NAVIGATION]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_ANALYST]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_COLLECTION]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-          [ChunkType.MAP_AR]: {
-            isShow: false,
-            backgroundColor: 'white',
-            column: 2,
-            widthPercent: 80,
-            heightPercent: 80,
-            fontPercent: 50,
-            imagePercent: 50,
-            legendPosition: 'topLeft',
-          },
-        }
+        data = {...defaultMapLegend}
       }
       return state.setIn(['mapLegend'], fromJS(data))
     },
@@ -586,12 +464,22 @@ export default handleActions(
       const data = payload || false
       return state.setIn(['navBarDisplay'], fromJS(data))
     },
-    [REHYDRATE]: (state, { payload }) =>
-      // if (payload && payload.setting) {
-      //   payload.setting.language = payload.setting.language === undefined ? 'CN' : payload.setting.language
-      // }
-      // return payload && payload.setting ? fromJS(payload.setting) : state
-      ModelUtils.checkModel(state, payload && payload.setting),
+    [REHYDRATE]: (state, { payload }) => {
+      let data = ModelUtils.checkModel(state, payload && payload.setting).toJSON()
+      let legendKeys = Object.keys(data.mapLegend)
+      let defaultKeys = Object.keys(defaultMapLegend)
+      for (let key of defaultKeys) {
+        if (legendKeys.indexOf(key) < 0) {
+          data.mapLegend[key] = defaultMapLegend[key]
+        }
+      }
+      for (let key of legendKeys) {
+        if (defaultKeys.indexOf(key) < 0) {
+          delete(data.mapLegend[key])
+        }
+      }
+      return fromJS(data)
+    }
   },
   initialState,
 )

@@ -856,24 +856,23 @@ export default class MT_layerManager extends React.Component {
 
   renderList = () => {
     return (
-      <View style={{ flex: 1 }}>
-        <SectionList
-          refreshing={this.state.refreshing}
-          onRefresh={() => {
-            this.setRefreshing(true)
-            this.getData()
-          }}
-          ref={ref => (this.listView = ref)}
-          sections={this.state.data}
-          renderItem={this._renderItem}
-          renderSectionHeader={this.renderSection}
-          getItemLayout={this.getItemLayout}
-          keyExtractor={(item, index) => index.toString()}
-          initialNumToRender={15}
-          // ItemSeparatorComponent={this.renderItemSeparator}
-          renderSectionFooter={this.renderSectionFooter}
-        />
-      </View>
+      <SectionList
+        style={{ flex: 1 }}
+        refreshing={this.state.refreshing}
+        onRefresh={() => {
+          this.setRefreshing(true)
+          this.getData()
+        }}
+        ref={ref => (this.listView = ref)}
+        sections={this.state.data}
+        renderItem={this._renderItem}
+        renderSectionHeader={this.renderSection}
+        getItemLayout={this.getItemLayout}
+        keyExtractor={(item, index) => index.toString()}
+        initialNumToRender={15}
+        // ItemSeparatorComponent={this.renderItemSeparator}
+        renderSectionFooter={this.renderSectionFooter}
+      />
     )
   }
 

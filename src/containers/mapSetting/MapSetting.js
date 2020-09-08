@@ -169,7 +169,7 @@ export default class MapSetting extends Component {
           {/*value={this.props.mapColumnNavBar}*/}
           {/*leftImage={getThemeAssets().setting.icon_horizontal_screen}*/}
         {/*/>*/}
-        {this._renderItemSeparatorComponent()}
+        {/*{this._renderItemSeparatorComponent()}*/}
         {
           CoworkInfo.coworkId !== '' &&
           <MapSettingItem
@@ -182,7 +182,7 @@ export default class MapSetting extends Component {
             leftImage={getThemeAssets().setting.icon_horizontal_screen}
           />
         }
-        {this._renderItemSeparatorComponent()}
+        {CoworkInfo.coworkId !== '' && this._renderItemSeparatorComponent()}
       </View>
     )
   }

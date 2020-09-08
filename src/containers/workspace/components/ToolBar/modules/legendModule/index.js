@@ -46,6 +46,7 @@ async function action(type) {
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
+  GLOBAL.toolBox && GLOBAL.toolBox.switchAr(false) // 若是AR地图，则切换到二维地图界面，然后显示图例
 }
 
 function setModuleData(type) {

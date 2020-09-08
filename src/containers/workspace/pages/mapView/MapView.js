@@ -2465,24 +2465,23 @@ export default class MapView extends React.Component {
   }
 
   /** 切换ar和地图浏览 **/
-  switchAr = () => {
-    if (this.state.showAIDetect) {
-      // SMapSuspension.closeMap()
-      // GLOBAL.SMMapSuspension && GLOBAL.SMMapSuspension.setVisible(false)
-      this.setState({
-        showAIDetect: false,
-      })
-      GLOBAL.showAIDetect = false
-      SMap.setDynamicviewsetVisible(true)
-      Orientation.unlockAllOrientations()
+  switchAr = (showAIDetect) => {
+    let _showAIDetect = this.state.showAIDetect
+    if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
+      if (showAIDetect !== _showAIDetect) {
+        _showAIDetect = showAIDetect
+      } else {
+        return
+      }
     } else {
-      this.setState({
-        showAIDetect: true,
-      })
-      GLOBAL.showAIDetect = true
-      SMap.setDynamicviewsetVisible(false)
-      Orientation.lockToPortrait()
+      _showAIDetect = !_showAIDetect
     }
+    this.setState({
+      showAIDetect: _showAIDetect,
+    })
+    GLOBAL.showAIDetect = _showAIDetect
+    SMap.setDynamicviewsetVisible(!_showAIDetect)
+    _showAIDetect ? Orientation.lockToPortrait() : Orientation.unlockAllOrientations()
   }
 
   removeAIDetect = bGone => {

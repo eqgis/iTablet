@@ -11,6 +11,7 @@ import {
 import { Container } from '../../../../components'
 import { SMap } from 'imobile_for_reactnative'
 import { FileTools, NativeMethod } from '../../../../native'
+import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import UserType from '../../../../constants/UserType'
 import { ConstPath } from '../../../../constants'
@@ -371,7 +372,7 @@ class SearchMine extends Component {
           ref={ref => (this.searchBar = ref)}
           style={styles.searchInputStyle}
           placeholder={getLanguage(global.language).Profile.SEARCH}
-          placeholderTextColor={'#A7A7A7'}
+          placeholderTextColor={color.fontColorGray}
           returnKeyType={'search'}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={true}
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
   searchViewStyle: {
     width: scaleSize(460),
     height: scaleSize(48),
-    backgroundColor: '#505050',
+    backgroundColor: color.bgW,
     borderRadius: scaleSize(24),
     paddingHorizontal: scaleSize(20),
     flexDirection: 'row',
@@ -430,7 +431,7 @@ const styles = StyleSheet.create({
     width: scaleSize(360),
     paddingVertical: 0,
     fontSize: scaleSize(20),
-    color: '#A7A7A7',
+    color: 'transparent',
   },
   clearImg: {
     width: scaleSize(20),

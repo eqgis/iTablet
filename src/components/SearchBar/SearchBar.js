@@ -6,6 +6,7 @@
 import React, { PureComponent } from 'react'
 import { View, TextInput, Image, TouchableOpacity } from 'react-native'
 import { getPublicAssets } from '../../assets'
+import { color } from '../../styles'
 import styles from './styles'
 
 export default class SearchBar extends PureComponent {
@@ -19,6 +20,7 @@ export default class SearchBar extends PureComponent {
     defaultValue: string, // 默认值
     editable: string, // 是否可编辑
     placeholder: string, // 占位符
+    placeholderTextColor: string, // 占位符颜色
     isFocused?: string, // 是否获得焦点
     keyboardAppearance?: string, // 键盘样式
     returnKeyType?: string, // Android上确定按钮文字
@@ -32,6 +34,7 @@ export default class SearchBar extends PureComponent {
     returnKeyType: 'search',
     returnKeyLabel: '搜索',
     blurOnSubmit: true,
+    placeholderTextColor: color.fontColorGray,
   }
 
   constructor(props) {
@@ -102,6 +105,7 @@ export default class SearchBar extends PureComponent {
           defaultValue={this.props.defaultValue}
           editable={this.props.editable}
           placeholder={this.props.placeholder}
+          placeholderTextColor={this.props.placeholder}
           style={styles.input}
           onBlur={this._onBlur}
           onFocus={this._onFocus}

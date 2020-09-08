@@ -22,11 +22,9 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   profileContainerL: {
-    flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
-    paddingHorizontal: scaleSize(44),
-    paddingVertical: scaleSize(40),
+    paddingBottom: scaleSize(50),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -35,6 +33,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: color.white,
     height: scaleSize(240),
+    paddingHorizontal: scaleSize(44),
+    paddingVertical: scaleSize(40),
   },
   // Myprofile
   MyProfileStyleP: {
@@ -83,15 +83,12 @@ export default StyleSheet.create({
   },
   // search
   searchContainerL: {
-    // flex: 1,
     position: 'absolute',
     flexDirection: 'column',
-    // height: '100%',
     height: scaleSize(80),
     justifyContent: 'flex-end',
-    // marginLeft: fixedSize(72),
-    bottom: scaleSize(-40),
-    right: scaleSize(40),
+    bottom: scaleSize(10),
+    right: scaleSize(130),
   },
   searchViewStyleP: {
     position: 'absolute',

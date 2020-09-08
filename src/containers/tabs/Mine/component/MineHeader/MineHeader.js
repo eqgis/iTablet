@@ -243,32 +243,35 @@ export default class MineHeader extends Component {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') >= 0
     if (isLandscape) {
       return (
-        <ImageBackground
-          resizeMode={'stretch'}
-          source={getThemeAssets().mine.bg_my_transverse}
-          style={[
-            styles.profileContainerBgL,
-            isLandscape && {
-              marginTop: GLOBAL.isPad ? fixedSize(86) : fixedSize(50),
-              marginBottom: GLOBAL.isPad ? scaleSize(60) : 0,
-            },
-          ]}
-        >
-          <View style={styles.profileContainerL}>
-            {hasCustomLogo && this._renderLogo()}
-            {!hasCustomLogo && this._renderMyProfile()}
-            {/*{!hasCustomLogo && this._renderSideItem()}*/}
-            {
-              isLandscape &&
-              <View style={[
-                isLandscape && styles.searchContainerL,
-                { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
-              ]}>
-                {this._renderSearch()}
-              </View>
-            }
-          </View>
-        </ImageBackground>
+        <View style={styles.profileContainerL}>
+          <ImageBackground
+            resizeMode={'stretch'}
+            source={getThemeAssets().mine.bg_my_transverse}
+            style={[
+              styles.profileContainerBgL,
+              isLandscape && {
+                marginTop: GLOBAL.isPad ? fixedSize(86) : fixedSize(50),
+                marginBottom: GLOBAL.isPad ? scaleSize(60) : 0,
+              },
+            ]}
+          >
+            {/*<View style={styles.profileContainerL}>*/}
+              {hasCustomLogo && this._renderLogo()}
+              {!hasCustomLogo && this._renderMyProfile()}
+              {/*{!hasCustomLogo && this._renderSideItem()}*/}
+              
+            {/*</View>*/}
+          </ImageBackground>
+          {
+            isLandscape &&
+            <View style={[
+              isLandscape && styles.searchContainerL,
+              { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
+            ]}>
+              {this._renderSearch()}
+            </View>
+          }
+        </View>
       )
     } else {
       return (

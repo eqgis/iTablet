@@ -224,8 +224,8 @@ export default class ToolBar extends React.Component {
     this.props.showFullMap && this.props.showFullMap(true)
   }
 
-  switchAr = () => {
-    this.props.switchAr && this.props.switchAr()
+  switchAr = (visible) => {
+    this.props.switchAr && this.props.switchAr(visible)
   }
 
   removeAIDetect = bGone => {

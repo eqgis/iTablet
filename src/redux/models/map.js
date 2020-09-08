@@ -124,6 +124,7 @@ export const saveMap = (params = {}, cb = () => {}) => async (
 ) => {
   try {
     let { mapName } = params
+    if (!params.addition) params.addition = {}
     const { currentMap } = getState().map.toJS()
     const curMapName = currentMap.name
     const { userName } = getState().user.toJS().currentUser

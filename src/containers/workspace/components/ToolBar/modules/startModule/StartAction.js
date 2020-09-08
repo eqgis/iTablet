@@ -989,7 +989,6 @@ async function openTemplate(item) {
         params.setContainerLoading &&
           params.setContainerLoading(
             true,
-            // ConstInfo.MAP_CREATING
             getLanguage(params.language).Prompt.CREATING,
           )
         // 打开模板工作空间
@@ -1032,7 +1031,6 @@ async function openTemplate(item) {
                   params.setContainerLoading(
                     true,
                     getLanguage(params.language).Prompt.READING_TEMPLATE,
-                    // ConstInfo.TEMPLATE_READING,
                   )
                   const templatePath = await FileTools.appendingHomeDirectory(
                     ConstPath.UserPath + mapInfo.Template,
@@ -1046,61 +1044,47 @@ async function openTemplate(item) {
                 }
                 params.setToolbarVisible(false)
               } else {
-                // params.getLayers(-1, layers => {
-                //   params.setCurrentLayer(layers.length > 0 && layers[0])
-                // })
                 Toast.show(
                   getLanguage(params.language).Prompt.THE_MAP_IS_OPENED,
                 )
-                // ConstInfo.MAP_ALREADY_OPENED)
-                // params.setContainerLoading(false)
               }
 
-              await params.getLayers(-1, async layers => {
-                params.setCurrentLayer(layers.length > 0 && layers[0])
+              // 添加底图
+              let layers = await params.getLayers(-1)
+              await params.setCurrentLayer(layers.length > 0 && layers[0])
+              if (!LayerUtils.isBaseLayer(layers[layers.length - 1])) {
+                await LayerUtils.openDefaultBaseMap()
+                await params.getLayers(-1)
+              }
 
-                if (!LayerUtils.isBaseLayer(layers[layers.length - 1])) {
-                  LayerUtils.openDefaultBaseMap()
-                  params.getLayers(-1)
-                }
-
-                // // 若没有底图，默认添加地图
-                // if (LayerUtils.getBaseLayers(layers).length > 0) {
-                //   await SMap.openDatasource(
-                //     ConstOnline['Google'].DSParams, GLOBAL.Type === ChunkType.MAP_COLLECTION
-                //       ? 1 : ConstOnline['Google'].layerIndex, false)
-                // }
-              })
               // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-              await SMap.getTaggingLayers(
+              let taggingLayers = await SMap.getTaggingLayers(
                 params.user.currentUser.userName,
-              ).then(dataList => {
-                dataList.forEach(item => {
-                  if (item.isVisible) {
-                    SMediaCollector.showMedia(item.name)
-                  }
-                })
-              })
-              params.setContainerLoading(false)
-              // // 重新加载图层
-              // params.getLayers({
-              //   type: -1,
-              //   currentLayerIndex: 0,
-              // })
-              params.mapMoveToCurrent()
+              )
+              for (let item of taggingLayers) {
+                if (item.isVisible) {
+                  await SMediaCollector.showMedia(item.name)
+                }
+              }
+
+              // params.setContainerLoading(false)
+              await params.mapMoveToCurrent()
               params.setContainerLoading(
                 true,
-                // ConstInfo.TEMPLATE_READING
                 getLanguage(params.language).Prompt.READING_TEMPLATE,
               )
-              params.getSymbolTemplates(null, () => {
-                params.setToolbarVisible(false)
-                params.setContainerLoading && params.setContainerLoading(false)
-                Toast.show(
-                  getLanguage(params.language).Prompt.SWITCHED_TEMPLATE,
-                )
-                // ConstInfo.TEMPLATE_CHANGE_SUCCESS
+              await params.getSymbolTemplates(null)
+
+              // 保存新建模版地图，若不保存，再次进入地图则没有底图
+              await params.saveMap({
+                mapName: mapsInfo[0],
               })
+              
+              params.setToolbarVisible(false)
+              params.setContainerLoading && params.setContainerLoading(false)
+              Toast.show(
+                getLanguage(params.language).Prompt.SWITCHED_TEMPLATE,
+              )
             } else {
               params.setContainerLoading && params.setContainerLoading(false)
               Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
@@ -1111,16 +1095,16 @@ async function openTemplate(item) {
         params.setContainerLoading && params.setContainerLoading(false)
       }
       NavigationService.goBack()
-      setTimeout(async () => {
-        params.setToolbarVisible(false)
+      // setTimeout(async () => {
+        // params.setToolbarVisible(false)
         if (GLOBAL.legend) {
           await SMap.addLegendListener({
             legendContentChange: GLOBAL.legend._contentChange,
           })
         }
-        Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
+        // Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
         // ConstInfo.MAP_SYMBOL_COLLECTION_CREATED)
-      }, 1000)
+      // }, 1000)
     },
   })
 }

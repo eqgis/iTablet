@@ -107,35 +107,16 @@ async function getAvailableMapName(path, name) {
     extension: 'xml',
     type: 'file',
   })
-  let exist = true
   let _name = name
-
-  function checkName(__name) {
-    let _exist = false
-    let newName = __name
-    for (let i = 0; i < maps.length; i++) {
-      let mapName = maps[i].name
-      if (mapName.indexOf('.') > 0) {
-        mapName = mapName.substring(0, mapName.indexOf('.'))
-      }
-      if (mapName === newName) {
-        _exist = true
-        newName = __name + '_' + (i + 1)
-        break
-      }
-    }
-    return {
-      name: newName,
-      exist: _exist,
-    }
+  let mapNames = []
+  for (let map of maps) {
+    mapNames.push(map.name.replace('.xml', ''))
   }
-
-  if (maps.length > 0) {
-    while (exist) {
-      let result = checkName(_name)
-      exist = result.exist
-      _name = result.name
-    }
+  
+  let baseName = name, mapIndex = 0
+  
+  while (mapNames.indexOf(_name) >= 0) {
+    _name = baseName + '_' + (++mapIndex)
   }
 
   return _name

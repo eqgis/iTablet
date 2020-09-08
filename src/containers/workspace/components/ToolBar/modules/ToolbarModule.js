@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import SMap from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { ConstToolType } from '../../../../../constants'
 import ToolbarBtnType from '../ToolbarBtnType'
@@ -29,6 +30,7 @@ import {
   layerSettingImageModule,
   addModule,
 } from '../modules'
+import * as Modules from '../modules'
 import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
 import ToolBarHeight from './ToolBarHeight'
 
@@ -91,8 +93,35 @@ function getToolbarSize(type, additional = {}) {
   return toolbarSize
 }
 
+let _modules = new Array()
+function getModules() {
+  if (_modules.length === 0) {
+    for (let key in Modules) {
+      // eslint-disable-next-line import/namespace
+      _modules.push(Modules[key])
+    }
+  }
+  return _modules
+}
+
+function add(param) {
+  _modules.push(param)
+}
+
 function getModule(type, params = {}) {
   let module
+
+  let modules = getModules()
+  //TODO 优化
+  modules.map(item => {
+    if (type.indexOf(item().type) === 0) {
+      module = item()
+    }
+  })
+  if (module !== undefined) {
+    return module
+  }
+
   if (type === 'ADD_SYMBOL_PATH' || type === 'ADD_SYMBOL_SYMBOLS') {
     module = addModule()
   } else if (
@@ -279,6 +308,8 @@ function getPlotAnimationData(type) {
 }
 
 export default {
+  add,
+
   setParams,
   addParams,
   getParams,

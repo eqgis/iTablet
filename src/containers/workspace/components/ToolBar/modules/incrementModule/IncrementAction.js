@@ -242,6 +242,7 @@ async function topoEdit() {
     _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_EDIT, {
       isFullScreen: false,
       height: 0,
+      resetToolModuleData: true,
     })
 }
 

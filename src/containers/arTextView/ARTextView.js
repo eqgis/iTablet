@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { SARText, SMARTextView, SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
-import { Container, BottomBar } from '../../components'
+import { Container } from '../../components'
 import { getLanguage } from '../../language'
-import MenuData from './MenuData'
 import NavigationService from '../NavigationService'
+import { ToolBar } from '../workspace/components'
+import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import arTextModule from './arTextModule'
 
 export default class ARTextView extends React.Component {
   props: {
@@ -27,6 +29,11 @@ export default class ARTextView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule.add(arTextModule)
+    ToolbarModule.setToolBarData('ARTEXTMODULE')
+    this.toolbar.setVisible(true, 'ARTEXTMODULE', {
+      type: 'table',
+    })
     setTimeout(async () => {
       if (this.point) {
         await SARText.setPosition(this.point.x, this.point.y)
@@ -42,8 +49,11 @@ export default class ARTextView extends React.Component {
     GLOBAL.toolBox.switchAr()
   }
 
-  renderBottom = () => {
-    return <BottomBar getData={MenuData.getPage} />
+  // renderBottom = () => {
+  //   return <BottomBar getData={MenuData.getPage} />
+  // }
+  renderToolbar = () => {
+    return <ToolBar ref={ref => (this.toolbar = ref)} />
   }
 
   render() {
@@ -59,7 +69,7 @@ export default class ARTextView extends React.Component {
         bottomProps={{ type: 'fix' }}
       >
         <SMARTextView style={{ flex: 1 }} />
-        {this.renderBottom()}
+        {this.renderToolbar()}
       </Container>
     )
   }

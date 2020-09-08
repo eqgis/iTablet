@@ -102,7 +102,7 @@ export default class XYZSlide extends Component {
         style={[
           {
             position: 'absolute',
-            bottom: scaleSize(96),
+            bottom: 0,
             paddingTop: scaleSize(40),
             width: '100%',
             borderTopStartRadius: scaleSize(25),

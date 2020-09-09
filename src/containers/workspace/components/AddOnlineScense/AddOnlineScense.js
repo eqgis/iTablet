@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Container } from '../../../../components'
 import { color, size } from '../../../../styles'
-import { Toast, scaleSize } from '../../../../utils'
+import { Toast, scaleSize, dataUtil } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 
 export default class AddOnlineScense extends Component {
@@ -22,13 +22,16 @@ export default class AddOnlineScense extends Component {
 
   save = () => {
     if (this.state.name === '') {
-      Toast.show(getLanguage(global.language).Map_Setting.SCENE_NAME)
-      //'请输入底图名称')
+      Toast.show(getLanguage(global.language).Prompt.PLEASE_ENTER + getLanguage(global.language).Map_Setting.SCENE_NAME)
       return
     }
     if (this.state.server === '') {
       Toast.show(getLanguage(global.language).Prompt.ENTER_SERVICE_ADDRESS)
-      //'请输入服务地址')
+      return
+    }
+    let checkURL = dataUtil.isLegalURL(this.state.server)
+    if (!checkURL.result) {
+      Toast.show(checkURL.error)
       return
     }
     let _server = this.state.server

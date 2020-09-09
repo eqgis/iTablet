@@ -175,7 +175,7 @@ const getNavigationSetting = () => [
 ]
 
 // 视频地图设置
-const getMapARSettings = () => [
+const getMapARAnalysisSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
     leftImage: getThemeAssets().setting.icon_detection_type,
@@ -829,7 +829,7 @@ export {
   fourRanges,
   transferData,
   getNavigationSetting,
-  getMapARSettings,
+  getMapARAnalysisSettings,
   getDetectTypesSettings,
   getDetectStyleSettings,
 }

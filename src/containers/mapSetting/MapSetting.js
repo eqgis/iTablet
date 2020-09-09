@@ -5,12 +5,11 @@ import { MapToolbar } from '../workspace/components'
 import {
   View,
   FlatList,
-  Platform,
 } from 'react-native'
 import styles from './styles'
 import {
   getThematicMapSettings,
-  getMapARSettings,
+  getMapARAnalysisSettings,
 } from './settingData'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
@@ -71,8 +70,8 @@ export default class MapSetting extends Component {
 
   getData = async () => {
     let newData = getThematicMapSettings()
-    if (GLOBAL.Type === ChunkType.MAP_AR) {
-      newData = newData.concat(getMapARSettings())
+    if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
+      newData = newData.concat(getMapARAnalysisSettings())
     }
     // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
     //   newData = newData.concat(getNavigationSetting())

@@ -85,14 +85,6 @@ export default class LineList extends Component {
     const preType = ToolbarModule.getData().preType
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(preType)
-    if (
-      GLOBAL.INCREMENT_DATA.datasetName !==
-        this.state.selectedItem.datasetName ||
-      GLOBAL.INCREMENT_DATA.datasourceName !==
-        this.state.selectedItem.datasourceName
-    ) {
-      GLOBAL.INCREMENT_DATA = {}
-    }
     this._keyboardDidHide()
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
@@ -108,6 +100,10 @@ export default class LineList extends Component {
       })
   }
   _confirm = async () => {
+    if (!this.state.selectedItem.datasetName) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      return
+    }
     if (
       GLOBAL.INCREMENT_DATA.datasetName !==
         this.state.selectedItem.datasetName ||
@@ -115,8 +111,8 @@ export default class LineList extends Component {
         this.state.selectedItem.datasourceName
     ) {
       let params = {
-        preDatasetName: GLOBAL.INCREMENT_DATA.datasetName,
-        datasourceName: GLOBAL.INCREMENT_DATA.datasourceName,
+        preDatasetName: GLOBAL.INCREMENT_DATA.datasetName || '',
+        datasourceName: this.state.selectedItem.datasourceName,
         datasetName: this.state.selectedItem.datasetName,
       }
       await SMap.setCurrentDataset(params)
@@ -231,6 +227,7 @@ export default class LineList extends Component {
       GLOBAL.INCREMENT_DATA.datasetName === datasetName
     ) {
       removeLayer = true
+      GLOBAL.INCREMENT_DATA = {}
     }
     SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({

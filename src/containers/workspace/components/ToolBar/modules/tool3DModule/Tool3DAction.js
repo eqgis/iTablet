@@ -318,7 +318,7 @@ function clearMeasure(type) {
     case ConstToolType.MAP3D_BOX_CLIP_OUT:
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
-      ToolbarModule.setData()
+      // ToolbarModule.setData()
       SScene.clipSenceClear()
       GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {

@@ -4,6 +4,7 @@ import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language/index'
 import { scaleSize, Toast } from '../../../../utils'
 import { getPublicAssets } from '../../../../assets'
+import { color } from '../../../../styles'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
 import MsgConstant from '../MsgConstant'
@@ -278,7 +279,7 @@ class CoworkMessage extends Component {
   renderHeaderRight = () => {
     return (
       <TouchableOpacity onPress={this.selecteAll}>
-        <Text style={{ fontSize: scaleSize(26), color: 'white' }}>
+        <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
           {getLanguage(global.language).Profile.SELECT_ALL}
         </Text>
       </TouchableOpacity>

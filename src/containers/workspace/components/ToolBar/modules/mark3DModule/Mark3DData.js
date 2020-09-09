@@ -84,7 +84,7 @@ async function getData(type, params) {
             try {
               if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
               // getParams.getMap3DAttribute()
-              Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
+              // Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
               // '保存成功')
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)

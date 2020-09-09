@@ -769,8 +769,7 @@ export default class ToolBarSectionList extends React.Component {
 
   render() {
     return (
-      <SectionList
-        ref={ref => (this.sectionList = ref)}
+      <View
         style={[
           this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {
             overflow: 'hidden',
@@ -779,16 +778,28 @@ export default class ToolBarSectionList extends React.Component {
           },
           this.props.style,
         ]}
-        sections={this.state.sections}
-        renderItem={this.renderItem}
-        renderSectionHeader={this.renderSection}
-        keyExtractor={(item, index) => index}
-        getItemLayout={this.getItemLayout}
-        ItemSeparatorComponent={this.renderSeparator}
-        renderSectionFooter={this.renderSectionFooter}
-        initialNumToRender={this.props.initialNumToRender}
-        stickySectionHeadersEnabled={true}
-      />
+      >
+        <SectionList
+          ref={ref => (this.sectionList = ref)}
+          // style={[
+          //   this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {
+          //     overflow: 'hidden',
+          //     borderTopLeftRadius: scaleSize(32),
+          //     borderTopRightRadius: scaleSize(32),
+          //   },
+          //   this.props.style,
+          // ]}
+          sections={this.state.sections}
+          renderItem={this.renderItem}
+          renderSectionHeader={this.renderSection}
+          keyExtractor={(item, index) => index}
+          getItemLayout={this.getItemLayout}
+          ItemSeparatorComponent={this.renderSeparator}
+          renderSectionFooter={this.renderSectionFooter}
+          initialNumToRender={this.props.initialNumToRender}
+          stickySectionHeadersEnabled={true}
+        />
+      </View>
     )
   }
 }

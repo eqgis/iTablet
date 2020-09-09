@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Modal, Platform, TouchableOpacity, Text, View } from 'react-native'
-import { color, size } from '../../styles'
-import { scaleSize } from '../../utils'
-import ConstToolType from '../../constants/ConstToolType'
-import Const from '../../constants/Const'
+import { Modal, Platform, TouchableOpacity, StatusBar, View } from 'react-native'
+import { color } from '../../styles'
+import { screen } from '../../utils'
 
 export default class PopModal extends PureComponent {
   props: {
@@ -30,6 +28,7 @@ export default class PopModal extends PureComponent {
     } else if (visible === this.state.modalVisible) {
       return
     }
+    StatusBar.setHidden(visible, 'none')
     this.setState(
       {
         modalVisible: visible,
@@ -48,6 +47,7 @@ export default class PopModal extends PureComponent {
 
   _onRequestClose = () => {
     if (Platform.OS === 'android') {
+      screen.getOrientation().indexOf('LANDSCAPE') < 0 && StatusBar.setHidden(false, 'none')
       this._onCloseModal()
     }
   }
@@ -59,6 +59,7 @@ export default class PopModal extends PureComponent {
     ) {
       this.props.onCloseModal()
     }
+    screen.getOrientation().indexOf('LANDSCAPE') < 0 && StatusBar.setHidden(false, 'none')
     this.setState({
       modalVisible: false,
     })
@@ -81,8 +82,8 @@ export default class PopModal extends PureComponent {
   }
 
   render() {
-    // let animationType = Platform.OS === 'ios' ? 'slide' : 'fade'
-    let animationType = 'fade'
+    // let animationType = Platform.OS === 'ios' ? 'none' : 'none'
+    let animationType = 'none'
     return (
       <Modal
         animationType={animationType}

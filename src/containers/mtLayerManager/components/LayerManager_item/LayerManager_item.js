@@ -673,7 +673,7 @@ export default class LayerManager_item extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.text_container}>
-          <Text style={[styles.text, { color: selectcolor }]}>{name}</Text>
+          <Text numberOfLines={2} style={[styles.text, { color: selectcolor }]}>{name}</Text>
         </View>
         <TouchableOpacity style={styles.btn} onPress={this._tool_row}>
           <Image

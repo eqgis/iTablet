@@ -18,13 +18,13 @@ export default class ToolbarTableList extends React.Component {
   }
 
   itemAction = async item => {
-    if (item.action) {
-      item.action(item)
-    } else if (
+    if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.tableAction
     ) {
       ToolbarModule.getData().actions.tableAction(item)
+    } else if (item.action) {
+      item.action(item)
     }
   }
 

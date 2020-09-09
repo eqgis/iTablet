@@ -7,11 +7,9 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  ImageBackground,
   TouchableOpacity,
   Image,
   ScrollView,
-  // TextInput,
 } from 'react-native'
 import { Container } from '../../../components'
 import { FileTools } from '../../../native'
@@ -19,14 +17,13 @@ import NavigationService from '../../NavigationService'
 import ConstPath from '../../../constants/ConstPath'
 import { SOnlineService } from 'imobile_for_reactnative'
 import { UserType } from '../../../constants'
-import { screen, scaleSize, fixedSize } from '../../../utils'
+import { screen, scaleSize } from '../../../utils'
 import { getLanguage } from '../../../language/index'
-import { getPublicAssets, getThemeAssets } from '../../../assets'
+import { getThemeAssets } from '../../../assets'
 import { MineHeader } from './component'
 import styles from './styles'
 import TabBar from '../TabBar'
 const Customer = 'Customer'
-import logos from '../../../assets/custom/logo'
 
 export default class Mine extends Component {
   props: {

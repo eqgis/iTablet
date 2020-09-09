@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     width: scaleSize(360),
     paddingVertical: 0,
     fontSize: scaleSize(20),
-    color: 'transparent',
+    color: color.contentColorBlack,
   },
   clearImg: {
     width: scaleSize(20),

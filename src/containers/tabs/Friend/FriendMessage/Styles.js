@@ -7,6 +7,15 @@ import { scaleSize } from '../../../../utils/screen'
 import { color, size } from '../../../../styles'
 
 const styles = StyleSheet.create({
+  contentView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    backgroundColor: color.bgW,
+    borderTopLeftRadius: scaleSize(36),
+    borderTopRightRadius: scaleSize(36),
+    overflow: 'hidden',
+  },
   ItemViewStyle: {
     // paddingLeft: scaleSize(44),
     // paddingRight: scaleSize(44),

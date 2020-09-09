@@ -163,21 +163,15 @@ class FriendMessage extends Component {
   }
 
   render() {
-    //console.log(params.user);
     return (
       <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          backgroundColor: 'white',
-        }}
+        style={styles.contentView}
       >
         {this._renderInformItem()}
         <View style={styles.itemSeparator} />
         <FlatList
           style={styles.list}
-          ItemSeparatorComponent={item => {
+          ItemSeparatorComponent={() => {
             return <View style={styles.itemSeparator} />
           }}
           data={this.state.data}
@@ -280,44 +274,6 @@ class FriendMessage extends Component {
           })
         }}
       >
-        {/*<View*/}
-          {/*style={[styles.ITemHeadTextViewStyle, { backgroundColor: 'orange' }]}*/}
-        {/*>*/}
-          {/*{this.state.hasInformMsg > 0 ? (*/}
-            {/*<View*/}
-              {/*style={{*/}
-                {/*position: 'absolute',*/}
-                {/*backgroundColor: 'red',*/}
-                {/*justifyContent: 'center',*/}
-                {/*height: scaleSize(25),*/}
-                {/*width: scaleSize(25),*/}
-                {/*borderRadius: scaleSize(25),*/}
-                {/*top: scaleSize(-6),*/}
-                {/*right: scaleSize(-12),*/}
-              {/*}}*/}
-            {/*>*/}
-              {/*<Text*/}
-                {/*style={{*/}
-                  {/*fontSize: scaleSize(20),*/}
-                  {/*color: 'white',*/}
-                  {/*textAlign: 'center',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{this.state.hasInformMsg}*/}
-              {/*</Text>*/}
-            {/*</View>*/}
-          {/*) : null}*/}
-          {/*<View*/}
-            {/*style={{*/}
-              {/*alignItems: 'center',*/}
-              {/*justifyContent: 'center',*/}
-              {/*flexDirection: 'row',*/}
-              {/*flexWrap: 'wrap',*/}
-            {/*}}*/}
-          {/*>*/}
-            {/*<Text style={styles.ITemHeadTextStyle}>通</Text>*/}
-          {/*</View>*/}
-        {/*</View>*/}
         <Image
           style={styles.itemImg}
           resizeMode={'contain'}

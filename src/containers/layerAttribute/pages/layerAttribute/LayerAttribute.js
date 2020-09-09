@@ -1111,6 +1111,7 @@ export default class LayerAttribute extends React.Component {
   goToSearch = () => {
     NavigationService.navigate('LayerAttributeSearch', {
       layerPath: this.props.currentLayer.path,
+      cb: this.refresh,
     })
   }
 

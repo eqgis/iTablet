@@ -13,6 +13,7 @@ import { LayerAttributeTable } from '../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { getPublicAssets } from '../../../../assets'
+import NavigationService from '../../../NavigationService'
 
 const PAGE_SIZE = 30
 
@@ -36,6 +37,7 @@ export default class LayerAttributeSearch extends React.Component {
     this.type = params && params.type
     this.layerPath = params && params.layerPath
     this.isSelection = (params && params.isSelection) || false
+    this.cb = params && params.cb
     this.state = {
       attributes: {
         head: [],
@@ -294,14 +296,12 @@ export default class LayerAttributeSearch extends React.Component {
         headerProps={{
           navigation: this.props.navigation,
           headerCenter: this.renderSearchBar(),
-          // headerRight: [
-          //   <MTBtn
-          //     key={'upload'}
-          //     image={require('../../../../assets/header/Frenchgrey/icon_search.png')}
-          //     imageStyle={styles.upload}
-          //     onPress={this.upload}
-          //   />,
-          // ],
+          backAction: () => {
+            if (this.cb && typeof this.cb === 'function') {
+              this.cb()
+            }
+            NavigationService.goBack('LayerAttributeSearch')
+          }
         }}
         style={styles.container}
       >

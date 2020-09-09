@@ -678,7 +678,6 @@ export default class NavigationView extends React.Component {
         style={{
           flex: 1,
           maxWidth: this.maxWidth,
-          // backgroundColor: '#303030',
           backgroundColor: '#ebebeb',
         }}
       >
@@ -687,7 +686,6 @@ export default class NavigationView extends React.Component {
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
             width: '100%',
-            // backgroundColor: '#ebebeb',
             backgroundColor: '#303030',
             flexDirection: 'row',
           }}
@@ -793,7 +791,7 @@ export default class NavigationView extends React.Component {
           </View>
         </View>
 
-        <View>
+        <View style={{ flex: 1, paddingBottom: scaleSize(130) }}>
           <FlatList
             style={{
               maxHeight: scaleSize(650),

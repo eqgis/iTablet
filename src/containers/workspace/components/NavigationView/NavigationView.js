@@ -791,44 +791,46 @@ export default class NavigationView extends React.Component {
           </View>
         </View>
 
-        <View style={{ flex: 1, paddingBottom: scaleSize(130) }}>
-          <FlatList
-            style={{
-              maxHeight: scaleSize(650),
-              marginLeft: scaleSize(90),
-              marginRight: scaleSize(50),
-              borderRadius: 5,
-            }}
-            data={renderHistory}
-            extraData={GLOBAL.STARTX}
-            keyExtractor={(item, index) => item.toString() + index}
-            renderItem={this.renderItem}
-          />
-          {renderHistory.length > 0 && (
-            <TouchableOpacity
+        <View style={{ flex: 1, marginBottom: scaleSize(180) }}>
+          <View>
+            <FlatList
               style={{
-                backgroundColor: color.content_white,
-                height: scaleSize(70),
-                justifyContent: 'center',
-                alignItems: 'center',
+                // maxHeight: scaleSize(650),
                 marginLeft: scaleSize(90),
                 marginRight: scaleSize(50),
                 borderRadius: 5,
               }}
-              onPress={() => {
-                this.props.setNavigationHistory &&
-                  this.props.setNavigationHistory([])
-              }}
-            >
-              <Text
+              data={renderHistory}
+              extraData={GLOBAL.STARTX}
+              keyExtractor={(item, index) => item.toString() + index}
+              renderItem={this.renderItem}
+            />
+            {renderHistory.length > 0 && (
+              <TouchableOpacity
                 style={{
-                  fontSize: setSpText(20),
+                  backgroundColor: color.content_white,
+                  height: scaleSize(70),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: scaleSize(90),
+                  marginRight: scaleSize(50),
+                  borderRadius: 5,
+                }}
+                onPress={() => {
+                  this.props.setNavigationHistory &&
+                    this.props.setNavigationHistory([])
                 }}
               >
-                {getLanguage(GLOBAL.language).Map_Main_Menu.CLEAR_NAV_HISTORY}
-              </Text>
-            </TouchableOpacity>
-          )}
+                <Text
+                  style={{
+                    fontSize: setSpText(20),
+                  }}
+                >
+                  {getLanguage(GLOBAL.language).Map_Main_Menu.CLEAR_NAV_HISTORY}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         <View

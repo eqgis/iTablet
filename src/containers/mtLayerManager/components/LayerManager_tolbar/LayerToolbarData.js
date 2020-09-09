@@ -558,6 +558,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
     ]
     if (layerData) {
       if (
+        GLOBAL.Type.indexOf(ChunkType.MAP_AR) >= 0 ||
         layerData.themeType > 0 ||
         layerData.isHeatmap ||
         (layerData.type >= 0 &&
@@ -567,7 +568,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
             layerData.type === DatasetType.TEXT ||
             GLOBAL.Type === ChunkType.MAP_PLOTTING))
       ) {
-        data.splice(3, 1) // 若当前图层为CAD或者TEXT，则没有'当前图层采集'选项
+        data.splice(3, 1) // 若当前图层为CAD或者TEXT，或当前模块为则没有'当前图层采集'选项
       }
     }
   }

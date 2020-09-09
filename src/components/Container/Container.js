@@ -123,9 +123,10 @@ export default class Container extends Component {
   getCurrentOverlayWidth = () => {
     let width
     if (GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
-      width = 52
       if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
         width = 40
+      } else {
+        width = 52
       }
     } else {
       width = 0

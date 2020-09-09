@@ -163,7 +163,7 @@ export default class LayerAttributeAdd extends React.Component {
   }
 
   //确认
-  confirm = isContinue => {
+  confirm = async isContinue => {
     if (!this.confirmValidate()) {
       return
     }
@@ -177,7 +177,8 @@ export default class LayerAttributeAdd extends React.Component {
     if (result.required) {
       result.defaultValue = this.state.defaultValue
     }
-    this.props.addAttributeField && this.props.addAttributeField(result)
+    let _result = this.props.addAttributeField && await this.props.addAttributeField(result)
+    if (!_result) return
     if (isContinue) {
       let tempName = this.state.name + '_1'
       let tempCaption = this.state.caption + '_1'

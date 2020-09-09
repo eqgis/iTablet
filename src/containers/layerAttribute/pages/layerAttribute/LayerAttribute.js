@@ -20,6 +20,7 @@ import {
   LayerUtils,
   StyleUtils,
   screen,
+  dataUtil,
 } from '../../../../utils'
 import { ConstInfo, ConstToolType, ChunkType } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
@@ -748,6 +749,11 @@ export default class LayerAttribute extends React.Component {
   /** 添加属性字段 **/
   addAttributeField = async fieldInfo => {
     let path = this.props.currentLayer.path
+    let checkName = dataUtil.isLegalName(fieldInfo.name, this.props.language)
+    if (!checkName.result) {
+      Toast.show(checkName.error)
+      return false
+    }
     let result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS)
@@ -755,6 +761,7 @@ export default class LayerAttribute extends React.Component {
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
     }
+    return result
   }
 
   /** 关联事件 **/

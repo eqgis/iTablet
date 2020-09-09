@@ -6,7 +6,6 @@ import {
   Text,
   Image,
   SectionList,
-  TouchableOpacity,
   Switch,
   InteractionManager,
 } from 'react-native'
@@ -15,6 +14,10 @@ import settingData from './settingData'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
 import { scaleSize } from '../../utils'
+import { getThemeAssets } from '../../assets'
+
+const HORIZONTAL_GAP_L = scaleSize(30)
+const HORIZONTAL_GAP_P = scaleSize(50)
 export default class setting extends Component {
   props: {
     language: string,
@@ -81,79 +84,57 @@ export default class setting extends Component {
   }
 
   renderListSectionHeader = ({ section }) => {
-    let image
-    section.visible
-      ? (image = require('../../assets/mapEdit/icon_spread.png'))
-      : (image = require('../../assets/mapEdit/icon_packUP.png'))
     return (
-      <TouchableOpacity
-        style={styles.section}
-        onPress={() => {
-          this.refreshList(section)
-        }}
+      <View
+        style={[
+          styles.section,
+          {
+            paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? HORIZONTAL_GAP_L : HORIZONTAL_GAP_P,
+          }
+        ]}
       >
-        <Image source={image} style={styles.selection} />
+        <Image source={getThemeAssets().setting.icon_basic} style={styles.selection} />
         <Text style={styles.sectionsTitle}>{section.title}</Text>
-      </TouchableOpacity>
+      </View>
     )
   }
+  
   renderListItem = ({ item, index }) => {
-    let itemSeparator = true
-    if (this.state.data[item.index].data.length - 1 === index) {
-      itemSeparator = false
-    }
     if (item.isShow) {
       if (typeof item.value === 'boolean') {
         return (
-          <View>
-            <View style={styles.row}>
-              <Text style={styles.switchText}>{item.name}</Text>
-              <Switch
-                style={styles.switch}
-                trackColor={{ false: color.bgG, true: color.switch }}
-                thumbColor={item.value ? color.bgW : color.bgW}
-                ios_backgroundColor={item.value ? color.switch : color.bgG}
-                value={item.value}
-                onValueChange={value => {
-                  this._onValueChange(value, item, index)
-                }}
-              />
-            </View>
-            {itemSeparator ? (
-              <View
-                style={[
-                  styles.itemSeparator,
-                  {
-                    width: 0.956 * this.props.device.width,
-                    marginLeft: 0.022 * this.props.device.width,
-                  },
-                ]}
-              />
-            ) : (
-              <View />
-            )}
+          <View style={[
+            styles.row,
+            {
+              paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? HORIZONTAL_GAP_L : HORIZONTAL_GAP_P,
+            }
+          ]}>
+            <Text style={styles.switchText}>{item.name}</Text>
+            <Switch
+              style={styles.switch}
+              trackColor={{ false: color.bgG, true: color.switch }}
+              thumbColor={item.value ? color.bgW : color.bgW}
+              ios_backgroundColor={item.value ? color.switch : color.bgG}
+              value={item.value}
+              onValueChange={value => {
+                this._onValueChange(value, item, index)
+              }}
+            />
           </View>
         )
       } else {
         return (
-          <View>
-            <View style={styles.row}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemValue}>{item.value}</Text>
-            </View>
-            {itemSeparator ? (
-              <View
-                style={[
-                  styles.itemSeparator,
-                  {
-                    width: 0.956 * this.props.device.width,
-                    marginLeft: 0.022 * this.props.device.width,
-                  },
-                ]}
-              />
-            ) : (
-              <View />
-            )}
+          <View style={[
+            styles.row,
+            {
+              paddingHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? HORIZONTAL_GAP_L : HORIZONTAL_GAP_P,
+            }
+          ]}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemValue}>{item.value}</Text>
           </View>
         )
       }
@@ -161,15 +142,27 @@ export default class setting extends Component {
       return <View />
     }
   }
+  
   _renderItemSeparator = () => {
-    return <View style={styles.itemSeparator} />
+    return (
+      <View
+        style={[
+          styles.itemSeparator,
+          {
+            marginLeft: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? HORIZONTAL_GAP_L : HORIZONTAL_GAP_P,
+          }
+        ]}
+      />
+    )
   }
+  
   renderSelection = () => {
     return (
       <SectionList
         sections={this.state.data}
         renderItem={this.renderListItem}
-        // ItemSeparatorComponent={this._renderItemSeparator}
+        ItemSeparatorComponent={this._renderItemSeparator}
         renderSectionHeader={this.renderListSectionHeader}
         keyExtractor={(item, index) => index}
         onRefresh={this.getData}

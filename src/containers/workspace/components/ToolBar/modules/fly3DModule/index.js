@@ -17,7 +17,7 @@ class Fly3DModule extends FunctionModule {
 
   action = async () => {
     const params = ToolbarModule.getParams()
-    const _data = Fly3DData.getData(this.type, params)
+    const _data = await Fly3DData.getData(this.type, params)
     const containerType = ToolbarType.list
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,

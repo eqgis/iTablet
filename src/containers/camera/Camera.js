@@ -92,22 +92,27 @@ export default class Camera extends React.Component {
 
   /** 照相 **/
   takePicture = async () => {
-    if (
-      !this.camera ||
-      this.state.type !== TYPE.PHOTO ||
-      this.state.recordStatus === RECORD_STATUS.RECORDING
-    )
-      return
-    this.setState({
-      recordStatus: RECORD_STATUS.RECORDING,
-    })
-    const options = { quality: 0.5, base64: true, pauseAfterCapture: true }
-    let data = await this.camera.takePictureAsync(options)
-    this.setState({
-      data,
-      recordStatus: RECORD_STATUS.RECORDED,
-    })
-    this.mediaViewer && this.mediaViewer.setVisible(true, data.uri)
+    try {
+      if (
+        !this.camera ||
+        this.state.type !== TYPE.PHOTO ||
+        this.state.recordStatus === RECORD_STATUS.RECORDING
+      )
+        return
+      this.setState({
+        recordStatus: RECORD_STATUS.RECORDING,
+      })
+      const options = { quality: 0.5, base64: true, pauseAfterCapture: true }
+      let data = await this.camera.takePictureAsync(options)
+      this.setState({
+        data,
+        recordStatus: RECORD_STATUS.RECORDED,
+      })
+      this.mediaViewer && this.mediaViewer.setVisible(true, data.uri)
+    } catch (e) {
+      console.warn('takePicture error: ' + e)
+      this.mediaViewer && this.mediaViewer.setVisible(true)
+    }
   }
 
   /** 开始录制视频 **/

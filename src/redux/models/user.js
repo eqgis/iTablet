@@ -11,6 +11,7 @@ export const USER_DELETE = 'USER_DELETE'
 // Actions
 // ---------------------------------.3-----------------
 export const setUser = (params = {}, cb = () => {}) => async dispatch => {
+  GLOBAL.currentUser = params
   await dispatch({
     type: USER_SET,
     payload: params,
@@ -19,6 +20,7 @@ export const setUser = (params = {}, cb = () => {}) => async dispatch => {
 }
 
 export const setUsers = (params = {}, cb = () => {}) => async dispatch => {
+  GLOBAL.currentUser = params[0]
   await dispatch({
     type: USERS_SET,
     payload: params,

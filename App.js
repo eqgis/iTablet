@@ -208,6 +208,7 @@ class AppRoot extends Component {
       // 获取用户登录记录
       let users = await ConfigUtils.getUsers()
       let userName = 'Customer'
+      // GLOBAL.currentUser = { userName }
       if (users.length === 0) {
         // 若没有任何用户登录，则默认Customer登录
         this.props.setUser({

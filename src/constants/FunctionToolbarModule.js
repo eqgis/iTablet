@@ -1,4 +1,4 @@
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SMediaCollector } from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
 import { ConstToolType, ToolbarType } from '.'
@@ -41,6 +41,19 @@ async function OpenData(data, index, callback) {
       GLOBAL.BaseMapSize = 1
       if (callback && typeof callback === 'function') {
         callback()
+      }
+    }
+    
+    // 切换底图，坐标系可能变化，导致多媒体callout位置错误，重新加载一次
+    let taggingLayers = await SMap.getTaggingLayers(
+      GLOBAL.currentUser.userName,
+    )
+    debugger
+    for (let _layer of taggingLayers) {
+      let isMediaLayer = await SMediaCollector.isMediaLayer(_layer.name)
+      if (_layer.isVisible && isMediaLayer) {
+        await SMediaCollector.hideMedia(_layer.name)
+        await SMediaCollector.showMedia(_layer.name)
       }
     }
   } else {

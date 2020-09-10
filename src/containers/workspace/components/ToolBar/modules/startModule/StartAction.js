@@ -789,24 +789,13 @@ async function changeMap(item) {
       }
       await SMap.openTaggingDataset(params.user.currentUser.userName)
       await params.getLayers(-1, async layers => {
-        params.setCurrentLayer(layers.length > 0 && layers[0])
-        // 若没有底图，默认添加地图
-        // if (LayerUtils.getBaseLayers(layers).length > 0) {
-        //   await SMap.openDatasource(
-        //     ConstOnline['Google'].DSParams, GLOBAL.Type === ChunkType.MAP_COLLECTION
-        //       ? 1 : ConstOnline['Google'].layerIndex, false)
-        // }
-        // if (!LayerUtils.isBaseLayer(layers[layers.length - 1].caption)) {
-        //   await LayerUtils.addBaseMap(
-        //     layers,
-        //     ConstOnline['Google'],
-        //     GLOBAL.Type === ChunkType.MAP_COLLECTION
-        //       ? 1
-        //       : ConstOnline['Google'].layerIndex,
-        //     false,
-        //   )
-        //   await params.getLayers(-1)
-        // }
+        // 默认设置第一个可见图层为当前图层
+        for (let layer of layers) {
+          if (layer.isVisible) {
+            params.setCurrentLayer(layer)
+            break
+          }
+        }
       })
 
       // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上

@@ -65,7 +65,8 @@ const Prompt = {
   SWITCHING_PLOT_LIB: '正在切换标绘库',
   NON_SELECTED_OBJ: '没有选择对象',
   CHANGE_BASE_MAP: '当前底图为空，请先切换底图',
-  OVERRIDE_SYMBOL: '是否覆盖相同id的符号？',
+  OVERRIDE_SYMBOL: '存在相同id的符号，请选择添加方式',
+  OVERWRITE: '覆盖',
 
   SET_ALL_MAP_VISIBLE: '全部显示',
   SET_ALL_MAP_INVISIBLE: '全部隐藏',

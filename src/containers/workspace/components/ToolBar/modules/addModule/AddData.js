@@ -259,8 +259,9 @@ async function getSymbolsFromFile() {
                 addSymbol(mapName, currentSymbolFile, data.id, true),
               cancelAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, false),
-              confirmText: getLanguage(global.language).Prompt.YES,
-              cancelText: getLanguage(global.language).Prompt.NO,
+              confirmText: getLanguage(global.language).Prompt.OVERWRITE,
+              cancelText: getLanguage(global.language).Prompt.CREATE,
+              disableBackTouch: false,
             })
             GLOBAL.SimpleDialog.setVisible(true)
           }

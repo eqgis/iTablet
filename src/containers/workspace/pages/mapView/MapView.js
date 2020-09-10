@@ -743,6 +743,7 @@ export default class MapView extends React.Component {
           }
           await SMap.outdoorNavigation(1)
           this.FloorListView?.setVisible(false)
+          SMap.setCurrentFloorID('')
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -789,6 +790,7 @@ export default class MapView extends React.Component {
     if (GLOBAL.FloorListView) {
       GLOBAL.FloorListView.changeBottom(false)
       GLOBAL.FloorListView.setGuiding(false)
+      GLOBAL.FloorListView.setVisible(true)
     }
   }
 
@@ -2465,7 +2467,7 @@ export default class MapView extends React.Component {
   }
 
   /** 切换ar和地图浏览 **/
-  switchAr = (showAIDetect) => {
+  switchAr = showAIDetect => {
     let _showAIDetect = this.state.showAIDetect
     if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
       if (showAIDetect !== _showAIDetect) {
@@ -2481,7 +2483,9 @@ export default class MapView extends React.Component {
     })
     GLOBAL.showAIDetect = _showAIDetect
     SMap.setDynamicviewsetVisible(!_showAIDetect)
-    _showAIDetect ? Orientation.lockToPortrait() : Orientation.unlockAllOrientations()
+    _showAIDetect
+      ? Orientation.lockToPortrait()
+      : Orientation.unlockAllOrientations()
   }
 
   removeAIDetect = bGone => {

@@ -201,10 +201,13 @@ function commit(type) {
             )
           }
         }
-        
+
         if (
-          _params.selection[0] && _params.selection[0].layerInfo &&
-          await SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
+          _params.selection[0] &&
+          _params.selection[0].layerInfo &&
+          (await SMediaCollector.isMediaLayer(
+            _params.selection[0].layerInfo.name,
+          ))
         ) {
           // 编辑旅行轨迹对象后，更新位置
           await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
@@ -283,11 +286,11 @@ function showEditLabel() {
   // 其他图层设置为不可选
   // _setMyLayersSelectable(layers, false)
 
-  Toast.show(
-    GLOBAL.language === 'CN'
-      ? '点击文字左上角以选中文字'
-      : 'Tap top-right of text to select it',
-  )
+  // Toast.show(
+  //   GLOBAL.language === 'CN'
+  //     ? '点击文字左上角以选中文字'
+  //     : 'Tap top-right of text to select it',
+  // )
 }
 
 function select() {

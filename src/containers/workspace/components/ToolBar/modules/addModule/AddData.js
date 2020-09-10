@@ -98,6 +98,9 @@ async function getUDBsAndMaps() {
             exitCallback: async () => {
               const params = ToolbarModule.getParams()
               const _data = await getUDBsAndMaps()
+              ToolbarModule.addData({
+                data: _data,
+              })
               const containerType = ToolbarType.list
               const data = ToolbarModule.getToolbarSize(containerType, {})
               params.showFullMap && params.showFullMap(true)

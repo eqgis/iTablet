@@ -11,8 +11,9 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-import SearchBar from '../../../../components/SearchBar'
+import { SearchBar, Header } from '../../../../components'
 import { scaleSize, screen } from '../../../../utils'
+import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
@@ -65,82 +66,88 @@ export default class PoiTopSearchBar extends React.Component {
     !visible && (obj.defaultValue = '')
     this.setState(obj)
   }
+  
+  back = async () => {
+    if (GLOBAL.PoiInfoContainer) {
+      let poiData = GLOBAL.PoiInfoContainer.state
+      let tempResult = GLOBAL.PoiInfoContainer.tempResult
+      if (tempResult.tempList.length > 0 && !poiData.showList) {
+        //清除操作分开写，此处需要await，返回搜索界面无需await，加快速度
+        await GLOBAL.PoiInfoContainer.clear()
+        this.setState({ defaultValue: tempResult.name })
+        GLOBAL.PoiInfoContainer.setState(
+          {
+            destination: '',
+            location: {},
+            address: '',
+            showMore: false,
+            showList: true,
+            neighbor: [],
+            resultList: tempResult.tempList,
+          },
+          async () => {
+            GLOBAL.PoiInfoContainer.show()
+            await SMap.addCallouts(tempResult.tempList)
+          },
+        )
+      } else {
+        NavigationService.navigate('PointAnalyst', {
+          type: 'pointSearch',
+        })
+        GLOBAL.PoiInfoContainer.setVisible(false)
+        GLOBAL.PoiInfoContainer.tempResult = {
+          name: '',
+          tempList: [],
+        }
+        this.props.setMapNavigation({
+          isShow: false,
+          name: '',
+        })
+        this.setVisible(false)
+        GLOBAL.PoiInfoContainer.clear()
+      }
+    }
+  }
+  
+  _renderSearchBar = () => {
+    return (
+      <SearchBar
+        defaultValue={this.state.defaultValue}
+        ref={ref => (this.searchBar = ref)}
+        onSubmitEditing={async searchKey => {
+          GLOBAL.PoiInfoContainer.clear()
+          GLOBAL.PoiInfoContainer.getSearchResult({ keyWords: searchKey })
+          GLOBAL.PoiInfoContainer.setState({
+            showList: true,
+          })
+        }}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
+        //{'请输入搜索关键字'}
+      />
+    )
+  }
 
   render() {
     if (!this.state.visible) return <View />
-    const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
     return (
       <Animated.View
         style={[
           styles.container,
           {
             height: screen.getHeaderHeight(),
-            paddingTop: screen.getIphonePaddingTop(),
             top: this.top,
             width: this.width,
           },
         ]}
       >
-        <TouchableOpacity
-          onPress={async () => {
-            if (GLOBAL.PoiInfoContainer) {
-              let poiData = GLOBAL.PoiInfoContainer.state
-              let tempResult = GLOBAL.PoiInfoContainer.tempResult
-              if (tempResult.tempList.length > 0 && !poiData.showList) {
-                //清除操作分开写，此处需要await，返回搜索界面无需await，加快速度
-                await GLOBAL.PoiInfoContainer.clear()
-                this.setState({ defaultValue: tempResult.name })
-                GLOBAL.PoiInfoContainer.setState(
-                  {
-                    destination: '',
-                    location: {},
-                    address: '',
-                    showMore: false,
-                    showList: true,
-                    neighbor: [],
-                    resultList: tempResult.tempList,
-                  },
-                  async () => {
-                    GLOBAL.PoiInfoContainer.show()
-                    await SMap.addCallouts(tempResult.tempList)
-                  },
-                )
-              } else {
-                NavigationService.navigate('PointAnalyst', {
-                  type: 'pointSearch',
-                })
-                GLOBAL.PoiInfoContainer.setVisible(false)
-                GLOBAL.PoiInfoContainer.tempResult = {
-                  name: '',
-                  tempList: [],
-                }
-                this.props.setMapNavigation({
-                  isShow: false,
-                  name: '',
-                })
-                this.setVisible(false)
-                GLOBAL.PoiInfoContainer.clear()
-              }
-            }
-          }}
-        >
-          <Image source={backImg} resizeMode={'contain'} style={styles.back} />
-        </TouchableOpacity>
-        <View style={styles.searchWrap}>
-          <SearchBar
-            defaultValue={this.state.defaultValue}
-            ref={ref => (this.searchBar = ref)}
-            onSubmitEditing={async searchKey => {
-              GLOBAL.PoiInfoContainer.clear()
-              GLOBAL.PoiInfoContainer.getSearchResult({ keyWords: searchKey })
-              GLOBAL.PoiInfoContainer.setState({
-                showList: true,
-              })
-            }}
-            placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
-            //{'请输入搜索关键字'}
-          />
-        </View>
+        <Header
+          ref={ref => (this.containerHeader = ref)}
+          navigation={this.props.navigation}
+          title={this.type === 'pointSearch'
+            ? '' : getLanguage(this.props.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS}
+          backAction={this.back}
+          headerCenter={this._renderSearchBar()}
+        />
       </Animated.View>
     )
   }
@@ -154,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: '#303030',
+    backgroundColor: color.bgW,
   },
   searchWrap: {
     flex: 1,

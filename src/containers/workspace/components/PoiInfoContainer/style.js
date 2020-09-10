@@ -24,7 +24,7 @@ export default StyleSheet.create({
     right: 0,
     bottom: 0,
     height: scaleSize(200),
-    padding: scaleSize(20),
+    paddingHorizontal: scaleSize(20),
     backgroundColor: color.contentWhite,
   },
   // closeBox: {

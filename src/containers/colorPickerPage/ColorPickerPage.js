@@ -176,6 +176,7 @@ export default class ColorPickerPage extends React.Component {
               color: color,
               colorHex: dataUtil.colorRgba(color),
             })
+            this.colorWheel && this.colorWheel.forceUpdate(color)
           }}
         />
         {this.colorViewType === 'ColorWheel' ? (

@@ -259,18 +259,14 @@ export default class MineHeader extends Component {
               {hasCustomLogo && this._renderLogo()}
               {!hasCustomLogo && this._renderMyProfile()}
               {/*{!hasCustomLogo && this._renderSideItem()}*/}
-              
+              <View style={[
+                styles.searchContainerL,
+                { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
+              ]}>
+                {this._renderSearch()}
+              </View>
             {/*</View>*/}
           </ImageBackground>
-          {
-            isLandscape &&
-            <View style={[
-              isLandscape && styles.searchContainerL,
-              { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
-            ]}>
-              {this._renderSearch()}
-            </View>
-          }
         </View>
       )
     } else {

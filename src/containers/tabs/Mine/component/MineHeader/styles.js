@@ -87,8 +87,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     height: scaleSize(80),
     justifyContent: 'flex-end',
-    bottom: scaleSize(10),
-    right: scaleSize(130),
+    bottom: scaleSize(-40),
+    right: scaleSize(40),
   },
   searchViewStyleP: {
     position: 'absolute',

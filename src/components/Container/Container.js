@@ -126,7 +126,7 @@ export default class Container extends Component {
       if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
         width = 40
       } else {
-        width = 52
+        width = 40
       }
     } else {
       width = 0

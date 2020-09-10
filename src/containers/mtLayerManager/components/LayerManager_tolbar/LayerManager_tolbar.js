@@ -68,7 +68,7 @@ export default class LayerManager_tolbar extends React.Component {
     language: string,
     type?: string,
     containerProps?: Object,
-    data: Array,
+    // data: Array,
     layerData?: Object,
     // existFullMap: () => {},
     getLayers: () => {}, // 更新数据（包括其他界面）
@@ -131,9 +131,19 @@ export default class LayerManager_tolbar extends React.Component {
     }
     return false
   }
-  componentDidUpdate() {
-    this.getHeight()
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.type !== prevState.type ||
+      this.state.data !== prevState.data ||
+      this.state.containerType !== prevState.containerType ||
+      this.props.device.orientation !== prevProps.device.orientation
+    ) {
+      this.getHeight()
+      this.showToolbarAndBox(this.isShow)
+    }
   }
+  
   getHeight = () => {
     let device = this.props.device
     let boxHeight
@@ -193,6 +203,7 @@ export default class LayerManager_tolbar extends React.Component {
     }
     this.height = boxHeight
   }
+  
   getData = (type, isGroup = false, layerData) => {
     let data = []
     let headerData = layerSettingCanVisit(this.props.language)

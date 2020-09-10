@@ -11,7 +11,6 @@ import {
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
 import { getPublicAssets } from '../../../../../assets'
-import { color } from '../../../../../styles'
 import Orientation from 'react-native-orientation'
 
 class LoginCloud extends Component {
@@ -305,7 +304,7 @@ class LoginCloud extends Component {
           // title: getLanguage(global.language).Profile.LOGIN,
           backImg: require('../../../../../assets/public/left_arrow.png'),
           headerStyle: {
-            backgroundColor: color.contentColorWhite,
+            borderBottomWidth: 0,
           },
           navigation: this.props.navigation,
           headerRight: !this.state.reLogin && this.renderRight(),

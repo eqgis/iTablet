@@ -32,6 +32,7 @@ export default StyleSheet.create({
     height: scaleSize(80),
     width: scaleSize(110),
     marginLeft: scaleSize(40),
+    borderRadius: scaleSize(8),
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -124,18 +124,18 @@ export default class LayerTopBar extends React.Component {
       }
     ]
   
-    let contentWidth = itemWidth * data.length
-      + itemGap * (data.length - 1)
-      + itemHorizontal * 2
-  
-    if (this.props.hasTabBtn) {
-      contentWidth += tabBtnWidth + itemGap
-    }
-    let isScroll = screen.getScreenWidth(this.props.orientation) < contentWidth
+    // let contentWidth = itemWidth * data.length
+    //   + itemGap * (data.length - 1)
+    //   + itemHorizontal * 2
+    //
+    // if (this.props.hasTabBtn) {
+    //   contentWidth += tabBtnWidth + itemGap
+    // }
+    // let isScroll = screen.getScreenWidth(this.props.orientation) < contentWidth
     
     let items = []
     data.forEach((item, index) => {
-      if (index !== 0 && isScroll) {
+      if (index !== 0) {
         item = Object.assign(item, {
           containerStyle: {
             marginLeft: itemGap
@@ -145,23 +145,23 @@ export default class LayerTopBar extends React.Component {
       items.push(this.renderBtn(item))
     })
     
-    if (isScroll) {
-      return (
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.rightScrollList}
-          showsHorizontalScrollIndicator={false}
-        >
-          {items}
-        </ScrollView>
-      )
-    } else {
-      return (
-        <View style={styles.rightList}>
-          {items}
-        </View>
-      )
-    }
+    // if (isScroll) {
+    return (
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.rightScrollList}
+        showsHorizontalScrollIndicator={false}
+      >
+        {items}
+      </ScrollView>
+    )
+    // } else {
+    //   return (
+    //     <View style={styles.rightList}>
+    //       {items}
+    //     </View>
+    //   )
+    // }
   }
 
   renderBtn = ({ key, icon, title, action, enabled, containerStyle }) => {
@@ -184,7 +184,7 @@ export default class LayerTopBar extends React.Component {
     return (
       <ImageButton
         key={key}
-        containerStyle={[styles.btn, style]}
+        containerStyle={[styles.tabBtn, style]}
         iconBtnStyle={styles.imgBtn}
         titleStyle={styles.btnTitle}
         icon={icon}

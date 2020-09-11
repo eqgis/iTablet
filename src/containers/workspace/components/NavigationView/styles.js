@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   pointAnalystView: {
     flex: 1,
-    backgroundColor: color.content_white,
+    backgroundColor: color.bgG2,
     marginLeft: scaleSize(30),
     marginRight: scaleSize(50),
     height: scaleSize(170),
@@ -59,6 +59,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    // borderWidth: 1,
+    // borderColor: color.separateColorGray,
   },
   onInput: {
     flex: 1,

@@ -24,6 +24,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog } from '../../../../components'
+import { getPublicAssets } from '../../../../assets'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
@@ -686,7 +687,7 @@ export default class NavigationView extends React.Component {
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
             width: '100%',
-            backgroundColor: '#303030',
+            backgroundColor: color.content_white,
             flexDirection: 'row',
           }}
         >
@@ -703,7 +704,7 @@ export default class NavigationView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={require('../../../../assets/public/Frenchgrey/icon-back-white.png')}
+              source={getPublicAssets().common.icon_back}
               style={styles.backbtn}
             />
           </TouchableOpacity>

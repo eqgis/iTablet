@@ -15,6 +15,10 @@ export default class SimpleDialog extends PureComponent {
     disableBackTouch: boolean,
   }
 
+  static defaultProps = {
+    disableBackTouch: true,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -29,6 +33,7 @@ export default class SimpleDialog extends PureComponent {
       confirmText: getLanguage(global.language).Friends.CONFIRM,
       cancelText: getLanguage(global.language).Friends.CANCEL,
       renderCustomeView: undefined,
+      disableBackTouch: this.props.disableBackTouch,
     }
   }
 
@@ -47,6 +52,7 @@ export default class SimpleDialog extends PureComponent {
     confirmText,
     cancelText,
     renderCustomeView,
+    disableBackTouch,
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
@@ -76,6 +82,10 @@ export default class SimpleDialog extends PureComponent {
         ? cancelText
         : getLanguage(global.language).Friends.CANCEL,
       renderCustomeView: renderCustomeView,
+      disableBackTouch:
+        disableBackTouch === undefined
+          ? this.props.disableBackTouch
+          : disableBackTouch,
     })
   }
 
@@ -90,6 +100,7 @@ export default class SimpleDialog extends PureComponent {
       showTitleImage: true,
       confirmText: getLanguage(global.language).Friends.CONFIRM,
       renderCustomeView: undefined,
+      disableBackTouch: this.props.disableBackTouch,
     })
   }
 
@@ -123,7 +134,7 @@ export default class SimpleDialog extends PureComponent {
           this.props.style,
           this.state.dialogStyle,
         ]}
-        disableBackTouch={this.props.disableBackTouch}
+        disableBackTouch={this.state.disableBackTouch}
       >
         {this.state.renderCustomeView ? (
           this.state.renderCustomeView()

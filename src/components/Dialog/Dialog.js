@@ -60,6 +60,7 @@ export default class Dialog extends PureComponent {
     cancelBtnDisable: false,
     onlyOneBtn: false,
     defaultVisible: false,
+    disableBackTouch: true,
   }
 
   constructor(props) {
@@ -195,13 +196,10 @@ export default class Dialog extends PureComponent {
           }
         }}
       >
-        <View
-          disabled={
-            this.props.disableBackTouch === undefined
-              ? false
-              : this.props.disableBackTouch
-          }
-          //onPress={this.cancel}
+        <TouchableOpacity
+          disabled={this.props.disableBackTouch}
+          onPress={() => this.setDialogVisible(false)}
+          activeOpacity={1}
           style={[styles.container, this.props.backgroundStyle]}
         >
           {this.props.header}
@@ -234,7 +232,7 @@ export default class Dialog extends PureComponent {
             <View style={styles.childrenContainer}>{this.props.children}</View>
             {this.renderBtns()}
           </KeyboardAvoidingView>
-        </View>
+        </TouchableOpacity>
       </Modal>
     )
   }

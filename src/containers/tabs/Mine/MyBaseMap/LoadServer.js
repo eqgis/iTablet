@@ -11,7 +11,7 @@ import {
 import { Container, Button } from '../../../../components'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
-import { Toast, scaleSize } from '../../../../utils'
+import { Toast, scaleSize, dataUtil } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import { getLayerIconByType } from '../../../../assets'
@@ -65,6 +65,11 @@ export default class LoadServer extends Component {
       //   ) +
       //   '@' +
       //   alias
+      let checkURL = dataUtil.isLegalURL(this.state.server)
+      if (!checkURL.result) {
+        Toast.show(checkURL.error)
+        return
+      }
       if (this.state.engineType === 23) {
         _DSParams = {
           server: this.state.server,
@@ -251,7 +256,7 @@ export default class LoadServer extends Component {
         <Text
           style={[
             styles.text,
-            { color: this.state.isCanSave ? color.reverseTheme : color.gray },
+            { color: this.state.isCanSave ? color.fontColorBlack : color.gray },
           ]}
         >
           {getLanguage(global.language).Profile.SAVE}
@@ -277,7 +282,7 @@ export default class LoadServer extends Component {
         <TextInput
           value={this.state.name}
           placeholder={getLanguage(global.language).Profile.MAP_NAME}
-          // {'地图名称'}
+          placeholderTextColor={color.fontColorGray}
           style={styles.textInput}
           ref={ref => (this.name = ref)}
           onChangeText={text => this.setState({ name: text })}
@@ -287,7 +292,7 @@ export default class LoadServer extends Component {
           placeholder={
             getLanguage(global.language).Profile.ENTER_SERVICE_ADDRESS
           }
-          //{'请输入服务地址'}
+          placeholderTextColor={color.fontColorGray}
           style={[styles.textInput, { marginTop: 20 }]}
           ref={ref => (this.server = ref)}
           onChangeText={text => this.setState({ server: text })}

@@ -97,7 +97,7 @@ export default class MyBaseMap extends Component {
   // }
 
   _renderHeaderBtn = () => {
-    let Img = require('../../../../assets/Mine/mine_my_local_import_white.png')
+    let Img = require('../../../../assets/Mine/mine_my_local_import_light.png')
     return (
       <TouchableOpacity
         onPress={() => {

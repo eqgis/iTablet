@@ -10,6 +10,7 @@ import {
 import { scaleSize, screen, setSpText } from '../../../../utils'
 import styles from './styles'
 import { TouchType } from '../../../../constants'
+import { getPublicAssets } from '../../../../assets'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -130,8 +131,7 @@ export default class NavigationStartHead extends React.Component {
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
             height: scaleSize(205) + TOOLBARHEIGHT,
             width: this.state.width,
-            backgroundColor: '#303030',
-            // backgroundColor: '#ebebeb',
+            backgroundColor: color.content_white,
             flexDirection: 'row',
             position: 'absolute',
             top: 0,
@@ -150,7 +150,7 @@ export default class NavigationStartHead extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={require('../../../../assets/public/Frenchgrey/icon-back-white.png')}
+              source={getPublicAssets().common.icon_back}
               style={styles.backbtn}
             />
           </TouchableOpacity>

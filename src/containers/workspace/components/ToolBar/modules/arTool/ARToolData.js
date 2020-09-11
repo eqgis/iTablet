@@ -50,14 +50,7 @@ function getData() {
 
   data = data.filter(item => {
     if (Platform.OS === 'ios') {
-      if (
-        item.key === 'arCastModelOperate' ||
-        //item.key === 'arVideo' ||
-        //item.key === 'arImage' ||
-        item.key === 'arWeather'
-        //item.key === 'arWebView' ||
-        // item.key === 'arText'
-      ) {
+      if (item.key === 'arCastModelOperate') {
         return false
       }
     }

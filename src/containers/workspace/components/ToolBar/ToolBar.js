@@ -115,6 +115,8 @@ export default class ToolBar extends React.Component {
     //改变当前楼层ID
     changeFloorID: () => {},
     setToolbarStatus: () => {},
+
+    getOverlay: () => {},
   }
 
   static defaultProps = {
@@ -125,6 +127,7 @@ export default class ToolBar extends React.Component {
       isFullScreen: DEFAULT_FULL_SCREEN,
       column: DEFAULT_COLUMN, // 只有table可以设置
     },
+    getOverlay: () => {},
   }
 
   constructor(props) {
@@ -177,7 +180,8 @@ export default class ToolBar extends React.Component {
     let tempthis = Object.assign({}, this.props)
     tempNext.nav && delete tempNext.nav
     tempthis.nav && delete tempthis.nav
-    let shouldUpdate = JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
+    let shouldUpdate =
+      JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     if (shouldUpdate) {
       this.setToolbarParams(nextProps, nextState)
@@ -225,7 +229,7 @@ export default class ToolBar extends React.Component {
     this.props.showFullMap && this.props.showFullMap(true)
   }
 
-  switchAr = (visible) => {
+  switchAr = visible => {
     this.props.switchAr && this.props.switchAr(visible)
   }
 
@@ -265,7 +269,8 @@ export default class ToolBar extends React.Component {
    * @param visible
    */
   setOverlayViewVisible = visible => {
-    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(visible)
+    let overlay = this.props.getOverlay()
+    overlay && overlay.setVisible(visible)
   }
 
   //更新遮盖层状态
@@ -700,7 +705,7 @@ export default class ToolBar extends React.Component {
     } else if (this.state.type === ConstToolType.MAP3D_WORKSPACE_LIST) {
       this.showToolbarAndBox(false)
       this.props.existFullMap && this.props.existFullMap()
-      GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+      this.props.getOverlay() && this.props.getOverlay().setVisible(false)
     } else if (
       this.state.type === ConstToolType.MAP_PLOTTING_ANIMATION ||
       this.state.type === ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST

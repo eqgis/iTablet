@@ -1210,7 +1210,7 @@ async function commit(type) {
       }
     }
   } else if (type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION) {
-    const expressions = selectList[Object.keys(selectList)[0]] || []
+    const expressions = selectList[_data.themeDatasetName] || []
     // 数据集->创建统计专题图
     const params = {
       DatasourceAlias: _data.themeDatasourceAlias,
@@ -1233,7 +1233,6 @@ async function commit(type) {
   } else if (
     type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
-    let result = false
     const expressions = selectList[Object.keys(selectList)[0]] || []
     // 图层->创建统计专题图
     const params = {
@@ -1241,7 +1240,7 @@ async function commit(type) {
       GraphExpressions: expressions,
       ThemeGraphType: themeCreateType,
     }
-    result = await SThemeCartography.createThemeGraphMapByLayer(params)
+    let result = await SThemeCartography.createThemeGraphMapByLayer(params)
     result &&
       _params.getLayers(-1, layers => {
         _params.setCurrentLayer(layers.length > 0 && layers[0])

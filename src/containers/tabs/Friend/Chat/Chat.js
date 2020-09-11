@@ -1173,6 +1173,7 @@ class Chat extends React.Component {
             />
           ) : null}
           <GiftedChat
+            ref={ref => (this.GiftedChat = ref)}
             locale={getLanguage(global.language).Friends.LOCALE}
             placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
             messages={this.state.messages}

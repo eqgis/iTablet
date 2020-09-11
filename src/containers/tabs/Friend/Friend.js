@@ -168,15 +168,28 @@ export default class Friend extends Component {
       )
       let JSOnlineService = new OnlineServicesUtils('online')
       let data
+      let Info
       if (this.props.appConfig.infoServer) {
         data = this.props.appConfig.infoServer
+        if (
+          data.MSG_IP &&
+          data.MSG_Port &&
+          data.MSG_HostName &&
+          data.MSG_UserName &&
+          data.MSG_Password &&
+          data.MSG_HTTP_Port &&
+          data.FILE_UPLOAD_SERVER_URL &&
+          data.FILE_DOWNLOAD_SERVER_URL
+        ) {
+          Info = data
+        }
       } else {
         data = await JSOnlineService.getPublicDataByName(
           '927528',
           'ServerInfo.geojson',
         )
       }
-      if (data && (data.url || data.id !== undefined)) {
+      if (!Info && data && (data.url || data.id !== undefined)) {
         let url =
           data.url || `https://www.supermapol.com/web/datas/${data.id}/download`
 
@@ -198,14 +211,17 @@ export default class Friend extends Component {
         let info = await RNFS.readFile(filePath)
         RNFS.unlink(filePath)
         let serverInfo = JSON.parse(info)
-        GLOBAL.MSG_IP = serverInfo.MSG_IP
-        GLOBAL.MSG_Port = serverInfo.MSG_Port
-        GLOBAL.MSG_HostName = serverInfo.MSG_HostName
-        GLOBAL.MSG_UserName = serverInfo.MSG_UserName
-        GLOBAL.MSG_Password = serverInfo.MSG_Password
-        GLOBAL.MSG_HTTP_Port = serverInfo.MSG_HTTP_Port
-        GLOBAL.FILE_UPLOAD_SERVER_URL = serverInfo.FILE_UPLOAD_SERVER_URL
-        GLOBAL.FILE_DOWNLOAD_SERVER_URL = serverInfo.FILE_DOWNLOAD_SERVER_URL
+        Info = serverInfo
+      }
+      if (Info) {
+        GLOBAL.MSG_IP = Info.MSG_IP
+        GLOBAL.MSG_Port = Info.MSG_Port
+        GLOBAL.MSG_HostName = Info.MSG_HostName
+        GLOBAL.MSG_UserName = Info.MSG_UserName
+        GLOBAL.MSG_Password = Info.MSG_Password
+        GLOBAL.MSG_HTTP_Port = Info.MSG_HTTP_Port
+        GLOBAL.FILE_UPLOAD_SERVER_URL = Info.FILE_UPLOAD_SERVER_URL
+        GLOBAL.FILE_DOWNLOAD_SERVER_URL = Info.FILE_DOWNLOAD_SERVER_URL
       } else {
         GLOBAL.MSG_IP = '127.0.0.1'
         GLOBAL.MSG_Port = 5672
@@ -1011,14 +1027,34 @@ export default class Friend extends Component {
       }
 
       if (!bSilent && !result) {
-        Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
+        let option = null
+        if (Platform.OS === 'android' && this.curChat) {
+          option =
+            this.curChat.GiftedChat?._keyboardHeight > 0
+              ? { position: 0 }
+              : null
+        }
+        Toast.show(
+          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+          option,
+        )
       }
 
       cb && cb(result)
       return result
     } catch (e) {
       if (!bSilent) {
-        Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
+        let option = null
+        if (Platform.OS === 'android' && this.curChat) {
+          option =
+            this.curChat.GiftedChat?._keyboardHeight > 0
+              ? { position: 0 }
+              : null
+        }
+        Toast.show(
+          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+          option,
+        )
       }
       cb && cb(false)
       return false
@@ -1828,7 +1864,10 @@ export default class Friend extends Component {
                   this.setState({ showPop: true })
                 }}
               >
-                <Image source={getThemeAssets().friend.add_friends} style={styles.addFriendImg} />
+                <Image
+                  source={getThemeAssets().friend.add_friends}
+                  style={styles.addFriendImg}
+                />
               </TouchableOpacity>
             ) : null,
           withoutBack: true,
@@ -1857,7 +1896,11 @@ export default class Friend extends Component {
         <ScrollableTabView
           renderTabBar={() => (
             <DefaultTabBar
-              style={{ height: scaleSize(80), marginTop: scaleSize(20), borderWidth: 0 }}
+              style={{
+                height: scaleSize(80),
+                marginTop: scaleSize(20),
+                borderWidth: 0,
+              }}
               renderTab={(name, page, isTabActive, onPressHandler) => {
                 let activeTextColor = 'rgba(70,128,223,1.0)'
                 let inactiveTextColor = 'black'
@@ -1892,7 +1935,7 @@ export default class Friend extends Component {
                       {name}
                     </Text>
                     {name ===
-                    getLanguage(this.props.language).Friends.MESSAGES && (
+                      getLanguage(this.props.language).Friends.MESSAGES && (
                       <InformSpot
                         style={{
                           top: scaleSize(15),

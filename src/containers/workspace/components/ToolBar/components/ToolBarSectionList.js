@@ -1,6 +1,6 @@
 import React from 'react'
 import { color, size } from '../../../../../styles'
-import { scaleSize, setSpText } from '../../../../../utils'
+import { scaleSize, setSpText, dataUtil } from '../../../../../utils'
 import { getLanguage } from '../../../../../language'
 import {
   StyleSheet,
@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { getPublicAssets } from '../../../../../assets'
 import { ColorScheme } from '../../../../../components'
+import ToolbarModule from '../modules/ToolbarModule'
 
 export default class ToolBarSectionList extends React.Component {
   props: {
@@ -78,8 +79,9 @@ export default class ToolBarSectionList extends React.Component {
   }
 
   dealSelectList = sections => {
-    let selectList = {},
-      allSelected = false
+    let moduleData = ToolbarModule.getData()
+    let selectList = moduleData.selectList || [],
+      allSelected = moduleData.allSelected || false
     for (let i = 0; i < sections.length; i++) {
       let section = sections[i]
       if (!selectList[section.title]) selectList[section.title] = []
@@ -92,6 +94,8 @@ export default class ToolBarSectionList extends React.Component {
           selectList[section.title].indexOf(pushName) < 0
         ) {
           selectList[section.title].push(pushName)
+        } else if (selectList[section.title].indexOf(pushName) >= 0) {
+          item.isSelected = true
         }
       }
 
@@ -108,6 +112,7 @@ export default class ToolBarSectionList extends React.Component {
         allSelected = false
       }
     }
+    ToolbarModule.addData({selectList, allSelected})
     return { selectList, allSelected }
   }
 
@@ -127,7 +132,8 @@ export default class ToolBarSectionList extends React.Component {
   }
 
   select = (section, index, isSelected, cb = () => {}) => {
-    let sections = JSON.parse(JSON.stringify(this.state.sections))
+    // let sections = JSON.parse(JSON.stringify(this.state.sections))
+    let sections = dataUtil.deepClone(this.state.sections)
     let selectList = this.state.selectList
     let title = this.state.sections[0].title
     for (let i = 0; i < sections.length; i++) {

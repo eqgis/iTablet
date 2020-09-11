@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native'
-import { scaleSize } from '../../utils'
+import { scaleSize, Toast } from '../../utils'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { getLanguage } from '../../language'
@@ -27,18 +27,25 @@ export default class InputStyledText extends InputPage {
   confirm = () => {
     if (this.clickAble && this.state.isLegalName) {
       this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
       this.input && this.input.blur()
+      let fontSize = parseInt(this.state.fontSize)
+      if (isNaN(fontSize) || fontSize === 0) {
+        Toast.show(
+          global.language == 'CN' ? '请输入字体大小' : 'Please input font size',
+        )
+        return
+      }
       let styles = {
         foreColor: this.state.foreColor,
-        fontSize: this.state.fontSize,
+        fontSize: fontSize,
       }
       if (this.state.backColor !== '') {
         styles.backColor = this.state.backColor
       }
       this.cb && this.cb(this.state.value, styles)
-      setTimeout(() => {
-        this.clickAble = true
-      }, 1500)
     }
   }
 
@@ -137,7 +144,7 @@ export default class InputStyledText extends InputPage {
           textAlign={'center'}
           onChangeText={text => {
             let value = this.clearNoNum(text)
-            this.setState({ fontSize: parseInt(value) })
+            this.setState({ fontSize: value })
           }}
         />
         <TouchableOpacity
@@ -168,8 +175,6 @@ export default class InputStyledText extends InputPage {
     if (value.indexOf('.') < 0 && value != '') {
       //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
       value = parseFloat(value)
-    } else if (value == '') {
-      value = 1
     }
     return value + ''
   }

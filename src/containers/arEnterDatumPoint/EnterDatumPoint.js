@@ -101,8 +101,6 @@ export default class EnterDatumPoint extends Component {
       GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
 
       GLOBAL.MapSelectPointType = 'selectPoint'
-      GLOBAL.OverlayView.setVisible(false)
-
       GLOBAL.ToolBar.setVisible(false)
 
       GLOBAL.MapXmlStr = await SMap.mapToXml()
@@ -112,10 +110,6 @@ export default class EnterDatumPoint extends Component {
 
       //导航选点 全屏时保留mapController
       GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
-
-      GLOBAL.toolBox.showFullMap(true)
-      GLOBAL.toolBox.showFullMap(false)
-      GLOBAL.toolBox.showFullMap(true)
 
       let map = await SMap.getCurrentPosition()
       let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
@@ -200,6 +194,7 @@ export default class EnterDatumPoint extends Component {
 
     if (GLOBAL.EnterDatumPointType === 'arMeasureCollect') {
       GLOBAL.MeasureCollectData.point = point
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
       NavigationService.replace('MeasureView', GLOBAL.MeasureCollectData)
       GLOBAL.EnterDatumPointType = undefined
       return
@@ -230,6 +225,7 @@ export default class EnterDatumPoint extends Component {
           // const datasourceAlias = time
           const datasetName = 'CollectSceneForm'
           const datasetPointName = 'CollectPointSceneForm'
+          GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
           NavigationService.replace('CollectSceneFormView', {
             datasourceAlias,
             datasetName,
@@ -248,21 +244,29 @@ export default class EnterDatumPoint extends Component {
       })
     } else if (GLOBAL.EnterDatumPointType === 'arVideo') {
       GLOBAL.EnterDatumPointType = undefined
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+      GLOBAL.toolBox?.setVisible(false)
       NavigationService.replace('ARVideoView', {
         point: point,
       })
     } else if (GLOBAL.EnterDatumPointType === 'arImage') {
       GLOBAL.EnterDatumPointType = undefined
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+      GLOBAL.toolBox?.setVisible(false)
       NavigationService.replace('ARImageView', {
         point: point,
       })
     } else if (GLOBAL.EnterDatumPointType === 'arWebView') {
       GLOBAL.EnterDatumPointType = undefined
+      GLOBAL.toolBox?.setVisible(false)
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
       NavigationService.replace('ARWebView', {
         point: point,
       })
     } else if (GLOBAL.EnterDatumPointType === 'arText') {
       GLOBAL.EnterDatumPointType = undefined
+      GLOBAL.toolBox?.setVisible(false)
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
       NavigationService.replace('ARTextView', {
         point: point,
       })
@@ -312,7 +316,7 @@ export default class EnterDatumPoint extends Component {
     GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(true)
     GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(true)
     GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = undefined
-    NavigationService.goBack('EnterDatumPoint')
+    NavigationService.goBack()
     return true
   }
 

@@ -1381,43 +1381,44 @@ export default class MapView extends React.Component {
 
         SMap.setLabelColor()
         // 示例地图不加载标注图层
-        !this.isExample && SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
-          () => {
-            SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(
-              async hasDefaultTagging => {
-                if (!hasDefaultTagging) {
-                  await SMap.newTaggingDataset(
-                    'Default_Tagging',
-                    this.props.user.currentUser.userName,
-                  )
-                }
-                SMap.getCurrentTaggingLayer(
-                  this.props.user.currentUser.userName,
-                ).then(async layer => {
-                  if (layer) {
-                    GLOBAL.TaggingDatasetName = layer.name
-                    await SMap.setLayerEditable(layer.name, true)
-                    await SMap.setLayerVisible(layer.name, true)
-                    this.props.setCurrentLayer(layer)
-
-                    bCreateTag = true
-                    if (hasMap) SMap.saveMap('', false, false)
-                    // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-                    SMap.getTaggingLayers(
+        !this.isExample &&
+          SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
+            () => {
+              SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(
+                async hasDefaultTagging => {
+                  if (!hasDefaultTagging) {
+                    await SMap.newTaggingDataset(
+                      'Default_Tagging',
                       this.props.user.currentUser.userName,
-                    ).then(dataList => {
-                      dataList.forEach(item => {
-                        if (item.isVisible) {
-                          SMediaCollector.showMedia(item.name)
-                        }
-                      })
-                    })
+                    )
                   }
-                })
-              },
-            )
-          },
-        )
+                  SMap.getCurrentTaggingLayer(
+                    this.props.user.currentUser.userName,
+                  ).then(async layer => {
+                    if (layer) {
+                      GLOBAL.TaggingDatasetName = layer.name
+                      await SMap.setLayerEditable(layer.name, true)
+                      await SMap.setLayerVisible(layer.name, true)
+                      this.props.setCurrentLayer(layer)
+
+                      bCreateTag = true
+                      if (hasMap) SMap.saveMap('', false, false)
+                      // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
+                      SMap.getTaggingLayers(
+                        this.props.user.currentUser.userName,
+                      ).then(dataList => {
+                        dataList.forEach(item => {
+                          if (item.isVisible) {
+                            SMediaCollector.showMedia(item.name)
+                          }
+                        })
+                      })
+                    }
+                  })
+                },
+              )
+            },
+          )
 
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
@@ -2111,6 +2112,7 @@ export default class MapView extends React.Component {
         showMeasureResult={this.showMeasureResult}
         switchAr={this.switchAr}
         removeAIDetect={this.removeAIDetect}
+        getOverlay={() => GLOBAL.OverlayView}
         {...this.props}
       />
     )
@@ -2836,20 +2838,9 @@ export default class MapView extends React.Component {
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
                 )
               GLOBAL.MapSelectPointType = undefined
-
-              GLOBAL.MapSelectPointType = undefined
-              // GLOBAL.ToolBar.setVisible(true)
-              // GLOBAL.toolBox.showFullMap(false)
-              // GLOBAL.OverlayView.setVisible(true)
-
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
               GLOBAL.toolBox.setVisible(false)
-
-              if (GLOBAL.isswitch) {
-                GLOBAL.isswitch = false
-                this.switchAr()
-              }
 
               Toast.show(
                 getLanguage(global.language).Profile
@@ -2950,10 +2941,6 @@ export default class MapView extends React.Component {
               }
 
               GLOBAL.MapSelectPointType = undefined
-              // GLOBAL.ToolBar.setVisible(true)
-              // GLOBAL.toolBox.showFullMap(false)
-
-              // GLOBAL.OverlayView.setVisible(true)
               GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
                 GLOBAL.DATUMPOINTVIEW &&
                 GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
@@ -2965,10 +2952,6 @@ export default class MapView extends React.Component {
               this.showFullMap(false)
               GLOBAL.toolBox.setVisible(false)
 
-              if (GLOBAL.isswitch) {
-                GLOBAL.isswitch = false
-                this.switchAr()
-              }
               return
             } else if (
               GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'

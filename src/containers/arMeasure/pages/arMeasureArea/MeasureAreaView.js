@@ -246,13 +246,12 @@ export default class MeasureAreaView extends React.Component {
   confirm = () => {}
 
   back = () => {
-    NavigationService.goBack('MeasureAreaView')
-
     // eslint-disable-next-line
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     // eslint-disable-next-line
     GLOBAL.toolBox.switchAr()
 
+    NavigationService.goBack()
     return true
   }
 

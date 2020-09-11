@@ -18,7 +18,7 @@ function commit() {}
 
 // AR沙盘
 function arCastModelOperate() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
@@ -72,7 +72,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -121,7 +121,6 @@ async function arVideo() {
     return
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   if (GLOBAL.showAIDetect) {
     GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -137,29 +136,12 @@ async function arImage() {
     return
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   if (GLOBAL.showAIDetect) {
     GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
   GLOBAL.EnterDatumPointType = 'arImage'
   NavigationService.navigate('EnterDatumPoint')
-}
-
-async function arWeather() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
-    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
-    return
-  }
-
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.isswitch = true
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-  }
-
-  NavigationService.navigate('ARWeatherView')
 }
 
 async function arWebView() {
@@ -169,7 +151,6 @@ async function arWebView() {
     return
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   if (GLOBAL.showAIDetect) {
     GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -177,6 +158,7 @@ async function arWebView() {
   GLOBAL.EnterDatumPointType = 'arWebView'
   NavigationService.navigate('EnterDatumPoint')
 }
+
 async function arText() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
@@ -184,7 +166,6 @@ async function arText() {
     return
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   if (GLOBAL.showAIDetect) {
     GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -202,7 +183,6 @@ export default {
   arCastModelOperate,
   arVideo,
   arImage,
-  arWeather,
   arWebView,
   arText,
 }

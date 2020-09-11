@@ -22,7 +22,6 @@ function collectSceneForm() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
@@ -109,7 +108,6 @@ function arMeasureCollect() {
     GLOBAL.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
       GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()

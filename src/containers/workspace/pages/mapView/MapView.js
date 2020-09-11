@@ -1380,7 +1380,8 @@ export default class MapView extends React.Component {
         bCreateTag = false
 
         SMap.setLabelColor()
-        SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
+        // 示例地图不加载标注图层
+        !this.isExample && SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
           () => {
             SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(
               async hasDefaultTagging => {

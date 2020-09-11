@@ -5,7 +5,7 @@
  */
 import { StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
-import color from '../../../../styles/color'
+import { color, size } from '../../../../styles'
 
 export default StyleSheet.create({
   box: {
@@ -69,10 +69,11 @@ export default StyleSheet.create({
   },
   searchIcon: {
     flex: 1,
-    height: scaleSize(80),
+    height: scaleSize(60),
+    width: scaleSize(60),
   },
   iconTxt: {
-    fontSize: setSpText(16),
+    fontSize: size.fontSize.fontSizeMd,
   },
   itemView: {
     flex: 1,

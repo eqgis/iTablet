@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { SMap, SScene, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, SScene, SMediaCollector, DatasetType } from 'imobile_for_reactnative'
 import { color, size } from '../../../../../../styles'
 import { FileTools, NativeMethod } from '../../../../../../native'
 import {
@@ -337,6 +337,7 @@ async function create() {
     openTemplateList()
     return
   }
+  let params = ToolbarModule.getParams()
   if (
     GLOBAL.Type === ChunkType.MAP_EDIT ||
     GLOBAL.Type === ChunkType.MAP_THEME ||
@@ -347,11 +348,11 @@ async function create() {
   ) {
     GLOBAL.FUNCTIONTOOLBAR.isMapIndoorNavigation()
     const userPath =
-      ToolbarModule.getParams().user.currentUser.userName &&
-      ToolbarModule.getParams().user.currentUser.userType !==
+      params.user.currentUser.userName &&
+      params.user.currentUser.userType !==
         UserType.PROBATION_USER
         ? `${ConstPath.UserPath +
-            ToolbarModule.getParams().user.currentUser.userName}/`
+            params.user.currentUser.userName}/`
         : ConstPath.CustomerPath
     const mapPath = await FileTools.appendingHomeDirectory(
       userPath + ConstPath.RelativePath.Map,
@@ -373,9 +374,9 @@ async function create() {
 
         // 移除多媒体采集Callout
         SMediaCollector.removeMedias()
-        await ToolbarModule.getParams().closeMap()
+        await params.closeMap()
         const userPath = `${ConstPath.UserPath +
-          (ToolbarModule.getParams().user.currentUser.userName || 'Customer')}/`
+          (params.user.currentUser.userName || 'Customer')}/`
         const fillLibPath = await FileTools.appendingHomeDirectory(
           `${userPath +
             ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
@@ -391,24 +392,37 @@ async function create() {
         await SMap.importSymbolLibrary(value, fillLibPath) // 导入面符号库
         await SMap.importSymbolLibrary(value, lineLibPath) // 导入线符号库
         await SMap.importSymbolLibrary(value, markerLibPath) // 导入点符号库
-        // await ToolbarModule.getParams().setCurrentMap()
+        // await params.setCurrentMap()
         // await SMap.removeAllLayer() // 移除所有图层
         // await SMap.closeDatasource(-1) // 关闭所有数据源
 
         LayerUtils.openDefaultBaseMap()
         await SMap.openTaggingDataset(
-          ToolbarModule.getParams().user.currentUser.userName,
+          params.user.currentUser.userName,
         )
         GLOBAL.TaggingDatasetName = ''
-        ToolbarModule.getParams().getLayers &&
-          (await ToolbarModule.getParams().getLayers())
+        
+        let layers = params.getLayers && await params.getLayers() || []
+        let _currentLayer = null
+        // 默认设置第一个可见图层为当前图层
+        for (let layer of layers) {
+          if (
+            layer.isVisible &&
+            layer.type !== DatasetType.IMAGE &&
+            layer.type !== DatasetType.MBImage
+          ) {
+            _currentLayer = layer
+            break
+          }
+        }
+        params.setCurrentLayer(_currentLayer)
 
         // 如果是标绘模块则加载标绘数据
         if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
           const plotIconPath = await FileTools.appendingHomeDirectory(
             `${userPath + ConstPath.RelativePath.Plotting}PlotLibData`,
           )
-          await ToolbarModule.getParams().getSymbolPlots({
+          await params.getSymbolPlots({
             path: plotIconPath,
             isFirst: true,
             newName: value,
@@ -416,8 +430,8 @@ async function create() {
           GLOBAL.newPlotMapName = value
         }
 
-        ToolbarModule.getParams().saveMap &&
-          (await ToolbarModule.getParams().saveMap({
+        params.saveMap &&
+          (await params.saveMap({
             mapName: value,
             nModule: GLOBAL.Type,
             notSaveToXML: true,
@@ -431,8 +445,8 @@ async function create() {
             legendContentChange: GLOBAL.legend._contentChange,
           })
         }
-        ToolbarModule.getParams().setToolbarVisible &&
-          ToolbarModule.getParams().setToolbarVisible(false)
+        params.setToolbarVisible &&
+          params.setToolbarVisible(false)
       },
     })
   }
@@ -789,13 +803,19 @@ async function changeMap(item) {
       }
       await SMap.openTaggingDataset(params.user.currentUser.userName)
       await params.getLayers(-1, async layers => {
+        let _currentLayer = null
         // 默认设置第一个可见图层为当前图层
         for (let layer of layers) {
-          if (layer.isVisible) {
-            params.setCurrentLayer(layer)
+          if (
+            layer.isVisible &&
+            layer.type !== DatasetType.IMAGE &&
+            layer.type !== DatasetType.MBImage
+          ) {
+            _currentLayer = layer
             break
           }
         }
+        params.setCurrentLayer(_currentLayer)
       })
 
       // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上

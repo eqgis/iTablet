@@ -242,6 +242,13 @@ export default class MT_layerManager extends React.Component {
       this.prevItemRef.props &&
       this.prevItemRef.props.parentData
     this.currentItemRef = this.itemRefs && this.itemRefs[data.name]
+    if (
+      data.type === DatasetType.IMAGE ||
+      data.type === DatasetType.MBImage
+    ) {
+      // 影像图层不能被设为当前图层
+      return
+    }
     if (this.props.currentLayer.caption === data.name) {
       this.props.setCurrentLayer &&
         this.props.setCurrentLayer(null, () => {

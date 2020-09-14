@@ -94,7 +94,7 @@ export default class AnimationNodeListView extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        {this.renderItemSeparatorComponent()}
+        {/*{this.renderItemSeparatorComponent()}*/}
       </View>
     )
   }
@@ -150,29 +150,37 @@ export default class AnimationNodeListView extends React.Component {
   renderListSectionHeader = ({ section }) => {
     return (
       <View style={styles.fltListHeader}>
-        <View style={styles.sceneView}>
+        {/*<View style={styles.sceneView}>*/}
           {/* <Image
                   source={require('../../../../assets/function/Frenchgrey/icon_symbolFly_white.png')}
                   style={styles.sceneImg}
                 /> */}
           {/* <Text style={styles.sceneTitle}>{section.title}</Text> */}
           <Text style={styles.sectionTitle}>{section.title}</Text>
-        </View>
+        {/*</View>*/}
       </View>
     )
   }
 
   render() {
     return (
-      <SectionList
+      <View
         style={{
+          flex: 1,
           backgroundColor: color.content_white,
+          // borderTopLeftRadius: scaleSize(32),
+          // borderTopRightRadius: scaleSize(32),
+          // overflow: 'hidden',
         }}
-        sections={this.state.data}
-        renderItem={this.renderListItem}
-        renderSectionHeader={this.renderListSectionHeader}
-        keyExtractor={(item, index) => index}
-      />
+      >
+        <SectionList
+          sections={this.state.data}
+          renderItem={this.renderListItem}
+          renderSectionHeader={this.renderListSectionHeader}
+          keyExtractor={(item, index) => index}
+          ItemSeparatorComponent={this.renderItemSeparatorComponent}
+        />
+      </View>
     )
   }
 }
@@ -183,7 +191,6 @@ const styles = StyleSheet.create({
     height: scaleSize(81),
     // marginTop: scaleSize(20),
     flexDirection: 'column',
-    // justifyContent:"center",
   },
   sceneItemcontent: {
     flex: 1,
@@ -201,10 +208,11 @@ const styles = StyleSheet.create({
     color: color.themeText2,
   },
   fltListHeader: {
+    flex: 1,
+    backgroundColor: color.section_bg,
     height: scaleSize(80),
-    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.subTheme,
+    flexDirection: 'row',
   },
   sceneView: {
     // flex:1,
@@ -229,8 +237,7 @@ const styles = StyleSheet.create({
   Separator: {
     flex: 1,
     height: 1,
-    // backgroundColor: color.fontColorGray,
-    backgroundColor: '#A0A0A0',
+    backgroundColor: color.separateColorGray,
   },
 
   itemView: {

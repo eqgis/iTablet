@@ -6,6 +6,7 @@ import {
   ConstPath,
   ToolbarType,
   TouchType,
+  Height,
 } from '../../../../../../constants'
 import { StyleUtils, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -356,8 +357,11 @@ function showAnimationNodeList() {
   const params = ToolbarModule.getParams()
   params.setToolbarVisible(true, ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST, {
     isFullScreen: true,
-    height: ConstToolType.TOOLBAR_HEIGHT[5],
-    containerType: ToolbarType.animationNode,
+    // height:
+    //   params.device.orientation === 'PORTRAIT'
+    //     ? Height.LIST_HEIGHT_P
+    //     : Height.LIST_HEIGHT_L,
+    containerType: ToolbarType.list,
     // cb: () => {},
     customView: _props => (
       <AnimationNodeListView

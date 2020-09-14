@@ -23,6 +23,8 @@ function getToolbarSize(type, orientation, additional = {}) {
   switch (type) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
+    case ToolbarType.createPlotAnimation: // 创建标绘推演
+    case ToolbarType.animationNode: // 态势推演
       height =
         orientation.indexOf('LANDSCAPE') === 0
           ? Height.LIST_HEIGHT_L
@@ -54,10 +56,6 @@ function getToolbarSize(type, orientation, additional = {}) {
     case ToolbarType.horizontalTable: // 横向滚动表格
       height = Height.TABLE_ROW_HEIGHT_4
       column = 8
-      break
-    case ToolbarType.createPlotAnimation: // 创建标绘推演
-    case ToolbarType.animationNode: // 态势推演
-      height = Height.TABLE_ROW_HEIGHT_2 * 8
       break
     case ToolbarType.picker: // 选择器
     case ToolbarType.multiPicker: //两列选择器

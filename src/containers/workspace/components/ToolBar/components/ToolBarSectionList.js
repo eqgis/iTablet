@@ -777,11 +777,11 @@ export default class ToolBarSectionList extends React.Component {
     return (
       <View
         style={[
-          this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {
-            overflow: 'hidden',
-            borderTopLeftRadius: scaleSize(32),
-            borderTopRightRadius: scaleSize(32),
-          },
+          // this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {
+          //   overflow: 'hidden',
+          //   borderTopLeftRadius: scaleSize(32),
+          //   borderTopRightRadius: scaleSize(32),
+          // },
           this.props.style,
         ]}
       >

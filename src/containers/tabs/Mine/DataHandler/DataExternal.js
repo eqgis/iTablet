@@ -996,7 +996,7 @@ function _isAIModel(name) {
 }
 
 function _isSubAIModel(name) {
-  return _isType(name, ['txt'])
+  return _isType(name, ['txt', 'json'])
 }
 
 function _isRelatedAIModel(name, checkName) {

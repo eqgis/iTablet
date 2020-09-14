@@ -27,7 +27,7 @@ export default class MapCutSetting extends React.Component {
     super(props)
     this.state = {
       data: this.initData(),
-      extradatasources: [],
+      extraDataSources: [...this.props.datasources],
     }
   }
 
@@ -109,7 +109,7 @@ export default class MapCutSetting extends React.Component {
           ? this.props.datasources[0].alias
           : ''
         newData.set('ds', item)
-        return { data: newData }
+        return { data: newData, extraDataSources: [...this.props.datasources] }
       })
     }
   }
@@ -247,26 +247,24 @@ export default class MapCutSetting extends React.Component {
             action: () => {
               this.showModal(false)
               NavigationService.navigate('MapCutDS', {
-                data: this.props.datasources.concat(
-                  this.state.extradatasources,
-                ),
+                data: this.state.extraDataSources,
                 currentUser: this.props.currentUser,
                 cb: ({ item, msg }) => {
                   if (item && !msg) {
                     const newData = new Map(this.state.data)
                     let dsData = newData.get('ds')
-                    let extradatasources = this.state.extradatasources
-                    extradatasources = extradatasources.filter(
+                    let extraDataSources = this.state.extraDataSources
+                    extraDataSources = extraDataSources.filter(
                       val => val.alias !== item.alias,
                     )
-                    extradatasources.push(item)
+                    extraDataSources.push(item)
                     if (dsData.dsName !== item.alias) {
                       dsData.dsName = item.alias
                       newData.set('ds', dsData)
                       this.setState(
                         {
                           data: newData,
-                          extradatasources,
+                          extraDataSources,
                         },
                         () => {
                           this.settingModal.setVisible(true)

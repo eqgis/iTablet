@@ -1261,6 +1261,7 @@ async function commit(type) {
 function tableAction(item = {}) {
   const _params = ToolbarModule.getParams()
   const _data = ToolbarModule.getData()
+  const currentLayer = _data.currentLayer || _params.currentLayer
 
   let themeParams = {}
 
@@ -1295,45 +1296,45 @@ function tableAction(item = {}) {
         case ConstToolType.MAP_THEME_PARAM_RANGE_MODE:
           // 分段专题图：分段方法
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             RangeMode: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGEMODE:
           // 分段栅格专题图：分段方法
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             RangeMode: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             LabelBackShape: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             FontName: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_RANGELABEL_FONTNAME:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             FontName: item.key,
             type: 'range',
           }
           break
         case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             Rotaion: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_RANGELABEL_ROTATION:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             Rotaion: item.key,
             type: 'range',
           }
@@ -1341,7 +1342,7 @@ function tableAction(item = {}) {
         case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR:
           // 统一标签前景色
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             Color: item.key,
             ColorType: 'UNIFORMLABEL_FORE_COLOR',
           }
@@ -1349,7 +1350,7 @@ function tableAction(item = {}) {
         case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
           // 统一标签背景色
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             Color: item.key,
             ColorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
           }
@@ -1357,28 +1358,28 @@ function tableAction(item = {}) {
         case ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE:
           // 统计专题图类型
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             ThemeGraphType: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_GRAPH_GRADUATEDMODE:
           // 统计专题图统计值计算方法
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             GraduatedMode: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE:
           // 等级符号专题图分级方式
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             GraduatedMode: item.key,
           }
           break
         case ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_COLOR:
           // 点密度专题图：点颜色
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             LineColor: item.key,
             ColorType: 'DOT_DENSITY_COLOR',
           }
@@ -1386,14 +1387,14 @@ function tableAction(item = {}) {
         case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
           // 等级符号专题图：点颜色
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             LineColor: item.key,
             ColorType: 'GRADUATED_SYMBOL_COLOR',
           }
           break
         default:
           themeParams = {
-            LayerName: _params.currentLayer.name,
+            LayerName: currentLayer.name,
             LabelBackShape: item.key,
           }
           break

@@ -227,11 +227,11 @@ async function createThemeGridRangeMap(params) {
 // 通过图层->创建栅格单值专题图
 async function createThemeGridUniqueMapByLayer() {
   const _params = ToolbarModule.getParams()
-  let paramsTheme = {}
+  const _data = ToolbarModule.getData()
+  const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  // let errorInfo = ''
-  paramsTheme = {
-    LayerName: _params.currentLayer.name,
+  let paramsTheme = {
+    LayerName: currentLayer.name,
     GridUniqueColorScheme: 'EE_Lake',
   }
   await SThemeCartography.createThemeGridUniqueMapByLayer(paramsTheme).then(
@@ -258,11 +258,11 @@ async function createThemeGridUniqueMapByLayer() {
 // 通过图层->创建栅格分段专题图
 async function createThemeGridRangeMapByLayer() {
   const _params = ToolbarModule.getParams()
-  let paramsTheme = {}
+  const _data = ToolbarModule.getData()
+  const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  // let errorInfo = ''
-  paramsTheme = {
-    LayerName: _params.currentLayer.name,
+  let paramsTheme = {
+    LayerName: currentLayer.name,
     GridRangeColorScheme: 'FF_Blues',
   }
   await SThemeCartography.createThemeGridRangeMapByLayer(paramsTheme).then(
@@ -300,16 +300,6 @@ function getThemeMapCreate(type) {
   )
     return { data, buttons }
   data = [
-    // {
-    //   //统一风格
-    //   key: constants.THEME_UNIFY_STYLE,
-    //   title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_MAP,
-    //   //constants.THEME_UNIFY_STYLE,
-    //   action: getUnifyStyleAdd,
-    //   size: 'large',
-    //   image: getThemeAssets().themeType.theme_create_unify_style,
-    //   selectedImage: getThemeAssets().themeType.theme_create_unify_style,
-    // },
     {
       // 单值风格
       key: constants.THEME_UNIQUE_STYLE,

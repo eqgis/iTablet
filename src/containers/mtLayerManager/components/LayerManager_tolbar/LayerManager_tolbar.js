@@ -689,7 +689,7 @@ export default class LayerManager_tolbar extends React.Component {
             ConstToolType.MAP_THEME_CREATE_BY_LAYER,
             {
               isFullScreen: true,
-              createThemeByLayer: this.state.layerData.path,
+              // createThemeByLayer: this.state.layerData.path,
             },
           )
         GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()

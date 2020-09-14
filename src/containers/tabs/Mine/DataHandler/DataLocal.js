@@ -174,6 +174,7 @@ async function _getAIModelDataList(user) {
     let contentList = await FileTools.getDirectoryContent(homePath + item.path)
     let tflite
     let labels = []
+    let param
     for (let i = 0; i < contentList.length; i++) {
       if (contentList[i].type === 'file') {
         let index = contentList[i].name.lastIndexOf('.')
@@ -183,6 +184,8 @@ async function _getAIModelDataList(user) {
             tflite = contentList[i].name
           } else if (type === 'txt') {
             labels.push(contentList[i].name)
+          } else if (type === 'json') {
+            param = contentList[i].name
           }
         }
       }
@@ -190,6 +193,7 @@ async function _getAIModelDataList(user) {
     if (tflite && labels.length > 0) {
       item.tflite = tflite
       item.labels = labels
+      item.param = param
       list.push(item)
     }
   }

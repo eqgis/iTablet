@@ -360,10 +360,10 @@ async function _copyFile(item, desDir) {
         )
         let itemName = relatedFileName.substring(
           0,
-          item.fileName.lastIndexOf('.'),
+          relatedFileName.lastIndexOf('.'),
         )
         let itemType = relatedFileName.substring(
-          item.fileName.lastIndexOf('.') + 1,
+          relatedFileName.lastIndexOf('.') + 1,
         )
         let sname = _getAvailableName(itemName, contentList, 'file', itemType)
         await FileTools.copyFile(item.relatedFiles[i], `${desDir}/${sname}`)

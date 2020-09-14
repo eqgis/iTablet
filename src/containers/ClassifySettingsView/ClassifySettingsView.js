@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { InteractionManager, View, Image, Text, ScrollView } from 'react-native'
+import {
+  InteractionManager,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  Platform,
+} from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets } from '../../assets'
 import Orientation from 'react-native-orientation'
@@ -11,7 +18,8 @@ import { FileTools } from '../../native'
 import Toast from '../../utils/Toast'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
-import { SAIClassifyView ,SMap } from 'imobile_for_reactnative'
+import { SAIClassifyView, SMap } from 'imobile_for_reactnative'
+import RNFS from 'react-native-fs'
 
 const DEFAULT_MODEL = 'mobilenet_quant_224' //默认模型
 const DUSTBIN_MODEL = 'citycase' //垃圾箱模型
@@ -263,8 +271,37 @@ export default class ClassifySettingsView extends React.Component {
                 params.ModelType = 'ABSOLUTE_FILE_PATH'
                 params.ModelPath =
                   global.homePath + item.path + '/' + item.tflite
-                params.LabelPath =
-                  global.homePath + item.path + '/' + item.labels[0]
+                let labelPath = item.labels[0]
+                let labelFilter = item.labels.filter(label => {
+                  if (
+                    global.language === 'CN' &&
+                    label.toLowerCase().indexOf('_cn') > -1
+                  ) {
+                    return true
+                  }
+                  if (
+                    global.language !== 'CN' &&
+                    label.toLowerCase().indexOf('_cn') < 0
+                  ) {
+                    return true
+                  }
+                  return false
+                })
+                if (labelFilter.length > 0) {
+                  labelPath = labelFilter[0]
+                }
+                params.LabelPath = global.homePath + item.path + '/' + labelPath
+                if (Platform.OS === 'android' && item.param) {
+                  try {
+                    let paramPath =
+                      global.homePath + item.path + '/' + item.param
+                    let info = await RNFS.readFile(paramPath)
+                    let infoJson = JSON.parse(info)
+                    Object.assign(params, infoJson)
+                  } catch (error) {
+                    /** */
+                  }
+                }
                 let result = await SAIClassifyView.setModel(params)
                 NavigationService.goBack()
                 setTimeout(() => {
@@ -305,8 +342,8 @@ export default class ClassifySettingsView extends React.Component {
           showsVerticalScrollIndicator={false}
         >
           {this.renderModelItemFirst()}
-          {this.renderModelItemSecond()}
-          {/*{this.renderModelItemThird()}*/}
+          {/* {this.renderModelItemSecond()} */}
+          {/* {this.renderModelItemThird()} */}
           {this.renderMyModel()}
         </ScrollView>
       </View>
@@ -413,7 +450,7 @@ export default class ClassifySettingsView extends React.Component {
   _downloadData = async downloadData => {
     let keyword = downloadData.fileName
     let dataUrl = await FetchUtils.getFindUserDataUrl(
-      'imobile1234',
+      'xiezhiyan123',
       keyword,
       '.zip',
     )

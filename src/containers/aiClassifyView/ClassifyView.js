@@ -13,8 +13,7 @@ import {
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
-import { SAIClassifyView, SMediaCollector,SMap } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
+import { SAIClassifyView, SMediaCollector, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import { Container, ImagePicker, Loading, MTBtn } from '../../components'
 import styles from './styles'
@@ -24,6 +23,7 @@ import { ConstPath } from '../../constants'
 import RadioButton from './RadioButton'
 import { scaleSize, Toast, LayerUtils } from '../../utils'
 import { RNCamera } from 'react-native-camera'
+import Orientation from 'react-native-orientation'
 // const { ClassifyView }= NativeModules;
 // const iOSEventEmitter = new NativeEventEmitter(ClassifyView)
 const SMessageServiceClassifyiOS = NativeModules.SAIClassifyView
@@ -76,7 +76,7 @@ export default class ClassifyView extends React.Component {
     this.Loading.setLoading(true)
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
-      ;(async function() {
+      (async function() {
         await SAIClassifyView.initAIClassify(
           this.datasourceAlias,
           this.datasetName,
@@ -101,7 +101,6 @@ export default class ClassifyView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.unlockAllOrientations()
     //移除监听
     // DeviceEventEmitter.removeListener('recognizeImage', this.recognizeImage)
 
@@ -258,7 +257,7 @@ export default class ClassifyView extends React.Component {
 
   save = async () => {
     //保存数据->跳转
-    ;(async function() {
+    (async function() {
       let currentLayer = GLOBAL.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false

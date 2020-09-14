@@ -2179,25 +2179,29 @@ export default class TouchProgress extends Component {
     return (
       <View
         style={[styles.box, { width: this.getWidthByOrientation() }]}
-        {...this._panResponder.panHandlers}
       >
-        <View style={[container, { width: this.getWidthByOrientation() }]}>
-          <View
-            style={[
-              styles.line,
-              { width: this.getWidthByOrientation() - MARGIN * 2 },
-            ]}
-          >
+        <View
+          style={{flex: 1, backgroundColor: 'transparent'}}
+          {...this._panResponder.panHandlers}
+        >
+          <View style={[container, { width: this.getWidthByOrientation() }]}>
             <View
-              style={[styles.backline]}
-              ref={ref => (this.backLine = ref)}
-            />
-          </View>
-          <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
-            <Image
-              style={[styles.image]}
-              source={require('../../../../assets/function/icon_progress.png')}
-            />
+              style={[
+                styles.line,
+                { width: this.getWidthByOrientation() - MARGIN * 2 },
+              ]}
+            >
+              <View
+                style={[styles.backline]}
+                ref={ref => (this.backLine = ref)}
+              />
+            </View>
+            <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
+              <Image
+                style={[styles.image]}
+                source={require('../../../../assets/function/icon_progress.png')}
+              />
+            </View>
           </View>
         </View>
         {this.state.tips !== '' && (
@@ -2277,11 +2281,11 @@ const styles = StyleSheet.create({
     width: IMAGE_SIZE,
   },
   tips: {
-    marginTop: scaleSize(10),
-    paddingLeft: scaleSize(20),
-    paddingRight: scaleSize(20),
-    paddingTop: scaleSize(5),
-    paddingBottom: scaleSize(5),
+    position: 'absolute',
+    top: scaleSize(50),
+    paddingHorizontal: scaleSize(10),
+    marginLeft: 'auto',
+    marginRight: 'auto',
     backgroundColor: 'rgba(110,110,110,0.85)',
     justifyContent: 'center',
     alignItems: 'center',

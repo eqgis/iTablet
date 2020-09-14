@@ -63,6 +63,7 @@ import { DropdownView } from './DropdownView'
 import SinglePicker from './SinglePicker'
 import ColorScheme from './ColorScheme'
 import BottomBar from './BottomBar'
+import MyToast from './MyToast'
 export {
   Container,
   BtnOne,
@@ -139,4 +140,5 @@ export {
   SinglePicker,
   ColorScheme,
   BottomBar,
+  MyToast,
 }

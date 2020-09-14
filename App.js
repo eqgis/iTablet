@@ -37,7 +37,7 @@ import {
 } from './src/redux/models/template'
 import { setModules } from './src/redux/models/appConfig'
 import { setMapModule } from './src/redux/models/mapModules'
-import { Dialog, Loading } from './src/components'
+import { Dialog, Loading, MyToast } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow }  from './src/redux/models/device'
@@ -1216,6 +1216,7 @@ class AppRoot extends Component {
         {this.renderIsNotItabletLicenseDialog()}
         {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
         <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false}/>
+        <MyToast ref={ref => GLOBAL.Toast = ref} />
       </View>
     )
   }

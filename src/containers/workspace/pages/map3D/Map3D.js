@@ -309,14 +309,14 @@ export default class Map3D extends React.Component {
   }
 
   _flyToPoint = () => {
-    ;(async function() {
+    (async function() {
       let point = await new Point3D().createObj(116.5, 39.9, 500)
       this.scene.flyToPoint(point)
     }.bind(this)())
   }
 
   _flyToCamera = () => {
-    ;(async function() {
+    (async function() {
       let camera = await new Camera().createObj(
         116.467575,
         39.91542777777778,
@@ -329,7 +329,7 @@ export default class Map3D extends React.Component {
   }
 
   _changeLayerColor = () => {
-    ;(async function() {
+    (async function() {
       let layers3ds = await this.scene.getLayer3Ds()
       let layer3D = await layers3ds.get(4)
       layer3D.setObjectsColor(1, 255, 0, 0, 0.8)
@@ -814,6 +814,7 @@ export default class Map3D extends React.Component {
         setContainerLoading={this.setLoading}
         layerList={this.state.layerlist}
         changeLayerList={this.getLayers}
+        getOverlay={() => GLOBAL.OverlayView}
       />
     )
   }

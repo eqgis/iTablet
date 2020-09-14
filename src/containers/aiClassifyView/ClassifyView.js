@@ -23,6 +23,7 @@ import { ConstPath } from '../../constants'
 import RadioButton from './RadioButton'
 import { scaleSize, Toast, LayerUtils } from '../../utils'
 import { RNCamera } from 'react-native-camera'
+import Orientation from 'react-native-orientation'
 // const { ClassifyView }= NativeModules;
 // const iOSEventEmitter = new NativeEventEmitter(ClassifyView)
 const SMessageServiceClassifyiOS = NativeModules.SAIClassifyView
@@ -68,6 +69,7 @@ export default class ClassifyView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
+    Orientation.lockToPortrait()
   }
 
   componentDidMount() {

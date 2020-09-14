@@ -26,7 +26,7 @@ function navigate(routeName, params) {
     )
     setTimeout(() => {
       tempRoute = undefined
-    }, 2000)
+    }, 1000)
   })()
 }
 
@@ -101,7 +101,7 @@ function goBack(routeName, immediate) {
     if (tempRoute) {
       setTimeout(() => {
         tempRoute = undefined
-      }, 2000)
+      }, 1000)
     }
   })()
 }

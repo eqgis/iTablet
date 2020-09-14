@@ -369,6 +369,8 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
   HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
+  
+  INVALID_DATA_SET_FAILED: '数据类型不合法，设置失败',
 }
 
 export { Prompt }

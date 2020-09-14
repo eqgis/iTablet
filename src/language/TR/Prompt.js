@@ -369,6 +369,8 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
+  
+  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
 }
 
 export { Prompt }

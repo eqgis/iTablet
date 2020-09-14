@@ -748,6 +748,7 @@ export default handleActions(
 
                 // 若修改的对象和之前最新的对象不是一个对象，则把被修改对象之前的值加入到历史记录中
                 if (
+                  layers[j].history[0] instanceof Array ||
                   layers[j].history[0].params.filter !== item.params.filter || // 判断是否是同一条数据
                   layers[j].history[0].fieldInfo.length !==
                     item.fieldInfo.length ||

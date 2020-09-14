@@ -834,11 +834,7 @@ export default class LayerSelectionAttribute extends React.Component {
               attributes.data[0][data.index].value = data.value
             }
           } else {
-            Toast.show(
-              global.language === 'CN'
-                ? '数据类型不合法,设置失败'
-                : 'Invalid data type. Failed to set',
-            )
+            Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
           }
 
           this.checkToolIsViable()

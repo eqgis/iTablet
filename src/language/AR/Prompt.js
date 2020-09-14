@@ -349,7 +349,7 @@ const Prompt = {
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
   CONFIRM_EXIT: 'Are you sure to exit?',
   TOPO_EDIT_END: 'Are you finished editing and exit?',
-  // 自定义专题图
+  // 自定义专题图 待翻译
   ONLY_INTEGER: '只能输入整数！',
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',
   PARAMS_ERROR: '参数错误，设置失败！',
@@ -367,8 +367,11 @@ const Prompt = {
   ATTRIBUTE_ADD_FAILED: 'فشل اضافه البيانات',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'القيمة الافتراضية خالية',
 
+  // 待翻译
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
   HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
+  
+  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
 }
 
 export { Prompt }

@@ -12,12 +12,11 @@ import {
   TouchableOpacity,
   SectionList,
   StyleSheet,
-  Animated,
   RefreshControl,
 } from 'react-native'
 import { Container } from '../../components'
 import { getPublicAssets, getThemeAssets } from '../../assets'
-import { scaleSize, screen, setSpText } from '../../utils'
+import { scaleSize, setSpText } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
 import { SMap } from 'imobile_for_reactnative'
@@ -37,27 +36,6 @@ export default class NavigationDataChangePage extends Component {
     this.selectedDatasets = params.selectedDatasets || []
     this.currentDatasource = params.currentDatasource || []
     this.currentDataset = params.currentDataset || {}
-    this.maxWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation) * 0.45,
-        )
-        : new Animated.Value(
-          screen.getScreenWidth(this.props.device.orientation),
-        )
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.device.orientation !== this.props.device.orientation) {
-      let maxWidth =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-          : screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.maxWidth, {
-        toValue: maxWidth,
-        duration: 300,
-      }).start()
-    }
   }
 
   _onPress = item => {
@@ -254,41 +232,34 @@ export default class NavigationDataChangePage extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <Animated.View
-          style={{
-            width: this.maxWidth,
-            flex: 1,
-          }}
-        >
-          <SectionList
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.isRefresh}
-                onRefresh={this._onRefresh}
-                colors={['orange', 'red']}
-                tintColor={'orange'}
-                titleColor={'orange'}
-                title={getLanguage(global.language).Friends.LOADING}
-                enabled={true}
-              />
-            }
-            style={styles.list}
-            sections={this.state.data}
-            renderSectionHeader={this._renderSectionHeader}
-            renderItem={this._renderItem}
-            keyExtractor={(item, index) => item.toString() + index}
-            getItemLayout={(data, index) => ({
-              length: 81,
-              offset: 81 * index,
-              index,
-            })}
-          />
-          <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
-            <Text style={styles.confirmTxt}>
-              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
-            </Text>
-          </TouchableOpacity>
-        </Animated.View>
+        <SectionList
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefresh}
+              onRefresh={this._onRefresh}
+              colors={['orange', 'red']}
+              tintColor={'orange'}
+              titleColor={'orange'}
+              title={getLanguage(global.language).Friends.LOADING}
+              enabled={true}
+            />
+          }
+          style={styles.list}
+          sections={this.state.data}
+          renderSectionHeader={this._renderSectionHeader}
+          renderItem={this._renderItem}
+          keyExtractor={(item, index) => item.toString() + index}
+          getItemLayout={(data, index) => ({
+            length: 81,
+            offset: 81 * index,
+            index,
+          })}
+        />
+        <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
+          <Text style={styles.confirmTxt}>
+            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+          </Text>
+        </TouchableOpacity>
       </Container>
     )
   }

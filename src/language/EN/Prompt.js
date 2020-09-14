@@ -369,6 +369,8 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect in Thematic layers',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Only point dataset can be created',
+  
+  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set',
 }
 
 export { Prompt }

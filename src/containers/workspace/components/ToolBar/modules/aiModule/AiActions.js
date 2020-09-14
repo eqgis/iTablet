@@ -11,7 +11,7 @@ import ToolAction from '../../../../../../containers/workspace/components/ToolBa
 
 // 违章采集
 function illegallyParkCollect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -92,7 +92,7 @@ async function getTaggingLayerData() {
 
 // AI分类
 function aiClassify() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
@@ -156,7 +156,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -200,7 +200,7 @@ function _downloadData(downloadData) {
 
 // 目标采集
 function aiDetect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
@@ -245,14 +245,14 @@ function aiDetect() {
 
 // 态势采集(聚合模式)
 function polymerizeCollect() {
-  ;(async function() {
+  (async function() {
     // await SAIDetectView.setProjectionModeEnable(true)
     // await SAIDetectView.setDrawTileEnable(false)
     await SAIDetectView.setIsPolymerize(true)
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
     if (!GLOBAL.showAIDetect) {
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     // await SAIDetectView.startCountTrackedObjs(true)
@@ -261,7 +261,7 @@ function polymerizeCollect() {
 
 // 人体姿态
 function poseEstimation() {
-  ;(async function() {
+  (async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
@@ -277,7 +277,7 @@ function poseEstimation() {
 
 // 手势骨骼
 function gestureBone() {
-  ;(async function() {
+  (async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
@@ -318,6 +318,13 @@ function gestureBone() {
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE_CLOSE //关闭
       // SMap.toGestureBoneView(getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
       SMap.toGestureBoneView(info)
+      SMap.addGestureBoneFinishListener(() => {
+        GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+        if (!GLOBAL.showAIDetect) {
+          GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+        }
+        SMap.removeGestureBoneFinishListener()
+      })
     }, 500)
   })()
 }

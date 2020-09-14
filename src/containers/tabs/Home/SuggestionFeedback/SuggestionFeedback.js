@@ -152,7 +152,7 @@ export default class SuggestionFeedback extends Component {
   //提交按钮
   renderButton() {
     return (
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignItems: 'center', paddingBottom: scaleSize(20) }}>
         <Button
           title={getLanguage(global.language).Profile.SUGGESTION_SUBMIT}
           type="BLUE"

@@ -60,6 +60,7 @@ export default class TouchProgress extends Component {
     this.state = {
       tips: '',
       previousTips: '',
+      showInput: false,
     }
 
     this._panResponder = PanResponder.create({
@@ -157,7 +158,7 @@ export default class TouchProgress extends Component {
         this._BackLine.style.width = (columnnumber * 10 * progressWidth) / 40
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-          '     ' +
+          '   ' +
           parseInt(columnnumber)
       } else if (
         this.props.selectName ===
@@ -170,7 +171,7 @@ export default class TouchProgress extends Component {
         this._BackLine.style.width = (width * progressWidth) / 100
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-          '     ' +
+          '   ' +
           parseInt(width)
       } else if (
         this.props.selectName ===
@@ -183,7 +184,7 @@ export default class TouchProgress extends Component {
         this._BackLine.style.width = (height * progressWidth) / 100
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-          '     ' +
+          '   ' +
           parseInt(height)
       } else if (
         this.props.selectName ===
@@ -196,7 +197,7 @@ export default class TouchProgress extends Component {
         this._BackLine.style.width = (imagePercent * progressWidth) / 100
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-          '     ' +
+          '   ' +
           parseInt(imagePercent)
       } else if (
         this.props.selectName ===
@@ -209,7 +210,7 @@ export default class TouchProgress extends Component {
         this._BackLine.style.width = (fontPercent * progressWidth) / 100
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-          '     ' +
+          '   ' +
           parseInt(fontPercent)
       }
     }
@@ -248,7 +249,7 @@ export default class TouchProgress extends Component {
           this._BackLine.style.width = (this.nuclearRadius * progressWidth) / 50
           tips =
             getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP_RADIUS +
-            '     ' +
+            '   ' +
             parseInt(this.nuclearRadius)
         } else if (
           this.props.selectName ===
@@ -268,7 +269,7 @@ export default class TouchProgress extends Component {
           tips =
             getLanguage(global.language).Map_Main_Menu
               .THEME_HEATMAP_FUZZY_DEGREE +
-            '     ' +
+            '   ' +
             parseInt(this.fuzzyDegree) +
             '%'
         } else if (
@@ -290,7 +291,7 @@ export default class TouchProgress extends Component {
           tips =
             getLanguage(global.language).Map_Main_Menu
               .THEME_HEATMAP_MAXCOLOR_WEIGHT +
-            '     ' +
+            '   ' +
             parseInt(this.maxColorWeight) +
             '%'
         }
@@ -313,7 +314,7 @@ export default class TouchProgress extends Component {
                 (this.ragngeCount * progressWidth) / 32
               tips =
                 getLanguage(global.language).Map_Main_Menu.RANGE_COUNT +
-                '     ' +
+                '   ' +
                 parseInt(this.ragngeCount)
             }
             break
@@ -370,7 +371,7 @@ export default class TouchProgress extends Component {
                   (this.dotValue * progressWidth) / 100
                 tips =
                   getLanguage(global.language).Map_Main_Menu.DOT_VALUE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.dotValue)
               } else if (
                 this.props.selectName ===
@@ -389,7 +390,7 @@ export default class TouchProgress extends Component {
                   (this.dotSize * progressWidth) / 100
                 tips =
                   getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.dotSize) +
                   'mm'
               }
@@ -414,7 +415,7 @@ export default class TouchProgress extends Component {
                   (this.baseValue * progressWidth) / 10000
                 tips =
                   getLanguage(global.language).Map_Main_Menu.DATUM_VALUE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.baseValue)
               } else if (
                 this.props.selectName ===
@@ -433,7 +434,7 @@ export default class TouchProgress extends Component {
                   (this.graSymbolSize * progressWidth) / 100
                 tips =
                   getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.graSymbolSize) +
                   'mm'
               }
@@ -462,7 +463,7 @@ export default class TouchProgress extends Component {
                   (this.fontsize * progressWidth) / 20
                 tips =
                   getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.fontsize)
               }
             }
@@ -490,7 +491,7 @@ export default class TouchProgress extends Component {
                   (this.fontsize * progressWidth) / 20
                 tips =
                   getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-                  '     ' +
+                  '   ' +
                   parseInt(this.fontsize)
               } else if (
                 this.props.selectName ===
@@ -509,7 +510,7 @@ export default class TouchProgress extends Component {
                   (this.ragngeCount * progressWidth) / 32
                 tips =
                   getLanguage(global.language).Map_Main_Menu.RANGE_COUNT +
-                  '     ' +
+                  '   ' +
                   parseInt(this.ragngeCount)
               }
             }
@@ -540,7 +541,7 @@ export default class TouchProgress extends Component {
                 tips =
                   getLanguage(global.language).Map_Main_Menu
                     .THEME_MAX_VISIBLE_SIZE +
-                  '     ' +
+                  '   ' +
                   parseInt(newValue) +
                   'X'
               }
@@ -566,7 +567,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (pointSize * progressWidth) / 100
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-              '     ' +
+              '   ' +
               parseInt(pointSize) +
               'mm'
           } else if (
@@ -585,7 +586,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (pointAlpha * progressWidth) / 100
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(pointAlpha) +
               '%'
           } else if (
@@ -604,7 +605,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (pointAngle * progressWidth) / 360
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(pointAngle) +
               '°'
           }
@@ -621,7 +622,7 @@ export default class TouchProgress extends Component {
           this._BackLine.style.width = (lineWidth * progressWidth) / 20
           tips =
             getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-            '     ' +
+            '   ' +
             parseInt(lineWidth) +
             'mm'
           break
@@ -645,7 +646,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (lineWidth * progressWidth) / 100
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH +
-              '     ' +
+              '   ' +
               parseInt(lineWidth) +
               'mm'
           } else if (
@@ -664,7 +665,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (fillOpaque * progressWidth) / 100
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(fillOpaque) +
               '%'
           }
@@ -684,7 +685,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (fontsize * progressWidth) / 20
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-              '     ' +
+              '   ' +
               parseInt(fontsize)
           } else if (this.props.selectName === 'TEXT_ROTATION') {
             let angle = await SCartography.getTextAngleOfLayer(
@@ -696,7 +697,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (angle * progressWidth) / 360
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(angle) +
               '°'
           }
@@ -718,7 +719,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (gridOpaque * progressWidth) / 100
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(gridOpaque)
           } else if (
             this.props.selectName ===
@@ -736,7 +737,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (gridBright * progressWidth) / 200
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS +
-              '     ' +
+              '   ' +
               parseInt(gridBright - 100) +
               '%'
           } else if (
@@ -755,7 +756,7 @@ export default class TouchProgress extends Component {
             this._BackLine.style.width = (gridContrast * progressWidth) / 200
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST +
-              '     ' +
+              '   ' +
               parseInt(gridContrast - 100) +
               '%'
           }
@@ -1054,7 +1055,7 @@ export default class TouchProgress extends Component {
       this._setMapLegend(legendSettings)
       tips =
         getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-        '     ' +
+        '   ' +
         parseInt(columns)
     } else if (
       this.props.selectName ===
@@ -1070,7 +1071,7 @@ export default class TouchProgress extends Component {
       this._setMapLegend(legendSettings)
       tips =
         getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-        '     ' +
+        '   ' +
         parseInt(value)
     } else if (
       this.props.selectName ===
@@ -1086,7 +1087,7 @@ export default class TouchProgress extends Component {
       this._setMapLegend(legendSettings)
       tips =
         getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-        '     ' +
+        '   ' +
         parseInt(value)
     } else if (
       this.props.selectName ===
@@ -1102,7 +1103,7 @@ export default class TouchProgress extends Component {
       this._setMapLegend(legendSettings)
       tips =
         getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-        '     ' +
+        '   ' +
         parseInt(value)
     } else if (
       this.props.selectName ===
@@ -1118,7 +1119,7 @@ export default class TouchProgress extends Component {
       this._setMapLegend(legendSettings)
       tips =
         getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-        '     ' +
+        '   ' +
         parseInt(value)
     } else if (type.indexOf('MAP_MARKS') === 0) {
       if (value < this.range[0]) value = this.range[0]
@@ -1143,7 +1144,7 @@ export default class TouchProgress extends Component {
       value -= 100
       tips =
         this.props.selectName[this.props.selectName.length - 1] +
-        '     ' +
+        '   ' +
         parseInt(value) +
         '%'
       let mode = TPData.getMatchPictureMode(this.props.selectName)
@@ -1162,7 +1163,7 @@ export default class TouchProgress extends Component {
       ) {
         tips =
           getLanguage(global.language).Map_Main_Menu.RANGE_COUNT +
-          '     ' +
+          '   ' +
           parseInt(value)
         let Params = {
           LayerName: this.props.currentLayer.name,
@@ -1187,7 +1188,7 @@ export default class TouchProgress extends Component {
       ) {
         tips =
           getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-          '     ' +
+          '   ' +
           parseInt(value)
         let _params = {
           LayerName: this.props.currentLayer.name,
@@ -1204,7 +1205,7 @@ export default class TouchProgress extends Component {
       ) {
         tips =
           getLanguage(global.language).Map_Main_Menu.DOT_VALUE +
-          '     ' +
+          '   ' +
           parseInt(value)
         let _params = {
           LayerName: this.props.currentLayer.name,
@@ -1217,7 +1218,7 @@ export default class TouchProgress extends Component {
       ) {
         tips =
           getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-          '     ' +
+          '   ' +
           parseInt(value) +
           'mm'
         let _params = {
@@ -1243,7 +1244,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.DATUM_VALUE +
-          '     ' +
+          '   ' +
           parseInt(value)
         let _params = {
           LayerName: this.props.currentLayer.name,
@@ -1262,7 +1263,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE +
-          '     ' +
+          '   ' +
           parseInt(newValue) +
           'X'
         let _params = {
@@ -1281,7 +1282,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP_RADIUS +
-          '     ' +
+          '   ' +
           parseInt(value)
         let _params = {
           LayerName: this.props.currentLayer.name,
@@ -1296,7 +1297,7 @@ export default class TouchProgress extends Component {
         tips =
           getLanguage(global.language).Map_Main_Menu
             .THEME_HEATMAP_FUZZY_DEGREE +
-          '     ' +
+          '   ' +
           parseInt(value) +
           '%'
         let _params = {
@@ -1312,7 +1313,7 @@ export default class TouchProgress extends Component {
         tips =
           getLanguage(global.language).Map_Main_Menu
             .THEME_HEATMAP_MAXCOLOR_WEIGHT +
-          '     ' +
+          '   ' +
           parseInt(value) +
           '%'
         let _params = {
@@ -1339,7 +1340,7 @@ export default class TouchProgress extends Component {
             )
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-              '     ' +
+              '   ' +
               parseInt(value) +
               'mm'
           } else if (
@@ -1355,7 +1356,7 @@ export default class TouchProgress extends Component {
             )
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           } else if (
@@ -1371,7 +1372,7 @@ export default class TouchProgress extends Component {
             )
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '°'
           }
@@ -1384,7 +1385,7 @@ export default class TouchProgress extends Component {
           await SCartography.setLineWidth(value, this.props.currentLayer.name)
           tips =
             getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-            '     ' +
+            '   ' +
             parseInt(value) +
             'mm'
           break
@@ -1400,7 +1401,7 @@ export default class TouchProgress extends Component {
             await SCartography.setLineWidth(value, this.props.currentLayer.name)
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH +
-              '     ' +
+              '   ' +
               parseInt(value) +
               'mm'
           } else if (
@@ -1416,7 +1417,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           }
@@ -1439,7 +1440,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-              '     ' +
+              '   ' +
               parseInt(value)
           } else if (this.props.selectName === 'TEXT_ROTATION') {
             await SCartography.setTextAngleOfLayer(
@@ -1453,7 +1454,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '°'
           }
@@ -1473,7 +1474,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           } else if (
@@ -1488,7 +1489,7 @@ export default class TouchProgress extends Component {
               )
               tips =
                 getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS +
-                '     ' +
+                '   ' +
                 parseInt(gridBrigh) +
                 '%'
             } else if (value > 100) {
@@ -1502,7 +1503,7 @@ export default class TouchProgress extends Component {
               )
               tips =
                 getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS +
-                '     ' +
+                '   ' +
                 parseInt(gridBrigh) +
                 '%'
             }
@@ -1518,7 +1519,7 @@ export default class TouchProgress extends Component {
               )
               tips =
                 getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST +
-                '     ' +
+                '   ' +
                 parseInt(gridContrast) +
                 '%'
             } else if (value > 100) {
@@ -1532,7 +1533,7 @@ export default class TouchProgress extends Component {
               )
               tips =
                 getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST +
-                '     ' +
+                '   ' +
                 parseInt(value) +
                 '%'
             }
@@ -1579,7 +1580,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN +
-          '     ' +
+          '   ' +
           parseInt(columns)
       } else if (
         this.props.selectName ===
@@ -1592,7 +1593,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1605,7 +1606,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1618,7 +1619,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_ICON +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1631,7 +1632,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
-          '     ' +
+          '   ' +
           parseInt(value)
       }
     }
@@ -1671,7 +1672,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.RANGE_COUNT +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName === 'fontsize' ||
@@ -1685,7 +1686,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1698,7 +1699,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.DOT_VALUE +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1711,7 +1712,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-          '     ' +
+          '   ' +
           parseInt(value) +
           'mm'
       } else if (
@@ -1725,7 +1726,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.DATUM_VALUE +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1738,7 +1739,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE +
-          '     ' +
+          '   ' +
           parseInt(value) +
           'X'
       } else if (
@@ -1752,7 +1753,7 @@ export default class TouchProgress extends Component {
         }
         tips =
           getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP_RADIUS +
-          '     ' +
+          '   ' +
           parseInt(value)
       } else if (
         this.props.selectName ===
@@ -1767,7 +1768,7 @@ export default class TouchProgress extends Component {
         tips =
           getLanguage(global.language).Map_Main_Menu
             .THEME_HEATMAP_FUZZY_DEGREE +
-          '     ' +
+          '   ' +
           parseInt(value) +
           '%'
       } else if (
@@ -1783,7 +1784,7 @@ export default class TouchProgress extends Component {
         tips =
           getLanguage(global.language).Map_Main_Menu
             .THEME_HEATMAP_MAXCOLOR_WEIGHT +
-          '     ' +
+          '   ' +
           parseInt(value) +
           '%'
       }
@@ -1803,7 +1804,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
-              '     ' +
+              '   ' +
               parseInt(value) +
               'mm'
           } else if (
@@ -1817,7 +1818,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           } else if (
@@ -1831,7 +1832,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '°'
           }
@@ -1843,7 +1844,7 @@ export default class TouchProgress extends Component {
           }
           tips =
             getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
-            '     ' +
+            '   ' +
             parseInt(value) +
             'mm'
           break
@@ -1858,7 +1859,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH +
-              '     ' +
+              '   ' +
               parseInt(value) +
               'mm'
           } else if (
@@ -1872,7 +1873,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           }
@@ -1890,7 +1891,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
-              '     ' +
+              '   ' +
               parseInt(value)
           } else if (this.props.selectName === 'TEXT_ROTATION') {
             if (value < 0) {
@@ -1900,7 +1901,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '°'
           }
@@ -1918,7 +1919,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           } else if (
@@ -1936,7 +1937,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           } else if (
@@ -1954,7 +1955,7 @@ export default class TouchProgress extends Component {
             }
             tips =
               getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS +
-              '     ' +
+              '   ' +
               parseInt(value) +
               '%'
           }
@@ -2172,8 +2173,8 @@ export default class TouchProgress extends Component {
       if (num) {
         strArray = this.state.tips.split(num)
       } else {
-        strArray = this.state.tips.split('     ')
-        strArray[0] += '     '
+        strArray = this.state.tips.split('   ')
+        // strArray[0] += '   '
       }
     }
     return (
@@ -2212,7 +2213,7 @@ export default class TouchProgress extends Component {
             }}
             activeOpacity={1}
           >
-            <Text style={styles.tipsText}>{strArray[0]}</Text>
+            <Text style={styles.tipsText}>{strArray[0].trim()}</Text>
             <TextInput
               ref={ref => (this.input = ref)}
               value={num !== undefined ? num + '' : ' '}
@@ -2283,30 +2284,41 @@ const styles = StyleSheet.create({
   tips: {
     position: 'absolute',
     top: scaleSize(50),
-    paddingHorizontal: scaleSize(10),
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    paddingHorizontal: scaleSize(20),
+    // marginLeft: 'auto',
+    // marginRight: 'auto',
     backgroundColor: 'rgba(110,110,110,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
   tipsText: {
-    fontSize: setSpText(20),
+    textAlign: 'center',
+    fontSize: setSpText(24),
     // fontFamily 字体
     fontWeight: 'bold',
     color: 'white',
   },
   input: {
+    height: setSpText(50),
     fontSize: setSpText(24),
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'right',
     color: 'white',
-    minWidth: scaleSize(40),
+    // minWidth: scaleSize(40),
+    width: scaleSize(100),
     ...Platform.select({
       android: {
         padding: 0,
       },
     }),
+  },
+  valueText: {
+    height: setSpText(50),
+    fontSize: setSpText(24),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    minWidth: scaleSize(40),
   },
 })

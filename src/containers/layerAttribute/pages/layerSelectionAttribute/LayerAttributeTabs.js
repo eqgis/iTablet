@@ -370,7 +370,9 @@ export default class LayerAttributeTabs extends React.Component {
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
       }
+      return result
     }
+    return false
   }
 
   /** 关联事件 **/

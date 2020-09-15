@@ -48,7 +48,7 @@ export default class ModuleInfo extends Component {
   getModuleData = () => {
     return [
       {
-        title: getLanguage(global.language).Map_Module.MAP_AR,
+        title: getLanguage(global.language).Map_Module.MAP_AR_MODULE,
         id: Platform.OS === 'ios' ? '18004' : '19004',
       },
       {

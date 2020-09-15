@@ -2,6 +2,7 @@
 const Map_Module = {
   MAP_EDIT: 'Kartografi',
   MAP_3D: 'Sahnet',
+  MAP_AR_MODULE: 'AR Module', //待翻译
   MAP_AR: 'AR Harita',
   MAP_AR_ANALYSIS: 'AR Analysis', //待翻译
   MAP_AR_MAPPING: 'AR Mapping',

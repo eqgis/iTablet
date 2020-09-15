@@ -2,6 +2,7 @@
 const Map_Module = {
   MAP_EDIT: 'رسم الخرائط',
   MAP_3D: 'مشهد',
+  MAP_AR_MODULE: 'AR Module', //待翻译
   MAP_AR: 'خريطة عربية',
   MAP_AR_ANALYSIS: 'AR Analysis', //待翻译
   MAP_AR_MAPPING: 'AR Mapping',

@@ -107,6 +107,7 @@ export default class ModuleInfo extends Component {
           </Text>
         </View>
         <FlatList
+          style={{ backgroundColor: 'white' }}
           data={this.getEditionData()}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}
@@ -124,6 +125,7 @@ export default class ModuleInfo extends Component {
           </Text>
         </View>
         <FlatList
+          style={{ backgroundColor: 'white' }}
           data={this.getModuleData()}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}

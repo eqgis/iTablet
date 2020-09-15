@@ -164,25 +164,27 @@ export default class LicenseInfo extends Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: color.background }}>
-        <View style={styles.item}>
-          <Text style={styles.title}>
-            {getLanguage(global.language).Profile.LICENSE_CURRENT}
-          </Text>
+        <View style={{ backgroundColor: color.content_white }}>
+          <View style={styles.item}>
+            <Text style={styles.title}>
+              {getLanguage(global.language).Profile.LICENSE_CURRENT}
+            </Text>
+          </View>
+          <InfoItem
+            text={getLanguage(global.language).Profile.LICENSE_TYPE}
+            info={licenseTypeTitle}
+            rightImage={require('../../../../../assets/Mine/mine_my_arrow.png')}
+            action={this.props.selectLicenseType}
+          />
+          <InfoItem
+            text={getLanguage(global.language).Profile.LICENSE_STATE}
+            info={daysStr}
+          />
+          <InfoItem
+            text={getLanguage(global.language).Profile.LICENSE_USER_NAME}
+            info={licenseInfo ? licenseInfo.user : ''}
+          />
         </View>
-        <InfoItem
-          text={getLanguage(global.language).Profile.LICENSE_TYPE}
-          info={licenseTypeTitle}
-          rightImage={require('../../../../../assets/Mine/mine_my_arrow.png')}
-          action={this.props.selectLicenseType}
-        />
-        <InfoItem
-          text={getLanguage(global.language).Profile.LICENSE_STATE}
-          info={daysStr}
-        />
-        <InfoItem
-          text={getLanguage(global.language).Profile.LICENSE_USER_NAME}
-          info={licenseInfo ? licenseInfo.user : ''}
-        />
 
         {licenseType === LicenseType.trial && this.renderTrial()}
         {licenseType !== LicenseType.trial &&

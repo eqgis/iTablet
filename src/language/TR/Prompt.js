@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Alan geçersiz',
   PLEASE_SELECT_A_RASTER_LAYER: 'Lütfen raster katmanı seçin',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını uniform ekleyin',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını',//待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'Mevcut katman modifikasyonu desteklemiyor',
 
   FAILED_TO_CREATE_POINT: 'Nokta oluşturma başarısız',

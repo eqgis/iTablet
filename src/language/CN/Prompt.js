@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: '字段不合法',
   PLEASE_SELECT_A_RASTER_LAYER: '请选择栅格图层',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: '请先通过"统一风格"添加数据源',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: '请先添加数据源',
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: '提示:当前图层暂不支持修改',
 
   FAILED_TO_CREATE_POINT: '点绘线失败',

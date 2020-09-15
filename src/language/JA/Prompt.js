@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'フィールドは無効です',
   PLEASE_SELECT_A_RASTER_LAYER: 'ラスタレイヤーを選択してください',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: '"統一スタイル"でデータソースを追加してください',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください',//待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'ヒント:現在レイヤーは変更をサポートしません',
 
   FAILED_TO_CREATE_POINT: 'ポイント追加に失敗',

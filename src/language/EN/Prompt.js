@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Field illegal',
   PLEASE_SELECT_A_RASTER_LAYER: 'Please select a raster layer',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Please add the Datasource by Uniform',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Please add the Datasource',
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'The current layer does not support modification',
 
   FAILED_TO_CREATE_POINT: 'Failed to create point',

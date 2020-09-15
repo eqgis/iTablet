@@ -2,6 +2,7 @@
 const Map_Module = {
   MAP_EDIT: 'Carte',
   MAP_3D: 'Paysage',
+  MAP_AR_MODULE: 'AR Module', //待翻译
   MAP_AR: 'Collection RA',
   MAP_AR_ANALYSIS: 'AR Analysis', //待翻译
   MAP_AR_MAPPING: 'AR Mapping',

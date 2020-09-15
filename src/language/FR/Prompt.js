@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Champ illégal',
   PLEASE_SELECT_A_RASTER_LAYER: 'Veuillez sélectionner une couche raster',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Veuillez ajouter la source de données par uniforme',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Veuillez ajouter la source de données',//待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'La couche actuelle ne prend pas en charge la modification',
 
   FAILED_TO_CREATE_POINT: 'Échec de création du point',

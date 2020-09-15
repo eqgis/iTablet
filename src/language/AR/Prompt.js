@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'الحقل غير قانونى',
   PLEASE_SELECT_A_RASTER_LAYER: 'يرجى تحديد طبقة البيانات النقطية',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'من فضلك اض مجموعه بيانات بشكل موحد',
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'من فضلك اض مجموعه بيانات بشكل موحد',//待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'لا تدعم الطبقة الحالية التعديل',
 
   FAILED_TO_CREATE_POINT: 'فشل في إنشاء نقطة',

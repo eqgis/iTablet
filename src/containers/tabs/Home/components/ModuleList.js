@@ -401,7 +401,12 @@ class ModuleList extends Component {
     if (!downloadData || !downloadData.key) return null
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id && this.props.downloads[i].params.module === downloadData.key) {
+        if (
+          this.props.downloads[i].id && (
+            this.props.downloads[i].id === downloadData.key ||
+            this.props.downloads[i].params.module === downloadData.key
+          )
+        ) {
           return this.props.downloads[i]
         }
       }

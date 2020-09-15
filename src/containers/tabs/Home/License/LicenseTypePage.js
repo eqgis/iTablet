@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  FlatList,
-  Platform,
-} from 'react-native'
+import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
@@ -14,7 +7,6 @@ import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
-import { Login } from '../../Mine'
 
 const LicenseType = {
   local: 0,
@@ -106,11 +98,11 @@ class LicenseTypePage extends Component {
           >
             {this.props.licenseInfo &&
               this.props.licenseInfo.licenseType === item.type && (
-                <Image
-                  source={require('../../../../assets/public/settings_selected.png')}
-                  style={{ height: scaleSize(55), width: scaleSize(55) }}
-                />
-              )}
+              <Image
+                source={require('../../../../assets/public/settings_selected.png')}
+                style={{ height: scaleSize(55), width: scaleSize(55) }}
+              />
+            )}
           </View>
           <View
             style={{
@@ -167,6 +159,7 @@ class LicenseTypePage extends Component {
         }}
       >
         <FlatList
+          contentContainerStyle={{ backgroundColor: color.content_white }}
           data={this.getType()}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}

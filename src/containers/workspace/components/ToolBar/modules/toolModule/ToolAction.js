@@ -339,7 +339,6 @@ async function redo(type = null) {
 
 async function setting() {
   NavigationService.navigate('AIDetecSettingsView')
-  this.props.showFullMap && this.props.showFullMap(true)
   await SAIDetectView.setProjectionModeEnable(false)
 }
 

@@ -43,7 +43,7 @@ export default class AIDetecSettingsView extends React.Component {
 
     this.state = {
       currentModel: DEFAULT_MODEL, //当前使用的模型
-      defaultBtx: '',
+      defaultBtx: getLanguage(this.props.language).Prompt.USED_IMMEDIATELY,
       dustbinBtx: '',
       plantBtx: '',
     }
@@ -129,14 +129,14 @@ export default class AIDetecSettingsView extends React.Component {
           defaultBtx: getLanguage(this.props.language).Prompt.USING,
         })
       } else if (currentmodel.ModelType === 'ABSOLUTE_FILE_PATH') {
-        if (currentmodel.ModelPath.indexOf(DETECT_DUSTBIN_MODEL) !== -1) {
+        if (currentmodel.ModelPath === this.dustbin_model) {
           this.setState({
             currentModel: DETECT_DUSTBIN_MODEL,
             defaultBtx: getLanguage(this.props.language).Prompt
               .USED_IMMEDIATELY,
             dustbinBtx: getLanguage(this.props.language).Prompt.USING,
           })
-        } else if (currentmodel.ModelPath.indexOf(ROAD_MODEL) !== -1) {
+        } else if (currentmodel.ModelPath === this.plant_model) {
           this.setState({
             currentModel: ROAD_MODEL,
             defaultBtx: getLanguage(this.props.language).Prompt
@@ -303,14 +303,22 @@ export default class AIDetecSettingsView extends React.Component {
                 let result = await SAIDetectView.setDetectInfo(params)
                 NavigationService.goBack()
                 setTimeout(() => {
+                  let dustbinBtx =
+                    this.state.dustbinBtx ===
+                    getLanguage(this.props.language).Prompt.USING
+                  let plantBtx =
+                    this.state.plantBtx ===
+                    getLanguage(this.props.language).Prompt.USING
                   this.setState({
                     currentModel: 'MyAIModel',
                     defaultBtx: getLanguage(this.props.language).Prompt
                       .USED_IMMEDIATELY,
-                    dustbinBtx: getLanguage(this.props.language).Prompt
-                      .USED_IMMEDIATELY,
-                    plantBtx: getLanguage(this.props.language).Prompt
-                      .USED_IMMEDIATELY,
+                    dustbinBtx: dustbinBtx
+                      ? getLanguage(this.props.language).Prompt.USED_IMMEDIATELY
+                      : this.state.dustbinBtx,
+                    plantBtx: plantBtx
+                      ? getLanguage(this.props.language).Prompt.USED_IMMEDIATELY
+                      : this.state.plantBtx,
                   })
                   Toast.show(
                     result

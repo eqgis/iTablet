@@ -142,6 +142,11 @@ export default class InputStyledText extends InputPage {
           keyboardType={'numeric'}
           maxLength={2}
           textAlign={'center'}
+          onBlur={() => {
+            if (this.state.fontSize === '') {
+              this.setState({ fontSize: '30' })
+            }
+          }}
           onChangeText={text => {
             let value = this.clearNoNum(text)
             this.setState({ fontSize: value })

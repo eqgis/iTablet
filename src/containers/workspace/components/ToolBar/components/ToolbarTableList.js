@@ -53,7 +53,7 @@ export default class ToolbarTableList extends React.Component {
         // size={MTBtn.Size.NORMAL}
         image={item.image}
         background={item.background}
-        onPress={() => {
+        onPressOut={() => {
           !item.disable && this.itemAction(item)
         }}
       />

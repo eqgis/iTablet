@@ -6,15 +6,8 @@ import {
   Text,
   FlatList,
   Platform,
-  Animated,
 } from 'react-native'
-import {
-  FetchUtils,
-  scaleSize,
-  screen,
-  setSpText,
-  Toast,
-} from '../../../../utils'
+import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
 import { TouchType } from '../../../../constants'
 import styles from './styles'
@@ -23,7 +16,7 @@ import PropTypes from 'prop-types'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
-import { Dialog } from '../../../../components'
+import { Dialog, Container } from '../../../../components'
 import { getPublicAssets } from '../../../../assets'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 
@@ -53,24 +46,6 @@ export default class NavigationView extends React.Component {
     this.state = {
       startName: '',
       endName: '',
-    }
-    this.maxWidth =
-      props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(
-          screen.getScreenWidth(props.device.orientation) * 0.45,
-        )
-        : new Animated.Value(screen.getScreenWidth(props.device.orientation))
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.device.orientation !== this.props.device.orientation) {
-      let maxWidth =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? screen.getScreenWidth(this.props.device.orientation) * 0.45
-          : screen.getScreenWidth(this.props.device.orientation)
-      Animated.timing(this.maxWidth, {
-        toValue: maxWidth,
-        duration: 300,
-      }).start()
     }
   }
 
@@ -669,18 +644,14 @@ export default class NavigationView extends React.Component {
       }
     }
   }
-  _renderSearchView = () => {
-    // let renderHistory = this.props.navigationhistory.filter(
-    //   item => item.isOutDoor === GLOBAL.ISOUTDOORMAP,
-    // )
+
+  render = () => {
     let renderHistory = this.props.navigationhistory
     return (
-      <Animated.View
-        style={{
-          flex: 1,
-          maxWidth: this.maxWidth,
-          backgroundColor: '#ebebeb',
-        }}
+      <Container
+        isOverlayBefore={false}
+        withoutHeader={true}
+        style={{ backgroundColor: '#ebebeb' }}
       >
         <View
           style={{
@@ -887,7 +858,7 @@ export default class NavigationView extends React.Component {
             </Text>
           </View>
         </Dialog>
-      </Animated.View>
+      </Container>
     )
   }
 
@@ -938,9 +909,5 @@ export default class NavigationView extends React.Component {
         <View style={styles.itemSeparator} />
       </View>
     )
-  }
-
-  render() {
-    return this._renderSearchView()
   }
 }

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-// import LayerSelectionAttribute from './LayerSelectionAttribute'
 import LayerAttributeTabs from './LayerAttributeTabs'
 import {
   setCurrentAttribute,
@@ -7,6 +6,10 @@ import {
   setAttributeHistory,
   clearAttributeHistory,
 } from '../../../../redux/models/layers'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../../../redux/models/backActions'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -24,6 +27,8 @@ const mapDispatchToProps = {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  setBackAction,
+  removeBackAction,
 }
 
 export default connect(

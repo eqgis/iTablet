@@ -5,8 +5,8 @@
  */
 
 import * as React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { Container, MTBtn, PopView, Dialog, PopModal } from '../../../../components'
+import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native'
+import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
 import { Toast, scaleSize, StyleUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -76,6 +76,8 @@ export default class LayerAttributeTabs extends React.Component {
     setLayerAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
+    setBackAction: () => {},
+    removeBackAction: () => {},
   }
 
   constructor(props) {
@@ -143,6 +145,10 @@ export default class LayerAttributeTabs extends React.Component {
 
   componentDidMount() {
     (async function() {
+      await this.props.setBackAction({
+        key: this.props.navigation.state.routeName,
+        action: this.back,
+      })
       if (this.preAction && typeof this.preAction === 'function') {
         await this.preAction()
       }
@@ -150,6 +156,14 @@ export default class LayerAttributeTabs extends React.Component {
         isShowView: true,
       })
     }.bind(this)())
+  }
+  
+  componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      this.props.removeBackAction({
+        key: this.props.navigation.state.routeName,
+      })
+    }
   }
 
   showDrawer = isShow => {

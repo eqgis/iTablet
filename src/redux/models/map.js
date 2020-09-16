@@ -154,6 +154,8 @@ export const saveMap = (params = {}, cb = () => {}) => async (
       path = `${ConstPath.UserPath + userName}/${
         ConstPath.RelativePath.Map
       }${mapName}.xml`
+    } else {
+      await SMap.saveMap(params.mapName, false, false)
     }
 
     // 另存为 和 未打开一幅已命名的地图，则需要重新设置当前地图

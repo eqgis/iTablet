@@ -10,7 +10,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   SectionList,
-  Dimensions,
+  RefreshControl,
   Platform,
   Keyboard,
 } from 'react-native'
@@ -657,7 +657,7 @@ export default class LayerAttributeTable extends React.Component {
     return (
       <View
         style={{
-          width: Dimensions.get('window').width,
+          flex: 1,
           height: COL_HEIGHT,
           justifyContent: 'center',
           alignItems: 'center',
@@ -665,19 +665,12 @@ export default class LayerAttributeTable extends React.Component {
       >
         <IndicatorLoading
           title={getLanguage(global.language).Prompt.LOADING}
-          //{'加载中'}
         />
       </View>
     )
   }
 
   render() {
-    // if (
-    //   !this.state.isMultiData &&
-    //   Object.keys(this.state.tableData[0].data).length === 0
-    // ) {
-    //   return null
-    // }
     if (Platform.OS === 'android') {
       return (
         <KeyboardAvoidingView
@@ -685,7 +678,6 @@ export default class LayerAttributeTable extends React.Component {
           enabled
           style={[styles.container, this.props.contentContainerStyle]}
         >
-          {/*<View style={styles.container}>*/}
           {this.props.type === 'MULTI_DATA' && this.state.isMultiData
             ? this.renderMultiDataTable()
             : this.renderSingleDataTable()}

@@ -162,7 +162,10 @@ export default class Map3D extends React.Component {
     ) {
       let data
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
         }
       }
@@ -888,7 +891,10 @@ export default class Map3D extends React.Component {
     let data
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
-        if (this.props.downloads[i].id === GLOBAL.Type) {
+        if (
+          this.props.downloads[i].id &&
+          this.props.downloads[i].params.module === GLOBAL.Type
+        ) {
           data = this.props.downloads[i]
           break
         }

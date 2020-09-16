@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: color.subTheme,
-    backgroundColor: color.white,
+    backgroundColor: color.bgW,
   },
   listContainer: {
     backgroundColor: 'transparent',

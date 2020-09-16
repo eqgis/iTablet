@@ -1197,36 +1197,7 @@ export default class MapView extends React.Component {
 
   _addMap = () => {
     (async function() {
-      let bWorkspcaOpen = true
-      let bDatasourceOPen = true
-      let bMapOPen = true
-      let bPlotOpen = true
-      let bCreateTag = true
-      let bNaviCreate = true
       try {
-        // if (this.wsData === null || this.wsData === undefined) {
-        //   this.setLoading(false)
-        //   return
-        // }
-
-        setTimeout(async () => {
-          // debugger
-          this.setLoading(false)
-          if (!bWorkspcaOpen) {
-            // Toast.show("workspace !")
-          } else if (!bDatasourceOPen) {
-            // Toast.show("datasource !")
-          } else if (!bMapOPen) {
-            // Toast.show("map !")
-          } else if (!bPlotOpen) {
-            // Toast.show("plot !")
-          } else if (!bCreateTag) {
-            // Toast.show("tagging !")
-          } else if (!bNaviCreate) {
-            // Toast.show("navi !")
-          }
-          // debugger
-        }, 1000 * 15)
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
           if (this.wsData instanceof Array) {
@@ -1234,28 +1205,19 @@ export default class MapView extends React.Component {
               let item = this.wsData[i]
               if (item === null) continue
               if (item.type === 'Workspace') {
-                bWorkspcaOpen = false
                 await this._openWorkspace(
                   this.wsData[i],
                   this.wsData[i].layerIndex,
                 )
-                bWorkspcaOpen = true
-                // debugger
               } else if (item.type === 'Datasource') {
-                bDatasourceOPen = false
                 await this._openDatasource(
                   this.wsData[i],
                   this.wsData[i].layerIndex,
                   false,
                 )
-                bDatasourceOPen = true
-                // debugger
               } else if (item.type === 'Map') {
-                bMapOPen = false
                 await this._openMap(this.wsData[i])
                 hasMap = true
-                bMapOPen = true
-                // debugger
               }
               // else if (item.type === 'LastMap') {
               //   // 打开最近地图
@@ -1265,21 +1227,12 @@ export default class MapView extends React.Component {
             }
           } else {
             if (this.wsData.type === 'Workspace') {
-              bWorkspcaOpen = false
               await this._openWorkspace(this.wsData, this.wsData.layerIndex)
-              bWorkspcaOpen = true
-              // debugger
             } else if (this.wsData.type === 'Datasource') {
-              bDatasourceOPen = false
               await this._openDatasource(this.wsData, this.wsData.layerIndex)
-              bDatasourceOPen = true
-              // debugger
             } else if (this.wsData.type === 'Map') {
-              bMapOPen = false
               await this._openMap(this.wsData)
               hasMap = true
-              bMapOPen = true
-              // debugger
             }
             // else if (this.wsData.type === 'LastMap') {
             //   // 打开最近地图
@@ -1304,11 +1257,9 @@ export default class MapView extends React.Component {
             ConstPath.RelativeFilePath.Workspace[
               global.language === 'CN' ? 'CN' : 'EN'
             ]
-          bWorkspcaOpen = false
           await this._openWorkspace({
             DSParams: { server: wsPath },
           })
-          bWorkspcaOpen = true
         }
         //没有打开地图，默认加载以“DefaultMapLib"为名的符号库
         if (!hasMap) {
@@ -1336,7 +1287,6 @@ export default class MapView extends React.Component {
             //ConstInfo.TEMPLATE_READING
             getLanguage(this.props.language).Prompt.READING_TEMPLATE,
           )
-          bPlotOpen = false
           let plotIconPath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath +
               this.props.user.currentUser.userName +
@@ -1355,7 +1305,6 @@ export default class MapView extends React.Component {
             },
           )
           GLOBAL.newPlotMapName = ''
-          bPlotOpen = true
         }
 
         // GLOBAL.Type === ChunkType.MAP_COLLECTION && this.initCollectorDatasource()
@@ -1396,9 +1345,7 @@ export default class MapView extends React.Component {
           ...this.props,
         })
         GLOBAL.TouchType = TouchType.NORMAL
-
-        bCreateTag = false
-
+        
         SMap.setLabelColor()
         // 示例地图不加载标注图层
         !this.isExample &&
@@ -1421,7 +1368,6 @@ export default class MapView extends React.Component {
                       await SMap.setLayerVisible(layer.name, true)
                       this.props.setCurrentLayer(layer)
 
-                      bCreateTag = true
                       if (hasMap) SMap.saveMap('', false, false)
                       // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
                       SMap.getTaggingLayers(
@@ -1429,7 +1375,7 @@ export default class MapView extends React.Component {
                       ).then(dataList => {
                         dataList.forEach(item => {
                           if (item.isVisible) {
-                            SMediaCollector.showMedia(item.name)
+                            SMediaCollector.showMedia(item.name, false)
                           }
                         })
                       })
@@ -1455,7 +1401,6 @@ export default class MapView extends React.Component {
         SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
         if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-          bNaviCreate = false
           this.props.setMap2Dto3D(true)
           this.props.setMapNavigation({ isShow: false, name: '' })
           SMap.getCurrentFloorID().then(currentFloorID => {
@@ -1468,7 +1413,6 @@ export default class MapView extends React.Component {
           GLOBAL.ENDNAME = getLanguage(
             GLOBAL.language,
           ).Map_Main_Menu.SELECT_DESTINATION
-          bNaviCreate = true
         }
 
         //防止退出时没有清空
@@ -1485,19 +1429,6 @@ export default class MapView extends React.Component {
         }
         this.startCowork()
       } catch (e) {
-        if (!bWorkspcaOpen) {
-          // Toast.show("workspace !")
-        } else if (!bDatasourceOPen) {
-          // Toast.show("datasource !")
-        } else if (!bMapOPen) {
-          // Toast.show("map !")
-        } else if (!bPlotOpen) {
-          // Toast.show("plot !")
-        } else if (!bCreateTag) {
-          // Toast.show("tagging !")
-        } else if (!bNaviCreate) {
-          // Toast.show("navi !")
-        }
         this.setLoading(false)
         this.mapLoaded = true
       }
@@ -1507,7 +1438,7 @@ export default class MapView extends React.Component {
   startCowork = () => {
     if (global.coworkMode && CoworkInfo.coworkId === '') {
       //创建
-      if (CoworkInfo.talkId != '') {
+      if (CoworkInfo.talkId !== '') {
         //从发现创建
         try {
           let friend = global.getFriend()

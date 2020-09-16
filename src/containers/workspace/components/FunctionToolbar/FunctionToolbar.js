@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList } from 'react-native'
+import { View, Animated, FlatList, TouchableOpacity } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
 import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
@@ -44,6 +44,9 @@ const RIGHT = scaleSize(20)
 const RIGHT_LANDSCAPE = 0
 const TOP = scaleSize(143)
 const TOP_LANDSCAPE = screen.HEADER_HEIGHT_LANDSCAPE
+const PREVIOUS = 'previous'
+const NEXT = 'next'
+
 export default class FunctionToolbar extends React.Component {
   props: {
     navigation: Object,
@@ -321,6 +324,20 @@ export default class FunctionToolbar extends React.Component {
   geometryMultiSelected = () => {
     // TODO 处理多选
   }
+  
+  indicatorScroll = ({location, isLandscape}) => {
+    let _offset = isLandscape ? scaleSize(120) : scaleSize(96)
+    switch (location) {
+      case PREVIOUS: {
+        this.list && this.list.scrollToOffset({offset: this.offset - _offset, animated: true})
+        break
+      }
+      case NEXT: {
+        this.list && this.list.scrollToOffset({offset: this.offset + _offset, animated: true})
+        break
+      }
+    }
+  }
 
   _renderItem = ({ item, index }) => {
     return (
@@ -436,21 +453,25 @@ export default class FunctionToolbar extends React.Component {
     let source
     let style = {
       opacity:
-        location === 'previous' ? this.previousOpacity : this.nextOpacity,
+        location === PREVIOUS ? this.previousOpacity : this.nextOpacity,
     }
     if (isLandscape) {
       source =
-        location === 'previous'
+        location === PREVIOUS
           ? getPublicAssets().common.icon_slide_left
           : getPublicAssets().common.icon_slide_right
     } else {
       source =
-        location === 'previous'
+        location === PREVIOUS
           ? getPublicAssets().common.icon_slide_up
           : getPublicAssets().common.icon_slide_down
     }
     return (
-      <View style={isLandscape ? styles.indicatorViewL : styles.indicatorViewP}>
+      <TouchableOpacity
+        style={isLandscape ? styles.indicatorViewL : styles.indicatorViewP}
+        activeOpacity={1}
+        onPress={() => this.indicatorScroll({location, isLandscape})}
+      >
         <Animated.Image
           resizeMode={'contain'}
           style={[
@@ -459,7 +480,7 @@ export default class FunctionToolbar extends React.Component {
           ]}
           source={source}
         />
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -499,9 +520,9 @@ export default class FunctionToolbar extends React.Component {
     }
     return (
       <Animated.View style={containerStyle}>
-        {this.state.data.length > 0 && this.renderIndicator('previous')}
+        {this.state.data.length > 0 && this.renderIndicator(PREVIOUS)}
         {this.renderList()}
-        {this.state.data.length > 0 && this.renderIndicator('next')}
+        {this.state.data.length > 0 && this.renderIndicator(NEXT)}
         {/*{this.props.device.orientation.indexOf('LANDSCAPE') === 0 && (*/}
         {/*<View style={{ height: 1, backgroundColor: '#EEEEEE' }} />*/}
         {/*)}*/}

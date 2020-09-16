@@ -127,7 +127,8 @@ export default class MediaEdit extends React.Component {
             ConstPath.RelativeFilePath.Media,
         )
         let result = await SMediaCollector.saveMediaByDataset(
-          GLOBAL.TaggingDatasetName || this.info.layerName,
+          // GLOBAL.TaggingDatasetName || this.info.layerName,
+          this.info.layerName,
           this.info.geoID,
           targetPath,
           modifiedData,

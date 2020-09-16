@@ -145,7 +145,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/vec_w/wmts?dpi=96/&tk=ee1a36d71fda193082a10bea9661c811',
+        'http://t0.tianditu.com/vec_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
       engineType: 23,
       driver: 'WMTS',
       alias: 'tianditu',

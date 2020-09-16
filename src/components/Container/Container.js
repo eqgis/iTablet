@@ -310,7 +310,7 @@ export default class Container extends Component {
         <View style={{ flex: 1 }}>
           <StatusBar animated={true} hidden={false} />
           {headerOnTop && this.renderHeader(fixHeader)}
-          <View style={[{ flex: 1 }, direction]}>
+          <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
             <ContainerView style={[styles.container, this.props.style]}>
               {!headerOnTop && this.renderHeader(fixHeader)}
               {this.props.children}

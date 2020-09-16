@@ -1310,6 +1310,26 @@ export default class MapView extends React.Component {
           })
           bWorkspcaOpen = true
         }
+        //没有打开地图，默认加载以“DefaultMapLib"为名的符号库
+        if (!hasMap) {
+          const userPath = `${ConstPath.UserPath +
+            (this.props.user.currentUser.userName || 'Customer')}/`
+          const fillLibPath = await FileTools.appendingHomeDirectory(
+            `${userPath +
+              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
+          )
+          const lineLibPath = await FileTools.appendingHomeDirectory(
+            `${userPath +
+              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
+          )
+          const markerLibPath = await FileTools.appendingHomeDirectory(
+            `${userPath +
+              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
+          )
+          await SMap.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
+          await SMap.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
+          await SMap.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
+        }
         if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
           this.setLoading(
             true,

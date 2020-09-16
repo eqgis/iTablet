@@ -94,7 +94,7 @@ export default class ToolBarSectionList extends React.Component {
           selectList[section.title].indexOf(pushName) < 0
         ) {
           selectList[section.title].push(pushName)
-        } else if (selectList[section.title].indexOf(pushName) >= 0) {
+        } else if (selectList[section.title].indexOf(pushName) >= 0 && this.props.listSelectable) {
           item.isSelected = true
         }
       }

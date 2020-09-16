@@ -239,6 +239,9 @@ async function getSymbolsFromFile() {
         onSymbolClick={async data => {
           let params = ToolbarModule.getParams()
           let mapName = params.map.currentMap.name
+          if (!mapName || mapName === '') {
+            mapName = 'DefaultMapLib'
+          }
           let isEixst = await SMap.isInSymbolLib(data.type, data.id)
           let addSymbol = async (mapName, filePath, id, isReplace) => {
             let result = await SMap.addSymbolFromFile(

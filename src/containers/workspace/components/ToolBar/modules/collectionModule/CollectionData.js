@@ -120,7 +120,7 @@ function getData(type) {
     {
       type: ToolbarBtnType.CHANGE_COLLECTION,
       image: getThemeAssets().collection.icon_collection_change,
-      action: CollectionAction.changeCollection,
+      action: () => CollectionAction.changeCollection(type),
     },
     {
       type: ToolbarBtnType.MAP_SYMBOL,

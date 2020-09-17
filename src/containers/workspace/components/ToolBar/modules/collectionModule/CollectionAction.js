@@ -5,6 +5,7 @@ import {
   DatasetType,
   GeoStyle,
   Action,
+  SLocation,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -33,7 +34,7 @@ function openTemplate(type) {
 /**
  *
  */
-function changeCollection() {
+function changeCollection(type) {
   const params = ToolbarModule.getParams()
   const data = ToolbarModule.getData()
   SCollector.stopCollect()
@@ -55,6 +56,10 @@ function changeCollection() {
     case SMCollectorType.POINT_HAND:
       toolbarType = ConstToolType.MAP_COLLECTION_POINT
       break
+  }
+  
+  if (isGPSCollect(type)) {
+    SLocation.setBackgroundLocationEnable(false)
   }
 
   params.setToolbarVisible(true, toolbarType, {
@@ -226,6 +231,11 @@ async function createCollector(type, layerName) {
     // 设置绘制风格
     await SCollector.setStyle(collectorStyle)
     await SCollector.initCollect(type)
+    if (isGPSCollect(type)) {
+      await SLocation.setBackgroundLocationEnable(true)
+    } else {
+      await SLocation.setBackgroundLocationEnable(false)
+    }
     ToolbarModule.getParams().getLayers(-1, () => {
       ToolbarModule.getParams().setCurrentLayer(layerInfo)
     })
@@ -296,6 +306,9 @@ async function close(type) {
     (typeof type === 'string' && type.indexOf('MAP_COLLECTION_') >= 0)
   ) {
     await SCollector.stopCollect()
+    if (isGPSCollect(type)) {
+      await SLocation.setBackgroundLocationEnable(false)
+    }
   }
   params.existFullMap && params.existFullMap()
   // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
@@ -304,6 +317,16 @@ async function close(type) {
   params.setCurrentSymbol()
   ToolbarModule.setData() // 关闭Toolbar清除临时数据
   SMap.setAction(Action.PAN)
+}
+
+function isGPSCollect (type) {
+  return (
+    type === SMCollectorType.POINT_GPS ||
+    type === SMCollectorType.LINE_GPS_POINT ||
+    type === SMCollectorType.LINE_GPS_PATH ||
+    type === SMCollectorType.REGION_GPS_POINT ||
+    type === SMCollectorType.REGION_GPS_PATH
+  )
 }
 
 export default {

@@ -48,7 +48,6 @@ async function OpenData(data, index, callback) {
     let taggingLayers = await SMap.getTaggingLayers(
       GLOBAL.currentUser.userName,
     )
-    debugger
     for (let _layer of taggingLayers) {
       let isMediaLayer = await SMediaCollector.isMediaLayer(_layer.name)
       if (_layer.isVisible && isMediaLayer) {

@@ -5,9 +5,10 @@ import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arVideoModule from './arVideoModule'
 
+let ToolbarModule
 export default class ARVideoView extends React.Component {
   props: {
     navigation: Object,
@@ -29,6 +30,7 @@ export default class ARVideoView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arVideoModule)
     ToolbarModule.setToolBarData('ARVIDEOMODULE')
     this.toolbar.setVisible(true, 'ARVIDEOMODULE', {
@@ -50,7 +52,7 @@ export default class ARVideoView extends React.Component {
   }
 
   renderToolbar = () => {
-    return <ToolBar ref={ref => (this.toolbar = ref)} />
+    return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
   render() {

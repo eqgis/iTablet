@@ -1,6 +1,8 @@
 import { SARWebView } from 'imobile_for_reactnative'
-import ToolbarModule from '../../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
 import NavigationService from '../../NavigationService'
+
+let ToolbarModule = getToolbarModule('AR')
 
 function inputUrl() {
   NavigationService.navigate('InputPage', {

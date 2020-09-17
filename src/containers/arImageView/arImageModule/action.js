@@ -1,6 +1,8 @@
 import { ImagePicker } from '../../../components'
 import { SARImage } from 'imobile_for_reactnative'
-import ToolbarModule from '../../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
+
+let ToolbarModule = getToolbarModule('AR')
 
 function selectImage() {
   ImagePicker.AlbumListView.defaultProps.showDialog = false

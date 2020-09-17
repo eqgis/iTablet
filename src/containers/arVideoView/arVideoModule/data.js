@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { getLanguage } from '../../../language'
-import ToolbarModule from '../../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
 import { Toast } from '../../../utils'
 import { SARVideoView } from 'imobile_for_reactnative'
 import ToolbarBtnType from '../../workspace/components/ToolBar/ToolbarBtnType'
 import action from './action'
 import XYZSlide from '../../../components/XYZSlide'
 import Slide from '../../../components/Slide'
+
+let ToolbarModule = getToolbarModule('AR')
 
 function getData(type) {
   let data = []

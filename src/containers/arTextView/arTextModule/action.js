@@ -1,7 +1,9 @@
 import { SARText } from 'imobile_for_reactnative'
-import ToolbarModule from '../../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
 import NavigationService from '../../NavigationService'
 import { getLanguage } from '../../../language'
+
+let ToolbarModule = getToolbarModule('AR')
 
 function inputText() {
   NavigationService.navigate('InputStyledText', {

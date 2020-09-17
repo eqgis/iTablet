@@ -5,9 +5,10 @@ import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arImageModule from './arImageModule'
 
+let ToolbarModule
 export default class ARImageView extends React.Component {
   props: {
     navigation: Object,
@@ -29,6 +30,7 @@ export default class ARImageView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arImageModule)
     ToolbarModule.setToolBarData('ARIMAGEMODULE')
     this.toolbar.setVisible(true, 'ARIMAGEMODULE', {
@@ -50,7 +52,7 @@ export default class ARImageView extends React.Component {
   }
 
   renderToolbar = () => {
-    return <ToolBar ref={ref => (this.toolbar = ref)} />
+    return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
   render() {

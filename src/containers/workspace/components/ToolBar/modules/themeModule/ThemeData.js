@@ -97,8 +97,10 @@ async function getDatasets(type, params = {}) {
 function getMenuData(type, themeType) {
   let data = []
   if (type.indexOf('MAP_THEME_PARAM') === -1) return data
-  const { themeParams } = ToolbarModule.getData() // 切换到menu，保留themeParams，用于保存专题参数
-  const { mapXml } = ToolbarModule.getData() // 切换到menu，保留mapXml，用于还原专题图
+  // 切换到menu，保留themeParams，用于保存专题参数
+  // 切换到menu，保留mapXml，用于还原专题图
+  // 切换到menu，保留themeCreateType，用于修改专题图
+  const { themeParams, mapXml, themeCreateType } = ToolbarModule.getData()
   const moduleData = {
     type,
     getData,
@@ -110,6 +112,9 @@ function getMenuData(type, themeType) {
   }
   if (mapXml) {
     Object.assign(moduleData, { mapXml })
+  }
+  if (themeCreateType) {
+    Object.assign(moduleData, { themeCreateType })
   }
   ToolbarModule.setData(moduleData)
   if (themeType === constants.THEME_UNIQUE_STYLE) {

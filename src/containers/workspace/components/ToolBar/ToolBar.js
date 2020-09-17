@@ -9,7 +9,7 @@ import {
 } from '../../../../constants'
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
-import ToolbarModule from './modules/ToolbarModule'
+import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
 import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
@@ -117,6 +117,7 @@ export default class ToolBar extends React.Component {
     setToolbarStatus: () => {},
 
     getOverlay: () => {},
+    toolbarModuleKey: String,
   }
 
   static defaultProps = {
@@ -128,6 +129,7 @@ export default class ToolBar extends React.Component {
       column: DEFAULT_COLUMN, // 只有table可以设置
     },
     getOverlay: () => {},
+    toolbarModuleKey: '',
   }
 
   constructor(props) {
@@ -159,7 +161,11 @@ export default class ToolBar extends React.Component {
     // this.isBoxShow = false
     this.lastState = {}
 
-    this.prevParams = ToolbarModule.getParams()
+    if (props.toolbarModuleKey === '') {
+      this.ToolbarModule = ToolbarModuleDefault
+    } else {
+      this.ToolbarModule = getToolbarModule(props.toolbarModuleKey)
+    }
     this.setToolbarParams(props, this.state)
   }
 
@@ -192,7 +198,6 @@ export default class ToolBar extends React.Component {
   componentWillUnmount() {
     this.buttonView = null
     this.contentView = null
-    ToolbarModule.setParams(this.prevParams)
   }
 
   getContentViewHeight = () => {
@@ -212,7 +217,7 @@ export default class ToolBar extends React.Component {
   setToolbarParams = (props, state) => {
     if (!props) props = this.props
     if (!state) state = this.state
-    ToolbarModule.setParams({
+    this.ToolbarModule.setParams({
       type: state.type,
       setToolbarVisible: this.setVisible,
       setLastState: this.setLastState,
@@ -242,7 +247,7 @@ export default class ToolBar extends React.Component {
   }
 
   getData = async type => {
-    let toolbarModule = await ToolbarModule.getToolBarData(type, {
+    let toolbarModule = await this.ToolbarModule.getToolBarData(type, {
       setToolbarVisible: this.setVisible,
       setLastState: this.setLastState,
       scrollListToLocation: this.scrollListToLocation,
@@ -337,7 +342,7 @@ export default class ToolBar extends React.Component {
         }
         // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
         if (this.state.type !== type && params.resetToolModuleData) {
-          await ToolbarModule.setToolBarData(type)
+          await this.ToolbarModule.setToolBarData(type)
         }
         let containerType =
           (params && params.containerType) || ToolbarType.table
@@ -347,7 +352,7 @@ export default class ToolBar extends React.Component {
         } else if (params && typeof params.height === 'number') {
           newHeight = params.height
         } else if (!params || params.height === undefined) {
-          let _size = ToolbarModule.getToolbarSize(containerType, {
+          let _size = this.ToolbarModule.getToolbarSize(containerType, {
             data,
           })
           newHeight = _size.height
@@ -452,10 +457,10 @@ export default class ToolBar extends React.Component {
 
   back = type => {
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.toolbarBack
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.toolbarBack
     ) {
-      ToolbarModule.getData().actions.toolbarBack(type)
+      this.ToolbarModule.getData().actions.toolbarBack(type)
       return
     }
   }
@@ -488,15 +493,15 @@ export default class ToolBar extends React.Component {
   }
 
   getToolbarModule = () => {
-    return ToolbarModule
+    return this.ToolbarModule
   }
 
   menu = (params = {}) => {
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.menu
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.menu
     ) {
-      ToolbarModule.getData().actions.menu(
+      this.ToolbarModule.getData().actions.menu(
         params.type || this.state.type,
         params.selectKey || this.state.selectKey,
         {
@@ -534,10 +539,10 @@ export default class ToolBar extends React.Component {
 
   showMenuBox = (params = {}) => {
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.showMenuBox
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.showMenuBox
     ) {
-      ToolbarModule.getData().actions.showMenuBox(
+      this.ToolbarModule.getData().actions.showMenuBox(
         params.type || this.state.type,
         params.selectKey || this.state.selectKey,
         {
@@ -675,10 +680,10 @@ export default class ToolBar extends React.Component {
       return
     GLOBAL.TouchType = TouchType.NORMAL
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.overlayOnPress
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.overlayOnPress
     ) {
-      ToolbarModule.getData().actions.overlayOnPress()
+      this.ToolbarModule.getData().actions.overlayOnPress()
     }
     if (
       this.state.type === ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS ||
@@ -751,6 +756,7 @@ export default class ToolBar extends React.Component {
         setVisible={this.setVisible}
         showBox={this.showBox}
         customView={this.state.customView}
+        getToolbarModule={() => this.ToolbarModule}
       />
     )
   }
@@ -770,6 +776,7 @@ export default class ToolBar extends React.Component {
         showMenuBox={this.showMenuBox}
         menu={this.menu}
         device={this.props.device}
+        getToolbarModule={() => this.ToolbarModule}
       />
     )
   }
@@ -784,6 +791,7 @@ export default class ToolBar extends React.Component {
         mapLegend={this.props.mapLegend}
         device={this.props.device}
         mapMoveToCurrent={this.mapMoveToCurrent}
+        getToolbarModule={() => this.ToolbarModule}
       />
     )
   }

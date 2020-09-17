@@ -17,6 +17,11 @@ export default class SymbolList extends React.Component {
     layerData: Object,
     device: Object,
     type: String,
+    getToolbarModule: () => {},
+  }
+
+  static defaultProps = {
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
@@ -47,7 +52,7 @@ export default class SymbolList extends React.Component {
       }
       return
     }
-    let event = ToolbarModule.getData().event
+    let event = this.props.getToolbarModule().getData().event
 
     if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)

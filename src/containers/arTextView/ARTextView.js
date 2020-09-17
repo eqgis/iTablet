@@ -5,9 +5,10 @@ import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arTextModule from './arTextModule'
 
+let ToolbarModule
 export default class ARTextView extends React.Component {
   props: {
     navigation: Object,
@@ -29,6 +30,7 @@ export default class ARTextView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arTextModule)
     ToolbarModule.setToolBarData('ARTEXTMODULE')
     this.toolbar.setVisible(true, 'ARTEXTMODULE', {
@@ -53,7 +55,7 @@ export default class ARTextView extends React.Component {
   //   return <BottomBar getData={MenuData.getPage} />
   // }
   renderToolbar = () => {
-    return <ToolBar ref={ref => (this.toolbar = ref)} />
+    return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
   render() {

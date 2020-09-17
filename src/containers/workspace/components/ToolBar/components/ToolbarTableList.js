@@ -15,14 +15,22 @@ export default class ToolbarTableList extends React.Component {
     device: Object,
     data: Array,
     getMenuAlertDialogRef: () => {},
+    getToolbarModule: () => {},
+  }
+
+  static defaultProps = {
+    getToolbarModule: () => ToolbarModule,
   }
 
   itemAction = async item => {
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.tableAction
+      this.props.getToolbarModule().getData().actions &&
+      this.props.getToolbarModule().getData().actions.tableAction
     ) {
-      ToolbarModule.getData().actions.tableAction(item)
+      this.props
+        .getToolbarModule()
+        .getData()
+        .actions.tableAction(item)
     } else if (item.action) {
       item.action(item)
     }

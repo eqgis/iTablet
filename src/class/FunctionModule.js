@@ -32,12 +32,17 @@ export default class FunctionModule {
     // return { height, column, row }
   }
 
+  setToolbarModule = param => {
+    this.ToolbarModule = param
+  }
+
   /**
    * 存放当前数据到ToolbarModule
    * @param type
    */
   setModuleData = (type = this.type) => {
-    ToolbarModule.setData({
+    let toolbarModule = this.ToolbarModule || ToolbarModule
+    toolbarModule.setData({
       type,
       getData: this.getData,
       actions: this.actions,

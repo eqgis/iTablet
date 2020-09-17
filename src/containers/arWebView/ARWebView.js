@@ -5,9 +5,10 @@ import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arWebViewModule from './arWebViewModule'
 
+let ToolbarModule
 export default class ARWebView extends React.Component {
   props: {
     navigation: Object,
@@ -29,6 +30,7 @@ export default class ARWebView extends React.Component {
   }
 
   componentDidMount() {
+    ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arWebViewModule)
     ToolbarModule.setToolBarData('ARWEBVIEWMODULE')
     this.toolbar.setVisible(true, 'ARWEBVIEWMODULE', {
@@ -50,7 +52,7 @@ export default class ARWebView extends React.Component {
   }
 
   renderToolbar = () => {
-    return <ToolBar ref={ref => (this.toolbar = ref)} />
+    return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
   render() {

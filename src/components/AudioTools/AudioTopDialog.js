@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     zIndex: 1000,
-    elevation: 20,
+    elevation: 6,
     top: 0,
     left: 0,
     right: 0,

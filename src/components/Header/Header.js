@@ -230,7 +230,7 @@ class NavigationHeader extends Component {
           { height: this.state.headerHeight, borderBottomWidth: 2, borderBottomColor: color.itemColorGray2 },
           headerStyle,
           padding,
-          { opacity: opacity, top: this.state.headerTop },
+          { opacity: opacity, top: this.state.headerTop, elevation: 6 },
         ]}
       >
         {header ? header : this.renderDefaultHeader()}

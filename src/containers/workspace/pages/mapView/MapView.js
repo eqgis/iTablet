@@ -586,7 +586,6 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
-    console.warn(111)
     SMap.setCurrentModule(0)
     if (
       GLOBAL.Type === ChunkType.MAP_AR ||

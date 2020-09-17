@@ -4,7 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal, Platform
+  Modal,
+  Platform,
+  TouchableOpacity,
 } from 'react-native'
 
 export const DURATION = {
@@ -40,12 +42,13 @@ export default class MyToast extends React.Component {
       visible:true,
       ...option,
     })
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.setState({
         visible: false,
         duration: DURATION.TOAST_SHOT,
         position: POSITION.TOP,
       })
+      this.timer = null
     }, this.state.duration)
   }
   render() {
@@ -69,14 +72,24 @@ export default class MyToast extends React.Component {
         animationType={'fade'}
         transparent={true}
         visible={this.state.visible}
+        pointerEvents={'box-none'}
       >
-        <View
+        <TouchableOpacity
+          activeOpacity={1}
           style={styles.modal}
+          onPress={() => {
+            this.timer = null
+            this.setState({
+              visible: false,
+              duration: DURATION.TOAST_SHOT,
+              position: POSITION.TOP,
+            })
+          }}
         >
           <View style={[styles.modalContent, position]}>
             <Text style={styles.modalTxt} >{this.state.modalTxt}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     )
   }

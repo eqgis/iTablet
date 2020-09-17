@@ -35,7 +35,7 @@ export default StyleSheet.create({
     bottom: BOTTOM_LANDSCAPE,
   },
   containerShadow: {
-    elevation: 20,
+    elevation: 5,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOpacity: 1,

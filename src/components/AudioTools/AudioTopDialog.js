@@ -13,6 +13,7 @@ import {
   Image,
   Platform,
   Animated,
+  Modal,
 } from 'react-native'
 import { scaleSize } from '../../utils'
 import { size } from '../../styles'
@@ -23,7 +24,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     zIndex: 1000,
-    elevation: 6,
     top: 0,
     left: 0,
     right: 0,
@@ -220,9 +220,18 @@ export default class AudioTopDialog extends PureComponent {
   }
 
   render() {
-    if (!this.state.visible) return null
     return (
-      <View style={styles.container}>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={this.state.visible}
+        onRequestClose={() => {
+          //点击物理按键需要隐藏对话框
+          if (this.props.backHide) {
+            this.setDialogVisible(false)
+          }
+        }}
+      >
         <TouchableOpacity
           activeOpacity={1}
           style={styles.overlay}
@@ -242,7 +251,7 @@ export default class AudioTopDialog extends PureComponent {
           {this.renderAudioBtn()}
           {this.renderCloseBtn()}
         </Animated.View>
-      </View>
+      </Modal>
     )
   }
 }

@@ -37,10 +37,16 @@ export default class ToolList extends React.Component {
     setCurrentLayer: () => {},
     setToolbarVisible: () => {},
     getMapSetting: () => {},
+    getToolbarModule: () => {},
+  }
+
+  static defaultProps = {
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
     super(props)
+    this.ToolbarModule = this.props.getToolbarModule()
     this.state = {
       data: this.props.data || [],
       // listExpressions: [],
@@ -72,8 +78,8 @@ export default class ToolList extends React.Component {
   /**点击item切换专题字段，刷新字段表达式列表 */
   refreshList = item => {
     let data
-    if (ToolbarModule.getData().actions.refreshModels) {
-      data = ToolbarModule.getData().actions.refreshModels(item)
+    if (this.ToolbarModule.getData().actions.refreshModels) {
+      data = this.ToolbarModule.getData().actions.refreshModels(item)
       this.setState({
         data,
       })
@@ -125,11 +131,14 @@ export default class ToolList extends React.Component {
   headerAction = ({ section }) => {
     (async function() {
       if (
-        ToolbarModule.getData().actions &&
-        ToolbarModule.getData().actions.headerAction
+        this.ToolbarModule.getData().actions &&
+        this.ToolbarModule.getData().actions.headerAction
       ) {
-        // ToolbarModule.getData().actions.listAction({ item, index, section })
-        ToolbarModule.getData().actions.headerAction(this.props.type, section)
+        // this.ToolbarModule.getData().actions.listAction({ item, index, section })
+        this.ToolbarModule.getData().actions.headerAction(
+          this.props.type,
+          section,
+        )
         return
       }
       if (
@@ -239,12 +248,12 @@ export default class ToolList extends React.Component {
   listAction = ({ item, index, section, ...params }) => {
     if (this.props.type === 'MAP3D_BASE') return
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.listAction
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.listAction
     ) {
-      // ToolbarModule.getData().actions.listAction({ item, index, section })
+      // this.ToolbarModule.getData().actions.listAction({ item, index, section })
       params.refreshList = this.refreshList
-      ToolbarModule.getData().actions.listAction(this.props.type, {
+      this.ToolbarModule.getData().actions.listAction(this.props.type, {
         item,
         index,
         section,
@@ -269,16 +278,19 @@ export default class ToolList extends React.Component {
         }}
         listSelectableAction={({ selectList }) => {
           if (
-            ToolbarModule.getData().actions &&
-            ToolbarModule.getData().actions.listSelectableAction
+            this.ToolbarModule.getData().actions &&
+            this.ToolbarModule.getData().actions.listSelectableAction
           ) {
-            ToolbarModule.getData().actions.listSelectableAction({ selectList })
+            this.ToolbarModule.getData().actions.listSelectableAction({
+              selectList,
+            })
           }
         }}
         headerAction={this.headerAction}
         underlayColor={color.item_separate_white}
         keyExtractor={(item, index) => index}
         device={this.props.device}
+        getToolbarModule={this.props.getToolbarModule}
       />
     )
   }

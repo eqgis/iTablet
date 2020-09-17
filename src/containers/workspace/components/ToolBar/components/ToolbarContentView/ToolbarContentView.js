@@ -38,15 +38,18 @@ export default class ToolbarContentView extends React.Component {
     setTemplate: () => {},
     customView: () => {},
     // showMap3DTool: () => {},
+    getToolbarModule: () => {},
   }
 
   static defaultProps = {
     data: [],
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
     super(props)
-    const data = ToolbarModule.getToolbarSize(props.containerType, {
+    this.ToolbarModule = this.props.getToolbarModule()
+    const data = this.ToolbarModule.getToolbarSize(props.containerType, {
       data: props.data,
     })
     this.height = data.height // ToolbarContentView当前类型，未收缩前的高度
@@ -87,7 +90,7 @@ export default class ToolbarContentView extends React.Component {
       this.props.type !== prevProps.type ||
       this.props.device.orientation !== prevProps.device.orientation
     ) {
-      let _data = ToolbarModule.getToolbarSize(this.props.containerType, {
+      let _data = this.ToolbarModule.getToolbarSize(this.props.containerType, {
         data: this.props.data,
       })
       this.height = _data.height
@@ -211,19 +214,19 @@ export default class ToolbarContentView extends React.Component {
   _onValueChange = ({ title, text }) => {
     switch (title) {
       case getLanguage(global.language).Map_Main_Menu.TOOLS_NAME:
-        ToolbarModule.addData({
+        this.ToolbarModule.addData({
           tools_name: text,
         })
         // this.tools_name = text
         break
       case getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS:
-        ToolbarModule.addData({
+        this.ToolbarModule.addData({
           tools_remarks: text,
         })
         // this.tools_remarks = text
         break
       case getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP:
-        ToolbarModule.addData({
+        this.ToolbarModule.addData({
           tools_http: text,
         })
         // this.tools_http = text
@@ -278,6 +281,7 @@ export default class ToolbarContentView extends React.Component {
         keyExtractor={(item, index) => index}
         device={this.props.device}
         language={this.props.language}
+        getToolbarModule={this.props.getToolbarModule}
       />
     )
   }
@@ -300,6 +304,7 @@ export default class ToolbarContentView extends React.Component {
         layerData={this.props.currentLayer}
         type={this.props.type}
         column={this.state.column}
+        getToolbarModule={this.props.getToolbarModule}
       />
     )
   }
@@ -315,6 +320,7 @@ export default class ToolbarContentView extends React.Component {
         row={this.state.row}
         device={this.props.device}
         language={this.props.language}
+        getToolbarModule={this.props.getToolbarModule}
       />
     )
   }
@@ -345,10 +351,10 @@ export default class ToolbarContentView extends React.Component {
               onPress={() => {
                 if (item.disable) return
                 if (
-                  ToolbarModule.getData().actions &&
-                  ToolbarModule.getData().actions.tableAction
+                  this.ToolbarModule.getData().actions &&
+                  this.ToolbarModule.getData().actions.tableAction
                 ) {
-                  ToolbarModule.getData().actions.tableAction(item)
+                  this.ToolbarModule.getData().actions.tableAction(item)
                 }
                 if (item.action) {
                   item.action(item)
@@ -382,8 +388,8 @@ export default class ToolbarContentView extends React.Component {
         column={this.state.column}
         itemAction={async item => {
           if (
-            ToolbarModule.getData().actions &&
-            ToolbarModule.getData().actions.tableAction
+            this.ToolbarModule.getData().actions &&
+            this.ToolbarModule.getData().actions.tableAction
           ) {
             let params = {
               type: this.props.type,
@@ -391,11 +397,11 @@ export default class ToolbarContentView extends React.Component {
               layerName: this.props.currentLayer.name,
             }
             typeof item === 'object' && Object.assign(params, item)
-            await ToolbarModule.getData().actions.tableAction(params)
+            await this.ToolbarModule.getData().actions.tableAction(params)
           }
           if (
-            ToolbarModule.getData().actions &&
-            ToolbarModule.getData().actions.colorAction
+            this.ToolbarModule.getData().actions &&
+            this.ToolbarModule.getData().actions.colorAction
           ) {
             let params = {
               type: this.props.type,
@@ -403,7 +409,7 @@ export default class ToolbarContentView extends React.Component {
               layerName: this.props.currentLayer.name,
             }
             typeof item === 'object' && Object.assign(params, item)
-            await ToolbarModule.getData().actions.colorAction(params)
+            await this.ToolbarModule.getData().actions.colorAction(params)
           }
         }}
       />
@@ -418,11 +424,11 @@ export default class ToolbarContentView extends React.Component {
         language={GLOBAL.language}
         confirm={data => {
           if (
-            ToolbarModule.getData().actions &&
-            ToolbarModule.getData().actions.pickerConfirm
+            this.ToolbarModule.getData().actions &&
+            this.ToolbarModule.getData().actions.pickerConfirm
           ) {
             let item = data instanceof Array ? [data[0].key, data[1].key] : data
-            ToolbarModule.getData().actions.pickerConfirm({
+            this.ToolbarModule.getData().actions.pickerConfirm({
               selectKey: item,
               selectName: item,
             })
@@ -430,10 +436,10 @@ export default class ToolbarContentView extends React.Component {
         }}
         cancel={() => {
           if (
-            ToolbarModule.getData().actions &&
-            ToolbarModule.getData().actions.pickerCancel
+            this.ToolbarModule.getData().actions &&
+            this.ToolbarModule.getData().actions.pickerCancel
           ) {
-            ToolbarModule.getData().actions.pickerCancel()
+            this.ToolbarModule.getData().actions.pickerCancel()
           }
         }}
         popData={this.props.data}

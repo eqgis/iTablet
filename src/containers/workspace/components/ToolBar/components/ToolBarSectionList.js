@@ -35,6 +35,7 @@ export default class ToolBarSectionList extends React.Component {
     initialNumToRender?: number,
     // selectList: Object,
     listSelectableAction?: () => {}, //多选刷新列表时调用
+    getToolbarModule: () => {},
   }
 
   static defaultProps = {
@@ -42,6 +43,7 @@ export default class ToolBarSectionList extends React.Component {
     listSelectable: false,
     activeOpacity: 1,
     initialNumToRender: 15,
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
@@ -54,7 +56,7 @@ export default class ToolBarSectionList extends React.Component {
       allSelected, // 判断是 全部选中 还是 全部取消，只在section.allSelectType = true时生效
     }
   }
-  
+
   shouldComponentUpdate(prevProps, prevState) {
     if (
       JSON.stringify(prevProps) !== JSON.stringify(this.props) ||
@@ -79,7 +81,7 @@ export default class ToolBarSectionList extends React.Component {
   }
 
   dealSelectList = sections => {
-    let moduleData = ToolbarModule.getData()
+    let moduleData = this.props.getToolbarModule().getData()
     let selectList = moduleData.selectList || [],
       allSelected = moduleData.allSelected || false
     for (let i = 0; i < sections.length; i++) {
@@ -94,7 +96,10 @@ export default class ToolBarSectionList extends React.Component {
           selectList[section.title].indexOf(pushName) < 0
         ) {
           selectList[section.title].push(pushName)
-        } else if (selectList[section.title].indexOf(pushName) >= 0 && this.props.listSelectable) {
+        } else if (
+          selectList[section.title].indexOf(pushName) >= 0 &&
+          this.props.listSelectable
+        ) {
           item.isSelected = true
         }
       }
@@ -112,7 +117,7 @@ export default class ToolBarSectionList extends React.Component {
         allSelected = false
       }
     }
-    ToolbarModule.addData({selectList, allSelected})
+    this.props.getToolbarModule().addData({ selectList, allSelected })
     return { selectList, allSelected }
   }
 

@@ -10,10 +10,16 @@ export default class ToolbarMenuDialog extends React.Component {
     selectKey: string,
     device: Object,
     mapLegend: Object,
+    getToolbarModule: () => {},
+  }
+
+  static defaultProps = {
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
     super(props)
+    this.ToolbarModule = this.props.getToolbarModule()
     this.state = {
       data: this.getData(),
     }
@@ -40,7 +46,7 @@ export default class ToolbarMenuDialog extends React.Component {
   }
 
   getData = () => {
-    let list = ToolbarModule.getMenuDialogData(
+    let list = this.ToolbarModule.getMenuDialogData(
       this.props.type,
       this.props.themeType,
     )

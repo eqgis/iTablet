@@ -26,16 +26,19 @@ export default class ToolbarBottomButtons extends React.Component {
     getLayers: () => {},
     showMenuBox: () => {},
     menu: () => {},
+    getToolbarModule: () => {},
   }
 
   static defaultProps = {
     buttons: [],
+    getToolbarModule: () => ToolbarModule,
   }
 
   constructor(props) {
     super(props)
     this.lastState = {}
-    ToolbarModule.addParams({
+    this.ToolbarModule = this.props.getToolbarModule()
+    this.ToolbarModule.addParams({
       buttonView: this, // ToolbarBottomButtons ref
     })
   }
@@ -68,15 +71,17 @@ export default class ToolbarBottomButtons extends React.Component {
   commit = async () => {
     let isFinished = false
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.commit
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.commit
     ) {
       // 返回false表示没有找到对应type的方法，返回undefined表示没有返回值，不作为判断
-      isFinished = await ToolbarModule.getData().actions.commit(this.props.type)
+      isFinished = await this.ToolbarModule.getData().actions.commit(
+        this.props.type,
+      )
     }
     if (isFinished === false) {
       this.props.close && this.props.close(this.props.type)
-      ToolbarModule.setData() // 关闭Toolbar清除临时数据
+      this.ToolbarModule.setData() // 关闭Toolbar清除临时数据
     }
   }
 
@@ -84,16 +89,18 @@ export default class ToolbarBottomButtons extends React.Component {
   close = async () => {
     let isFinished = false
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.close
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.close
     ) {
-      isFinished = await ToolbarModule.getData().actions.close(this.props.type)
+      isFinished = await this.ToolbarModule.getData().actions.close(
+        this.props.type,
+      )
     }
     if (isFinished === false) {
       this.props.close && this.props.close(this.props.type)
     }
     GLOBAL.TouchType = TouchType.NORMAL
-    // ToolbarModule.setData() // 关闭Toolbar清除临时数据
+    // this.ToolbarModule.setData() // 关闭Toolbar清除临时数据
   }
 
   back = () => this.props.back(this.props.type)
@@ -113,10 +120,10 @@ export default class ToolbarBottomButtons extends React.Component {
   /** 显示属性 **/
   showAttribute = () => {
     if (
-      ToolbarModule.getData().actions &&
-      ToolbarModule.getData().actions.showAttribute
+      this.ToolbarModule.getData().actions &&
+      this.ToolbarModule.getData().actions.showAttribute
     ) {
-      ToolbarModule.getData().actions.showAttribute(this.props.selection)
+      this.ToolbarModule.getData().actions.showAttribute(this.props.selection)
     }
   }
 

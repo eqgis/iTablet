@@ -12,17 +12,17 @@ const Profile = {
   SETTINGS: '設定',
   COLOR_SCHEME: 'カラースキーム',
   TEMPLATE: 'テンプレート',
-  AIMODEL: 'AI Model', //待翻译
+  AIMODEL: 'AI モデル', //jp0730
   COLLECTION_TEMPLATE: 'コレクションテンプレート',
   PLOTTING_TEMPLATE: 'アニメシンボルテンプレート',
   NAVIGATION: 'ナビ',
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',
 
-  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
-  MY_MODEL: 'My Model', //待翻译
+  MY_COLOR_SCHEME: 'マイカラースキーム', //jp0730
+  MY_MODEL: 'マイモデル', //jp0730
 
-  SELECT_MODEL: 'Select Model', //待翻译
+  SELECT_MODEL: 'モデルの選択', //jp0730
 
   // 我的——登录
   LOGIN: 'ログイン',
@@ -125,7 +125,7 @@ const Profile = {
   BATCH_ADD: 'バッチ追加',
   BATCH_OPERATE: 'バッチ操作',
   MY_APPLET: '使用できるアプレット',
-  UN_DOWNLOADED_APPLET: 'Undownloaded Applet', // 带下载
+  UN_DOWNLOADED_APPLET: 'アプレットダウンロードの取り消し', // 带下载
   DELETE_APPLET: 'アプレットの削除',
   ADD_APPLET: 'アプレットの追加',
   MOVE_UP: '上へ',
@@ -168,13 +168,13 @@ const Profile = {
   DATASET_TYPE_TEXT: 'テキスト',
   CLEAR: 'クリア',
   CREATE: '作成',
-  DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
-  DATASET_BUILD_STATISTICS: 'Statistics Model',
-  TIME_SPEND_OPERATION: 'This operation may take some time, would you like to continue?',
-  IMPORT_BUILD_PYRAMID: 'Do you want to build image pyramid(may take some time)？',
-  BUILDING: 'Building',
-  BUILD_SUCCESS: 'Build Sucessfully',
-  BUILD_FAILED: 'Build Failed',
+  DATASET_BUILD_PYRAMID: 'ピラミッドの作成', //jp0730
+  DATASET_BUILD_STATISTICS: '統計モデルの生成',
+  TIME_SPEND_OPERATION: '当操作は時間掛かります。続きますか?',
+  IMPORT_BUILD_PYRAMID: '画像ピラミッドを作成しますか(時間掛かります)？',
+  BUILDING: '作成',
+  BUILD_SUCCESS: '作成に成功',
+  BUILD_FAILED: '作成に失敗',
 
   // 作成データソース
   NEW_DATASOURCE: '新規データソース',
@@ -335,8 +335,8 @@ const Profile = {
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'マップから選択に成功',
   MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'デバイスを地面に対して垂直に持ち、南方向に向けてOKをクリックしてください',
   MAP_AR_DATUM_SETTING: '設定',
-  X_COORDINATE: 'X Coordinate', //待翻译
-  Y_COORDINATE: 'Y Coordinate',
+  X_COORDINATE: 'X 座標', //jp0730
+  Y_COORDINATE: 'Y 座標',
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

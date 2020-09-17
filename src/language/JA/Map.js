@@ -339,17 +339,17 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: '道路ネットワーク',
 
   MAP_AR_DONT_SUPPORT_DEVICE: '当デバイスをサポートしません',
-  MAP_AR_MEASURE: 'AR Measure', //待翻译
-  MAP_AR_ANALYZE: 'AR Analyze', //待翻译
-  MAP_AR_MAPPING: 'AR Mapping',
-  MAP_AR_TOOL: 'AR Tool', //待翻译
+  MAP_AR_MEASURE: 'AR 計測', //ｊｐ0730
+  MAP_AR_ANALYZE: 'AR 解析', //ｊｐ0730
+  MAP_AR_MAPPING: 'AR マッピング',
+  MAP_AR_TOOL: 'AR ツール', //jp0917
   MAP_AR_CAMERA_EXCEPTION: 'カメラ異常、権限を確認してください',
   MAP_AR_AI_ASSISTANT: 'AI\nアシスタント',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: '通常コレクション',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: '市政コレクション',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: '交通違反コレクション',
-  MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
-  MAP_AI_GESTURE_BONE: 'Gesture Bone', //待翻译
+  MAP_AI_POSE_ESTIMATION: '人の姿勢', //jp0917
+  MAP_AI_GESTURE_BONE: 'ジェスチャースケルトン', //jp0917
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: '道路コレクション',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'POIマップ',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'AR計測',
@@ -365,20 +365,20 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR画像',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'ARの高さ測定',
-  MAP_AR_VIDEO: 'AR Video', //待翻译
-  MAP_AR_IMAGE: 'AR Picture',
-  MAP_AR_EFFECT: 'AR Effect',
-  MAP_AR_WEBVIEW: 'AR WebPage',
-  MAP_AR_TEXT: 'AR Text',
-  MAP_AR_SELECT_EFFECT: 'Select Effect',
+  MAP_AR_VIDEO: 'AR 動画', //jp0730
+  MAP_AR_IMAGE: 'AR画像',
+  MAP_AR_EFFECT: 'AR特殊効果',
+  MAP_AR_WEBVIEW: 'ウェブページ',
+  MAP_AR_TEXT: 'ARテキスト',
+  MAP_AR_SELECT_EFFECT: '特殊効果の選択',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',
-  MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
-  MAP_AR_SELECT_POINT_PLANE: 'to Plane',
-  MAP_AR_ADD_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_ADD_TO_PLANE: 'Select Point',
-  MAP_AR_MOVE_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_MOVE_TO_PLANE: 'Select Point',
+  MAP_AR_TO_CURRENT_POSITION: '現在位置に',
+  MAP_AR_SELECT_POINT_PLANE: '平面からポイントを選択',
+  MAP_AR_ADD_TO_CURRENT_POSITION: '現在位置に追加',
+  MAP_AR_ADD_TO_PLANE: '選択ポイントの追加',
+  MAP_AR_MOVE_TO_CURRENT_POSITION: '現在位置に変更',
+  MAP_AR_MOVE_TO_PLANE: '選択ポイントの変更',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: '左折してください',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: '右に曲がる',
@@ -415,21 +415,21 @@ const Map_Main_Menu = {
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'スクリーンをクリックして現在のポイントに設定します',
   MAP_AR_AI_MEASURE_LENGTH: '長さ測定',
   MAP_AR_AI_MEASURE_AREA: '測定面積',
-  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
-  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan', //待翻译
-  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook', //待翻译
-  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look', //待翻译
-  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'Switch Camera', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'Association Map', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'Association Cancel', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: 'Up', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: 'Down', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: 'Left', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'Right', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'Shrink', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'Magnify', //待翻译
-  MAP_AI_GESTURE_BONE_DETAIL: 'Gesture detail', //待翻译
-  MAP_AI_GESTURE_BONE_CLOSE: 'Close', //待翻译
+  MAP_AI_POSE_ESTIMATION_ZOOM: '姿勢のズーム',
+  MAP_AI_POSE_ESTIMATION_PAN: '姿勢の移動',
+  MAP_AI_POSE_ESTIMATION_OVERLOOK: '姿勢を無視',
+  MAP_AI_POSE_ESTIMATION_LOOK: '姿勢の認識',
+  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'カメラを切り替え',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'マップ関連',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: '関連の解除',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: '上に移動',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: '下に移動',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: '左に移動',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: '右に移動',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: '縮小',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: '拡大',
+  MAP_AI_GESTURE_BONE_DETAIL: 'ジェスチャーの詳細',
+  MAP_AI_GESTURE_BONE_CLOSE: '閉じる',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: '分類中',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: '分類に失敗しました。再度試してください',
@@ -509,7 +509,7 @@ const Map_Main_Menu = {
   MAP_TOPO_RESAMPLE: 'リサンプリング',
   MAP_TOPO_CHANGE_DIRECTION: '方向を変更',
   ADD_DATASET: 'データセットの追加',
-  SELECT_ROADNAME_FIELD: '道路名フィールドを選択してくかえる',
+  SELECT_ROADNAME_FIELD: '次のデータセットの道路名フィールドを選択します',
   SELECT_FIELD: 'フィールドの選択',
   MERGE_CANCEL: 'キャンセル',
   MERGE_CONFIRM: 'OK',
@@ -653,18 +653,18 @@ const Map_Layer = {
   ADD_LAYER_URL: 'オンラインレイヤーのアドレスを追加',
   TERRAIN: '地形',
   IMAGE: '画像',
-  IS_ADD_NOTATION_LAYER: 'Do you want to add the notation layer', //待翻译
+  IS_ADD_NOTATION_LAYER: 'ラベルレイヤーを追加しますか？', //jp0730
 
-  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode', //待翻译
-  LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',
-  DISPLAY_MODE_COMPOSITE: 'Composite',
-  DISPLAY_MODE_STRETCHED: 'Stretched',
-  STRETCH_TYPE_NONE: 'None',
-  STRETCH_TYPE_STANDARDDEVIATION: 'Standard Deviation',
-  STRETCH_TYPE_MINIMUMMAXIMUM: 'Minimun Maximum',
-  STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'Histogram Equalization',
-  STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'Histogram Specification',
-  STRETCH_TYPE_GAUSSIAN: 'Gaussian',
+  LAYER_SETTING_IMAGE_DISPLAY_MODE: '表示モード', //jp0730
+  LAYER_SETTING_IMAGE_STRETCH_TYPE: '誇張モード',
+  DISPLAY_MODE_COMPOSITE: 'コンポジット表示モード',
+  DISPLAY_MODE_STRETCHED: '拡張表示モード',
+  STRETCH_TYPE_NONE: '無し',
+  STRETCH_TYPE_STANDARDDEVIATION: '標準偏差誇張',
+  STRETCH_TYPE_MINIMUMMAXIMUM: '最小最大値誇張',
+  STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'ヒストグラム平坦化',
+  STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'ヒストグラム仕様化',
+  STRETCH_TYPE_GAUSSIAN: 'ガウス誇張',
 }
 
 // 属性
@@ -906,23 +906,23 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',// 待翻译
-  COLLECTION_TEMPLATE_CREATE: 'Create Template',
-  COLLECTION_TEMPLATE_NAME: 'Template Name',
-  ELEMENT_SETTINGS: 'Element Settings',
-  ELEMENT_STORAGE: 'Element Storage',
-  ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
-  DEFAULT_TEMPLATE: 'Default Template',
-  
-  ELEMENT_NAME: 'Element Name',
-  ELEMENT_CODE: 'Element Code',
-  
-  CREATE_ROOT_NODE: 'Create Root Node',
-  CREATE_CHILD_NODE: 'Create Chile Node',
-  INSERT_NODE: 'Insert Node',
-  
-  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
+  COLLECTION_TEMPLATE_MANAGEMENT: 'テンプレート管理', // jp0730
+  COLLECTION_TEMPLATE_CREATE: 'テンプレート作成',
+  COLLECTION_TEMPLATE_NAME: 'テンプレート名',
+  ELEMENT_SETTINGS: '要素設定',
+  ELEMENT_STORAGE: '要素保存',
+  ATTRIBUTE_SETTINGS: '属性設定',
+  CURRENT_TEMPLATE: '現在テンプレート',
+  DEFAULT_TEMPLATE: 'デフォルトテンプレート',
+
+  ELEMENT_NAME: '要素名',
+  ELEMENT_CODE: '要素コード',
+
+  CREATE_ROOT_NODE: '新規ルートノード',
+  CREATE_CHILD_NODE: '新規サブノード',
+  INSERT_NODE: 'ノードの挿入',
+
+  TEMPLATE_ERROR: 'マップは保存しません。テンプレートを使用できません。',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

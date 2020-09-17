@@ -1,6 +1,11 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { SMap, SScene, SMediaCollector, DatasetType } from 'imobile_for_reactnative'
+import {
+  SMap,
+  SScene,
+  SMediaCollector,
+  DatasetType,
+} from 'imobile_for_reactnative'
 import { color, size } from '../../../../../../styles'
 import { FileTools, NativeMethod } from '../../../../../../native'
 import {
@@ -338,21 +343,20 @@ async function create() {
     return
   }
   let params = ToolbarModule.getParams()
-  if (
-    GLOBAL.Type === ChunkType.MAP_EDIT ||
-    GLOBAL.Type === ChunkType.MAP_THEME ||
-    GLOBAL.Type === ChunkType.MAP_PLOTTING ||
-    GLOBAL.Type === ChunkType.MAP_NAVIGATION ||
-    GLOBAL.Type === ChunkType.MAP_ANALYST ||
-    GLOBAL.Type === ChunkType.MAP_AR
-  ) {
+  // if (
+  //   GLOBAL.Type === ChunkType.MAP_EDIT ||
+  //   GLOBAL.Type === ChunkType.MAP_THEME ||
+  //   GLOBAL.Type === ChunkType.MAP_PLOTTING ||
+  //   GLOBAL.Type === ChunkType.MAP_NAVIGATION ||
+  //   GLOBAL.Type === ChunkType.MAP_ANALYST ||
+  //   GLOBAL.Type === ChunkType.MAP_AR
+  // )
+  {
     GLOBAL.FUNCTIONTOOLBAR.isMapIndoorNavigation()
     const userPath =
       params.user.currentUser.userName &&
-      params.user.currentUser.userType !==
-        UserType.PROBATION_USER
-        ? `${ConstPath.UserPath +
-            params.user.currentUser.userName}/`
+      params.user.currentUser.userType !== UserType.PROBATION_USER
+        ? `${ConstPath.UserPath + params.user.currentUser.userName}/`
         : ConstPath.CustomerPath
     const mapPath = await FileTools.appendingHomeDirectory(
       userPath + ConstPath.RelativePath.Map,
@@ -397,12 +401,10 @@ async function create() {
         // await SMap.closeDatasource(-1) // 关闭所有数据源
 
         LayerUtils.openDefaultBaseMap()
-        await SMap.openTaggingDataset(
-          params.user.currentUser.userName,
-        )
+        await SMap.openTaggingDataset(params.user.currentUser.userName)
         GLOBAL.TaggingDatasetName = ''
-        
-        let layers = params.getLayers && await params.getLayers() || []
+
+        let layers = (params.getLayers && (await params.getLayers())) || []
         let _currentLayer = null
         // 默认设置第一个可见图层为当前图层
         for (let layer of layers) {
@@ -445,8 +447,7 @@ async function create() {
             legendContentChange: GLOBAL.legend._contentChange,
           })
         }
-        params.setToolbarVisible &&
-          params.setToolbarVisible(false)
+        params.setToolbarVisible && params.setToolbarVisible(false)
       },
     })
   }
@@ -1088,12 +1089,10 @@ async function openTemplate(item) {
               await params.saveMap({
                 mapName: mapsInfo[0],
               })
-              
+
               params.setToolbarVisible(false)
               params.setContainerLoading && params.setContainerLoading(false)
-              Toast.show(
-                getLanguage(params.language).Prompt.SWITCHED_TEMPLATE,
-              )
+              Toast.show(getLanguage(params.language).Prompt.SWITCHED_TEMPLATE)
             } else {
               params.setContainerLoading && params.setContainerLoading(false)
               Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
@@ -1105,14 +1104,14 @@ async function openTemplate(item) {
       }
       NavigationService.goBack()
       // setTimeout(async () => {
-        // params.setToolbarVisible(false)
-        if (GLOBAL.legend) {
-          await SMap.addLegendListener({
-            legendContentChange: GLOBAL.legend._contentChange,
-          })
-        }
-        // Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
-        // ConstInfo.MAP_SYMBOL_COLLECTION_CREATED)
+      // params.setToolbarVisible(false)
+      if (GLOBAL.legend) {
+        await SMap.addLegendListener({
+          legendContentChange: GLOBAL.legend._contentChange,
+        })
+      }
+      // Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
+      // ConstInfo.MAP_SYMBOL_COLLECTION_CREATED)
       // }, 1000)
     },
   })

@@ -21,9 +21,10 @@ export default class ScaleView extends React.Component {
   constructor(props) {
     super(props)
     this.left = new Animated.Value(scaleSize(120))
+    this.bottomN = 5
     this.bottom =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
-        ? new Animated.Value(scaleSize(30))
+        ? new Animated.Value(scaleSize(this.bottomN))
         : new Animated.Value(scaleSize(120))
     this.state = {
       width: scaleSize(65),
@@ -72,7 +73,7 @@ export default class ScaleView extends React.Component {
     if (this.state.visible) {
       let newBottom
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-        newBottom = scaleSize(30)
+        newBottom = scaleSize(this.bottomN)
       } else {
         newBottom = scaleSize(120)
       }
@@ -92,7 +93,7 @@ export default class ScaleView extends React.Component {
           duration: immediately ? 0 : 300,
         }),
         Animated.timing(this.bottom, {
-          toValue: visible ? scaleSize(120) : scaleSize(30),
+          toValue: visible ? scaleSize(120) : scaleSize(this.bottomN),
           duration: immediately ? 0 : 300,
         }),
       ]).start()

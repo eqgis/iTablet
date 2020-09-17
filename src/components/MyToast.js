@@ -10,8 +10,8 @@ import {
 } from 'react-native'
 
 export const DURATION = {
-  TOAST_SHOT: 2000,
-  TOAST_LONG: 3500,
+  TOAST_SHOT: 1000,
+  TOAST_LONG: 2000,
 }
 
 export const POSITION = {

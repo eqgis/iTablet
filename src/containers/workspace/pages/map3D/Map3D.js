@@ -35,7 +35,7 @@ import {
 } from '../../components'
 import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
-import { Toast, scaleSize } from '../../../../utils'
+import { Toast, scaleSize, screen } from '../../../../utils'
 import { color } from '../../../../styles'
 import { share3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
@@ -907,6 +907,7 @@ export default class Map3D extends React.Component {
         style={styles.progressView}
         height={
           Platform.OS === 'ios' &&
+          !screen.isIphoneX() &&
           this.props.device.orientation.indexOf('PORTRAIT') === 0
             ? 20
             : 8

@@ -22,7 +22,7 @@ const Prompt = {
   PREPARING: '準備中',
 
   DOWNLOAD_SAMPLE_DATA: 'サンプルデータをダウンロードしますか？',
-  DOWNLOAD_DATA: 'Data Download', // 待翻译
+  DOWNLOAD_DATA: 'データのダウンロード', // jp0917
   DOWNLOAD: 'ダウンロード',
   DOWNLOADING: 'ダウンロード中',
   DOWNLOAD_SUCCESSFULLY: 'ダウンロード済',
@@ -65,8 +65,8 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'アニメシンボルライブラリを切り替え中',
   NON_SELECTED_OBJ: '選択オブジェクトはありません',
   CHANGE_BASE_MAP: '現在ベースマップはありません。ベースマップを切替えてください。',
-  OVERRIDE_SYMBOL: 'Symbol with the same id exists, please select method to add', //待翻译
-  OVERWRITE: 'Overwrite',
+  OVERRIDE_SYMBOL: '同じIDのシンボルを上書きしますか？', //jp0730
+  OVERWRITE: '上書き',
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',
@@ -95,7 +95,7 @@ const Prompt = {
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',
   NO_SCENE: 'シーン表示無し',
-  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
+  ADD_ONLINE_SCENE: 'オンラインシーンの追加', //待翻译
 
   PLEASE_ENTER_TEXT: 'テキスト内容を入力してください',
   PLEASE_SELECT_THEMATIC_LAYER: '主題図レイヤーを選択してください',
@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'フィールドは無効です',
   PLEASE_SELECT_A_RASTER_LAYER: 'ラスタレイヤーを選択してください',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください',//待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください', //待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'ヒント:現在レイヤーは変更をサポートしません',
 
   FAILED_TO_CREATE_POINT: 'ポイント追加に失敗',
@@ -311,44 +311,44 @@ const Prompt = {
   NOT_SUPPORT_ONLINE_NAVIGATION: 'オンラインナビをサポートしません',
   CREATE: '新規',
   NO_DATASOURCE: '現在のワークスペースにはデータソースがありません。新規データソースを作成してください',
-  FLOOR: 'Floor', //待翻译
+  FLOOR: '階', //jp0730
   AR_NAVIGATION: 'AR Navi',
   ARRIVE_DESTINATION: 'Arrived the destination',
   DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
   //导航增量路网
-  SELECT_LINE_DATASET: 'Please select a line dataset first', //待翻译
-  CANT_UNDO: 'Irrevocable',
-  CANT_REDO: "Can't redo",
-  DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
-  SWITCH_LINE: 'Switch dataset',
-  HAS_NO_ROADNAME_FIELD_DATA: 'Dataset without road name field info',
-  MERGE_SUCCESS: 'Merged successfully',
-  MERGE_FAILD: 'Merge failed',
-  NOT_SUPPORT_PRJCOORDSYS: 'The coordinate system of the following data set does not support merging',
-  MERGEING: 'Merging',
-  NEW_NAV_DATA: 'Create Navigation Data',
-  INPUT_MODEL_FILE_NAME: 'Please enter a model file name',
-  SELECT_DESTINATION_DATASOURCE: 'Please select the target datasource',
-  FILENAME_ALREADY_EXIST: 'The file already exists, please re-enter the file name',
-  NETWORK_BUILDING: 'Building...',
-  BUILD_SUCCESS: 'Successfully built',
-  SELECT_LINE_SMOOTH: 'Please select the line that needs to be smoothed',
-  SELECT_A_POINT_INLINE: 'Please select an online point',
-  LINE_DATASET: 'Line Dataset',
-  DESTINATION_DATASOURCE: 'Target Datasource',
-  SMOOTH_FACTOR: 'Please enter smoothing factor',
-  SELECT_EXTEND_LINE: 'Please select the line that needs to be extended',
-  SELECT_SECOND_LINE: 'Please select the second line',
-  SELECT_TRIM_LINE: 'Please select the line to be trimmed',
-  SELECT_BASE_LINE: 'Please select a baseline',
-  SELECT_RESAMPLE_LINE: 'Please select the line that needs to be resampled',
-  SELECT_CHANGE_DIRECTION_LINE: 'Please select the line that needs to change direction',
-  EDIT_SUCCESS: 'Successful operation',
-  EDIT_FAILED: 'Operation failed',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
-  CONFIRM_EXIT: 'Are you sure to exit?',
-  TOPO_EDIT_END: 'Are you finished editing and exit?',
+  SELECT_LINE_DATASET: 'ラインデータセットを選択してください',
+  CANT_UNDO: '元に戻すことはできません',
+  CANT_REDO: 'やり直すことはできません',
+  DATASET_RENAME_FAILED: 'データセット名数字、アルファベット、「_」、「@」、「＃」で構成することが必要です',
+  SWITCH_LINE: 'データの切替',
+  HAS_NO_ROADNAME_FIELD_DATA: '道路名フィールド情報を選択されていないデータセットがあります',
+  MERGE_SUCCESS: 'マージに成功しました',
+  MERGE_FAILD: 'マージに失敗しました',
+  NOT_SUPPORT_PRJCOORDSYS: '以下のデータセットの座標系はマージをサポートしていません',
+  MERGEING: 'マージ中',
+  NEW_NAV_DATA: 'ナビデータを作成する',
+  INPUT_MODEL_FILE_NAME: 'モデルファイル名を入力してください',
+  SELECT_DESTINATION_DATASOURCE: 'ターゲットデータソースを選択してください',
+  FILENAME_ALREADY_EXIST: 'ファイルは既に存在しています。ファイル名を再入力してください',
+  NETWORK_BUILDING: 'ネットワーク作成中...',
+  BUILD_SUCCESS: '道路ネットワークの作成に成功しました',
+  SELECT_LINE_SMOOTH: 'スムーズネスラインを選択してください',
+  SELECT_A_POINT_INLINE: 'ライン上にあるポイントを選択してください',
+  LINE_DATASET: 'ラインデータセット',
+  DESTINATION_DATASOURCE: '目標データソース',
+  SMOOTH_FACTOR: 'スムーズ係数を入力してください',
+  SELECT_EXTEND_LINE: '延長するラインを選択してください',
+  SELECT_SECOND_LINE: 'ベースラインを選択してください',
+  SELECT_TRIM_LINE: 'トリミングするラインを選択してください',
+  SELECT_BASE_LINE: 'ベースラインを選択してください',
+  SELECT_RESAMPLE_LINE: 'リサンプリングするラインを選択してください',
+  SELECT_CHANGE_DIRECTION_LINE: '方向変更するラインを選択してください',
+  EDIT_SUCCESS: '操作に成功しました',
+  EDIT_FAILED: '操作に失敗しました',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'スムーズ係数は2~10間の整数に設定してください',
+  CONFIRM_EXIT: '終了しますか？',
+  TOPO_EDIT_END: '編集を完了して終了しますか？',
   // 自定义专题图
   ONLY_INTEGER: '整数を入力してください',
   ONLY_INTEGER_GREATER_THAN_2: '２より大きい整数を入力してください',
@@ -369,8 +369,8 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
-  
-  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
+
+  INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917
 }
 
 export { Prompt }

@@ -12,7 +12,7 @@ const Common = {
   FRONT: '前',
   BACK: '後',
 
-  PARAMETER: 'パラメタ',
+  PARAMETER: 'パラメータ',
 }
 
 export { Protocol, Common }

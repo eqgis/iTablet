@@ -1,7 +1,7 @@
 const Find = {
   PUBLIC_DATA: 'パブリックデータ',
   APPLET: 'アプレット',
-  GIS_ACADEMY: 'GIS Academy', //待翻译
+  GIS_ACADEMY: 'GISアカデミー', //ｊｐ0730
   SEARCH_RESULT: '検索結果',
   BACK: '返す',
   CONFIRM: '検索',
@@ -28,19 +28,19 @@ const Find = {
   COWORK_LOGIN: 'SuperMap Onlineにログインしてリストを取得してください',
   APPLET_DOWNLOADED_RELOAD: 'ダウンロードが完了しました。再起動して、アプレットを起動できます',
   RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
-  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
-  APPLET_RESETTING: 'Rest', // 待翻译
-  
-  // 待翻译
-  PUBLIC_MAP_INFO: 'Provides public services published by users',
-  PUBLIC_DATA_INFO: 'Provides various public data published by users',
-  SUPERMAP_INFO: 'Shares the latest news and brand activities',
-  SUPERMAP_KNOW_INFO: 'Get professional technical services and consultation',
-  SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
-  GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
-  ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
+  APPLET_RESET_OLD_VERSION: '元のバージョンにリセットしますか？', // ｊｐ0730
+  APPLET_OLD_VERSION_ALREADY: '最初のバージョンです。', // ｊｐ0730
+  APPLET_RESET_FAILED: 'リセットに失敗', // ｊｐ0730
+  APPLET_RESETTING: 'リセット', // ｊｐ0730
+
+  // jp0917
+  PUBLIC_MAP_INFO: '公開されているマップサービスを提供',
+  PUBLIC_DATA_INFO: '公開されている様々なデータを提供',
+  SUPERMAP_INFO: '製品の最新資料を提供',
+  SUPERMAP_KNOW_INFO: '技術サービスとビジネスコンサルティングを提供',
+  SUPERMAP_FORUM_INFO: 'SuperMapテクニカルQ＆Aコミュニティへようこそ',
+  GIS_ACADEMY_INFO: 'SuperMap GIS関連の大規模なコースを提供',
+  ONLINE_COWORK_INFO: '複数クライアントからリアルタイムの共同作業をサポート',
 }
 
 export { Find }

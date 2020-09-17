@@ -1,5 +1,5 @@
 import Toast from 'react-native-root-toast'
-import { POSITION, DURATION } from '../components/MyToast'
+// import { POSITION, DURATION } from '../components/MyToast'
 
 function show(msg, option = null) {
   const op = {
@@ -10,20 +10,25 @@ function show(msg, option = null) {
     delay: 0,
     ...option,
   }
-  GLOBAL.Toast.show(msg, op)
+  // if (option.type === 'normal') {
+  //   Toast.show(msg, op)
+  // } else {
+  //   GLOBAL.Toast.show(msg, op)
+  // }
+  Toast.show(msg, op)
 }
 
-// const DURATION = {
-//   TOAST_SHOT: 2000,
-//   TOAST_LONG: 3500,
-// }
-//
-// const POSITION = {
-//   CENTER: Toast.positions.CENTER,
-//   // TOP: Toast.positions.TOP,
-//   TOP: 100,
-//   BOTTOM: Toast.positions.BOTTOM,
-// }
+const DURATION = {
+  TOAST_SHOT: 2000,
+  TOAST_LONG: 3500,
+}
+
+const POSITION = {
+  CENTER: Toast.positions.CENTER,
+  // TOP: Toast.positions.TOP,
+  TOP: 100,
+  BOTTOM: Toast.positions.BOTTOM,
+}
 
 export default {
   show,

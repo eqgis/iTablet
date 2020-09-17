@@ -100,14 +100,18 @@ class ToolbarModule {
     if (this._modules.length === 0) {
       for (let key in Modules) {
         // eslint-disable-next-line import/namespace
-        this._modules.push(Modules[key])
+        let item = Modules[key]()
+        item.setToolbarModule && item.setToolbarModule(this)
+        this._modules.push(item)
       }
     }
     return this._modules
   }
 
   add(param) {
-    this._modules.push(param)
+    let item = param()
+    item.setToolbarModule(this)
+    this._modules.push(item)
   }
 
   getModule(type, params = {}) {
@@ -116,8 +120,8 @@ class ToolbarModule {
     let modules = this.getModules()
     //TODO 优化
     modules.map(item => {
-      if (type.indexOf(item().type) === 0) {
-        module = item()
+      if (type.indexOf(item.type) === 0) {
+        module = item
       }
     })
     if (module !== undefined) {

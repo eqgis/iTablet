@@ -2174,7 +2174,7 @@ export default class TouchProgress extends Component {
         strArray = this.state.tips.split(num)
       } else {
         strArray = this.state.tips.split('   ')
-        // strArray[0] += '   '
+        strArray[0] += '   '
       }
     }
     return (
@@ -2213,7 +2213,7 @@ export default class TouchProgress extends Component {
             }}
             activeOpacity={1}
           >
-            <Text style={styles.tipsText}>{strArray[0].trim()}</Text>
+            <Text style={styles.tipsText}>{strArray[0]}</Text>
             <TextInput
               ref={ref => (this.input = ref)}
               value={num !== undefined ? num + '' : ' '}

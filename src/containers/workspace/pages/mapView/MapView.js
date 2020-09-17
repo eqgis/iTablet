@@ -1364,8 +1364,8 @@ export default class MapView extends React.Component {
                   ).then(async layer => {
                     if (layer) {
                       GLOBAL.TaggingDatasetName = layer.name
-                      await SMap.setLayerEditable(layer.name, true)
-                      await SMap.setLayerVisible(layer.name, true)
+                      layer.isEdit = await SMap.setLayerEditable(layer.name, true)
+                      layer.isVisible = await SMap.setLayerVisible(layer.name, true)
                       this.props.setCurrentLayer(layer)
 
                       if (hasMap) SMap.saveMap('', false, false)

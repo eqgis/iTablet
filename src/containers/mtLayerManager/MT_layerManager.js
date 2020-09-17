@@ -235,6 +235,10 @@ export default class MT_layerManager extends React.Component {
   }
 
   onAllPressRow = async ({ data, parentData, section }) => {
+    if (!data.isVisible) {
+      Toast.show(getLanguage(this.props.language).Prompt.INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT)
+      return
+    }
     // 之前点击的图层组中的某一项
     this.prevItemRef = this.currentItemRef
     let prevParentData =
@@ -940,6 +944,7 @@ export default class MT_layerManager extends React.Component {
     return (
       <LayerManager_tolbar
         language={this.props.language}
+        currentLayer={this.props.currentLayer}
         curUserBaseMaps={this.curUserBaseMaps}
         ref={ref => (this.toolBox = ref)}
         onPress={this.onPressRow}

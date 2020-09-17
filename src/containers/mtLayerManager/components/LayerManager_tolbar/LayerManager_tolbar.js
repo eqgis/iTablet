@@ -78,6 +78,7 @@ export default class LayerManager_tolbar extends React.Component {
     updateTagging: () => {},
     getOverlayView: () => {},
     updateData?: () => {},
+    currentLayer: Object,
     device: Object,
     // layers: Object,
     user: Object,
@@ -724,6 +725,9 @@ export default class LayerManager_tolbar extends React.Component {
         case getLanguage(this.props.language).Map_Layer.VISIBLE:
         case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE:
           layerData.isVisible = !layerData.isVisible
+          if (!layerData.isVisible  && layerData.name === this.props.currentLayer.name) {
+            this.props.setCurrentLayer(null)
+          }
           rel = await SMap.setLayerVisible(layerData.path, layerData.isVisible)
           break
         case getLanguage(this.props.language).Map_Layer.EDITABLE:

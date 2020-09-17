@@ -372,6 +372,7 @@ const Prompt = {
   HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
   
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
 }
 
 export { Prompt }

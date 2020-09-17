@@ -90,7 +90,7 @@ async function touchCallback(event) {
     case TouchType.MAP_MARKS_TAGGING:
       NavigationService.navigate('InputPage', {
         headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
-        type: 'name',
+        // type: 'name',
         cb: async value => {
           if (value !== '') {
             const datasourceName = GLOBAL.currentLayer.datasourceAlias

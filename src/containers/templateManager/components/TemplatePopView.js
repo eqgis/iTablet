@@ -12,9 +12,8 @@ import {
   SectionList,
   KeyboardAvoidingView,
   Platform,
-  InteractionManager,
 } from 'react-native'
-import { PopView, ListSeparator } from '../../../components'
+import { PopView } from '../../../components'
 import TemplateItem from './TemplateItem'
 import { scaleSize, Toast } from '../../../utils'
 import { size, color } from '../../../styles'
@@ -306,26 +305,26 @@ export default class TemplatePopView extends React.Component {
     return (
       <PopView ref={ref => (this.popModal = ref)}>
         <KeyboardAvoidingView
-          behavior={
-            Platform.OS === 'ios' &&
-            (this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ? 'position'
-              : 'padding')
+          behavior={Platform.OS === 'ios' && 'padding'}
+          keyboardVerticalOffset={
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad
+              ? 0
+              : (this.props.device.height - this.props.height || 0)
           }
-          contentContainerStyle={[
+          style={[
             styles.popView,
             this.props.height >= 0 && { height: this.props.height },
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad &&
+            { height: this.props.device.height },
+            {
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              backgroundColor: '#rgba(0,0,0,0)',
+            },
           ]}
         >
-          <View
-            style={[
-              styles.popView,
-              this.props.height >= 0 && { height: this.props.height },
-            ]}
-          >
-            {this.renderBottom()}
-            {this.renderList()}
-          </View>
+          {this.renderBottom()}
+          {this.renderList()}
         </KeyboardAvoidingView>
       </PopView>
     )

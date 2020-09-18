@@ -47,9 +47,10 @@ export default class Row extends Component {
 
   constructor(props) {
     super(props)
+    let value = this.props.value || this.props.defaultValue
     this.state = {
-      value: props.value || props.defaultValue,
-      defaultValue: this.props.defaultValue || '',
+      value: value === undefined ? '' : value,
+      defaultValue: this.props.defaultValue === undefined ? '' : this.props.defaultValue,
       disable: this.props.disable,
     }
   }
@@ -69,9 +70,10 @@ export default class Row extends Component {
       prevProps.defaultValue !== this.props.defaultValue ||
       this.state.defaultValue !== prevState.defaultValue
     ) {
+      let value = this.props.value || this.props.defaultValue
       this.setState({
-        value: this.props.value || this.props.defaultValue,
-        defaultValue: this.props.defaultValue || '',
+        value: value === undefined ? '' : value,
+        defaultValue: this.props.defaultValue === undefined ? '' : this.props.defaultValue,
         disable: this.props.disable,
       })
     }

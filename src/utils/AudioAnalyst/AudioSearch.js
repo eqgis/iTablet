@@ -1,6 +1,7 @@
 import { AudioKeywords, ChunkType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
 import LocateUtils from '../../containers/pointAnalyst/LocateUtils'
+import { Audio } from '../../utils'
 
 const { searchKeys, keywords } = AudioKeywords
 
@@ -60,7 +61,7 @@ function search(content = '') {
       is3D: GLOBAL.Type === ChunkType.MAP_3D,
     }, async data => {
       if (data) {
-        GLOBAL.AudioDialog.setVisible(false)
+        Audio.hideAudio()
       }
       // this.location = location
       // if (GLOBAL.Type !== ChunkType.MAP_3D) {
@@ -76,7 +77,7 @@ function search(content = '') {
       // }
     })
   } else if (_searchKey) {
-    GLOBAL.AudioDialog.setVisible(false)
+    Audio.hideAudio()
     NavigationService.navigate('PointAnalyst', {
       type: 'pointSearch',
     })

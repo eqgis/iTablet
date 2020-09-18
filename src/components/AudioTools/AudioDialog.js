@@ -4,7 +4,9 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { AudioAnalyst } from '../../utils'
+import { Platform } from 'react-native'
+import Orientation from 'react-native-orientation'
+import { AudioAnalyst, screen } from '../../utils'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
 import AudioTopDialog from './AudioTopDialog'
@@ -21,8 +23,10 @@ export default class AudioDialog extends PureComponent {
     data?: Object,
     is3D?: boolean,
     language: string,
+    type: string,
     defaultText?: string,
     device: Object,
+    close: () => {},
   }
 
   static defaultProps = {
@@ -30,12 +34,13 @@ export default class AudioDialog extends PureComponent {
     activeOpacity: 0.8,
     is3D: false,
     defaultText: '',
+    type: 'top',
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      type: 'top',
+      type: this.props.type,
       visible: false,
       recording: false,
       content: '',
@@ -46,6 +51,40 @@ export default class AudioDialog extends PureComponent {
       SSpeechRecognizer.setParameter('language', 'en_us ')
     }
   }
+  
+  componentDidMount() {
+    (async function() {
+      try {
+        this.initOrientation()
+        await SSpeechRecognizer.addListenser({
+          onBeginOfSpeech: () => {
+            this.setState({ content: '', recording: true })
+          },
+          onEndOfSpeech: () => {
+            this.setState({ recording: false })
+          },
+          onError: e => {
+            let error = getLanguage(this.props.language).Prompt.SPEECH_ERROR
+            if (e.indexOf('没有说话') !== -1) {
+              error = getLanguage(this.props.language).Prompt.SPEECH_NONE
+            }
+            this.setState({ content: error })
+          },
+          onResult: ({ info, isLast }) => {
+            if (isLast) return
+            this.setState({ content: info }, () => {
+              setTimeout(() => {
+                AudioAnalyst.analyst(info)
+              }, 1000)
+            })
+          },
+        })
+        await this.startRecording()
+      } catch (e) {
+        () => {}
+      }
+    }.bind(this)())
+  }
 
   componentWillUnmount() {
     (async function() {
@@ -55,6 +94,11 @@ export default class AudioDialog extends PureComponent {
         // }
         this.state.recording && (await SSpeechRecognizer.stop())
         await SSpeechRecognizer.removeListener()
+        if (Platform.OS === 'ios') {
+          Orientation.removeSpecificOrientationListener(this.setOrientation)
+        } else {
+          Orientation.removeOrientationListener(this.setOrientation)
+        }
       } catch (e) {
         () => {}
       }
@@ -70,83 +114,71 @@ export default class AudioDialog extends PureComponent {
       }
     }
   }
+  
+  setOrientation = orientation => {
+    if (this.AudioRef && this.AudioRef.orientationChange) {
+      this.AudioRef.orientationChange(orientation)
+    }
+  }
+  
+  initOrientation = async () => {
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.setOrientation(orientation)
+      })
+      Orientation.removeSpecificOrientationListener(this.setOrientation)
+      Orientation.addSpecificOrientationListener(this.setOrientation)
+    } else {
+      Orientation.getOrientation((e, orientation) => {
+        this.setOrientation(orientation)
+      })
+      Orientation.removeOrientationListener(this.setOrientation)
+      Orientation.addOrientationListener(this.setOrientation)
+    }
+  }
 
   //控制Modal框是否可以展示
-  setVisible = (visible, type) => {
+  setVisible = async (visible, type) => {
     let newState = { recording: false }
     if (this.state.visible !== visible) newState.visible = visible
     if (type) newState.type = type
     newState.content = visible ? this.state.content : ''
     this.setState(newState)
-    ;(async function() {
-      try {
-        if (visible) {
-          await SSpeechRecognizer.addListenser({
-            onBeginOfSpeech: () => {
-              this.setState({ content: '', recording: true })
-            },
-            onEndOfSpeech: () => {
-              this.setState({ recording: false })
-            },
-            onError: e => {
-              let error = getLanguage(this.props.language).Prompt.SPEECH_ERROR
-              if (e.indexOf('没有说话') !== -1) {
-                error = getLanguage(this.props.language).Prompt.SPEECH_NONE
-              }
-              this.setState({ content: error })
-            },
-            onResult: ({ info, isLast }) => {
-              if (isLast) return
-              this.setState({ content: info }, () => {
-                setTimeout(() => {
-                  AudioAnalyst.analyst(info)
-                }, 1000)
-              })
-            },
-          })
-          this.startRecording()
-        } else {
-          this.state.recording && (await SSpeechRecognizer.stop())
-          await SSpeechRecognizer.removeListener()
-        }
-      } catch (e) {
-        () => {}
-      }
-    }.bind(this)())
+    if (!visible) {
+      await this.stopRecording()
+      this.props.close && this.props.close()
+    }
   }
 
-  startRecording = () => {
+  startRecording = async () => {
     this.setState({
       content: '',
       recording: true,
     })
-    ;(async function() {
-      try {
-        SSpeechRecognizer.start()
-      } catch (e) {
-        () => {}
-      }
-    }.bind(this)())
+    try {
+      SSpeechRecognizer.start()
+    } catch (e) {
+      () => {}
+    }
   }
 
-  stopRecording = () => {
-    (async function() {
-      try {
-        await SSpeechRecognizer.stop()
-        await SSpeechRecognizer.removeListener()
-      } catch (e) {
-        () => {}
-      }
-    }.bind(this)())
+  stopRecording = async () => {
+    try {
+      this.state.recording && await SSpeechRecognizer.stop()
+      await SSpeechRecognizer.removeListener()
+    } catch (e) {
+      () => {}
+    }
   }
 
   render() {
-    if (!this.state.visible || !this.state.type) return null
+    // if (!this.state.visible || !this.state.type) return null
+    this.AudioRef
     switch (this.state.type) {
       case 'top':
         return (
           <AudioTopDialog
-            ref={ref => (this.topDialog = ref)}
+            ref={ref => this.AudioRef = ref}
             startRecording={this.startRecording}
             stopRecording={this.stopRecording}
             setVisible={this.setVisible}
@@ -154,13 +186,12 @@ export default class AudioDialog extends PureComponent {
             content={this.state.content}
             recording={this.state.recording}
             defaultText={this.props.defaultText}
-            device={this.props.device}
           />
         )
       case 'bottom':
         return (
           <AudioBottomDialog
-            ref={ref => (this.bottomDialog = ref)}
+            ref={ref => this.AudioRef = ref}
             startRecording={this.startRecording}
             stopRecording={this.stopRecording}
             setVisible={this.setVisible}
@@ -168,13 +199,12 @@ export default class AudioDialog extends PureComponent {
             content={this.state.content}
             recording={this.state.recording}
             defaultText={this.props.defaultText}
-            device={this.props.device}
           />
         )
       case 'center':
         return (
           <AudioCenterDialog
-            ref={ref => (this.centerDialog = ref)}
+            ref={ref => this.AudioRef = ref}
             startRecording={this.startRecording}
             stopRecording={this.stopRecording}
             setVisible={this.setVisible}
@@ -182,7 +212,6 @@ export default class AudioDialog extends PureComponent {
             content={this.state.content}
             recording={this.state.recording}
             defaultText={this.props.defaultText}
-            device={this.props.device}
           />
         )
     }

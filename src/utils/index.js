@@ -12,6 +12,7 @@ import request from './request'
 import AnalystTools from './AnalystTools'
 import StyleUtils from './StyleUtils'
 import OnlineServicesUtils from './OnlineServicesUtils'
+import Audio from './Audio'
 
 export {
   screen,
@@ -34,4 +35,5 @@ export {
   AnalystTools,
   StyleUtils,
   OnlineServicesUtils,
+  Audio,
 }

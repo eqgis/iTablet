@@ -15,7 +15,7 @@ import {
   Animated,
   Modal,
 } from 'react-native'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { size } from '../../styles'
 import { ConstPath } from '../../constants'
 
@@ -101,7 +101,6 @@ export default class AudioTopDialog extends PureComponent {
     activeOpacity?: number,
     visible?: boolean,
     recording?: boolean,
-    device: Object,
   }
 
   static defaultProps = {
@@ -135,21 +134,21 @@ export default class AudioTopDialog extends PureComponent {
       })
     }
 
-    if (
-      JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
-    ) {
-      this.onOrientationChange()
-    }
+    // if (
+    //   JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
+    // ) {
+    //   this.onOrientationChange()
+    // }
   }
 
-  onOrientationChange = () => {
+  orientationChange = orientation => {
     Animated.parallel([
       Animated.timing(this.left, {
-        toValue: this.getFixDistance(),
+        toValue: this.getFixDistance(orientation),
         duration: 0,
       }),
       Animated.timing(this.right, {
-        toValue: this.getFixDistance(),
+        toValue: this.getFixDistance(orientation),
         duration: 0,
       }),
     ]).start()
@@ -169,15 +168,13 @@ export default class AudioTopDialog extends PureComponent {
     }
   }
 
-  getFixDistance = () => {
-    if (this.props.device.orientation === 'PORTRAIT') {
-      return scaleSize(30)
+  getFixDistance = (orientation = '') => {
+    let distance = scaleSize(30)
+    if (orientation.indexOf('PORTRAIT') < 0) {
+      let width = Math.abs(screen.getScreenHeight() - screen.getScreenWidth())
+      distance = width / 2 + scaleSize(30)
     }
-    let width = this.props.device.width - this.props.device.height
-    if (width < 0) {
-      width = this.props.device.height - this.props.device.width
-    }
-    return width / 2 + scaleSize(30)
+    return distance
   }
 
   renderAudioBtn = () => {
@@ -221,37 +218,18 @@ export default class AudioTopDialog extends PureComponent {
 
   render() {
     return (
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={this.state.visible}
-        onRequestClose={() => {
-          //点击物理按键需要隐藏对话框
-          if (this.props.backHide) {
-            this.setDialogVisible(false)
-          }
-        }}
+      <Animated.View
+        style={[styles.dialogStyle, { left: this.left, right: this.right }]}
       >
-        <TouchableOpacity
-          activeOpacity={1}
-          style={styles.overlay}
-          onPress={() => {
-            this.setVisible(false)
-          }}
-        />
-        <Animated.View
-          style={[styles.dialogStyle, { left: this.left, right: this.right }]}
-        >
-          <ScrollView style={styles.contentView}>
-            <Text style={styles.content}>{this.state.content}</Text>
-            {this.state.content === '' && (
-              <Text style={styles.tip}>{this.props.defaultText}</Text>
-            )}
-          </ScrollView>
-          {this.renderAudioBtn()}
-          {this.renderCloseBtn()}
-        </Animated.View>
-      </Modal>
+        <ScrollView style={styles.contentView}>
+          <Text style={styles.content}>{this.state.content}</Text>
+          {this.state.content === '' && (
+            <Text style={styles.tip}>{this.props.defaultText}</Text>
+          )}
+        </ScrollView>
+        {this.renderAudioBtn()}
+        {this.renderCloseBtn()}
+      </Animated.View>
     )
   }
 }

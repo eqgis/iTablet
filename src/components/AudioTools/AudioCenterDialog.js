@@ -193,7 +193,7 @@ export default class AudioCenterDialog extends PureComponent {
   }
 
   render() {
-    if (!this.state.visible) return null
+    // if (!this.state.visible) return null
     return (
       <View style={styles.container}>
         <TouchableOpacity

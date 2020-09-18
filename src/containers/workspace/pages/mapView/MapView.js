@@ -62,7 +62,6 @@ import {
   // SearchBar,
   Progress,
   BubblePane,
-  AudioDialog,
   PopMenu,
   CustomInputDialog,
   CustomAlertDialog,
@@ -75,6 +74,7 @@ import {
   LayerUtils,
   FetchUtils,
   screen,
+  Audio,
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -1097,6 +1097,13 @@ export default class MapView extends React.Component {
 
   back = async () => {
     if (!this.mapLoaded) return
+    
+    // 最顶层的语音搜索，最先处理
+    if (Audio.isShow()) {
+      Audio.hideAudio()
+      return
+    }
+    
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
       this.backAction({
@@ -2295,8 +2302,7 @@ export default class MapView extends React.Component {
               key: MapHeaderButton.Audio,
               image: getPublicAssets().common.icon_audio,
               action: () => {
-                // SSpeechRecognizer.start()
-                GLOBAL.AudioDialog.setVisible(true)
+                Audio.showAudio('top', { device: this.props.device })
               },
             }
             break
@@ -3215,12 +3221,12 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
-        <AudioDialog
-          ref={ref => (GLOBAL.AudioDialog = ref)}
-          defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
-          device={this.props.device}
-          language={this.props.language}
-        />
+        {/*<AudioDialog*/}
+          {/*ref={ref => (GLOBAL.AudioDialog = ref)}*/}
+          {/*defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}*/}
+          {/*device={this.props.device}*/}
+          {/*language={this.props.language}*/}
+        {/*/>*/}
         {global.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}

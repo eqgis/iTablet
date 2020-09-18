@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, NetInfo, ScrollView, InteractionManager } from 'react-native'
+import { View, StyleSheet, NetInfo, ScrollView } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { color } from '../../../../styles'
@@ -129,9 +129,7 @@ class ModuleList extends Component {
           // ref.getDialogCheck(),
           this.props.ignoreDownloads.indexOf(downloadData.key) >= 0,
         )
-      InteractionManager.runAfterInteractions(() => {
-        this.props.showDialog && this.props.showDialog(true)
-      })
+      this.props.showDialog && this.props.showDialog(true)
     }.bind(this)())
   }
 

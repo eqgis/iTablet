@@ -94,10 +94,11 @@ async function _getLabelDataList(user) {
   const path = `${userPath + ConstPath.RelativePath.Label}Label_${
     user.userName
   }#.udb`
-  // const result = await FileTools.fileIsExist(path)
-  // if (!result) {
-  //   creatLabelDatasource(user, path)
-  // }
+  const result = await FileTools.fileIsExist(path)
+  if (!result) {
+    // creatLabelDatasource(user, path)
+    return null
+  }
   const list = await SMap.getUDBNameOfLabel(path)
   return list
 }

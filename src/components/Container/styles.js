@@ -68,11 +68,11 @@ export default StyleSheet.create({
     bottom: 0,
     // width: scaleSize(96),
     backgroundColor: color.theme,
-    alignSelf: 'center',
+    // alignSelf: 'center',
     zIndex: zIndexLevel.TWO,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   flexRightBar: {
     // width: scaleSize(96),

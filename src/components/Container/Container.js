@@ -263,7 +263,7 @@ export default class Container extends Component {
       style.push(this.props.bottomProps.style)
     }
     let bottom = isLandscape
-      ? { right: this.state.bottom }
+      ? { right: this.state.bottom, height: this.props.device.height }
       : { bottom: this.state.bottom }
     return (
       <AnimatedView style={[style, bottom]}>

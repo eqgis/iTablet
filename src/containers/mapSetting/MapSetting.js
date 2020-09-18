@@ -2,15 +2,9 @@ import React, { Component } from 'react'
 import { Container } from '../../components'
 import NavigationService from '../NavigationService'
 import { MapToolbar } from '../workspace/components'
-import {
-  View,
-  FlatList,
-} from 'react-native'
+import { View, FlatList } from 'react-native'
 import styles from './styles'
-import {
-  getThematicMapSettings,
-  getMapARAnalysisSettings,
-} from './settingData'
+import { getThematicMapSettings, getMapARAnalysisSettings } from './settingData'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { ChunkType } from '../../constants'
@@ -109,7 +103,7 @@ export default class MapSetting extends Component {
   _renderItemSeparatorComponent = () => {
     return <View style={styles.itemSeparator} />
   }
-  
+
   renderFlatListItem = ({ item }) => {
     return (
       <MapSettingItem
@@ -118,7 +112,8 @@ export default class MapSetting extends Component {
         action={() => {
           //图例单独处理
           if (
-            item.title === getLanguage(this.props.language).Map_Settings.LEGEND_SETTING
+            item.title ===
+            getLanguage(this.props.language).Map_Settings.LEGEND_SETTING
           ) {
             legendModule().action()
           } else {
@@ -160,19 +155,19 @@ export default class MapSetting extends Component {
       <View>
         {this._renderItemSeparatorComponent()}
         {/*<MapSettingItem*/}
-          {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
-          {/*type={'switch'}*/}
-          {/*rightAction={value => {*/}
-            {/*this.props.setColumnNavBar(value)*/}
-          {/*}}*/}
-          {/*value={this.props.mapColumnNavBar}*/}
-          {/*leftImage={getThemeAssets().setting.icon_horizontal_screen}*/}
+        {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
+        {/*type={'switch'}*/}
+        {/*rightAction={value => {*/}
+        {/*this.props.setColumnNavBar(value)*/}
+        {/*}}*/}
+        {/*value={this.props.mapColumnNavBar}*/}
+        {/*leftImage={getThemeAssets().setting.icon_horizontal_screen}*/}
         {/*/>*/}
         {/*{this._renderItemSeparatorComponent()}*/}
-        {
-          CoworkInfo.coworkId !== '' &&
+        {CoworkInfo.coworkId !== '' && (
           <MapSettingItem
-            title={getLanguage(global.language).Profile.REAL_TIME_SYNC}
+            type={'switch'}
+            title={getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
               CoworkInfo.setIsRealTime(value)
               this.setState({ isRealTime: value })
@@ -180,7 +175,7 @@ export default class MapSetting extends Component {
             value={this.state.isRealTime}
             leftImage={getThemeAssets().setting.icon_horizontal_screen}
           />
-        }
+        )}
         {CoworkInfo.coworkId !== '' && this._renderItemSeparatorComponent()}
       </View>
     )
@@ -205,7 +200,7 @@ export default class MapSetting extends Component {
         headerProps={{
           title: this.props.mapModules.modules[
             this.props.mapModules.currentMapModule
-            ].chunk.title,
+          ].chunk.title,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',

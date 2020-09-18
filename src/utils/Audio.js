@@ -4,9 +4,9 @@ import RootSiblings from 'react-native-root-siblings'
 import AudioDialog from '../components/AudioTools/AudioDialog'
 import { getLanguage } from '../language/index'
 
-let sibling, AudioDialogRef
+let elements = [], AudioDialogRef
 function showAudio(type = 'top', audioProps = {}) {
-  sibling = new RootSiblings()
+  let sibling = new RootSiblings()
   sibling.update(
     <TouchableOpacity
       activeOpacity={1}
@@ -35,9 +35,11 @@ function showAudio(type = 'top', audioProps = {}) {
       />
     </TouchableOpacity>
   )
+  elements.push({sibling, AudioDialogRef})
 }
 
 async function hideAudio () {
+  let { sibling, AudioDialogRef } = elements.pop()
   if (AudioDialogRef) {
     await AudioDialogRef.stopRecording()
   }

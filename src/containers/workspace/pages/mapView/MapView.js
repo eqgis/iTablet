@@ -2797,6 +2797,7 @@ export default class MapView extends React.Component {
               GLOBAL.MapSelectPointType = undefined
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
+              SMap.deleteMarker(GLOBAL.markerTag)
               GLOBAL.toolBox.setVisible(false)
 
               Toast.show(
@@ -2897,6 +2898,7 @@ export default class MapView extends React.Component {
                 GLOBAL.MapXmlStr = undefined
               }
 
+              SMap.deleteMarker(GLOBAL.markerTag)
               GLOBAL.MapSelectPointType = undefined
               GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
                 GLOBAL.DATUMPOINTVIEW &&

@@ -46,6 +46,7 @@ export default class ARTextView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
+    SARText.onDestroy()
     NavigationService.goBack()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

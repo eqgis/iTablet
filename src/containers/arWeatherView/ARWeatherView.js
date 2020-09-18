@@ -62,6 +62,7 @@ export default class ARWeatherView extends React.Component {
   }
 
   back = () => {
+    SARWeather.onDestroy()
     NavigationService.goBack()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

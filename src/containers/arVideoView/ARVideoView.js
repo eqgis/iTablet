@@ -46,6 +46,7 @@ export default class ARVideoView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
+    SARVideoView.onDestroy()
     NavigationService.goBack()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

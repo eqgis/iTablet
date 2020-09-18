@@ -46,6 +46,7 @@ export default class ARWebView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
+    SARWebView.onDestroy()
     NavigationService.goBack()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

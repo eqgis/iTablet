@@ -46,6 +46,7 @@ export default class ARImageView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
+    SARImage.onDestroy()
     NavigationService.goBack()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

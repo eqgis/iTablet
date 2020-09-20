@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { FlatList, View, Text } from 'react-native'
+import { FlatList, View, Text, TouchableOpacity } from 'react-native'
 import { scaleSize } from '../../../utils'
 import { color } from '../../../styles'
 import { getLanguage } from '../../../language'
@@ -18,7 +18,7 @@ import { mapModules } from '../../../../configs/mapModules'
 import AppletItem from './AppletItem'
 
 import styles from './styles'
-import TouchableOpacity from 'react-native-gesture-handler/touchables/TouchableOpacity'
+// import TouchableOpacity from 'react-native-gesture-handler/touchables/TouchableOpacity'
 
 export default class AppletList extends React.Component {
   props: {

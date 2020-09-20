@@ -241,11 +241,13 @@ class AppRoot extends Component {
       }
       let needToUpdate = false
       applets.map(key => {
-        for (let item of mapModules) {
-          needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
-          if (item.key === key || needToUpdate) {
-            myMapModules.push(item)
-            break
+        if (key !== 'APPLET_ADD') {
+          for (let item of mapModules) {
+            needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
+            if (item.key === key || needToUpdate) {
+              myMapModules.push(item)
+              break
+            }
           }
         }
       })

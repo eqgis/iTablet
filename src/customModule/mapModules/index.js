@@ -13,7 +13,6 @@ import MapARMapping from './MapARMapping'
 /** 自定义模块 **/
 // import MapExample from './MapExample'
 
-/** export顺序为首页模块显示顺序 **/
 export {
   MapARConfig,
   MapEditConfig,

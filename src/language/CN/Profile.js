@@ -47,7 +47,7 @@ const Profile = {
   GET_CODE: '获取验证码',
   ENTER_EMAIL: '请输入邮箱',
   ENTER_SERVER_ADDRESS: '请输入服务地址',
-  ENTER_VALID_SERVER_ADDRESS: '请输入合法的服务地址',
+  ENTER_VALID_SERVER_ADDRESS: '请输入有效的服务地址',
   ENTER_REALNAME: '请输入真实姓名',
   ENTER_COMPANY: '请输入工作机构',
   REGISTER_READ_PROTOCAL: '我已阅读并接受 ',

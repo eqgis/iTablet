@@ -140,21 +140,21 @@ export default class AddMore extends React.Component {
                 {/* // 发起群聊 */}
               </Text>
             </TouchableOpacity>
-            <View style={styles.seperator} />
-            <TouchableOpacity
-              onPress={() => {
-                this.props.addMore(3), this.closeModal()
-              }}
-              style={styles.itemView}
-            >
-              <Image
-                style={styles.imgStyle}
-                source={getThemeAssets().friend.friend_mobileCon}
-              />
-              <Text style={styles.textStyle}>
-                {getLanguage(global.language).Friends.RECOMMEND_FRIEND}
-              </Text>
-            </TouchableOpacity>
+            {/*<View style={styles.seperator} />*/}
+            {/*<TouchableOpacity*/}
+              {/*onPress={() => {*/}
+                {/*this.props.addMore(3), this.closeModal()*/}
+              {/*}}*/}
+              {/*style={styles.itemView}*/}
+            {/*>*/}
+              {/*<Image*/}
+                {/*style={styles.imgStyle}*/}
+                {/*source={getThemeAssets().friend.friend_mobileCon}*/}
+              {/*/>*/}
+              {/*<Text style={styles.textStyle}>*/}
+                {/*{getLanguage(global.language).Friends.RECOMMEND_FRIEND}*/}
+              {/*</Text>*/}
+            {/*</TouchableOpacity>*/}
           </View>
         </View>
       </Modal>

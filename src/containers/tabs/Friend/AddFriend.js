@@ -20,6 +20,8 @@ import { dialogStyles } from './Styles'
 import FriendListFileHandle from './FriendListFileHandle'
 import { getLanguage } from '../../../language/index'
 import { Toast, OnlineServicesUtils } from '../../../utils'
+import { size, color } from '../../../styles'
+import { getThemeAssets } from '../../../assets'
 import MSGConstant from './MsgConstant'
 
 const dismissKeyboard = require('dismissKeyboard')
@@ -226,9 +228,11 @@ class AddFriend extends Component {
           }
         }}
       >
-        <View style={[styles.ITemHeadTextViewStyle, { opacity: opacity }]}>
-          <Text style={styles.ITemHeadTextStyle}>{headStr}</Text>
-        </View>
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
         <View style={[styles.ITemTextViewStyle, { opacity: opacity }]}>
           <Text style={styles.ITemTextStyle}>{item.nickname}</Text>
         </View>
@@ -309,23 +313,30 @@ var styles = StyleSheet.create({
   },
 
   ITemTextStyle: {
-    fontSize: scaleSize(30),
-    color: 'black',
+    marginLeft: scaleSize(32),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray2,
   },
-  ITemTextViewStyle: {
-    marginLeft: scaleSize(20),
-    flexDirection: 'row',
+  itemImg: {
+    marginLeft: scaleSize(32),
+    height: scaleSize(60),
+    width: scaleSize(60),
+    borderRadius: scaleSize(30),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ItemTextViewStyle: {
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    flexGrow: 1,
   },
-  ITemHeadTextStyle: {
-    fontSize: scaleSize(25),
-    color: 'white',
+  ItemHeadTextStyle: {
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorBlack,
   },
   ItemViewStyle: {
     paddingLeft: scaleSize(20),
     paddingRight: scaleSize(30),
-    height: scaleSize(70),
+    height: scaleSize(90),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',

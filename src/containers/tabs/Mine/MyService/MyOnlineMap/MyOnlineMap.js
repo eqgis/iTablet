@@ -12,7 +12,7 @@ import styles, { textHeight } from './Styles'
 import NavigationService from '../../../../NavigationService'
 import { FetchUtils, scaleSize } from '../../../../../utils'
 import Toast from '../../../../../utils/Toast'
-import color from '../../../../../styles/color'
+import { color, size } from '../../../../../styles'
 import { getLanguage } from '../../../../../language'
 export default class MyOnlineMap extends Component {
   props: {
@@ -190,21 +190,32 @@ export default class MyOnlineMap extends Component {
   _renderSectionHeader = section => {
     let title = section.section.title
     if (title !== undefined) {
-      let lineHeight = scaleSize(80)
       return (
-        <Text
-          style={[
-            styles.titleTextStyle,
-            {
-              fontWeight: 'bold',
-              lineHeight: lineHeight,
-              backgroundColor: color.itemColorGray,
-              color: color.fontColorWhite,
-            },
-          ]}
+        <View
+          style={{
+            backgroundColor: color.bgW2,
+            // justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: scaleSize(80),
+            flexDirection: 'row',
+          }}
         >
-          {title}
-        </Text>
+          <Text
+            style={[
+              styles.titleTextStyle,
+              {
+                color: color.fontColorBlack,
+                fontSize: size.fontSize.fontSizeXl,
+                fontWeight: 'bold',
+                paddingLeft: 15,
+                backgroundColor: 'transparent',
+              },
+            ]}
+          >
+            {title}
+          </Text>
+        </View>
       )
     }
     return <View />

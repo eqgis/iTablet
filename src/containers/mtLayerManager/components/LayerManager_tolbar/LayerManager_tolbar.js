@@ -59,6 +59,8 @@ import {
   getLayerIconByType,
 } from '../../../../assets'
 import { stat } from 'react-native-fs'
+import { setCurrentLayer } from '../../../../redux/models/layers'
+
 
 /** 工具栏类型 **/
 const list = 'list'
@@ -83,6 +85,7 @@ export default class LayerManager_tolbar extends React.Component {
     // layers: Object,
     user: Object,
     navigation: Object,
+    currentLayer: Object,
     curUserBaseMaps: Array,
     currentScale: Number,
   }
@@ -527,6 +530,9 @@ export default class LayerManager_tolbar extends React.Component {
           }
           GLOBAL.BaseMapSize = 0
         } else {
+          if( this.state.layerData.path === this.props.currentLayer.name){
+            this.props.setCurrentLayer();
+          }
           await SMap.removeLayer(this.state.layerData.path)
         }
         await SMap.refreshMap()

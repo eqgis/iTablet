@@ -281,15 +281,15 @@ function isLegalName(text = '', language = 'CN') {
     }
   }
   const pattern1 = new RegExp(
-    "^[0-9`~!@#_$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s\-¥]",
+    "^[0-9`_~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s\-¥œ∑´†¥¨ˆπ“‘åß∂ƒ˙∆˚¬…æ«Ω≈√∫˜µ≤≥µ≠–ºª•¶§∞¢£™¡]",
   )
   const pattern2 = new RegExp(
-    "[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s¥]",
+    "[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s¥œ∑´†¥¨ˆπ“‘åß∂ƒ˙∆˚¬…æ«Ω≈√∫˜µ≤≥µ≠–ºª•¶§∞¢£™¡]",
   )
   const emojiPattern = new RegExp(
     '/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|[\uD800-\uDBFF]|[\uDC00-\uDFFF]|[^\u0020-\u007E\u00A0-\u00BE\u2E80-\uA4CF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF\u0080-\u009F\u2000-\u201f\u2026\u2022\u20ac\r\n]/g'
   )
-  
+
   // const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
   // const re1 = /^[a-zA-Z\u4e00-\u9fa5]/ // 判断首字母
   if (pattern1.test(text[0])) {
@@ -299,8 +299,6 @@ function isLegalName(text = '', language = 'CN') {
       error: getLanguage(language).Prompt.ERROR_INFO_START_WITH_A_LETTER,
     }
   }
-  console.warn('1: ', pattern2.test(text))
-  console.warn('2: ', emojiPattern.test(text))
   if (pattern2.test(text) || emojiPattern.test(text)) {
     return {
       result: false,

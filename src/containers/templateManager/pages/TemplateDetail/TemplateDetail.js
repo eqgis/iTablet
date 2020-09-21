@@ -203,7 +203,6 @@ export default class TemplateDetail extends React.Component {
 
   confirm = async () => {
     let params = this.props.navigation.state.params || {}
-    console.warn(JSON.stringify(params))
     if (params.title) {
       await this.goBack({
         title: params.title,

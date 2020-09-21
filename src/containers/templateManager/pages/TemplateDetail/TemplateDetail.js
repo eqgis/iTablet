@@ -14,7 +14,7 @@ import {
   InputDialog,
 } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
-import { screen, scaleSize } from '../../../../utils'
+import { screen, scaleSize, Toast } from '../../../../utils'
 import { ConstToolType } from '../../../../constants'
 import { size, color } from '../../../../styles'
 import { ListSeparator, TreeList, TreeListItem } from '../../../../components'
@@ -203,8 +203,9 @@ export default class TemplateDetail extends React.Component {
 
   confirm = async () => {
     let params = this.props.navigation.state.params || {}
+    console.warn(JSON.stringify(params))
     if (params.title) {
-      this.goBack({
+      await this.goBack({
         title: params.title,
         data: await XMLUtil.obj2Xml(params.title, this.state.data),
       })
@@ -214,79 +215,91 @@ export default class TemplateDetail extends React.Component {
   }
 
   goBack = async (data = {}) => {
-    let path = this.path
-    if (data.title) {
-      path =
-        (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
-        this.props.currentUser.userName +
-        '/' +
-        ConstPath.RelativePath.Template +
-        data.title +
-        '.xml'
-    }
-    let xmlObj
-
-    if (data.data) {
-      // 编辑已有的template文件
-      let oldXmlObj = XMLUtil.obj2Xml(data.title, this.oldData)
-      if (JSON.stringify(data.data) !== JSON.stringify(oldXmlObj)) {
+    try {
+      this.container &&
+      this.container.setLoading(true, getLanguage(this.props.language).Profile.SWITCHING)
+      let path = this.path
+      if (data.title) {
+        path =
+          (await FileTools.appendingHomeDirectory(ConstPath.UserPath)) +
+          this.props.currentUser.userName +
+          '/' +
+          ConstPath.RelativePath.Template +
+          data.title +
+          '.xml'
+      }
+      let xmlObj
+  
+      if (data.data) {
+        // 编辑已有的template文件
+        let oldXmlObj = XMLUtil.obj2Xml(data.title, this.oldData)
+        if (JSON.stringify(data.data) !== JSON.stringify(oldXmlObj)) {
+          let res = await XMLUtil.writeXML(path, this.state.data)
+          if (res.result) {
+            xmlObj = res.xmlObj
+          }
+        } else {
+          xmlObj = data.data
+        }
+      } else if (data.title) {
+        // 新建template文件
         let res = await XMLUtil.writeXML(path, this.state.data)
         if (res.result) {
           xmlObj = res.xmlObj
         }
-      } else {
-        xmlObj = data.data
       }
-    } else if (data.title) {
-      // 新建template文件
-      let res = await XMLUtil.writeXML(path, this.state.data)
-      if (res.result) {
-        xmlObj = res.xmlObj
-      }
-    }
+  
+      if (xmlObj) {
+        const homePath = await FileTools.appendingHomeDirectory()
+        const mapXml = homePath + this.props.map.currentMap.path
+        const expFilePath = `${mapXml.substr(0, mapXml.lastIndexOf('.'))}.exp`
+        const expIsExist = await FileTools.fileIsExist(expFilePath)
+        let relativeTemplatePath
+        if (expIsExist) {
+          let expData = JSON.parse(await fs.readFile(expFilePath))
+          relativeTemplatePath = path.replace(homePath + ConstPath.UserPath, '')
+          // 若exp文件中Template不存在，或者和当前模板目录不相同，则改写文件
+          if (
+            expData &&
+            (!expData.Template || expData.Template !== relativeTemplatePath)
+          ) {
+            expData.Template = relativeTemplatePath
+            await fs.unlink(expFilePath)
+            await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
+          }
+        }
+    
+        let params = this.props.navigation.state.params
+        if (params && params.cb && typeof params.cb === 'function') {
+          params.cb()
+        }
+  
+        // 修改地图信息中的Template
+        let map = this.props.map.currentMap
+        map.Template = relativeTemplatePath
+        await this.props.setCurrentMap(map)
+        this.container &&
+        this.container.setLoading(false)
+        Toast.show(getLanguage(this.props.language).Prompt.SWITCHING_SUCCESS)
 
-    if (xmlObj) {
-      const homePath = await FileTools.appendingHomeDirectory()
-      const mapXml = homePath + this.props.map.currentMap.path
-      const expFilePath = `${mapXml.substr(0, mapXml.lastIndexOf('.'))}.exp`
-      const expIsExist = await FileTools.fileIsExist(expFilePath)
-      let relativeTemplatePath
-      if (expIsExist) {
-        let expData = JSON.parse(await fs.readFile(expFilePath))
-        relativeTemplatePath = path.replace(homePath + ConstPath.UserPath, '')
-        // 若exp文件中Template不存在，或者和当前模板目录不相同，则改写文件
+        NavigationService.goBack('TemplateManager')
+        // 修改redux采集模板
+        this.props.setSymbolTemplates({
+          path: path,
+          data: xmlObj,
+          name: data.title,
+        })
         if (
-          expData &&
-          (!expData.Template || expData.Template !== relativeTemplatePath)
+          ToolbarModule.getData().actions &&
+          ToolbarModule.getData().actions.openTemplate
         ) {
-          expData.Template = relativeTemplatePath
-          await fs.unlink(expFilePath)
-          await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
+          ToolbarModule.getData().actions.openTemplate(ConstToolType.COLLECTION)
         }
       }
-
-      let params = this.props.navigation.state.params
-      if (params && params.cb && typeof params.cb === 'function') {
-        params.cb()
-      }
-
-      NavigationService.goBack('TemplateManager')
-      // 修改地图信息中的Template
-      let map = this.props.map.currentMap
-      map.Template = relativeTemplatePath
-      this.props.setCurrentMap(map)
-      // 修改redux采集模板
-      this.props.setSymbolTemplates({
-        path: path,
-        data: xmlObj,
-        name: data.title,
-      })
-      if (
-        ToolbarModule.getData().actions &&
-        ToolbarModule.getData().actions.openTemplate
-      ) {
-        ToolbarModule.getData().actions.openTemplate(ConstToolType.COLLECTION)
-      }
+    } catch (e) {
+      this.container &&
+      this.container.setLoading(false)
+      Toast.show(getLanguage(this.props.language).Prompt.CHANGE_FAULT)
     }
   }
 
@@ -417,7 +430,7 @@ export default class TemplateDetail extends React.Component {
   render() {
     return (
       <Container
-        ref={ref => (this.Container = ref)}
+        ref={ref => (this.container = ref)}
         navigation={this.props.navigation}
         headerProps={{
           title: this.state.title,

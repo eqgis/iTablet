@@ -101,7 +101,6 @@ class LicenseJoinEducation extends Component {
         Toast.show(
           getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
-        debugger
         if(Platform.OS === 'android') {
           await SMap.setEducationConnectCallback(async result => {
             if (!result) {

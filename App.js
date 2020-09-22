@@ -208,7 +208,10 @@ class AppRoot extends Component {
       // 获取用户登录记录
       let users = await ConfigUtils.getUsers()
       let userName = 'Customer'
-      // GLOBAL.currentUser = { userName }
+      // 创建游客目录
+      if (!(await FileTools.fileIsExist(userName))) {
+        await FileTools.initUserDefaultData(userName)
+      }
       if (users.length === 0) {
         // 若没有任何用户登录，则默认Customer登录
         this.props.setUser({
@@ -218,6 +221,10 @@ class AppRoot extends Component {
       } else {
         await this.props.setUsers(users)
         userName = users[0].userName
+        // 创建登录用户目录
+        if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
+          await FileTools.initUserDefaultData(userName)
+        }
       }
       await this.getUserApplets(userName)
     } catch (e) {
@@ -370,7 +377,6 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     ;(async function () {
       await this.initDirectories()
-      await FileTools.initUserDefaultData(this.props.user.currentUser.userName || 'Customer')
       await this.initUser()
       SOnlineService.init()
       // SOnlineService.removeCookie()

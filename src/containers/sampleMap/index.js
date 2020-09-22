@@ -4,6 +4,7 @@ import {
   downloadFile,
   deleteDownloadFile,
 } from '../../redux/models/down'
+import { importSceneWorkspace } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),
@@ -15,6 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   downloadFile,
   deleteDownloadFile,
+  importSceneWorkspace,
 }
 export default connect(
   mapStateToProps,

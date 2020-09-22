@@ -1338,7 +1338,7 @@ class Chat extends React.Component {
             right: {
               //我方的气泡
               marginTop: scaleSize(1),
-              backgroundColor: 'blue',
+              backgroundColor: color.gray,
               overflow: 'hidden',
               borderRadius: scaleSize(10),
             },

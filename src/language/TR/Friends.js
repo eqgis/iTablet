@@ -146,5 +146,7 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: 'ekle',
   SYS_MSG_GEO_DELETED2: 'silin',
   SYS_MSG_GEO_UPDATED2: 'güncelle',
+  
+  ADDED: 'Added', // 待翻译
 }
 export { Friends }

@@ -146,5 +146,6 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: '',
   SYS_MSG_GEO_DELETED2: '',
   SYS_MSG_GEO_UPDATED2: '',
+  ADDED: 'Added',
 }
 export { Friends }

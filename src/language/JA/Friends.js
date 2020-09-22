@@ -146,5 +146,7 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: 'を追加しました',
   SYS_MSG_GEO_DELETED2: 'を削除しました',
   SYS_MSG_GEO_UPDATED2: 'を更新しました',
+  
+  ADDED: 'Added', // 待翻译
 }
 export { Friends }

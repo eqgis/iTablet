@@ -15,9 +15,9 @@ import {
 
 import Container from '../../../../components/Container'
 import NavigationService from '../../../NavigationService'
-import { Toast } from '../../../../utils'
-import { color } from '../../../../styles'
-import { scaleSize } from '../../../../utils/screen'
+import { Toast, scaleSize } from '../../../../utils'
+import { color, size } from '../../../../styles'
+import { getThemeAssets } from '../../../../assets'
 import { getPinYinFirstCharacter } from '../../../../utils/pinyin'
 import FriendListFileHandle from '../FriendListFileHandle'
 import { getLanguage } from '../../../../language/index'
@@ -269,7 +269,6 @@ class CreateGroupChat extends Component {
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            marginTop: scaleSize(10),
           }}
         >
           <SectionList
@@ -321,6 +320,8 @@ class CreateGroupChat extends Component {
 
   _renderSectionHeader(sectionItem) {
     const { section } = sectionItem
+    let isFirstSection = section.key === this.state.sections[0].key &&
+      section.title === this.state.sections[0].title
     return (
       <View style={styles.HeadViewStyle}>
         <Text style={styles.HeadTextStyle}>{section.title.toUpperCase()}</Text>
@@ -343,11 +344,11 @@ class CreateGroupChat extends Component {
         activeOpacity={0.75}
         onPress={() => this._onFriendSelect(item)}
       >
-        <View style={styles.ITemHeadTextViewStyle}>
-          <Text style={styles.ITemHeadTextStyle}>
-            {item['markName'][0].toUpperCase()}
-          </Text>
-        </View>
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
         <View style={styles.ITemTextViewStyle}>
           <Text style={styles.ITemTextStyle}>{item['markName']}</Text>
         </View>
@@ -373,18 +374,15 @@ class CreateGroupChat extends Component {
 
 const styles = StyleSheet.create({
   HeadViewStyle: {
-    height: scaleSize(35),
-    backgroundColor: 'rgba(160,160,160,1.0)',
-    paddingHorizontal: scaleSize(10),
+    height: scaleSize(72),
+    backgroundColor: color.itemColorGray2,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: scaleSize(10),
-    marginRight: scaleSize(10),
   },
   HeadTextStyle: {
-    fontSize: scaleSize(22),
-    color: 'white',
-    marginLeft: scaleSize(20),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorBlack,
+    marginLeft: scaleSize(80),
   },
   ItemViewStyle: {
     paddingLeft: scaleSize(20),
@@ -409,14 +407,21 @@ const styles = StyleSheet.create({
   },
 
   ITemTextViewStyle: {
-    marginLeft: scaleSize(20),
-    flexDirection: 'row',
+    marginLeft: scaleSize(32),
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    flexGrow: 1,
   },
   ITemTextStyle: {
-    fontSize: scaleSize(30),
-    color: 'black',
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray2,
+  },
+  itemImg: {
+    marginLeft: scaleSize(32),
+    height: scaleSize(60),
+    width: scaleSize(60),
+    borderRadius: scaleSize(30),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   SectionSeparatorLineStyle: {
     height: scaleSize(1),

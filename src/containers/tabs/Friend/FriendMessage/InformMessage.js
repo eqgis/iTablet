@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  Image,
 } from 'react-native'
 import { scaleSize } from '../../../../utils/screen'
 import { Container } from '../../../../components'
 import { styles } from './Styles'
 import AddFriend from './../AddFriend'
 import { getLanguage } from '../../../../language/index'
+import { getThemeAssets } from '../../../../assets'
 import MSGconstant from '../MsgConstant'
 import FriendListFileHandle from '../FriendListFileHandle'
 import { SimpleDialog } from '../index'
@@ -165,7 +167,9 @@ export default class InformMessage extends React.Component {
     let lastMessage = this.friend.loadMsg(item)
     let time = item.originMsg.time
     let ctime = new Date(time)
-    let timeString = moment(ctime).format('YYYY/MM/DD HH:mm')
+    let timeString = item.originMsg.consumed
+      ? getLanguage(this.language).Friends.ADDED
+      : moment(ctime).format('YYYY/MM/DD HH:mm')
     // let timeString =
     //   '' +
     //   ctime.getFullYear() +
@@ -177,33 +181,26 @@ export default class InformMessage extends React.Component {
     //   ctime.getHours() +
     //   ':' +
     //   ctime.getMinutes()
-    let opacity = 1.0
-    if (item.originMsg.consumed) {
-      opacity = 0.3
-    }
+    // let opacity = 1.0
+    // if (item.originMsg.consumed) {
+    //   opacity = 0.3
+    // }
     return (
       <TouchableOpacity
-        style={[styles.ItemViewStyle, { opacity: opacity }]}
+        style={[styles.ItemViewStyle]}
         activeOpacity={0.75}
         disabled={item.originMsg.consumed || false}
         onPress={() => {
           this._onSectionselect(item, index)
         }}
       >
-        <View style={styles.ITemHeadTextViewStyle}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {this._renderItemHeadView(item)}
-          </View>
-        </View>
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
         <View style={styles.ITemTextViewStyle}>
-          {this._renderItemTitleView(item)}
+          <Text style={styles.ITemTextStyle}>{item.originMsg.user.name}</Text>
           <Text
             style={{
               fontSize: scaleSize(20),
@@ -234,16 +231,5 @@ export default class InformMessage extends React.Component {
         </View>
       </TouchableOpacity>
     )
-  }
-
-  _renderItemHeadView(item) {
-    return (
-      <Text style={styles.ITemHeadTextStyle}>
-        {item.originMsg.user.name[0]}
-      </Text>
-    )
-  }
-  _renderItemTitleView(item) {
-    return <Text style={styles.ITemTextStyle}>{item.originMsg.user.name}</Text>
   }
 }

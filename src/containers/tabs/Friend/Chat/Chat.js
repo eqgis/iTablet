@@ -806,9 +806,7 @@ class Chat extends React.Component {
         uri = `data:image/png;base64,${imgdata}`
       }
     }
-    this.ImageViewer.setPicMsg(message)
-    this.ImageViewer.setImageUri(uri)
-    this.ImageViewer.setVisible(true)
+    ImageViewer.show([{url: uri}])
   }
 
   onCustomViewLocationTouch = async message => {
@@ -1232,7 +1230,6 @@ class Chat extends React.Component {
               }}
             />
             {this.renderSimpleDialog()}
-            {this.rennderImageViewer()}
           </Animated.View>
         </Container>
     )
@@ -1437,15 +1434,6 @@ class Chat extends React.Component {
 
   renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
-  }
-
-  rennderImageViewer = () => {
-    return (
-      <ImageViewer
-        ref={ref => (this.ImageViewer = ref)}
-        receivePicture={this.receivePicture}
-      />
-    )
   }
 }
 

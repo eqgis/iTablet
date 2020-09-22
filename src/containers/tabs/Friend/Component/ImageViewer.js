@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   View,
   Image,
-  Modal,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -11,8 +10,28 @@ import {
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { scaleSize, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
+import RootSiblings from 'react-native-root-siblings'
 
-export default class ChatImageViewer extends React.Component {
+let elements = [], imageViewer
+function show(urls = []) {
+  let sibling = new RootSiblings()
+  sibling.update(
+    <ChatImageViewer
+      ref={ref => (imageViewer = ref)}
+      receivePicture={this.receivePicture}
+      imageUrls={urls}
+    />
+  )
+  elements.push({sibling, imageViewer})
+}
+
+function hide () {
+  let { sibling } = elements.pop()
+  sibling && sibling.destroy()
+  sibling = null
+}
+
+class ChatImageViewer extends React.Component {
   props: {
     receivePicture: () => {},
   }
@@ -20,7 +39,7 @@ export default class ChatImageViewer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageUrls: [],
+      imageUrls: props.imageUrls || [],
       visible: false,
       showCover: true,
     }
@@ -31,16 +50,6 @@ export default class ChatImageViewer extends React.Component {
     if (visible !== this.state.visible) {
       this.setState({ visible })
     }
-  }
-
-  setImageUri = uri => {
-    this.setState({
-      imageUrls: [{ url: uri }],
-    })
-  }
-
-  setPicMsg = message => {
-    this.message = message
   }
 
   close = () => {
@@ -72,7 +81,7 @@ export default class ChatImageViewer extends React.Component {
     return (
       <TouchableOpacity
         style={[styles.headerStyle, { top: screen.getIphonePaddingTop() }]}
-        onPress={this.close}
+        onPress={hide}
       >
         <Image
           source={require('../../../../assets/public/Frenchgrey/icon-back-white.png')}
@@ -115,30 +124,27 @@ export default class ChatImageViewer extends React.Component {
   render() {
     this.screenWidth = Dimensions.get('window').width
     return (
-      <View>
-        <Modal
-          animationType={'fade'}
-          onRequestClose={this.close}
-          visible={this.state.visible}
-          transparent={true}
-          supportedOrientations={[
-            'portrait',
-            'portrait-upside-down',
-            'landscape',
-            'landscape-left',
-            'landscape-right',
-          ]}
-        >
-          <ImageViewer
-            ref={ref => (this.ImageViewer = ref)}
-            imageUrls={this.state.imageUrls}
-            saveToLocalByLongPress={false}
-            onClick={() => {
-              this.setState({ showCover: !this.state.showCover })
-            }}
-          />
-          {this.state.showCover && this.renderCover()}
-        </Modal>
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: 'black',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          flex: 1,
+        }}
+      >
+        <ImageViewer
+          ref={ref => (this.ImageViewer = ref)}
+          imageUrls={this.props.imageUrls}
+          saveToLocalByLongPress={false}
+          style={styles.coverView}
+          onClick={() => {
+            this.setState({ showCover: !this.state.showCover })
+          }}
+        />
+        {this.state.showCover && this.renderCover()}
       </View>
     )
   }
@@ -152,7 +158,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0)',
   },
   headerStyle: {
     position: 'absolute',
@@ -183,3 +188,8 @@ const styles = StyleSheet.create({
     height: scaleSize(60),
   },
 })
+
+export default {
+  show,
+  hide,
+}

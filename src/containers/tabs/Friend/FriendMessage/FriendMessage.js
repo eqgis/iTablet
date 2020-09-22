@@ -10,6 +10,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ImageBackground,
 } from 'react-native'
 // eslint-disable-next-line
 import { ActionPopover } from 'teaset'
@@ -249,6 +250,33 @@ class FriendMessage extends Component {
       )
     })
   }
+  
+  _renderDot = num => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: 'red',
+          justifyContent: 'center',
+          height: scaleSize(25),
+          width: scaleSize(25),
+          borderRadius: scaleSize(25),
+          top: scaleSize(-6),
+          right: scaleSize(-12),
+        }}
+      >
+        <Text
+          style={{
+            fontSize: scaleSize(20),
+            color: 'white',
+            textAlign: 'center',
+          }}
+        >
+          {num}
+        </Text>
+      </View>
+    )
+  }
 
   _renderInformItem() {
     let iTemView
@@ -274,11 +302,16 @@ class FriendMessage extends Component {
           })
         }}
       >
-        <Image
+        <ImageBackground
           style={styles.itemImg}
           resizeMode={'contain'}
           source={getThemeAssets().friend.icon_notice}
-        />
+        >
+          {
+            this.state.hasInformMsg > 0 &&
+            this._renderDot(this.state.hasInformMsg)
+          }
+        </ImageBackground>
         <View style={styles.ITemTextViewStyle}>
           <Text style={styles.ITemTextStyle}>
             {getLanguage(this.props.language).Friends.NOTIFICATION}
@@ -329,30 +362,10 @@ class FriendMessage extends Component {
               resizeMode={'contain'}
               source={getThemeAssets().friend.contact_photo}
             />
-            {item.unReadMsg > 0 ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  backgroundColor: 'red',
-                  justifyContent: 'center',
-                  height: scaleSize(25),
-                  width: scaleSize(25),
-                  borderRadius: scaleSize(25),
-                  top: scaleSize(-6),
-                  right: scaleSize(-12),
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: scaleSize(20),
-                    color: 'white',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.unReadMsg}
-                </Text>
-              </View>
-            ) : null}
+            {
+              item.unReadMsg > 0 &&
+              this._renderDot(item.unReadMsg)
+            }
           </View>
           <View style={styles.ITemTextViewStyle}>
             {this._renderItemTitleView(item)}

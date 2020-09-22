@@ -28,7 +28,8 @@ import CustomView from './CustomView'
 import { ConstPath, ConstOnline } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { Toast, LayerUtils } from '../../../../utils'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import { color } from '../../../../styles'
 import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../MsgConstant'
 import { getLanguage } from '../../../../language/index'
@@ -1202,6 +1203,7 @@ class Chat extends React.Component {
                 return (
                   <InputToolbar
                     {...props}
+                    textStyle={{color: color.fontColorGray2}}
                     label={getLanguage(global.language).Friends.SEND}
                   />
                 )
@@ -1272,78 +1274,105 @@ class Chat extends React.Component {
           this.onPressAvator(props.currentMessage.user)
         }}
       >
-        <View
+        <Image
           style={{
             height: scaleSize(60),
             width: scaleSize(60),
-            borderRadius: scaleSize(60),
-            backgroundColor: backColor,
+            borderRadius: scaleSize(30),
             alignItems: 'center',
             justifyContent: 'center',
           }}
-        >
-          <Text
-            style={{
-              fontSize: scaleSize(30),
-              color: 'white',
-              textAlign: 'center',
-            }}
-          >
-            {headerStr}
-          </Text>
-        </View>
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
+        {/*<View*/}
+          {/*style={{*/}
+            {/*height: scaleSize(60),*/}
+            {/*width: scaleSize(60),*/}
+            {/*borderRadius: scaleSize(60),*/}
+            {/*backgroundColor: backColor,*/}
+            {/*alignItems: 'center',*/}
+            {/*justifyContent: 'center',*/}
+          {/*}}*/}
+        {/*>*/}
+          {/*<Text*/}
+            {/*style={{*/}
+              {/*fontSize: scaleSize(30),*/}
+              {/*color: 'white',*/}
+              {/*textAlign: 'center',*/}
+            {/*}}*/}
+          {/*>*/}
+            {/*{headerStr}*/}
+          {/*</Text>*/}
+        {/*</View>*/}
       </TouchableOpacity>
     )
   }
   renderBubble(props) {
     return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          left: {
-            //对方的气泡
-            marginTop: scaleSize(1),
-            backgroundColor: '#rgba(255, 255, 255, 1.0)',
-            overflow: 'hidden',
-            borderRadius: scaleSize(10),
-          },
-          right: {
-            //我方的气泡
-            marginTop: scaleSize(1),
-            backgroundColor: 'blue',
-            overflow: 'hidden',
-            borderRadius: scaleSize(10),
-          },
-        }}
-        //与下一条自己的消息连接处的样式
-        containerToNextStyle={{
-          left: {
-            borderBottomLeftRadius: scaleSize(10),
-          },
-          right: {
-            borderBottomRightRadius: scaleSize(10),
-          },
-        }}
-        //与上一条自己的消息连接处的样式
-        containerToPreviousStyle={{
-          left: {
-            borderTopLeftRadius: scaleSize(10),
-          },
-          right: {
-            borderTopRightRadius: scaleSize(10),
-          },
-        }}
-        //底栏样式
-        bottomContainerStyle={{
-          right: {
-            flexDirection: 'row-reverse',
-            justifyContent: 'space-between',
-          },
-          left: {
-            justifyContent: 'space-between',
-          },
-        }}
-      />
+      <View>
+        {
+          this.isGroupChat() && (
+            !props.previousMessage ||
+            !props.previousMessage.user ||
+            props.previousMessage.user.name !== props.currentMessage.user.name
+          ) &&
+          <Text
+            style={{
+              textAlign: props.currentMessage.user.name === this.curUser.nickname
+                ? 'right'
+                : 'left',
+            }}
+          >{props.currentMessage.user.name}</Text>
+        }
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            left: {
+              //对方的气泡
+              marginTop: scaleSize(1),
+              backgroundColor: '#rgba(255, 255, 255, 1.0)',
+              overflow: 'hidden',
+              borderRadius: scaleSize(10),
+            },
+            right: {
+              //我方的气泡
+              marginTop: scaleSize(1),
+              backgroundColor: 'blue',
+              overflow: 'hidden',
+              borderRadius: scaleSize(10),
+            },
+          }}
+          //与下一条自己的消息连接处的样式
+          containerToNextStyle={{
+            left: {
+              borderBottomLeftRadius: scaleSize(10),
+            },
+            right: {
+              borderBottomRightRadius: scaleSize(10),
+            },
+          }}
+          //与上一条自己的消息连接处的样式
+          containerToPreviousStyle={{
+            left: {
+              borderTopLeftRadius: scaleSize(10),
+            },
+            right: {
+              borderTopRightRadius: scaleSize(10),
+            },
+          }}
+          //底栏样式
+          bottomContainerStyle={{
+            right: {
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            },
+            left: {
+              justifyContent: 'space-between',
+            },
+          }}
+        />
+      </View>
     )
   }
   //渲染标记

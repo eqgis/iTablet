@@ -110,6 +110,7 @@ const Friends = {
   DELETE_FRIEND: 'Arkadaşı sil',
   LIST_MEMBERS: 'Üyeleri listele ',
   LEAVE_GROUP: 'Gruptan çık',
+  MEMBERS: 'Members', // 待翻译
   CLEAR_HISTORY: 'Sohbet geçmişini temizle',
   DISBAND_GROUP: 'Grubu dağıt',
   DELETE_MEMBER: 'Grup üyesini çıkar',

@@ -164,9 +164,9 @@ class FriendGroup extends Component {
           resizeMode={'contain'}
           source={getThemeAssets().friend.contact_photo}
         />
-        {/*<View style={styles.ITemTextViewStyle}>*/}
-          <Text style={styles.ITemTextStyle}>{item.groupName}</Text>
-        {/*</View>*/}
+        <View style={styles.ITemTextViewStyle}>
+          <Text numberOfLines={2} style={styles.ITemTextStyle}>{item.groupName}</Text>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -202,6 +202,7 @@ class FriendGroup extends Component {
 const styles = StyleSheet.create({
   ItemViewStyle: {
     height: scaleSize(114),
+    paddingHorizontal: scaleSize(44),
     flexDirection: 'row',
     // justifyContent: 'space-around',
     alignItems: 'center',
@@ -222,15 +223,14 @@ const styles = StyleSheet.create({
   },
 
   ITemTextViewStyle: {
-    marginLeft: scaleSize(20),
+    marginLeft: scaleSize(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexGrow: 1,
+    flex: 1,
   },
   ITemTextStyle: {
-    marginLeft: scaleSize(32),
-    fontSize: scaleSize(30),
-    color: 'black',
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray2,
   },
   FlatListViewStyle: {
     position: 'absolute',
@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(150),
   },
   itemImg: {
-    marginLeft: scaleSize(44),
     height: scaleSize(60),
     width: scaleSize(60),
     borderRadius: scaleSize(30),

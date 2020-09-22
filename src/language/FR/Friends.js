@@ -109,6 +109,7 @@ const Friends = {
   PUSH_FRIEND_CARD: "Poussez la carte d'amis",
   FRIEND_MAP: "Carte d'amis",
   ADD_BLACKLIST: 'Ajouter à la liste noire',
+  MEMBERS: 'Members', // 待翻译
   DELETE_FRIEND: 'Supprimer un ami',
   LIST_MEMBERS: 'Liste des membres',
   LEAVE_GROUP: 'Quitter le groupe',

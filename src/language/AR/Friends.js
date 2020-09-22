@@ -111,6 +111,7 @@ const Friends = {
   ADD_BLACKLIST: 'أضف إلى قائمة الحذر',
   DELETE_FRIEND: 'حذف صديق',
   LIST_MEMBERS: 'أعضاء القائمة',
+  MEMBERS: 'Members', // 待翻译
   LEAVE_GROUP: 'غادر المجموعة',
   CLEAR_HISTORY: 'مسح تاريخ الدردشة',
   DISBAND_GROUP: 'حل المجموعة',

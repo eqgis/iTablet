@@ -109,6 +109,7 @@ const Friends = {
   ADD_BLACKLIST: 'Add to blacklist',
   DELETE_FRIEND: 'Delete friend',
   LIST_MEMBERS: 'List members ',
+  MEMBERS: 'Members',
   LEAVE_GROUP: 'Leave group',
   CLEAR_HISTORY: 'Clear chat history',
   DISBAND_GROUP: 'Disband group',

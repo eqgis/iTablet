@@ -298,10 +298,10 @@ const styles = StyleSheet.create({
   },
 
   ITemTextViewStyle: {
-    marginLeft: scaleSize(32),
+    paddingHorizontal: scaleSize(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexGrow: 1,
+    flex: 1,
   },
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,

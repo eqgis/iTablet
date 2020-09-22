@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(32),
     flexDirection: 'column',
     justifyContent: 'space-between',
-    flexGrow: 1,
+    flex: 1,
   },
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,

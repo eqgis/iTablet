@@ -116,7 +116,15 @@ export default class SampleMap extends Component {
   }
   
   _renderItem = ({item}) => {
-    if (!item.fileName) return <View style={{flex: 1}} />
+    if (!item.fileName) return (
+      <View
+        style={{
+          flex: 1,
+          marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? scaleSize(10)
+            : scaleSize(20)
+        }} />
+    )
     return (
       <SampleMapItem
         user={this.props.user}

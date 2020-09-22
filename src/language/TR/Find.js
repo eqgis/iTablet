@@ -1,4 +1,5 @@
 const Find = {
+  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'Açık Veri',
   APPLET: 'Aplet',
   GIS_ACADEMY: 'GIS Academy', //待翻译
@@ -32,7 +33,7 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
   APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
   APPLET_RESETTING: 'Rest', // 待翻译
-  
+
   // 待翻译
   PUBLIC_MAP_INFO: 'Provides public services published by users',
   PUBLIC_DATA_INFO: 'Provides various public data published by users',

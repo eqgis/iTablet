@@ -24,6 +24,7 @@ import Mine, {
   MyAIModel,
 } from './Mine'
 import Find from './Find'
+import FindSettingPage from './Find/FindSettingPage'
 import SuperMapKnown from './Find/superMapKnown'
 import PublicData from './Find/PublicData'
 import Applet from './Find/Applet'
@@ -139,4 +140,5 @@ export {
   PublicData,
   Applet,
   CoworkManagePage,
+  FindSettingPage,
 }

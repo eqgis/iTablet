@@ -30,6 +30,8 @@ async function composeWaiting(action) {
   setTimeout(() => (isWaiting = false), 2000)
 }
 
+const STAR_MODULE = ChunkType.MAP_AR_MAPPING
+
 class ModuleList extends Component {
   props: {
     language: string,
@@ -419,9 +421,9 @@ class ModuleList extends Component {
         key={item.key}
         item={item}
         // showStar={index === 0}
-        showStar={item.key === ChunkType.MAP_AR}
+        showStar={item.key === STAR_MODULE}
         style={
-          item.key === ChunkType.MAP_AR && {
+          item.key === STAR_MODULE && {
             width:
               SizeUtil.getItemWidth(
                 this.props.device.orientation,
@@ -466,7 +468,7 @@ class ModuleList extends Component {
       column = 2
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
-      if (data[index].key === ChunkType.MAP_AR) arIndex = index
+      if (data[index].key === STAR_MODULE) arIndex = index
       let itemView = this._renderItem({ item: data[index], index })
       if (index === arIndex) {
         let row = (
@@ -511,7 +513,7 @@ class ModuleList extends Component {
     let _subRow = []
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
-      if (data[index].key === ChunkType.MAP_AR) arIndex = index
+      if (data[index].key === STAR_MODULE) arIndex = index
       let itemView = this._renderItem({ item: data[index], index })
       if (arIndex >= 0 && (index === arIndex + 1 || index === arIndex + 2)) {
         _subRow.push(itemView)

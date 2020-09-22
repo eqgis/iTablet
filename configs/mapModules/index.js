@@ -6,14 +6,14 @@ import * as AppModule from '../../src/customModule/mapModules'
 
 /** export顺序为首页模块显示顺序 **/
 const mapModules = [
-  AppModule.MapARConfig,
   AppModule.MapARMapping,
-  AppModule.MapARAnalysis,
   AppModule.MapEditConfig,
   AppModule.Map3DConfig,
+  AppModule.MapARConfig,
+  AppModule.MapThemeConfig,
+  AppModule.MapARAnalysis,
   AppModule.MapCollectionConfig,
   AppModule.MapNavigationConfig,
-  AppModule.MapThemeConfig,
   AppModule.MapPlottingConfig,
   AppModule.MapAnalystConfig,
   // MapExample,

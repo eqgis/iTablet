@@ -1100,7 +1100,6 @@ class Chat extends React.Component {
   render() {
     let moreImg = getPublicAssets().common.icon_nav_imove
     return (
-      <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
         <Container
           style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
           ref={ref => (this.container = ref)}
@@ -1142,99 +1141,100 @@ class Chat extends React.Component {
             /* eslint-enable */
           }}
         >
-          {this.state.showInformSpot ? (
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'red',
-                height: scaleSize(15),
-                width: scaleSize(15),
-                borderRadius: scaleSize(15),
-                top: Top,
-                left: scaleSize(75),
+          <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
+            {this.state.showInformSpot ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  backgroundColor: 'red',
+                  height: scaleSize(15),
+                  width: scaleSize(15),
+                  borderRadius: scaleSize(15),
+                  top: Top,
+                  left: scaleSize(75),
+                }}
+              />
+            ) : null}
+            {this.state.coworkMode ? (
+              <CoworkTouchableView
+                screen="Chat"
+                onPress={async () => {
+                  // let mapOpen
+                  // try {
+                  //   mapOpen = await SMap.isAnyMapOpened()
+                  // } catch (error) {
+                  //   mapOpen = false
+                  // }
+                  // if (!mapOpen) {
+                  this.friend.curMod.action(this.curUser)
+                  // } else {
+                  //   NavigationService.navigate('MapView')
+                  // }
+                }}
+              />
+            ) : null}
+            <GiftedChat
+              ref={ref => (this.GiftedChat = ref)}
+              locale={getLanguage(global.language).Friends.LOCALE}
+              placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
+              messages={this.state.messages}
+              showAvatarForEveryMessage={false}
+              onSend={this.onSend}
+              loadEarlier={this.state.loadEarlier}
+              onLoadEarlier={this.onLoadEarlier}
+              isLoadingEarlier={this.state.isLoadingEarlier}
+              label={getLanguage(global.language).Friends.LOAD_EARLIER}
+              showUserAvatar={this.state.showUserAvatar}
+              renderAvatarOnTop={false}
+              user={{
+                _id: this.curUser.userId, // sent messages should have same user._id
+                name: this.curUser.nickname,
               }}
-            />
-          ) : null}
-          {this.state.coworkMode ? (
-            <CoworkTouchableView
-              screen="Chat"
-              onPress={async () => {
-                // let mapOpen
-                // try {
-                //   mapOpen = await SMap.isAnyMapOpened()
-                // } catch (error) {
-                //   mapOpen = false
-                // }
-                // if (!mapOpen) {
-                this.friend.curMod.action(this.curUser)
-                // } else {
-                //   NavigationService.navigate('MapView')
-                // }
+              renderActions={this.renderCustomActions}
+              //被移出群组后不显示输入栏
+              renderInputToolbar={props => {
+                if (
+                  this.targetUser.id.indexOf('Group_') === -1 ||
+                  FriendListFileHandle.isInGroup(
+                    this.targetUser.id,
+                    this.curUser.userId,
+                  )
+                ) {
+                  return (
+                    <InputToolbar
+                      {...props}
+                      textStyle={{color: color.fontColorGray2}}
+                      label={getLanguage(global.language).Friends.SEND}
+                    />
+                  )
+                }
+                return null
               }}
-            />
-          ) : null}
-          <GiftedChat
-            ref={ref => (this.GiftedChat = ref)}
-            locale={getLanguage(global.language).Friends.LOCALE}
-            placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
-            messages={this.state.messages}
-            showAvatarForEveryMessage={false}
-            onSend={this.onSend}
-            loadEarlier={this.state.loadEarlier}
-            onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={this.state.isLoadingEarlier}
-            label={getLanguage(global.language).Friends.LOAD_EARLIER}
-            showUserAvatar={this.state.showUserAvatar}
-            renderAvatarOnTop={false}
-            user={{
-              _id: this.curUser.userId, // sent messages should have same user._id
-              name: this.curUser.nickname,
-            }}
-            renderActions={this.renderCustomActions}
-            //被移出群组后不显示输入栏
-            renderInputToolbar={props => {
-              if (
-                this.targetUser.id.indexOf('Group_') === -1 ||
-                FriendListFileHandle.isInGroup(
-                  this.targetUser.id,
-                  this.curUser.userId,
-                )
-              ) {
+              renderBubble={this.renderBubble}
+              renderTicks={this.renderTicks}
+              renderSystemMessage={this.renderSystemMessage}
+              renderCustomView={this.renderCustomView}
+              renderFooter={this.renderFooter}
+              renderAvatar={this.renderAvatar}
+              renderMessageText={props => {
+                if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
+                  return null
+                }
                 return (
-                  <InputToolbar
+                  <MessageText
                     {...props}
-                    textStyle={{color: color.fontColorGray2}}
-                    label={getLanguage(global.language).Friends.SEND}
+                    customTextStyle={{
+                      fontSize: scaleSize(20),
+                      lineHeight: scaleSize(25),
+                    }}
                   />
                 )
-              }
-              return null
-            }}
-            renderBubble={this.renderBubble}
-            renderTicks={this.renderTicks}
-            renderSystemMessage={this.renderSystemMessage}
-            renderCustomView={this.renderCustomView}
-            renderFooter={this.renderFooter}
-            renderAvatar={this.renderAvatar}
-            renderMessageText={props => {
-              if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
-                return null
-              }
-              return (
-                <MessageText
-                  {...props}
-                  customTextStyle={{
-                    fontSize: scaleSize(20),
-                    lineHeight: scaleSize(25),
-                  }}
-                />
-              )
-            }}
-          />
-          {this.renderSimpleDialog()}
-          {this.rennderImageViewer()}
+              }}
+            />
+            {this.renderSimpleDialog()}
+            {this.rennderImageViewer()}
+          </Animated.View>
         </Container>
-      </Animated.View>
     )
   }
 

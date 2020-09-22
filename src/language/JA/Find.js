@@ -1,4 +1,5 @@
 const Find = {
+  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'パブリックデータ',
   APPLET: 'アプレット',
   GIS_ACADEMY: 'GISアカデミー', //ｊｐ0730

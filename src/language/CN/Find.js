@@ -1,4 +1,5 @@
 const Find = {
+  TOGGLE_FIND_ITEM: '打开/关闭发现页面入口',
   PUBLIC_DATA: '公共数据',
   APPLET: '小程序',
   GIS_ACADEMY: 'GIS学院',
@@ -32,7 +33,7 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: '已经是最初版本',
   APPLET_RESETTING: '正在重置',
   APPLET_RESET_FAILED: '重置失败',
-  
+
   PUBLIC_MAP_INFO: '提供用户公开发布的地图服务',
   PUBLIC_DATA_INFO: '提供用户公开发布的多类型数据',
   SUPERMAP_INFO: '分享公司最新动态及品牌活动',

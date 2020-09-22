@@ -34,6 +34,7 @@ export const NAVIGATION_HISTORY = 'NAVIGATION_HISTORY'
 export const ONLINEMAP = 'ONLINEMAP'
 export const COLUMN_NAV_BAR = 'COLUMN_NAV_BAR'
 export const NAV_BAR_DISPLAY = 'NAV_BAR_DISPLAY'
+export const TOGGLE_FIND_ITEM = 'TOGGLE_FIND_ITEM'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -248,6 +249,13 @@ export const setNavBarDisplay = (params = {}) => async dispatch => {
   })
 }
 
+export const toggleFindItem = (params = {}) => async dispatch => {
+  await dispatch({
+    type: TOGGLE_FIND_ITEM,
+    payload: params || {},
+  })
+}
+
 let defaultMapLegend = (() => {
   let _mapLegend = {}
   let legendConfig = {
@@ -260,10 +268,10 @@ let defaultMapLegend = (() => {
     imagePercent: 50,
     legendPosition: 'topLeft',
   }
-  
+
   let moduleKeys = Object.keys(ChunkType)
   moduleKeys.map(item => {
-    _mapLegend[item] =  {...legendConfig}
+    _mapLegend[item] = { ...legendConfig }
   })
   return _mapLegend
 })()
@@ -290,7 +298,7 @@ const initialState = fromJS({
   autoLanguage: true,
   configLangSet: false,
   peripheralDevice: 'local',
-  mapLegend: {...defaultMapLegend},
+  mapLegend: { ...defaultMapLegend },
   mapNavigation: {
     isShow: false,
     name: '',
@@ -305,6 +313,12 @@ const initialState = fromJS({
   navigationhistory: [],
   mapColumnNavBar: false,
   navBarDisplay: false,
+  find: {
+    showSuperMapGroup: true,
+    showSuperMapKonw: true,
+    showSuperMapForum: true,
+    showGisAcademy: true,
+  },
 })
 
 export default handleActions(
@@ -382,7 +396,7 @@ export default handleActions(
       if (payload) {
         data = payload
       } else {
-        data = {...defaultMapLegend}
+        data = { ...defaultMapLegend }
       }
       return state.setIn(['mapLegend'], fromJS(data))
     },
@@ -464,8 +478,17 @@ export default handleActions(
       const data = payload || false
       return state.setIn(['navBarDisplay'], fromJS(data))
     },
+    [`${TOGGLE_FIND_ITEM}`]: (state, { payload }) => {
+      const data = payload || {}
+      let curData = state.toJS().find
+      Object.assign(curData, data)
+      return state.setIn(['find'], fromJS(curData))
+    },
     [REHYDRATE]: (state, { payload }) => {
-      let data = ModelUtils.checkModel(state, payload && payload.setting).toJSON()
+      let data = ModelUtils.checkModel(
+        state,
+        payload && payload.setting,
+      ).toJSON()
       let legendKeys = Object.keys(data.mapLegend)
       let defaultKeys = Object.keys(defaultMapLegend)
       for (let key of defaultKeys) {
@@ -475,11 +498,11 @@ export default handleActions(
       }
       for (let key of legendKeys) {
         if (defaultKeys.indexOf(key) < 0) {
-          delete(data.mapLegend[key])
+          delete data.mapLegend[key]
         }
       }
       return fromJS(data)
-    }
+    },
   },
   initialState,
 )

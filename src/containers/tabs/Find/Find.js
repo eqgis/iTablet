@@ -6,7 +6,6 @@
 import React, { Component } from 'react'
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -14,11 +13,11 @@ import {
 } from 'react-native'
 import { Container } from '../../../components'
 import NavigationService from '../../NavigationService'
-import { color, size } from '../../../styles'
+import { color } from '../../../styles'
 import Toast from '../../../utils/Toast'
 import { scaleSize, OnlineServicesUtils } from '../../../utils'
 import { getLanguage } from '../../../language/index'
-import { getThemeAssets } from '../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
 import FindItem from './FindItem'
 
@@ -35,6 +34,7 @@ export default class Find extends Component {
     language: string,
     navigation: Object,
     user: Object,
+    find: Object,
   }
 
   constructor(props) {
@@ -176,7 +176,14 @@ export default class Find extends Component {
       },
     },
   ) => {
-    const { title, subTitle, leftImagePath, rightImagePath, isInformSpot, onClick } = itemRequire
+    const {
+      title,
+      subTitle,
+      leftImagePath,
+      rightImagePath,
+      isInformSpot,
+      onClick,
+    } = itemRequire
     return (
       <FindItem
         title={title}
@@ -191,10 +198,7 @@ export default class Find extends Component {
 
   _selectionRender = () => {
     return (
-      <View
-        opacity={1}
-        style={{ flex: 1, backgroundColor: color.bgW }}
-      >
+      <View opacity={1} style={{ flex: 1, backgroundColor: color.bgW }}>
         <ScrollView
           style={{ flex: 1 }}
           showsHorizontalScrollIndicator={false}
@@ -227,69 +231,75 @@ export default class Find extends Component {
               NavigationService.navigate('FriendMap')
             },
           })} */}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Prompt.SUPERMAP_GROUP,
-            subTitle: getLanguage(this.props.language).Find.SUPERMAP_INFO,
-            leftImagePath: getThemeAssets().find.supermap,
-            isInformSpot: this.state.superMapGroup,
-            onClick: () => {
-              NavigationService.navigate('SuperMapKnown', {
-                type: 'SuperMapGroup',
-                callback: this.state.superMapGroup
-                  ? () => {
+          {this.props.find.showSuperMapGroup &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Prompt.SUPERMAP_GROUP,
+              subTitle: getLanguage(this.props.language).Find.SUPERMAP_INFO,
+              leftImagePath: getThemeAssets().find.supermap,
+              isInformSpot: this.state.superMapGroup,
+              onClick: () => {
+                NavigationService.navigate('SuperMapKnown', {
+                  type: 'SuperMapGroup',
+                  callback: this.state.superMapGroup
+                    ? () => {
                       this.setState({ superMapGroup: false })
                       AsyncStorage.setItem(
                         SUPERMAPGROUP_UPDATE_TIME,
                         superMapGroupTime,
                       )
                     }
-                  : null,
-              })
-            },
-          })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
-            subTitle: getLanguage(this.props.language).Find.SUPERMAP_KNOW_INFO,
-            leftImagePath: getThemeAssets().find.supermapkonw,
-            isInformSpot: this.state.superMapKnown,
-            onClick: () => {
-              NavigationService.navigate('SuperMapKnown', {
-                type: 'SuperMapKnow',
-                callback: this.state.superMapKnown
-                  ? () => {
+                    : null,
+                })
+              },
+            })}
+          {this.props.find.showSuperMapKonw &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
+              subTitle: getLanguage(this.props.language).Find
+                .SUPERMAP_KNOW_INFO,
+              leftImagePath: getThemeAssets().find.supermapkonw,
+              isInformSpot: this.state.superMapKnown,
+              onClick: () => {
+                NavigationService.navigate('SuperMapKnown', {
+                  type: 'SuperMapKnow',
+                  callback: this.state.superMapKnown
+                    ? () => {
                       this.setState({ superMapKnown: false })
                       AsyncStorage.setItem(
                         SUPERMAPKNOWN_UPDATE_TIME,
                         superMapKnownTime,
                       )
                     }
-                  : null,
-              })
-            },
-          })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
-            subTitle: getLanguage(this.props.language).Find.SUPERMAP_FORUM_INFO,
-            leftImagePath: getThemeAssets().find.forum,
-            isInformSpot: false,
-            onClick: this.goToSuperMapForum,
-          })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Find.GIS_ACADEMY,
-            subTitle: getLanguage(this.props.language).Find.GIS_ACADEMY_INFO,
-            leftImagePath: getThemeAssets().find.college,
-            isInformSpot: false,
-            onClick: this.goToGISAcademy,
-          })}
+                    : null,
+                })
+              },
+            })}
+          {this.props.find.showSuperMapForum &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Prompt.SUPERMAP_FORUM,
+              subTitle: getLanguage(this.props.language).Find
+                .SUPERMAP_FORUM_INFO,
+              leftImagePath: getThemeAssets().find.forum,
+              isInformSpot: false,
+              onClick: this.goToSuperMapForum,
+            })}
+          {this.props.find.showGisAcademy &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Find.GIS_ACADEMY,
+              subTitle: getLanguage(this.props.language).Find.GIS_ACADEMY_INFO,
+              leftImagePath: getThemeAssets().find.college,
+              isInformSpot: false,
+              onClick: this.goToGISAcademy,
+            })}
           {/*{this._renderItem({*/}
-            {/*title: getLanguage(this.props.language).Find.APPLET,*/}
-            {/*subTitle: getLanguage(this.props.language).Find.APPLET,*/}
-            {/*// subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,*/}
-            {/*leftImagePath: getThemeAssets().mine.my_applets,*/}
-            {/*isInformSpot: this.state.appletInfo,*/}
-            {/*onClick: () => {*/}
-              {/*NavigationService.navigate('Applet', { type: 'APPLET' })*/}
-            {/*},*/}
+          {/*title: getLanguage(this.props.language).Find.APPLET,*/}
+          {/*subTitle: getLanguage(this.props.language).Find.APPLET,*/}
+          {/*// subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,*/}
+          {/*leftImagePath: getThemeAssets().mine.my_applets,*/}
+          {/*isInformSpot: this.state.appletInfo,*/}
+          {/*onClick: () => {*/}
+          {/*NavigationService.navigate('Applet', { type: 'APPLET' })*/}
+          {/*},*/}
           {/*})}*/}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.ONLINE_COWORK,
@@ -309,6 +319,33 @@ export default class Find extends Component {
     return <TabBar navigation={this.props.navigation} />
   }
 
+  renderHeaderRight = () => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            NavigationService.navigate('FindSettingPage')
+          }}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getPublicAssets().common.icon_nav_imove}
+            style={{
+              height: scaleSize(40),
+              width: scaleSize(40),
+              marginRight: scaleSize(10),
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -318,6 +355,7 @@ export default class Find extends Component {
         headerProps={{
           title: getLanguage(this.props.language).Navigator_Label.EXPLORE,
           withoutBack: true,
+          headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: { borderBottomWidth: 0 },
         }}

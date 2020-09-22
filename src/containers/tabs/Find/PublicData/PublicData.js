@@ -15,7 +15,7 @@ import { UserType } from '../../../../constants'
 import { OnlineServicesUtils } from '../../../../utils'
 import DataItem from './DataItem'
 import SearchMenu from './SearchMenu'
-import { getThemeAssets } from '../../../../assets'
+import { getPublicAssets } from '../../../../assets'
 
 var JSOnlineService
 var JSIPortalService
@@ -310,7 +310,7 @@ export default class PublicData extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={getThemeAssets().find.filter}
+            source={getPublicAssets().common.icon_nav_imove}
             style={styles.searchImg}
           />
         </TouchableOpacity>

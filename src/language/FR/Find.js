@@ -1,4 +1,5 @@
 const Find = {
+  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'Données publiques',
   APPLET: 'Applet', //待翻译
   GIS_ACADEMY: 'GIS Academy', //待翻译
@@ -6,7 +7,7 @@ const Find = {
   BACK: 'Retour',
   CONFIRM: 'Search', //待翻译
   RESET: 'Reset', //待翻译
-  
+
   ALL: 'All', //待翻译
   ONLINE_WORKSPACE: 'Workspace', //待翻译
   ONLINE_DATASOURCE: 'Source de données',
@@ -23,7 +24,7 @@ const Find = {
   NETWORK_ERROR: 'Erreur réseau, veuillez réessayer plus tard',
   NO_MORE_DATA: 'Plus de données trouvées',
   DOWNLOADED: 'Download successful. You can import this data at Import',
-  
+
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
   APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
@@ -32,7 +33,7 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
   APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
   APPLET_RESETTING: 'Rest', // 待翻译
-  
+
   // 待翻译
   PUBLIC_MAP_INFO: 'Provides public services published by users',
   PUBLIC_DATA_INFO: 'Provides various public data published by users',

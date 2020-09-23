@@ -102,12 +102,11 @@ export default class SampleMap extends Component {
           await this.props.importSceneWorkspace({
             server: arrFile[0].filePath,
           })
-        } else {
-          await SMap.importWorkspaceInfo({
-            server: arrFile[0].filePath,
-            type: 9,
-          })
         }
+        await SMap.importWorkspaceInfo({
+          server: arrFile[0].filePath,
+          type: 9,
+        })
       }
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)

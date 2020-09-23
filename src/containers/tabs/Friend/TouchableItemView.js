@@ -136,7 +136,7 @@ export default class TouchableItemView extends Component {
 const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'column',
-    paddingHorizontal: scaleSize(40),
+    paddingHorizontal: scaleSize(30),
   },
   contentView: {
     height: scaleSize(80),

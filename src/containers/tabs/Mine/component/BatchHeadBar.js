@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import { getPublicAssets } from '../../../../assets'
-import { getLanguage } from '../../../../language/index'
+import { getLanguage } from '../../../../language'
+import { scaleSize } from '../../../../utils'
 
 export default class BatchHeadBar extends Component {
   props: {
@@ -25,7 +26,7 @@ export default class BatchHeadBar extends Component {
           ? getPublicAssets().common.icon_check
           : getPublicAssets().common.icon_uncheck
     return (
-      <View style={styles.batchHeadStyle}>
+      <View style={[styles.batchHeadStyle, {paddingLeft: scaleSize(30)}]}>
         <View style={styles.batchCheckStyle}>
           <TouchableOpacity
             style={styles.btn}

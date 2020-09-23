@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
   sectionImg: {
     tintColor: color.fontColorWhite,
     marginLeft: 10,
-    width: scaleSize(52),
-    height: scaleSize(52),
+    width: scaleSize(30),
+    height: scaleSize(30),
   },
   item: {
     flex: 1,

@@ -144,8 +144,10 @@ export default class ProtocolDialog extends Component {
         confirmBtnDisable={this.state.confirmBtnDisable}
         type={Dialog.Type.NON_MODAL}
       >
-        {this.renderWebView()}
-        {this.renderOption()}
+        <View style={{flex: 1}}>
+          {this.renderWebView()}
+          {this.renderOption()}
+        </View>
       </Dialog>
     )
   }

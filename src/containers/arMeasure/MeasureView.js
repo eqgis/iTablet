@@ -311,7 +311,7 @@ export default class MeasureView extends React.Component {
           source={require('../../assets/home/Frenchgrey/icon_prompt.png')}
           style={styles.dialogHeaderImg}
         />
-        <Text style={styles.promptTtile}>
+        <Text style={styles.promptTitle}>
           {
             getLanguage(global.language).Profile
               .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH

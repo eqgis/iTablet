@@ -24,7 +24,8 @@ const Find = {
   NETWORK_ERROR: 'Ağ hatası, lütfen daha sonra tekrar deneyiniz',
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
-
+  
+  LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',

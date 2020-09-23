@@ -30,7 +30,7 @@ class FindSettingPage extends React.Component {
     },
     {
       key: getLanguage(global.language).Prompt.SUPERMAP_KNOW,
-      value: 'showSuperMapKonw',
+      value: 'showSuperMapKnow',
       image: getThemeAssets().find.supermapkonw,
     },
     {
@@ -89,7 +89,7 @@ class FindSettingPage extends React.Component {
           <View
             style={{
               height: scaleSize(1),
-              backgroundColor: '#A0A0A0',
+              backgroundColor: color.itemColorGray2,
             }}
           />
         )}

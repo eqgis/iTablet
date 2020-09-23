@@ -27,6 +27,7 @@ export default StyleSheet.create({
     width: scaleSize(450),
     backgroundColor: color.content_white,
     borderRadius: 12,
+    overflow: 'hidden',
     // backgroundColor: 'transparent',
     // paddingVertical: scaleSize(10),
   },

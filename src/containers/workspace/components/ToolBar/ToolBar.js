@@ -50,6 +50,7 @@ export default class ToolBar extends React.Component {
     mapLegend?: Object, //图例参数对象
     layerList?: Array, //三维图层
     toolbarStatus: Object,
+    laboratory: Object,
 
     confirm: () => {},
     showDialog: () => {},

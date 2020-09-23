@@ -24,7 +24,8 @@ const Find = {
   NETWORK_ERROR: 'ネット異常、後で試してください',
   NO_MORE_DATA: 'データはすべてロードしました。',
   DOWNLOADED: 'ダウンロード完了、インポートできます。',
-
+  
+  LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'オンラインコラボレーション',
   COWORK_LOGIN: 'SuperMap Onlineにログインしてリストを取得してください',
   APPLET_DOWNLOADED_RELOAD: 'ダウンロードが完了しました。再起動して、アプレットを起動できます',

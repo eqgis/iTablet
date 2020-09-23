@@ -35,6 +35,7 @@ export const ONLINEMAP = 'ONLINEMAP'
 export const COLUMN_NAV_BAR = 'COLUMN_NAV_BAR'
 export const NAV_BAR_DISPLAY = 'NAV_BAR_DISPLAY'
 export const TOGGLE_FIND_ITEM = 'TOGGLE_FIND_ITEM'
+export const TOGGLE_LABORATORY_ITEM = 'TOGGLE_LABORATORY_ITEM'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -256,6 +257,13 @@ export const toggleFindItem = (params = {}) => async dispatch => {
   })
 }
 
+export const toggleLaboratoryItem = (params = {}) => async dispatch => {
+  await dispatch({
+    type: TOGGLE_LABORATORY_ITEM,
+    payload: params || {},
+  })
+}
+
 let defaultMapLegend = (() => {
   let _mapLegend = {}
   let legendConfig = {
@@ -315,9 +323,13 @@ const initialState = fromJS({
   navBarDisplay: false,
   find: {
     showSuperMapGroup: true,
-    showSuperMapKonw: true,
+    showSuperMapKnow: true,
     showSuperMapForum: true,
     showGisAcademy: true,
+  },
+  laboratory: {
+    gestureBone: false,
+    estimation: false,
   },
 })
 
@@ -483,6 +495,12 @@ export default handleActions(
       let curData = state.toJS().find
       Object.assign(curData, data)
       return state.setIn(['find'], fromJS(curData))
+    },
+    [`${TOGGLE_LABORATORY_ITEM}`]: (state, { payload }) => {
+      const data = payload || {}
+      let curData = state.toJS().laboratory
+      Object.assign(curData, data)
+      return state.setIn(['laboratory'], fromJS(curData))
     },
     [REHYDRATE]: (state, { payload }) => {
       let data = ModelUtils.checkModel(

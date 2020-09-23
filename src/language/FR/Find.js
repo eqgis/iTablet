@@ -24,7 +24,8 @@ const Find = {
   NETWORK_ERROR: 'Erreur réseau, veuillez réessayer plus tard',
   NO_MORE_DATA: 'Plus de données trouvées',
   DOWNLOADED: 'Download successful. You can import this data at Import',
-
+  
+  LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
   APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',

@@ -252,7 +252,7 @@ export default class Find extends Component {
                 })
               },
             })}
-          {this.props.find.showSuperMapKonw &&
+          {this.props.find.showSuperMapKnow &&
             this._renderItem({
               title: getLanguage(this.props.language).Prompt.SUPERMAP_KNOW,
               subTitle: getLanguage(this.props.language).Find
@@ -308,6 +308,15 @@ export default class Find extends Component {
             isInformSpot: false,
             onClick: () => {
               NavigationService.navigate('CoworkManagePage')
+            },
+          })}
+          {this._renderItem({
+            title: getLanguage(this.props.language).Find.LABORATORY,
+            subTitle: getLanguage(this.props.language).Find.LABORATORY,
+            leftImagePath: getThemeAssets().find.laboratory,
+            isInformSpot: false,
+            onClick: () => {
+              NavigationService.navigate('Laboratory')
             },
           })}
         </ScrollView>

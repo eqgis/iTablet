@@ -25,6 +25,7 @@ const Find = {
   NO_MORE_DATA: '数据已全部加载',
   DOWNLOADED: '下载完成，可在导入中导入数据',
 
+  LABORATORY: '实验室',
   ONLINE_COWORK: '在线协作',
   COWORK_LOGIN: '请登录Online获取列表',
   APPLET_DOWNLOADED_RELOAD: '下载完成，重新加载小程序',
@@ -41,6 +42,10 @@ const Find = {
   SUPERMAP_FORUM_INFO: '欢迎来到SuperMap技术问答社区',
   GIS_ACADEMY_INFO: '提供海量SuperMap GIS相关课程',
   ONLINE_COWORK_INFO: '支持多人实时协同操作',
+  
+  // 实验室
+  LAB_GESTURE_BONE_INFO: '位置指引：AR分析-AR分析-手势骨骼\n手势骨骼，您可以用手势操控地图，实现地图缩放、平移等操作。\n\n温馨提示：手势骨骼功能仅为beta体验功能。',
+  LAB_POSE_ESTIMATION_INFO: '位置指引：AR分析-AR分析-人体姿态\n人体姿态，您可以用手势操控地图，实现地图缩放、平移等操作。\n\n温馨提示：人体姿态功能仅为beta体验功能。',
 }
 
 export { Find }

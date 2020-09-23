@@ -14,6 +14,7 @@ const contact_map = require('./icon_contact_map_light.png')
 const contact_location = require('./icon_discover_contactlocation_light.png')
 const bus_location = require('./icon_discover_buslocation_light.png')
 const like = require('./icon_discover_like_light.png')
+const laboratory = require('./icon_find_laboratory.png')
 
 export default {
   supermap,
@@ -32,4 +33,5 @@ export default {
   contact_location,
   bus_location,
   like,
+  laboratory,
 }

@@ -146,7 +146,7 @@ export default class SimpleDialog extends PureComponent {
                 style={styles.dialogHeaderImg}
               />
             )}
-            <Text style={[styles.promptTtile, this.state.textStyle]}>
+            <Text style={[styles.promptTitle, this.state.textStyle]}>
               {this.state.text}
             </Text>
             {this.state.renderExtra()}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     height: scaleSize(80),
     opacity: 1,
   },
-  promptTtile: {
+  promptTitle: {
     fontSize: scaleSize(24),
     lineHeight: scaleSize(32),
     color: color.theme_white,

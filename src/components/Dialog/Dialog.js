@@ -229,7 +229,8 @@ export default class Dialog extends PureComponent {
                 {this.props.info}
               </Text>
             )}
-            <View style={styles.childrenContainer}>{this.props.children}</View>
+            {this.props.children}
+            {/*<View style={styles.childrenContainer}>{this.props.children}</View>*/}
             {this.renderBtns()}
           </KeyboardAvoidingView>
         </TouchableOpacity>

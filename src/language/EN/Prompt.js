@@ -102,7 +102,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'The current layer cannot be styled, and please reselect another one',
 
   PLEASE_SELECT_PLOT_LAYER: 'Please Select Plot Layer',
-  DONOT_SUPPORT_ARCORE: 'This Device does not support ARCore',
+  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device',
   PLEASE_NEW_PLOT_LAYER: 'Please Create New Plot Layer',
   DOWNLOADING_PLEASE_WAIT: 'Downloading Please Wait',
   SELECT_DELETE_BY_RECTANGLE: 'Please select delete item by rectangle select',
@@ -369,7 +369,7 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect in Thematic layers',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Only point dataset can be created',
-  
+
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
 }

@@ -102,7 +102,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Le calque actuel ne peut pas être stylisé et veuillez en sélectionner un autre',
 
   PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner le calque du tracé',
-  DONOT_SUPPORT_ARCORE: 'Cet appareil ne prend pas en charge ARCore',
+  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer un nouveau calque de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
   SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Champ illégal',
   PLEASE_SELECT_A_RASTER_LAYER: 'Veuillez sélectionner une couche raster',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Veuillez ajouter la source de données',//待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Veuillez ajouter la source de données', //待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'La couche actuelle ne prend pas en charge la modification',
 
   FAILED_TO_CREATE_POINT: 'Échec de création du point',
@@ -369,7 +369,7 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
   HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
-  
+
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
 }

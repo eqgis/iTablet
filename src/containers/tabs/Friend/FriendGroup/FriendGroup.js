@@ -114,6 +114,9 @@ class FriendGroup extends Component {
           justifyContent: 'flex-start',
           backgroundColor: 'white',
           marginTop: scaleSize(20),
+          borderTopLeftRadius: scaleSize(36),
+          borderTopRightRadius: scaleSize(36),
+          overflow: 'hidden',
         }}
       >
         <FlatList
@@ -230,7 +233,7 @@ const styles = StyleSheet.create({
   },
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorGray2,
+    color: color.fontColorBlack,
   },
   FlatListViewStyle: {
     position: 'absolute',

@@ -11,6 +11,7 @@ import {
 import { scaleSize } from '../../../utils/screen'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
+import { color } from '../../../styles'
 let Top = scaleSize(88)
 if (Platform.OS === 'ios') {
   Top += 20
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#rgba(0,0,0,0)',
   },
   modal: {
-    backgroundColor: '#FBFBFB',
+    backgroundColor: color.itemColorGray3,
     // width: scaleSize(300),
     // height: scaleSize(170),
     position: 'absolute',

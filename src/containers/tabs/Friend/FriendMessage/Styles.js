@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorGray2,
+    color: color.fontColorBlack,
   },
   itemSeparator: {
     height: scaleSize(2),

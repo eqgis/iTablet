@@ -688,7 +688,7 @@ const Map_Attribute = {
   ATTRIBUTE_FIELD_ADD: 'Add',
   ATTRIBUTE_ADD: 'Add Attribute',
   ATTRIBUTE_DETAIL: 'Attribute Detail',
-  REQUIRED: 'Required',
+  REQUIRED: 'Require',
   NAME: 'Name',
   TYPE: 'Type',
   LENGTH: 'Length',
@@ -913,7 +913,7 @@ const Template = {
   ELEMENT_SETTINGS: 'Element Settings',
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
+  CURRENT_TEMPLATE: 'Current',
   DEFAULT_TEMPLATE: 'Default Template',
 
   ELEMENT_NAME: 'Element Name',

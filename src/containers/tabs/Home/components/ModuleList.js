@@ -71,10 +71,11 @@ class ModuleList extends Component {
       JSON.stringify(nextState) !== JSON.stringify(this.state)
     )
   }
-  
+
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(prevProps.mapModules) !== JSON.stringify(this.props.mapModules) ||
+      JSON.stringify(prevProps.mapModules) !==
+        JSON.stringify(this.props.mapModules) ||
       JSON.stringify(prevProps.language) !== JSON.stringify(this.props.language)
     ) {
       this.setState({
@@ -82,7 +83,7 @@ class ModuleList extends Component {
       })
     }
   }
-  
+
   getData = () => {
     let data = []
     for (let item of this.props.mapModules.modules) {
@@ -106,7 +107,9 @@ class ModuleList extends Component {
     (async function() {
       if (!downloadData.example || downloadData.example.length === 0) return
       let item = downloadData.example[0] // 默认下载第一个EXAMPLE
-      let keyword = item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE')
+      let keyword = item.name.endsWith('_EXAMPLE')
+        ? item.name
+        : item.name + '_EXAMPLE'
       let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
@@ -139,7 +142,9 @@ class ModuleList extends Component {
     ref.setDownloading(true)
     let cachePath = downloadData.cachePath
     let item = downloadData.example[0] // 默认下载第一个EXAMPLE
-    let fileDirPath = cachePath + (item.name.endsWith('_EXAMPLE') ? item.name : (item.name + '_EXAMPLE'))
+    let fileDirPath =
+      cachePath +
+      (item.name.endsWith('_EXAMPLE') ? item.name : item.name + '_EXAMPLE')
     try {
       let fileCachePath = fileDirPath + '.zip'
       let downloadOptions = {
@@ -245,22 +250,29 @@ class ModuleList extends Component {
       defaultExample,
     }
   }
-  
+
   /**
    * 检测数据在online上是否存在
    * @param index
    * @returns {Promise.<*>}
    */
-  checkData = async (index) => {
+  checkData = async index => {
     let moduleKey
     let module = this.props.mapModules.modules[index]
-    let examples = module && module.getExampleName && module.getExampleName(language)
+    let examples =
+      module &&
+      module.getExampleName &&
+      module.getExampleName(this.props.language)
     if (!examples || examples.length === 0) return ''
     let fileName = examples[0].name
     if (!fileName.endsWith('_EXAMPLE')) fileName += '_EXAMPLE'
-    let result = await FetchUtils.getDataInfoByUrl({
-      nickname: 'xiezhiyan123',
-    }, fileName, '.zip')
+    let result = await FetchUtils.getDataInfoByUrl(
+      {
+        nickname: 'xiezhiyan123',
+      },
+      fileName,
+      '.zip',
+    )
     if (result.content.length > 0) {
       for (let _item of result.content) {
         let _itemFileName = _item.fileName.replace('.zip', '')
@@ -306,7 +318,7 @@ class ModuleList extends Component {
       }
 
       let downloadData = this.getDownloadData(language, item, index)
-  
+
       let moduleKey = await this.checkData(index)
       if (moduleKey) {
         downloadData.key = moduleKey
@@ -378,18 +390,20 @@ class ModuleList extends Component {
         if (!isExist) {
           await this.props.importWorkspace(filePath)
         }
-        this.moduleItems[index] && this.moduleItems[index].setNewState({
-          disabled: false,
-          isShowProgressView: false,
-        })
+        this.moduleItems[index] &&
+          this.moduleItems[index].setNewState({
+            disabled: false,
+            isShowProgressView: false,
+          })
         await this.props.setCurrentMapModule(index)
         item.action && (await item.action(tmpCurrentUser, latestMap))
       }
     } catch (e) {
-      this.moduleItems[index] && this.moduleItems[index].setNewState({
-        disabled: false,
-        isShowProgressView: false,
-      })
+      this.moduleItems[index] &&
+        this.moduleItems[index].setNewState({
+          disabled: false,
+          isShowProgressView: false,
+        })
     }
   }
 
@@ -402,10 +416,9 @@ class ModuleList extends Component {
     if (this.props.downloads.length > 0) {
       for (let i = 0; i < this.props.downloads.length; i++) {
         if (
-          this.props.downloads[i].id && (
-            this.props.downloads[i].id === downloadData.key ||
-            this.props.downloads[i].params.module === downloadData.key
-          )
+          this.props.downloads[i].id &&
+          (this.props.downloads[i].id === downloadData.key ||
+            this.props.downloads[i].params.module === downloadData.key)
         ) {
           return this.props.downloads[i]
         }
@@ -435,7 +448,15 @@ class ModuleList extends Component {
           }
         }
         device={this.props.device}
-        isNew={this.props.oldMapModules.indexOf(item.key) < 0 && item.key !== ChunkType.APPLET_ADD}
+        isNew={
+          this.props.oldMapModules.indexOf(item.key) < 0 &&
+          item.key !== ChunkType.APPLET_ADD
+        }
+        isBeta={
+          item.key === ChunkType.MAP_AR ||
+          item.key === ChunkType.MAP_AR_MAPPING ||
+          item.key === ChunkType.MAP_AR_ANALYSIS
+        }
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}
         importWorkspace={this.props.importWorkspace}
@@ -446,8 +467,8 @@ class ModuleList extends Component {
           await composeWaiting(async () => {
             // InteractionManager.runAfterInteractions(async () => {
             _item.key !== ChunkType.APPLET_ADD &&
-            this.props.setOldMapModule &&
-            this.props.setOldMapModule(_item.key)
+              this.props.setOldMapModule &&
+              this.props.setOldMapModule(_item.key)
             this.itemAction(this.props.language, { item: _item, index })
             // })
           })
@@ -557,8 +578,8 @@ class ModuleList extends Component {
           styles.container,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? {
-                paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-              }
+              paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+            }
             : { marginTop: scaleSize(20) },
         ]}
       >

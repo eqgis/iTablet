@@ -45,6 +45,7 @@ const Find = {
   // 实验室
   LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.\n\nTips: Gesture Bone is only a experimental beta feature.',
   LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.\n\nTips: Pose Estimation is only a experimental beta feature.',
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.\n\nTips: High-Precision Collect is only a experimental beta feature.',
 }
 
 export { Find }

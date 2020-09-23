@@ -330,6 +330,7 @@ const initialState = fromJS({
   laboratory: {
     gestureBone: false,
     estimation: false,
+    highPrecisionCollect: false,
   },
 })
 

@@ -1,19 +1,11 @@
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ARMappingAction from './ARMappingAction'
+import ToolbarModule from '../ToolbarModule'
 
 function getData() {
+  const _params = ToolbarModule.getParams()
   let data = [
-    {
-      // 高精度采集
-      key: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-      action: ARMappingAction.collectSceneForm,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
-    },
     // {
     //   // 户型图采集
     //   key: 'arMeasureCollect',
@@ -51,6 +43,19 @@ function getData() {
       image: getThemeAssets().ar.functiontoolbar.ar_draw_area,
     },
   ]
+  
+  if (_params.laboratory.highPrecisionCollect) {
+    data.unshift({
+      // 高精度采集
+      key: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+      action: ARMappingAction.collectSceneForm,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+    })
+  }
 
   return { data }
 }

@@ -60,7 +60,6 @@ function getData() {
     // },
   ]
   if (Platform.OS === 'android') {
-    console.warn(JSON.stringify(_params.laboratory))
     if (_params.laboratory.poseEstimation) {
       data.push({
         // 人体姿态

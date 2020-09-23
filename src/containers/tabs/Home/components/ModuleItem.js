@@ -20,6 +20,7 @@ export default class ModuleItem extends Component {
     device: Object,
     showStar?: boolean,
     isNew?: boolean,
+    isBeta?: boolean,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
@@ -30,6 +31,7 @@ export default class ModuleItem extends Component {
   static defaultProps = {
     style: {},
     isNew: false,
+    isBeta: false,
   }
 
   constructor(props) {
@@ -197,15 +199,22 @@ export default class ModuleItem extends Component {
             />
             {this._renderProgressView()}
             <Text style={styles.title}>{item.title}</Text>
-            {this.props.isNew && (
-                <View style={styles.redDot} />
-              )}
+            {this.props.isNew && <View style={styles.redDot} />}
             {this.props.showStar && (
               <Image
                 resizeMode={'contain'}
                 source={getPublicAssets().common.icon_star}
                 style={styles.starImage}
               />
+            )}
+            {this.props.isBeta && (
+              <View style={styles.label}>
+                <Image
+                  source={require('../../../../assets/home/left_top.png')}
+                  style={styles.labelImage}
+                />
+                <Text style={styles.labelText}>{'BETA'}</Text>
+              </View>
             )}
           </View>
         </Animated.View>
@@ -276,5 +285,31 @@ const styles = StyleSheet.create({
     height: fixedSize(16),
     borderRadius: fixedSize(8),
     backgroundColor: 'red',
+  },
+  label: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: fixedSize(45),
+    height: fixedSize(45),
+    justifyContent: 'center',
+  },
+  labelImage: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: fixedSize(45),
+    height: fixedSize(45),
+  },
+  labelText: {
+    fontSize: fixedSize(13),
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    transform: [
+      { translateX: -fixedSize(7) },
+      { translateY: -fixedSize(7) },
+      { rotate: '-45deg' },
+    ],
   },
 })

@@ -216,7 +216,7 @@ export default class InformMessage extends React.Component {
             marginRight: scaleSize(20),
             flexDirection: 'column',
             justifyContent: 'flex-end',
-            flexGrow: 1,
+            // flexGrow: 1,
           }}
         >
           <Text

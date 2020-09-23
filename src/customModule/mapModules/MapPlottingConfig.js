@@ -18,10 +18,16 @@ export default class MapPlottingConfig extends Module {
     super({
       key: MapPlottingConfig.key,
       example: {
-        DEFAULT: {
-          name: '福建',
-          mapName: 'TourLine',
-        },
+        DEFAULT: [
+          {
+            name: '福建',
+            mapName: 'TourLine',
+          },
+          {
+            name: '强渡乌江',
+            mapName: '强渡乌江',
+          },
+        ],
       },
       functionModules: [
         startModule,

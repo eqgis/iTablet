@@ -29,6 +29,10 @@ export default class Map3DConfig extends Module {
             name: 'SKYCBD',
             mapName: 'SKYCBD_webp',
           },
+          {
+            name: '珠峰',
+            mapName: '珠峰',
+          },
         ],
       },
       functionModules: [start3DModule, mark3DModule, fly3DModule, tool3DModule],

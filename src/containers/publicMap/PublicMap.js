@@ -41,6 +41,7 @@ export default class PublicMap extends Component {
       progressWidth: this.screenWidth * 0.4,
       isLoading: false,
     }
+    this.cacheVer = 0
     this.currentPage = 1
     this.totalPage = 100
     this.isLoading = false
@@ -54,7 +55,12 @@ export default class PublicMap extends Component {
           RNFS.readFile(path).then(result => {
             if (result && jsonUtil.isJSON(result)) {
               let data = JSON.parse(result)
-              this.setState({ data })
+              if (data.version !== undefined) {
+                this.cacheVer = data.version
+                this.setState({ data: data.data })
+              } else {
+                this.setState({ data })
+              }
             }
           })
         } else {
@@ -165,7 +171,11 @@ export default class PublicMap extends Component {
 
   async saveMapCache() {
     if (this.state.data.length < 1) return
-    let data = JSON.stringify(this.state.data)
+    let dataObj = {
+      version: this.cacheVer,
+      data: this.state.data,
+    }
+    let data = JSON.stringify(dataObj)
     let path =
       (await FileTools.getHomeDirectory()) +
       ConstPath.CachePath +

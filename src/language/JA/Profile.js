@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: '携帯番号/メールアドレス/ニックネーム',
   ENTER_USERNAME_ALL: '携帯番号、メールアドレスまたはニックネームを入力してください',
   ENTER_PASSWORD: 'パスワードを入力してください',
+  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
+  PASSWORD_DISMATCH: 'The passwords are different, please check again',
   REGISTER: 'レジスタ',
   FORGET_PASSWORD: 'パスワードを忘れましたか？',
   RESET_PASSWORD: 'パスワードの再設定',

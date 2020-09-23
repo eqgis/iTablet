@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: '手机号/邮箱/昵称',
   ENTER_USERNAME_ALL: '请输入手机号、邮箱或昵称',
   ENTER_PASSWORD: '请输入密码',
+  RE_ENTER_PASSWORD: '请输入确认密码',
+  PASSWORD_DISMATCH: '密码不一致，请重新确认',
   REGISTER: '注册',
   FORGET_PASSWORD: '忘记密码？',
   RESET_PASSWORD: '重置密码',

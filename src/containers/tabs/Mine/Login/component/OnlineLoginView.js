@@ -68,8 +68,8 @@ export default class OnlineLoginView extends React.Component {
         <Text
           style={styles.registetrText}
           onPress={() => {
-            // NavigationService.navigate('Register')
-            NavigationService.navigate('Protocol', { type: 'Register' })
+            NavigationService.navigate('Register')
+            // NavigationService.navigate('Protocol', { type: 'Register' })
           }}
         >
           {getLanguage(this.props.language).Profile.REGISTER}
@@ -94,7 +94,7 @@ export default class OnlineLoginView extends React.Component {
         style={styles.loginStyle}
         onPress={() => {
           Keyboard.dismiss()
-          let reg = /^[0-9]{11}$/
+          let reg = /^[0-9]+$/
           let isEmail = !reg.test(this.userName)
           this.props.login({
             isEmail: isEmail,

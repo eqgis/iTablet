@@ -21,6 +21,7 @@ import { Container } from '../../../../components'
 import NavigationService from '../../../NavigationService'
 import styles, { fontSize } from './Styles'
 import { getLanguage } from '../../../../language/index'
+import { color } from '../../../../styles'
 
 let JSOnlineService = undefined
 export default class Register extends React.Component {
@@ -32,9 +33,11 @@ export default class Register extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      verifyTime: 0,
       readProtocal: true,
       behavior: 'padding',
     }
+    this.telArea = '86'
     JSOnlineService = new OnlineServicesUtils('online')
     JSOnlineService.loadPhoneRegisterPage()
   }
@@ -51,24 +54,34 @@ export default class Register extends React.Component {
         Toast.show(getLanguage(this.props.language).Profile.ENTER_USERNAME)
         return
       }
-      if (!this.txtPhoneNumberRealName) {
-        //请输入真实姓名
-        Toast.show(getLanguage(this.props.language).Profile.ENTER_REALNAME)
-        return
-      }
-      if (!this.txtPhoneNumberCompany) {
-        //请输入工作机构
-        Toast.show(getLanguage(this.props.language).Profile.ENTER_COMPANY)
-        return
-      }
-      if (!this.txtPhoneNumberEmail) {
-        //请输入个人邮箱
-        Toast.show(getLanguage(this.props.language).Profile.ENTER_EMAIL)
-        return
-      }
+      // if (!this.txtPhoneNumberRealName) {
+      //   //请输入真实姓名
+      //   Toast.show(getLanguage(this.props.language).Profile.ENTER_REALNAME)
+      //   return
+      // }
+      // if (!this.txtPhoneNumberCompany) {
+      //   //请输入工作机构
+      //   Toast.show(getLanguage(this.props.language).Profile.ENTER_COMPANY)
+      //   return
+      // }
+      // if (!this.txtPhoneNumberEmail) {
+      //   //请输入个人邮箱
+      //   Toast.show(getLanguage(this.props.language).Profile.ENTER_EMAIL)
+      //   return
+      // }
       if (!this.txtPhoneNumberPassword) {
         //请输入密码
         Toast.show(getLanguage(this.props.language).Profile.ENTER_PASSWORD)
+        return
+      }
+      if (!this.passwordconfirm) {
+        //确认密码
+        Toast.show(getLanguage(this.props.language).Profile.RE_ENTER_PASSWORD)
+        return
+      }
+      if (this.txtPhoneNumberPassword !== this.passwordconfirm) {
+        //密码不一致
+        Toast.show(getLanguage(this.props.language).Profile.PASSWORD_DISMATCH)
         return
       }
       if (!this.txtPhoneNumber) {
@@ -88,10 +101,9 @@ export default class Register extends React.Component {
       //'注册中...')
       result = await JSOnlineService.register('phone', {
         nickname: this.txtPhoneNumberNickname,
-        realName: this.txtPhoneNumberRealName,
-        company: this.txtPhoneNumberCompany,
-        email: this.txtPhoneNumberEmail,
         password: this.txtPhoneNumberPassword,
+        confirmpassword: this.confirmpassword,
+        telArea: this.telArea,
         phoneNumber: this.txtPhoneNumber,
         SMSVerifyCode: this.txtVerifyCode,
       })
@@ -135,7 +147,7 @@ export default class Register extends React.Component {
             this.txtPhoneNumberNickname = text
           }}
         />
-        <TextInput
+        {/* <TextInput
           keyboardType={'email-address'}
           //'请输入真实姓名'
           placeholder={getLanguage(this.props.language).Profile.ENTER_REALNAME}
@@ -146,8 +158,8 @@ export default class Register extends React.Component {
           onChangeText={text => {
             this.txtPhoneNumberRealName = text
           }}
-        />
-        <TextInput
+        /> */}
+        {/* <TextInput
           keyboardType={'email-address'}
           //'请输入工作机构'
           placeholder={getLanguage(this.props.language).Profile.ENTER_COMPANY}
@@ -158,8 +170,8 @@ export default class Register extends React.Component {
           onChangeText={text => {
             this.txtPhoneNumberCompany = text
           }}
-        />
-        <TextInput
+        /> */}
+        {/* <TextInput
           keyboardType={'email-address'}
           clearButtonMode={'while-editing'}
           //'请输入邮箱'
@@ -170,7 +182,7 @@ export default class Register extends React.Component {
           onChangeText={text => {
             this.txtPhoneNumberEmail = text
           }}
-        />
+        /> */}
         <TextInput
           secureTextEntry={true}
           clearButtonMode={'while-editing'}
@@ -184,17 +196,60 @@ export default class Register extends React.Component {
           }}
         />
         <TextInput
-          keyboardType={'phone-pad'}
-          //'请输入手机号'
-          placeholder={getLanguage(this.props.language).Profile.ENTER_MOBILE}
+          secureTextEntry={true}
+          clearButtonMode={'while-editing'}
+          //'确认密码'
+          placeholder={
+            getLanguage(this.props.language).Profile.RE_ENTER_PASSWORD
+          }
           placeholderTextColor={'#A7A7A7'}
           style={styles.textInputStyle}
-          clearButtonMode={'while-editing'}
-          defaultValue={this.txtPhoneNumber}
+          defaultValue={this.passwordconfirm}
           onChangeText={text => {
-            this.txtPhoneNumber = text
+            this.passwordconfirm = text
           }}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <TextInput
+            keyboardType={'numeric'}
+            maxLength={3}
+            clearButtonMode={'while-editing'}
+            //国家区号
+            placeholder={''}
+            placeholderTextColor={'#A7A7A7'}
+            style={[styles.textInputStyle, { width: scaleSize(60) }]}
+            defaultValue={this.telArea}
+            value={this.state.telArea}
+            onBlur={() => {
+              if (this.state.telArea === '') {
+                this.setState({ telArea: '86' })
+                this.telArea = '86'
+              }
+            }}
+            onChangeText={text => {
+              this.telArea = text
+              this.setState({ telArea: text })
+            }}
+          />
+          <TextInput
+            keyboardType={'phone-pad'}
+            //'请输入手机号'
+            placeholder={getLanguage(this.props.language).Profile.ENTER_MOBILE}
+            placeholderTextColor={'#A7A7A7'}
+            style={[styles.textInputStyle, { flex: 1 }]}
+            clearButtonMode={'while-editing'}
+            defaultValue={this.txtPhoneNumber}
+            onChangeText={text => {
+              this.txtPhoneNumber = text
+            }}
+          />
+        </View>
         <View style={styles.verifyCodeViewStyle}>
           <TextInput
             keyboardType={'phone-pad'}
@@ -220,19 +275,39 @@ export default class Register extends React.Component {
               Toast.show(
                 getLanguage(this.props.language).Prompt.VERIFICATION_CODE_SENT,
               )
-              //'验证码已发送')
-              // SOnlineService.sendSMSVerifyCode(this.txtPhoneNumber)
-              JSOnlineService.sendSMSVerifyCode(this.txtPhoneNumber)
+              this.setAvaiable(60)
+              JSOnlineService.sendSMSVerifyCode(
+                this.txtPhoneNumber,
+                this.telArea,
+              )
             }}
+            disabled={this.state.verifyTime !== 0}
           >
-            <Text style={styles.verifyCodeRTextStyle}>
+            <Text
+              style={[
+                styles.verifyCodeRTextStyle,
+                this.state.verifyTime !== 0 && { color: 'grey' },
+              ]}
+            >
               {/* 获取验证码 */}
               {getLanguage(this.props.language).Profile.GET_CODE}
+              {this.state.verifyTime !== 0 && '(' + this.state.verifyTime + ')'}
             </Text>
           </TouchableOpacity>
         </View>
       </View>
     )
+  }
+
+  setAvaiable = sec => {
+    this.setState({ verifyTime: sec })
+    this.verifyInterval = setInterval(() => {
+      let time = this.state.verifyTime
+      this.setState({ verifyTime: --time })
+      if (time === 0) {
+        clearInterval(this.verifyInterval)
+      }
+    }, 1000)
   }
 
   renderServiceProtocal = () => {
@@ -247,7 +322,10 @@ export default class Register extends React.Component {
             this.setState({ readProtocal: !this.state.readProtocal })
           }
         >
-          <Image source={icon} />
+          <Image
+            source={icon}
+            style={{ width: scaleSize(45), height: scaleSize(45) }}
+          />
         </TouchableOpacity>
         <View
           style={[
@@ -283,6 +361,10 @@ export default class Register extends React.Component {
           //'注册'
           title: getLanguage(this.props.language).Profile.REGISTER + ' Online',
           navigation: this.props.navigation,
+          headerStyle: {
+            backgroundColor: color.contentColorWhite,
+            borderBottomWidth: 0,
+          },
         }}
       >
         <KeyboardAvoidingView
@@ -308,7 +390,10 @@ export default class Register extends React.Component {
               {this.renderServiceProtocal()}
 
               <TouchableOpacity
-                style={styles.registerStyle}
+                style={[
+                  styles.registerStyle,
+                  !this.state.readProtocal && { backgroundColor: 'grey' },
+                ]}
                 disabled={!this.state.readProtocal}
                 onPress={() => {
                   Keyboard.dismiss()

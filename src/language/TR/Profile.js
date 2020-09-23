@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: 'phone number/email/nickname', //待翻译
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
+  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
+  PASSWORD_DISMATCH: 'The passwords are different, please check again',
   REGISTER: 'Kayıt ol',
   FORGET_PASSWORD: 'Şifrenizi mi unuttunuz?',
   RESET_PASSWORD: 'Şifreyi Sıfırla',
@@ -125,7 +127,7 @@ const Profile = {
   BATCH_ADD: 'Batch Add', // 待翻译
   BATCH_OPERATE: 'Toplu İşlem',
   MY_APPLET: 'My Applet', // 待翻译
-  
+
   // 待翻译
   UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
   DELETE_APPLET: 'Delete Applet',

@@ -17,6 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
+  CURRENT_SCENCE: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'Start',
   START_OPEN_MAP: 'Open Map',

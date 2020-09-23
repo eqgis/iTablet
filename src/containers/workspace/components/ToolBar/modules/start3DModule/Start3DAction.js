@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text, Image } from 'react-native'
+import { TouchableOpacity, Text, Image, View } from 'react-native'
 import { FileTools } from '../../../../../../native'
 import {
   ConstToolType,
@@ -67,6 +67,31 @@ async function getSceneData() {
           }
           element.subTitle = element.mtime
           element.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+          if (element.name === GLOBAL.sceneName && !element.isOnlineScence) {
+            element.rightView = (
+              <View
+                style={{
+                  height: scaleSize(30),
+                  width: scaleSize(120),
+                  borderRadius: scaleSize(4),
+                  backgroundColor: color.bgG,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: scaleSize(30),
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: size.fontSize.fontSizeSm,
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  {getLanguage(params.language).Map_Main_Menu.CURRENT_SCENCE}
+                </Text>
+              </View>
+            )
+          }
           _data.push(element)
         }
       }

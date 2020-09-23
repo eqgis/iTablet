@@ -102,7 +102,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: '当前图层无法设置风格，请重新选择图层',
 
   PLEASE_SELECT_PLOT_LAYER: '请选择或新建标注图层',
-  DONOT_SUPPORT_ARCORE: '此设备不支持ARCore',
+  DONOT_SUPPORT_ARCORE: '此设备不支持AR功能',
   PLEASE_NEW_PLOT_LAYER: '请新建标注图层',
   DOWNLOADING_PLEASE_WAIT: '下载中请稍等',
   SELECT_DELETE_BY_RECTANGLE: '请框选删除对象',
@@ -369,7 +369,7 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
   HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
-  
+
   INVALID_DATA_SET_FAILED: '数据类型不合法，设置失败',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: '图层不可见，不能设置为当前图层',
 }

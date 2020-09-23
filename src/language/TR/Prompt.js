@@ -102,7 +102,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin',
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
-  DONOT_SUPPORT_ARCORE: 'Bu cihaz ARCore desteklemiyor',
+  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
@@ -275,7 +275,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Alan geçersiz',
   PLEASE_SELECT_A_RASTER_LAYER: 'Lütfen raster katmanı seçin',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını',//待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını', //待翻译
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'Mevcut katman modifikasyonu desteklemiyor',
 
   FAILED_TO_CREATE_POINT: 'Nokta oluşturma başarısız',
@@ -369,7 +369,7 @@ const Prompt = {
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
-  
+
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
 }

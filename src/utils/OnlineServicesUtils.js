@@ -451,12 +451,13 @@ export default class OnlineServicesUtils {
     }
   }
 
-  sendSMSVerifyCode = async phoneNumber => {
+  sendSMSVerifyCode = async (phoneNumber, area) => {
     try {
       let url =
         'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
       let paramObj = {
         phoneNumber: phoneNumber,
+        telArea: area,
         execution: this.registerPage('input[name=execution]').attr().value,
         _eventId_send: this.registerPage('input[name=_eventId_send]').attr()
           .value,
@@ -491,11 +492,13 @@ export default class OnlineServicesUtils {
           'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
         let paramObj = {
           nickname: param.nickname,
-          realName: param.realName,
-          company: param.company,
-          email: param.email,
+          // realName: param.realName,
+          // company: param.company,
+          // email: param.email,
           password: param.password,
+          confirmpassword: param.confirmpassword,
           phoneNumber: param.phoneNumber,
+          telArea: param.telArea,
           SMSVerifyCode: param.SMSVerifyCode,
           execution: this.registerPage('input[name=execution]').attr().value,
           _eventId_register: this.registerPage(

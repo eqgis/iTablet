@@ -78,11 +78,10 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(20),
   },
   protocalCheck: {
-    width: scaleSize(25),
-    height: scaleSize(25),
+    width: scaleSize(50),
+    height: scaleSize(50),
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: scaleSize(10),
   },
   protocalTextView: {
     flexDirection: 'row',

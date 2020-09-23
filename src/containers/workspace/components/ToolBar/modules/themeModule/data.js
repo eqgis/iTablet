@@ -1,4 +1,4 @@
-import { SThemeCartography, RangeMode } from 'imobile_for_reactnative'
+import { SThemeCartography, RangeMode, SMap, EngineType } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
@@ -26,11 +26,47 @@ import NavigationService from '../../../../../NavigationService'
  * @returns {Promise.<void>}
  */
 async function showDatasetsList(type, filter = {}) {
+  const _params = ToolbarModule.getParams()
   const isAnyOpenedDS = await SThemeCartography.isAnyOpenedDS()
   if (!isAnyOpenedDS) {
     Toast.show(
       getLanguage(global.language).Prompt.PLEASE_ADD_DATASOURCE_BY_UNIFORM,
     )
+    NavigationService.navigate('MyDatasource', {
+      title: getLanguage(global.language).Profile.DATA,
+      from: 'MapView',
+      getItemCallback: async data => {
+        try {
+          _params.setContainerLoading &&
+          _params.setContainerLoading(
+            true,
+            getLanguage(_params.language).Prompt.LOADING,
+          )
+  
+          let server = await FileTools.appendingHomeDirectory(data.item.path)
+          let alias = data.item.name
+          if (alias.endsWith('.udb')) alias = alias.replace('.udb', '')
+          if (alias.endsWith('.sci')) alias = alias.replace('.sci', '')
+  
+          let datasourceParams = {
+            server,
+            engineType: EngineType.UDB,
+            alias,
+          }
+          if (await SMap.openDatasource(datasourceParams, 0, true)) {
+            await showDatasetsList(type, filter)
+            NavigationService.goBack('MyDatasource')
+            _params.setContainerLoading && _params.setContainerLoading(false)
+          } else {
+            _params.setContainerLoading && _params.setContainerLoading(false)
+            Toast.show(getLanguage(_params.language).Prompt.FAILED_TO_IMPORT)
+          }
+        } catch (e) {
+          _params.setContainerLoading && _params.setContainerLoading(false)
+          Toast.show(getLanguage(_params.language).Prompt.FAILED_TO_IMPORT)
+        }
+      },
+    })
     return
   }
   const data = []
@@ -71,7 +107,7 @@ async function showDatasetsList(type, filter = {}) {
     }
     const buttons = [ToolbarBtnType.CANCEL]
     // const height =
-    //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
+    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5]
     const _type = ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS
@@ -86,8 +122,8 @@ async function showDatasetsList(type, filter = {}) {
       actions: ThemeAction,
     }
     ToolbarModule.addData(_data)
-    ToolbarModule.getParams().setToolbarVisible &&
-      ToolbarModule.getParams().setToolbarVisible(true, _type, {
+    _params.setToolbarVisible &&
+      _params.setToolbarVisible(true, _type, {
         containerType: ToolbarType.list,
         isFullScreen: true,
         isTouchProgress: false,
@@ -96,8 +132,8 @@ async function showDatasetsList(type, filter = {}) {
         data,
         buttons,
       })
-    ToolbarModule.getParams().scrollListToLocation &&
-      ToolbarModule.getParams().scrollListToLocation()
+    _params.scrollListToLocation &&
+      _params.scrollListToLocation()
   })
 }
 

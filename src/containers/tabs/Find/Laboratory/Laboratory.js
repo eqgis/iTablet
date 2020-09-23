@@ -27,7 +27,14 @@ class Laboratory extends React.Component {
 
   getData = () => {
     return Platform.select({
-      ios: [],
+      ios: [
+        {
+          key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+          value: 'highPrecisionCollect',
+          image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+          info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
+        },
+      ],
       android: [
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,

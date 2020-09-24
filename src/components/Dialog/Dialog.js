@@ -198,7 +198,13 @@ export default class Dialog extends PureComponent {
       >
         <TouchableOpacity
           disabled={this.props.disableBackTouch}
-          onPress={() => this.setDialogVisible(false)}
+          onPress={() => {
+            if (this.props.cancelAction) {
+              this.props.cancelAction()
+            } else {
+              this.setDialogVisible(false)
+            }
+          }}
           activeOpacity={1}
           style={[styles.container, this.props.backgroundStyle]}
         >
@@ -242,24 +248,40 @@ export default class Dialog extends PureComponent {
     if (this.state.visible) {
       return (
         <View style={[styles.nonModalContainer, this.props.backgroundStyle]}>
+          <TouchableOpacity
+            style={[
+              styles.nonModalContainer,
+              {backgroundColor: 'rgba(0,0,0,0.3)'},
+              this.props.backgroundStyle,
+            ]}
+            disabled={this.props.disableBackTouch}
+            onPress={() => {
+              if (this.props.cancelAction) {
+                this.props.cancelAction()
+              } else {
+                this.setDialogVisible(false)
+              }
+            }}
+            activeOpacity={1}
+            pointerEvent={'box-none'}
+          />
           {this.props.header}
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
-            <View style={[styles.dialogStyle, this.props.style]}>
-              {this.props.title && (
-                <Text style={[styles.title, this.props.titleStyle]}>
-                  {this.props.title}
-                </Text>
-              )}
-              {this.props.info && (
-                <Text style={[styles.info, this.props.infoStyle]}>
-                  {this.props.info}
-                </Text>
-              )}
-              <View style={styles.childrenContainer}>
-                {this.props.children}
-              </View>
-              {this.renderBtns()}
-            </View>
+          <KeyboardAvoidingView
+            style={[styles.dialogStyle, this.props.style]}
+            behavior={Platform.OS === 'ios' && 'padding'}
+          >
+            {this.props.title && (
+              <Text style={[styles.title, this.props.titleStyle]}>
+                {this.props.title}
+              </Text>
+            )}
+            {this.props.info && (
+              <Text style={[styles.info, this.props.infoStyle]}>
+                {this.props.info}
+              </Text>
+            )}
+            {this.props.children}
+            {this.renderBtns()}
           </KeyboardAvoidingView>
         </View>
       )

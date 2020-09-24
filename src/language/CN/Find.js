@@ -44,9 +44,10 @@ const Find = {
   ONLINE_COWORK_INFO: '支持多人实时协同操作',
   
   // 实验室
-  LAB_GESTURE_BONE_INFO: '位置指引：AR分析-AR分析-手势骨骼\n手势骨骼，您可以用手势操控地图，实现地图缩放、平移等操作。\n\n温馨提示：手势骨骼功能仅为beta体验功能。',
-  LAB_POSE_ESTIMATION_INFO: '位置指引：AR分析-AR分析-人体姿态\n人体姿态，您可以用手势操控地图，实现地图缩放、平移等操作。\n\n温馨提示：人体姿态功能仅为beta体验功能。',
-  LAB_FORM_COLLECT_INFO: '位置指引：AR测图-AR测图-AR采集\nAR采集，您可以用于室内轨迹，点，线，面采集。\n\n温馨提示：AR采集功能仅为beta体验功能。',
+  LAB_GESTURE_BONE_INFO: '位置指引：AR分析-AR分析-手势骨骼\n手势骨骼，您可以用手势操控地图，实现地图缩放、平移等操作。',
+  LAB_POSE_ESTIMATION_INFO: '位置指引：AR分析-AR分析-人体姿态\n人体姿态，您可以用手势操控地图，实现地图缩放、平移等操作',
+  LAB_FORM_COLLECT_INFO: '位置指引：AR测图-AR测图-AR采集\nAR采集，您可以用于室内轨迹，点，线，面采集。',
+  BETA_TIPS: '温馨提示：该功能仅为beta体验功能。'
 }
 
 export { Find }

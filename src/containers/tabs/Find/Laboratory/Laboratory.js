@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, Text, View, Image, Switch, TouchableOpacity, Platform } from 'react-native'
 import { Container, Dialog } from '../../../../components'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, dataUtil } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
@@ -22,6 +22,7 @@ class Laboratory extends React.Component {
     this.state = {
       data: this.getData(),
       info: '',
+      currentData: {},
     }
   }
 
@@ -102,7 +103,8 @@ class Laboratory extends React.Component {
               if (data[item.value]) {
                 this.data = data
                 this.Dialog && this.setState({
-                  info: item.info || '',
+                  // info: item.info || '',
+                  currentData: dataUtil.deepClone(item),
                 }, () => {
                   this.Dialog.setDialogVisible(true)
                 })
@@ -129,9 +131,8 @@ class Laboratory extends React.Component {
     return (
       <Dialog
         ref={ref => (this.Dialog = ref)}
-        type={'modal'}
+        // type={'modal'}
         confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
-        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         confirmAction={() => {
           if (this.data) {
             this.props.toggleLaboratoryItem(this.data)
@@ -144,32 +145,25 @@ class Laboratory extends React.Component {
           this.Dialog && this.Dialog.setDialogVisible(false)
         }}
         opacity={1}
-        style={{
-          // minHeight: scaleSize(360),
-          width: scaleSize(600),
-          backgroundColor: color.content_white,
-        }}
-        disableBackTouch={true}
-        // info={this.state.info}
+        style={styles.dialogView}
+        disableBackTouch={false}
+        onlyOneBtn={true}
+        cancelBtnVisible={false}
         infoStyle={{ textAlign: 'left' }}
       >
-        <View
-          style={{
-            // minHeight: scaleSize(360),
-            width: scaleSize(600),
-            backgroundColor: color.content_white,
-            marginBottom: scaleSize(20),
-            // backgroundColor: 'yellow',
-            alignSelf: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <View style={styles.promptView}>
           <Image
-            source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
+            source={this.state.currentData.image}
             style={styles.dialogHeaderImg}
           />
           <Text style={styles.promptTitle}>
-            {this.state.info}
+            {this.state.currentData.key}
+          </Text>
+          <Text style={styles.promptContent}>
+            {this.state.currentData.info}
+          </Text>
+          <Text style={styles.promptTips}>
+            {getLanguage(this.props.language).Find.BETA_TIPS}
           </Text>
         </View>
       </Dialog>

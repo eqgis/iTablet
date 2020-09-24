@@ -751,6 +751,9 @@ const Map_Settings = {
   REMARKS: '備考',
   DRAWING_RANGE: '描画範囲',
 
+  //目标识别二级菜单
+  Beta: '(体験機能)',
+
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI設定',
   DETECT_TYPE: '検出タイプ',

@@ -263,7 +263,7 @@ export default class SecondMapSettings extends Component {
     return data
   }
 
-  // 检测类型数据
+  // 识别型数据
   getDetectTypesSettings = async () => {
     let data = await getDetectTypesSettings()
     let array = await SAIDetectView.getDetectArrayToUse()
@@ -554,12 +554,12 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                let data = this.state.data.concat()
-                data[0].value = prjCoordSysName
-                this.setState({
-                  data,
-                })
-              },
+                  let data = this.state.data.concat()
+                  data[0].value = prjCoordSysName
+                  this.setState({
+                    data,
+                  })
+                },
         })
         break
       case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
@@ -571,12 +571,12 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                let data = this.state.data.concat()
-                data[0].value = prjCoordSysName
-                this.setState({
-                  data,
-                })
-              },
+                  let data = this.state.data.concat()
+                  data[0].value = prjCoordSysName
+                  this.setState({
+                    data,
+                  })
+                },
         })
         break
       case getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD:
@@ -743,23 +743,62 @@ export default class SecondMapSettings extends Component {
             }}
           />
         </View>
-        {this.renderLine()}
+        {this.renderLine(index)}
       </View>
     )
   }
 
   //渲染分割线
-  renderLine = () => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          height: 1,
-          marginHorizontal: 10,
-          backgroundColor: color.separateColorGray,
-        }}
-      />
-    )
+  renderLine = index => {
+    if (
+      this.state.title ===
+        getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE &&
+      index === 11
+    ) {
+      return (
+        <View>
+          <View
+            style={{
+              flex: 1,
+              height: 1,
+              marginHorizontal: 10,
+              backgroundColor: color.separateColorGray,
+            }}
+          />
+          <View
+            style={{
+              ...styles.betarow,
+              paddingRight: scaleSize(10),
+              backgroundColor: color.gray5,
+            }}
+          >
+            <Text style={styles.betaName1}>{'Beta'}</Text>
+            <Text style={styles.betaName}>
+              {getLanguage(GLOBAL.language).Map_Settings.Beta}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              height: 1,
+              marginHorizontal: 10,
+              backgroundColor: color.separateColorGray,
+            }}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            height: 1,
+            marginHorizontal: 10,
+            backgroundColor: color.separateColorGray,
+          }}
+        />
+      )
+    }
   }
 
   //渲染带more按钮的行
@@ -802,19 +841,21 @@ export default class SecondMapSettings extends Component {
         >
           <View style={styles.row}>
             <Text style={styles.itemName}>{item.title}</Text>
-            {hasValue && isBackGroundColor && (
-              <View style={{ ...styles.colorView }}>
-                <Text
-                  style={{
-                    ...styles.colorBlock,
-                    backgroundColor: item.value,
-                  }}
-                />
-              </View>
-            )}
-            {hasValue && !isBackGroundColor && (
-              <Text style={styles.rightText}>{item.value}</Text>
-            )}
+            {hasValue &&
+              isBackGroundColor && (
+                <View style={{ ...styles.colorView }}>
+                  <Text
+                    style={{
+                      ...styles.colorBlock,
+                      backgroundColor: item.value,
+                    }}
+                  />
+                </View>
+              )}
+            {hasValue &&
+              !isBackGroundColor && (
+                <Text style={styles.rightText}>{item.value}</Text>
+              )}
             <Image
               style={styles.itemArrow}
               resizeMode={'contain'}
@@ -1152,7 +1193,7 @@ export default class SecondMapSettings extends Component {
       }
     })
     ;(paramsObject.coordSysTransMethod = this.state.title),
-    (isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject))
+      (isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject))
     if (isSuccess) {
       this.state.cb(this.state.title)
       this.backAction()
@@ -1340,12 +1381,12 @@ export default class SecondMapSettings extends Component {
           headerRight:
             this.state.rightBtn !== ''
               ? [
-                <TouchableOpacity key={'copy'} onPress={this.copyInfo}>
-                  <Text style={styles.headerRight}>
-                    {this.state.rightBtn}
-                  </Text>
-                </TouchableOpacity>,
-              ]
+                  <TouchableOpacity key={'copy'} onPress={this.copyInfo}>
+                    <Text style={styles.headerRight}>
+                      {this.state.rightBtn}
+                    </Text>
+                  </TouchableOpacity>,
+                ]
               : null,
         }}
       >

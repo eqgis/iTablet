@@ -546,7 +546,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      (async function() {
+      ;(async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -594,8 +594,13 @@ export default class MapView extends React.Component {
     ) {
       Orientation.unlockAllOrientations()
     }
+    if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
+      ;(async function() {
+        await SAIDetectView.dispose()
+      })()
+    }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      (async function() {
+      ;(async function() {
         await SMap.destroySpeakPlugin()
       })()
     }
@@ -658,7 +663,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                (async function() {
+                ;(async function() {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
@@ -1053,7 +1058,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    (async function() {
+    ;(async function() {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1097,13 +1102,13 @@ export default class MapView extends React.Component {
 
   back = async () => {
     if (!this.mapLoaded) return
-    
+
     // 最顶层的语音搜索，最先处理
     if (Audio.isShow()) {
       Audio.hideAudio()
       return
     }
-    
+
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
       this.backAction({
@@ -1203,7 +1208,7 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    (async function() {
+    ;(async function() {
       try {
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
@@ -1352,7 +1357,7 @@ export default class MapView extends React.Component {
           ...this.props,
         })
         GLOBAL.TouchType = TouchType.NORMAL
-        
+
         SMap.setLabelColor()
         // 示例地图不加载标注图层
         !this.isExample &&
@@ -1371,8 +1376,14 @@ export default class MapView extends React.Component {
                   ).then(async layer => {
                     if (layer) {
                       GLOBAL.TaggingDatasetName = layer.name
-                      layer.isEdit = await SMap.setLayerEditable(layer.name, true)
-                      layer.isVisible = await SMap.setLayerVisible(layer.name, true)
+                      layer.isEdit = await SMap.setLayerEditable(
+                        layer.name,
+                        true,
+                      )
+                      layer.isVisible = await SMap.setLayerVisible(
+                        layer.name,
+                        true,
+                      )
                       this.props.setCurrentLayer(layer)
 
                       if (hasMap) SMap.saveMap('', false, false)
@@ -1932,7 +1943,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    (async function() {
+    ;(async function() {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -1946,7 +1957,7 @@ export default class MapView extends React.Component {
   //多媒体采集
   captureImage = params => {
     //保存数据->跳转
-    (async function() {
+    ;(async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -2081,7 +2092,7 @@ export default class MapView extends React.Component {
   }
 
   confirm = () => {
-    (async function() {
+    ;(async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.dialog.setDialogVisible(false)
@@ -2752,8 +2763,7 @@ export default class MapView extends React.Component {
       <MapSelectPoint
         ref={ref => (GLOBAL.AIDETECTCHANGE = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
+          title: GLOBAL.AIDETECTCHANGETITLE,
           navigation: this.props.navigation,
           type: 'fix',
           backAction: async () => {
@@ -2761,10 +2771,35 @@ export default class MapView extends React.Component {
             GLOBAL.AIDETECTCHANGE.setVisible(false)
             this.showFullMap(false)
             GLOBAL.toolBox.setVisible(false)
+            await SAIDetectView.pauseDetect()
+            await SAIDetectView.clearDetectObjects()
             // this.switchAr()
           },
+          headerRight: this._renderAIDectectHeaderRight(),
         }}
       />
+    )
+  }
+
+  _renderAIDectectHeaderRight = () => {
+    const dectectype = getThemeAssets().setting.icon_detection_type
+    return (
+      <TouchableOpacity
+        onPress={async () => {
+          NavigationService.navigate('SecondMapSettings', {
+            title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
+            language: this.props.language,
+            //
+            device: this.props.device,
+          })
+        }}
+      >
+        <Image
+          resizeMode={'contain'}
+          source={dectectype}
+          style={styles.search}
+        />
+      </TouchableOpacity>
     )
   }
 
@@ -3091,14 +3126,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-          <RNLegendView
-            setMapLegend={this.props.setMapLegend}
-            legendSettings={this.props.mapLegend}
-            device={this.props.device}
-            language={this.props.language}
-            ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
+            <RNLegendView
+              setMapLegend={this.props.setMapLegend}
+              legendSettings={this.props.mapLegend}
+              device={this.props.device}
+              language={this.props.language}
+              ref={ref => (GLOBAL.legend = ref)}
+            />
+          )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
@@ -3107,19 +3142,19 @@ export default class MapView extends React.Component {
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
+            <SMAIDetectView
+              ref={ref => (GLOBAL.SMAIDetectView = ref)}
+              style={
+                screen.isIphoneX() && {
+                  paddingBottom: screen.getIphonePaddingBottom(),
+                }
               }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
-            language={this.props.language}
-            isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-            onArObjectClick={this._onArObjectClick}
-          />
-        )}
+              customStyle={this.state.showAIDetect ? null : styles.hidden}
+              language={this.props.language}
+              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+              onArObjectClick={this._onArObjectClick}
+            />
+          )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
@@ -3172,15 +3207,16 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!this.state.showAIDetect && this.state.showScaleView && (
-          <ScaleView
-            mapNavigation={this.props.mapNavigation}
-            device={this.props.device}
-            language={this.props.language}
-            isShow={this.props.mapScaleView}
-            ref={ref => (GLOBAL.scaleView = ref)}
-          />
-        )}
+        {!this.state.showAIDetect &&
+          this.state.showScaleView && (
+            <ScaleView
+              mapNavigation={this.props.mapNavigation}
+              device={this.props.device}
+              language={this.props.language}
+              isShow={this.props.mapScaleView}
+              ref={ref => (GLOBAL.scaleView = ref)}
+            />
+          )}
         <BubblePane ref={ref => (GLOBAL.bubblePane = ref)} maxSize={1} />
         <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
@@ -3224,14 +3260,15 @@ export default class MapView extends React.Component {
         />
         {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
         {/*<AudioDialog*/}
-          {/*ref={ref => (GLOBAL.AudioDialog = ref)}*/}
-          {/*defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}*/}
-          {/*device={this.props.device}*/}
-          {/*language={this.props.language}*/}
+        {/*ref={ref => (GLOBAL.AudioDialog = ref)}*/}
+        {/*defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}*/}
+        {/*device={this.props.device}*/}
+        {/*language={this.props.language}*/}
         {/*/>*/}
-        {global.coworkMode && this.state.onlineCowork && (
-          <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
-        )}
+        {global.coworkMode &&
+          this.state.onlineCowork && (
+            <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
+          )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

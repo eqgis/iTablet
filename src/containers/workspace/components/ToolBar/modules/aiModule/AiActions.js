@@ -11,7 +11,7 @@ import ToolAction from '../../../../../../containers/workspace/components/ToolBa
 
 // 违章采集
 function illegallyParkCollect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -92,7 +92,7 @@ async function getTaggingLayerData() {
 
 // AI分类
 function aiClassify() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
@@ -156,7 +156,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -200,7 +200,7 @@ function _downloadData(downloadData) {
 
 // 目标采集
 function aiDetect() {
-  (async function() {
+  ;(async function() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
@@ -223,6 +223,7 @@ function aiDetect() {
 
     await SAIDetectView.setProjectionModeEnable(true)
     await SAIDetectView.setIsPolymerize(false)
+    await SAIDetectView.startDetect()
     let buttons = [
       ToolbarBtnType.PLACEHOLDER,
       ToolbarBtnType.PLACEHOLDER,
@@ -238,6 +239,9 @@ function aiDetect() {
         isFullScreen: false,
         height: 0,
       })
+    GLOBAL.AIDETECTCHANGETITLE = getLanguage(
+      global.language,
+    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
     GLOBAL.AIDETECTCHANGE.setVisible(true)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   })()
@@ -245,23 +249,62 @@ function aiDetect() {
 
 // 态势采集(聚合模式)
 function polymerizeCollect() {
-  (async function() {
-    // await SAIDetectView.setProjectionModeEnable(true)
-    // await SAIDetectView.setDrawTileEnable(false)
-    await SAIDetectView.setIsPolymerize(true)
+  // await SAIDetectView.setIsPolymerize(true)
+  // await SAIDetectView.startDetect()
+  // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+  // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
+  // if (!GLOBAL.showAIDetect) {
+  //   (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  // }
+  ;(async function() {
+    const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
-    if (!GLOBAL.showAIDetect) {
-      (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.isswitch = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
-    // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    // await SAIDetectView.startCountTrackedObjs(true)
+    let taggingLayerData = await getTaggingLayerData()
+    const dataList = await SMap.getTaggingLayers(
+      _params.user.currentUser.userName,
+    )
+    for (let i = 0; i < dataList.length; i++) {
+      if (
+        taggingLayerData.datasourceAlias === dataList[i].datasourceAlias &&
+        taggingLayerData.datasetName === dataList[i].datasetName
+      ) {
+        GLOBAL.currentLayer = dataList[i]
+        break
+      }
+    }
+
+    await SAIDetectView.setIsPolymerize(true)
+    await SAIDetectView.startDetect()
+    let buttons = [
+      ToolbarBtnType.PLACEHOLDER,
+      ToolbarBtnType.PLACEHOLDER,
+      {
+        type: ToolbarBtnType.SETTIING,
+        action: ToolAction.setting,
+        image: require('../../../../../../assets/mapTools/ai_setting.png'),
+      },
+    ]
+    ;(await GLOBAL.toolBox) &&
+      GLOBAL.toolBox.setVisible(true, ConstToolType.AIDETECT, {
+        buttons: buttons,
+        isFullScreen: false,
+        height: 0,
+      })
+    GLOBAL.AIDETECTCHANGETITLE = getLanguage(
+      global.language,
+    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
+    GLOBAL.AIDETECTCHANGE.setVisible(true)
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   })()
 }
 
 // 人体姿态
 function poseEstimation() {
-  (async function() {
+  ;(async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
@@ -277,7 +320,7 @@ function poseEstimation() {
 
 // 手势骨骼
 function gestureBone() {
-  (async function() {
+  ;(async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {

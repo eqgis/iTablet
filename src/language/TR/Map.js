@@ -751,6 +751,9 @@ const Map_Settings = {
   REMARKS: 'Uyarılar',
   DRAWING_RANGE: 'Çizim Aralığı',
 
+  //目标识别二级菜单
+  Beta: '(Deneyim Fonksiyonu)',
+
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI Ayarları',
   DETECT_TYPE: 'Türleri Belirle',
@@ -906,7 +909,7 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',// 待翻译
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management', // 待翻译
   COLLECTION_TEMPLATE_CREATE: 'Create Template',
   COLLECTION_TEMPLATE_NAME: 'Template Name',
   ELEMENT_SETTINGS: 'Element Settings',
@@ -914,14 +917,14 @@ const Template = {
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
   CURRENT_TEMPLATE: 'Current Template',
   DEFAULT_TEMPLATE: 'Default Template',
-  
+
   ELEMENT_NAME: 'Element Name',
   ELEMENT_CODE: 'Element Code',
-  
+
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
-  
+
   TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 

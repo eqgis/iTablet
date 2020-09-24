@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   },
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorGray2,
+    color: color.fontColorBlack,
   },
   itemImg: {
     marginLeft: scaleSize(32),

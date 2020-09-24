@@ -315,7 +315,7 @@ var styles = StyleSheet.create({
   ITemTextStyle: {
     marginLeft: scaleSize(32),
     fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorGray2,
+    color: color.fontColorBlack,
   },
   itemImg: {
     marginLeft: scaleSize(32),

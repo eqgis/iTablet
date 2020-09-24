@@ -47,7 +47,7 @@ class Laboratory extends React.Component {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
           value: 'poseEstimation',
           image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
-          info: getLanguage(this.props.language).Find.LAB_GESTURE_BONE_INFO,
+          info: getLanguage(this.props.language).Find.LAB_POSE_ESTIMATION_INFO,
         },
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,

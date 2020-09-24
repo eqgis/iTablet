@@ -175,7 +175,7 @@ export default class TemplateManager extends React.Component {
             <TextBtn
               btnText={getLanguage(this.props.language).Prompt.CREATE}
               textStyle={styles.headerBtnTitle}
-              width={scaleSize(80)}
+              // width={scaleSize(80)}
               height={scaleSize(40)}
               btnClick={this.create}
             />

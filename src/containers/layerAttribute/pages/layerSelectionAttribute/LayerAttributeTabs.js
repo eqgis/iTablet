@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
 import { Toast, scaleSize, StyleUtils } from '../../../../utils'
@@ -16,7 +16,13 @@ import DefaultTabBar from './DefaultTabBar'
 import { LayerTopBar, DrawerBar, LocationView } from '../../components'
 import LayerSelectionAttribute from './LayerSelectionAttribute'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { SMap, Action, GeoStyle, TextStyle, GeometryType } from 'imobile_for_reactnative'
+import {
+  SMap,
+  Action,
+  GeoStyle,
+  TextStyle,
+  GeometryType,
+} from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
@@ -157,7 +163,7 @@ export default class LayerAttributeTabs extends React.Component {
       })
     }.bind(this)())
   }
-  
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
@@ -349,12 +355,12 @@ export default class LayerAttributeTabs extends React.Component {
     this.deleteFieldData = fieldInfo
     this.deleteFieldDialog.setDialogVisible(true)
   }
-  
+
   showLayerAddView = (visible, params) => {
     // GLOBAL.ToolBar.showFullMap(true)
     this.addPopModal && this.addPopModal.setVisible(visible, params)
   }
-  
+
   /** 添加属性字段 **/
   addAttributeField = async fieldInfo => {
     if (this.state.attributes.data.length > 0) {
@@ -415,13 +421,16 @@ export default class LayerAttributeTabs extends React.Component {
     for (let i = 0; i < this.props.selection.length; i++) {
       if (this.props.selection[i].layerInfo.path === layerPath) {
         for (let j = 0; j < selection.data.length; j++) {
-          if (selection.data[j].name === 'SmGeoType' && selection.data[j].value === GeometryType.GEOTEXT) {
+          if (
+            selection.data[j].name === 'SmGeoType' &&
+            selection.data[j].value === GeometryType.GEOTEXT
+          ) {
             geoStyle = new TextStyle()
             geoStyle.setForeColor(0, 255, 0, 0.5)
             break
           }
         }
-        
+
         objs.push({
           layerPath: layerPath,
           // ids: [selection.data[0].value],
@@ -594,31 +603,9 @@ export default class LayerAttributeTabs extends React.Component {
         cancelAction={() => {
           this.deleteFieldDialog.setDialogVisible(false)
         }}
-      >
-        <View
-          style={{
-            paddingTop: scaleSize(30),
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              fontSize: scaleSize(32),
-              color: color.theme_white,
-              marginTop: scaleSize(5),
-              marginLeft: scaleSize(10),
-              marginRight: scaleSize(10),
-              textAlign: 'center',
-            }}
-          >
-            {getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_CONFIRM +
-              '\n' +
-              getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_TIPS}
-          </Text>
-        </View>
-      </Dialog>
+        title={getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_CONFIRM}
+        info={getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_TIPS}
+      />
     )
   }
 
@@ -696,7 +683,7 @@ export default class LayerAttributeTabs extends React.Component {
         }}
         key={index}
         tabLabel={data.layerInfo.name || ('图层' + index >= 0 ? index + 1 : '')}
-        contentContainerStyle={{backgroundColor: color.bgW}}
+        contentContainerStyle={{ backgroundColor: color.bgW }}
         // currentAttribute={this.props.currentAttribute}
         // currentLayer={this.props.currentLayer}
         map={this.props.map}
@@ -767,13 +754,13 @@ export default class LayerAttributeTabs extends React.Component {
       </View>
     )
   }
-  
+
   _renderHeader = () => {
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
-    
+
     let buttons = []
     if (this.type !== 'MAP_3D') {
       buttons = [
@@ -891,16 +878,23 @@ export default class LayerAttributeTabs extends React.Component {
         >
           {this.renderEditControllerView()}
         </PopModal>
-  
+
         <LayerAttributeAdd
           ref={ref => (this.addPopModal = ref)}
           contentStyle={{
-            height: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ? '100%' : '80%',
-            width: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ? '40%' : '100%',
+            height:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '100%'
+                : '80%',
+            width:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '40%'
+                : '100%',
             right: 0,
-            left: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? '60%' : 0,
+            left:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '60%'
+                : 0,
           }}
           navigation={this.props.navigation}
           device={this.props.device}

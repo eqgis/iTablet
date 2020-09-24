@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
     fontSize: setSpText(36),
   },
   confirm: {
-    width: scaleSize(50),
     height: scaleSize(50),
     marginHorizontal: scaleSize(20),
     alignItems: 'center',

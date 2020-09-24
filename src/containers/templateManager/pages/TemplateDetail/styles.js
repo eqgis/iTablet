@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   headerBtnTitle: {
     color: color.fontColorBlack,
-    fontSize: 17,
+    fontSize: scaleSize(24),
   },
   listItem: {
     // flex: 1,

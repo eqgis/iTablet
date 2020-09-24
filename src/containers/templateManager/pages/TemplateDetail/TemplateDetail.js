@@ -216,7 +216,10 @@ export default class TemplateDetail extends React.Component {
   goBack = async (data = {}) => {
     try {
       this.container &&
-      this.container.setLoading(true, getLanguage(this.props.language).Profile.SWITCHING)
+        this.container.setLoading(
+          true,
+          getLanguage(this.props.language).Profile.SWITCHING,
+        )
       let path = this.path
       if (data.title) {
         path =
@@ -228,7 +231,7 @@ export default class TemplateDetail extends React.Component {
           '.xml'
       }
       let xmlObj
-  
+
       if (data.data) {
         // 编辑已有的template文件
         let oldXmlObj = XMLUtil.obj2Xml(data.title, this.oldData)
@@ -247,7 +250,7 @@ export default class TemplateDetail extends React.Component {
           xmlObj = res.xmlObj
         }
       }
-  
+
       if (xmlObj) {
         const homePath = await FileTools.appendingHomeDirectory()
         const mapXml = homePath + this.props.map.currentMap.path
@@ -267,18 +270,17 @@ export default class TemplateDetail extends React.Component {
             await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
           }
         }
-    
+
         let params = this.props.navigation.state.params
         if (params && params.cb && typeof params.cb === 'function') {
           params.cb()
         }
-  
+
         // 修改地图信息中的Template
         let map = this.props.map.currentMap
         map.Template = relativeTemplatePath
         await this.props.setCurrentMap(map)
-        this.container &&
-        this.container.setLoading(false)
+        this.container && this.container.setLoading(false)
         Toast.show(getLanguage(this.props.language).Prompt.SWITCHING_SUCCESS)
 
         NavigationService.goBack('TemplateManager')
@@ -296,8 +298,7 @@ export default class TemplateDetail extends React.Component {
         }
       }
     } catch (e) {
-      this.container &&
-      this.container.setLoading(false)
+      this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.CHANGE_FAULT)
     }
   }
@@ -438,7 +439,7 @@ export default class TemplateDetail extends React.Component {
             <TextBtn
               btnText={getLanguage(this.props.language).Prompt.COMPLETE}
               textStyle={styles.headerBtnTitle}
-              width={scaleSize(80)}
+              // width={scaleSize(80)}
               height={scaleSize(40)}
               btnClick={this.confirm}
             />

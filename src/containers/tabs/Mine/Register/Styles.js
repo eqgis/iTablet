@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: scaleSize(80),
     fontSize: scaleSize(fontSize),
     borderBottomColor: color.borderLight,
-    color: color.fontColorGray,
+    color: 'black',
     borderBottomWidth: 1,
     marginTop: 10,
   },

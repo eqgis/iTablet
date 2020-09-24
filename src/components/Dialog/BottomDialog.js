@@ -61,7 +61,7 @@ export default class BottomDialog extends PureComponent {
       <Dialog
         ref={ref => (this.dialog = ref)}
         title={this.props.title}
-        style={{ height: scaleSize(240) }}
+        // style={{ height: scaleSize(240) }}
         opacityStyle={{ height: scaleSize(240) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}

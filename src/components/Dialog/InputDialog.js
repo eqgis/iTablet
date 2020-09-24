@@ -136,7 +136,7 @@ export default class InputDialog extends PureComponent {
       <Dialog
         ref={ref => (this.dialog = ref)}
         title={this.props.title}
-        style={{ height: scaleSize(250) }}
+        // style={{ height: scaleSize(250) }}
         opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}

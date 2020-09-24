@@ -130,13 +130,21 @@ class NavigationHeader extends Component {
         ? scaleSize(40)
         : scaleSize(60)
 
-    let backBtnSource =
-      backImg || getPublicAssets().common.icon_back
+    let backStyle = styles.backBtn
+    let TitleViewStyle = headerTitleViewStyle
+    let rightStyle = [styles.headerRightView, headerRightStyle]
+    if (type === 'flex') {
+      backStyle = styles.backBtnFlex
+      TitleViewStyle = styles.headerTitleViewFlex
+      rightStyle = [styles.headerRightViewFlex, headerRightStyle]
+    }
+
+    let backBtnSource = backImg || getPublicAssets().common.icon_back
     let backBtn = (
       <TouchableOpacity
         accessible={true}
         accessibilityLabel={'返回'}
-        style={styles.backBtn}
+        style={backStyle}
         activeOpacity={activeOpacity}
         onPress={event => {
           this.handleBack(navigation, event)
@@ -156,7 +164,7 @@ class NavigationHeader extends Component {
     let titleView = null
     if (type !== 'floatNoTitle') {
       titleView = (
-        <View style={headerTitleViewStyle}>
+        <View style={TitleViewStyle}>
           {headerCenter ? (
             headerCenter
           ) : (
@@ -187,11 +195,7 @@ class NavigationHeader extends Component {
           !withoutBack && backBtn
         )}
         {titleView}
-        {headerRight && (
-          <View style={[styles.headerRightView, headerRightStyle]}>
-            {headerRight}
-          </View>
-        )}
+        {headerRight && <View style={rightStyle}>{headerRight}</View>}
       </View>
     )
   }
@@ -227,7 +231,11 @@ class NavigationHeader extends Component {
       <Animated.View
         style={[
           currentHeaderStyle,
-          { height: this.state.headerHeight, borderBottomWidth: 2, borderBottomColor: color.itemColorGray2 },
+          {
+            height: this.state.headerHeight,
+            borderBottomWidth: 2,
+            borderBottomColor: color.itemColorGray2,
+          },
           headerStyle,
           padding,
           { opacity: opacity, top: this.state.headerTop },

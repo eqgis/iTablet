@@ -2,7 +2,6 @@ import { ConstToolType } from '../../../../../../constants'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
-import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { SMeasureView } from 'imobile_for_reactnative'
 
@@ -14,7 +13,7 @@ class arEffect extends FunctionModule {
   action = async () => {
     let isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 

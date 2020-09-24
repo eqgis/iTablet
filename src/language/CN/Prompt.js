@@ -103,6 +103,7 @@ const Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: '请选择或新建标注图层',
   DONOT_SUPPORT_ARCORE: '此设备不支持AR功能',
+  GET_SUPPORTED_DEVICE_LIST: '获取受支持的设备列表',
   PLEASE_NEW_PLOT_LAYER: '请新建标注图层',
   DOWNLOADING_PLEASE_WAIT: '下载中请稍等',
   SELECT_DELETE_BY_RECTANGLE: '请框选删除对象',

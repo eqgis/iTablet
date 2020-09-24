@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
+import { scaleSize } from '../../utils'
 
 import styles from './styles'
 
@@ -46,6 +47,7 @@ export default class Dialog extends PureComponent {
     opacityStyle: Object,
     onlyOneBtn: boolean,
     disableBackTouch: boolean,
+    buttonMode: String,
   }
 
   static defaultProps = {
@@ -61,6 +63,7 @@ export default class Dialog extends PureComponent {
     onlyOneBtn: false,
     defaultVisible: false,
     disableBackTouch: true,
+    buttonMode: 'default',
   }
 
   constructor(props) {
@@ -103,10 +106,86 @@ export default class Dialog extends PureComponent {
     this.setDialogVisible(false)
   }
 
+  renderListBtns = () => {
+    let confirmPressColor = this.state.confirmPress ? { color: '#4680DF' } : {}
+    let cancelPressColor = this.state.cancelPress ? { color: '#4680DF' } : {}
+    return (
+      <View
+        style={{
+          width: '100%',
+          height: scaleSize(160),
+          marginTop: scaleSize(50),
+        }}
+      >
+        <View style={styles.separateLineL} />
+        <TouchableOpacity
+          activeOpacity={this.props.activeOpacity}
+          style={[styles.btnStyle, this.props.confirmBtnStyle]}
+          onPress={this.confirm}
+          onPressIn={() => {
+            !this.props.confirmBtnDisable &&
+              this.setState({
+                confirmPress: true,
+              })
+          }}
+          onPressOut={() => {
+            !this.props.confirmBtnDisable &&
+              this.setState({
+                confirmPress: false,
+              })
+          }}
+        >
+          <Text
+            style={[
+              this.props.confirmBtnDisable
+                ? styles.btnDisableTitle
+                : styles.btnTitle,
+              confirmPressColor,
+              this.props.confirmTitleStyle,
+            ]}
+          >
+            {this.props.confirmBtnTitle}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.separateLineL} />
+        <TouchableOpacity
+          activeOpacity={this.props.activeOpacity}
+          style={[styles.btnStyle, this.props.cancelBtnStyle]}
+          onPress={this.cancel}
+          onPressIn={() => {
+            this.setState({
+              cancelPress: true,
+            })
+          }}
+          onPressOut={() => {
+            this.setState({
+              cancelPress: false,
+            })
+          }}
+        >
+          <Text
+            style={[
+              this.props.cancelBtnDisable
+                ? styles.btnDisableTitle
+                : styles.btnTitle,
+              cancelPressColor,
+              this.props.cancelTitleStyle,
+            ]}
+          >
+            {this.props.cancelBtnTitle}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   renderBtns = () => {
     let confirmPressColor = this.state.confirmPress ? { color: '#4680DF' } : {}
     let cancelPressColor = this.state.cancelPress ? { color: '#4680DF' } : {}
     if (!this.props.showBtns) return null
+    if (this.props.buttonMode === 'list') {
+      return this.renderListBtns()
+    }
     return (
       <View style={this.props.onlyOneBtn ? styles.oneBtn : styles.btns}>
         {this.props.cancelBtnVisible && (
@@ -251,7 +330,7 @@ export default class Dialog extends PureComponent {
           <TouchableOpacity
             style={[
               styles.nonModalContainer,
-              {backgroundColor: 'rgba(0,0,0,0.3)'},
+              { backgroundColor: 'rgba(0,0,0,0.3)' },
               this.props.backgroundStyle,
             ]}
             disabled={this.props.disableBackTouch}

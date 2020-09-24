@@ -103,6 +103,7 @@ const Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
   DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
+  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',

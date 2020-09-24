@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, MTBtn } from '../../../../components'
-import { Toast, scaleSize, OnlineServicesUtils } from '../../../../utils'
+import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
@@ -171,13 +171,13 @@ class Protocol extends Component {
           source =
             global.language === 'CN'
               ? {
-                  uri:
+                uri:
                     'file:///android_asset/SuperMapUserServiceAgreement_CN.html',
-                }
+              }
               : {
-                  uri:
+                uri:
                     'file:///android_asset/SuperMapUserServiceAgreement_EN.html',
-                }
+              }
         } else {
           source =
             global.language === 'CN'
@@ -191,13 +191,13 @@ class Protocol extends Component {
           source =
             global.language === 'CN'
               ? {
-                  uri:
+                uri:
                     'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
-                }
+              }
               : {
-                  uri:
+                uri:
                     'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
-                }
+              }
         } else {
           source =
             global.language === 'CN'
@@ -286,6 +286,11 @@ class Protocol extends Component {
       case 'GISAcademy':
         source = { uri: `https://edu.supermap.com` }
         title = getLanguage(global.language).Find.GIS_ACADEMY
+        break
+      case 'ARDevice':
+        source = {
+          uri: `https://developers.google.cn/ar/discover/supported-devices`,
+        }
         break
       default:
         break

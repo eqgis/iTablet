@@ -11,7 +11,7 @@ import ToolAction from '../../../../../../containers/workspace/components/ToolBa
 
 // 违章采集
 function illegallyParkCollect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -45,12 +45,6 @@ function illegallyParkCollect() {
       Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
       _params.navigation.navigate('LayerManager')
     }
-
-    // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-    // if (!isSupportedARCore) {
-    //   Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
-    //   return
-    // }
   })()
 }
 
@@ -92,7 +86,7 @@ async function getTaggingLayerData() {
 
 // AI分类
 function aiClassify() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     if (GLOBAL.isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
@@ -156,7 +150,7 @@ function getDownloadData(key, fileName) {
 }
 
 function _downloadData(downloadData) {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     const keyword = downloadData.fileName
     const dataUrl = await FetchUtils.getFindUserDataUrl(
@@ -200,7 +194,7 @@ function _downloadData(downloadData) {
 
 // 目标采集
 function aiDetect() {
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
@@ -256,7 +250,7 @@ function polymerizeCollect() {
   // if (!GLOBAL.showAIDetect) {
   //   (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   // }
-  ;(async function() {
+  (async function() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
@@ -304,7 +298,7 @@ function polymerizeCollect() {
 
 // 人体姿态
 function poseEstimation() {
-  ;(async function() {
+  (async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
@@ -320,7 +314,7 @@ function poseEstimation() {
 
 // 手势骨骼
 function gestureBone() {
-  ;(async function() {
+  (async function() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {

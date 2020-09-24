@@ -22,7 +22,7 @@ function arCastModelOperate() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     if (GLOBAL.isProjectModelDownload) {
@@ -35,13 +35,6 @@ function arCastModelOperate() {
       const isDustbin = await FileTools.fileIsExist(dustbinPath)
 
       if (isDustbin) {
-        // const _params = ToolbarModule.getParams()
-        // const isSupportedARCore = await SMeasureView.isSupportedARCore()
-        // if (!isSupportedARCore) {
-        //   Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
-        //   return
-        // }
-
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
           GLOBAL.isswitch = true
@@ -117,7 +110,7 @@ function _downloadData(downloadData) {
 async function arVideo() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
@@ -132,7 +125,7 @@ async function arVideo() {
 async function arImage() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
@@ -147,7 +140,7 @@ async function arImage() {
 async function arWebView() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
@@ -162,7 +155,7 @@ async function arWebView() {
 async function arText() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    Toast.show(getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 

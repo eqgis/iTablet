@@ -103,6 +103,7 @@ const Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner le calque du tracé',
   DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
+  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer un nouveau calque de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
   SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",

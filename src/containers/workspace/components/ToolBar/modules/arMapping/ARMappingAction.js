@@ -1,7 +1,6 @@
 import ToolbarModule from '../ToolbarModule'
 import { SMeasureView, SMap } from 'imobile_for_reactnative'
-import { Toast, LayerUtils } from '../../../../../../utils'
-import { getLanguage } from '../../../../../../language'
+import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
 function close() {}
@@ -15,10 +14,9 @@ function commit() {}
 // 高精度采集
 function collectSceneForm() {
   (async function() {
-    const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
@@ -69,7 +67,7 @@ function arMeasureCollect() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -121,7 +119,7 @@ function arDrawLine() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -176,7 +174,7 @@ function arDrawArea() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -232,7 +230,7 @@ function arDrawPoint() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer

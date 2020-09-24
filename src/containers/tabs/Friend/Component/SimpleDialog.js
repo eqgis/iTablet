@@ -12,11 +12,20 @@ export default class SimpleDialog extends PureComponent {
     renderExtra: () => {},
     style: Object,
     text: String,
+    confirmText: String,
+    cancelText: String,
     disableBackTouch: boolean,
+    buttonMode: String,
+    confirmTitleStyle: Object,
+    cancelTitleStyle: Object,
   }
 
   static defaultProps = {
     disableBackTouch: true,
+    buttonMode: 'default',
+    text: '',
+    confirmText: '',
+    cancelText: '',
   }
 
   constructor(props) {
@@ -25,15 +34,16 @@ export default class SimpleDialog extends PureComponent {
       visible: false,
       confirmAction: this.confirm,
       cancelAction: this.cancel,
-      text: this.props.text,
+      text: '',
       textStyle: {},
       renderExtra: props.renderExtra ? props.renderExtra : this.renderExtra,
       dialogStyle: {},
       showTitleImage: true,
-      confirmText: getLanguage(global.language).Friends.CONFIRM,
-      cancelText: getLanguage(global.language).Friends.CANCEL,
+      confirmText: '',
+      cancelText: '',
       renderCustomeView: undefined,
       disableBackTouch: this.props.disableBackTouch,
+      buttonMode: props.buttonMode,
     }
   }
 
@@ -53,6 +63,7 @@ export default class SimpleDialog extends PureComponent {
     cancelText,
     renderCustomeView,
     disableBackTouch,
+    buttonMode,
   }) => {
     let confirm, cancel
     if (confirmAction && typeof confirmAction === 'function') {
@@ -68,39 +79,38 @@ export default class SimpleDialog extends PureComponent {
       }
     }
     this.setState({
-      text: text || this.props.text,
+      text: text || '',
       textStyle: textStyle ? textStyle : {},
       confirmAction: confirmAction ? confirm || this.confirm : this.confirm,
       cancelAction: cancelAction ? cancel || this.cancel : this.cancel,
       renderExtra: renderExtra ? renderExtra : this.renderExtra,
       dialogStyle: dialogStyle ? dialogStyle : {},
       showTitleImage: showTitleImage !== undefined ? showTitleImage : true,
-      confirmText: confirmText
-        ? confirmText
-        : getLanguage(global.language).Friends.CONFIRM,
-      cancelText: cancelText
-        ? cancelText
-        : getLanguage(global.language).Friends.CANCEL,
+      confirmText: confirmText || '',
+      cancelText: cancelText || '',
       renderCustomeView: renderCustomeView,
       disableBackTouch:
         disableBackTouch === undefined
           ? this.props.disableBackTouch
           : disableBackTouch,
+      buttonMode: buttonMode ? buttonMode : this.props.buttonMode,
     })
   }
 
   reset = () => {
     this.setState({
-      text: this.props.text,
+      text: '',
       textStyle: {},
       confirmAction: this.confirm,
       cancelAction: this.cancel,
       renderExtra: this.renderExtra,
       dialogStyle: {},
       showTitleImage: true,
-      confirmText: getLanguage(global.language).Friends.CONFIRM,
+      confirmText: '',
+      cancelText: '',
       renderCustomeView: undefined,
       disableBackTouch: this.props.disableBackTouch,
+      buttonMode: this.props.buttonMode,
     })
   }
 
@@ -123,18 +133,31 @@ export default class SimpleDialog extends PureComponent {
       <Dialog
         ref={ref => (this.Dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={this.state.confirmText}
-        cancelBtnTitle={this.state.cancelText}
+        confirmBtnTitle={
+          this.state.confirmText !== ''
+            ? this.state.confirmText
+            : this.props.confirmText !== ''
+              ? this.props.confirmText
+              : getLanguage(global.language).Friends.CONFIRM
+        }
+        cancelBtnTitle={
+          this.state.cancelText !== ''
+            ? this.state.cancelText
+            : this.props.cancelText !== ''
+              ? this.props.cancelText
+              : getLanguage(global.language).Friends.CANCEL
+        }
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}
-        opacity={1}
-        opacityStyle={styles.opacityView}
-        style={[
-          styles.dialogBackground,
-          this.props.style,
-          this.state.dialogStyle,
-        ]}
+        confirmTitleStyle={this.props.confirmTitleStyle}
+        cancelTitleStyle={this.props.cancelTitleStyle}
+        // style={[
+        //   styles.dialogBackground,
+        //   this.props.style,
+        //   this.state.dialogStyle,
+        // ]}
         disableBackTouch={this.state.disableBackTouch}
+        buttonMode={this.state.buttonMode}
       >
         {this.state.renderCustomeView ? (
           this.state.renderCustomeView()
@@ -147,7 +170,7 @@ export default class SimpleDialog extends PureComponent {
               />
             )}
             <Text style={[styles.promptTitle, this.state.textStyle]}>
-              {this.state.text}
+              {this.state.text !== '' ? this.state.text : this.props.text}
             </Text>
             {this.state.renderExtra()}
           </View>
@@ -159,7 +182,6 @@ export default class SimpleDialog extends PureComponent {
 
 const styles = StyleSheet.create({
   dialogHeaderView: {
-    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -178,9 +200,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   dialogBackground: {
-    height: scaleSize(250),
-  },
-  opacityView: {
     height: scaleSize(250),
   },
 })

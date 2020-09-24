@@ -325,8 +325,8 @@ export default class LayerAttribute extends React.Component {
           let currentIndex = resetCurrent
             ? -1
             : others.currentIndex !== undefined
-            ? others.currentIndex
-            : this.state.currentIndex
+              ? others.currentIndex
+              : this.state.currentIndex
           let relativeIndex =
             resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
           // : currentIndex - startIndex - 1
@@ -638,11 +638,12 @@ export default class LayerAttribute extends React.Component {
       {
         title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
-          ;(async function() {
-            this.addPopModal && this.addPopModal.setVisible(true, {
-              data: {fieldInfo},
-              isDetail: true,
-            })
+          (async function() {
+            this.addPopModal &&
+              this.addPopModal.setVisible(true, {
+                data: { fieldInfo },
+                isDetail: true,
+              })
           }.bind(this)())
         },
       },
@@ -740,7 +741,7 @@ export default class LayerAttribute extends React.Component {
     }
     this._showPopover(pressView, index, fieldInfo)
   }
-  
+
   showLayerAddView = () => {
     // GLOBAL.ToolBar.showFullMap(true)
     this.addPopModal && this.addPopModal.setVisible(true)
@@ -937,7 +938,9 @@ export default class LayerAttribute extends React.Component {
               ...checkData,
             })
           } else {
-            Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
+            Toast.show(
+              getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED,
+            )
           }
         })
     }
@@ -1159,7 +1162,6 @@ export default class LayerAttribute extends React.Component {
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         opacity={1}
         opacityStyle={[styles.opacityView, { height: scaleSize(250) }]}
-        style={[styles.dialogBackground, { height: scaleSize(250) }]}
         cancelAction={() => {
           this.deleteFieldDialog.setDialogVisible(false)
         }}
@@ -1235,11 +1237,11 @@ export default class LayerAttribute extends React.Component {
         tableHead={
           this.state.attributes.data.length === 1
             ? [
-                getLanguage(this.props.language).Map_Label.NAME,
-                getLanguage(this.props.language).Map_Label.ATTRIBUTE,
-                //'名称'
-                //'属性值'
-              ]
+              getLanguage(this.props.language).Map_Label.NAME,
+              getLanguage(this.props.language).Map_Label.ATTRIBUTE,
+              //'名称'
+              //'属性值'
+            ]
             : this.state.attributes.head
         }
         widthArr={this.state.attributes.data.length === 1 && [100, 100]}
@@ -1256,7 +1258,7 @@ export default class LayerAttribute extends React.Component {
             ? -1
             : this.state.startIndex + 1
         }
-        contentContainerStyle={{backgroundColor: color.bgW}}
+        contentContainerStyle={{ backgroundColor: color.bgW }}
         hasInputText={this.state.attributes.data.length > 1}
         selectRow={this.selectRow}
         refresh={cb => this.refresh(cb)}
@@ -1364,13 +1366,13 @@ export default class LayerAttribute extends React.Component {
   //     </View>
   //   )
   // }
-  
+
   _renderHeader = () => {
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
-  
+
     let buttons = []
     if (this.type !== 'MAP_3D') {
       buttons = [
@@ -1468,9 +1470,9 @@ export default class LayerAttribute extends React.Component {
           {showContent
             ? this.renderMapLayerAttribute()
             : this.renderInfoView({
-                title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
-                //'暂无属性',
-              })}
+              title: getLanguage(this.props.language).Prompt.NO_ATTRIBUTES,
+              //'暂无属性',
+            })}
           {/* {this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()} */}
           <LocationView
             ref={ref => (this.locationView = ref)}
@@ -1490,12 +1492,19 @@ export default class LayerAttribute extends React.Component {
         <LayerAttributeAdd
           ref={ref => (this.addPopModal = ref)}
           contentStyle={{
-            height: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ? '100%' : '80%',
-            width: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ? '40%' : '100%',
+            height:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '100%'
+                : '80%',
+            width:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '40%'
+                : '100%',
             right: 0,
-            left: this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? '60%' : 0,
+            left:
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+                ? '60%'
+                : 0,
           }}
           navigation={this.props.navigation}
           device={this.props.device}

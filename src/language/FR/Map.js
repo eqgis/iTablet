@@ -410,13 +410,13 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: 'Changement',
   MAP_AR_AI_CLEAR: 'Effacer',
   MAP_AR_AI_NEW_ROAD: 'Veuillez créer une nouvelle route',
-  
+
   // 待翻译
   MAP_AR_AI_SAVE_REGION: 'Save Region',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
   MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
-  
+
   MAP_AR_AI_MEASURE_LENGTH: 'Mesure de longueur',
   MAP_AR_AI_MEASURE_AREA: 'Zone de mesure',
   MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
@@ -648,7 +648,7 @@ const Map_Layer = {
   BASEMAP: 'Mon fond de carte',
   BASEMAP_SWITH: 'interchanger fond de  carte',
   MY_TERRAIN: 'Mon terrain',
-  
+
   //待翻译
   SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
   ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
@@ -911,22 +911,22 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',// 待翻译
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management', // 待翻译
   COLLECTION_TEMPLATE_CREATE: 'Create Template',
   COLLECTION_TEMPLATE_NAME: 'Template Name',
   ELEMENT_SETTINGS: 'Element Settings',
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
+  CURRENT_TEMPLATE: 'Current',
   DEFAULT_TEMPLATE: 'Default Template',
-  
+
   ELEMENT_NAME: 'Element Name',
   ELEMENT_CODE: 'Element Code',
-  
+
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
-  
+
   TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 

@@ -410,7 +410,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: 'تغيير',
   MAP_AR_AI_CLEAR: 'مسح',
   MAP_AR_AI_NEW_ROAD: 'من فضلك انشاء خط جديد',
-  
+
   // 待翻译
   MAP_AR_AI_SAVE_REGION: 'Save Region',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
@@ -911,22 +911,22 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management',  // 待翻译
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management', // 待翻译
   COLLECTION_TEMPLATE_CREATE: 'Create Template',
   COLLECTION_TEMPLATE_NAME: 'Template Name',
   ELEMENT_SETTINGS: 'Element Settings',
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
+  CURRENT_TEMPLATE: 'Current',
   DEFAULT_TEMPLATE: 'Default Template',
-  
+
   ELEMENT_NAME: 'Element Name',
   ELEMENT_CODE: 'Element Code',
-  
+
   CREATE_ROOT_NODE: 'Create Root Node',
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
-  
+
   TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
 }
 

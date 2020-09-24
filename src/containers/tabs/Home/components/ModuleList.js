@@ -347,20 +347,22 @@ class ModuleList extends Component {
         }
       }
       if (arrFile.length === 0) {
-        if (
-          downloadData.example &&
-          downloadData.example.length > 0 &&
-          this.props.ignoreDownloads.filter(
-            _item => _item.id === downloadData.key,
-          ).length === 0 &&
-          (!currentDownloadData ||
-            (currentDownloadData &&
-              currentDownloadData.downloaded === undefined))
-        ) {
-          this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)
-        }
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && item.action(tmpCurrentUser, latestMap)
+        this.props.setCurrentMapModule(index).then(async() => {
+          let result = item.action && await item.action(tmpCurrentUser, latestMap)
+          if (
+            result &&
+            downloadData.example &&
+            downloadData.example.length > 0 &&
+            this.props.ignoreDownloads.filter(
+              _item => _item.id === downloadData.key,
+            ).length === 0 &&
+            (
+              !currentDownloadData ||
+              (currentDownloadData && currentDownloadData.downloaded === undefined)
+            )
+          ) {
+            this._showAlert(this.moduleItems[index], downloadData, tmpCurrentUser)
+          }
         })
       } else {
         let filePath2

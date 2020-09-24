@@ -1175,6 +1175,24 @@ class AppRoot extends Component {
     return <SimpleDialog ref={ref => global.SimpleDialog = ref}/>
   }
 
+  renderARDeviceListDialog = () => {
+    return  (
+      <SimpleDialog
+        ref={ref => global.ARDeviceListDialog = ref}
+        buttonMode={'list'}
+        text={getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE}
+        confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
+        confirmAction={()=>{
+          NavigationService.navigate('Protocol', {
+            type: 'ARDevice',
+          })
+        }}
+        confirmTitleStyle={{color: '#4680DF'}}
+        cancelTitleStyle={{color: '#4680DF'}}
+      />
+    )
+  }
+
   render () {
     if (!this.state.isInit) {
       return <Loading info="Loading"/>
@@ -1219,6 +1237,7 @@ class AppRoot extends Component {
         {this.renderDialog()}
         {this.renderSimpleDialog()}
         {this.renderImportDialog()}
+        {this.renderARDeviceListDialog()}
         {this.renderLicenseNotModuleDialog()}
         {this.renderNoNativeOfficialLicenseDialog()}
         {this.renderIsNotItabletLicenseDialog()}

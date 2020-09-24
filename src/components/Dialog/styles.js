@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native'
-import { color, size, zIndexLevel } from '../../styles'
+import { color, size } from '../../styles'
 import { scaleSize } from '../../utils'
 
 export default StyleSheet.create({
@@ -106,6 +106,11 @@ export default StyleSheet.create({
   separateLine: {
     height: '100%',
     width: 1,
+    backgroundColor: '#EEEEEE',
+  },
+  separateLineL: {
+    width: '100%',
+    height: 1,
     backgroundColor: '#EEEEEE',
   },
   btnTitle: {

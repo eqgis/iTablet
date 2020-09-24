@@ -103,6 +103,7 @@ const Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'Please Select Plot Layer',
   DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device',
+  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
   PLEASE_NEW_PLOT_LAYER: 'Please Create New Plot Layer',
   DOWNLOADING_PLEASE_WAIT: 'Downloading Please Wait',
   SELECT_DELETE_BY_RECTANGLE: 'Please select delete item by rectangle select',

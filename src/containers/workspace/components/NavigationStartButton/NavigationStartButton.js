@@ -564,9 +564,7 @@ export default class NavigationStartButton extends React.Component {
                 onPress={async () => {
                   let isSupportedARCore = await SMeasureView.isSupportedARCore()
                   if (!isSupportedARCore) {
-                    Toast.show(
-                      getLanguage(global.language).Prompt.DONOT_SUPPORT_ARCORE,
-                    )
+                    global.ARDeviceListDialog.setVisible(true)
                     return
                   }
                   if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {

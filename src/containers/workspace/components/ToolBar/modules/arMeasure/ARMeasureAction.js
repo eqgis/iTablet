@@ -1,7 +1,4 @@
-import ToolbarModule from '../ToolbarModule'
 import { SMeasureView } from 'imobile_for_reactnative'
-import { Toast } from '../../../../../../utils'
-import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
 
 function close() {}
@@ -15,10 +12,9 @@ function commit() {}
 // AR测量面积
 function arMeasureArea() {
   (async function() {
-    const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
@@ -36,10 +32,9 @@ function arMeasureArea() {
 // AR测量距离
 function arMeasureLength() {
   (async function() {
-    const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
@@ -57,10 +52,9 @@ function arMeasureLength() {
 // AR测量距离
 function arMeasureHeight() {
   (async function() {
-    const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      Toast.show(getLanguage(_params.language).Prompt.DONOT_SUPPORT_ARCORE)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 

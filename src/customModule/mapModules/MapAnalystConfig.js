@@ -2,6 +2,7 @@ import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
+import { SMap } from 'imobile_for_reactnative'
 import {
   startModule,
   addModule,
@@ -47,6 +48,16 @@ export default class MapAnalystConfig extends Module {
       baseMapIndex: 1,
       mapType: this.mapType,
       licenceType: 0x40,
+      preAction: async () => {
+        let sdk = await SMap.getPhoneSDK()
+        if (sdk <= 24) {
+          Toast.show(
+            getLanguage(language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+          )
+          return false
+        }
+        return true
+      },
     })
   }
 }

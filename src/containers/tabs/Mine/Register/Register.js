@@ -22,6 +22,7 @@ import NavigationService from '../../../NavigationService'
 import styles, { fontSize } from './Styles'
 import { getLanguage } from '../../../../language/index'
 import { color } from '../../../../styles'
+import Orientation from 'react-native-orientation'
 
 let JSOnlineService = undefined
 export default class Register extends React.Component {
@@ -40,6 +41,18 @@ export default class Register extends React.Component {
     this.telArea = '86'
     JSOnlineService = new OnlineServicesUtils('online')
     JSOnlineService.loadPhoneRegisterPage()
+  }
+
+  componentDidMount() {
+    if (!global.isPad && !GLOBAL.ORIENTATIONLOCKED) {
+      Orientation.lockToPortrait()
+    }
+  }
+
+  componentWillUnmount() {
+    if (!GLOBAL.ORIENTATIONLOCKED) {
+      Orientation.unlockAllOrientations()
+    }
   }
 
   _goMine = () => {
@@ -257,7 +270,12 @@ export default class Register extends React.Component {
             //'请输入验证码'
             placeholder={getLanguage(this.props.language).Profile.ENTER_CODE}
             placeholderTextColor={'#A7A7A7'}
-            style={{ flex: 1, fontSize: scaleSize(fontSize), padding: 0 }}
+            style={{
+              flex: 1,
+              fontSize: scaleSize(fontSize),
+              padding: 0,
+              color: 'black',
+            }}
             defaultValue={this.txtVerifyCode}
             onChangeText={text => {
               this.txtVerifyCode = text

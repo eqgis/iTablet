@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   headerBtnTitle: {
     color: color.fontColorBlack,
-    fontSize: size.fontSize.fontSizeXXl,
+    fontSize: size.fontSize.fontSizeLg,
   },
   headerView: {
     height: scaleSize(81),

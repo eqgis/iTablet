@@ -48,11 +48,13 @@ export default class Login extends React.Component {
     this.getData()
     if (!global.isPad) {
       Orientation.lockToPortrait()
+      GLOBAL.ORIENTATIONLOCKED = true
     }
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
+    GLOBAL.ORIENTATIONLOCKED = false
   }
 
   getData = () => {

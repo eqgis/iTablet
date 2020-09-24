@@ -1,3 +1,5 @@
+import React from 'react'
+import { TouchableOpacity, Text, Image, View } from 'react-native'
 import { FileTools } from '../../../../../../native'
 import {
   ConstToolType,
@@ -5,7 +7,8 @@ import {
   ToolbarType,
 } from '../../../../../../constants'
 import { SScene } from 'imobile_for_reactnative'
-import { Toast } from '../../../../../../utils'
+import { Toast, scaleSize } from '../../../../../../utils'
+import { size, color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
@@ -64,6 +67,31 @@ async function getSceneData() {
           }
           element.subTitle = element.mtime
           element.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+          if (element.name === GLOBAL.sceneName && !element.isOnlineScence) {
+            element.rightView = (
+              <View
+                style={{
+                  height: scaleSize(30),
+                  width: scaleSize(120),
+                  borderRadius: scaleSize(4),
+                  backgroundColor: color.bgG,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: scaleSize(30),
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: size.fontSize.fontSizeSm,
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  {getLanguage(params.language).Map_Main_Menu.CURRENT_SCENCE}
+                </Text>
+              </View>
+            )
+          }
           _data.push(element)
         }
       }
@@ -77,12 +105,80 @@ async function getSceneData() {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
 
-  let _extraData = {
-    title: getLanguage(params.language).Prompt.ADD_ONLINE_SCENE,
-    image: require('../../../../../../assets/mapTools/icon_add_white.png'),
-    action: addOnlineScene,
+  // let _extraData = {
+  //   title: getLanguage(params.language).Map_Main_Menu.OPEN,
+  //   image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+  //   action: addOnlineScene,
+  // }
+  // data[0].extraData = _extraData
+  // if (onlineScenceData.length > 0) {
+  //   for (let i = 0; i < onlineScenceData.length; i++) {
+  //     data[0].data.push({
+  //       name: onlineScenceData[i].name,
+  //       server: onlineScenceData[i].server,
+  //       mtime: '',
+  //       isOnlineScence: true,
+  //       image: getThemeAssets().share.online,
+  //     })
+  //   }
+  // }
+  
+  function renderRightButton ({title, image, action}) {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: scaleSize(80),
+          marginRight: scaleSize(30),
+        }}
+        onPress={() => action && action()}
+      >
+        {title && (
+          <Text
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+            style={{
+              fontSize: size.fontSize.fontSizeMd,
+              height: scaleSize(30),
+              backgroundColor: 'transparent',
+              color: color.section_text,
+              textAlignVertical: 'center',
+              textAlign: 'right',
+            }}
+          >
+            {title}
+          </Text>
+        )}
+        {image && (
+          <Image
+            source={image}
+            resizeMode={'contain'}
+            style={{
+              width: scaleSize(40),
+              height: scaleSize(40),
+            }}
+          />
+        )}
+      </TouchableOpacity>
+    )
   }
-  data[0].extraData = _extraData
+
+  data[0].buttons = [
+    renderRightButton({
+      title: getLanguage(params.language).Map_Main_Menu.OPEN,
+      image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+      action: addOnlineScene,
+    }),
+    renderRightButton({
+      title: getLanguage(global.language).Profile.SAMPLEDATA,
+      action: () => {
+        NavigationService.navigate('SampleMap', {
+          refreshAction: getSceneData,
+        })
+      },
+    }),
+  ]
   if (onlineScenceData.length > 0) {
     for (let i = 0; i < onlineScenceData.length; i++) {
       data[0].data.push({

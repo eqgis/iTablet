@@ -109,6 +109,7 @@ const Friends = {
   ADD_BLACKLIST: 'Add to blacklist',
   DELETE_FRIEND: 'Delete friend',
   LIST_MEMBERS: 'List members ',
+  MEMBERS: 'Members',
   LEAVE_GROUP: 'Leave group',
   CLEAR_HISTORY: 'Clear chat history',
   DISBAND_GROUP: 'Disband group',
@@ -146,5 +147,6 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: '',
   SYS_MSG_GEO_DELETED2: '',
   SYS_MSG_GEO_UPDATED2: '',
+  ADDED: 'Added',
 }
 export { Friends }

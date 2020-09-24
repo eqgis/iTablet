@@ -451,23 +451,27 @@ export default class OnlineServicesUtils {
     }
   }
 
-  sendSMSVerifyCode = async phoneNumber => {
+  sendSMSVerifyCode = async (phoneNumber, area) => {
     try {
       let url =
         'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
       let paramObj = {
         phoneNumber: phoneNumber,
+        telArea: area,
         execution: this.registerPage('input[name=execution]').attr().value,
         _eventId_send: this.registerPage('input[name=_eventId_send]').attr()
           .value,
       }
       let paramStr = this._obj2params(paramObj)
+      let headers = {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      }
+      if (this.registerCookie) {
+        headers.Cookie = this.registerCookie
+      }
       let registerResponse = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          Cookie: this.registerCookie,
-        },
+        headers,
         body: paramStr,
       })
       let responsedata = await registerResponse.text()
@@ -491,11 +495,13 @@ export default class OnlineServicesUtils {
           'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
         let paramObj = {
           nickname: param.nickname,
-          realName: param.realName,
-          company: param.company,
-          email: param.email,
+          // realName: param.realName,
+          // company: param.company,
+          // email: param.email,
           password: param.password,
+          confirmpassword: param.confirmpassword,
           phoneNumber: param.phoneNumber,
+          telArea: param.telArea,
           SMSVerifyCode: param.SMSVerifyCode,
           execution: this.registerPage('input[name=execution]').attr().value,
           _eventId_register: this.registerPage(
@@ -509,13 +515,16 @@ export default class OnlineServicesUtils {
         } else {
           AcceptLanguage = 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
+        let headers = {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'Accept-Language': AcceptLanguage,
+        }
+        if (this.registerCookie) {
+          headers.Cookie = this.registerCookie
+        }
         let registerResponse = await fetch(url, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            Cookie: this.registerCookie,
-            'Accept-Language': AcceptLanguage,
-          },
+          headers,
           body: paramStr,
         })
         let responsedata = await registerResponse.text()

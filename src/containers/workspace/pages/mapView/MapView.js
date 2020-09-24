@@ -148,6 +148,7 @@ export default class MapView extends React.Component {
     downloads: PropTypes.array,
     mapSearchHistory: PropTypes.array,
     toolbarStatus: PropTypes.object,
+    laboratory: PropTypes.object,
 
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,

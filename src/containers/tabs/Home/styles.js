@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   dialog: {
     flexDirection: 'column',
-    height: scaleSize(464),
+    // height: scaleSize(464),
     width: scaleSize(392),
     borderRadius: scaleSize(40),
     paddingVertical: scaleSize(20),

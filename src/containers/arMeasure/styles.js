@@ -341,7 +341,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  promptTtile: {
+  promptTitle: {
     fontSize: scaleSize(24),
     color: color.theme_white,
     marginTop: scaleSize(5),

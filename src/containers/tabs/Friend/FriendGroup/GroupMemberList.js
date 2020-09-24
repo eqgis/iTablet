@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Image,
 } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import TouchableItemView from '../TouchableItemView'
@@ -12,6 +13,8 @@ import Container from '../../../../components/Container'
 import NavigationService from '../../../NavigationService'
 import FriendListFileHandle from '../FriendListFileHandle'
 import { getLanguage } from '../../../../language/index'
+import { getThemeAssets } from '../../../../assets'
+import { color } from '../../../../styles'
 
 class GroupMemberList extends Component {
   props: {
@@ -66,6 +69,7 @@ class GroupMemberList extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           withoutBack: false,
+          title: getLanguage(global.language).Friends.MEMBERS,
           navigation: this.props.navigation,
           headerRight:
             this.mode === 'view' ? null : (
@@ -80,7 +84,7 @@ class GroupMemberList extends Component {
               >
                 <Text
                   style={{
-                    color: 'white',
+                    color: color.contentColorBlack,
                     fontSize: scaleSize(25),
                     textAlign: 'center',
                   }}
@@ -118,6 +122,19 @@ class GroupMemberList extends Component {
         disableTouch={
           this.mode === 'select' && this.user.userId === item.id ? true : false
         }
+        renderImage={() => (
+          <Image
+            style={{
+              height: scaleSize(60),
+              width: scaleSize(60),
+              borderRadius: scaleSize(30),
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            resizeMode={'contain'}
+            source={getThemeAssets().friend.contact_photo}
+          />
+        )}
         renderRight={() => {
           if (this.mode === 'select') {
             let bSelected = false

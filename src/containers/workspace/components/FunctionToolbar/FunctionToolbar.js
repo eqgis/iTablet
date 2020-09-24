@@ -102,6 +102,7 @@ export default class FunctionToolbar extends React.Component {
     }
     this.visible = true
     this.offset = 0
+    this.maxOffset = 100
     this.onPrevious = true
     this.onNext = true
     this.previousOpacity = new Animated.Value(0)
@@ -329,11 +330,14 @@ export default class FunctionToolbar extends React.Component {
     let _offset = isLandscape ? scaleSize(120) : scaleSize(96)
     switch (location) {
       case PREVIOUS: {
-        this.list && this.list.scrollToOffset({offset: this.offset - _offset, animated: true})
+        this.list && this.list.scrollToOffset({offset: (this.offset - _offset < 0) ? 0 : (this.offset - _offset), animated: true})
         break
       }
       case NEXT: {
-        this.list && this.list.scrollToOffset({offset: this.offset + _offset, animated: true})
+        this.list && this.list.scrollToOffset({
+          offset: (this.offset + _offset) > this.maxOffset ? this.maxOffset : (this.offset + _offset),
+          animated: true,
+        })
         break
       }
     }
@@ -433,6 +437,10 @@ export default class FunctionToolbar extends React.Component {
           this.offset = isLandscape
             ? event.nativeEvent.contentOffset.x
             : event.nativeEvent.contentOffset.y
+          // console.warn(JSON.stringify(event.nativeEvent))
+          this.maxOffset = isLandscape
+            ? event.nativeEvent.contentSize.width - event.nativeEvent.layoutMeasurement.width
+            : event.nativeEvent.contentSize.height - event.nativeEvent.layoutMeasurement.height
           this.handlePosition()
         }}
         showsVerticalScrollIndicator={false}

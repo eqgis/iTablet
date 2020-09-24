@@ -25,32 +25,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  ITemHeadTextViewStyle: {
-    marginLeft: scaleSize(20),
-    height: scaleSize(60),
-    width: scaleSize(60),
-    borderRadius: scaleSize(60),
-    backgroundColor: 'green',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  ITemHeadTextStyle: {
-    fontSize: scaleSize(30),
-    color: 'white',
-  },
   
   ITemTextViewStyle: {
-    marginRight: scaleSize(10),
-    marginLeft: scaleSize(25),
+    marginLeft: scaleSize(32),
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
   },
   ITemTextStyle: {
-    fontSize: scaleSize(30),
-    color: 'black',
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorBlack,
   },
   itemSeparator: {
     height: scaleSize(2),
@@ -58,7 +42,7 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(150),
   },
   itemImg: {
-    marginLeft: scaleSize(44),
+    marginLeft: scaleSize(32),
     height: scaleSize(60),
     width: scaleSize(60),
     borderRadius: scaleSize(30),

@@ -1,4 +1,5 @@
 const Find = {
+  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'Données publiques',
   APPLET: 'Applet', //待翻译
   GIS_ACADEMY: 'GIS Academy', //待翻译
@@ -6,7 +7,7 @@ const Find = {
   BACK: 'Retour',
   CONFIRM: 'Search', //待翻译
   RESET: 'Reset', //待翻译
-  
+
   ALL: 'All', //待翻译
   ONLINE_WORKSPACE: 'Workspace', //待翻译
   ONLINE_DATASOURCE: 'Source de données',
@@ -24,6 +25,7 @@ const Find = {
   NO_MORE_DATA: 'Plus de données trouvées',
   DOWNLOADED: 'Download successful. You can import this data at Import',
   
+  LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
   APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
@@ -32,7 +34,7 @@ const Find = {
   APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
   APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
   APPLET_RESETTING: 'Rest', // 待翻译
-  
+
   // 待翻译
   PUBLIC_MAP_INFO: 'Provides public services published by users',
   PUBLIC_DATA_INFO: 'Provides various public data published by users',
@@ -41,6 +43,12 @@ const Find = {
   SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
   GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
   ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
+  
+  // 实验室
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.',// 待翻译
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.',// 待翻译
+  BETA_TIPS: 'Tips: This is only a experimental beta feature.' // 待翻译
 }
 
 export { Find }

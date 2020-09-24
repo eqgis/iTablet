@@ -11,6 +11,7 @@ import {
 import { scaleSize } from '../../../utils/screen'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
+import { color } from '../../../styles'
 let Top = scaleSize(88)
 if (Platform.OS === 'ios') {
   Top += 20
@@ -140,21 +141,21 @@ export default class AddMore extends React.Component {
                 {/* // 发起群聊 */}
               </Text>
             </TouchableOpacity>
-            <View style={styles.seperator} />
-            <TouchableOpacity
-              onPress={() => {
-                this.props.addMore(3), this.closeModal()
-              }}
-              style={styles.itemView}
-            >
-              <Image
-                style={styles.imgStyle}
-                source={getThemeAssets().friend.friend_mobileCon}
-              />
-              <Text style={styles.textStyle}>
-                {getLanguage(global.language).Friends.RECOMMEND_FRIEND}
-              </Text>
-            </TouchableOpacity>
+            {/*<View style={styles.seperator} />*/}
+            {/*<TouchableOpacity*/}
+              {/*onPress={() => {*/}
+                {/*this.props.addMore(3), this.closeModal()*/}
+              {/*}}*/}
+              {/*style={styles.itemView}*/}
+            {/*>*/}
+              {/*<Image*/}
+                {/*style={styles.imgStyle}*/}
+                {/*source={getThemeAssets().friend.friend_mobileCon}*/}
+              {/*/>*/}
+              {/*<Text style={styles.textStyle}>*/}
+                {/*{getLanguage(global.language).Friends.RECOMMEND_FRIEND}*/}
+              {/*</Text>*/}
+            {/*</TouchableOpacity>*/}
           </View>
         </View>
       </Modal>
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#rgba(0,0,0,0)',
   },
   modal: {
-    backgroundColor: '#FBFBFB',
+    backgroundColor: color.itemColorGray3,
     // width: scaleSize(300),
     // height: scaleSize(170),
     position: 'absolute',

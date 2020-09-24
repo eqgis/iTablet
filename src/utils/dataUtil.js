@@ -281,13 +281,14 @@ function isLegalName(text = '', language = 'CN') {
     }
   }
   const pattern1 = new RegExp(
-    "^[0-9`_~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s\-¥œ∑´†¥¨ˆπ“‘åß∂ƒ˙∆˚¬…æ«Ω≈√∫˜µ≤≥µ≠–ºª•¶§∞¢£™¡]",
+    "^[0-9`_~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s-¥œ∑´†¥¨ˆπ“‘åß∂ƒ˙∆˚¬…æ«Ω≈√∫˜µ≤≥µ≠–ºª•¶§∞¢£™¡]",
   )
   const pattern2 = new RegExp(
     "[`~!$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+～·《》\\s¥œ∑´†¥¨ˆπ“‘åß∂ƒ˙∆˚¬…æ«Ω≈√∫˜µ≤≥µ≠–ºª•¶§∞¢£™¡]",
   )
   const emojiPattern = new RegExp(
-    '/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|[\uD800-\uDBFF]|[\uDC00-\uDFFF]|[^\u0020-\u007E\u00A0-\u00BE\u2E80-\uA4CF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF\u0080-\u009F\u2000-\u201f\u2026\u2022\u20ac\r\n]/g'
+    // eslint-disable-next-line no-control-regex
+    '/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|[\uD800-\uDBFF]|[\uDC00-\uDFFF]|[^\u0020-\u007E\u00A0-\u00BE\u2E80-\uA4CF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF\u0080-\u009F\u2000-\u201f\u2026\u2022\u20ac\r\n]/g',
   )
 
   // const re = /^[0-9a-zA-Z_\u4e00-\u9fa5@#_]+$/
@@ -310,7 +311,7 @@ function isLegalName(text = '', language = 'CN') {
   }
 }
 
-function isLegalURL(URL, language = 'CN') {
+function isLegalURL(URL, language = global.language) {
   const str = URL
   const Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
   const objExp = new RegExp(Expression)
@@ -372,15 +373,15 @@ function deepClone(obj, hash = new WeakMap()) {
   }
   // 查表
   if (hash.has(obj)) return hash.get(obj)
-  
+
   let isArray = Array.isArray(obj)
   let cloneObj = isArray ? [] : {}
   // 哈希表设值
   hash.set(obj, cloneObj)
-  
+
   let result = Object.keys(obj).map(key => {
     return {
-      [key]: deepClone(obj[key], hash)
+      [key]: deepClone(obj[key], hash),
     }
   })
   return Object.assign(cloneObj, ...result)
@@ -414,6 +415,6 @@ export default {
 
   getNameByURL,
   xml2js,
-  
+
   deepClone,
 }

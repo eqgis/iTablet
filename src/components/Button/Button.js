@@ -15,12 +15,14 @@ export default class Button extends PureComponent {
     title: string,
     activeOpacity?: number,
     type?: string,
+    disabled?: Boolean,
     onPress: () => {},
   }
 
   static defaultProps = {
     activeOpacity: 0.8,
     type: 'BLUE',
+    disabled: false,
   }
 
   constructor(props) {
@@ -55,6 +57,7 @@ export default class Button extends PureComponent {
         activeOpacity={this.props.activeOpacity}
         style={[styles.baseStyle, color, this.props.style]}
         onPress={this.action}
+        disabled={this.props.disabled}
       >
         <Text
           style={[

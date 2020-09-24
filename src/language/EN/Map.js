@@ -17,6 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
+  CURRENT_SCENCE: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'Start',
   START_OPEN_MAP: 'Open Map',
@@ -359,12 +360,12 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'High-Precision Collect',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illegally-Park Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'AR Area',
-  MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR Ranging',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR Line',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR Picture',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Measure Area',
+  MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'Measure Distance',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR Draw Line',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR Draw Region',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR Draw Point',
-  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR Measure Height',
+  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Measure Height',
   MAP_AR_VIDEO: 'AR Video',
   MAP_AR_IMAGE: 'AR Picture',
   MAP_AR_EFFECT: 'AR Effect',
@@ -687,7 +688,7 @@ const Map_Attribute = {
   ATTRIBUTE_FIELD_ADD: 'Add',
   ATTRIBUTE_ADD: 'Add Attribute',
   ATTRIBUTE_DETAIL: 'Attribute Detail',
-  REQUIRED: 'Required',
+  REQUIRED: 'Require',
   NAME: 'Name',
   TYPE: 'Type',
   LENGTH: 'Length',
@@ -915,7 +916,7 @@ const Template = {
   ELEMENT_SETTINGS: 'Element Settings',
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
+  CURRENT_TEMPLATE: 'Current',
   DEFAULT_TEMPLATE: 'Default Template',
 
   ELEMENT_NAME: 'Element Name',

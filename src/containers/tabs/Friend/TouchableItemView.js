@@ -43,7 +43,7 @@ export default class TouchableItemView extends Component {
       return this.props.renderText(this.props)
     }
     return (
-      <View style={styles.textView}>
+      <View style={[styles.textView, this.props.renderImage && { marginLeft: scaleSize(30) }]}>
         {this.renderUpperText()}
         {this.renderBottomText()}
       </View>
@@ -136,12 +136,12 @@ export default class TouchableItemView extends Component {
 const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'column',
+    paddingHorizontal: scaleSize(30),
   },
   contentView: {
     height: scaleSize(80),
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: scaleSize(40),
   },
   touchView: {
     flex: 1,

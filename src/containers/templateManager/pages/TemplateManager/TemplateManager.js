@@ -109,7 +109,9 @@ export default class TemplateManager extends React.Component {
           map.Template = ''
           this.props.setCurrentMap(map)
           expData.Template = ''
+          await fs.unlink(expFilePath)
           await fs.writeFile(expFilePath, JSON.stringify(expData), 'utf8')
+          await this.props.setCurrentMap(map)
         }
       }
     } else {

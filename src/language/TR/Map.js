@@ -17,6 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
+  CURRENT_SCENCE: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'Başla',
   START_OPEN_MAP: 'Haritayı Aç',
@@ -915,7 +916,7 @@ const Template = {
   ELEMENT_SETTINGS: 'Element Settings',
   ELEMENT_STORAGE: 'Element Storage',
   ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current Template',
+  CURRENT_TEMPLATE: 'Current',
   DEFAULT_TEMPLATE: 'Default Template',
 
   ELEMENT_NAME: 'Element Name',

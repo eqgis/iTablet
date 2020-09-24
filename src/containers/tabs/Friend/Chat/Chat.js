@@ -28,7 +28,8 @@ import CustomView from './CustomView'
 import { ConstPath, ConstOnline } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { Toast, LayerUtils } from '../../../../utils'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import { color } from '../../../../styles'
 import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../MsgConstant'
 import { getLanguage } from '../../../../language/index'
@@ -805,9 +806,7 @@ class Chat extends React.Component {
         uri = `data:image/png;base64,${imgdata}`
       }
     }
-    this.ImageViewer.setPicMsg(message)
-    this.ImageViewer.setImageUri(uri)
-    this.ImageViewer.setVisible(true)
+    ImageViewer.show([{url: uri}])
   }
 
   onCustomViewLocationTouch = async message => {
@@ -1099,7 +1098,6 @@ class Chat extends React.Component {
   render() {
     let moreImg = getPublicAssets().common.icon_nav_imove
     return (
-      <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
         <Container
           style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
           ref={ref => (this.container = ref)}
@@ -1141,98 +1139,99 @@ class Chat extends React.Component {
             /* eslint-enable */
           }}
         >
-          {this.state.showInformSpot ? (
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'red',
-                height: scaleSize(15),
-                width: scaleSize(15),
-                borderRadius: scaleSize(15),
-                top: Top,
-                left: scaleSize(75),
+          <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
+            {this.state.showInformSpot ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  backgroundColor: 'red',
+                  height: scaleSize(15),
+                  width: scaleSize(15),
+                  borderRadius: scaleSize(15),
+                  top: Top,
+                  left: scaleSize(75),
+                }}
+              />
+            ) : null}
+            {this.state.coworkMode ? (
+              <CoworkTouchableView
+                screen="Chat"
+                onPress={async () => {
+                  // let mapOpen
+                  // try {
+                  //   mapOpen = await SMap.isAnyMapOpened()
+                  // } catch (error) {
+                  //   mapOpen = false
+                  // }
+                  // if (!mapOpen) {
+                  this.friend.curMod.action(this.curUser)
+                  // } else {
+                  //   NavigationService.navigate('MapView')
+                  // }
+                }}
+              />
+            ) : null}
+            <GiftedChat
+              ref={ref => (this.GiftedChat = ref)}
+              locale={getLanguage(global.language).Friends.LOCALE}
+              placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
+              messages={this.state.messages}
+              showAvatarForEveryMessage={false}
+              onSend={this.onSend}
+              loadEarlier={this.state.loadEarlier}
+              onLoadEarlier={this.onLoadEarlier}
+              isLoadingEarlier={this.state.isLoadingEarlier}
+              label={getLanguage(global.language).Friends.LOAD_EARLIER}
+              showUserAvatar={this.state.showUserAvatar}
+              renderAvatarOnTop={false}
+              user={{
+                _id: this.curUser.userId, // sent messages should have same user._id
+                name: this.curUser.nickname,
               }}
-            />
-          ) : null}
-          {this.state.coworkMode ? (
-            <CoworkTouchableView
-              screen="Chat"
-              onPress={async () => {
-                // let mapOpen
-                // try {
-                //   mapOpen = await SMap.isAnyMapOpened()
-                // } catch (error) {
-                //   mapOpen = false
-                // }
-                // if (!mapOpen) {
-                this.friend.curMod.action(this.curUser)
-                // } else {
-                //   NavigationService.navigate('MapView')
-                // }
+              renderActions={this.renderCustomActions}
+              //被移出群组后不显示输入栏
+              renderInputToolbar={props => {
+                if (
+                  this.targetUser.id.indexOf('Group_') === -1 ||
+                  FriendListFileHandle.isInGroup(
+                    this.targetUser.id,
+                    this.curUser.userId,
+                  )
+                ) {
+                  return (
+                    <InputToolbar
+                      {...props}
+                      textStyle={{color: color.fontColorGray2}}
+                      label={getLanguage(global.language).Friends.SEND}
+                    />
+                  )
+                }
+                return null
               }}
-            />
-          ) : null}
-          <GiftedChat
-            ref={ref => (this.GiftedChat = ref)}
-            locale={getLanguage(global.language).Friends.LOCALE}
-            placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
-            messages={this.state.messages}
-            showAvatarForEveryMessage={false}
-            onSend={this.onSend}
-            loadEarlier={this.state.loadEarlier}
-            onLoadEarlier={this.onLoadEarlier}
-            isLoadingEarlier={this.state.isLoadingEarlier}
-            label={getLanguage(global.language).Friends.LOAD_EARLIER}
-            showUserAvatar={this.state.showUserAvatar}
-            renderAvatarOnTop={false}
-            user={{
-              _id: this.curUser.userId, // sent messages should have same user._id
-              name: this.curUser.nickname,
-            }}
-            renderActions={this.renderCustomActions}
-            //被移出群组后不显示输入栏
-            renderInputToolbar={props => {
-              if (
-                this.targetUser.id.indexOf('Group_') === -1 ||
-                FriendListFileHandle.isInGroup(
-                  this.targetUser.id,
-                  this.curUser.userId,
-                )
-              ) {
+              renderBubble={this.renderBubble}
+              renderTicks={this.renderTicks}
+              renderSystemMessage={this.renderSystemMessage}
+              renderCustomView={this.renderCustomView}
+              renderFooter={this.renderFooter}
+              renderAvatar={this.renderAvatar}
+              renderMessageText={props => {
+                if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
+                  return null
+                }
                 return (
-                  <InputToolbar
+                  <MessageText
                     {...props}
-                    label={getLanguage(global.language).Friends.SEND}
+                    customTextStyle={{
+                      fontSize: scaleSize(20),
+                      lineHeight: scaleSize(25),
+                    }}
                   />
                 )
-              }
-              return null
-            }}
-            renderBubble={this.renderBubble}
-            renderTicks={this.renderTicks}
-            renderSystemMessage={this.renderSystemMessage}
-            renderCustomView={this.renderCustomView}
-            renderFooter={this.renderFooter}
-            renderAvatar={this.renderAvatar}
-            renderMessageText={props => {
-              if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
-                return null
-              }
-              return (
-                <MessageText
-                  {...props}
-                  customTextStyle={{
-                    fontSize: scaleSize(20),
-                    lineHeight: scaleSize(25),
-                  }}
-                />
-              )
-            }}
-          />
-          {this.renderSimpleDialog()}
-          {this.rennderImageViewer()}
+              }}
+            />
+            {this.renderSimpleDialog()}
+          </Animated.View>
         </Container>
-      </Animated.View>
     )
   }
 
@@ -1272,78 +1271,105 @@ class Chat extends React.Component {
           this.onPressAvator(props.currentMessage.user)
         }}
       >
-        <View
+        <Image
           style={{
             height: scaleSize(60),
             width: scaleSize(60),
-            borderRadius: scaleSize(60),
-            backgroundColor: backColor,
+            borderRadius: scaleSize(30),
             alignItems: 'center',
             justifyContent: 'center',
           }}
-        >
-          <Text
-            style={{
-              fontSize: scaleSize(30),
-              color: 'white',
-              textAlign: 'center',
-            }}
-          >
-            {headerStr}
-          </Text>
-        </View>
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
+        {/*<View*/}
+          {/*style={{*/}
+            {/*height: scaleSize(60),*/}
+            {/*width: scaleSize(60),*/}
+            {/*borderRadius: scaleSize(60),*/}
+            {/*backgroundColor: backColor,*/}
+            {/*alignItems: 'center',*/}
+            {/*justifyContent: 'center',*/}
+          {/*}}*/}
+        {/*>*/}
+          {/*<Text*/}
+            {/*style={{*/}
+              {/*fontSize: scaleSize(30),*/}
+              {/*color: 'white',*/}
+              {/*textAlign: 'center',*/}
+            {/*}}*/}
+          {/*>*/}
+            {/*{headerStr}*/}
+          {/*</Text>*/}
+        {/*</View>*/}
       </TouchableOpacity>
     )
   }
   renderBubble(props) {
     return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          left: {
-            //对方的气泡
-            marginTop: scaleSize(1),
-            backgroundColor: '#rgba(255, 255, 255, 1.0)',
-            overflow: 'hidden',
-            borderRadius: scaleSize(10),
-          },
-          right: {
-            //我方的气泡
-            marginTop: scaleSize(1),
-            backgroundColor: 'blue',
-            overflow: 'hidden',
-            borderRadius: scaleSize(10),
-          },
-        }}
-        //与下一条自己的消息连接处的样式
-        containerToNextStyle={{
-          left: {
-            borderBottomLeftRadius: scaleSize(10),
-          },
-          right: {
-            borderBottomRightRadius: scaleSize(10),
-          },
-        }}
-        //与上一条自己的消息连接处的样式
-        containerToPreviousStyle={{
-          left: {
-            borderTopLeftRadius: scaleSize(10),
-          },
-          right: {
-            borderTopRightRadius: scaleSize(10),
-          },
-        }}
-        //底栏样式
-        bottomContainerStyle={{
-          right: {
-            flexDirection: 'row-reverse',
-            justifyContent: 'space-between',
-          },
-          left: {
-            justifyContent: 'space-between',
-          },
-        }}
-      />
+      <View>
+        {
+          this.isGroupChat() && (
+            !props.previousMessage ||
+            !props.previousMessage.user ||
+            props.previousMessage.user.name !== props.currentMessage.user.name
+          ) &&
+          <Text
+            style={{
+              textAlign: props.currentMessage.user.name === this.curUser.nickname
+                ? 'right'
+                : 'left',
+            }}
+          >{props.currentMessage.user.name}</Text>
+        }
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            left: {
+              //对方的气泡
+              marginTop: scaleSize(1),
+              backgroundColor: '#rgba(255, 255, 255, 1.0)',
+              overflow: 'hidden',
+              borderRadius: scaleSize(10),
+            },
+            right: {
+              //我方的气泡
+              marginTop: scaleSize(1),
+              backgroundColor: color.gray,
+              overflow: 'hidden',
+              borderRadius: scaleSize(10),
+            },
+          }}
+          //与下一条自己的消息连接处的样式
+          containerToNextStyle={{
+            left: {
+              borderBottomLeftRadius: scaleSize(10),
+            },
+            right: {
+              borderBottomRightRadius: scaleSize(10),
+            },
+          }}
+          //与上一条自己的消息连接处的样式
+          containerToPreviousStyle={{
+            left: {
+              borderTopLeftRadius: scaleSize(10),
+            },
+            right: {
+              borderTopRightRadius: scaleSize(10),
+            },
+          }}
+          //底栏样式
+          bottomContainerStyle={{
+            right: {
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-between',
+            },
+            left: {
+              justifyContent: 'space-between',
+            },
+          }}
+        />
+      </View>
     )
   }
   //渲染标记
@@ -1408,15 +1434,6 @@ class Chat extends React.Component {
 
   renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
-  }
-
-  rennderImageViewer = () => {
-    return (
-      <ImageViewer
-        ref={ref => (this.ImageViewer = ref)}
-        receivePicture={this.receivePicture}
-      />
-    )
   }
 }
 

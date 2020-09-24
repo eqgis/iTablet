@@ -110,6 +110,7 @@ const Friends = {
   DELETE_FRIEND: '友達の削除',
   LIST_MEMBERS: 'グループメンバーの表示',
   LEAVE_GROUP: 'グループチャットを閉じる',
+  MEMBERS: 'Members', // 待翻译
   CLEAR_HISTORY: 'チャットレコードのクリア',
   DISBAND_GROUP: 'グループの解除',
   DELETE_MEMBER: 'グループメンバーの削除',
@@ -146,5 +147,7 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: 'を追加しました',
   SYS_MSG_GEO_DELETED2: 'を削除しました',
   SYS_MSG_GEO_UPDATED2: 'を更新しました',
+  
+  ADDED: 'Added', // 待翻译
 }
 export { Friends }

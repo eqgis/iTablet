@@ -102,7 +102,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: '現在レイヤーにスタイルを設定できません。レイヤーを再度選択してください。',
 
   PLEASE_SELECT_PLOT_LAYER: 'マークレイヤーを選択、または新規してください',
-  DONOT_SUPPORT_ARCORE: '当デバイスはARCoreをサポートしません',
+  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
   PLEASE_NEW_PLOT_LAYER: '新規マークレイヤーを作成しますか',
   DOWNLOADING_PLEASE_WAIT: 'ダウンロード中、お待ちください',
   SELECT_DELETE_BY_RECTANGLE: '削除オブジェクトを選択してください',

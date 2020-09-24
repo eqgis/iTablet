@@ -27,7 +27,14 @@ export default class RenderFindItem extends Component {
     this.exist = false
     this.downloading = false
     this.downloadingPath = false
-    this.titleName
+    this.titleName = ''
+    if (this.props.data.fileName) {
+      let index = this.props.data.fileName.lastIndexOf('.')
+      this.titleName =
+        index === -1
+          ? this.props.data.fileName
+          : this.props.data.fileName.substring(0, index)
+    }
     this.state = {
       progress: getLanguage(global.language).Prompt.DOWNLOAD,
       // '下载',
@@ -95,14 +102,14 @@ export default class RenderFindItem extends Component {
       })
     }
 
-    this.titleName = ''
-    if (this.props.data.fileName) {
-      let index = this.props.data.fileName.lastIndexOf('.')
-      this.titleName =
-        index === -1
-          ? this.props.data.fileName
-          : this.props.data.fileName.substring(0, index)
-    }
+    // this.titleName = ''
+    // if (this.props.data.fileName) {
+    //   let index = this.props.data.fileName.lastIndexOf('.')
+    //   this.titleName =
+    //     index === -1
+    //       ? this.props.data.fileName
+    //       : this.props.data.fileName.substring(0, index)
+    // }
   }
   _navigator = uri => {
     NavigationService.navigate('MyOnlineMap', {

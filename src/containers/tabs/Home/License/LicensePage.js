@@ -164,7 +164,7 @@ class LicensePage extends Component {
           source={require('../../../../assets/home/Frenchgrey/icon_prompt.png')}
           style={styles.dialogHeaderImg}
         />
-        <Text style={styles.promptTtile}>
+        <Text style={styles.promptTitle}>
           {getLanguage(global.language).Profile.LICENSE_CLEAN_ALERT}
         </Text>
       </View>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  promptTtile: {
+  promptTitle: {
     fontSize: scaleSize(24),
     color: color.theme_white,
     marginTop: scaleSize(5),

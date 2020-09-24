@@ -109,6 +109,7 @@ const Friends = {
   ADD_BLACKLIST: '加入黑名单',
   DELETE_FRIEND: '删除好友',
   LIST_MEMBERS: '查看群员',
+  MEMBERS: '群成员',
   LEAVE_GROUP: '退出群聊',
   CLEAR_HISTORY: '清空聊天记录',
   DISBAND_GROUP: '解散群',
@@ -146,5 +147,6 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: '',
   SYS_MSG_GEO_DELETED2: '',
   SYS_MSG_GEO_UPDATED2: '',
+  ADDED: '已添加',
 }
 export { Friends }

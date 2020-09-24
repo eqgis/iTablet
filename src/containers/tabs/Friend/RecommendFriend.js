@@ -14,11 +14,12 @@ import {
 } from 'react-native'
 import { Container, Dialog } from '../../../components'
 import { dialogStyles } from './Styles'
-import { scaleSize } from '../../../utils/screen'
-import { getLanguage } from '../../../language/index'
+import { getLanguage } from '../../../language'
 // eslint-disable-next-line
 import Contacts from 'react-native-contacts'
-import { Toast, OnlineServicesUtils } from '../../../utils'
+import { Toast, OnlineServicesUtils, scaleSize } from '../../../utils'
+import { getThemeAssets } from '../../../assets'
+import { size, color } from '../../../styles'
 import FriendListFileHandle from './FriendListFileHandle'
 import MsgConstant from './MsgConstant'
 import NavigationService from '../../NavigationService'
@@ -300,7 +301,7 @@ class RecommendFriend extends Component {
           activeOpacity={0.75}
           onPress={() => {
             this.target = item //[id,name]
-            if (this.target.id == this.user.userId) {
+            if (this.target.id === this.user.userId) {
               Toast.show(getLanguage(this.language).Friends.ADD_SELF)
               return
             }
@@ -313,10 +314,12 @@ class RecommendFriend extends Component {
             }
           }}
         >
-          <View style={[styles.ItemHeadViewStyle, { opacity: 1 }]}>
-            <Text style={styles.ItemHeadTextStyle}>{item.name[0]}</Text>
-          </View>
-          <View style={{ flexDirection: 'column' }}>
+          <Image
+            style={styles.itemImg}
+            resizeMode={'contain'}
+            source={getThemeAssets().friend.contact_photo}
+          />
+          <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
             <View style={[styles.ItemTextViewStyle, { opacity: 1 }]}>
               <Text style={styles.ItemTextStyle}>{item.name}</Text>
             </View>
@@ -407,10 +410,10 @@ var styles = StyleSheet.create({
   ItemViewStyle: {
     paddingLeft: scaleSize(20),
     paddingRight: scaleSize(30),
+    height: scaleSize(90),
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginBottom: scaleSize(30),
+    alignItems: 'center',
   },
   ItemHeadViewStyle: {
     marginLeft: scaleSize(20),
@@ -422,27 +425,34 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
   },
   ItemTextStyle: {
-    fontSize: scaleSize(30),
-    color: 'black',
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray2,
+  },
+  itemImg: {
+    marginLeft: scaleSize(32),
+    height: scaleSize(60),
+    width: scaleSize(60),
+    borderRadius: scaleSize(30),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ItemTextViewStyle: {
-    marginLeft: scaleSize(20),
-    flexDirection: 'row',
+    marginLeft: scaleSize(32),
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    flexGrow: 1,
   },
   ItemHeadTextStyle: {
-    fontSize: scaleSize(25),
-    color: 'white',
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorBlack,
   },
   ItemSubTextViewStyle: {
-    marginLeft: scaleSize(20),
+    marginLeft: scaleSize(32),
     flexDirection: 'row',
   },
   ItemSubTextStyle: {
-    fontSize: scaleSize(25),
+    fontSize: size.fontSize.fontSizeMd,
     marginRight: scaleSize(10),
-    color: 'black',
+    color: color.fontColorGray2,
   },
 })
 export default RecommendFriend

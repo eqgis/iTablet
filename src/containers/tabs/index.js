@@ -24,9 +24,11 @@ import Mine, {
   MyAIModel,
 } from './Mine'
 import Find from './Find'
+import FindSettingPage from './Find/FindSettingPage'
 import SuperMapKnown from './Find/superMapKnown'
 import PublicData from './Find/PublicData'
 import Applet from './Find/Applet'
+import Laboratory from './Find/Laboratory'
 import CoworkManagePage from './Find/CoworkManagePage'
 import Friend, {
   Chat,
@@ -139,4 +141,6 @@ export {
   PublicData,
   Applet,
   CoworkManagePage,
+  FindSettingPage,
+  Laboratory,
 }

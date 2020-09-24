@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { FileTools } from '../../native'
 import { Toast, scaleSize, FetchUtils } from '../../utils'
+import { ChunkType } from '../../constants'
 import NavigationService from '../NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
@@ -23,6 +24,7 @@ export default class SampleMap extends Component {
     
     downloadFile: () => {},
     deleteDownloadFile: () => {},
+    importSceneWorkspace: () => {},
   }
 
   constructor(props) {
@@ -96,6 +98,11 @@ export default class SampleMap extends Component {
       await FileTools.unZipFile(fileCachePath, cachePath)
       let arrFile = await FileTools.getFilterFiles(fileDirPath)
       if (arrFile.length > 0) {
+        if (GLOBAL.Type === ChunkType.MAP_3D) {
+          await this.props.importSceneWorkspace({
+            server: arrFile[0].filePath,
+          })
+        }
         await SMap.importWorkspaceInfo({
           server: arrFile[0].filePath,
           type: 9,
@@ -116,7 +123,15 @@ export default class SampleMap extends Component {
   }
   
   _renderItem = ({item}) => {
-    if (!item.fileName) return <View style={{flex: 1}} />
+    if (!item.fileName) return (
+      <View
+        style={{
+          flex: 1,
+          marginHorizontal: this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? scaleSize(10)
+            : scaleSize(20)
+        }} />
+    )
     return (
       <SampleMapItem
         user={this.props.user}

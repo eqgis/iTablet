@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: "numéro de mobile/e-mail/nom d'utilisateur",
   ENTER_USERNAME_ALL: "Veuillez saisir votre numéro de mobile, adresse e-mail ou votre nom d'utilisateur",
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
+  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
+  PASSWORD_DISMATCH: 'The passwords are different, please check again',
   REGISTER: "S'inscrire",
   FORGET_PASSWORD: 'Mot de passe oublié',
   RESET_PASSWORD: 'Réinitialiser le mot de passe',
@@ -125,7 +127,7 @@ const Profile = {
   BATCH_ADD: 'Batch Add', // 待翻译
   BATCH_OPERATE: 'Opération par lots',
   MY_APPLET: 'My Applet', // 待翻译
-  
+
   // 待翻译
   UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
   DELETE_APPLET: 'Delete Applet',
@@ -183,7 +185,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'Définir le nom de la source de données',
   ENTER_DATASOURCE_NAME: 'Veuillez saisir le nom de la source de données',
   OPEN_DATASROUCE_FAILED: "Échec de l'ouverture de la source de données",
-  DATASOURCE_TYPE: 'Datasource type',  //待翻译
+  DATASOURCE_TYPE: 'Datasource type', //待翻译
   SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'Sélectionnez le format à exporter',
@@ -203,8 +205,8 @@ const Profile = {
   SETTING_SUGGESTION_FEEDBACK: 'Suggestion Feedback', //待翻译
   SETTING_LANGUAGE: 'Langue',
   SETTING_LANGUAGE_AUTO: 'Auto',
-  SETTING_LOCATION_DEVICE: 'Location Device',//待翻译
-  SETTING_LOCATION_LOCAL: 'This device',//待翻译
+  SETTING_LOCATION_DEVICE: 'Location Device', //待翻译
+  SETTING_LOCATION_LOCAL: 'This device', //待翻译
 
   // 许可
   LICENSE: '许可',
@@ -216,7 +218,7 @@ const Profile = {
   LICENSE_SURPLUS: 'License Surplus',
   LICENSE_YEAR: 'YEAR', //待翻译
   LICENSE_DAY: 'Jour',
-  LICENSE_PERMANENT: 'Permanent',//待翻译
+  LICENSE_PERMANENT: 'Permanent', //待翻译
   LICENSE_CONTAIN_MODULE: 'License Contain Module',
   LICENSE_CONTAIN_EXPAND_MODULE: 'License Contain Expand Module', //待翻译
   LICENSE_USER_NAME: 'User Name', //待翻译
@@ -247,7 +249,7 @@ const Profile = {
   LICENSE_NO_NATIVE_OFFICAL: 'Pas de fichier de licence officiel natif, veuillez ajouter le fichier de licence Official_License à / iTablet / license / file ',
   LICENSE_NOT_ITABLET_OFFICAL: "Cette licence officielle n'est pas activée sur iTablet, veuillez vous rendre sur la page de licence pour effacer la licence et la réactiver",
   LICENSE_NATIVE_EXPIRE: 'Licence native non valide',
-  
+
   // 待翻译
   LICENSE_LONG_EFFECTIVE: 'Long Effective',
   LICENSE_OFFLINE: 'License OffLine',
@@ -268,10 +270,10 @@ const Profile = {
   LICENSE_SHOW_DETAIL: 'Show details',
   LICENSE_QUERY_NONE: 'Unable to get license information',
   LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
-  
+
   LICENSE_EDUCATION: 'Licence pédagogique',
   LICENSE_EDUCATION_CONNECT_FAIL: 'Échec de la connexion au service',
-  
+
   // 待翻译
   LICENSE_QUERY: 'Query License',
   LICENSE_QUERYING: 'Quering',
@@ -288,7 +290,7 @@ const Profile = {
   LICENSE_EDITION_STANDARD: 'Standard Edition',
   LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
   LICENSE_EDITION_ADVANCED: 'Advanced Edition',
-  
+
   // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: "Durée d'exécution principale",
@@ -308,7 +310,7 @@ const Profile = {
   Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
   Realspace_Effect_Dev: 'Realspace Effect Dev',
   Realspace_Effect_Runtime: "Temps d'exécution réel de l'espace",
-  
+
   // itablet许可模块 待翻译
   ITABLET_ARMAP: 'Ar Map',
   ITABLET_NAVIGATIONMAP: 'Navigation Map',
@@ -317,7 +319,7 @@ const Profile = {
   INVALID_MODULE: 'Invalid module. Unable to continue.',
   INVALID_LICENSE: 'Invalid license. Unable to continue.',
   GO_ACTIVATE: 'Go Activate',
-  
+
   // 意见反馈 待翻译
   SUGGESTION_FUNCTION_ABNORMAL: 'Function Abnormal : Function abnormal or not can use',
   SUGGESTION_PRODUCT_ADVICE: 'Product Suggestion : I have a suggestion',
@@ -330,7 +332,7 @@ const Profile = {
   SUGGESTION_SUBMIT: 'Submit',
   SUGGESTION_SUBMIT_SUCCEED: 'Submit Succeed',
   SUGGESTION_SUBMIT_FAILED: 'Submit Failed',
-  
+
   // ar地图校准 待翻译
   MAP_AR_DATUM_LONGITUDE: 'Longitude',
   MAP_AR_DATUM_LATITUDE: 'Latitude',
@@ -346,7 +348,7 @@ const Profile = {
   MAP_AR_DATUM_SETTING: 'Setting',
   X_COORDINATE: 'X Coordinate',
   Y_COORDINATE: 'Y Coordinate',
-  
+
   // ar地图 待翻译
   COLLECT_SCENE_RENAME: 'Rename',
   COLLECT_SCENE_RENAME_SUCCEED: 'Rename succeed',

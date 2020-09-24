@@ -477,8 +477,11 @@ export default class LoadServer extends Component {
               marginTop: scaleSize(30),
             }}
             titleStyle={{ fontSize: scaleSize(24) }}
+            disabled={!_isCanSure}
             onPress={() => {
-              this.sure()
+              if (_isCanSure) {
+                this.sure()
+              }
             }}
           />
         </View>

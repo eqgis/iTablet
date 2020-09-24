@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: 'phone number/email/nickname', //待翻译
   ENTER_USERNAME_ALL: 'Please enter your phone number, email or nickname', //待翻译
   ENTER_PASSWORD: 'من فضلك أدخل رقمك السري',
+  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
+  PASSWORD_DISMATCH: 'The passwords are different, please check again',
   REGISTER: 'تسجيل',
   FORGET_PASSWORD: 'هل نسيت كلمة المرور؟',
   RESET_PASSWORD: 'إعادة تعيين كلمة المرور',
@@ -124,7 +126,7 @@ const Profile = {
   BATCH_DELETE: 'حذف الدفعة',
   BATCH_ADD: 'Batch Add', // 待翻译
   BATCH_OPERATE: 'عمليات الدفعة',
-  
+
   // 待翻译
   MY_APPLET: 'My Applet',
   UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
@@ -183,7 +185,7 @@ const Profile = {
   SET_DATASOURCE_NAME: 'تعيين اسم محموعه بيانات',
   ENTER_DATASOURCE_NAME: 'من فضلك ادخل اسم مجموعه البيانات',
   OPEN_DATASROUCE_FAILED: 'فشل فتح مجموعه البيانات',
-  DATASOURCE_TYPE: 'Datasource type',  //待翻译
+  DATASOURCE_TYPE: 'Datasource type', //待翻译
   SERVICE_TYPE: 'Service type',
 
   SELECT_DATASET_EXPORT_TYPE: 'أختر شكل التصدير',
@@ -203,8 +205,8 @@ const Profile = {
   SETTING_SUGGESTION_FEEDBACK: 'Suggestion Feedback', //待翻译
   SETTING_LANGUAGE: 'اللغة',
   SETTING_LANGUAGE_AUTO: 'تلقائى',
-  SETTING_LOCATION_DEVICE: 'Location Device',//待翻译
-  SETTING_LOCATION_LOCAL: 'This device',//待翻译
+  SETTING_LOCATION_DEVICE: 'Location Device', //待翻译
+  SETTING_LOCATION_LOCAL: 'This device', //待翻译
 
   // 许可
   LICENSE: 'License', //待翻译
@@ -216,7 +218,7 @@ const Profile = {
   LICENSE_SURPLUS: 'فائض ارخصة',
   LICENSE_YEAR: 'YEAR', //待翻译
   LICENSE_DAY: 'يوم',
-  LICENSE_PERMANENT: 'Permanent',//待翻译
+  LICENSE_PERMANENT: 'Permanent', //待翻译
   LICENSE_CONTAIN_MODULE: 'ترخيص يحتوي على وحدة',
   LICENSE_CONTAIN_EXPAND_MODULE: 'License Contain Expand Module', //待翻译
   LICENSE_USER_NAME: 'User Name', //待翻译
@@ -247,7 +249,7 @@ const Profile = {
   LICENSE_NO_NATIVE_OFFICAL: 'لا يوجد ملف ترخيص رسمي أصلي ، يرجى إضافة ملف الترخيص/إلى الرخصة الرسمية/التابلت الذكى/لرخصة/الملف ',
   LICENSE_NOT_ITABLET_OFFICAL: 'لم يتم تفعيل هذا الترخيص الرسمي على التابلت الذكى، يرجى الانتقال إلى صفحة الترخيص لمسح الترخيص وإعادة تنشيطه   ',
   LICENSE_NATIVE_EXPIRE: 'رخصة أصلية غير صالحة',
-  
+
   // 待翻译
   LICENSE_LONG_EFFECTIVE: 'Long Effective',
   LICENSE_OFFLINE: 'License OffLine',
@@ -268,10 +270,10 @@ const Profile = {
   LICENSE_SHOW_DETAIL: 'Show details',
   LICENSE_QUERY_NONE: 'Unable to get license information',
   LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
-  
+
   LICENSE_EDUCATION: 'رخصة تعليمية',
   LICENSE_EDUCATION_CONNECT_FAIL: 'فشل اتصال الخدمة',
-  
+
   // 待翻译
   LICENSE_QUERY: 'Query License',
   LICENSE_QUERYING: 'Quering',
@@ -288,7 +290,7 @@ const Profile = {
   LICENSE_EDITION_STANDARD: 'Standard Edition',
   LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
   LICENSE_EDITION_ADVANCED: 'Advanced Edition',
-  
+
   // imobile许可模块
   Core_Dev: 'التطوير الاساسى',
   Core_Runtime: 'وقت التشغيل الأساسي',
@@ -308,7 +310,7 @@ const Profile = {
   Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
   Realspace_Effect_Dev: 'Realspace Effect Dev',
   Realspace_Effect_Runtime: 'Realspace Effect Runtime',
-  
+
   // itablet许可模块 待翻译
   ITABLET_ARMAP: 'Ar Map',
   ITABLET_NAVIGATIONMAP: 'Navigation Map',

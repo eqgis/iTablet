@@ -16,10 +16,24 @@ export default class Map3DConfig extends Module {
       key: Map3DConfig.key,
       is3D: true,
       example: {
-        DEFAULT: {
-          name: 'OlympicGreen',
-          mapName: 'OlympicGreen',
-        },
+        DEFAULT: [
+          {
+            name: 'OlympicGreen',
+            mapName: 'OlympicGreen',
+          },
+          {
+            name: 'SunCBD',
+            mapName: 'SunCBD_webp',
+          },
+          {
+            name: 'SKYCBD',
+            mapName: 'SKYCBD_webp',
+          },
+          {
+            name: '珠峰',
+            mapName: '珠峰',
+          },
+        ],
       },
       functionModules: [start3DModule, mark3DModule, fly3DModule, tool3DModule],
       mapType: Module.MapType.SCENE,

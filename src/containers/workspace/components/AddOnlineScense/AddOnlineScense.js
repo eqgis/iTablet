@@ -21,29 +21,51 @@ export default class AddOnlineScense extends Component {
   }
 
   save = () => {
-    if (this.state.name === '') {
-      Toast.show(getLanguage(global.language).Prompt.PLEASE_ENTER + getLanguage(global.language).Map_Setting.SCENE_NAME)
-      return
-    }
+    // if (this.state.name === '') {
+    //   Toast.show(getLanguage(global.language).Prompt.PLEASE_ENTER + getLanguage(global.language).Map_Setting.SCENE_NAME)
+    //   return
+    // }
     if (this.state.server === '') {
       Toast.show(getLanguage(global.language).Prompt.ENTER_SERVICE_ADDRESS)
       return
     }
-    let checkURL = dataUtil.isLegalURL(this.state.server)
-    if (!checkURL.result) {
-      Toast.show(checkURL.error)
-      return
-    }
+
     let _server = this.state.server
     if (_server.indexOf('http') !== 0) {
       _server = 'http://' + _server
     }
 
-    let data = {
-      name: this.state.name,
-      server: _server,
+    let checkURL = dataUtil.isLegalURL(_server)
+    if (!checkURL.result) {
+      Toast.show(checkURL.error)
+      return
     }
-    this.cb && this.cb(data)
+
+    let data = {}
+    if (this.getServerAndName(_server, data)) {
+      this.cb && this.cb(data)
+    } else {
+      Toast.show(
+        getLanguage(global.language).Profile.ENTER_VALID_SERVER_ADDRESS,
+      )
+    }
+  }
+
+  getServerAndName = (url, data) => {
+    let pat1 = /(.+\/rest\/realspace)\/scenes\/(.+)/
+    if (pat1.test(url)) {
+      let resutl = url.match(pat1)
+      let server = resutl[1]
+      let name = resutl[2]
+      let pat2 = /(.+)\.openrealspace$/
+      if (pat2.test(name)) {
+        name = name.match(pat2)[1]
+      }
+      data.server = server
+      data.name = name
+      return true
+    }
+    return false
   }
 
   _renderHeaderBtn = () => {
@@ -71,7 +93,7 @@ export default class AddOnlineScense extends Component {
           headerRight: this._renderHeaderBtn(),
         }}
       >
-        <TextInput
+        {/* <TextInput
           value={this.state.name}
           placeholder={getLanguage(global.language).Map_Setting.SCENE_NAME}
           placeholderTextColor={color.fontColorGray}
@@ -83,7 +105,7 @@ export default class AddOnlineScense extends Component {
               name: text,
             })
           }}
-        />
+        /> */}
         <TextInput
           value={this.state.server}
           placeholder={

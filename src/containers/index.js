@@ -43,6 +43,8 @@ import {
   PublicData,
   Applet,
   CoworkManagePage,
+  FindSettingPage,
+  Laboratory,
 } from './tabs'
 
 import GetBack from './register&getBack/GetBack'
@@ -850,6 +852,20 @@ export default function(appConfig) {
       },
       CoworkManagePage: {
         screen: CoworkManagePage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      FindSettingPage: {
+        screen: FindSettingPage,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      Laboratory: {
+        screen: Laboratory,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

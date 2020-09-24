@@ -36,6 +36,8 @@ const Profile = {
   USERNAME_ALL: 'phone number/email/nickname',
   ENTER_USERNAME_ALL: 'Please enter your phone number, email or nickname',
   ENTER_PASSWORD: 'Please enter your password',
+  RE_ENTER_PASSWORD: 'Please re-enter your password',
+  PASSWORD_DISMATCH: 'The passwords are different, please check again',
   REGISTER: 'Register',
   FORGET_PASSWORD: 'Forgot password?',
   RESET_PASSWORD: 'Reset Password',

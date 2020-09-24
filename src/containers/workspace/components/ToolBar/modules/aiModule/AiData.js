@@ -1,9 +1,11 @@
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import AiActions from './AiActions'
+import ToolbarModule from '../ToolbarModule'
 import { Platform } from 'react-native'
 
 function getData() {
+  const _params = ToolbarModule.getParams()
   const buttons = []
   const data = [
     {
@@ -46,23 +48,6 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_violation_light,
     },
-    {
-      // 人体姿态
-      key: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
-      action: AiActions.poseEstimation,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
-    },
-    {
-      // 手势骨骼
-      key: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
-      action: AiActions.gestureBone,
-      size: 'large',
-      // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
-      image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
-    },
     // {
     //   //路面采集
     //   key: getLanguage(global.language).Map_Main_Menu
@@ -74,8 +59,28 @@ function getData() {
     //   image: getThemeAssets().ar.icon_ar,
     // },
   ]
-  if (Platform.OS === 'ios') {
-    data.splice(4, 2)
+  if (Platform.OS === 'android') {
+    if (_params.laboratory.poseEstimation) {
+      data.push({
+        // 人体姿态
+        key: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+        action: AiActions.poseEstimation,
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
+      })
+    }
+    if (_params.laboratory.gestureBone) {
+      data.push({
+        // 手势骨骼
+        key: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+        action: AiActions.gestureBone,
+        size: 'large',
+        // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
+        image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
+      })
+    }
   }
   return { data, buttons }
 }

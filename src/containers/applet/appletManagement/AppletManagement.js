@@ -165,7 +165,26 @@ export default class AppletManagement extends React.Component {
             GLOBAL.SimpleDialog.set({
               text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_RELOAD,
               confirmText: getLanguage(this.props.language).Find.RELOAD,
-              confirmAction: () => {
+              confirmAction: async () => {
+                let titleName = ''
+                if (item.fileName) {
+                  let index = item.fileName.lastIndexOf('.')
+                  titleName =
+                    index === -1
+                      ? item.fileName
+                      : item.fileName.substring(0, index)
+                  const suffix = (Platform.OS === 'ios' ? '.ios' : '.android') + '.bundle'
+                  if (titleName.endsWith(suffix)) {
+                    titleName = titleName.replace(suffix, '')
+                  }
+                }
+                let arr = []
+                for (let applet of this.state.myApplets) {
+                  arr.push(applet.fileName)
+                }
+                arr.push(titleName)
+                arr = [...new Set(arr)]
+                await ConfigUtils.recordApplets(this.props.user.currentUser.userName, arr)
                 appUtilsModule.reloadBundle()
               },
             })

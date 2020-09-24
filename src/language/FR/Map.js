@@ -756,6 +756,9 @@ const Map_Settings = {
   REMARKS: 'Remarques',
   DRAWING_RANGE: 'Plage de dessin',
 
+  //目标识别二级菜单
+  Beta: '(Fonction Expérimentale)',
+
   // 视频地图设置	一级菜单
   POI_SETTING: 'Paramètres POI',
   DETECT_TYPE: 'Détecter les types',

@@ -752,6 +752,9 @@ const Map_Settings = {
   REMARKS: 'Uyarılar',
   DRAWING_RANGE: 'Çizim Aralığı',
 
+  //目标识别二级菜单
+  Beta: '(Deneyim Fonksiyonu)',
+
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI Ayarları',
   DETECT_TYPE: 'Türleri Belirle',

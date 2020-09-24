@@ -756,6 +756,9 @@ const Map_Settings = {
   REMARKS: 'ملاحظات',
   DRAWING_RANGE: 'نطاق الرسم',
 
+  //目标识别二级菜单
+  Beta: '(تجربة وظيفة)',
+
   // 视频地图设置	一级菜单
   POI_SETTING: 'اعدادات نقاط الاهتمام',
   DETECT_TYPE: 'كشف الأنواع',

@@ -752,10 +752,13 @@ const Map_Settings = {
   REMARKS: '备注',
   DRAWING_RANGE: '绘制范围',
 
+  //目标识别二级菜单
+  Beta: '(以下为体验功能)',
+
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI设置',
-  DETECT_TYPE: '检测类型',
-  DETECT_STYLE: '检测框风格',
+  DETECT_TYPE: '识别类型',
+  DETECT_STYLE: '识别框风格',
 
   POI_SETTING_PROJECTION_MODE: '投射模式',
   POI_SETTING_OVERLAP_MODE: '避让模式',

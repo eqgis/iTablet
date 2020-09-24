@@ -752,10 +752,13 @@ const Map_Settings = {
   REMARKS: 'Remarks',
   DRAWING_RANGE: 'Drawing Range',
 
+  //目标识别二级菜单
+  Beta: '(Experience Function)',
+
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI Settings',
-  DETECT_TYPE: 'Detect Types',
-  DETECT_STYLE: 'Detect Style',
+  DETECT_TYPE: 'Distinguish Types',
+  DETECT_STYLE: 'Distinguish Style',
 
   POI_SETTING_PROJECTION_MODE: 'Projection Mode',
   POI_SETTING_OVERLAP_MODE: 'Overlap Mode',

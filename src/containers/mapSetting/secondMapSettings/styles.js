@@ -16,6 +16,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  betarow: {
+    flex: 1,
+    flexDirection: 'row',
+    height: scaleSize(60),
+    paddingHorizontal: scaleSize(30),
+    alignItems: 'center',
+  },
   rightWrap: {
     flex: 1,
   },
@@ -34,6 +41,15 @@ export default StyleSheet.create({
   itemName: {
     color: '#303030',
     fontSize: setSpText(26),
+  },
+  betaName: {
+    color: '#919191',
+    fontSize: setSpText(15),
+    paddingLeft: scaleSize(10),
+  },
+  betaName1: {
+    color: '#919191',
+    fontSize: setSpText(20),
   },
   switch: {
     transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],

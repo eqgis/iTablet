@@ -84,7 +84,7 @@ export default class AIDetecSettingsView extends React.Component {
 
   componentDidMount() {
     // 初始化数据
-    (async function() {
+    ;(async function() {
       this.homePath = await FileTools.appendingHomeDirectory()
       let dustbinPath =
         this.homePath +
@@ -348,8 +348,8 @@ export default class AIDetecSettingsView extends React.Component {
           showsVerticalScrollIndicator={false}
         >
           {this.renderModelItemFirst()}
-          {this.renderModelItemSecond()}
-          {this.renderModelItemThird()}
+          {/* {this.renderModelItemSecond()} */}
+          {/* {this.renderModelItemThird()} */}
           {this.renderMyModel()}
         </ScrollView>
       </View>

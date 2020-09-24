@@ -176,17 +176,17 @@ const getNavigationSetting = () => [
 
 // 视频地图设置
 const getMapARAnalysisSettings = () => [
-  {
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
-    leftImage: getThemeAssets().setting.icon_detection_type,
-  },
+  // {
+  //   title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
+  //   leftImage: getThemeAssets().setting.icon_detection_type,
+  // },
   {
     title: getLanguage(global.language).Map_Settings.DETECT_STYLE,
     leftImage: getThemeAssets().setting.icon_checkbox_style,
   },
 ]
 
-// 检测类型设置
+// 识别类型设置
 const getDetectTypesSettings = () => [
   {
     key: '人员',
@@ -213,32 +213,8 @@ const getDetectTypesSettings = () => [
     iconType: 'switch',
   },
   {
-    key: '公交车',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BUS,
-    value: false,
-    iconType: 'switch',
-  },
-  {
     key: '卡车',
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TRUCK,
-    value: false,
-    iconType: 'switch',
-  },
-  {
-    key: '交通信号灯',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
-    value: false,
-    iconType: 'switch',
-  },
-  {
-    key: '消防栓',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_FIREHYDRANT,
-    value: false,
-    iconType: 'switch',
-  },
-  {
-    key: '杯子',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CUP,
     value: false,
     iconType: 'switch',
   },
@@ -273,18 +249,6 @@ const getDetectTypesSettings = () => [
     iconType: 'switch',
   },
   {
-    key: '显示器',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TV,
-    value: false,
-    iconType: 'switch',
-  },
-  {
-    key: '笔记本电脑',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_LAPTOP,
-    value: false,
-    iconType: 'switch',
-  },
-  {
     key: '鼠标',
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE_MOUSE,
     value: false,
@@ -293,6 +257,12 @@ const getDetectTypesSettings = () => [
   {
     key: '键盘',
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE_KEYBOARD,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '笔记本电脑',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_LAPTOP,
     value: false,
     iconType: 'switch',
   },
@@ -311,6 +281,36 @@ const getDetectTypesSettings = () => [
   {
     key: '瓶子',
     title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BOTTLE,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '公交车',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BUS,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '交通信号灯',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '消防栓',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_FIREHYDRANT,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '杯子',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CUP,
+    value: false,
+    iconType: 'switch',
+  },
+  {
+    key: '显示器',
+    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TV,
     value: false,
     iconType: 'switch',
   },

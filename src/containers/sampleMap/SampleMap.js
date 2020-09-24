@@ -8,11 +8,11 @@ import {
 } from 'react-native'
 import { FileTools } from '../../native'
 import { Toast, scaleSize, FetchUtils } from '../../utils'
-import { ChunkType } from '../../constants'
+import { Module } from '../../class'
 import NavigationService from '../NavigationService'
-import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
+import DataHandler from '../tabs/Mine/DataHandler'
 
 export default class SampleMap extends Component {
   props: {
@@ -45,6 +45,7 @@ export default class SampleMap extends Component {
   getData = async () => {
     let examples = this.props.mapModules.modules[this.props.mapModules.currentMapModule]
       .getExampleName(this.props.language)
+    let mapType = this.props.mapModules.modules[this.props.mapModules.currentMapModule].mapType
     let keywords = []
     for (let i = 0; i < examples.length; i++) {
       let _name = examples[i].name
@@ -59,6 +60,11 @@ export default class SampleMap extends Component {
     }, keywords, '.zip').then(result => {
       let arr = result.content
       if (arr.length % 2 === 1) arr.push({})
+      arr.forEach(item => {
+        if (Object.keys(item).length > 0) {
+          item.mapType = mapType
+        }
+      })
       this.setState({
         data: arr,
       })
@@ -96,17 +102,11 @@ export default class SampleMap extends Component {
       }
       await this.props.downloadFile(downloadOptions)
       await FileTools.unZipFile(fileCachePath, cachePath)
-      let arrFile = await FileTools.getFilterFiles(fileDirPath)
-      if (arrFile.length > 0) {
-        if (GLOBAL.Type === ChunkType.MAP_3D) {
-          await this.props.importSceneWorkspace({
-            server: arrFile[0].filePath,
-          })
-        }
-        await SMap.importWorkspaceInfo({
-          server: arrFile[0].filePath,
-          type: 9,
-        })
+      let tempData = await DataHandler.getExternalData(fileDirPath) || []
+      if (downloadData.mapType === Module.MapType.SCENE) {
+        await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
+      } else {
+        await DataHandler.importWorkspace(tempData[0])
       }
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)

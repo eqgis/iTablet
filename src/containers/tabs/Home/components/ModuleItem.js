@@ -21,7 +21,6 @@ export default class ModuleItem extends Component {
     showStar?: boolean,
     isNew?: boolean,
     isBeta?: boolean,
-    importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
     itemAction: () => {},

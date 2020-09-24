@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, NetInfo, ScrollView } from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
+import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
 import { SMap } from 'imobile_for_reactnative'
@@ -13,6 +14,7 @@ import {
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { AppletAdd } from '../../../../customModule/mapModules'
+import DataHandler from '../../../tabs/Mine/DataHandler'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
@@ -161,11 +163,12 @@ class ModuleList extends Component {
         .downloadFile(downloadOptions)
         .then(async () => {
           await FileTools.unZipFile(fileCachePath, cachePath)
-          let arrFile = await FileTools.getFilterFiles(fileDirPath)
-          await this.props.importWorkspace(
-            arrFile[0].filePath,
-            // downloadData.copyFilePath,
-          )
+          let tempData = await DataHandler.getExternalData(fileDirPath) || []
+          if (downloadData.itemData.mapType === Module.MapType.SCENE) {
+            await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
+          } else {
+            await DataHandler.importWorkspace(tempData[0])
+          }
           FileTools.deleteFile(fileDirPath + '_')
           FileTools.deleteFile(fileDirPath + '.zip')
           this.props.deleteDownloadFile({ id: downloadData.key })
@@ -459,7 +462,6 @@ class ModuleList extends Component {
         }
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}
-        importWorkspace={this.props.importWorkspace}
         showDialog={this.props.showDialog}
         getModuleItem={this.props.getModuleItem}
         setOldMapModule={this.props.setOldMapModule}

@@ -144,7 +144,7 @@ export default class SampleMapItem extends Component {
           fileName: fileName,
           cachePath: cachePath,
           copyFilePath: toPath,
-          // itemData: item,
+          mapType: this.props.data.mapType,
           tmpCurrentUser: this.props.user.currentUser,
           url: this.props.data.url,
           ...example,

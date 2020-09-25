@@ -33,9 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   input: {
-    width: '80%',
-    // height: ROW_HEIGHT,
-    backgroundColor: 'transparent',
+    height: ROW_HEIGHT,
     textAlign: 'center',
     ...Platform.select({
       android: {
@@ -224,18 +222,12 @@ export default class Cell extends Component {
   }
 
   render() {
-    return (
-      <TouchableOpacity
-        style={[styles.cell, this.props.style]}
-        activeOpacity={1}
-        delayLongPress={this.props.delayLongPress}
-        onPress={this._onPress}
-      >
-        {this.props.editable && this.state.editable ? (
+    if (this.props.editable && this.state.editable) {
+      return (
           <TextInput
             ref={ref => (this.cellInput = ref)}
             value={this.state.value + ''}
-            style={styles.input}
+            style={[this.props.style, styles.input]}
             underlineColorAndroid="transparent"
             onChangeText={this._onChangeText}
             onBlur={this._onBlur}
@@ -249,7 +241,15 @@ export default class Cell extends Component {
               this.props.data.fieldInfo && this.props.data.fieldInfo.type,
             )}
           />
-        ) : (
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          style={[styles.cell, this.props.style]}
+          activeOpacity={1}
+          delayLongPress={this.props.delayLongPress}
+          onPress={this._onPress}
+        >
           <Text
             style={[styles.cellText, this.props.cellTextStyle]}
             numberOfLines={2}
@@ -257,8 +257,8 @@ export default class Cell extends Component {
           >
             {this.state.value + ''}
           </Text>
-        )}
-      </TouchableOpacity>
-    )
+        </TouchableOpacity>
+      )
+    }
   }
 }

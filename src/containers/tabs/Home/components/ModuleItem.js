@@ -208,10 +208,12 @@ export default class ModuleItem extends Component {
             )}
             {this.props.isBeta && (
               <View style={styles.label}>
-                <Image
-                  source={require('../../../../assets/home/left_top.png')}
-                  style={styles.labelImage}
-                />
+                <View style={styles.labelImageContainer}>
+                  <Image
+                    source={require('../../../../assets/home/left_top.png')}
+                    style={styles.labelImage}
+                  />
+                </View>
                 <Text style={styles.labelText}>{'BETA'}</Text>
               </View>
             )}
@@ -293,12 +295,22 @@ const styles = StyleSheet.create({
     height: fixedSize(45),
     justifyContent: 'center',
   },
-  labelImage: {
+  labelImageContainer: {
     position: 'absolute',
     left: 0,
     top: 0,
     width: fixedSize(45),
     height: fixedSize(45),
+    borderTopLeftRadius: fixedSize(16),
+    overflow: 'hidden',
+  },
+  labelImage: {
+    // position: 'absolute',
+    // left: 0,
+    // top: 0,
+    width: fixedSize(45),
+    height: fixedSize(45),
+    // borderTopLeftRadius: fixedSize(16),
   },
   labelText: {
     fontSize: fixedSize(13),

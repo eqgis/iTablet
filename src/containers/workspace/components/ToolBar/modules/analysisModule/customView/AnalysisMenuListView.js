@@ -313,7 +313,6 @@ const styles = StyleSheet.create({
     width: scaleSize(64),
   },
   tableItemtext: {
-    height: scaleSize(40),
     width: scaleSize(120),
     fontSize: setSpText(18),
     alignContent: 'center',

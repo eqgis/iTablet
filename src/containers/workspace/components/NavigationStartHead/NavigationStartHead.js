@@ -189,7 +189,10 @@ export default class NavigationStartHead extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{ fontSize: setSpText(24) }}
+                    style={{
+                      fontSize: setSpText(24),
+                      lineHeight: scaleSize(26),
+                    }}
                   >
                     {GLOBAL.STARTNAME}
                   </Text>
@@ -228,7 +231,10 @@ export default class NavigationStartHead extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{ fontSize: setSpText(24) }}
+                    style={{
+                      fontSize: setSpText(24),
+                      lineHeight: scaleSize(26),
+                    }}
                   >
                     {GLOBAL.ENDNAME}
                   </Text>

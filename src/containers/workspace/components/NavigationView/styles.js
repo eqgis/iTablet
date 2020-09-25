@@ -48,6 +48,7 @@ export default StyleSheet.create({
     flex: 1,
     fontSize: scaleSize(20),
     marginLeft: scaleSize(15),
+    lineHeight: scaleSize(24),
   },
   pointAnalystView: {
     flex: 1,

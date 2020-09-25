@@ -1,6 +1,6 @@
 // 好友
 const Friends = {
-  LOCALE: 'tr',
+  LOCALE: 'en',
 
   LOGOUT: 'Çevrimiçi hizmete giriş yapın ve arkadaşlarınızla iletişimde kalın',
   MESSAGES: 'Mesajlar',
@@ -21,14 +21,14 @@ const Friends = {
   RECEIVE_FAIL_EXPIRE: 'Alma başarısız, dosyanın süresi dolmuş olabilir',
   RECEIVE_FAIL_NETWORK: 'Alma başarısız, lütfen ağınızı kontrol edin',
   // FriendMessage
-  MARK_READ: 'Okundu olarak işaretle', //*
-  MARK_UNREAD: 'Okunmadı olarak işaretle', //*
-  DEL: 'Delete', //*
-  NOTIFICATION: 'Bildirim', //*
-  CLEAR_NOTIFICATION: 'Bildirimleri Temizle', //*
-  CONFIRM: 'Evet', //*
-  CANCEL: 'İptal', //*
-  ALERT_DEL_HISTORY: 'Bu konuşma geçmişini sil?', //*
+  MARK_READ: 'Okundu olarak işaretle',
+  MARK_UNREAD: 'Okunmadı olarak işaretle',
+  DEL: 'Silme',
+  NOTIFICATION: 'Bildirim',
+  CLEAR_NOTIFICATION: 'Bildirimleri Temizle',
+  CONFIRM: 'Evet',
+  CANCEL: 'İptal',
+  ALERT_DEL_HISTORY: 'Bu konuşma geçmişini sil?',
   // FriendList
   SET_MARK_NAME: 'İşaret Adı Ayarla',
   DEL_FRIEND: 'Arkadaş Sil',
@@ -71,7 +71,7 @@ const Friends = {
   DATA_NOT_FOUND: 'Veri bulunamadı, tekrar indirmek ister misiniz?',
   LOAD_ORIGIN_PIC: 'Başlangıcı Yükle',
   // CustomActions
-  MAP: 'Map',
+  MAP: 'Harita',
   TEMPLATE: 'Taslak',
   LOCATION: 'Konum',
   PICTURE: 'Resim',
@@ -87,7 +87,7 @@ const Friends = {
   COWORK_IGNORE: 'ignore',
   NEW_MESSAGE: 'Yeni mesajı',
   NEW_MESSAGE_SHORT: 'Yeni',
-  UPDATING: 'Yañartılıyor',
+  UPDATING: 'Güncelleniyor',
   SELECT_MESSAGE_TO_UPDATE: 'Lütfen işlemek için mesajı seçin',
   UPDATE_NOT_EXIST_OBJ: 'Nesne yok ve güncellenemiyor',
   ADD_DELETE_ERROR: 'Silinmiş öğeyi eklemez',
@@ -95,7 +95,7 @@ const Friends = {
   NO_SUCH_MAP: 'Hiçbir harita bulunamadı',
   SELF: 'Kendim',
   ONLINECOWORK_DISABLE_ADD: 'Çevrimiçi işbirliğinde eklenemiyorum',
-  ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork', //待翻译
+  ONLINECOWORK_DISABLE_OPERATION: 'Çevirimiçi ortak çalışırken işlen yapılamıyor ',
   // RecommendFriend
   FIND_NONE: 'Kişilerinizden yeni arkadaşlar bulunamıyor',
   ALREADY_FRIEND: 'Zaten arkadaşsınız',
@@ -109,8 +109,8 @@ const Friends = {
   ADD_BLACKLIST: 'Kara listeye ekle',
   DELETE_FRIEND: 'Arkadaşı sil',
   LIST_MEMBERS: 'Üyeleri listele ',
+  MEMBERS: 'Members', //待翻译
   LEAVE_GROUP: 'Gruptan çık',
-  MEMBERS: 'Members', // 待翻译
   CLEAR_HISTORY: 'Sohbet geçmişini temizle',
   DISBAND_GROUP: 'Grubu dağıt',
   DELETE_MEMBER: 'Grup üyesini çıkar',
@@ -140,14 +140,13 @@ const Friends = {
   SYS_LOGIN_ON_OTHER_DEVICE: 'Hesabınız başka bir cihazda oturum açtı',
   SYS_MSG_REJ: 'Karşı taraf seni henüz arkadaş olarak eklemedi',
   SYS_FRIEND_REQ_ACCEPT: 'Artık arkadaşsınız, keyfini çıkar!',
-  SYS_INVITE_TO_COWORK: ' seni işbirliğine davet',
+  SYS_INVITE_TO_COWORK: ' seni işbirliğine davet etti',
   SYS_MSG_GEO_ADDED: '',
   SYS_MSG_GEO_DELETED: '',
   SYS_MSG_GEO_UPDATED: '',
   SYS_MSG_GEO_ADDED2: 'ekle',
   SYS_MSG_GEO_DELETED2: 'silin',
   SYS_MSG_GEO_UPDATED2: 'güncelle',
-  
-  ADDED: 'Added', // 待翻译
+  ADDED: 'Added', //待翻译
 }
 export { Friends }

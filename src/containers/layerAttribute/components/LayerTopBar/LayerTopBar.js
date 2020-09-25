@@ -12,10 +12,7 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { screen, scaleSize } from '../../../../utils'
 
-const itemWidth = scaleSize(220)
-const tabBtnWidth = scaleSize(110)
 const itemGap = scaleSize(20)
-const itemHorizontal = scaleSize(40)
 
 export default class LayerTopBar extends React.Component {
   props: {
@@ -123,15 +120,6 @@ export default class LayerTopBar extends React.Component {
         enabled: this.props.canRelated,
       }
     ]
-  
-    // let contentWidth = itemWidth * data.length
-    //   + itemGap * (data.length - 1)
-    //   + itemHorizontal * 2
-    //
-    // if (this.props.hasTabBtn) {
-    //   contentWidth += tabBtnWidth + itemGap
-    // }
-    // let isScroll = screen.getScreenWidth(this.props.orientation) < contentWidth
     
     let items = []
     data.forEach((item, index) => {

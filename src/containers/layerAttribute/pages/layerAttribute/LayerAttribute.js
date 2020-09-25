@@ -1269,6 +1269,7 @@ export default class LayerAttribute extends React.Component {
         buttonTitles={buttonTitles}
         isShowSystemFields={this.state.isShowSystemFields}
         onPressHeader={this.onPressHeader}
+        bottomOffset={this.props.device.orientation.indexOf('LANDSCAPE') < 0 ? scaleSize(90) : scaleSize(0)}
       />
     )
   }

@@ -1,4 +1,4 @@
-//底部导航、首页弹出框选项
+// 底部导航、首页弹出框选项
 const Navigator_Label = {
   HOME: 'Accueil',
   FRIENDS: 'Contacts',
@@ -7,10 +7,10 @@ const Navigator_Label = {
 
   LEFT_TOP_LOG: "S'identifier",
   LEFT_TOP_REG: 'Enregistrement',
-  LEFT_TOP_CANCEL: 'ANNULER',
+  LEFT_TOP_CANCEL: 'Annuler',
 
-  RIGHT_TOP_ABOUT: 'A Propos',
-  RIGHT_TOP_SETTING: 'Paramètre',
+  RIGHT_TOP_ABOUT: 'À propos',
+  RIGHT_TOP_SETTING: 'Réglages',
   RIGHT_TOP_EXIT: 'Sortie',
 }
 

@@ -10,11 +10,12 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   SectionList,
-  RefreshControl,
   Platform,
   Keyboard,
+  UIManager,
+  findNodeHandle,
 } from 'react-native'
-import { scaleSize, dataUtil } from '../../../../utils'
+import { scaleSize, dataUtil, screen } from '../../../../utils'
 import { IndicatorLoading } from '../../../../components'
 import { color } from '../../../../styles'
 import Row from './Row'
@@ -55,6 +56,7 @@ export default class LayerAttributeTable extends React.Component {
     hasIndex?: boolean,
     startIndex?: number,
     isShowSystemFields?: boolean,
+    bottomOffset?: number,
   }
 
   static defaultProps = {
@@ -70,6 +72,7 @@ export default class LayerAttributeTable extends React.Component {
     refreshing: false,
     stickySectionHeadersEnabled: true,
     indexColumn: -1,
+    bottomOffset: 0,
   }
 
   constructor(props) {
@@ -197,14 +200,15 @@ export default class LayerAttributeTable extends React.Component {
     }
   }
   _keyboardDidShow = e => {
-    let { screenY, height } = e.startCoordinates
-    if (screenY - this.itemClickPosition < height && this.scrollIndex >= 0) {
-      this.table &&
+    let keyboardCoordinates = e.endCoordinates
+    if ((keyboardCoordinates.screenY - keyboardCoordinates.height - COL_HEIGHT) < this.itemClickPosition && this.scrollIndex >= 0 && this.table) {
+      UIManager.measure(findNodeHandle(this.table), (x, y, width, height) => {
         this.table.scrollToLocation({
           itemIndex: this.scrollIndex,
-          viewPosition: 1,
-          viewOffset: -height,
+          viewPosition: 0,
+          viewOffset: height - keyboardCoordinates.height + this.props.bottomOffset - COL_HEIGHT,
         })
+      });
     }
   }
 

@@ -43,7 +43,7 @@ export default class Chunk {
   action = async (user, lastMap) => {
     if (this.preAction && typeof this.preAction === 'function') {
       let result = await this.preAction()
-      if (!result) return
+      if (!result) return false
     }
     if (
       this.mapType === '' &&
@@ -51,7 +51,7 @@ export default class Chunk {
       typeof this.props.action === 'function'
     ) {
       await this.props.action()
-      return
+      return true
     }
     GLOBAL.Type = this.key
     SMap.setCurrentModule(this.licenceType)
@@ -145,5 +145,6 @@ export default class Chunk {
       default:
         break
     }
+    return true
   }
 }

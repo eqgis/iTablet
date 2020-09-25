@@ -22,7 +22,7 @@ export default class SimpleDialog extends PureComponent {
 
   static defaultProps = {
     disableBackTouch: true,
-    buttonMode: 'default',
+    buttonMode: 'row',
     text: '',
     confirmText: '',
     cancelText: '',

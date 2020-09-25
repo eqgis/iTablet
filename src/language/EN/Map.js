@@ -753,7 +753,7 @@ const Map_Settings = {
   DRAWING_RANGE: 'Drawing Range',
 
   //目标识别二级菜单
-  Beta: '(Experience Function)',
+  Beta: '(Experimental Function)',
 
   // 视频地图设置:一级菜单
   POI_SETTING: 'POI Settings',

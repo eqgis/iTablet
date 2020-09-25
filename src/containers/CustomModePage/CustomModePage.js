@@ -389,6 +389,7 @@ export default class CustomModePage extends Component {
           backAction: this._back,
           navigation: this.props.navigation,
           headerRight: this._renderRight(),
+          type: 'flex',
         }}
       >
         <View style={styles.pageContainer}>

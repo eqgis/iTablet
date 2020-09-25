@@ -55,6 +55,12 @@ export default StyleSheet.create({
     marginLeft: scaleSize(20),
     justifyContent: 'center',
   },
+  backBtnFlex: {
+    width: scaleSize(60),
+    padding: 5,
+    marginLeft: scaleSize(20),
+    justifyContent: 'center',
+  },
   backIcon: {
     width: scaleSize(60),
     height: scaleSize(60),
@@ -90,12 +96,23 @@ export default StyleSheet.create({
     flexDirection: 'row',
     right: scaleSize(25),
   },
+  headerRightViewFlex: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    right: scaleSize(25),
+  },
   headerTitleView: {
     position: 'absolute',
     zIndex: -1,
     left: scaleSize(80),
     right: scaleSize(80),
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitleViewFlex: {
+    flex: 1,
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
   headerTitle: {

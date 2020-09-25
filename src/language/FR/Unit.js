@@ -1,15 +1,15 @@
 const FieldType = {
-  BOOLEAN: 'Booléen(ne)',
-  BYTE: 'Byte',
+  BOOLEAN: 'Booléen',
+  BYTE: 'Octet',
   INT16: 'Int16',
   INT32: 'Int32',
   INT64: 'Int64',
-  SINGLE: 'unique',
+  SINGLE: 'Seul',
   DOUBLE: 'Double',
-  LONGBINARY: 'Long binaire',
+  LONGBINARY: 'Long Binaire',
   TEXT: 'Texte',
   CHAR: 'Char',
-  WTEXT: 'WText',
+  WTEXT: 'WTexte',
 }
 
 export { FieldType }

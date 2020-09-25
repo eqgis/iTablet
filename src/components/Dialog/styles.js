@@ -177,7 +177,7 @@ export default StyleSheet.create({
   errorView: {
     marginTop: Platform.OS === 'ios' ? scaleSize(4) : 0,
     width: '100%',
-    minHeight: scaleSize(50),
+    minHeight: scaleSize(60),
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',

@@ -793,17 +793,10 @@ export default class MyDataPage extends Component {
   }
 
   showRelatedMapsDialog = ({ confirmAction, relatedMaps }) => {
-    let dialogHeight
-    if (relatedMaps.length < 5) {
-      dialogHeight = scaleSize(270) + relatedMaps.length * scaleSize(35)
-    } else {
-      dialogHeight = scaleSize(410)
-    }
     this.SimpleDialog.set({
       text: getLanguage(global.language).Prompt.DELETE_MAP_RELATE_DATA,
       confirmAction: confirmAction,
       renderExtra: () => this.renderRelatedMap(relatedMaps),
-      dialogStyle: { height: dialogHeight },
     })
     this.SimpleDialog.setVisible(true)
   }
@@ -818,7 +811,7 @@ export default class MyDataPage extends Component {
             style={{
               textAlign: 'center',
               fontSize: scaleSize(24),
-              marginTop: scaleSize(5),
+              lineHeight: scaleSize(26),
             }}
           >
             {this.exportPath}
@@ -827,7 +820,6 @@ export default class MyDataPage extends Component {
       },
       confirmAction: () => (this.exportPath = ''),
       cancelAction: () => (this.exportPath = ''),
-      dialogStyle: { width: scaleSize(500), height: scaleSize(340) },
     })
     this.SimpleDialog.setVisible(true)
   }
@@ -1107,8 +1099,7 @@ export default class MyDataPage extends Component {
       <View
         style={{
           marginTop: scaleSize(10),
-          marginBottom: scaleSize(45),
-          height: scaleSize(150),
+          maxHeight: scaleSize(150),
           width: '80%',
         }}
       >

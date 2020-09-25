@@ -186,8 +186,13 @@ export default class Dialog extends PureComponent {
     if (this.props.buttonMode === 'list') {
       return this.renderListBtns()
     }
+    let btnViewStyle = this.props.onlyOneBtn ? styles.oneBtn : styles.btns
+    if (this.props.buttonMode === 'row') {
+      //SimpleDialog使用
+      btnViewStyle = [btnViewStyle, { marginTop: scaleSize(50) }]
+    }
     return (
-      <View style={this.props.onlyOneBtn ? styles.oneBtn : styles.btns}>
+      <View style={btnViewStyle}>
         {this.props.cancelBtnVisible && (
           <TouchableOpacity
             activeOpacity={this.props.activeOpacity}

@@ -8,13 +8,23 @@ import { getThemeAssets } from '../../../../../../assets'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { SMap } from 'imobile_for_reactnative'
 
 class AnalysisModule extends FunctionModule {
   constructor(props) {
     super(props)
   }
 
-  action = () => {
+  action = async () => {
+    if (this.type === ConstToolType.MAP_PROCESS) {
+      let sdk = await SMap.getPhoneSDK()
+      if (sdk <= 24) {
+        Toast.show(
+          getLanguage(language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+        )
+        return true
+      }
+    }
     const params = ToolbarModule.getParams()
     const _data = AnalysisData.getData(this.type)
     const containerType = ToolbarType.table

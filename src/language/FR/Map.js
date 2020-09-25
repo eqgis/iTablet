@@ -1,4 +1,4 @@
-//制图
+// 制图
 const Map_Label = {
   // 地图底部导航
   MAP: 'Carte',
@@ -14,12 +14,12 @@ const Map_Label = {
   ENCLOSURE: 'Enceinte',
 }
 
-//地图、场景主菜单
+// 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Carte en cours',
   CURRENT_SCENCE: 'Current', // 待翻译
   // 地图制图及公共 开始
-  START: 'Start',
+  START: 'Début',
   START_OPEN_MAP: 'Ovrir la carte',
   START_NEW_MAP: 'Nouvelle carte',
   START_RECENT: 'Récent',
@@ -46,36 +46,36 @@ const Map_Main_Menu = {
   NAVIGATION_WORKSPACE: 'Espace de travail de navigation',
   NAVIGATION_MAP: 'NAVIGATION_CARTE',
   NETWORK: 'RÉSEAU',
-  NETWORK_MODULE: '路网',
+  NETWORK_MODULE: 'Réseau',
   NETMODEL: 'Modèle de réseau',
   NETDATA: 'DONNÉES DE RÉSEAU',
   INDOORDATA: 'DONNÉES INTÉRIEURES',
-  INDOOR_DATASOURCE: '室内数据源',
-  OUTDOOR_DATASETS: '室外数据集',
-  SWITCH_DATA: '导航数据切换',
+  INDOOR_DATASOURCE: 'Sources de données intérieures',
+  OUTDOOR_DATASETS: 'Ensembles de données extérieurs',
+  SWITCH_DATA: 'Commutation de données',
   DATASET: 'Ensemble de données',
   Traffic: 'Trafic',
 
   ANALYSIS: 'Analyse',
-  PROCESS: '处理',
+  PROCESS: 'Processus',
 
   NEW_DATASOURCE: 'Nouvelle source de données',
   // 图例设置
   LEGEND_COLUMN: 'Numéro de colonne',
   LEGEND_WIDTH: 'Largeur',
   LEGEND_HEIGHT: 'Hauteur',
-  LEGEND_FONT: '字体大小',
-  LEGEND_ICON: '图标大小',
+  LEGEND_FONT: 'Taille de police',
+  LEGEND_ICON: "Taille de l'image",
   LEGEND_COLOR: 'Couleur',
-  LEGEND_POSITION: '图例位置',
-  TOP_LEFT: '左上对齐',
-  TOP_RIGHT: '右上对齐',
-  LEFT_BOTTOM: '左下对齐',
-  RIGHT_BOTTOM: '右下对齐',
+  LEGEND_POSITION: 'Position de la légende',
+  TOP_LEFT: 'Alignement Haut-Gauche',
+  TOP_RIGHT: 'Alignement Bas-Gauche',
+  LEFT_BOTTOM: 'Lower Left Alignment', //待翻译
+  RIGHT_BOTTOM: 'Alignement Bas-Droite',
 
   // 地图制图及公共 风格
-  STYLE: 'Styles',
-  STYLE_EDIT: '风格编辑',
+  STYLE: 'Modes',
+  STYLE_EDIT: 'Modifier le Mode',
   STYLE_SYMBOL: 'Symbole',
   STYLE_SIZE: 'Dimension',
   STYLE_SYMBOL_SIZE: 'Taille du symbole',
@@ -116,7 +116,7 @@ const Map_Main_Menu = {
   TOOLS_AREA_MEASUREMENT: 'Zone\n Mesure',
   TOOLS_AZIMUTH_MEASUREMENT: "Mesure d'azimut",
   TOOLS_SELECT: 'Sélectionner',
-  TOOLS_RECTANGLE_SELECT: 'Sélection rectangle',
+  TOOLS_RECTANGLE_SELECT: 'Sélection rectangulaire',
   TOOLS_ROUND_SELECT: 'Sélection circulaire',
   FULL_SCREEN: 'Plein écran',
 
@@ -158,7 +158,7 @@ const Map_Main_Menu = {
   TOUR_NAME: 'Nom du tour',
 
   STYLE_TRANSFER: 'Cartographie IA',
-  OBJ_EDIT: '对象编辑',
+  OBJ_EDIT: 'Edit Object',
 
   TOOLS_MAGNIFIER: 'Loupe',
   TOOLS_SELECT_ALL: 'Tout sélectionner',
@@ -174,9 +174,9 @@ const Map_Main_Menu = {
   TOOLS_CROSS_CLIP: 'Clip croisé',
   // 三维 飞行
   FLY: 'Survoler',
-  FLY_ROUTE: 'Itinéraire de vol',
+  FLY_ROUTE: 'Itinéraire du survol',
   FLY_ADD_STOPS: 'Ajouter des Stops',
-  FLY_AROUND_POINT: "Voler autour d'un point",
+  FLY_AROUND_POINT: "Survoler autour d'un point",
 
   // 三维裁剪
   CLIP_LAYER: 'Couches',
@@ -188,7 +188,7 @@ const Map_Main_Menu = {
   CLIP_AREA_SETTINGS_YROT: 'y pivoter',
   CLIP_AREA_SETTINGS_ZROT: 'Z pivoter',
   POSITION: 'Position',
-  CLIP_SETTING: 'Clip settings',
+  CLIP_SETTING: 'Paramètres du clip',
   CLIP_INNER: 'Paramètres de clip',
   LINE_COLOR: 'Couleur de ligne',
   LINE_OPACITY: 'Opacité de ligne',
@@ -220,8 +220,8 @@ const Map_Main_Menu = {
   THEME_DOT_DENSITY_MAP: 'Densité de points\n Carte',
   THEME_GRADUATED_SYMBOLS_MAP: 'Gradué\n Symboles carte',
   THEME_HEATMAP: 'Carte de chaleur',
-  THEME_CRID_UNIQUE: '栅格单值专题图',
-  THEME_CRID_RANGE: '栅格分段专题图',
+  THEME_CRID_UNIQUE: 'Grid Unique',
+  THEME_CRID_RANGE: 'Grid Range',
 
   THEME_ALL_SELECTED: 'Tout Sélectionner',
   THEME_ALL_CANCEL: 'Tout Annuler',
@@ -265,15 +265,15 @@ const Map_Main_Menu = {
   THEME_MIN_VISIBLE_SIZE: 'Taille min de visibilité',
 
   // 自定义专题图设置
-  THEME_RANGES_LABEL_MAP_TITLE: '分段标签专题图',
-  THEME_RANGES_MAP_TITLE: '分段风格专题图',
-  THEME_UNIQUE_VALUES_MAP_TITLE: '单值风格专题图',
-  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: '单值标签专题图',
-  RANGE: '段数',
-  PREVIEW: '预览',
-  CUSTOM_THEME_MAP: '自定义专题图',
-  COLOR_PICKER: '色盘',
-  USER_DEFINE: '用户自定义',
+  THEME_RANGES_LABEL_MAP_TITLE: 'Plages des étiquettes de carte',
+  THEME_RANGES_MAP_TITLE: 'Carte des plages',
+  THEME_UNIQUE_VALUES_MAP_TITLE: 'Carte des valeurs uniques',
+  THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "Carte d'étiquette de valeur unique",
+  RANGE: 'Plage',
+  PREVIEW: 'Aperçu',
+  CUSTOM_THEME_MAP: 'Carte thématique personnalisée',
+  COLOR_PICKER: 'Pipette à couleurs',
+  USER_DEFINE: "Défini par l'utilisateur",
 
   DOT_VALUE: 'Valeur du point',
   GRADUATE_BY: 'Granduer par',
@@ -283,9 +283,9 @@ const Map_Main_Menu = {
   // 外业采集 采集
   CREATE_WITH_SYMBOLS: 'Créer avec des symboles',
   CREATE_WITH_TEMPLATE: 'Créer avec un modèle',
-  POINT_SYMBOL_LIBRARY: '点符号库',
-  LINE_SYMBOL_LIBRARY: '线型符号库',
-  REGION_SYMBOL_LIBRARY: '填充符号库',
+  POINT_SYMBOL_LIBRARY: 'Bibliothèque de marqueurs',
+  LINE_SYMBOL_LIBRARY: 'Bibliothèque de lignes',
+  REGION_SYMBOL_LIBRARY: 'Remplir la bibliothèque',
 
   COLLECTION: 'Collecte',
   COLLECTION_RECENT: 'Récent',
@@ -320,7 +320,7 @@ const Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'Remplir le creux',
   EDIT_CANCEL_SELECTION: 'Annuler la sélection',
   MOVE: 'Déplacer',
-  OBJMOVE: '对象平移',
+  OBJMOVE: 'Move',
   FREE_DRAW_ERASE: 'Effacer dessin libre',
 
   // 标绘
@@ -340,17 +340,17 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'Route\nRéseau',
 
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
-  MAP_AR_MEASURE: 'AR Measure', //待翻译
-  MAP_AR_ANALYZE: 'AR Analyze', //待翻译
-  MAP_AR_MAPPING: 'AR Mapping',
-  MAP_AR_TOOL: 'AR Tool', //待翻译
+  MAP_AR_MEASURE: 'Mesure RA',
+  MAP_AR_ANALYZE: 'Analyse RA',
+  MAP_AR_MAPPING: 'Cartographie RA',
+  MAP_AR_TOOL: 'Outil RA',
   MAP_AR_CAMERA_EXCEPTION: "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
   MAP_AR_AI_ASSISTANT: 'IA\nCollecte',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Collecte personnalisée',
   MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Collecte municipale',
   MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'Collecte des violations',
-  MAP_AI_POSE_ESTIMATION: 'Pose Estimation', //待翻译
-  MAP_AI_GESTURE_BONE: 'Gesture Bone', //待翻译
+  MAP_AI_POSE_ESTIMATION: 'Pose Estimation',
+  MAP_AI_GESTURE_BONE: 'Gesture Bone',
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'Collecte de route',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'Carte POI',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'Mesure IA',
@@ -360,26 +360,26 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'Collecte de haute précision',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illégalement-Pack Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Modèle en fonte',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone AR',
-  MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR allant',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'Dessin au trait AR',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR photo',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'Points de tirage AR',
-  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Mesure de hauteur AR',
-  MAP_AR_VIDEO: 'AR Video', //待翻译
-  MAP_AR_IMAGE: 'AR Picture',
-  MAP_AR_EFFECT: 'AR Effect',
-  MAP_AR_WEBVIEW: 'AR WebPage',
-  MAP_AR_TEXT: 'AR Text',
-  MAP_AR_SELECT_EFFECT: 'Select Effect',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'allant RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'Dessin au trait RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'Photo RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'Points de tirage RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Mesure de hauteur RA',
+  MAP_AR_VIDEO: 'Video RA',
+  MAP_AR_IMAGE: 'Image RA',
+  MAP_AR_EFFECT: 'Effet RA',
+  MAP_AR_WEBVIEW: 'Page Web RA',
+  MAP_AR_TEXT: 'Texte RA',
+  MAP_AR_SELECT_EFFECT: 'Sélectionnez un effet',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Nouvelles données',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Remplissez le nom',
-  MAP_AR_TO_CURRENT_POSITION: 'to Current', //待翻译
-  MAP_AR_SELECT_POINT_PLANE: 'to Plane',
-  MAP_AR_ADD_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_ADD_TO_PLANE: 'Select Point',
-  MAP_AR_MOVE_TO_CURRENT_POSITION: 'to Current',
-  MAP_AR_MOVE_TO_PLANE: 'Select Point',
+  MAP_AR_TO_CURRENT_POSITION: 'Au courant',
+  MAP_AR_SELECT_POINT_PLANE: 'Au Plan',
+  MAP_AR_ADD_TO_CURRENT_POSITION: 'Au courant',
+  MAP_AR_ADD_TO_PLANE: 'Sélectionnez un point',
+  MAP_AR_MOVE_TO_CURRENT_POSITION: 'Au courant',
+  MAP_AR_MOVE_TO_PLANE: 'Sélectionnez un point',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Tournez à gauche',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Tournez à droite',
@@ -410,30 +410,27 @@ const Map_Main_Menu = {
   MAP_AR_AI_CHANGE: 'Changement',
   MAP_AR_AI_CLEAR: 'Effacer',
   MAP_AR_AI_NEW_ROAD: 'Veuillez créer une nouvelle route',
-
-  // 待翻译
-  MAP_AR_AI_SAVE_REGION: 'Save Region',
-  MAP_AR_AI_SCENE_TRACK_COLLECT: 'Track Collect',
-  MAP_AR_AI_SCENE_POINT_COLLECT: 'Point Collect',
-  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: 'Click the screen to determine the current point',
-
+  MAP_AR_AI_SAVE_REGION: 'Enregistrer la région',
+  MAP_AR_AI_SCENE_TRACK_COLLECT: 'Suivre la collecte',
+  MAP_AR_AI_SCENE_POINT_COLLECT: 'Collecte de points',
+  MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT: "Cliquez sur l'écran pour déterminer le point actuel",
   MAP_AR_AI_MEASURE_LENGTH: 'Mesure de longueur',
   MAP_AR_AI_MEASURE_AREA: 'Zone de mesure',
-  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //待翻译
-  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan', //待翻译
-  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook', //待翻译
-  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look', //待翻译
-  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'Switch Camera', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'Association Map', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'Association Cancel', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: 'Up', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: 'Down', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: 'Left', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'Right', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'Shrink', //待翻译
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'Magnify', //待翻译
-  MAP_AI_GESTURE_BONE_DETAIL: 'Gesture detail', //待翻译
-  MAP_AI_GESTURE_BONE_CLOSE: 'Close', //待翻译
+  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom',
+  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan',
+  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook',
+  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look',
+  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'Changer de caméra',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'Carte des associations',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'Association Annuler',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: 'Haut',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: 'Bas',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: 'Gauche',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'Droit',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'Rétrécir',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'Amplifier',
+  MAP_AI_GESTURE_BONE_DETAIL: 'Détail du geste',
+  MAP_AI_GESTURE_BONE_CLOSE: 'Fermer',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'Classifier le chargement',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'Échec de la classification, réessayer',
@@ -487,42 +484,42 @@ const Map_Main_Menu = {
   MY_LOCATION: 'Ma position',
 
   //导航采集
-  MAP_INDOOR_NETWORK: 'Indoor', //待翻译
-  MAP_OUTDOOR_NETWORK: 'Outdoor',
+  MAP_INDOOR_NETWORK: 'Intérieur',
+  MAP_OUTDOOR_NETWORK: 'Extérieur',
 
-  MAP_INCREMENT_START: 'Start',
+  MAP_INCREMENT_START: 'Début',
   MAP_INCREMENT_STOP: 'Stop',
-  MAP_INCREMENT_ADD_POINT: 'Add point',
-  MAP_INCREMENT_CANCEL: 'Cancel',
-  MAP_INCREMENT_COMMIT: 'Commit',
+  MAP_INCREMENT_ADD_POINT: 'Ajouter un point',
+  MAP_INCREMENT_CANCEL: 'Annuler',
+  MAP_INCREMENT_COMMIT: 'Commettre',
 
-  MAP_INCREMENT_GPS_POINT: 'Collect Points by GPS',
-  MAP_INCREMENT_GPS_TRACK: 'Collect Line by GPS',
-  MAP_INCREMENT_POINTLINE: 'Point Draw',
-  MAP_INCREMENT_FREELINE: 'Free Draw',
+  MAP_INCREMENT_GPS_POINT: 'Collectez des points par GPS',
+  MAP_INCREMENT_GPS_TRACK: 'Collecter des lignes par GPS',
+  MAP_INCREMENT_POINTLINE: 'Dessin de point',
+  MAP_INCREMENT_FREELINE: 'Tirage gratuit',
 
-  MAP_TOPO_ADD_NODE: 'Add Node',
-  MAP_TOPO_EDIT_NODE: 'Edit node',
-  MAP_TOPO_DELETE_NODE: 'Delete node',
-  MAP_TOPO_DELETE_OBJECT: 'Delete object',
-  MAP_TOPO_SMOOTH: 'Smooth',
-  MAP_TOPO_SPLIT_LINE: 'Line Split',
-  MAP_TOPO_SPLIT: 'Interrupt',
-  MAP_TOPO_EXTEND: 'Extend',
-  MAP_TOPO_TRIM: 'Trim',
-  MAP_TOPO_RESAMPLE: 'Re-sampling',
-  MAP_TOPO_CHANGE_DIRECTION: 'Change Direction',
-  ADD_DATASET: 'Append Dataset',
-  SELECT_ROADNAME_FIELD: 'Select the Road Name Field',
-  SELECT_FIELD: 'Select Field',
-  MERGE_CANCEL: 'Cancel',
-  MERGE_CONFIRM: 'Confirm',
-  MERGE_SELECT_ALL: 'Select All',
-  MERGE_ADD: 'Append',
-  MERGE_DATASET: 'Merge Datasets',
+  MAP_TOPO_ADD_NODE: 'Ajouter un nœud',
+  MAP_TOPO_EDIT_NODE: 'Modifier le nœud',
+  MAP_TOPO_DELETE_NODE: 'Supprimer le nœud',
+  MAP_TOPO_DELETE_OBJECT: "Supprimer l'objet",
+  MAP_TOPO_SMOOTH: 'Lisse',
+  MAP_TOPO_SPLIT_LINE: 'Division de ligne',
+  MAP_TOPO_SPLIT: 'Interrompre',
+  MAP_TOPO_EXTEND: 'Étendre',
+  MAP_TOPO_TRIM: 'Réduire',
+  MAP_TOPO_RESAMPLE: 'Rééchantillonnage',
+  MAP_TOPO_CHANGE_DIRECTION: 'Changer de direction',
+  ADD_DATASET: 'Ajouter un jeu de données',
+  SELECT_ROADNAME_FIELD: 'Sélectionnez le champ Nom de la route',
+  SELECT_FIELD: 'Sélectionnez un champ',
+  MERGE_CANCEL: 'Annuler',
+  MERGE_CONFIRM: 'Confirmer',
+  MERGE_SELECT_ALL: 'Tout sélectionner',
+  MERGE_ADD: 'Joindre',
+  MERGE_DATASET: 'Fusionner les ensembles de données',
 }
 
-//推演动画
+// 推演动画
 const Map_Plotting = {
   PLOTTING_ANIMATION_MODE: "Mode d'animation",
   PLOTTING_ANIMATION_OPERATION: 'Opération de résultat',
@@ -536,7 +533,7 @@ const Map_Plotting = {
   PLOTTING_ANIMATION_SCALE: 'Échelle',
   PLOTTING_ANIMATION_GROW: 'Grandir',
 
-  PLOTTING_ANIMATION_START_TIME: 'Heure de début',
+  PLOTTING_ANIMATION_START_TIME: 'Temps de début',
   PLOTTING_ANIMATION_DURATION: 'Durée',
   PLOTTING_ANIMATION_FLLOW_LAST: 'Suivre la dernière animation',
   PLOTTING_ANIMATION_CLICK_START: 'Cliquez sur Démarrer',
@@ -589,12 +586,12 @@ const Map_Plotting = {
   ANIMATION_NODE_EDIT: "Editer l'animation",
 }
 
-//图层
+// 图层
 const Map_Layer = {
   PLOTS: 'Mes marques',
   PLOTS_IMPORT: 'Importer des marques',
   PLOTS_DELETE: 'Supprimer les marques',
-  PLOTS_EDIT: '编辑标注',
+  PLOTS_EDIT: 'Edit Marks',
   PLOTS_SET_AS_CURRENT: 'Définir comme marques en cours',
 
   LAYERS: 'Mes couches',
@@ -617,7 +614,7 @@ const Map_Layer = {
   LAYERS_MAXIMUM: 'Échelle de visibilité maximale',
   LAYERS_MINIMUM: 'Échelle de visibilité minimale',
   LAYERS_UER_DEFINE: "Définir par l'utilisateur",
-  LAYER_NONE: '无',
+  LAYER_NONE: 'None',
   LAYERS_SET_AS_CURRENT_SCALE: 'Définir comme échelle en cours',
   LAYERS_CLEAR: 'Effacer',
   LAYERS_LAYER_NAME: 'Nom de la couche',
@@ -649,34 +646,33 @@ const Map_Layer = {
   BASEMAP_SWITH: 'interchanger fond de  carte',
   MY_TERRAIN: 'Mon terrain',
 
-  //待翻译
-  SCALE_TO_CURRENT_LAYER: 'Scale to the current layer',
-  ADD_A_TERRAIN_LAYER: 'Add a terrain layer',
-  ADD_A_IMAGE_LAYER: 'Add a image layer',
-  REMOVE_THE_CURRENT_LAYER: 'Remove the current layer',
-  ONLINE_BASE_MAP: 'Online BaseMap',
-  ADD_LAYER_URL: 'Add Layer Url',
+  SCALE_TO_CURRENT_LAYER: "Mettre à l'échelle la couche actuelle",
+  ADD_A_TERRAIN_LAYER: 'Ajouter une couche de terrain',
+  ADD_A_IMAGE_LAYER: "Ajouter une couche d'image",
+  REMOVE_THE_CURRENT_LAYER: 'Supprimer la couche actuelle',
+  ONLINE_BASE_MAP: 'Carte de base en ligne',
+  ADD_LAYER_URL: 'Ajouter une URL de la couche',
   TERRAIN: 'Terrain',
   IMAGE: 'Image',
-  IS_ADD_NOTATION_LAYER: 'Do you want to add the notation layer',
+  IS_ADD_NOTATION_LAYER: 'Voulez-vous ajouter la couche de notation',
 
-  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'Display Mode', //待翻译
-  LAYER_SETTING_IMAGE_STRETCH_TYPE: 'Stretch Type',
+  LAYER_SETTING_IMAGE_DISPLAY_MODE: "Mode d'affichage",
+  LAYER_SETTING_IMAGE_STRETCH_TYPE: "Type d'extension",
   DISPLAY_MODE_COMPOSITE: 'Composite',
-  DISPLAY_MODE_STRETCHED: 'Stretched',
-  STRETCH_TYPE_NONE: 'None',
-  STRETCH_TYPE_STANDARDDEVIATION: 'Standard Deviation',
-  STRETCH_TYPE_MINIMUMMAXIMUM: 'Minimun Maximum',
-  STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'Histogram Equalization',
-  STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'Histogram Specification',
-  STRETCH_TYPE_GAUSSIAN: 'Gaussian',
+  DISPLAY_MODE_STRETCHED: 'Etendu',
+  STRETCH_TYPE_NONE: 'Aucun',
+  STRETCH_TYPE_STANDARDDEVIATION: 'Écart-type',
+  STRETCH_TYPE_MINIMUMMAXIMUM: 'Minimum Maximum',
+  STRETCH_TYPE_HISTOGRAMEQUALIZATION: "Égalisation d'histogramme",
+  STRETCH_TYPE_HISTOGRAMSPECIFICATION: "Spécification de l'histogramme",
+  STRETCH_TYPE_GAUSSIAN: 'Gaussien',
 }
 
-//属性
+// 属性
 const Map_Attribute = {
   ATTRIBUTE_SORT: 'Trier',
   ATTRIBUTE_LOCATION: 'Emplacement',
-  ATTRIBUTE_CANCEL: '取消',
+  ATTRIBUTE_CANCEL: 'Annuler',
   ATTRIBUTE_EDIT: 'Éditer',
   ATTRIBUTE_STATISTIC: 'Statistique',
   ATTRIBUTE_ASSOCIATION: 'Association',
@@ -690,14 +686,14 @@ const Map_Attribute = {
   ATTRIBUTE_REDO: 'Refaire',
   ATTRIBUTE_REVERT: 'Revenir',
   ATTRIBUTE_FIELD_ADD: 'Ajouter',
-  ATTRIBUTE_ADD: '添加属性',
-  ATTRIBUTE_DETAIL: '属性详情',
-  REQUIRED: '必填',
-  NAME: '名称',
-  TYPE: '类型',
-  LENGTH: '长度',
-  DEFAULT: '缺省值',
-  CONFIRM_ADD: '确认',
+  ATTRIBUTE_ADD: 'Add Attribute',
+  ATTRIBUTE_DETAIL: 'Attribute Detail',
+  REQUIRED: 'Obligatoire',
+  NAME: 'Nom',
+  TYPE: 'Type',
+  LENGTH: 'Longueur',
+  DEFAULT: 'Défaut',
+  CONFIRM_ADD: 'Ajouter',
 
   DETAIL: 'Détail',
   // 统计模式
@@ -720,8 +716,8 @@ const Map_Setting = {
   ROTATION_GESTURE: 'Geste de rotation',
   PITCH_GESTURE: 'Le Pas de Geste',
   THEME_LEGEND: 'Légende du thème',
-  COLUMN_NAV_BAR: '横屏时纵向显示导航栏',
-  REAL_TIME_SYNC: '实时同步',
+  COLUMN_NAV_BAR: 'Barre de navigation verticale en mode paysage',
+  REAL_TIME_SYNC: 'Synchronisation en temps réel',
 
   // 效果设置
   EFFECT_SETTINGS: "Paramètres d'effet",
@@ -757,9 +753,9 @@ const Map_Settings = {
   DRAWING_RANGE: 'Plage de dessin',
 
   //目标识别二级菜单
-  Beta: '(Fonction Expérimentale)',
+  Beta: '(Experience Function)', //待翻译
 
-  // 视频地图设置	一级菜单
+  // 视频地图设置
   POI_SETTING: 'Paramètres POI',
   DETECT_TYPE: 'Détecter les types',
   DETECT_STYLE: 'Détecter le style',
@@ -882,7 +878,7 @@ const Map_Settings = {
   OFF: 'OFF',
   CONFIRM: 'Confirmer',
   CANCEL: 'Annuler',
-  COPY: 'Copie',
+  COPY: 'Copier',
 }
 
 // 地图工具
@@ -914,23 +910,23 @@ const Map_PoiTitle = {
 
 // 采集模板
 const Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Template Management', // 待翻译
-  COLLECTION_TEMPLATE_CREATE: 'Create Template',
-  COLLECTION_TEMPLATE_NAME: 'Template Name',
-  ELEMENT_SETTINGS: 'Element Settings',
-  ELEMENT_STORAGE: 'Element Storage',
-  ATTRIBUTE_SETTINGS: 'Attribute Settings',
-  CURRENT_TEMPLATE: 'Current',
-  DEFAULT_TEMPLATE: 'Default Template',
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Gestion des modèles',
+  COLLECTION_TEMPLATE_CREATE: 'Créer un modèle',
+  COLLECTION_TEMPLATE_NAME: 'Nom du modèle',
+  ELEMENT_SETTINGS: 'Paramètres des éléments',
+  ELEMENT_STORAGE: 'Stockage des éléments',
+  ATTRIBUTE_SETTINGS: "Paramètres d'attribut",
+  CURRENT_TEMPLATE: 'Modèle en cour',
+  DEFAULT_TEMPLATE: 'Modèle par défaut',
 
-  ELEMENT_NAME: 'Element Name',
-  ELEMENT_CODE: 'Element Code',
+  ELEMENT_NAME: "Nom de l'élément",
+  ELEMENT_CODE: "Code d'élément",
 
-  CREATE_ROOT_NODE: 'Create Root Node',
-  CREATE_CHILD_NODE: 'Create Chile Node',
-  INSERT_NODE: 'Insert Node',
+  CREATE_ROOT_NODE: 'Créer un nœud racine',
+  CREATE_CHILD_NODE: 'Créer un nœud Chili',
+  INSERT_NODE: 'Insérer un nœud',
 
-  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
+  TEMPLATE_ERROR: "Impossible d'utiliser le modèle tant que la carte n'a pas été enregistrée",
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

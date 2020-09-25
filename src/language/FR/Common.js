@@ -1,18 +1,18 @@
 const Protocol = {
-  PROTOCOL: 'Contrat de service utilisateur SuperMap',
+  PROTOCOL: 'Contrat de service utilisateurs SuperMap',
   AGREE: "D'accord",
   READ_AND_AGREE: "J'ai lu et j'accepte les conditions ci-dessus",
 }
 
 const Common = {
-  UP: 'Up', //待翻译
-  DOWN: 'Down',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  FRONT: 'Front',
-  BACK: 'Back',
+  UP: 'Haut',
+  DOWN: 'Bas',
+  LEFT: 'Gauche',
+  RIGHT: 'Droit',
+  FRONT: 'Avant',
+  BACK: 'Arrière',
 
-  PARAMETER: 'Parameter',
+  PARAMETER: 'Paramètre',
 }
 
 export { Protocol, Common }

@@ -203,7 +203,7 @@ const Analyst_Labels = {
   REGISTRATION_ASSOCIATION: 'İlişkili tarama',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'Bağlantı kaldırıldı',
-  REGISTRATION_EXECUTE: 'infaz',
+  REGISTRATION_EXECUTE: 'Kayıt gerçekleştirme',
   REGISTRATION_EXECUTE_SUCCESS: 'Başarılı uygulama',
   REGISTRATION_EXECUTE_FAILED: 'Yürütme başarısız',
   REGISTRATION_SAVE_AS: 'Farklı kaydet',
@@ -246,7 +246,7 @@ const Analyst_Labels = {
   OFFSET: 'dengelemek',
   RATIO_DIFFERENCE: 'Oransal fark',
   TARGET_COORDS: 'Hedef koordinat sistemi',
-  COPY: 'kopya',
+  COPY: 'Kopya',
   RESETING: 'Sıfırla',
   GEOCOORDSYS: 'Coğrafi koordinat sistemi',
   PRJCOORDSYS: 'Öngörülen koordinat sistemi',
@@ -272,27 +272,27 @@ const Convert_Unit = {
   /// 分米。
   DECIMETER: 'Dm',
   /// 平方分米。
-  SQUAREDECIMETER: 'Kare decimetres',
+  SQUAREDECIMETER: 'Dm2',
   ///  英尺。
-  FOOT: 'ayak',
+  FOOT: 'Ayak',
   ///  平方英尺。
   SQUAREFOOT: 'Fit Kare',
   ///  码。
-  YARD: 'kod',
+  YARD: 'Yard',
   ///  平方码。
-  SQUAREYARD: 'Kare bahçe',
+  SQUAREYARD: 'Yard2',
   ///  米。
   METER: 'Metre',
   ///  平方米。
-  SQUAREMETER: 'Metrekare',
+  SQUAREMETER: 'Metre2',
   /// 千米。
   KILOMETER: 'km',
   /// 平方千米。
-  SQUAREKILOMETER: 'kilometre kare',
+  SQUAREKILOMETER: 'kilometre2',
   /// 平方英里。
   MILE: 'Mil kare',
   /// 英里。
-  SQUAREMILE: 'mil',
+  SQUAREMILE: 'mil2',
   ///  秒。
   SECOND: 'ikinci',
   ///  分。
@@ -305,9 +305,9 @@ const Convert_Unit = {
 
 const Analyst_Params = {
   // 缓冲区分析
-  BUFFER_LEFT_AND_RIGHT: 'Sol ve Sağ',
-  BUFFER_LEFT: 'Sol',
-  BUFFER_RIGHT: 'Sağ',
+  BUFFER_LEFT_AND_RIGHT: 'Sol ve Sağ Buffer',
+  BUFFER_LEFT: 'Sol Buffer',
+  BUFFER_RIGHT: 'Sağ Buffer',
 
   // 分析方法
   SIMPLE_DENSITY_ANALYSIS: 'Basit Yoğunluk Analizi',
@@ -327,7 +327,7 @@ const Analyst_Params = {
   // 长度单位
   METER: 'm',
   KILOMETER: 'km',
-  YARD: 'yarda',
+  YARD: 'yard',
   FOOT: 'ft',
   MILE: 'mil',
 

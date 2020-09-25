@@ -1,54 +1,54 @@
 const Find = {
   TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'Données publiques',
-  APPLET: 'Applet', //待翻译
-  GIS_ACADEMY: 'GIS Academy', //待翻译
-  SEARCH_RESULT: 'Search Result', //待翻译
-  BACK: 'Retour',
-  CONFIRM: 'Search', //待翻译
-  RESET: 'Reset', //待翻译
+  APPLET: 'Applet',
+  GIS_ACADEMY: 'Académie GIS',
+  SEARCH_RESULT: 'Résultat de recherche',
+  BACK: 'Arrière',
+  CONFIRM: 'Chercher',
+  RESET: 'Réinitialiser',
 
-  ALL: 'All', //待翻译
-  ONLINE_WORKSPACE: 'Workspace', //待翻译
+  ALL: 'Tout',
+  ONLINE_WORKSPACE: 'Espace de travail',
   ONLINE_DATASOURCE: 'Source de données',
-  ONLINE_MAP_RESOURCE: 'Ressource cartographique',
-  ONLINE_COLORSCHEME: 'Schema de couleur',
-  ONLINE_SYMBOL: 'Symbole',
+  ONLINE_MAP_RESOURCE: 'Carte de Ressources',
+  ONLINE_COLORSCHEME: 'Schéma de couleurs',
+  ONLINE_SYMBOL: 'symbole',
 
-  SORT_BY_NAME: 'Ordonner par nom',
-  SORT_BY_TIME: 'Ordonner par heure',
+  SORT_BY_NAME: 'Trier par nom',
+  SORT_BY_TIME: 'Trier par temps',
   SELECT_DATATYPES: 'Sélectionnez les données',
 
   SELECT_DATATYPES_FIRST: "Veuillez d'abord sélectionner les données",
   NO_DATA: 'Données non trouvées',
   NETWORK_ERROR: 'Erreur réseau, veuillez réessayer plus tard',
-  NO_MORE_DATA: 'Plus de données trouvées',
-  DOWNLOADED: 'Download successful. You can import this data at Import',
-  
-  LABORATORY: 'Laboratory', // 待翻译
-  ONLINE_COWORK: 'Online Cowork',
-  COWORK_LOGIN: 'Please login SuperMap Online',
-  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
-  RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
-  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
-  APPLET_RESETTING: 'Rest', // 待翻译
+  NO_MORE_DATA: 'Pas de données trouvées',
+  DOWNLOADED: 'Téléchargement réussi. Vous pouvez importer ces données dans Importer',
 
-  // 待翻译
-  PUBLIC_MAP_INFO: 'Provides public services published by users',
-  PUBLIC_DATA_INFO: 'Provides various public data published by users',
-  SUPERMAP_INFO: 'Shares the latest news and brand activities',
-  SUPERMAP_KNOW_INFO: 'Get professional technical services and consultation',
-  SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
-  GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
-  ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
-  
+  LABORATORY: 'Laboratory', // 待翻译
+  ONLINE_COWORK: 'Coworking en ligne',
+  COWORK_LOGIN: 'Veuillez vous connecter à SuperMap en ligne',
+  APPLET_DOWNLOADED_RELOAD: "Téléchargement terminé, rechargez l'applet",
+  RELOAD: 'Recharger',
+  APPLET_RESET_OLD_VERSION: 'Ou revenir à la version précédente?',
+  APPLET_OLD_VERSION_ALREADY: "C'est la version originale",
+  APPLET_RESET_FAILED: 'Échec de réinitialisation',
+  APPLET_RESETTING: 'Réinitialiser',
+
+  PUBLIC_MAP_INFO: 'Fourniture des services publics publiés par les utilisateurs',
+  PUBLIC_DATA_INFO: 'Fourniture de diverses données publiques publiées par les utilisateurs',
+  SUPERMAP_INFO: 'Partage de dernières nouvelles et activités de la marque',
+  SUPERMAP_KNOW_INFO: 'Obtenez des services techniques et des conseils professionnels',
+  SUPERMAP_FORUM_INFO: 'Bienvenue dans la communauté de communication sur la technologie SuperMap',
+  GIS_ACADEMY_INFO: 'Fournit une grande quantité de tutoriels sur SuperMap GIS',
+  ONLINE_COWORK_INFO: 'Prend en charge la coopération entre plusieurs utilisateurs.',
+  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
+
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.',// 待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.',// 待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.' // 待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //待翻译
+  BETA_TIPS: 'Tips: This is only a experimental beta feature.', //待翻译
 }
 
 export { Find }

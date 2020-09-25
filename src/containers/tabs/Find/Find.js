@@ -312,7 +312,7 @@ export default class Find extends Component {
           })}
           {this._renderItem({
             title: getLanguage(this.props.language).Find.LABORATORY,
-            subTitle: getLanguage(this.props.language).Find.LABORATORY,
+            subTitle: getLanguage(this.props.language).Find.LABORATORY_INFO,
             leftImagePath: getThemeAssets().find.laboratory,
             isInformSpot: false,
             onClick: () => {

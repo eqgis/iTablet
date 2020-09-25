@@ -24,7 +24,7 @@ const Find = {
   NETWORK_ERROR: 'خطأ في الشبكة ، يرجى المحاولة مرة أخرى لاحقًا',
   NO_MORE_DATA: 'لم يتم العثور على مزيد من البيانات',
   DOWNLOADED: 'Download successful. You can import this data at Import',
-  
+
   LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'Online Cowork',
   COWORK_LOGIN: 'Please login SuperMap Online',
@@ -42,11 +42,12 @@ const Find = {
   SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
   GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
   ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
+  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
   // 实验室
   LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.',// 待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.',// 待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.' // 待翻译
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', // 待翻译
+  BETA_TIPS: 'Tips: This is only a experimental beta feature.', // 待翻译
 }
 
 export { Find }

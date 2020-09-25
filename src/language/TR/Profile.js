@@ -12,17 +12,17 @@ const Profile = {
   SETTINGS: 'Ayarlar',
   COLOR_SCHEME: 'Renk Şeması',
   TEMPLATE: 'Taslak',
-  AIMODEL: 'AI Model', //待翻译
+  AIMODEL: 'AI Modeli',
   COLLECTION_TEMPLATE: 'Ölçme Taslağı',
   PLOTTING_TEMPLATE: 'Çizim Şablonu',
   NAVIGATION: 'Navigasyon',
   INCREMENT: 'Arttırım',
   ENCLOSURE: 'Çevreleme',
 
-  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
-  MY_MODEL: 'My Model', //待翻译
+  MY_COLOR_SCHEME: 'Renk Şemalarım',
+  MY_MODEL: 'Modellerim',
 
-  SELECT_MODEL: 'Select Model', //待翻译
+  SELECT_MODEL: 'Model Seç',
 
   // 我的——登录
   LOGIN: 'Giriş',
@@ -33,11 +33,11 @@ const Profile = {
   EMAIL_LOGIN: '’E-posta Girişi',
   ENTER_EMAIL_OR_USERNAME: 'Lütfen e-postanızı ya da kullanıcı adınızı girin',
   ENTER_MOBILE: 'Lütfen cep telefon numaranızı girin',
-  USERNAME_ALL: 'phone number/email/nickname', //待翻译
+  USERNAME_ALL: 'Telefon numarası/E-mail/Kullanıcı Adı',
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
   RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again',
+  PASSWORD_DISMATCH: 'The passwords are different, please check again', //待翻译
   REGISTER: 'Kayıt ol',
   FORGET_PASSWORD: 'Şifrenizi mi unuttunuz?',
   RESET_PASSWORD: 'Şifreyi Sıfırla',
@@ -61,7 +61,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'Hesap Değiştir',
   LOG_OUT: 'Oturumu Kapat',
 
-  SWITCH: 'Switch', //待翻译
+  SWITCH: 'Değiştir',
   SWITCH_CURRENT: 'Bu kullanıcı ile zaten giriş yaptınız',
   SWITCHING: 'Değiştiriliyor...',
   SWITCH_FAIL: 'Geçiş başarısız, lütfen bu kullanıcıyla tekrar giriş yapmayı deneyin',
@@ -124,12 +124,10 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'Renk Şemasını Sil',
   BATCH_SHARE: 'Toplu Paylaş',
   BATCH_DELETE: 'Toplu Sil',
-  BATCH_ADD: 'Batch Add', // 待翻译
+  BATCH_ADD: 'Toplu Ekle',
   BATCH_OPERATE: 'Toplu İşlem',
-  MY_APPLET: 'My Applet', // 待翻译
-
-  // 待翻译
-  UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
+  MY_APPLET: 'Uygulamalarım',
+  UN_DOWNLOADED_APPLET: 'Yüklenmemiş Uygulama',
   DELETE_APPLET: 'Delete Applet',
   ADD_APPLET: 'Add Applet',
   MOVE_UP: 'Move Up',
@@ -172,7 +170,7 @@ const Profile = {
   DATASET_TYPE_TEXT: 'Metin',
   CLEAR: 'Temizle',
   CREATE: 'Oluştur',
-  DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
+  DATASET_BUILD_PYRAMID: 'Veri Piramidi',
   DATASET_BUILD_STATISTICS: 'Statistics Model',
   TIME_SPEND_OPERATION: 'This operation may take some time, would you like to continue?',
   IMPORT_BUILD_PYRAMID: 'Do you want to build image pyramid(may take some time)？',
@@ -222,7 +220,7 @@ const Profile = {
   LICENSE_CONTAIN_MODULE: 'Lisans Modülü İçerir',
   LICENSE_CONTAIN_EXPAND_MODULE: 'Lisans Modülü İçerir',
   LICENSE_USER_NAME: 'Kullanıcı Adı',
-  LICENSE_REMIND_NUMBER: 'License Remind Number', //待翻译
+  LICENSE_REMIND_NUMBER: 'Lisans Hatırlatma Numarası',
   LICENSE_OFFICIAL_INPUT: 'Resmi Lisans Girişi',
   LICENSE_TRIAL_APPLY: 'Deneme Lisansı Başvurusu',
   LICENSE_OFFICIAL_CLEAN: 'Resmi Lisans Dönüş',
@@ -238,7 +236,7 @@ const Profile = {
   LICENSE_HAVE_REGISTER: 'Kaydedildi',
   LICENSE_NOT_CONTAIN_MODULE: 'Modülü İçermiyor',
   LICENSE_MODULE_REGISTER_SUCCESS: 'Modül Kaydı Başarılı',
-  LICENSE_MODULE_REGISTER_FAIL: 'Module Register Fail', //待翻译
+  LICENSE_MODULE_REGISTER_FAIL: 'Modül Kaydı Başarısız',
   LICENSE_EXIT: 'Çıkış',
   LICENSE_EXIT_FAILED: 'Çıkış Başarısız',
   LICENSE_EXIT_CLOUD_ACTIVATE: 'Dönüş bulut lisans ve Aktivasyonu?',
@@ -339,8 +337,8 @@ const Profile = {
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
   MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
   MAP_AR_DATUM_SETTING: 'Kurulum',
-  X_COORDINATE: 'X Coordinate', //待翻译
-  Y_COORDINATE: 'Y Coordinate',
+  X_COORDINATE: 'X Koordinatı',
+  Y_COORDINATE: 'Y Koordinatı',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

@@ -5,14 +5,14 @@ const Protocol = {
 }
 
 const Common = {
-  UP: 'Up', //待翻译
-  DOWN: 'Down',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  FRONT: 'Front',
-  BACK: 'Back',
+  UP: 'Yukarı',
+  DOWN: 'Aşağı',
+  LEFT: 'Sol',
+  RIGHT: 'Sağ',
+  FRONT: 'Ön',
+  BACK: 'Arka',
 
-  PARAMETER: 'Parameter',
+  PARAMETER: 'Parametre',
 }
 
 export { Protocol, Common }

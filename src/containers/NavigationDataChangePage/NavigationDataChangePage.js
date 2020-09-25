@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     height: scaleSize(80),
-    width: scaleSize(200),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',

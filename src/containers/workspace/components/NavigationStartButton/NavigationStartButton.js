@@ -489,6 +489,7 @@ export default class NavigationStartButton extends React.Component {
                   style={{
                     fontSize: setSpText(20),
                     color: color.white,
+                    textAlign: 'center',
                   }}
                 >
                   {this.state.road}
@@ -515,6 +516,7 @@ export default class NavigationStartButton extends React.Component {
                 style={{
                   fontSize: setSpText(20),
                   color: color.white,
+                  textAlign: 'center',
                 }}
               >
                 {getLanguage(GLOBAL.language).Map_Main_Menu.REAL_NAVIGATION}
@@ -540,6 +542,7 @@ export default class NavigationStartButton extends React.Component {
                 style={{
                   fontSize: setSpText(20),
                   color: color.white,
+                  textAlign: 'center',
                 }}
               >
                 {
@@ -584,6 +587,7 @@ export default class NavigationStartButton extends React.Component {
                   style={{
                     fontSize: setSpText(20),
                     color: color.white,
+                    textAlign: 'center',
                   }}
                 >
                   {getLanguage(global.language).Prompt.AR_NAVIGATION}

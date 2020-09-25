@@ -146,13 +146,15 @@ export default class InputDialog extends PureComponent {
       >
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' && "padding"} enabled>
           {this.renderInput()}
-          {!this.state.isLegalName && this.state.errorInfo && (
+          
             <View style={styles.errorView}>
-              <Text numberOfLines={2} style={styles.errorInfo}>
-                {this.state.errorInfo}
-              </Text>
+              {
+                !this.state.isLegalName && this.state.errorInfo && (
+                <Text numberOfLines={2} style={styles.errorInfo}>
+                  {this.state.errorInfo}
+                </Text>
+              )}
             </View>
-          )}
         </KeyboardAvoidingView>
       </Dialog>
     )

@@ -24,7 +24,6 @@ export default StyleSheet.create({
     color: color.fontColorBlack,
     paddingLeft: 15,
     fontSize: size.fontSize.fontSizeXl,
-    height: size.fontSize.fontSizeXl + scaleSize(6),
   },
   currentView: {
     height: scaleSize(30),

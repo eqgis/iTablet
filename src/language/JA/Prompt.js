@@ -293,7 +293,7 @@ const Prompt = {
   NO_LINE_DATASETS: '現在ワークスペースにラインデータセットはありません',
   NETWORK_DATASET_IS_NOT_AVAILABLE: '現在道路ネットワークデータセットは使用できません。',
   POINT_NOT_IN_BOUNDS: '現在の選択ポイントは道路ネットワークデータセット範囲内にありません',
-  POSITION_OUT_OF_MAP: '現在位置は不在マップナビ範囲内にありません。シミュレーションナビを使用してください',
+  POSITION_OUT_OF_MAP: '現在位置はマップナビ範囲外です。シミュレーションナビを使用してください',
   SELECT_DATASOURCE_FOR_NAVIGATION: 'ナビルート解析のデータを選択してください',
   PLEASE_SELECT_NETWORKDATASET: 'ネットワークデータセットを選択してください',
   PLEASE_SELECT_A_POINT_INDOOR: '室内でポイントを選択してください',

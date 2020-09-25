@@ -714,7 +714,10 @@ export default class NavigationView extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{ fontSize: setSpText(24) }}
+                    style={{
+                      fontSize: setSpText(24),
+                      lineHeight: scaleSize(26),
+                    }}
                   >
                     {this.state.startName || GLOBAL.STARTNAME}
                   </Text>
@@ -753,7 +756,10 @@ export default class NavigationView extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{ fontSize: setSpText(24) }}
+                    style={{
+                      fontSize: setSpText(24),
+                      lineHeight: scaleSize(26),
+                    }}
                   >
                     {this.state.endName || GLOBAL.ENDNAME}
                   </Text>

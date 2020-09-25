@@ -22,7 +22,7 @@ const Prompt = {
   PREPARING: 'Hazırlamak',
 
   DOWNLOAD_SAMPLE_DATA: 'Örnek veri indir?',
-  DOWNLOAD_DATA: 'Data Download', // 待翻译
+  DOWNLOAD_DATA: 'Veri İndir',
   DOWNLOAD: 'İndir',
   DOWNLOADING: 'Yükleniyor',
   DOWNLOAD_SUCCESSFULLY: 'Tamamlandı',
@@ -38,7 +38,7 @@ const Prompt = {
 
   DELETE_STOP: 'Durdurmayı silmek istediğinizden emin misiniz?',
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
-  PLEASE_ADD_STOP: 'Please add stop', //待翻译
+  PLEASE_ADD_STOP: 'Lütfen Stop Ekleyin',
 
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
@@ -65,7 +65,7 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'Değiştiriliyor',
   NON_SELECTED_OBJ: 'Seçili nesne yok',
   CHANGE_BASE_MAP: 'Altlık harita boş, lütfen ilk önce değiştirin',
-  OVERRIDE_SYMBOL: 'Symbol with the same id exists, please select method to add', //待翻译
+  OVERRIDE_SYMBOL: 'Aynı kimliğe sahip sembol mevcut, lütfen eklemek için yöntem seçin!',
   OVERWRITE: 'Overwrite',
 
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
@@ -95,7 +95,7 @@ const Prompt = {
   NO_FLY: 'Mevcut sahnede uçuş yok',
   PLEASE_OPEN_SCENE: 'Lütfen bir sahne açın',
   NO_SCENE: 'Sahne Yok',
-  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
+  ADD_ONLINE_SCENE: 'Onliine Sahne Ekle',
 
   PLEASE_ENTER_TEXT: 'Lütfen metin girin',
   PLEASE_SELECT_THEMATIC_LAYER: 'Lütfen tematik bir katman seçin',
@@ -103,7 +103,7 @@ const Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
   DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
-  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
+  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list', //待翻译
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
@@ -167,10 +167,10 @@ const Prompt = {
   CHOOSE_STARTING_POINT: 'Başlangıç noktası seç',
   CHOOSE_DESTINATION: 'Hedef Seçin',
 
-  LATEST: 'En son:',
-  GEOGRAPHIC_COORDINATE_SYSTEM: 'Coğrafi Koordinat Sistemi:',
-  PROJECTED_COORDINATE_SYSTEM: 'Öngörülen (Projected) Koordinat Sistemi:',
-  FIELD_TYPE: 'Alan Tipi:',
+  LATEST: 'En son: ',
+  GEOGRAPHIC_COORDINATE_SYSTEM: 'Coğrafi Koordinat Sistemi: ',
+  PROJECTED_COORDINATE_SYSTEM: 'Öngörülen (Projected) Koordinat Sistemi: ',
+  FIELD_TYPE: 'Alan Tipi: ',
 
   PLEASE_LOGIN_AND_SHARE: 'Lütfen giriş yap ve paylaş',
   PLEASE_LOGIN: 'Lütfen giriş',
@@ -183,7 +183,7 @@ const Prompt = {
   EXPORTING: 'Dışarı Aktarılıyor',
   EXPORT_SUCCESS: 'Başarıyla Dışarı Aktarıldı',
   EXPORT_FAILED: 'Dışa Aktarma Başarısız',
-  EXPORT_TO: 'Veri şu konuma dışarı aktarıldı:',
+  EXPORT_TO: 'Veri şu konuma dışarı aktarıldı: ',
   REQUIRE_PRJ_1984: 'Verikümesinin PrjCoordSys WGS_1984 olmalıdır',
 
   UNDO_FAILED: 'Geri alma başarısız',
@@ -199,7 +199,7 @@ const Prompt = {
   USING: 'Using',
   DEFAULT_MODEL: 'Varsayılan Model',
   DUSTBIN_MODEL: 'Çöpkovası Modeli',
-  PLANT_MODEL: 'Plant Model', //待翻译
+  PLANT_MODEL: 'Plant Modeli',
   CHANGING: 'Değiştiriliyor',
   CHANGE_SUCCESS: 'Değişme Başarılı',
   CHANGE_FAULT: 'Değişme Hatası',
@@ -276,7 +276,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'Alan geçersiz',
   PLEASE_SELECT_A_RASTER_LAYER: 'Lütfen raster katmanı seçin',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını', //待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'Lütfen verikaynağını katmana göre ekleyin',
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'Mevcut katman modifikasyonu desteklemiyor',
 
   FAILED_TO_CREATE_POINT: 'Nokta oluşturma başarısız',
@@ -312,13 +312,13 @@ const Prompt = {
   NOT_SUPPORT_ONLINE_NAVIGATION: 'Çevrimiçi navigasyon henüz desteklenmiyor.',
   CREATE: 'Yeni',
   NO_DATASOURCE: 'Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun',
-  FLOOR: 'Floor', //待翻译
+  FLOOR: 'Kat',
   AR_NAVIGATION: 'AR Navi',
   ARRIVE_DESTINATION: 'Arrived the destination',
   DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
   //导航增量路网
-  SELECT_LINE_DATASET: 'Please select a line dataset first', //待翻译
+  SELECT_LINE_DATASET: 'Lütfen önce bir çizgi veri kümesi seçin',
   CANT_UNDO: 'Irrevocable',
   CANT_REDO: "Can't redo",
   DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
@@ -355,7 +355,7 @@ const Prompt = {
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: 'Parametre hatası, ayar başarısız!',
 
-  SPEECH_TIP: 'Şunları diyebilirsiniz :\nYaklaş, Uzaklaş, Konumlandır ya da Kapat',
+  SPEECH_TIP: "You may say \n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: 'Tanımlı hata, lütfen daha sonra tekrar deneyiniz',
   SPEECH_NONE: 'Hiçbir şey konuşmadınız gibi görünüyor',
 
@@ -371,7 +371,7 @@ const Prompt = {
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 
-  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
+  INVALID_DATA_SET_FAILED: 'Geçersiz veri türü. Ayarlama başarısız!',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
 }
 

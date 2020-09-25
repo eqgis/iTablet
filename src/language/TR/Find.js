@@ -2,7 +2,7 @@ const Find = {
   TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
   PUBLIC_DATA: 'Açık Veri',
   APPLET: 'Aplet',
-  GIS_ACADEMY: 'GIS Academy', //待翻译
+  GIS_ACADEMY: 'CBS Akademi',
   SEARCH_RESULT: 'Sonuç',
   BACK: 'Geri',
   CONFIRM: 'Onay',
@@ -24,30 +24,30 @@ const Find = {
   NETWORK_ERROR: 'Ağ hatası, lütfen daha sonra tekrar deneyiniz',
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
-  
+
   LABORATORY: 'Laboratory', // 待翻译
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
-  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
-  RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
-  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
-  APPLET_RESETTING: 'Rest', // 待翻译
+  APPLET_DOWNLOADED_RELOAD: 'İndirme tamamlandı, yüklenebilir apleti yeniden yükleyin ',
+  RELOAD: 'Yeniden yükle',
+  APPLET_RESET_OLD_VERSION: 'Önceki versiyona sıfırlamak istiyormusun?',
+  APPLET_OLD_VERSION_ALREADY: 'Bu orjinal versiyondur',
+  APPLET_RESET_FAILED: 'Sıfırlama başarısız',
+  APPLET_RESETTING: 'Yeniden başlatma',
 
-  // 待翻译
-  PUBLIC_MAP_INFO: 'Provides public services published by users',
-  PUBLIC_DATA_INFO: 'Provides various public data published by users',
-  SUPERMAP_INFO: 'Shares the latest news and brand activities',
-  SUPERMAP_KNOW_INFO: 'Get professional technical services and consultation',
-  SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
-  GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
-  ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
+  PUBLIC_MAP_INFO: 'Kullanıcılar tarafından yayınlanan kamu hizmetlerini sağlar',
+  PUBLIC_DATA_INFO: 'Kullanıcılar tarafından yayınlanan çeşitli genel bilgileri sağlar',
+  SUPERMAP_INFO: 'En son haberleri ve marka aktivitelerini paylaşır',
+  SUPERMAP_KNOW_INFO: 'Profesyonel teknik hizmetler ve danışmanlık alın',
+  SUPERMAP_FORUM_INFO: 'SuperMap teknolojisi iletişim topluluğuna hoşgeldiniz',
+  GIS_ACADEMY_INFO: 'SuperMap CBS hakkında çok sayıda Eğitim Dokümanı sağlar',
+  ONLINE_COWORK_INFO: 'Birden çok kullanıcı arasında işbirliğini destekler.',
+
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.',// 待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.',// 待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.' // 待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //待翻译
+  BETA_TIPS: 'Tips: This is only a experimental beta feature.', //待翻译
 }
 
 export { Find }

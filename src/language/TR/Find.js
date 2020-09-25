@@ -42,6 +42,7 @@ const Find = {
   SUPERMAP_FORUM_INFO: 'SuperMap teknolojisi iletişim topluluğuna hoşgeldiniz',
   GIS_ACADEMY_INFO: 'SuperMap CBS hakkında çok sayıda Eğitim Dokümanı sağlar',
   ONLINE_COWORK_INFO: 'Birden çok kullanıcı arasında işbirliğini destekler.',
+  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
 
   // 实验室
   LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译

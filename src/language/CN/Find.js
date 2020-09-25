@@ -42,6 +42,7 @@ const Find = {
   SUPERMAP_FORUM_INFO: '欢迎来到SuperMap技术问答社区',
   GIS_ACADEMY_INFO: '提供海量SuperMap GIS相关课程',
   ONLINE_COWORK_INFO: '支持多人实时协同操作',
+  LABORATORY_INFO: '体验功能',
 
   // 实验室
   LAB_GESTURE_BONE_INFO: '位置指引：AR分析-AR分析-手势骨骼\n手势骨骼，您可以用手势操控地图，实现地图缩放、平移等操作。',

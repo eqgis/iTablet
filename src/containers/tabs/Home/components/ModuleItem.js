@@ -210,7 +210,7 @@ export default class ModuleItem extends Component {
               <View style={styles.label}>
                 <View style={styles.labelImageContainer}>
                   <Image
-                    source={require('../../../../assets/home/left_top.png')}
+                    source={require('../../../../assets/home/left_top_blue.png')}
                     style={styles.labelImage}
                   />
                 </View>
@@ -299,8 +299,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    width: fixedSize(45),
-    height: fixedSize(45),
+    width: fixedSize(60),
+    height: fixedSize(60),
     borderTopLeftRadius: fixedSize(16),
     overflow: 'hidden',
   },
@@ -308,18 +308,18 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // left: 0,
     // top: 0,
-    width: fixedSize(45),
-    height: fixedSize(45),
+    width: fixedSize(60),
+    height: fixedSize(60),
     // borderTopLeftRadius: fixedSize(16),
   },
   labelText: {
-    fontSize: fixedSize(13),
+    fontSize: fixedSize(16),
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     transform: [
-      { translateX: -fixedSize(7) },
-      { translateY: -fixedSize(7) },
+      { translateX: -fixedSize(3) },
+      { translateY: -fixedSize(3) },
       { rotate: '-45deg' },
     ],
   },

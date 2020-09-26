@@ -9,15 +9,6 @@ function getData() {
   const buttons = []
   const data = [
     {
-      // 目标分类
-      key: 'aiClassify',
-      title: getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_CLASSIFY,
-      action: AiActions.aiClassify,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_classify_light,
-    },
-    {
       // 目标采集
       key: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
@@ -26,6 +17,15 @@ function getData() {
       action: AiActions.aiDetect,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_collect_light,
+    },
+    {
+      // 目标分类
+      key: 'aiClassify',
+      title: getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_CLASSIFY,
+      action: AiActions.aiClassify,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_classify_light,
     },
     {
       // 态势采集

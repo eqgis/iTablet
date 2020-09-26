@@ -753,7 +753,7 @@ export default class SecondMapSettings extends Component {
     if (
       this.state.title ===
         getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE &&
-      index === 11
+      index === 9
     ) {
       return (
         <View>

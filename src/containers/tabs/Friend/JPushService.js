@@ -74,6 +74,7 @@ export default class JPushService {
   }
 
   static sendLocalNotification(messageObj) {
+    if (Platform.OS === 'android') return
     //只push以下消息
     if (
       messageObj.type !== MsgConstant.MSG_SINGLE &&
@@ -124,6 +125,7 @@ export default class JPushService {
   }
 
   static init(userId) {
+    if (Platform.OS === 'android') return
     if (Platform.OS === 'android') {
       JPushModule.initPush()
       JPushModule.notifyJSDidLoad(resultCode => {

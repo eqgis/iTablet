@@ -322,10 +322,14 @@ const initialState = fromJS({
   mapColumnNavBar: false,
   navBarDisplay: false,
   find: {
+    showPublicMap: true,
+    showPublicData: true,
     showSuperMapGroup: true,
     showSuperMapKnow: true,
     showSuperMapForum: true,
     showGisAcademy: true,
+    showCowork: true,
+    showLab: true,
   },
   laboratory: {
     gestureBone: false,

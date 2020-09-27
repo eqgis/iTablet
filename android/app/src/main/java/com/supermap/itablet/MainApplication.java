@@ -36,7 +36,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import cn.jpush.reactnativejpush.JPushPackage;
+//import cn.jpush.reactnativejpush.JPushPackage;
 import cn.qiuxiang.react.geolocation.AMapGeolocationPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 
@@ -62,12 +62,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new ExtraDimensionsPackage(),
             new BackgroundTimerPackage(),
             new RNCameraPackage(),
-            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
+//            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
             new ReactVideoPackage(),
-            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
+//            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
             new PickerPackage(),
             new RNFSPackage(),
-            new JPushPackage(true, true),
+//            new JPushPackage(true, true),
             new ReactNativeContacts(),
             new AMapGeolocationPackage(),
             new OrientationPackage(),

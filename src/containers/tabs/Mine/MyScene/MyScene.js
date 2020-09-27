@@ -31,14 +31,13 @@ class MyScene extends MyDataPage {
 
   deleteData = async () => {
     if (!this.itemInfo) return false
-    let scenePath = await FileTools.appendingHomeDirectory(
+    let pxpPath = await FileTools.appendingHomeDirectory(
       this.itemInfo.item.path,
     )
-    let pxpPath = scenePath + '.pxp'
+    let scenePath = pxpPath?.substring(0,pxpPath.length-4) 
 
     let result = await FileTools.deleteFile(scenePath)
     result = result && (await FileTools.deleteFile(pxpPath))
-
     return result
   }
 

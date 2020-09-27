@@ -6,7 +6,6 @@ import SMessageServiceHTTP from './SMessageServiceHTTP'
 
 export default class JPushService {
   static async push(messageStr, talkIds) {
-    if (Platform.OS === 'android') return
     let messageObj = JSON.parse(messageStr)
     //只push以下消息
     if (

@@ -878,7 +878,7 @@ export default class MT_layerManager extends React.Component {
         sections={this.state.data}
         renderItem={this._renderItem}
         renderSectionHeader={this.renderSection}
-        getItemLayout={this.getItemLayout}
+        // getItemLayout={this.getItemLayout}
         keyExtractor={(item, index) => index.toString()}
         initialNumToRender={15}
         // ItemSeparatorComponent={this.renderItemSeparator}

@@ -6,6 +6,7 @@ import SMessageServiceHTTP from './SMessageServiceHTTP'
 
 export default class JPushService {
   static async push(messageStr, talkIds) {
+    if (Platform.OS === 'android') return
     let messageObj = JSON.parse(messageStr)
     //只push以下消息
     if (
@@ -74,6 +75,7 @@ export default class JPushService {
   }
 
   static sendLocalNotification(messageObj) {
+    if (Platform.OS === 'android') return
     //只push以下消息
     if (
       messageObj.type !== MsgConstant.MSG_SINGLE &&
@@ -124,6 +126,7 @@ export default class JPushService {
   }
 
   static init(userId) {
+    if (Platform.OS === 'android') return
     if (Platform.OS === 'android') {
       JPushModule.initPush()
       JPushModule.notifyJSDidLoad(resultCode => {

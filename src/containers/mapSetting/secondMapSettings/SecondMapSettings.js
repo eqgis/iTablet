@@ -260,6 +260,7 @@ export default class SecondMapSettings extends Component {
     data[10].value = await SMap.getFixedTextOrientation()
     data[11].value = await SMap.isOverlapDisplayed()
     data[12].value = await SMap.isMagnifierEnabled()
+    data.splice(1,1)
     return data
   }
 

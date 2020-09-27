@@ -107,7 +107,12 @@ export default class Map3D extends React.Component {
         true,
         getLanguage(this.props.language).Prompt.LOADING,
       )
-      InteractionManager.runAfterInteractions(() => {
+      let startOpen = false
+      let openScene = () => {
+        if (startOpen) return
+        startOpen = true
+        clearTimeout(this.openTimer)
+
         if (Platform.OS === 'android') {
           this.props.setBackAction({
             action: this.back,
@@ -121,7 +126,9 @@ export default class Map3D extends React.Component {
         this.addAttributeListener()
         this.addCircleFlyListen()
         this.getLayers()
-      })
+      }
+      InteractionManager.runAfterInteractions(openScene)
+      this.openTimer = setTimeout(openScene, 3000)
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
         () => {

@@ -206,24 +206,26 @@ export default class Find extends Component {
           overScrollMode={'always'}
           bounces={true}
         >
-          {this._renderItem({
-            title: getLanguage(this.props.language).Prompt.PUBLIC_MAP,
-            subTitle: getLanguage(this.props.language).Find.PUBLIC_MAP_INFO,
-            leftImagePath: getThemeAssets().find.public_map,
-            isInformSpot: false,
-            onClick: () => {
-              NavigationService.navigate('PublicMap')
-            },
-          })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Find.PUBLIC_DATA,
-            subTitle: getLanguage(this.props.language).Find.PUBLIC_DATA_INFO,
-            leftImagePath: getThemeAssets().find.public_data,
-            isInformSpot: false,
-            onClick: () => {
-              NavigationService.navigate('PublicData')
-            },
-          })}
+          {this.props.find.showPublicMap &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Prompt.PUBLIC_MAP,
+              subTitle: getLanguage(this.props.language).Find.PUBLIC_MAP_INFO,
+              leftImagePath: getThemeAssets().find.public_map,
+              isInformSpot: false,
+              onClick: () => {
+                NavigationService.navigate('PublicMap')
+              },
+            })}
+          {this.props.find.showPublicData &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Find.PUBLIC_DATA,
+              subTitle: getLanguage(this.props.language).Find.PUBLIC_DATA_INFO,
+              leftImagePath: getThemeAssets().find.public_data,
+              isInformSpot: false,
+              onClick: () => {
+                NavigationService.navigate('PublicData')
+              },
+            })}
           {/* {this._renderItem({
             title: Const.FRIENDMAP,
             leftImagePath: require('../../../assets/Find/find_publicmap.png'),
@@ -301,24 +303,27 @@ export default class Find extends Component {
           {/*NavigationService.navigate('Applet', { type: 'APPLET' })*/}
           {/*},*/}
           {/*})}*/}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Find.ONLINE_COWORK,
-            subTitle: getLanguage(this.props.language).Find.ONLINE_COWORK_INFO,
-            leftImagePath: getThemeAssets().find.onlineCowork,
-            isInformSpot: false,
-            onClick: () => {
-              NavigationService.navigate('CoworkManagePage')
-            },
-          })}
-          {this._renderItem({
-            title: getLanguage(this.props.language).Find.LABORATORY,
-            subTitle: getLanguage(this.props.language).Find.LABORATORY_INFO,
-            leftImagePath: getThemeAssets().find.laboratory,
-            isInformSpot: false,
-            onClick: () => {
-              NavigationService.navigate('Laboratory')
-            },
-          })}
+          {this.props.find.showCowork &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Find.ONLINE_COWORK,
+              subTitle: getLanguage(this.props.language).Find
+                .ONLINE_COWORK_INFO,
+              leftImagePath: getThemeAssets().find.onlineCowork,
+              isInformSpot: false,
+              onClick: () => {
+                NavigationService.navigate('CoworkManagePage')
+              },
+            })}
+          {this.props.find.showLab &&
+            this._renderItem({
+              title: getLanguage(this.props.language).Find.LABORATORY,
+              subTitle: getLanguage(this.props.language).Find.LABORATORY_INFO,
+              leftImagePath: getThemeAssets().find.laboratory,
+              isInformSpot: false,
+              onClick: () => {
+                NavigationService.navigate('Laboratory')
+              },
+            })}
         </ScrollView>
       </View>
     )

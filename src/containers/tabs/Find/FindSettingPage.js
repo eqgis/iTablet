@@ -24,6 +24,16 @@ class FindSettingPage extends React.Component {
 
   getData = () => [
     {
+      key: getLanguage(global.language).Prompt.PUBLIC_MAP,
+      value: 'showPublicMap',
+      image: getThemeAssets().find.public_map,
+    },
+    {
+      key: getLanguage(global.language).Find.PUBLIC_DATA,
+      value: 'showPublicData',
+      image: getThemeAssets().find.public_data,
+    },
+    {
       key: getLanguage(global.language).Prompt.SUPERMAP_GROUP,
       value: 'showSuperMapGroup',
       image: getThemeAssets().find.supermap,
@@ -42,6 +52,16 @@ class FindSettingPage extends React.Component {
       key: getLanguage(global.language).Find.GIS_ACADEMY,
       value: 'showGisAcademy',
       image: getThemeAssets().find.college,
+    },
+    {
+      key: getLanguage(global.language).Find.ONLINE_COWORK,
+      value: 'showCowork',
+      image: getThemeAssets().find.onlineCowork,
+    },
+    {
+      key: getLanguage(global.language).Find.LABORATORY,
+      value: 'showLab',
+      image: getThemeAssets().find.laboratory,
     },
   ]
 

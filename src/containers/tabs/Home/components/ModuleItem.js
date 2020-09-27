@@ -6,8 +6,9 @@ import {
   Image,
   StyleSheet,
   Animated,
+  Easing,
 } from 'react-native'
-import { fixedSize } from '../../../../utils'
+import { fixedSize, scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getPublicAssets } from '../../../../assets'
 import SizeUtil from '../SizeUtil'
@@ -42,11 +43,14 @@ export default class ModuleItem extends Component {
       disabled: false,
       dialogCheck: false,
       touch: false,
+      isLoading: false,
     }
     let size = this.getSize()
     this.itemWidth = new Animated.Value(size.width)
     this.itemHeight = new Animated.Value(size.height)
     this.itemBorderWidth = new Animated.Value(0)
+    this.rotateValue = new Animated.Value(0)
+    this.aniMotion = null
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -91,6 +95,30 @@ export default class ModuleItem extends Component {
   setDownloading = (downloading = false) => {
     this.downloading = downloading
   }
+  
+  spin = (isLoading = true) => {
+    if (!this.state.isLoading && isLoading) {
+      this.setState({
+        isLoading: true,
+      }, () => {
+        if (!this.aniMotion && this.state.isLoading) {
+          this.rotateValue.setValue(0)
+          this.aniMotion = Animated.timing(this.rotateValue,{
+            toValue: this.rotateValue._value === 0 ? 1 : 0,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          });
+          Animated.loop(this.aniMotion).start()
+        }
+      })
+    } else {
+      this.aniMotion = null
+      this.setState({
+        isLoading: false,
+      })
+    }
+  }
 
   _renderProgressView = () => {
     if (!this.props.downloadData) return <View />
@@ -125,44 +153,44 @@ export default class ModuleItem extends Component {
     let height = size.height
     return (
       <TouchableOpacity
-        activeOpacity={1}
+        activeOpacity={0.5}
         disabled={this.state.disabled}
         onPress={() => {
+          this.spin(true)
+          item.cb = this.spin
           this.props.itemAction && this.props.itemAction(item)
         }}
         onPressIn={() => {
-          Animated.parallel([
-            Animated.timing(this.itemWidth, {
-              toValue: width + SizeUtil.getItemGap(),
-              duration: 100,
-            }),
-            Animated.timing(this.itemHeight, {
-              toValue: height + SizeUtil.getItemGap(),
-              duration: 100,
-            }),
-            Animated.timing(this.itemBorderWidth, {
-              toValue: 2,
-              duration: 0,
-            }),
-          ]).start()
+          // Animated.parallel([
+          //   Animated.timing(this.itemWidth, {
+          //     toValue: width + SizeUtil.getItemGap(),
+          //     duration: 100,
+          //   }),
+          //   Animated.timing(this.itemHeight, {
+          //     toValue: height + SizeUtil.getItemGap(),
+          //     duration: 100,
+          //   }),
+          //   Animated.timing(this.itemBorderWidth, {
+          //     toValue: 2,
+          //     duration: 0,
+          //   }),
+          // ]).start()
         }}
         onPressOut={() => {
-          setTimeout(() => {
-            Animated.parallel([
-              Animated.timing(this.itemWidth, {
-                toValue: width,
-                duration: 100,
-              }),
-              Animated.timing(this.itemHeight, {
-                toValue: height,
-                duration: 100,
-              }),
-              Animated.timing(this.itemBorderWidth, {
-                toValue: 0,
-                duration: 0,
-              }),
-            ]).start()
-          }, 500)
+          // Animated.parallel([
+          //   Animated.timing(this.itemWidth, {
+          //     toValue: width,
+          //     duration: 100,
+          //   }),
+          //   Animated.timing(this.itemHeight, {
+          //     toValue: height,
+          //     duration: 100,
+          //   }),
+          //   Animated.timing(this.itemBorderWidth, {
+          //     toValue: 0,
+          //     duration: 0,
+          //   }),
+          // ]).start()
         }}
         style={[
           this.isLandscape() ? styles.moduleView_L : styles.moduleView_P,
@@ -173,7 +201,7 @@ export default class ModuleItem extends Component {
           },
         ]}
       >
-        <Animated.View
+        <View
           style={[
             this.isLandscape() ? styles.moduleViewL : styles.moduleViewP,
             {
@@ -218,7 +246,22 @@ export default class ModuleItem extends Component {
               </View>
             )}
           </View>
-        </Animated.View>
+          {
+            this.state.isLoading &&
+            <Animated.Image
+              resizeMode={'contain'}
+              style={[
+                styles.loading,
+                {
+                  transform: [{rotate: this.rotateValue
+                    .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']})
+                  }]
+                }
+              ]}
+              source={getPublicAssets().common.icon_downloading}
+            />
+          }
+        </View>
       </TouchableOpacity>
     )
   }
@@ -322,5 +365,12 @@ const styles = StyleSheet.create({
       { translateY: -fixedSize(3) },
       { rotate: '-45deg' },
     ],
+  },
+  loading: {
+    position: 'absolute',
+    top: scaleSize(20),
+    right: scaleSize(20),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
 })

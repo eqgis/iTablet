@@ -94,7 +94,7 @@ import {
   Platform,
   View,
   Text,
-  // InteractionManager,
+  InteractionManager,
   Image,
   TouchableOpacity,
   BackHandler,
@@ -297,120 +297,122 @@ export default class MapView extends React.Component {
       }
     })
   }
-
+  
   async componentDidMount() {
-    if (!global.isLicenseValid) {
-      let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-    }
-
-    BackHandler.addEventListener('hardwareBackPress', this.backHandler)
-
-    if (global.isLicenseValid) {
-      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-        this.addFloorHiddenListener()
-        SMap.setIndustryNavigationListener({
-          callback: async () => {
-            if (
-              GLOBAL.NAV_PARAMS &&
-              GLOBAL.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-            ) {
-              GLOBAL.changeRouteDialog &&
-                GLOBAL.changeRouteDialog.setDialogVisible(true)
-            } else {
-              this._changeRouteCancel()
-            }
-          },
-        })
-        SMap.setStopNavigationListener({
-          callback: this._changeRouteCancel,
-        })
+    InteractionManager.runAfterInteractions(async () => {
+      if (!global.isLicenseValid) {
+        let licenseStatus = await SMap.getEnvironmentStatus()
+        global.isLicenseValid = licenseStatus.isLicenseValid
       }
-      this.container &&
+  
+      BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+  
+      if (global.isLicenseValid) {
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+          this.addFloorHiddenListener()
+          SMap.setIndustryNavigationListener({
+            callback: async () => {
+              if (
+                GLOBAL.NAV_PARAMS &&
+                GLOBAL.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
+              ) {
+                GLOBAL.changeRouteDialog &&
+                GLOBAL.changeRouteDialog.setDialogVisible(true)
+              } else {
+                this._changeRouteCancel()
+              }
+            },
+          })
+          SMap.setStopNavigationListener({
+            callback: this._changeRouteCancel,
+          })
+        }
+        this.container &&
         this.container.setLoading(
           true,
           getLanguage(this.props.language).Prompt.LOADING,
           //'地图加载中'
         )
-      // 动画导致有时不会进入InteractionManager
-      // InteractionManager.runAfterInteractions(() => {
-      GLOBAL.SaveMapView &&
+        // 动画导致有时不会进入InteractionManager
+        // InteractionManager.runAfterInteractions(() => {
+        GLOBAL.SaveMapView &&
         GLOBAL.SaveMapView.setTitle(
           getLanguage(this.props.language).Prompt.SAVE_TITLE,
           getLanguage(this.props.language).Prompt.SAVE_YES,
           getLanguage(this.props.language).Prompt.SAVE_NO,
           getLanguage(this.props.language).Prompt.CANCEL,
         )
-
-      this.setState({
-        showMap: true,
-      })
-
-      this.props.setBackAction({
-        key: 'MapView',
-        action: this.back,
-      })
-
-      SMediaCollector.setCalloutTapListener(info => {
-        NavigationService.navigate('MediaEdit', {
-          info,
+    
+        this.setState({
+          showMap: true,
         })
-      })
-
-      this.clearData()
-      if (this.toolBox) {
-        GLOBAL.toolBox = this.toolBox
-      }
-      // })
-
-      this.unsubscribeFocus = this.props.navigation.addListener(
-        'willFocus',
-        () => {
-          if (this.showFullonBlur) {
-            this.showFullMap(false)
-            this.showFullonBlur = false
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-        },
-      )
-
-      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
-      this.unsubscribeDidFocus = this.props.navigation.addListener(
-        'didFocus',
-        () => {
-          if (this.showFullonBlur) {
-            this.showFullMap(false)
-            this.showFullonBlur = false
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-        },
-      )
-
-      this.unsubscribeBlur = this.props.navigation.addListener(
-        'willBlur',
-        () => {
-          if (!this.fullMap) {
-            this.showFullMap(true)
-            this.showFullonBlur = true
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-        },
-      )
-      SMap.addMessageCalloutListener(this.onMessageCalloutTap)
-      this.addSpeechRecognizeListener()
-      if (GLOBAL.language === 'CN') {
-        SSpeechRecognizer.setParameter('language', 'zh_cn')
+    
+        this.props.setBackAction({
+          key: 'MapView',
+          action: this.back,
+        })
+    
+        SMediaCollector.setCalloutTapListener(info => {
+          NavigationService.navigate('MediaEdit', {
+            info,
+          })
+        })
+    
+        this.clearData()
+        if (this.toolBox) {
+          GLOBAL.toolBox = this.toolBox
+        }
+        // })
+    
+        this.unsubscribeFocus = this.props.navigation.addListener(
+          'willFocus',
+          () => {
+            if (this.showFullonBlur) {
+              this.showFullMap(false)
+              this.showFullonBlur = false
+            }
+            this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+          },
+        )
+    
+        //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+        this.unsubscribeDidFocus = this.props.navigation.addListener(
+          'didFocus',
+          () => {
+            if (this.showFullonBlur) {
+              this.showFullMap(false)
+              this.showFullonBlur = false
+            }
+            this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+          },
+        )
+    
+        this.unsubscribeBlur = this.props.navigation.addListener(
+          'willBlur',
+          () => {
+            if (!this.fullMap) {
+              this.showFullMap(true)
+              this.showFullonBlur = true
+            }
+            this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+          },
+        )
+        SMap.addMessageCalloutListener(this.onMessageCalloutTap)
+        this.addSpeechRecognizeListener()
+        if (GLOBAL.language === 'CN') {
+          SSpeechRecognizer.setParameter('language', 'zh_cn')
+        } else {
+          SSpeechRecognizer.setParameter('language', 'en_us ')
+        }
       } else {
-        SSpeechRecognizer.setParameter('language', 'en_us ')
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+          confirmAction: () => NavigationService.goBack(),
+          cancelAction: () => NavigationService.goBack(),
+        })
+        global.SimpleDialog.setVisible(true)
       }
-    } else {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-        confirmAction: () => NavigationService.goBack(),
-        cancelAction: () => NavigationService.goBack(),
-      })
-      global.SimpleDialog.setVisible(true)
-    }
+    })
   }
 
   componentDidUpdate(prevProps) {

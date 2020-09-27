@@ -322,12 +322,12 @@ class ModuleList extends Component {
 
       let downloadData = this.getDownloadData(language, item, index)
 
-      let moduleKey = await this.checkData(index)
-      if (moduleKey) {
-        downloadData.key = moduleKey
-      } else {
-        downloadData = {}
-      }
+      // let moduleKey = await this.checkData(index)
+      // if (moduleKey) {
+      //   downloadData.key = moduleKey
+      // } else {
+      //   downloadData = {}
+      // }
 
       let currentDownloadData = this.getCurrentDownloadData(downloadData)
 
@@ -349,6 +349,7 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         this.props.setCurrentMapModule(index).then(async() => {
           let result = item.action && await item.action(tmpCurrentUser, latestMap)
+          item.cb && item.cb(false) // 停止转圈
           if (
             result &&
             downloadData.example &&
@@ -402,6 +403,7 @@ class ModuleList extends Component {
           })
         await this.props.setCurrentMapModule(index)
         item.action && (await item.action(tmpCurrentUser, latestMap))
+        item.cb && item.cb(false) // 停止转圈
       }
     } catch (e) {
       this.moduleItems[index] &&

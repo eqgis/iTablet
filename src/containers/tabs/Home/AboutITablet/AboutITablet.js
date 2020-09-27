@@ -82,7 +82,7 @@ export default class AboutITablet extends Component {
           >
             SuperMap iTablet
           </Text>
-          <Text style={styles.version}>10i</Text>
+          <Text style={styles.version}>10i(2020)</Text>
         </View>
         <View
           style={[

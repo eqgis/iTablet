@@ -61,6 +61,8 @@ export default class PublicMap extends Component {
               } else {
                 this.setState({ data })
               }
+            } else {
+              this.loadData()
             }
           })
         } else {
@@ -176,13 +178,18 @@ export default class PublicMap extends Component {
       data: this.state.data,
     }
     let data = JSON.stringify(dataObj)
-    let path =
-      (await FileTools.getHomeDirectory()) +
-      ConstPath.CachePath +
-      'publicMap.txt'
-    RNFS.writeFile(path, data, 'utf8')
-      .then(() => {})
-      .catch(() => {})
+    if (jsonUtil.isJSON(data)) {
+      let path =
+        (await FileTools.getHomeDirectory()) +
+        ConstPath.CachePath +
+        'publicMap.txt'
+      if (await FileTools.fileIsExist(path)) {
+        await RNFS.unlink(path)
+      }
+      RNFS.writeFile(path, data, 'utf8')
+        .then(() => {})
+        .catch(() => {})
+    }
   }
 
   _onRefresh = async () => {

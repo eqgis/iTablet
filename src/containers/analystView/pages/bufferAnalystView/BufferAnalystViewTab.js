@@ -718,8 +718,6 @@ export default class BufferAnalystViewTab extends Component {
                 newStateData = Object.assign(newStateData, {
                   resultDataSource: data,
                   resultDataSet: { value: resultDatasetName },
-                  roundTypeStatus: CheckStatus.CHECKED,
-                  flatTypeStatus: CheckStatus.UN_CHECK,
                 })
               }
               break
@@ -741,11 +739,11 @@ export default class BufferAnalystViewTab extends Component {
                 newStateData = this.state.showAdvance
                   ? { dataSet: data, roundTypeStatus, flatTypeStatus }
                   : {
-                    dataSet: data,
-                    showAdvance: true,
-                    roundTypeStatus,
-                    flatTypeStatus,
-                  }
+                      dataSet: data,
+                      showAdvance: true,
+                      roundTypeStatus,
+                      flatTypeStatus,
+                    }
               }
 
               break

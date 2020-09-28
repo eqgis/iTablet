@@ -28,7 +28,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: scaleSize(30),
-    height: scaleSize(80),
+    // height: scaleSize(80),
   },
   title: {
     fontSize: setSpText(22),

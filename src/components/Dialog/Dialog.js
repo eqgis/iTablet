@@ -305,23 +305,23 @@ export default class Dialog extends PureComponent {
             <View />
           )}
           <KeyboardAvoidingView
-            style={[styles.dialogStyle, this.props.style]}
-            contentContainerStyle={[styles.dialogStyle, this.props.style]}
             behavior={Platform.OS === 'ios' && 'position'}
           >
-            {this.props.title && (
-              <Text style={[styles.title, this.props.titleStyle]}>
-                {this.props.title}
-              </Text>
-            )}
-            {this.props.info && (
-              <Text style={[styles.info, this.props.infoStyle]}>
-                {this.props.info}
-              </Text>
-            )}
-            {this.props.children}
-            {/*<View style={styles.childrenContainer}>{this.props.children}</View>*/}
-            {this.renderBtns()}
+            <View style={[styles.dialogStyle, this.props.style]}>
+              {this.props.title && (
+                <Text style={[styles.title, this.props.titleStyle]}>
+                  {this.props.title}
+                </Text>
+              )}
+              {this.props.info && (
+                <Text style={[styles.info, this.props.infoStyle]}>
+                  {this.props.info}
+                </Text>
+              )}
+              {this.props.children}
+              {/*<View style={styles.childrenContainer}>{this.props.children}</View>*/}
+              {this.renderBtns()}
+            </View>
           </KeyboardAvoidingView>
         </TouchableOpacity>
       </Modal>
@@ -351,21 +351,22 @@ export default class Dialog extends PureComponent {
           />
           {this.props.header}
           <KeyboardAvoidingView
-            style={[styles.dialogStyle, this.props.style]}
             behavior={Platform.OS === 'ios' && 'padding'}
           >
-            {this.props.title && (
-              <Text style={[styles.title, this.props.titleStyle]}>
-                {this.props.title}
-              </Text>
-            )}
-            {this.props.info && (
-              <Text style={[styles.info, this.props.infoStyle]}>
-                {this.props.info}
-              </Text>
-            )}
-            {this.props.children}
-            {this.renderBtns()}
+            <View style={[styles.dialogStyle, this.props.style]}>
+              {this.props.title && (
+                <Text style={[styles.title, this.props.titleStyle]}>
+                  {this.props.title}
+                </Text>
+              )}
+              {this.props.info && (
+                <Text style={[styles.info, this.props.infoStyle]}>
+                  {this.props.info}
+                </Text>
+              )}
+              {this.props.children}
+              {this.renderBtns()}
+            </View>
           </KeyboardAvoidingView>
         </View>
       )

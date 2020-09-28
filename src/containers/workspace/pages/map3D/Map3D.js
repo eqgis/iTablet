@@ -833,12 +833,12 @@ export default class Map3D extends React.Component {
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
-        style={{
-          height: scaleSize(220),
-        }}
-        opacityStyle={{
-          height: scaleSize(220),
-        }}
+        // style={{
+        //   height: scaleSize(220),
+        // }}
+        // opacityStyle={{
+        //   height: scaleSize(220),
+        // }}
         type={'modal'}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
@@ -865,11 +865,9 @@ export default class Map3D extends React.Component {
             style={styles.textInputStyle}
           />
         </View>
-        {this.state.showErrorInfo && (
-          <Text style={styles.placeholder}>
-            {getLanguage(this.props.language).Friends.INPUT_INVALID}
-          </Text>
-        )}
+        <Text style={styles.placeholder}>
+          {this.state.showErrorInfo && getLanguage(this.props.language).Friends.INPUT_INVALID}
+        </Text>
       </Dialog>
     )
   }

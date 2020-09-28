@@ -598,8 +598,6 @@ export default class LayerAttributeTabs extends React.Component {
         confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         opacity={1}
-        opacityStyle={[styles.opacityView, { height: scaleSize(250) }]}
-        style={[styles.dialogBackground, { height: scaleSize(250) }]}
         cancelAction={() => {
           this.deleteFieldDialog.setDialogVisible(false)
         }}

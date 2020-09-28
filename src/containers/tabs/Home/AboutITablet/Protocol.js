@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, MTBtn } from '../../../../components'
-import { Toast, OnlineServicesUtils } from '../../../../utils'
+import { Toast, OnlineServicesUtils, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
@@ -334,12 +334,13 @@ class Protocol extends Component {
           title: title,
           headerLeft: headerLeft,
           navigation: this.props.navigation,
+          type: 'fix',
         }}
       >
         {this.state.isLoadWebView ? (
           <WebView
             ref={ref => (this.webView = ref)}
-            style={{ flex: 1, paddingTop: 0 }}
+            style={{ flex: 1, paddingTop: 0, marginTop: screen.getHeaderHeight(this.props.device.orientation) }}
             source={source}
             /** 保证release版本时，可加载到html*/
             originWhitelist={['*']}

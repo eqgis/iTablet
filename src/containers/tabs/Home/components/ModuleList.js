@@ -307,15 +307,17 @@ class ModuleList extends Component {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && item.action(tmpCurrentUser, latestMap)
+        this.props.setCurrentMapModule(index).then(async () => {
+          item.action && (await item.action(tmpCurrentUser, latestMap))
+          item.cb && item.cb(false) // 停止转圈
         })
         return
       }
 
       if (item.key === ChunkType.MAP_AR) {
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && item.action(tmpCurrentUser, latestMap)
+        this.props.setCurrentMapModule(index).then(async () => {
+          item.action && (await item.action(tmpCurrentUser, latestMap))
+          item.cb && item.cb(false) // 停止转圈
         })
         return
       }

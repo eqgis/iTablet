@@ -194,8 +194,10 @@ export default class Camera extends React.Component {
       datasetName: this.datasetName,
       mediaPaths,
     })
+    console.warn('addMedia', result)
     if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
+      console.warn('updateTour', result)
     }
     return result
   }
@@ -328,7 +330,7 @@ export default class Camera extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getPublicAssets().common.icon_back}
+              source={getPublicAssets().common.icon_back_white}
               style={styles.smallIcon}
             />
           </TouchableOpacity>

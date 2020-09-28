@@ -87,6 +87,7 @@ import {
   ToolbarType,
   ChunkType,
   MapHeaderButton,
+  Const,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { setGestureDetectorListener } from '../../../GestureDetectorListener'
@@ -2452,6 +2453,11 @@ export default class MapView extends React.Component {
     }
     this.setState({
       showAIDetect: _showAIDetect,
+    }, () => {
+      // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
+      setTimeout(() => {
+        _showAIDetect && this.showFullMap(false)
+      }, Const.ANIMATED_DURATION)
     })
     GLOBAL.showAIDetect = _showAIDetect
     SMap.setDynamicviewsetVisible(!_showAIDetect)

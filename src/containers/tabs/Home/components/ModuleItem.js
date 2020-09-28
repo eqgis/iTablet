@@ -156,8 +156,8 @@ export default class ModuleItem extends Component {
         activeOpacity={0.5}
         disabled={this.state.disabled}
         onPress={() => {
-          this.spin(true)
-          item.cb = this.spin
+          // this.spin(true)
+          item.spin = this.spin
           this.props.itemAction && this.props.itemAction(item)
         }}
         onPressIn={() => {

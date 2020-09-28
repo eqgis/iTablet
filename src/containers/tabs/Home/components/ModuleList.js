@@ -290,6 +290,7 @@ class ModuleList extends Component {
 
   itemAction = async (language, { item, index }) => {
     try {
+      item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(true)
       let tmpCurrentUser = this.props.currentUser
       let currentUserName = tmpCurrentUser.userName
         ? tmpCurrentUser.userName
@@ -309,7 +310,7 @@ class ModuleList extends Component {
       if (!global.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
-          item.cb && item.cb(false) // 停止转圈
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
         })
         return
       }
@@ -317,7 +318,7 @@ class ModuleList extends Component {
       if (item.key === ChunkType.MAP_AR) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
-          item.cb && item.cb(false) // 停止转圈
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
         })
         return
       }
@@ -351,7 +352,7 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         this.props.setCurrentMapModule(index).then(async() => {
           let result = item.action && await item.action(tmpCurrentUser, latestMap)
-          item.cb && item.cb(false) // 停止转圈
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
           if (
             result &&
             downloadData.example &&
@@ -405,7 +406,7 @@ class ModuleList extends Component {
           })
         await this.props.setCurrentMapModule(index)
         item.action && (await item.action(tmpCurrentUser, latestMap))
-        item.cb && item.cb(false) // 停止转圈
+        item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
       }
     } catch (e) {
       this.moduleItems[index] &&

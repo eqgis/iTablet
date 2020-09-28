@@ -290,6 +290,7 @@ class ModuleList extends Component {
 
   itemAction = async (language, { item, index }) => {
     try {
+      item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(true)
       let tmpCurrentUser = this.props.currentUser
       let currentUserName = tmpCurrentUser.userName
         ? tmpCurrentUser.userName
@@ -307,27 +308,29 @@ class ModuleList extends Component {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && item.action(tmpCurrentUser, latestMap)
+        this.props.setCurrentMapModule(index).then(async () => {
+          item.action && (await item.action(tmpCurrentUser, latestMap))
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
         })
         return
       }
 
       if (item.key === ChunkType.MAP_AR) {
-        this.props.setCurrentMapModule(index).then(() => {
-          item.action && item.action(tmpCurrentUser, latestMap)
+        this.props.setCurrentMapModule(index).then(async () => {
+          item.action && (await item.action(tmpCurrentUser, latestMap))
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
         })
         return
       }
 
       let downloadData = this.getDownloadData(language, item, index)
 
-      let moduleKey = await this.checkData(index)
-      if (moduleKey) {
-        downloadData.key = moduleKey
-      } else {
-        downloadData = {}
-      }
+      // let moduleKey = await this.checkData(index)
+      // if (moduleKey) {
+      //   downloadData.key = moduleKey
+      // } else {
+      //   downloadData = {}
+      // }
 
       let currentDownloadData = this.getCurrentDownloadData(downloadData)
 
@@ -349,6 +352,7 @@ class ModuleList extends Component {
       if (arrFile.length === 0) {
         this.props.setCurrentMapModule(index).then(async() => {
           let result = item.action && await item.action(tmpCurrentUser, latestMap)
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
           if (
             result &&
             downloadData.example &&
@@ -402,6 +406,7 @@ class ModuleList extends Component {
           })
         await this.props.setCurrentMapModule(index)
         item.action && (await item.action(tmpCurrentUser, latestMap))
+        item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
       }
     } catch (e) {
       this.moduleItems[index] &&

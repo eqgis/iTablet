@@ -112,6 +112,7 @@ export default class SaveView extends React.Component {
         ref={ref => (this.menu = ref)}
         title={this.state.title}
         getData={this.getData}
+        close={this.cancel}
         device={this.props.device}
       />
     )

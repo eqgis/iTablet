@@ -119,7 +119,7 @@ class TabBar extends React.Component {
         item={item}
         selected={routeKey === item.key}
         onPress={() => {
-          item.btnClick && item.btnClick()
+          !GLOBAL.clickWait && item.btnClick && item.btnClick()
         }}
         renderExtra={() => {
           if (item.key === 'Friend') {

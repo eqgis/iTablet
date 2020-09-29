@@ -270,6 +270,7 @@ export default class MapView extends React.Component {
       currentDataset: {}, //当前使用的数据集
     }
     this.floorHiddenListener = null
+    GLOBAL.clickWait = false
   }
 
   addFloorHiddenListener = () => {
@@ -588,6 +589,7 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
+    GLOBAL.clickWait = false
     SMap.setCurrentModule(0)
     if (
       GLOBAL.Type === ChunkType.MAP_AR ||
@@ -1164,6 +1166,8 @@ export default class MapView extends React.Component {
     //   }
     // }
     let result = await SMap.mapIsModified()
+    if (GLOBAL.clickWait) return true
+    GLOBAL.clickWait = true
     if (result && !this.isExample) {
       this.setSaveViewVisible(true, null, async () => {
         this.props.setCurrentAttribute({})
@@ -1172,6 +1176,7 @@ export default class MapView extends React.Component {
         if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
           this._removeNavigationListeners()
         }
+        GLOBAL.clickWait = false
       })
     } else {
       try {
@@ -1196,8 +1201,10 @@ export default class MapView extends React.Component {
         setTimeout(() => {
           this.setLoading(false)
           NavigationService.goBack()
+          GLOBAL.clickWait = false
         }, 1000)
       } catch (e) {
+        GLOBAL.clickWait = false
         this.setLoading(false)
       }
     }
@@ -1350,8 +1357,7 @@ export default class MapView extends React.Component {
             }
           },
         )
-
-        this.mapLoaded = true
+        
         this._addGeometrySelectedListener()
 
         setGestureDetectorListener({
@@ -1360,51 +1366,44 @@ export default class MapView extends React.Component {
         })
         GLOBAL.TouchType = TouchType.NORMAL
 
-        SMap.setLabelColor()
+        await SMap.setLabelColor()
         // 示例地图不加载标注图层
-        !this.isExample &&
-          SMap.openTaggingDataset(this.props.user.currentUser.userName).then(
-            () => {
-              SMap.hasDefaultTagging(this.props.user.currentUser.userName).then(
-                async hasDefaultTagging => {
-                  if (!hasDefaultTagging) {
-                    await SMap.newTaggingDataset(
-                      'Default_Tagging',
-                      this.props.user.currentUser.userName,
-                    )
-                  }
-                  SMap.getCurrentTaggingLayer(
-                    this.props.user.currentUser.userName,
-                  ).then(async layer => {
-                    if (layer) {
-                      GLOBAL.TaggingDatasetName = layer.name
-                      layer.isEdit = await SMap.setLayerEditable(
-                        layer.name,
-                        true,
-                      )
-                      layer.isVisible = await SMap.setLayerVisible(
-                        layer.name,
-                        true,
-                      )
-                      this.props.setCurrentLayer(layer)
-
-                      if (hasMap) SMap.saveMap('', false, false)
-                      // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-                      SMap.getTaggingLayers(
-                        this.props.user.currentUser.userName,
-                      ).then(dataList => {
-                        dataList.forEach(item => {
-                          if (item.isVisible) {
-                            SMediaCollector.showMedia(item.name, false)
-                          }
-                        })
-                      })
-                    }
-                  })
-                },
-              )
-            },
+        if (!this.isExample) {
+          await SMap.openTaggingDataset(this.props.user.currentUser.userName)
+          let hasDefaultTagging = await SMap.hasDefaultTagging(this.props.user.currentUser.userName)
+          if (!hasDefaultTagging) {
+            await SMap.newTaggingDataset(
+              'Default_Tagging',
+              this.props.user.currentUser.userName,
+            )
+          }
+          let layer = await SMap.getCurrentTaggingLayer(
+            this.props.user.currentUser.userName,
           )
+          if (layer) {
+            GLOBAL.TaggingDatasetName = layer.name
+            layer.isEdit = await SMap.setLayerEditable(
+              layer.name,
+              true,
+            )
+            layer.isVisible = await SMap.setLayerVisible(
+              layer.name,
+              true,
+            )
+            this.props.setCurrentLayer(layer)
+    
+            if (hasMap) await SMap.saveMap('', false, false)
+            // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
+            let dataList = await SMap.getTaggingLayers(
+              this.props.user.currentUser.userName,
+            )
+            dataList.forEach(item => {
+              if (item.isVisible) {
+                SMediaCollector.showMedia(item.name, false)
+              }
+            })
+          }
+        }
 
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true })
@@ -1448,6 +1447,8 @@ export default class MapView extends React.Component {
           currentDataset: {}, //当前使用的数据集
         }
         this.startCowork()
+  
+        this.mapLoaded = true
       } catch (e) {
         this.setLoading(false)
         this.mapLoaded = true
@@ -1550,11 +1551,6 @@ export default class MapView extends React.Component {
         } else {
           await this.props.setTemplate()
         }
-        // // 加载图层
-        // await this.props.getLayers(-1, layers => {
-        //   this.props.setCurrentLayer(layers.length > 0 && layers[0])
-        // })
-        this.setVisible(false)
       }
     } catch (e) {
       this.setLoading(false)

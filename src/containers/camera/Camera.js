@@ -110,7 +110,6 @@ export default class Camera extends React.Component {
       })
       this.mediaViewer && this.mediaViewer.setVisible(true, data.uri)
     } catch (e) {
-      console.warn('takePicture error: ' + e)
       this.mediaViewer && this.mediaViewer.setVisible(true)
     }
   }
@@ -194,10 +193,8 @@ export default class Camera extends React.Component {
       datasetName: this.datasetName,
       mediaPaths,
     })
-    console.warn('addMedia', result)
     if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
-      console.warn('updateTour', result)
     }
     return result
   }

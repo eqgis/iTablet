@@ -232,7 +232,7 @@ export default class Register extends React.Component {
           <TextInput
             keyboardType={'numeric'}
             maxLength={3}
-            clearButtonMode={'while-editing'}
+            clearButtonMode={'never'}
             //国家区号
             placeholder={''}
             placeholderTextColor={'#A7A7A7'}

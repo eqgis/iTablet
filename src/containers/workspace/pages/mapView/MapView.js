@@ -2449,17 +2449,13 @@ export default class MapView extends React.Component {
     }
     this.setState({
       showAIDetect: _showAIDetect,
-    }, () => {
-      // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
-      setTimeout(() => {
-        _showAIDetect && this.showFullMap(false)
-      }, Const.ANIMATED_DURATION)
     })
     GLOBAL.showAIDetect = _showAIDetect
     SMap.setDynamicviewsetVisible(!_showAIDetect)
     _showAIDetect
       ? Orientation.lockToPortrait()
       : Orientation.unlockAllOrientations()
+    return _showAIDetect
   }
 
   removeAIDetect = bGone => {
@@ -2508,7 +2504,11 @@ export default class MapView extends React.Component {
                 bGoneAIDetect: false,
               })
             }
-            this.switchAr()
+            let _showAIDetect = this.switchAr()
+            // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
+            setTimeout(() => {
+              _showAIDetect && this.showFullMap(false)
+            }, Const.ANIMATED_DURATION)
           }}
           activeOpacity={0.5}
           // separator={scaleSize(2)}

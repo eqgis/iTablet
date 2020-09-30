@@ -337,10 +337,16 @@ export default class Home extends Component {
     let storage = null
     let fileName = null
     let downloadData = this.state.downloadData
-    if (downloadData && downloadData.example && downloadData.example.length > 0) {
+    if (
+      downloadData &&
+      downloadData.example &&
+      downloadData.example.length > 0
+    ) {
       let item = downloadData.example[0]
       fileName = item.name
-      storage = (item.size === undefined ? 0 : (item.size / 1024 / 1024).toFixed(2)) + 'MB'
+      storage =
+        (item.size === undefined ? 0 : (item.size / 1024 / 1024).toFixed(2)) +
+        'MB'
     }
     let Img = this.state.dialogCheck
       ? getPublicAssets().common.icon_select
@@ -375,14 +381,23 @@ export default class Home extends Component {
           <Button
             title={getLanguage(this.props.language).Prompt.DOWNLOAD}
             onPress={this.confirm}
-            style={[styles.dialogButton, {backgroundColor: color.itemColorGray}]}
-            titleStyle={{color: color.white}}
+            style={[
+              styles.dialogButton,
+              { backgroundColor: color.itemColorGray },
+            ]}
+            titleStyle={{ color: color.white }}
           />
           <Button
             title={getLanguage(this.props.language).Prompt.CANCEL}
             onPress={this.cancel}
-            style={[styles.dialogButton, {backgroundColor: color.itemColorGray2, marginTop: scaleSize(22)}]}
-            titleStyle={{color: color.contentColorGray}}
+            style={[
+              styles.dialogButton,
+              {
+                backgroundColor: color.itemColorGray2,
+                marginTop: scaleSize(22),
+              },
+            ]}
+            titleStyle={{ color: color.contentColorGray }}
           />
         </View>
         <TouchableOpacity
@@ -491,7 +506,7 @@ export default class Home extends Component {
     let avatar = !UserType.isProbationUser(this.props.user.currentUser)
       ? {
         uri:
-          'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+            'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
       }
       : getPublicAssets().common.icon_avatar
     return (
@@ -500,24 +515,21 @@ export default class Home extends Component {
           styles.header,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? {
-                paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-                paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
-                paddingTop: GLOBAL.isPad ? scaleSize(64) : scaleSize(10),
-              }
+              paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+              paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
+              paddingTop: GLOBAL.isPad ? scaleSize(64) : scaleSize(10),
+            }
             : {
-                paddingHorizontal: scaleSize(40),
-                paddingTop: scaleSize(50),
-              },
+              paddingHorizontal: scaleSize(40),
+              paddingTop: scaleSize(50),
+            },
         ]}
       >
         <TouchableOpacity
           style={styles.userView}
           onPress={event => this.showUserPop(event)}
         >
-          <Image
-            source={avatar}
-            style={styles.userImg}
-          />
+          <Image source={avatar} style={styles.userImg} />
         </TouchableOpacity>
         <Text style={styles.headTitle}>{this.props.appConfig.name}</Text>
         <TouchableOpacity
@@ -546,6 +558,9 @@ export default class Home extends Component {
         hideInBackground={false}
         showFullInMap={true}
         withoutHeader
+        headerProps={{
+          backAction: this.showMorePop,
+        }}
         style={styles.container}
         bottomBar={this.renderTabBar()}
       >

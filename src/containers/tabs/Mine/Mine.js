@@ -4,13 +4,7 @@
   E-mail: 756355668@qq.com
 */
 import React, { Component } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { Container } from '../../../components'
 import { FileTools } from '../../../native'
 import NavigationService from '../../NavigationService'
@@ -23,7 +17,6 @@ import { getThemeAssets } from '../../../assets'
 import { MineHeader } from './component'
 import styles from './styles'
 import TabBar from '../TabBar'
-const Customer = 'Customer'
 
 export default class Mine extends Component {
   props: {
@@ -225,8 +218,7 @@ export default class Mine extends Component {
           data.push({
             title: getLanguage(this.props.language).Find.APPLET,
             image: getThemeAssets().mine.my_applets,
-            onClick: () =>
-              NavigationService.navigate('AppletManagement'),
+            onClick: () => NavigationService.navigate('AppletManagement'),
           })
           break
         case 'AIModel':
@@ -332,6 +324,7 @@ export default class Mine extends Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        navigation={this.props.navigation}
         hideInBackground={false}
         showFullInMap={true}
         withoutHeader={true}

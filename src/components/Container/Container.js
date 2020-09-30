@@ -11,6 +11,8 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
+  BackHandler,
+  Platform,
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
@@ -97,10 +99,12 @@ export default class Container extends Component {
   componentDidMount() {
     this.props.initWithLoading && this.setLoading(true)
     this.addNavigationListener()
+    this.addBackListener()
   }
 
   componentWillUnmount() {
     this.removeNavigationListener()
+    this.removeBackListener()
   }
 
   componentDidUpdate(prevProps) {
@@ -138,6 +142,51 @@ export default class Container extends Component {
       width = 0
     }
     return width
+  }
+
+  addBackListener = () => {
+    if (Platform.OS === 'android') {
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
+    }
+  }
+
+  removeBackListener = () => {
+    if (Platform.OS === 'android') {
+      BackHandler.removeEventListener('hardwareBackPress', this.onBackPress)
+    }
+  }
+
+  onBackPress = () => {
+    let navigation =
+      this.props.navigation ||
+      (this.props.headerProps && this.props.headerProps.navigation)
+    let backAction
+    let headerProps = this.props.headerProps
+    if (headerProps) {
+      if (
+        headerProps.backAction &&
+        typeof headerProps.backAction === 'function'
+      ) {
+        backAction = headerProps.backAction
+      }
+    }
+    //todo 所有container添加navigation属性
+    if (navigation) {
+      let name = navigation.state.routeName
+      let current = NavigationService.isCurrent(name)
+      if (!current) {
+        return false
+      }
+    }
+    if (backAction) {
+      backAction()
+      return true
+    }
+    if (navigation) {
+      navigation.goBack(null)
+      return true
+    }
+    return false
   }
 
   addNavigationListener = () => {
@@ -219,9 +268,7 @@ export default class Container extends Component {
   }
 
   renderHeader = fixHeader => {
-    return this.props.withoutHeader ? // ) : ( //   <View style={styles.iOSPadding} /> // Platform.OS === 'ios' ? (
-    //   <View />
-    // )
+    return this.props.withoutHeader ? // ) //   <View /> // ) : ( //   <View style={styles.iOSPadding} /> // Platform.OS === 'ios' ? (
       null : this.props.header ? (
         <AnimatedView
           style={[fixHeader && styles.fixHeader, { top: this.state.top }]}

@@ -88,7 +88,7 @@ export default class PopMenu extends PureComponent {
     if (
       JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
     ) {
-      this.setVisible(false)
+      this.close()
     }
   }
 
@@ -280,7 +280,7 @@ export default class PopMenu extends PureComponent {
       arrow: arrow,
     })
   }
-  
+
   close = () => {
     this.props.close && this.props.close()
     this.setVisible(false)

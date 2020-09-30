@@ -72,7 +72,7 @@ export default class SaveView extends React.Component {
 
   cancel = () => {
     this.props.cancel && this.props.cancel()
-    this.setVisible(false)
+    // this.setVisible(false)
     this.cb = null
   }
 

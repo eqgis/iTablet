@@ -7,7 +7,7 @@ import * as React from 'react'
 import { View, Animated, FlatList, TouchableOpacity } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
-import { scaleSize, Toast, setSpText, screen } from '../../../../utils'
+import { scaleSize, Toast, screen } from '../../../../utils'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
@@ -325,19 +325,27 @@ export default class FunctionToolbar extends React.Component {
   geometryMultiSelected = () => {
     // TODO 处理多选
   }
-  
-  indicatorScroll = ({location, isLandscape}) => {
+
+  indicatorScroll = ({ location, isLandscape }) => {
     let _offset = isLandscape ? scaleSize(120) : scaleSize(96)
     switch (location) {
       case PREVIOUS: {
-        this.list && this.list.scrollToOffset({offset: (this.offset - _offset < 0) ? 0 : (this.offset - _offset), animated: true})
+        this.list &&
+          this.list.scrollToOffset({
+            offset: this.offset - _offset < 0 ? 0 : this.offset - _offset,
+            animated: true,
+          })
         break
       }
       case NEXT: {
-        this.list && this.list.scrollToOffset({
-          offset: (this.offset + _offset) > this.maxOffset ? this.maxOffset : (this.offset + _offset),
-          animated: true,
-        })
+        this.list &&
+          this.list.scrollToOffset({
+            offset:
+              this.offset + _offset > this.maxOffset
+                ? this.maxOffset
+                : this.offset + _offset,
+            animated: true,
+          })
         break
       }
     }
@@ -359,7 +367,7 @@ export default class FunctionToolbar extends React.Component {
           key={index}
           title={item.title}
           textColor={'black'}
-          textStyle={{ fontSize: setSpText(20), marginTop: scaleSize(8) }}
+          textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={item.image}
           onPress={item.action}
@@ -439,8 +447,10 @@ export default class FunctionToolbar extends React.Component {
             : event.nativeEvent.contentOffset.y
           // console.warn(JSON.stringify(event.nativeEvent))
           this.maxOffset = isLandscape
-            ? event.nativeEvent.contentSize.width - event.nativeEvent.layoutMeasurement.width
-            : event.nativeEvent.contentSize.height - event.nativeEvent.layoutMeasurement.height
+            ? event.nativeEvent.contentSize.width -
+              event.nativeEvent.layoutMeasurement.width
+            : event.nativeEvent.contentSize.height -
+              event.nativeEvent.layoutMeasurement.height
           this.handlePosition()
         }}
         showsVerticalScrollIndicator={false}
@@ -460,8 +470,7 @@ export default class FunctionToolbar extends React.Component {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let source
     let style = {
-      opacity:
-        location === PREVIOUS ? this.previousOpacity : this.nextOpacity,
+      opacity: location === PREVIOUS ? this.previousOpacity : this.nextOpacity,
     }
     if (isLandscape) {
       source =
@@ -478,7 +487,7 @@ export default class FunctionToolbar extends React.Component {
       <TouchableOpacity
         style={isLandscape ? styles.indicatorViewL : styles.indicatorViewP}
         activeOpacity={1}
-        onPress={() => this.indicatorScroll({location, isLandscape})}
+        onPress={() => this.indicatorScroll({ location, isLandscape })}
       >
         <Animated.Image
           resizeMode={'contain'}

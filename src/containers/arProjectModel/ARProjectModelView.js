@@ -9,7 +9,11 @@ import {
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
-import { SMProjectModelView, SProjectModelView,SMap  } from 'imobile_for_reactnative'
+import {
+  SMProjectModelView,
+  SProjectModelView,
+  SMap,
+} from 'imobile_for_reactnative'
 import styles from './styles'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
@@ -171,8 +175,8 @@ export default class ARProjectModeView extends React.Component {
       >
         <TouchableOpacity
           style={{
+            flex: 1,
             backgroundColor: color.transOverlay,
-            height: '60%',
           }}
           onPress={() => {
             this.setState({
@@ -312,9 +316,9 @@ export default class ARProjectModeView extends React.Component {
               <Text style={styles.buttonname}>
                 {this.state.showSandTable
                   ? getLanguage(global.language).Map_Main_Menu
-                      .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
+                    .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
                   : getLanguage(global.language).Map_Main_Menu
-                      .MAP_AR_AI_ASSISTANT_SAND_TABLE}
+                    .MAP_AR_AI_ASSISTANT_SAND_TABLE}
               </Text>
             </View>
           </TouchableOpacity>

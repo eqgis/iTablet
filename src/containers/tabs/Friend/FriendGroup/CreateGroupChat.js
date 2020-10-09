@@ -295,24 +295,26 @@ class CreateGroupChat extends Component {
               </View>
             )} // 数据为空时调用
           />
-          <View style={styles.FlatListViewStyle}>
-            <FlatList
-              data={letterArr}
-              keyExtractor={(item, index) => index.toString()} //不重复的key
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  style={styles.FlatListItemViewStyle}
-                  onPress={() => {
-                    this._onSectionselect(index)
-                  }}
-                >
-                  <Text style={{ fontSize: scaleSize(25) }}>
-                    {item.toUpperCase()}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
+          {this.state.sections.length > 30 && (
+            <View style={styles.FlatListViewStyle}>
+              <FlatList
+                data={letterArr}
+                keyExtractor={(item, index) => index.toString()} //不重复的key
+                renderItem={({ item, index }) => (
+                  <TouchableOpacity
+                    style={styles.FlatListItemViewStyle}
+                    onPress={() => {
+                      this._onSectionselect(index)
+                    }}
+                  >
+                    <Text style={{ fontSize: scaleSize(25) }}>
+                      {item.toUpperCase()}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
         </View>
       </Container>
     )
@@ -320,8 +322,9 @@ class CreateGroupChat extends Component {
 
   _renderSectionHeader(sectionItem) {
     const { section } = sectionItem
-    let isFirstSection = section.key === this.state.sections[0].key &&
-      section.title === this.state.sections[0].title
+    // let isFirstSection =
+    //   section.key === this.state.sections[0].key &&
+    //   section.title === this.state.sections[0].title
     return (
       <View style={styles.HeadViewStyle}>
         <Text style={styles.HeadTextStyle}>{section.title.toUpperCase()}</Text>

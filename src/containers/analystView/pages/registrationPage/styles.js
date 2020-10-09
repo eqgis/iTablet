@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native'
 import { color, size } from '../../../../styles'
 import { scaleSize, setSpText } from '../../../../utils'
+export const MAX_VISIBLE_NUMBER = 5 // 显示的最大个数
+
+export const ITEM_VIEW_HEIGHT_P = scaleSize(100) // 竖屏时高度
+export const INDICATOR_VIEW_SIZE = scaleSize(50) // 箭头高宽尺寸
+export const MAX_HEIGHT_P =
+  ITEM_VIEW_HEIGHT_P * MAX_VISIBLE_NUMBER + INDICATOR_VIEW_SIZE * 2
 
 export default StyleSheet.create({
   container: {
@@ -170,5 +176,35 @@ export default StyleSheet.create({
     left: -99999,
     height: '100%',
     width: '100%',
+  },
+
+  toolbarContainer: {
+    position: 'absolute',
+    top: '10%',
+    right: scaleSize(20),
+    backgroundColor: color.white,
+    borderRadius: scaleSize(12),
+    width: scaleSize(96),
+    maxHeight: MAX_HEIGHT_P,
+    elevation: 5,
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+  },
+  btnViewP: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: ITEM_VIEW_HEIGHT_P,
+    backgroundColor: 'transparent',
+  },
+  btn: {
+    paddingHorizontal: scaleSize(5),
+    width: '100%',
+  },
+  btnImage: {
+    width: scaleSize(44),
+    height: scaleSize(44),
   },
 })

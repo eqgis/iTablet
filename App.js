@@ -289,6 +289,7 @@ class AppRoot extends Component {
     GLOBAL.isProjectModelDownload = true //ar沙盘模型文件下载判断
     GLOBAL.getDevice = this.getDevice
     GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
+    GLOBAL.clickWait = false // 防止重复点击
   }
 
   getDevice = () => {
@@ -1231,6 +1232,7 @@ class AppRoot extends Component {
           notSave={this.closeMapHandler}
           cancel={() => {
             // this.backAction = null
+            GLOBAL.clickWait = false
             this.props.setMap2Dto3D(true)
           }}
         />

@@ -110,7 +110,6 @@ export default class Camera extends React.Component {
       })
       this.mediaViewer && this.mediaViewer.setVisible(true, data.uri)
     } catch (e) {
-      console.warn('takePicture error: ' + e)
       this.mediaViewer && this.mediaViewer.setVisible(true)
     }
   }
@@ -328,7 +327,7 @@ export default class Camera extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getPublicAssets().common.icon_back}
+              source={getPublicAssets().common.icon_back_white}
               style={styles.smallIcon}
             />
           </TouchableOpacity>

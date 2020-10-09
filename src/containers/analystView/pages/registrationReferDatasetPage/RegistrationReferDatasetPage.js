@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, LinkageList, Button, TextBtn } from '../../../../components'
+import { Container, LinkageList, Button } from '../../../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
@@ -171,7 +171,6 @@ export default class RegistrationReferDatasetPage extends Component {
     }
 
     NavigationService.goBack()
-    NavigationService.goBack()
   }
 
   render() {
@@ -183,14 +182,7 @@ export default class RegistrationReferDatasetPage extends Component {
           title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_REFER_DATASET_ADD,
           navigation: this.props.navigation,
-          backAction: this.back,
-          headerRight: (
-            <TextBtn
-              btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
-              textStyle={styles.headerBtnTitle}
-              btnClick={this.exit}
-            />
-          ),
+          backAction: this.exit,
         }}
       >
         <LinkageList

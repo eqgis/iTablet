@@ -62,6 +62,7 @@ export default class PopMenu extends PureComponent {
     device: Object,
     title: String,
     getData: () => {},
+    close?: () => {},
     fixOnPhone: boolean,
   }
 
@@ -87,7 +88,7 @@ export default class PopMenu extends PureComponent {
     if (
       JSON.stringify(prevProps.device) !== JSON.stringify(this.props.device)
     ) {
-      this.setVisible(false)
+      this.close()
     }
   }
 
@@ -280,6 +281,11 @@ export default class PopMenu extends PureComponent {
     })
   }
 
+  close = () => {
+    this.props.close && this.props.close()
+    this.setVisible(false)
+  }
+
   _getItemNums = () => {
     let data = this.props.data
     if (this.props.getData && typeof this.props.getData === 'function') {
@@ -339,11 +345,8 @@ export default class PopMenu extends PureComponent {
         style={styles.item}
         titleStyle={styles.btnTitle}
         title={getLanguage(global.language).Prompt.CANCEL}
-        // {'取消'}
         key={'取消'}
-        onPress={() => {
-          this.setVisible(false)
-        }}
+        onPress={this.close}
         activeOpacity={0.5}
       />
     )
@@ -378,16 +381,12 @@ export default class PopMenu extends PureComponent {
           'landscape-left',
           'landscape-right',
         ]}
-        onRequestClose={() => {
-          this.setVisible(false)
-        }}
+        onRequestClose={this.close}
       >
         <TouchableOpacity
           style={[styles.overlay, this.state.overlay]}
           activeOpacity={1}
-          onPress={() => {
-            this.setVisible(false)
-          }}
+          onPress={this.close}
         >
           <View
             style={[
@@ -399,16 +398,6 @@ export default class PopMenu extends PureComponent {
           >
             {this._renderList()}
           </View>
-          {/* <View
-            style={[
-              {
-                position: 'absolute',
-              },
-              this.state.indicatorPosition,
-            ]}
-          >
-            <View style={[styles.arrow, this.state.arrow]} />
-          </View> */}
         </TouchableOpacity>
       </Modal>
     )

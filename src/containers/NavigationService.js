@@ -79,10 +79,10 @@ function goBack(routeName, immediate) {
       }
     }
     if (
-      routeName && !key ||
-      routeName !== undefined &&
-      routeName !== '' &&
-      routeName === tempRoute ||
+      (routeName && !key) ||
+      (routeName !== undefined &&
+        routeName !== '' &&
+        routeName === tempRoute) ||
       tempRoute === 'temp'
     ) {
       return
@@ -91,7 +91,7 @@ function goBack(routeName, immediate) {
     } else {
       tempRoute = 'temp'
     }
-    
+
     await _navigator.dispatch(
       NavigationActions.back({
         key,
@@ -104,6 +104,20 @@ function goBack(routeName, immediate) {
       }, 1000)
     }
   })()
+}
+
+function isCurrent(name) {
+  const { routes } = _navigator.state.nav
+  if (routes.length > 0) {
+    let currentRoute = routes[routes.length - 1]
+    while (currentRoute.routes) {
+      currentRoute = currentRoute.routes[currentRoute.index]
+    }
+    if (currentRoute.routeName === name) {
+      return true
+    }
+  }
+  return false
 }
 
 function pop(index = 1) {
@@ -149,4 +163,5 @@ export default {
   popToTop,
   isInMap,
   isInMap3D,
+  isCurrent,
 }

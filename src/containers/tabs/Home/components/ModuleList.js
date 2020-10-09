@@ -21,15 +21,13 @@ import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
 
-let isWaiting = false // 防止重复点击
-
 async function composeWaiting(action) {
-  if (isWaiting) return
-  isWaiting = true
+  if (GLOBAL.clickWait) return
+  GLOBAL.clickWait = true
   if (action && typeof action === 'function') {
     await action()
   }
-  setTimeout(() => (isWaiting = false), 2000)
+  setTimeout(() => (GLOBAL.clickWait = false), 2000)
 }
 
 const STAR_MODULE = ChunkType.MAP_AR_MAPPING

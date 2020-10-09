@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, TextBtn, Button } from '../../../../components'
+import { Container, TextBtn, Button, MTBtn } from '../../../../components'
 
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -10,8 +10,6 @@ import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import {
   View,
   Text,
-  TouchableOpacity,
-  Image,
   FlatList,
   TextInput,
   InteractionManager,
@@ -134,7 +132,7 @@ export default class RegistrationPage extends Component {
 
   sure = async () => {
     if (this.state.isEditPoint) {
-      ;(async function() {
+      (async function() {
         let _controlPoints = await SRectifyView.getControlPoints()
         let points = this.checkPoints(_controlPoints)
         let point = points[this.state.currentIndex]
@@ -320,138 +318,62 @@ export default class RegistrationPage extends Component {
     })
   }
 
+  getToolBarItem = () => {
+    return [
+      {
+        title: getLanguage(global.language).Analyst_Labels
+          .REGISTRATION_POINTS_DETAIL,
+        image: getThemeAssets().analyst.analysis_connectivity,
+        action: this.detalShow,
+      },
+      {
+        title: getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTE,
+        image: getThemeAssets().analyst.analysis_traveling,
+        action: this.confirm,
+      },
+      {
+        title: getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT,
+        image: getPublicAssets().mapTools.tools_new_thematic_map,
+        action: this.export,
+      },
+      {
+        title: getLanguage(global.language).Analyst_Labels.ARITHMETIC,
+        image: getPublicAssets().mapTools.tools_modify_thematic_map,
+        action: this.toRegistrationArithmeticPage,
+      },
+    ]
+  }
+
+  _renderItem = ({ item, index }) => {
+    return (
+      <View style={styles.btnViewP}>
+        <MTBtn
+          style={styles.btn}
+          imageStyle={styles.btnImage}
+          key={index}
+          title={item.title}
+          textColor={'black'}
+          textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
+          size={MTBtn.Size.NORMAL}
+          image={item.image}
+          onPress={item.action}
+          activeOpacity={0.5}
+        />
+      </View>
+    )
+  }
+
   renderToolBar = () => {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          alignContent: 'center',
-          top: '10%',
-          right: scaleSize(20),
-          marginBottom: 'auto',
-          marginTop: 'auto',
-          height: scaleSize(430),
-          backgroundColor: color.white,
-
-          elevation: 20,
-          shadowOffset: { width: 0, height: 0 },
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
-          shadowOpacity: 1,
-          shadowRadius: 2,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            width: scaleSize(80),
-            height: scaleSize(100),
-            alignItems: 'center',
-            marginTop: scaleSize(20),
-          }}
-          onPress={() => {
-            this.detalShow()
-          }}
-        >
-          <Image
-            style={{
-              height: scaleSize(50),
-              width: scaleSize(50),
-            }}
-            // source={getPublicAssets().mapTools.tools_new_thematic_map}
-            source={getThemeAssets().analyst.analysis_connectivity}
-          />
-          <Text
-            style={{
-              fontSize: scaleSize(24),
-            }}
-            numberOfLines={1}
-          >
-            {
-              getLanguage(global.language).Analyst_Labels
-                .REGISTRATION_POINTS_DETAIL
-            }
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            width: scaleSize(80),
-            height: scaleSize(100),
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            this.confirm()
-          }}
-        >
-          <Image
-            style={{
-              height: scaleSize(50),
-              width: scaleSize(50),
-            }}
-            // source={getPublicAssets().mapTools.tools_new_thematic_map}
-            source={getThemeAssets().analyst.analysis_traveling}
-          />
-          <Text
-            style={{
-              fontSize: scaleSize(24),
-            }}
-            numberOfLines={1}
-          >
-            {getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTE}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            width: scaleSize(80),
-            height: scaleSize(100),
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            this.export()
-          }}
-        >
-          <Image
-            style={{
-              height: scaleSize(50),
-              width: scaleSize(50),
-            }}
-            source={getPublicAssets().mapTools.tools_new_thematic_map}
-          />
-          <Text
-            style={{
-              fontSize: scaleSize(24),
-            }}
-            numberOfLines={1}
-          >
-            {getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            width: scaleSize(80),
-            height: scaleSize(100),
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            this.toRegistrationArithmeticPage()
-          }}
-        >
-          <Image
-            style={{
-              height: scaleSize(50),
-              width: scaleSize(50),
-            }}
-            source={getPublicAssets().mapTools.tools_modify_thematic_map}
-          />
-          <Text
-            style={{
-              fontSize: scaleSize(24),
-              width: scaleSize(50),
-            }}
-            numberOfLines={1}
-          >
-            {getLanguage(global.language).Analyst_Labels.ARITHMETIC}
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.toolbarContainer}>
+        <FlatList
+          ref={ref => (this.list = ref)}
+          data={this.getToolBarItem()}
+          renderItem={this._renderItem}
+          keyExtractor={(item, index) => index + '-' + item.title}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     )
   }
@@ -493,9 +415,9 @@ export default class RegistrationPage extends Component {
           title={
             this.state.isAssociat
               ? getLanguage(global.language).Analyst_Labels
-                  .REGISTRATION_ASSOCIATION_CLOCE
+                .REGISTRATION_ASSOCIATION_CLOCE
               : getLanguage(global.language).Analyst_Labels
-                  .REGISTRATION_ASSOCIATION
+                .REGISTRATION_ASSOCIATION
           }
           ref={ref => (this.sureButton = ref)}
           type={'BLUE'}
@@ -884,7 +806,7 @@ export default class RegistrationPage extends Component {
             headerProps={{
               title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
               navigation: this.props.navigation,
-              backAction: this.back,
+              backAction: this.exit,
               headerRight: (
                 <TextBtn
                   btnText={

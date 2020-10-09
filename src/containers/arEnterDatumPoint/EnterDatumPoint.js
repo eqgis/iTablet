@@ -118,23 +118,29 @@ export default class EnterDatumPoint extends Component {
       global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
         // NavigationService.navigate('MapViewSingle', {
-        wsData,
+        // wsData,
         isExample: true,
         noLegend: true,
         // mapName: message.originMsg.message.message.message,
-        showMarker: {
-          x: map.x,
-          y: map.y,
-        },
+        // showMarker: {
+        //   x: map.x,
+        //   y: map.y,
+        // },
       })
       GLOBAL.toolBox.showFullMap(true)
       GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-      let point = {
-        x: map.x,
-        y: map.y,
-      }
-      GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
+      // let point = {
+      // x: map.x,
+      // y: map.y,
+      // }
+      // GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
       SMap.setAction(Action.PAN)
+      GLOBAL.scaleView.isvisible(false)
+      GLOBAL.mapController.setVisible(true)
+      GLOBAL.mapController.move({
+        bottom: scaleSize(50),
+        left: 'default',
+      })
     }
   }
 

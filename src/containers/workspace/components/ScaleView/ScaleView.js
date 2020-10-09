@@ -31,6 +31,7 @@ export default class ScaleView extends React.Component {
       title: '',
       isAddedListener: false,
       visible: true,
+      isvisible: true,
     }
     this.startTime = 0
     this.endTime = 0
@@ -82,6 +83,12 @@ export default class ScaleView extends React.Component {
         duration: 300,
       }).start()
     }
+  }
+
+  isvisible = isvisible => {
+    this.setState({
+      isvisible,
+    })
   }
 
   showFullMap = (visible, immediately = false) => {
@@ -138,6 +145,7 @@ export default class ScaleView extends React.Component {
   }
 
   render() {
+    if (!this.state.isvisible) return null
     if (this.props.mapNavigation.isShow || !this.props.isShow) return null
 
     var props = { ...this.props }

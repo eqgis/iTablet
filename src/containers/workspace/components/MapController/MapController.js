@@ -241,6 +241,13 @@ export default class MapController extends React.Component {
       !result &&
         Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
     })
+
+    let map = await SMap.getCurrentPosition()
+    let point = {
+      x: map.x,
+      y: map.y,
+    }
+    GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
   }
 
   renderCompass = () => {

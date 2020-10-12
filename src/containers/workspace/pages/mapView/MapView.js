@@ -599,13 +599,13 @@ export default class MapView extends React.Component {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
-      (async function() {
-        await SAIDetectView.dispose()
+      ;(async function() {
+        SAIDetectView.dispose()
       })()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      (async function() {
-        await SMap.destroySpeakPlugin()
+      ;(async function() {
+        SMap.destroySpeakPlugin()
       })()
     }
     if (this.floorHiddenListener) {
@@ -1105,14 +1105,16 @@ export default class MapView extends React.Component {
   }
 
   back = async () => {
+    // console.warn("1")
     if (!this.mapLoaded) return
-
+    // console.warn("2")
     // 最顶层的语音搜索，最先处理
     if (Audio.isShow()) {
       Audio.hideAudio()
       return
     }
 
+    // console.warn("3")
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
       this.backAction({
@@ -1122,7 +1124,7 @@ export default class MapView extends React.Component {
       this.mapController && this.mapController.reset()
       return
     }
-
+    // console.warn("4")
     this.props.setMap2Dto3D(false)
 
     if (Platform.OS === 'android') {
@@ -1149,24 +1151,10 @@ export default class MapView extends React.Component {
       NavigationService.navigate('Chat', param)
       return true
     }
-
-    // this.backAction = async () => {
-    //   try {
-    //     this.setLoading(
-    //       true,
-    //       getLanguage(this.props.language).Prompt.CLOSING,
-    //       //'正在关闭地图'
-    //     )
-    //     await this.props.closeMap()
-    //     GLOBAL.clearMapData()
-    //     this.setLoading(false)
-    //     NavigationService.goBack()
-    //   } catch (e) {
-    //     this.setLoading(false)
-    //   }
-    // }
+    // console.warn("5")
     let result = await SMap.mapIsModified()
     if (GLOBAL.clickWait) return true
+    // console.warn("6")
     GLOBAL.clickWait = true
     if (result && !this.isExample) {
       this.setSaveViewVisible(true, null, async () => {
@@ -1178,6 +1166,7 @@ export default class MapView extends React.Component {
         }
         GLOBAL.clickWait = false
       })
+      console.warn("7")
     } else {
       try {
         this.setLoading(
@@ -1185,6 +1174,7 @@ export default class MapView extends React.Component {
           getLanguage(this.props.language).Prompt.CLOSING,
           //'正在关闭地图'
         )
+        console.warn("8")
         if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
           this._removeNavigationListeners().then(() => {
             SMap.clearPoint()
@@ -1192,22 +1182,28 @@ export default class MapView extends React.Component {
             this.props.setMap2Dto3D(false)
           })
         }
+        console.warn("9")
         await this.props.closeMap()
+        console.warn("10")
         await this._removeGeometrySelectedListener()
+        console.warn("11")
         await this.props.setCurrentAttribute({})
         // this.setState({ showScaleView: false })
         GLOBAL.Type = null
         GLOBAL.clearMapData()
+        console.warn("12")
         setTimeout(() => {
           this.setLoading(false)
           NavigationService.goBack()
           GLOBAL.clickWait = false
         }, 1000)
       } catch (e) {
+        debugger
         GLOBAL.clickWait = false
         this.setLoading(false)
       }
     }
+    console.warn("13")
     // this.props.getAttributes({})
     return true
   }
@@ -1914,7 +1910,14 @@ export default class MapView extends React.Component {
     ) {
       GLOBAL.scaleView && GLOBAL.scaleView.showFullMap(full)
     }
-    this.setState({ showArModeIcon: full })
+
+    //只有AR模块走这段代码 add xiezhy
+    if(GLOBAL.Type === ChunkType.MAP_AR ||
+      GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
+      GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+        this.setState({ showArModeIcon: full })
+    }
+    
     this.fullMap = !full
   }
 
@@ -2418,6 +2421,7 @@ export default class MapView extends React.Component {
       <Progress
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
+        //下载示范数据进度条高度，统一修改为8 yangsl
         height={8}
         progressAniDuration={0}
         progressColor={color.item_selected_bg}

@@ -681,11 +681,15 @@ class AppRoot extends Component {
 
   saveMap = async () => {
     if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-      await SMap.stopGuide()
-      await SMap.clearPoint()
-      // await SMapSuspension.closeMap()
-      // GLOBAL.SMMapSuspension&&GLOBAL.SMMapSuspension.setVisible(false)
-      this.props.setMap2Dto3D(false)
+
+      //这里先处理下异常 add xiezhy
+      try {
+        await SMap.stopGuide()
+        await SMap.clearPoint()
+        this.props.setMap2Dto3D(false)
+      }catch (e) {
+        this.setSaveMapViewLoading(false)
+      }
     }
     if (GLOBAL.Type === ConstToolType.MAP_3D) {
       this.map3dBackAction()
@@ -751,12 +755,17 @@ class AppRoot extends Component {
   }
 
   closeMapHandler = async () => {
+
     if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-      await SMap.stopGuide()
-      await SMap.clearPoint()
-      // await SMapSuspension.closeMap()
-      // GLOBAL.SMMapSuspension&&GLOBAL.SMMapSuspension.setVisible(false)
-      this.props.setMap2Dto3D(false)
+
+      //现在这处理一下异常  add xiezhy
+      try {
+        await SMap.stopGuide()
+        await SMap.clearPoint()
+        this.props.setMap2Dto3D(false)
+      }catch (e) {
+        this.setSaveMapViewLoading(false)
+      }
     }
     if (GLOBAL.Type === ConstToolType.MAP_3D) {
       this.map3dBackAction()

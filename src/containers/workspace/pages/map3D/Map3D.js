@@ -35,7 +35,7 @@ import {
 } from '../../components'
 import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
-import { Toast, scaleSize, screen } from '../../../../utils'
+import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { share3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
@@ -140,6 +140,18 @@ export default class Map3D extends React.Component {
         },
       )
 
+      //zhangxt 2020-10-12 跳转回map3d速度太快等情况未触发willFocus时，在didFocus时重复处理相关逻辑
+      this.unsubscribeDidFocus = this.props.navigation.addListener(
+        'didFocus',
+        () => {
+          if (this.showFullonBlur) {
+            this.showFullMap(false)
+            this.showFullonBlur = false
+          }
+          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+        },
+      )
+
       this.unsubscribeBlur = this.props.navigation.addListener(
         'willBlur',
         () => {
@@ -193,6 +205,7 @@ export default class Map3D extends React.Component {
     this.circleFlyListen && this.circleFlyListen.remove()
     this.unsubscribeFocus && this.unsubscribeFocus.remove()
     this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    this.unsubscribeDidFocus && this.unsubscribeDidFocus.remove()
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
@@ -866,7 +879,8 @@ export default class Map3D extends React.Component {
           />
         </View>
         <Text style={styles.placeholder}>
-          {this.state.showErrorInfo && getLanguage(this.props.language).Friends.INPUT_INVALID}
+          {this.state.showErrorInfo &&
+            getLanguage(this.props.language).Friends.INPUT_INVALID}
         </Text>
       </Dialog>
     )

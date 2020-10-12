@@ -1105,16 +1105,16 @@ export default class MapView extends React.Component {
   }
 
   back = async () => {
-    console.warn("1")
+    // console.warn("1")
     if (!this.mapLoaded) return
-    console.warn("2")
+    // console.warn("2")
     // 最顶层的语音搜索，最先处理
     if (Audio.isShow()) {
       Audio.hideAudio()
       return
     }
 
-    console.warn("3")
+    // console.warn("3")
     // 优先处理其他界面跳转到MapView传来的返回事件
     if (this.backAction && typeof this.backAction === 'function') {
       this.backAction({
@@ -1124,7 +1124,7 @@ export default class MapView extends React.Component {
       this.mapController && this.mapController.reset()
       return
     }
-    console.warn("4")
+    // console.warn("4")
     this.props.setMap2Dto3D(false)
 
     if (Platform.OS === 'android') {
@@ -1151,10 +1151,10 @@ export default class MapView extends React.Component {
       NavigationService.navigate('Chat', param)
       return true
     }
-    console.warn("5")
+    // console.warn("5")
     let result = await SMap.mapIsModified()
     if (GLOBAL.clickWait) return true
-    console.warn("6")
+    // console.warn("6")
     GLOBAL.clickWait = true
     if (result && !this.isExample) {
       this.setSaveViewVisible(true, null, async () => {

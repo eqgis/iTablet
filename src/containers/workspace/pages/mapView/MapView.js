@@ -2422,9 +2422,7 @@ export default class MapView extends React.Component {
       <Progress
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
-        height={
-          Platform.OS === 'ios' && 8
-        }
+        height={8}
         progressAniDuration={0}
         progressColor={color.item_selected_bg}
       />

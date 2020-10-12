@@ -549,7 +549,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
+      (async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -667,7 +667,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                ;(async function() {
+                (async function() {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
@@ -1062,7 +1062,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    ;(async function() {
+    (async function() {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1213,7 +1213,7 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    ;(async function() {
+    (async function() {
       try {
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
@@ -1353,7 +1353,7 @@ export default class MapView extends React.Component {
             }
           },
         )
-        
+
         this._addGeometrySelectedListener()
 
         setGestureDetectorListener({
@@ -1366,7 +1366,9 @@ export default class MapView extends React.Component {
         // 示例地图不加载标注图层
         if (!this.isExample) {
           await SMap.openTaggingDataset(this.props.user.currentUser.userName)
-          let hasDefaultTagging = await SMap.hasDefaultTagging(this.props.user.currentUser.userName)
+          let hasDefaultTagging = await SMap.hasDefaultTagging(
+            this.props.user.currentUser.userName,
+          )
           if (!hasDefaultTagging) {
             await SMap.newTaggingDataset(
               'Default_Tagging',
@@ -1378,16 +1380,10 @@ export default class MapView extends React.Component {
           )
           if (layer) {
             GLOBAL.TaggingDatasetName = layer.name
-            layer.isEdit = await SMap.setLayerEditable(
-              layer.name,
-              true,
-            )
-            layer.isVisible = await SMap.setLayerVisible(
-              layer.name,
-              true,
-            )
+            layer.isEdit = await SMap.setLayerEditable(layer.name, true)
+            layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
-    
+
             if (hasMap) await SMap.saveMap('', false, false)
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             let dataList = await SMap.getTaggingLayers(
@@ -1443,7 +1439,7 @@ export default class MapView extends React.Component {
           currentDataset: {}, //当前使用的数据集
         }
         this.startCowork()
-  
+
         this.mapLoaded = true
       } catch (e) {
         this.setLoading(false)
@@ -1944,7 +1940,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    ;(async function() {
+    (async function() {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -1958,7 +1954,7 @@ export default class MapView extends React.Component {
   //多媒体采集
   captureImage = params => {
     //保存数据->跳转
-    ;(async function() {
+    (async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -2093,7 +2089,7 @@ export default class MapView extends React.Component {
   }
 
   confirm = () => {
-    ;(async function() {
+    (async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.dialog.setDialogVisible(false)
@@ -3127,14 +3123,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-            <RNLegendView
-              setMapLegend={this.props.setMapLegend}
-              legendSettings={this.props.mapLegend}
-              device={this.props.device}
-              language={this.props.language}
-              ref={ref => (GLOBAL.legend = ref)}
-            />
-          )}
+          <RNLegendView
+            setMapLegend={this.props.setMapLegend}
+            legendSettings={this.props.mapLegend}
+            device={this.props.device}
+            language={this.props.language}
+            ref={ref => (GLOBAL.legend = ref)}
+          />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
@@ -3143,19 +3139,19 @@ export default class MapView extends React.Component {
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
-            <SMAIDetectView
-              ref={ref => (GLOBAL.SMAIDetectView = ref)}
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
               }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )}
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            language={this.props.language}
+            // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+            onArObjectClick={this._onArObjectClick}
+          />
+        )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
@@ -3208,16 +3204,15 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!this.state.showAIDetect &&
-          this.state.showScaleView && (
-            <ScaleView
-              mapNavigation={this.props.mapNavigation}
-              device={this.props.device}
-              language={this.props.language}
-              isShow={this.props.mapScaleView}
-              ref={ref => (GLOBAL.scaleView = ref)}
-            />
-          )}
+        {!this.state.showAIDetect && this.state.showScaleView && (
+          <ScaleView
+            mapNavigation={this.props.mapNavigation}
+            device={this.props.device}
+            language={this.props.language}
+            isShow={this.props.mapScaleView}
+            ref={ref => (GLOBAL.scaleView = ref)}
+          />
+        )}
         <BubblePane ref={ref => (GLOBAL.bubblePane = ref)} maxSize={1} />
         <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
@@ -3245,6 +3240,7 @@ export default class MapView extends React.Component {
           device={this.props.device}
           ref={ref => (GLOBAL.PoiTopSearchBar = ref)}
           setMapNavigation={this.props.setMapNavigation}
+          navigation={this.props.navigation}
         />
         <PoiInfoContainer
           setLoading={this.setLoading}
@@ -3266,10 +3262,9 @@ export default class MapView extends React.Component {
         {/*device={this.props.device}*/}
         {/*language={this.props.language}*/}
         {/*/>*/}
-        {global.coworkMode &&
-          this.state.onlineCowork && (
-            <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
-          )}
+        {global.coworkMode && this.state.onlineCowork && (
+          <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

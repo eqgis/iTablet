@@ -4,13 +4,7 @@
  * https://github.com/AsortKeven
  */
 import * as React from 'react'
-import {
-  Animated,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-} from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
 import { SearchBar, Header } from '../../../../components'
 import { scaleSize, screen } from '../../../../utils'
 import { color } from '../../../../styles'
@@ -22,6 +16,7 @@ export default class PoiTopSearchBar extends React.Component {
   props: {
     setMapNavigation: () => {},
     device: Object,
+    navigation: Object,
   }
 
   constructor(props) {
@@ -66,7 +61,7 @@ export default class PoiTopSearchBar extends React.Component {
     !visible && (obj.defaultValue = '')
     this.setState(obj)
   }
-  
+
   back = async () => {
     if (GLOBAL.PoiInfoContainer) {
       let poiData = GLOBAL.PoiInfoContainer.state
@@ -108,7 +103,7 @@ export default class PoiTopSearchBar extends React.Component {
       }
     }
   }
-  
+
   _renderSearchBar = () => {
     return (
       <SearchBar
@@ -116,7 +111,13 @@ export default class PoiTopSearchBar extends React.Component {
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={async searchKey => {
           GLOBAL.PoiInfoContainer.clear()
-          GLOBAL.PoiInfoContainer.getSearchResult({ keyWords: searchKey })
+          //zhangxt 2020-10-12 补全接口需要的参数
+          let location = await SMap.getMapcenterPosition()
+          GLOBAL.PoiInfoContainer.getSearchResult({
+            keyWords: searchKey,
+            location: JSON.stringify(location),
+            radius: 5000,
+          })
           GLOBAL.PoiInfoContainer.setState({
             showList: true,
           })
@@ -143,8 +144,11 @@ export default class PoiTopSearchBar extends React.Component {
         <Header
           ref={ref => (this.containerHeader = ref)}
           navigation={this.props.navigation}
-          title={this.type === 'pointSearch'
-            ? '' : getLanguage(this.props.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS}
+          title={
+            this.type === 'pointSearch'
+              ? ''
+              : getLanguage(global.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS
+          }
           backAction={this.back}
           headerCenter={this._renderSearchBar()}
         />

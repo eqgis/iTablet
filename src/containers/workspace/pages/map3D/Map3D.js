@@ -910,6 +910,7 @@ export default class Map3D extends React.Component {
       <Progress
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
+        //下载示范数据进度条高度，统一修改为8 yangsl
         height={8}
         progressAniDuration={0}
         progressColor={color.item_selected_bg}

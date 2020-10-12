@@ -488,7 +488,8 @@ export default class PointAnalyst extends Component {
             radius: this.radius,
             is3D: this.is3D,
           }, async () => {
-            this.location = location
+            //莫名其妙的代码，注释掉 add xiezhy
+            // this.location = location
             if (!this.is3D) {
               if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
                 GLOBAL.TouchType = TouchType.NORMAL

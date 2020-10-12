@@ -8,7 +8,8 @@ const { searchKeys, keywords } = AudioKeywords
 function search(content = '') {
   if (!content) return
   content = content.toLowerCase()
-  let value = '', key = ''
+  let value = '',
+    key = ''
   const values = Object.values(searchKeys)
   for (let i = 0; i < values.length; i++) {
     if (values[i].includes(',')) {
@@ -27,7 +28,7 @@ function search(content = '') {
       break
     }
   }
-  
+
   // 判断关键字 搜索
   let searches = keywords.SEARCH.split(',')
   let newContent = content
@@ -39,8 +40,8 @@ function search(content = '') {
       break
     }
   }
-  
-  let item = {content: newContent}
+
+  let item = { content: newContent }
   switch (value) {
     // case keywords.SEARCH:
     //   GLOBAL.AudioDialog.setVisible(false)
@@ -53,29 +54,32 @@ function search(content = '') {
         item.title = key
       }
   }
-  
+
   if (item.title || item.content) {
-    LocateUtils.SearchCategories({
-      ...item,
-      radius: 5000,
-      is3D: GLOBAL.Type === ChunkType.MAP_3D,
-    }, async data => {
-      if (data) {
-        Audio.hideAudio()
-      }
-      // this.location = location
-      // if (GLOBAL.Type !== ChunkType.MAP_3D) {
-      //   if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      //     GLOBAL.TouchType = TouchType.NORMAL
-      //     await SMap.clearTrackingLayer()
-      //     // this.props.setNavigationChangeAR(true)
-      //     this.props.setMapNavigation({
-      //       isShow: true,
-      //       name: item.title,
-      //     })
-      //   }
-      // }
-    })
+    LocateUtils.SearchPoiInMapView(
+      {
+        ...item,
+        radius: 5000,
+        is3D: GLOBAL.Type === ChunkType.MAP_3D,
+      },
+      async data => {
+        if (data) {
+          Audio.hideAudio()
+        }
+        // this.location = location
+        // if (GLOBAL.Type !== ChunkType.MAP_3D) {
+        //   if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+        //     GLOBAL.TouchType = TouchType.NORMAL
+        //     await SMap.clearTrackingLayer()
+        //     // this.props.setNavigationChangeAR(true)
+        //     this.props.setMapNavigation({
+        //       isShow: true,
+        //       name: item.title,
+        //     })
+        //   }
+        // }
+      },
+    )
   } else if (_searchKey) {
     Audio.hideAudio()
     NavigationService.navigate('PointAnalyst', {

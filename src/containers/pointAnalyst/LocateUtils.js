@@ -1,16 +1,17 @@
-import { SScene, SMap } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
 
 /**
+ * zhangxt 2020-10-12 搜索后跳转到mapview显示结果，仅2维地图
  * 类别查询，如景点，医院等
  * @param item {title: '景点', radius: 5000, is3D: false}
  * @param cb
  * @returns {Promise.<void>}
  * @constructor
  */
-async function SearchCategories (item, cb = () => {}) {
+async function SearchPoiInMapView(item, cb = () => {}) {
   if (!item.is3D) {
     let location = await SMap.getMapcenterPosition()
     this.location = location
@@ -30,20 +31,14 @@ async function SearchCategories (item, cb = () => {}) {
             NavigationService.navigate('MapView')
             GLOBAL.PoiInfoContainer.setVisible(true)
             GLOBAL.PoiTopSearchBar.setVisible(true)
-            GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.title || item.content })
+            GLOBAL.PoiTopSearchBar.setState({
+              defaultValue: item.title || item.content,
+            })
           }
           cb && cb(data)
         },
       )
     }
-  } else {
-    let location = await SScene.getSceneCenter()
-    cb && cb(location)
-    getSearchResult({
-      keyWords: item.title,
-      location: JSON.stringify(location),
-      radius: item.radius || 0,
-    })
   }
 }
 
@@ -52,17 +47,25 @@ function getDistance(p1, p2) {
   let R = 6371393
   return Math.abs(
     ((p2.x - p1.x) *
-    Math.PI *
-    R *
-    Math.cos((((p2.y + p1.y) / 2) * Math.PI) / 180)) /
-    180,
+      Math.PI *
+      R *
+      Math.cos((((p2.y + p1.y) / 2) * Math.PI) / 180)) /
+      180,
   )
 }
 
-compare = prop => (a, b) => {
-  return a[prop] - b[prop]
+function compare(prop) {
+  return (a, b) => {
+    return a[prop] - b[prop]
+  }
 }
 
+/**
+ * zhangxt 2020-10-12
+ * @param {*} params 搜索参数 {keyWords: 'abc', location: '{x:123, y:456}', radius: 5000 }
+ * @param {*} location 当前位置 { x: 123, y: 456}
+ * @param {*} cb 结果通过回调返回，可能为空 {resultList: Array, poiInfos: Array, radius?:Number}
+ */
 function getSearchResult(params, location, cb = () => {}) {
   let searchStr = ''
   let keys = Object.keys(params)
@@ -98,19 +101,18 @@ function getSearchResult(params, location, cb = () => {}) {
                     distance: getDistance(item.location, location),
                   }
                 })
-                resultList
-                  .sort(compare('distance'))
-                  .forEach((item, index) => {
-                    resultList[index].distance =
-                      item.distance > 1000
-                        ? (item.distance / 1000).toFixed(2) + 'km'
-                        : ~~item.distance + 'm'
-                  })
-                cb && cb({
-                  resultList,
-                  poiInfos,
-                  radius: 50000,
+                resultList.sort(compare('distance')).forEach((item, index) => {
+                  resultList[index].distance =
+                    item.distance > 1000
+                      ? (item.distance / 1000).toFixed(2) + 'km'
+                      : ~~item.distance + 'm'
                 })
+                cb &&
+                  cb({
+                    resultList,
+                    poiInfos,
+                    radius: 50000,
+                  })
               }
             })
         } else {
@@ -129,16 +131,17 @@ function getSearchResult(params, location, cb = () => {}) {
                 ? (item.distance / 1000).toFixed(2) + 'km'
                 : ~~item.distance + 'm'
           })
-          cb && cb({
-            resultList,
-            poiInfos,
-          })
+          cb &&
+            cb({
+              resultList,
+              poiInfos,
+            })
         }
       }
     })
 }
 
 export default {
-  SearchCategories,
+  SearchPoiInMapView,
   getSearchResult,
 }

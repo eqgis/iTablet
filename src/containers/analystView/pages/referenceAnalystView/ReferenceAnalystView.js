@@ -255,6 +255,8 @@ export default class ReferenceAnalystView extends Component {
     SMap.setAction(Action.PAN)
     this.props.setSelection && this.props.setSelection(null)
     NavigationService.goBack('ReferenceAnalystView')
+    //泰森多边形分析自定义区域后返回未全屏问题 jiakai
+    GLOBAL.toolBox.showFullMap(true)
   }
 
   getDataSources = async () => {

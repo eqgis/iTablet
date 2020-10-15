@@ -37,7 +37,7 @@ async function action(type) {
   const data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
   setModuleData(type)
   _params.setMapLegend(mapLegend)
-  _params.setToolbarVisible(true, ConstToolType.LEGEND, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LEGEND, {
     containerType,
     column: data.column,
     isFullScreen: false,
@@ -60,7 +60,6 @@ function setModuleData(type) {
 
 export default function(type, title, customAction) {
   return {
-    key: title,
     title,
     action: () => {
       if (customAction === false) {

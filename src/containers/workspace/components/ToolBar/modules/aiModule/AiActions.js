@@ -228,7 +228,7 @@ function aiDetect() {
       },
     ]
     ;(await GLOBAL.toolBox) &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.AIDETECT, {
+      GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AR_ANALYSIS_DETECT, {
         buttons: buttons,
         isFullScreen: false,
         height: 0,
@@ -283,7 +283,7 @@ function polymerizeCollect() {
       },
     ]
     ;(await GLOBAL.toolBox) &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.AIDETECT, {
+      GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AR_ANALYSIS_DETECT, {
         buttons: buttons,
         isFullScreen: false,
         height: 0,

@@ -6,7 +6,7 @@ import { SMap } from 'imobile_for_reactnative'
 function showSetting(back = false) {
   const _params = ToolbarModule.getParams()
   _params.showFullMap(true)
-  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
   })
   if (back) {
@@ -19,7 +19,7 @@ function setDisplayMode(item) {
   if (item) {
     SMap.setImageDisplayMode(_params.currentLayer.path, item.value)
   }
-  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
   })
 }
@@ -29,15 +29,17 @@ function setStretchType(item) {
   if (item) {
     SMap.setImageStretchType(_params.currentLayer.path, item.value)
   }
-  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
+    selectKey: GLOBAL.ToolBar.state.selectKey,
   })
 }
 
 function onPickerCancel() {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.LAYER_SETTING_IMAGE_MENU, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
+    selectKey: GLOBAL.ToolBar.state.selectKey,
   })
 }
 

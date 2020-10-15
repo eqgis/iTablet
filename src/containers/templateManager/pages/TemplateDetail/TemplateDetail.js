@@ -294,7 +294,7 @@ export default class TemplateDetail extends React.Component {
           ToolbarModule.getData().actions &&
           ToolbarModule.getData().actions.openTemplate
         ) {
-          ToolbarModule.getData().actions.openTemplate(ConstToolType.COLLECTION)
+          ToolbarModule.getData().actions.openTemplate(ConstToolType.SM_MAP_COLLECTION)
         }
       }
     } catch (e) {

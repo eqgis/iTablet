@@ -7,6 +7,7 @@ import {
   addModule,
   markModule,
   analysisModule,
+  processModule,
   styleModule,
   toolModule,
 } from '../../containers/workspace/components/ToolBar/modules'
@@ -27,8 +28,8 @@ export default class MapAnalystConfig extends Module {
         startModule,
         addModule,
         markModule,
-        () => analysisModule('MAP_ANALYSIS'),
-        () => analysisModule('MAP_PROCESS'),
+        analysisModule,
+        processModule,
         styleModule,
         toolModule,
       ],

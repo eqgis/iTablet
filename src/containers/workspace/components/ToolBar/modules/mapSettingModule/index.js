@@ -39,7 +39,6 @@ async function setModuleData(type) {
 
 export default function(title) {
   return {
-    key: title,
     title,
     action: type => action(type),
     size: 'large',

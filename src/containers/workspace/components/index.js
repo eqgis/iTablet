@@ -34,7 +34,6 @@ import {
 } from './AnalystMapOptions'
 // import MenuList from './ToolBar/modules/tool3DModule/CustomViews/MenuList'
 import { PoiInfoContainer, PoiTopSearchBar } from './PoiInfoContainer'
-import AIFunctionToolbar from './AIFunctionToolbar'
 import AIMapSuspensionDialog from './AIMapSuspensionDialog'
 import RNLegendView from './RNLegendView'
 import ScaleView from './ScaleView'
@@ -82,7 +81,6 @@ export {
   PoiTopSearchBar,
   IncrementRoadView,
   MapSelectPoint,
-  AIFunctionToolbar,
   AIMapSuspensionDialog,
   NavigationPoiView,
   RNFloorListView,

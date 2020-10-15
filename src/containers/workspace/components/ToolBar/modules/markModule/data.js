@@ -15,7 +15,7 @@ const line = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '符号线',
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE, {
         containerType: ToolbarType.symbol,
         isFullScreen: false,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
@@ -30,7 +30,7 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_WIDTH, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_WIDTH, {
         isFullScreen: true,
         showMenuDialog: false,
         isTouchProgress: true,
@@ -45,7 +45,7 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET, {
         containerType: ToolbarType.colorTable,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
@@ -61,7 +61,7 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT, {
         containerType: ToolbarType.symbol,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
@@ -74,7 +74,7 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_SIZE, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_SIZE, {
         isFullScreen: true,
         showMenuDialog: false,
         isTouchProgress: true,
@@ -88,7 +88,7 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET, {
         containerType: ToolbarType.colorTable,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
@@ -101,7 +101,7 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_ROTATION, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_ROTATION, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -114,7 +114,7 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -131,7 +131,7 @@ const region = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '面符号',
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION, {
         containerType: ToolbarType.symbol,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
@@ -144,7 +144,7 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET, {
         containerType: ToolbarType.colorTable,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
@@ -157,7 +157,7 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET, {
         containerType: ToolbarType.colorTable,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
@@ -170,7 +170,7 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -184,7 +184,7 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -201,7 +201,7 @@ const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT, {
         containerType: ToolbarType.table,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_FONT,
@@ -214,7 +214,7 @@ const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -228,7 +228,7 @@ const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION, {
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
@@ -242,7 +242,7 @@ const text = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      showAction(ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET, {
+      showAction(ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET, {
         containerType: ToolbarType.colorTable,
         isFullScreen: false,
         selectName: getLanguage(param).Map_Main_Menu.STYLE_COLOR,

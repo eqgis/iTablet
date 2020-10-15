@@ -17,7 +17,7 @@ function getData(type) {
   const buttons = getButtons(type)
   let customView = null
   switch (type) {
-    case ConstToolType.LEGEND_POSITION:
+    case ConstToolType.SM_MAP_LEGEND_POSITION:
       {
         let currentPopData
         if (GLOBAL.Type) {
@@ -39,7 +39,7 @@ function getData(type) {
         )
       }
       break
-    case ConstToolType.LEGEND:
+    case ConstToolType.SM_MAP_LEGEND:
     default:
       data = legendColor
       break
@@ -85,11 +85,11 @@ function getMenuData(type) {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR,
       action: () => {
         GLOBAL.toolBox && GLOBAL.toolBox.menu({
-          type: ConstToolType.LEGEND,
+          type: ConstToolType.SM_MAP_LEGEND,
           selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR
         })
         GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
+          GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
             containerType: ToolbarType.colorTable,
             // column,
             isFullScreen: false,
@@ -186,9 +186,9 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
       action: () => {
-        const _data = getData(ConstToolType.LEGEND_POSITION)
+        const _data = getData(ConstToolType.SM_MAP_LEGEND_POSITION)
         GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND_POSITION, {
+          GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND_POSITION, {
             containerType: ToolbarType.picker,
             isFullScreen: false,
             selectName: getLanguage(_params.language).Map_Main_Menu
@@ -210,7 +210,7 @@ function getButtons(type) {
   const legendData = _params.mapLegend
   let buttons = []
   switch (type) {
-    case ConstToolType.LEGEND:
+    case ConstToolType.SM_MAP_LEGEND:
     default:
       if (legendData[GLOBAL.Type].isShow) {
         buttons = [

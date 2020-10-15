@@ -10,8 +10,6 @@ import { ConstToolType, TouchType } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import AnalysisAction from './AnalysisAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-// import { Analyst_Types } from '../../../../../analystView/AnalystType'
-import AnalysisMenuListView from './customView/AnalysisMenuListView'
 
 function getData(type) {
   let buttons
@@ -19,19 +17,16 @@ function getData(type) {
   let data
   let temp = { buttons: [], data: [] }
   switch (type) {
-    case ConstToolType.MAP_ANALYSIS:
+    case ConstToolType.SM_MAP_ANALYSIS:
       temp = getToolData()
       break
-    case ConstToolType.MAP_PROCESS:
-      temp = getCustomView()
-      break
-    case ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH:
+    case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
       temp = getOptimalPathData()
       break
-    case ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
+    case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
       temp = getConnectivityData()
       break
-    case ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH:
+    case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
       temp = getTSPData()
       break
   }
@@ -39,24 +34,6 @@ function getData(type) {
   buttons = temp.buttons
   customView = temp.customView
   return { data, buttons, customView }
-}
-
-function getCustomView() {
-  let obj = {}
-  // customView: () => (
-  const params = ToolbarModule.getParams()
-  const userName = params.user.currentUser.userName || 'Customer'
-  let _customView = () => (
-    <AnalysisMenuListView
-      userName={userName}
-      device={params.device}
-      showToolbar={params.setToolbarVisible}
-    />
-  )
-  obj.data = undefined
-  obj.buttons = undefined
-  obj.customView = _customView
-  return obj
 }
 
 /** 工具栏数据 * */
@@ -70,7 +47,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+          type: ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH,
           // cb: cb,
         })
       },
@@ -85,7 +62,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
         })
       },
       image: getThemeAssets().analyst.analysis_connectivity,
@@ -97,7 +74,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+          type: ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH,
         })
       },
       image: getThemeAssets().analyst.analysis_traveling,
@@ -136,7 +113,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('AnalystListEntry', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_OVERLAY_ANALYSIS,
           title: getLanguage(_params.language).Analyst_Modules.OVERLAY_ANALYSIS,
         })
       },
@@ -149,7 +126,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('ReferenceAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON,
+          type: ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON,
           title: getLanguage(_params.language).Analyst_Modules.THIESSEN_POLYGON,
         })
       },
@@ -176,7 +153,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('InterpolationAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
           title: getLanguage(_params.language).Analyst_Modules
             .INTERPOLATION_ANALYSIS,
         })
@@ -190,7 +167,7 @@ function getToolData() {
       action: (params = {}) => {
         NavigationService.navigate('AnalystListEntry', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS,
           title: getLanguage(_params.language).Analyst_Modules.ONLINE_ANALYSIS,
         })
       },
@@ -209,7 +186,7 @@ function getOptimalPathData() {
       type: ToolbarBtnType.ANALYST,
       image: getThemeAssets().analyst.analysis_analyst,
       action: () =>
-        AnalysisAction.analyst(ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH),
+        AnalysisAction.analyst(ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH),
     },
     ToolbarBtnType.TOOLBAR_DONE,
   ]
@@ -266,7 +243,7 @@ function getConnectivityData() {
       image: getThemeAssets().analyst.analysis_analyst,
       action: () =>
         AnalysisAction.analyst(
-          ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+          ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
         ),
     },
     ToolbarBtnType.TOOLBAR_DONE,
@@ -323,7 +300,7 @@ function getTSPData() {
       type: ToolbarBtnType.ANALYST,
       image: getThemeAssets().analyst.analysis_analyst,
       action: () =>
-        AnalysisAction.analyst(ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH),
+        AnalysisAction.analyst(ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH),
     },
     ToolbarBtnType.TOOLBAR_DONE,
   ]

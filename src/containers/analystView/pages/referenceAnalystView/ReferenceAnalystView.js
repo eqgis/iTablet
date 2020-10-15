@@ -136,7 +136,7 @@ export default class ReferenceAnalystView extends Component {
     let optionParameter = {}
     // 泰森
     if (
-      this.type === ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON &&
+      this.type === ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON &&
       this.state.isCustomLocale
     ) {
       // 检查选择面
@@ -187,7 +187,7 @@ export default class ReferenceAnalystView extends Component {
           },
           result = false
         switch (this.type) {
-          case ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON:
+          case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
             if (this.state.isCustomLocale) {
               if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
                 optionParameter = {
@@ -206,7 +206,7 @@ export default class ReferenceAnalystView extends Component {
               optionParameter,
             )
             break
-          case ConstToolType.MAP_ANALYSIS_MEASURE_DISTANCE:
+          case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
             // result = await SAnalyst.erase(
             //   sourceData,
             //   targetData,
@@ -808,9 +808,9 @@ export default class ReferenceAnalystView extends Component {
       >
         <ScrollView style={styles.container}>
           {this.renderSourceData()}
-          {this.type === ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON &&
+          {this.type === ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON &&
             this.renderDisplaySettingsData()}
-          {this.type === ConstToolType.MAP_ANALYSIS_MEASURE_DISTANCE &&
+          {this.type === ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE &&
             this.renderReferenceData()}
           {this.renderResultData()}
         </ScrollView>

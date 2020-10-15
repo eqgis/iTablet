@@ -110,7 +110,7 @@ async function showDatasetsList(type, filter = {}) {
     //   _params.device.orientation.indexOf('LANDSCAPE') === 0
     //     ? ConstToolType.THEME_HEIGHT[3]
     //     : ConstToolType.THEME_HEIGHT[5]
-    const _type = ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS
+    const _type = ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS
     const _data = {
       type: _type,
       getData: ThemeData.getData,
@@ -184,7 +184,7 @@ function showExpressionList(type, themeType) {
     ToolbarModule.getParams().setToolbarVisible &&
       ToolbarModule.getParams().setToolbarVisible(
         true,
-        ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME,
+        ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME,
         {
           containerType: listSelectable
             ? ToolbarType.selectableList
@@ -331,8 +331,8 @@ function getThemeMapCreate(type) {
   let data = []
   const buttons = []
   if (
-    type !== ConstToolType.MAP_THEME_CREATE_BY_LAYER &&
-    type !== ConstToolType.MAP_THEME_CREATE
+    type !== ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER &&
+    type !== ConstToolType.SM_MAP_THEME_CREATE
   )
     return { data, buttons }
   data = [
@@ -343,7 +343,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_UNIQUE_STYLE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme')
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_create_unique_style,
@@ -356,7 +356,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_RANGE_STYLE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme')
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_create_range_style,
@@ -387,7 +387,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_UNIFY_LABEL,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_UNIFY_LABEL)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_create_unify_label,
@@ -401,7 +401,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_UNIQUE_LABEL,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_UNIQUE_LABEL)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_create_unique_label,
@@ -414,7 +414,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_RANGE_LABEL,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_RANGE_LABEL)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_create_range_label,
@@ -427,7 +427,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_AREA,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_AREA)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_area,
@@ -440,7 +440,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_STEP,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_STEP)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_step,
@@ -453,7 +453,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_LINE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_LINE)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_line,
@@ -466,7 +466,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_POINT,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_POINT)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_point,
@@ -479,7 +479,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_BAR,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_BAR)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_bar,
@@ -492,7 +492,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_BAR3D,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_BAR3D)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_bar3d,
@@ -505,7 +505,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_PIE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_PIE)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_pie,
@@ -518,7 +518,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_PIE3D,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_PIE3D)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_pie3d,
@@ -531,7 +531,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_ROSE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_ROSE)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_rose,
@@ -544,7 +544,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_ROSE3D,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_ROSE3D)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_rose3d,
@@ -557,7 +557,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_STACK_BAR,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () =>
             showExpressionList('ThemeGraph', constants.THEME_GRAPH_STACK_BAR)
           : () => showDatasetsList(type),
@@ -571,7 +571,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_STACK_BAR3D,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () =>
             showExpressionList(
               'ThemeGraph',
@@ -588,7 +588,7 @@ function getThemeMapCreate(type) {
       // constants.THEME_GRAPH_RING,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('ThemeGraph', constants.THEME_GRAPH_RING)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graph_ring,
@@ -600,7 +600,7 @@ function getThemeMapCreate(type) {
       title: getLanguage(global.language).Map_Main_Menu.THEME_DOT_DENSITY_MAP,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_DOT_DENSITY)
           : () =>
             showDatasetsList(type, {
@@ -616,7 +616,7 @@ function getThemeMapCreate(type) {
         .THEME_GRADUATED_SYMBOLS_MAP,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? () => showExpressionList('Theme', constants.THEME_GRADUATED_SYMBOL)
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_graduated_symbol,
@@ -628,7 +628,7 @@ function getThemeMapCreate(type) {
       title: getLanguage(global.language).Map_Main_Menu.THEME_CRID_UNIQUE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? createThemeGridUniqueMapByLayer
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_grid_unique,
@@ -640,7 +640,7 @@ function getThemeMapCreate(type) {
       title: getLanguage(global.language).Map_Main_Menu.THEME_CRID_RANGE,
       size: 'large',
       action:
-        type === ConstToolType.MAP_THEME_CREATE_BY_LAYER
+        type === ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER
           ? createThemeGridRangeMapByLayer
           : () => showDatasetsList(type),
       image: getThemeAssets().themeType.theme_grid_range,
@@ -660,131 +660,6 @@ function getThemeMapCreate(type) {
   return { data, buttons }
 }
 
-async function showLocalDatasetsList() {
-  let data = []
-  const customerUDBPath = await FileTools.appendingHomeDirectory(
-    ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
-  )
-  const customerUDBs = await FileTools.getPathListByFilter(customerUDBPath, {
-    extension: 'udb',
-    type: 'file',
-  })
-  customerUDBs.forEach(item => {
-    item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
-    item.info = {
-      infoType: 'mtime',
-      lastModifiedDate: item.mtime,
-    }
-  })
-
-  let userUDBPath
-  let userUDBs
-  if (
-    ToolbarModule.getParams().user &&
-    ToolbarModule.getParams().user.currentUser.userName
-  ) {
-    userUDBPath = `${(await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath,
-    )) + ToolbarModule.getParams().user.currentUser.userName}/${
-      ConstPath.RelativePath.Datasource
-    }`
-    userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
-      extension: 'udb',
-      type: 'file',
-    })
-    userUDBs.forEach(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
-      item.info = {
-        infoType: 'mtime',
-        lastModifiedDate: item.mtime,
-      }
-    })
-
-    data = [
-      {
-        title: Const.PUBLIC_DATA_SOURCE,
-        image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
-        data: customerUDBs,
-      },
-      {
-        title: Const.DATA_SOURCE,
-        image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
-        data: userUDBs,
-      },
-    ]
-  } else {
-    data = [
-      {
-        title: Const.DATA_SOURCE,
-        image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
-        data: customerUDBs,
-      },
-    ]
-  }
-
-  ToolbarModule.getParams().setToolbarVisible &&
-    ToolbarModule.getParams().setToolbarVisible(
-      true,
-      ConstToolType.MAP_THEME_START_OPENDS,
-      {
-        containerType: ToolbarType.list,
-        isFullScreen: true,
-        isTouchProgress: false,
-        showMenuDialog: false,
-        // height:
-        //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
-        //     ? ConstToolType.THEME_HEIGHT[3]
-        //     : ConstToolType.THEME_HEIGHT[5],
-        data,
-        buttons: [ToolbarBtnType.CANCEL],
-      },
-    )
-}
-
-/**
- * 开始->新建专题图
- * @param type
- * @returns {{data: Array, buttons: Array}}
- */
-function getThemeMapStartCreate(type) {
-  let data = []
-  const buttons = []
-  if (type !== ConstToolType.MAP_THEME_START_CREATE) return { data, buttons }
-  data = [
-    {
-      // 单值风格
-      key: constants.THEME_UNIQUE_STYLE,
-      title: getLanguage(global.language).Map_Main_Menu.THEME_UNIQUE_VALUES_MAP,
-      // constants.THEME_UNIQUE_STYLE,
-      size: 'large',
-      action: showLocalDatasetsList,
-      image: require('../../../../../../assets/mapTools/icon_function_theme_create_unique_style_black.png'),
-      selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_unique_style_black.png'),
-    },
-    {
-      // 分段风格
-      key: constants.THEME_RANGE_STYLE,
-      title: getLanguage(global.language).Map_Main_Menu.THEME_RANGES_MAP,
-      // constants.THEME_RANGE_STYLE,
-      size: 'large',
-      action: showLocalDatasetsList,
-      image: require('../../../../../../assets/mapTools/icon_function_theme_create_range_style_black.png'),
-      selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_range_style_black.png'),
-    },
-    {
-      // 统一标签
-      key: constants.THEME_UNIFY_LABEL,
-      title: getLanguage(global.language).Map_Main_Menu.THEME_UNIFORM_LABLE,
-      // constants.THEME_UNIFY_LABEL,
-      size: 'large',
-      action: showLocalDatasetsList,
-      image: require('../../../../../../assets/mapTools/icon_function_theme_create_unify_label_black.png'),
-      selectedImage: require('../../../../../../assets/mapTools/icon_function_theme_create_unify_label_black.png'),
-    },
-  ]
-  return { data, buttons }
-}
-
 /**
  * 专题图参数设置
  * @param type
@@ -793,8 +668,8 @@ function getThemeMapStartCreate(type) {
 function getThemeMapParam(type) {
   const data = []
   let buttons = getThemeFiveMenu()
-  if (type === ConstToolType.MAP_THEME_PARAM_GRAPH) return { data, buttons }
-  if (type !== ConstToolType.MAP_THEME_PARAM) return { data: [], buttons: [] }
+  if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH) return { data, buttons }
+  if (type !== ConstToolType.SM_MAP_THEME_PARAM) return { data: [], buttons: [] }
   buttons = getThemeFourMenu()
   return { data, buttons }
 }
@@ -816,7 +691,7 @@ function setRangeMode(type, rangeMode) {
   if (rangeMode !== undefined) {
     _params.RangeMode = rangeMode
   }
-  if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE) {
+  if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE) {
     if (rangeMode === RangeMode.CUSTOMINTERVAL) {
       globalParams.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
@@ -2939,7 +2814,7 @@ async function getUnifyStyleAdd() {
     ]
   }
 
-  const type = ConstToolType.MAP_ADD
+  const type = ConstToolType.SM_MAP_ADD
   // const height =
   //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
   //     ? ConstToolType.THEME_HEIGHT[3]
@@ -3401,7 +3276,7 @@ const uniqueMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_UNIQUE_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3412,7 +3287,7 @@ const uniqueMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getUniqueColorScheme(
-        ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
@@ -3427,7 +3302,7 @@ const rangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_RANGE_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3438,7 +3313,7 @@ const rangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_METHOD,
     action: () => {
       ThemeAction.getRangeMode(
-        ConstToolType.MAP_THEME_PARAM_RANGE_MODE,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE,
         getLanguage(param).Map_Main_Menu.THEME_METHOD,
       )
     },
@@ -3449,8 +3324,7 @@ const rangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.RANGE_COUNT,
     action: () => {
       ThemeAction.getRangeParameter(
-        ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
-        // ConstToolType.MAP_THEME_PARAM_RANGE_PARAM,
+        ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
         getLanguage(param).Map_Main_Menu.RANGE_COUNT,
       )
     },
@@ -3461,7 +3335,7 @@ const rangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getRangeColorScheme(
-        ConstToolType.MAP_THEME_PARAM_RANGE_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGE_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
@@ -3471,7 +3345,7 @@ const rangeMenuInfo = param => [
     selectKey: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
     btnTitle: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
     action: () => {
-      ThemeAction.rangeCustomSetting(ConstToolType.MAP_THEME_PARAM_RANGE_MODE)
+      ThemeAction.rangeCustomSetting(ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE)
     },
   },
 
@@ -3495,7 +3369,7 @@ const labelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3506,7 +3380,7 @@ const labelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_BACK_SHAPE,
     action: () => {
       ThemeAction.getLabelBackShape(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE,
         getLanguage(param).Map_Main_Menu.THEME_BACK_SHAPE,
       )
     },
@@ -3517,7 +3391,7 @@ const labelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_BACKGROUND,
     action: () => {
       ThemeAction.getColorTable(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR,
         getLanguage(param).Map_Main_Menu.STYLE_BACKGROUND,
       )
     },
@@ -3528,7 +3402,7 @@ const labelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       ThemeAction.getLabelFont(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME,
         getLanguage(param).Map_Main_Menu.STYLE_FONT,
       )
     },
@@ -3539,7 +3413,7 @@ const labelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
       ThemeAction.getLabelFontSize(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
         getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
       )
     },
@@ -3550,7 +3424,7 @@ const labelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
       ThemeAction.getLabelFontRotation(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION,
         getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
       )
     },
@@ -3561,7 +3435,7 @@ const labelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       ThemeAction.getColorTable(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR,
         getLanguage(param).Map_Main_Menu.STYLE_COLOR,
       )
     },
@@ -3577,7 +3451,7 @@ const uniqueLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3589,7 +3463,7 @@ const uniqueLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_UNIQUE_EXPRESSION,
       )
     },
@@ -3600,7 +3474,7 @@ const uniqueLabelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getUniqueColorScheme(
-        ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
@@ -3611,7 +3485,7 @@ const uniqueLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       ThemeAction.getLabelFont(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME,
         getLanguage(param).Map_Main_Menu.STYLE_FONT,
       )
     },
@@ -3622,7 +3496,7 @@ const uniqueLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
       ThemeAction.getLabelFontSize(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
         getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
       )
     },
@@ -3633,7 +3507,7 @@ const uniqueLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
       ThemeAction.getLabelFontRotation(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION,
         getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
       )
     },
@@ -3649,7 +3523,7 @@ const rangeLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3661,7 +3535,7 @@ const rangeLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_RANGE_EXPRESSION,
       )
     },
@@ -3672,7 +3546,7 @@ const rangeLabelMenuInfo = param => [
   //   btnTitle: getLanguage(param).Map_Main_Menu.THEME_METHOD,
   //   action: () => {
   //     ThemeAction.getRangeMode(
-  //       ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE,
+  //       ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE,
   //       getLanguage(param).Map_Main_Menu.THEME_METHOD,
   //     )
   //   },
@@ -3683,7 +3557,7 @@ const rangeLabelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getRangeColorScheme(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
@@ -3694,8 +3568,7 @@ const rangeLabelMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.RANGE_COUNT,
     action: () => {
       ThemeAction.getRangeParameter(
-        ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
-        // ConstToolType.MAP_THEME_PARAM_RANGE_PARAM,
+        ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
         getLanguage(param).Map_Main_Menu.RANGE_COUNT,
       )
     },
@@ -3706,7 +3579,7 @@ const rangeLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       ThemeAction.getLabelFont(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_FONTNAME,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_FONTNAME,
         getLanguage(param).Map_Main_Menu.STYLE_FONT,
       )
     },
@@ -3717,7 +3590,7 @@ const rangeLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
       ThemeAction.getLabelFontSize(
-        ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTSIZE,
         getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
       )
     },
@@ -3728,7 +3601,7 @@ const rangeLabelMenuInfo = param => [
     btntitle: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
       ThemeAction.getLabelFontRotation(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_ROTATION,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_ROTATION,
         getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
       )
     },
@@ -3739,7 +3612,7 @@ const rangeLabelMenuInfo = param => [
     btnTitle: getLanguage(global.language).Map_Main_Menu.THEME_MANUAL,
     action: () => {
       ThemeAction.rangeCustomSetting(
-        ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE,
       )
     },
   },
@@ -3753,7 +3626,7 @@ const graphMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getGraphThemeExpressions(
-        ConstToolType.MAP_THEME_PARAM_GRAPH_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_GRAPH_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3764,7 +3637,7 @@ const graphMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_GRANDUATE_BY,
     action: () => {
       ThemeAction.getGraphThemeGradutedMode(
-        ConstToolType.MAP_THEME_PARAM_GRAPH_GRADUATEDMODE,
+        ConstToolType.SM_MAP_THEME_PARAM_GRAPH_GRADUATEDMODE,
         getLanguage(param).Map_Main_Menu.THEME_GRANDUATE_BY,
       )
     },
@@ -3775,7 +3648,7 @@ const graphMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getGraphThemeColorScheme(
-        ConstToolType.MAP_THEME_PARAM_GRAPH_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
@@ -3786,7 +3659,7 @@ const graphMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE,
     action: () => {
       ThemeAction.getGraphMaxValue(
-        ConstToolType.MAP_THEME_PARAM_GRAPH_MAXVALUE,
+        ConstToolType.SM_MAP_THEME_PARAM_GRAPH_MAXVALUE,
         getLanguage(param).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE,
         getLanguage(param).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE,
       )
@@ -3804,7 +3677,7 @@ const dotDensityMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3815,7 +3688,7 @@ const dotDensityMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.DOT_VALUE,
     action: () => {
       ThemeAction.getDotDensityValueAndDotsize(
-        ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_VALUE,
+        ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_VALUE,
         getLanguage(param).Map_Main_Menu.DOT_VALUE,
         getLanguage(param).Map_Main_Menu.DOT_VALUE,
       )
@@ -3830,7 +3703,7 @@ const dotDensityMenuInfo = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       ToolbarModule.getParams().setToolbarVisible(
         true,
-        ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS,
+        ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS,
         {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
@@ -3851,7 +3724,7 @@ const dotDensityMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
       ThemeAction.getDotDensityValueAndDotsize(
-        ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_SIZE,
+        ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SIZE,
         getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
         getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
       )
@@ -3864,7 +3737,7 @@ const dotDensityMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       ThemeAction.getColorTable(
-        ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_COLOR,
         '点颜色',
         '点颜色',
       )
@@ -3880,7 +3753,7 @@ const graduatedSymbolMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },
@@ -3894,7 +3767,7 @@ const graduatedSymbolMenuInfo = param => [
     // '分级方式',
     action: () => {
       ThemeAction.getGraduatedSymbolGradutedMode(
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE,
         '分级方式',
       )
     },
@@ -3908,7 +3781,7 @@ const graduatedSymbolMenuInfo = param => [
     // '基准值',
     action: () => {
       ThemeAction.getGraduatedSymbolBaseValueAndSymbolSize(
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_VALUE,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_VALUE,
         getLanguage(param).Map_Main_Menu.DATUM_VALUE,
         getLanguage(param).Map_Main_Menu.DATUM_VALUE,
       )
@@ -3922,7 +3795,7 @@ const graduatedSymbolMenuInfo = param => [
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       ToolbarModule.getParams().setToolbarVisible(
         true,
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOLS,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS,
         {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
@@ -3942,7 +3815,7 @@ const graduatedSymbolMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
       ThemeAction.getGraduatedSymbolBaseValueAndSymbolSize(
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_SIZE,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_SIZE,
         getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
         getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
       )
@@ -3957,7 +3830,7 @@ const graduatedSymbolMenuInfo = param => [
     // '符号颜色',
     action: () => {
       ThemeAction.getColorTable(
-        ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR,
         '符号颜色',
         '符号颜色',
       )
@@ -3973,25 +3846,12 @@ const gridUniqueMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getUniqueColorScheme(
-        ConstToolType.MAP_THEME_PARAM_GRID_UNIQUE_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_GRID_UNIQUE_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
     },
   },
-  // {
-  //   key: '缺省风格',
-  //   selectKey: '缺省风格',
-  //   btnTitle: '缺省风格',
-  //   action: () => {
-  //     GLOBAL.toolBox &&
-  //     GLOBAL.toolBox.getColorTable(
-  //       ConstToolType.MAP_THEME_PARAM_GRID_UNIQUE_DEFAULT_COLOR,
-  //       '缺省风格',
-  //       '缺省风格',
-  //     )
-  //   },
-  // },
 ]
 
 // 栅格分段专题图（分段方法有缺陷，只有等距分段有用，先注释掉）
@@ -4003,7 +3863,7 @@ const gridRangeMenuInfo = param => [
   //   action: () => {
   //     GLOBAL.toolBox &&
   //     GLOBAL.toolBox.getGridRangeMode(
-  //       ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGEMODE,
+  //       ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGEMODE,
   //       '分段方法',
   //       '分段方法',
   //     )
@@ -4015,7 +3875,7 @@ const gridRangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.RANGE_COUNT,
     action: () => {
       ThemeAction.getRangeParameter(
-        ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
+        ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGECOUNT,
         getLanguage(param).Map_Main_Menu.RANGE_COUNT,
         getLanguage(param).Map_Main_Menu.RANGE_COUNT,
       )
@@ -4027,7 +3887,7 @@ const gridRangeMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
       ThemeAction.getRangeColorScheme(
-        ConstToolType.MAP_THEME_PARAM_GRID_RANGE_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
       )
@@ -4044,9 +3904,9 @@ const heatmapMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_HEATMAP_RADIUS,
     action: () => {
       ThemeAction.getHeatmapParams(
-        ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_RADIUS,
-        '核半径',
-        '核半径',
+        ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_RADIUS,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_RADIUS,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_RADIUS,
       )
     },
   },
@@ -4056,7 +3916,7 @@ const heatmapMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_HEATMAP_COLOR,
     action: () => {
       ThemeAction.getAggregationColorScheme(
-        ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR,
+        ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_HEATMAP_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_HEATMAP_COLOR,
       )
@@ -4069,9 +3929,9 @@ const heatmapMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE,
     action: () => {
       ThemeAction.getHeatmapParams(
-        ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_FUZZYDEGREE,
-        '颜色渐变模糊度',
-        '颜色渐变模糊度',
+        ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_FUZZYDEGREE,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE,
       )
     },
   },
@@ -4082,9 +3942,9 @@ const heatmapMenuInfo = param => [
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT,
     action: () => {
       ThemeAction.getHeatmapParams(
-        ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_MAXCOLOR_WEIGHT,
-        '最大颜色权重',
-        '最大颜色权重',
+        ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_MAXCOLOR_WEIGHT,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT,
+        getLanguage(param).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT,
       )
     },
   },
@@ -4171,7 +4031,6 @@ export default {
   getThemeMapParam,
   getRangeColorScheme,
   getUniqueColorScheme,
-  getThemeMapStartCreate,
   getThemeFiveMenu,
   getThemeGraphType,
   getGraphThemeGradutedMode,

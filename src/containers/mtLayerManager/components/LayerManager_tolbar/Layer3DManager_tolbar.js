@@ -85,7 +85,7 @@ export default class LayerManager_tolbar extends React.Component {
   async getData(type) {
     let data = []
     switch (type) {
-      case ConstToolType.MAP3D_LAYER3D_BASE:
+      case ConstToolType.SM_MAP3D_LAYER3D_BASE:
         data = [
           {
             title: '',
@@ -103,13 +103,13 @@ export default class LayerManager_tolbar extends React.Component {
           },
         ]
         break
-      case ConstToolType.MAP3D_LAYER3D_IMAGE:
+      case ConstToolType.SM_MAP3D_LAYER3D_IMAGE:
         data = layere3dImage(global.language)
         break
-      case ConstToolType.MAP3D_LAYER3D_TERRAIN:
+      case ConstToolType.SM_MAP3D_LAYER3D_TERRAIN:
         data = layere3dTerrain(global.language)
         break
-      case ConstToolType.MAP3D_BASE:
+      case ConstToolType.SM_MAP3D_BASE:
         data = [
           {
             header: {
@@ -133,10 +133,10 @@ export default class LayerManager_tolbar extends React.Component {
           },
         ]
         break
-      case ConstToolType.MAP3D_LAYER3D_DEFAULT:
+      case ConstToolType.SM_MAP3D_LAYER3D_DEFAULT:
         data = layer3dDefault(this.props.language, false)
         break
-      case ConstToolType.MAP3D_LAYER3D_DEFAULT_SELECTED:
+      case ConstToolType.SM_MAP3D_LAYER3D_DEFAULT_SELECTED:
         data = layer3dDefault(this.props.language, true)
         break
       case 'AddTerrain_second': {
@@ -204,7 +204,7 @@ export default class LayerManager_tolbar extends React.Component {
       this.isShow = isShow
     }
     // Box内容框的显示和隐藏
-    // if (this.state.type === ConstToolType.MAP_THEME_PARAM) {
+    // if (this.state.type === ConstToolType.SM_MAP_THEME_PARAM) {
     //   Animated.timing(this.state.boxHeight, {
     //     toValue: 0,
     //     duration: 300,
@@ -280,9 +280,9 @@ export default class LayerManager_tolbar extends React.Component {
       section.title === getLanguage(global.language).Map_Layer.BASEMAP_SWITH
     ) {
       //'切换底图') {
-      this.setVisible(true, ConstToolType.MAP3D_BASE, {
+      this.setVisible(true, ConstToolType.SM_MAP3D_BASE, {
         height: ConstToolType.TOOLBAR_HEIGHT[5],
-        type: ConstToolType.MAP3D_BASE,
+        type: ConstToolType.SM_MAP3D_BASE,
       })
     } else if (section.type && section.type === 'setLayerSelect') {
       //设置图层可选择
@@ -290,8 +290,8 @@ export default class LayerManager_tolbar extends React.Component {
       let canChoose = !selectable
       SScene.setSelectable(this.layer3dItem.name, canChoose).then(result => {
         let type = canChoose
-          ? ConstToolType.MAP3D_LAYER3D_DEFAULT_SELECTED
-          : ConstToolType.MAP3D_LAYER3D_DEFAULT
+          ? ConstToolType.SM_MAP3D_LAYER3D_DEFAULT_SELECTED
+          : ConstToolType.SM_MAP3D_LAYER3D_DEFAULT
         this.setVisible(true, type, {
           height: ConstToolType.TOOLBAR_HEIGHT[1],
         })
@@ -532,21 +532,13 @@ export default class LayerManager_tolbar extends React.Component {
             </Text>
           </View>
         </TouchableHighlight>
-        <View
-          style={{
-            flexDirection: 'column',
-            width: '100%',
-            height: 1,
-            backgroundColor: color.bgG,
-          }}
-        />
       </View>
     )
   }
 
   renderView = () => {
     let box
-    // if(this.state.type === ConstToolType.MAP3D_BASE){
+    // if(this.state.type === ConstToolType.SM_MAP3D_BASE){
     //   box = this.renderMap3DList()
     // }else
     {

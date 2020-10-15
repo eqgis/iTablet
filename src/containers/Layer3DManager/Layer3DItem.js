@@ -127,12 +127,12 @@ const layer3dSettingCanNotSelect = param => [
             this.props.item.name === 'BingMap' ||
             this.props.item.name === 'TianDiTu'
           ) {
-            layer3dToolbar.setVisible(true, ConstToolType.MAP3D_LAYER3D_BASE, {
+            layer3dToolbar.setVisible(true, ConstToolType.SM_MAP3D_LAYER3D_BASE, {
               isFullScreen: true,
               height: ConstToolType.TOOLBAR_HEIGHT[1],
             })
           } else {
-            layer3dToolbar.setVisible(true, ConstToolType.MAP3D_LAYER3D_IMAGE, {
+            layer3dToolbar.setVisible(true, ConstToolType.SM_MAP3D_LAYER3D_IMAGE, {
               isFullScreen: true,
               height: ConstToolType.TOOLBAR_HEIGHT[2],
             })
@@ -140,15 +140,15 @@ const layer3dSettingCanNotSelect = param => [
           break
         }
         case 'Terrain':
-          layer3dToolbar.setVisible(true, ConstToolType.MAP3D_LAYER3D_TERRAIN, {
+          layer3dToolbar.setVisible(true, ConstToolType.SM_MAP3D_LAYER3D_TERRAIN, {
             isFullScreen: true,
             height: ConstToolType.TOOLBAR_HEIGHT[2],
           })
           break
         default: {
-          let type = ConstToolType.MAP3D_LAYER3D_DEFAULT
+          let type = ConstToolType.SM_MAP3D_LAYER3D_DEFAULT
           if (this.state.selectable) {
-            type = ConstToolType.MAP3D_LAYER3D_DEFAULT_SELECTED
+            type = ConstToolType.SM_MAP3D_LAYER3D_DEFAULT_SELECTED
           }
           layer3dToolbar.setVisible(true, type, {
             isFullScreen: true,

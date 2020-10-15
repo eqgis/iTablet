@@ -348,13 +348,13 @@ export default class ToolbarContentView extends React.Component {
               textStyle={{ fontSize: setSpText(20) }}
               image={item.image}
               background={item.background}
-              onPress={() => {
+              onPress={async () => {
                 if (item.disable) return
                 if (
                   this.ToolbarModule.getData().actions &&
                   this.ToolbarModule.getData().actions.tableAction
                 ) {
-                  this.ToolbarModule.getData().actions.tableAction(item)
+                  this.ToolbarModule.getData().actions.tableAction(this.props.type, item)
                 }
                 if (item.action) {
                   item.action(item)
@@ -397,7 +397,7 @@ export default class ToolbarContentView extends React.Component {
               layerName: this.props.currentLayer.name,
             }
             typeof item === 'object' && Object.assign(params, item)
-            await this.ToolbarModule.getData().actions.tableAction(params)
+            await this.ToolbarModule.getData().actions.tableAction(this.props.type, params)
           }
           if (
             this.ToolbarModule.getData().actions &&
@@ -459,10 +459,7 @@ export default class ToolbarContentView extends React.Component {
         case ToolbarType.selectableList:
           if (this.props.data.length === 0) return <View /> // 若当前无数据，则不显示
           switch (this.props.type) {
-            case ConstToolType.MAP_TOOL_TAGGING_SETTING:
-              box = this.renderInputView()
-              break
-            case ConstToolType.PLOT_ANIMATION_XML_LIST:
+            case ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST:
             default:
               box = this.renderList()
               break

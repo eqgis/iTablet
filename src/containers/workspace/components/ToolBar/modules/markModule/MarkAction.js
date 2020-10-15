@@ -39,7 +39,7 @@ async function point() {
     layerType === 'POINTLAYER'
   ) {
     SMap.setAction(Action.CREATEPOINT)
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -60,7 +60,7 @@ async function words() {
     layerType === 'CADLAYER' ||
     layerType === 'TEXTLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW_TEXT, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW_TEXT, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -83,7 +83,7 @@ async function pointline() {
     layerType === 'CADLAYER' ||
     layerType === 'LINELAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -105,7 +105,7 @@ async function freeline() {
     layerType === 'CADLAYER' ||
     layerType === 'LINELAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -128,7 +128,7 @@ async function pointcover() {
     layerType === 'CADLAYER' ||
     layerType === 'REGIONLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -153,7 +153,7 @@ async function freecover() {
     layerType === 'CADLAYER' ||
     layerType === 'REGIONLAYER'
   ) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_MARKS_DRAW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
@@ -165,7 +165,7 @@ async function freecover() {
 function commit(type) {
   try {
     const _params = ToolbarModule.getParams()
-    if (type === ConstToolType.MAP_MARKS_DRAW) {
+    if (type === ConstToolType.SM_MAP_MARKS_DRAW) {
       let currentLayer = _params.currentLayer
       SMap.setTaggingGrid(
         currentLayer.datasetName,
@@ -186,7 +186,7 @@ function commit(type) {
       })
     } else {
       SMap.submit().then(async () => {
-        const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+        const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
         if (global.coworkMode && global.getFriend) {
           let event = ToolbarModule.getData().event
@@ -252,7 +252,7 @@ function back() {
     SMap.cancel()
     SMap.clearSelection()
     _params.setSelection()
-    const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+    const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,
@@ -261,7 +261,7 @@ function back() {
     })
   }
   SMap.setAction(Action.PAN)
-  _params.setToolbarVisible(true, ConstToolType.MAP_MARKS, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS, {
     isFullScreen: true,
   })
 }
@@ -274,7 +274,7 @@ function showEditLabel() {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
 
-  const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+  const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
@@ -315,21 +315,21 @@ function selectLabelToEdit(toolType = '') {
     toolType = GLOBAL.MapToolType
   }
   switch (toolType) {
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT:
-      type = ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT_NOSTYLE
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT_NOSTYLE
       // height = ConstToolType.HEIGHT[0]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE:
-      type = ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE_NOSTYLE
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE:
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE_NOSTYLE
       // height = ConstToolType.HEIGHT[2]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION:
-      type = ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION_NOSTYLE
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION:
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION_NOSTYLE
       // height = ConstToolType.HEIGHT[2]
       // containerType = ToolbarType.scrollTable
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT:
-      type = ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT_NOSTYLE
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT:
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT_NOSTYLE
       // height = ConstToolType.HEIGHT[0]
       break
   }
@@ -360,23 +360,23 @@ function selectLabelToStyle() {
   // let height = ConstToolType.THEME_HEIGHT[3]
   let type = ''
   switch (GLOBAL.MapToolType) {
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
       containerType = ToolbarType.symbol
-      type = ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE:
       containerType = ToolbarType.symbol
-      type = ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION:
       containerType = ToolbarType.symbol
-      type = ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT:
       showMenuDialog = true
       // height = 0
       isFullScreen = true
-      type = ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT
+      type = ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT
       break
   }
 
@@ -390,7 +390,7 @@ function selectLabelToStyle() {
         showMenuDialog,
         cb: () => {
           if (
-            GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT
+            GLOBAL.MapToolType === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT
           ) {
             SMap.appointEditGeometry(event.id, event.layerInfo.path)
           } else {
@@ -435,7 +435,7 @@ async function deleteLabel() {
     }
   })
   _params.setSelection()
-  const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+  const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,
@@ -446,17 +446,17 @@ async function deleteLabel() {
 function colorAction(params) {
   const { event } = ToolbarModule.getData()
   switch (params.type) {
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
       SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
       SMap.setTaggingLineColor(params.key, event.layerInfo.path, event.id)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
       SMap.setTaggingFillForeColor(params.key, event.layerInfo.path, event.id)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
       SMap.setTaggingTextColor(params.key, event.layerInfo.path, event.id)
       break
     default:
@@ -488,7 +488,7 @@ function setTaggingTextFont(param) {
   }
 }
 function geometrySelected(event) {
-  if (GLOBAL.MapToolType === ConstToolType.MAP_MARKS_TAGGING_SELECT) {
+  if (GLOBAL.MapToolType === ConstToolType.SM_MAP_MARKS_TAGGING_SELECT) {
     ToolbarModule.addData({
       event,
     })
@@ -509,20 +509,20 @@ function geometrySelected(event) {
     // let height = ConstToolType.THEME_HEIGHT[3]
     switch (geoType) {
       case DatasetType.POINT:
-        type = ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT
+        type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT
         // height = ConstToolType.HEIGHT[0]
         break
       case DatasetType.LINE:
-        type = ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE
+        type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE
         // height = ConstToolType.HEIGHT[2]
         break
       case DatasetType.REGION:
-        type = ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION
+        type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION
         // height = ConstToolType.HEIGHT[2]
         // containerType = ToolbarType.scrollTable
         break
       case DatasetType.TEXT:
-        type = ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT
+        type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT
         // height = ConstToolType.HEIGHT[0]
         break
     }
@@ -550,10 +550,10 @@ function geometrySelected(event) {
 
 async function close(type) {
   const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP_MARKS_TAGGING_SETTING) {
+  if (type === ConstToolType.SM_MAP_MARKS_TAGGING_SETTING) {
     await SMap.undo()
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_MARKS_TAGGING_SELECT) {
+  } else if (type === ConstToolType.SM_MAP_MARKS_TAGGING_SELECT) {
     SMap.setAction(Action.PAN)
     const { layers } = _params.layers
     // 还原其他图层的选择状态
@@ -645,7 +645,7 @@ function toolbarBack() {
     SMap.cancel()
     SMap.clearSelection()
     _params.setSelection()
-    const type = ConstToolType.MAP_MARKS_TAGGING_SELECT
+    const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
     _params.setToolbarVisible(true, type, {
       isFullScreen: false,

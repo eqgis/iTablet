@@ -6,6 +6,7 @@ import {
   ConstOnline,
   UserType,
   ToolbarType,
+  ConstToolType,
 } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import ToolBarSectionList from './ToolBarSectionList'
@@ -246,7 +247,7 @@ export default class ToolList extends React.Component {
   }
 
   listAction = ({ item, index, section, ...params }) => {
-    if (this.props.type === 'MAP3D_BASE') return
+    if (this.props.type === ConstToolType.SM_MAP3D_BASE) return
     if (
       this.ToolbarModule.getData().actions &&
       this.ToolbarModule.getData().actions.listAction

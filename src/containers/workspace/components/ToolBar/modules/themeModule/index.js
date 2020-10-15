@@ -25,7 +25,7 @@ class ThemeModule extends FunctionModule {
 
   action = async () => {
     const params = ToolbarModule.getParams()
-    const _type = ConstToolType.MAP_THEME_CREATE
+    const _type = ConstToolType.SM_MAP_THEME_CREATE
     const _data = ThemeData.getData(_type, params)
     const containerType = ToolbarType.table
     const data = ToolbarModule.getToolbarSize(containerType, {
@@ -45,8 +45,7 @@ class ThemeModule extends FunctionModule {
 
 export default function() {
   return new ThemeModule({
-    type: ConstToolType.MAP_THEME,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
+    type: ConstToolType.SM_MAP_THEME,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_thematic,

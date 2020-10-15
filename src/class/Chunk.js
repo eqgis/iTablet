@@ -39,6 +39,8 @@ export default class Chunk {
 
     this.licenceType = props.licenceType || 255 // TODO 临时方法
   }
+  
+  getTitle = () => this.title
 
   action = async (user, lastMap) => {
     if (this.preAction && typeof this.preAction === 'function') {

@@ -764,7 +764,7 @@ export default class TouchProgress extends Component {
         }
       }
     }
-    if (type.indexOf('MAP_MARKS') === 0) {
+    if (type.indexOf('SM_MAP_MARKS') === 0) {
       let data = await _data.actions?.getTouchProgressInfo()
       let { value, range, step } = data
       this._panBtnStyles.style.left =
@@ -879,7 +879,7 @@ export default class TouchProgress extends Component {
       ) {
         newValue = value * 200
       }
-    } else if (type.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('SM_MAP_MARKS') === 0) {
       newValue = value * this.range[1]
     } else if (
       this.props.selectName ===
@@ -1121,7 +1121,7 @@ export default class TouchProgress extends Component {
         getLanguage(global.language).Map_Main_Menu.LEGEND_FONT +
         '   ' +
         parseInt(value)
-    } else if (type.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('SM_MAP_MARKS') === 0) {
       if (value < this.range[0]) value = this.range[0]
       if (value > this.range[1]) value = this.range[1]
       _data.actions?.setTouchProgressInfo(value)
@@ -1982,7 +1982,7 @@ export default class TouchProgress extends Component {
       }
     }
 
-    if (type.indexOf('MAP_MARKS') === 0) {
+    if (type.indexOf('SM_MAP_MARKS') === 0) {
       if (value < this.range[0]) value = this.range[0]
       if (value > this.range[1]) value = this.range[1]
       tips = _data.actions?.getTouchProgressTips(value)
@@ -2016,7 +2016,7 @@ export default class TouchProgress extends Component {
       ) {
         newValue = (value + 100) / 200
       }
-    } else if (type.indexOf('MAP_MARKS') === 0) {
+    } else if (type.indexOf('SM_MAP_MARKS') === 0) {
       newValue = value / this.range[1]
     } else if (
       this.props.selectName ===

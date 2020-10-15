@@ -12,14 +12,14 @@ import PlotAction from './PlotAction'
 function getData(type, params) {
   let tabBarData = {}
   if (
-    type === ConstToolType.PLOT_ANIMATION_START ||
-    type === ConstToolType.PLOT_ANIMATION_NODE_CREATE ||
-    type === ConstToolType.PLOT_ANIMATION_PLAY ||
-    type === ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST
-    // ||type === ConstToolType.PLOT_ANIMATION_XML_LIST
+    type === ConstToolType.SM_MAP_PLOT_ANIMATION_START ||
+    type === ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE ||
+    type === ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY ||
+    type === ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST
+    // ||type === ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST
   ) {
     tabBarData = getPlotOperationData(type, params)
-  } else if (type === ConstToolType.PLOT_ANIMATION_WAY) {
+  } else if (type === ConstToolType.SM_MAP_PLOT_ANIMATION_WAY) {
     tabBarData = getAnimationWayData(type, params)
   }
   return tabBarData
@@ -64,20 +64,20 @@ function getPlotOperationData(type, params) {
   let data = []
   let buttons = getPlotButtons()
   switch (type) {
-    case ConstToolType.PLOT_ANIMATION_START:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_START:
       data = []
       break
-    case ConstToolType.PLOT_ANIMATION_NODE_CREATE:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE:
       data = []
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.PLOT_ANIMATION_XML_LIST:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST:
       data = []
       break
-    case ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST:
       data = getAnimationNodeListData()
       break
-    case ConstToolType.PLOT_ANIMATION_PLAY:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY:
       data = [
         {
           key: 'startFly',
@@ -140,7 +140,7 @@ function getAnimationWayData(type, params) {
   const data = []
   let buttons = []
   switch (type) {
-    case ConstToolType.PLOT_ANIMATION_WAY:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_WAY:
       data.push({
         key: constants.CANCEL,
         title: getLanguage(global.language).Map_Plotting

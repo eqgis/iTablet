@@ -63,7 +63,7 @@ export default class ToolbarMenuDialog extends React.Component {
         device={this.props.device}
         onSelect={item => {
           this.setState({
-            selectKey: item.selectKey,
+            selectKey: item.selectKey || item.key,
             selectName: item.selectName || item.key,
           })
         }}

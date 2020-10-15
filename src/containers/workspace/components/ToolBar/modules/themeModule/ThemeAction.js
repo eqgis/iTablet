@@ -110,22 +110,22 @@ async function getThemeExpress(type, key = '', name = '') {
   const param = {
     LayerName: _params.currentLayer.name,
   }
-  if (type === ConstToolType.MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
+  if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
     selectedExpression = await SThemeCartography.getUniqueExpression(param)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGE_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
     selectedExpression = await SThemeCartography.getRangeExpression(param)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
     selectedExpression = await SThemeCartography.getUniformLabelExpression(
       param,
     )
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
     selectedExpression = await SThemeCartography.getUniqueLabelExpression(param)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
     selectedExpression = await SThemeCartography.getRangeLabelExpression(param)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     selectedExpression = await SThemeCartography.getDotDensityExpression(param)
   } else if (
-    type === ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
+    type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
     selectedExpression = await SThemeCartography.getGraduatedSymbolExpress(
       param,
@@ -137,9 +137,9 @@ async function getThemeExpress(type, key = '', name = '') {
   for (let i = 0; i < expressionData.list.length; i++) {
     const item = expressionData.list[i]
     if (
-      type === ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION ||
-      // type === ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION ||
-      // type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_EXPRESSION ||
+      type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION ||
+      // type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION ||
+      // type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION ||
       ThemeMenuData.isThemeFieldTypeAvailable(
         item.fieldTypeStr,
         themeCreateType,
@@ -301,7 +301,7 @@ async function getGraphThemeColorScheme(type, key = '', name = '') {
 //       showMenuDialog: false,
 //       containerType: ToolbarType.horizontalTable,
 //       column: 4,
-//       type: ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE,
+//       type: ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE,
 //       buttons: ThemeMenuData.getThemeFiveMenu(),
 //     },
 //   }, false)
@@ -373,7 +373,7 @@ async function rangeCustomSetting(type) {
   const globalParams = ToolbarModule.getParams()
   globalParams.setToolbarVisible(false)
   NavigationService.navigate('CustomModePage', { type })
-  // setRangeMode("MAP_THEME_PARAM_RANGE_MODE", RangeMode.CUSTOMINTERVAL)
+  // setRangeMode("SM_MAP_THEME_PARAM_RANGE_MODE", RangeMode.CUSTOMINTERVAL)
 }
 // 热力图颜色方案列表
 async function getAggregationColorScheme(type, key = '', name = '') {
@@ -739,7 +739,7 @@ async function listAction(type, params = {}) {
   const _params = ToolbarModule.getParams()
   const { themeCreateType } = ToolbarModule.getData()
   const item = params.item || {}
-  if (type === ConstToolType.MAP_ADD) {
+  if (type === ConstToolType.SM_MAP_ADD) {
     // 数据源和地图列表点击事件
     // 添加数据集
     _params.setContainerLoading &&
@@ -748,7 +748,7 @@ async function listAction(type, params = {}) {
         getLanguage(_params.language).Prompt.READING_DATA,
       )
     const _data = await ThemeData.getDatasets(
-      ConstToolType.MAP_THEME_ADD_DATASET,
+      ConstToolType.SM_MAP_ADD_DATASET,
       item,
     )
     const alias = _data.data[0].title
@@ -779,7 +779,7 @@ async function listAction(type, params = {}) {
     }
 
     _params.showFullMap && _params.showFullMap(true)
-    _params.setToolbarVisible(true, ConstToolType.MAP_THEME_ADD_DATASET, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_DATASET, {
       containerType: ToolbarType.selectableList,
       isFullScreen: true,
       isTouchProgress: false,
@@ -794,7 +794,7 @@ async function listAction(type, params = {}) {
     ToolbarModule.addData(data)
 
     _params.setContainerLoading && _params.setContainerLoading(false)
-  } else if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
+  } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     // 数据集列表点击事件
     let data = ToolbarModule.getData()
     if (data && data.selectList) {
@@ -803,7 +803,7 @@ async function listAction(type, params = {}) {
       data = Object.assign(data, { selectList: params.selectList })
     }
     ToolbarModule.addData(data)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
     // 单值专题图表达式
     const Params = {
       UniqueExpression: item.expression,
@@ -812,7 +812,7 @@ async function listAction(type, params = {}) {
     // await SThemeCartography.setUniqueExpression(Params)
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.modifyThemeUniqueMap(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR) {
     if (item.key === 'USER_DEFINE') {
       _params.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
@@ -833,7 +833,7 @@ async function listAction(type, params = {}) {
       }
       await SThemeCartography.setUniqueColorScheme(Params)
     }
-  } else if (type === ConstToolType.MAP_THEME_PARAM_GRID_UNIQUE_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_UNIQUE_COLOR) {
     // 栅格单值专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
@@ -849,7 +849,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.modifyThemeGridUniqueMap(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGE_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
     // 分段专题图表达式
     const Params = {
       RangeExpression: item.expression,
@@ -857,7 +857,7 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.setRangeExpression(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     // 点密度专题图表达式
     const Params = {
       DotExpression: item.expression,
@@ -866,7 +866,7 @@ async function listAction(type, params = {}) {
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.modifyDotDensityThemeMap(Params)
   } else if (
-    type === ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
+    type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
     // 等级符号专题图表达式
     const Params = {
@@ -875,7 +875,7 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.modifyGraduatedSymbolThemeMap(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGE_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_COLOR) {
     // 分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
@@ -891,7 +891,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.setRangeColorScheme(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_GRID_RANGE_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_COLOR) {
     // 栅格分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
@@ -907,7 +907,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.modifyThemeGridRangeMap(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR) {
     // 统计专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
@@ -923,7 +923,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.setThemeGraphColorScheme(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR) {
     // 热力图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
@@ -939,7 +939,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.setHeatMapColorScheme(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
     // 统一标签表达式
     const Params = {
       LabelExpression: item.expression,
@@ -947,7 +947,7 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.setUniformLabelExpression(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
     // 单值标签表达式
     const Params = {
       UniqueExpression: item.expression,
@@ -955,7 +955,7 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.setUniqueLabelExpression(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR) {
     // 单值标签专题图颜色表
     if (item.key === 'USER_DEFINE') {
       _params.setToolbarVisible(false)
@@ -976,7 +976,7 @@ async function listAction(type, params = {}) {
       }
       await SThemeCartography.setUniqueLabelColorScheme(Params)
     }
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
     // 分段标签表达式
     const Params = {
       RangeExpression: item.expression,
@@ -984,8 +984,8 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await SThemeCartography.setRangeLabelExpression(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_RANGELABEL_COLOR) {
-    // 单值标签专题图颜色表
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_COLOR) {
+    // 分段标签专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
     let Params
     if (item.colors) {
@@ -1000,7 +1000,7 @@ async function listAction(type, params = {}) {
       }
     }
     await SThemeCartography.setRangeLabelColorScheme(Params)
-  } else if (type === ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS) {
     // 数据集选择列表(跳转到专题图字段选择列表)
     try {
       // 栅格专题图直接由数据集创建，无需选择字段
@@ -1097,7 +1097,7 @@ async function listAction(type, params = {}) {
       }
       _params.setToolbarVisible(
         true,
-        ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION,
         {
           isFullScreen: true,
           isTouchProgress: false,
@@ -1133,7 +1133,7 @@ async function listAction(type, params = {}) {
     } catch (e) {
       _params.setContainerLoading && _params.setContainerLoading(false)
     }
-  } else if (type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
     if (params.selectList) {
       // 多选字段
       ToolbarModule.addData({ selectList: params.selectList })
@@ -1150,7 +1150,7 @@ async function listAction(type, params = {}) {
       themeCreateType,
     })
   } else if (
-    type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
+    type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
     if (params.selectList) {
       // 多选字段
@@ -1163,7 +1163,7 @@ async function listAction(type, params = {}) {
       ..._params,
       themeCreateType,
     })
-  } else if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_EXPRESSION) {
     params.selectList && listSelectableAction({ selectList: params.selectList })
   }
 }
@@ -1178,7 +1178,7 @@ async function commit(type) {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
     return
   }
-  if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
+  if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     for (const key of Object.keys(selectList)) {
       const resultArr = await SMap.addLayers(selectList[key], key)
       // 找出有默认样式的数据集，并给对应图层设置
@@ -1209,7 +1209,7 @@ async function commit(type) {
         Toast.show(getLanguage(_params.language).Prompt.ADD_FAILED)
       }
     }
-  } else if (type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
     const expressions = selectList[_data.themeDatasetName] || []
     // 数据集->创建统计专题图
     const params = {
@@ -1231,7 +1231,7 @@ async function commit(type) {
       Toast.show(getLanguage(_params.language).Prompt.CREATE_THEME_FAILED)
     }
   } else if (
-    type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
+    type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
     const expressions = selectList[Object.keys(selectList)[0]] || []
     // 图层->创建统计专题图
@@ -1258,7 +1258,7 @@ async function commit(type) {
   }
 }
 
-function tableAction(item = {}) {
+function tableAction(type, item = {}) {
   const _params = ToolbarModule.getParams()
   const _data = ToolbarModule.getData()
   const currentLayer = _data.currentLayer || _params.currentLayer
@@ -1293,53 +1293,53 @@ function tableAction(item = {}) {
       }
 
       switch (_data.type) {
-        case ConstToolType.MAP_THEME_PARAM_RANGE_MODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
           // 分段专题图：分段方法
           themeParams = {
             LayerName: currentLayer.name,
             RangeMode: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_GRID_RANGE_RANGEMODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGEMODE:
           // 分段栅格专题图：分段方法
           themeParams = {
             LayerName: currentLayer.name,
             RangeMode: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE:
           themeParams = {
             LayerName: currentLayer.name,
             LabelBackShape: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME:
           themeParams = {
             LayerName: currentLayer.name,
             FontName: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_RANGELABEL_FONTNAME:
+        case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_FONTNAME:
           themeParams = {
             LayerName: currentLayer.name,
             FontName: item.key,
             type: 'range',
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION:
           themeParams = {
             LayerName: currentLayer.name,
             Rotaion: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_RANGELABEL_ROTATION:
+        case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_ROTATION:
           themeParams = {
             LayerName: currentLayer.name,
             Rotaion: item.key,
             type: 'range',
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR:
           // 统一标签前景色
           themeParams = {
             LayerName: currentLayer.name,
@@ -1347,7 +1347,7 @@ function tableAction(item = {}) {
             ColorType: 'UNIFORMLABEL_FORE_COLOR',
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
           // 统一标签背景色
           themeParams = {
             LayerName: currentLayer.name,
@@ -1355,28 +1355,28 @@ function tableAction(item = {}) {
             ColorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE:
           // 统计专题图类型
           themeParams = {
             LayerName: currentLayer.name,
             ThemeGraphType: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_GRAPH_GRADUATEDMODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_GRADUATEDMODE:
           // 统计专题图统计值计算方法
           themeParams = {
             LayerName: currentLayer.name,
             GraduatedMode: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE:
           // 等级符号专题图分级方式
           themeParams = {
             LayerName: currentLayer.name,
             GraduatedMode: item.key,
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_COLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_COLOR:
           // 点密度专题图：点颜色
           themeParams = {
             LayerName: currentLayer.name,
@@ -1384,7 +1384,7 @@ function tableAction(item = {}) {
             ColorType: 'DOT_DENSITY_COLOR',
           }
           break
-        case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
           // 等级符号专题图：点颜色
           themeParams = {
             LayerName: currentLayer.name,
@@ -1418,7 +1418,7 @@ function toolbarBack() {
   const _data = ToolbarModule.getData()
   const lastData = _data.lastData || {}
   const { selectList } = _data
-  // _params.setToolbarVisible(true, ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS, {
+  // _params.setToolbarVisible(true, ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS, {
   _params.setToolbarVisible(true, _data.type, {
     containerType: ToolbarType.list,
     isFullScreen: true,
@@ -1429,7 +1429,7 @@ function toolbarBack() {
     // height: _data.height,
   })
   ToolbarModule.addData({
-    // type: ConstToolType.MAP_THEME,
+    // type: ConstToolType.SM_MAP_THEME,
     type: _data.type,
     getData: ThemeData.getData,
     actions,
@@ -1485,8 +1485,8 @@ async function layerListAction(data) {
   if (curThemeType) {
     const _type =
       curThemeType === constants.THEME_GRAPH_STYLE
-        ? ConstToolType.MAP_THEME_PARAM_GRAPH
-        : ConstToolType.MAP_THEME_PARAM
+        ? ConstToolType.SM_MAP_THEME_PARAM_GRAPH
+        : ConstToolType.SM_MAP_THEME_PARAM
     _params.showFullMap(true)
     // const { orientation } = _params.device
     const xml = await SMap.mapToXml()
@@ -1523,14 +1523,14 @@ function menu(type, selectKey, params = {}) {
   let isTouchProgress
   const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
-    if (type.indexOf('MAP_THEME_PARAM') >= 0 && isBoxShow) {
+    if (type.indexOf('SM_MAP_THEME_PARAM') >= 0 && isBoxShow) {
       params.showBox && params.showBox()
     }
   }
 
   const setData = function() {
     let buttons
-    if (type.indexOf('MAP_THEME_PARAM_GRAPH') >= 0) {
+    if (type.indexOf('SM_MAP_THEME_PARAM_GRAPH') >= 0) {
       buttons = ThemeMenuData.getThemeFiveMenu()
     } else {
       buttons = ThemeMenuData.getThemeFourMenu()
@@ -1546,7 +1546,7 @@ function menu(type, selectKey, params = {}) {
 
   if (
     Utils.isTouchProgress(selectKey) &&
-    type !== ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
+    type !== ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
   ) {
     isFullScreen = true
     showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
@@ -1569,10 +1569,10 @@ function menu(type, selectKey, params = {}) {
 }
 
 function showMenuBox(type, selectKey, params = {}) {
-  if (type.indexOf('MAP_THEME_PARAM') === -1) return
+  if (type.indexOf('SM_MAP_THEME_PARAM') === -1) return
   if (
     Utils.isTouchProgress(selectKey) &&
-    type !== ConstToolType.MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
+    type !== ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
   ) {
     params.showBox &&
       params.showBox({
@@ -1580,23 +1580,23 @@ function showMenuBox(type, selectKey, params = {}) {
         showMenuDialog: false,
         isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
       })
-  } else if (type === ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE) {
     switch (selectKey) {
       case '表达式':
         getGraphThemeExpressions(
-          ConstToolType.MAP_THEME_PARAM_GRAPH_EXPRESSION,
+          ConstToolType.SM_MAP_THEME_PARAM_GRAPH_EXPRESSION,
           '表达式',
         )
         break
       case '计算方法':
         getGraphThemeGradutedMode(
-          ConstToolType.MAP_THEME_PARAM_GRAPH_GRADUATEDMODE,
+          ConstToolType.SM_MAP_THEME_PARAM_GRAPH_GRADUATEDMODE,
           '计算方法',
         )
         break
       case '颜色方案':
         getGraphThemeColorScheme(
-          ConstToolType.MAP_THEME_PARAM_GRAPH_COLOR,
+          ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR,
           '颜色方案',
         )
         break
@@ -1615,9 +1615,9 @@ function showMenuBox(type, selectKey, params = {}) {
 async function changeGraphType(type) {
   const _params = ToolbarModule.getParams()
   let isBoxShow = GLOBAL.ToolBar && !GLOBAL.ToolBar.getBoxShow()
-  if (type !== ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE) {
+  if (type !== ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE) {
     // 其他Box展开到修改专题图类型Box展开
-    type = ConstToolType.MAP_THEME_PARAM_GRAPH_TYPE
+    type = ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE
     isBoxShow = true
   }
   const showBox = function() {

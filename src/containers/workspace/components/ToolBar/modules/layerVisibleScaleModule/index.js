@@ -45,7 +45,7 @@ function getToolbarSize(type, orientation) {
 }
 
 // export default function(type, title) {
-//   setModuleData(ConstToolType.MAP_LAYER_VISIBLE_SCALE)
+//   setModuleData(ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE)
 //   return {
 //     key: title,
 //     title,
@@ -69,7 +69,7 @@ class layerVisibleScaleModule extends FunctionModule {
 
 export default function() {
   return new layerVisibleScaleModule({
-    type: ConstToolType.MAP_LAYER_VISIBLE_SCALE,
+    type: ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE,
     getData: LayerVisibleScaleData.getData,
     actions: LayerVisibleScaleAction,
   })

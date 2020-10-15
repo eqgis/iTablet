@@ -13,19 +13,14 @@ import ToolbarModule from '../ToolbarModule'
 async function commit(type) {
   const params = ToolbarModule.getParams()
   let currentToolbarType = ''
-  if (type === ConstToolType.MAP_EDIT_DEFAULT) {
+  if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
     // 编辑完成关闭Toolbar
     params.setToolbarVisible(false, '', {
       cb: () => {
         SMap.setAction(Action.PAN)
       },
     })
-  }
-  //   if (
-  //   type !== ConstToolType.MAP_TOOL_TAGGING &&
-  //   type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
-  // )
-  else {
+  } else {
     try {
       await SMap.submit()
       await SMap.setAction(Action.SELECT)
@@ -63,10 +58,10 @@ async function commit(type) {
           event.geometryType,
         )
       }
-      currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
+      currentToolbarType = ConstToolType.SM_MAP_EDIT_DEFAULT
       // 编辑完成关闭Toolbar
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-      params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+      params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
         isFullScreen: false,
         // height: 0,
       })
@@ -85,12 +80,12 @@ function toolbarBack(type) {
   if (
     typeof type === 'string' &&
     type.indexOf('MAP_EDIT_') >= 0 &&
-    type !== ConstToolType.MAP_EDIT_DEFAULT
+    type !== ConstToolType.SM_MAP_EDIT_DEFAULT
   ) {
     SMap.cancel()
     actionType = Action.SELECT
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-    params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+    params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
       isFullScreen: false,
       // height: 0,
     })
@@ -108,6 +103,7 @@ function close() {
   SMap.setAction(actionType)
 }
 
+/** 地图点选对象回调 **/
 async function geometrySelected(event) {
   const params = ToolbarModule.getParams()
   params.setSelection &&
@@ -128,38 +124,37 @@ async function geometrySelected(event) {
   })
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
-    case ConstToolType.MAP_EDIT_POINT:
-    case ConstToolType.MAP_EDIT_LINE:
-    case ConstToolType.MAP_EDIT_REGION:
-    case ConstToolType.MAP_EDIT_DEFAULT: {
-      if (currentToolbarType === ConstToolType.MAP_EDIT_DEFAULT) {
-        let containerType = ToolbarType.table
-        let type = ''
-        switch (event.geometryType) {
-          case GeometryType.GEOPOINT:
-            type = ConstToolType.MAP_EDIT_POINT
-            break
-          case GeometryType.GEOLINE:
-            type = ConstToolType.MAP_EDIT_LINE
-            break
-          case GeometryType.GEOREGION:
-            type = ConstToolType.MAP_EDIT_REGION
-            break
-          case GeometryType.GEOTEXT:
-            type = ConstToolType.MAP_EDIT_TEXT
-            break
-          case GeometryType.GEOGRAPHICOBJECT:
-            type = ConstToolType.MAP_EDIT_PLOT
-            break
-        }
-        params.showFullMap && params.showFullMap(true)
-        params.setToolbarVisible &&
-          params.setToolbarVisible(true, type, {
-            isFullScreen: false,
-            containerType,
-            cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
-          })
+    case ConstToolType.SM_MAP_EDIT_POINT:
+    case ConstToolType.SM_MAP_EDIT_LINE:
+    case ConstToolType.SM_MAP_EDIT_REGION:
+      break
+    case ConstToolType.SM_MAP_EDIT_DEFAULT: {
+      let containerType = ToolbarType.table
+      let type = ''
+      switch (event.geometryType) {
+        case GeometryType.GEOPOINT:
+          type = ConstToolType.SM_MAP_EDIT_POINT
+          break
+        case GeometryType.GEOLINE:
+          type = ConstToolType.SM_MAP_EDIT_LINE
+          break
+        case GeometryType.GEOREGION:
+          type = ConstToolType.SM_MAP_EDIT_REGION
+          break
+        case GeometryType.GEOTEXT:
+          type = ConstToolType.SM_MAP_EDIT_TEXT
+          break
+        case GeometryType.GEOGRAPHICOBJECT:
+          type = ConstToolType.SM_MAP_EDIT_PLOT
+          break
       }
+      params.showFullMap && params.showFullMap(true)
+      params.setToolbarVisible &&
+        params.setToolbarVisible(true, type, {
+          isFullScreen: false,
+          containerType,
+          cb: () => SMap.appointEditGeometry(event.id, event.layerInfo.path),
+        })
       break
     }
     default:
@@ -174,6 +169,7 @@ async function geometrySelected(event) {
       break
   }
 }
+
 function move() {
   return SMap.setAction(Action.MOVE_GEOMETRY)
 }
@@ -197,14 +193,17 @@ function remove() {
   GLOBAL.removeObjectDialog && GLOBAL.removeObjectDialog.setDialogVisible(true)
 }
 
+/** 添加点 * */
 function addNode() {
   return SMap.setAction(Action.VERTEXADD)
 }
 
+/** 编辑点 * */
 function editNode() {
   return SMap.setAction(Action.VERTEXEDIT)
 }
 
+/** 删除点 * */
 function deleteNode() {
   return SMap.setAction(Action.VERTEXDELETE)
 }
@@ -249,6 +248,7 @@ function patchHollowRegion() {
   return SMap.setAction(Action.PATCH_HOLLOW_REGION)
 }
 
+/** 删除标注层中文字 **/
 async function deleteLabel() {
   const _params = ToolbarModule.getParams()
   const _selection = _params.selection
@@ -264,7 +264,7 @@ async function deleteLabel() {
     }
   })
   _params.setSelection()
-  const type = ConstToolType.MAP_EDIT_DEFAULT
+  const type = ConstToolType.SM_MAP_EDIT_DEFAULT
   
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,

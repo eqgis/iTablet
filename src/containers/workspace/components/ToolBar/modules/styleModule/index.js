@@ -26,7 +26,7 @@ class StyleModule extends FunctionModule {
       _params = {}
     if (params.currentLayer.themeType <= 0 && !params.currentLayer.isHeatmap) {
       if (params.currentLayer.type === 83) {
-        _type = ConstToolType.GRID_STYLE
+        _type = ConstToolType.SM_MAP_STYLE_GRID
         _params = {
           containerType: ToolbarType.list,
           isFullScreen: false,
@@ -37,13 +37,13 @@ class StyleModule extends FunctionModule {
         params.currentLayer.type === 3 ||
         params.currentLayer.type === 5
       ) {
-        _type = ConstToolType.MAP_STYLE
+        _type = ConstToolType.SM_MAP_STYLE
         _params = {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
         }
       } else if (params.currentLayer.type === 7) {
-        _type = ConstToolType.MAP_STYLE
+        _type = ConstToolType.SM_MAP_STYLE
         _params = {
           containerType: ToolbarType.list,
           isFullScreen: true,
@@ -70,13 +70,11 @@ class StyleModule extends FunctionModule {
 
 export default function(action) {
   return new StyleModule({
-    type: ConstToolType.MAP_STYLE,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
+    type: ConstToolType.SM_MAP_STYLE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_style,
     getData: StyleData.getData,
     actions: StyleAction,
-    action,
   })
 }

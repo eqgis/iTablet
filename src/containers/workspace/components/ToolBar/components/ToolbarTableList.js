@@ -30,7 +30,7 @@ export default class ToolbarTableList extends React.Component {
       this.props
         .getToolbarModule()
         .getData()
-        .actions.tableAction(item)
+        .actions.tableAction(this.props.type, item)
     } else if (item.action) {
       item.action(item)
     }

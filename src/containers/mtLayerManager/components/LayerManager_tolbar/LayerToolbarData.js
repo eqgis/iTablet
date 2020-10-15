@@ -133,7 +133,7 @@ const base3DListData = [
   },
 ]
 
-function layerThemeSetting(language, isGroup = false) {
+function layerThemeCreateSetting(language, isGroup = false) {
   let data = []
   if (isGroup) {
     data = getGroupData(language)
@@ -188,7 +188,7 @@ function layerThemeSetting(language, isGroup = false) {
     },
   ]
 }
-function layerThemeSettings(language, isGroup = false) {
+function layerThemeModifySetting(language, isGroup = false) {
   let data = []
   if (isGroup) {
     data = getGroupData(language)
@@ -614,11 +614,11 @@ const mscaleData = [
 
 export {
   layersetting,
-  layerThemeSetting,
+  layerThemeCreateSetting,
   layerPlottingSetting,
   layerCollectionSetting,
   layerNavigationSetting,
-  layerThemeSettings,
+  layerThemeModifySetting,
   layereditsetting,
   // 3d
   layere3dImage,

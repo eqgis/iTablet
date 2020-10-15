@@ -9,7 +9,7 @@ function close(type) {
   const action = ToolbarModule.getData().backAction || null
   action && action()
   AnalystTools.clear(type)
-  _params.setToolbarVisible(true, ConstToolType.MAP_ANALYSIS, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
     isFullScreen: true,
     // height:
     //   _params.device.orientation.indexOf('LANDSCAPE') === 0
@@ -22,9 +22,9 @@ function close(type) {
 async function analyst(type) {
   const _params = ToolbarModule.getParams()
   if (
-    type === ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH ||
-    type === ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
-    type === ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH
+    type === ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH ||
+    type === ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
+    type === ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
   ) {
     await AnalystTools.clearRoutes(type)
   }

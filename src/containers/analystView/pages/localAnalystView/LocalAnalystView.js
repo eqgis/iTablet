@@ -46,14 +46,14 @@ export default class LocalAnalystView extends Component {
 
     let title = ''
     switch (this.type) {
-      case ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
         title = getLanguage(this.props.language).Analyst_Modules.OPTIMAL_PATH
         break
-      case ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
+      case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
         title = getLanguage(this.props.language).Analyst_Modules
           .CONNECTIVITY_ANALYSIS
         break
-      case ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
         title = getLanguage(this.props.language).Analyst_Modules.FIND_TSP_PATH
         break
     }
@@ -149,7 +149,7 @@ export default class LocalAnalystView extends Component {
 
         this.props.closeMap(async () => {
           let res
-          // if (this.type === ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS) {
+          // if (this.type === ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS) {
           //   res = await this.loadFacility({ parent, item })
           // } else {
           res = await this.loadTransport({ parent, item })

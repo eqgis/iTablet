@@ -15,10 +15,10 @@ async function getData(type) {
 
   const _params = ToolbarModule.getParams()
   switch (type) {
-    case ConstToolType.LAYER_SETTING_IMAGE_MENU:
+    case ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU:
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.LAYER_SETTING_IMAGE_STRETCH_TYPE:
+    case ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_STRETCH_TYPE:
       {
         let mode = await SMap.getImageDisplayMode(_params.currentLayer.path)
         let stretchType = await SMap.getImageStretchType(
@@ -49,7 +49,7 @@ async function getData(type) {
         )
       }
       break
-    case ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE:
+    case ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_DISPLAY_MODE:
       {
         let mode = await SMap.getImageDisplayMode(_params.currentLayer.path)
         let stretchType = await SMap.getImageStretchType(
@@ -87,36 +87,42 @@ async function getData(type) {
 function getMenuData() {
   let data = [
     {
-      key: getLanguage(global.language).Map_Layer
-        .LAYER_SETTING_IMAGE_DISPLAY_MODE,
+      key: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_DISPLAY_MODE,
       action: () => {
         const _params = ToolbarModule.getParams()
         _params.setToolbarVisible(
           true,
-          ConstToolType.LAYER_SETTING_IMAGE_DISPLAY_MODE,
+          ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_DISPLAY_MODE,
           {
             isFullScreen: false,
             showMenuDialog: false,
             containerType: ToolbarType.multiPicker,
+            selectKey: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_DISPLAY_MODE,
+            selectName: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_DISPLAY_MODE,
           },
         )
       },
+      selectKey: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_DISPLAY_MODE,
+      selectName: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_DISPLAY_MODE,
     },
     {
-      key: getLanguage(global.language).Map_Layer
-        .LAYER_SETTING_IMAGE_STRETCH_TYPE,
+      key: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_STRETCH_TYPE,
       action: () => {
         const _params = ToolbarModule.getParams()
         _params.setToolbarVisible(
           true,
-          ConstToolType.LAYER_SETTING_IMAGE_STRETCH_TYPE,
+          ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_STRETCH_TYPE,
           {
             isFullScreen: false,
             showMenuDialog: false,
             containerType: ToolbarType.multiPicker,
+            selectKey: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_STRETCH_TYPE,
+            selectName: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_STRETCH_TYPE,
           },
         )
       },
+      selectKey: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_STRETCH_TYPE,
+      selectName: getLanguage(global.language).Map_Layer.LAYER_SETTING_IMAGE_STRETCH_TYPE,
     },
   ]
   return data

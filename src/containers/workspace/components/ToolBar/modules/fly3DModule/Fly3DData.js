@@ -13,11 +13,11 @@ async function getData(type, params) {
     ToolbarModule.setParams(params)
   }
   let _data = { data: [], buttons: [] }
-  if (type === ConstToolType.MAP3D_TOOL_FLYLIST) {
+  if (type === ConstToolType.SM_MAP3D_FLY_LIST) {
     _data = await getFlyList()
-  } else if (type === ConstToolType.MAP3D_TOOL_FLY) {
+  } else if (type === ConstToolType.SM_MAP3D_FLY) {
     _data = getToolFly()
-  } else if (type === ConstToolType.MAP3D_TOOL_NEWFLY) {
+  } else if (type === ConstToolType.SM_MAP3D_FLY_NEW) {
     _data = getNewFly()
   }
   return _data

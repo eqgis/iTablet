@@ -26,7 +26,7 @@ function setModuleData(type) {
 }
 
 // export default function(type,title) {
-//   setModuleData(ConstToolType.MAP_COLOR_PICKER)
+//   setModuleData(ConstToolType.SM_MAP_COLOR_PICKER)
 //   return {
 //     key: title,
 //     title,
@@ -47,7 +47,7 @@ class themeColorPickerModule extends FunctionModule {
 
 export default function() {
   return new themeColorPickerModule({
-    type: ConstToolType.MAP_COLOR_PICKER,
+    type: ConstToolType.SM_MAP_COLOR_PICKER,
     getData: ThemeColorPickerData.getData,
     actions: ThemeColorPickerAction,
   })

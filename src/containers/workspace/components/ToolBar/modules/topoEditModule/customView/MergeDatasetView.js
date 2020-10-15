@@ -67,7 +67,7 @@ export default class MergeDatasetView extends Component {
     const _params = ToolbarModule.getParams()
     _params.setToolbarVisible(
       true,
-      ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,
+      ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK,
       {
         isFullScreen: false,
         containerType: ToolbarType.list,

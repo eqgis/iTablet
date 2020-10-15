@@ -191,7 +191,7 @@ async function getSceneData() {
     }
   }
 
-  const type = ConstToolType.MAP3D_WORKSPACE_LIST
+  const type = ConstToolType.SM_MAP3D_WORKSPACE_LIST
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     containerType: ToolbarType.list,
     isFullScreen: true,
@@ -262,7 +262,7 @@ function openOnlineScene(item) {
 
 async function listAction(type, params = {}) {
   switch (type) {
-    case ConstToolType.MAP3D_WORKSPACE_LIST:
+    case ConstToolType.SM_MAP3D_WORKSPACE_LIST:
       if (params.item.isOnlineScence) {
         openOnlineScene(params.item)
         return

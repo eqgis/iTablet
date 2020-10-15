@@ -225,7 +225,7 @@ export default class ModuleItem extends Component {
               style={styles.moduleImage}
             />
             {this._renderProgressView()}
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{item.getTitle()}</Text>
             {this.props.isNew && <View style={styles.redDot} />}
             {this.props.showStar && (
               <Image

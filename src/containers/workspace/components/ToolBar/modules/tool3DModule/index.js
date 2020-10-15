@@ -31,8 +31,7 @@ class Tool3DModule extends FunctionModule {
 
 export default function() {
   return new Tool3DModule({
-    type: ConstToolType.MAP3D_TOOL,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
+    type: ConstToolType.SM_MAP3D_TOOL,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_tools,

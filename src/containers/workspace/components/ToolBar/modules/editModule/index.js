@@ -37,8 +37,7 @@ class EditModule extends FunctionModule {
 
 export default function() {
   return new EditModule({
-    type: ConstToolType.MAP_EDIT_DEFAULT,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+    type: ConstToolType.SM_MAP_EDIT_DEFAULT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_edit,

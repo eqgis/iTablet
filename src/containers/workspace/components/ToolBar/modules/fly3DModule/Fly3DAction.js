@@ -12,9 +12,9 @@ import Fly3DData from './Fly3DData'
 
 async function listAction(type, params = {}) {
   const _params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP3D_TOOL_FLYLIST) {
+  if (type === ConstToolType.SM_MAP3D_FLY_LIST) {
     SScene.setPosition(params.index)
-    const type = ConstToolType.MAP3D_TOOL_FLY
+    const type = ConstToolType.SM_MAP3D_FLY
     const { data, buttons } = await Fly3DData.getData(type)
     _params.showFullMap && _params.showFullMap(true)
     _params.setToolbarVisible(true, type, {
@@ -58,7 +58,7 @@ async function getWorkspaceList() {
   } catch (error) {
     Toast.show(getLanguage(params.language).Prompt.NO_SCENE_LIST)
   }
-  params.setToolbarVisible(true, ConstToolType.MAP3D_TOOL, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL, {
     containerType: ToolbarType.table,
     isFullScreen: true,
     // height:
@@ -73,13 +73,13 @@ async function getWorkspaceList() {
 
 async function close(type) {
   const params = ToolbarModule.getParams()
-  if (type === ConstToolType.MAP3D_TOOL_FLY) {
+  if (type === ConstToolType.SM_MAP3D_FLY) {
     SScene.checkoutListener('startTouchAttribute')
     SScene.flyStop()
     GLOBAL.action3d && SScene.setAction(GLOBAL.action3d)
     params.existFullMap && params.existFullMap()
     params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP3D_TOOL_NEWFLY) {
+  } else if (type === ConstToolType.SM_MAP3D_FLY_NEW) {
     SScene.checkoutListener('startTouchAttribute')
     SScene.clearRoutStops()
     SScene.flyStop()
@@ -96,7 +96,7 @@ async function close(type) {
 function newFly() {
   const params = ToolbarModule.getParams()
   const _data = Fly3DData.getNewFly()
-  params.setToolbarVisible(true, ConstToolType.MAP3D_TOOL_NEWFLY, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP3D_FLY_NEW, {
     // height: ConstToolType.HEIGHT[0],
     // column: _data.data.length,
     containerType: ToolbarType.table,

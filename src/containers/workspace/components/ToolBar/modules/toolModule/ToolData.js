@@ -25,10 +25,8 @@ function getData(type, params) {
   ToolbarModule.setParams(params)
   GLOBAL.MapToolType = type
   let layerType = ''
-  // if (type.indexOf(ConstToolType.MAP_TOOL) === -1) return { data, buttons }
   switch (type) {
-    case ConstToolType.MAP_TOOLS:
-    case ConstToolType.MAP_TOOL:
+    case ConstToolType.SM_MAP_TOOL:
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,
       )
@@ -219,9 +217,9 @@ function getData(type, params) {
       //   ToolbarBtnType.PLACEHOLDER,
       // ]
       break
-    case ConstToolType.MAP_TOOL_MEASURE_LENGTH:
-    case ConstToolType.MAP_TOOL_MEASURE_AREA:
-    case ConstToolType.MAP_TOOL_MEASURE_ANGLE:
+    case ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH:
+    case ConstToolType.SM_MAP_TOOL_MEASURE_AREA:
+    case ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE:
       buttons = [
         ToolbarBtnType.CANCEL,
         {
@@ -239,37 +237,12 @@ function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT:
-    case ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE:
-    case ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE:
+    case ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE:
+    case ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE:
       buttons = [ToolbarBtnType.CANCEL]
       break
-    // case ConstToolType.MAP_TOOL_TAGGING_SELECT_POINT:
-    // case ConstToolType.MAP_TOOL_TAGGING_SELECT_LINE:
-    // case ConstToolType.MAP_TOOL_TAGGING_SELECT_REGION:
-    // case ConstToolType.MAP_TOOL_TAGGING_SELECT_TEXT:
-    //   data = [
-    //     {
-    //       key: 'tagging_edit',
-    //       title: getLanguage(global.language).Map_Main_Menu.EDIT,
-    //       action: () => ToolAction.selectLabelToEdit(),
-    //       size: 'large',
-    //       image: require('../../../../../../assets/function/icon_edit.png'),
-    //     },
-    //     {
-    //       key: 'tagging_style',
-    //       title: getLanguage(global.language).Map_Main_Menu.STYLE,
-    //       action: ToolAction.selectLabelToStyle,
-    //       size: 'large',
-    //       image: require('../../../../../../assets/function/icon_function_style.png'),
-    //     },
-    //   ]
-    //   buttons = [ToolbarBtnType.TOOLBAR_BACK]
-    //   break
-    case ConstToolType.MAP_TOOL_TAGGING_POINT_SELECT:
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE:
-    case ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE:
-    case ConstToolType.MAP_TOOL_POINT_SELECT:
+    case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
+    case ConstToolType.SM_MAP_TOOL_POINT_SELECT:
       data = [
         // {
         //   key: constants.SELECT_ALL,
@@ -303,16 +276,16 @@ function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP_TOOL_RECTANGLE_CUT:
+    case ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT:
       buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
       break
-    case ConstToolType.MAP_TOOL_INCREMENT:
+    case ConstToolType.SM_MAP_TOOL_INCREMENT:
       data = [
         {
           key: constants.UNDO,
           title: getLanguage(global.language).Prompt.UNDO,
           action: () => {
-            ToolAction.undo(ConstToolType.MAP_TOOL_INCREMENT)
+            ToolAction.undo(ConstToolType.SM_MAP_TOOL_INCREMENT)
           },
           size: 'large',
           image: require('../../../../../../assets/lightTheme/public/icon_undo_light.png'),
@@ -321,7 +294,7 @@ function getData(type, params) {
           key: constants.REDO,
           title: getLanguage(global.language).Prompt.REDO,
           action: () => {
-            ToolAction.redo(ConstToolType.MAP_TOOL_INCREMENT)
+            ToolAction.redo(ConstToolType.SM_MAP_TOOL_INCREMENT)
           },
           size: 'large',
           image: require('../../../../../../assets/lightTheme/public/icon_redo_light.png'),
@@ -348,7 +321,7 @@ function getData(type, params) {
       ]
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.MAP_TOOL_GPSINCREMENT:
+    case ConstToolType.SM_MAP_TOOL_GPSINCREMENT:
       data = [
         {
           key: constants.BEGIN,
@@ -383,7 +356,7 @@ function getData(type, params) {
       ]
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER:
+    case ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER:
       data = pickerData()
       buttons = [
         ToolbarBtnType.CANCEL,
@@ -400,7 +373,7 @@ function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
+    case ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER:
       buttons = [
         ToolbarBtnType.CANCEL,
         {
@@ -423,7 +396,7 @@ function getData(type, params) {
 function getMenuData(type) {
   let data = []
   switch (type) {
-    case ConstToolType.MAP_TOOL_STYLE_TRANSFER:
+    case ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER:
       data = [
         {
           key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS,
@@ -436,7 +409,7 @@ function getMenuData(type) {
                   .STYLE_BRIGHTNESS,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .STYLE_BRIGHTNESS,
-                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -453,7 +426,7 @@ function getMenuData(type) {
                   .STYLE_CONTRAST,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .STYLE_CONTRAST,
-                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST,
@@ -469,7 +442,7 @@ function getMenuData(type) {
                   .SATURATION,
                 selectKey: getLanguage(GLOBAL.language).Map_Main_Menu
                   .SATURATION,
-                buttons: getData(ConstToolType.MAP_TOOL_STYLE_TRANSFER).buttons,
+                buttons: getData(ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER).buttons,
               })
           },
           selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION,

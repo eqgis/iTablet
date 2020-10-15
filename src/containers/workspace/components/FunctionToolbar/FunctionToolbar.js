@@ -275,7 +275,7 @@ export default class FunctionToolbar extends React.Component {
     let data = []
     functionModules.forEach(item => {
       let _item = typeof item === 'function' ? item() : item
-      if (_item.type === ConstToolType.MAP_STYLE) {
+      if (_item.type === ConstToolType.SM_MAP_STYLE) {
         _item.action = () => {
           let currentLayer = this.props.currentLayer
           if (
@@ -284,7 +284,7 @@ export default class FunctionToolbar extends React.Component {
           ) {
             layerSettingImageModule().actions.showSetting()
           } else if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
-            styleModule().action(ConstToolType.MAP_STYLE)
+            styleModule().action(ConstToolType.SM_MAP_STYLE)
           } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
             themeModule().actions.layerListAction(this.props.currentLayer)
           } else {
@@ -365,7 +365,7 @@ export default class FunctionToolbar extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={index}
-          title={item.title}
+          title={item.getTitle()}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
@@ -415,15 +415,15 @@ export default class FunctionToolbar extends React.Component {
   getCurrentData = () => {
     let filterData = this.state.data.filter(item => {
       if (this.props.ARView) {
-        if (item.type === ConstToolType.MAP_STYLE) return false
-        if (item.type === ConstToolType.MAP_MARKS) return false
-        if (item.type === ConstToolType.MAP_TOOLS) return false
+        if (item.type === ConstToolType.SM_MAP_STYLE) return false
+        if (item.type === ConstToolType.SM_MAP_MARKS) return false
+        if (item.type === ConstToolType.SM_MAP_TOOL) return false
       } else {
-        if (item.type === ConstToolType.MAP_AR_MEASURE) return false
-        if (item.type === ConstToolType.MAP_AR_AI_ASSISTANT) return false
-        if (item.type === ConstToolType.MAP_AR_TOOL) return false
-        if (item.type === ConstToolType.MAP_AR_EFFECT) return false
-        if (item.type === ConstToolType.MAP_AR_MAPPING) return false
+        if (item.type === ConstToolType.SM_MAP_AR_MEASURE) return false
+        if (item.type === ConstToolType.SM_MAP_AR_ANALYSIS) return false
+        if (item.type === ConstToolType.SM_MAP_AR_TOOL) return false
+        if (item.type === ConstToolType.SM_MAP_AR_EFFECT) return false
+        if (item.type === ConstToolType.SM_MAP_AR_MAPPING) return false
       }
       return true
     })

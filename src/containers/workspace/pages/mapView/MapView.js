@@ -21,7 +21,6 @@ import {
 import PropTypes from 'prop-types'
 import {
   FunctionToolbar,
-  AIFunctionToolbar,
   MapToolbar,
   MapNavMenu,
   MapNavIcon,
@@ -416,35 +415,25 @@ export default class MapView extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (
-    //   prevProps.navigation !==
-    //   this.props.navigation
-    // ) {
-    //     this.showFullMap(true)
-    // }
-
     if (
       JSON.stringify(prevProps.mapNavigation) !==
       JSON.stringify(this.props.mapNavigation)
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
     }
-    if (
-      JSON.stringify(prevProps.editLayer) !==
-        JSON.stringify(this.props.editLayer) &&
-      this.props.nav.routes[this.props.nav.index] === 'MapView'
-    ) {
-      let name = this.props.editLayer ? this.props.editLayer.name : ''
-      name && Toast.show('当前可编辑的图层为\n' + name)
-    }
+    // if (
+    //   JSON.stringify(prevProps.editLayer) !==
+    //     JSON.stringify(this.props.editLayer) &&
+    //   this.props.nav.routes[this.props.nav.index] === 'MapView'
+    // ) {
+    //   let name = this.props.editLayer ? this.props.editLayer.name : ''
+    //   name && Toast.show('当前可编辑的图层为\n' + name)
+    // }
     if (
       JSON.stringify(prevProps.currentLayer) !==
       JSON.stringify(this.props.currentLayer)
     ) {
       GLOBAL.currentLayer = this.props.currentLayer
-      // this.setState({
-      //   currentLayer: this.props.currentLayer,
-      // })
     }
 
     // 防止Toolbar被销毁后，再次添加Toolbar，修改其state失败
@@ -452,6 +441,7 @@ export default class MapView extends React.Component {
       GLOBAL.toolBox = this.toolBox
     }
 
+    // TODO 调整返回地图界面，改变Header以及返回事件，点击返回后，恢复原来地图界面的Header，去掉MapView中特例功能的方法
     // 网络分析模式下
     if (this.props.analyst.params) {
       // 网络分析模式下，设置返回按钮事件
@@ -464,11 +454,11 @@ export default class MapView extends React.Component {
             cb: () => {
               if (
                 this.props.analyst.params.type ===
-                  ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH ||
+                  ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH ||
                 this.props.analyst.params.type ===
-                  ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
+                  ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
                 this.props.analyst.params.type ===
-                  ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH
+                  ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
               ) {
                 this.container && this.container.setHeaderVisible(false)
               } else {
@@ -919,9 +909,6 @@ export default class MapView extends React.Component {
       return
     }
     switch (currentToolbarType) {
-      case ConstToolType.MAP_TOOL_TAGGING_POINT_SELECT:
-      case ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE:
-        break
       default:
         // 除了编辑状态，其余点选对象所在图层全设置为选择状态
         if (event.layerInfo.editable) {
@@ -958,7 +945,7 @@ export default class MapView extends React.Component {
 
     let currentToolbarType = ToolbarModule.getData().type
     switch (currentToolbarType) {
-      case ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE:
+      case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
         SMap.setAction(Action.PAN)
         break
     }
@@ -1082,8 +1069,8 @@ export default class MapView extends React.Component {
           let preType = ToolbarModule.getParams().type
           let type =
             preType.indexOf('MAP_TOPO_') > -1
-              ? ConstToolType.MAP_TOPO_EDIT
-              : ConstToolType.MAP_EDIT_DEFAULT
+              ? ConstToolType.SM_MAP_TOPO_EDIT
+              : ConstToolType.SM_MAP_EDIT_DEFAULT
           // 删除对象后，编辑设为为选择状态
           this.toolBox.setVisible(true, type, {
             isFullScreen: false,
@@ -1726,11 +1713,11 @@ export default class MapView extends React.Component {
   renderAnalystMapButtons = () => {
     if (
       this.props.analyst.params.type !==
-        ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH &&
+        ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH &&
       this.props.analyst.params.type !==
-        ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS &&
+        ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS &&
       this.props.analyst.params.type !==
-        ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH
+        ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
     )
       return null
     return (
@@ -1782,7 +1769,7 @@ export default class MapView extends React.Component {
             this.setState({ mapTitle: this.mapTitle })
           }
           // TODO 不同类型高度修改
-          this.toolBox.setVisible(true, ConstToolType.MAP_ANALYSIS, {
+          this.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
             isFullScreen: true,
             // height:
             //   this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -1793,22 +1780,6 @@ export default class MapView extends React.Component {
         }}
         setAnalystParams={this.props.setAnalystParams}
         language={this.props.language}
-      />
-    )
-  }
-
-  /** 仅限视频地图工具栏（右侧） **/
-  renderAIFunctionToolbar = () => {
-    return (
-      <AIFunctionToolbar
-        ref={ref => (GLOBAL.AIFUNCTIONTOOLBAR = ref)}
-        language={this.props.language}
-        device={this.props.device}
-        user={this.props.user}
-        type={this.type}
-        getToolRef={() => this.toolBox}
-        style={styles.functionToolbar}
-        showFullMap={this.showFullMap}
       />
     )
   }
@@ -2562,9 +2533,9 @@ export default class MapView extends React.Component {
     if (rel) {
       this.FloorListView.setVisible(false)
       if (!this.state.isRight) {
-        type = ConstToolType.MAP_TOOL_GPSINCREMENT
+        type = ConstToolType.SM_MAP_TOOL_GPSINCREMENT
       } else {
-        type = ConstToolType.MAP_TOOL_INCREMENT
+        type = ConstToolType.SM_MAP_TOOL_INCREMENT
         await SMap.setLabelColor()
         await SMap.setAction(Action.DRAWLINE)
         await SMap.setIsMagnifierEnabled(true)
@@ -2675,7 +2646,7 @@ export default class MapView extends React.Component {
 
   _pressRoad = async type => {
     //暂时屏蔽室内采集
-    if (type === ConstToolType.MAP_INCREMENT_INNER) return
+    if (type === ConstToolType.SM_MAP_INCREMENT_INNER) return
     const params = ToolbarModule.getParams()
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(type)
@@ -2684,7 +2655,7 @@ export default class MapView extends React.Component {
     })
     this.showFullMap(true)
     switch (type) {
-      case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+      case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
         SMap.createDefaultDataset().then(async returnData => {
           if (returnData.datasetName) {
             params.setToolbarVisible(true, type, {
@@ -2699,7 +2670,7 @@ export default class MapView extends React.Component {
           }
         })
         break
-      case ConstToolType.MAP_INCREMENT_INNER:
+      case ConstToolType.SM_MAP_INCREMENT_INNER:
         break
     }
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
@@ -2718,7 +2689,7 @@ export default class MapView extends React.Component {
           <TouchableOpacity
             style={styles.incrementButton}
             onPress={() => {
-              this._pressRoad(ConstToolType.MAP_INCREMENT_INNER)
+              this._pressRoad(ConstToolType.SM_MAP_INCREMENT_INNER)
             }}
           >
             <Image
@@ -2736,7 +2707,7 @@ export default class MapView extends React.Component {
           <TouchableOpacity
             style={styles.incrementButton}
             onPress={() => {
-              this._pressRoad(ConstToolType.MAP_INCREMENT_GPS_TRACK)
+              this._pressRoad(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
             }}
           >
             <Image

@@ -29,8 +29,7 @@ class ShareModule extends FunctionModule {
 
 export default function() {
   return new ShareModule({
-    type: ConstToolType.MAP_SHARE,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
+    type: ConstToolType.SM_MAP_SHARE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_share.png'),

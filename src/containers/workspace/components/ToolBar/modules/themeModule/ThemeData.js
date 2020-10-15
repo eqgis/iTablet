@@ -23,25 +23,20 @@ function getData(type, params) {
   ToolbarModule.setParams(params)
   // GLOBAL.MapToolType = type
   switch (type) {
-    case ConstToolType.MAP_THEME_CREATE:
-    case ConstToolType.MAP_THEME_CREATE_BY_LAYER:
+    case ConstToolType.SM_MAP_THEME_CREATE:
+    case ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER:
       temp = ThemeMenuData.getThemeMapCreate(type)
       data = temp.data
       buttons = temp.buttons
       break
-    case ConstToolType.MAP_THEME_PARAM:
-    case ConstToolType.MAP_THEME_PARAM_GRAPH:
+    case ConstToolType.SM_MAP_THEME_PARAM:
+    case ConstToolType.SM_MAP_THEME_PARAM_GRAPH:
       temp = ThemeMenuData.getThemeMapParam(type)
       data = temp.data
       buttons = temp.buttons
       break
-    case ConstToolType.MAP_THEME_START_CREATE:
-      temp = ThemeMenuData.getThemeMapStartCreate(type)
-      data = temp.data
-      buttons = temp.buttons
-      break
     default:
-      if (type.indexOf(`${ConstToolType.MAP_THEME_PARAM_GRAPH}_`) > 0) {
+      if (type.indexOf(`${ConstToolType.SM_MAP_THEME_PARAM_GRAPH}_`) > 0) {
         buttons = ThemeMenuData.getThemeFiveMenu()
       }
       break
@@ -53,7 +48,7 @@ async function getDatasets(type, params = {}) {
   let buttons = []
   let data = []
 
-  if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
+  if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
@@ -96,7 +91,7 @@ async function getDatasets(type, params = {}) {
 
 function getMenuData(type, themeType) {
   let data = []
-  if (type.indexOf('MAP_THEME_PARAM') === -1) return data
+  if (type.indexOf('SM_MAP_THEME_PARAM') === -1) return data
   // 切换到menu，保留themeParams，用于保存专题参数
   // 切换到menu，保留mapXml，用于还原专题图
   // 切换到menu，保留themeCreateType，用于修改专题图

@@ -29,6 +29,7 @@ const DEFAULT_FULL_SCREEN = true
 // let isSharing = false
 
 export default class ToolBar extends React.Component {
+  // TODO 待去除不用的属性和方法
   props: {
     language: string,
     children: any,
@@ -297,13 +298,24 @@ export default class ToolBar extends React.Component {
    * isShow: 是否显示
    * type:   显示数据类型
    * params: {
-   *   isFullScreen:    是否全屏，
-   *   height:          工具栏高度
-   *   column:          表格列数（仅table可用）
-   *   containerType:   容器的类型, list | table
+   *   isFullScreen:        是否全屏，
+   *   height:              工具栏高度
+   *   containerType:       容器的类型, list | table
    *   resetToolModuleData: 是否重置ToolbarModule中的data
    *   touchType:           setVisible之后 GLOBAL.TouchType的值
-   *   isExistFullMap:   setVisible之后是否退出全屏
+   *   isExistFullMap:      setVisible之后是否退出全屏
+   *   themeType:           专题类型
+   *
+   *   isTouchProgress:     是否显示指滑横向进度条
+   *
+   *   showMenuDialog:      是否显示指滑菜单
+   *   selectKey:           指滑菜单选中目标的key
+   *   selectName:          指滑菜单选中目标的name
+   *
+   *   column:              table类型的列数
+   *   row:                 table类型的行数
+   *
+   *   cb:                  setVisible之后的回调函数
    * }
    **/
   setVisible = (isShow, type = '', params = {}) => {
@@ -632,10 +644,10 @@ export default class ToolBar extends React.Component {
       if (GLOBAL.Type === ChunkType.MAP_EDIT) {
         if (
           GLOBAL.MapToolType &&
-          (GLOBAL.MapToolType.indexOf(ConstToolType.MAP_MARKS_TAGGING_EDIT) !==
+          (GLOBAL.MapToolType.indexOf(ConstToolType.SM_MAP_MARKS_TAGGING_EDIT) !==
             -1 ||
             GLOBAL.MapToolType.indexOf(
-              ConstToolType.MAP_MARKS_TAGGING_STYLE,
+              ConstToolType.SM_MAP_MARKS_TAGGING_STYLE,
             ) !== -1)
         ) {
           return
@@ -674,7 +686,7 @@ export default class ToolBar extends React.Component {
   overlayOnPress = () => {
     if (
       !this.state.isFullScreen ||
-      this.state.type === ConstToolType.MAP_TOOL_STYLE_TRANSFER ||
+      this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER ||
       this.state.isTouchProgress ||
       this.state.showMenuDialog
     )
@@ -687,15 +699,15 @@ export default class ToolBar extends React.Component {
       this.ToolbarModule.getData().actions.overlayOnPress()
     }
     if (
-      this.state.type === ConstToolType.MAP_THEME_PARAM_CREATE_DATASETS ||
-      this.state.type === ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION ||
+      this.state.type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS ||
+      this.state.type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION ||
       this.state.type ===
-        ConstToolType.MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
+        ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
     ) {
       this.setVisible(false)
     } else if (
       typeof this.state.type === 'string' &&
-      this.state.type.indexOf('MAP_THEME_PARAM') >= 0
+      this.state.type.indexOf('SM_MAP_THEME_PARAM') >= 0
     ) {
       this.contentView && this.contentView.changeHeight(0)
       // this.isBoxShow = false
@@ -708,26 +720,26 @@ export default class ToolBar extends React.Component {
           this.updateOverlayView()
         },
       )
-    } else if (this.state.type === ConstToolType.MAP3D_WORKSPACE_LIST) {
+    } else if (this.state.type === ConstToolType.SM_MAP3D_WORKSPACE_LIST) {
       this.showToolbarAndBox(false)
       this.props.existFullMap && this.props.existFullMap()
       this.props.getOverlay() && this.props.getOverlay().setVisible(false)
     } else if (
-      this.state.type === ConstToolType.MAP_PLOTTING_ANIMATION ||
-      this.state.type === ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST
+      this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_TEMP ||
+      this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST
     ) {
       let height = 0
       this.props.showFullMap && this.props.showFullMap(true)
-      let type = ConstToolType.PLOT_ANIMATION_START
+      let type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
       this.setVisible(true, type, {
         isFullScreen: false,
         height,
         cb: () => SMap.setAction(Action.SELECT),
       })
-    } else if (this.state.type === ConstToolType.PLOT_ANIMATION_NODE_CREATE) {
+    } else if (this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE) {
       // TODO savePlotAnimationNode
       // this.contentView.savePlotAnimationNode()
-    } else if (this.state.type === ConstToolType.MAP3D_TOOL_FLYLIST) {
+    } else if (this.state.type === ConstToolType.SM_MAP3D_FLY_LIST) {
       SScene.checkoutListener('startTouchAttribute')
       SScene.setAction('PAN3D')
       GLOBAL.action3d = 'PAN3D'
@@ -735,12 +747,8 @@ export default class ToolBar extends React.Component {
     } else {
       this.setVisible(false)
     }
-    // if (this.state.type === ConstToolType.MAP_BASE) {
-    //   this.props.getLayers()
-    // }
     if (GLOBAL.Type === ChunkType.MAP_EDIT) {
       GLOBAL.showMenu = true
-      // GLOBAL.showFlex = true
       this.setState({ selectKey: '' })
     }
   }
@@ -816,14 +824,6 @@ export default class ToolBar extends React.Component {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       size.width = this.props.device.width
     }
-    let keyboardVerticalOffset
-    if (Platform.OS === 'android') {
-      keyboardVerticalOffset =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 0 : 200
-    } else {
-      keyboardVerticalOffset =
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 250 : 500
-    }
     return (
       <Animated.View
         style={[
@@ -853,7 +853,7 @@ export default class ToolBar extends React.Component {
             showMenu={() => {
               // 智能配图选择器，唤起选择器菜单
               if (
-                this.state.type === ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER
+                this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
               ) {
                 this.showPicker()
                 return
@@ -864,36 +864,17 @@ export default class ToolBar extends React.Component {
           />
         )}
         {this.state.showMenuDialog && this.renderMenuDialog()}
-        {this.state.type === ConstToolType.MAP_TOOL_TAGGING_SETTING ? (
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={keyboardVerticalOffset}
-            behavior={Platform.OS === 'ios' && 'position'}
-          >
-            <View
-              style={[
-                this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                  ? styles.containersLandscape
-                  : styles.containers,
-              ]}
-              pointerEvents={'box-none'}
-            >
-              {this.renderView()}
-              {this.renderBottomBtns()}
-            </View>
-          </KeyboardAvoidingView>
-        ) : (
-          <View
-            style={[
-              this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                ? styles.containersLandscape
-                : styles.containers,
-            ]}
-            pointerEvents={'box-none'}
-          >
-            {this.renderView()}
-            {this.renderBottomBtns()}
-          </View>
-        )}
+        <View
+          style={[
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? styles.containersLandscape
+              : styles.containers,
+          ]}
+          pointerEvents={'box-none'}
+        >
+          {this.renderView()}
+          {this.renderBottomBtns()}
+        </View>
       </Animated.View>
     )
   }

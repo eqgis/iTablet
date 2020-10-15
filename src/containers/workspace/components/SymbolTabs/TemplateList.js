@@ -88,13 +88,13 @@ export default class TemplateList extends React.Component {
     // if (layer) {
     // switch (type) {
     //   case 'Region':
-    //     toolbarType = ConstToolType.MAP_COLLECTION_REGION
+    //     toolbarType = ConstToolType.SM_MAP_COLLECTION_REGION
     //     break
     //   case 'Line':
-    //     toolbarType = ConstToolType.MAP_COLLECTION_LINE
+    //     toolbarType = ConstToolType.SM_MAP_COLLECTION_LINE
     //     break
     //   case 'Point':
-    //     toolbarType = ConstToolType.MAP_COLLECTION_POINT
+    //     toolbarType = ConstToolType.SM_MAP_COLLECTION_POINT
     //     break
     //   // default:
     //   //   actionType = Action.PAN

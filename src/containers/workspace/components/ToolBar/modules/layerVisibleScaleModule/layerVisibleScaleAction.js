@@ -55,7 +55,7 @@ async function rightSelect(item) {
     ToolbarModule.addData({ currentType, mapScale: (mapScale - 0).toFixed(6) })
     _params.setToolbarVisible(
       true,
-      ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE,
+      ConstToolType.SM_MAP_LAYER_VISIBLE_USER_DEFINE,
       {
         containerType: ToolbarType.fullScreen,
         isFullScreen: false,
@@ -69,7 +69,7 @@ async function commit() {
   let mapScale = await SMap.getMapScale()
   let currentType = ToolbarModule.getData().currentType
   ToolbarModule.addData({ [`${currentType}`]: mapScale - 0 })
-  _params.setToolbarVisible(true, ConstToolType.MAP_LAYER_VISIBLE_SCALE, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
     containerType: ToolbarType.multiPicker,
     isFullScreen: false,
   })
@@ -77,7 +77,7 @@ async function commit() {
 
 function close() {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.MAP_LAYER_VISIBLE_SCALE, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
     containerType: ToolbarType.multiPicker,
     isFullScreen: false,
   })

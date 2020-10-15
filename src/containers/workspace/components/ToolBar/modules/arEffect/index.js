@@ -29,8 +29,7 @@ class arEffect extends FunctionModule {
 
 export default function() {
   return new arEffect({
-    type: ConstToolType.MAP_AR_EFFECT,
-    key: ConstToolType.MAP_AR_EFFECT,
+    type: ConstToolType.SM_MAP_AR_EFFECT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
     size: 'large',
     image: getThemeAssets().ar.functiontoolbar.ar_effect,

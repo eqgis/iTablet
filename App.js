@@ -48,7 +48,7 @@ import { SaveView } from './src/containers/workspace/components'
 import { scaleSize, Toast, screen } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
-import { ConstPath, ConstInfo, ConstToolType, ThemeType, ChunkType, UserType } from './src/constants'
+import { ConstPath, ConstInfo, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
@@ -687,7 +687,7 @@ class AppRoot extends Component {
       // GLOBAL.SMMapSuspension&&GLOBAL.SMMapSuspension.setVisible(false)
       this.props.setMap2Dto3D(false)
     }
-    if (GLOBAL.Type === ConstToolType.MAP_3D) {
+    if (GLOBAL.Type === ChunkType.MAP_3D) {
       this.map3dBackAction()
       GLOBAL.openWorkspace && Toast.show(ConstInfo.SAVE_SCENE_SUCCESS)
       return
@@ -758,7 +758,7 @@ class AppRoot extends Component {
       // GLOBAL.SMMapSuspension&&GLOBAL.SMMapSuspension.setVisible(false)
       this.props.setMap2Dto3D(false)
     }
-    if (GLOBAL.Type === ConstToolType.MAP_3D) {
+    if (GLOBAL.Type === ChunkType.MAP_3D) {
       this.map3dBackAction()
       return
     }

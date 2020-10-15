@@ -10,6 +10,7 @@ import themeModule from './themeModule'
 import collectionModule from './collectionModule'
 import editModule from './editModule'
 import analysisModule from './analysisModule'
+import processModule from './processModule'
 import plotModule from './plotModule'
 import tool3DModule from './tool3DModule'
 import navigationModule from './navigationModule'
@@ -42,6 +43,7 @@ export {
   collectionModule,
   editModule,
   analysisModule,
+  processModule,
   plotModule,
   tool3DModule,
   navigationModule,

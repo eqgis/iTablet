@@ -12,12 +12,12 @@ function getData(language) {
       action: (params = {}) => {
         // NavigationService.navigate('AnalystListEntry', {
         //   ...params,
-        //   type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+        //   type: ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH,
         //   title: getLanguage(language).Analyst_Modules.OPTIMAL_PATH,
         // })
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+          type: ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH,
           // cb: cb,
         })
       },
@@ -31,12 +31,12 @@ function getData(language) {
       action: (params = {}) => {
         // NavigationService.navigate('AnalystListEntry', {
         //   ...params,
-        //   type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+        //   type: ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
         //   title: getLanguage(language).Analyst_Modules.CONNECTIVITY_ANALYSIS,
         // })
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
           // cb: cb,
         })
       },
@@ -49,12 +49,12 @@ function getData(language) {
       action: (params = {}) => {
         // NavigationService.navigate('AnalystListEntry', {
         //   ...params,
-        //   type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+        //   type: ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH,
         //   title: getLanguage(language).Analyst_Modules.FIND_TSP_PATH,
         // })
         NavigationService.navigate('LocalAnalystView', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+          type: ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH,
           // cb: cb,
         })
       },
@@ -91,7 +91,7 @@ function getData(language) {
       action: (params = {}) => {
         NavigationService.navigate('AnalystListEntry', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_OVERLAY_ANALYSIS,
           title: getLanguage(language).Analyst_Modules.OVERLAY_ANALYSIS,
         })
       },
@@ -104,7 +104,7 @@ function getData(language) {
       action: (params = {}) => {
         NavigationService.navigate('AnalystListEntry', {
           ...params,
-          type: ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS,
+          type: ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS,
           title: getLanguage(language).Analyst_Modules.ONLINE_ANALYSIS,
         })
       },

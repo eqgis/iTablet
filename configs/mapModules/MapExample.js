@@ -9,9 +9,10 @@ import {
 import { functionExample } from '../mapFunctionModules'
 
 export default class MapExample extends Module {
+  static key = 'MapExample' // key值，必须
   constructor () {
     super({
-      key: 'MapExample',
+      key: MapExample.key,
       example: {
         DEFAULT: { // 默认/中文数据名称
           name: '湖北',
@@ -39,7 +40,7 @@ export default class MapExample extends Module {
   // 首页模块数据
   getChunk = language => {
     return this.createChunk(language, {
-      key: 'MapExample',
+      key: MapExample.key,
       // 根据语言获取地图模块名称
       title:'Gis小程序',
       // 模块图片

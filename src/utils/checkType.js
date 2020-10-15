@@ -1,5 +1,31 @@
 import { DatasetType } from 'imobile_for_reactnative'
 
+/**
+ * 检测传入的Toolbar类型是否占用系统字段
+ * @param types (String | Array | Object)
+ */
+function checkCustomToolbarType (types) {
+  const error = 'Types beginning with SM are system reserved fields and cannot be used: '
+  if (types instanceof Object) {
+    const SysKeys = Object.keys(types)
+    for (let i = 0; i < SysKeys.length; i++) {
+      if (types[SysKeys[i]].indexOf('SM_') === 0) {
+        throw new Error(error + types[SysKeys[i]])
+      }
+    }
+  } else if (types instanceof Array) {
+    for (let i = 0; i < types.length; i++) {
+      if (types[i].indexOf('SM_') === 0) {
+        throw new Error(error + types[i])
+      }
+    }
+  } else if (typeof types === 'string') {
+    if (types.indexOf('SM_') === 0) {
+      throw new Error(error + types)
+    }
+  }
+}
+
 const vectorType = [
   DatasetType.CAD,
   DatasetType.TEXT,
@@ -44,4 +70,5 @@ function getMediaTypeByPath(uri = '') {
 export default {
   isVectorDataset,
   getMediaTypeByPath,
+  checkCustomToolbarType,
 }

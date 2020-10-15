@@ -25,7 +25,7 @@ async function getData(type) {
       action: IncrementAction.changeNetwork,
     },
     {
-      type: ConstToolType.MAP_INCREMENT_CHANGE_METHOD,
+      type: ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD,
       image: IncrementAction.getTypeImage(type),
       //toolbarBottomButtons里面默认传了type，此处不传type
       action: () => IncrementAction.changeMethod(),
@@ -40,8 +40,8 @@ async function getData(type) {
   let customView
 
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       data = [
         {
           key: constants.UNDO,
@@ -75,7 +75,7 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       data = [
         {
           key: constants.UNDO,
@@ -117,7 +117,7 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
       data = [
         {
           key: constants.MAP_INCREMENT_START,
@@ -151,7 +151,7 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_INCREMENT_CHANGE_METHOD:
+    case ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD:
       data = [
         {
           key: constants.MAP_INCREMENT_GPS_POINT,
@@ -159,7 +159,7 @@ async function getData(type) {
             .MAP_INCREMENT_GPS_POINT,
           action: () =>
             IncrementAction.methodSelected(
-              ConstToolType.MAP_INCREMENT_GPS_POINT,
+              ConstToolType.SM_MAP_INCREMENT_GPS_POINT,
             ),
           size: 'large',
           image: getPublicAssets().navigation.increment_add_point,
@@ -170,7 +170,7 @@ async function getData(type) {
             .MAP_INCREMENT_GPS_TRACK,
           action: () =>
             IncrementAction.methodSelected(
-              ConstToolType.MAP_INCREMENT_GPS_TRACK,
+              ConstToolType.SM_MAP_INCREMENT_GPS_TRACK,
             ),
           size: 'large',
           image: getPublicAssets().navigation.increment_gps_track,
@@ -181,7 +181,7 @@ async function getData(type) {
             .MAP_INCREMENT_POINTLINE,
           action: () =>
             IncrementAction.methodSelected(
-              ConstToolType.MAP_INCREMENT_POINTLINE,
+              ConstToolType.SM_MAP_INCREMENT_POINTLINE,
             ),
           size: 'large',
           image: getPublicAssets().navigation.increment_pointline,
@@ -192,21 +192,21 @@ async function getData(type) {
             .MAP_INCREMENT_FREELINE,
           action: () =>
             IncrementAction.methodSelected(
-              ConstToolType.MAP_INCREMENT_FREELINE,
+              ConstToolType.SM_MAP_INCREMENT_FREELINE,
             ),
           size: 'large',
           image: getPublicAssets().navigation.increment_freeline,
         },
       ]
       break
-    case ConstToolType.MAP_INCREMENT_CHANGE_NETWORK:
+    case ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK:
       data = await SMap.getLineDataset()
       //eslint-disable-next-line
       customView = props => <LineList data={data} device={props.device} selectedItem={GLOBAL.INCREMENT_DATA}/>
       buttons = []
       break
   }
-  if(type === ConstToolType.MAP_INCREMENT_EDIT){
+  if(type === ConstToolType.SM_MAP_INCREMENT_EDIT){
     buttons.splice(2,1)
   }
   return {data, buttons, customView}

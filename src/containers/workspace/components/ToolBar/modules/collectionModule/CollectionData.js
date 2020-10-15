@@ -18,9 +18,9 @@ function getData(type) {
   let isCollection = false
 
   if (
-    type === ConstToolType.MAP_COLLECTION_POINT ||
-    type === ConstToolType.MAP_COLLECTION_LINE ||
-    type === ConstToolType.MAP_COLLECTION_REGION
+    type === ConstToolType.SM_MAP_COLLECTION_POINT ||
+    type === ConstToolType.SM_MAP_COLLECTION_LINE ||
+    type === ConstToolType.SM_MAP_COLLECTION_REGION
   ) {
     return getOperationData(type)
   }
@@ -145,16 +145,16 @@ function getOperationData(type) {
   const _params = ToolbarModule.getParams()
   // 判断是否是采集操作功能
   if (
-    type !== ConstToolType.MAP_COLLECTION_POINT &&
-    type !== ConstToolType.MAP_COLLECTION_LINE &&
-    type !== ConstToolType.MAP_COLLECTION_REGION
+    type !== ConstToolType.SM_MAP_COLLECTION_POINT &&
+    type !== ConstToolType.SM_MAP_COLLECTION_LINE &&
+    type !== ConstToolType.SM_MAP_COLLECTION_REGION
   )
     return { data, buttons }
 
   const gpsPointType =
-    type === ConstToolType.MAP_COLLECTION_POINT
+    type === ConstToolType.SM_MAP_COLLECTION_POINT
       ? SMCollectorType.POINT_GPS
-      : type === ConstToolType.MAP_COLLECTION_LINE
+      : type === ConstToolType.SM_MAP_COLLECTION_LINE
         ? SMCollectorType.LINE_GPS_POINT
         : SMCollectorType.REGION_GPS_POINT
   data.push({
@@ -166,9 +166,9 @@ function getOperationData(type) {
     size: 'large',
     image: require('../../../../../../assets/mapTools/icon_collection_point_collect.png'),
   })
-  if (type !== ConstToolType.MAP_COLLECTION_POINT) {
+  if (type !== ConstToolType.SM_MAP_COLLECTION_POINT) {
     const gpsPathType =
-      type === ConstToolType.MAP_COLLECTION_LINE
+      type === ConstToolType.SM_MAP_COLLECTION_LINE
         ? SMCollectorType.LINE_GPS_PATH
         : SMCollectorType.REGION_GPS_PATH
     data.push({
@@ -183,7 +183,7 @@ function getOperationData(type) {
   }
 
   switch (type) {
-    case ConstToolType.MAP_COLLECTION_POINT:
+    case ConstToolType.SM_MAP_COLLECTION_POINT:
       data.push(
         {
           key: 'pointDraw',
@@ -207,7 +207,7 @@ function getOperationData(type) {
         // },
       )
       break
-    case ConstToolType.MAP_COLLECTION_LINE:
+    case ConstToolType.SM_MAP_COLLECTION_LINE:
       data.push(
         {
           key: 'pointDraw',
@@ -237,7 +237,7 @@ function getOperationData(type) {
         },
       )
       break
-    case ConstToolType.MAP_COLLECTION_REGION:
+    case ConstToolType.SM_MAP_COLLECTION_REGION:
       data.push(
         {
           key: 'pointDraw',

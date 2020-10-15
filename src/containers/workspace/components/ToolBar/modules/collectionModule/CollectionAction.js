@@ -24,7 +24,7 @@ function openTemplate(type) {
     data: _data.data,
   })
   params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
     ...data,
@@ -44,17 +44,17 @@ function changeCollection(type) {
     case SMCollectorType.REGION_GPS_POINT:
     case SMCollectorType.REGION_HAND_PATH:
     case SMCollectorType.REGION_HAND_POINT:
-      toolbarType = ConstToolType.MAP_COLLECTION_REGION
+      toolbarType = ConstToolType.SM_MAP_COLLECTION_REGION
       break
     case SMCollectorType.LINE_GPS_PATH:
     case SMCollectorType.LINE_GPS_POINT:
     case SMCollectorType.LINE_HAND_POINT:
     case SMCollectorType.LINE_HAND_PATH:
-      toolbarType = ConstToolType.MAP_COLLECTION_LINE
+      toolbarType = ConstToolType.SM_MAP_COLLECTION_LINE
       break
     case SMCollectorType.POINT_GPS:
     case SMCollectorType.POINT_HAND:
-      toolbarType = ConstToolType.MAP_COLLECTION_POINT
+      toolbarType = ConstToolType.SM_MAP_COLLECTION_POINT
       break
   }
   
@@ -108,13 +108,9 @@ function showCollection(type, layerName) {
 function showSymbol() {
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
-    // height:
-    //   params.device.orientation.indexOf('PORTRAIT') >= 0
-    //     ? ConstToolType.HEIGHT[3]
-    //     : ConstToolType.THEME_HEIGHT[4],
     cb: () => SCollector.stopCollect(),
   })
 }

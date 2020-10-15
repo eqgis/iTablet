@@ -6,7 +6,6 @@ import {
   ConstPath,
   ToolbarType,
   TouchType,
-  Height,
 } from '../../../../../../constants'
 import { StyleUtils, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -16,47 +15,16 @@ import PlotData from './PlotData'
 import { PlotAnimationView, AnimationNodeListView } from './customView'
 import NavigationService from '../../../../../NavigationService'
 
-// function commit(type) {
-//   const params = ToolbarModule.getParams()
-//   let currentToolbarType = ''
-//   if (type === ConstToolType.MAP_EDIT_DEFAULT) {
-//     // 编辑完成关闭Toolbar
-//     params.setToolbarVisible(false, '', {
-//       cb: () => {
-//         SMap.setAction(Action.PAN)
-//       },
-//     })
-//   } else if (
-//     type !== ConstToolType.MAP_TOOL_TAGGING &&
-//     type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
-//   ) {
-//     currentToolbarType = ConstToolType.MAP_EDIT_DEFAULT
-//     // 编辑完成关闭Toolbar
-//     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-//     params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
-//       isFullScreen: false,
-//       height: 0,
-//       cb: () => {
-//         SMap.submit()
-//         SMap.setAction(Action.SELECT)
-//       },
-//     })
-//   }
-//   ToolbarModule.addData({
-//     type: currentToolbarType,
-//   })
-// }
-
 function listAction(type, params = {}) {
   switch (type) {
-    case ConstToolType.PLOT_ANIMATION_XML_LIST:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST:
       SMap.readAnimationXmlFile(params.item.path)
       animationPlay()
       break
-    case ConstToolType.PLOT_LIB_CHANGE:
+    case ConstToolType.SM_MAP_PLOT_LIB_CHANGE:
       changePlotLib(params.item)
       break
-    case ConstToolType.MAP_PLOTTING_ANIMATION:
+    case ConstToolType.SM_MAP_PLOT_ANIMATION_TEMP:
       PlotData.getAnimationList()
       break
   }
@@ -66,7 +34,7 @@ async function geometrySelected(event) {
   const params = ToolbarModule.getParams()
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
-    case ConstToolType.PLOTTING_ANIMATION: {
+    case ConstToolType.SM_MAP_PLOT_ANIMATION: {
       const type = await SMap.getGeometryTypeById(
         event.layerInfo.name,
         event.id,
@@ -79,7 +47,7 @@ async function geometrySelected(event) {
       } else {
         params.setToolbarVisible(
           true,
-          ConstToolType.PLOT_ANIMATION_NODE_CREATE,
+          ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE,
           {
             isFullScreen: true,
             containerType: ToolbarType.createPlotAnimation,
@@ -120,7 +88,7 @@ async function geometrySelected(event) {
 
                   const height = 0
                   params.showFullMap && params.showFullMap(true)
-                  const type = ConstToolType.PLOT_ANIMATION_START
+                  const type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
                   params.setToolbarVisible(true, type, {
                     isFullScreen: false,
                     height,
@@ -146,14 +114,9 @@ async function geometrySelected(event) {
 function showSymbol() {
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
-  params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
     isFullScreen: true,
     containerType: ToolbarType.tabs,
-    // height:
-    //   params.device.orientation.indexOf('PORTRAIT') >= 0
-    //     ? ConstToolType.HEIGHT[3]
-    //     : ConstToolType.THEME_HEIGHT[4],
-    // column: params.device.orientation.indexOf('LANDSCAPE') === 0 ? 8 : 4,
     cb: () => {
       SMap.cancel()
     },
@@ -203,7 +166,7 @@ function cancelAnimationWay() {
   // SMap.endAnimationWayPoint(false)
   const params = ToolbarModule.getParams()
   SMap.refreshAnimationWayPoint()
-  const type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
+  const type = ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
     isFullScreen: true,
     height: ConstToolType.TOOLBAR_HEIGHT[5],
@@ -217,7 +180,7 @@ async function endAnimationWayPoint() {
   const wayPoints = await SMap.endAnimationWayPoint(true)
   GLOBAL.animationWayData && (GLOBAL.animationWayData.wayPoints = wayPoints)
 
-  const type = ConstToolType.PLOT_ANIMATION_NODE_CREATE
+  const type = ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
     isFullScreen: true,
     height: ConstToolType.TOOLBAR_HEIGHT[5],
@@ -274,7 +237,7 @@ function reset() {
   const height = 0
   ToolbarModule.getParams().showFullMap &&
     ToolbarModule.getParams().showFullMap(true)
-  const type = ConstToolType.PLOT_ANIMATION_START
+  const type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
     height,
@@ -355,7 +318,7 @@ async function animationSave() {
 
 function showAnimationNodeList() {
   const params = ToolbarModule.getParams()
-  params.setToolbarVisible(true, ConstToolType.PLOT_ANIMATION_GO_OBJECT_LIST, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST, {
     isFullScreen: true,
     // height:
     //   params.device.orientation === 'PORTRAIT'
@@ -377,7 +340,7 @@ async function showAnimationXmlList() {
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
   const _data = await PlotData.getAnimationList()
-  params.setToolbarVisible(true, ConstToolType.PLOT_ANIMATION_XML_LIST, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST, {
     data: _data.data,
     buttons: _data.buttons,
     containerType: ToolbarType.list,
@@ -393,7 +356,7 @@ async function animationPlay() {
   const params = ToolbarModule.getParams()
   // const height = ConstToolType.HEIGHT[0]
   params.showFullMap && params.showFullMap(true)
-  const type = ConstToolType.PLOT_ANIMATION_PLAY
+  const type = ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY
   params.setToolbarVisible(true, type, {
     isFullScreen: false,
     // height,
@@ -406,7 +369,7 @@ async function animationPlay() {
 function close() {
   const params = ToolbarModule.getParams()
   const data = ToolbarModule.getData()
-  if (data.type === ConstToolType.PLOTTING_ANIMATION) {
+  if (data.type === ConstToolType.SM_MAP_PLOT_ANIMATION) {
     SMap.animationClose()
     SMap.setAction(Action.PAN)
     SMap.endAnimationWayPoint(false)
@@ -414,8 +377,8 @@ function close() {
     GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
     params.setToolbarVisible(false)
   } else if (
-    data.type === ConstToolType.PLOT_ANIMATION_PLAY ||
-    data.type === ConstToolType.PLOT_ANIMATION_START
+    data.type === ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY ||
+    data.type === ConstToolType.SM_MAP_PLOT_ANIMATION_START
   ) {
     SMap.animationClose()
     params.setToolbarVisible(false)

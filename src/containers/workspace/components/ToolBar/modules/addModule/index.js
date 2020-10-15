@@ -53,8 +53,7 @@ class AddModule extends FunctionModule {
 
 export default function() {
   return new AddModule({
-    type: ConstToolType.MAP_ADD,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+    type: ConstToolType.SM_MAP_ADD,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_add,

@@ -61,46 +61,6 @@ function openWorkspace(cb) {
   })
 }
 
-/** 打开导航工作空间 * */
-// function naviWorkSpace() {
-//   if (!ToolbarModule.getParams().setToolbarVisible) return
-//   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
-//   ;(async function() {
-//     let data = [],
-//       path =
-//         (await FileTools.appendingHomeDirectory(
-//           ToolbarModule.getParams().user && ToolbarModule.getParams().user.currentUser.userName
-//             ? ConstPath.UserPath + ToolbarModule.getParams().user.currentUser.userName + '/'
-//             : ConstPath.CustomerPath,
-//         )) + ConstPath.RelativeFilePath.NaviWorkspace
-//     let userFileList
-//
-//     userFileList = await FileTools.getNavigationWorkspace(path)
-//
-//     if (userFileList && userFileList.length > 0) {
-//       let userList = []
-//       userFileList.forEach(item => {
-//         let name = item.name
-//         item.title = name
-//         item.name = name.split('.')[0]
-//         item.image = require('../../../../assets/mapTools/icon_open_black.png')
-//         userList.push(item)
-//       })
-//     }
-//     data.push({
-//       title: getLanguage(global.language).Map_Main_Menu.NAVIGATION_WORKSPACE,
-//       //'导航工作空间',
-//       image: require('../../../../assets/mapTools/icon_open.png'),
-//       data: userFileList || [],
-//     })
-//     ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.WORKSPACE_CHANGE, {
-//       containerType: ToolbarType.list,
-//       height: ConstToolType.THEME_HEIGHT[4],
-//       data,
-//     })
-//   })()
-// }
-
 /** 切换标绘库 * */
 // function changePlotLib() {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
@@ -185,12 +145,8 @@ function openMap() {
         },
       },
     })
-    _params.setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_START_CHANGE, {
       containerType: ToolbarType.list,
-      // height:
-      //   _params.device.orientation.indexOf('LANDSCAPE') === 0
-      //     ? ConstToolType.THEME_HEIGHT[4]
-      //     : ConstToolType.HEIGHT[3],
       data,
     })
   })()
@@ -248,7 +204,7 @@ function openTemplateList() {
   //           data: tpList,
   //         },
   //       ]
-  //       ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_TEMPLATE, {
+  //       ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.SM_MAP_START_TEMPLATE, {
   //         containerType: ToolbarType.list,
   //         height: ConstToolType.HEIGHT[3],
   //         data,
@@ -284,10 +240,9 @@ function openTemplateList() {
     ]
     ToolbarModule.getParams().setToolbarVisible(
       true,
-      ConstToolType.MAP_TEMPLATE,
+      ConstToolType.SM_MAP_START_TEMPLATE,
       {
         containerType: ToolbarType.list,
-        // height: ConstToolType.HEIGHT[3],
         data,
       },
     )
@@ -475,7 +430,7 @@ function showHistory() {
       data: latestMap,
     },
   ]
-  ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_CHANGE, {
+  ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.SM_MAP_START_CHANGE, {
     containerType: ToolbarType.list,
     height:
       ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
@@ -501,70 +456,6 @@ function setSaveViewVisible(visible, cb) {
   // ToolbarModule.getParams().setSaveViewVisible(visible)
   GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
 }
-
-/** 新建专题图 * */
-// function createThemeMap() {
-//   let isAnyMapOpened = true //是否有打开的地图
-//   SMap.mapIsModified().then(async result => {
-//     isAnyMapOpened = await SMap.isAnyMapOpened()
-//     if (isAnyMapOpened && result) {
-//       setSaveViewVisible(true)
-//     } else {
-//       //先关闭地图
-//       if (isAnyMapOpened) {
-//         ToolbarModule.getParams().setContainerLoading &&
-//           ToolbarModule.getParams().setContainerLoading(true, '正在关闭当前地图')
-//         if (!ToolbarModule.getParams().closeMap) return
-//         ToolbarModule.getParams().closeMap()
-//         ToolbarModule.getParams().setContainerLoading && ToolbarModule.getParams().setContainerLoading(false)
-//       }
-//
-//       if (!ToolbarModule.getParams().setToolbarVisible) return
-//       ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
-//
-//       Orientation.getOrientation((e, orientation) => {
-//         let column = orientation.indexOf('PORTRAIT') >= 0 ? 3 : 8
-//         let height =
-//           orientation.indexOf('PORTRAIT') >= 0
-//             ? ConstToolType.HEIGHT[0]
-//             : ConstToolType.HEIGHT[0]
-//
-//         ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_THEME_START_CREATE, {
-//           containerType: 'table',
-//           isFullScreen: true,
-//           isTouchProgress: false,
-//           showMenuDialog: false,
-//           column: column,
-//           height: height,
-//         })
-//       })
-//     }
-//   })
-// }
-
-/** 添加 * */
-// function add(type) {
-//   if (!ToolbarModule.getParams().setToolbarVisible) return
-//   ToolbarModule.getParams().showFullMap && ToolbarModule.getParams().showFullMap(true)
-//
-//   switch (type) {
-//     case 'MAP_3D':
-//       ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP3D_ADD_LAYER, {
-//         containerType: ToolbarType.list,
-//         isFullScreen: true,
-//         height: ConstToolType.HEIGHT[3],
-//       })
-//       break
-//
-//     default:
-//       ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.MAP_ADD_LAYER, {
-//         containerType: ToolbarType.list,
-//         isFullScreen: false,
-//         height: ConstToolType.THEME_HEIGHT[3],
-//       })
-//       break
-//   }
-// }
 
 /** 保存地图 * */
 function saveMap() {
@@ -860,11 +751,11 @@ async function changeMap(item) {
 async function listAction(type, params = {}) {
   const _params = ToolbarModule.getParams()
   switch (type) {
-    case ConstToolType.MAP_TEMPLATE:
+    case ConstToolType.SM_MAP_START_TEMPLATE:
       openTemplate(params.item)
       _params.getMapSetting()
       break
-    case ConstToolType.MAP_CHANGE:
+    case ConstToolType.SM_MAP_START_CHANGE:
       changeMap(params.item)
       _params.getMapSetting()
       break

@@ -43,10 +43,10 @@ export default class SymbolList extends React.Component {
         SymbolID: data.id,
       }
       switch (this.props.type) {
-        case ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
+        case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
           SThemeCartography.modifyDotDensityThemeMap(params)
           break
-        case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOLS:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
           SThemeCartography.modifyGraduatedSymbolThemeMap(params)
           break
       }
@@ -54,19 +54,19 @@ export default class SymbolList extends React.Component {
     }
     let event = this.props.getToolbarModule().getData().event
 
-    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE) {
+    if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 3) {
       SCartography.setLineSymbolID(data.id, this.props.layerData.name)
     }
 
-    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT) {
+    if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
       SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
     }
 
-    if (this.props.type === ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION) {
+    if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
       SCartography.setFillSymbolID(data.id, this.props.layerData.name)
@@ -98,8 +98,8 @@ export default class SymbolList extends React.Component {
     let symbols = []
     if (GLOBAL.Type === ChunkType.MAP_THEME) {
       switch (this.props.type) {
-        case ConstToolType.MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
-        case ConstToolType.MAP_THEME_PARAM_GRADUATED_SYMBOLS:
+        case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
+        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
           SMap.findSymbolsByGroups('point', '').then(result => {
             result.forEach(item => {
               symbols.push(item)
@@ -112,13 +112,13 @@ export default class SymbolList extends React.Component {
     }
     let symbolType = this.props.layerData.type
     switch (this.props.type) {
-      case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
+      case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT:
         symbolType = 1
         break
-      case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
+      case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE:
         symbolType = 3
         break
-      case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
+      case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION:
         symbolType = 5
         break
     }

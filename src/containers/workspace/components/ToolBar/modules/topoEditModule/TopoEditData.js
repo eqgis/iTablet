@@ -23,7 +23,7 @@ async function getData(type) {
     //   action: TopoEditAction.showMerge,
     // },
     {
-      type: ConstToolType.MAP_INCREMENT_CHANGE_METHOD,
+      type: ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD,
       image: getPublicAssets().navigation.btn_increment_change_type,
       action: TopoEditAction.changeEditType,
     },
@@ -32,10 +32,10 @@ async function getData(type) {
   ]
   let customView
   switch (type) {
-    case ConstToolType.MAP_TOPO_EDIT:
-    case ConstToolType.MAP_TOPO_OBJECT_EDIT:
+    case ConstToolType.SM_MAP_TOPO_EDIT:
+    case ConstToolType.SM_MAP_TOPO_OBJECT_EDIT:
       break
-    case ConstToolType.MAP_TOPO_SWITCH_TYPE:
+    case ConstToolType.SM_MAP_TOPO_SWITCH_TYPE:
       data = [
         {
           key: constants.MAP_TOPO_SMOOTH,
@@ -96,7 +96,7 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED:
+    case ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED:
       data = [
         {
           key: constants.MAP_TOPO_MOVE_OBJECT,
@@ -159,16 +159,16 @@ async function getData(type) {
         },
       ]
       break
-    // case ConstToolType.MAP_TOPO_MERGE_DATASET:
+    // case ConstToolType.SM_MAP_TOPO_MERGE_DATASET:
     //   {
     //     data = []
     //     buttons = []
     //     customView = () => <MergeDatasetView />
     //   }
     //   break
-    case ConstToolType.MAP_TOPO_SPLIT_LINE:
-    case ConstToolType.MAP_TOPO_EXTEND_LINE:
-    case ConstToolType.MAP_TOPO_TRIM_LINE:
+    case ConstToolType.SM_MAP_TOPO_SPLIT_LINE:
+    case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
+    case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
       data = [
         {
           key: constants.CANCEL_SELECT,

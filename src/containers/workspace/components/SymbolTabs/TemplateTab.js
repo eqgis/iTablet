@@ -56,15 +56,15 @@ export default class TemplateTab extends React.Component {
       )
       switch (type) {
         case 'Region':
-          // toolbarType = ConstToolType.MAP_COLLECTION_REGION
+          // toolbarType = ConstToolType.SM_MAP_COLLECTION_REGION
           toolbarType = SMCollectorType.REGION_HAND_POINT
           break
         case 'Line':
-          // toolbarType = ConstToolType.MAP_COLLECTION_LINE
+          // toolbarType = ConstToolType.SM_MAP_COLLECTION_LINE
           toolbarType = SMCollectorType.LINE_HAND_POINT
           break
         case 'Point':
-          // toolbarType = ConstToolType.MAP_COLLECTION_POINT
+          // toolbarType = ConstToolType.SM_MAP_COLLECTION_POINT
           toolbarType = SMCollectorType.POINT_HAND
           break
       }

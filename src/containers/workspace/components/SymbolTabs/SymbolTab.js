@@ -49,15 +49,15 @@ export default class SymbolTab extends React.Component {
     let type = ''
     switch (data.type) {
       case 'marker':
-        // type = ConstToolType.MAP_COLLECTION_POINT
+        // type = ConstToolType.SM_MAP_COLLECTION_POINT
         type = SMCollectorType.POINT_HAND
         break
       case 'line':
-        // type = ConstToolType.MAP_COLLECTION_LINE
+        // type = ConstToolType.SM_MAP_COLLECTION_LINE
         type = SMCollectorType.LINE_HAND_POINT
         break
       case 'fill':
-        // type = ConstToolType.MAP_COLLECTION_REGION
+        // type = ConstToolType.SM_MAP_COLLECTION_REGION
         type = SMCollectorType.REGION_HAND_POINT
         break
     }

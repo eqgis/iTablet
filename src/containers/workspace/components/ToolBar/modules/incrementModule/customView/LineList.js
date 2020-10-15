@@ -30,11 +30,17 @@ import ToolbarModule from '../../ToolbarModule'
 import { Const, ToolbarType, Height } from '../../../../../../../constants'
 import IncrementData from '../IncrementData'
 import { getLanguage } from '../../../../../../../language'
-import MergeDatasetView from '../../topoEditModule/customView/MergeDatasetView'
+import MergeDatasetView from './MergeDatasetView'
 
 export default class LineList extends Component {
   props: {
+    /**
+     * [{datasetName<String>,datasourceName<String>}]
+     */
     data: Array,
+    /**
+     * {datasetName<String>,datasourceName<String>}
+     */
     selectedItem: Object,
     device: Object,
   }
@@ -42,8 +48,11 @@ export default class LineList extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      /** 同props.data */
       data: props.data || [],
+      /** 同props.selectedItem */
       selectedItem: props.selectedItem || {},
+      /** {datasetName<String>,datasourceName<String>} */
       editingItem: {},
     }
     this.keyBoardDidShowListener = null
@@ -80,6 +89,10 @@ export default class LineList extends Component {
       duration: Const.ANIMATED_DURATION,
     }).start()
   }
+
+  /**
+   * 返回路网采集模块
+   */
   _cancel = async () => {
     const params = ToolbarModule.getParams()
     const preType = ToolbarModule.getData().preType
@@ -99,6 +112,10 @@ export default class LineList extends Component {
         ..._data,
       })
   }
+
+  /**
+   * 设置选中的数据并返回路网采集模块
+   */
   _confirm = async () => {
     if (!this.state.selectedItem.datasetName) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
@@ -136,6 +153,10 @@ export default class LineList extends Component {
       })
   }
 
+  /**
+   * 跳转到合并数据集页面
+   * @param {*} item FlatList的data数组元素 data[]
+   */
   onMerge = item => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible &&
@@ -152,6 +173,10 @@ export default class LineList extends Component {
       })
   }
 
+  /**
+   * 编辑数据集名称
+   * @param {Object} param0.item FlatList的data数组元素 data[]
+   */
   _onEditPress = ({ item }) => {
     let editingItem = this.state.editingItem
     if (
@@ -169,6 +194,12 @@ export default class LineList extends Component {
       )
     }
   }
+
+  /**
+   * 完成编辑数据集名称
+   * @param {Number} param0.index 序号
+   * @param {String} param0.text 编辑的文字
+   */
   _endEditing = ({ index, text }) => {
     let data = JSON.parse(JSON.stringify(this.state.data))
     let regExp = /^[a-zA-Z0-9@#_]+$/
@@ -198,6 +229,11 @@ export default class LineList extends Component {
   //     editingItem:{},
   //   })
   // }
+
+  /**
+   * 选中数据集
+   * @param {*} param0.item FlatList的data数组元素 data[]
+   */
   _selectItem = ({ item }) => {
     let selectedItem = this.state.selectedItem
     if (
@@ -209,6 +245,11 @@ export default class LineList extends Component {
       })
     }
   }
+
+  /**
+   * 删除数据集
+   * @param {*} param0.index 数据集在FlatList的data数组元素中的序号
+   */
   _onDeletePress = ({ index }) => {
     let data = JSON.parse(JSON.stringify(this.state.data))
     let deleteData = data.splice(index, 1)
@@ -235,6 +276,12 @@ export default class LineList extends Component {
       selectedItem,
     })
   }
+
+  /**
+   *
+   * @param {Number} param0.index  FlatList的data数组元素的序号
+   * @param {Object} param0.item FlatList的data数组元素 data[]
+   */
   _renderItem = ({ index, item }) => {
     let hasExtra =
       this.state.selectedItem.datasourceName === item.datasourceName &&

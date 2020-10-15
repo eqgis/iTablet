@@ -135,14 +135,13 @@ async function changeMap(item) {
         const datas = await SMap.getFloorData()
         if (datas.data && datas.data.length > 0) {
           let { data, datasource, currentFloorID } = datas
-          data = data.sort(function(a,b){
-            let key1 = a.name
-            let key2 = b.name
-            return key1[0] !== key2[0]
-              ? key2.charCodeAt(0) - key1.charCodeAt(0)
-              : key1[0] === 'F'
-                ? key2.charCodeAt(1) - key1.charCodeAt(1)
-                : key1.charCodeAt(1) - key2.charCodeAt(1)
+          //打开地图时比较楼层id来进行排序 zhangxt
+          data = data.sort((a, b) => {
+            try {
+              return b.id - a.id
+            } catch (e) {
+              return 0
+            }
           })
           floorListView.setState(
             {

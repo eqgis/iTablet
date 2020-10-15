@@ -11,7 +11,6 @@ import { getPublicAssets } from '../../../../../../assets'
 import TopoEditAction from './TopoEditAction'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
-// import MergeDatasetView from './customView/MergeDatasetView'
 
 async function getData(type) {
   let data = []
@@ -159,13 +158,6 @@ async function getData(type) {
         },
       ]
       break
-    // case ConstToolType.MAP_TOPO_MERGE_DATASET:
-    //   {
-    //     data = []
-    //     buttons = []
-    //     customView = () => <MergeDatasetView />
-    //   }
-    //   break
     case ConstToolType.MAP_TOPO_SPLIT_LINE:
     case ConstToolType.MAP_TOPO_EXTEND_LINE:
     case ConstToolType.MAP_TOPO_TRIM_LINE:

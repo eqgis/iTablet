@@ -242,7 +242,7 @@ export default class MapView extends React.Component {
       showIncrement: false,
       speechContent: '',
       recording: false,
-      isRight: true,
+      isRight: true, //室内增量路网模式，true为手绘，false为轨迹 zhangxt
       currentFloorID: '', //导航模块当前楼层id
       showScaleView: false, //是否显示比例尺（地图加载完成后更改值）
       path: '',
@@ -599,12 +599,12 @@ export default class MapView extends React.Component {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
-      ;(async function() {
+      (async function() {
         SAIDetectView.dispose()
       })()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
+      (async function() {
         SMap.destroySpeakPlugin()
       })()
     }
@@ -1186,7 +1186,7 @@ export default class MapView extends React.Component {
           GLOBAL.clickWait = false
         }, 1000)
       } catch (e) {
-        debugger
+
         GLOBAL.clickWait = false
         this.setLoading(false)
       }
@@ -1899,12 +1899,14 @@ export default class MapView extends React.Component {
     }
 
     //只有AR模块走这段代码 add xiezhy
-    if(GLOBAL.Type === ChunkType.MAP_AR ||
+    if (
+      GLOBAL.Type === ChunkType.MAP_AR ||
       GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
-      GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-        this.setState({ showArModeIcon: full })
+      GLOBAL.Type === ChunkType.MAP_AR_MAPPING
+    ) {
+      this.setState({ showArModeIcon: full })
     }
-    
+
     this.fullMap = !full
   }
 
@@ -2507,6 +2509,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 室内增量路网绘制icon
+   */
   _renderNavigationIcon = () => {
     let title = getLanguage(this.props.language).Map_Main_Menu.DRAW
     return (
@@ -2527,41 +2532,50 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 开始绘制室内增量路网
+   */
   _incrementRoad = async () => {
-    if (!this.state.isRight) {
-      let position = await SMap.getCurrentPosition()
-      let isIndoor = await SMap.isIndoorPoint(position.x, position.y)
-      if (!isIndoor) {
-        Toast.show(
-          getLanguage(this.props.language).Prompt
-            .CANT_USE_TRACK_TO_INCREMENT_ROAD,
-        )
-        return
-      }
-    }
-    if (this.state.showIncrement) {
-      this.setState({ showIncrement: false })
-    }
-    //清空Toolbar数据
-    ToolbarModule.setData({})
-    let rel = await SMap.addNetWorkDataset()
-    let type
-    if (rel) {
-      this.FloorListView.setVisible(false)
+    try {
       if (!this.state.isRight) {
-        type = ConstToolType.MAP_TOOL_GPSINCREMENT
-      } else {
-        type = ConstToolType.MAP_TOOL_INCREMENT
-        await SMap.setLabelColor()
-        await SMap.setAction(Action.DRAWLINE)
-        await SMap.setIsMagnifierEnabled(true)
+        let position = await SMap.getCurrentPosition()
+        let isIndoor = await SMap.isIndoorPoint(position.x, position.y)
+        if (!isIndoor) {
+          Toast.show(
+            getLanguage(this.props.language).Prompt
+              .CANT_USE_TRACK_TO_INCREMENT_ROAD,
+          )
+          return
+        }
       }
-      this.toolBox.setVisible(true, type, {
-        containerType: ToolbarType.table,
-        isFullScreen: false,
-      })
-      ToolbarModule.setToolBarData(type)
-    } else {
+      if (this.state.showIncrement) {
+        this.setState({ showIncrement: false })
+      }
+      //清空Toolbar数据
+      ToolbarModule.setData({})
+      let rel = await SMap.addNetWorkDataset()
+      let type
+      if (rel) {
+        this.FloorListView.setVisible(false)
+        if (!this.state.isRight) {
+          type = ConstToolType.MAP_TOOL_GPSINCREMENT
+        } else {
+          type = ConstToolType.MAP_TOOL_INCREMENT
+          await SMap.setLabelColor()
+          await SMap.setAction(Action.DRAWLINE)
+          await SMap.setIsMagnifierEnabled(true)
+        }
+        this.toolBox.setVisible(true, type, {
+          containerType: ToolbarType.table,
+          isFullScreen: false,
+        })
+        ToolbarModule.setToolBarData(type)
+      } else {
+        GLOBAL.TouchType = TouchType.NORMAL
+        this.showFullMap(false)
+        Toast.show(getLanguage(this.props.language).Prompt.ILLEGAL_DATA)
+      }
+    } catch (e) {
       GLOBAL.TouchType = TouchType.NORMAL
       this.showFullMap(false)
       Toast.show(getLanguage(this.props.language).Prompt.ILLEGAL_DATA)
@@ -2624,6 +2638,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 室内路网采集页面 zhangxt
+   */
   _renderIncrementRoad = () => {
     if (this.state.showIncrement) {
       return (

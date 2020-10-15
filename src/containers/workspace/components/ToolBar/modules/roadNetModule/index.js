@@ -49,7 +49,11 @@ class RoadNetModule extends FunctionModule {
       mapDataset.data.map(item => {
         selectedDatasets &&
           selectedDatasets.map(dt => {
-            if (item.name === dt.name) {
+            //对比是否是同一数据源内的同一数据集 zhangxt
+            if (
+              item.name === dt.name &&
+              item.datasourceName === dt.datasourceName
+            ) {
               item.selected = true
             }
           })

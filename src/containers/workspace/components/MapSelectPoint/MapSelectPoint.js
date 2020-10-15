@@ -16,8 +16,11 @@ export default class MapSelectPoint extends React.Component {
   }
 
   updateLatitudeAndLongitude = point => {
-    this.pointLatitudeAndLongitude.updateLatitudeAndLongitude(point)
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    if(this.pointLatitudeAndLongitude)
+    {
+      this.pointLatitudeAndLongitude.updateLatitudeAndLongitude(point)
+      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    }
   }
 
   setVisible = iShow => {

@@ -29,15 +29,47 @@ export default class NavigationDataChangePage extends Component {
     super(props)
     let { params } = this.props.navigation.state
     this.state = {
-      data: (params && params.data) || {},
+      /**
+       * [{
+       *  title<String>, 'datasource'|'dataset'
+       *  data<Array> [{
+       *      selected<Boolean>, 是否选中
+       *      name<String>, 室内数据源名或室外路网数据集名
+       *      datasourceName<String>, 数据源名
+       *      datasetName<String>?, 室外路网数据集名
+       *      modelFileName<String>?, 室外导航模型文件名
+       *      }]
+       * }]
+       */
+      data: (params && params.data) || [],
       isRefresh: false,
     }
+    /**
+     * {
+     *      selected<Boolean>, 是否选中
+     *      name<String>, 室内数据源名或室外路网数据集名
+     *      datasourceName<String>, 数据源名
+     * }
+     */
     this.selectedDatasources = params.selectedDatasources || []
+    /**
+     * {
+     *      selected<Boolean>, 是否选中
+     *      name<String>, 室内数据源名或室外路网数据集名
+     *      datasourceName<String>, 数据源名
+     *      datasetName<String>, 室外路网数据集名
+     *      modelFileName<String>, 室外导航模型文件名
+     * }
+     */
     this.selectedDatasets = params.selectedDatasets || []
     this.currentDatasource = params.currentDatasource || []
     this.currentDataset = params.currentDataset || {}
   }
 
+  /**
+   * 点击复选框事件，设置选中 zhangxt
+   * @param {*} item
+   */
   _onPress = item => {
     let data = JSON.parse(JSON.stringify(this.state.data))
     let datasource = data[0]
@@ -63,13 +95,21 @@ export default class NavigationDataChangePage extends Component {
       }
     })
     dataset.data.map(val => {
-      if (val.name === item.name) {
+      //对比是否是同一数据源内的同一数据集 zhangxt
+      if (
+        val.name === item.name &&
+        val.datasourceName === item.datasourceName
+      ) {
         val.selected = !val.selected
         if (val.selected) {
           this.selectedDatasets.push(val)
         } else {
           this.selectedDatasets.map((item, index) => {
-            if (item.name === val.name) {
+            //对比是否是同一数据源内的同一数据集 zhangxt
+            if (
+              item.name === val.name &&
+              val.datasourceName === item.datasourceName
+            ) {
               this.selectedDatasets.splice(index, 1)
               if (item.name === this.currentDataset.name) {
                 this.currentDataset = {}
@@ -86,6 +126,9 @@ export default class NavigationDataChangePage extends Component {
     })
   }
 
+  /**
+   * 手动下拉刷新 在新建室外数据集返回此页面时需要手动刷新才会显示出来 zhangxt
+   */
   _onRefresh = async () => {
     this.setState(
       {
@@ -106,7 +149,11 @@ export default class NavigationDataChangePage extends Component {
         mapDataset.data.map(item => {
           this.selectedDatasets &&
             this.selectedDatasets.map(dt => {
-              if (item.name === dt.name) {
+              //对比是否是同一数据源内的同一数据集 zhangxt
+              if (
+                item.name === dt.name &&
+                item.datasourceName === dt.datasourceName
+              ) {
                 item.selected = true
               }
             })
@@ -119,10 +166,17 @@ export default class NavigationDataChangePage extends Component {
       },
     )
   }
+
+  /**
+   * 跳转到新建室外数据集页面 zhangxt
+   */
   _newNavData = () => {
     this.props.navigation.navigate('CreateNavDataPage')
   }
 
+  /**
+   * 确定按钮事件，设置导航使用的室内数据原和室外数据集 zhangxt
+   */
   _confirm = () => {
     const _params = ToolbarModule.getParams()
     _params.setNavigationDatas &&
@@ -231,6 +285,7 @@ export default class NavigationDataChangePage extends Component {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.SWITCH_DATA,
           navigation: this.props.navigation,
         }}
+        style={{ paddingBottom: scaleSize(120) }}
       >
         <SectionList
           refreshControl={
@@ -244,7 +299,6 @@ export default class NavigationDataChangePage extends Component {
               enabled={true}
             />
           }
-          style={styles.list}
           sections={this.state.data}
           renderSectionHeader={this._renderSectionHeader}
           renderItem={this._renderItem}

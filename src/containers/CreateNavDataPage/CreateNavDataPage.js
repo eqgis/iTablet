@@ -39,7 +39,28 @@ export default class CreateNavDataPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      /**
+       * 线数据集
+       * [{
+       *  title<String>, 数据源名称
+       *  visible<Boolean>, 是否可见
+       *  data<Array>, [{
+       *      datasourceName<String>, 数据源名称
+       *      datasetName<String>, 数据集名称
+       *    }]
+       * }]
+       */
       lineDataset: [],
+      /**
+       * 目标数据源
+       * [{
+       *  alias<String>,
+       *  engineType<int>,
+       *  server<String>,
+       *  driver<String>,
+       *  ...
+       * }]
+       */
       datasource: [],
       selectedDataset: {},
       selectedDatasource: {},
@@ -51,6 +72,9 @@ export default class CreateNavDataPage extends Component {
     this.getDatasource()
   }
 
+  /**
+   * 获取工作空间内所有线数据集 zhangxt
+   */
   getLineDatasets = async () => {
     let lineDataset = await SMap.getAllLineDatasets()
     this.setState({
@@ -58,6 +82,9 @@ export default class CreateNavDataPage extends Component {
     })
   }
 
+  /**
+   * 获取所有数据源，标注数据源除外。没有数据源时，弹出新建对话框 zhangxt
+   */
   getDatasource = async () => {
     let datasource = await SMap.getDatasources()
     let data = []
@@ -93,6 +120,9 @@ export default class CreateNavDataPage extends Component {
     }
   }
 
+  /**
+   * 确定按钮事件。选择完数据集和数据源后弹出新建模型文件对话框 zhangxt
+   */
   _confirm = () => {
     let { selectedDatasource, selectedDataset } = this.state
     if (!selectedDataset.datasetName) {
@@ -126,6 +156,10 @@ export default class CreateNavDataPage extends Component {
     })
   }
 
+  /**
+   * 通过新建数据源对话框新建数据源 zhangxt
+   * @param {*} datasourceName
+   */
   _createDatasource = async datasourceName => {
     this.container.setLoading(
       true,
@@ -153,6 +187,13 @@ export default class CreateNavDataPage extends Component {
     return true
   }
 
+  /**
+   * 获取某路径下可用文件名 zhangxt
+   * @param {*} path 路径
+   * @param {*} name 文件名 abc
+   * @param {*} ext 扩展名 udb
+   * @returns abc.udb 有重名的在文件名后加“_1”,仍重名则改为"_2"，依此类推
+   */
   _getAvailableFileName = async (path, name, ext) => {
     let result = await FileTools.fileIsExist(path)
     if (!result) {
@@ -171,6 +212,10 @@ export default class CreateNavDataPage extends Component {
     }
   }
 
+  /**
+   * 新建模型文件对话框确定事件，生成路网模型和对应的导航数据集 zhangxt
+   * @param {*} fileName
+   */
   _dialogConfirm = async fileName => {
     let { selectedDatasource, selectedDataset } = this.state
     let { result, error } = dataUtil.isLegalName(fileName)
@@ -195,6 +240,7 @@ export default class CreateNavDataPage extends Component {
           sourceDatasourceName: selectedDataset.datasourceName,
           sourceDatasetName: selectedDataset.datasetName,
         }
+        //没有RoadName字段则要带上选择的道路名称字段
         if (selectedDataset.selectedFieldInfo) {
           sourceDataset.sourceDatasetFiled = selectedDataset.selectedFieldInfo
         }
@@ -387,15 +433,22 @@ class Item extends Component {
     super(props)
   }
 
+  /**
+   * zhangxt
+   * 数据集选择事件。数据集必须包含道路名称字段才可选择
+   * 通过室外路网采集创建的默认创建‘RoadName’字段
+   */
   onSelect = async () => {
     let datasetName = this.props.item.datasetName
     let datasourceName = this.props.item.datasourceName
+    //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
       let needChangeData = await SMap.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
+        //已有‘RoadName’字段直接使用，不用再选择
         if (this.props.item.fieldInfo.indexOf('RoadName') > -1) {
           this.props.item.fieldInfo = []
           this.props.item.hasRoadName = true
@@ -465,6 +518,7 @@ class Item extends Component {
                 fontSize: setSpText(18),
               }}
               onSelect={(selectIndex, value) => {
+                //选中道路名称字段
                 this.props.item.selectedFieldInfo = value
               }}
               defaultValue={

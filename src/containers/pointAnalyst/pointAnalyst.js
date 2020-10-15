@@ -380,17 +380,37 @@ export default class PointAnalyst extends Component {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
-  getSearchResult = params => {
-    LocateUtils.getSearchResult(params, this.location, res => {
-      this.setState({
-        searchData: res.searchData,
-        poiInfos: res.poiInfos,
-        showList: false,
-      })
-      if (res && res.radius) {
-        this.radius = res.radius
-      }
-    })
+  /**
+   * zhangxt 2020-10-12 通过关键字查询，结果显示在本页面列表内
+   * @param {*} key 查询关键字
+   */
+  getSearchResult = async key => {
+    let location
+    if (this.is3D) {
+      location = await SScene.getSceneCenter()
+    } else {
+      location = await SMap.getMapcenterPosition()
+    }
+    this.location = location
+    LocateUtils.getSearchResult(
+      {
+        keyWords: key,
+        location: JSON.stringify(location),
+        radius: this.radius,
+      },
+      location,
+      res => {
+        if (!res) return
+        this.setState({
+          searchData: res.resultList,
+          poiInfos: res.poiInfos,
+          showList: false,
+        })
+        if (res && res.radius) {
+          this.radius = res.radius
+        }
+      },
+    )
   }
 
   renderSearchBar = () => {
@@ -407,14 +427,8 @@ export default class PointAnalyst extends Component {
         }}
         onSubmitEditing={async searchKey => {
           // this.setLoading(true, getLanguage(global.language).Prompt.SERCHING)
-          let location
-          if (this.is3D) {
-            location = await SScene.getSceneCenter()
-          } else {
-            location = await SMap.getMapcenterPosition()
-          }
-          this.location = location
-          this.getSearchResult({ keyWords: searchKey })
+          //zhangxt 2020-10-12 通过关键字搜索,其他参数在方法内获得
+          this.getSearchResult(searchKey)
         }}
         placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
         placeholderTextColor={color.fontColorGray}
@@ -483,24 +497,31 @@ export default class PointAnalyst extends Component {
     return (
       <TouchableOpacity
         onPress={async () => {
-          LocateUtils.SearchCategories({
-            ...item,
-            radius: this.radius,
-            is3D: this.is3D,
-          }, async () => {
-            this.location = location
-            if (!this.is3D) {
-              if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-                GLOBAL.TouchType = TouchType.NORMAL
-                await SMap.clearTrackingLayer()
-                // this.props.setNavigationChangeAR(true)
-                this.props.setMapNavigation({
-                  isShow: true,
-                  name: item.title,
-                })
-              }
-            }
-          })
+          //zhangxt 2020-10-12 将3维搜索从原接口分离，走关键字搜索的流程
+          if (!this.is3D) {
+            LocateUtils.SearchPoiInMapView(
+              {
+                ...item,
+                radius: this.radius,
+                is3D: this.is3D,
+              },
+              async () => {
+                if (!this.is3D) {
+                  if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+                    GLOBAL.TouchType = TouchType.NORMAL
+                    await SMap.clearTrackingLayer()
+                    // this.props.setNavigationChangeAR(true)
+                    this.props.setMapNavigation({
+                      isShow: true,
+                      name: item.title,
+                    })
+                  }
+                }
+              },
+            )
+          } else {
+            this.getSearchResult(item.title)
+          }
         }}
         style={styles.searchIconWrap}
       >
@@ -522,9 +543,11 @@ export default class PointAnalyst extends Component {
         ref={ref => (this.container = ref)}
         initWithLoading={false}
         headerProps={{
-          title: this.type === 'pointSearch'
-            ? ''
-            : getLanguage(this.props.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS,
+          title:
+            this.type === 'pointSearch'
+              ? ''
+              : getLanguage(this.props.language).Map_Main_Menu
+                .TOOLS_PATH_ANALYSIS,
           // navigation: this.props.navigation,
           backAction: () => {
             // if (this.searchClickedInfo.isClicked) {

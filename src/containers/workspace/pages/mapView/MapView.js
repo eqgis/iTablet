@@ -241,7 +241,7 @@ export default class MapView extends React.Component {
       showIncrement: false,
       speechContent: '',
       recording: false,
-      isRight: true,
+      isRight: true, //室内增量路网模式，true为手绘，false为轨迹 zhangxt
       currentFloorID: '', //导航模块当前楼层id
       showScaleView: false, //是否显示比例尺（地图加载完成后更改值）
       path: '',
@@ -539,7 +539,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
+      (async function() {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -589,13 +589,13 @@ export default class MapView extends React.Component {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
-      ;(async function() {
-        await SAIDetectView.dispose()
+      (async function() {
+        SAIDetectView.dispose()
       })()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      ;(async function() {
-        await SMap.destroySpeakPlugin()
+      (async function() {
+        SMap.destroySpeakPlugin()
       })()
     }
     if (this.floorHiddenListener) {
@@ -657,7 +657,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                ;(async function() {
+                (async function() {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     await SScene.resetCamera()
@@ -1049,7 +1049,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    ;(async function() {
+    (async function() {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1093,7 +1093,6 @@ export default class MapView extends React.Component {
 
   back = async () => {
     if (!this.mapLoaded) return
-
     // 最顶层的语音搜索，最先处理
     if (Audio.isShow()) {
       Audio.hideAudio()
@@ -1109,7 +1108,6 @@ export default class MapView extends React.Component {
       this.mapController && this.mapController.reset()
       return
     }
-
     this.props.setMap2Dto3D(false)
 
     if (Platform.OS === 'android') {
@@ -1136,22 +1134,6 @@ export default class MapView extends React.Component {
       NavigationService.navigate('Chat', param)
       return true
     }
-
-    // this.backAction = async () => {
-    //   try {
-    //     this.setLoading(
-    //       true,
-    //       getLanguage(this.props.language).Prompt.CLOSING,
-    //       //'正在关闭地图'
-    //     )
-    //     await this.props.closeMap()
-    //     GLOBAL.clearMapData()
-    //     this.setLoading(false)
-    //     NavigationService.goBack()
-    //   } catch (e) {
-    //     this.setLoading(false)
-    //   }
-    // }
     let result = await SMap.mapIsModified()
     if (GLOBAL.clickWait) return true
     GLOBAL.clickWait = true
@@ -1191,6 +1173,7 @@ export default class MapView extends React.Component {
           GLOBAL.clickWait = false
         }, 1000)
       } catch (e) {
+
         GLOBAL.clickWait = false
         this.setLoading(false)
       }
@@ -1204,7 +1187,7 @@ export default class MapView extends React.Component {
   }
 
   _addMap = () => {
-    ;(async function() {
+    (async function() {
       try {
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
@@ -1344,7 +1327,7 @@ export default class MapView extends React.Component {
             }
           },
         )
-        
+
         this._addGeometrySelectedListener()
 
         setGestureDetectorListener({
@@ -1357,7 +1340,9 @@ export default class MapView extends React.Component {
         // 示例地图不加载标注图层
         if (!this.isExample) {
           await SMap.openTaggingDataset(this.props.user.currentUser.userName)
-          let hasDefaultTagging = await SMap.hasDefaultTagging(this.props.user.currentUser.userName)
+          let hasDefaultTagging = await SMap.hasDefaultTagging(
+            this.props.user.currentUser.userName,
+          )
           if (!hasDefaultTagging) {
             await SMap.newTaggingDataset(
               'Default_Tagging',
@@ -1369,16 +1354,10 @@ export default class MapView extends React.Component {
           )
           if (layer) {
             GLOBAL.TaggingDatasetName = layer.name
-            layer.isEdit = await SMap.setLayerEditable(
-              layer.name,
-              true,
-            )
-            layer.isVisible = await SMap.setLayerVisible(
-              layer.name,
-              true,
-            )
+            layer.isEdit = await SMap.setLayerEditable(layer.name, true)
+            layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
-    
+
             if (hasMap) await SMap.saveMap('', false, false)
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             let dataList = await SMap.getTaggingLayers(
@@ -1434,7 +1413,7 @@ export default class MapView extends React.Component {
           currentDataset: {}, //当前使用的数据集
         }
         this.startCowork()
-  
+
         this.mapLoaded = true
       } catch (e) {
         this.setLoading(false)
@@ -1889,7 +1868,16 @@ export default class MapView extends React.Component {
     ) {
       GLOBAL.scaleView && GLOBAL.scaleView.showFullMap(full)
     }
-    this.setState({ showArModeIcon: full })
+
+    //只有AR模块走这段代码 add xiezhy
+    if (
+      GLOBAL.Type === ChunkType.MAP_AR ||
+      GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
+      GLOBAL.Type === ChunkType.MAP_AR_MAPPING
+    ) {
+      this.setState({ showArModeIcon: full })
+    }
+
     this.fullMap = !full
   }
 
@@ -1912,7 +1900,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    ;(async function() {
+    (async function() {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -1926,7 +1914,7 @@ export default class MapView extends React.Component {
   //多媒体采集
   captureImage = params => {
     //保存数据->跳转
-    ;(async function() {
+    (async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -2061,7 +2049,7 @@ export default class MapView extends React.Component {
   }
 
   confirm = () => {
-    ;(async function() {
+    (async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.dialog.setDialogVisible(false)
@@ -2393,6 +2381,7 @@ export default class MapView extends React.Component {
       <Progress
         ref={ref => (this.mProgress = ref)}
         style={styles.progressView}
+        //下载示范数据进度条高度，统一修改为8 yangsl
         height={8}
         progressAniDuration={0}
         progressColor={color.item_selected_bg}
@@ -2491,6 +2480,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 室内增量路网绘制icon
+   */
   _renderNavigationIcon = () => {
     let title = getLanguage(this.props.language).Map_Main_Menu.DRAW
     return (
@@ -2511,41 +2503,50 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 开始绘制室内增量路网
+   */
   _incrementRoad = async () => {
-    if (!this.state.isRight) {
-      let position = await SMap.getCurrentPosition()
-      let isIndoor = await SMap.isIndoorPoint(position.x, position.y)
-      if (!isIndoor) {
-        Toast.show(
-          getLanguage(this.props.language).Prompt
-            .CANT_USE_TRACK_TO_INCREMENT_ROAD,
-        )
-        return
-      }
-    }
-    if (this.state.showIncrement) {
-      this.setState({ showIncrement: false })
-    }
-    //清空Toolbar数据
-    ToolbarModule.setData({})
-    let rel = await SMap.addNetWorkDataset()
-    let type
-    if (rel) {
-      this.FloorListView.setVisible(false)
+    try {
       if (!this.state.isRight) {
-        type = ConstToolType.SM_MAP_TOOL_GPSINCREMENT
-      } else {
-        type = ConstToolType.SM_MAP_TOOL_INCREMENT
-        await SMap.setLabelColor()
-        await SMap.setAction(Action.DRAWLINE)
-        await SMap.setIsMagnifierEnabled(true)
+        let position = await SMap.getCurrentPosition()
+        let isIndoor = await SMap.isIndoorPoint(position.x, position.y)
+        if (!isIndoor) {
+          Toast.show(
+            getLanguage(this.props.language).Prompt
+              .CANT_USE_TRACK_TO_INCREMENT_ROAD,
+          )
+          return
+        }
       }
-      this.toolBox.setVisible(true, type, {
-        containerType: ToolbarType.table,
-        isFullScreen: false,
-      })
-      ToolbarModule.setToolBarData(type)
-    } else {
+      if (this.state.showIncrement) {
+        this.setState({ showIncrement: false })
+      }
+      //清空Toolbar数据
+      ToolbarModule.setData({})
+      let rel = await SMap.addNetWorkDataset()
+      let type
+      if (rel) {
+        this.FloorListView.setVisible(false)
+        if (!this.state.isRight) {
+          type = ConstToolType.SM_MAP_TOOL_GPSINCREMENT
+        } else {
+          type = ConstToolType.SM_MAP_TOOL_INCREMENT
+          await SMap.setLabelColor()
+          await SMap.setAction(Action.DRAWLINE)
+          await SMap.setIsMagnifierEnabled(true)
+        }
+        this.toolBox.setVisible(true, type, {
+          containerType: ToolbarType.table,
+          isFullScreen: false,
+        })
+        ToolbarModule.setToolBarData(type)
+      } else {
+        GLOBAL.TouchType = TouchType.NORMAL
+        this.showFullMap(false)
+        Toast.show(getLanguage(this.props.language).Prompt.ILLEGAL_DATA)
+      }
+    } catch (e) {
       GLOBAL.TouchType = TouchType.NORMAL
       this.showFullMap(false)
       Toast.show(getLanguage(this.props.language).Prompt.ILLEGAL_DATA)
@@ -2608,6 +2609,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 室内路网采集页面 zhangxt
+   */
   _renderIncrementRoad = () => {
     if (this.state.showIncrement) {
       return (
@@ -3094,14 +3098,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-            <RNLegendView
-              setMapLegend={this.props.setMapLegend}
-              legendSettings={this.props.mapLegend}
-              device={this.props.device}
-              language={this.props.language}
-              ref={ref => (GLOBAL.legend = ref)}
-            />
-          )}
+          <RNLegendView
+            setMapLegend={this.props.setMapLegend}
+            legendSettings={this.props.mapLegend}
+            device={this.props.device}
+            language={this.props.language}
+            ref={ref => (GLOBAL.legend = ref)}
+          />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
@@ -3110,19 +3114,19 @@ export default class MapView extends React.Component {
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
-            <SMAIDetectView
-              ref={ref => (GLOBAL.SMAIDetectView = ref)}
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
+          <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
               }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )}
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            language={this.props.language}
+            // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+            onArObjectClick={this._onArObjectClick}
+          />
+        )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
@@ -3175,16 +3179,15 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!this.state.showAIDetect &&
-          this.state.showScaleView && (
-            <ScaleView
-              mapNavigation={this.props.mapNavigation}
-              device={this.props.device}
-              language={this.props.language}
-              isShow={this.props.mapScaleView}
-              ref={ref => (GLOBAL.scaleView = ref)}
-            />
-          )}
+        {!this.state.showAIDetect && this.state.showScaleView && (
+          <ScaleView
+            mapNavigation={this.props.mapNavigation}
+            device={this.props.device}
+            language={this.props.language}
+            isShow={this.props.mapScaleView}
+            ref={ref => (GLOBAL.scaleView = ref)}
+          />
+        )}
         <BubblePane ref={ref => (GLOBAL.bubblePane = ref)} maxSize={1} />
         <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
@@ -3212,6 +3215,7 @@ export default class MapView extends React.Component {
           device={this.props.device}
           ref={ref => (GLOBAL.PoiTopSearchBar = ref)}
           setMapNavigation={this.props.setMapNavigation}
+          navigation={this.props.navigation}
         />
         <PoiInfoContainer
           setLoading={this.setLoading}
@@ -3233,10 +3237,9 @@ export default class MapView extends React.Component {
         {/*device={this.props.device}*/}
         {/*language={this.props.language}*/}
         {/*/>*/}
-        {global.coworkMode &&
-          this.state.onlineCowork && (
-            <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
-          )}
+        {global.coworkMode && this.state.onlineCowork && (
+          <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

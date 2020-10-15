@@ -650,6 +650,7 @@ export default class NavigationView extends React.Component {
     return (
       <Container
         isOverlayBefore={false}
+        navigation={this.props.navigation}
         withoutHeader={true}
         style={{ backgroundColor: '#ebebeb' }}
       >

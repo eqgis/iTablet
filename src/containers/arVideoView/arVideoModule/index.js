@@ -20,7 +20,7 @@ class arVideoModule extends FunctionModule {
 
 export default function() {
   return new arVideoModule({
-    type: 'ARVIDEOMODULE',
+    type: 'SM_ARVIDEOMODULE',
     getData: data.getData,
     actions: actions,
     getMenuData: data.getMenuData,

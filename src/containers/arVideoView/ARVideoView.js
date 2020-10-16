@@ -32,8 +32,8 @@ export default class ARVideoView extends React.Component {
   componentDidMount() {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arVideoModule)
-    ToolbarModule.setToolBarData('ARVIDEOMODULE')
-    this.toolbar.setVisible(true, 'ARVIDEOMODULE', {
+    ToolbarModule.setToolBarData('SM_ARVIDEOMODULE')
+    this.toolbar.setVisible(true, 'SM_ARVIDEOMODULE', {
       type: 'table',
     })
     setTimeout(async () => {

@@ -16,7 +16,7 @@ function getData(type) {
   let customView = null
   let pageAction = () => {}
   switch (type) {
-    case 'ARTEXTMODULE':
+    case 'SM_ARTEXTMODULE':
       buttons = [
         {
           type: 'add',
@@ -29,7 +29,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_select',
+              'SM_ARTEXTMODULE_select',
             ),
         },
       ]
@@ -38,7 +38,7 @@ function getData(type) {
         SARText.setPlaneVisible(false)
       }
       break
-    case 'ARTEXTMODULE_add':
+    case 'SM_ARTEXTMODULE_add':
       data = [
         {
           key: 'addAtCurrent',
@@ -58,7 +58,10 @@ function getData(type) {
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARTEXTMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -66,21 +69,27 @@ function getData(type) {
         SARText.setPlaneVisible(false)
       }
       break
-    case 'ARTEXTMODULE_addAtPlane':
+    case 'SM_ARTEXTMODULE_addAtPlane':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARTEXTMODULE',
+            ),
         },
       ]
       break
-    case 'ARTEXTMODULE_select':
+    case 'SM_ARTEXTMODULE_select':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARTEXTMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -91,13 +100,13 @@ function getData(type) {
         SARText.setOnTapListener(() => {
           ToolbarModule.getParams().setToolbarVisible(
             true,
-            'ARTEXTMODULE_selected',
+            'SM_ARTEXTMODULE_selected',
           )
         })
         SARText.setPlaneVisible(false)
       }
       break
-    case 'ARTEXTMODULE_selected':
+    case 'SM_ARTEXTMODULE_selected':
       data = [
         {
           key: 'modifyLocation',
@@ -106,7 +115,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modify_location',
+              'SM_ARTEXTMODULE_modify_location',
             ),
         },
         {
@@ -116,7 +125,7 @@ function getData(type) {
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modify_style',
+              'SM_ARTEXTMODULE_modify_style',
               {
                 showMenuDialog: true,
               },
@@ -129,7 +138,7 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_delete_black.png'),
           action: () => {
             SARText.deleteItem()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+            ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
           },
         },
       ]
@@ -139,7 +148,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_select',
+              'SM_ARTEXTMODULE_select',
             ),
         },
       ]
@@ -148,7 +157,7 @@ function getData(type) {
         SARText.setPlaneVisible(false)
       }
       break
-    case 'ARTEXTMODULE_modify_location':
+    case 'SM_ARTEXTMODULE_modify_location':
       data = [
         {
           key: 'modifyToCurrent',
@@ -157,7 +166,7 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: () => {
             SARText.modifyToCurrentPosition()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+            ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
           },
         },
         {
@@ -168,7 +177,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modifyToPlane',
+              'SM_ARTEXTMODULE_modifyToPlane',
             ),
         },
       ]
@@ -178,23 +187,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_selected',
-            ),
-        },
-      ]
-      pageAction = () => {
-        SARText.setTapAction('NONE')
-        SARText.setPlaneVisible(false)
-      }
-      break
-    case 'ARTEXTMODULE_modify_style':
-      buttons = [
-        {
-          type: ToolbarBtnType.TOOLBAR_BACK,
-          action: () =>
-            ToolbarModule.getParams().setToolbarVisible(
-              true,
-              'ARTEXTMODULE_selected',
+              'SM_ARTEXTMODULE_selected',
             ),
         },
       ]
@@ -203,14 +196,30 @@ function getData(type) {
         SARText.setPlaneVisible(false)
       }
       break
-    case 'ARTEXTMODULE_modifyToPlane':
+    case 'SM_ARTEXTMODULE_modify_style':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modify_location',
+              'SM_ARTEXTMODULE_selected',
+            ),
+        },
+      ]
+      pageAction = () => {
+        SARText.setTapAction('NONE')
+        SARText.setPlaneVisible(false)
+      }
+      break
+    case 'SM_ARTEXTMODULE_modifyToPlane':
+      buttons = [
+        {
+          type: ToolbarBtnType.TOOLBAR_BACK,
+          action: () =>
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARTEXTMODULE_modify_location',
             ),
         },
       ]
@@ -218,11 +227,11 @@ function getData(type) {
         SARText.setTapAction('MODIFY')
         SARText.setPlaneVisible(true)
         SARText.setOnModifyListener(() => {
-          ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+          ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
         })
       }
       break
-    case 'ARTEXTMODULE_modifyBy':
+    case 'SM_ARTEXTMODULE_modifyBy':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
@@ -230,7 +239,7 @@ function getData(type) {
             SARText.move(0, 0, 0)
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modify_style',
+              'SM_ARTEXTMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -244,7 +253,7 @@ function getData(type) {
             currentY = currentY === undefined ? 0 : currentY
             currentZ = currentZ === undefined ? 0 : currentZ
             SARText.move(currentX, currentY, currentZ, true)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+            ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
           },
         },
       ]
@@ -289,14 +298,14 @@ function getData(type) {
         />
       )
       break
-    case 'ARTEXTMODULE_modifyViewRange':
+    case 'SM_ARTEXTMODULE_modifyViewRange':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modify_style',
+              'SM_ARTEXTMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -308,7 +317,7 @@ function getData(type) {
             let { viewRange } = ToolbarModule.getData()
             viewRange = viewRange === undefined ? 1 : viewRange
             SARText.setViewRange(viewRange)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+            ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
           },
         },
       ]
@@ -338,7 +347,7 @@ function getData(type) {
 function getMenuData(type) {
   let data = []
   switch (type) {
-    case 'ARTEXTMODULE_modify_style':
+    case 'SM_ARTEXTMODULE_modify_style':
       data = [
         {
           des: 'modifyBy',
@@ -346,7 +355,7 @@ function getMenuData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modifyBy',
+              'SM_ARTEXTMODULE_modifyBy',
               { containerType: 'xyzslide' },
             ),
         },
@@ -358,7 +367,7 @@ function getMenuData(type) {
             ToolbarModule.addData({ defaultViewRange })
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARTEXTMODULE_modifyViewRange',
+              'SM_ARTEXTMODULE_modifyViewRange',
               { containerType: 'xyzslide' },
             )
           },

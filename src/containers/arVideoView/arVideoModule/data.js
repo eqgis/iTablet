@@ -16,7 +16,7 @@ function getData(type) {
   let customView = null
   let pageAction = () => {}
   switch (type) {
-    case 'ARVIDEOMODULE':
+    case 'SM_ARVIDEOMODULE':
       buttons = [
         {
           type: 'add',
@@ -29,7 +29,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_select',
+              'SM_ARVIDEOMODULE_select',
             ),
         },
       ]
@@ -38,7 +38,7 @@ function getData(type) {
         SARVideoView.setPlaneVisible(false)
       }
       break
-    case 'ARVIDEOMODULE_add':
+    case 'SM_ARVIDEOMODULE_add':
       data = [
         {
           key: 'addAtCurrent',
@@ -58,7 +58,10 @@ function getData(type) {
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -66,21 +69,27 @@ function getData(type) {
         SARVideoView.setPlaneVisible(false)
       }
       break
-    case 'ARVIDEOMODULE_addAtPlane':
+    case 'SM_ARVIDEOMODULE_addAtPlane':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            ),
         },
       ]
       break
-    case 'ARVIDEOMODULE_select':
+    case 'SM_ARVIDEOMODULE_select':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -91,13 +100,13 @@ function getData(type) {
         SARVideoView.setOnTapListener(() => {
           ToolbarModule.getParams().setToolbarVisible(
             true,
-            'ARVIDEOMODULE_selected',
+            'SM_ARVIDEOMODULE_selected',
           )
         })
         SARVideoView.setPlaneVisible(false)
       }
       break
-    case 'ARVIDEOMODULE_selected':
+    case 'SM_ARVIDEOMODULE_selected':
       data = [
         {
           key: 'modifyLocation',
@@ -106,7 +115,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modify_location',
+              'SM_ARVIDEOMODULE_modify_location',
             ),
         },
         {
@@ -116,7 +125,7 @@ function getData(type) {
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modify_style',
+              'SM_ARVIDEOMODULE_modify_style',
               {
                 showMenuDialog: true,
               },
@@ -129,7 +138,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_delete_black.png'),
           action: () => {
             SARVideoView.deleteItem()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            )
           },
         },
       ]
@@ -139,7 +151,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_select',
+              'SM_ARVIDEOMODULE_select',
             ),
         },
       ]
@@ -148,7 +160,7 @@ function getData(type) {
         SARVideoView.setPlaneVisible(false)
       }
       break
-    case 'ARVIDEOMODULE_modify_location':
+    case 'SM_ARVIDEOMODULE_modify_location':
       data = [
         {
           key: 'modifyToCurrent',
@@ -157,7 +169,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: () => {
             SARVideoView.modifyToCurrentPosition()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            )
           },
         },
         {
@@ -168,7 +183,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modifyToPlane',
+              'SM_ARVIDEOMODULE_modifyToPlane',
             ),
         },
       ]
@@ -178,23 +193,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_selected',
-            ),
-        },
-      ]
-      pageAction = () => {
-        SARVideoView.setTapAction('NONE')
-        SARVideoView.setPlaneVisible(false)
-      }
-      break
-    case 'ARVIDEOMODULE_modify_style':
-      buttons = [
-        {
-          type: ToolbarBtnType.TOOLBAR_BACK,
-          action: () =>
-            ToolbarModule.getParams().setToolbarVisible(
-              true,
-              'ARVIDEOMODULE_selected',
+              'SM_ARVIDEOMODULE_selected',
             ),
         },
       ]
@@ -203,14 +202,30 @@ function getData(type) {
         SARVideoView.setPlaneVisible(false)
       }
       break
-    case 'ARVIDEOMODULE_modifyToPlane':
+    case 'SM_ARVIDEOMODULE_modify_style':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modify_location',
+              'SM_ARVIDEOMODULE_selected',
+            ),
+        },
+      ]
+      pageAction = () => {
+        SARVideoView.setTapAction('NONE')
+        SARVideoView.setPlaneVisible(false)
+      }
+      break
+    case 'SM_ARVIDEOMODULE_modifyToPlane':
+      buttons = [
+        {
+          type: ToolbarBtnType.TOOLBAR_BACK,
+          action: () =>
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE_modify_location',
             ),
         },
       ]
@@ -218,11 +233,11 @@ function getData(type) {
         SARVideoView.setTapAction('MODIFY')
         SARVideoView.setPlaneVisible(true)
         SARVideoView.setOnModifyListener(() => {
-          ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+          ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARVIDEOMODULE')
         })
       }
       break
-    case 'ARVIDEOMODULE_modifyBy':
+    case 'SM_ARVIDEOMODULE_modifyBy':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
@@ -230,7 +245,7 @@ function getData(type) {
             SARVideoView.move(0, 0, 0)
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modify_style',
+              'SM_ARVIDEOMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -244,7 +259,10 @@ function getData(type) {
             currentY = currentY === undefined ? 0 : currentY
             currentZ = currentZ === undefined ? 0 : currentZ
             SARVideoView.move(currentX, currentY, currentZ, true)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            )
           },
         },
       ]
@@ -289,14 +307,14 @@ function getData(type) {
         />
       )
       break
-    case 'ARVIDEOMODULE_modifyViewRange':
+    case 'SM_ARVIDEOMODULE_modifyViewRange':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modify_style',
+              'SM_ARVIDEOMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -308,7 +326,10 @@ function getData(type) {
             let { viewRange } = ToolbarModule.getData()
             viewRange = viewRange === undefined ? 1 : viewRange
             SARVideoView.setViewRange(viewRange)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARVIDEOMODULE',
+            )
           },
         },
       ]
@@ -338,7 +359,7 @@ function getData(type) {
 function getMenuData(type) {
   let data = []
   switch (type) {
-    case 'ARVIDEOMODULE_modify_style':
+    case 'SM_ARVIDEOMODULE_modify_style':
       data = [
         {
           des: 'modifyBy',
@@ -346,7 +367,7 @@ function getMenuData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modifyBy',
+              'SM_ARVIDEOMODULE_modifyBy',
               { containerType: 'xyzslide' },
             ),
         },
@@ -358,7 +379,7 @@ function getMenuData(type) {
             ToolbarModule.addData({ defaultViewRange })
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARVIDEOMODULE_modifyViewRange',
+              'SM_ARVIDEOMODULE_modifyViewRange',
               { containerType: 'xyzslide' },
             )
           },

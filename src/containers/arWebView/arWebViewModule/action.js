@@ -11,7 +11,10 @@ function inputUrl() {
     cb: result => {
       NavigationService.goBack()
       ToolbarModule.addData({ url: result })
-      ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE_add')
+      ToolbarModule.getParams().setToolbarVisible(
+        true,
+        'SM_ARWEBVIEWMODULE_add',
+      )
     },
   })
 }
@@ -19,7 +22,7 @@ function inputUrl() {
 function addAtCurrent() {
   let { url } = ToolbarModule.getData()
   SARWebView.addAtCurrentPosition(url)
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+  ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARWEBVIEWMODULE')
 }
 
 function addAtPoint() {
@@ -28,11 +31,11 @@ function addAtPoint() {
   SARWebView.setUrl(url)
   SARWebView.setPlaneVisible(true)
   SARWebView.setOnAddListener(() => {
-    ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+    ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARWEBVIEWMODULE')
   })
   ToolbarModule.getParams().setToolbarVisible(
     true,
-    'ARWEBVIEWMODULE_addAtPlane',
+    'SM_ARWEBVIEWMODULE_addAtPlane',
   )
 }
 

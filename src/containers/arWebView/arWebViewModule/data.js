@@ -16,7 +16,7 @@ function getData(type) {
   let customView = null
   let pageAction = () => {}
   switch (type) {
-    case 'ARWEBVIEWMODULE':
+    case 'SM_ARWEBVIEWMODULE':
       buttons = [
         {
           type: 'add',
@@ -29,7 +29,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_select',
+              'SM_ARWEBVIEWMODULE_select',
             ),
         },
       ]
@@ -38,7 +38,7 @@ function getData(type) {
         SARWebView.setPlaneVisible(false)
       }
       break
-    case 'ARWEBVIEWMODULE_add':
+    case 'SM_ARWEBVIEWMODULE_add':
       data = [
         {
           key: 'addAtCurrent',
@@ -60,7 +60,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE',
+              'SM_ARWEBVIEWMODULE',
             ),
         },
       ]
@@ -69,26 +69,26 @@ function getData(type) {
         SARWebView.setPlaneVisible(false)
       }
       break
-    case 'ARWEBVIEWMODULE_addAtPlane':
+    case 'SM_ARWEBVIEWMODULE_addAtPlane':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE',
+              'SM_ARWEBVIEWMODULE',
             ),
         },
       ]
       break
-    case 'ARWEBVIEWMODULE_select':
+    case 'SM_ARWEBVIEWMODULE_select':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE',
+              'SM_ARWEBVIEWMODULE',
             ),
         },
       ]
@@ -100,13 +100,13 @@ function getData(type) {
         SARWebView.setOnTapListener(() => {
           ToolbarModule.getParams().setToolbarVisible(
             true,
-            'ARWEBVIEWMODULE_selected',
+            'SM_ARWEBVIEWMODULE_selected',
           )
         })
         SARWebView.setPlaneVisible(false)
       }
       break
-    case 'ARWEBVIEWMODULE_selected':
+    case 'SM_ARWEBVIEWMODULE_selected':
       data = [
         {
           key: 'modifyLocation',
@@ -115,7 +115,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modify_location',
+              'SM_ARWEBVIEWMODULE_modify_location',
             ),
         },
         {
@@ -125,7 +125,7 @@ function getData(type) {
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modify_style',
+              'SM_ARWEBVIEWMODULE_modify_style',
               {
                 showMenuDialog: true,
               },
@@ -138,7 +138,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_delete_black.png'),
           action: () => {
             SARWebView.deleteItem()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARWEBVIEWMODULE',
+            )
           },
         },
       ]
@@ -148,7 +151,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_select',
+              'SM_ARWEBVIEWMODULE_select',
             ),
         },
       ]
@@ -157,7 +160,7 @@ function getData(type) {
         SARWebView.setPlaneVisible(false)
       }
       break
-    case 'ARWEBVIEWMODULE_modify_location':
+    case 'SM_ARWEBVIEWMODULE_modify_location':
       data = [
         {
           key: 'modifyToCurrent',
@@ -166,7 +169,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: () => {
             SARWebView.modifyToCurrentPosition()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARWEBVIEWMODULE',
+            )
           },
         },
         {
@@ -177,7 +183,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modifyToPlane',
+              'SM_ARWEBVIEWMODULE_modifyToPlane',
             ),
         },
       ]
@@ -187,23 +193,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_selected',
-            ),
-        },
-      ]
-      pageAction = () => {
-        SARWebView.setTapAction('NONE')
-        SARWebView.setPlaneVisible(false)
-      }
-      break
-    case 'ARWEBVIEWMODULE_modify_style':
-      buttons = [
-        {
-          type: ToolbarBtnType.TOOLBAR_BACK,
-          action: () =>
-            ToolbarModule.getParams().setToolbarVisible(
-              true,
-              'ARWEBVIEWMODULE_selected',
+              'SM_ARWEBVIEWMODULE_selected',
             ),
         },
       ]
@@ -212,14 +202,30 @@ function getData(type) {
         SARWebView.setPlaneVisible(false)
       }
       break
-    case 'ARWEBVIEWMODULE_modifyToPlane':
+    case 'SM_ARWEBVIEWMODULE_modify_style':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modify_location',
+              'SM_ARWEBVIEWMODULE_selected',
+            ),
+        },
+      ]
+      pageAction = () => {
+        SARWebView.setTapAction('NONE')
+        SARWebView.setPlaneVisible(false)
+      }
+      break
+    case 'SM_ARWEBVIEWMODULE_modifyToPlane':
+      buttons = [
+        {
+          type: ToolbarBtnType.TOOLBAR_BACK,
+          action: () =>
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARWEBVIEWMODULE_modify_location',
             ),
         },
       ]
@@ -227,11 +233,14 @@ function getData(type) {
         SARWebView.setTapAction('MODIFY')
         SARWebView.setPlaneVisible(true)
         SARWebView.setOnModifyListener(() => {
-          ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+          ToolbarModule.getParams().setToolbarVisible(
+            true,
+            'SM_ARWEBVIEWMODULE',
+          )
         })
       }
       break
-    case 'ARWEBVIEWMODULE_modifyBy':
+    case 'SM_ARWEBVIEWMODULE_modifyBy':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
@@ -239,7 +248,7 @@ function getData(type) {
             SARWebView.move(0, 0, 0)
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modify_style',
+              'SM_ARWEBVIEWMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -253,7 +262,10 @@ function getData(type) {
             currentY = currentY === undefined ? 0 : currentY
             currentZ = currentZ === undefined ? 0 : currentZ
             SARWebView.move(currentX, currentY, currentZ, true)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARWEBVIEWMODULE',
+            )
           },
         },
       ]
@@ -298,14 +310,14 @@ function getData(type) {
         />
       )
       break
-    case 'ARWEBVIEWMODULE_modifyViewRange':
+    case 'SM_ARWEBVIEWMODULE_modifyViewRange':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modify_style',
+              'SM_ARWEBVIEWMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -317,7 +329,10 @@ function getData(type) {
             let { viewRange } = ToolbarModule.getData()
             viewRange = viewRange === undefined ? 1 : viewRange
             SARWebView.setViewRange(viewRange)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARWEBVIEWMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARWEBVIEWMODULE',
+            )
           },
         },
       ]
@@ -347,7 +362,7 @@ function getData(type) {
 function getMenuData(type) {
   let data = []
   switch (type) {
-    case 'ARWEBVIEWMODULE_modify_style':
+    case 'SM_ARWEBVIEWMODULE_modify_style':
       data = [
         {
           des: 'modifyBy',
@@ -355,7 +370,7 @@ function getMenuData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modifyBy',
+              'SM_ARWEBVIEWMODULE_modifyBy',
               { containerType: 'xyzslide' },
             ),
         },
@@ -367,7 +382,7 @@ function getMenuData(type) {
             ToolbarModule.addData({ defaultViewRange })
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARWEBVIEWMODULE_modifyViewRange',
+              'SM_ARWEBVIEWMODULE_modifyViewRange',
               { containerType: 'xyzslide' },
             )
           },

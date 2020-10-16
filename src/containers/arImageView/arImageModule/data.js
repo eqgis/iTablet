@@ -16,7 +16,7 @@ function getData(type) {
   let customView = null
   let pageAction = () => {}
   switch (type) {
-    case 'ARIMAGEMODULE':
+    case 'SM_ARIMAGEMODULE':
       buttons = [
         {
           type: 'add',
@@ -29,7 +29,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_select',
+              'SM_ARIMAGEMODULE_select',
             ),
         },
       ]
@@ -38,7 +38,7 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'ARIMAGEMODULE_add':
+    case 'SM_ARIMAGEMODULE_add':
       data = [
         {
           key: 'addAtCurrent',
@@ -58,7 +58,10 @@ function getData(type) {
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -66,21 +69,27 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'ARIMAGEMODULE_addAtPlane':
+    case 'SM_ARIMAGEMODULE_addAtPlane':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            ),
         },
       ]
       break
-    case 'ARIMAGEMODULE_select':
+    case 'SM_ARIMAGEMODULE_select':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE'),
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            ),
         },
       ]
       pageAction = () => {
@@ -91,13 +100,13 @@ function getData(type) {
         SARImage.setOnTapListener(() => {
           ToolbarModule.getParams().setToolbarVisible(
             true,
-            'ARIMAGEMODULE_selected',
+            'SM_ARIMAGEMODULE_selected',
           )
         })
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'ARIMAGEMODULE_selected':
+    case 'SM_ARIMAGEMODULE_selected':
       data = [
         {
           key: 'modifyLocation',
@@ -106,7 +115,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modify_location',
+              'SM_ARIMAGEMODULE_modify_location',
             ),
         },
         {
@@ -116,7 +125,7 @@ function getData(type) {
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modify_style',
+              'SM_ARIMAGEMODULE_modify_style',
               {
                 showMenuDialog: true,
               },
@@ -129,7 +138,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_delete_black.png'),
           action: () => {
             SARImage.deleteItem()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            )
           },
         },
       ]
@@ -139,7 +151,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_select',
+              'SM_ARIMAGEMODULE_select',
             ),
         },
       ]
@@ -148,7 +160,7 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'ARIMAGEMODULE_modify_location':
+    case 'SM_ARIMAGEMODULE_modify_location':
       data = [
         {
           key: 'modifyToCurrent',
@@ -157,7 +169,10 @@ function getData(type) {
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: () => {
             SARImage.modifyToCurrentPosition()
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            )
           },
         },
         {
@@ -168,7 +183,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modifyToPlane',
+              'SM_ARIMAGEMODULE_modifyToPlane',
             ),
         },
       ]
@@ -178,23 +193,7 @@ function getData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_selected',
-            ),
-        },
-      ]
-      pageAction = () => {
-        SARImage.setTapAction('NONE')
-        SARImage.setPlaneVisible(false)
-      }
-      break
-    case 'ARIMAGEMODULE_modify_style':
-      buttons = [
-        {
-          type: ToolbarBtnType.TOOLBAR_BACK,
-          action: () =>
-            ToolbarModule.getParams().setToolbarVisible(
-              true,
-              'ARIMAGEMODULE_selected',
+              'SM_ARIMAGEMODULE_selected',
             ),
         },
       ]
@@ -203,14 +202,30 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'ARIMAGEMODULE_modifyToPlane':
+    case 'SM_ARIMAGEMODULE_modify_style':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modify_location',
+              'SM_ARIMAGEMODULE_selected',
+            ),
+        },
+      ]
+      pageAction = () => {
+        SARImage.setTapAction('NONE')
+        SARImage.setPlaneVisible(false)
+      }
+      break
+    case 'SM_ARIMAGEMODULE_modifyToPlane':
+      buttons = [
+        {
+          type: ToolbarBtnType.TOOLBAR_BACK,
+          action: () =>
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE_modify_location',
             ),
         },
       ]
@@ -218,11 +233,11 @@ function getData(type) {
         SARImage.setTapAction('MODIFY')
         SARImage.setPlaneVisible(true)
         SARImage.setOnModifyListener(() => {
-          ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+          ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARIMAGEMODULE')
         })
       }
       break
-    case 'ARIMAGEMODULE_modifyBy':
+    case 'SM_ARIMAGEMODULE_modifyBy':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
@@ -230,7 +245,7 @@ function getData(type) {
             SARImage.move(0, 0, 0)
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modify_style',
+              'SM_ARIMAGEMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -244,7 +259,10 @@ function getData(type) {
             currentY = currentY === undefined ? 0 : currentY
             currentZ = currentZ === undefined ? 0 : currentZ
             SARImage.move(currentX, currentY, currentZ, true)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            )
           },
         },
       ]
@@ -289,14 +307,14 @@ function getData(type) {
         />
       )
       break
-    case 'ARIMAGEMODULE_modifyViewRange':
+    case 'SM_ARIMAGEMODULE_modifyViewRange':
       buttons = [
         {
           type: ToolbarBtnType.TOOLBAR_BACK,
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modify_style',
+              'SM_ARIMAGEMODULE_modify_style',
               { showMenuDialog: true },
             )
           },
@@ -308,7 +326,10 @@ function getData(type) {
             let { viewRange } = ToolbarModule.getData()
             viewRange = viewRange === undefined ? 1 : viewRange
             SARImage.setViewRange(viewRange)
-            ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              'SM_ARIMAGEMODULE',
+            )
           },
         },
       ]
@@ -338,7 +359,7 @@ function getData(type) {
 function getMenuData(type) {
   let data = []
   switch (type) {
-    case 'ARIMAGEMODULE_modify_style':
+    case 'SM_ARIMAGEMODULE_modify_style':
       data = [
         {
           des: 'modifyBy',
@@ -346,7 +367,7 @@ function getMenuData(type) {
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modifyBy',
+              'SM_ARIMAGEMODULE_modifyBy',
               { containerType: 'xyzslide' },
             ),
         },
@@ -358,7 +379,7 @@ function getMenuData(type) {
             ToolbarModule.addData({ defaultViewRange })
             ToolbarModule.getParams().setToolbarVisible(
               true,
-              'ARIMAGEMODULE_modifyViewRange',
+              'SM_ARIMAGEMODULE_modifyViewRange',
               { containerType: 'xyzslide' },
             )
           },

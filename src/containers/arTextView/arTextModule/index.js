@@ -20,7 +20,7 @@ class arTextModule extends FunctionModule {
 
 export default function() {
   return new arTextModule({
-    type: 'ARTEXTMODULE',
+    type: 'SM_ARTEXTMODULE',
     getData: data.getData,
     actions: actions,
     getMenuData: data.getMenuData,

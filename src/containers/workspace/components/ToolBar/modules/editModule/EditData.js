@@ -12,7 +12,7 @@ import EditAction from './EditAction'
 function getData(type) {
   let data = []
   let buttons = []
-  if (typeof type === 'string' && type.indexOf('MAP_EDIT_') === -1) {
+  if (typeof type === 'string' && type.indexOf(ConstToolType.SM_MAP_EDIT) === -1) {
     return { data, buttons }
   }
   switch (type) {
@@ -316,7 +316,7 @@ function getData(type) {
       ]
       break
   }
-  if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
+  if (type === ConstToolType.SM_MAP_EDIT) {
     buttons = [
       ToolbarBtnType.CANCEL,
       ToolbarBtnType.PLACEHOLDER,

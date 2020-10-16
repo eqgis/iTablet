@@ -13,7 +13,7 @@ import ToolbarModule from '../ToolbarModule'
 async function commit(type) {
   const params = ToolbarModule.getParams()
   let currentToolbarType = ''
-  if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
+  if (type === ConstToolType.SM_MAP_EDIT) {
     // 编辑完成关闭Toolbar
     params.setToolbarVisible(false, '', {
       cb: () => {
@@ -58,10 +58,10 @@ async function commit(type) {
           event.geometryType,
         )
       }
-      currentToolbarType = ConstToolType.SM_MAP_EDIT_DEFAULT
+      currentToolbarType = ConstToolType.SM_MAP_EDIT
       // 编辑完成关闭Toolbar
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-      params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
+      params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT, {
         isFullScreen: false,
         // height: 0,
       })
@@ -80,12 +80,12 @@ function toolbarBack(type) {
   if (
     typeof type === 'string' &&
     type.indexOf('MAP_EDIT_') >= 0 &&
-    type !== ConstToolType.SM_MAP_EDIT_DEFAULT
+    type !== ConstToolType.SM_MAP_EDIT
   ) {
     SMap.cancel()
     actionType = Action.SELECT
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-    params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
+    params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT, {
       isFullScreen: false,
       // height: 0,
     })
@@ -128,7 +128,7 @@ async function geometrySelected(event) {
     case ConstToolType.SM_MAP_EDIT_LINE:
     case ConstToolType.SM_MAP_EDIT_REGION:
       break
-    case ConstToolType.SM_MAP_EDIT_DEFAULT: {
+    case ConstToolType.SM_MAP_EDIT: {
       let containerType = ToolbarType.table
       let type = ''
       switch (event.geometryType) {
@@ -264,7 +264,7 @@ async function deleteLabel() {
     }
   })
   _params.setSelection()
-  const type = ConstToolType.SM_MAP_EDIT_DEFAULT
+  const type = ConstToolType.SM_MAP_EDIT
   
   _params.setToolbarVisible(true, type, {
     isFullScreen: false,

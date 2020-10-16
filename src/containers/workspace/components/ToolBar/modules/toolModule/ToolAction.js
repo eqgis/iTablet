@@ -611,7 +611,7 @@ function commit(type) {
   const _params = ToolbarModule.getParams()
   // getParams.showToolbar(false)
   if (typeof type === 'string' && type.indexOf('MAP_EDIT_') >= 0) {
-    if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
+    if (type === ConstToolType.SM_MAP_EDIT) {
       // 编辑完成关闭Toolbar
       _params.setToolbarVisible(false, '', {
         cb: () => {
@@ -621,7 +621,7 @@ function commit(type) {
     } else {
       // 编辑完成关闭Toolbar
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-      _params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT, {
         isFullScreen: false,
         cb: () => {
           SMap.submit()

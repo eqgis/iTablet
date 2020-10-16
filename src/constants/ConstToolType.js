@@ -126,8 +126,7 @@ const TOUCHPROGRESS_CONST = {
 
 /** 地图浏览 **/
 const MAP_EDIT_CONST = {
-  SM_MAP_EDIT: 'SM_MAP_EDIT',                                   // 地图编辑模块
-  SM_MAP_EDIT_DEFAULT: 'SM_MAP_EDIT_DEFAULT',                   // 默认编辑选择模式，Toolbar只有底部按钮栏（未选中任何对象时的编辑模式）
+  SM_MAP_EDIT: 'SM_MAP_EDIT',                                   // 地图编辑模块，Toolbar只有底部按钮栏（未选中任何对象时的编辑模式）
   SM_MAP_EDIT_POINT: 'SM_MAP_EDIT_POINT',                       // 编辑点
   SM_MAP_EDIT_LINE: 'SM_MAP_EDIT_LINE',                         // 编辑线
   SM_MAP_EDIT_REGION: 'SM_MAP_EDIT_REGION',                     // 编辑面

@@ -87,7 +87,6 @@ class ToolbarModule {
 
   getModule(type, params = {}) {
     let module
-
     let modules = this.getModules()
     //TODO 优化
     modules.map(item => {

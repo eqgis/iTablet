@@ -89,36 +89,19 @@ class ToolbarModule {
     let module
 
     let modules = this.getModules()
-    //TODO 优化
-    modules.map(item => {
-      // 严格按照命名规范，type名称SM_yyy_zzz（SM_ 为系统字段，自定义不可使用）
-      if (type.indexOf(item.type) === 0) {
-        module = item
-      }
-    })
-
-    if (module !== undefined) {
-      return module
+    // SM_ 开头的为系统字段
+    if (type.indexOf('SM_') === 0) {
+      modules.map(item => {
+        if (type.indexOf(item.type) === 0) {
+          module = item
+        }
+      })
+    } else if (type !== '') {
+      // 自定义FunctionModule
+      module = mapFunctionModules.getModule(type, params)
     }
-    // TODO 新增自定义FunctionModule
-    module = mapFunctionModules.getModule(type, params)
+
     return module
-  
-    // TODO 待AR相关type更改后使用以下代码
-    // let modules = this.getModules()
-    // // SM_ 开头的为系统字段
-    // if (type.indexOf('SM_') === 0) {
-    //   modules.map(item => {
-    //     if (type.indexOf(item.type) === 0) {
-    //       module = item
-    //     }
-    //   })
-    // } else if (type !== '') {
-    //   // 自定义FunctionModule
-    //   module = mapFunctionModules.getModule(type, params)
-    // }
-    //
-    // return module
   }
 
   /**

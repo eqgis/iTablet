@@ -14,7 +14,10 @@ function selectImage() {
       if (data && data.length > 0) {
         let path = data[0].uri
         ToolbarModule.addData({ path: path })
-        ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE_add')
+        ToolbarModule.getParams().setToolbarVisible(
+          true,
+          'SM_ARIMAGEMODULE_add',
+        )
       }
     },
   })
@@ -23,7 +26,7 @@ function selectImage() {
 function addAtCurrent() {
   let { path } = ToolbarModule.getData()
   SARImage.addAtCurrentPosition(path)
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+  ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARIMAGEMODULE')
 }
 
 function addAtPoint() {
@@ -32,9 +35,12 @@ function addAtPoint() {
   SARImage.setImagePath(path)
   SARImage.setPlaneVisible(true)
   SARImage.setOnAddListener(() => {
-    ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE')
+    ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARIMAGEMODULE')
   })
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARIMAGEMODULE_addAtPlane')
+  ToolbarModule.getParams().setToolbarVisible(
+    true,
+    'SM_ARIMAGEMODULE_addAtPlane',
+  )
 }
 
 export default {

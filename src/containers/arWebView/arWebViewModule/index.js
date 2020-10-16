@@ -20,7 +20,7 @@ class arWebViewModule extends FunctionModule {
 
 export default function() {
   return new arWebViewModule({
-    type: 'ARWEBVIEWMODULE',
+    type: 'SM_ARWEBVIEWMODULE',
     getData: data.getData,
     actions: actions,
     getMenuData: data.getMenuData,

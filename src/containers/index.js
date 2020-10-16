@@ -158,7 +158,6 @@ import AIGestureBoneView from './aiGestureBoneView'
 import ARWebView from './arWebView'
 import ARTextView from './arTextView'
 
-import Map2Dto3D from './workspace/components/Map2Dto3D'
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
 import CreateNavDataPage from './CreateNavDataPage'
@@ -1268,12 +1267,6 @@ export default function(appConfig) {
       },
       SecondMapSettings7: {
         screen: SecondMapSettings,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      Map2Dto3D: {
-        screen: Map2Dto3D,
         navigationOptions: {
           header: null,
         },

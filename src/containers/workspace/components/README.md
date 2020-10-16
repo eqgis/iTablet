@@ -11,7 +11,6 @@
 > * MapController           (地图左侧控件)
 > * MapToolbar              (地图底部菜单(Tab))
 > * MapToolbarSetting       (设置页面二级菜单面板)
-> * MenuAlertDialog         (菜单提示框)
 > * MoreToolbar             (更多二级菜单面板)
 > * NetworkAnalystToolBar   (网络分析二级菜单面板)
 > * OverlayView

@@ -77,8 +77,6 @@ export default class FunctionToolbar extends React.Component {
     device: Object,
     user: Object,
     map: Object,
-    //弹出模型、路网弹窗
-    setMap2Dto3D: () => {},
     openOnlineMap: boolean,
     ARView: Boolean,
   }
@@ -237,7 +235,6 @@ export default class FunctionToolbar extends React.Component {
   }
 
   isMapIndoorNavigation = () => {
-    this.props.setMap2Dto3D(false)
     GLOBAL.toolBox.props.setOpenOnlineMap(false)
   }
 

@@ -826,7 +826,6 @@ export default class Map3D extends React.Component {
         confirmDialog={this.confirm}
         dialog={() => this.dialog}
         showFullMap={this.showFullMap}
-        setInputDialogVisible={this.setInputDialogVisible}
         {...this.props}
         setAttributes={this.props.setAttributes}
         measureShow={this.measureShow}

@@ -41,7 +41,6 @@ import { FunctionExampleTypes } from './index'
  addGeometrySelectedListener: () => {},     // 添加地图对象选择监听
  removeGeometrySelectedListener: () => {},  // 移除地图对象选择监听
  setSaveViewVisible?: () => {},
- setSaveMapDialogVisible?: () => {},        // 显示是否保存地图弹框
  setContainerLoading?: () => {},            // 显示加载图标
  showFullMap: () => {},                     // 显示全屏，只显示地图
  dialog: () => {},                          // ?
@@ -64,7 +63,6 @@ import { FunctionExampleTypes } from './index'
  setCurrentTemplateInfo: () => {},
  setCurrentPlotInfo: () => {},
  setTemplate: () => {},
- setInputDialogVisible: () => {},
  exportmap3DWorkspace: () => {},
  importSceneWorkspace: () => {},
  getMapSetting: () => {},
@@ -82,7 +80,6 @@ import { FunctionExampleTypes } from './index'
  setMapIndoorNavigation: () => {},
  setMapNavigationShow: () => {},
  setMapNavigation: () => {},
- setMap2Dto3D: () => {},
  switchAr: () => {},
  removeAIDetect: () => {},
  setOpenOnlineMap: () => {},

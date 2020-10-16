@@ -18,7 +18,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
 import { setUser, setUsers } from './src/redux/models/user'
-import { setAgreeToProtocol, setLanguage, setMapSetting ,setMap2Dto3D} from './src/redux/models/setting'
+import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
 import {
   setEditLayer,
   setSelection,
@@ -166,7 +166,6 @@ class AppRoot extends Component {
     setAnalystParams: PropTypes.func,
     setAgreeToProtocol: PropTypes.func,
     setLanguage: PropTypes.func,
-    setMap2Dto3D: PropTypes.func,
     setCurrentLayer: PropTypes.func,
     setModules: PropTypes.func,
     setMapModule: PropTypes.func,
@@ -270,12 +269,10 @@ class AppRoot extends Component {
 
   initGlobal = () => {
     GLOBAL.AppState = AppState.currentState
-    GLOBAL.isBackHome = true
     GLOBAL.loginTimer = undefined
     GLOBAL.STARTX = undefined  //离线导航起点
     GLOBAL.ENDX = undefined  //离线导航终点
     GLOBAL.HASCHOSE = false  //离线数据选择
-    this.props.setMap2Dto3D(false) //release版没有重置为false
     // TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理
     GLOBAL.ThemeType = ThemeType.LIGHT_THEME
     GLOBAL.TaggingDatasetName = ''
@@ -676,116 +673,6 @@ class AppRoot extends Component {
     } catch (e) {
       this.container && this.container.setLoading(false)
       NavigationService.goBack()
-    }
-  }
-
-  saveMap = async () => {
-    if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-
-      //这里先处理下异常 add xiezhy
-      try {
-        await SMap.stopGuide()
-        await SMap.clearPoint()
-        this.props.setMap2Dto3D(false)
-      }catch (e) {
-        this.setSaveMapViewLoading(false)
-      }
-    }
-    if (GLOBAL.Type === ChunkType.MAP_3D) {
-      this.map3dBackAction()
-      GLOBAL.openWorkspace && Toast.show(ConstInfo.SAVE_SCENE_SUCCESS)
-      return
-    }
-    let mapName = ''
-    if (this.props.map.currentMap.name) { // 获取当前打开的地图xml的名称
-      mapName = this.props.map.currentMap.name
-      mapName = mapName.substr(0, mapName.lastIndexOf('.')) || this.props.map.currentMap.name
-    } else {
-      let mapInfo = await SMap.getMapInfo()
-      if (mapInfo && mapInfo.name) { // 获取MapControl中的地图名称
-        mapName = mapInfo.name
-      } else if (this.props.layers.length > 0) { // 获取数据源名称作为地图名称
-        mapName = this.props.collection.datasourceName
-      }
-    }
-    let addition = {}
-    if (this.props.map.currentMap.Template) {
-      addition.Template = this.props.map.currentMap.Template
-    }
-
-    return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
-  }
-
-  // 导出(保存)工作空间中地图到模块
-  saveMapName = async (mapName = '', nModule = '', addition = {}, cb = () => {}) => {
-    try {
-      this.setSaveMapViewLoading(true,getLanguage(this.props.language).Prompt.SAVING)
-      //'正在保存地图')
-      let result = await this.props.saveMap({mapName, nModule, addition})
-      //   .then(result => {
-      //   this.setSaveMapViewLoading(false)
-      //   Toast.show(
-      //     result ? ConstInfo.SAVE_MAP_SUCCESS : ConstInfo.SAVE_MAP_FAILED,
-      //   )
-      //   cb && cb()
-      // }, () => {
-      //   this.setSaveMapViewLoading(false)
-      // })
-      if (result || result === '') {
-        this.setSaveMapViewLoading(false)
-        Toast.show(
-          result || result === '' ?
-            getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
-        )
-        cb && cb()
-        return true
-      } else {
-        this.setSaveMapViewLoading(false)
-        return false
-      }
-    } catch (e) {
-      this.setSaveMapViewLoading(false)
-      return false
-    }
-  }
-
-  setSaveMapViewLoading = (loading = false, info, extra) => {
-    GLOBAL.Loading && GLOBAL.Loading.setLoading(loading, info, extra)
-  }
-
-  closeMapHandler = async () => {
-
-    if (GLOBAL.Type === constants.MAP_NAVIGATION) {
-
-      //现在这处理一下异常  add xiezhy
-      try {
-        await SMap.stopGuide()
-        await SMap.clearPoint()
-        this.props.setMap2Dto3D(false)
-      }catch (e) {
-        this.setSaveMapViewLoading(false)
-      }
-    }
-    if (GLOBAL.Type === ChunkType.MAP_3D) {
-      this.map3dBackAction()
-      return
-    }
-    if (GLOBAL.isBackHome) {
-      try {
-        this.setSaveMapViewLoading(true,
-          getLanguage(this.props.language).Prompt.CLOSING,
-          //'正在关闭地图'
-        )
-        await this.props.closeMap()
-        GLOBAL.clearMapData()
-        this.setSaveMapViewLoading(false)
-        NavigationService.goBack()
-      } catch (e) {
-        this.setSaveMapViewLoading(false)
-      }
-    } else {
-      GLOBAL.isBackHome = true // 默认是true
     }
   }
 
@@ -1233,18 +1120,6 @@ class AppRoot extends Component {
             setNav={this.props.setNav}
           />
         </View>
-        <SaveView
-          ref={ref => GLOBAL.SaveMapView = ref}
-          language={this.props.language}
-          save={this.saveMap}
-          device={this.props.device}
-          notSave={this.closeMapHandler}
-          cancel={() => {
-            // this.backAction = null
-            GLOBAL.clickWait = false
-            this.props.setMap2Dto3D(true)
-          }}
-        />
         {this.renderDialog()}
         {this.renderSimpleDialog()}
         {this.renderImportDialog()}
@@ -1299,7 +1174,6 @@ const AppRootWithRedux = connect(mapStateToProps, {
   saveMap,
   setAgreeToProtocol,
   setLanguage,
-  setMap2Dto3D,
   setModules,
   setMapModule,
   setLicenseInfo,

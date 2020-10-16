@@ -452,17 +452,11 @@ function showHistory() {
 
 function setSaveViewVisible(visible, cb) {
   if (!ToolbarModule.getParams().setSaveViewVisible) return
-  GLOBAL.isBackHome = false
-  // ToolbarModule.getParams().setSaveViewVisible(visible)
   GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
 }
 
 /** 保存地图 * */
 function saveMap() {
-  // if (!ToolbarModule.getParams().setSaveViewVisible) return
-  // GLOBAL.isBackHome = false
-  // ToolbarModule.getParams().setSaveViewVisible(true)
-
   (async function() {
     try {
       if (GLOBAL.Type === ChunkType.MAP_3D) {
@@ -591,7 +585,7 @@ function saveMapAs() {
                 ToolbarModule.getParams().setContainerLoading &&
                   ToolbarModule.getParams().setContainerLoading(false)
                 if (result) {
-                  NavigationService.goBack()
+                  NavigationService.goBack('InputPage')
                   setTimeout(() => {
                     Toast.show(
                       getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY,
@@ -620,7 +614,6 @@ async function changeMap(item) {
       // ConstInfo.MAP_ALREADY_OPENED)
       return
     }
-    params.setMap2Dto3D(false)
     params.setOpenOnlineMap(true)
     params.setContainerLoading(
       true,
@@ -732,7 +725,6 @@ async function changeMap(item) {
 
       params.setContainerLoading(false)
       params.setToolbarVisible(false)
-      params.setMap2Dto3D(true)
     } else {
       params.getLayers(-1, layers => {
         params.setCurrentLayer(layers.length > 0 && layers[0])

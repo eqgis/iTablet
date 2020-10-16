@@ -14,7 +14,6 @@ import {
   EngineType,
   SMediaCollector,
   SMAIDetectView,
-  // SMMapSuspension,
   SAIDetectView,
   SSpeechRecognizer,
 } from 'imobile_for_reactnative'
@@ -26,14 +25,12 @@ import {
   MapNavIcon,
   MapController,
   ToolBar,
-  MenuAlertDialog,
   OverlayView,
   BackgroundOverlay,
   AnalystMapButtons,
   AnalystMapToolbar,
   PoiInfoContainer,
   PoiTopSearchBar,
-  // SimpleSelectList,
   RNLegendView,
   ScaleView,
   IncrementRoadView,
@@ -47,6 +44,7 @@ import {
   RNFloorListView,
   PreviewHeader,
   IncrementRoadDialog,
+  SaveView,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { shareModule } from '../../components/ToolBar/modules'
@@ -54,11 +52,8 @@ import {
   Container,
   MTBtn,
   Dialog,
-  SaveDialog,
-  InputDialog,
   PopModal,
   SurfaceView,
-  // SearchBar,
   Progress,
   BubblePane,
   PopMenu,
@@ -82,7 +77,6 @@ import {
   ConstPath,
   ConstToolType,
   TouchType,
-  ConstInfo,
   ToolbarType,
   ChunkType,
   MapHeaderButton,
@@ -124,9 +118,7 @@ export default class MapView extends React.Component {
     template: PropTypes.object,
     mapLegend: PropTypes.object,
     mapNavigation: PropTypes.object,
-    map2Dto3D: PropTypes.bool,
     mapScaleView: PropTypes.bool,
-    mapIs3D: PropTypes.bool,
     navigationChangeAR: PropTypes.bool,
     navigationPoiView: PropTypes.bool,
     openOnlineMap: PropTypes.bool,
@@ -183,8 +175,6 @@ export default class MapView extends React.Component {
     clearAttributeHistory: PropTypes.func,
     setMapLegend: PropTypes.func,
     setMapNavigation: PropTypes.func,
-    setMap2Dto3D: PropTypes.func,
-    setMapIs3D: PropTypes.func,
     setNavigationChangeAR: PropTypes.func,
     setNavigationPoiView: PropTypes.func,
     setBackAction: PropTypes.func,
@@ -269,7 +259,7 @@ export default class MapView extends React.Component {
       currentDataset: {}, //当前使用的数据集
     }
     this.floorHiddenListener = null
-    GLOBAL.clickWait = false
+    GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
   }
 
   addFloorHiddenListener = () => {
@@ -975,74 +965,91 @@ export default class MapView extends React.Component {
   }
 
   // 导出(保存)工作空间中地图到模块
-  saveMapName = (
+  saveMapName = async (
     mapTitle = '',
     nModule = '',
     addition = {},
-    isNew = false,
+    // isNew = false,
     cb = () => {},
   ) => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
-      this.props.saveMap({ mapTitle, nModule, addition, isNew }).then(
-        result => {
-          this.setLoading(false)
-          Toast.show(
-            result
-              ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-              : ConstInfo.MAP_EXIST,
-          )
-          cb && cb()
-        },
-        () => {
-          this.setLoading(false)
-        },
-      )
-      // SMap.saveMapName(mapTitle, nModule, addition, isNew).then(
-      //   result => {
-      //     this.setLoading(false)
-      //     Toast.show(
-      //       result ? ConstInfo.SAVE_MAP_SUCCESS : ConstInfo.MAP_EXIST,
-      //     )
-      //     cb && cb()
-      //   },
-      //   () => {
-      //     this.setLoading(false)
-      //   },
-      // )
-    } catch (e) {
-      this.setLoading(false)
-    }
-  }
-
-  // 地图保存
-  saveMap = (name = '', cb = () => {}) => {
-    try {
-      this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
-      //'正在保存地图')
-      SMap.saveMap(name).then(result => {
+      let result = await this.props.saveMap({ mapTitle, nModule, addition })
+      if (result || result === '') {
         this.setLoading(false)
         Toast.show(
           result
             ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-            : ConstInfo.MAP_EXIST,
+            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
+          // ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
+          // : ConstInfo.MAP_EXIST,
         )
         cb && cb()
-      })
+        return true
+      } else {
+        this.setSaveMapViewLoading(false)
+        return false
+      }
     } catch (e) {
       this.setLoading(false)
+      GLOBAL.clickWait = false
+      return false
     }
   }
 
-  // 地图另存为
-  saveAsMap = (name = '') => {
+  // 地图保存
+  saveMap = async () => {
     try {
+      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+        //这里先处理下异常 add xiezhy
+        try {
+          await SMap.stopGuide()
+          await SMap.clearPoint()
+        } catch (e) {
+          this.setLoading(false)
+        }
+      }
+      let mapName = ''
+      if (this.props.map.currentMap.name) { // 获取当前打开的地图xml的名称
+        mapName = this.props.map.currentMap.name
+        mapName = mapName.substr(0, mapName.lastIndexOf('.')) || this.props.map.currentMap.name
+      } else {
+        let mapInfo = await SMap.getMapInfo()
+        if (mapInfo && mapInfo.name) { // 获取MapControl中的地图名称
+          mapName = mapInfo.name
+        } else if (this.props.layers.length > 0) { // 获取数据源名称作为地图名称
+          mapName = this.props.collection.datasourceName
+        }
+      }
       let addition = {}
       if (this.props.map.currentMap.Template) {
         addition.Template = this.props.map.currentMap.Template
       }
-      this.saveMapName(name, '', addition, true)
+  
+      return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
     } catch (e) {
+      GLOBAL.clickWait = false
+      this.setLoading(false)
+    }
+  }
+  
+  /** 关闭地图，并返回首页 **/
+  closeMapHandler = async () => {
+    try {
+      this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      await this.props.closeMap()
+      await this._removeGeometrySelectedListener()
+      await this.props.setCurrentAttribute({})
+      // this.setState({ showScaleView: false })
+      GLOBAL.Type = null
+      GLOBAL.clearMapData()
+      setTimeout(() => {
+        this.setLoading(false)
+        NavigationService.goBack()
+        GLOBAL.clickWait = false
+      }, 1000)
+    } catch (e) {
+      GLOBAL.clickWait = false
       this.setLoading(false)
     }
   }
@@ -1070,19 +1077,19 @@ export default class MapView extends React.Component {
           let type =
             preType.indexOf('MAP_TOPO_') > -1
               ? ConstToolType.SM_MAP_TOPO_EDIT
-              : ConstToolType.SM_MAP_EDIT_DEFAULT
+              : ConstToolType.SM_MAP_EDIT
           // 删除对象后，编辑设为为选择状态
           this.toolBox.setVisible(true, type, {
             isFullScreen: false,
             height: 0,
           })
         } else {
-          Toast.show('删除失败')
+          Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
         }
         GLOBAL.removeObjectDialog &&
           GLOBAL.removeObjectDialog.setDialogVisible(false)
       } catch (e) {
-        Toast.show('删除失败')
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
       }
     }.bind(this)())
   }
@@ -1092,94 +1099,82 @@ export default class MapView extends React.Component {
   }
 
   back = async () => {
-    if (!this.mapLoaded) return
-    // 最顶层的语音搜索，最先处理
-    if (Audio.isShow()) {
-      Audio.hideAudio()
-      return
-    }
-
-    // 优先处理其他界面跳转到MapView传来的返回事件
-    if (this.backAction && typeof this.backAction === 'function') {
-      this.backAction({
-        showFullMap: this.showFullMap,
-      })
-      this.backAction = null
-      this.mapController && this.mapController.reset()
-      return
-    }
-    this.props.setMap2Dto3D(false)
-
-    if (Platform.OS === 'android') {
-      if (this.toolBox && this.toolBox.getState().isShow) {
-        this.toolBox.buttonView.close()
-        return true
-      } else if (this.SaveDialog && this.SaveDialog.getState().visible) {
-        this.SaveDialog.setDialogVisible(false)
-        return true
-      } else if (
-        GLOBAL.removeObjectDialog &&
-        GLOBAL.removeObjectDialog.getState().visible
-      ) {
-        GLOBAL.removeObjectDialog.setDialogVisible(false)
+    try {
+      if (!this.mapLoaded) return
+      // 最顶层的语音搜索，最先处理
+      if (Audio.isShow()) {
+        Audio.hideAudio()
+        return
+      }
+  
+      // 优先处理其他界面跳转到MapView传来的返回事件
+      if (this.backAction && typeof this.backAction === 'function') {
+        this.backAction({
+          showFullMap: this.showFullMap,
+        })
+        this.backAction = null
+        this.mapController && this.mapController.reset()
+        return
+      }
+  
+      // Android物理返回事件
+      if (Platform.OS === 'android') {
+        // Toolbar显示时，返回事件Toolbar的close
+        if (this.toolBox && this.toolBox.getState().isShow) {
+          this.toolBox.buttonView.close()
+          return true
+        }
+        // 删除对象Dialog显示时，返回事件关闭Dialog
+        else if (
+          GLOBAL.removeObjectDialog &&
+          GLOBAL.removeObjectDialog.getState().visible
+        ) {
+          GLOBAL.removeObjectDialog.setDialogVisible(false)
+          return true
+        }
+      }
+  
+      if (global.coworkMode) {
+        let param = {}
+        if (CoworkInfo.coworkId !== '') {
+          param.targetId = CoworkInfo.talkId
+        }
+        NavigationService.navigate('Chat', param)
         return true
       }
-    }
-
-    if (global.coworkMode) {
-      let param = {}
-      if (CoworkInfo.coworkId !== '') {
-        param.targetId = CoworkInfo.talkId
+      let result = await SMap.mapIsModified()
+      if (GLOBAL.clickWait) return true
+      GLOBAL.clickWait = true
+      if (result && !this.isExample) {
+        this.setSaveViewVisible(true, null, async () => {
+          this.props.setCurrentAttribute({})
+          // this.setState({ showScaleView: false })
+          this._removeGeometrySelectedListener()
+          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+            this._removeNavigationListeners()
+          }
+          GLOBAL.clickWait = false
+        })
+      } else {
+        try {
+          this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+          if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+            this._removeNavigationListeners().then(() => {
+              SMap.clearPoint()
+              SMap.stopGuide()
+            })
+          }
+          await this.closeMapHandler()
+        } catch (e) {
+          GLOBAL.clickWait = false
+          this.setLoading(false)
+        }
       }
-      NavigationService.navigate('Chat', param)
+      return true
+    } catch (e) {
+      GLOBAL.clickWait = false
       return true
     }
-    let result = await SMap.mapIsModified()
-    if (GLOBAL.clickWait) return true
-    GLOBAL.clickWait = true
-    if (result && !this.isExample) {
-      this.setSaveViewVisible(true, null, async () => {
-        this.props.setCurrentAttribute({})
-        // this.setState({ showScaleView: false })
-        this._removeGeometrySelectedListener()
-        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-          this._removeNavigationListeners()
-        }
-        GLOBAL.clickWait = false
-      })
-    } else {
-      try {
-        this.setLoading(
-          true,
-          getLanguage(this.props.language).Prompt.CLOSING,
-          //'正在关闭地图'
-        )
-        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-          this._removeNavigationListeners().then(() => {
-            SMap.clearPoint()
-            SMap.stopGuide()
-            this.props.setMap2Dto3D(false)
-          })
-        }
-        await this.props.closeMap()
-        await this._removeGeometrySelectedListener()
-        await this.props.setCurrentAttribute({})
-        // this.setState({ showScaleView: false })
-        GLOBAL.Type = null
-        GLOBAL.clearMapData()
-        setTimeout(() => {
-          this.setLoading(false)
-          NavigationService.goBack()
-          GLOBAL.clickWait = false
-        }, 1000)
-      } catch (e) {
-
-        GLOBAL.clickWait = false
-        this.setLoading(false)
-      }
-    }
-    // this.props.getAttributes({})
-    return true
   }
 
   setLoading = (loading = false, info, extra) => {
@@ -1386,7 +1381,6 @@ export default class MapView extends React.Component {
         SMap.setIsMagnifierEnabled(true)
         SMap.setPOIOptimized(true)
         if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-          this.props.setMap2Dto3D(true)
           this.props.setMapNavigation({ isShow: false, name: '' })
           SMap.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
@@ -1582,17 +1576,17 @@ export default class MapView extends React.Component {
    * 中间弹出的保存地图组建
    * @param visible
    */
-  setSaveMapDialogVisible = visible => {
-    this.SaveDialog && this.SaveDialog.setDialogVisible(visible)
-  }
+  // setSaveMapDialogVisible = visible => {
+  //   this.SaveDialog && this.SaveDialog.setDialogVisible(visible)
+  // }
 
   /**
    * 中间弹出的命名框
    * @param visible
    */
-  setInputDialogVisible = (visible, params = {}) => {
-    this.InputDialog && this.InputDialog.setDialogVisible(visible, params)
-  }
+  // setInputDialogVisible = (visible, params = {}) => {
+  //   this.InputDialog && this.InputDialog.setDialogVisible(visible, params)
+  // }
 
   onMessageCalloutTap = info => {
     try {
@@ -1771,7 +1765,6 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
-        getMenuAlertDialogRef={() => this.MenuAlertDialog}
         showFullMap={this.showFullMap}
         user={this.props.user}
         map={this.props.map}
@@ -1783,7 +1776,6 @@ export default class MapView extends React.Component {
         device={this.props.device}
         setMapType={this.setMapType}
         online={this.props.online}
-        setMap2Dto3D={this.props.setMap2Dto3D}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
         ARView={this.state.showAIDetect}
@@ -1973,18 +1965,7 @@ export default class MapView extends React.Component {
     }
   }
 
-  renderMenuDialog = () => {
-    return (
-      <MenuAlertDialog
-        ref={ref => (this.MenuAlertDialog = ref)}
-        backHide="true"
-        existFullMap={() => this.showFullMap(false)}
-        showFullMap={this.showFullMap}
-        getToolBarRef={() => this.toolBox}
-      />
-    )
-  }
-
+  /** 顶部量算结果显示 **/
   renderMeasureLabel = () => {
     return (
       <View style={styles.measureResultContainer}>
@@ -2027,14 +2008,11 @@ export default class MapView extends React.Component {
         setNavigationDatas={this.setNavigationDatas}
         getNavigationDatas={this.getNavigationDatas}
         existFullMap={() => this.showFullMap(false)}
-        getMenuAlertDialogRef={() => this.MenuAlertDialog}
         addGeometrySelectedListener={this._addGeometrySelectedListener}
         removeGeometrySelectedListener={this._removeGeometrySelectedListener}
         showFullMap={this.showFullMap}
         setSaveViewVisible={this.setSaveViewVisible}
-        setSaveMapDialogVisible={this.setSaveMapDialogVisible}
         setContainerLoading={this.setLoading}
-        setInputDialogVisible={this.setInputDialogVisible}
         showMeasureResult={this.showMeasureResult}
         switchAr={this.switchAr}
         removeAIDetect={this.removeAIDetect}
@@ -3048,6 +3026,25 @@ export default class MapView extends React.Component {
       />
     )
   }
+  
+  /**
+   * 退出地图保存提示框
+   */
+  _renderExitSaveView = () => {
+    return (
+      <SaveView
+        ref={ref => GLOBAL.SaveMapView = ref}
+        language={this.props.language}
+        save={this.saveMap}
+        device={this.props.device}
+        notSave={this.closeMapHandler}
+        cancel={() => {
+          // this.backAction = null
+          GLOBAL.clickWait = false
+        }}
+      />
+    )
+  }
 
   renderContainer = () => {
     return (
@@ -3165,9 +3162,6 @@ export default class MapView extends React.Component {
         {!this.isExample &&
           this.props.analyst.params &&
           this.renderAnalystMapToolbar()}
-        {!this.isExample &&
-          !this.props.analyst.params &&
-          this.renderMenuDialog()}
         {this.state.measureShow &&
           !this.props.analyst.params &&
           this.renderMeasureLabel()}
@@ -3196,21 +3190,12 @@ export default class MapView extends React.Component {
         <Dialog
           ref={ref => (GLOBAL.removeObjectDialog = ref)}
           type={Dialog.Type.MODAL}
-          // title={'提示'}
           info={getLanguage(this.props.language).Prompt.DELETE_OBJECT}
-          // {'是否要删除该对象吗？\n（删除后将不可恢复）'}
           confirmAction={this.removeObject}
-          // style={styles.dialogStyle}
           opacityStyle={styles.dialogStyle}
           confirmBtnTitle={getLanguage(this.props.language).Prompt.DELETE}
           cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         />
-        <SaveDialog
-          ref={ref => (this.SaveDialog = ref)}
-          confirmAction={data => this.saveAsMap(data.mapTitle)}
-          type="normal"
-        />
-        <InputDialog ref={ref => (this.InputDialog = ref)} label="名称" />
         <PoiTopSearchBar
           device={this.props.device}
           ref={ref => (GLOBAL.PoiTopSearchBar = ref)}
@@ -3231,12 +3216,6 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
-        {/*<AudioDialog*/}
-        {/*ref={ref => (GLOBAL.AudioDialog = ref)}*/}
-        {/*defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}*/}
-        {/*device={this.props.device}*/}
-        {/*language={this.props.language}*/}
-        {/*/>*/}
         {global.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
@@ -3289,6 +3268,7 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
+        {this._renderExitSaveView()}
       </Container>
     )
   }

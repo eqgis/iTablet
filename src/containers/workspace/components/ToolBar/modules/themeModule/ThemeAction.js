@@ -1264,149 +1264,119 @@ function tableAction(type, item = {}) {
   const currentLayer = _data.currentLayer || _params.currentLayer
 
   let themeParams = {}
-
-  switch (item.key) {
-    case 'psDistance':
-      item.action({
-        callback: (result, listener) => {
-          Toast.show(`${result}米`)
-          this.MeasureListener = listener
-        },
-      })
-      break
-    case 'spaceSuerface':
-      item.action({
-        callback: (result, listener) => {
-          Toast.show(`${result}平方米`)
-          this.MeasureListener = listener
-        },
-      })
-      break
-    default: {
-      const type = item.key
-      const menuToolRef =
-        _params.getMenuAlertDialogRef && _params.getMenuAlertDialogRef()
-      if (menuToolRef && type !== '') {
-        // 创建的专题图类型
-        //   thiss
-        menuToolRef.setMenuType(type)
+  switch (_data.type) {
+    case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
+      // 分段专题图：分段方法
+      themeParams = {
+        LayerName: currentLayer.name,
+        RangeMode: item.key,
       }
-
-      switch (_data.type) {
-        case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
-          // 分段专题图：分段方法
-          themeParams = {
-            LayerName: currentLayer.name,
-            RangeMode: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGEMODE:
-          // 分段栅格专题图：分段方法
-          themeParams = {
-            LayerName: currentLayer.name,
-            RangeMode: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE:
-          themeParams = {
-            LayerName: currentLayer.name,
-            LabelBackShape: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME:
-          themeParams = {
-            LayerName: currentLayer.name,
-            FontName: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_FONTNAME:
-          themeParams = {
-            LayerName: currentLayer.name,
-            FontName: item.key,
-            type: 'range',
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION:
-          themeParams = {
-            LayerName: currentLayer.name,
-            Rotaion: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_ROTATION:
-          themeParams = {
-            LayerName: currentLayer.name,
-            Rotaion: item.key,
-            type: 'range',
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR:
-          // 统一标签前景色
-          themeParams = {
-            LayerName: currentLayer.name,
-            Color: item.key,
-            ColorType: 'UNIFORMLABEL_FORE_COLOR',
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
-          // 统一标签背景色
-          themeParams = {
-            LayerName: currentLayer.name,
-            Color: item.key,
-            ColorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE:
-          // 统计专题图类型
-          themeParams = {
-            LayerName: currentLayer.name,
-            ThemeGraphType: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_GRADUATEDMODE:
-          // 统计专题图统计值计算方法
-          themeParams = {
-            LayerName: currentLayer.name,
-            GraduatedMode: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE:
-          // 等级符号专题图分级方式
-          themeParams = {
-            LayerName: currentLayer.name,
-            GraduatedMode: item.key,
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_COLOR:
-          // 点密度专题图：点颜色
-          themeParams = {
-            LayerName: currentLayer.name,
-            LineColor: item.key,
-            ColorType: 'DOT_DENSITY_COLOR',
-          }
-          break
-        case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
-          // 等级符号专题图：点颜色
-          themeParams = {
-            LayerName: currentLayer.name,
-            LineColor: item.key,
-            ColorType: 'GRADUATED_SYMBOL_COLOR',
-          }
-          break
-        default:
-          themeParams = {
-            LayerName: currentLayer.name,
-            LabelBackShape: item.key,
-          }
-          break
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_RANGEMODE:
+      // 分段栅格专题图：分段方法
+      themeParams = {
+        LayerName: currentLayer.name,
+        RangeMode: item.key,
       }
-
-      ToolbarModule.addData({
-        themeCreateType: item.key,
-        themeParams,
-      })
-      item.action && item.action(item)
-    }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE:
+      themeParams = {
+        LayerName: currentLayer.name,
+        LabelBackShape: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FONTNAME:
+      themeParams = {
+        LayerName: currentLayer.name,
+        FontName: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_FONTNAME:
+      themeParams = {
+        LayerName: currentLayer.name,
+        FontName: item.key,
+        type: 'range',
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION:
+      themeParams = {
+        LayerName: currentLayer.name,
+        Rotaion: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_ROTATION:
+      themeParams = {
+        LayerName: currentLayer.name,
+        Rotaion: item.key,
+        type: 'range',
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_FORECOLOR:
+      // 统一标签前景色
+      themeParams = {
+        LayerName: currentLayer.name,
+        Color: item.key,
+        ColorType: 'UNIFORMLABEL_FORE_COLOR',
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
+      // 统一标签背景色
+      themeParams = {
+        LayerName: currentLayer.name,
+        Color: item.key,
+        ColorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE:
+      // 统计专题图类型
+      themeParams = {
+        LayerName: currentLayer.name,
+        ThemeGraphType: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_GRADUATEDMODE:
+      // 统计专题图统计值计算方法
+      themeParams = {
+        LayerName: currentLayer.name,
+        GraduatedMode: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_GRADUATEDMODE:
+      // 等级符号专题图分级方式
+      themeParams = {
+        LayerName: currentLayer.name,
+        GraduatedMode: item.key,
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_COLOR:
+      // 点密度专题图：点颜色
+      themeParams = {
+        LayerName: currentLayer.name,
+        LineColor: item.key,
+        ColorType: 'DOT_DENSITY_COLOR',
+      }
+      break
+    case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
+      // 等级符号专题图：点颜色
+      themeParams = {
+        LayerName: currentLayer.name,
+        LineColor: item.key,
+        ColorType: 'GRADUATED_SYMBOL_COLOR',
+      }
+      break
+    default:
+      themeParams = {
+        LayerName: currentLayer.name,
+        LabelBackShape: item.key,
+      }
+      break
   }
+  
+  ToolbarModule.addData({
+    themeCreateType: item.key,
+    themeParams,
+  })
+  item.action && item.action(item)
 }
 
 /**

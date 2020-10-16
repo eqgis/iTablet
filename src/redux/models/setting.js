@@ -158,18 +158,7 @@ export const setMapNavigation = (params = {}) => async dispatch => {
     payload: params || false,
   })
 }
-export const setMap2Dto3D = (params = {}) => async dispatch => {
-  await dispatch({
-    type: MAP_2DTO3D,
-    payload: params || false,
-  })
-}
-export const setMapIs3D = (params = {}) => async dispatch => {
-  await dispatch({
-    type: MAP_IS3D,
-    payload: params || false,
-  })
-}
+
 export const setNavigationChangeAR = (params = {}) => async dispatch => {
   await dispatch({
     type: NAVIGATION_CHANGEAR,
@@ -311,8 +300,6 @@ const initialState = fromJS({
     isShow: false,
     name: '',
   },
-  map2Dto3D: false,
-  mapIs3D: false,
   mapScaleView: true,
   navigationChangeAR: false,
   navigationPoiView: false,
@@ -428,24 +415,6 @@ export default handleActions(
         }
       }
       return state.setIn(['mapNavigation'], fromJS(data))
-    },
-    [`${MAP_2DTO3D}`]: (state, { payload }) => {
-      let data = state.toJS().map2Dto3D
-      if (payload !== undefined) {
-        data = payload
-      } else {
-        data = false
-      }
-      return state.setIn(['map2Dto3D'], fromJS(data))
-    },
-    [`${MAP_IS3D}`]: (state, { payload }) => {
-      let data = state.toJS().mapIs3D
-      if (payload !== undefined) {
-        data = payload
-      } else {
-        data = false
-      }
-      return state.setIn(['mapIs3D'], fromJS(data))
     },
     [`${NAVIGATION_CHANGEAR}`]: (state, { payload }) => {
       let data = state.toJS().navigationChangeAR

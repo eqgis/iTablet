@@ -7,8 +7,8 @@ export default class FunctionModule {
   constructor(props) {
     this.props = props || {}
     this.type = this.props.type
-    this.key = this.props.title
     this.title = this.props.title || ''
+    this.key = this.props.key || this.title
     this.size = this.props.size
     this.image = this.props.image
     // 模块相关数据
@@ -31,6 +31,8 @@ export default class FunctionModule {
     //   row = -1
     // return { height, column, row }
   }
+
+  getTitle = () => this.title
 
   setToolbarModule = param => {
     this.ToolbarModule = param

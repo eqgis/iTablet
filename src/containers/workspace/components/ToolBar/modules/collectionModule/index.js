@@ -19,7 +19,7 @@ class CollectionModule extends FunctionModule {
   action = async () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
-    if (this.type === ConstToolType.MAP_TEMPLATE_CREATE) {
+    if (this.type === ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE) {
       if (params && params.map && params.map.currentMap.path) {
         this.setModuleData(this.type)
         NavigationService.navigate('TemplateManager')
@@ -34,20 +34,19 @@ class CollectionModule extends FunctionModule {
 
 export default function(type = ConstToolType.COLLECTION) {
   switch (type) {
-    case ConstToolType.MAP_TEMPLATE_CREATE:
+    case ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE:
       return new CollectionModule({
-        type: ConstToolType.MAP_TEMPLATE_CREATE,
-        key: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+        type: ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE,
         title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
         size: 'large',
         image: getThemeAssets().functionBar.icon_tool_template,
         getData: CollectionData.getData,
         actions: CollectionAction,
       })
-    case ConstToolType.COLLECTION:
+    case ConstToolType.SM_MAP_COLLECTION:
+    default:
       return new CollectionModule({
         type,
-        key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         size: 'large',
         image: getThemeAssets().functionBar.icon_tool_collection,

@@ -5,7 +5,6 @@ export default {
   // 点击监听类型
   NORMAL: 'NORMAL',
   NULL: 'NULL',
-  // MAP_TOOL_TAGGING: 'MAP_TOOL_TAGGING',
   //标注事件
   MAP_MARKS_TAGGING: 'MAP_MARKS_TAGGING',
 

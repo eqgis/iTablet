@@ -9,6 +9,7 @@ import IncrementAction from './IncrementAction'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { ConstToolType } from '../../../../../../constants'
 
 class IncrementModule extends FunctionModule {
   constructor(props) {
@@ -23,8 +24,7 @@ class IncrementModule extends FunctionModule {
 
 export default function() {
   return new IncrementModule({
-    type: 'MAP_INCREAMENT',
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+    type: ConstToolType.SM_MAP_INCREMENT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_collection,

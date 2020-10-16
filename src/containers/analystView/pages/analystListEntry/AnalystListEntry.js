@@ -24,7 +24,7 @@ export default class AnalystListEntry extends Component {
     const { params } = props.navigation.state
     this.cb = params && params.cb
     this.type =
-      (params && params.type) || ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS
+      (params && params.type) || ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS
     // TODO 根据类型获取数据列表
     this.state = {
       title: (params && params.title) || '',
@@ -43,31 +43,31 @@ export default class AnalystListEntry extends Component {
   getData = type => {
     let data = []
     switch (type) {
-      case ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
         data =
           AnalystEntryData.getLocalAnalystEntryData(
             this.props.language,
-            ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+            ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH,
           ) || []
         break
-      case ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
+      case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
         data =
           AnalystEntryData.getLocalAnalystEntryData(
             this.props.language,
-            ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+            ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
           ) || []
         break
-      case ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
         data =
           AnalystEntryData.getLocalAnalystEntryData(
             this.props.language,
-            ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+            ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH,
           ) || []
         break
-      case ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS:
+      case ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS:
         data = AnalystEntryData.getOnlineAnalystData(this.props.language) || []
         break
-      case ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS:
+      case ConstToolType.SM_MAP_ANALYSIS_OVERLAY_ANALYSIS:
       default:
         data = AnalystEntryData.getOverlayAnalystData(this.props.language) || []
         break

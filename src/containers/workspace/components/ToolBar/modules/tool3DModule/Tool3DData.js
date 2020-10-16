@@ -19,7 +19,7 @@ async function getData(type, params) {
   let buttons = []
   let customView = null
   switch (type) {
-    case ConstToolType.MAP3D_TOOL:
+    case ConstToolType.SM_MAP3D_TOOL:
       data = [
         {
           key: 'distanceMeasure',
@@ -69,7 +69,7 @@ async function getData(type, params) {
         //     }
         //     try {
         //       // SScene.startDrawLine()
-        //       this.showMap3DTool(ConstToolType.MAP3D_PLANE_CLIP)
+        //       this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP)
         //     } catch (error) {
         //       Toast.show('点绘线失败')
         //     }
@@ -92,7 +92,7 @@ async function getData(type, params) {
         //     }
         //     try {
         //       // SScene.startDrawLine()
-        //       this.showMap3DTool(ConstToolType.MAP3D_CROSS_CLIP)
+        //       this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_CROSS_CLIP)
         //     } catch (error) {
         //       Toast.show('点绘线失败')
         //     }
@@ -111,7 +111,7 @@ async function getData(type, params) {
         })
       }
       break
-    case ConstToolType.MAP3D_SYMBOL_SELECT:
+    case ConstToolType.SM_MAP3D_TOOL_SELECT:
       data = [
         {
           key: 'cancel',
@@ -127,7 +127,7 @@ async function getData(type, params) {
       ]
       buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE]
       break
-    case ConstToolType.MAP3D_BOX_CLIPPING:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING:
       buttons = [
         ToolbarBtnType.CANCEL,
         {
@@ -137,20 +137,20 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP3D_BOX_CLIP:
-    case ConstToolType.MAP3D_PLANE_CLIP:
-    case ConstToolType.MAP3D_CROSS_CLIP:
-    case ConstToolType.MAP3D_CLIP_SHOW:
-    case ConstToolType.MAP3D_CLIP_HIDDEN:
-    case ConstToolType.MAP3D_BOX_CLIP_IN:
-    case ConstToolType.MAP3D_BOX_CLIP_OUT: {
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_CROSS_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_CLIP_SHOW:
+    case ConstToolType.SM_MAP3D_TOOL_CLIP_HIDDEN:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_IN:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_OUT: {
       const _data = await getClipData(type)
       data = _data.data
       buttons = _data.buttons
       customView = _data.customView
       break
     }
-    case ConstToolType.MAP3D_CIRCLEFLY:
+    case ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY:
       data = [
         {
           key: 'startFly',
@@ -179,7 +179,7 @@ async function getClipData(type) {
   let customView
   const data = clipSetting.layers
   switch (type) {
-    case ConstToolType.MAP3D_CLIP_SHOW:
+    case ConstToolType.SM_MAP3D_TOOL_CLIP_SHOW:
       if (data[0].selected === undefined) {
         data.map(item => {
           item.selected = true

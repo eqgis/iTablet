@@ -5,7 +5,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 
-class MarkModule extends FunctionModule {
+class NavigationModule extends FunctionModule {
   constructor(props) {
     super(props)
   }
@@ -19,9 +19,8 @@ class MarkModule extends FunctionModule {
 }
 
 export default function() {
-  return new MarkModule({
-    type: ConstToolType.MAP_NAVIGATION_MODULE,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
+  return new NavigationModule({
+    type: ConstToolType.SM_MAP_NAVIGATION_MODULE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_navigation,

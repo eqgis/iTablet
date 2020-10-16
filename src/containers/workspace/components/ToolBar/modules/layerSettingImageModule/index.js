@@ -11,9 +11,8 @@ class LayerSettingImageModule extends FunctionModule {
 
 export default function() {
   return new LayerSettingImageModule({
-    type: ConstToolType.LAYER_SETTING_IMAGE,
-    key: ConstToolType.LAYER_SETTING_IMAGE,
-    title: ConstToolType.LAYER_SETTING_IMAGE,
+    type: ConstToolType.SM_MAP_LAYER_SETTING_IMAGE,
+    title: ConstToolType.SM_MAP_LAYER_SETTING_IMAGE,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_style.png'),
     getData: LayerSettingImageData.getData,

@@ -514,8 +514,8 @@ export default class SecondMapSettings extends Component {
         {
           let type =
             title === getLanguage(GLOBAL.language).Map_Settings.COLOR_MODE
-              ? ConstToolType.MAP_COLOR_MODE
-              : ConstToolType.MAP_BACKGROUND_COLOR
+              ? ConstToolType.SM_MAP_SETTINGS_COLOR_MODE
+              : ConstToolType.SM_MAP_SETTINGS_BACKGROUND_COLOR
           mapSettingModule().action(type)
         }
 

@@ -49,16 +49,16 @@ export default class CustomModePage extends Component {
         LayerName: GLOBAL.currentLayer.name || '',
       }
       switch (this.type) {
-        case ConstToolType.MAP_THEME_PARAM_RANGE_MODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
           data = await SThemeCartography.getRangeList(layerParams)
           break
-        case ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE:
+        case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
           data = await SThemeCartography.getRangeLabelList(layerParams)
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
           data = await SThemeCartography.getUniqueList(layerParams)
           break
-        case ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR:
+        case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
           data = await SThemeCartography.getUniqueLabelList(layerParams)
           break
       }
@@ -198,7 +198,7 @@ export default class CustomModePage extends Component {
 
   _pressColor = index => {
     const _params = ToolbarModule.getParams()
-    let type = ConstToolType.MAP_COLOR_PICKER
+    let type = ConstToolType.SM_MAP_COLOR_PICKER
     ToolbarModule.addData({
       customModeData: this.state.data,
       customType: this.type,
@@ -217,16 +217,16 @@ export default class CustomModePage extends Component {
   _setAttrToMap = async params => {
     let result
     switch (this.type) {
-      case ConstToolType.MAP_THEME_PARAM_RANGE_MODE:
+      case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
         result = await SThemeCartography.setCustomThemeRange(params)
         break
-      case ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE:
+      case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
         result = await SThemeCartography.setCustomRangeLabel(params)
         break
-      case ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR:
+      case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
         result = await SThemeCartography.setCustomThemeUnique(params)
         break
-      case ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR:
+      case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
         result = true
         break
     }
@@ -358,22 +358,22 @@ export default class CustomModePage extends Component {
   render() {
     let title, hasSubTitle
     switch (this.type) {
-      case ConstToolType.MAP_THEME_PARAM_RANGELABEL_MODE:
+      case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
         title = getLanguage(GLOBAL.language).Map_Main_Menu
           .THEME_RANGES_LABEL_MAP_TITLE
         hasSubTitle = true
         break
-      case ConstToolType.MAP_THEME_PARAM_RANGE_MODE:
+      case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
         hasSubTitle = true
         title = getLanguage(GLOBAL.language).Map_Main_Menu
           .THEME_RANGES_MAP_TITLE
         break
-      case ConstToolType.MAP_THEME_PARAM_UNIQUE_COLOR:
+      case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
         hasSubTitle = false
         title = getLanguage(GLOBAL.language).Map_Main_Menu
           .THEME_UNIQUE_VALUES_MAP_TITLE
         break
-      case ConstToolType.MAP_THEME_PARAM_UNIQUELABEL_COLOR:
+      case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
         hasSubTitle = false
         title = getLanguage(GLOBAL.language).Map_Main_Menu
           .THEME_UNIQUE_VALUE_LABEL_MAP_TITLE

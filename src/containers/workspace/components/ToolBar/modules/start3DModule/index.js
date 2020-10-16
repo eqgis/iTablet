@@ -31,8 +31,7 @@ class Start3DModule extends FunctionModule {
 
 export default function() {
   return new Start3DModule({
-    type: ConstToolType.MAP_3D_START,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.START,
+    type: ConstToolType.SM_MAP3D_START,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_start,

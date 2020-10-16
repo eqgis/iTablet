@@ -11,7 +11,7 @@ function inputText() {
     cb: (result, styles) => {
       NavigationService.goBack()
       ToolbarModule.addData({ text: result, styles: styles })
-      ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE_add')
+      ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE_add')
     },
   })
 }
@@ -19,7 +19,7 @@ function inputText() {
 function addAtCurrent() {
   let { text, styles } = ToolbarModule.getData()
   SARText.addAtCurrentPosition(text, styles)
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+  ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
 }
 
 function addAtPoint() {
@@ -28,9 +28,12 @@ function addAtPoint() {
   SARText.setText(text, styles)
   SARText.setPlaneVisible(true)
   SARText.setOnAddListener(() => {
-    ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE')
+    ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARTEXTMODULE')
   })
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARTEXTMODULE_addAtPlane')
+  ToolbarModule.getParams().setToolbarVisible(
+    true,
+    'SM_ARTEXTMODULE_addAtPlane',
+  )
 }
 
 export default {

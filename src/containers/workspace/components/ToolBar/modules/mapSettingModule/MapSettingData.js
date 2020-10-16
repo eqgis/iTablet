@@ -14,10 +14,10 @@ function getData(type) {
   let data = []
   let customView = null
   switch (type) {
-    case ConstToolType.MAP_BACKGROUND_COLOR:
+    case ConstToolType.SM_MAP_SETTINGS_BACKGROUND_COLOR:
       data = mapBackGroundColor
       break
-    case ConstToolType.MAP_COLOR_MODE:
+    case ConstToolType.SM_MAP_SETTINGS_COLOR_MODE:
       data = colorMode()
       customView = () => <SelectList data={data} />
       break

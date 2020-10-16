@@ -21,8 +21,8 @@ function createPoint() {
     SScene.checkoutListener('startLabelOperate')
     GLOBAL.Map3DSymbol = true
     SScene.startDrawFavorite(getLanguage(params.language).Prompt.POI)
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINT)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINT, {
+    // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT)
+    params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT, {
       isFullScreen: false,
       // height: 0,
     })
@@ -49,8 +49,8 @@ function createText() {
         ToolbarModule.addData({ point: result })
       },
     })
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_TEXT)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_TEXT, {
+    // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_TEXT)
+    params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_TEXT, {
       isFullScreen: false,
       // height: 0,
     })
@@ -71,8 +71,8 @@ function createLine() {
   GLOBAL.Map3DSymbol = true
   try {
     SScene.startDrawLine()
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINTLINE)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINTLINE, {
+    // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_LINE)
+    params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT_LINE, {
       isFullScreen: false,
       // height: 0,
     })
@@ -93,8 +93,8 @@ function createRegion() {
     SScene.checkoutListener('startLabelOperate')
     GLOBAL.Map3DSymbol = true
     SScene.startDrawArea()
-    // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_POINTSURFACE)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_SYMBOL_POINTSURFACE, {
+    // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_SURFACE)
+    params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT_SURFACE, {
       isFullScreen: false,
       // height: 0,
     })
@@ -120,10 +120,10 @@ function clearPlotting() {
 function close(type) {
   const _params = ToolbarModule.getParams()
   if (
-    type === ConstToolType.MAP3D_SYMBOL_POINT ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE ||
-    type === ConstToolType.MAP3D_SYMBOL_TEXT
+    type === ConstToolType.SM_MAP3D_MARK_POINT ||
+    type === ConstToolType.SM_MAP3D_MARK_POINT_LINE ||
+    type === ConstToolType.SM_MAP3D_MARK_POINT_SURFACE ||
+    type === ConstToolType.SM_MAP3D_MARK_TEXT
   ) {
     SScene.clearAllLabel()
     GLOBAL.Map3DSymbol = false

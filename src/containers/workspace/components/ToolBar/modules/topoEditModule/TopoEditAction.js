@@ -21,7 +21,7 @@ async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
   let preType = _params.type
   if (
-    preType === ConstToolType.MAP_TOPO_SPLIT_LINE &&
+    preType === ConstToolType.SM_MAP_TOPO_SPLIT_LINE &&
     ToolbarModule.getData().event
   ) {
     ToolbarModule.addData({ secondEvent: event })
@@ -47,11 +47,11 @@ async function geometrySelected(event) {
   let secondLine = false
   if (geoType === DatasetType.LINE) {
     switch (preType) {
-      case ConstToolType.MAP_TOPO_EDIT:
-      case ConstToolType.MAP_TOPO_OBJECT_EDIT:
+      case ConstToolType.SM_MAP_TOPO_EDIT:
+      case ConstToolType.SM_MAP_TOPO_OBJECT_EDIT:
         {
           SMap.setAction(Action.VERTEXEDIT)
-          type = ConstToolType.MAP_TOPO_OBJECT_EDIT_SELECTED
+          type = ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED
           const _data = await TopoEditData.getData(type)
           const containerType = ToolbarType.table
           const data = ToolbarModule.getToolbarSize(containerType, {
@@ -66,7 +66,7 @@ async function geometrySelected(event) {
           })
         }
         break
-      case ConstToolType.MAP_TOPO_SMOOTH:
+      case ConstToolType.SM_MAP_TOPO_SMOOTH:
         //弹窗 输入平滑系数
         GLOBAL.InputDialog?.setDialogVisible(true, {
           title: getLanguage(GLOBAL.language).Prompt.SMOOTH_FACTOR,
@@ -81,7 +81,7 @@ async function geometrySelected(event) {
           cancelAction: inputCancel,
         })
         break
-      case ConstToolType.MAP_TOPO_EXTEND_LINE:
+      case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
         SMap.setAction(Action.PAN)
         Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_EXTEND_LINE)
         //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
@@ -89,7 +89,7 @@ async function geometrySelected(event) {
           GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
         }, 200)
         break
-      case ConstToolType.MAP_TOPO_SPLIT_LINE: {
+      case ConstToolType.SM_MAP_TOPO_SPLIT_LINE: {
         await SMap.setAction(Action.SELECT)
         let data = ToolbarModule.getData()
         let { secondEvent } = data
@@ -101,7 +101,7 @@ async function geometrySelected(event) {
         }
         break
       }
-      case ConstToolType.MAP_TOPO_TRIM_LINE:
+      case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
         SMap.setAction(Action.PAN)
         Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_TRIM_LINE)
         //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
@@ -109,17 +109,17 @@ async function geometrySelected(event) {
           GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
         }, 200)
         break
-      case ConstToolType.MAP_TOPO_RESAMPLE_LINE:
+      case ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE:
         resampleLine()
         break
-      case ConstToolType.MAP_TOPO_CHANGE_DIRECTION:
+      case ConstToolType.SM_MAP_TOPO_CHANGE_DIRECTION:
         changeLineDirection()
         break
     }
     if (
-      preType === ConstToolType.MAP_TOPO_EXTEND_LINE ||
-      preType === ConstToolType.MAP_TOPO_SPLIT_LINE ||
-      preType === ConstToolType.MAP_TOPO_TRIM_LINE
+      preType === ConstToolType.SM_MAP_TOPO_EXTEND_LINE ||
+      preType === ConstToolType.SM_MAP_TOPO_SPLIT_LINE ||
+      preType === ConstToolType.SM_MAP_TOPO_TRIM_LINE
     ) {
       let params = {
         id: event.id,
@@ -159,7 +159,7 @@ function dialogConfirm() {
 // function showMerge() {
 //   const _params = ToolbarModule.getParams()
 //   let preType = _params.type
-//   _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_MERGE_DATASET, {
+//   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_MERGE_DATASET, {
 //     isFullScreen: false,
 //     containerType: ToolbarType.list,
 //     height:
@@ -173,13 +173,13 @@ function dialogConfirm() {
 //切换编辑方式
 async function changeEditType() {
   const _params = ToolbarModule.getParams()
-  if (_params.type === ConstToolType.MAP_TOPO_SWITCH_TYPE) {
+  if (_params.type === ConstToolType.SM_MAP_TOPO_SWITCH_TYPE) {
     return
   }
   SMap.clearTrackingLayer()
   GLOBAL.TouchType = TouchType.NULL
   SMap.setAction(Action.PAN)
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_SWITCH_TYPE, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_SWITCH_TYPE, {
     containerType: ToolbarType.table,
     isFullScreen: false,
   })
@@ -215,45 +215,45 @@ async function switchType(item) {
   let type
   switch (key) {
     case constants.MAP_TOPO_SMOOTH:
-      type = ConstToolType.MAP_TOPO_SMOOTH
+      type = ConstToolType.SM_MAP_TOPO_SMOOTH
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
       break
     case constants.MAP_TOPO_SPLIT_LINE:
-      type = ConstToolType.MAP_TOPO_SPLIT_LINE
+      type = ConstToolType.SM_MAP_TOPO_SPLIT_LINE
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_SPLIT:
-      type = ConstToolType.MAP_TOPO_SPLIT
+      type = ConstToolType.SM_MAP_TOPO_SPLIT
       touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       await SMap.setAction(Action.PAN)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       break
     case constants.MAP_TOPO_EXTEND:
-      type = ConstToolType.MAP_TOPO_EXTEND_LINE
+      type = ConstToolType.SM_MAP_TOPO_EXTEND_LINE
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_TRIM:
-      type = ConstToolType.MAP_TOPO_TRIM_LINE
+      type = ConstToolType.SM_MAP_TOPO_TRIM_LINE
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_RESAMPLE:
-      type = ConstToolType.MAP_TOPO_RESAMPLE_LINE
+      type = ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_RESAMPLE_LINE)
       break
     case constants.MAP_TOPO_CHANGE_DIRECTION:
-      type = ConstToolType.MAP_TOPO_CHANGE_DIRECTION
+      type = ConstToolType.SM_MAP_TOPO_CHANGE_DIRECTION
       await SMap.setAction(Action.SELECT)
       Toast.show(
         getLanguage(GLOBAL.language).Prompt.SELECT_CHANGE_DIRECTION_LINE,
       )
       break
     case constants.MAP_TOPO_OBJECT_EDIT:
-      type = ConstToolType.MAP_TOPO_OBJECT_EDIT
+      type = ConstToolType.SM_MAP_TOPO_OBJECT_EDIT
       await SMap.setAction(Action.SELECT)
       break
   }
@@ -281,7 +281,7 @@ function redo() {
 
 function submit() {
   SMap.submit()
-  let type = ConstToolType.MAP_TOPO_EDIT
+  let type = ConstToolType.SM_MAP_TOPO_EDIT
   const _params = ToolbarModule.getParams()
   const containerType = ToolbarType.table
   ToolbarModule.setToolBarData(type)
@@ -297,14 +297,14 @@ function close() {
   const containerType = ToolbarType.table
   let nextType, touchType
   if (
-    _params.type === ConstToolType.MAP_TOPO_EDIT ||
-    _params.type === ConstToolType.MAP_TOPO_SWITCH_TYPE
+    _params.type === ConstToolType.SM_MAP_TOPO_EDIT ||
+    _params.type === ConstToolType.SM_MAP_TOPO_SWITCH_TYPE
   ) {
-    ToolbarModule.setToolBarData(ConstToolType.MAP_INCREMENT_GPS_TRACK)
-    nextType = ConstToolType.MAP_INCREMENT_GPS_TRACK
+    ToolbarModule.setToolBarData(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
+    nextType = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
     touchType = TouchType.NULL
   } else {
-    nextType = ConstToolType.MAP_TOPO_SWITCH_TYPE
+    nextType = ConstToolType.SM_MAP_TOPO_SWITCH_TYPE
   }
   SMap.setAction(Action.PAN)
   SMap.clearTrackingLayer()
@@ -348,7 +348,7 @@ async function inputConfirm(text) {
 function inputCancel() {
   const _params = ToolbarModule.getParams()
   SMap.setAction(Action.PAN)
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_SWITCH_TYPE, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_SWITCH_TYPE, {
     containerType: ToolbarType.table,
     isFullScreen: false,
   })
@@ -498,13 +498,13 @@ function editConfirm() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_TOPO_SPLIT_LINE:
+    case ConstToolType.SM_MAP_TOPO_SPLIT_LINE:
       lineSplitByLine()
       break
-    case ConstToolType.MAP_TOPO_EXTEND_LINE:
+    case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
       extendLine()
       break
-    case ConstToolType.MAP_TOPO_TRIM_LINE:
+    case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
       trimLine()
       break
   }
@@ -514,9 +514,9 @@ async function editCancel() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_TOPO_SPLIT_LINE:
-    case ConstToolType.MAP_TOPO_EXTEND_LINE:
-    case ConstToolType.MAP_TOPO_TRIM_LINE:
+    case ConstToolType.SM_MAP_TOPO_SPLIT_LINE:
+    case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
+    case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
       await SMap.setAction(Action.SELECT)
       ToolbarModule.addData({
         event: undefined,

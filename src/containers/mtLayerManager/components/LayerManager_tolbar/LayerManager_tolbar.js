@@ -6,18 +6,16 @@ import {
   ConstPath,
   UserType,
   ToolbarType,
-  ChunkType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import {
   layersetting,
-  layerThemeSetting,
+  layerThemeCreateSetting,
   layerPlottingSetting,
   layerCollectionSetting,
-  layerThemeSettings,
+  layerThemeModifySetting,
   layereditsetting,
   taggingData,
-  mscaleData,
   layerSettingCanVisit,
   layerSettingCanSelect,
   layerSettingCanEdit,
@@ -59,8 +57,6 @@ import {
   getLayerIconByType,
 } from '../../../../assets'
 import { stat } from 'react-native-fs'
-import { setCurrentLayer } from '../../../../redux/models/layers'
-
 
 /** 工具栏类型 **/
 const list = 'list'
@@ -148,61 +144,23 @@ export default class LayerManager_tolbar extends React.Component {
     }
   }
   
+  /** 获取Toolbar高度 **/
   getHeight = () => {
     let device = this.props.device
     let boxHeight
     if (this.state.isGroup) {
       boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
     } else {
-      switch (this.state.type) {
-        case ConstToolType.MAP_STYLE:
-        case ConstToolType.MAP_THEME_STYLE:
-        case ConstToolType.MAP_THEME_STYLES:
-          if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0) {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
-          } else {
-            boxHeight =
-              GLOBAL.Type === ChunkType.MAP_EDIT
-                ? ConstToolType.TOOLBAR_HEIGHT[6]
-                : ConstToolType.TOOLBAR_HEIGHT[7]
-          }
-          break
-        case ConstToolType.PLOTTING:
-        case ConstToolType.MAP_EDIT_MORE_STYLE:
-          if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0) {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[2]
-          } else {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[4]
-          }
-          break
-        case ConstToolType.COLLECTION:
-        case ConstToolType.MAP_NAVIGATION:
-          if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0) {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[2]
-          } else {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[6]
-          }
-          break
-        case ConstToolType.MAP_MAX_SCALE:
-        case ConstToolType.MAP_MIN_SCALE:
-          if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0) {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
-          } else {
-            boxHeight = ConstToolType.TOOLBAR_HEIGHT[5]
-          }
-          break
-        case ConstToolType.MAP_SCALE:
-          boxHeight = ConstToolType.TOOLBAR_HEIGHT_2[3]
-          break
-        case ConstToolType.MAP_EDIT_STYLE:
-          boxHeight = ConstToolType.TOOLBAR_HEIGHT[1]
-          break
-        case ConstToolType.MAP_EDIT_TAGGING:
-          boxHeight = ConstToolType.TOOLBAR_HEIGHT[2]
-          break
-        default:
-          boxHeight = ConstToolType.TOOLBAR_HEIGHT[0]
-          break
+      let length = 0
+      for (let i = 0; i < this.state.data.length; i++) {
+        length += this.state.data[i].data.length
+      }
+      length = length > 8 ? 8 : length // 竖屏最多显示8行的高度
+      boxHeight = length * ConstToolType.TOOLBAR_HEIGHT[0]
+      if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0 && length > 3) {
+        boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
+      } else {
+        boxHeight = length * ConstToolType.TOOLBAR_HEIGHT[0]
       }
     }
     this.height = boxHeight
@@ -213,19 +171,19 @@ export default class LayerManager_tolbar extends React.Component {
     let headerData = layerSettingCanVisit(this.props.language)
     !isGroup && headerData.concat(layerSettingCanSelect(this.props.language))
     switch (type) {
-      case ConstToolType.MAP_STYLE:
+      case ConstToolType.SM_MAP_STYLE:
         data = layersetting(this.props.language, isGroup)
         data[0].headers = headerData
         break
-      case ConstToolType.MAP_THEME_STYLE:
-        data = layerThemeSetting(this.props.language, isGroup)
+      case ConstToolType.SM_MAP_LAYER_THEME_CREATE:
+        data = layerThemeCreateSetting(this.props.language, isGroup)
         data[0].headers = headerData
         break
-      case ConstToolType.MAP_THEME_STYLES:
-        data = layerThemeSettings(this.props.language, isGroup)
+      case ConstToolType.SM_MAP_LAYER_THEME_MODIFY:
+        data = layerThemeModifySetting(this.props.language, isGroup)
         data[0].headers = headerData
         break
-      case ConstToolType.PLOTTING:
+      case ConstToolType.SM_MAP_PLOT:
         //如果是cad图层 单独处理，其他图层通采集图层
         // headerData = headerData
         // .concat(layerSettingCanEdit(this.props.language))
@@ -233,12 +191,12 @@ export default class LayerManager_tolbar extends React.Component {
         data = layerPlottingSetting(this.props.language, isGroup)
         data[0].headers = headerData
         break
-      case ConstToolType.MAP_NAVIGATION:
+      case ConstToolType.SM_MAP_LAYER_NAVIGATION:
         headerData = headerData.concat(layerSettingCanEdit(this.props.language))
         data = layerNavigationSetting(this.props.language, isGroup)
         data[0].headers = headerData
         break
-      case ConstToolType.COLLECTION:
+      case ConstToolType.SM_MAP_COLLECTION:
         //collection 单独处理
         headerData = headerData
           .concat(layerSettingCanEdit(this.props.language))
@@ -246,10 +204,10 @@ export default class LayerManager_tolbar extends React.Component {
         data = layerCollectionSetting(this.props.language, isGroup, layerData)
         data[0].headers = headerData
         break
-      case ConstToolType.MAP_EDIT_STYLE:
+      case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
         data = layereditsetting(global.language)
         break
-      case ConstToolType.MAP_EDIT_MORE_STYLE: {
+      case ConstToolType.SM_MAP_LAYER_BASE_CHANGE: {
         let layerManagerDataArr = [...layerManagerData()]
         for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
           let baseMap = this.props.curUserBaseMaps[i]
@@ -300,14 +258,8 @@ export default class LayerManager_tolbar extends React.Component {
       //         data:layerManagerData,
       //       },
       //     ]
-      case ConstToolType.MAP_EDIT_TAGGING:
+      case ConstToolType.SM_MAP_EDIT_TAGGING:
         data = taggingData(global.language)
-        break
-      case ConstToolType.MAP_MAX_SCALE:
-        data = mscaleData
-        break
-      case ConstToolType.MAP_MIN_SCALE:
-        data = mscaleData
         break
     }
     return data
@@ -326,7 +278,7 @@ export default class LayerManager_tolbar extends React.Component {
       this.isShow = isShow
     }
     // Box内容框的显示和隐藏
-    if (this.state.type === ConstToolType.MAP_THEME_PARAM) {
+    if (this.state.type === ConstToolType.SM_MAP_THEME_PARAM) {
       Animated.timing(this.state.boxHeight, {
         toValue: 0,
         duration: 300,
@@ -552,7 +504,7 @@ export default class LayerManager_tolbar extends React.Component {
       section.title === getLanguage(global.language).Map_Layer.BASEMAP_SWITH
     ) {
       //'切换底图') {
-      this.setVisible(true, ConstToolType.MAP_EDIT_MORE_STYLE, {
+      this.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
         height: ConstToolType.TOOLBAR_HEIGHT[5],
         layerData: this.state.layerData,
       })
@@ -576,7 +528,7 @@ export default class LayerManager_tolbar extends React.Component {
         this.props.navigation.navigate('MapView')
         let _params = ToolbarModule.getParams()
         _params.showFullMap(true)
-        _params.setToolbarVisible(true, ConstToolType.MAP_LAYER_VISIBLE_SCALE, {
+        _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
           containerType: ToolbarType.multiPicker,
           isFullScreen: false,
           resetToolModuleData: true,
@@ -693,7 +645,7 @@ export default class LayerManager_tolbar extends React.Component {
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(
             true,
-            ConstToolType.MAP_THEME_CREATE_BY_LAYER,
+            ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER,
             {
               isFullScreen: true,
               // createThemeByLayer: this.state.layerData.path,
@@ -701,7 +653,7 @@ export default class LayerManager_tolbar extends React.Component {
           )
         GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
         ToolbarModule.setData({
-          type: ConstToolType.MAP_THEME_CREATE_BY_LAYER,
+          type: ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER,
           getData: themeModule().getData,
           actions: themeModule().actions,
           currentLayer: this.state.layerData,
@@ -1248,17 +1200,15 @@ export default class LayerManager_tolbar extends React.Component {
     switch (this.state.containerType) {
       case list:
         switch (this.state.type) {
-          case ConstToolType.MAP_MAX_SCALE:
-          case ConstToolType.MAP_MIN_SCALE:
-          case ConstToolType.MAP_EDIT_TAGGING:
-          case ConstToolType.MAP_STYLE:
-          case ConstToolType.MAP_THEME_STYLE:
-          case ConstToolType.MAP_THEME_STYLES:
-          case ConstToolType.COLLECTION:
-          case ConstToolType.PLOTTING:
-          case ConstToolType.MAP_EDIT_STYLE:
-          case ConstToolType.MAP_EDIT_MORE_STYLE:
-          case ConstToolType.MAP_NAVIGATION:
+          case ConstToolType.SM_MAP_EDIT_TAGGING:
+          case ConstToolType.SM_MAP_STYLE:
+          case ConstToolType.SM_MAP_LAYER_THEME_CREATE:
+          case ConstToolType.SM_MAP_LAYER_THEME_MODIFY:
+          case ConstToolType.SM_MAP_COLLECTION:
+          case ConstToolType.SM_MAP_PLOT:
+          case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
+          case ConstToolType.SM_MAP_LAYER_BASE_CHANGE:
+          case ConstToolType.SM_MAP_LAYER_NAVIGATION:
             box = this.renderList()
             break
         }

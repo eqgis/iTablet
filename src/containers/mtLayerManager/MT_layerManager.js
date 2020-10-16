@@ -383,7 +383,7 @@ export default class MT_layerManager extends React.Component {
   }
 
   onToolBasePress = async ({ data, section }) => {
-    this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_STYLE, {
+    this.toolBox.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_DEFAULT, {
       height: ConstToolType.TOOLBAR_HEIGHT[1],
       layerData: data,
       section: section,
@@ -392,7 +392,7 @@ export default class MT_layerManager extends React.Component {
   }
 
   taggingTool = async ({ data, index }) => {
-    this.toolBox.setVisible(true, ConstToolType.MAP_EDIT_TAGGING, {
+    this.toolBox.setVisible(true, ConstToolType.SM_MAP_EDIT_TAGGING, {
       height: ConstToolType.TOOLBAR_HEIGHT[0],
       layerData: data,
       index: index,
@@ -427,19 +427,16 @@ export default class MT_layerManager extends React.Component {
         case ThemeType.DOTDENSITY:
         case ThemeType.GRIDUNIQUE:
         case ThemeType.GRIDRANGE:
-          themeType = ConstToolType.MAP_THEME_STYLES
+          themeType = ConstToolType.SM_MAP_LAYER_THEME_MODIFY
           break
         default:
-          themeType = ConstToolType.MAP_THEME_STYLE
+          themeType = ConstToolType.SM_MAP_LAYER_THEME_CREATE
           break
       }
       if (data.isHeatmap) {
-        themeType = ConstToolType.MAP_THEME_STYLES
+        themeType = ConstToolType.SM_MAP_LAYER_THEME_MODIFY
       }
       this.toolBox.setVisible(true, themeType, {
-        height: isGroup
-          ? ConstToolType.TOOLBAR_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT[6],
         layerData: data,
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
@@ -448,10 +445,7 @@ export default class MT_layerManager extends React.Component {
       GLOBAL.Type === ChunkType.MAP_EDIT ||
       GLOBAL.Type === ChunkType.MAP_ANALYST
     ) {
-      this.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
-        height: isGroup
-          ? ConstToolType.TOOLBAR_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT[6],
+      this.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
         layerData: data,
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
@@ -460,28 +454,19 @@ export default class MT_layerManager extends React.Component {
       GLOBAL.Type === ChunkType.MAP_PLOTTING &&
       data.name.substring(0, 9) === 'PlotEdit_'
     ) {
-      this.toolBox.setVisible(true, ConstToolType.PLOTTING, {
-        height: isGroup
-          ? ConstToolType.TOOLBAR_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT[4],
+      this.toolBox.setVisible(true, ConstToolType.SM_MAP_PLOT, {
         layerData: data,
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
       })
     } else if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      this.toolBox.setVisible(true, ConstToolType.MAP_NAVIGATION, {
-        height: isGroup
-          ? ConstToolType.TOOLBAR_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT[4],
+      this.toolBox.setVisible(true, ConstToolType.SM_MAP_LAYER_NAVIGATION, {
         layerData: data,
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
       })
     } else {
-      this.toolBox.setVisible(true, ConstToolType.COLLECTION, {
-        height: isGroup
-          ? ConstToolType.TOOLBAR_HEIGHT[3]
-          : ConstToolType.TOOLBAR_HEIGHT[5],
+      this.toolBox.setVisible(true, ConstToolType.SM_MAP_COLLECTION, {
         layerData: data,
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
@@ -956,7 +941,6 @@ export default class MT_layerManager extends React.Component {
         device={this.props.device}
         user={this.props.user}
         navigation={this.props.navigation}
-        currentLayer={this.props.currentLayer}
       />
     )
   }

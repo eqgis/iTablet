@@ -13,7 +13,8 @@ import {
   Animated,
 } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
-import { color } from '../../../../styles'
+import { getPublicAssets } from '../../../../assets'
+import { color, zIndexLevel } from '../../../../styles'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { TouchType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
@@ -57,7 +58,7 @@ export default class PreviewHeader extends React.Component {
     ToolbarModule.setData({})
   }
   render() {
-    const backImg = require('../../../../assets/public/Frenchgrey/icon-back-white.png')
+    const backImg = getPublicAssets().common.icon_back
     return (
       <Animated.View
         style={[
@@ -69,7 +70,7 @@ export default class PreviewHeader extends React.Component {
           },
         ]}
       >
-        <TouchableOpacity onPress={this._back}>
+        <TouchableOpacity style={styles.backBtn} onPress={this._back}>
           <Image source={backImg} resizeMode={'contain'} style={styles.back} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
@@ -94,7 +95,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: color.contentColorBlack,
+    backgroundColor: color.white,
+  },
+  backBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: scaleSize(20),
   },
   back: {
     width: scaleSize(60),
@@ -103,12 +109,13 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
-    color: color.white,
+    color: color.content,
     fontSize: setSpText(36),
+    backgroundColor: 'rgba(255, 255, 255, 0)',
   },
   confirm: {
     height: scaleSize(50),
@@ -118,6 +125,6 @@ const styles = StyleSheet.create({
   },
   confirmTxt: {
     fontSize: setSpText(20),
-    color: color.white,
+    color: color.content,
   },
 })

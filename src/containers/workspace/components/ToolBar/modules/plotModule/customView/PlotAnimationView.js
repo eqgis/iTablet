@@ -550,7 +550,7 @@ export default class PlotAnimationView extends React.Component {
     GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
     let height = 0
     // this.props.showFullMap && this.props.showFullMap(true)
-    let type = ConstToolType.PLOT_ANIMATION_START
+    let type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
     this.props.showToolbar(true, type, {
       isFullScreen: false,
       height,
@@ -561,7 +561,7 @@ export default class PlotAnimationView extends React.Component {
   createAnimationWay = () => {
     if (this.state.animationMode === 0) {
       GLOBAL.animationWayData = this.getCreateInfo()
-      this.props.showToolbar(true, ConstToolType.PLOT_ANIMATION_WAY, {
+      this.props.showToolbar(true, ConstToolType.SM_MAP_PLOT_ANIMATION_WAY, {
         containerType: 'table',
         height: ConstToolType.HEIGHT[0],
         isFullScreen: false,

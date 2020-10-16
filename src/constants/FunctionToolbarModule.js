@@ -425,7 +425,7 @@ const legendMenuInfo = (param, orientation) => [
       }
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
           containerType: ToolbarType.colorTable,
           column,
           isFullScreen: false,
@@ -525,7 +525,7 @@ const legendMenuInfoNotVisible = (param, orientation) => [
       }
       GLOBAL.toolBox && GLOBAL.toolBox.menu()
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.LEGEND, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
           containerType: ToolbarType.colorTable,
           column,
           isFullScreen: false,

@@ -16,7 +16,7 @@ function getData(type) {
     return { data, buttons }
   }
   switch (type) {
-    case ConstToolType.MAP_EDIT_POINT:
+    case ConstToolType.SM_MAP_EDIT_POINT:
       data = [
         {
           key: constants.MOVE,
@@ -48,7 +48,7 @@ function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_EDIT_LINE:
+    case ConstToolType.SM_MAP_EDIT_LINE:
       data = [
         {
           key: constants.MOVE,
@@ -117,7 +117,7 @@ function getData(type) {
         // },
       ]
       break
-    case ConstToolType.MAP_EDIT_REGION:
+    case ConstToolType.SM_MAP_EDIT_REGION:
       data = [
         {
           key: constants.MOVE,
@@ -240,7 +240,7 @@ function getData(type) {
         // },
       ]
       break
-    case ConstToolType.MAP_EDIT_TEXT:
+    case ConstToolType.SM_MAP_EDIT_TEXT:
       data = [
         {
           key: constants.MOVE,
@@ -272,7 +272,7 @@ function getData(type) {
         },
       ]
       break
-    case ConstToolType.MAP_EDIT_PLOT:
+    case ConstToolType.SM_MAP_EDIT_PLOT:
       data = [
         {
           key: constants.EDIT_NODE,
@@ -316,19 +316,19 @@ function getData(type) {
       ]
       break
   }
-  if (type === ConstToolType.MAP_EDIT_DEFAULT) {
+  if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
     buttons = [
       ToolbarBtnType.CANCEL,
       ToolbarBtnType.PLACEHOLDER,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]
-  } else if (type === ConstToolType.MAP_EDIT_TAGGING) {
+  } else if (type === ConstToolType.SM_MAP_EDIT_TAGGING) {
     buttons = [
       ToolbarBtnType.CANCEL,
       ToolbarBtnType.PLACEHOLDER,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]
-  } else if (type === ConstToolType.MAP_EDIT_TAGGING_SETTING) {
+  } else if (type === ConstToolType.SM_MAP_EDIT_TAGGING_SETTING) {
     buttons = [
       ToolbarBtnType.TAGGING_BACK,
       ToolbarBtnType.PLACEHOLDER,

@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { SScene } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
+import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 
 export default class Map3DToolBar extends React.Component {
@@ -96,7 +97,7 @@ export default class Map3DToolBar extends React.Component {
   }
 
   renderListItem = ({ item, index }) => {
-    if (this.props.type === 'MAP3D_BASE') {
+    if (this.props.type === ConstToolType.SM_MAP3D_BASE) {
       if (item.show) {
         return (
           // <TouchableOpacity
@@ -139,14 +140,14 @@ export default class Map3DToolBar extends React.Component {
         return <View />
       }
     }
-    if (this.props.type === 'MAP3D_ADD_LAYER') {
+    if (this.props.type === ConstToolType.SM_MAP3D_ADD_LAYER) {
       return (
         <TouchableOpacity onPress={item.action()}>
           <Text style={styles.item}>{item.title}</Text>
         </TouchableOpacity>
       )
     }
-    if (this.props.type === 'MAP3D_TOOL_FLYLIST') {
+    if (this.props.type === 'SM_MAP3D_FLY_LIST') {
       return (
         <TouchableOpacity
           onPress={() => {
@@ -188,7 +189,7 @@ export default class Map3DToolBar extends React.Component {
   }
 
   renderListSectionHeader = ({ section }) => {
-    if (this.props.type === 'MAP3D_BASE') {
+    if (this.props.type === ConstToolType.SM_MAP3D_BASE) {
       return (
         // <View style={styles.sceneView}>
         //   <Image
@@ -200,10 +201,10 @@ export default class Map3DToolBar extends React.Component {
         <View />
       )
     }
-    if (this.props.type === 'MAP3D_ADD_LAYER') {
+    if (this.props.type === ConstToolType.SM_MAP3D_ADD_LAYER) {
       return <View />
     }
-    if (this.props.type === 'MAP3D_TOOL_FLYLIST') {
+    if (this.props.type === ConstToolType.SM_MAP3D_FLY_LIST) {
       // return <Text style={styles.sectionHeader}>{section.title}</Text>
       return (
         <View style={styles.fltListHeader}>
@@ -323,7 +324,7 @@ export default class Map3DToolBar extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    if (this.props.type === 'MAP3D_WORKSPACE_LIST') {
+    if (this.props.type === ConstToolType.SM_MAP3D_WORKSPACE_LIST) {
       let info
       if (global.language === 'CN') info = item.mtime
       else if (global.language === 'EN') {
@@ -366,7 +367,7 @@ export default class Map3DToolBar extends React.Component {
         </TouchableOpacity>
       )
     }
-    if (this.props.type === 'MAP3D_IMPORTWORKSPACE') {
+    if (this.props.type === ConstToolType.SM_MAP3D_IMPORTWORKSPACE) {
       return (
         <TouchableOpacity
           onPress={() => {
@@ -417,8 +418,8 @@ export default class Map3DToolBar extends React.Component {
 
   render() {
     if (
-      this.props.type === 'MAP3D_ATTRIBUTE' ||
-      this.props.type === 'MAP3D_IMPORTWORKSPACE'
+      this.props.type === ConstToolType.SM_MAP3D_ATTRIBUTE ||
+      this.props.type === ConstToolType.SM_MAP3D_IMPORTWORKSPACE
     ) {
       return (
         <FlatList
@@ -427,7 +428,7 @@ export default class Map3DToolBar extends React.Component {
           keyExtractor={(item, index) => index}
         />
       )
-    } else if (this.props.type === 'MAP3D_WORKSPACE_LIST') {
+    } else if (this.props.type === ConstToolType.SM_MAP3D_WORKSPACE_LIST) {
       return (
         <View style={styles.sceneHead}>
           <View style={styles.sceneView}>

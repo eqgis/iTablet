@@ -86,7 +86,7 @@ export default class AnalystMapButtons extends React.Component {
 
   getData = type => {
     let data = {
-      [ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH]: [
+      [ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH]: [
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_START_STATION,
@@ -116,7 +116,7 @@ export default class AnalystMapButtons extends React.Component {
           },
         },
       ],
-      [ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS]: [
+      [ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS]: [
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_AS_START_STATION,
@@ -132,7 +132,7 @@ export default class AnalystMapButtons extends React.Component {
           },
         },
       ],
-      [ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH]: [
+      [ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH]: [
         {
           title: getLanguage(this.props.language).Analyst_Labels.ADD_STATIONS,
           action: () => {

@@ -146,7 +146,7 @@ function showSaveDialog(type) {
     return
   }
   if (
-    type !== ConstToolType.MAP_SHARE_MAP3D &&
+    type !== ConstToolType.SM_MAP3D_SHARE &&
     !ToolbarModule.getParams().map.currentMap.name
   ) {
     Toast.show(ConstInfo.PLEASE_SAVE_MAP)

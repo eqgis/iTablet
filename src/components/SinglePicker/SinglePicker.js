@@ -62,6 +62,7 @@ export default class SinglePicker extends React.Component {
       this.props.popData.length > 0 &&
       this.props.popData[0]
     this.update = false
+    this.selectItem = this.currentFirstData // 默认选中数据
   }
 
   shouldComponentUpdate(nextProps, nextState) {

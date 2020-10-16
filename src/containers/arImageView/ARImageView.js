@@ -32,8 +32,8 @@ export default class ARImageView extends React.Component {
   componentDidMount() {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arImageModule)
-    ToolbarModule.setToolBarData('ARIMAGEMODULE')
-    this.toolbar.setVisible(true, 'ARIMAGEMODULE', {
+    ToolbarModule.setToolBarData('SM_ARIMAGEMODULE')
+    this.toolbar.setVisible(true, 'SM_ARIMAGEMODULE', {
       type: 'table',
     })
     setTimeout(async () => {

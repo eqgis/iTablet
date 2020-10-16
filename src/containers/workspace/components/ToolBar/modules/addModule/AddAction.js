@@ -12,7 +12,7 @@ import AddData from './AddData'
  * @returns {Promise.<void>}
  */
 async function listAction(type, params = {}) {
-  if (type === ConstToolType.MAP_ADD) {
+  if (type === ConstToolType.SM_MAP_ADD) {
     // 数据源和地图列表点击事件
     const _params = ToolbarModule.getParams()
     if (
@@ -22,7 +22,7 @@ async function listAction(type, params = {}) {
     ) {
       // 打开数据源
       const _data = await AddData.getData(
-        ConstToolType.MAP_THEME_ADD_DATASET,
+        ConstToolType.SM_MAP_ADD_DATASET,
         params.item,
       )
 
@@ -53,7 +53,7 @@ async function listAction(type, params = {}) {
       }
 
       _params.showFullMap && _params.showFullMap(true)
-      _params.setToolbarVisible(true, ConstToolType.MAP_THEME_ADD_DATASET, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_DATASET, {
         containerType: ToolbarType.selectableList,
         isFullScreen: true,
         isTouchProgress: false,
@@ -104,11 +104,11 @@ async function listAction(type, params = {}) {
         currentSymbolFile: filePath,
         lastData: ToolbarModule.getData().data,
       })
-      _params.setToolbarVisible(true, 'ADD_SYMBOL_PATH', {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_SYMBOL_PATH, {
         containerType: ToolbarType.list,
       })
     }
-  } else if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
+  } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     // 数据集列表点击事件
     let data = ToolbarModule.getData()
     if (data && data.selectList) {
@@ -127,18 +127,18 @@ async function listSelectableAction({ selectList }) {
 function toolbarBack(type) {
   const _params = ToolbarModule.getParams()
   if (!_params) return
-  if (type === 'ADD_SYMBOL_SYMBOLS') {
+  if (type === ConstToolType.SM_MAP_ADD_SYMBOL_SYMBOLS) {
     ToolbarModule.addData({
       currentSymbolPath: '',
     })
-    _params.setToolbarVisible(true, 'ADD_SYMBOL_PATH', {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_SYMBOL_PATH, {
       containerType: ToolbarType.list,
     })
   } else {
     const _data = ToolbarModule.getData()
     const lastData = _data.lastData || {}
     const { selectList } = _data
-    _params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD, {
       isFullScreen: true,
       isTouchProgress: false,
       showMenuDialog: false,
@@ -149,7 +149,7 @@ function toolbarBack(type) {
     })
 
     ToolbarModule.addData({
-      type: ConstToolType.MAP_ADD,
+      type: ConstToolType.SM_MAP_ADD,
       getData: AddData.getData,
       data: lastData,
       actions,
@@ -221,7 +221,7 @@ let onSelectPath = path => {
     currentSymbolPath: symbolPath,
   })
 
-  _params.setToolbarVisible(true, 'ADD_SYMBOL_SYMBOLS', {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_SYMBOL_SYMBOLS, {
     containerType: ToolbarType.symbol,
   })
 }

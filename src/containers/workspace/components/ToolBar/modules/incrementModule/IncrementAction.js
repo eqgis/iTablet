@@ -34,18 +34,18 @@ async function cancel() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
       BackgroundTimer.stopBackgroundTimer()
       await SMap.clearIncrementPoints()
       break
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       await SMap.clearIncrementPoints()
       break
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
       await SMap.cancel()
       await SMap.setAction(Action.CREATEPOLYLINE)
       break
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       await SMap.cancel()
       await SMap.setAction(Action.FREEDRAW)
       break
@@ -68,16 +68,16 @@ async function submit() {
     const _params = ToolbarModule.getParams()
     let type = _params.type
     switch (type) {
-      case ConstToolType.MAP_INCREMENT_GPS_POINT:
-      case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+      case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
+      case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
         BackgroundTimer.stopBackgroundTimer()
         await SMap.submitIncrement()
         break
-      case ConstToolType.MAP_INCREMENT_POINTLINE:
+      case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
         await SMap.submit()
         await SMap.setAction(Action.CREATEPOLYLINE)
         break
-      case ConstToolType.MAP_INCREMENT_FREELINE:
+      case ConstToolType.SM_MAP_INCREMENT_FREELINE:
         await SMap.submit()
         await SMap.setAction(Action.FREEDRAW)
         break
@@ -95,11 +95,11 @@ async function redo() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       await SMap.redoIncrement()
       break
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       await SMap.redo()
       break
   }
@@ -113,11 +113,11 @@ async function undo() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       await SMap.undoIncrement()
       break
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       await SMap.undo()
       break
   }
@@ -126,7 +126,7 @@ async function undo() {
 /**
  * 切换采集方式
  */
-async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
+async function changeMethod(type = ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD) {
   BackgroundTimer.stopBackgroundTimer()
   const _params = ToolbarModule.getParams()
   let containerType = ToolbarType.table
@@ -143,7 +143,7 @@ async function changeMethod(type = ConstToolType.MAP_INCREMENT_CHANGE_METHOD) {
 function changeNetwork() {
   const _params = ToolbarModule.getParams()
   let type = _params.type
-  _params.setToolbarVisible(true, ConstToolType.MAP_INCREMENT_CHANGE_NETWORK, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
     isFullScreen: false,
     containerType: ToolbarType.list,
     height:
@@ -161,18 +161,18 @@ let image
  * 获取当前增量方式图片
  */
 function getTypeImage(type) {
-  if (type === ConstToolType.MAP_INCREMENT_CHANGE_METHOD) return image
+  if (type === ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD) return image
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
       image = getPublicAssets().navigation.btn_increment_point_line
       break
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       image = getPublicAssets().navigation.btn_increment_freeline
       break
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       image = getPublicAssets().navigation.btn_increment_gps_point
       break
-    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
       image = getPublicAssets().navigation.btn_increment_gps_track
       break
     default:
@@ -191,14 +191,14 @@ async function methodSelected(type) {
   await SMap.clearIncrementPoints()
   await SMap.setAction(Action.PAN)
   switch (type) {
-    case ConstToolType.MAP_INCREMENT_GPS_POINT:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       break
-    case ConstToolType.MAP_INCREMENT_GPS_TRACK:
+    case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
       break
-    case ConstToolType.MAP_INCREMENT_POINTLINE:
+    case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
       await SMap.setAction(Action.CREATEPOLYLINE)
       break
-    case ConstToolType.MAP_INCREMENT_FREELINE:
+    case ConstToolType.SM_MAP_INCREMENT_FREELINE:
       await SMap.setAction(Action.FREEDRAW)
       break
   }
@@ -238,7 +238,7 @@ async function topoEdit() {
   SMap.submit()
   await SMap.setAction(Action.SELECT)
   _params.setToolbarVisible &&
-    _params.setToolbarVisible(true, ConstToolType.MAP_TOPO_EDIT, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
       isFullScreen: false,
       height: 0,
       resetToolModuleData: true,

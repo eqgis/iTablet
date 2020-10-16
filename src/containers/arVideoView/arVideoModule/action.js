@@ -14,7 +14,10 @@ function selectVideo() {
       if (data && data.length > 0) {
         let path = data[0].uri
         ToolbarModule.addData({ path: path })
-        ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE_add')
+        ToolbarModule.getParams().setToolbarVisible(
+          true,
+          'SM_ARVIDEOMODULE_add',
+        )
       }
     },
   })
@@ -23,7 +26,7 @@ function selectVideo() {
 function addAtCurrent() {
   let { path } = ToolbarModule.getData()
   SARVideoView.addAtCurrentPosition(path)
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+  ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARVIDEOMODULE')
 }
 
 function addAtPoint() {
@@ -32,9 +35,12 @@ function addAtPoint() {
   SARVideoView.setVideoPath(path)
   SARVideoView.setPlaneVisible(true)
   SARVideoView.setOnAddListener(() => {
-    ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE')
+    ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARVIDEOMODULE')
   })
-  ToolbarModule.getParams().setToolbarVisible(true, 'ARVIDEOMODULE_addAtPlane')
+  ToolbarModule.getParams().setToolbarVisible(
+    true,
+    'SM_ARVIDEOMODULE_addAtPlane',
+  )
 }
 
 export default {

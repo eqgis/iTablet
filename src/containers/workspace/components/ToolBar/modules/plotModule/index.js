@@ -19,7 +19,7 @@ class PlotModule extends FunctionModule {
     let containerType, data
     this.setModuleData(this.type)
     switch (this.type) {
-      case ConstToolType.PLOTTING:
+      case ConstToolType.SM_MAP_PLOT:
         if (!GLOBAL.isInitSymbolPlotsEnd) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.MAP_LOADING)
           return
@@ -27,17 +27,16 @@ class PlotModule extends FunctionModule {
         containerType = ToolbarType.tabs
         data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
         params.showFullMap && params.showFullMap(true)
-        params.setToolbarVisible(true, ConstToolType.MAP_SYMBOL, {
+        params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
           isFullScreen: true,
           containerType,
           ...data,
         })
         break
-      case ConstToolType.PLOTTING_ANIMATION:
+      case ConstToolType.SM_MAP_PLOT_ANIMATION:
         params.showFullMap && params.showFullMap(true)
-        params.setToolbarVisible(true, ConstToolType.PLOT_ANIMATION_START, {
+        params.setToolbarVisible(true, ConstToolType.SM_MAP_PLOT_ANIMATION_START, {
           isFullScreen: false,
-          height: 0,
           cb: () => SMap.setAction(Action.SELECT),
         })
         break
@@ -62,16 +61,16 @@ class PlotModule extends FunctionModule {
 
 export default function(type) {
   let image, title
-  if (type === ConstToolType.PLOTTING_ANIMATION) {
+  if (type === ConstToolType.SM_MAP_PLOT_ANIMATION) {
     title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING_ANIMATION
     image = getThemeAssets().functionBar.icon_tool_deduction
   } else {
+    type = ConstToolType.SM_MAP_PLOT
     title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOT
     image = getThemeAssets().functionBar.icon_tool_plotting
   }
   return new PlotModule({
     type: type,
-    key: title,
     title: title,
     size: 'large',
     image: image,

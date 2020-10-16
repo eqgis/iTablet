@@ -10,13 +10,7 @@ function getData(type, params) {
   let data = []
   const buttons = []
   switch (type) {
-    case ConstToolType.MAP_START:
-    case ConstToolType.MAP_ANALYST_START:
-    case ConstToolType.MAP_EDIT_START:
-    case ConstToolType.MAP_COLLECTION_START:
-    case ConstToolType.MAP_PLOTTING_START:
-    case ConstToolType.MAP_THEME_START:
-    case ConstToolType.MAP_NAVIGATION_START:
+    case ConstToolType.SM_MAP_START:
       data = [
         // {
         //   key: constants.NAVIGATION,

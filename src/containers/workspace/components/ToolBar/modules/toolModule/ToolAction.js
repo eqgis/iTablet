@@ -35,7 +35,7 @@ function stop() {
 
 function submit() {
   (async function() {
-    if (GLOBAL.MapToolType === ConstToolType.MAP_TOOL_GPSINCREMENT) {
+    if (GLOBAL.MapToolType === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
       await SMap.addGPSRecordset()
     }
     await SMap.submit()
@@ -48,8 +48,7 @@ function select(type) {
     type = ToolbarModule.getParams().type
   }
   switch (type) {
-    case ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE:
-    case ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE:
+    case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
       SMap.setAction(Action.SELECT_BY_RECTANGLE)
       // SMap.selectByRectangle()
       break
@@ -79,19 +78,12 @@ function pointSelect() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-
-  let type
-  if (GLOBAL.MapToolType === ConstToolType.MAP_TOOLS) {
-    type = ConstToolType.MAP_TOOL_TAGGING_POINT_SELECT
-  } else {
-    type = ConstToolType.MAP_TOOL_POINT_SELECT
-  }
+  
+  const type = ConstToolType.SM_MAP_TOOL_POINT_SELECT
 
   _params.setToolbarVisible(true, type, {
     containerType: 'table',
-    // column: 3,
     isFullScreen: false,
-    // height: ConstToolType.HEIGHT[0],
     cb: () => select(type),
   })
 }
@@ -102,12 +94,7 @@ function selectByRectangle() {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
 
-  let type
-  if (GLOBAL.MapToolType === ConstToolType.MAP_TOOLS) {
-    type = ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE
-  } else {
-    type = ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE
-  }
+  const type = ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE
 
   _params.setToolbarVisible(true, type, {
     containerType: 'table',
@@ -126,7 +113,7 @@ function rectangleCut() {
   // addMapCutListener()
   GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
 
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_RECTANGLE_CUT, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT, {
     isFullScreen: false,
     // height: 0,
   })
@@ -159,7 +146,7 @@ function measureLength() {
     })
   })
 
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_LENGTH, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH, {
     containerType: 'table',
     // column: 4,
     isFullScreen: false,
@@ -194,7 +181,7 @@ function measureArea() {
     })
   })
 
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_AREA, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_AREA, {
     containerType: 'table',
     // column: 4,
     isFullScreen: false,
@@ -235,7 +222,7 @@ function measureAngle() {
     })
   })
 
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_MEASURE_ANGLE, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE, {
     containerType: 'table',
     // column: 4,
     isFullScreen: false,
@@ -249,17 +236,17 @@ function clearMeasure(type) {
   type = _params.type
   if (typeof type === 'string' && type.indexOf('MAP_TOOL_MEASURE_') >= 0) {
     switch (type) {
-      case ConstToolType.MAP_TOOL_MEASURE_LENGTH:
+      case ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH:
         ToolbarModule.getParams().showMeasureResult &&
           ToolbarModule.getParams().showMeasureResult(true, '0m')
         SMap.setAction(Action.MEASURELENGTH)
         break
-      case ConstToolType.MAP_TOOL_MEASURE_AREA:
+      case ConstToolType.SM_MAP_TOOL_MEASURE_AREA:
         ToolbarModule.getParams().showMeasureResult &&
           ToolbarModule.getParams().showMeasureResult(true, '0㎡')
         SMap.setAction(Action.MEASUREAREA)
         break
-      case ConstToolType.MAP_TOOL_MEASURE_ANGLE:
+      case ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE:
         ToolbarModule.getParams().showMeasureResult &&
           ToolbarModule.getParams().showMeasureResult(true, '0°')
         SMap.setAction(Action.MEASUREANGLE)
@@ -276,7 +263,7 @@ function clearMeasure(type) {
 /** 量算功能 撤销事件 * */
 async function undo(type) {
   if (ToolbarModule.getData().isFinished === false) return
-  if (type === ConstToolType.MAP_TOOL_INCREMENT) {
+  if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.undo()
     return
   }
@@ -290,7 +277,7 @@ async function undo(type) {
   }
   newState.canRedo = redoArr.length > 0
   newState.canUndo = pointArr.length > 0
-  if (type === ConstToolType.MAP_TOOL_MEASURE_ANGLE && pointArr.length <= 1) {
+  if (type === ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE && pointArr.length <= 1) {
     _params.showMeasureResult && _params.showMeasureResult(true, '0°')
     if (pointArr.length === 1) {
       newState.canRedo = false
@@ -315,7 +302,7 @@ async function undo(type) {
 /** 量算功能 重做事件 * */
 async function redo(type = null) {
   if (ToolbarModule.getData().isFinished === false) return
-  if (type === ConstToolType.MAP_TOOL_INCREMENT) {
+  if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.redo()
     return
   }
@@ -531,7 +518,7 @@ function matchPictureStyle() {
       }
       ToolbarModule.getParams().showFullMap &&
         ToolbarModule.getParams().showFullMap(true)
-      _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER, {
         isFullScreen: false,
         // height: 0,
       })
@@ -624,33 +611,29 @@ function commit(type) {
   const _params = ToolbarModule.getParams()
   // getParams.showToolbar(false)
   if (typeof type === 'string' && type.indexOf('MAP_EDIT_') >= 0) {
-    if (type === ConstToolType.MAP_EDIT_DEFAULT) {
+    if (type === ConstToolType.SM_MAP_EDIT_DEFAULT) {
       // 编辑完成关闭Toolbar
       _params.setToolbarVisible(false, '', {
         cb: () => {
           SMap.setAction(Action.PAN)
         },
       })
-    } else if (
-      type !== ConstToolType.MAP_TOOL_TAGGING &&
-      type !== ConstToolType.MAP_TOOL_TAGGING_SETTING
-    ) {
+    } else {
       // 编辑完成关闭Toolbar
       // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-      _params.setToolbarVisible(true, ConstToolType.MAP_EDIT_DEFAULT, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT_DEFAULT, {
         isFullScreen: false,
-        // height: 0,
         cb: () => {
           SMap.submit()
           SMap.setAction(Action.SELECT)
         },
       })
     }
-  } else if (type === ConstToolType.MAP_TOOL_RECTANGLE_CUT) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT) {
     NavigationService.navigate('MapCut', {
       points: GLOBAL.MapSurfaceView.getResult(),
     })
-  } else if (type === ConstToolType.MAP_TOOL_STYLE_TRANSFER) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
     // ToolbarPicker.hide()
     SMap.resetMapFixColorsModeValue(false)
     _params.setToolbarVisible(false, '', {
@@ -700,7 +683,7 @@ function showMenuBox() {
   const _params = ToolbarModule.getParams()
   _params.setToolbarVisible(
     true,
-    ConstToolType.MAP_TOOL_STYLE_TRANSFER_PICKER,
+    ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER,
     {
       containerType: ToolbarType.picker,
       isFullScreen: false,
@@ -720,7 +703,7 @@ function showMenuBox() {
  */
 function pickerConfirm(params) {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER, {
     isFullScreen: true,
     showMenuDialog: false,
     isTouchProgress: true,
@@ -734,7 +717,7 @@ function pickerConfirm(params) {
  */
 function pickerCancel() {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(true, ConstToolType.MAP_TOOL_STYLE_TRANSFER, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER, {
     isFullScreen: false,
     showMenuDialog: false,
     isTouchProgress: false,
@@ -761,7 +744,7 @@ async function listSelectableAction({ selectList }) {
 //     SMap.cancel()
 //     SMap.clearSelection()
 //     _params.setSelection()
-//     const type = ConstToolType.MAP_TOOL_TAGGING_SELECT
+//     const type = ConstToolType.SM_MAP_TOOL_TAGGING_SELECT
 //
 //     _params.setToolbarVisible(true, type, {
 //       isFullScreen: false,
@@ -774,48 +757,45 @@ async function listSelectableAction({ selectList }) {
 async function close(type) {
   const _params = ToolbarModule.getParams()
   const _data = ToolbarModule.getData()
-  if (type === ConstToolType.MAP_TOOL_TAGGING_SETTING) {
-    await SMap.undo()
-    _params.setToolbarVisible(false)
-  } else if (
-    type === ConstToolType.MAP_TOOL_INCREMENT ||
-    type === ConstToolType.MAP_TOOL_GPSINCREMENT
+  if (
+    type === ConstToolType.SM_MAP_TOOL_INCREMENT ||
+    type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT
   ) {
     GLOBAL.FloorListView.setVisible(true)
     await SMap.removeNetworkDataset()
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_TOOL_STYLE_TRANSFER) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
     await SMap.resetMapFixColorsModeValue(true)
     // _params.setToolbarVisible(false)
     return false
   } else if (
-    type === ConstToolType.MAP_TOOL_SELECT_BY_RECTANGLE ||
-    type === ConstToolType.MAP_TOOL_TAGGING_SELECT_BY_RECTANGLE ||
-    type === ConstToolType.MAP_TOOL_TAGGING_POINT_SELECT ||
-    type === ConstToolType.MAP_TOOL_POINT_SELECT
+    type === ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE ||
+    type === ConstToolType.SM_MAP_TOOL_POINT_SELECT
   ) {
     SMap.setAction(Action.PAN)
     SMap.clearSelection()
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_TOOL_TAGGING_SELECT) {
-    SMap.setAction(Action.PAN)
-    const { layers } = _params.layers
-    // 还原其他图层的选择状态
-    // _setMyLayersSelectable(layers, true)
-    for (let i = 0; i < layers.length; i++) {
-      if (LayerUtils.getLayerType(layers[i]) === 'TAGGINGLAYER') {
-        if (
-          _params.currentLayer &&
-          _params.currentLayer.name &&
-          _params.currentLayer.name === layers[i].name
-        ) {
-          SMap.setLayerEditable(layers[i].path, true)
-        }
-      }
-    }
-    _params.setToolbarVisible(false)
-  } else if (
+  }
+  // else if (type === ConstToolType.SM_MAP_TOOL_TAGGING_SELECT) {
+  //   SMap.setAction(Action.PAN)
+  //   const { layers } = _params.layers
+  //   // 还原其他图层的选择状态
+  //   // _setMyLayersSelectable(layers, true)
+  //   for (let i = 0; i < layers.length; i++) {
+  //     if (LayerUtils.getLayerType(layers[i]) === 'TAGGINGLAYER') {
+  //       if (
+  //         _params.currentLayer &&
+  //         _params.currentLayer.name &&
+  //         _params.currentLayer.name === layers[i].name
+  //       ) {
+  //         SMap.setLayerEditable(layers[i].path, true)
+  //       }
+  //     }
+  //   }
+  //   _params.setToolbarVisible(false)
+  // }
+  else if (
     typeof type === 'string' &&
     type.indexOf('MAP_TOOL_MEASURE_') >= 0
   ) {
@@ -827,16 +807,16 @@ async function close(type) {
     SMap.setAction(Action.PAN)
     _params.showMeasureResult(false)
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_TOOL_RECTANGLE_CUT) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT) {
     GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerAttribute')
     await SMap.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+  } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerSelectionAttribute', {
       selectionAttribute: GLOBAL.SelectedSelectionAttribute,

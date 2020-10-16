@@ -38,7 +38,7 @@ function measureDistance() {
       _params.measureShow(true, `${result.length}m`)
     },
   })
-  showAnalystResult(ConstToolType.MAP3D_TOOL_DISTANCEMEASURE)
+  showAnalystResult(ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE)
 }
 
 /** 面积量算 * */
@@ -72,7 +72,7 @@ function measureArea() {
       _params.measureShow(true, `${result.totalArea}㎡`)
     },
   })
-  showAnalystResult(ConstToolType.MAP3D_TOOL_SUERFACEMEASURE)
+  showAnalystResult(ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE)
 }
 
 /** 路径分析 * */
@@ -92,8 +92,8 @@ function select() {
   SScene.setAction('PANSELECT3D')
   GLOBAL.action3d = 'PANSELECT3D'
   GLOBAL.Map3DSymbol = true
-  // this.showMap3DTool(ConstToolType.MAP3D_SYMBOL_SELECT)
-  const type = ConstToolType.MAP3D_SYMBOL_SELECT
+  // this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_SELECT)
+  const type = ConstToolType.SM_MAP3D_TOOL_SELECT
   params.setToolbarVisible(true, type, {
     containerType: ToolbarType.table,
     isFullScreen: false,
@@ -110,7 +110,7 @@ function boxClip() {
     return
   }
   GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
-  params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
+  params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
     isFullScreen: false,
     // height: 0,
   })
@@ -166,8 +166,8 @@ async function map3dCut() {
         rel[key] = parseFloat(rel[key].toFixed(num))
     })
     GLOBAL.MapSurfaceView.show(false)
-    // this.props.showMap3DTool(ConstToolType.MAP3D_BOX_CLIP)
-    params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIP, {
+    // this.props.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_BOX_CLIP)
+    params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIP, {
       isFullScreen: false,
       // height: 0,
     })
@@ -287,7 +287,7 @@ function redo() {
 function clearMeasure(type) {
   const _params = ToolbarModule.getParams()
   switch (type) {
-    case ConstToolType.MAP3D_TOOL_SUERFACEMEASURE:
+    case ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE:
       SScene.clearSquareAnalyst()
       ToolbarModule.getParams().measureShow &&
         ToolbarModule.getParams().measureShow(true, '0㎡')
@@ -298,7 +298,7 @@ function clearMeasure(type) {
         isFinished: true,
       })
       break
-    case ConstToolType.MAP3D_TOOL_DISTANCEMEASURE:
+    case ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE:
       SScene.clearLineAnalyst()
       ToolbarModule.getParams().measureShow &&
         ToolbarModule.getParams().measureShow(true, '0m')
@@ -309,29 +309,29 @@ function clearMeasure(type) {
         isFinished: true,
       })
       break
-    // case ConstToolType.MAP3D_BOX_CLIP:
-    case ConstToolType.MAP3D_CROSS_CLIP:
-    case ConstToolType.MAP3D_PLANE_CLIP:
-    case ConstToolType.MAP3D_CLIP_SHOW:
-    case ConstToolType.MAP3D_CLIP_HIDDEN:
-    case ConstToolType.MAP3D_BOX_CLIP_IN:
-    case ConstToolType.MAP3D_BOX_CLIP_OUT:
+    // case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_CROSS_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_CLIP_SHOW:
+    case ConstToolType.SM_MAP3D_TOOL_CLIP_HIDDEN:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_IN:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_OUT:
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
       // ToolbarModule.setData()
       SScene.clipSenceClear()
       GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
-      _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
         // height: 0,
       })
       break
-    case ConstToolType.MAP3D_BOX_CLIP:
+    case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP:
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
       SScene.clipSenceClear()
       GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
-      _params.setToolbarVisible(true, ConstToolType.MAP3D_BOX_CLIPPING, {
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
       })
       break
@@ -344,8 +344,8 @@ function clearMeasure(type) {
 async function close(type) {
   const _params = ToolbarModule.getParams()
   if (
-    type === ConstToolType.MAP3D_TOOL_DISTANCEMEASURE ||
-    type === ConstToolType.MAP3D_TOOL_SUERFACEMEASURE
+    type === ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE ||
+    type === ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE
   ) {
     SScene.closeAnalysis()
     _params.measureShow(false, '')
@@ -356,31 +356,21 @@ async function close(type) {
       canUndo: false,
       canRedo: false,
     })
-  } else if (
-    type === ConstToolType.MAP3D_SYMBOL_POINT ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTLINE ||
-    type === ConstToolType.MAP3D_SYMBOL_POINTSURFACE ||
-    type === ConstToolType.MAP3D_SYMBOL_TEXT
-  ) {
-    SScene.clearAllLabel()
-    GLOBAL.Map3DSymbol = false
-    _params.existFullMap && _params.existFullMap()
-    _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP3D_SYMBOL_SELECT) {
+  } else if (type === ConstToolType.SM_MAP3D_TOOL_SELECT) {
     SScene.clearSelection()
     _params.setAttributes({})
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
-  } else if (type === ConstToolType.MAP3D_CIRCLEFLY) {
+  } else if (type === ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY) {
     SScene.stopCircleFly()
     SScene.clearCirclePoint()
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
   } else if (
-    type === ConstToolType.MAP3D_BOX_CLIPPING ||
-    type === ConstToolType.MAP3D_BOX_CLIP ||
-    type === ConstToolType.MAP3D_CROSS_CLIP ||
-    type === ConstToolType.MAP3D_PLANE_CLIP
+    type === ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING ||
+    type === ConstToolType.SM_MAP3D_TOOL_BOX_CLIP ||
+    type === ConstToolType.SM_MAP3D_TOOL_CROSS_CLIP ||
+    type === ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP
   ) {
     await SScene.clipSenceClear()
     GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
@@ -403,7 +393,7 @@ function circleFly() {
   _params.showFullMap && _params.showFullMap(true)
   GLOBAL.action3d = 'PAN3D_FIX'
   SScene.stopCircleFly()
-  _params.setToolbarVisible(true, ConstToolType.MAP3D_CIRCLEFLY, {
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY, {
     containerType: ToolbarType.table,
     isFullScreen: false,
     resetToolModuleData: true,
@@ -414,7 +404,7 @@ function showMenuDialog() {
   const _data = ToolbarModule.getData()
   const configs = JSON.parse(JSON.stringify(_data))
   if (configs.showBox) {
-    _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CLIP_HIDDEN, {
       containerType: ToolbarType.typeNull,
       isFullScreen: false,
     })
@@ -432,12 +422,12 @@ function showLayerList() {
       showMenuDialog: false,
     })
   if (!showBox) {
-    _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_SHOW, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CLIP_SHOW, {
       containerType: ToolbarType.colorTable,
       isFullScreen: false,
     })
   } else {
-    _params.setToolbarVisible(true, ConstToolType.MAP3D_CLIP_HIDDEN, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CLIP_HIDDEN, {
       containerType: ToolbarType.typeNull,
       isFullScreen: false,
     })
@@ -460,8 +450,8 @@ function changeClip() {
   SScene.clipByBox(clipSetting)
   _params.setClipSetting && _params.setClipSetting(clipSetting)
   const type = clipSetting.clipInner
-    ? ConstToolType.MAP3D_BOX_CLIP_IN
-    : ConstToolType.MAP3D_BOX_CLIP_OUT
+    ? ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_IN
+    : ConstToolType.SM_MAP3D_TOOL_BOX_CLIP_OUT
   _params.setToolbarVisible(true, type, {
     containerType: ToolbarType.typeNull,
     isFullScreen: false,

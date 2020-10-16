@@ -22,9 +22,8 @@ async function getData(type, params) {
   ToolbarModule.setParams(params)
   GLOBAL.MapToolType = type
   let layerType = '', isTourLayer = false
-  // if (type.indexOf(ConstToolType.MAP_TOOL) === -1) return { data, buttons }
   switch (type) {
-    case ConstToolType.MAP_MARKS_DRAW:
+    case ConstToolType.SM_MAP_MARKS_DRAW:
       buttons = [
         {
           type: ToolbarBtnType.CANCEL,
@@ -43,7 +42,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_DRAW_TEXT:
+    case ConstToolType.SM_MAP_MARKS_DRAW_TEXT:
       buttons = [
         {
           type: ToolbarBtnType.CANCEL,
@@ -51,7 +50,7 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP_MARKS:
+    case ConstToolType.SM_MAP_MARKS:
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,
       )
@@ -195,10 +194,10 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_SELECT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_SELECT:
       buttons = [ToolbarBtnType.CANCEL]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
       data = [
         {
           key: constants.MOVE,
@@ -242,7 +241,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE:
       data = [
         {
           key: constants.MOVE,
@@ -310,7 +309,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION:
       data = [
         {
           key: constants.MOVE,
@@ -377,7 +376,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT:
       data = [
         {
           key: constants.MOVE,
@@ -421,7 +420,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_POINT_NOSTYLE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT_NOSTYLE:
       data = [
         {
           key: constants.MOVE,
@@ -458,7 +457,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_LINE_NOSTYLE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE_NOSTYLE:
       data = [
         {
           key: constants.MOVE,
@@ -519,7 +518,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_REGION_NOSTYLE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_REGION_NOSTYLE:
       data = [
         {
           key: constants.MOVE,
@@ -579,7 +578,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_EDIT_TEXT_NOSTYLE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT_NOSTYLE:
       data = [
         {
           key: constants.MOVE,
@@ -616,18 +615,18 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_SIZE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_ROTATION:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_WIDTH:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_SIZE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_ROTATION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_WIDTH:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         ToolbarBtnType.MENU,
@@ -635,7 +634,7 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
       data = [
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
@@ -693,8 +692,8 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
       data = colors
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -703,9 +702,9 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
       data = colorsWithNull
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -721,30 +720,30 @@ function getMenuData(type) {
   const _params = ToolbarModule.getParams()
   let data = []
   switch (type) {
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_SIZE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_ROTATION:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_SIZE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_ROTATION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_TRANSPARENCY:
       data = point(_params.language, _params.device.orientation)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_LINE_WIDTH:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_WIDTH:
       data = line(_params.language, _params.device.orientation)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDER_WIDTH:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_TRANSPARENCY:
       data = region(_params.language, _params.device.orientation)
       break
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE:
-    case ConstToolType.MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_FONT_SIZE:
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_ROTATION:
       data = text(_params.language, _params.device.orientation)
       break
   }

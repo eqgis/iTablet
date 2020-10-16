@@ -20,7 +20,7 @@ async function getData(type) {
   let buttons = []
   let customView
   switch (type) {
-    case ConstToolType.MAP_LAYER_VISIBLE_SCALE:
+    case ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE:
       data = await getVisibleScalePickerData()
       customView = () => (
         <MultiPicker
@@ -33,7 +33,7 @@ async function getData(type) {
         />
       )
       break
-    case ConstToolType.MAP_LAYER_VISIBLE_USER_DEFINE:
+    case ConstToolType.SM_MAP_LAYER_VISIBLE_USER_DEFINE:
       {
         let currentType = ToolbarModule.getData().currentType
         let mapScale = ToolbarModule.getData().mapScale

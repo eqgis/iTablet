@@ -650,6 +650,7 @@ export default class NavigationView extends React.Component {
     return (
       <Container
         isOverlayBefore={false}
+        navigation={this.props.navigation}
         withoutHeader={true}
         style={{ backgroundColor: '#ebebeb' }}
       >
@@ -716,7 +717,7 @@ export default class NavigationView extends React.Component {
                     ellipsizeMode={'tail'}
                     style={{
                       fontSize: setSpText(24),
-                      lineHeight: scaleSize(26),
+                      padding: 0,
                     }}
                   >
                     {this.state.startName || GLOBAL.STARTNAME}
@@ -758,7 +759,7 @@ export default class NavigationView extends React.Component {
                     ellipsizeMode={'tail'}
                     style={{
                       fontSize: setSpText(24),
-                      lineHeight: scaleSize(26),
+                      padding: 0,
                     }}
                   >
                     {this.state.endName || GLOBAL.ENDNAME}

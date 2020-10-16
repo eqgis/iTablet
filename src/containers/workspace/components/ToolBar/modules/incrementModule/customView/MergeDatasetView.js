@@ -28,7 +28,12 @@ import { getLanguage } from '../../../../../../../language'
 
 export default class MergeDatasetView extends Component {
   props: {
-    data: Array,
+    /**
+     * {
+     *  datasetName<String>, 目标数据集名
+     *  datasourceName<String>, 目标数据源名
+     * }
+     */
     sourceData: Object,
   }
 
@@ -38,6 +43,21 @@ export default class MergeDatasetView extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      /**
+       * @author zhangxt
+       * 所有线数据集
+       *[{
+       *  title<String>, 数据源名称
+       *  visible<Boolean>, 是否可见
+       *  data<Array>, [{
+       *      datasourceName<String>, 数据源名称
+       *      datasetName<String>, 数据集名称
+       *      fieldInfo<Array<String>>?, 数据集字段名，选择后添加
+       *      selected?:true, 是否选中，选择后添加
+       *      selectedFieldInfo<String>？, 选择的道路字段名，选择后添加
+       *    }]
+       * }]
+       */
       lineDataset: [],
     }
   }
@@ -46,6 +66,9 @@ export default class MergeDatasetView extends Component {
     this._add()
   }
 
+  /**
+   * 获取所有线数据集，过滤需要合并的源数据集 zhangxt
+   */
   _add = async () => {
     let lineDataset = await SMap.getAllLineDatasets()
     let { datasetName, datasourceName } = this.props.sourceData
@@ -63,11 +86,14 @@ export default class MergeDatasetView extends Component {
     })
   }
 
+  /**
+   * 返回路网采集模块
+   */
   _cancel = () => {
     const _params = ToolbarModule.getParams()
     _params.setToolbarVisible(
       true,
-      ConstToolType.MAP_INCREMENT_CHANGE_NETWORK,
+      ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK,
       {
         isFullScreen: false,
         containerType: ToolbarType.list,
@@ -79,6 +105,9 @@ export default class MergeDatasetView extends Component {
     )
   }
 
+  /**
+   * 确定事件
+   */
   confirm = () => {
     let data = JSON.parse(JSON.stringify(this.state.lineDataset))
     let selectedData = []
@@ -95,6 +124,10 @@ export default class MergeDatasetView extends Component {
       )
       return
     }
+    /**
+     * 需要有默认的道路名称字段'RoadName'或自己选择的道路名称字段
+     * 有默认字段，则fieldInfo.length为0，有选择的字段，则item.selectedFieldInfo不为空
+     */
     let filterData = selectedData.filter(item => {
       return item.fieldInfo.length > 0 && !item.selectedFieldInfo
     })
@@ -107,7 +140,16 @@ export default class MergeDatasetView extends Component {
     }
   }
 
-  //todo 原生回调 添加进度条
+  /**
+   * 开始合并
+   * @param {Array} selectedDatas  [{
+   *  datasetName<String>,
+   *  datasourceName<String>,
+   *  fieldInfo<Array<String>>, 数据集字段名
+   *  selected:true,
+   *  selectedFieldInfo<String>？, 选择的道路字段名
+   * }]
+   */
   mergeData = async selectedDatas => {
     const _params = ToolbarModule.getParams()
     _params.setContainerLoading(
@@ -145,6 +187,10 @@ export default class MergeDatasetView extends Component {
     }
   }
 
+  /**
+   *
+   * @param {Object} section  {section<Object>, SectionList的sections数组数据元素 sections[0]}
+   */
   _onTitlePress = section => {
     let lineDataset = JSON.parse(JSON.stringify(this.state.lineDataset))
     let currentIndex
@@ -160,12 +206,27 @@ export default class MergeDatasetView extends Component {
     })
   }
 
-  renderItem = ({ section, item }) => {
+  /**
+   *
+   * @param {Object} param {
+   *  index<Number>,
+   *  item<Any>, section数组内的元素 section[]
+   *  sections<Array>, item所在的数组
+   *  separators<Object>, 分割组件
+   * }
+   */
+  renderItem = param => {
+    let { section, item } = param
     if (!section.visible) return null
     return <Item item={item} />
   }
 
-  _renderSectionHeader = ({ section }) => {
+  /**
+   *
+   * @param {Object} param {section<Object>, SectionList的sections数组数据元素 sections[]}
+   */
+  _renderSectionHeader = param => {
+    let { section } = param
     let arrowImg = section.visible
       ? getThemeAssets().publicAssets.icon_drop_down
       : getThemeAssets().publicAssets.icon_drop_up
@@ -230,6 +291,15 @@ export default class MergeDatasetView extends Component {
 
 class Item extends Component {
   props: {
+    /**
+     * {
+     *    datasourceName<String>, 数据源名称
+     *    datasetName<String>, 数据集名称
+     *    fieldInfo<Array<String>>?, 数据集字段名，选择后添加
+     *    selected?:true, 是否选中，选择后添加
+     *    selectedFieldInfo<String>？, 选择的道路字段名，选择后添加
+     *  }
+     */
     item: Object,
   }
 
@@ -240,15 +310,22 @@ class Item extends Component {
     }
   }
 
+  /**
+   * zhangxt
+   * 数据集选择事件。数据集必须包含道路名称字段才可选择
+   * 通过室外路网采集创建的默认创建‘RoadName’字段
+   */
   onSelect = async () => {
     let datasetName = this.props.item.datasetName
     let datasourceName = this.props.item.datasourceName
+    //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
       let needChangeData = await SMap.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
+        //已有‘RoadName’字段直接使用，不用再选择
         if (this.props.item.fieldInfo.indexOf('RoadName') > -1) {
           this.props.item.fieldInfo = []
           this.props.item.hasRoadName = true

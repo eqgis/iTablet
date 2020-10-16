@@ -8,7 +8,7 @@ function getData(type, params) {
   ToolbarModule.setParams(params)
   let data = []
   const buttons = []
-  if (type !== ConstToolType.MAP_3D_START) return { data, buttons }
+  if (type !== ConstToolType.SM_MAP3D_START) return { data, buttons }
   data = [
     // {
     //   key: constants.CREATE,
@@ -20,7 +20,7 @@ function getData(type, params) {
     //     // NavigationService.navigate('WorkspaceFileList', { type: 'MAP_3D' })
     //     ToolbarModule.getParams().setToolbarVisible(
     //       true,
-    //       ConstToolType.MAP3D_IMPORTWORKSPACE,
+    //       ConstToolType.SM_MAP3D_IMPORTWORKSPACE,
     //       {
     //         containerType: 'list',
     //       },

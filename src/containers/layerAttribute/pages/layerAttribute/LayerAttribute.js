@@ -736,7 +736,7 @@ export default class LayerAttribute extends React.Component {
   }
   /** 点击属性字段回调 **/
   onPressHeader = ({ fieldInfo, index, pressView }) => {
-    if (GLOBAL.Type === ConstToolType.MAP_3D) {
+    if (GLOBAL.Type === ChunkType.MAP_3D) {
       return
     }
     this._showPopover(pressView, index, fieldInfo)
@@ -803,7 +803,7 @@ export default class LayerAttribute extends React.Component {
       true,
     ).then(data => {
       ToolbarModule.setToolBarData(
-        ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+        ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
       ).then(() => {
         this.props.navigation &&
           this.props.navigation.navigate('MapView', {
@@ -812,7 +812,7 @@ export default class LayerAttribute extends React.Component {
         GLOBAL.toolBox &&
           GLOBAL.toolBox.setVisible(
             true,
-            ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE,
+            ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
             {
               isFullScreen: false,
               // height: 0,
@@ -838,7 +838,7 @@ export default class LayerAttribute extends React.Component {
     // ]).then(data => {
     //   this.props.navigation && this.props.navigation.navigate('MapView')
     //   GLOBAL.toolBox &&
-    //     GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_TOOL_ATTRIBUTE_RELATE, {
+    //     GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
     //       isFullScreen: false,
     //       height: 0,
     //     })

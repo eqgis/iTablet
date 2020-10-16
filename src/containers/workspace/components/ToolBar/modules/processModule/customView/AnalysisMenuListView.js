@@ -90,7 +90,7 @@ export default class AnalysisMenuListView extends React.Component {
     //     // action: (params = {}) => {
     //     //   NavigationService.navigate('LocalAnalystView', {
     //     //     ...params,
-    //     //     type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+    //     //     type: ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
     //     //   })
     //     // },
     //     image: getThemeAssets().analyst.analysis_connectivity,
@@ -107,7 +107,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('LocalAnalystView', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH,
+            type: ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH,
             // cb: cb,
           })
         },
@@ -121,7 +121,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('LocalAnalystView', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
+            type: ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS,
           })
         },
         image: getThemeAssets().analyst.analysis_connectivity,
@@ -133,7 +133,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('LocalAnalystView', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH,
+            type: ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH,
           })
         },
         image: getThemeAssets().analyst.analysis_traveling,
@@ -169,7 +169,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('AnalystListEntry', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_OVERLAY_ANALYSIS,
+            type: ConstToolType.SM_MAP_ANALYSIS_OVERLAY_ANALYSIS,
             title: getLanguage(language).Analyst_Modules.OVERLAY_ANALYSIS,
           })
         },
@@ -182,7 +182,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('ReferenceAnalystView', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON,
+            type: ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON,
             title: getLanguage(language).Analyst_Modules.THIESSEN_POLYGON,
           })
         },
@@ -195,7 +195,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('InterpolationAnalystView', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
+            type: ConstToolType.SM_MAP_ANALYSIS_INTERPOLATION_ANALYSIS,
             title: getLanguage(language).Analyst_Modules.INTERPOLATION_ANALYSIS,
           })
         },
@@ -208,7 +208,7 @@ export default class AnalysisMenuListView extends React.Component {
         action: (params = {}) => {
           NavigationService.navigate('AnalystListEntry', {
             ...params,
-            type: ConstToolType.MAP_ANALYSIS_ONLINE_ANALYSIS,
+            type: ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS,
             title: getLanguage(language).Analyst_Modules.ONLINE_ANALYSIS,
           })
         },

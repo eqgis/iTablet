@@ -138,11 +138,11 @@ export default class AnalystMapToolbar extends React.Component {
 
   render() {
     switch (this.props.type) {
-      case ConstToolType.MAP_ANALYSIS_OPTIMAL_PATH:
-      case ConstToolType.MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
-      case ConstToolType.MAP_ANALYSIS_FIND_TSP_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
+      case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
+      case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
         return this.renderToolbarWithBack()
-      case ConstToolType.MAP_ANALYSIS_THIESSEN_POLYGON:
+      case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
         return this.renderToolbarWithReset()
     }
   }

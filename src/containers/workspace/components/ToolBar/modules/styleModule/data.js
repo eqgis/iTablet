@@ -10,11 +10,11 @@ const line = param => [
     // '符号线',
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.MAP_STYLE,
+        type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -55,11 +55,11 @@ const line = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.LINECOLOR_SET,
+        type: ConstToolType.SM_MAP_STYLE_LINE_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.LINECOLOR_SET, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_LINE_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -81,11 +81,11 @@ const point = param => [
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.MAP_STYLE,
+        type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -125,11 +125,11 @@ const point = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.POINTCOLOR_SET,
+        type: ConstToolType.SM_MAP_STYLE_POINT_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.POINTCOLOR_SET, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_POINT_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -191,11 +191,11 @@ const region = param => [
     // '面符号',
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.MAP_STYLE,
+        type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.MAP_STYLE, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -214,11 +214,11 @@ const region = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.REGIONBEFORECOLOR_SET,
+        type: ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.REGIONBEFORECOLOR_SET, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -245,7 +245,7 @@ const region = param => [
   //       column = 12
   //     }
   //     GLOBAL.toolBox &&
-  //       GLOBAL.toolBox.setVisible(true, ConstToolType.REGIONAFTERCOLOR_SET, {
+  //       GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR, {
   //         containerType: ToolbarType.colorTable,
   //         column,
   //         isFullScreen: false,
@@ -265,11 +265,11 @@ const region = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.REGIONBORDERCOLOR_SET,
+        type: ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.REGIONBORDERCOLOR_SET, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -403,11 +403,11 @@ const text = param => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.TEXTFONT,
+        type: ConstToolType.SM_MAP_STYLE_TEXT_FONT,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTFONT, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_FONT, {
           isFullScreen: false,
           buttons: [
             ToolbarBtnType.CANCEL,
@@ -463,11 +463,11 @@ const text = param => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
       GLOBAL.toolBox && GLOBAL.toolBox.menu({
-        type: ConstToolType.TEXTCOLOR_SET,
+        type: ConstToolType.SM_MAP_STYLE_TEXT_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
       GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.TEXTCOLOR_SET, {
+        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [

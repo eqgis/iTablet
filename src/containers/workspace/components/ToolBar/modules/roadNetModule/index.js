@@ -49,7 +49,11 @@ class RoadNetModule extends FunctionModule {
       mapDataset.data.map(item => {
         selectedDatasets &&
           selectedDatasets.map(dt => {
-            if (item.name === dt.name) {
+            //对比是否是同一数据源内的同一数据集 zhangxt
+            if (
+              item.name === dt.name &&
+              item.datasourceName === dt.datasourceName
+            ) {
               item.selected = true
             }
           })
@@ -77,7 +81,6 @@ class RoadNetModule extends FunctionModule {
 export default function() {
   return new RoadNetModule({
     type: 'MAP_ROAD_NET_MODULE',
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODULE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODULE,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_network,

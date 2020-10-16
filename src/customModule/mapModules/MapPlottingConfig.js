@@ -1,4 +1,4 @@
-import { ChunkType } from '../../constants'
+import { ChunkType, ConstToolType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
@@ -33,9 +33,9 @@ export default class MapPlottingConfig extends Module {
         startModule,
         addModule,
         markModule,
-        () => plotModule('PLOTTING'),
+        () => plotModule(ConstToolType.SM_MAP_PLOT),
         editModule,
-        () => plotModule('PLOTTING_ANIMATION'),
+        () => plotModule(ConstToolType.SM_MAP_PLOT_ANIMATION),
         toolModule,
       ],
       mapType: Module.MapType.MAP,

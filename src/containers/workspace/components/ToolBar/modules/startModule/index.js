@@ -31,8 +31,7 @@ class StartModule extends FunctionModule {
 
 export default function() {
   return new StartModule({
-    type: ConstToolType.MAP_START,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.START,
+    type: ConstToolType.SM_MAP_START,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_start,

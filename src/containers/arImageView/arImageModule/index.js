@@ -20,7 +20,7 @@ class arImageModule extends FunctionModule {
 
 export default function() {
   return new arImageModule({
-    type: 'ARIMAGEMODULE',
+    type: 'SM_ARIMAGEMODULE',
     getData: data.getData,
     actions: actions,
     getMenuData: data.getMenuData,

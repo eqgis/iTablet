@@ -11,7 +11,7 @@ function getData(type, params) {
   let data = []
   const buttons = []
   ToolbarModule.setParams(params)
-  if (type !== ConstToolType.MAP_SHARE) return { data, buttons }
+  if (type !== ConstToolType.SM_MAP_SHARE) return { data, buttons }
   data = [
     {
       key: constants.SUPERMAP_ONLINE,

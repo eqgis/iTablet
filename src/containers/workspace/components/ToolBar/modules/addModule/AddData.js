@@ -104,7 +104,7 @@ async function getUDBsAndMaps() {
               const containerType = ToolbarType.list
               const data = ToolbarModule.getToolbarSize(containerType, {})
               params.showFullMap && params.showFullMap(true)
-              params.setToolbarVisible(true, ConstToolType.MAP_ADD, {
+              params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD, {
                 containerType,
                 isFullScreen: true,
                 isTouchProgress: false,
@@ -138,7 +138,7 @@ async function getDatasets(type, params = {}) {
   let buttons = []
   let data = []
 
-  if (type === ConstToolType.MAP_THEME_ADD_DATASET) {
+  if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
@@ -281,13 +281,13 @@ async function getSymbolsFromFile() {
 
 async function getData(type, params = {}) {
   switch (type) {
-    case ConstToolType.MAP_THEME_ADD_DATASET:
+    case ConstToolType.SM_MAP_ADD_DATASET:
       return getDatasets(type, params)
-    case ConstToolType.MAP_ADD:
+    case ConstToolType.SM_MAP_ADD:
       return await getUDBsAndMaps()
-    case 'ADD_SYMBOL_PATH':
+    case ConstToolType.SM_MAP_ADD_SYMBOL_PATH:
       return await getSymbolPath()
-    case 'ADD_SYMBOL_SYMBOLS':
+    case ConstToolType.SM_MAP_ADD_SYMBOL_SYMBOLS:
       return await getSymbolsFromFile()
   }
 }

@@ -21,7 +21,7 @@ class ToolModule extends FunctionModule {
     })
     this.setModuleData(this.type)
     params.showFullMap && params.showFullMap(true)
-    params.setToolbarVisible(true, ConstToolType.MAP_TOOLS, {
+    params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL, {
       containerType,
       isFullScreen: true,
       ...data,
@@ -39,8 +39,7 @@ class ToolModule extends FunctionModule {
 
 export default function() {
   return new ToolModule({
-    type: ConstToolType.MAP_TOOLS,
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
+    type: ConstToolType.SM_MAP_TOOL,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_tools,

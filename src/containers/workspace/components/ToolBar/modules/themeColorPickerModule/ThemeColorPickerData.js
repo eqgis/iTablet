@@ -14,7 +14,7 @@ function getData(type) {
   let data = [],
     buttons = [],
     customView
-  if (type === ConstToolType.MAP_COLOR_PICKER) {
+  if (type === ConstToolType.SM_MAP_COLOR_PICKER) {
     {
       let data = ToolbarModule.getData().customModeData
       let index = ToolbarModule.getData().index

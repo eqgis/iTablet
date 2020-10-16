@@ -1,8 +1,8 @@
 /**
- * 分析
+ * 处理
  */
-import AnalysisData from './AnalysisData'
-import AnalysisAction from './AnalysisAction'
+import ProcessData from './ProcessData'
+import ProcessAction from './ProcessAction'
 import ToolbarModule from '../ToolbarModule'
 import { getThemeAssets } from '../../../../../../assets'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
@@ -18,8 +18,17 @@ class AnalysisModule extends FunctionModule {
   }
 
   action = async () => {
+    if (this.type === ConstToolType.SM_MAP_PROCESS && Platform.OS === 'android') {
+      let sdk = await SMap.getPhoneSDK()
+      if (sdk <= 24) {
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+        )
+        return true
+      }
+    }
     const params = ToolbarModule.getParams()
-    const _data = AnalysisData.getData(this.type)
+    const _data = ProcessData.getData(this.type)
     const containerType = ToolbarType.table
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
@@ -34,15 +43,30 @@ class AnalysisModule extends FunctionModule {
       buttons: _data.buttons,
     })
   }
+
+  //eslint-disable-next-line
+  getToolbarSize = (type, orientation, additional) => {
+    const _data = ToolbarModule.getData()
+    let data = {}
+    if (
+      _data.type === ConstToolType.SM_MAP_PROCESS &&
+      !(additional && additional.data && additional.data.length > 0)
+    ) {
+      data.height =
+        ConstToolType.TOOLBAR_HEIGHT[0] *
+        (orientation.indexOf('LANDSCAPE') === 0 ? 6 : 5)
+    }
+    return data
+  }
 }
 
 export default function() {
   return new AnalysisModule({
-    type: ConstToolType.SM_MAP_ANALYSIS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
+    type: ConstToolType.SM_MAP_PROCESS,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.PROCESS,
     size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_analysis,
-    getData: AnalysisData.getData,
-    actions: AnalysisAction,
+    image: getThemeAssets().functionBar.icon_tool_handle,
+    getData: ProcessData.getData,
+    actions: ProcessAction,
   })
 }

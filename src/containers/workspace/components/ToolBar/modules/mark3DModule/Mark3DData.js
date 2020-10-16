@@ -21,7 +21,7 @@ async function getData(type, params) {
   let data = []
   let buttons = []
   switch (type) {
-    case ConstToolType.MAP3D_MARK:
+    case ConstToolType.SM_MAP3D_MARK:
       data = [
         {
           key: 'map3DPoint',
@@ -67,7 +67,7 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP3D_SYMBOL_POINT:
+    case ConstToolType.SM_MAP3D_MARK_POINT:
       buttons = [
         ToolbarBtnType.CANCEL,
         {
@@ -93,9 +93,9 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.MAP3D_SYMBOL_POINTLINE:
-    case ConstToolType.MAP3D_SYMBOL_POINTSURFACE:
-    case ConstToolType.MAP3D_SYMBOL_TEXT:
+    case ConstToolType.SM_MAP3D_MARK_POINT_LINE:
+    case ConstToolType.SM_MAP3D_MARK_POINT_SURFACE:
+    case ConstToolType.SM_MAP3D_MARK_TEXT:
       buttons = [
         ToolbarBtnType.CANCEL,
         {

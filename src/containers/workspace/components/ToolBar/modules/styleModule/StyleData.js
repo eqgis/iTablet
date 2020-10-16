@@ -18,8 +18,8 @@ import {
 function getData(type, params) {
   let data = []
   switch (type) {
-    case ConstToolType.MAP_STYLE:
-    case ConstToolType.GRID_STYLE:
+    case ConstToolType.SM_MAP_STYLE:
+    case ConstToolType.SM_MAP_STYLE_GRID:
       if (
         ToolbarModule.getParams().currentLayer &&
         !ToolbarModule.getData().currentLayerStyle
@@ -36,17 +36,17 @@ function getData(type, params) {
         })
       }
       break
-    case ConstToolType.POINTCOLOR_SET:
-    case ConstToolType.TEXTCOLOR_SET:
+    case ConstToolType.SM_MAP_STYLE_POINT_COLOR:
+    case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:
       data = colors
       break
-    case ConstToolType.LINECOLOR_SET:
-    case ConstToolType.REGIONBEFORECOLOR_SET:
-    case ConstToolType.REGIONAFTERCOLOR_SET:
-    case ConstToolType.REGIONBORDERCOLOR_SET:
+    case ConstToolType.SM_MAP_STYLE_LINE_COLOR:
+    case ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR:
+    case ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR:
+    case ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR:
       data = colorsWithNull
       break
-    case ConstToolType.TEXTFONT:
+    case ConstToolType.SM_MAP_STYLE_TEXT_FONT:
       data = font(GLOBAL.language)
       break
   }

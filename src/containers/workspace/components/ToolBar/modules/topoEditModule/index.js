@@ -39,7 +39,7 @@ class TopoEditModule extends FunctionModule {
 
 export default function() {
   return new TopoEditModule({
-    type: ConstToolType.MAP_TOPO_EDIT,
+    type: ConstToolType.SM_MAP_TOPO_EDIT,
     getData: TopoEditData.getData,
     actions: TopoEditAction,
   })

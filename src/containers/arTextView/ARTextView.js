@@ -32,8 +32,8 @@ export default class ARTextView extends React.Component {
   componentDidMount() {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arTextModule)
-    ToolbarModule.setToolBarData('ARTEXTMODULE')
-    this.toolbar.setVisible(true, 'ARTEXTMODULE', {
+    ToolbarModule.setToolBarData('SM_ARTEXTMODULE')
+    this.toolbar.setVisible(true, 'SM_ARTEXTMODULE', {
       type: 'table',
     })
     setTimeout(async () => {

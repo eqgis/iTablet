@@ -43,28 +43,29 @@ async function close() {
   _params.setToolbarVisible(false)
 }
 
-async function tableAction(params) {
-  switch (params.type) {
-    case ConstToolType.LINECOLOR_SET:
-      SCartography.setLineColor(params.key, params.layerName)
+async function tableAction(type, params) {
+  let result = false
+  switch (type) {
+    case ConstToolType.SM_MAP_STYLE_LINE_COLOR:
+      result = await SCartography.setLineColor(params.key, params.layerName)
       break
-    case ConstToolType.POINTCOLOR_SET:
-      SCartography.setMarkerColor(params.key, params.layerName)
+    case ConstToolType.SM_MAP_STYLE_POINT_COLOR:
+      result = await SCartography.setMarkerColor(params.key, params.layerName)
       break
-    case ConstToolType.REGIONBEFORECOLOR_SET:
-      SCartography.setFillForeColor(params.key, params.layerName)
+    case ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR:
+      result = await SCartography.setFillForeColor(params.key, params.layerName)
       break
-    case ConstToolType.REGIONAFTERCOLOR_SET:
-      SCartography.setFillBackColor(params.key, params.layerName)
+    case ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR:
+      result = await SCartography.setFillBackColor(params.key, params.layerName)
       break
-    case ConstToolType.REGIONBORDERCOLOR_SET:
-      SCartography.setFillBorderColor(params.key, params.layerName)
+    case ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR:
+      result = await SCartography.setFillBorderColor(params.key, params.layerName)
       break
-    case ConstToolType.TEXTCOLOR_SET:
-      SCartography.setTextColorOfLayer(params.key, params.layerName)
+    case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:
+      result = await SCartography.setTextColorOfLayer(params.key, params.layerName)
       break
   }
-  if (!params.type && params.action) {
+  if (!result && params.action) {
     params.action(params)
   }
 }
@@ -73,7 +74,7 @@ function layerListAction(data) {
   const _params = ToolbarModule.getParams()
   SMap.setLayerEditable(data.path, true)
   if (data.type === 83) {
-    _params.setToolbarVisible(true, ConstToolType.GRID_STYLE, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_STYLE_GRID, {
       containerType: ToolbarType.list,
       isFullScreen: false,
       resetToolModuleData: true,
@@ -81,7 +82,7 @@ function layerListAction(data) {
     _params.showFullMap(true)
     _params.navigation.navigate('MapView')
   } else if (data.type === 1 || data.type === 3 || data.type === 5) {
-    _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_STYLE, {
       containerType: ToolbarType.symbol,
       isFullScreen: false,
       resetToolModuleData: true,
@@ -90,7 +91,7 @@ function layerListAction(data) {
     _params.navigation.navigate('MapView')
   } else if (data.type === 7) {
     _params.showFullMap && _params.showFullMap(true)
-    _params.setToolbarVisible(true, ConstToolType.MAP_STYLE, {
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_STYLE, {
       containerType: ToolbarType.list,
       isFullScreen: true,
       resetToolModuleData: true,
@@ -138,18 +139,18 @@ function menu(type, selectKey, params = {}) {
   const showBox = function() {
     if (
       GLOBAL.Type === ChunkType.MAP_EDIT ||
-      type === ConstToolType.GRID_STYLE ||
-      type === ConstToolType.MAP_STYLE ||
-      type === ConstToolType.MAP_EDIT_STYLE ||
-      type === ConstToolType.MAP_EDIT_MORE_STYLE ||
-      ((type === ConstToolType.LINECOLOR_SET ||
-        type === ConstToolType.POINTCOLOR_SET ||
-        type === ConstToolType.REGIONBEFORECOLOR_SET ||
-        type === ConstToolType.REGIONAFTERCOLOR_SET ||
-        type === ConstToolType.REGIONBORDERCOLOR_SET ||
-        type === ConstToolType.TEXTCOLOR_SET ||
-        type === ConstToolType.TEXTFONT ||
-        type === ConstToolType.LEGEND))
+      type === ConstToolType.SM_MAP_STYLE_GRID ||
+      type === ConstToolType.SM_MAP_STYLE ||
+      type === ConstToolType.SM_MAP_LAYER_BASE_DEFAULT ||
+      type === ConstToolType.SM_MAP_LAYER_BASE_CHANGE ||
+      ((type === ConstToolType.SM_MAP_STYLE_LINE_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_POINT_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_TEXT_COLOR ||
+        type === ConstToolType.SM_MAP_STYLE_TEXT_FONT ||
+        type === ConstToolType.SM_MAP_LEGEND))
     ) {
       params.showBox && params.showBox()
     }
@@ -159,18 +160,18 @@ function menu(type, selectKey, params = {}) {
     let buttons
     if (
       GLOBAL.Type === ChunkType.MAP_EDIT ||
-      type === ConstToolType.GRID_STYLE ||
-      type === ConstToolType.MAP_STYLE ||
-      type === ConstToolType.MAP_EDIT_STYLE ||
-      type === ConstToolType.MAP_EDIT_MORE_STYLE ||
-      type === ConstToolType.LINECOLOR_SET ||
-      type === ConstToolType.POINTCOLOR_SET ||
-      type === ConstToolType.REGIONBEFORECOLOR_SET ||
-      type === ConstToolType.REGIONAFTERCOLOR_SET ||
-      type === ConstToolType.REGIONBORDERCOLOR_SET ||
-      type === ConstToolType.TEXTCOLOR_SET ||
-      type === ConstToolType.TEXTFONT ||
-      type === ConstToolType.LEGEND
+      type === ConstToolType.SM_MAP_STYLE_GRID ||
+      type === ConstToolType.SM_MAP_STYLE ||
+      type === ConstToolType.SM_MAP_LAYER_BASE_DEFAULT ||
+      type === ConstToolType.SM_MAP_LAYER_BASE_CHANGE ||
+      type === ConstToolType.SM_MAP_STYLE_LINE_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_POINT_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_TEXT_COLOR ||
+      type === ConstToolType.SM_MAP_STYLE_TEXT_FONT ||
+      type === ConstToolType.SM_MAP_LEGEND
     ) {
       if (type.indexOf('LEGEND') >= 0) {
         if (_params.mapLegend[GLOBAL.Type].isShow) {

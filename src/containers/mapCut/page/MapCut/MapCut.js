@@ -3,6 +3,9 @@
  Author: Yang Shanglong
  E-mail: yangshanglong@supermap.com
  */
+/**
+ * 地图裁剪界面
+ */
 import * as React from 'react'
 import {
   View,
@@ -76,15 +79,18 @@ export default class MapCut extends React.Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      (async function() {
+    // 切换页面时不要用InteractionManager，其他动画会导致InteractionManager中的方法不执行 ysl
+    // InteractionManager.runAfterInteractions(() => {
+    (async function() {
+      try {
+        this.container && this.container.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
         let layers = await this.props.getLayers()
         SMap.getDatasources().then(datasources => {
           let reg = /^Label_(.*)((#$)|(#_\d+$)|(##\d+$))/
           datasources = datasources.filter(
             item =>
-              !item.alias.match(reg) &&
-              item.engineType === EngineType.UDB
+            !item.alias.match(reg) &&
+            item.engineType === EngineType.UDB
           )
           this.setState({
             datasources,
@@ -110,7 +116,7 @@ export default class MapCut extends React.Component {
                 datasourceName: item.datasourceAlias,
                 caption: '',
               }
-
+        
               // 为减少循环遍历并setState的临时方案，extraData为Map
               this.state.extraData.set(item.name, data)
             }
@@ -118,8 +124,12 @@ export default class MapCut extends React.Component {
           return item.isVisible
         })
         this.selectAll(true, _layers)
-      }.bind(this)())
-    })
+        this.container && this.container.setLoading(false)
+      } catch (e) {
+        this.container && this.container.setLoading(false)
+      }
+    }.bind(this)())
+    // })
   }
 
   /**

@@ -123,6 +123,18 @@ export default class BaseMapItem extends Component {
             'https://www.supermapol.com/services/../services/../services/../resources/thumbnail/data/data3255.png',
         }
         break
+      case 'tianditu':
+        Img = {
+          uri:
+            'https://www.supermapol.com/services/../services/../resources/thumbnail/data/data3258.png',
+        }
+        break
+      case 'BingMap':
+        Img = {
+          uri:
+            'https://www.supermapol.com/services/../services/../services/../services/../resources/thumbnail/data/data3255.png',
+        }
+        break
       default:
         Img = require('../../../../assets/public/mapLoad.png')
         break

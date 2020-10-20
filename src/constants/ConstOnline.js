@@ -108,7 +108,7 @@ export default {
       alias: 'bingMap',
     },
     layerIndex: 0,
-    mapName: 'Bing地图',
+    mapName: 'BingMap',
   },
   OSM: {
     type: 'Datasource',

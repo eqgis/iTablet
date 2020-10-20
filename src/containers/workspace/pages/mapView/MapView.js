@@ -588,6 +588,8 @@ export default class MapView extends React.Component {
         SMap.destroySpeakPlugin()
       })()
     }
+    //unmount时置空 zhangxt
+    GLOBAL.Type = null
     if (this.floorHiddenListener) {
       this.floorHiddenListener.remove()
     }
@@ -1010,14 +1012,19 @@ export default class MapView extends React.Component {
         }
       }
       let mapName = ''
-      if (this.props.map.currentMap.name) { // 获取当前打开的地图xml的名称
+      if (this.props.map.currentMap.name) {
+        // 获取当前打开的地图xml的名称
         mapName = this.props.map.currentMap.name
-        mapName = mapName.substr(0, mapName.lastIndexOf('.')) || this.props.map.currentMap.name
+        mapName =
+          mapName.substr(0, mapName.lastIndexOf('.')) ||
+          this.props.map.currentMap.name
       } else {
         let mapInfo = await SMap.getMapInfo()
-        if (mapInfo && mapInfo.name) { // 获取MapControl中的地图名称
+        if (mapInfo && mapInfo.name) {
+          // 获取MapControl中的地图名称
           mapName = mapInfo.name
-        } else if (this.props.layers.length > 0) { // 获取数据源名称作为地图名称
+        } else if (this.props.layers.length > 0) {
+          // 获取数据源名称作为地图名称
           mapName = this.props.collection.datasourceName
         }
       }
@@ -1025,14 +1032,14 @@ export default class MapView extends React.Component {
       if (this.props.map.currentMap.Template) {
         addition.Template = this.props.map.currentMap.Template
       }
-  
+
       return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
     } catch (e) {
       GLOBAL.clickWait = false
       this.setLoading(false)
     }
   }
-  
+
   /** 关闭地图，并返回首页 **/
   closeMapHandler = async () => {
     try {
@@ -1041,7 +1048,8 @@ export default class MapView extends React.Component {
       await this._removeGeometrySelectedListener()
       await this.props.setCurrentAttribute({})
       // this.setState({ showScaleView: false })
-      GLOBAL.Type = null
+      //此处置空unmount内的判断会失效 zhangxt
+      // GLOBAL.Type = null
       GLOBAL.clearMapData()
       setTimeout(() => {
         this.setLoading(false)
@@ -1106,7 +1114,7 @@ export default class MapView extends React.Component {
         Audio.hideAudio()
         return
       }
-  
+
       // 优先处理其他界面跳转到MapView传来的返回事件
       if (this.backAction && typeof this.backAction === 'function') {
         this.backAction({
@@ -1116,7 +1124,7 @@ export default class MapView extends React.Component {
         this.mapController && this.mapController.reset()
         return
       }
-  
+
       // Android物理返回事件
       if (Platform.OS === 'android') {
         // Toolbar显示时，返回事件Toolbar的close
@@ -1133,7 +1141,7 @@ export default class MapView extends React.Component {
           return true
         }
       }
-  
+
       if (global.coworkMode) {
         let param = {}
         if (CoworkInfo.coworkId !== '') {
@@ -3026,14 +3034,14 @@ export default class MapView extends React.Component {
       />
     )
   }
-  
+
   /**
    * 退出地图保存提示框
    */
   _renderExitSaveView = () => {
     return (
       <SaveView
-        ref={ref => GLOBAL.SaveMapView = ref}
+        ref={ref => (GLOBAL.SaveMapView = ref)}
         language={this.props.language}
         save={this.saveMap}
         device={this.props.device}

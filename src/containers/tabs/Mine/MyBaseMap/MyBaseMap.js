@@ -13,6 +13,7 @@ import { getLanguage } from '../../../../language/index'
 // import { InputDialog } from '../../../../components/Dialog'
 // import { Toast } from '../../../../utils'
 import styles from './styles'
+import { ConstOnline } from '../../../../constants'
 export default class MyBaseMap extends Component {
   props: {
     user: any,
@@ -35,6 +36,12 @@ export default class MyBaseMap extends Component {
     if (!this.curUserBaseMaps) {
       this.curUserBaseMaps = this.props.baseMaps['default']
     }
+    //仅获取用户自定义底图 zhangxt
+    this.curUserBaseMaps = this.curUserBaseMaps.filter(item => {
+      return item.userAdd
+    })
+    //添加公共底图 zhangxt
+    this.curUserBaseMaps = this.getCommonBaseMap().concat(this.curUserBaseMaps)
     let count = this.curUserBaseMaps.length
     for (let i = 0; i < count; i++) {
       this.curUserBaseMaps[i].index = i
@@ -43,6 +50,21 @@ export default class MyBaseMap extends Component {
   }
 
   componentDidMount() {}
+
+  /**
+   * @author zhangxt
+   * @description 获取公共的底图列表
+   * @returns {Array}
+   */
+  getCommonBaseMap = () => {
+    return [
+      ConstOnline.BingMap,
+      ConstOnline.Baidu,
+      ConstOnline.Google,
+      ConstOnline.OSM,
+      ConstOnline.tianditu,
+    ]
+  }
 
   _renderItem = ({ item, index }) => {
     return (

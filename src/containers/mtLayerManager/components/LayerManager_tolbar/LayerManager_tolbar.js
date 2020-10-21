@@ -131,7 +131,7 @@ export default class LayerManager_tolbar extends React.Component {
     }
     return false
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.type !== prevState.type ||
@@ -143,7 +143,7 @@ export default class LayerManager_tolbar extends React.Component {
       this.showToolbarAndBox(this.isShow)
     }
   }
-  
+
   /** 获取Toolbar高度 **/
   getHeight = () => {
     let device = this.props.device
@@ -157,7 +157,11 @@ export default class LayerManager_tolbar extends React.Component {
       }
       length = length > 8 ? 8 : length // 竖屏最多显示8行的高度
       boxHeight = length * ConstToolType.TOOLBAR_HEIGHT[0]
-      if (!GLOBAL.isPad && device.orientation.indexOf('LANDSCAPE') === 0 && length > 3) {
+      if (
+        !GLOBAL.isPad &&
+        device.orientation.indexOf('LANDSCAPE') === 0 &&
+        length > 3
+      ) {
         boxHeight = ConstToolType.TOOLBAR_HEIGHT[3]
       } else {
         boxHeight = length * ConstToolType.TOOLBAR_HEIGHT[0]
@@ -165,7 +169,7 @@ export default class LayerManager_tolbar extends React.Component {
     }
     this.height = boxHeight
   }
-  
+
   getData = (type, isGroup = false, layerData) => {
     let data = []
     let headerData = layerSettingCanVisit(this.props.language)
@@ -211,9 +215,11 @@ export default class LayerManager_tolbar extends React.Component {
         let layerManagerDataArr = [...layerManagerData()]
         for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
           let baseMap = this.props.curUserBaseMaps[i]
+          //只保留用户添加的 zhangxt
           if (
             baseMap.DSParams.engineType === 227 ||
-            baseMap.DSParams.engineType === 223
+            baseMap.DSParams.engineType === 223 ||
+            !baseMap.userAdd
           ) {
             continue
           }
@@ -482,8 +488,8 @@ export default class LayerManager_tolbar extends React.Component {
           }
           GLOBAL.BaseMapSize = 0
         } else {
-          if( this.state.layerData.path === this.props.currentLayer.name){
-            this.props.setCurrentLayer();
+          if (this.state.layerData.path === this.props.currentLayer.name) {
+            this.props.setCurrentLayer()
           }
           await SMap.removeLayer(this.state.layerData.path)
         }
@@ -528,11 +534,15 @@ export default class LayerManager_tolbar extends React.Component {
         this.props.navigation.navigate('MapView')
         let _params = ToolbarModule.getParams()
         _params.showFullMap(true)
-        _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
-          containerType: ToolbarType.multiPicker,
-          isFullScreen: false,
-          resetToolModuleData: true,
-        })
+        _params.setToolbarVisible(
+          true,
+          ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE,
+          {
+            containerType: ToolbarType.multiPicker,
+            isFullScreen: false,
+            resetToolModuleData: true,
+          },
+        )
       }.bind(this)())
     } else if (
       section.title === getLanguage(global.language).Map_Layer.LAYERS_COLLECT
@@ -683,7 +693,10 @@ export default class LayerManager_tolbar extends React.Component {
         case getLanguage(this.props.language).Map_Layer.VISIBLE:
         case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE:
           layerData.isVisible = !layerData.isVisible
-          if (!layerData.isVisible  && layerData.name === this.props.currentLayer.name) {
+          if (
+            !layerData.isVisible &&
+            layerData.name === this.props.currentLayer.name
+          ) {
             this.props.setCurrentLayer(null)
           }
           rel = await SMap.setLayerVisible(layerData.path, layerData.isVisible)

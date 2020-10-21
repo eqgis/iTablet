@@ -3,6 +3,7 @@ import {
   Action,
   SMediaCollector,
   SAIDetectView,
+  FixColorMode,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -681,12 +682,14 @@ async function showAttribute() {
 
 function showMenuBox() {
   const _params = ToolbarModule.getParams()
+  let { selectName } = ToolbarModule.getData()
   _params.setToolbarVisible(
     true,
     ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER,
     {
       containerType: ToolbarType.picker,
       isFullScreen: false,
+      selectName: selectName || '',
       // height: ConstToolType.TOOLBAR_HEIGHT_2[3],
       // cb: () => SCollector.stopCollect(),
     },
@@ -840,6 +843,102 @@ async function close(type) {
   }
 }
 
+/**
+ * 获取智能配图mode
+ * @param arr ep: ['线', '亮度']
+ * @returns {*}
+ */
+function getMatchPictureMode(arr) {
+  let mode
+  switch (arr[arr.length - 1]) {
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS:
+      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+        mode = FixColorMode.FCM_FB
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+        mode = FixColorMode.FCM_BB
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+        mode = FixColorMode.FCM_LB
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+        mode = FixColorMode.FCM_TB
+      }
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST:
+      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+        mode = FixColorMode.FCM_FH
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+        mode = FixColorMode.FCM_BH
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+        mode = FixColorMode.FCM_LH
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+        mode = FixColorMode.FCM_TH
+      }
+      break
+    case getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION:
+      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+        mode = FixColorMode.FCM_FS
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+        mode = FixColorMode.FCM_BS
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+        mode = FixColorMode.FCM_LS
+      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+        mode = FixColorMode.FCM_TS
+      }
+      break
+  }
+  return mode
+}
+
+/**
+ * @author ysl
+ * 获取TouchProgress的初始信息
+ * @param title
+ *        智能配图的title是数组 ep: ['线', '亮度']
+ * @returns {Promise.<{
+ * title,                   提示消息标题
+ * value: number,           当前值
+ * tips: string,            当前信息
+ * range: [number,number],  步长 最小改变单位,默认值1
+ * step: number,            数值范围
+ * unit: string             单位（可选）
+ * }>}
+ */
+async function getTouchProgressInfo(title) {
+  let tips = ''
+  let range = [1, 100]
+  let value = 0
+  let step = 1
+  let unit = '%'
+  let _title = title
+  // 智能配图 title 为数组
+  if (title instanceof Array) {
+    ToolbarModule.addData({ selectName: title })
+    _title = title[title.length - 1]
+    range = [-100, 100]
+    let mode = getMatchPictureMode(title)
+    value = await SMap.getMapFixColorsModeValue(mode)
+  }
+  return { title: _title, value, tips, range, step, unit }
+}
+
+/**
+ * @author ysl
+ * 设置TouchProgress的值到地图对应的属性
+ * @param title
+ * @param value
+ */
+function setTouchProgressInfo(title, value) {
+  let range = [-100, 100]
+  if (value > range[1]) value = range[1]
+  else if (value <= range[0]) value = range[0]
+  
+  let arr = GLOBAL.toolBox && GLOBAL.toolBox.state && GLOBAL.toolBox.state.selectName || ''
+  if (arr instanceof Array) {
+    let mode = getMatchPictureMode(arr)
+    SMap.updateMapFixColorsMode(mode, value)
+  }
+  
+}
+
 export default {
   commit,
   showAttribute,
@@ -855,6 +954,9 @@ export default {
   redo,
   listSelectableAction,
   close,
+  // TouchProgress数据和事件
+  getTouchProgressInfo,
+  setTouchProgressInfo,
 
   begin,
   stop,

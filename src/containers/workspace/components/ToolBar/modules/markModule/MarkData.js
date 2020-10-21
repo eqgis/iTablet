@@ -716,6 +716,7 @@ async function getData(type, params) {
   }
   return { data, buttons }
 }
+
 function getMenuData(type) {
   const _params = ToolbarModule.getParams()
   let data = []

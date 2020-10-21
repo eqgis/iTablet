@@ -699,7 +699,7 @@ async function getLabelFontSize(type, key = '', name = '') {
       showMenuDialog: false,
       type,
       buttons: ThemeMenuData.getThemeFourMenu(),
-      selectName: name || 'fontsize',
+      selectName: name || key,
       selectKey: key,
       data: [],
     },
@@ -1633,6 +1633,220 @@ async function close() {
   _params.setToolbarVisible(false)
 }
 
+/**
+ * @author ysl
+ * 获取TouchProgress的初始信息
+ * @param title
+ * @returns {
+ *   Promise.<{
+ *     title,                   提示消息标题
+ *     value: number,           当前值
+ *     tips: string,            当前信息
+ *     range: [number,number],  步长 最小改变单位,默认值1
+ *     step: number,            数值范围
+ *     unit: string             单位（可选）
+ *   }>
+ * }
+ */
+async function getTouchProgressInfo(title) {
+  const _params = ToolbarModule.getParams()
+  // let layerType = _params.currentLayer.type
+  // let isHeatmap = _params.currentLayer.isHeatmap
+  let themeType = _params.currentLayer.themeType
+  // let event = _data.event
+  let tips = ''
+  let range = [1, 100]
+  let value = 0
+  let step = 1
+  let unit = ''
+  // let title = GLOBAL.toolBox?.state?.selectName
+  switch (title) {
+    // 热力图
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
+      range = [1, 50]
+      value = await SThemeCartography.getHeatMapRadius({
+        LayerName: _params.currentLayer.name,
+      })
+      unit = 'X'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
+      range = [1, 100]
+      value = await SThemeCartography.getHeatMapFuzzyDegree({
+        LayerName: _params.currentLayer.name,
+      })
+      unit = '%'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
+      range = [1, 100]
+      value = await SThemeCartography.getHeatMapMaxColorWeight({
+        LayerName: _params.currentLayer.name,
+      })
+      unit = '%'
+      break
+    // 其他专题图
+    case getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT:
+      if (
+        themeType === ThemeType.RANGE ||
+        themeType === ThemeType.LABELRANGE
+      ) {
+        value = await SThemeCartography.getRangeCount({
+          LayerName: _params.currentLayer.name,
+        })
+      } else if (themeType === ThemeType.GRIDRANGE) {
+        value = await SThemeCartography.getGridRangeCount({
+          LayerName: _params.currentLayer.name,
+        })
+      }
+      range = [2, 32]
+      break
+    case getLanguage(_params.language).Map_Main_Menu.DOT_VALUE:
+      range = [0, 100]
+      value = await SThemeCartography.getDotDensityValue({
+        LayerName: _params.currentLayer.name,
+      })
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      range = [0, 100]
+      if (themeType === ThemeType.DOTDENSITY) {
+        value = await SThemeCartography.getDotDensityDotSize({
+          LayerName: _params.currentLayer.name,
+        })
+      } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
+        value = await SThemeCartography.getGraduatedSymbolSize({
+          LayerName: _params.currentLayer.name,
+        })
+      }
+      unit = 'mm'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.DATUM_VALUE:
+      range = [1, 10000]
+      value = await SThemeCartography.getGraduatedSymbolValue({
+        LayerName: _params.currentLayer.name,
+      })
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      range = [1, 20]
+      value = await SThemeCartography.getLabelFontSize({
+        LayerName: _params.currentLayer.name,
+      })
+      break
+    case getLanguage(_params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
+      range = [1, 20]
+      value = await SThemeCartography.getGraphMaxValue({
+        LayerName: _params.currentLayer.name,
+      })
+      unit = 'X'
+      break
+  }
+  return { title, value, tips, range, step, unit }
+}
+
+/**
+ * @author ysl
+ * 设置TouchProgress的值到地图对应的属性
+ * @param title
+ * @param value
+ */
+function setTouchProgressInfo(title, value) {
+  const Params = ToolbarModule.getParams()
+  let themeType = Params.currentLayer.themeType
+  let range = [1, 100], _params = {}
+  switch (title) {
+    // 热力图
+    case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
+      range = [1, 50]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      _params = {
+        LayerName: Params.currentLayer.name,
+        Radius: value,
+      }
+      SThemeCartography.setHeatMapRadius(_params)
+      break
+    case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
+      _params = {
+        LayerName: Params.currentLayer.name,
+        FuzzyDegree: value,
+      }
+      SThemeCartography.setHeatMapFuzzyDegree(_params)
+      break
+    case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
+      _params = {
+        LayerName: Params.currentLayer.name,
+        MaxColorWeight: value,
+      }
+      SThemeCartography.setHeatMapMaxColorWeight(_params)
+      break
+    // 其他专题图
+    case getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT:
+      _params = {
+        LayerName: Params.currentLayer.name,
+        RangeParameter: parseInt(value),
+      }
+      Object.assign(_params, ToolbarModule.getData().themeParams)
+      if (themeType === ThemeType.LABELRANGE) {
+        SThemeCartography.modifyThemeLabelRangeMap(_params)
+      } else if (themeType === ThemeType.RANGE) {
+        SThemeCartography.modifyThemeRangeMap(_params)
+      } else if (themeType === ThemeType.GRIDRANGE) {
+        SThemeCartography.modifyThemeGridRangeMap(_params)
+      }
+      break
+    case getLanguage(Params.language).Map_Main_Menu.DOT_VALUE:
+      _params = {
+        LayerName: Params.currentLayer.name,
+        Value: value,
+      }
+      SThemeCartography.modifyDotDensityThemeMap(_params)
+      break
+    case getLanguage(Params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      _params = {
+        LayerName: Params.currentLayer.name,
+        SymbolSize: value,
+      }
+      if (themeType === ThemeType.DOTDENSITY) {
+        SThemeCartography.modifyDotDensityThemeMap(_params)
+      } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
+        SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+      }
+      break
+    case getLanguage(Params.language).Map_Main_Menu.DATUM_VALUE:
+      range = [1, 10000]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      _params = {
+        LayerName: Params.currentLayer.name,
+        BaseValue: value,
+      }
+      SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+      break
+    case getLanguage(Params.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      range = [1, 20]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      _params = {
+        LayerName: Params.currentLayer.name,
+        FontSize: parseInt(value),
+      }
+      // 分段标签
+      if (themeType === ThemeType.LABELRANGE) {
+        _params.type = 'range'
+      }
+      SThemeCartography.setLabelFontSize(_params)
+      break
+    case getLanguage(Params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
+      range = [1, 20]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      _params = {
+        LayerName: Params.currentLayer.name,
+        MaxValue: value,
+      }
+      SThemeCartography.setGraphMaxValue(_params)
+      break
+  }
+}
+
 const actions = {
   commit,
   listAction,
@@ -1643,6 +1857,9 @@ const actions = {
   showMenuBox,
   close,
   listSelectableAction,
+  // TouchProgress数据和事件
+  setTouchProgressInfo,
+  getTouchProgressInfo,
 
   getThemeExpress,
   getGraphThemeExpressions,

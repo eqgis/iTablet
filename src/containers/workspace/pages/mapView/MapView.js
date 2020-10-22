@@ -1051,11 +1051,10 @@ export default class MapView extends React.Component {
       //此处置空unmount内的判断会失效 zhangxt
       // GLOBAL.Type = null
       GLOBAL.clearMapData()
-      setTimeout(() => {
-        this.setLoading(false)
-        NavigationService.goBack()
-        GLOBAL.clickWait = false
-      }, 1000)
+
+      this.setLoading(false)
+      NavigationService.goBack()
+      GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
       this.setLoading(false)
@@ -1387,7 +1386,6 @@ export default class MapView extends React.Component {
           )
 
         SMap.setIsMagnifierEnabled(true)
-        SMap.setPOIOptimized(true)
         if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
           this.props.setMapNavigation({ isShow: false, name: '' })
           SMap.getCurrentFloorID().then(currentFloorID => {

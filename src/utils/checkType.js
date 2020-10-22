@@ -1,4 +1,4 @@
-import { DatasetType } from 'imobile_for_reactnative'
+// import { DatasetType } from 'imobile_for_reactnative'
 
 /**
  * 检测传入的Toolbar类型是否占用系统字段
@@ -26,21 +26,21 @@ function checkCustomToolbarType (types) {
   }
 }
 
-const vectorType = [
-  DatasetType.CAD,
-  DatasetType.TEXT,
-  DatasetType.LINE,
-  DatasetType.REGION,
-  DatasetType.POINT,
-  DatasetType.TABULAR,
-]
+// const vectorType = [
+//   DatasetType.CAD,
+//   DatasetType.TEXT,
+//   DatasetType.LINE,
+//   DatasetType.REGION,
+//   DatasetType.POINT,
+//   DatasetType.TABULAR,
+// ]
 
-function isVectorDataset(type) {
-  for (let i = 0; i < vectorType.length; i++) {
-    if (type === vectorType[i]) return true
-  }
-  return false
-}
+// function isVectorDataset(type) {
+//   for (let i = 0; i < vectorType.length; i++) {
+//     if (type === vectorType[i]) return true
+//   }
+//   return false
+// }
 
 function getMediaTypeByPath(uri = '') {
   let type = ''
@@ -68,7 +68,7 @@ function getMediaTypeByPath(uri = '') {
 }
 
 export default {
-  isVectorDataset,
+  // isVectorDataset,
   getMediaTypeByPath,
   checkCustomToolbarType,
 }

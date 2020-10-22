@@ -1,7 +1,8 @@
 import { SMap, DatasetType, SMediaCollector } from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
+import ConstToolType from './ConstToolType'
+import ToolbarType from './ToolbarType'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
-import { ConstToolType, ToolbarType } from '.'
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils } from '../utils'
 

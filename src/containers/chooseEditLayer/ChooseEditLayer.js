@@ -7,7 +7,7 @@
 import * as React from 'react'
 import { FlatList } from 'react-native'
 import { ListSeparator, Container, EmptyView, Dialog } from '../../components'
-import { checkType, Toast, scaleSize } from '../../utils'
+import { Toast, scaleSize } from '../../utils'
 import PropTypes from 'prop-types'
 import { Action, DatasetType } from 'imobile_for_reactnative'
 import { LayerManager_item } from '../mtLayerManager/components'
@@ -45,7 +45,7 @@ export default class ChooseEditLayer extends React.Component {
     //     let type = await (await layer.getDataset()).getType()
     // 排除文本图层和专题图
     // if (type === DatasetType.TEXT || layerNameArr[i].themeType > 0) continue
-    // if (checkType.isVectorDataset(type)) {
+    // if (this.isVectorDataset(type)) {
     //   layerNameArr[i].layer = layer
     //   arr.push(layerNameArr[i])
     // }
@@ -76,7 +76,7 @@ export default class ChooseEditLayer extends React.Component {
           continue
         if (
           layerNameArr[i].type === 'layerGroup' ||
-          checkType.isVectorDataset(layerNameArr[i].type)
+          this.isVectorDataset(layerNameArr[i].type)
         ) {
           arr.push(layerNameArr[i])
         }
@@ -114,6 +114,21 @@ export default class ChooseEditLayer extends React.Component {
     }
   }
 
+  isVectorDataset = type => {
+    const vectorType = [
+      DatasetType.CAD,
+      DatasetType.TEXT,
+      DatasetType.LINE,
+      DatasetType.REGION,
+      DatasetType.POINT,
+      DatasetType.TABULAR,
+    ]
+    for (let i = 0; i < vectorType.length; i++) {
+      if (type === vectorType[i]) return true
+    }
+    return false
+  }
+
   getChildList = async ({ data }) => {
     try {
       if (data.type !== 'layerGroup') return
@@ -129,7 +144,7 @@ export default class ChooseEditLayer extends React.Component {
           item.type === DatasetType.TEXT ||
           item.themeType > 0 ||
           (item.type !== this.type &&
-            !checkType.isVectorDataset(item.type) &&
+            !this.isVectorDataset(item.type) &&
             item.type !== 'layerGroup')
         )
           continue

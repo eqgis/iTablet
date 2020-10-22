@@ -191,9 +191,9 @@ export const closeMap = (cb = () => {}) => async dispatch => {
       await SMap.removeUserCallout()
       await SMap.clearUserTrack()
     }
-    console.warn(1)
+    // console.warn(1)
     await SMap.exitMap()
-    console.warn(2)
+    // console.warn(2)
 
     // console.warn(1)
     // await SMap.resetMapFixColorsModeValue(false)

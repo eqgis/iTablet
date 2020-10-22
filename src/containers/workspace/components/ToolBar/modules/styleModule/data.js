@@ -358,7 +358,7 @@ const grid = param => [
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
   },
   {
-    key: getLanguage(param).Map_Main_Menu.STYLE_CONTRAST,
+    key: getLanguage(param).Map_Main_Menu.CONTRAST,
     action: () => {
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setState({
@@ -453,7 +453,7 @@ const text = param => [
             ToolbarBtnType.MENU_FLEX,
             ToolbarBtnType.TOOLBAR_COMMIT,
           ],
-          selectName: 'TEXT_ROTATION',
+          selectName: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
           selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
         })
     },

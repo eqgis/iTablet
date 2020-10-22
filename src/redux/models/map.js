@@ -418,10 +418,11 @@ const initialState = fromJS({
   workspace: {},
   baseMaps: {
     default: [
+      ConstOnline.BingMap,
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
-      ConstOnline.SuperMapCloud,
+      ConstOnline.tianditu,
     ],
   },
 })

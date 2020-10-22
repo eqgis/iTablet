@@ -232,11 +232,11 @@ const text = param => [
         isTouchProgress: true,
         showMenuDialog: false,
         isFullScreen: true,
-        selectName: 'TEXT_ROTATION',
+        selectName: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
       })
     },
-    selectName: 'TEXT_ROTATION',
+    selectName: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
   },
   {

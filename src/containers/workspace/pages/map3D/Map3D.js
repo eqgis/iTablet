@@ -714,11 +714,11 @@ export default class Map3D extends React.Component {
 
   confirm = async () => {
     // eslint-disable-next-line
-    const content = /[@#\$%\^&\*]+/g
+    // const content = /[@#\$%\^&\*]+/g
     // let result = content.test(this.state.inputText)
-    let result = content.test(this.inputText)
+    // let result = content.test(this.inputText)
     if (
-      result ||
+      // result ||
       this.inputText === '' ||
       this.inputText === null
       // this.state.inputText === '' ||

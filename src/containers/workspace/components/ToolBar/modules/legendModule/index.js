@@ -5,6 +5,7 @@ import LegendData from './LegendData'
 import LegendAction from './LegendAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { getLanguage } from '../../../../../../language'
 
 async function action(type) {
   const _params = ToolbarModule.getParams()
@@ -60,7 +61,8 @@ function setModuleData(type) {
 
 export default function(type, title, customAction) {
   return {
-    title,
+    title: title || getLanguage(GLOBAL.language).Map_Settings.THEME_LEGEND,
+    type: ConstToolType.SM_MAP_LEGEND,
     action: () => {
       if (customAction === false) {
         return

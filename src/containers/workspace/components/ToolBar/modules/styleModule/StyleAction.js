@@ -1,4 +1,4 @@
-import { SCartography, SMap } from 'imobile_for_reactnative'
+import { SCartography, SMap, DatasetType } from 'imobile_for_reactnative'
 import {
   ConstToolType,
   TouchType,
@@ -135,7 +135,7 @@ function menu(type, selectKey, params = {}) {
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  // const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
   const showBox = function() {
     if (
       GLOBAL.Type === ChunkType.MAP_EDIT ||
@@ -230,11 +230,169 @@ function menu(type, selectKey, params = {}) {
   }
 }
 
+/**
+ * @author ysl
+ * 获取TouchProgress的初始信息
+ * @param title
+ * @returns {Promise.<{
+ * title,                   提示消息标题
+ * value: number,           当前值
+ * tips: string,            当前信息
+ * range: [number,number],  步长 最小改变单位,默认值1
+ * step: number,            数值范围
+ * unit: string             单位（可选）
+ * }>}
+ */
+async function getTouchProgressInfo(title) {
+  const _params = ToolbarModule.getParams()
+  let layerType = _params.currentLayer.type
+  let tips = ''
+  let range = [1, 100]
+  let value = 0
+  let step = 1
+  let unit = ''
+  switch (title) {
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      range = [1, 100]
+      value = await SCartography.getMarkerSize(_params.currentLayer.name)
+      unit = 'mm'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+      range = [0, 100]
+      if (layerType === DatasetType.POINT) {
+        value = await SCartography.getMarkerAlpha(_params.currentLayer.name)
+      } else if (layerType === DatasetType.REGION) {
+        value = await SCartography.getFillOpaqueRate(_params.currentLayer.name)
+      } else if (layerType === DatasetType.GRID) {
+        value = await SCartography.getGridOpaqueRate(_params.currentLayer.name)
+      }
+      unit = '%'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_ROTATION:
+      range = [0, 360]
+      if (layerType === DatasetType.POINT) {
+        value = await SCartography.getMarkerAngle(_params.currentLayer.name)
+      } else if (layerType === DatasetType.TEXT) {
+        value = await SCartography.getTextAngleOfLayer(_params.currentLayer.name)
+      }
+      unit = '°'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+      range = [1, 20]
+      value = await SCartography.getLineWidth(_params.currentLayer.name)
+      unit = 'mm'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+      range = [0, 100]
+      value = await SCartography.getLineWidth(_params.currentLayer.name)
+      unit = 'mm'
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      range = [1, 20]
+      value = await SCartography.getTextSizeOfLayer(_params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_BRIGHTNESS:
+      range = [0, 200]
+      // 亮度范围是 -100 至 100
+      value = await SCartography.getGridBrightness(_params.currentLayer.name) + 100
+      break
+    case getLanguage(_params.language).Map_Main_Menu.CONTRAST:
+      range = [0, 200]
+      // 对比度范围是 -100 至 100
+      value = await SCartography.getGridContrast(_params.currentLayer.name) + 100
+      break
+  }
+  return { title, value, tips, range, step, unit }
+}
+
+/**
+ * @author ysl
+ * 设置TouchProgress的值到地图对应的属性
+ * @param title
+ * @param value
+ */
+function setTouchProgressInfo(title, value) {
+  const _params = ToolbarModule.getParams()
+  let layerType = _params.currentLayer.type
+  let range = [1, 100]
+  switch (title) {
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+      range = [1, 100]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      SCartography.setMarkerSize(value, _params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+      // 相同标题，当前根据图层类型来区分使用方法
+      range = [0, 100]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      if (layerType === DatasetType.POINT) {
+        SCartography.setMarkerAlpha(value, _params.currentLayer.name)
+      } else if (layerType === DatasetType.REGION) {
+        SCartography.setFillOpaqueRate(value, _params.currentLayer.name)
+      } else if (layerType === DatasetType.GRID) {
+        SCartography.setGridOpaqueRate(value, _params.currentLayer.name)
+      }
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_ROTATION:
+      range = [0, 360]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      if (layerType === DatasetType.POINT) {
+        SCartography.setMarkerAngle(value, _params.currentLayer.name)
+      } else if (layerType === DatasetType.TEXT) {
+        SCartography.setTextAngleOfLayer(value, _params.currentLayer.name)
+      }
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+      range = [1, 20]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      SCartography.setLineWidth(value, _params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+      range = [0, 100]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      SCartography.setLineWidth(value, _params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
+      range = [1, 20]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+      SCartography.setTextSizeOfLayer(value, _params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.STYLE_BRIGHTNESS:
+      range = [0, 200]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+  
+      value -= 100 // 亮度范围是 -100 至 100
+      
+      SCartography.setGridBrightness(value, _params.currentLayer.name)
+      break
+    case getLanguage(_params.language).Map_Main_Menu.CONTRAST:
+      range = [0, 200]
+      if (value > range[1]) value = range[1]
+      else if (value <= range[0]) value = range[0]
+  
+      value -= 100 // 对比度范围是 -100 至 100
+      
+      SCartography.setGridContrast(value, _params.currentLayer.name)
+      break
+  }
+}
+
 export default {
   commit,
   close,
   tableAction,
   layerListAction,
   menu,
+  // TouchProgress数据和事件
+  getTouchProgressInfo,
+  setTouchProgressInfo,
+  
   setTextFont,
 }

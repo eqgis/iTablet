@@ -195,17 +195,47 @@ export default class MapView extends React.Component {
       let parent = this.props.navigation.dangerouslyGetParent()
       params = parent.state.key === 'CoworkMapStack' && parent.state.params
     }
+    /** 模块类型 */
     this.type = (params && params.type) || GLOBAL.Type || 'LOCAL'
-    this.mapType = (params && params.mapType) || 'DEFAULT'
+    /** 为true则仅显示地图，不显示其他UI控件 */
     this.isExample = (params && params.isExample) || false
+    /** 是否显示图例 */
     this.noLegend = (params && params.noLegend) || false
+    /**
+     * 要打开的数据 object|array 工作空间，数据源，地图或它们的数组
+     * Datasource和Map一般不会同时使用
+     * 工作空间，一般是大工作空间
+     * {
+     *  type: 'Workspace'
+     *  DSParams: { server<string>, 工作空间路径 },
+     * }
+     * 数据源，一般为从ConstOnline获取的底图的数据源
+     * {
+     *  type: 'Datasource'
+     *  DSParams: {
+     *   server<string>, 数据源路径，
+     *   engineType: 225,
+     *   alias: 'TrafficMap',
+     *  },
+     *  layerIndex: 0, 要添加到地图的数据集序号
+     * }
+     * 地图，要打开的地图
+     * {
+     *  type: 'Map'
+     *  path<string>, 地图xml路径
+     *  name<string>, 地图名
+     * }
+     */
     this.wsData = params && params.wsData
+    /** 是否显示定位callout */
     this.showMarker = params && params.showMarker
+    /** 页面标题 */
     this.mapTitle = params.mapTitle
 
     this.path = (params && params.path) || ''
     this.showDialogCaption =
       params && params.path ? !params.path.endsWith('.smwu') : true
+    /** 自定义返回事件 */
     this.backAction = (params && params.backAction) || null
     this.state = {
       showMap: false, // 控制地图初始化显示
@@ -262,6 +292,7 @@ export default class MapView extends React.Component {
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
   }
 
+  /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
     this.floorHiddenListener = SMap.addFloorHiddenListener(async result => {
       //在选点过程中/路径分析界面 不允许拖放改变FloorList、MapController的状态
@@ -622,6 +653,7 @@ export default class MapView extends React.Component {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
+  /** 添加语音识别监听 */
   addSpeechRecognizeListener = () => {
     SSpeechRecognizer.addListenser({
       onBeginOfSpeech: () => {
@@ -683,6 +715,7 @@ export default class MapView extends React.Component {
     })
   }
 
+  /** 继续室内外一体化导航，切换到剩下的室内或室外导航 */
   _changeNavRoute = async () => {
     GLOBAL.changeRouteDialog.setDialogVisible(false)
     this.setLoading(true, getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING)
@@ -756,7 +789,7 @@ export default class MapView extends React.Component {
     this.changeNavPathInfo({ path: '', pathLength: '' })
     this.setLoading(false)
   }
-  //取消切换 清除所有导航信息
+  /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
     SMap.clearPoint()
     this.showFullMap(false)
@@ -878,11 +911,34 @@ export default class MapView extends React.Component {
     }
   }
 
+  /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
     this._addMap()
   }
 
+  /**
+   * 对象选中回调
+   * @param {object} event
+   * {
+   *  layerInfo<object>: {
+   *    name<string>,
+   *    caption<string>,
+   *    editable<boolean>
+   *    visible<boolean>
+   *    selectable<boolean>
+   *    type<number>,
+   *    path<string>,
+   *  },
+   *  id<number>,
+   *  geometryType<number>,
+   *  fieldInfo<array<object>, [{
+   *    name<string>,
+   *    value<any>,
+   *    filedInfo<object>: {caption<string> ...}
+   *  }]
+   * }
+   */
   geometrySelected = async event => {
     this.props.setSelection &&
       this.props.setSelection([
@@ -914,6 +970,25 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 对象多选回调
+   * @param {object} event
+   * {
+   *  geometries<array<object>>: [{
+   *    ids<array<number>>: [1,2],
+   *    geometryType<number>,
+   *    layerInfo<object>, {
+   *      name<string>,
+   *      caption<string>,
+   *      editable<boolean>
+   *      visible<boolean>
+   *      selectable<boolean>
+   *      type<number>,
+   *      path<string>,
+   *    }
+   *  }]
+   * }
+   */
   geometryMultiSelected = event => {
     if (
       ToolbarModule.getData().actions &&
@@ -951,10 +1026,12 @@ export default class MapView extends React.Component {
     })
   }
 
+  /** 移除触摸事件监听 */
   _removeGeometrySelectedListener = async () => {
     await SMap.removeGeometrySelectedListener()
   }
 
+  /** 移除导航相关监听（楼层控件） */
   _removeNavigationListeners = async () => {
     let listeners = []
     if (this.TrafficView && this.TrafficView.listener) {
@@ -966,7 +1043,13 @@ export default class MapView extends React.Component {
     await SMap.removeFloorHiddenListener(listeners)
   }
 
-  // 导出(保存)工作空间中地图到模块
+  /**
+   * 导出(保存)工作空间中地图到模块
+   * @param {string} mapTitle 地图名
+   * @param {string} nModule 弃用
+   * @param {object} addition {Template<string> 模版}
+   * @param {function} cb 保存成功回调
+   */
   saveMapName = async (
     mapTitle = '',
     nModule = '',
@@ -999,7 +1082,7 @@ export default class MapView extends React.Component {
     }
   }
 
-  // 地图保存
+  /** 地图保存 */
   saveMap = async () => {
     try {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
@@ -1102,10 +1185,12 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
+  /** 处理android系统返回键 */
   backHandler = () => {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
+  /** 返回事件 */
   back = async () => {
     try {
       if (!this.mapLoaded) return
@@ -1185,10 +1270,12 @@ export default class MapView extends React.Component {
     }
   }
 
+  /** 设置Container的loading */
   setLoading = (loading = false, info, extra) => {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
+  /** 加载地图，mapview加载完成后调用 */
   _addMap = () => {
     (async function() {
       try {
@@ -1402,9 +1489,6 @@ export default class MapView extends React.Component {
           ).Map_Main_Menu.SELECT_DESTINATION
         }
 
-        //防止退出时没有清空
-        await SMap.removeUserCallout()
-        await SMap.clearUserTrack()
 
         this.setLoading(false)
         //切换地图完成后重置导航选择的数据
@@ -1414,7 +1498,13 @@ export default class MapView extends React.Component {
           currentDatasource: [], //当前使用的数据源
           currentDataset: {}, //当前使用的数据集
         }
-        this.startCowork()
+        ;(async function () {
+          //防止退出时没有清空
+          await SMap.removeUserCallout()
+          await SMap.clearUserTrack()
+
+          this.startCowork()
+        }.bind(this)())
 
         this.mapLoaded = true
       } catch (e) {
@@ -1424,6 +1514,7 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
+  /** 开始在线协作 */
   startCowork = () => {
     if (global.coworkMode && CoworkInfo.coworkId === '') {
       //创建
@@ -1467,6 +1558,11 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 打开工作空间
+   * @param {object} wsData 见this.wsData工作空间部分
+   * @param {*} index deprecated
+   */
   _openWorkspace = async (wsData, index = -1) => {
     if (!wsData.DSParams || !wsData.DSParams.server) {
       this.setLoading(false)
@@ -1482,6 +1578,12 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 打开数据源
+   * @param {object} wsData 见this.wsData数据源部分
+   * @param {number} index 添加到地图的数据集序号
+   * @param {boolean} toHead 是否添加到图层顶部
+   */
   _openDatasource = async (wsData, index = -1, toHead = true) => {
     if (!wsData.DSParams || !wsData.DSParams.server) {
       this.setLoading(false)
@@ -1495,6 +1597,10 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 打开地图
+   * @param {object} data  见this.wsData地图部分
+   */
   _openMap = async data => {
     try {
       let mapInfo = await this.props.openMap({
@@ -1596,6 +1702,14 @@ export default class MapView extends React.Component {
   //   this.InputDialog && this.InputDialog.setDialogVisible(visible, params)
   // }
 
+  /**
+   * 在线协作消息callout点击回调
+   * @param {object} info {
+   *  messageID<number>, callout对应的消息ID
+   *  x<number>, 点击位置的屏幕x坐标
+   *  y<number>, 点击位置的屏幕y坐标
+   * }
+   */
   onMessageCalloutTap = info => {
     try {
       this.coworkMessageID = info.messageID
@@ -1782,7 +1896,6 @@ export default class MapView extends React.Component {
         addGeometrySelectedListener={this._addGeometrySelectedListener}
         removeGeometrySelectedListener={this._removeGeometrySelectedListener}
         device={this.props.device}
-        setMapType={this.setMapType}
         online={this.props.online}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
@@ -1791,6 +1904,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 专题图预览时的header */
   renderPreviewHeader = () => {
     return (
       <PreviewHeader
@@ -1812,6 +1926,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 页面进入后台时的遮盖层 */
   renderBackgroundOverlay = () => {
     return (
       <BackgroundOverlay
@@ -1847,7 +1962,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  /** 显示全屏 **/
+  /**
+   * 显示全屏
+   * @param {boolean} isFull
+   */
   showFullMap = isFull => {
     this.showFullonBlur = !isFull
     if (isFull === this.fullMap) return
@@ -1881,7 +1999,11 @@ export default class MapView extends React.Component {
     this.fullMap = !full
   }
 
-  /** 显示量算结果 **/
+  /**
+   * 显示量算结果
+   * @param {boolean} isShow 是否显示量算结果
+   * @param {string|number} result 测量出来的距离 '100m'
+   */
   showMeasureResult = (isShow, result = '') => {
     if (
       isShow !== this.state.measureShow ||
@@ -1911,7 +2033,14 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
-  //多媒体采集
+  /**
+   * AR分类点击保存截图
+   * @param {object} params {
+   *  ID<number>, trackID
+   *  mediaName<string>, 识别的名称
+   *  Info<string>, 识别的信息
+   * }
+   */
   captureImage = params => {
     //保存数据->跳转
     (async function() {
@@ -1958,6 +2087,14 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
+  /**
+   * AR分类点击回调
+   * @param {object} data {
+   *  id<number>, trackID
+   *  name<string>, 识别的名称
+   *  info<string>, 识别的信息
+   * }
+   */
   _onArObjectClick = data => {
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
       let params = {
@@ -1986,16 +2123,23 @@ export default class MapView extends React.Component {
     )
   }
 
-  /** 改变地图存储类型 是否有本地XML文件 **/
-  setMapType = mapType => {
-    this.mapType = mapType
-  }
-
-  //设置已选中的和当前正在试用的导航数据
+  /**
+   * 设置已选中的和当前正在使用的导航数据
+   * @param {object} params {
+   *  selectedDatasets<array>, //当前选中数据集,详见NavigationDataChangePage
+   *  selectedDatasources<array>, [] //当前选中数据源，详见NavigationDataChangePage
+   *  currentDataset<object>, //当前使用中的数据集，selectedDatasets的元素
+   *  currentDatasource<array>, //当前使用中的数据源，selectedDatasources中选中的元素的数组
+   * }
+   */
   setNavigationDatas = params => {
     this.selectedData = params
   }
 
+  /**
+   * 获取导航需要的数据
+   * @returns {object} 详见setNavigationDatas
+   */
   getNavigationDatas = () => {
     return this.selectedData
   }
@@ -2030,10 +2174,16 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 开启动态投影弹框的取消事件
+   */
   cancel = () => {
     GLOBAL.dialog.setDialogVisible(false)
   }
 
+  /**
+   * 开启动态投影弹框的确定事件
+   */
   confirm = () => {
     (async function() {
       let result = await SMap.setDynamicProjection()
@@ -2043,6 +2193,9 @@ export default class MapView extends React.Component {
     }.bind(this)())
   }
 
+  /**
+   * 是否开启动态投影的弹框
+   */
   renderDialog = () => {
     return (
       <Dialog
@@ -2062,6 +2215,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 底部撤销恢复的工具栏
+   */
   renderEditControllerView = () => {
     return (
       <View style={[styles.editControllerView, { width: '100%' }]}>
@@ -2341,6 +2497,9 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 顶部下载进度条
+   */
   renderProgress = () => {
     let data
     if (this.props.downloads.length > 0) {
@@ -2375,7 +2534,10 @@ export default class MapView extends React.Component {
     )
   }
 
-  /** 切换ar和地图浏览 **/
+  /**
+   * 切换ar和地图浏览
+   * @param {boolean} showAIDetect 是否隐藏AR相机页面
+   */
   switchAr = showAIDetect => {
     let _showAIDetect = this.state.showAIDetect
     if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
@@ -2398,12 +2560,17 @@ export default class MapView extends React.Component {
     return _showAIDetect
   }
 
+  /**
+   * 移除AR相机页面
+   * @param {boolean} bGone 是否移除AR相机页面
+   */
   removeAIDetect = bGone => {
     this.setState({
       bGoneAIDetect: bGone,
     })
   }
 
+  /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
     let right
     if (
@@ -2552,6 +2719,11 @@ export default class MapView extends React.Component {
   //     </View>
   //   )
   // }
+  /**
+   * 设置楼层id
+   * @param {string} currentFloorID 楼层id
+   * @param {*} cb 完成回调
+   */
   changeFloorID = (currentFloorID, cb) => {
     if (currentFloorID !== this.state.currentFloorID) {
       this.setState(
@@ -2564,6 +2736,8 @@ export default class MapView extends React.Component {
       )
     }
   }
+
+  /** 楼层控件 */
   _renderFloorListView = () => {
     return (
       <RNFloorListView
@@ -2576,6 +2750,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 实时路况 */
   _renderTrafficView = () => {
     return (
       <TrafficView
@@ -2634,6 +2809,10 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 室内外路网采集入口
+   * @param {string} type SM_MAP_INCREMENT_INNER|SM_MAP_INCREMENT_GPS_TRACK
+   */
   _pressRoad = async type => {
     //暂时屏蔽室内采集
     if (type === ConstToolType.SM_MAP_INCREMENT_INNER) return
@@ -2670,6 +2849,7 @@ export default class MapView extends React.Component {
     GLOBAL.IncrementRoadDialog.setVisible(false)
   }
 
+  /** 室内外路网采集的弹框 */
   renderIncrementDialog = () => {
     const increment_indoor = getPublicAssets().navigation.increment_indoor
     const increment_outdoor = getPublicAssets().navigation.increment_outdoor
@@ -2716,6 +2896,8 @@ export default class MapView extends React.Component {
       </IncrementRoadDialog>
     )
   }
+
+  /** 目标识别header */
   _renderAIDetectChange = () => {
     return (
       <MapSelectPoint
@@ -2739,6 +2921,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 目标识别header右侧按钮 */
   _renderAIDectectHeaderRight = () => {
     const dectectype = getThemeAssets().setting.icon_detection_type
     return (
@@ -2761,10 +2944,18 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 导航  地图选点界面的搜索按钮被点击,当前设置按钮title
+   * @returns {object} {
+   *   isClicked<boolean>,
+       title<string>, 当前点击按钮的标题
+   *  }
+   */
   getSearchClickedInfo = () => {
     return this.searchClickedInfo
   }
 
+  /** 地图选点header右边确定view */
   _renderMapSelectPointHeaderRight = () => {
     if (
       GLOBAL.MapSelectPointType === 'selectPoint' ||
@@ -2864,6 +3055,7 @@ export default class MapView extends React.Component {
     }
   }
 
+  /** 地图选点header */
   _renderMapSelectPoint = () => {
     return (
       <MapSelectPoint
@@ -2929,6 +3121,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 在线路径分析 */
   _onlineRouteAnylystConfirm = async () => {
     GLOBAL.NavDialog.setDialogVisible(false)
     this.setLoading(true, getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING)
@@ -2976,6 +3169,17 @@ export default class MapView extends React.Component {
     }
   }
 
+  /**
+   * 设置导航路径的信息
+   * @param {object} param0
+   * @param {array} param0.path [{
+   *  roadLength<number>, 路径长度
+   *  turnType<number>, 转弯类型
+   * }]
+   * @param {object} param0.pathLength {
+   *  length<number>, 路径长度
+   * }
+   */
   changeNavPathInfo = ({ path, pathLength }) => {
     this.setState({
       path,
@@ -2983,6 +3187,7 @@ export default class MapView extends React.Component {
     })
   }
 
+  /** 导航底部组件 */
   _renderNavigationStartButton = () => {
     return (
       <NavigationStartButton
@@ -2995,6 +3200,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 导航顶部组件 */
   _renderNavigationStartHead = () => {
     return (
       <NavigationStartHead
@@ -3005,6 +3211,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  /** 地图选点底部组件 */
   _renderMapSelectPointButton = () => {
     return (
       <MapSelectPointButton
@@ -3019,6 +3226,11 @@ export default class MapView extends React.Component {
     )
   }
 
+  /**
+   * 根据data打开地图并显示指定点位置
+   * @param {object} data  见this.wsData
+   * @param {object} point 坐标点 {x<number>, y<number>}
+   */
   _openSelectPointMap = async (data, point) => {
     await SMap.removeAllLayer() // 移除所有图层
     await this._openDatasource(data, data.layerIndex)

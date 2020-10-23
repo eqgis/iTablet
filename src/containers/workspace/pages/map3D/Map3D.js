@@ -107,28 +107,8 @@ export default class Map3D extends React.Component {
         true,
         getLanguage(this.props.language).Prompt.LOADING,
       )
-      let startOpen = false
-      let openScene = () => {
-        if (startOpen) return
-        startOpen = true
-        clearTimeout(this.openTimer)
-
-        if (Platform.OS === 'android') {
-          this.props.setBackAction({
-            action: this.back,
-          })
-        }
-        GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
-
-        // 三维地图只允许单例
-        // setTimeout(this._addScene, 2000)
-        this._addScene()
-        this.addAttributeListener()
-        this.addCircleFlyListen()
-        this.getLayers()
-      }
-      InteractionManager.runAfterInteractions(openScene)
-      this.openTimer = setTimeout(openScene, 3000)
+      // InteractionManager.runAfterInteractions(openScene)
+      // this.openTimer = setTimeout(openScene, 3000)
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
         () => {
@@ -315,7 +295,32 @@ export default class Map3D extends React.Component {
   }
 
   _onGetInstance = sceneControl => {
+    // console.warn("add scene")
     GLOBAL.sceneControl = sceneControl
+
+    //放到这里打开场景，更稳定 add xiezhy
+    // let startOpen = false
+    // let openScene = () => {
+
+      // if (startOpen) return
+      // startOpen = true
+      // clearTimeout(this.openTimer)
+
+      if (Platform.OS === 'android') {
+        this.props.setBackAction({
+          action: this.back,
+        })
+      }
+      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
+
+      // 三维地图只允许单例
+      // setTimeout(this._addScene, 2000)
+      this._addScene()
+      this.addAttributeListener()
+      this.addCircleFlyListen()
+      this.getLayers()
+    // }
+
     // this._addScene()
   }
 

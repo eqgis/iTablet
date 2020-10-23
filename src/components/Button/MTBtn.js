@@ -24,7 +24,7 @@ export default class MTBtn extends React.Component {
     selectedImage?: any, // 点击时图片
     size?: string, // 图片文字大小
     title?: string, // 文字
-    onPress: () => {}, // 点击事件
+    onPress: () => void, // 点击事件
     textStyle?: any, // 自定义文字样式
     textColor?: string, // 自定义文字颜色
     imageStyle?: any, // 自定义图片样式
@@ -34,8 +34,8 @@ export default class MTBtn extends React.Component {
     // flash：按下和松开
     activeOpacity?: number, // 点击按钮透明度 0 - 1
     separator?: number, // 图片和文字的间距
-    onPressIn?: () => {}, // 按下时的事件
-    onPressOut?: () => {}, // 松开时的事件
+    onPressIn?: () => void, // 按下时的事件
+    onPressOut?: () => void, // 松开时的事件
     opacity?: number, // 点击后透明度，若无，在为TouchableHighlight，反之为TouchableOpacity
   }
 

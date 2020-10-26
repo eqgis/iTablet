@@ -125,7 +125,7 @@ class FindSettingPage extends React.Component {
           navigation: this.props.navigation,
         }}
       >
-        <View>
+        <View style={{flex: 1}}>
           <View
             style={{
               justifyContent: 'flex-end',

@@ -1116,7 +1116,24 @@ export default class MapView extends React.Component {
         addition.Template = this.props.map.currentMap.Template
       }
 
-      return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
+      this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
+      let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
+      if (result || result === '') {
+        this.setLoading(false)
+        Toast.show(
+          result
+            ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
+            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
+          // ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
+          // : ConstInfo.MAP_EXIST,
+        )
+        return true
+      } else {
+        this.setSaveMapViewLoading(false)
+        return false
+      }
+
+      // return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
     } catch (e) {
       GLOBAL.clickWait = false
       this.setLoading(false)
@@ -1245,6 +1262,7 @@ export default class MapView extends React.Component {
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             this._removeNavigationListeners()
           }
+          await this.closeMapHandler()
           GLOBAL.clickWait = false
         })
       } else {
@@ -3255,7 +3273,7 @@ export default class MapView extends React.Component {
         language={this.props.language}
         save={this.saveMap}
         device={this.props.device}
-        notSave={this.closeMapHandler}
+        // notSave={this.closeMapHandler}
         cancel={() => {
           // this.backAction = null
           GLOBAL.clickWait = false

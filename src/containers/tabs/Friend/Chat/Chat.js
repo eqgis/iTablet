@@ -218,8 +218,10 @@ class Chat extends React.Component {
       SMap.mapIsModified().then(async result => {
         if (result) {
           GLOBAL.SaveMapView &&
-            GLOBAL.SaveMapView.setVisible(true, null, () => {
+            GLOBAL.SaveMapView.setVisible(true, null, async () => {
+              await this.props.closeMap()
               close()
+              this.props.navigation.pop()
             })
         } else {
           await this.props.closeMap()

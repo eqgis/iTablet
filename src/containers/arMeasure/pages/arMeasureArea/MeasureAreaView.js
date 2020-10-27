@@ -174,9 +174,6 @@ export default class MeasureAreaView extends React.Component {
       'onCurrentHeightChanged',
       this.onCurrentHeightChanged,
     )
-    // if (Platform.OS !== 'ios') {
-    SMeasureAreaView.dispose()
-    // }
   }
 
   /**高度变化 */
@@ -246,6 +243,8 @@ export default class MeasureAreaView extends React.Component {
   confirm = () => {}
 
   back = () => {
+    //返回时立即释放资源，以免ai检测冲突 zhangxt
+    SMeasureAreaView.dispose()
     // eslint-disable-next-line
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     // eslint-disable-next-line

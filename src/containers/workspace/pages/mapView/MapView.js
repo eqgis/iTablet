@@ -1043,45 +1043,6 @@ export default class MapView extends React.Component {
     await SMap.removeFloorHiddenListener(listeners)
   }
 
-  /**
-   * 导出(保存)工作空间中地图到模块
-   * @param {string} mapTitle 地图名
-   * @param {string} nModule 弃用
-   * @param {object} addition {Template<string> 模版}
-   * @param {function} cb 保存成功回调
-   */
-  saveMapName = async (
-    mapTitle = '',
-    nModule = '',
-    addition = {},
-    // isNew = false,
-    cb = () => {},
-  ) => {
-    try {
-      this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
-      let result = await this.props.saveMap({ mapTitle, nModule, addition })
-      if (result || result === '') {
-        this.setLoading(false)
-        Toast.show(
-          result
-            ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
-          // ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-          // : ConstInfo.MAP_EXIST,
-        )
-        cb && cb()
-        return true
-      } else {
-        this.setSaveMapViewLoading(false)
-        return false
-      }
-    } catch (e) {
-      this.setLoading(false)
-      GLOBAL.clickWait = false
-      return false
-    }
-  }
-
   /** 地图保存 */
   saveMap = async () => {
     try {
@@ -1117,6 +1078,7 @@ export default class MapView extends React.Component {
       }
 
       this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
+      // 导出(保存)工作空间中地图到模块
       let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
       if (result || result === '') {
         this.setLoading(false)
@@ -1124,16 +1086,12 @@ export default class MapView extends React.Component {
           result
             ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
             : getLanguage(this.props.language).Prompt.SAVE_FAILED,
-          // ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-          // : ConstInfo.MAP_EXIST,
         )
         return true
       } else {
         this.setSaveMapViewLoading(false)
         return false
       }
-
-      // return await this.saveMapName(mapName, '', addition, this.closeMapHandler)
     } catch (e) {
       GLOBAL.clickWait = false
       this.setLoading(false)
@@ -3273,7 +3231,6 @@ export default class MapView extends React.Component {
         language={this.props.language}
         save={this.saveMap}
         device={this.props.device}
-        // notSave={this.closeMapHandler}
         cancel={() => {
           // this.backAction = null
           GLOBAL.clickWait = false

@@ -274,6 +274,13 @@ export default class Map3D extends React.Component {
         }, 1500)
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
+      }).catch(() =>{
+        //reject异常处理 zhangxt
+        setTimeout(() => {
+          this.container.setLoading(false)
+          // Toast.show('无场景显示')
+          this.mapLoaded = true
+        }, 1500)
       })
     } catch (e) {
       setTimeout(() => {

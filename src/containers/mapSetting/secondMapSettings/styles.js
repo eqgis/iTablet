@@ -89,7 +89,7 @@ export default StyleSheet.create({
     borderColor: color.separateColorGray,
   },
   headerRight: {
-    color: 'white',
+    color: 'black',
     width: scaleSize(100),
     fontSize: size.fontSize.fontSizeXXl,
     textAlign: 'right',

@@ -879,6 +879,8 @@ const Map_Settings = {
   CONFIRM: 'Onay',
   CANCEL: 'İptal',
   COPY: 'Kopyala',
+
+  CONFIDENCE: 'Confidence', //待翻译
 }
 
 // 地图工具

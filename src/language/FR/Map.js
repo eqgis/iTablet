@@ -879,6 +879,8 @@ const Map_Settings = {
   CONFIRM: 'Confirmer',
   CANCEL: 'Annuler',
   COPY: 'Copier',
+
+  CONFIDENCE: 'Confidence', //待翻译
 }
 
 // 地图工具

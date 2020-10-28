@@ -38,7 +38,7 @@ import {
   getDetectTypesSettings,
 } from '../settingData'
 import { SMap, SAIDetectView } from 'imobile_for_reactnative'
-import { scaleSize } from '../../../utils'
+import { scaleSize, screen } from '../../../utils'
 import color from '../../../styles/color'
 import styles from './styles'
 import Toast from '../../../utils/Toast'
@@ -48,6 +48,7 @@ import { getLanguage } from '../../../language'
 import FileTools from '../../../native/FileTools'
 import { mapSettingModule } from '../../workspace/components/ToolBar/modules'
 import { ConstToolType } from '../../../constants'
+import SlideBar from '../../../components/SlideBar'
 
 export default class SecondMapSettings extends Component {
   props: {
@@ -69,10 +70,29 @@ export default class SecondMapSettings extends Component {
       cb: params.cb || '',
       editControllerVisible: false,
       currentClick: '',
+      /** ai检测置信度设置 */
+      showConfidence: false,
+      /** ai检测置信度 范围 0-100*/
+      confidence: 0,
     }
   }
   UNSAFE_componentWillMount() {
     this.getData()
+  }
+
+  componentDidMount() {
+    this.initState()
+  }
+  /** 初始化状态 */
+  initState = async () => {
+    //获取置信度初始值 zhangxt
+    if(this.state.title === getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE) {
+      let confidence = await SAIDetectView.getConfidence()
+      confidence = Math.round(confidence * 100)
+      this.setState({
+        confidence: confidence,
+      })
+    }
   }
 
   //数字格式化成带逗号的数字
@@ -555,12 +575,12 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                  let data = this.state.data.concat()
-                  data[0].value = prjCoordSysName
-                  this.setState({
-                    data,
-                  })
-                },
+                let data = this.state.data.concat()
+                data[0].value = prjCoordSysName
+                this.setState({
+                  data,
+                })
+              },
         })
         break
       case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
@@ -572,12 +592,12 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                  let data = this.state.data.concat()
-                  data[0].value = prjCoordSysName
-                  this.setState({
-                    data,
-                  })
-                },
+                let data = this.state.data.concat()
+                data[0].value = prjCoordSysName
+                this.setState({
+                  data,
+                })
+              },
         })
         break
       case getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD:
@@ -844,19 +864,19 @@ export default class SecondMapSettings extends Component {
             <Text style={styles.itemName}>{item.title}</Text>
             {hasValue &&
               isBackGroundColor && (
-                <View style={{ ...styles.colorView }}>
-                  <Text
-                    style={{
-                      ...styles.colorBlock,
-                      backgroundColor: item.value,
-                    }}
-                  />
-                </View>
-              )}
+              <View style={{ ...styles.colorView }}>
+                <Text
+                  style={{
+                    ...styles.colorBlock,
+                    backgroundColor: item.value,
+                  }}
+                />
+              </View>
+            )}
             {hasValue &&
               !isBackGroundColor && (
-                <Text style={styles.rightText}>{item.value}</Text>
-              )}
+              <Text style={styles.rightText}>{item.value}</Text>
+            )}
             <Image
               style={styles.itemArrow}
               resizeMode={'contain'}
@@ -1101,6 +1121,21 @@ export default class SecondMapSettings extends Component {
     }
   }
 
+  /** 设置置信度确认方法 */
+  setConfidence = async () => {
+    if(this.state.showConfidence) {
+      let confidence = this.state.confidence
+      SAIDetectView.setConfidence(confidence / 100)
+      this.setState({
+        showConfidence: false,
+      })
+    } else {
+      this.setState({
+        showConfidence: true,
+      })
+    }
+  }
+
   //SectionList header点击事件
   refreshList = section => {
     let newData = this.state.data
@@ -1194,7 +1229,7 @@ export default class SecondMapSettings extends Component {
       }
     })
     ;(paramsObject.coordSysTransMethod = this.state.title),
-      (isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject))
+    (isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject))
     if (isSuccess) {
       this.state.cb(this.state.title)
       this.backAction()
@@ -1217,6 +1252,78 @@ export default class SecondMapSettings extends Component {
         }}
       />
     )
+  }
+
+  renderRight = () => {
+    if(this.state.rightBtn !== '') {
+      return (
+        <TouchableOpacity key={'copy'} onPress={this.copyInfo}>
+          <Text style={styles.headerRight}>
+            {this.state.rightBtn}
+          </Text>
+        </TouchableOpacity>
+      )
+    }
+    if(this.state.title === getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE) {
+      return (
+        <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: scaleSize(30)}} key={'confidence'} onPress={this.setConfidence}>
+          <Text style={{color: 'black', fontSize: scaleSize(24)}}>
+            {this.state.showConfidence
+              ? getLanguage(GLOBAL.language).Prompt.CONFIRM
+              : getLanguage(GLOBAL.language).Map_Settings.CONFIDENCE}
+          </Text>
+          {!this.state.showConfidence && (
+            <Text style={{color: 'black', fontSize: scaleSize(20)}}>
+              {'(' + this.state.confidence + '%)'}
+            </Text>
+          )}
+        </TouchableOpacity>
+      )
+    }
+    return null
+  }
+
+  renderConfidenceSlide = () => {
+    if(this.state.showConfidence) {
+      return (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
+            backgroundColor: '#00000055',
+          }}
+        >
+          <View style={{
+            width: '100%',
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}>
+
+            <Text
+              numberOfLines={1}
+              style={{
+                fontSize: scaleSize(24),
+                textAlign: 'center',
+              }}
+            >
+              {this.state.confidence +'%'}
+            </Text>
+            <SlideBar
+              style={{ width: screen.getScreenWidth() - 20 }}
+              range={[0, 100]}
+              defaultValue={this.state.confidence}
+              onMove={location => {
+                this.setState({
+                  confidence: location,
+                })
+              }}
+            />
+          </View>
+        </View>
+      )
+    }
   }
 
   render() {
@@ -1379,16 +1486,8 @@ export default class SecondMapSettings extends Component {
         headerProps={{
           title: this.state.title,
           backAction: this.backAction,
-          headerRight:
-            this.state.rightBtn !== ''
-              ? [
-                  <TouchableOpacity key={'copy'} onPress={this.copyInfo}>
-                    <Text style={styles.headerRight}>
-                      {this.state.rightBtn}
-                    </Text>
-                  </TouchableOpacity>,
-                ]
-              : null,
+          headerRight: this.renderRight(),
+          headerOnTop: this.state.showConfidence,
         }}
       >
         <FlatList
@@ -1396,6 +1495,7 @@ export default class SecondMapSettings extends Component {
           data={this.state.data}
           keyExtractor={(item, index) => item + index}
         />
+        {this.renderConfidenceSlide()}
       </Container>
     )
   }

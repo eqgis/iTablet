@@ -1,3 +1,4 @@
+/*global GLOBAL*/
 import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
@@ -9,6 +10,8 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../../../../../containers/workspace/components/ToolBar/ToolbarBtnType'
 import ToolAction from '../../../../../../containers/workspace/components/ToolBar/modules/toolModule/ToolAction'
 
+let isDownload = true // 目标分类默认文件下载判断
+
 // 违章采集
 function illegallyParkCollect() {
   (async function() {
@@ -19,7 +22,7 @@ function illegallyParkCollect() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (dataList.length > 0) {
       if (GLOBAL.showAIDetect) {
-        GLOBAL.isswitch = true
+        GLOBAL.arSwitchToMap = true
         ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
       }
       let taggingLayerData = await getTaggingLayerData()
@@ -88,7 +91,7 @@ async function getTaggingLayerData() {
 function aiClassify() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    if (GLOBAL.isDownload) {
+    if (isDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
       const dustbinPath =
         `${this.homePath +
@@ -101,7 +104,7 @@ function aiClassify() {
       if (isDustbin) {
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
-          GLOBAL.isswitch = true
+          GLOBAL.arSwitchToMap = true
           ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
         }
         let taggingLayerData = await getTaggingLayerData()
@@ -124,7 +127,7 @@ function aiClassify() {
           datasetName,
         })
       } else {
-        GLOBAL.isDownload = false
+        isDownload = false
         const downloadData = getDownloadData(
           'mobilenet_quant_224',
           'mobilenet_quant_224',
@@ -177,7 +180,7 @@ function _downloadData(downloadData) {
           await FileTools.unZipFile(fileCachePath, fileDirPath)
           await FileTools.deleteFile(fileCachePath)
           _params.deleteDownloadFile({ id: 'mobilenet_quant_224' })
-          GLOBAL.isDownload = true
+          isDownload = true
           Toast.show(getLanguage(_params.language).Prompt.DOWNLOAD_SUCCESSFULLY)
         })
         .catch(() => {
@@ -198,7 +201,7 @@ function aiDetect() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
@@ -233,10 +236,9 @@ function aiDetect() {
         isFullScreen: false,
         height: 0,
       })
-    GLOBAL.AIDETECTCHANGETITLE = getLanguage(
-      global.language,
-    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
-    GLOBAL.AIDETECTCHANGE.setVisible(true)
+    GLOBAL.AIDETECTCHANGE.setVisible(true, getLanguage(
+      GLOBAL.language,
+    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   })()
 }
@@ -254,7 +256,7 @@ function polymerizeCollect() {
     const _params = ToolbarModule.getParams()
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
@@ -288,10 +290,9 @@ function polymerizeCollect() {
         isFullScreen: false,
         height: 0,
       })
-    GLOBAL.AIDETECTCHANGETITLE = getLanguage(
-      global.language,
-    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
-    GLOBAL.AIDETECTCHANGE.setVisible(true)
+    GLOBAL.AIDETECTCHANGE.setVisible(true, getLanguage(
+      GLOBAL.language,
+    ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT)
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   })()
 }
@@ -302,7 +303,7 @@ function poseEstimation() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
@@ -318,7 +319,7 @@ function gestureBone() {
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
 
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
@@ -326,34 +327,34 @@ function gestureBone() {
       // NavigationService.navigate('AIGestureBoneView')
       let info = {}
       info.gestureTitle = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE //放大
       info.zoom = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY //放大
       info.shrink = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK //缩小
-      info.full = getLanguage(global.language).Map_Main_Menu.FULL_SCREEN //全幅
+      info.full = getLanguage(GLOBAL.language).Map_Main_Menu.FULL_SCREEN //全幅
       info.associationCancel = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL //取消关联
       info.association = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION //关联地图
       info.switchCamera = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA //切换相机
       info.location = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Attribute.ATTRIBUTE_LOCATION //定位
       info.gestureDetail = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE_DETAIL //手势详情
       info.close = getLanguage(
-        global.language,
+        GLOBAL.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE_CLOSE //关闭
-      // SMap.toGestureBoneView(getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
+      // SMap.toGestureBoneView(getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
       SMap.toGestureBoneView(info)
       SMap.addGestureBoneFinishListener(() => {
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)

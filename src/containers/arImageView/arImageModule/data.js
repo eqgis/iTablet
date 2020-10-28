@@ -42,14 +42,14 @@ function getData(type) {
       data = [
         {
           key: 'addAtCurrent',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_ADD_TO_CURRENT_POSITION,
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: action.addAtCurrent,
         },
         {
           key: 'addAtPlane',
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
           image: require('../../../assets/mapTools/icon_free_point_select_black.png'),
           action: action.addAtPoint,
         },
@@ -94,7 +94,7 @@ function getData(type) {
       ]
       pageAction = () => {
         Toast.show(
-          global.language === 'CN' ? '请点选对象' : 'Please tap the object',
+          GLOBAL.language === 'CN' ? '请点选对象' : 'Please tap the object',
         )
         SARImage.setTapAction('SELECT')
         SARImage.setOnTapListener(() => {
@@ -110,7 +110,7 @@ function getData(type) {
       data = [
         {
           key: 'modifyLocation',
-          title: getLanguage(global.language).Map_Main_Menu.EDIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
           image: require('../../../assets/function/icon_edit.png'),
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
@@ -120,7 +120,7 @@ function getData(type) {
         },
         {
           key: 'modifyStyle',
-          title: getLanguage(global.language).Map_Main_Menu.STYLE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
           image: require('../../../assets/function/icon_function_style.png'),
           action: () => {
             ToolbarModule.getParams().setToolbarVisible(
@@ -134,7 +134,7 @@ function getData(type) {
         },
         {
           key: 'delete',
-          title: getLanguage(global.language).Analyst_Labels.DELETE,
+          title: getLanguage(GLOBAL.language).Analyst_Labels.DELETE,
           image: require('../../../assets/mapTools/icon_delete_black.png'),
           action: () => {
             SARImage.deleteItem()
@@ -164,7 +164,7 @@ function getData(type) {
       data = [
         {
           key: 'modifyToCurrent',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_MOVE_TO_CURRENT_POSITION,
           image: require('../../../assets/mapTools/icon_point_black.png'),
           action: () => {
@@ -177,7 +177,7 @@ function getData(type) {
         },
         {
           key: 'modifyToPlane',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_MOVE_TO_PLANE,
           image: require('../../../assets/mapTools/icon_free_point_select_black.png'),
           action: () =>
@@ -344,7 +344,7 @@ function getData(type) {
         <Slide
           range={[1, 30]}
           defaultValue={ToolbarModule.getData().defaultViewRange}
-          unit={getLanguage(global.language).Map_Main_Menu.METERS}
+          unit={getLanguage(GLOBAL.language).Map_Main_Menu.METERS}
           onMove={value => {
             ToolbarModule.addData({ viewRange: value })
           }}
@@ -363,7 +363,7 @@ function getMenuData(type) {
       data = [
         {
           des: 'modifyBy',
-          key: global.language === 'CN' ? '位置调整' : 'Position',
+          key: GLOBAL.language === 'CN' ? '位置调整' : 'Position',
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
@@ -373,7 +373,7 @@ function getMenuData(type) {
         },
         {
           des: 'viewRange',
-          key: global.language === 'CN' ? '可见距离' : 'Visible Distance',
+          key: GLOBAL.language === 'CN' ? '可见距离' : 'Visible Distance',
           action: async () => {
             let defaultViewRange = await SARImage.getViewRange()
             ToolbarModule.addData({ defaultViewRange })

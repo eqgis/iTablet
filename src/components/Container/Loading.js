@@ -27,7 +27,7 @@ export default class Loading extends Component {
     indicatorColor: 'white',
     displayMode: 'NORMAL',
     indicatorMode: 'BLACK_WITH_TITLE', // BLACK_WITH_TITLE   NORMAL
-    info: getLanguage(global.language).Prompt.LOADING,
+    info: getLanguage(GLOBAL.language).Prompt.LOADING,
     // timeout: 6000,
   }
 
@@ -45,7 +45,7 @@ export default class Loading extends Component {
   }
 
   setLoading = (loading, info, extra = {}) => {
-    let INFO = getLanguage(global.language).Prompt.LOADING
+    let INFO = getLanguage(GLOBAL.language).Prompt.LOADING
     if (
       loading !== this.state.animating ||
       this.state.info !== info ||

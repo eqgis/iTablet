@@ -180,7 +180,7 @@ export default class SampleModeView extends React.Component {
               }}
             >
               <Text style={styles.cancelText}>
-                {getLanguage(global.language).Analyst_Labels.CANCEL}
+                {getLanguage(GLOBAL.language).Analyst_Labels.CANCEL}
               </Text>
             </TouchableOpacity>
 
@@ -193,7 +193,7 @@ export default class SampleModeView extends React.Component {
                 }}
               >
                 <Text style={styles.cancelText}>
-                  {getLanguage(global.language).Analyst_Labels.CONFIRM}
+                  {getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -217,7 +217,7 @@ export default class SampleModeView extends React.Component {
             />
             <Text style={styles.subText}>
               {
-                getLanguage(global.language).Analyst_Labels
+                getLanguage(GLOBAL.language).Analyst_Labels
                   .REGISTRATION_RESAMPLE
               }
             </Text>
@@ -225,7 +225,7 @@ export default class SampleModeView extends React.Component {
 
           {/* <View style={styles.item}>
                         <Text style={styles.titelText}>
-                            {getLanguage(global.language).Analyst_Labels
+                            {getLanguage(GLOBAL.language).Analyst_Labels
                                         .REGISTRATION_SAMPLE_MODE+':'}
                         </Text>
                         <View style={styles.sampleModeItem}>
@@ -251,7 +251,7 @@ export default class SampleModeView extends React.Component {
                                     }}
                                 />
                                 <Text style={styles.subText}>
-                                {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NEAR}
+                                {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NEAR}
                                 </Text>
                             </View>
                             <View style={styles.subItem}>
@@ -276,7 +276,7 @@ export default class SampleModeView extends React.Component {
                                     }}
                                 />
                                 <Text style={styles.subText}>
-                                {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_BILINEARITY}
+                                {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_BILINEARITY}
                                 </Text>
                             </View>
                             <View style={styles.subItem}>
@@ -301,7 +301,7 @@ export default class SampleModeView extends React.Component {
                                     }}
                                 />
                                 <Text style={styles.subText}>
-                                {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION}
+                                {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION}
                                 </Text>
                             </View>
                         </View>
@@ -310,7 +310,7 @@ export default class SampleModeView extends React.Component {
 
                     <View style={styles.item}>
                         <Text style={styles.titelText}>
-                            {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_PIXEL+':'}
+                            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_PIXEL+':'}
                         </Text>
                         <TextInput
                             underlineColorAndroid={'transparent'}
@@ -342,7 +342,7 @@ export default class SampleModeView extends React.Component {
                 color: color.black,
               }}
             >
-              {getLanguage(global.language).Analyst_Labels
+              {getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_SAMPLE_PIXEL + ':'}
             </Text>
             <View
@@ -413,7 +413,7 @@ export default class SampleModeView extends React.Component {
                 color: color.black,
               }}
             >
-              {getLanguage(global.language).Analyst_Labels
+              {getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_SAMPLE_MODE + ':'}
             </Text>
             {/* <View style={styles.item}> */}
@@ -429,17 +429,17 @@ export default class SampleModeView extends React.Component {
               <RadioGroup
                 data={[
                   {
-                    title: getLanguage(global.language).Analyst_Labels
+                    title: getLanguage(GLOBAL.language).Analyst_Labels
                       .REGISTRATION_SAMPLE_MODE_NEAR,
                     value: 0,
                   },
                   {
-                    title: getLanguage(global.language).Analyst_Labels
+                    title: getLanguage(GLOBAL.language).Analyst_Labels
                       .REGISTRATION_SAMPLE_MODE_BILINEARITY,
                     value: 1,
                   },
                   {
-                    title: getLanguage(global.language).Analyst_Labels
+                    title: getLanguage(GLOBAL.language).Analyst_Labels
                       .REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION,
                     value: 2,
                   },

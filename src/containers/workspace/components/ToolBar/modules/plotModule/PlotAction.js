@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import React from 'react'
 import { SMap, Action } from 'imobile_for_reactnative'
 import {
@@ -30,6 +31,7 @@ function listAction(type, params = {}) {
   }
 }
 
+let plotAnimationView = null
 async function geometrySelected(event) {
   const params = ToolbarModule.getParams()
   const currentToolbarType = ToolbarModule.getData().type
@@ -41,7 +43,7 @@ async function geometrySelected(event) {
       )
       if (type === -1) {
         Toast.show(
-          getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
+          getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
         )
         SMap.setAction(Action.PAN)
       } else {
@@ -53,11 +55,11 @@ async function geometrySelected(event) {
             containerType: ToolbarType.createPlotAnimation,
             customView: _props => (
               <PlotAnimationView
-                ref={ref => (GLOBAL.plotAnimationView = ref)}
+                ref={ref => (plotAnimationView = ref)}
                 saveAndContinue={() => {
                   const createInfo =
-                    GLOBAL.plotAnimationView &&
-                    GLOBAL.plotAnimationView.getCreateInfo()
+                    plotAnimationView &&
+                    plotAnimationView.getCreateInfo()
                   if (
                     _props.selection.length > 0 &&
                     _props.selection[0].ids > 0
@@ -66,13 +68,13 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
+                    SMap.createAnimationGo(createInfo, params.map.currentMap.name)
                   }
                 }}
                 savePlotAnimationNode={() => {
                   const createInfo =
-                    GLOBAL.plotAnimationView &&
-                    GLOBAL.plotAnimationView.getCreateInfo()
+                    plotAnimationView &&
+                    plotAnimationView.getCreateInfo()
                   if (
                     _props.selection.length > 0 &&
                     _props.selection[0].ids > 0
@@ -81,7 +83,7 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SMap.createAnimationGo(createInfo, GLOBAL.newPlotMapName)
+                    SMap.createAnimationGo(createInfo, params.map.currentMap.name)
                   }
                   GLOBAL.TouchType = TouchType.NULL
                   GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
@@ -208,8 +210,8 @@ async function collectionSubmit(libId, symbolCode) {
     }
     if (plotLayer) {
       ToolbarModule.getParams().setCurrentLayer(plotLayer)
-      if (global.coworkMode && global.getFriend) {
-        let friend = global.getFriend()
+      if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+        let friend = GLOBAL.getFriend()
         friend.onGeometryAdd(plotLayer)
       }
     }
@@ -291,17 +293,17 @@ async function animationSave() {
   )
   const defaultAnimationName = mapName
   NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(global.language).Map_Main_Menu.PLOT_SAVE_ANIMATION,
+    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.PLOT_SAVE_ANIMATION,
     // '保存推演动画',
     value: defaultAnimationName,
-    placeholder: getLanguage(global.language).Prompt.ENTER_ANIMATION_NAME,
+    placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_ANIMATION_NAME,
     type: 'name',
     cb: async value => {
       try {
         GLOBAL.Loading &&
           GLOBAL.Loading.setLoading(
             true,
-            getLanguage(global.language).Prompt.SAVEING,
+            getLanguage(GLOBAL.language).Prompt.SAVEING,
           )
         await SMap.animationSave(savePath, value)
 

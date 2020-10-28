@@ -178,14 +178,14 @@ async function getBasicData(min, max, customMin, customMax) {
   maxOption.unshift(customOptionMax)
   const pickerData = [
     {
-      key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,
+      key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MINIMUM,
       value: '最小可见比例尺',
       children: minOption,
       initItem: minInitItem,
       selectedItem: customMin ? customOptionMin : minInitItem,
     },
     {
-      key: getLanguage(global.language).Map_Layer.LAYERS_MAXIMUM,
+      key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MAXIMUM,
       value: '最大可见比例尺',
       children: maxOption,
       initItem: maxInitItem,

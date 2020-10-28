@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import React from 'react'
 import { Text, View } from 'react-native'
 import {
@@ -132,12 +133,12 @@ function openMap() {
       })
     }
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu.OPEN_MAP,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN_MAP,
       // '我的地图',
       image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
       data: userFileList || [],
       extraData: {
-        title: getLanguage(global.language).Profile.SAMPLEDATA,
+        title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
         action: () => {
           NavigationService.navigate('SampleMap', {
             refreshAction: openMap,
@@ -228,12 +229,12 @@ function openTemplateList() {
     }
     const data = [
       {
-        title: getLanguage(global.language).Map_Main_Menu.CREATE_WITH_SYMBOLS,
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.CREATE_WITH_SYMBOLS,
         // Const.CREATE_SYMBOL_COLLECTION,
         data: [],
       },
       {
-        title: getLanguage(global.language).Map_Main_Menu.CREATE_WITH_TEMPLATE,
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.CREATE_WITH_TEMPLATE,
         // Const.CREATE_MODULE,
         data: tpList,
       },
@@ -307,7 +308,7 @@ async function create() {
   //   GLOBAL.Type === ChunkType.MAP_AR
   // )
   {
-    GLOBAL.FUNCTIONTOOLBAR.isMapIndoorNavigation()
+    params.setOpenOnlineMap(false)
     const userPath =
       params.user.currentUser.userName &&
       params.user.currentUser.userType !== UserType.PROBATION_USER
@@ -318,16 +319,16 @@ async function create() {
     )
     const newName = await FileTools.getAvailableMapName(mapPath, 'DefaultMap')
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(global.language).Map_Main_Menu.START_NEW_MAP,
+      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
       // '新建地图',
       value: newName,
-      placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
+      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
         GLOBAL.Loading &&
           GLOBAL.Loading.setLoading(
             true,
-            getLanguage(global.language).Prompt.CREATING,
+            getLanguage(GLOBAL.language).Prompt.CREATING,
             // ConstInfo.MAP_SYMBOL_COLLECTION_CREATING,
           )
 
@@ -357,7 +358,6 @@ async function create() {
 
         LayerUtils.openDefaultBaseMap()
         await SMap.openTaggingDataset(params.user.currentUser.userName)
-        GLOBAL.TaggingDatasetName = ''
 
         let layers = (params.getLayers && (await params.getLayers())) || []
         let _currentLayer = null
@@ -384,7 +384,6 @@ async function create() {
             isFirst: true,
             newName: value,
           })
-          GLOBAL.newPlotMapName = value
         }
 
         params.saveMap &&
@@ -425,7 +424,7 @@ function showHistory() {
   })
   const data = [
     {
-      title: getLanguage(global.language).Map_Main_Menu.START_RECENT,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.START_RECENT,
       // Const.HISTORY,
       data: latestMap,
     },
@@ -469,7 +468,7 @@ function saveMap() {
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(
           true,
-          getLanguage(global.language).Prompt.SAVING,
+          getLanguage(GLOBAL.language).Prompt.SAVING,
         )
       // '正在保存地图')
       let mapName = ''
@@ -517,13 +516,13 @@ function saveMap() {
         ToolbarModule.getParams().setToolbarVisible(false)
       Toast.show(
         result
-          ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY
-          : getLanguage(global.language).Prompt.SAVE_FAILED,
+          ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY
+          : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
-      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
     }
   })()
 }
@@ -549,9 +548,9 @@ function saveMapAs() {
     )
     NavigationService.navigate('InputPage', {
       value: newName,
-      headerTitle: getLanguage(global.language).Map_Main_Menu.START_SAVE_AS_MAP,
+      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_AS_MAP,
       // '地图另存',
-      placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
+      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
         const addition = {}
@@ -573,7 +572,7 @@ function saveMapAs() {
         ToolbarModule.getParams().setContainerLoading &&
           ToolbarModule.getParams().setContainerLoading(
             true,
-            getLanguage(global.language).Prompt.SAVING,
+            getLanguage(GLOBAL.language).Prompt.SAVING,
           )
         ToolbarModule.getParams().saveMap &&
           ToolbarModule.getParams()
@@ -588,11 +587,11 @@ function saveMapAs() {
                   NavigationService.goBack('InputPage')
                   setTimeout(() => {
                     Toast.show(
-                      getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY,
+                      getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY,
                     )
                   }, 1000)
                 } else {
-                  Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
+                  Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
                 }
               },
               () => {
@@ -791,14 +790,14 @@ async function headerAction(type, section = {}) {
           const customerPath =
             ConstPath.CustomerPath +
             ConstPath.RelativeFilePath.Workspace[
-              global.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           let wsPath
           if (params.user.currentUser.userName) {
             const userWSPath = `${ConstPath.UserPath +
               params.user.currentUser.userName}/${
               ConstPath.RelativeFilePath.Workspace[
-                global.language === 'CN' ? 'CN' : 'EN'
+                GLOBAL.language === 'CN' ? 'CN' : 'EN'
               ]
             }`
             wsPath = await FileTools.appendingHomeDirectory(userWSPath)

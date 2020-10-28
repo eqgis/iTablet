@@ -27,7 +27,7 @@ export default class Personal extends Component {
 
   _logoutConfirm = () => {
     this.SimpleDialog.set({
-      text: getLanguage(global.language).Prompt.LOG_OUT,
+      text: getLanguage(GLOBAL.language).Prompt.LOG_OUT,
       confirmAction: this._logout,
     })
     this.SimpleDialog.setVisible(true)
@@ -49,7 +49,7 @@ export default class Personal extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
             ConstPath.RelativeFilePath.Workspace[
-              global.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ],
         )
         if (this.container) {
@@ -76,7 +76,7 @@ export default class Personal extends Component {
     let marginLeft = 15
     let marginRight = 20
     let fontSize = size.fontSize.fontSizeXl
-    if (key !== getLanguage(global.language).Profile.PROFILE_PHOTO) {
+    if (key !== getLanguage(GLOBAL.language).Profile.PROFILE_PHOTO) {
       //'头像') {
       return (
         <View style={{ width: '100%' }}>
@@ -168,23 +168,23 @@ export default class Personal extends Component {
       <View style={{ width: '100%' }}>
         {this._renderItem(
           //'头像'
-          getLanguage(global.language).Profile.PROFILE_PHOTO,
+          getLanguage(GLOBAL.language).Profile.PROFILE_PHOTO,
         )}
         {this._renderItem(
           //'用户名'
-          getLanguage(global.language).Profile.USERNAME,
+          getLanguage(GLOBAL.language).Profile.USERNAME,
           this.props.user.currentUser.userName,
         )}
         {this._renderItem(
           //'手机号'
-          getLanguage(global.language).Profile.PHONE,
+          getLanguage(GLOBAL.language).Profile.PHONE,
           this.props.user.currentUser.phone,
         )}
         {this._renderItem(
           //'邮箱'
-          getLanguage(global.language).Profile.E_MAIL,
+          getLanguage(GLOBAL.language).Profile.E_MAIL,
           this.props.user.currentUser.email === ' 立即绑定'
-            ? getLanguage(global.language).Profile.CONNECT
+            ? getLanguage(GLOBAL.language).Profile.CONNECT
             : this.props.user.currentUser.email,
         )}
       </View>
@@ -220,7 +220,7 @@ export default class Personal extends Component {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(global.language).Profile.SWITCH_ACCOUNT}
+          {getLanguage(GLOBAL.language).Profile.SWITCH_ACCOUNT}
           {/* 切换账号 */}
         </Text>
       </TouchableOpacity>
@@ -242,7 +242,7 @@ export default class Personal extends Component {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(global.language).Profile.LOG_OUT}
+          {getLanguage(GLOBAL.language).Profile.LOG_OUT}
           {/* 退出登录 */}
         </Text>
       </TouchableOpacity>
@@ -258,7 +258,7 @@ export default class Personal extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Profile.MY_ACCOUNT,
+          title: getLanguage(GLOBAL.language).Profile.MY_ACCOUNT,
           //'个人主页',
           navigation: this.props.navigation,
         }}

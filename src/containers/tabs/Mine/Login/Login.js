@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 
   componentDidMount() {
     this.getData()
-    if (!global.isPad) {
+    if (!GLOBAL.isPad) {
       Orientation.lockToPortrait()
       GLOBAL.ORIENTATIONLOCKED = true
     }
@@ -155,7 +155,7 @@ export default class Login extends React.Component {
           userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
         ) {
-          Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
+          Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_CURRENT)
           return
         }
         let startLogin = async () => {
@@ -226,7 +226,7 @@ export default class Login extends React.Component {
         if (result === 'timeout') {
           Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else if (result) {
-          global.isLogging = true
+          GLOBAL.isLogging = true
           this.props.setUser(user)
           NavigationService.popToTop('Tabs')
         } else {
@@ -437,12 +437,12 @@ export default class Login extends React.Component {
   renderLogin = () => {
     if (this.state.type === 'Online') {
       return (
-        <OnlineLoginView language={global.language} login={this._loginOnline} />
+        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} />
       )
     } else if (this.state.type === 'iPortal') {
       return (
         <IPortalLoginView
-          language={global.language}
+          language={GLOBAL.language}
           login={this._loginIPortal}
         />
       )

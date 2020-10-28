@@ -95,7 +95,7 @@ export default class ARProjectModeView extends React.Component {
   getModuleListData() {
     let data = []
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_ARCHITECTURE,
       type: 'architecture',
       show: false,
@@ -103,7 +103,7 @@ export default class ARProjectModeView extends React.Component {
       index: 0,
     })
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_PATH,
       type: 'path',
       show: false,
@@ -111,7 +111,7 @@ export default class ARProjectModeView extends React.Component {
       index: 1,
     })
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_MARKER,
       type: 'maker',
       show: false,
@@ -193,7 +193,7 @@ export default class ARProjectModeView extends React.Component {
           <View style={styles.titleView}>
             <Text style={[styles.text, { color: color.white }]}>
               {
-                getLanguage(global.language).Map_Main_Menu
+                getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_OPREATE_MODEL
               }
             </Text>
@@ -249,7 +249,7 @@ export default class ARProjectModeView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_LEFT_ROTATE
                 }
               </Text>
@@ -280,7 +280,7 @@ export default class ARProjectModeView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_RIGHT_ROTATE
                 }
               </Text>
@@ -315,9 +315,9 @@ export default class ARProjectModeView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {this.state.showSandTable
-                  ? getLanguage(global.language).Map_Main_Menu
+                  ? getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
-                  : getLanguage(global.language).Map_Main_Menu
+                  : getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE}
               </Text>
             </View>
@@ -362,7 +362,7 @@ export default class ARProjectModeView extends React.Component {
                 ]}
               >
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL
                 }
               </Text>
@@ -387,7 +387,7 @@ export default class ARProjectModeView extends React.Component {
             <Container
               ref={ref => (this.Container = ref)}
               headerProps={{
-                title: getLanguage(global.language).Map_Main_Menu
+                title: getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
                 navigation: this.props.navigation,
                 backAction: this.back,

@@ -28,7 +28,7 @@ export default class AppletItem extends Component {
     this.downloading = false
     this.downloadingPath = false
     this.state = {
-      progress: getLanguage(global.language).Prompt.DOWNLOAD,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
       isDownloading: false,
     }
   }
@@ -74,7 +74,7 @@ export default class AppletItem extends Component {
     if (data) {
       if (data.downed) {
         this.setState({
-          progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
           isDownloading: false,
         })
         this.props.removeItemOfDownList({ id: data.id })
@@ -91,15 +91,15 @@ export default class AppletItem extends Component {
 
   getDownloadStatus = async () => {
     let path =
-      global.homePath + ConstPath.BundlesPath + this.props.data.fileName
+      GLOBAL.homePath + ConstPath.BundlesPath + this.props.data.fileName
     if (await RNFS.exists(path)) {
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
         isDownloading: false,
       })
     } else {
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOAD,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
         isDownloading: false,
       })
     }
@@ -129,11 +129,11 @@ export default class AppletItem extends Component {
     // let fileName =
     //   'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
     let dataId = this.props.data.id
-    let path = global.homePath + ConstPath.BundlesPath + fileName
+    let path = GLOBAL.homePath + ConstPath.BundlesPath + fileName
     let dataUrl
     try {
       if (this.state.isDownloading) {
-        Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
         return
       }
       if (await RNFS.exists(path)) {
@@ -144,7 +144,7 @@ export default class AppletItem extends Component {
         await RNFS.unlink(path)
       }
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOADING,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
         isDownloading: true,
       })
       if (UserType.isIPortalUser(this.props.user)) {
@@ -182,7 +182,7 @@ export default class AppletItem extends Component {
       })
       this.onDownloaded(fileName, path)
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
       if (await RNFS.exists(path)) {
         await RNFS.unlink(path)
       }
@@ -204,7 +204,7 @@ export default class AppletItem extends Component {
       result = false
     } else if (type === 'zip') {
       this.setState({
-        progress: getLanguage(global.language).Prompt.UNZIPPING,
+        progress: getLanguage(GLOBAL.language).Prompt.UNZIPPING,
       })
       if (await RNFS.exists(bundlesPath + name)) {
         await RNFS.unlink(bundlesPath + name)
@@ -214,12 +214,12 @@ export default class AppletItem extends Component {
       result = await FileTools.copyFile(path, bundlesPath, true)
     }
     this.setState({
-      progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
       isDownloading: false,
     })
     // result
-    //   ? Toast.show(getLanguage(global.language).Find.APPLET_DOWNLOADED_RELOAD)
-    //   : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    //   ? Toast.show(getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_RELOAD)
+    //   : Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
     if (this.props.onDownloaded) {
       this.props.onDownloaded(result)
     }

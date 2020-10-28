@@ -24,42 +24,42 @@ class FindSettingPage extends React.Component {
 
   getData = () => [
     {
-      key: getLanguage(global.language).Prompt.PUBLIC_MAP,
+      key: getLanguage(GLOBAL.language).Prompt.PUBLIC_MAP,
       value: 'showPublicMap',
       image: getThemeAssets().find.public_map,
     },
     {
-      key: getLanguage(global.language).Find.PUBLIC_DATA,
+      key: getLanguage(GLOBAL.language).Find.PUBLIC_DATA,
       value: 'showPublicData',
       image: getThemeAssets().find.public_data,
     },
     {
-      key: getLanguage(global.language).Prompt.SUPERMAP_GROUP,
+      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_GROUP,
       value: 'showSuperMapGroup',
       image: getThemeAssets().find.supermap,
     },
     {
-      key: getLanguage(global.language).Prompt.SUPERMAP_KNOW,
+      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_KNOW,
       value: 'showSuperMapKnow',
       image: getThemeAssets().find.supermapkonw,
     },
     {
-      key: getLanguage(global.language).Prompt.SUPERMAP_FORUM,
+      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_FORUM,
       value: 'showSuperMapForum',
       image: getThemeAssets().find.forum,
     },
     {
-      key: getLanguage(global.language).Find.GIS_ACADEMY,
+      key: getLanguage(GLOBAL.language).Find.GIS_ACADEMY,
       value: 'showGisAcademy',
       image: getThemeAssets().find.college,
     },
     {
-      key: getLanguage(global.language).Find.ONLINE_COWORK,
+      key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
       value: 'showCowork',
       image: getThemeAssets().find.onlineCowork,
     },
     {
-      key: getLanguage(global.language).Find.LABORATORY,
+      key: getLanguage(GLOBAL.language).Find.LABORATORY,
       value: 'showLab',
       image: getThemeAssets().find.laboratory,
     },
@@ -121,7 +121,7 @@ class FindSettingPage extends React.Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Map_Label.SETTING,
+          title: getLanguage(GLOBAL.language).Map_Label.SETTING,
           navigation: this.props.navigation,
         }}
       >
@@ -134,7 +134,7 @@ class FindSettingPage extends React.Component {
             }}
           >
             <Text style={{ fontSize: scaleSize(24) }}>
-              {getLanguage(global.language).Find.TOGGLE_FIND_ITEM}
+              {getLanguage(GLOBAL.language).Find.TOGGLE_FIND_ITEM}
             </Text>
           </View>
           <FlatList

@@ -124,14 +124,14 @@ export const setLanguage = (params, isConfig = false, cb = () => {}) => async (
       type: SETTING_LANGUAGE_AUTO,
       payload: language,
     })
-    global.language = language
+    GLOBAL.language = language
   } else {
     await SLanguage.setLanguage(params)
     await dispatch({
       type: SETTING_LANGUAGE,
       payload: params,
     })
-    global.language = params
+    GLOBAL.language = params
   }
   if (isConfig) {
     await dispatch({

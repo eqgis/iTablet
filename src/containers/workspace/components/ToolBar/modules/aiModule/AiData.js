@@ -15,9 +15,9 @@ function getData(type) {
       data = [
         {
           // 目标采集
-          key: getLanguage(global.language).Map_Main_Menu
+          key: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
           action: AiActions.aiDetect,
           size: 'large',
@@ -26,7 +26,7 @@ function getData(type) {
         {
           // 目标分类
           key: 'aiClassify',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           action: AiActions.aiClassify,
           size: 'large',
@@ -34,9 +34,9 @@ function getData(type) {
         },
         {
           // 态势采集
-          key: getLanguage(global.language).Map_Main_Menu
+          key: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT,
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT,
           action: AiActions.polymerizeCollect,
           size: 'large',
@@ -45,9 +45,9 @@ function getData(type) {
         },
         {
           // 违章采集
-          key: getLanguage(global.language).Map_Main_Menu
+          key: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
           action: AiActions.illegallyParkCollect,
           size: 'large',
@@ -55,9 +55,9 @@ function getData(type) {
         },
         // {
         //   //路面采集
-        //   key: getLanguage(global.language).Map_Main_Menu
+        //   key: getLanguage(GLOBAL.language).Map_Main_Menu
         //     .MAP_AR_AI_ASSISTANT_ROAD_COLLECT,
-        //   title: getLanguage(global.language).Map_Main_Menu
+        //   title: getLanguage(GLOBAL.language).Map_Main_Menu
         //     .MAP_AR_AI_ASSISTANT_ROAD_COLLECT,
         //   // action:openMap,
         //   size: 'large',
@@ -68,8 +68,8 @@ function getData(type) {
         if (_params.laboratory.poseEstimation) {
           data.push({
             // 人体姿态
-            key: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
-            title: getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+            key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION,
             action: AiActions.poseEstimation,
             size: 'large',
             image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
@@ -78,8 +78,8 @@ function getData(type) {
         if (_params.laboratory.gestureBone) {
           data.push({
             // 手势骨骼
-            key: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
-            title: getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+            key: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
             action: AiActions.gestureBone,
             size: 'large',
             // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,

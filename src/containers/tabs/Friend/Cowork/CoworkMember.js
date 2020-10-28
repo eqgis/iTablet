@@ -37,7 +37,7 @@ class CoworkMember extends Component {
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Friends.COWORK_MEMBER,
+          title: getLanguage(GLOBAL.language).Friends.COWORK_MEMBER,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

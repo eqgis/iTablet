@@ -28,10 +28,10 @@ class SelectFriend extends Component {
     return (
       <FriendList
         ref={ref => (this.friendList = ref)}
-        tabLabel={getLanguage(global.language).Friends.FRIENDS}
-        language={global.language}
+        tabLabel={getLanguage(GLOBAL.language).Friends.FRIENDS}
+        language={GLOBAL.language}
         user={this.props.user.currentUser}
-        friend={global.getFriend()}
+        friend={GLOBAL.getFriend()}
         callBack={targetId => {
           this.callBack && this.callBack(targetId)
         }}
@@ -43,10 +43,10 @@ class SelectFriend extends Component {
     return (
       <FriendGroup
         ref={ref => (this.friendGroup = ref)}
-        tabLabel={getLanguage(global.language).Friends.GROUPS}
-        language={global.language}
+        tabLabel={getLanguage(GLOBAL.language).Friends.GROUPS}
+        language={GLOBAL.language}
         user={this.props.user.currentUser}
-        friend={global.getFriend()}
+        friend={GLOBAL.getFriend()}
         callBack={targetId => {
           this.callBack && this.callBack(targetId)
         }}
@@ -126,7 +126,7 @@ class SelectFriend extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Friends.TITLE_CHOOSE_FRIEND,
+          title: getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_FRIEND,
           navigation: this.props.navigation,
         }}
       >

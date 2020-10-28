@@ -36,10 +36,10 @@ const ICONS = context => [
   {
     name: require('../../../../assets/lightTheme/friend/app_chat_map.png'),
     type: 'ionicon',
-    text: getLanguage(global.language).Friends.MAP,
+    text: getLanguage(GLOBAL.language).Friends.MAP,
     onPress: () => {
       NavigationService.navigate('MyMap', {
-        title: getLanguage(global.language).Profile.MAP,
+        title: getLanguage(GLOBAL.language).Profile.MAP,
         chatCallback: (_path, fileName) => {
           context.props.sendCallBack(1, _path, fileName)
         },
@@ -50,7 +50,7 @@ const ICONS = context => [
   // {
   //   name: require('../../../../assets/lightTheme/friend/app_chat_data.png'),
   //   type: 'ionicon',
-  //   text: getLanguage(global.language).Friends.TEMPLATE,
+  //   text: getLanguage(GLOBAL.language).Friends.TEMPLATE,
   //   onPress: () => {
   //     NavigationService.navigate('MyModule', {
   //       formChat: true,
@@ -63,7 +63,7 @@ const ICONS = context => [
   {
     name: require('../../../../assets/lightTheme/friend/app_chat_location.png'),
     type: 'material',
-    text: getLanguage(global.language).Friends.LOCATION,
+    text: getLanguage(GLOBAL.language).Friends.LOCATION,
     onPress: () => {
       context.setModalVisible()
       context.handleLocationClick()
@@ -72,7 +72,7 @@ const ICONS = context => [
   {
     name: require('../../../../assets/lightTheme/friend/app_chat_pic.png'),
     type: 'material',
-    text: getLanguage(global.language).Friends.PICTURE,
+    text: getLanguage(GLOBAL.language).Friends.PICTURE,
     onPress: () => {
       context.setModalVisible()
       ImagePicker.AlbumListView.defaultProps.showDialog = false
@@ -121,12 +121,12 @@ export default class CustomActions extends React.Component {
   handleLocationClick = async () => {
     let isConnected = await NetInfo.isConnected.fetch()
     if (!isConnected) {
-      Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NO_NETWORK)
       return
     }
     if (!(await AppUtils.isLocationOpen())) {
       this.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.OPEN_LOCATION,
+        text: getLanguage(GLOBAL.language).Prompt.OPEN_LOCATION,
         confirmAction: () => {
           AppUtils.startAppLoactionSetting()
         },
@@ -150,7 +150,7 @@ export default class CustomActions extends React.Component {
     }
     if (!allowed) {
       this.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.REQUEST_LOCATION,
+        text: getLanguage(GLOBAL.language).Prompt.REQUEST_LOCATION,
         confirmAction: () => {
           AppUtils.startAppLoactionSetting()
         },
@@ -161,7 +161,7 @@ export default class CustomActions extends React.Component {
 
     let location = await SMap.getCurrentLocation()
     if (location.longitude === 0 && location.latitude === 0) {
-      Toast.show(getLanguage(global.language).Prompt.LOCATION_ERROR)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.LOCATION_ERROR)
       return
     }
     SOnlineService.reverseGeocoding(location.longitude, location.latitude, {

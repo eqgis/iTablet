@@ -323,11 +323,11 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToTop = (cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
       //ConstInfo.CANNOT_LOCATION)
       return
     }
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     // ConstInfo.LOCATING)
     this.currentPage = 0
     if (this.state.startIndex === 0) {
@@ -396,11 +396,11 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToBottom = (cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
       // ConstInfo.CANNOT_LOCATION)
       return
     }
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     // ConstInfo.LOCATING)
     this.currentPage =
       this.total > 0 ? Math.floor((this.total - 1) / PAGE_SIZE) : 0
@@ -454,7 +454,7 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToPosition = (data = {}, cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
       //ConstInfo.CANNOT_LOCATION)
       return
     }
@@ -467,7 +467,7 @@ export default class LayerSelectionAttribute extends React.Component {
       // 相对定位
       currentIndex = this.state.currentIndex + data.index
       if (currentIndex < 0 || currentIndex >= this.total) {
-        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -488,7 +488,7 @@ export default class LayerSelectionAttribute extends React.Component {
     } else if (data.type === 'absolute') {
       // 绝对定位
       if (data.index <= 0 || data.index > this.total) {
-        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -508,7 +508,7 @@ export default class LayerSelectionAttribute extends React.Component {
       currentIndex = data.index - 1
     }
 
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     // if (this.currentPage > 0) {
     //   this.canBeRefresh = true
@@ -647,7 +647,7 @@ export default class LayerSelectionAttribute extends React.Component {
 
     items = [
       {
-        title: global.language === 'CN' ? '详情' : 'Detail',
+        title: GLOBAL.language === 'CN' ? '详情' : 'Detail',
         onPress: () => {
           (async function() {
             // NavigationService.navigate('LayerAttributeAdd', {
@@ -667,7 +667,7 @@ export default class LayerSelectionAttribute extends React.Component {
     let isSystemField = tempStr.substring(0, 2) == 'sm'
     if (!fieldInfo.isSystemField && !isSystemField) {
       items.push({
-        title: getLanguage(global.language).Profile.DELETE,
+        title: getLanguage(GLOBAL.language).Profile.DELETE,
         onPress: () => {
           if (
             this.props.onAttributeFieldDelete &&
@@ -870,7 +870,7 @@ export default class LayerSelectionAttribute extends React.Component {
         }
         break
     }
-    this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
     //'修改中')
     try {
       this.props.setAttributeHistory &&
@@ -963,7 +963,7 @@ export default class LayerSelectionAttribute extends React.Component {
     // }
 
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(global.language).Map_Tools.VIEW]
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
@@ -986,8 +986,8 @@ export default class LayerSelectionAttribute extends React.Component {
           this.state.attributes.data.length > 1
             ? this.state.attributes.head
             : [
-              getLanguage(global.language).Map_Label.NAME,
-              getLanguage(global.language).Map_Label.ATTRIBUTE,
+              getLanguage(GLOBAL.language).Map_Label.NAME,
+              getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
               //'名称'
               //'属性值'
             ]

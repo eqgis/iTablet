@@ -37,10 +37,10 @@ export default class BaseMapItem extends Component {
   // mapName: 'OSM',
   _showPopover = (pressView, item) => {
     let items = []
-    // global.language
+    // GLOBAL.language
     items = [
       {
-        title: global.language === 'CN' ? '修改' : 'modify',
+        title: GLOBAL.language === 'CN' ? '修改' : 'modify',
         // '删除',
         onPress: () => {
           NavigationService.navigate('LoadServer', {
@@ -52,7 +52,7 @@ export default class BaseMapItem extends Component {
         },
       },
       {
-        title: global.language === 'CN' ? '删除' : 'delete',
+        title: GLOBAL.language === 'CN' ? '删除' : 'delete',
         // '删除',
         onPress: () => {
           let list = this.props.curUserBaseMaps

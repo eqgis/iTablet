@@ -27,27 +27,27 @@ export default class ChooseWeather extends React.Component {
 
   weatherData = [
     {
-      title: global.language === 'CN' ? '春天' : 'spring',
+      title: GLOBAL.language === 'CN' ? '春天' : 'spring',
       key: 'SpringFlower',
     },
     {
-      title: global.language === 'CN' ? '夏天' : 'summer',
+      title: GLOBAL.language === 'CN' ? '夏天' : 'summer',
       key: 'CloudLightening',
     },
     {
-      title: global.language === 'CN' ? '秋天' : 'autumn',
+      title: GLOBAL.language === 'CN' ? '秋天' : 'autumn',
       key: 'AutumnLeave',
     },
     {
-      title: global.language === 'CN' ? '冬天' : 'winter',
+      title: GLOBAL.language === 'CN' ? '冬天' : 'winter',
       key: 'Snow',
     },
     {
-      title: global.language === 'CN' ? '雪花' : 'snow',
+      title: GLOBAL.language === 'CN' ? '雪花' : 'snow',
       key: 'CartoonSnow',
     },
     {
-      title: global.language === 'CN' ? '云' : 'Clouds',
+      title: GLOBAL.language === 'CN' ? '云' : 'Clouds',
       key: 'Clouds',
     },
   ]
@@ -80,7 +80,7 @@ export default class ChooseWeather extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_SELECT_EFFECT,
           navigation: this.props.navigation,
         }}
@@ -104,7 +104,7 @@ class WeatherItem extends React.Component {
   constructor(props) {
     super(props)
     this.path =
-      global.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
+      GLOBAL.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
     let isCurrent = this.props.currentItemKey === this.props.item.key
 
     this.state = {
@@ -159,7 +159,7 @@ class WeatherItem extends React.Component {
       status: 3,
     })
     try {
-      let path = global.homePath + '/iTablet/Common/Weather/'
+      let path = GLOBAL.homePath + '/iTablet/Common/Weather/'
       await FileTools.createDirectory(path)
       let onlineservice = new OnlineServicesUtils('online')
       let item = await onlineservice.getPublicDataByName(
@@ -182,7 +182,7 @@ class WeatherItem extends React.Component {
       this.setState({
         status: 0,
       })
-      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
     }
   }
 
@@ -220,17 +220,17 @@ class WeatherItem extends React.Component {
     let progress
     switch (this.state.status) {
       case 0:
-        text = getLanguage(global.language).Prompt.DOWNLOAD
+        text = getLanguage(GLOBAL.language).Prompt.DOWNLOAD
         break
       case 1:
-        text = getLanguage(global.language).Profile.SWITCH
+        text = getLanguage(GLOBAL.language).Profile.SWITCH
         break
       case 2:
-        text = getLanguage(global.language).Profile.SWITCH
+        text = getLanguage(GLOBAL.language).Profile.SWITCH
         color = { backgroundColor: 'grey' }
         break
       case 3:
-        text = getLanguage(global.language).Prompt.DOWNLOADING
+        text = getLanguage(GLOBAL.language).Prompt.DOWNLOADING
         progress = this.getDownloadProgress()
         if (progress > -1) {
           text = progress + '%'

@@ -29,7 +29,7 @@ export default class SampleMapItem extends Component {
     this.downloadingPath = false
     this.aniMotion = null
     this.state = {
-      progress: getLanguage(global.language).Prompt.DOWNLOAD,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
       rotateValue: new Animated.Value(0),
@@ -223,7 +223,7 @@ export default class SampleMapItem extends Component {
   //       style={[styles.itemDownloadView, styles.itemDownloadedView]}
   //     >
   //       <Text style={[styles.itemName, { marginHorizontal: scaleSize(22) }]}>
-  //         {getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY}
+  //         {getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY}
   //       </Text>
   //     </View>
   //   )

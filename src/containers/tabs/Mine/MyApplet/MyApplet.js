@@ -55,7 +55,7 @@ class MyApplet extends MyDataPage {
       isShowItem: true,
     })
     sectionData.push({
-      title: getLanguage(global.language).Profile.MY_APPLET,
+      title: getLanguage(GLOBAL.language).Profile.MY_APPLET,
       data: othersApplets || [],
       isShowItem: true,
     })
@@ -109,7 +109,7 @@ class MyApplet extends MyDataPage {
     if (sectionIndex === 1) {
       return [
         {
-          title: getLanguage(global.language).Profile.ADD_APPLET,
+          title: getLanguage(GLOBAL.language).Profile.ADD_APPLET,
           action: () => {
             this._closeModal()
             _section1.data.push(item)
@@ -126,7 +126,7 @@ class MyApplet extends MyDataPage {
       }
       let popData = [
         {
-          title: getLanguage(global.language).Profile.MOVE_UP,
+          title: getLanguage(GLOBAL.language).Profile.MOVE_UP,
           action: () => {
             this._closeModal()
             if (this.itemInfo.index !== 0) {
@@ -140,7 +140,7 @@ class MyApplet extends MyDataPage {
           },
         },
         {
-          title: getLanguage(global.language).Profile.MOVE_DOWN,
+          title: getLanguage(GLOBAL.language).Profile.MOVE_DOWN,
           action: () => {
             this._closeModal()
             if (index < _section1.data.length - 1) {
@@ -156,7 +156,7 @@ class MyApplet extends MyDataPage {
       ]
       if (defaultModules.indexOf(item.name) < 0) {
         popData.push({
-          title: getLanguage(global.language).Profile.DELETE_APPLET,
+          title: getLanguage(GLOBAL.language).Profile.DELETE_APPLET,
           action: () => {
             this._closeModal()
             _section1.data.splice(index, 1)
@@ -168,7 +168,7 @@ class MyApplet extends MyDataPage {
       return popData
       // return [
       //   {
-      //     title: getLanguage(global.language).Profile.MOVE_UP,
+      //     title: getLanguage(GLOBAL.language).Profile.MOVE_UP,
       //     action: () => {
       //       this._closeModal()
       //       if (this.itemInfo.index !== 0) {
@@ -178,7 +178,7 @@ class MyApplet extends MyDataPage {
       //     },
       //   },
       //   {
-      //     title: getLanguage(global.language).Profile.MOVE_DOWN,
+      //     title: getLanguage(GLOBAL.language).Profile.MOVE_DOWN,
       //     action: () => {
       //       this._closeModal()
       //       if (index < _section1.data.length - 1) {
@@ -188,7 +188,7 @@ class MyApplet extends MyDataPage {
       //     },
       //   },
       //   {
-      //     title: getLanguage(global.language).Profile.DELETE_APPLET,
+      //     title: getLanguage(GLOBAL.language).Profile.DELETE_APPLET,
       //     action: () => {
       //       this._closeModal()
       //       _section1.data.splice(index, 1)
@@ -316,11 +316,11 @@ class MyApplet extends MyDataPage {
       this._getSectionData()
       Toast.show(
         result
-          ? getLanguage(global.language).Prompt.ADD_SUCCESS
-          : getLanguage(global.language).Prompt.ADD_FAILED,
+          ? getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS
+          : getLanguage(GLOBAL.language).Prompt.ADD_FAILED,
       )
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
     }
   }
 
@@ -348,7 +348,7 @@ class MyApplet extends MyDataPage {
           return
         }
       }
-      this.setLoading(true, getLanguage(global.language).Prompt.DELETING_DATA)
+      this.setLoading(true, getLanguage(GLOBAL.language).Prompt.DELETING_DATA)
       let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
       let _section1 = _sectionData[0]
       let _section2 = _sectionData[1]
@@ -372,11 +372,11 @@ class MyApplet extends MyDataPage {
       this._getSectionData()
       Toast.show(
         result
-          ? getLanguage(global.language).Prompt.DELETED_SUCCESS
-          : getLanguage(global.language).Prompt.FAILED_TO_DELETE,
+          ? getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS
+          : getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE,
       )
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
     } finally {
       this.setLoading(false)
     }
@@ -384,7 +384,7 @@ class MyApplet extends MyDataPage {
 
   getCommonPagePopupData = () => [
     {
-      title: getLanguage(global.language).Profile.BATCH_ADD,
+      title: getLanguage(GLOBAL.language).Profile.BATCH_ADD,
       action: () => {
         this.setState({
           batchMode: 1,
@@ -392,7 +392,7 @@ class MyApplet extends MyDataPage {
       },
     },
     {
-      title: getLanguage(global.language).Profile.BATCH_DELETE,
+      title: getLanguage(GLOBAL.language).Profile.BATCH_DELETE,
       action: () => {
         this.setState({
           batchMode: 2,
@@ -405,12 +405,12 @@ class MyApplet extends MyDataPage {
     let title, action, img
     switch (this.state.batchMode) {
       case 1:
-        title = getLanguage(global.language).Profile.BATCH_ADD
+        title = getLanguage(GLOBAL.language).Profile.BATCH_ADD
         action = this.batchAdd
         img = getPublicAssets().common.icon_plus
         break
       case 2:
-        title = getLanguage(global.language).Profile.BATCH_DELETE
+        title = getLanguage(GLOBAL.language).Profile.BATCH_DELETE
         action = this.batchDelete
         img = getThemeAssets().attribute.icon_delete
         break

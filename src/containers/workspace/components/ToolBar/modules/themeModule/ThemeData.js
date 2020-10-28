@@ -21,7 +21,6 @@ function getData(type, params) {
   let buttons = []
   let temp = {}
   ToolbarModule.setParams(params)
-  // GLOBAL.MapToolType = type
   switch (type) {
     case ConstToolType.SM_MAP_THEME_CREATE:
     case ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER:

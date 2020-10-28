@@ -4,6 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 
+/*global GLOBAL*/
 import * as React from 'react'
 import {
   SMMapView,
@@ -127,6 +128,7 @@ export default class MapView extends React.Component {
     mapModules: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
     backActions: PropTypes.object,
+    navBarDisplay: PropTypes.bool,
 
     bufferSetting: PropTypes.object,
     overlaySetting: PropTypes.object,
@@ -142,6 +144,7 @@ export default class MapView extends React.Component {
     toolbarStatus: PropTypes.object,
     laboratory: PropTypes.object,
 
+    setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
     setLatestMap: PropTypes.func,
@@ -321,14 +324,14 @@ export default class MapView extends React.Component {
   }
 
   async componentDidMount() {
-    if (!global.isLicenseValid) {
+    if (!GLOBAL.isLicenseValid) {
       let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
+      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     }
 
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
-    if (global.isLicenseValid) {
+    if (GLOBAL.isLicenseValid) {
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
         SMap.setIndustryNavigationListener({
@@ -426,12 +429,12 @@ export default class MapView extends React.Component {
         SSpeechRecognizer.setParameter('language', 'en_us ')
       }
     } else {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
         confirmAction: () => NavigationService.goBack(),
         cancelAction: () => NavigationService.goBack(),
       })
-      global.SimpleDialog.setVisible(true)
+      GLOBAL.SimpleDialog.setVisible(true)
     }
   }
 
@@ -663,9 +666,9 @@ export default class MapView extends React.Component {
         this.setState({ recording: false })
       },
       onError: e => {
-        let error = getLanguage(global.language).Prompt.SPEECH_ERROR
+        let error = getLanguage(GLOBAL.language).Prompt.SPEECH_ERROR
         if (e.indexOf('没有说话') !== -1) {
-          error = getLanguage(global.language).Prompt.SPEECH_NONE
+          error = getLanguage(GLOBAL.language).Prompt.SPEECH_NONE
         }
         this.setState({ speechContent: error })
       },
@@ -690,7 +693,7 @@ export default class MapView extends React.Component {
                     SMap.moveToCurrent().then(result => {
                       !result &&
                         Toast.show(
-                          getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS,
+                          getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS,
                         )
                     })
                   }
@@ -1149,12 +1152,12 @@ export default class MapView extends React.Component {
             height: 0,
           })
         } else {
-          Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
         }
         GLOBAL.removeObjectDialog &&
           GLOBAL.removeObjectDialog.setDialogVisible(false)
       } catch (e) {
-        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
       }
     }.bind(this)())
   }
@@ -1201,7 +1204,7 @@ export default class MapView extends React.Component {
         }
       }
 
-      if (global.coworkMode) {
+      if (GLOBAL.coworkMode) {
         let param = {}
         if (CoworkInfo.coworkId !== '') {
           param.targetId = CoworkInfo.talkId
@@ -1311,7 +1314,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-              global.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1350,17 +1353,10 @@ export default class MapView extends React.Component {
               ConstPath.RelativePath.Plotting +
               'PlotLibData',
           )
-          this.props.getSymbolPlots(
-            {
-              path: plotIconPath,
-              isFirst: true,
-            },
-            () => {
-              GLOBAL.isInitSymbolPlotsEnd = true
-              this.props.getLayers()
-            },
-          )
-          GLOBAL.newPlotMapName = ''
+          await this.props.getSymbolPlots({
+            path: plotIconPath,
+            isFirst: true,
+          })
         }
 
         // GLOBAL.Type === ChunkType.MAP_COLLECTION && this.initCollectorDatasource()
@@ -1418,7 +1414,6 @@ export default class MapView extends React.Component {
             this.props.user.currentUser.userName,
           )
           if (layer) {
-            GLOBAL.TaggingDatasetName = layer.name
             layer.isEdit = await SMap.setLayerEditable(layer.name, true)
             layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
@@ -1490,41 +1485,41 @@ export default class MapView extends React.Component {
 
   /** 开始在线协作 */
   startCowork = () => {
-    if (global.coworkMode && CoworkInfo.coworkId === '') {
+    if (GLOBAL.coworkMode && CoworkInfo.coworkId === '') {
       //创建
       if (CoworkInfo.talkId !== '') {
         //从发现创建
         try {
-          let friend = global.getFriend()
+          let friend = GLOBAL.getFriend()
           let talkId = CoworkInfo.talkId
           let mapName = this.props.map.currentMap.name
           friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
           this.setState({ onlineCowork: true })
         } catch (error) {
-          Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
         }
       } else if (this.props.map.currentMap.name) {
         //从好友创建
-        global.SimpleDialog.set({
-          text: getLanguage(global.language).Friends.SEND_COWORK_INVITE,
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(GLOBAL.language).Friends.SEND_COWORK_INVITE,
           confirmAction: () => {
             try {
-              let friend = global.getFriend()
+              let friend = GLOBAL.getFriend()
               let talkId = friend.curChat.targetId
               let mapName = this.props.map.currentMap.name
               friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
               this.setState({ onlineCowork: true })
             } catch (error) {
-              Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
+              Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
             }
           },
         })
-        global.SimpleDialog.setVisible(true)
+        GLOBAL.SimpleDialog.setVisible(true)
       }
-    } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
+    } else if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
       //加入
       try {
-        let friend = global.getFriend()
+        let friend = GLOBAL.getFriend()
         friend.startSendLocation()
       } catch (error) {
         //
@@ -1702,19 +1697,19 @@ export default class MapView extends React.Component {
   renderMessageMenu = () => {
     let data = [
       {
-        title: getLanguage(global.language).Friends.COWORK_UPDATE,
+        title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
         action: () => {
           CoworkInfo.update(this.coworkMessageID)
         },
       },
       {
-        title: getLanguage(global.language).Friends.COWORK_ADD,
+        title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
         action: () => {
           CoworkInfo.add(this.coworkMessageID)
         },
       },
       {
-        title: getLanguage(global.language).Friends.COWORK_IGNORE,
+        title: getLanguage(GLOBAL.language).Friends.COWORK_IGNORE,
         action: () => {
           CoworkInfo.ignore(this.coworkMessageID)
         },
@@ -1858,7 +1853,7 @@ export default class MapView extends React.Component {
     return (
       <FunctionToolbar
         language={this.props.language}
-        ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
+        ref={ref => (this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}
         showFullMap={this.showFullMap}
@@ -1878,6 +1873,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  // TODO 是否移除待定
   /** 专题图预览时的header */
   renderPreviewHeader = () => {
     return (
@@ -2152,7 +2148,7 @@ export default class MapView extends React.Component {
    * 开启动态投影弹框的取消事件
    */
   cancel = () => {
-    GLOBAL.dialog.setDialogVisible(false)
+    GLOBAL.prjDialog.setDialogVisible(false)
   }
 
   /**
@@ -2162,7 +2158,7 @@ export default class MapView extends React.Component {
     (async function() {
       let result = await SMap.setDynamicProjection()
       if (result) {
-        GLOBAL.dialog.setDialogVisible(false)
+        GLOBAL.prjDialog.setDialogVisible(false)
       }
     }.bind(this)())
   }
@@ -2170,10 +2166,10 @@ export default class MapView extends React.Component {
   /**
    * 是否开启动态投影的弹框
    */
-  renderDialog = () => {
+  renderPrjDialog = () => {
     return (
       <Dialog
-        ref={ref => (GLOBAL.dialog = ref)}
+        ref={ref => (GLOBAL.prjDialog = ref)}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
         //title={'提示'}
@@ -2343,10 +2339,10 @@ export default class MapView extends React.Component {
     //   <SearchBar
     //     ref={ref => (this.searchBar = ref)}
     //     onSubmitEditing={searchKey => {
-    //       this.setLoading(true, getLanguage(global.language).Prompt.SEARCHING)
+    //       this.setLoading(true, getLanguage(GLOBAL.language).Prompt.SEARCHING)
     //       this.search(searchKey)
     //     }}
-    //     placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
+    //     placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
     //     //{'请输入搜索关键字'}
     //   />
     // )
@@ -2445,7 +2441,7 @@ export default class MapView extends React.Component {
           />,
         )
     }
-    if (global.coworkMode && this.state.onlineCowork) {
+    if (GLOBAL.coworkMode && this.state.onlineCowork) {
       buttons.push(
         <MTBtn
           key={'CoworkMember'}
@@ -2877,7 +2873,6 @@ export default class MapView extends React.Component {
       <MapSelectPoint
         ref={ref => (GLOBAL.AIDETECTCHANGE = ref)}
         headerProps={{
-          title: GLOBAL.AIDETECTCHANGETITLE,
           navigation: this.props.navigation,
           type: 'fix',
           backAction: async () => {
@@ -2902,7 +2897,7 @@ export default class MapView extends React.Component {
       <TouchableOpacity
         onPress={async () => {
           NavigationService.navigate('SecondMapSettings', {
-            title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
+            title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE,
             language: this.props.language,
             //
             device: this.props.device,
@@ -2959,7 +2954,7 @@ export default class MapView extends React.Component {
               GLOBAL.toolBox.setVisible(false)
 
               Toast.show(
-                getLanguage(global.language).Profile
+                getLanguage(GLOBAL.language).Profile
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
               )
               return
@@ -2979,7 +2974,7 @@ export default class MapView extends React.Component {
                 )
               GLOBAL.MapSelectPointType = undefined
               Toast.show(
-                getLanguage(global.language).Profile
+                getLanguage(GLOBAL.language).Profile
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
               )
             }
@@ -3300,12 +3295,11 @@ export default class MapView extends React.Component {
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
         {!this.isExample &&
-          global.isLicenseValid &&
+          GLOBAL.isLicenseValid &&
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
           <SMAIDetectView
-            ref={ref => (GLOBAL.SMAIDetectView = ref)}
             style={
               screen.isIphoneX() && {
                 paddingBottom: screen.getIphonePaddingBottom(),
@@ -3379,7 +3373,7 @@ export default class MapView extends React.Component {
         <PopModal ref={ref => (this.popModal = ref)}>
           {this.renderEditControllerView()}
         </PopModal>
-        {this.renderDialog()}
+        {this.renderPrjDialog()}
         <Dialog
           ref={ref => (GLOBAL.removeObjectDialog = ref)}
           type={Dialog.Type.MODAL}
@@ -3409,7 +3403,7 @@ export default class MapView extends React.Component {
           setNavigationChangeAR={this.props.setNavigationChangeAR}
         />
         {GLOBAL.Type === ChunkType.MAP_THEME && this.renderPreviewHeader()}
-        {global.coworkMode && this.state.onlineCowork && (
+        {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (

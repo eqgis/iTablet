@@ -41,23 +41,23 @@ export default class SearchMenu extends React.Component {
 
   getData = () => [
     {
-      key: getLanguage(global.language).Find.ALL,
+      key: getLanguage(GLOBAL.language).Find.ALL,
       value: 'all',
     },
     {
-      key: getLanguage(global.language).Find.ONLINE_WORKSPACE,
+      key: getLanguage(GLOBAL.language).Find.ONLINE_WORKSPACE,
       value: ['WORKSPACE'],
     },
     {
-      key: getLanguage(global.language).Find.ONLINE_DATASOURCE,
+      key: getLanguage(GLOBAL.language).Find.ONLINE_DATASOURCE,
       value: ['UDB'],
     },
     {
-      key: getLanguage(global.language).Find.ONLINE_SYMBOL,
+      key: getLanguage(GLOBAL.language).Find.ONLINE_SYMBOL,
       value: ['MARKERSYMBOL', 'LINESYMBOL', 'FILLSYMBOL'],
     },
     {
-      key: getLanguage(global.language).Find.ONLINE_COLORSCHEME,
+      key: getLanguage(GLOBAL.language).Find.ONLINE_COLORSCHEME,
       value: ['COLORSCHEME'],
     },
   ]
@@ -170,7 +170,7 @@ export default class SearchMenu extends React.Component {
             style={styles.orderImg}
           />
           <Text style={styles.textStyle}>
-            {getLanguage(global.language).Find.SORT_BY_NAME}
+            {getLanguage(GLOBAL.language).Find.SORT_BY_NAME}
           </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.fileName ? indicator : ''}
@@ -187,7 +187,7 @@ export default class SearchMenu extends React.Component {
             style={styles.orderImg}
           />
           <Text style={styles.textStyle}>
-            {getLanguage(global.language).Find.SORT_BY_TIME}
+            {getLanguage(GLOBAL.language).Find.SORT_BY_TIME}
           </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.lastModifiedTime ? indicator : ''}
@@ -271,7 +271,7 @@ export default class SearchMenu extends React.Component {
           <TextInput
             ref={ref => (this.searchBar = ref)}
             style={styles.searchInputStyle}
-            placeholder={getLanguage(global.language).Profile.SEARCH}
+            placeholder={getLanguage(GLOBAL.language).Profile.SEARCH}
             defaultValue={this.state.searchText}
             placeholderTextColor={'#A7A7A7'}
             returnKeyType={'search'}
@@ -290,12 +290,12 @@ export default class SearchMenu extends React.Component {
       <View style={styles.searchButtonContainer}>
         <TouchableOpacity style={styles.searchButton} onPress={this.reset}>
           <Text style={styles.searchButtonText}>
-            {getLanguage(global.language).Find.RESET}
+            {getLanguage(GLOBAL.language).Find.RESET}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.searchButton} onPress={this.search}>
           <Text style={styles.searchButtonText}>
-            {getLanguage(global.language).Find.CONFIRM}
+            {getLanguage(GLOBAL.language).Find.CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>

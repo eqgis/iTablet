@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import {
   SMap,
   STransportationAnalyst,
@@ -89,7 +90,7 @@ async function touchCallback(event) {
       break
     case TouchType.MAP_MARKS_TAGGING:
       NavigationService.navigate('InputPage', {
-        headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
+        headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_NAME,
         // type: 'name',
         cb: async value => {
           if (value !== '') {
@@ -114,45 +115,45 @@ async function touchCallback(event) {
     case TouchType.SET_START_STATION:
       STransportationAnalyst.setStartPoint(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.START_STATION,
+        getLanguage(GLOBAL.language).Analyst_Labels.START_STATION,
       )
       break
     case TouchType.MIDDLE_STATIONS:
       STransportationAnalyst.addNode(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.MIDDLE_STATION,
+        getLanguage(GLOBAL.language).Analyst_Labels.MIDDLE_STATION,
       )
       break
     case TouchType.SET_END_STATION:
       STransportationAnalyst.setEndPoint(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.END_STATION,
+        getLanguage(GLOBAL.language).Analyst_Labels.END_STATION,
       )
       break
     case TouchType.SET_AS_START_STATION:
       STransportationAnalyst.setStartPoint(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.START_STATION,
+        getLanguage(GLOBAL.language).Analyst_Labels.START_STATION,
       )
       // SFacilityAnalyst.setStartPoint(event.screenPoint)
       break
     case TouchType.SET_AS_END_STATION:
       STransportationAnalyst.setEndPoint(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.END_STATION,
+        getLanguage(GLOBAL.language).Analyst_Labels.END_STATION,
       )
       // SFacilityAnalyst.setEndPoint(event.screenPoint)
       break
     case TouchType.ADD_STATIONS:
       STransportationAnalyst.addNode(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.NODE,
+        getLanguage(GLOBAL.language).Analyst_Labels.NODE,
       )
       break
     case TouchType.ADD_BARRIER_NODES:
       STransportationAnalyst.addBarrierNode(
         event.screenPoint,
-        getLanguage(global.language).Analyst_Labels.BARRIER_NODE,
+        getLanguage(GLOBAL.language).Analyst_Labels.BARRIER_NODE,
       )
       break
     case TouchType.ANIMATION_WAY:

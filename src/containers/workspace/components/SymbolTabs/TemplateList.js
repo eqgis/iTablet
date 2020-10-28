@@ -65,7 +65,7 @@ export default class TemplateList extends React.Component {
   action = ({ data }) => {
     Toast.show(
       //'当前选择为:'
-      getLanguage(global.language).Prompt.THE_CURRENT_SELECTION +
+      getLanguage(GLOBAL.language).Prompt.THE_CURRENT_SELECTION +
         data.$.code +
         ' ' +
         data.$.name,

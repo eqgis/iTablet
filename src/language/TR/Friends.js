@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: 'Grupta sohbet etmek için ikiden fazla arkadaş ekle',
   NO_FRIEND: 'Hay aksi! Henüz arkadaş yok',
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: 'E-posta / Telefon / Takma İsim',
+  ADD_FRIEND_PLACEHOLDER: 'E-posta / Takma İsim',
   SEARCHING: 'Aranıyor...',
   SEARCH: 'Arama',
   ADD_SELF: 'Kendinizi arkadaş olarak ekleyemezsiniz',

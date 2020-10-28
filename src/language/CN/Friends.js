@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: '少于两人不能发起群聊',
   NO_FRIEND: '您还未添加好友哦',
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: '邮箱/手机/昵称',
+  ADD_FRIEND_PLACEHOLDER: '邮箱/昵称',
   SEARCHING: '查询中...',
   SEARCH: '搜索',
   ADD_SELF: '不能添加自己为好友哦',

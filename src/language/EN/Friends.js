@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: 'Add more than 2 friend to chat in group',
   NO_FRIEND: 'Oops,no friend yet',
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: 'Email/Phone/Nickname',
+  ADD_FRIEND_PLACEHOLDER: 'Email/Nickname',
   SEARCHING: 'Searching...',
   SEARCH: 'SEARCH',
   ADD_SELF: 'Cannot add yourself as friend',

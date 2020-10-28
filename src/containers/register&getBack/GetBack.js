@@ -32,7 +32,7 @@ export default class GetBack extends React.Component {
       <Container
         style={styles.container}
         headerProps={{
-          title: getLanguage(global.language).Profile.RESET_PASSWORD,
+          title: getLanguage(GLOBAL.language).Profile.RESET_PASSWORD,
           navigation: this.props.navigation,
         }}
       >

@@ -33,9 +33,9 @@ export default class IPortalLoginView extends React.Component {
 
   goNext = async () => {
     if (this.iportalAddress) {
-      global.Loading.setLoading(
+      GLOBAL.Loading.setLoading(
         true,
-        getLanguage(global.language).Profile.CONNECTING,
+        getLanguage(GLOBAL.language).Profile.CONNECTING,
       )
       let url = this.iportalAddress + '/login.rjson'
       if (this.iportalAddress.indexOf('http') !== 0) {
@@ -57,7 +57,7 @@ export default class IPortalLoginView extends React.Component {
       }
       if (status === 405) {
         setTimeout(() => {
-          global.Loading.setLoading(false)
+          GLOBAL.Loading.setLoading(false)
           this.setState({ showServer: false })
           Animated.timing(this.state.left, {
             toValue: -this.screenWidth,
@@ -66,8 +66,8 @@ export default class IPortalLoginView extends React.Component {
         }, 1000)
       } else {
         setTimeout(() => {
-          Toast.show(getLanguage(global.language).Profile.CONNECT_SERVER_FAIL)
-          global.Loading.setLoading(false)
+          Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
+          GLOBAL.Loading.setLoading(false)
         }, 1000)
       }
     } else {
@@ -109,7 +109,7 @@ export default class IPortalLoginView extends React.Component {
           }}
         >
           <Text style={[styles.buttonText]}>
-            {getLanguage(global.language).Profile.NEXT}
+            {getLanguage(GLOBAL.language).Profile.NEXT}
           </Text>
         </TouchableOpacity>
       </View>

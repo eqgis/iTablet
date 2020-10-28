@@ -50,9 +50,9 @@ class LicenseJoin extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
+        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
-          let result = await global.recycleCloudLicense()
+          let result = await GLOBAL.recycleCloudLicense()
           if (result > -1) {
             this.activateLicenseSerialNumber(true)
           }
@@ -72,9 +72,9 @@ class LicenseJoin extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
+        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
-          let result = await global.recycleCloudLicense()
+          let result = await GLOBAL.recycleCloudLicense()
           if (result > -1) {
             this.reloadLocalLicense(true)
           }
@@ -121,7 +121,7 @@ class LicenseJoin extends Component {
         this._checkEdutionLicense()
         GLOBAL.Loading.setLoading(
           true,
-          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
+          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
         )
         await SMap.reloadLocalLicense()
         let status = await SMap.getEnvironmentStatus()
@@ -136,7 +136,7 @@ class LicenseJoin extends Component {
         this.setState({ checkLocal: false })
       }
     } catch (error) {
-      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
       GLOBAL.Loading.setLoading(false)
       this.setState({ checkLocal: false })
     }
@@ -164,7 +164,7 @@ class LicenseJoin extends Component {
         this._checkEdutionLicense()
         GLOBAL.Loading.setLoading(
           true,
-          global.language === 'CN' ? '许可申请中...' : 'Applying',
+          GLOBAL.language === 'CN' ? '许可申请中...' : 'Applying',
         )
         let str = ''
         for (let i = 0; i < this.state.texts.length - 1; i++) {
@@ -178,57 +178,56 @@ class LicenseJoin extends Component {
             if (result === -1) {
               GLOBAL.Loading.setLoading(false)
               Toast.show(
-                global.language === 'CN' ? '激活失败...' : 'Activate Faild',
+                GLOBAL.language === 'CN' ? '激活失败...' : 'Activate Faild',
               )
               return
             }
           }, 40000)
           result = await SMap.activateLicense(str)
           if (result) {
-            let modules = await SMap.licenseContainModule(str)
-            let size = modules.length
-            let number = 0
-            for (let i = 0; i < size; i++) {
-              let modultCode = Number(modules[i])
-              if (modultCode == 0) {
-                continue
-              }
-              number = number + (1 << modultCode % 100)
-            }
-            GLOBAL.modulesNumber = number
+            // let modules = await SMap.licenseContainModule(str)
+            // let size = modules.length
+            // let number = 0
+            // for (let i = 0; i < size; i++) {
+            //   let modultCode = Number(modules[i])
+            //   if (modultCode == 0) {
+            //     continue
+            //   }
+            //   number = number + (1 << modultCode % 100)
+            // }
             Toast.show(
-              getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+              getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_SUCCESS,
             )
             let info = await SMap.getEnvironmentStatus()
             this.props.setLicenseInfo(info)
             GLOBAL.Loading.setLoading(
               false,
-              global.language === 'CN' ? '许可申请中...' : 'Applying',
+              GLOBAL.language === 'CN' ? '许可申请中...' : 'Applying',
             )
             this.props.navigation.pop(2)
           } else {
             Toast.show(
-              // getLanguage(global.language).Profile.INPUT_LICENSE_SERIAL_NUMBER,
-              global.language === 'CN' ? '激活失败...' : 'Activate Faild',
+              // getLanguage(GLOBAL.language).Profile.INPUT_LICENSE_SERIAL_NUMBER,
+              GLOBAL.language === 'CN' ? '激活失败...' : 'Activate Faild',
             )
             GLOBAL.Loading.setLoading(
               false,
-              global.language === 'CN' ? '许可申请中...' : 'Applying',
+              GLOBAL.language === 'CN' ? '许可申请中...' : 'Applying',
             )
           }
         } else {
           Toast.show(
-            getLanguage(global.language).Profile
+            getLanguage(GLOBAL.language).Profile
               .PLEASE_INPUT_LICENSE_SERIAL_NUMBER,
           )
           GLOBAL.Loading.setLoading(
             false,
-            global.language === 'CN' ? '许可申请中...' : 'Applying',
+            GLOBAL.language === 'CN' ? '许可申请中...' : 'Applying',
           )
         }
       }
     } catch (error) {
-      Toast.show(global.language === 'CN' ? '激活失败...' : 'Activate Faild')
+      Toast.show(GLOBAL.language === 'CN' ? '激活失败...' : 'Activate Faild')
       GLOBAL.Loading.setLoading(false)
     }
   }
@@ -280,7 +279,7 @@ class LicenseJoin extends Component {
           }}
         >
           {
-            getLanguage(global.language).Profile
+            getLanguage(GLOBAL.language).Profile
               .PLEASE_INPUT_LICENSE_SERIAL_NUMBER
           }
         </Text>
@@ -347,7 +346,7 @@ class LicenseJoin extends Component {
 
         <View style={{ alignItems: 'center' }}>
           <Button
-            title={global.language === 'CN' ? '确定' : 'Confirm'}
+            title={GLOBAL.language === 'CN' ? '确定' : 'Confirm'}
             ref={ref => (this.sureButton = ref)}
             type={this.state.isCanSure ? 'BLUE' : 'GRAY'}
             style={{
@@ -367,7 +366,7 @@ class LicenseJoin extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile
+          title: getLanguage(GLOBAL.language).Profile
             .INPUT_LICENSE_SERIAL_NUMBER,
           //'输入许可序列编号',
           navigation: this.props.navigation,

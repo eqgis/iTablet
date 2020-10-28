@@ -3,6 +3,7 @@
  * Author: Asort
  * https://github.com/AsortKeven
  */
+/* global GLOBAL */
 import React, { Component } from 'react'
 import {
   View,
@@ -27,6 +28,7 @@ export default class CustomModePage extends Component {
   props: {
     device: Object,
     navigation: Object,
+    currentLayer: Object,
   }
 
   constructor(props) {
@@ -46,7 +48,7 @@ export default class CustomModePage extends Component {
       length = data.length
     } else {
       let layerParams = {
-        LayerName: GLOBAL.currentLayer.name || '',
+        LayerName: this.props.currentLayer.name || '',
       }
       switch (this.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
@@ -161,7 +163,7 @@ export default class CustomModePage extends Component {
 
   _preView = async () => {
     let data = {
-      LayerName: GLOBAL.currentLayer.name,
+      LayerName: this.props.currentLayer.name,
       RangeList: this.state.data,
     }
     let rel = await this._setAttrToMap(data)
@@ -181,7 +183,7 @@ export default class CustomModePage extends Component {
 
   _confirm = async () => {
     let data = {
-      LayerName: GLOBAL.currentLayer.name,
+      LayerName: this.props.currentLayer.name,
       RangeList: this.state.data,
     }
     let rel = await this._setAttrToMap(data)

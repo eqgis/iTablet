@@ -32,14 +32,14 @@ export default class LocationView extends React.Component {
     this.currentData = {}
     let options = [
       {
-        title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_RELATIVE,
+        title: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_RELATIVE,
         //'相对位置',
         value: 'relative',
         hasInput: true,
         keyboardType: 'numeric',
       },
       {
-        title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_ABSOLUTE,
+        title: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_ABSOLUTE,
         //'绝对位置',
         value: 'absolute',
         hasInput: true,
@@ -134,7 +134,7 @@ export default class LocationView extends React.Component {
         })
       } else {
         // Toast.show(
-        //   getLanguage(global.language).Prompt
+        //   getLanguage(GLOBAL.language).Prompt
         //     .PLEASE_SELECT_LICATION_INFORMATION,
         // )
       }
@@ -146,7 +146,7 @@ export default class LocationView extends React.Component {
     return (
       <View style={styles.topView}>
         <Text style={styles.text}>
-          {getLanguage(global.language).Map_Attribute.ATTRIBUTE_CURRENT +
+          {getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_CURRENT +
             ': ' +
             //'当前位置 '
             (this.props.currentIndex + 1 || '')}
@@ -162,7 +162,7 @@ export default class LocationView extends React.Component {
           style={styles.button}
           titleStyle={styles.buttonTitle}
           title={
-            getLanguage(global.language).Map_Attribute.ATTRIBUTE_FIRST_RECORD
+            getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_FIRST_RECORD
           }
           //"定位到首位"
           onPress={this.locateToTop}
@@ -171,7 +171,7 @@ export default class LocationView extends React.Component {
           style={styles.button}
           titleStyle={styles.buttonTitle}
           title={
-            getLanguage(global.language).Map_Attribute.ATTRIBUTE_LAST_RECORD
+            getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_LAST_RECORD
           }
           //"定位到末行"
           onPress={this.locateToBottom}
@@ -224,7 +224,7 @@ export default class LocationView extends React.Component {
       <View style={styles.bottomButtons}>
         <TextBtn
           textStyle={styles.bottomBtnTxt}
-          btnText={getLanguage(global.language).Prompt.CANCEL}
+          btnText={getLanguage(GLOBAL.language).Prompt.CANCEL}
           //"取消"
           btnClick={() => this.show(false)}
         />
@@ -235,7 +235,7 @@ export default class LocationView extends React.Component {
               : styles.bottomBtnTxtDisable
           }
           btnText={
-            getLanguage(global.language).Map_Attribute.ATTRIBUTE_LOCATION
+            getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_LOCATION
           }
           //"定位"
           btnClick={this.locateToPosition}

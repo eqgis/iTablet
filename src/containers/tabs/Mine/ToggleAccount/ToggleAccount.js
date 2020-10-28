@@ -38,13 +38,13 @@ export default class ToggleAccount extends Component {
         this.props.user.currentUser.userName === userName &&
         this.props.user.currentUser.password === password
       ) {
-        Toast.show(getLanguage(global.language).Profile.SWITCH_CURRENT)
+        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_CURRENT)
         return
       }
       if (this.containerRef) {
         this.containerRef.setLoading(
           true,
-          getLanguage(global.language).Profile.SWITCHING,
+          getLanguage(GLOBAL.language).Profile.SWITCHING,
         )
       }
       let result
@@ -65,7 +65,7 @@ export default class ToggleAccount extends Component {
         this.props.setUser(item)
         NavigationService.popToTop()
       } else {
-        Toast.show(getLanguage(global.language).Profile.SWITCH_FAIL)
+        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_FAIL)
       }
     } catch (e) {
       if (this.containerRef) {
@@ -90,7 +90,7 @@ export default class ToggleAccount extends Component {
         this.props.deleteUser(item)
       }
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
     }
   }
 
@@ -105,7 +105,7 @@ export default class ToggleAccount extends Component {
       let customPath = await FileTools.appendingHomeDirectory(
         ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-            global.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
       )
       this.props.deleteUser(this.props.user.currentUser)
@@ -150,7 +150,7 @@ export default class ToggleAccount extends Component {
     let data
     data = [
       {
-        title: getLanguage(global.language).Profile.DELETE_ACCOUNT,
+        title: getLanguage(GLOBAL.language).Profile.DELETE_ACCOUNT,
         action: this.deleteAccount,
       },
     ]
@@ -197,7 +197,7 @@ export default class ToggleAccount extends Component {
           }}
         >
           <Text style={{ fontSize: fontSize, color: color.fontColorBlack }}>
-            {getLanguage(global.language).Profile.ADD_ACCOUNT}
+            {getLanguage(GLOBAL.language).Profile.ADD_ACCOUNT}
             {/* 添加账号 */}
           </Text>
         </TouchableOpacity>
@@ -210,7 +210,7 @@ export default class ToggleAccount extends Component {
       <Container
         ref={ref => (this.containerRef = ref)}
         headerProps={{
-          title: getLanguage(global.language).Profile.MANAGE_ACCOUNT,
+          title: getLanguage(GLOBAL.language).Profile.MANAGE_ACCOUNT,
           //'账号管理',
           navigation: this.props.navigation,
         }}

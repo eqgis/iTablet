@@ -90,7 +90,7 @@ export default class Chunk {
           homePath +
           userPath +
           ConstPath.RelativeFilePath.Workspace[
-            global.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ]
 
         let wsData
@@ -137,7 +137,7 @@ export default class Chunk {
           mapTitle: this.title,
           isExample: this.isExample,
         }
-        if (global.coworkMode) {
+        if (GLOBAL.coworkMode) {
           NavigationService.navigate('CoworkMapStack', param)
         } else {
           NavigationService.navigate('MapView', param)

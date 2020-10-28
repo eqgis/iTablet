@@ -45,22 +45,22 @@ export default class ChoosePage extends React.Component {
 
     switch (this.type) {
       case 'font':
-        this.title = getLanguage(global.language).Map_Main_Menu.THEME_FONT
+        this.title = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_FONT
         //'字体'
         data = fonts
         break
       case 'color':
-        this.title = getLanguage(global.language).Map_Main_Menu.THEME_COLOR
+        this.title = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_COLOR
         //'颜色'
         data = this.getColors()
         break
       case 'expression':
-        this.title = getLanguage(global.language).Map_Main_Menu.THEME_EXPRESSION
+        this.title = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_EXPRESSION
         //'表达式'
         data = []
         break
       case 'fontColor':
-        this.title = getLanguage(global.language).Map_Main_Menu.THEME_FONT
+        this.title = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_FONT
         //'文本颜色'
         data = fontColors
         break

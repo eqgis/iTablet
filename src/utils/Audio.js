@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import RootSiblings from 'react-native-root-siblings'
@@ -27,9 +28,9 @@ function showAudio(type = 'top', audioProps = {}) {
       <AudioDialog
         ref={ref => (AudioDialogRef = ref)}
         type={type}
-        defaultText={getLanguage(global.language).Prompt.SPEECH_TIP}
+        defaultText={getLanguage(GLOBAL.language).Prompt.SPEECH_TIP}
         // device={this.props.device}
-        language={global.language}
+        language={GLOBAL.language}
         close={hideAudio}
         {...audioProps}
       />

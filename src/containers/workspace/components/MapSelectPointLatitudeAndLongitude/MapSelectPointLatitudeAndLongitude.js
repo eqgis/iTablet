@@ -80,7 +80,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
           <View style={{ backgroundColor: color.background }}>
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(global.language).Profile.X_COORDINATE}
+                {getLanguage(GLOBAL.language).Profile.X_COORDINATE}
               </Text>
               <TextInput
                 editable={this.state.isEdit}
@@ -101,7 +101,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(global.language).Profile.Y_COORDINATE}
+                {getLanguage(GLOBAL.language).Profile.Y_COORDINATE}
               </Text>
               <TextInput
                 editable={this.state.isEdit}

@@ -81,7 +81,7 @@ function getPlotOperationData(type, params) {
       data = [
         {
           key: 'startFly',
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
           // '开始播放',
           action: async () => {
             await SMap.initAnimation()
@@ -93,7 +93,7 @@ function getPlotOperationData(type, params) {
         },
         {
           key: 'stop',
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_PAUSE,
           // '暂停',
           action: () => {
             SMap.animationPause()
@@ -105,7 +105,7 @@ function getPlotOperationData(type, params) {
         },
         {
           key: 'reset',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .PLOTTING_ANIMATION_RESET,
           // '复原',
           action: () => PlotAction.reset(),
@@ -124,7 +124,7 @@ function getAnimationNodeListData() {
   const animationNodeList = []
   const data = [
     {
-      title: getLanguage(global.language).Map_Plotting.ANIMATION_NODE_EDIT,
+      title: getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_NODE_EDIT,
       // '态势推演列表',
       data: animationNodeList,
     },
@@ -143,7 +143,7 @@ function getAnimationWayData(type, params) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION_WAY:
       data.push({
         key: constants.CANCEL,
-        title: getLanguage(global.language).Map_Plotting
+        title: getLanguage(GLOBAL.language).Map_Plotting
           .PLOTTING_ANIMATION_BACK,
         // constants.CANCEL,
         action: PlotAction.cancelAnimationWay,
@@ -152,14 +152,14 @@ function getAnimationWayData(type, params) {
       })
       data.push({
         key: constants.UNDO,
-        title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
         action: PlotAction.animationWayUndo,
         size: 'large',
         image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
       })
       data.push({
         key: constants.SUBMIT,
-        title: getLanguage(global.language).Map_Plotting
+        title: getLanguage(GLOBAL.language).Map_Plotting
           .PLOTTING_ANIMATION_SAVE,
         action: PlotAction.endAnimationWayPoint,
         size: 'large',
@@ -184,7 +184,7 @@ function getCollectionData(libId, symbolCode, params) {
   let buttons = []
   data.push({
     key: constants.UNDO,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
     // constants.UNDO,
     action: PlotAction.undo,
     size: 'large',
@@ -192,7 +192,7 @@ function getCollectionData(libId, symbolCode, params) {
   })
   data.push({
     key: constants.REDO,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
     // constants.REDO,
     action: PlotAction.redo,
     size: 'large',
@@ -201,7 +201,7 @@ function getCollectionData(libId, symbolCode, params) {
 
   data.push({
     key: constants.CANCEL,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
     // constants.CANCEL,
     action: () => PlotAction.cancel(libId, symbolCode),
     size: 'large',
@@ -209,7 +209,7 @@ function getCollectionData(libId, symbolCode, params) {
   })
   data.push({
     key: constants.SUBMIT,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_SUBMIT,
     // constants.SUBMIT,
     action: () => PlotAction.collectionSubmit(libId, symbolCode),
     size: 'large',

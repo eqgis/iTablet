@@ -7,28 +7,28 @@ import NavigationService from '../NavigationService'
 function getMapSettings() {
   const data = [
     {
-      title: getLanguage(global.language).Map_Setting.BASIC_SETTING,
+      title: getLanguage(GLOBAL.language).Map_Setting.BASIC_SETTING,
       // '基本设置',
       visible: true,
       data: [
         {
-          name: getLanguage(global.language).Map_Setting.ROTATION_GESTURE,
+          name: getLanguage(GLOBAL.language).Map_Setting.ROTATION_GESTURE,
           // '手势旋转',
           value: false,
         },
         {
-          name: getLanguage(global.language).Map_Setting.PITCH_GESTURE,
+          name: getLanguage(GLOBAL.language).Map_Setting.PITCH_GESTURE,
           // '手势俯仰',
           value: false,
         },
         {
-          name: getLanguage(global.language).Map_Setting.THEME_LEGEND,
+          name: getLanguage(GLOBAL.language).Map_Setting.THEME_LEGEND,
           value: false,
         },
       ],
     },
     {
-      title: getLanguage(global.language).Map_Setting.EFFECT_SETTINGS,
+      title: getLanguage(GLOBAL.language).Map_Setting.EFFECT_SETTINGS,
       // '效果设置',
       visible: true,
       data: [
@@ -65,19 +65,19 @@ function getMapSettings() {
         //   value: false,
         // },
         {
-          name: getLanguage(global.language).Map_Setting.ANTI_ALIASING_MAP,
+          name: getLanguage(GLOBAL.language).Map_Setting.ANTI_ALIASING_MAP,
           // '反走样地图',
           value: false,
         },
         {
-          name: getLanguage(global.language).Map_Setting.SHOW_OVERLAYS,
+          name: getLanguage(GLOBAL.language).Map_Setting.SHOW_OVERLAYS,
           // '显示压盖对象',
           value: false,
         },
       ],
     },
     {
-      title: getLanguage(global.language).Map_Setting.BOUNDS_SETTING,
+      title: getLanguage(GLOBAL.language).Map_Setting.BOUNDS_SETTING,
       // '范围设置',
       visible: true,
       data: [
@@ -98,7 +98,7 @@ function getMapSettings() {
         //   value: '',
         // },
         {
-          name: getLanguage(global.language).Map_Setting.FIX_SCALE,
+          name: getLanguage(GLOBAL.language).Map_Setting.FIX_SCALE,
           // '固定比例尺',
           value: false,
         },
@@ -128,27 +128,27 @@ function getMapSettings() {
 // 地图设置 新菜单栏
 const getThematicMapSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
+    title: getLanguage(GLOBAL.language).Map_Settings.BASIC_SETTING,
     leftImage: getThemeAssets().setting.icon_basic,
   },
   {
-    title: getLanguage(global.language).Map_Settings.RANGE_SETTING,
+    title: getLanguage(GLOBAL.language).Map_Settings.RANGE_SETTING,
     leftImage: getThemeAssets().setting.icon_range,
   },
   {
-    title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
+    title: getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
     leftImage: getThemeAssets().setting.icon_coordinate,
   },
   // 高级设置 暂时屏蔽
   // {
-  //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.ADVANCED_SETTING,
   // },
   {
-    title: getLanguage(global.language).Map_Settings.LEGEND_SETTING,
+    title: getLanguage(GLOBAL.language).Map_Settings.LEGEND_SETTING,
     leftImage: getThemeAssets().setting.icon_legend,
   },
   {
-    title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+    title: getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_DEVICE,
     leftImage: getThemeAssets().setting.icon_location,
     action: () => {
       NavigationService.navigate('LocationSetting')
@@ -158,30 +158,30 @@ const getThematicMapSettings = () => [
 
 const getNavigationSetting = () => [
   {
-    title: getLanguage(global.language).Map_Settings.ENCLOSURE_NAME,
+    title: getLanguage(GLOBAL.language).Map_Settings.ENCLOSURE_NAME,
   },
   {
-    title: getLanguage(global.language).Map_Settings.START_TIME,
+    title: getLanguage(GLOBAL.language).Map_Settings.START_TIME,
   },
   {
-    title: getLanguage(global.language).Map_Settings.END_TIME,
+    title: getLanguage(GLOBAL.language).Map_Settings.END_TIME,
   },
   {
-    title: getLanguage(global.language).Map_Settings.REMARKS,
+    title: getLanguage(GLOBAL.language).Map_Settings.REMARKS,
   },
   {
-    title: getLanguage(global.language).Map_Settings.DRAWING_RANGE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DRAWING_RANGE,
   },
 ]
 
 // 视频地图设置
 const getMapARAnalysisSettings = () => [
   // {
-  //   title: getLanguage(global.language).Map_Settings.DETECT_TYPE,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE,
   //   leftImage: getThemeAssets().setting.icon_detection_type,
   // },
   {
-    title: getLanguage(global.language).Map_Settings.DETECT_STYLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE,
     leftImage: getThemeAssets().setting.icon_checkbox_style,
   },
 ]
@@ -190,127 +190,127 @@ const getMapARAnalysisSettings = () => [
 const getDetectTypesSettings = () => [
   {
     key: '人员',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_PERSON,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_PERSON,
     value: false,
     iconType: 'switch',
   },
   {
     key: '自行车',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BICYCLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BICYCLE,
     value: false,
     iconType: 'switch',
   },
   {
     key: '车辆',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CAR,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CAR,
     value: false,
     iconType: 'switch',
   },
   {
     key: '摩托车',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_MOTORCYCLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_MOTORCYCLE,
     value: false,
     iconType: 'switch',
   },
   {
     key: '卡车',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TRUCK,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRUCK,
     value: false,
     iconType: 'switch',
   },
   {
     key: '椅子',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CHAIR,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CHAIR,
     value: false,
     iconType: 'switch',
   },
   {
     key: '鸟',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BIRD,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BIRD,
     value: false,
     iconType: 'switch',
   },
   {
     key: '猫',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CAT,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CAT,
     value: false,
     iconType: 'switch',
   },
   {
     key: '狗',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_DOG,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_DOG,
     value: false,
     iconType: 'switch',
   },
   {
     key: '盆栽植物',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_POTTEDPLANT,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_POTTEDPLANT,
     value: false,
     iconType: 'switch',
   },
   {
     key: '鼠标',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_MOUSE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_MOUSE,
     value: false,
     iconType: 'switch',
   },
   {
     key: '键盘',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_KEYBOARD,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_KEYBOARD,
     value: false,
     iconType: 'switch',
   },
   {
     key: '笔记本电脑',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_LAPTOP,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_LAPTOP,
     value: false,
     iconType: 'switch',
   },
   {
     key: '手机',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CELLPHONE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CELLPHONE,
     value: false,
     iconType: 'switch',
   },
   {
     key: '书',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BOOK,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BOOK,
     value: false,
     iconType: 'switch',
   },
   {
     key: '瓶子',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BOTTLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BOTTLE,
     value: false,
     iconType: 'switch',
   },
   {
     key: '公交车',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_BUS,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BUS,
     value: false,
     iconType: 'switch',
   },
   {
     key: '交通信号灯',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
     value: false,
     iconType: 'switch',
   },
   {
     key: '消防栓',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_FIREHYDRANT,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_FIREHYDRANT,
     value: false,
     iconType: 'switch',
   },
   {
     key: '杯子',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_CUP,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CUP,
     value: false,
     iconType: 'switch',
   },
   {
     key: '显示器',
-    title: getLanguage(global.language).Map_Settings.DETECT_TYPE_TV,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TV,
     value: false,
     iconType: 'switch',
   },
@@ -318,33 +318,33 @@ const getDetectTypesSettings = () => [
 // 识别框风格设置
 const getDetectStyleSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.DETECT_STYLE_IS_DRAW_TITLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE_IS_DRAW_TITLE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings
+    title: getLanguage(GLOBAL.language).Map_Settings
       .DETECT_STYLE_IS_DRAW_CONFIDENCE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.COUNTRACKED,
+    title: getLanguage(GLOBAL.language).Map_Settings.COUNTRACKED,
     value: false,
     iconType: 'switch',
   },
   // {
-  //   title: getLanguage(global.language).Map_Settings.DETECT_STYLE_IS_SAME_COLOR,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE_IS_SAME_COLOR,
   //   value: false,
   //   iconType: 'switch',
   // },
   // {
-  //   title: getLanguage(global.language).Map_Settings.DETECT_STYLE_SAME_COLOR,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE_SAME_COLOR,
   //   value: '',
   //   iconType: 'arrow',
   // },
   // {
-  //   title: getLanguage(global.language).Map_Settings.DETECT_STYLE_STROKE_WIDTH,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE_STROKE_WIDTH,
   //   value: '2mm',
   //   iconType: 'arrow',
   // },
@@ -355,67 +355,67 @@ const getDetectStyleSettings = () => [
 // 基本设置
 const basicSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.MAP_NAME,
+    title: getLanguage(GLOBAL.language).Map_Settings.MAP_NAME,
     value: '',
     iconType: 'text',
   },
   {
-    title: getLanguage(global.language).Map_Settings.SHOW_SCALE,
+    title: getLanguage(GLOBAL.language).Map_Settings.SHOW_SCALE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.ROTATION_GESTURE,
+    title: getLanguage(GLOBAL.language).Map_Settings.ROTATION_GESTURE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.PITCH_GESTURE,
+    title: getLanguage(GLOBAL.language).Map_Settings.PITCH_GESTURE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.ROTATION_ANGLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.ROTATION_ANGLE,
     value: '0°',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.COLOR_MODE,
+    title: getLanguage(GLOBAL.language).Map_Settings.COLOR_MODE,
     value: '',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.BACKGROUND_COLOR,
+    title: getLanguage(GLOBAL.language).Map_Settings.BACKGROUND_COLOR,
     value: '',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.MAP_ANTI_ALIASING,
+    title: getLanguage(GLOBAL.language).Map_Settings.MAP_ANTI_ALIASING,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FIX_SYMBOL_ANGLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.FIX_SYMBOL_ANGLE,
     value: true,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FIX_TEXT_ANGLE,
+    title: getLanguage(GLOBAL.language).Map_Settings.FIX_TEXT_ANGLE,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FIX_TEXT_DIRECTION,
+    title: getLanguage(GLOBAL.language).Map_Settings.FIX_TEXT_DIRECTION,
     value: true,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.SHOW_OVERLAYS,
+    title: getLanguage(GLOBAL.language).Map_Settings.SHOW_OVERLAYS,
     value: true,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.ENABLE_MAP_MAGNIFER,
+    title: getLanguage(GLOBAL.language).Map_Settings.ENABLE_MAP_MAGNIFER,
     value: true,
     iconType: 'switch',
   },
@@ -423,7 +423,7 @@ const basicSettings = () => [
 // 范围设置
 const rangeSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.MAP_CENTER,
+    title: getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER,
     value: '',
     // 当前是文字显示状态还是Input输入框状态
     state: false,
@@ -431,19 +431,19 @@ const rangeSettings = () => [
     iconType: 'doubleInput',
   },
   {
-    title: getLanguage(global.language).Map_Settings.MAP_SCALE,
+    title: getLanguage(GLOBAL.language).Map_Settings.MAP_SCALE,
     value: '',
     // 当前是文字显示状态还是Input输入框状态
     state: false,
     iconType: 'input',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FIX_SCALE_LEVEL,
+    title: getLanguage(GLOBAL.language).Map_Settings.FIX_SCALE_LEVEL,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.CURRENT_VIEW_BOUNDS,
+    title: getLanguage(GLOBAL.language).Map_Settings.CURRENT_VIEW_BOUNDS,
     value: '',
     iconType: 'arrow',
   },
@@ -452,25 +452,25 @@ const rangeSettings = () => [
 // 四至范围
 const fourRanges = () => [
   {
-    title: getLanguage(global.language).Map_Settings.LEFT,
+    title: getLanguage(GLOBAL.language).Map_Settings.LEFT,
     value: '',
     state: false,
     iconType: 'input',
   },
   {
-    title: getLanguage(global.language).Map_Settings.BOTTOM,
+    title: getLanguage(GLOBAL.language).Map_Settings.BOTTOM,
     value: '',
     state: false,
     iconType: 'input',
   },
   {
-    title: getLanguage(global.language).Map_Settings.RIGHT,
+    title: getLanguage(GLOBAL.language).Map_Settings.RIGHT,
     value: '',
     state: false,
     iconType: 'input',
   },
   {
-    title: getLanguage(global.language).Map_Settings.TOP,
+    title: getLanguage(GLOBAL.language).Map_Settings.TOP,
     value: '',
     state: false,
     iconType: 'input',
@@ -479,24 +479,24 @@ const fourRanges = () => [
 // 坐标系设置
 const coordinateSystemSettings = () => [
   {
-    title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM,
+    title: getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM,
     value: 'GCS_WGS 1984',
     // iconType: 'arrow', 暂时屏蔽地图坐标系设置
     iconType: 'text',
   },
   {
-    title: getLanguage(global.language).Map_Settings.COPY_COORDINATE_SYSTEM,
+    title: getLanguage(GLOBAL.language).Map_Settings.COPY_COORDINATE_SYSTEM,
     value: '',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.DYNAMIC_PROJECTION,
+    title: getLanguage(GLOBAL.language).Map_Settings.DYNAMIC_PROJECTION,
     value: false,
     iconType: 'switch',
   },
   {
-    title: getLanguage(global.language).Map_Settings.TRANSFER_METHOD,
-    value: getLanguage(global.language).Map_Settings.OFF,
+    title: getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD,
+    value: getLanguage(GLOBAL.language).Map_Settings.OFF,
     iconType: 'arrow',
   },
 ]
@@ -504,17 +504,17 @@ const coordinateSystemSettings = () => [
 // 复制坐标系
 const copyCoordinate = () => [
   {
-    title: getLanguage(global.language).Map_Settings.FROM_DATASOURCE,
+    title: getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE,
     value: '',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FROM_DATASET,
+    title: getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET,
     value: '',
     iconType: 'arrow',
   },
   {
-    title: getLanguage(global.language).Map_Settings.FROM_FILE,
+    title: getLanguage(GLOBAL.language).Map_Settings.FROM_FILE,
     value: '',
     iconType: 'arrow',
   },
@@ -522,28 +522,28 @@ const copyCoordinate = () => [
 // 从文件复制坐标系类型列表
 const coordMenuData = () => [
   [
-    getLanguage(global.language).Map_Settings.ALL_COORD_FILE,
-    getLanguage(global.language).Map_Settings.SHAPE_COORD_FILE,
-    getLanguage(global.language).Map_Settings.MAPINFO_FILE,
-    getLanguage(global.language).Map_Settings.MAPINFO_TAB_FILE,
-    getLanguage(global.language).Map_Settings.IMG_COORD_FILE,
-    getLanguage(global.language).Map_Settings.COORD_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.ALL_COORD_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.SHAPE_COORD_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.MAPINFO_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.MAPINFO_TAB_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.IMG_COORD_FILE,
+    getLanguage(GLOBAL.language).Map_Settings.COORD_FILE,
   ],
   ['*.shp', '*.prj', '*.mif', '*.tab', '*.tif', '*.img', '*.sit', '*.xml'],
 ]
 const coordMenuTitle = () => [
-  getLanguage(global.language).Map_Settings.TYPE,
-  getLanguage(global.language).Map_Settings.FORMAT,
+  getLanguage(GLOBAL.language).Map_Settings.TYPE,
+  getLanguage(GLOBAL.language).Map_Settings.FORMAT,
 ]
 // 坐标系数据
 const coordinateData = () => [
   // {
-  //   title: getLanguage(global.language).Map_Settings.PLAN_COORDINATE_SYSTEM,
+  //   title: getLanguage(GLOBAL.language).Map_Settings.PLAN_COORDINATE_SYSTEM,
   //   visible: true,
   //   data: [],
   // },
   {
-    title: getLanguage(global.language).Map_Settings
+    title: getLanguage(GLOBAL.language).Map_Settings
       .GEOGRAPHIC_COORDINATE_SYSTEM,
     visible: true,
     data: [
@@ -562,7 +562,7 @@ const coordinateData = () => [
     ],
   },
   {
-    title: getLanguage(global.language).Map_Settings
+    title: getLanguage(GLOBAL.language).Map_Settings
       .PROJECTED_COORDINATE_SYSTEM,
     visible: true,
     data: [
@@ -615,17 +615,17 @@ const transferData = () => [
 // 转换方法3参数设置
 const transfer3ParamsSetting = () => [
   {
-    title: getLanguage(global.language).Map_Settings.BASIC_PARAMS,
+    title: getLanguage(GLOBAL.language).Map_Settings.BASIC_PARAMS,
     value: [
       {
-        title: getLanguage(global.language).Map_Settings.TRANSFER_METHOD,
+        title: getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD,
         iconType: 'text',
         value: '',
       },
     ],
   },
   {
-    title: getLanguage(global.language).Map_Settings.OFFSET,
+    title: getLanguage(GLOBAL.language).Map_Settings.OFFSET,
     value: [
       {
         title: 'X',
@@ -655,15 +655,15 @@ const transfer3ParamsSetting = () => [
 // 转换方法7参数设置
 const transfer7ParamsSetting = () => [
   {
-    title: getLanguage(global.language).Map_Settings.BASIC_PARAMS,
+    title: getLanguage(GLOBAL.language).Map_Settings.BASIC_PARAMS,
     value: [
       {
-        title: getLanguage(global.language).Map_Settings.TRANSFER_METHOD,
+        title: getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD,
         iconType: 'text',
         value: '',
       },
       {
-        title: getLanguage(global.language).Map_Settings
+        title: getLanguage(GLOBAL.language).Map_Settings
           .PROPORTIONAL_DIFFERENCE,
         state: false,
         iconType: 'input',
@@ -673,7 +673,7 @@ const transfer7ParamsSetting = () => [
     ],
   },
   {
-    title: getLanguage(global.language).Map_Settings.ROTATION_ANGLE_SECONDS,
+    title: getLanguage(GLOBAL.language).Map_Settings.ROTATION_ANGLE_SECONDS,
     value: [
       {
         title: 'X',
@@ -699,7 +699,7 @@ const transfer7ParamsSetting = () => [
     ],
   },
   {
-    title: getLanguage(global.language).Map_Settings.OFFSET,
+    title: getLanguage(GLOBAL.language).Map_Settings.OFFSET,
     value: [
       {
         title: 'X',
@@ -729,51 +729,51 @@ const transfer7ParamsSetting = () => [
 // 高级设置
 // const advancedSettings = () => [
 //   {
-//     title: getLanguage(global.language).Map_Settings.FLOW_VISIUALIZATION,
+//     title: getLanguage(GLOBAL.language).Map_Settings.FLOW_VISIUALIZATION,
 //     value: true,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.SHOW_NEGATIVE_DATA,
+//     title: getLanguage(GLOBAL.language).Map_Settings.SHOW_NEGATIVE_DATA,
 //     value: true,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.AUTOMATIC_AVOIDANCE,
+//     title: getLanguage(GLOBAL.language).Map_Settings.AUTOMATIC_AVOIDANCE,
 //     value: false,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.ZOOM_WITH_MAP,
+//     title: getLanguage(GLOBAL.language).Map_Settings.ZOOM_WITH_MAP,
 //     value: false,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.SHOW_TRACTION_LINE,
+//     title: getLanguage(GLOBAL.language).Map_Settings.SHOW_TRACTION_LINE,
 //     value: false,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.GLOBAL_STATISTICS,
+//     title: getLanguage(GLOBAL.language).Map_Settings.GLOBAL_STATISTICS,
 //     value: false,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.CHART_ANNOTATION,
-//     value: getLanguage(global.language).Map_Settings.PERCENT,
+//     title: getLanguage(GLOBAL.language).Map_Settings.CHART_ANNOTATION,
+//     value: getLanguage(GLOBAL.language).Map_Settings.PERCENT,
 //     iconType: 'arrow',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.SHOW_AXIS,
+//     title: getLanguage(GLOBAL.language).Map_Settings.SHOW_AXIS,
 //     value: false,
 //     iconType: 'switch',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.HISTOGRAM_STYLE,
+//     title: getLanguage(GLOBAL.language).Map_Settings.HISTOGRAM_STYLE,
 //     iconType: 'arrow',
 //   },
 //   {
-//     title: getLanguage(global.language).Map_Settings.ROSE_AND_PIE_CHART_STYLE,
+//     title: getLanguage(GLOBAL.language).Map_Settings.ROSE_AND_PIE_CHART_STYLE,
 //     iconType: 'arrow',
 //   },
 // ]
@@ -792,23 +792,23 @@ const transfer7ParamsSetting = () => [
 // ]
 const colorMode = () => [
   {
-    value: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
+    value: getLanguage(GLOBAL.language).Map_Settings.DEFAULT_COLOR_MODE,
     action: () => SMap.setMapColorMode(0),
   },
   {
-    value: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
+    value: getLanguage(GLOBAL.language).Map_Settings.BLACK_AND_WHITE,
     action: () => SMap.setMapColorMode(1),
   },
   {
-    value: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
+    value: getLanguage(GLOBAL.language).Map_Settings.GRAY_SCALE_MODE,
     action: () => SMap.setMapColorMode(2),
   },
   {
-    value: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE,
+    value: getLanguage(GLOBAL.language).Map_Settings.ANTI_BLACK_AND_WHITE,
     action: () => SMap.setMapColorMode(3),
   },
   {
-    value: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE_2,
+    value: getLanguage(GLOBAL.language).Map_Settings.ANTI_BLACK_AND_WHITE_2,
     action: () => SMap.setMapColorMode(4),
   },
 ]

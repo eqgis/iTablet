@@ -24,6 +24,7 @@ export default class PreviewColorPicker extends Component {
         r: Number,
         g: Number,
         b: Number,
+        currentLayer: Object,
     }
 
     constructor(props) {
@@ -97,7 +98,7 @@ export default class PreviewColorPicker extends Component {
       let type = ToolbarModule.getData().customType
       let data = JSON.parse(JSON.stringify(this.state.data))
       let params = {
-        LayerName: GLOBAL.currentLayer.name,
+        LayerName: this.props.currentLayer.name,
         RangeList: data,
       }
       let rel = false

@@ -81,7 +81,7 @@ export default class MyLocalData extends Component {
       let cacheData = []
       let userData = []
       let onlineData = []
-      let homePath = global.homePath
+      let homePath = GLOBAL.homePath
       let cachePath = homePath + ConstPath.CachePath2
       let userPath =
         homePath +
@@ -111,7 +111,7 @@ export default class MyLocalData extends Component {
       onlineData = result[2]
       if (cacheData.length > 0) {
         sectionData.push({
-          title: getLanguage(global.language).Profile.SAMPLEDATA,
+          title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
           data: cacheData,
           isShowItem: true,
           dataType: 'cache',
@@ -119,7 +119,7 @@ export default class MyLocalData extends Component {
       }
       if (userData.length > 0) {
         sectionData.push({
-          title: getLanguage(global.language).Profile.ON_DEVICE,
+          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
           data: userData,
           isShowItem: true,
           dataType: 'external',
@@ -127,7 +127,7 @@ export default class MyLocalData extends Component {
       }
       if (onlineData.length > 0) {
         sectionData.push({
-          title: getLanguage(global.language).Profile.ON_DEVICE,
+          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
           data: onlineData,
           isShowItem: true,
           dataType: 'online',
@@ -234,7 +234,7 @@ export default class MyLocalData extends Component {
         JSON.stringify(this.itemInfo.item) ===
           JSON.stringify(this.props.importItem.item)
       ) {
-        Toast.show(getLanguage(global.language).Prompt.DATA_BEING_IMPORT)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DATA_BEING_IMPORT)
         return
       }
       this.setLoading(
@@ -244,7 +244,7 @@ export default class MyLocalData extends Component {
       )
 
       let exportDir =
-        global.homePath +
+        GLOBAL.homePath +
         ConstPath.UserPath +
         this.state.userName +
         '/' +
@@ -361,15 +361,15 @@ export default class MyLocalData extends Component {
       getItemCallback: async ({ item }) => {
         NavigationService.goBack()
         if (type === 'tif' || type === 'img') {
-          global.SimpleDialog.set({
-            text: getLanguage(global.language).Profile.IMPORT_BUILD_PYRAMID,
-            confirmText: getLanguage(global.language).Prompt.YES,
-            cancelText: getLanguage(global.language).Prompt.NO,
+          GLOBAL.SimpleDialog.set({
+            text: getLanguage(GLOBAL.language).Profile.IMPORT_BUILD_PYRAMID,
+            confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+            cancelText: getLanguage(GLOBAL.language).Prompt.NO,
             confirmAction: async () => {
               try {
                 GLOBAL.Loading.setLoading(
                   true,
-                  getLanguage(global.language).Prompt.IMPORTING,
+                  getLanguage(GLOBAL.language).Prompt.IMPORTING,
                 )
                 await importDataset(item, { buildPyramid: true })
                 GLOBAL.Loading.setLoading(false)
@@ -381,7 +381,7 @@ export default class MyLocalData extends Component {
               importDataset(item)
             },
           })
-          global.SimpleDialog.setVisible(true)
+          GLOBAL.SimpleDialog.setVisible(true)
         } else {
           importDataset(item)
         }
@@ -400,7 +400,7 @@ export default class MyLocalData extends Component {
   importData = async () => {
     this._closeModal()
     if (this.props.importItem !== '') {
-      Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
       return
     }
     if (this.itemInfo && this.itemInfo.id) {
@@ -449,7 +449,7 @@ export default class MyLocalData extends Component {
             itemInfo.id === element.id &&
             element.progress > 0
           ) {
-            Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+            Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
             return
           }
         }
@@ -484,7 +484,7 @@ export default class MyLocalData extends Component {
         headers,
         progressDivider: 2,
         begin: () => {
-          Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
         },
         progress: res => {
           const value = ~~res.progress.toFixed(0)
@@ -875,9 +875,9 @@ export default class MyLocalData extends Component {
         }
         let title
         if (isPublish) {
-          title = getLanguage(global.language).Profile.SET_AS_PRIVATE_DATA
+          title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
         } else {
-          title = getLanguage(global.language).Profile.SET_AS_PUBLIC_DATA
+          title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
         }
         data.push({
           title: title,

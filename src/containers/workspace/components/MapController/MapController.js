@@ -239,7 +239,7 @@ export default class MapController extends React.Component {
     }
     SMap.moveToCurrent().then(result => {
       !result &&
-        Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
     })
 
     //{{ 更新地图选点控件 add jiakai

@@ -23,7 +23,7 @@ class LocationSetting extends React.Component {
       devices: ['local'],
       currentOption: this.prevOption,
       showSearch: true,
-      searchNotify: getLanguage(global.language).Prompt.SEARCHING,
+      searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING,
     }
   }
 
@@ -62,7 +62,7 @@ class LocationSetting extends React.Component {
       }, 10000)
     })
     if(this.state.devices.length === 1) {
-      this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
+      this.setState({ searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
     } else if(this.state.devices.length > 1) {
       this.setState({ showSearch: false})
     }
@@ -72,7 +72,7 @@ class LocationSetting extends React.Component {
     let title
     switch (key) {
       case 'local':
-        title = getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL
+        title = getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_LOCAL
         break
       default:
         title = key
@@ -128,7 +128,7 @@ class LocationSetting extends React.Component {
           onPress={this.changeDevice}
         >
           <Text style={[styles.headerRightText, { color: textColor }]}>
-            {getLanguage(global.language).Profile.SAVE}
+            {getLanguage(GLOBAL.language).Profile.SAVE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -138,7 +138,7 @@ class LocationSetting extends React.Component {
   renderSearch() {
     return (
       <View style={styles.searchItem}>
-        {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
+        {this.state.searchNotify === getLanguage(GLOBAL.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
         <Text style={styles.searchText}>
           {this.state.searchNotify}
         </Text>
@@ -152,7 +152,7 @@ class LocationSetting extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+          title: getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_DEVICE,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),

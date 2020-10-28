@@ -49,7 +49,7 @@ function getData(type) {
   ) {
     data.push({
       key: 'addGPSPoint',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_ADD_POINT,
       // '打点',
       action: () => SCollector.addGPSPoint(type),
       size: 'large',
@@ -62,7 +62,7 @@ function getData(type) {
   ) {
     data.push({
       key: 'start',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
       // '开始',
       action: () => SCollector.startCollect(type),
       size: 'large',
@@ -70,7 +70,7 @@ function getData(type) {
     })
     data.push({
       key: 'stop',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_STOP,
       // '停止',
       action: () => SCollector.pauseCollect(type),
       size: 'large',
@@ -84,7 +84,7 @@ function getData(type) {
   ) {
     data.push({
       key: constants.UNDO,
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
       // constants.UNDO,
       action: () => CollectionAction.undo(type),
       size: 'large',
@@ -92,7 +92,7 @@ function getData(type) {
     })
     data.push({
       key: constants.REDO,
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
       // constants.REDO,
       action: () => CollectionAction.redo(type),
       size: 'large',
@@ -101,7 +101,7 @@ function getData(type) {
   }
   data.push({
     key: constants.CANCEL,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
     // constants.CANCEL,
     action: () => CollectionAction.cancel(type),
     size: 'large',
@@ -109,7 +109,7 @@ function getData(type) {
   })
   data.push({
     key: constants.SUBMIT,
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_SUBMIT,
     // constants.SUBMIT,
     action: () => CollectionAction.collectionSubmit(type),
     size: 'large',
@@ -159,7 +159,7 @@ function getOperationData(type) {
         : SMCollectorType.REGION_GPS_POINT
   data.push({
     key: 'gpsPoint',
-    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
     // 'GPS打点',
     action: () =>
       CollectionAction.showCollection(gpsPointType, _params.currentLayer.path),
@@ -173,7 +173,7 @@ function getOperationData(type) {
         : SMCollectorType.REGION_GPS_PATH
     data.push({
       key: 'gpsPath',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
+      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
       // 'GPS轨迹',
       action: () =>
         CollectionAction.showCollection(gpsPathType, _params.currentLayer.path),
@@ -187,7 +187,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
           // '点绘式',
           action: () =>
@@ -211,7 +211,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
           // '点绘式',
           action: () =>
@@ -224,7 +224,7 @@ function getOperationData(type) {
         },
         {
           key: 'freeDraw',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
           // '自由式',
           action: () =>
@@ -241,7 +241,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
           // '点绘式',
           action: () =>
@@ -254,7 +254,7 @@ function getOperationData(type) {
         },
         {
           key: 'freeDraw',
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
           // '自由式',
           action: () =>

@@ -14,13 +14,13 @@ function arMeasureArea() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      global.ARDeviceListDialog.setVisible(true)
+      GLOBAL.ARDeviceListDialog.setVisible(true)
       return
     }
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     NavigationService.navigate('MeasureAreaView', {
@@ -34,13 +34,13 @@ function arMeasureLength() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      global.ARDeviceListDialog.setVisible(true)
+      GLOBAL.ARDeviceListDialog.setVisible(true)
       return
     }
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     NavigationService.navigate('MeasureAreaView', {
@@ -54,13 +54,13 @@ function arMeasureHeight() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      global.ARDeviceListDialog.setVisible(true)
+      GLOBAL.ARDeviceListDialog.setVisible(true)
       return
     }
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.isswitch = true
+      GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     NavigationService.navigate('MeasureAreaView', {

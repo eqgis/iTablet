@@ -38,7 +38,7 @@ class CoworkMessage extends Component {
 
   getMessage = () => {
     try {
-      if (global.coworkMode) {
+      if (GLOBAL.coworkMode) {
         let messages = CoworkInfo.messages
         let rvsMsg = messages.clone().reverse()
         this.setState({ messages: rvsMsg })
@@ -69,7 +69,7 @@ class CoworkMessage extends Component {
         for (let i = 0; i < selection.length; i++) {
           GLOBAL.Loading.setLoading(
             true,
-            getLanguage(global.language).Friends.UPDATING,
+            getLanguage(GLOBAL.language).Friends.UPDATING,
           )
           let messageID = selection[i]
           if (type === 'update') {
@@ -84,7 +84,7 @@ class CoworkMessage extends Component {
         GLOBAL.Loading.setLoading(false)
       } else {
         Toast.show(
-          getLanguage(global.language).Friends.SELECT_MESSAGE_TO_UPDATE,
+          getLanguage(GLOBAL.language).Friends.SELECT_MESSAGE_TO_UPDATE,
         )
       }
     } catch (error) {
@@ -123,7 +123,7 @@ class CoworkMessage extends Component {
           }}
         >
           <Text style={{ fontSize: scaleSize(26), color: '#4680DF' }}>
-            {getLanguage(global.language).Friends.COWORK_UPDATE}
+            {getLanguage(GLOBAL.language).Friends.COWORK_UPDATE}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -142,7 +142,7 @@ class CoworkMessage extends Component {
           }}
         >
           <Text style={{ fontSize: scaleSize(26), color: '#4680DF' }}>
-            {getLanguage(global.language).Friends.COWORK_ADD}
+            {getLanguage(GLOBAL.language).Friends.COWORK_ADD}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -161,7 +161,7 @@ class CoworkMessage extends Component {
           }}
         >
           <Text style={{ fontSize: scaleSize(26), color: 'red' }}>
-            {getLanguage(global.language).Friends.COWORK_IGNORE}
+            {getLanguage(GLOBAL.language).Friends.COWORK_IGNORE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -178,33 +178,33 @@ class CoworkMessage extends Component {
     let geoType = ''
     switch (message.message.type) {
       case MsgConstant.MSG_COWORK_ADD:
-        action = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED
-        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED2
+        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED
+        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED2
         break
       case MsgConstant.MSG_COWORK_DELETE:
-        action = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED
-        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED2
+        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED
+        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED2
         break
       case MsgConstant.MSG_COWORK_UPDATE:
-        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED
-        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED
+        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
         break
     }
     switch (message.message.geoType) {
       case GeometryType.GEOPOINT:
-        geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
+        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
         break
       case GeometryType.GEOLINE:
-        geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
+        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
         break
       case GeometryType.GEOREGION:
-        geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
+        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
         break
       case GeometryType.GEOTEXT:
-        geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
+        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
         break
       case GeometryType.GEOGRAPHICOBJECT:
-        geoType = getLanguage(global.language).Map_Main_Menu.PLOTTING
+        geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
     }
     if (action) {
       action = action + ' '
@@ -280,7 +280,7 @@ class CoworkMessage extends Component {
     return (
       <TouchableOpacity onPress={this.selecteAll}>
         <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
-          {getLanguage(global.language).Profile.SELECT_ALL}
+          {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
         </Text>
       </TouchableOpacity>
     )
@@ -292,7 +292,7 @@ class CoworkMessage extends Component {
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Friends.NEW_MESSAGE,
+          title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderHeaderRight(),

@@ -40,7 +40,7 @@ export default class AIPoseEstimationView extends React.Component {
     this.state = {
       associationMap: false, //关联地图
       poseOverLook: true, //忽略姿态
-      poseTitle: getLanguage(global.language).Map_Main_Menu
+      poseTitle: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_PAN, //姿态标题
 
       poseData: this.poseData,
@@ -73,10 +73,10 @@ export default class AIPoseEstimationView extends React.Component {
   onPoseChanged = info => {
     // let title = null
     // if (info.poseType === 'ZOOM') {
-    //   title = getLanguage(global.language).Map_Main_Menu
+    //   title = getLanguage(GLOBAL.language).Map_Main_Menu
     //     .MAP_AI_POSE_ESTIMATION_ZOOM
     // } else if (info.poseType === 'PAN') {
-    //   title = getLanguage(global.language).Map_Main_Menu
+    //   title = getLanguage(GLOBAL.language).Map_Main_Menu
     //     .MAP_AI_POSE_ESTIMATION_PAN
     // } else {
     //   title = ''
@@ -97,13 +97,13 @@ export default class AIPoseEstimationView extends React.Component {
 
     if (this.state.poseMode === 'MODE_ZOOM') {
       _poseCallBackData.push(
-        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ZOOM +
+        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ZOOM +
           ':' +
           _poseTitle,
       )
     } else if (this.state.poseMode === 'MODE_PAN') {
       _poseCallBackData.push(
-        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_PAN +
+        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_PAN +
           ':' +
           _poseTitle,
       )
@@ -121,27 +121,27 @@ export default class AIPoseEstimationView extends React.Component {
     let _poseTitle = ''
     switch (arrStrs[0]) {
       case 'up':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP
         break
       case 'down':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN
         break
       case 'left':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT
         break
       case 'right':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT
         break
       case 'shrink':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK
         break
       case 'magnify':
-        _poseTitle = getLanguage(global.language).Map_Main_Menu
+        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY
         break
     }
@@ -184,9 +184,9 @@ export default class AIPoseEstimationView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {this.state.associationMap
-                  ? getLanguage(global.language).Map_Main_Menu
+                  ? getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
-                  : getLanguage(global.language).Map_Main_Menu
+                  : getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
               </Text>
             </View>
@@ -217,9 +217,9 @@ export default class AIPoseEstimationView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {this.state.poseOverLook
-                  ? getLanguage(global.language).Map_Main_Menu
+                  ? getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_LOOK
-                  : getLanguage(global.language).Map_Main_Menu
+                  : getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_OVERLOOK}
               </Text>
             </View>
@@ -249,7 +249,7 @@ export default class AIPoseEstimationView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA
                 }
               </Text>
@@ -288,19 +288,19 @@ export default class AIPoseEstimationView extends React.Component {
 
   poseData = [
     {
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_ZOOM,
       mode: 'MODE_ZOOM',
       index: 0,
     },
     {
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_PAN,
       mode: 'MODE_PAN',
       index: 1,
     },
     {
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_OVERLOOK,
       mode: 'MODE_OVERLOOK',
       index: 2,
@@ -379,7 +379,7 @@ export default class AIPoseEstimationView extends React.Component {
           <View style={styles.titleView}>
             <Text style={[styles.text, { color: color.white }]}>
               {
-                getLanguage(global.language).Map_Main_Menu
+                getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AI_POSE_ESTIMATION_LOOK
               }
             </Text>
@@ -413,7 +413,7 @@ export default class AIPoseEstimationView extends React.Component {
             <Container
               ref={ref => (this.Container = ref)}
               headerProps={{
-                title: getLanguage(global.language).Map_Main_Menu
+                title: getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AI_POSE_ESTIMATION,
                 navigation: this.props.navigation,
                 type: 'fix',

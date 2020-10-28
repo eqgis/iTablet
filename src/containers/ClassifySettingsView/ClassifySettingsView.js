@@ -270,17 +270,17 @@ export default class ClassifySettingsView extends React.Component {
                 let params = {}
                 params.ModelType = 'ABSOLUTE_FILE_PATH'
                 params.ModelPath =
-                  global.homePath + item.path + '/' + item.tflite
+                  GLOBAL.homePath + item.path + '/' + item.tflite
                 let labelPath = item.labels[0]
                 let labelFilter = item.labels.filter(label => {
                   if (
-                    global.language === 'CN' &&
+                    GLOBAL.language === 'CN' &&
                     label.toLowerCase().indexOf('_cn') > -1
                   ) {
                     return true
                   }
                   if (
-                    global.language !== 'CN' &&
+                    GLOBAL.language !== 'CN' &&
                     label.toLowerCase().indexOf('_cn') < 0
                   ) {
                     return true
@@ -290,11 +290,11 @@ export default class ClassifySettingsView extends React.Component {
                 if (labelFilter.length > 0) {
                   labelPath = labelFilter[0]
                 }
-                params.LabelPath = global.homePath + item.path + '/' + labelPath
+                params.LabelPath = GLOBAL.homePath + item.path + '/' + labelPath
                 if (Platform.OS === 'android' && item.param) {
                   try {
                     let paramPath =
-                      global.homePath + item.path + '/' + item.param
+                      GLOBAL.homePath + item.path + '/' + item.param
                     let info = await RNFS.readFile(paramPath)
                     let infoJson = JSON.parse(info)
                     Object.assign(params, infoJson)

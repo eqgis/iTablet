@@ -35,7 +35,7 @@ export default class RegistrationExecutePage extends Component {
     (async function() {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(global.language).Prompt.LOADING,
+        getLanguage(GLOBAL.language).Prompt.LOADING,
       )
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
@@ -109,7 +109,7 @@ export default class RegistrationExecutePage extends Component {
   confirm = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
+      getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXECUTING,
     )
     try {
       let arithmeticMode = GLOBAL.RegistrationArithmeticMode
@@ -144,12 +144,12 @@ export default class RegistrationExecutePage extends Component {
       }
       if (count === datasets.length) {
         Toast.show(
-          getLanguage(global.language).Analyst_Labels
+          getLanguage(GLOBAL.language).Analyst_Labels
             .REGISTRATION_EXECUTE_SUCCESS,
         )
       } else {
         Toast.show(
-          getLanguage(global.language).Analyst_Labels
+          getLanguage(GLOBAL.language).Analyst_Labels
             .REGISTRATION_EXECUTE_FAILED,
         )
       }
@@ -189,31 +189,31 @@ export default class RegistrationExecutePage extends Component {
         >
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(global.language).Analyst_Labels
+              getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_ORIGINAL_DATASOURCE
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
-            {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS}
+            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAVE_AS}
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(global.language).Analyst_Labels
+              getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASET
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(global.language).Analyst_Labels
+              getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASOURCE
             }
           </Text>
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(global.language).Analyst_Labels
+              getLanguage(GLOBAL.language).Analyst_Labels
                 .REGISTRATION_SAMPLE_MODE
             }
           </Text>
@@ -228,10 +228,10 @@ export default class RegistrationExecutePage extends Component {
 
   editDatasetName(dataset, index) {
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(global.language).Analyst_Labels
+      headerTitle: getLanguage(GLOBAL.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       value: dataset.outputDatasetName,
-      placeholder: getLanguage(global.language).Analyst_Labels
+      placeholder: getLanguage(GLOBAL.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       type: 'name',
       cb: async value => {
@@ -394,7 +394,7 @@ export default class RegistrationExecutePage extends Component {
               >
                 {item.sampleModeData && item.sampleModeData.checked
                   ? item.sampleModeData.sampleModeTitle
-                  : getLanguage(global.language).Analyst_Labels
+                  : getLanguage(GLOBAL.language).Analyst_Labels
                     .REGISTRATION_SAMPLE_MODE_NO}
               </Text>
               <Image
@@ -519,13 +519,13 @@ export default class RegistrationExecutePage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Analyst_Labels
+          title: getLanguage(GLOBAL.language).Analyst_Labels
             .REGISTRATION_EXECUTE,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={() => {
                 this.confirm()

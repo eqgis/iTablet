@@ -43,25 +43,25 @@ class CoworkInviteView extends React.Component {
   }
 
   onPress = async () => {
-    if (global.coworkMode) {
+    if (GLOBAL.coworkMode) {
       return
     }
     let item = this.props.data
     let map = await this.getMap()
     if (!map) {
-      Toast.show(getLanguage(global.language).Friends.NO_SUCH_MAP)
+      Toast.show(getLanguage(GLOBAL.language).Friends.NO_SUCH_MAP)
       return
     }
     let licenseStatus = await SMap.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
-    if (!global.isLicenseValid) {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+    GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+    if (!GLOBAL.isLicenseValid) {
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
       })
-      global.SimpleDialog.setVisible(true)
+      GLOBAL.SimpleDialog.setVisible(true)
       return
     }
-    let friend = global.getFriend()
+    let friend = GLOBAL.getFriend()
     let result = await friend.joinCowork(item.coworkId, item.talkId)
     if (result) {
       let modules = this.props.mapModules.modules
@@ -69,17 +69,17 @@ class CoworkInviteView extends React.Component {
       let i = 0
       for (i = 0; i < modules.length; i++) {
         if (modules[i].key === item.module) {
-          module = modules[i].getChunk(global.language)
+          module = modules[i].getChunk(GLOBAL.language)
           break
         }
       }
-      global.getFriend().setCurMod(module)
+      GLOBAL.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(i).then(() => {
         module.action(this.props.user.currentUser, map)
       })
-      global.getFriend().curChat &&
-        global.getFriend().curChat.setCoworkMode(true)
-      global.coworkMode = true
+      GLOBAL.getFriend().curChat &&
+        GLOBAL.getFriend().curChat.setCoworkMode(true)
+      GLOBAL.coworkMode = true
     }
   }
 
@@ -100,7 +100,7 @@ class CoworkInviteView extends React.Component {
     let modules = this.props.mapModules.modules
     for (let i = 0; i < modules.length; i++) {
       if (modules[i].key === this.props.data.module) {
-        let data = modules[i].getChunk(global.language)
+        let data = modules[i].getChunk(GLOBAL.language)
         image = data.moduleImage
         title = data.title
         break
@@ -113,7 +113,7 @@ class CoworkInviteView extends React.Component {
     let time = moment(new Date(this.props.data.time)).format('YYYY/MM/DD HH:mm')
     let user = this.props.data.user.name
     if (this.props.data.userId === this.props.data.user.id) {
-      user = getLanguage(global.language).Friends.SELF
+      user = getLanguage(GLOBAL.language).Friends.SELF
     }
     let group = this.props.data.user.groupName
     if (group) {
@@ -157,7 +157,7 @@ class CoworkInviteView extends React.Component {
               marginBottom: scaleSize(20),
             }}
           >
-            {getLanguage(global.language).Friends.COWORK_INVITATION}
+            {getLanguage(GLOBAL.language).Friends.COWORK_INVITATION}
           </Text>
           <View
             style={{
@@ -184,7 +184,7 @@ class CoworkInviteView extends React.Component {
           }}
         />
         <Text style={{ fontSize: scaleSize(26) }}>
-          {getLanguage(global.language).Friends.MAP +
+          {getLanguage(GLOBAL.language).Friends.MAP +
             ':  ' +
             this.props.data.mapName}
         </Text>

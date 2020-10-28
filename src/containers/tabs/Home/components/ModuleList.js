@@ -304,8 +304,8 @@ class ModuleList extends Component {
       }
 
       let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
+      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      if (!GLOBAL.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
@@ -436,7 +436,7 @@ class ModuleList extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let downloadData = this.getDownloadData(global.language, item, index)
+    let downloadData = this.getDownloadData(GLOBAL.language, item, index)
     return (
       <ModuleItem
         key={item.key}

@@ -340,7 +340,7 @@ export default class ToolBarSectionList extends React.Component {
               />
               {/* <Text style={[styles.sectionSelectedTitle]}> */}
               {/* {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .THEME_HIDE_SYSTEM_FIELDS
                 } */}
               {/* 隐藏系统字段 */}
@@ -441,7 +441,7 @@ export default class ToolBarSectionList extends React.Component {
               </Text>
               {item.subTitle && (
                 <Text style={styles.subTitle}>
-                  {getLanguage(global.language).Prompt.LATEST}
+                  {getLanguage(GLOBAL.language).Prompt.LATEST}
                   {item.subTitle}
                 </Text>
               )}
@@ -494,18 +494,18 @@ export default class ToolBarSectionList extends React.Component {
     let info
     if (item.info.infoType === 'mtime') {
       info =
-        getLanguage(global.language).Prompt.LATEST + item.info.lastModifiedDate
+        getLanguage(GLOBAL.language).Prompt.LATEST + item.info.lastModifiedDate
     } else if (item.info.infoType === 'fieldType') {
       info =
-        getLanguage(global.language).Prompt.FIELD_TYPE + item.info.fieldType
+        getLanguage(GLOBAL.language).Prompt.FIELD_TYPE + item.info.fieldType
     } else if (item.info.infoType === 'dataset') {
       let geoCoordSysType = item.info.geoCoordSysType
       let prjCoordSysType = item.info.prjCoordSysType
       info =
-        getLanguage(global.language).Prompt.GEOGRAPHIC_COORDINATE_SYSTEM +
+        getLanguage(GLOBAL.language).Prompt.GEOGRAPHIC_COORDINATE_SYSTEM +
         geoCoordSysType +
         ', ' +
-        getLanguage(global.language).Prompt.PROJECTED_COORDINATE_SYSTEM +
+        getLanguage(GLOBAL.language).Prompt.PROJECTED_COORDINATE_SYSTEM +
         prjCoordSysType
     } else {
       return

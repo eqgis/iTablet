@@ -54,7 +54,7 @@ export default class ARWeatherView extends React.Component {
   }
 
   showDefault = async () => {
-    let path = global.homePath + '/iTablet/Common/Weather/Snow.mp4'
+    let path = GLOBAL.homePath + '/iTablet/Common/Weather/Snow.mp4'
     if (await FileTools.fileIsExist(path)) {
       SARWeather.setWeather(path)
       this.setCurrent('Snow')
@@ -134,7 +134,7 @@ export default class ARWeatherView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

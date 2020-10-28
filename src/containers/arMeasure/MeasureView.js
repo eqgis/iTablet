@@ -288,7 +288,7 @@ export default class MeasureView extends React.Component {
         ref={ref => (this.DatumPointDialog = ref)}
         type={'modal'}
         cancelBtnVisible={false}
-        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
         confirmAction={async () => {
           let fixedPoint = this.point
           //设置基点
@@ -313,7 +313,7 @@ export default class MeasureView extends React.Component {
         />
         <Text style={styles.promptTitle}>
           {
-            getLanguage(global.language).Profile
+            getLanguage(GLOBAL.language).Profile
               .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
           }
         </Text>
@@ -451,7 +451,7 @@ export default class MeasureView extends React.Component {
       <View style={styles.SwitchModelsView}>
         <Text style={styles.titleSwitchModelsView}>
           {
-            getLanguage(global.language).Map_Main_Menu
+            getLanguage(GLOBAL.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_CHOOSE_MODEL
           }
         </Text>
@@ -531,7 +531,7 @@ export default class MeasureView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_MEASURE_LENGTH
                 }
               </Text>
@@ -568,7 +568,7 @@ export default class MeasureView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(global.language).Map_Main_Menu
+                  getLanguage(GLOBAL.language).Map_Main_Menu
                     .MAP_AR_AI_MEASURE_AREA
                 }
               </Text>
@@ -595,7 +595,7 @@ export default class MeasureView extends React.Component {
     return (
       <View style={styles.totallengthChangeView}>
         <Text style={styles.titleTotal}>
-          {getLanguage(global.language).Map_Main_Menu
+          {getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
             this.state.totalLength +
             'm'}
@@ -608,7 +608,7 @@ export default class MeasureView extends React.Component {
     return (
       <View style={[styles.totallengthChangeView, { top: scaleSize(200) }]}>
         <Text style={styles.titleTotal}>
-          {getLanguage(global.language).Map_Main_Menu
+          {getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
             this.state.totalArea +
             'm²'}
@@ -621,7 +621,7 @@ export default class MeasureView extends React.Component {
     return (
       <View style={styles.tolastlengthChangeView}>
         <Text style={styles.titleTotal}>
-          {getLanguage(global.language).Map_Main_Menu
+          {getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE +
             this.state.currentLength +
             'm'}
@@ -634,7 +634,7 @@ export default class MeasureView extends React.Component {
     return (
       <View style={styles.currentLengthChangeView}>
         <Text style={styles.title}>
-          {getLanguage(global.language).Map_Main_Menu
+          {getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH +
             this.state.tolastLength +
             'm'}
@@ -648,7 +648,7 @@ export default class MeasureView extends React.Component {
       <View style={styles.currentLengthChangeView}>
         <Text style={styles.title}>
           {
-            getLanguage(global.language).Map_Main_Menu
+            getLanguage(GLOBAL.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING
           }
         </Text>
@@ -661,7 +661,7 @@ export default class MeasureView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,

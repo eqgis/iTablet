@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: '2人以下ではグループチャットを開始できません',
   NO_FRIEND: 'まだ友達を追加していません',
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: 'メールアドレス/携帯電話/ニックネーム',
+  ADD_FRIEND_PLACEHOLDER: 'メールアドレス/ニックネーム',
   SEARCHING: '検索中...',
   SEARCH: '検索',
   ADD_SELF: '自分は友達として追加できません',

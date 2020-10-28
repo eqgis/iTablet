@@ -136,7 +136,7 @@ export const getDatasetInfoFromIServer = params => async () => {
   }/fields.json`
   return request(url, 'GET', {
     headers: {
-      Cookie: global.cookie,
+      Cookie: GLOBAL.cookie,
     },
   })
 }

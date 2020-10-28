@@ -311,7 +311,7 @@ function isLegalName(text = '', language = 'CN') {
   }
 }
 
-function isLegalURL(URL, language = global.language) {
+function isLegalURL(URL, language = GLOBAL.language) {
   const str = URL
   const Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
   const objExp = new RegExp(Expression)

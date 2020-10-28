@@ -196,7 +196,7 @@ export default class PointAnalyst extends Component {
             await SScene.savePoint(index, this.PointType)
             this.container.setLoading(
               true,
-              getLanguage(global.language).Prompt.ANALYSING,
+              getLanguage(GLOBAL.language).Prompt.ANALYSING,
             )
             //'路径分析中')
             this.setState({ secondPoint: pointName, analystData: [] })
@@ -205,14 +205,14 @@ export default class PointAnalyst extends Component {
               this.container.setLoading(false)
               NavigationService.goBack()
             } else {
-              Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+              Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
               //'网络错误')
             }
           }
         } else {
           this.container.setLoading(
             true,
-            getLanguage(global.language).Prompt.SERCHING,
+            getLanguage(GLOBAL.language).Prompt.SERCHING,
           )
           // '位置搜索中')
           this.setState({ searchValue: pointName, searchData: [] })
@@ -221,14 +221,14 @@ export default class PointAnalyst extends Component {
             this.container.setLoading(false)
             NavigationService.goBack()
           } else {
-            Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+            Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
             //'网络错误')
           }
         }
       } else {
         this.container.setLoading(
           true,
-          getLanguage(global.language).Prompt.SEARCHING,
+          getLanguage(GLOBAL.language).Prompt.SEARCHING,
         )
         let x = item.x
         let y = item.y
@@ -262,11 +262,11 @@ export default class PointAnalyst extends Component {
               },
             )
         } else {
-          Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
         }
       }
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.container && this.container.setLoading(false)
       //'网络错误')
     }
@@ -296,7 +296,7 @@ export default class PointAnalyst extends Component {
                 value={this.state.firstPoint}
                 style={styles.onInput}
                 placeholder={
-                  getLanguage(global.language).Prompt.CHOOSE_STARTING_POINT
+                  getLanguage(GLOBAL.language).Prompt.CHOOSE_STARTING_POINT
                 }
                 placeholderTextColor={color.fontColorGray}
               />
@@ -320,7 +320,7 @@ export default class PointAnalyst extends Component {
                 value={this.state.secondPoint}
                 style={styles.secondInput}
                 placeholder={
-                  getLanguage(global.language).Prompt.CHOOSE_DESTINATION
+                  getLanguage(GLOBAL.language).Prompt.CHOOSE_DESTINATION
                 }
                 placeholderTextColor={color.fontColorGray}
               />
@@ -426,11 +426,11 @@ export default class PointAnalyst extends Component {
           }
         }}
         onSubmitEditing={async searchKey => {
-          // this.setLoading(true, getLanguage(global.language).Prompt.SERCHING)
+          // this.setLoading(true, getLanguage(GLOBAL.language).Prompt.SERCHING)
           //zhangxt 2020-10-12 通过关键字搜索,其他参数在方法内获得
           this.getSearchResult(searchKey)
         }}
-        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
         placeholderTextColor={color.fontColorGray}
       />
     )
@@ -486,7 +486,7 @@ export default class PointAnalyst extends Component {
                 fontSize: setSpText(20),
               }}
             >
-              {getLanguage(global.language).Prompt.CLEAR_HISTORY}
+              {getLanguage(GLOBAL.language).Prompt.CLEAR_HISTORY}
             </Text>
           </TouchableOpacity>
         )}

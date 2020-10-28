@@ -94,7 +94,7 @@ export default class LayerTopBar extends React.Component {
           ? getPublicAssets().common.icon_plus
           : getPublicAssets().common.icon_plus_gray,
         key: '添加',
-        title: getLanguage(global.language).Map_Attribute
+        title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_FIELD_ADD,
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
@@ -104,7 +104,7 @@ export default class LayerTopBar extends React.Component {
           ? getThemeAssets().attribute.attribute_location
           : getThemeAssets().attribute.attribute_location,
         key: '定位',
-        title: getLanguage(global.language).Map_Attribute
+        title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_LOCATION,
         action: this.locateAction,
         enabled: this.props.canLocated,
@@ -114,7 +114,7 @@ export default class LayerTopBar extends React.Component {
           ? getThemeAssets().attribute.icon_attribute_browse
           : getPublicAssets().attribute.icon_attribute_browse,
         key: '关联',
-        title: getLanguage(global.language).Map_Attribute
+        title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_ASSOCIATION,
         action: this.relateAction,
         enabled: this.props.canRelated,

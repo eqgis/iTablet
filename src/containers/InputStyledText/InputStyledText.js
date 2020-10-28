@@ -34,7 +34,7 @@ export default class InputStyledText extends InputPage {
       let fontSize = parseInt(this.state.fontSize)
       if (isNaN(fontSize) || fontSize === 0) {
         Toast.show(
-          global.language == 'CN' ? '请输入字体大小' : 'Please input font size',
+          GLOBAL.language == 'CN' ? '请输入字体大小' : 'Please input font size',
         )
         return
       }
@@ -63,7 +63,7 @@ export default class InputStyledText extends InputPage {
         }}
       >
         <Text style={{ flex: 1, fontSize: scaleSize(20), color: '#000000' }}>
-          {getLanguage(global.language).Map_Main_Menu.STYLE_COLOR}
+          {getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_COLOR}
         </Text>
         <View
           style={{
@@ -94,7 +94,7 @@ export default class InputStyledText extends InputPage {
         }}
       >
         <Text style={{ flex: 1, fontSize: scaleSize(20), color: '#000000' }}>
-          {getLanguage(global.language).Map_Main_Menu.STYLE_BACKGROUND}
+          {getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BACKGROUND}
         </Text>
         <View
           style={{
@@ -115,7 +115,7 @@ export default class InputStyledText extends InputPage {
     return (
       <View style={styles.itemView}>
         <Text style={{ flex: 1, fontSize: scaleSize(20), color: '#000000' }}>
-          {getLanguage(global.language).Map_Main_Menu.LEGEND_FONT}
+          {getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_FONT}
         </Text>
         <TouchableOpacity
           onPress={() => {

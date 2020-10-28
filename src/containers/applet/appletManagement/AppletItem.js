@@ -38,7 +38,7 @@ export default class AppletItem extends React.Component {
     this.downloading = false
     this.downloadingPath = false
     this.state = {
-      progress: getLanguage(global.language).Prompt.DOWNLOAD,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
       isDownloading: false,
     }
   }
@@ -84,7 +84,7 @@ export default class AppletItem extends React.Component {
     if (data) {
       if (data.downed) {
         this.setState({
-          progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
           isDownloading: false,
         })
         this.props.removeItemOfDownList({ id: data.id })
@@ -101,22 +101,22 @@ export default class AppletItem extends React.Component {
   
   getDownloadStatus = async () => {
     let path =
-      global.homePath + ConstPath.BundlesPath + this.props.data.fileName
+      GLOBAL.homePath + ConstPath.BundlesPath + this.props.data.fileName
     if (await RNFS.exists(path)) {
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
         isDownloading: false,
       })
     } else {
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOAD,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
         isDownloading: false,
       })
     }
   }
   
   _action = async () => {
-    let filePath = global.homePath + ConstPath.BundlesPath + this.props.data.fileName
+    let filePath = GLOBAL.homePath + ConstPath.BundlesPath + this.props.data.fileName
     if (_mapModules.indexOf(this.props.data.fileName) >= 0) {
       // 判断redux中是否存在未显示的小程序
       let applets = [] // redux使用的对象数组
@@ -155,11 +155,11 @@ export default class AppletItem extends React.Component {
     // let fileName =
     //   'index.' + (Platform.OS === 'ios' ? 'ios' : 'android') + '.bundle.zip'
     let dataId = this.props.data.id
-    let path = global.homePath + ConstPath.BundlesPath + fileName
+    let path = GLOBAL.homePath + ConstPath.BundlesPath + fileName
     let dataUrl
     try {
       if (this.state.isDownloading) {
-        Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
         return
       }
       if (await RNFS.exists(path)) {
@@ -170,7 +170,7 @@ export default class AppletItem extends React.Component {
         await RNFS.unlink(path)
       }
       this.setState({
-        progress: getLanguage(global.language).Prompt.DOWNLOADING,
+        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
         isDownloading: true,
       })
       if (UserType.isIPortalUser(this.props.user)) {
@@ -208,7 +208,7 @@ export default class AppletItem extends React.Component {
       })
       this._onDownloaded(fileName, path)
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
       if (await RNFS.exists(path)) {
         await RNFS.unlink(path)
       }
@@ -216,7 +216,7 @@ export default class AppletItem extends React.Component {
   }
   
   _onDownloaded = async (fileName, path) => {
-    let bundlesPath = global.homePath + ConstPath.BundlesPath
+    let bundlesPath = GLOBAL.homePath + ConstPath.BundlesPath
     let index = fileName.lastIndexOf('.')
     let name, type
     if (index !== -1) {
@@ -229,7 +229,7 @@ export default class AppletItem extends React.Component {
       result = false
     } else if (type === 'zip') {
       this.setState({
-        progress: getLanguage(global.language).Prompt.UNZIPPING,
+        progress: getLanguage(GLOBAL.language).Prompt.UNZIPPING,
       })
       if (await RNFS.exists(bundlesPath + name)) {
         await RNFS.unlink(bundlesPath + name)
@@ -239,7 +239,7 @@ export default class AppletItem extends React.Component {
       result = await FileTools.copyFile(path, bundlesPath, true)
     }
     this.setState({
-      progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
       isDownloading: false,
     })
     

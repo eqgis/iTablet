@@ -30,15 +30,15 @@ export default class CollectSceneFormSet extends Component {
 
     let problemItems = []
     problemItems.push({
-      title: getLanguage(global.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
+      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(global.language).Profile.SUGGESTION_PRODUCT_ADVICE,
+      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_PRODUCT_ADVICE,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(global.language).Profile.SUGGESTION_OTHER_PROBLEMS,
+      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_OTHER_PROBLEMS,
       checked: false,
     })
     this.state = {
@@ -55,26 +55,26 @@ export default class CollectSceneFormSet extends Component {
   componentDidMount() {
     // this.getFixedPosition()
     this.point &&
-      GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
+      this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
   }
 
   getFixedPosition = async () => {
     let fiexdPoint = await SCollectSceneFormView.getFixedPosition()
-    GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(fiexdPoint)
+    this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(fiexdPoint)
   }
 
   getCurrentPosition = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
+      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
     let map = await SMap.getCurrentPosition()
 
-    GLOBAL.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(map)
+    this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(map)
 
     GLOBAL.Loading.setLoading(false)
     Toast.show(
-      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
+      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
     )
   }
 
@@ -101,7 +101,7 @@ export default class CollectSceneFormSet extends Component {
     let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
     wsData.layerIndex = 3
     let licenseStatus = await SMap.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
+    GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     NavigationService.navigate('MapView', {
       wsData,
       isExample: true,
@@ -129,7 +129,7 @@ export default class CollectSceneFormSet extends Component {
           onPress={this.getCurrentPosition}
         >
           <Text style={styles.itemButton}>
-            {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
           </Text>
         </TouchableOpacity>
 
@@ -140,7 +140,7 @@ export default class CollectSceneFormSet extends Component {
       this.mapSelectPoint
     }>
     <Text style={styles.itemButton}>
-      {getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}
+      {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}
     </Text>
 
     </TouchableOpacity> */}
@@ -153,11 +153,11 @@ export default class CollectSceneFormSet extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.itemtitle}>
-            {getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION}
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_POSITION}
           </Text>
           <Text style={styles.itemSubTitle}>
             {'(' +
-              getLanguage(global.language).Profile
+              getLanguage(GLOBAL.language).Profile
                 .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH +
               ')'}
           </Text>
@@ -167,7 +167,7 @@ export default class CollectSceneFormSet extends Component {
           // style={{
           //   alignItems: 'flex-end'
           // }}
-          ref={ref => (GLOBAL.DATUMPOINTVIEWSET = ref)}
+          ref={ref => (this.DATUMPOINTVIEWSET = ref)}
           isEdit={true}
         />
 
@@ -181,12 +181,12 @@ export default class CollectSceneFormSet extends Component {
       <TouchableOpacity
         key={'search'}
         onPress={async () => {
-          let point = GLOBAL.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
+          let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
           this.fixedPositions(point)
         }}
       >
         <Text style={styles.textConfirm}>
-          {getLanguage(global.language).Map_Settings.CONFIRM}
+          {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
@@ -209,7 +209,7 @@ export default class CollectSceneFormSet extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile.MAP_AR_DATUM_SETTING,
+          title: getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_SETTING,
           //'设置',
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),

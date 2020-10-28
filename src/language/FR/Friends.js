@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: 'Ajouter plus de 2 amis pour discuter en groupe',
   NO_FRIEND: "Oups, pas encore d'ami",
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: 'Email / Téléphone / Pseudo',
+  ADD_FRIEND_PLACEHOLDER: 'Email / Pseudo',
   SEARCHING: 'Recherche...',
   SEARCH: 'CHERCHER',
   ADD_SELF: 'Impossible de vous ajouter comme ami',

@@ -29,7 +29,7 @@ export default class RegistrationReferDatasetPage extends Component {
 
   getData = () => {
     (async function() {
-      this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
+      this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length; ) {
@@ -146,15 +146,14 @@ export default class RegistrationReferDatasetPage extends Component {
   }
 
   confirm = () => {
-    let _rectifyDatasetInfo = GLOBAL.ReferLinkageList.getSelectData()
+    let _rectifyDatasetInfo = this.ReferLinkageList.getSelectData()
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
-      GLOBAL.RectifyReferDatasetInfo = _rectifyDatasetInfo
       // NavigationService.navigate('RegistrationArithmeticPage')
-      NavigationService.navigate('RegistrationPage')
+      NavigationService.navigate('RegistrationPage', {rectifyReferDatasetInfo: _rectifyDatasetInfo})
     } else {
       Toast.show(
-        getLanguage(global.language).Analyst_Labels
+        getLanguage(GLOBAL.language).Analyst_Labels
           .REGISTRATION_NOT_SETLECT_REFER_DATASET,
       )
     }
@@ -179,7 +178,7 @@ export default class RegistrationReferDatasetPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Analyst_Labels
+          title: getLanguage(GLOBAL.language).Analyst_Labels
             .REGISTRATION_REFER_DATASET_ADD,
           navigation: this.props.navigation,
           backAction: this.exit,
@@ -187,13 +186,13 @@ export default class RegistrationReferDatasetPage extends Component {
       >
         <LinkageList
           // ref={ref => (this.linkageList = ref)}
-          ref={ref => (GLOBAL.ReferLinkageList = ref)}
-          language={global.language}
+          ref={ref => (this.ReferLinkageList = ref)}
+          language={GLOBAL.language}
           adjustmentWidth={true}
           data={this.state.dataSourceAndSets}
           titles={[
-            getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
-            getLanguage(global.language).Analyst_Labels.DATA_SET,
+            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
+            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET,
           ]}
           onRightPress={this.listRightAction}
           isMultiple={true}
@@ -201,7 +200,7 @@ export default class RegistrationReferDatasetPage extends Component {
 
         <View style={{ alignItems: 'center' }}>
           <Button
-            title={getLanguage(global.language).Analyst_Labels.REGISTRATION}
+            title={getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION}
             ref={ref => (this.sureButton = ref)}
             type={'BLUE'}
             style={{

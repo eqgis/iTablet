@@ -153,7 +153,7 @@ export default class LocalDataItem extends Component {
                 marginRight: 20,
               }}
             >
-              {getLanguage(global.language).Profile.PATH + `:${path}`}
+              {getLanguage(GLOBAL.language).Profile.PATH + `:${path}`}
             </Text>
           </View>
           <Image

@@ -122,7 +122,7 @@ export default class PoiTopSearchBar extends React.Component {
             showList: true,
           })
         }}
-        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
         //{'请输入搜索关键字'}
       />
     )
@@ -147,7 +147,7 @@ export default class PoiTopSearchBar extends React.Component {
           title={
             this.type === 'pointSearch'
               ? ''
-              : getLanguage(global.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS
+              : getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS
           }
           backAction={this.back}
           headerCenter={this._renderSearchBar()}

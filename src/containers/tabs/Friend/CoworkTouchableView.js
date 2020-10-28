@@ -31,7 +31,7 @@ export default class CoworkTouchableView extends Component {
   render() {
     let text = ''
     if (this.props.screen === 'Chat') {
-      text = getLanguage(global.language).Friends.GO_COWORK
+      text = getLanguage(GLOBAL.language).Friends.GO_COWORK
     }
     return (
       <AnimatedView

@@ -375,14 +375,45 @@ export default class OnlineServicesUtils {
     return result
   }
 
+  /** 登录后获取用户名 online禁止手机号查找用户后需要此接口来获取手机登录用户的用户名，再根据用户名获取其他信息 */
+  getLoginUserName = async () => {
+    let username = ''
+    try {
+      let url = 'https://www.supermapol.com/web/mycontent/cloud/account'
+      let cookie = await this.getCookie()
+      let headers = {}
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+        }
+      }
+      let response = fetch(url, {
+        headers: headers,
+      })
+      let result = await new Promise.race([response, timeout(10)])
+      if (result === 'timeout') {
+        return username
+      } else {
+        response = result
+      }
+      let text = await response.text()
+      let page = cheerio.load(text)
+      username = page('div[class="col-xs-8 userInfo"]').children().first().attr('title')
+    } catch(e) { /** */}
+    return username
+  }
+
   /**
    * 获取用户信息，未登陆时获取nickname和id
    * 登陆后还可获取相应账号的phone和email
-   * @param userName 可以是id，nickname，phone或email
+   * @param userName nickname或email
+   * @param isEmail 通过手机号查找已被禁止，请设置为true
    */
   getUserInfo = async (userName, isEmail) => {
     try {
       let url
+      //仅支持邮箱，用户名 zhangxt
+      isEmail = true
       if (isEmail) {
         url =
           'https://www.supermapol.com/web/users/online.json?nickname=' +
@@ -510,7 +541,7 @@ export default class OnlineServicesUtils {
         }
         let paramStr = this._obj2params(paramObj)
         let AcceptLanguage
-        if (global.language === 'CN') {
+        if (GLOBAL.language === 'CN') {
           AcceptLanguage = 'zh-CN,zh;q=0.9,ja;q=0.8,en;q=0.7'
         } else {
           AcceptLanguage = 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'

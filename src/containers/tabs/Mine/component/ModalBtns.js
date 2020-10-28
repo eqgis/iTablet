@@ -35,7 +35,7 @@ export default class ModalBtns extends Component {
           {this.props.actionOfLocal && (
             <MTBtn
               key={'lcoal'}
-              title={getLanguage(global.language).Profile.LOCAL}
+              title={getLanguage(GLOBAL.language).Profile.LOCAL}
               style={styles.button}
               image={getThemeAssets().share.local}
               imageStyle={styles.headerBtn}
@@ -71,13 +71,13 @@ export default class ModalBtns extends Component {
           {this.props.actionOfWechat && (
             <MTBtn
               key={'wechat'}
-              title={getLanguage(global.language).Prompt.WECHAT}
+              title={getLanguage(GLOBAL.language).Prompt.WECHAT}
               style={styles.button}
               image={getThemeAssets().share.wechat}
               imageStyle={styles.headerBtn}
               onPress={() => {
                 this.SimpleDialog.set({
-                  text: getLanguage(global.language).Prompt.OPEN_THRID_PARTY,
+                  text: getLanguage(GLOBAL.language).Prompt.OPEN_THRID_PARTY,
                   confirmAction: () => {
                     this.props.actionOfWechat && this.props.actionOfWechat()
                   },
@@ -89,7 +89,7 @@ export default class ModalBtns extends Component {
           {this.props.actionOfFriend && (
             <MTBtn
               key={'friend'}
-              title={getLanguage(global.language).Navigator_Label.FRIENDS}
+              title={getLanguage(GLOBAL.language).Navigator_Label.FRIENDS}
               style={styles.button}
               image={getThemeAssets().share.friend}
               imageStyle={styles.headerBtn}
@@ -106,7 +106,7 @@ export default class ModalBtns extends Component {
           {this.showCancel && (
             <MTBtn
               key={'cancel'}
-              title={getLanguage(global.language).Prompt.CANCEL}
+              title={getLanguage(GLOBAL.language).Prompt.CANCEL}
               style={styles.button}
               image={require('../../../../assets/mapTools/icon_cancel_1.png')}
               imageStyle={styles.headerBtn}

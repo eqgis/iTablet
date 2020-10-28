@@ -237,8 +237,8 @@ export default class LayerAttributeSearch extends React.Component {
           this.state.attributes.data.length > 1
             ? this.state.attributes.head
             : [
-              getLanguage(global.language).Map_Label.NAME,
-              getLanguage(global.language).Map_Label.ATTRIBUTE,
+              getLanguage(GLOBAL.language).Map_Label.NAME,
+              getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
               //'名称'
               //'属性值'
             ]
@@ -270,10 +270,10 @@ export default class LayerAttributeSearch extends React.Component {
       <SearchBar
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={searchKey => {
-          this.setLoading(true, getLanguage(global.language).Prompt.SEARCHING)
+          this.setLoading(true, getLanguage(GLOBAL.language).Prompt.SEARCHING)
           this.search(searchKey)
         }}
-        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
         //{'请输入搜索关键字'}
       />
     )

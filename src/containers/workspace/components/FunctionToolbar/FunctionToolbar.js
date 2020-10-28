@@ -234,10 +234,6 @@ export default class FunctionToolbar extends React.Component {
     this.visible = visible
   }
 
-  isMapIndoorNavigation = () => {
-    GLOBAL.toolBox.props.setOpenOnlineMap(false)
-  }
-
   remove = () => {}
 
   save = async e => {
@@ -254,16 +250,8 @@ export default class FunctionToolbar extends React.Component {
 
   share = () => {}
 
-  //判断当前模块是否有效
-  getLicenseValid = index => {
-    return GLOBAL.modulesNumber
-      ? (GLOBAL.modulesNumber >> index) % 2 === 1
-      : true
-  }
-
   /** 获取一级数据 **/
   getData = type => {
-    let isLicenseNotValid = false
     const currentMapModule = this.props.mapModules.modules.find(function(item) {
       return item.key === type
     })
@@ -294,11 +282,6 @@ export default class FunctionToolbar extends React.Component {
       }
       data.push(_item)
     })
-
-    if (isLicenseNotValid) {
-      GLOBAL.licenseModuleNotContainDialog &&
-        GLOBAL.licenseModuleNotContainDialog.setDialogVisible(true)
-    }
     return data
   }
 

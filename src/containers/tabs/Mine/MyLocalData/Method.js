@@ -226,7 +226,7 @@ async function downFileAction(
         headers,
         progressDivider: 2,
         begin: () => {
-          Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
           // '开始导入')
         },
         progress: res => {
@@ -273,32 +273,32 @@ async function downFileAction(
 
                   if (result === true) {
                     Toast.show(
-                      getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
+                      getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS,
                     )
                   } else {
                     Toast.show(
-                      getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                      getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
                     )
                   }
                   result = await importWorkspace({ path: filePath })
                   // if (result.msg !== undefined) {
                   //   Toast.show(
-                  //     getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                  //     getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
                   //   )
                   // } else {
                   //   Toast.show(
-                  //     getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
+                  //     getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS,
                   //   )
                   // }
                 } else {
                   const result = await importWorkspace({ path: filePath })
                   if (result.msg !== undefined) {
                     Toast.show(
-                      getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                      getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
                     )
                   } else {
                     Toast.show(
-                      getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
+                      getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS,
                     )
                   }
                 }
@@ -307,15 +307,15 @@ async function downFileAction(
                   result => {
                     result.length > 0
                       ? Toast.show(
-                        getLanguage(global.language).Prompt.IMPORTED_SUCCESS,
+                        getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS,
                       ) // '数据导入成功')
                       : Toast.show(
-                        getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                        getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
                       ) // '数据导入失败')
                   },
                   () => {
                     Toast.show(
-                      getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
+                      getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
                     ) // '数据导入失败')
                   },
                 )
@@ -329,13 +329,13 @@ async function downFileAction(
             progress: 0,
             downed: false,
           })
-          Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
           // '请求异常，导入失败')
         },
       )
     }
   } catch (error) {
-    Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
     // '导入失败')
   }
 }

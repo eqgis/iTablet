@@ -3,7 +3,9 @@
  Author: Yang Shanglong
  E-mail: yangshanglong@supermap.com
  */
-
+/**
+ * 退出保存提示框
+ */
 import * as React from 'react'
 import { PopMenu } from '../../../../components'
 import { getLanguage } from '../../../../language'
@@ -46,6 +48,9 @@ export default class SaveView extends React.Component {
     })
   }
 
+  /**
+   * 保存事件
+   */
   save = () => {
     (async function() {
       let result
@@ -60,6 +65,9 @@ export default class SaveView extends React.Component {
     }.bind(this)())
   }
 
+  /**
+   * 不保存事件
+   */
   notSave = () => {
     (async function() {
       this.props.notSave && this.props.notSave()
@@ -70,12 +78,22 @@ export default class SaveView extends React.Component {
     }.bind(this)())
   }
 
+  /**
+   * 取消事件
+   */
   cancel = () => {
     this.props.cancel && this.props.cancel()
     // this.setVisible(false)
     this.cb = null
   }
 
+  /**
+   * 显示保存提示框
+   * @param {boolean} visible 是否显示
+   * @param {() => void} setLoading 设置加载界面的方法
+   * @param {() => void} cb 保存和不保存事件之后的回调
+   * @param {{left: number, right: number, top: number, bottom: number}} position 提示框位置
+   */
   setVisible = (visible, setLoading, cb, position) => {
     // if (this.state.visible === visible) return
     if (setLoading && typeof setLoading === 'function') {
@@ -85,6 +103,12 @@ export default class SaveView extends React.Component {
     this.cb = cb || this.cb
   }
 
+  /**
+   * 设置
+   * @param {boolean} loading 是否显示
+   * @param {string} info 加载消息
+   * @param {{bgColor: string, timeout: number}} extra 包含背景颜色，超时隐藏Loading时间
+   */
   setLoading = (loading = false, info, extra) => {
     this._setLoading && this._setLoading(loading, info, extra)
   }

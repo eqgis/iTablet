@@ -467,7 +467,7 @@ class ModuleList extends Component {
         }
         isBeta={
           //市场不允许出现beta标志，在审核期间把标去掉 add xiezhy
-          GLOBAL.isAudit && (
+          !GLOBAL.isAudit && (
           item.key === ChunkType.MAP_AR ||
           item.key === ChunkType.MAP_AR_MAPPING ||
           item.key === ChunkType.MAP_AR_ANALYSIS)

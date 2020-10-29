@@ -39,8 +39,8 @@ export default class Setting extends Component {
 
   _checkOpenLicense = async () => {
     try {
-      let bOpen = true
-      bOpen = await SMap.isAudit()
+      //市场不允许出现许可，在审核期间把标去掉 add xiezhy
+      let bOpen = GLOBAL.isAudit
       bOpen = !bOpen
       
       this.setState({

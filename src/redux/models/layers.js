@@ -194,7 +194,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
   if (!params.type) {
     params.type = 'undo'
   }
-  let language = getState().language.toJS()
+  let language = getState().setting.toJS().language
   let _type
 
   switch (params.type) {
@@ -431,7 +431,7 @@ export const setCurrentLayer3d = (
 }
 
 export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
-  let language = getState().language.toJS()
+  let language = getState().setting.toJS().language
   const result = await SScene.getLayerList()
   const basemaplist = []
   const layerlist = []

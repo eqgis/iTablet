@@ -687,7 +687,9 @@ export default class MapView extends React.Component {
                 (async function() {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
-                    await SScene.resetCamera()
+                    // 定位到当前位置
+                    await SScene.location()
+                    // await SScene.resetCamera()
                     this.mapController.setCompass(0)
                   } else {
                     SMap.moveToCurrent().then(result => {

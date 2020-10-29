@@ -233,7 +233,9 @@ export default class MapController extends React.Component {
   location = async () => {
     if (this.props.type === 'MAP_3D') {
       await SScene.setHeading()
-      await SScene.resetCamera()
+      // 定位到当前位置
+      await SScene.location()
+      // await SScene.resetCamera()
       this.setCompass(0)
       return
     }

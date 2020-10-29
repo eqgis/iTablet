@@ -138,14 +138,14 @@ export default class SimpleDialog extends PureComponent {
             ? this.state.confirmText
             : this.props.confirmText !== ''
               ? this.props.confirmText
-              : getLanguage(global.language).Friends.CONFIRM
+              : getLanguage(GLOBAL.language).Friends.CONFIRM
         }
         cancelBtnTitle={
           this.state.cancelText !== ''
             ? this.state.cancelText
             : this.props.cancelText !== ''
               ? this.props.cancelText
-              : getLanguage(global.language).Friends.CANCEL
+              : getLanguage(GLOBAL.language).Friends.CANCEL
         }
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}

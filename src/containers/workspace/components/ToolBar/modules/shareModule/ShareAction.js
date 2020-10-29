@@ -14,13 +14,13 @@ async function shareMap(type, list = [], name = '') {
   try {
     // GLOBAL.Loading && GLOBAL.Loading.setLoading(true, '分享中')
     if (ToolbarModule.getData().isSharing) {
-      Toast.show(getLanguage(global.language).Prompt.SHARING)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SHARING)
       // ConstInfo.SHARE_WAIT)
       return
     }
     ToolbarModule.getParams().setToolbarVisible &&
       ToolbarModule.getParams().setToolbarVisible(false)
-    Toast.show(getLanguage(global.language).Prompt.SHARE_PREPARE)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_PREPARE)
 
     setTimeout(async () => {
       ToolbarModule.getParams().setSharing({
@@ -57,7 +57,7 @@ async function shareMap(type, list = [], name = '') {
           const dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
 
           // SOnlineService.deleteData(dataName).then(async () => {
-          Toast.show(getLanguage(global.language).Prompt.SHARE_START)
+          Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_START)
           const onProgress = progress => {
             progress = parseInt(progress)
             if (progress % 10 !== 0) {
@@ -107,8 +107,8 @@ async function shareMap(type, list = [], name = '') {
             GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
             Toast.show(
               result
-                ? getLanguage(global.language).Prompt.SHARE_SUCCESS
-                : getLanguage(global.language).Prompt.SHARE_FAILED,
+                ? getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS
+                : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
             )
             FileTools.deleteFile(path)
             ToolbarModule.addData({ isSharing: false })
@@ -141,7 +141,7 @@ function showSaveDialog(type) {
     (type === constants.SUPERMAP_IPORTAL &&
       !UserType.isIPortalUser(ToolbarModule.getParams().user.currentUser))
   ) {
-    Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN_AND_SHARE)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_LOGIN_AND_SHARE)
     // '请登陆后再分享')
     return
   }
@@ -150,15 +150,15 @@ function showSaveDialog(type) {
     return
   }
   if (ToolbarModule.getData().isSharing) {
-    Toast.show(getLanguage(global.language).Prompt.SHARING)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SHARING)
     // '分享中，请稍后')
     return
   }
   NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(global.language).Map_Main_Menu.SHARE,
+    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
     // '分享',
     value: ToolbarModule.getParams().map.currentMap.name,
-    placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
+    placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
     type: 'name',
     cb: async value => {
       const list = [ToolbarModule.getParams().map.currentMap.name]

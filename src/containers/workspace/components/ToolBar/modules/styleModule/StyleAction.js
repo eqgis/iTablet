@@ -109,22 +109,22 @@ function layerListAction(data) {
 function setTextFont(param) {
   const layerName = ToolbarModule.getParams().currentLayer.name
   switch (param.title) {
-    case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BOLD:
       SCartography.setTextFontOfLayer('BOLD', layerName)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ITALIC:
       SCartography.setTextFontOfLayer('ITALIC', layerName)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_UNDERLINE:
       SCartography.setTextFontOfLayer('UNDERLINE', layerName)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_STRIKEOUT:
       SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SHADOW:
       SCartography.setTextFontOfLayer('SHADOW', layerName)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
+    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_OUTLINE:
       SCartography.setTextFontOfLayer('OUTLINE', layerName)
       break
   }

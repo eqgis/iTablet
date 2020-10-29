@@ -9,7 +9,7 @@ function getData() {
     // {
     //   // 户型图采集
     //   key: 'arMeasureCollect',
-    //   title: getLanguage(global.language).Map_Main_Menu
+    //   title: getLanguage(GLOBAL.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT,
     //   action: ARMappingAction.arMeasureCollect,
     //   size: 'large',
@@ -18,7 +18,7 @@ function getData() {
     {
       //AR画点
       key: 'arDrawArea',
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
       action: ARMappingAction.arDrawPoint,
       size: 'large',
@@ -27,7 +27,7 @@ function getData() {
     {
       //AR画线
       key: 'arDrawLine',
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
       action: ARMappingAction.arDrawLine,
       size: 'large',
@@ -36,7 +36,7 @@ function getData() {
     {
       //AR画面
       key: 'arDrawArea',
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA,
       action: ARMappingAction.arDrawArea,
       size: 'large',
@@ -47,9 +47,9 @@ function getData() {
   if (_params.laboratory.highPrecisionCollect) {
     data.unshift({
       // 高精度采集
-      key: getLanguage(global.language).Map_Main_Menu
+      key: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-      title: getLanguage(global.language).Map_Main_Menu
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
       action: ARMappingAction.collectSceneForm,
       size: 'large',

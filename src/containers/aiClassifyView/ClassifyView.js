@@ -38,6 +38,7 @@ export default class ClassifyView extends React.Component {
     language: String,
     user: Object,
     nav: Object,
+    currentLayer: Object,
   }
 
   constructor(props) {
@@ -152,7 +153,7 @@ export default class ClassifyView extends React.Component {
       })
     } else {
       Toast.show(
-        getLanguage(global.language).Map_Main_Menu
+        getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED,
       )
       this.clear()
@@ -223,7 +224,7 @@ export default class ClassifyView extends React.Component {
     if (!this.camera) return
     this.Loading.setLoading(
       true,
-      getLanguage(global.language).Map_Main_Menu
+      getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING,
     )
     const options = {
@@ -243,7 +244,7 @@ export default class ClassifyView extends React.Component {
     if (!result) {
       this.Loading.setLoading(false)
       Toast.show(
-        getLanguage(global.language).Map_Main_Menu
+        getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED,
       )
       this.clear()
@@ -258,7 +259,7 @@ export default class ClassifyView extends React.Component {
   save = async () => {
     //保存数据->跳转
     (async function() {
-      let currentLayer = GLOBAL.currentLayer
+      let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
       if (currentLayer) {
@@ -386,7 +387,7 @@ export default class ClassifyView extends React.Component {
           )
         } else {
           Toast.show(
-            getLanguage(global.language).Map_Main_Menu
+            getLanguage(GLOBAL.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS,
           )
         }
@@ -603,13 +604,13 @@ export default class ClassifyView extends React.Component {
         <View style={styles.takeplace} />
         <Text style={styles.title}>
           {
-            getLanguage(global.language).Map_Main_Menu
+            getLanguage(GLOBAL.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT
           }
         </Text>
         <Text style={styles.titleConfidence}>
           {
-            getLanguage(global.language).Map_Main_Menu
+            getLanguage(GLOBAL.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_CONFIDENCE
           }
         </Text>
@@ -734,7 +735,7 @@ export default class ClassifyView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           navigation: this.props.navigation,
           backAction: this.back,

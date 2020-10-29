@@ -35,7 +35,7 @@ class LoginCloud extends Component {
 
   componentDidMount() {
     this.reLogin()
-    if (!global.isPad) {
+    if (!GLOBAL.isPad) {
       Orientation.lockToPortrait()
     }
   }
@@ -97,11 +97,11 @@ class LoginCloud extends Component {
 
     try {
       if (!userName) {
-        Toast.show(getLanguage(global.language).Profile.ENTER_USERNAME_ALL)
+        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_USERNAME_ALL)
         return
       }
       if (!password) {
-        Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
+        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_PASSWORD)
         return
       }
 
@@ -109,7 +109,7 @@ class LoginCloud extends Component {
       if (isConnected) {
         this.container.setLoading(
           true,
-          getLanguage(global.language).Prompt.LOG_IN,
+          getLanguage(GLOBAL.language).Prompt.LOG_IN,
         )
         let startLogin = async () => {
           let loginResult = SMap.loginCloudLicense(userName, password)
@@ -117,7 +117,7 @@ class LoginCloud extends Component {
         }
         result = startLogin()
       } else {
-        Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_NETWORK)
         return false
       }
 
@@ -131,7 +131,7 @@ class LoginCloud extends Component {
 
       let res = await new Promise.race([result, timeout(20)])
       if (res === 'timeout') {
-        Toast.show(getLanguage(global.language).Profile.LOGIN_TIMEOUT)
+        Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_TIMEOUT)
         return false
       } else {
         result = res
@@ -144,12 +144,12 @@ class LoginCloud extends Component {
         })
         return true
       } else {
-        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_LOG)
         SMap.logoutCloudLicense()
         return false
       }
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_LOG)
       SMap.logoutCloudLicense()
       return false
     } finally {
@@ -209,12 +209,12 @@ class LoginCloud extends Component {
       >
         {this.renderItem({
           key: 'DEFAULT',
-          title: getLanguage(global.language).Profile
+          title: getLanguage(GLOBAL.language).Profile
             .LICENSE_CLOUD_SITE_DEFAULT,
         })}
         {this.renderItem({
           key: 'JP',
-          title: getLanguage(global.language).Profile.LICENSE_CLOUD_SITE_JP,
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD_SITE_JP,
         })}
       </View>
     )
@@ -289,7 +289,7 @@ class LoginCloud extends Component {
   renderLogin = () => {
     return (
       <OnlineLoginView
-        language={global.language}
+        language={GLOBAL.language}
         login={this.login}
         showRegister={false}
       />
@@ -301,7 +301,7 @@ class LoginCloud extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          // title: getLanguage(global.language).Profile.LOGIN,
+          // title: getLanguage(GLOBAL.language).Profile.LOGIN,
           backImg: require('../../../../../assets/public/left_arrow.png'),
           headerStyle: {
             borderBottomWidth: 0,

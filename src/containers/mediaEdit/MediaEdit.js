@@ -127,7 +127,6 @@ export default class MediaEdit extends React.Component {
             ConstPath.RelativeFilePath.Media,
         )
         let result = await SMediaCollector.saveMediaByDataset(
-          // GLOBAL.TaggingDatasetName || this.info.layerName,
           this.info.layerName,
           this.info.geoID,
           targetPath,
@@ -369,7 +368,7 @@ export default class MediaEdit extends React.Component {
             action: () => {
               NavigationService.navigate('InputPage', {
                 value: this.state.mediaName,
-                headerTitle: getLanguage(global.language).Map_Label.NAME,
+                headerTitle: getLanguage(GLOBAL.language).Map_Label.NAME,
                 type: 'name',
                 cb: async value => {
                   this.setState({
@@ -397,7 +396,7 @@ export default class MediaEdit extends React.Component {
             action: () => {
               NavigationService.navigate('InputPage', {
                 value: this.state.httpAddress,
-                headerTitle: getLanguage(global.language).Map_Main_Menu
+                headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
                   .TOOLS_HTTP,
                 type: 'http',
                 cb: async value => {
@@ -416,7 +415,7 @@ export default class MediaEdit extends React.Component {
             action: () => {
               NavigationService.navigate('InputPage', {
                 value: this.state.description,
-                headerTitle: getLanguage(global.language).Map_Main_Menu
+                headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
                   .TOOLS_REMARKS,
                 cb: async value => {
                   this.setState({

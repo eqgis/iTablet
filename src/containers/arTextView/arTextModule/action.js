@@ -7,7 +7,7 @@ let ToolbarModule = getToolbarModule('AR')
 
 function inputText() {
   NavigationService.navigate('InputStyledText', {
-    placeholder: getLanguage(global.language).Prompt.PLEASE_ENTER,
+    placeholder: getLanguage(GLOBAL.language).Prompt.PLEASE_ENTER,
     cb: (result, styles) => {
       NavigationService.goBack()
       ToolbarModule.addData({ text: result, styles: styles })

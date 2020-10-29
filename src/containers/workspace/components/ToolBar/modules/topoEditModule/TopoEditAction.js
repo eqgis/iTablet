@@ -135,11 +135,11 @@ async function geometrySelected(event) {
  * 提交 显示Dialog
  */
 function commit() {
-  global.SimpleDialog.set({
+  GLOBAL.SimpleDialog.set({
     text: getLanguage(GLOBAL.language).Prompt.TOPO_EDIT_END,
     confirmAction: dialogConfirm,
   })
-  global.SimpleDialog.setVisible(true)
+  GLOBAL.SimpleDialog.setVisible(true)
 }
 
 function dialogConfirm() {

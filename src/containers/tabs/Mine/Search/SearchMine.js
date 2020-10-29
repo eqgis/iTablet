@@ -48,7 +48,7 @@ class SearchMine extends Component {
 
   _search = async () => {
     if (this.searchText === '') {
-      Toast.show(getLanguage(global.language).Prompt.ENTER_KEY_WORDS)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS)
       return
     }
     this.setState({ searching: true, resultList: [] })
@@ -246,37 +246,37 @@ class SearchMine extends Component {
       switch (item.title) {
         case 'DATA':
           NavigationService.navigate('MyDatasource', {
-            title: getLanguage(global.language).Profile.DATA,
+            title: getLanguage(GLOBAL.language).Profile.DATA,
           })
           break
         case 'MAP':
           NavigationService.navigate('MyMap', {
-            title: getLanguage(global.language).Profile.MAP,
+            title: getLanguage(GLOBAL.language).Profile.MAP,
           })
           break
         case 'SCENE':
           NavigationService.navigate('MyScene', {
-            title: getLanguage(global.language).Profile.SCENE,
+            title: getLanguage(GLOBAL.language).Profile.SCENE,
           })
           break
         case 'SYMBOL':
           NavigationService.navigate('MySymbol', {
-            title: getLanguage(global.language).Profile.SYMBOL,
+            title: getLanguage(GLOBAL.language).Profile.SYMBOL,
           })
           break
         case 'COLOR':
           NavigationService.navigate('MyColor', {
-            title: getLanguage(global.language).Profile.COLOR_SCHEME,
+            title: getLanguage(GLOBAL.language).Profile.COLOR_SCHEME,
           })
           break
         case 'LABEL':
           NavigationService.navigate('MyLabel', {
-            title: getLanguage(global.language).Profile.MARK,
+            title: getLanguage(GLOBAL.language).Profile.MARK,
           })
           break
         case 'TEMPLATE':
           NavigationService.navigate('MyTemplate', {
-            title: getLanguage(global.language).Profile.TEMPLATE,
+            title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
           })
           break
       }
@@ -335,11 +335,11 @@ class SearchMine extends Component {
   renderNoData = () => {
     let text
     if (this.searchText === '') {
-      text = getLanguage(global.language).Prompt.ENTER_KEY_WORDS
+      text = getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS
     } else if (this.state.searching) {
-      text = getLanguage(global.language).Prompt.SERCHING
+      text = getLanguage(GLOBAL.language).Prompt.SERCHING
     } else {
-      text = getLanguage(global.language).Profile.NO_SEARCH_RESULT
+      text = getLanguage(GLOBAL.language).Profile.NO_SEARCH_RESULT
     }
     return (
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -371,7 +371,7 @@ class SearchMine extends Component {
         <TextInput
           ref={ref => (this.searchBar = ref)}
           style={styles.searchInputStyle}
-          placeholder={getLanguage(global.language).Profile.SEARCH}
+          placeholder={getLanguage(GLOBAL.language).Profile.SEARCH}
           placeholderTextColor={color.fontColorGray}
           returnKeyType={'search'}
           // eslint-disable-next-line jsx-a11y/no-autofocus

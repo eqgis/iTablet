@@ -46,27 +46,27 @@ class LicenseTypePage extends Component {
   getType = () => {
     let data = [
       {
-        title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
+        title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
         type: LicenseType.local,
         onPress: this.joinLicense,
       },
       {
-        title: getLanguage(global.language).Profile.LICENSE_CLOUD,
+        title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD,
         type: LicenseType.clould,
         onPress: this.joinCloud,
       },
       {
-        title: getLanguage(global.language).Profile.LICENSE_PRIVATE_CLOUD,
+        title: getLanguage(GLOBAL.language).Profile.LICENSE_PRIVATE_CLOUD,
         type: LicenseType.privateClould,
         onPress: this.joinPrivateCloud,
       },
       {
-        title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
+        title: getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION,
         type: LicenseType.education,
         onPress: this.joinEducationLicense,
       },
       {
-        title: getLanguage(global.language).Profile.LICENSE_TRIAL,
+        title: getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL,
         type: LicenseType.trial,
       },
     ]
@@ -137,8 +137,8 @@ class LicenseTypePage extends Component {
               >
                 {this.props.licenseInfo.licenseType === LicenseType.trial &&
                 this.props.licenseInfo.isLicenseValid
-                  ? getLanguage(global.language).Profile.LICENSE_IN_TRIAL
-                  : getLanguage(global.language).Profile.LICENSE_TRIAL_END}
+                  ? getLanguage(GLOBAL.language).Profile.LICENSE_IN_TRIAL
+                  : getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL_END}
               </Text>
             )}
           </View>
@@ -151,7 +151,7 @@ class LicenseTypePage extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile.LICENSE_TYPE,
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_TYPE,
           navigation: this.props.navigation,
         }}
         style={{

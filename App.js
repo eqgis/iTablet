@@ -425,6 +425,7 @@ class AppRoot extends Component {
     let bundleInfo = await AppInfo.getBundleVersion()
     GLOBAL.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
+    GLOBAL.isAudit = await SMap.isAudit()
   }
 
   openWorkspace = async () => {

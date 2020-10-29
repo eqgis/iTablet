@@ -3,7 +3,9 @@
  */
 declare namespace GLOBAL {
   /** 语言 */
-  let language: string                
+  let language: string  
+  /** 是否在市场审核期间 */
+  let isAudit:boolean           
   let markerTag: string
   /** 版本号 */
   let APP_VERSION: string          

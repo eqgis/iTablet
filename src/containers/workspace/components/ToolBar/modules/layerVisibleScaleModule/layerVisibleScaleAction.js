@@ -55,9 +55,9 @@ async function rightSelect(item) {
     ToolbarModule.addData({ currentType, mapScale: (mapScale - 0).toFixed(6) })
     _params.setToolbarVisible(
       true,
-      ConstToolType.SM_MAP_LAYER_VISIBLE_USER_DEFINE,
+      ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE_USER_DEFINE,
       {
-        containerType: ToolbarType.fullScreen,
+        containerType: ToolbarType.buttons,
         isFullScreen: false,
       },
     )

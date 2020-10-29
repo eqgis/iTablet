@@ -194,8 +194,20 @@ export default class Map3D extends React.Component {
   }
 
   getLayers = async () => {
-    let layerlist = await SScene.getLayerList()
-    let terrainLayerList = await SScene.getTerrainLayerList()
+    // 获取三维图层
+    let layerlist
+    try {
+      layerlist = await SScene.getLayerList()
+    } catch (e) {
+      layerlist = []
+    }
+    // 获取三维地形
+    let terrainLayerList
+    try {
+      terrainLayerList = await SScene.getTerrainLayerList()
+    } catch (e) {
+      terrainLayerList = []
+    }
     layerlist = JSON.parse(JSON.stringify(layerlist.concat(terrainLayerList)))
     let cutLayers = layerlist.map(layer => {
       layer.selected = true

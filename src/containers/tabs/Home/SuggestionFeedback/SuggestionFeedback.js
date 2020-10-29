@@ -19,15 +19,15 @@ export default class SuggestionFeedback extends Component {
 
     let problemItems = []
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
+      title: getLanguage(global.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_PRODUCT_ADVICE,
+      title: getLanguage(global.language).Profile.SUGGESTION_PRODUCT_ADVICE,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_OTHER_PROBLEMS,
+      title: getLanguage(global.language).Profile.SUGGESTION_OTHER_PROBLEMS,
       checked: false,
     })
     this.state = {
@@ -49,7 +49,7 @@ export default class SuggestionFeedback extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.SUGGESTION_SELECT_PROBLEMS}
+            {getLanguage(global.language).Profile.SUGGESTION_SELECT_PROBLEMS}
           </Text>
         </View>
         <View style={styles.separateLine} />
@@ -97,14 +97,14 @@ export default class SuggestionFeedback extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.SUGGESTION_PROBLEMS_DETAIL}
+            {getLanguage(global.language).Profile.SUGGESTION_PROBLEMS_DETAIL}
           </Text>
         </View>
         <View style={styles.separateLine} />
         <TextInput
           style={styles.input}
           placeholder={
-            getLanguage(GLOBAL.language).Profile.SUGGESTION_PROBLEMS_DESCRIPTION
+            getLanguage(global.language).Profile.SUGGESTION_PROBLEMS_DESCRIPTION
           }
           placeholderTextTextColor={color.gray2}
           onChangeText={text => {
@@ -123,7 +123,7 @@ export default class SuggestionFeedback extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.SUGGESTION_CONTACT_WAY}
+            {getLanguage(global.language).Profile.SUGGESTION_CONTACT_WAY}
           </Text>
         </View>
         <View style={styles.separateLine} />
@@ -136,7 +136,7 @@ export default class SuggestionFeedback extends Component {
             backgroundColor: color.white,
           }}
           placeholder={
-            getLanguage(GLOBAL.language).Profile.SUGGESTION_CONTACT_WAY_INPUT
+            getLanguage(global.language).Profile.SUGGESTION_CONTACT_WAY_INPUT
           }
           placeholderTextTextColor={color.gray2}
           onChangeText={text => {
@@ -154,7 +154,7 @@ export default class SuggestionFeedback extends Component {
     return (
       <View style={{ alignItems: 'center', paddingBottom: scaleSize(20) }}>
         <Button
-          title={getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT}
+          title={getLanguage(global.language).Profile.SUGGESTION_SUBMIT}
           type="BLUE"
           style={{
             width: '94%',
@@ -171,7 +171,7 @@ export default class SuggestionFeedback extends Component {
   submit = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT,
+      getLanguage(global.language).Profile.SUGGESTION_SUBMIT,
     )
     let result = this.checkSuggestionInfo()
     if (!result.isCanSubmit) {
@@ -193,9 +193,9 @@ export default class SuggestionFeedback extends Component {
 
     let submitResult = await SMap.suggestionFeedback(suggest)
     if (submitResult) {
-      Toast.show(getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT_SUCCEED)
+      Toast.show(getLanguage(global.language).Profile.SUGGESTION_SUBMIT_SUCCEED)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT_FAILED)
+      Toast.show(getLanguage(global.language).Profile.SUGGESTION_SUBMIT_FAILED)
     }
     GLOBAL.Loading.setLoading(false)
   }
@@ -205,15 +205,15 @@ export default class SuggestionFeedback extends Component {
     let result = { isCanSubmit: false, msg: '' }
     if (this.state.selectProblemItems.length === 0) {
       result.msg = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Profile.SUGGESTION_SELECT_PROBLEMS
     } else if (this.state.problemsDetail === '') {
       result.msg = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Profile.SUGGESTION_PROBLEMS_DETAIL
     } else if (this.state.contactWay === '') {
       result.msg = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Profile.SUGGESTION_CONTACT_WAY_INPUT
     } else {
       result.isCanSubmit = true
@@ -242,7 +242,7 @@ export default class SuggestionFeedback extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile
+          title: getLanguage(global.language).Profile
             .SETTING_SUGGESTION_FEEDBACK,
           //'意见反馈',
           navigation: this.props.navigation,

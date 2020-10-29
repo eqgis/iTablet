@@ -147,6 +147,7 @@ export default class ARMap extends Component {
         {/* {<SMDynamicArrowView ref={ref => (GLOBAL.DynamicArrowView = ref)} />}*/}
         {this.state.isDetect && (
           <SMAIDetectView
+            ref={ref => (GLOBAL.SMAIDetectView = ref)}
             style={styles.aiview}
             onArObjectClick={this._onArObjectClick}
           />

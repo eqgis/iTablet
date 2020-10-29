@@ -7,7 +7,7 @@ function getData() {
     {
       //AR测距
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
       action: ARMeasureAction.arMeasureLength,
       size: 'large',
@@ -16,7 +16,7 @@ function getData() {
     {
       //AR测高
       key: 'arMeasureHeitht',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
@@ -25,7 +25,7 @@ function getData() {
     {
       //AR面积
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
       action: ARMeasureAction.arMeasureArea,
       size: 'large',

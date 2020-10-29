@@ -56,9 +56,9 @@ class LicenseJoinCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
-          let result = await GLOBAL.recycleCloudLicense()
+          let result = await global.recycleCloudLicense()
           if (result > -1) {
             cb()
           }
@@ -78,9 +78,9 @@ class LicenseJoinCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_LOGOUT,
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_LOGOUT,
         confirmAction: async () => {
-          let result = await GLOBAL.recycleCloudLicense()
+          let result = await global.recycleCloudLicense()
           if (result > -1) {
             this.logout(true)
           }
@@ -129,18 +129,18 @@ class LicenseJoinCloud extends Component {
         this.container &&
           this.container.setLoading(
             true,
-            getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
+            getLanguage(global.language).Profile.LICENSE_ACTIVATING,
           )
         let returnId = await SMap.applyCloudLicense(licenseId)
         if (!returnId) {
           Toast.show(
-            getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL,
+            getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL,
           )
         } else {
           AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, licenseId)
           AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, returnId)
           Toast.show(
-            getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+            getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
           )
           let info = await SMap.getEnvironmentStatus()
           this.props.setLicenseInfo(info)
@@ -150,7 +150,7 @@ class LicenseJoinCloud extends Component {
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
 
@@ -168,16 +168,16 @@ class LicenseJoinCloud extends Component {
       this.container &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
       let result = await SMap.applyCloudTrialLicense()
       if (!result) {
-        Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+        Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       } else {
         AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, '')
         AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, '')
         Toast.show(
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
         let info = await SMap.getEnvironmentStatus()
         this.props.setLicenseInfo(info)
@@ -186,7 +186,7 @@ class LicenseJoinCloud extends Component {
       this.container && this.container.setLoading(false)
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
 
@@ -199,7 +199,7 @@ class LicenseJoinCloud extends Component {
       this.container &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.LICENSE_EXIT + '...',
+          getLanguage(global.language).Profile.LICENSE_EXIT + '...',
         )
       let result = await SMap.logoutCloudLicense()
       this.container && this.container.setLoading(false)
@@ -207,10 +207,10 @@ class LicenseJoinCloud extends Component {
         this.props.setCloudLicenseUser({})
         this.props.navigation.pop(2)
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_FAILED)
+        Toast.show(getLanguage(global.language).Profile.LICENSE_EXIT_FAILED)
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_FAILED)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_EXIT_FAILED)
       this.container && this.container.setLoading(false)
     }
   }
@@ -221,7 +221,7 @@ class LicenseJoinCloud extends Component {
       return (
         <View style={{ marginTop: scaleSize(50), alignItems: 'center' }}>
           <Text style={{ fontSize: scaleSize(26), color: color.gray2 }}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_QUERY_NONE}
+            {getLanguage(global.language).Profile.LICENSE_QUERY_NONE}
           </Text>
         </View>
       )
@@ -241,7 +241,7 @@ class LicenseJoinCloud extends Component {
               color: color.gray2,
             }}
           >
-            {getLanguage(GLOBAL.language).Profile.LICENSE_SELECT_LICENSE}
+            {getLanguage(global.language).Profile.LICENSE_SELECT_LICENSE}
           </Text>
         </View>
         <View style={{ marginHorizontal: 20 }}>
@@ -284,7 +284,7 @@ class LicenseJoinCloud extends Component {
               },
             ]}
           >
-            {getLanguage(GLOBAL.language).Profile.LICENSE + (index + 1)}
+            {getLanguage(global.language).Profile.LICENSE + (index + 1)}
           </Text>
         </TouchableOpacity>
       </View>
@@ -331,7 +331,7 @@ class LicenseJoinCloud extends Component {
           source={icon}
         />
         <Text style={{ color: color.gray2 }}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_SHOW_DETAIL}
+          {getLanguage(global.language).Profile.LICENSE_SHOW_DETAIL}
         </Text>
       </TouchableOpacity>
     )
@@ -341,9 +341,9 @@ class LicenseJoinCloud extends Component {
     let remainText = ''
     if (this.state.currentLicense.remainDays !== undefined) {
       let remainDays = this.state.currentLicense.remainDays
-      remainText = remainDays + getLanguage(GLOBAL.language).Profile.LICENSE_DAY
+      remainText = remainDays + getLanguage(global.language).Profile.LICENSE_DAY
       if (remainDays === 73000) {
-        remainText = getLanguage(GLOBAL.language).Profile.LICENSE_PERMANENT
+        remainText = getLanguage(global.language).Profile.LICENSE_PERMANENT
       }
     }
     return (
@@ -363,7 +363,7 @@ class LicenseJoinCloud extends Component {
             marginLeft: 20,
           }}
         >
-          {getLanguage(GLOBAL.language).Profile.LICENSE_REAMIN_DAYS}
+          {getLanguage(global.language).Profile.LICENSE_REAMIN_DAYS}
         </Text>
         <Text
           style={{
@@ -398,10 +398,10 @@ class LicenseJoinCloud extends Component {
       }
     }
     if (showTrial) {
-      title = getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL_APPLY
+      title = getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY
       enable = true
     } else {
-      title = getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATE
+      title = getLanguage(global.language).Profile.LICENSE_ACTIVATE
       enable = this.state.currentLicense.id !== undefined
     }
     return (
@@ -439,7 +439,7 @@ class LicenseJoinCloud extends Component {
               color: '#4680DF',
             }}
           >
-            {getLanguage(GLOBAL.language).Profile.LOG_OUT}
+            {getLanguage(global.language).Profile.LOG_OUT}
           </Text>
         </TouchableOpacity>
       </View>
@@ -452,7 +452,7 @@ class LicenseJoinCloud extends Component {
         ref={ref => (this.container = ref)}
         style={{ backgroundColor: color.background }}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_SELECT_LICENSE,
+          title: getLanguage(global.language).Profile.LICENSE_SELECT_LICENSE,
           navigation: this.props.navigation,
         }}
       >

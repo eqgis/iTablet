@@ -102,7 +102,7 @@ export default class Map3D extends React.Component {
   }
 
   componentDidMount() {
-    if (GLOBAL.isLicenseValid) {
+    if (global.isLicenseValid) {
       this.container.setLoading(
         true,
         getLanguage(this.props.language).Prompt.LOADING,
@@ -144,12 +144,12 @@ export default class Map3D extends React.Component {
       )
       BackHandler.addEventListener('hardwareBackPress', this.backHandler)
     } else {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
         confirmAction: () => NavigationService.goBack(),
         cancelAction: () => NavigationService.goBack(),
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
     }
   }
 
@@ -303,6 +303,7 @@ export default class Map3D extends React.Component {
 
   _onGetInstance = sceneControl => {
     // console.warn("add scene")
+    GLOBAL.sceneControl = sceneControl
 
     //放到这里打开场景，更稳定 add xiezhy
     // let startOpen = false
@@ -688,7 +689,7 @@ export default class Map3D extends React.Component {
     return (
       <FunctionToolbar
         language={this.props.language}
-        ref={ref => (this.functionToolbar = ref)}
+        ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
         getToolRef={() => {
           return this.toolBox
         }}
@@ -1036,7 +1037,7 @@ export default class Map3D extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
-        {GLOBAL.isLicenseValid && (
+        {global.isLicenseValid && (
           <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
         )}
         <SurfaceView

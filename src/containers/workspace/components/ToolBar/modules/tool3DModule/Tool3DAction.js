@@ -91,6 +91,7 @@ function select() {
   const params = ToolbarModule.getParams()
   SScene.setAction('PANSELECT3D')
   GLOBAL.action3d = 'PANSELECT3D'
+  GLOBAL.Map3DSymbol = true
   // this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_SELECT)
   const type = ConstToolType.SM_MAP3D_TOOL_SELECT
   params.setToolbarVisible(true, type, {

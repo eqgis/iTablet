@@ -213,19 +213,19 @@ export default class ToolbarContentView extends React.Component {
   //标注 RecordSet数据改变
   _onValueChange = ({ title, text }) => {
     switch (title) {
-      case getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_NAME:
+      case getLanguage(global.language).Map_Main_Menu.TOOLS_NAME:
         this.ToolbarModule.addData({
           tools_name: text,
         })
         // this.tools_name = text
         break
-      case getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_REMARKS:
+      case getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS:
         this.ToolbarModule.addData({
           tools_remarks: text,
         })
         // this.tools_remarks = text
         break
-      case getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_HTTP:
+      case getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP:
         this.ToolbarModule.addData({
           tools_http: text,
         })

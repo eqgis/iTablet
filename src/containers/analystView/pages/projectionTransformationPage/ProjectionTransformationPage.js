@@ -62,24 +62,24 @@ export default class ProjectionTransformationPage extends Component {
     //判断数据源
     if (!this.state.dataSource) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
       )
       return
     }
     //判断数据集
     if (!this.state.dataSet) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.DATA_SET,
       )
       return
     }
     //判断转换方法
     if (!this.state.transMothodData) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_CONVERT_MOTHED,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.PROJECTION_CONVERT_MOTHED,
       )
       return
     }
@@ -88,19 +88,19 @@ export default class ProjectionTransformationPage extends Component {
       //判断数据源
       if (!this.state.resultDataSource) {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_PLEASE_SELECT +
-            getLanguage(GLOBAL.language).Analyst_Labels.RESULT_SETTINGS +
-            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
+            getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS +
+            getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
         )
         return
       }
       // //目标坐标系
       // if(!this.state.targetCoords){
       //   Toast.show(
-      //     getLanguage(GLOBAL.language).Analyst_Labels
+      //     getLanguage(global.language).Analyst_Labels
       //       .REGISTRATION_PLEASE_SELECT +
-      //       getLanguage(GLOBAL.language).Analyst_Labels
+      //       getLanguage(global.language).Analyst_Labels
       //         .TARGET_COORDS,
       //   )
       //   return
@@ -108,19 +108,19 @@ export default class ProjectionTransformationPage extends Component {
       //判断数据集
       if (!this.state.resultDataSet) {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_PLEASE_SELECT +
-            getLanguage(GLOBAL.language).Analyst_Labels.RESULT_SETTINGS +
-            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET,
+            getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS +
+            getLanguage(global.language).Analyst_Labels.DATA_SET,
         )
         return
       }
       //目标坐标系
       if (!this.state.targetCoords) {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_PLEASE_SELECT +
-            getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS,
+            getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
         )
         return
       }
@@ -128,15 +128,15 @@ export default class ProjectionTransformationPage extends Component {
     //目标坐标系
     if (!this.state.targetCoords) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
       )
       return
     }
 
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Analyst_Labels.CONVERTTING,
+      getLanguage(global.language).Analyst_Labels.CONVERTTING,
     )
     let dataInfo = {}
     dataInfo.datasourceName = this.state.dataSource.alias
@@ -154,9 +154,9 @@ export default class ProjectionTransformationPage extends Component {
 
     if (result) {
       NavigationService.goBack()
-      Toast.show(getLanguage(GLOBAL.language).Analyst_Labels.CONVERT_SUCCESS)
+      Toast.show(getLanguage(global.language).Analyst_Labels.CONVERT_SUCCESS)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Analyst_Labels.CONVERT_FAILED)
+      Toast.show(getLanguage(global.language).Analyst_Labels.CONVERT_FAILED)
     }
   }
 
@@ -305,12 +305,12 @@ export default class ProjectionTransformationPage extends Component {
       <View style={{ backgroundColor: color.white }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.SOURCE_DATA}
+            {getLanguage(global.language).Analyst_Labels.SOURCE_DATA}
           </Text>
         </View>
         <AnalystItem
           // style={{ marginRight: scaleSize(0) }}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE}
+          title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
           value={(this.state.dataSource && this.state.dataSource.value) || ''}
           onPress={async () => {
             this.currentPop = popTypes.DataSource
@@ -328,12 +328,12 @@ export default class ProjectionTransformationPage extends Component {
         />
         <AnalystItem
           // style={{ marginRight: scaleSize(0) }}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET}
+          title={getLanguage(global.language).Analyst_Labels.DATA_SET}
           value={(this.state.dataSet && this.state.dataSet.value) || ''}
           onPress={async () => {
             if (!this.state.dataSource) {
               Toast.show(
-                getLanguage(GLOBAL.language).Analyst_Prompt
+                getLanguage(global.language).Analyst_Prompt
                   .SELECT_DATA_SOURCE_FIRST,
               )
               return
@@ -363,7 +363,7 @@ export default class ProjectionTransformationPage extends Component {
         <AnalystItem
           style={{ borderBottomWidth: 0 }}
           title={
-            getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_SOURCE_COORDS
+            getLanguage(global.language).Analyst_Labels.PROJECTION_SOURCE_COORDS
           }
           value={
             (this.state.dataSet && this.state.dataSet.coordParams.coordName) ||
@@ -372,7 +372,7 @@ export default class ProjectionTransformationPage extends Component {
           onPress={async () => {
             if (!this.state.dataSet) {
               Toast.show(
-                getLanguage(GLOBAL.language).Analyst_Prompt
+                getLanguage(global.language).Analyst_Prompt
                   .SELECT_DATA_SET_FIRST,
               )
               return
@@ -394,7 +394,7 @@ export default class ProjectionTransformationPage extends Component {
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .PROJECTION_CONVERT_SETTING
             }
           </Text>
@@ -402,7 +402,7 @@ export default class ProjectionTransformationPage extends Component {
         <AnalystItem
           // style={{ marginRight: scaleSize(0) }}
           title={
-            getLanguage(GLOBAL.language).Analyst_Labels
+            getLanguage(global.language).Analyst_Labels
               .PROJECTION_CONVERT_MOTHED
           }
           value={
@@ -427,17 +427,17 @@ export default class ProjectionTransformationPage extends Component {
         <AnalystItem
           style={{ borderBottomWidth: 0 }}
           title={
-            getLanguage(GLOBAL.language).Analyst_Labels
+            getLanguage(global.language).Analyst_Labels
               .PROJECTION_PARAMETER_SETTING
           }
           // value={(this.state.dataSet && this.state.dataSet.coordParams.coordName) || ''} GO_TO_SET
-          value={getLanguage(GLOBAL.language).Analyst_Labels.GO_TO_SET}
+          value={getLanguage(global.language).Analyst_Labels.GO_TO_SET}
           onPress={async () => {
             if (!this.state.transMothodData) {
               Toast.show(
-                getLanguage(GLOBAL.language).Analyst_Labels
+                getLanguage(global.language).Analyst_Labels
                   .REGISTRATION_PLEASE_SELECT +
-                  getLanguage(GLOBAL.language).Analyst_Labels
+                  getLanguage(global.language).Analyst_Labels
                     .PROJECTION_CONVERT_MOTHED,
               )
               return
@@ -468,18 +468,18 @@ export default class ProjectionTransformationPage extends Component {
       <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.RESULT_SETTINGS}
+            {getLanguage(global.language).Analyst_Labels.RESULT_SETTINGS}
           </Text>
         </View>
         <AnalystItem
           // style={{ borderBottomWidth: 0 }}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS}
+          title={getLanguage(global.language).Analyst_Labels.TARGET_COORDS}
           value={
             (this.state.targetCoords && this.state.targetCoords.title) || ''
           }
           onPress={async () => {
             NavigationService.navigate('ProjectionTargetCoordsPage', {
-              title: getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS,
+              title: getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
               filtVectDataset: this.filtVectDataset,
               cb: targetCoords => {
                 NavigationService.goBack()
@@ -493,7 +493,7 @@ export default class ProjectionTransformationPage extends Component {
         <AnalystItem
           style={this.state.isSaveAs ? null : { borderBottomWidth: 0 }}
           title={
-            getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAVE_AS
+            getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS
           }
           disable={this.state.isMustSaveAs}
           value={this.state.isMustSaveAs || this.state.isSaveAs}
@@ -504,7 +504,7 @@ export default class ProjectionTransformationPage extends Component {
         {!this.state.isSaveAs ? null : (
           <View>
             <AnalystItem
-              title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE}
+              title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
               value={
                 (this.state.resultDataSource &&
                   this.state.resultDataSource.value) ||
@@ -526,7 +526,7 @@ export default class ProjectionTransformationPage extends Component {
             />
             <AnalystItem
               style={{ borderBottomWidth: 0 }}
-              title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET}
+              title={getLanguage(global.language).Analyst_Labels.DATA_SET}
               value={
                 // (this.state.resultDataSet && this.state.resultDataSet.value) || ''
                 (this.state.resultDataSet &&
@@ -535,13 +535,13 @@ export default class ProjectionTransformationPage extends Component {
               }
               onPress={async () => {
                 NavigationService.navigate('InputPage', {
-                  headerTitle: getLanguage(GLOBAL.language).Analyst_Labels
+                  headerTitle: getLanguage(global.language).Analyst_Labels
                     .DATA_SET,
                   value:
                     (this.state.resultDataSet &&
                       this.state.resultDataSet.datasetName) ||
                     '',
-                  placeholder: getLanguage(GLOBAL.language).Analyst_Labels
+                  placeholder: getLanguage(global.language).Analyst_Labels
                     .DATA_SET,
                   type: 'name',
                   cb: async value => {
@@ -582,7 +582,7 @@ export default class ProjectionTransformationPage extends Component {
     return (
       <PopModalList
         ref={ref => (this.popModal = ref)}
-        language={GLOBAL.language}
+        language={global.language}
         popData={this.state.popData}
         currentPopData={this.state.currentPopData}
         confirm={async data => {
@@ -651,13 +651,13 @@ export default class ProjectionTransformationPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Modules
+          title: getLanguage(global.language).Analyst_Modules
             .PROJECTION_TRANSFORMATION,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

@@ -205,11 +205,11 @@ async function methodSelected(type) {
   changeMethod(type)
 }
 function close() {
-  GLOBAL.SimpleDialog.set({
+  global.SimpleDialog.set({
     text: getLanguage(GLOBAL.language).Prompt.CONFIRM_EXIT,
     confirmAction: dialogConfirm,
   })
-  GLOBAL.SimpleDialog.setVisible(true)
+  global.SimpleDialog.setVisible(true)
 }
 
 function dialogConfirm() {

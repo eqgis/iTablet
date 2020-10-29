@@ -43,7 +43,7 @@ export default class LicenseInfo extends Component {
         onPress={this.props.applyTrialLicense}
       >
         <Text style={{ fontSize: scaleSize(24) }}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL_APPLY}
+          {getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY}
         </Text>
       </TouchableOpacity>
     )
@@ -67,7 +67,7 @@ export default class LicenseInfo extends Component {
         onPress={this.props.containModule}
       >
         <Text style={{ fontSize: scaleSize(24) }}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_CONTAIN_MODULE}
+          {getLanguage(global.language).Profile.LICENSE_CONTAIN_MODULE}
         </Text>
         <Image
           source={require('../../../../../assets/Mine/mine_my_arrow.png')}
@@ -93,7 +93,7 @@ export default class LicenseInfo extends Component {
         onPress={this.props.recycleLicense}
       >
         <Text style={{ fontSize: scaleSize(24), color: color.red }}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_OFFICIAL_RETURN}
+          {getLanguage(global.language).Profile.LICENSE_OFFICIAL_RETURN}
         </Text>
       </TouchableOpacity>
     )
@@ -131,35 +131,35 @@ export default class LicenseInfo extends Component {
         }
       }
       if (days >= yearDays * 20) {
-        daysStr = getLanguage(GLOBAL.language).Profile.LICENSE_LONG_EFFECTIVE
+        daysStr = getLanguage(global.language).Profile.LICENSE_LONG_EFFECTIVE
       } else if (days > yearDays) {
         daysStr =
-          getLanguage(GLOBAL.language).Profile.LICENSE_SURPLUS +
+          getLanguage(global.language).Profile.LICENSE_SURPLUS +
           days / yearDays +
-          getLanguage(GLOBAL.language).Profile.LICENSE_YEAR +
+          getLanguage(global.language).Profile.LICENSE_YEAR +
           (days % yearDays) +
-          getLanguage(GLOBAL.language).Profile.LICENSE_DAY
+          getLanguage(global.language).Profile.LICENSE_DAY
       } else {
         daysStr =
-          getLanguage(GLOBAL.language).Profile.LICENSE_SURPLUS +
+          getLanguage(global.language).Profile.LICENSE_SURPLUS +
           days +
-          getLanguage(GLOBAL.language).Profile.LICENSE_DAY
+          getLanguage(global.language).Profile.LICENSE_DAY
       }
     }
 
     if (licenseType === LicenseType.trial) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_TRIAL
     } else if (licenseType === LicenseType.local) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_OFFLINE
     } else if (licenseType === LicenseType.cloud) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_CLOUD
     } else if (licenseType === LicenseType.privateCloud) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile
+      licenseTypeTitle = getLanguage(global.language).Profile
         .LICENSE_PRIVATE_CLOUD
     } else if (licenseType === LicenseType.education) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_EDUCATION
     } else if (licenseType === LicenseType.none) {
-      licenseTypeTitle = getLanguage(GLOBAL.language).Profile.LICENSE_NONE
+      licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_NONE
     }
 
     return (
@@ -167,21 +167,21 @@ export default class LicenseInfo extends Component {
         <View style={{ backgroundColor: color.content_white }}>
           <View style={styles.item}>
             <Text style={styles.title}>
-              {getLanguage(GLOBAL.language).Profile.LICENSE_CURRENT}
+              {getLanguage(global.language).Profile.LICENSE_CURRENT}
             </Text>
           </View>
           <InfoItem
-            text={getLanguage(GLOBAL.language).Profile.LICENSE_TYPE}
+            text={getLanguage(global.language).Profile.LICENSE_TYPE}
             info={licenseTypeTitle}
             rightImage={require('../../../../../assets/Mine/mine_my_arrow.png')}
             action={this.props.selectLicenseType}
           />
           <InfoItem
-            text={getLanguage(GLOBAL.language).Profile.LICENSE_STATE}
+            text={getLanguage(global.language).Profile.LICENSE_STATE}
             info={daysStr}
           />
           <InfoItem
-            text={getLanguage(GLOBAL.language).Profile.LICENSE_USER_NAME}
+            text={getLanguage(global.language).Profile.LICENSE_USER_NAME}
             info={licenseInfo ? licenseInfo.user : ''}
           />
         </View>

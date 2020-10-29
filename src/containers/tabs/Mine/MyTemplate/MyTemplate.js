@@ -27,12 +27,12 @@ class MyTemplate extends MyDataPage {
     )
     let sectionData = []
     sectionData.push({
-      title: getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE,
+      title: getLanguage(global.language).Profile.PLOTTING_TEMPLATE,
       data: plotData || [],
       isShowItem: true,
     })
     sectionData.push({
-      title: getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE,
+      title: getLanguage(global.language).Profile.COLLECTION_TEMPLATE,
       data: collectingData || [],
       isShowItem: true,
     })
@@ -43,7 +43,7 @@ class MyTemplate extends MyDataPage {
     let filePath
     if (
       this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
+      getLanguage(global.language).Profile.COLLECTION_TEMPLATE
     ) {
       filePath = this.itemInfo.item.path.substring(
         0,
@@ -51,7 +51,7 @@ class MyTemplate extends MyDataPage {
       )
     } else if (
       this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
+      getLanguage(global.language).Profile.PLOTTING_TEMPLATE
     ) {
       filePath = this.itemInfo.item.path
     }
@@ -64,7 +64,7 @@ class MyTemplate extends MyDataPage {
     let fromPath
     if (
       this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
+      getLanguage(global.language).Profile.COLLECTION_TEMPLATE
     ) {
       fromPath = this.itemInfo.item.path.substring(
         0,
@@ -72,7 +72,7 @@ class MyTemplate extends MyDataPage {
       )
     } else if (
       this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
+      getLanguage(global.language).Profile.PLOTTING_TEMPLATE
     ) {
       fromPath = this.itemInfo.item.path
     }

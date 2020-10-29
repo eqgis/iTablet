@@ -15,7 +15,6 @@ function getData(type) {
     buttons = [],
     customView
   if (type === ConstToolType.SM_MAP_COLOR_PICKER) {
-    let params = ToolbarModule.getParams()
     {
       let data = ToolbarModule.getData().customModeData
       let index = ToolbarModule.getData().index
@@ -27,9 +26,7 @@ function getData(type) {
           g={g}
           r={r}
           selectedIndex={index}
-          b={b}
-          currentLayer={params.currentLayer}
-        />
+          b={b}/>
       )
       buttons = [
         ToolbarBtnType.CANCEL,

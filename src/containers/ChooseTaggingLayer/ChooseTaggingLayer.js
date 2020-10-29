@@ -215,8 +215,8 @@ export default class ChooseTaggingLayer extends React.Component {
       setTimeout(() => {
         this.clickAble = true
       }, 1500)
-      if (GLOBAL.arSwitchToMap) {
-        GLOBAL.arSwitchToMap = false
+      if (GLOBAL.isswitch) {
+        GLOBAL.isswitch = false
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
       }
       NavigationService.goBack()

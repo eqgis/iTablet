@@ -541,7 +541,7 @@ export default class OnlineServicesUtils {
         }
         let paramStr = this._obj2params(paramObj)
         let AcceptLanguage
-        if (GLOBAL.language === 'CN') {
+        if (global.language === 'CN') {
           AcceptLanguage = 'zh-CN,zh;q=0.9,ja;q=0.8,en;q=0.7'
         } else {
           AcceptLanguage = 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'

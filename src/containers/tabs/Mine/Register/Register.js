@@ -44,7 +44,7 @@ export default class Register extends React.Component {
   }
 
   componentDidMount() {
-    if (!GLOBAL.isPad && !GLOBAL.ORIENTATIONLOCKED) {
+    if (!global.isPad && !GLOBAL.ORIENTATIONLOCKED) {
       Orientation.lockToPortrait()
     }
   }
@@ -348,11 +348,11 @@ export default class Register extends React.Component {
         <View
           style={[
             styles.protocalTextView,
-            { flexDirection: GLOBAL.language === 'EN' ? 'column' : 'row' },
+            { flexDirection: global.language === 'EN' ? 'column' : 'row' },
           ]}
         >
           <Text style={styles.protocalText}>
-            {getLanguage(GLOBAL.language).Profile.REGISTER_READ_PROTOCAL}
+            {getLanguage(global.language).Profile.REGISTER_READ_PROTOCAL}
           </Text>
           <TouchableOpacity
             onPress={() =>
@@ -362,7 +362,7 @@ export default class Register extends React.Component {
             }
           >
             <Text style={[styles.protocalText, { color: '#4680DF' }]}>
-              {getLanguage(GLOBAL.language).Profile.REGISTER_ONLINE_PROTOCAL}
+              {getLanguage(global.language).Profile.REGISTER_ONLINE_PROTOCAL}
             </Text>
           </TouchableOpacity>
         </View>

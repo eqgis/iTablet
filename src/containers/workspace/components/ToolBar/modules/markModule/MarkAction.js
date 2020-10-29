@@ -177,10 +177,10 @@ function commit(type) {
         SMap.refreshMap()
         //提交标注后 需要刷新属性表
         GLOBAL.NEEDREFRESHTABLE = true
-        if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+        if (global.coworkMode && global.getFriend) {
           let layerType = LayerUtils.getLayerType(currentLayer)
           if (layerType !== 'TAGGINGLAYER') {
-            let friend = GLOBAL.getFriend()
+            let friend = global.getFriend()
             friend.onGeometryAdd(currentLayer)
           }
         }
@@ -189,11 +189,11 @@ function commit(type) {
       SMap.submit().then(async () => {
         const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
-        if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+        if (global.coworkMode && global.getFriend) {
           let event = ToolbarModule.getData().event
           let layerType = LayerUtils.getLayerType(event.layerInfo)
           if (layerType !== 'TAGGINGLAYER') {
-            let friend = GLOBAL.getFriend()
+            let friend = global.getFriend()
             friend.onGeometryEdit(
               event.layerInfo,
               event.fieldInfo,
@@ -246,9 +246,9 @@ function deleteNode() {
 function back() {
   const _params = ToolbarModule.getParams()
   if (
-    _params.type.indexOf('MAP_MARKS_TAGGING_SELECT_') !== -1 ||
-    _params.type.indexOf('MAP_MARKS_TAGGING_EDIT_') !== -1 ||
-    _params.type.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_SELECT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_EDIT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
   ) {
     SMap.cancel()
     SMap.clearSelection()
@@ -313,7 +313,7 @@ function selectLabelToEdit(toolType = '') {
   let type = ''
 
   if (toolType === '') {
-    toolType = _params.type
+    toolType = GLOBAL.MapToolType
   }
   switch (toolType) {
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
@@ -360,7 +360,7 @@ function selectLabelToStyle() {
   let containerType = ''
   // let height = ConstToolType.THEME_HEIGHT[3]
   let type = ''
-  switch (_params.type) {
+  switch (GLOBAL.MapToolType) {
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
       containerType = ToolbarType.symbol
       type = ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT
@@ -391,7 +391,7 @@ function selectLabelToStyle() {
         showMenuDialog,
         cb: () => {
           if (
-            _params.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT
+            GLOBAL.MapToolType === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT
           ) {
             SMap.appointEditGeometry(event.id, event.layerInfo.path)
           } else {
@@ -489,8 +489,7 @@ function setTaggingTextFont(param) {
   }
 }
 function geometrySelected(event) {
-  const _params = ToolbarModule.getParams()
-  if (_params.type === ConstToolType.SM_MAP_MARKS_TAGGING_SELECT) {
+  if (GLOBAL.MapToolType === ConstToolType.SM_MAP_MARKS_TAGGING_SELECT) {
     ToolbarModule.addData({
       event,
     })
@@ -640,9 +639,9 @@ function showMenuBox(type, selectKey, params = {}) {
 function toolbarBack() {
   const _params = ToolbarModule.getParams()
   if (
-    _params.type.indexOf('MAP_MARKS_TAGGING_SELECT_') !== -1 ||
-    _params.type.indexOf('MAP_MARKS_TAGGING_EDIT_') !== -1 ||
-    _params.type.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_SELECT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_EDIT_') !== -1 ||
+    GLOBAL.MapToolType.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
   ) {
     SMap.cancel()
     SMap.clearSelection()

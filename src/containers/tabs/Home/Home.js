@@ -106,7 +106,7 @@ export default class Home extends Component {
           if (result === true) {
             // Toast.show('导入3D成功')
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS)
+            Toast.show(getLanguage(global.language).Prompt.IMPORTED_SUCCESS)
           }
           result = await SMap.importWorkspaceInfo({
             server: filePath,
@@ -115,7 +115,7 @@ export default class Home extends Component {
 
           // if (result.length === 0) {
           //   Toast.show(
-          //     getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
+          //     getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
           //   )
           // }
         } else {
@@ -125,7 +125,7 @@ export default class Home extends Component {
           })
 
           if (result.length === 0) {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+            Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
           }
         }
       }
@@ -222,7 +222,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
             ConstPath.RelativeFilePath.Workspace[
-              GLOBAL.language === 'CN' ? 'CN' : 'EN'
+              global.language === 'CN' ? 'CN' : 'EN'
             ],
         )
         this.props.deleteUser(this.props.user.currentUser)

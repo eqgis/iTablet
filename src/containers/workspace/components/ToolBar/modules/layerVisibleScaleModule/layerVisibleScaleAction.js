@@ -48,7 +48,7 @@ function pickerCancel() {
 }
 
 async function rightSelect(item) {
-  if (item.key === getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE) {
+  if (item.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE) {
     const _params = ToolbarModule.getParams()
     let currentType = item.type
     let mapScale = await SMap.getMapScale()

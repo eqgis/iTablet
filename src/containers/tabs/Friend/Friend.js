@@ -1,7 +1,7 @@
 /**
  * Created by imobile-xzy on 2019/3/4.
  */
-/* global GLOBAL */
+
 import React, { Component } from 'react'
 import Container from '../../../components/Container'
 import {
@@ -97,7 +97,7 @@ export default class Friend extends Component {
     this.addFileListener()
     this.stateChangeCount = 0
     this._receiveMessage = this._receiveMessage.bind(this)
-    GLOBAL.getFriend = this._getFriend
+    global.getFriend = this._getFriend
     this._setHomePath()
   }
 
@@ -158,7 +158,7 @@ export default class Friend extends Component {
   }
 
   _setHomePath = async () => {
-    GLOBAL.homePath = await FileTools.appendingHomeDirectory()
+    global.homePath = await FileTools.appendingHomeDirectory()
   }
 
   initServerInfo = async () => {
@@ -214,12 +214,28 @@ export default class Friend extends Component {
         Info = serverInfo
       }
       if (Info) {
-        SMessageServiceHTTP.setService(Info)
+        GLOBAL.MSG_IP = Info.MSG_IP
+        GLOBAL.MSG_Port = Info.MSG_Port
+        GLOBAL.MSG_HostName = Info.MSG_HostName
+        GLOBAL.MSG_UserName = Info.MSG_UserName
+        GLOBAL.MSG_Password = Info.MSG_Password
+        GLOBAL.MSG_HTTP_Port = Info.MSG_HTTP_Port
+        GLOBAL.FILE_UPLOAD_SERVER_URL = Info.FILE_UPLOAD_SERVER_URL
+        GLOBAL.FILE_DOWNLOAD_SERVER_URL = Info.FILE_DOWNLOAD_SERVER_URL
       } else {
-        SMessageServiceHTTP.setService()
+        GLOBAL.MSG_IP = '127.0.0.1'
+        GLOBAL.MSG_Port = 5672
+        GLOBAL.MSG_HostName = '/'
+        GLOBAL.MSG_UserName = 'Name'
+        GLOBAL.MSG_Password = 'Password'
       }
     } catch (error) {
-      SMessageServiceHTTP.setService()
+      GLOBAL.MSG_IP = '127.0.0.1'
+      GLOBAL.MSG_Port = 5672
+      GLOBAL.MSG_HostName = '/'
+      GLOBAL.MSG_UserName = 'Name'
+      GLOBAL.MSG_Password = 'Password'
+      // console.log(error)
     }
   }
 
@@ -413,11 +429,11 @@ export default class Friend extends Component {
       try {
         await this.initServerInfo()
         let res = await SMessageService.connectService(
-          SMessageServiceHTTP.serviceInfo.MSG_IP,
-          SMessageServiceHTTP.serviceInfo.MSG_Port,
-          SMessageServiceHTTP.serviceInfo.MSG_HostName,
-          SMessageServiceHTTP.serviceInfo.MSG_UserName,
-          SMessageServiceHTTP.serviceInfo.MSG_Password,
+          GLOBAL.MSG_IP,
+          GLOBAL.MSG_Port,
+          GLOBAL.MSG_HostName,
+          GLOBAL.MSG_UserName,
+          GLOBAL.MSG_Password,
           this.props.user.currentUser.userId,
         )
         if (!res) {
@@ -430,7 +446,7 @@ export default class Friend extends Component {
             this.props.user.currentUser.userId,
           )
           //是否是login时调用
-          if (GLOBAL.isLogging) {
+          if (global.isLogging) {
             if (connection) {
               this.loginTime = Date.parse(new Date())
               await this._sendMessage(
@@ -444,7 +460,7 @@ export default class Friend extends Component {
               )
               await SMessageServiceHTTP.closeConnection(connection)
             }
-            GLOBAL.isLogging = false
+            global.isLogging = false
           } else {
             if (connection) {
               //检查是否之前consumer
@@ -546,10 +562,8 @@ export default class Friend extends Component {
       title: name,
     }
 
-    // eslint-disable-next-line no-prototype-builtins
     if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userId)) {
       let chats = this.props.chat[this.props.user.currentUser.userId]
-      // eslint-disable-next-line no-prototype-builtins
       if (chats.hasOwnProperty(targetId)) {
         chatObj = chats[targetId].history
         friend = {
@@ -769,12 +783,12 @@ export default class Friend extends Component {
         await SMessageService.declareSession([member], coworkId)
         return true
       } else {
-        Toast.show(getLanguage(this.props.language).Friends.COWORK_IS_END)
+        Toast.show(getLanguage(global.language).Friends.COWORK_IS_END)
         return false
       }
     } catch (error) {
       CoworkInfo.reset()
-      Toast.show(getLanguage(this.props.language).Friends.COWORK_JOIN_FAIL)
+      Toast.show(getLanguage(global.language).Friends.COWORK_JOIN_FAIL)
       return false
     }
   }
@@ -932,7 +946,7 @@ export default class Friend extends Component {
           CoworkInfo.isRealTime &&
           CoworkInfo.isUserShow(this.props.user.currentUser.userId)
         ) {
-          let initial = getLanguage(this.props.language).Friends.SELF
+          let initial = getLanguage(global.language).Friends.SELF
           if (initial.length > 2) {
             initial = initial.slice(0, 2)
           }
@@ -1192,7 +1206,7 @@ export default class Friend extends Component {
       case MSGConstant.MSG_INVITE_COWORK:
         text =
           msg.originMsg.user.name +
-          getLanguage(this.props.language).Friends.SYS_INVITE_TO_COWORK
+          getLanguage(global.language).Friends.SYS_INVITE_TO_COWORK
         break
       default:
         break
@@ -1230,7 +1244,14 @@ export default class Friend extends Component {
    * 使用rabbitMQ发送
    */
   _sendFile = (messageStr, filepath, talkId, msgId, informMsg, cb) => {
-    let connectInfo = SMessageServiceHTTP.serviceInfo
+    let connectInfo = {
+      serverIP: GLOBAL.MSG_IP,
+      port: GLOBAL.MSG_Port,
+      hostName: GLOBAL.MSG_HostName,
+      userName: GLOBAL.MSG_UserName,
+      passwd: GLOBAL.MSG_Password,
+      userID: this.props.user.currentUser.userId,
+    }
     SMessageService.sendFileWithMQ(
       JSON.stringify(connectInfo),
       messageStr,
@@ -1260,7 +1281,7 @@ export default class Friend extends Component {
   sendFile = async (message, filePath, talkId, msgId, cb) => {
     try {
       let res = await SMessageService.sendFileWithThirdServer(
-        SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL,
+        GLOBAL.FILE_UPLOAD_SERVER_URL,
         filePath,
         this.props.user.currentUser.userId,
         talkId,
@@ -1350,7 +1371,7 @@ export default class Friend extends Component {
     try {
       let homePath = await FileTools.appendingHomeDirectory()
       let res = await SMessageService.receiveFileWithThirdServer(
-        SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL,
+        GLOBAL.FILE_DOWNLOAD_SERVER_URL,
         chatMessage.originMsg.user.id,
         chatMessage.originMsg.message.message.queueName,
         chatMessage.originMsg.message.message.fileSize,
@@ -1392,7 +1413,7 @@ export default class Friend extends Component {
       if (this.props.user.userType !== UserType.PROBATION_USER) {
         SOnlineService.logout()
       }
-      GLOBAL.coworkMode = false
+      global.coworkMode = false
       if (CoworkInfo.coworkId !== '') {
         this.leaveCowork()
       }
@@ -1401,7 +1422,7 @@ export default class Friend extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
             ConstPath.RelativeFilePath.Workspace[
-              this.props.language === 'CN' ? 'CN' : 'EN'
+              global.language === 'CN' ? 'CN' : 'EN'
             ],
         )
         this.props.deleteUser(this.props.user.currentUser)

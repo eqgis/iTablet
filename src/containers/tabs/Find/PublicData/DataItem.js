@@ -28,7 +28,7 @@ export default class DataItem extends Component {
     this.downloadingPath = false
     this.titleName
     this.state = {
-      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+      progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
     }
   }
@@ -74,7 +74,7 @@ export default class DataItem extends Component {
     if (data) {
       if (data.downed) {
         this.setState({
-          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+          progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
           isDownloading: false,
         })
         this.props.removeItemOfDownList({ id: data.id })
@@ -91,7 +91,7 @@ export default class DataItem extends Component {
 
   getDownloadStatus = async () => {
     let path =
-      GLOBAL.homePath +
+      global.homePath +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
@@ -99,12 +99,12 @@ export default class DataItem extends Component {
       this.props.data.fileName
     if (await RNFS.exists(path)) {
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+        progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
         isDownloading: false,
       })
     } else {
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+        progress: getLanguage(global.language).Prompt.DOWNLOAD,
         isDownloading: false,
       })
     }
@@ -133,7 +133,7 @@ export default class DataItem extends Component {
     let fileName = this.props.data.fileName
     let dataId = this.props.data.id
     let path =
-      GLOBAL.homePath +
+      global.homePath +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
@@ -142,7 +142,7 @@ export default class DataItem extends Component {
     let dataUrl
     try {
       if (this.state.isDownloading) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+        Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
         return
       }
       if (await RNFS.exists(path)) {
@@ -153,7 +153,7 @@ export default class DataItem extends Component {
         await RNFS.unlink(path)
       }
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
+        progress: getLanguage(global.language).Prompt.DOWNLOADING,
         isDownloading: true,
       })
       if (UserType.isIPortalUser(this.props.user.currentUser)) {
@@ -191,7 +191,7 @@ export default class DataItem extends Component {
       })
       this.onDownloaded(fileName, path)
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
       if (await RNFS.exists(path)) {
         await RNFS.unlink(path)
       }
@@ -225,8 +225,8 @@ export default class DataItem extends Component {
       result = await FileTools.copyFile(path, externalPath + fileName, true)
     }
     result
-      ? Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
-      : Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      ? Toast.show(getLanguage(global.language).Find.DOWNLOADED)
+      : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
   }
 
   render() {

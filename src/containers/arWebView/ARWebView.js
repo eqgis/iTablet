@@ -61,7 +61,7 @@ export default class ARWebView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

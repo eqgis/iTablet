@@ -567,7 +567,7 @@ export default class NavigationStartButton extends React.Component {
                 onPress={async () => {
                   let isSupportedARCore = await SMeasureView.isSupportedARCore()
                   if (!isSupportedARCore) {
-                    GLOBAL.ARDeviceListDialog.setVisible(true)
+                    global.ARDeviceListDialog.setVisible(true)
                     return
                   }
                   if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
@@ -590,7 +590,7 @@ export default class NavigationStartButton extends React.Component {
                     textAlign: 'center',
                   }}
                 >
-                  {getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION}
+                  {getLanguage(global.language).Prompt.AR_NAVIGATION}
                 </Text>
               </TouchableOpacity>
             )}

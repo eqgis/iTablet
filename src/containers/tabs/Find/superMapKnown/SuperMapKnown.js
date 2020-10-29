@@ -73,7 +73,7 @@ export default class SuperMapKnown extends Component {
         await RNFS.unlink(fileCachePath)
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
     }
   }
 
@@ -118,10 +118,10 @@ export default class SuperMapKnown extends Component {
     var tempTitle
     switch (this.type) {
       case 'SuperMapKnow':
-        tempTitle = getLanguage(GLOBAL.language).Prompt.SUPERMAP_KNOW
+        tempTitle = getLanguage(global.language).Prompt.SUPERMAP_KNOW
         break
       case 'SuperMapGroup':
-        tempTitle = getLanguage(GLOBAL.language).Prompt.SUPERMAP_GROUP
+        tempTitle = getLanguage(global.language).Prompt.SUPERMAP_GROUP
         break
     }
     return (

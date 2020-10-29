@@ -120,38 +120,38 @@ export default class PlotAnimationView extends React.Component {
   getData() {
     let data = []
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
       image: getThemeAssets().plot.plot_animation_grow,
       animationMode: AnimationMode.WAY,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_BLINK,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_BLINK,
       image: getThemeAssets().plot.plot_animation_appear,
       animationMode: AnimationMode.BLINK,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting
+      name: getLanguage(global.language).Map_Plotting
         .PLOTTING_ANIMATION_ATTRIBUTE,
       image: getThemeAssets().plot.plot_animation_arcs,
       animationMode: AnimationMode.ATTRIBUTE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_SHOW,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SHOW,
       image: getThemeAssets().plot.plot_animation_shrink,
       animationMode: AnimationMode.SHOW,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_ROTATE,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_ROTATE,
       image: getThemeAssets().plot.plot_animation_fade_in,
       animationMode: AnimationMode.ROTATE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_SCALE,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SCALE,
       image: getThemeAssets().plot.plot_animation_fade_out,
       animationMode: AnimationMode.SCALE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_GROW,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_GROW,
       image: getThemeAssets().plot.plot_animation_flash,
       animationMode: AnimationMode.GROW,
     })
@@ -247,7 +247,7 @@ export default class PlotAnimationView extends React.Component {
       <View style={styles.container}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_MODE}
+            {getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_MODE}
           </Text>
         </View>
 
@@ -260,7 +260,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_OPERATION
             }
           </Text>
@@ -268,7 +268,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_START_TIME
             }
           </Text>
@@ -307,7 +307,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_DURATION
             }
           </Text>
@@ -347,7 +347,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_START_MODE
             }
           </Text>
@@ -356,7 +356,7 @@ export default class PlotAnimationView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .PLOTTING_ANIMATION_FLLOW_LAST
               }
             </Text>
@@ -377,7 +377,7 @@ export default class PlotAnimationView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .PLOTTING_ANIMATION_CLICK_START
               }
             </Text>
@@ -398,7 +398,7 @@ export default class PlotAnimationView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .PLOTTING_ANIMATION_TOGETHER_LAST
               }
             </Text>
@@ -427,7 +427,7 @@ export default class PlotAnimationView extends React.Component {
             <View style={styles.startTime}>
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_WAY_SET
                 }
               </Text>
@@ -451,7 +451,7 @@ export default class PlotAnimationView extends React.Component {
               />
               <Text style={styles.saveAndContinueText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_CONTINUE
                 }
               </Text>
@@ -577,7 +577,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.headerItem}>
           <TouchableOpacity style={styles.startTimeText} onPress={this.cancle}>
             <Text style={styles.startTimeText}>
-              {getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+              {getLanguage(global.language).Map_Settings.CANCEL}
             </Text>
           </TouchableOpacity>
 
@@ -588,7 +588,7 @@ export default class PlotAnimationView extends React.Component {
             >
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_SAVE
                 }
               </Text>

@@ -27,7 +27,7 @@ export default class PlotTab extends React.Component {
   action = ({ item }) => {
     Toast.show(
       //'当前选择为:'
-      getLanguage(GLOBAL.language).Prompt.THE_CURRENT_SELECTION +
+      getLanguage(global.language).Prompt.THE_CURRENT_SELECTION +
         item.code +
         ' ' +
         item.name,

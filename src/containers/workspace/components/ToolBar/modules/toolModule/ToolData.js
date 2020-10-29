@@ -23,6 +23,7 @@ function getData(type, params) {
   let buttons = []
   let customView = null
   ToolbarModule.setParams(params)
+  GLOBAL.MapToolType = type
   let layerType = ''
   switch (type) {
     case ConstToolType.SM_MAP_TOOL:
@@ -32,7 +33,7 @@ function getData(type, params) {
       data = [
         {
           key: 'distanceComput',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_DISTANCE_MEASUREMENT,
           // '距离量算',
           action: ToolAction.measureLength,
@@ -41,7 +42,7 @@ function getData(type, params) {
         },
         {
           key: 'coverComput',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_AREA_MEASUREMENT,
           // '面积量算',
           action: ToolAction.measureArea,
@@ -50,7 +51,7 @@ function getData(type, params) {
         },
         {
           key: 'azimuthComput',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_AZIMUTH_MEASUREMENT,
           // '方位角量算',
           action: ToolAction.measureAngle,
@@ -59,7 +60,7 @@ function getData(type, params) {
         },
         {
           key: 'pointSelect',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_SELECT,
+          title: getLanguage(global.language).Map_Main_Menu.TOOLS_SELECT,
           // '点选',
           action: ToolAction.pointSelect,
           size: 'large',
@@ -67,7 +68,7 @@ function getData(type, params) {
         },
         {
           key: 'selectByRectangle',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_RECTANGLE_SELECT,
           // '框选',
           action: ToolAction.selectByRectangle,
@@ -76,9 +77,9 @@ function getData(type, params) {
         },
         {
           key: 'pointSelect',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FULL_SCREEN,
+          title: getLanguage(global.language).Map_Main_Menu.FULL_SCREEN,
           // '全幅',
-          // getLanguage(GLOBAL.language).Map_Main_Menu.START_OPEN_MAP,
+          // getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
           // '全幅',
           action: ToolAction.viewEntire,
           size: 'large',
@@ -100,7 +101,7 @@ function getData(type, params) {
         // },
         {
           key: 'rectangularCut',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .TOOLS_RECTANGLE_CLIP,
           // '矩形裁剪',
           action: ToolAction.rectangleCut,
@@ -158,7 +159,7 @@ function getData(type, params) {
         // },
         {
           key: 'captureImage',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+          title: getLanguage(global.language).Map_Main_Menu.CAMERA,
           action: ToolAction.captureImage,
           size: 'large',
           disable: layerType !== 'TAGGINGLAYER',
@@ -169,21 +170,21 @@ function getData(type, params) {
         },
         {
           key: 'tour',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOUR,
+          title: getLanguage(global.language).Map_Main_Menu.TOUR,
           action: ToolAction.tour,
           size: 'large',
           image: getPublicAssets().mapTools.tour,
         },
         {
           key: 'matchPictureStyle',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSFER,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_TRANSFER,
           action: ToolAction.matchPictureStyle,
           size: 'large',
           image: getThemeAssets().mapTools.rightbar_tool_style,
         },
         // {
         //   key: 'showEditLabel',
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+        //   title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
         //   action: ToolAction.showEditLabel,
         //   size: 'large',
         //   image: require('../../../../../../assets/function/icon_edit.png'),
@@ -259,7 +260,7 @@ function getData(type, params) {
         // },
         {
           key: constants.CANCEL_SELECT,
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: ToolAction.cancelSelect,
           size: 'large',
@@ -282,7 +283,7 @@ function getData(type, params) {
       data = [
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Prompt.UNDO,
+          title: getLanguage(global.language).Prompt.UNDO,
           action: () => {
             ToolAction.undo(ConstToolType.SM_MAP_TOOL_INCREMENT)
           },
@@ -291,7 +292,7 @@ function getData(type, params) {
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Prompt.REDO,
+          title: getLanguage(global.language).Prompt.REDO,
           action: () => {
             ToolAction.redo(ConstToolType.SM_MAP_TOOL_INCREMENT)
           },
@@ -300,7 +301,7 @@ function getData(type, params) {
         },
         {
           key: constants.CANCEL,
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: () => {
             SMap.setAction(Action.PAN)
@@ -311,7 +312,7 @@ function getData(type, params) {
         },
         {
           key: constants.COMMIT,
-          title: getLanguage(GLOBAL.language).Prompt.COMMIT,
+          title: getLanguage(global.language).Prompt.COMMIT,
           // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',
@@ -324,21 +325,21 @@ function getData(type, params) {
       data = [
         {
           key: constants.BEGIN,
-          title: getLanguage(GLOBAL.language).Prompt.BEGIN,
+          title: getLanguage(global.language).Prompt.BEGIN,
           action: ToolAction.begin,
           size: 'large',
           image: require('../../../../../../assets/Navigation/begin.png'),
         },
         {
           key: constants.STOP,
-          title: getLanguage(GLOBAL.language).Prompt.STOP,
+          title: getLanguage(global.language).Prompt.STOP,
           action: ToolAction.stop,
           size: 'large',
           image: require('../../../../../../assets/Navigation/stop.png'),
         },
         {
           key: constants.CANCEL,
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: ToolAction.close,
           size: 'large',
@@ -346,7 +347,7 @@ function getData(type, params) {
         },
         {
           key: constants.COMMIT,
-          title: getLanguage(GLOBAL.language).Prompt.COMMIT,
+          title: getLanguage(global.language).Prompt.COMMIT,
           // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',

@@ -666,7 +666,7 @@ export default class SecondMapSettings extends Component {
         }
         break
       //转换参数设置点击
-      case getLanguage(GLOBAL.language).Map_Settings.PROPORTIONAL_DIFFERENCE:
+      case getLanguage(global.language).Map_Settings.PROPORTIONAL_DIFFERENCE:
       case 'X':
       case 'Y':
       case 'Z':
@@ -680,7 +680,7 @@ export default class SecondMapSettings extends Component {
           tips = getLanguage(GLOBAL.language).Prompt.TRANSFER_PARAMS
         }
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+      case getLanguage(global.language).Map_Settings.MAP_CENTER:
         data[index].value = `${this.formatNumberToString(
           this.inputvalue,
         )}/${this.formatNumberToString(Number.parseFloat(newValue).toFixed(6))}`
@@ -980,7 +980,7 @@ export default class SecondMapSettings extends Component {
                   case 'X':
                   case 'Y':
                   case 'Z':
-                  case getLanguage(GLOBAL.language).Map_Settings
+                  case getLanguage(global.language).Map_Settings
                     .PROPORTIONAL_DIFFERENCE:
                     data[item.pos].value[index].state = true
                     break

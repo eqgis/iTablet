@@ -20,6 +20,7 @@ async function getData(type, params) {
   let data = []
   let buttons = []
   ToolbarModule.setParams(params)
+  GLOBAL.MapToolType = type
   let layerType = '', isTourLayer = false
   switch (type) {
     case ConstToolType.SM_MAP_MARKS_DRAW:
@@ -57,7 +58,7 @@ async function getData(type, params) {
       data = [
         {
           key: constants.POINT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_POINT,
+          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_POINT,
           // constants.POINT,
           action: MarkAction.point,
           disable:
@@ -79,7 +80,7 @@ async function getData(type, params) {
         },
         {
           key: constants.WORDS,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
+          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
           // constants.WORDS,
           size: 'large',
           action: MarkAction.words,
@@ -99,7 +100,7 @@ async function getData(type, params) {
         },
         {
           key: constants.POINTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.DOT_LINE,
           // constants.POINTLINE,
           size: 'large',
           action: MarkAction.pointline,
@@ -119,7 +120,7 @@ async function getData(type, params) {
         },
         {
           key: constants.FREELINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.FREE_LINE,
           // constants.FREELINE,
           size: 'large',
           action: MarkAction.freeline,
@@ -139,7 +140,7 @@ async function getData(type, params) {
         },
         {
           key: constants.POINTCOVER,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_REGION,
+          title: getLanguage(global.language).Map_Main_Menu.DOT_REGION,
           // constants.POINTCOVER,
           size: 'large',
           action: MarkAction.pointcover,
@@ -159,7 +160,7 @@ async function getData(type, params) {
         },
         {
           key: constants.FREECOVER,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_REGION,
+          title: getLanguage(global.language).Map_Main_Menu.FREE_REGION,
           // constants.FREECOVER,
           size: 'large',
           action: MarkAction.freecover,
@@ -179,14 +180,14 @@ async function getData(type, params) {
         },
         // {
         //   key: constants.MOVE,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJMOVE,
+        //   title: getLanguage(global.language).Map_Main_Menu.OBJMOVE,
         //   action: MarkAction.move,
         //   size: 'large',
         //   image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         // },
         {
           key: 'showEditLabel',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: MarkAction.showEditLabel,
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
@@ -200,35 +201,35 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -244,14 +245,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -259,7 +260,7 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: MarkAction.undo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -267,7 +268,7 @@ async function getData(type, params) {
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: MarkAction.redo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -275,28 +276,28 @@ async function getData(type, params) {
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           action: MarkAction.deleteNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           action: MarkAction.addNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -312,14 +313,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           // constants.DELETE,
           size: 'large',
           action: MarkAction.deleteLabel,
@@ -327,35 +328,35 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           size: 'large',
           action: MarkAction.undo,
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           size: 'large',
           action: MarkAction.redo,
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           size: 'large',
           action: MarkAction.deleteNode,
           image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           // constants.ADD_NODE,
           size: 'large',
           action: MarkAction.addNode,
@@ -363,7 +364,7 @@ async function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -379,35 +380,35 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -423,28 +424,28 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -460,14 +461,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
@@ -475,7 +476,7 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: MarkAction.undo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
@@ -483,7 +484,7 @@ async function getData(type, params) {
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: MarkAction.redo,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -491,21 +492,21 @@ async function getData(type, params) {
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           action: MarkAction.deleteNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           action: MarkAction.addNode,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_add_node_black.png'),
@@ -521,14 +522,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           //constants.DELETE,
           size: 'large',
           action: MarkAction.deleteLabel,
@@ -536,35 +537,35 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           size: 'large',
           action: MarkAction.undo,
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           size: 'large',
           action: MarkAction.redo,
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
           image: require('../../../../../../assets/mapTools/icon_edit_node_black.png'),
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           size: 'large',
           action: MarkAction.deleteNode,
           image: require('../../../../../../assets/mapTools/icon_delete_node_black.png'),
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           //constants.ADD_NODE,
           size: 'large',
           action: MarkAction.addNode,
@@ -581,28 +582,28 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.deleteLabel,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_delete_black.png'),
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
@@ -637,7 +638,7 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BOLD,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_bold.png'),
@@ -645,7 +646,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ITALIC,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_italic.png'),
@@ -653,7 +654,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_UNDERLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_underline.png'),
@@ -661,7 +662,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_STRIKEOUT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
@@ -669,7 +670,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SHADOW,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
@@ -677,7 +678,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_OUTLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_outline.png'),

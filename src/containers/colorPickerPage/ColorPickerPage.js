@@ -150,11 +150,11 @@ export default class ColorPickerPage extends React.Component {
       <View style={styles.btns}>
         <Button
           type={Button.Type.GRAY}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.RESET}
+          title={getLanguage(global.language).Analyst_Labels.RESET}
           onPress={this.reset}
         />
         <Button
-          title={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+          title={getLanguage(global.language).Analyst_Labels.CONFIRM}
           onPress={this.confirm}
         />
       </View>
@@ -166,7 +166,7 @@ export default class ColorPickerPage extends React.Component {
       <Container
         style={styles.container}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.CHOOSE_COLOR,
+          title: getLanguage(global.language).Profile.CHOOSE_COLOR,
           navigation: this.props.navigation,
         }}
       >

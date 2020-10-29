@@ -112,7 +112,7 @@ export default class IllegallyParkView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,

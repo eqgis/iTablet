@@ -64,7 +64,7 @@ export default class ARTextView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TEXT,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TEXT,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

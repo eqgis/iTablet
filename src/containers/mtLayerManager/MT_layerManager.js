@@ -3,7 +3,7 @@
   Author: Wang zihao
   E-mail: zihaowang5325@qq.com
 */
-/* global GLOBAL */
+
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
 import { Container } from '../../components'
@@ -401,7 +401,7 @@ export default class MT_layerManager extends React.Component {
   }
 
   onToolPress = async ({ data, parentData, section }) => {
-    // let isGroup = data.type === 'layerGroup'
+    let isGroup = data.type === 'layerGroup'
     let refreshParentList = async () => {
       let prevParentData =
         this.prevItemRef &&
@@ -667,10 +667,11 @@ export default class MT_layerManager extends React.Component {
         if (value !== '') {
           (async function() {
             await SMap.setLabelColor()
-            await SMap.newTaggingDataset(
+            let data = await SMap.newTaggingDataset(
               value,
               this.props.user.currentUser.userName,
             )
+            GLOBAL.TaggingDatasetName = data && data.datasetName
             // this.setRefreshing(true)
             // this.getData()
             this.updateTagging()
@@ -823,7 +824,7 @@ export default class MT_layerManager extends React.Component {
           {section.title ===
             getLanguage(this.props.language).Map_Layer.LAYERS && (
             <Text style={styles.sectionSubTitle}>
-              {getLanguage(GLOBAL.language).Prompt.LONG_PRESS_TO_SORT}
+              {getLanguage(global.language).Prompt.LONG_PRESS_TO_SORT}
             </Text>
           )}
         </View>

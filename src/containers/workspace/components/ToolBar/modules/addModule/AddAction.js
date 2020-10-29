@@ -203,7 +203,7 @@ async function commit() {
     })
 
     _params.setToolbarVisible(false)
-    GLOBAL.prjDialog.setDialogVisible(true)
+    GLOBAL.dialog.setDialogVisible(true)
     Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
   } else {
     Toast.show(getLanguage(_params.language).Prompt.ADD_FAILED)

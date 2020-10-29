@@ -60,7 +60,7 @@ class NewMessageIcon extends Component {
           >
             <Text style={{ color: 'white' }}>
               {`${
-                getLanguage(GLOBAL.language).Friends.NEW_MESSAGE_SHORT
+                getLanguage(global.language).Friends.NEW_MESSAGE_SHORT
               }(${number})`}
             </Text>
           </View>

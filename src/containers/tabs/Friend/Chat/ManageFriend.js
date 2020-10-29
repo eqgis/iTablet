@@ -32,11 +32,11 @@ class ManageFriend extends Component {
     this.user = this.props.navigation.getParam('user')
     this.targetId = this.props.navigation.getParam('targetId')
     this.targetUser = this.friend.getTargetUser(this.targetId)
-    this.language = GLOBAL.language
+    this.language = global.language
     this.chat = this.props.navigation.getParam('chat')
     this.state = {
       contacts: [],
-      coworkMode: GLOBAL.coworkMode,
+      coworkMode: global.coworkMode,
     }
   }
 
@@ -93,7 +93,7 @@ class ManageFriend extends Component {
           <TouchableItemView
             //地图协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.COWORK}
+            text={getLanguage(global.language).Friends.COWORK}
             onPress={() => {
               NavigationService.navigate('SelectModule')
             }}
@@ -103,7 +103,7 @@ class ManageFriend extends Component {
           <TouchableItemView
             //退出协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.EXIT_COWORK}
+            text={getLanguage(global.language).Friends.EXIT_COWORK}
             onPress={() => {
               this.chat.back()
               // this.friend.setCurMap(undefined)

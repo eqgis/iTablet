@@ -91,12 +91,12 @@ export default class LayerManager_tolbar extends React.Component {
             title: '',
             data: [
               {
-                title: getLanguage(GLOBAL.language).Map_Layer.ADD_A_IMAGE_LAYER,
+                title: getLanguage(global.language).Map_Layer.ADD_A_IMAGE_LAYER,
                 image: require('../../../../assets/mapTools/icon_create_black.png'),
                 type: 'AddImage',
               },
               {
-                title: getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH,
+                title: getLanguage(global.language).Map_Layer.BASEMAP_SWITH,
                 image: require('../../../../assets/mapTools/icon_open_black.png'),
               },
             ],
@@ -104,16 +104,16 @@ export default class LayerManager_tolbar extends React.Component {
         ]
         break
       case ConstToolType.SM_MAP3D_LAYER3D_IMAGE:
-        data = layere3dImage(GLOBAL.language)
+        data = layere3dImage(global.language)
         break
       case ConstToolType.SM_MAP3D_LAYER3D_TERRAIN:
-        data = layere3dTerrain(GLOBAL.language)
+        data = layere3dTerrain(global.language)
         break
       case ConstToolType.SM_MAP3D_BASE:
         data = [
           {
             header: {
-              title: getLanguage(GLOBAL.language).Map_Layer.ONLINE_BASE_MAP,
+              title: getLanguage(global.language).Map_Layer.ONLINE_BASE_MAP,
               image: require('../../../../assets/map/layers_theme_unique_style.png'),
             },
             data: [
@@ -143,7 +143,7 @@ export default class LayerManager_tolbar extends React.Component {
         //地形添加二级界面
         let terrainDatas = {
           header: {
-            title: getLanguage(GLOBAL.language).Map_Layer.TERRAIN,
+            title: getLanguage(global.language).Map_Layer.TERRAIN,
             image: require('../../../../assets/map/Frenchgrey/icon_vectorfile_white.png'),
             type: 'Terrain',
           },
@@ -168,7 +168,7 @@ export default class LayerManager_tolbar extends React.Component {
         //影像添加二级界面
         let terrainDatas = {
           header: {
-            title: getLanguage(GLOBAL.language).Map_Layer.IMAGE,
+            title: getLanguage(global.language).Map_Layer.IMAGE,
             image: require('../../../../assets/map/layers_theme_unique_style.png'),
             type: 'Image',
           },
@@ -277,7 +277,7 @@ export default class LayerManager_tolbar extends React.Component {
       return
     }
     if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH
+      section.title === getLanguage(global.language).Map_Layer.BASEMAP_SWITH
     ) {
       //'切换底图') {
       this.setVisible(true, ConstToolType.SM_MAP3D_BASE, {
@@ -456,7 +456,7 @@ export default class LayerManager_tolbar extends React.Component {
           }}
           onPress={() => {
             this.props.navigation.navigate('InputPage', {
-              headerTitle: getLanguage(GLOBAL.language).Map_Layer.ADD_LAYER_URL,
+              headerTitle: getLanguage(global.language).Map_Layer.ADD_LAYER_URL,
               value: '',
               placeholder: 'eg http://ip:port/iserver/services/',
               cb: async value => {

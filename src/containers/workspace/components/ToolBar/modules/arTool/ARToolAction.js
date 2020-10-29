@@ -1,4 +1,3 @@
-/* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
 import { SMeasureView } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
@@ -8,8 +7,6 @@ import NavigationService from '../../../../../NavigationService'
 import { FileTools } from '../../../../../../native'
 import { ConstPath } from '../../../../../../constants'
 import FetchUtils from '../../../../../../utils/FetchUtils'
-
-let isProjectModelDownload = true // ar沙盘模型文件下载判断
 
 function close() {}
 
@@ -25,10 +22,10 @@ function arCastModelOperate() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
-    if (isProjectModelDownload) {
+    if (GLOBAL.isProjectModelDownload) {
       this.homePath = await FileTools.appendingHomeDirectory()
       const dustbinPath =
         `${this.homePath + ConstPath.Common_AIProjectModel}gltf` +
@@ -40,12 +37,12 @@ function arCastModelOperate() {
       if (isDustbin) {
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
-          GLOBAL.arSwitchToMap = true
+          GLOBAL.isswitch = true
           ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
         }
         NavigationService.navigate('ARProjectModeView')
       } else {
-        isProjectModelDownload = false
+        GLOBAL.isProjectModelDownload = false
         const downloadData = getDownloadData('gltf', 'gltf')
         _downloadData(downloadData)
         Toast.show(getLanguage(_params.language).Prompt.DOWNLOADING_PLEASE_WAIT)
@@ -95,7 +92,7 @@ function _downloadData(downloadData) {
           await FileTools.unZipFile(fileCachePath, fileDirPath)
           await FileTools.deleteFile(fileCachePath)
           _params.deleteDownloadFile({ id: 'gltf' })
-          isProjectModelDownload = true
+          GLOBAL.isProjectModelDownload = true
           Toast.show(getLanguage(_params.language).Prompt.DOWNLOAD_SUCCESSFULLY)
         })
         .catch(() => {
@@ -113,12 +110,12 @@ function _downloadData(downloadData) {
 async function arVideo() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
   if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
+    GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
   GLOBAL.EnterDatumPointType = 'arVideo'
@@ -128,12 +125,12 @@ async function arVideo() {
 async function arImage() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
   if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
+    GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
   GLOBAL.EnterDatumPointType = 'arImage'
@@ -143,12 +140,12 @@ async function arImage() {
 async function arWebView() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
   if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
+    GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
   GLOBAL.EnterDatumPointType = 'arWebView'
@@ -158,12 +155,12 @@ async function arWebView() {
 async function arText() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
   if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
+    GLOBAL.isswitch = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
   GLOBAL.EnterDatumPointType = 'arText'

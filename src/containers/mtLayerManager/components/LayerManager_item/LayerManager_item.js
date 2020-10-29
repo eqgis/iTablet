@@ -421,7 +421,7 @@ export default class LayerManager_item extends React.Component {
 
     items = [
       {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_UP,
+        title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_UP,
         onPress: () => {
           (async function() {
             await SMap.moveUpLayer(layer.path)
@@ -467,7 +467,7 @@ export default class LayerManager_item extends React.Component {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_DOWN,
+        title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_DOWN,
         onPress: () => {
           (async function() {
             await SMap.moveDownLayer(layer.path)
@@ -517,7 +517,7 @@ export default class LayerManager_item extends React.Component {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_TOP,
+        title: getLanguage(global.language).Map_Layer.LAYERS_TOP,
         onPress: () => {
           (async function() {
             this.popKey = ''
@@ -542,7 +542,7 @@ export default class LayerManager_item extends React.Component {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_BOTTOM,
+        title: getLanguage(global.language).Map_Layer.LAYERS_BOTTOM,
         onPress: () => {
           (async function() {
             this.popKey = ''

@@ -26,7 +26,7 @@ export default class MyBaseMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(GLOBAL.language).Profile.BASEMAP,
+      title: getLanguage(global.language).Profile.BASEMAP,
       //'底图',
       modalIsVisible: false,
     }
@@ -172,7 +172,7 @@ export default class MyBaseMap extends Component {
     let item = this.itemInfo
     if (item) {
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+        title: getLanguage(global.language).Profile.DELETE_DATA,
         action: this.deleteData,
       })
     }

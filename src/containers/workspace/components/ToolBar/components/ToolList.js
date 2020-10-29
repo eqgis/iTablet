@@ -181,7 +181,7 @@ export default class ToolList extends React.Component {
             const customerPath =
               ConstPath.CustomerPath +
               ConstPath.RelativeFilePath.Workspace[
-                GLOBAL.language === 'CN' ? 'CN' : 'EN'
+                global.language === 'CN' ? 'CN' : 'EN'
               ]
             let wsPath
             if (this.props.user.currentUser.userName) {
@@ -190,7 +190,7 @@ export default class ToolList extends React.Component {
                 this.props.user.currentUser.userName +
                 '/' +
                 ConstPath.RelativeFilePath.Workspace[
-                  GLOBAL.language === 'CN' ? 'CN' : 'EN'
+                  global.language === 'CN' ? 'CN' : 'EN'
                 ]
               wsPath = await FileTools.appendingHomeDirectory(userWSPath)
             } else {

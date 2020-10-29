@@ -30,8 +30,8 @@ class AddModule extends FunctionModule {
   }
 
   action = async () => {
-    if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
-      Toast.show(getLanguage(GLOBAL.language).Friends.ONLINECOWORK_DISABLE_ADD)
+    if (global.coworkMode && CoworkInfo.coworkId !== '') {
+      Toast.show(getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_ADD)
       return
     }
     this.setModuleData(this.type)

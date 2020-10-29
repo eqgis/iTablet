@@ -69,7 +69,7 @@ class GroupMemberList extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           withoutBack: false,
-          title: getLanguage(GLOBAL.language).Friends.MEMBERS,
+          title: getLanguage(global.language).Friends.MEMBERS,
           navigation: this.props.navigation,
           headerRight:
             this.mode === 'view' ? null : (

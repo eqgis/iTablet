@@ -1,4 +1,3 @@
-/* global GLOBAL */
 import React, { Component } from 'react'
 import {
   View,
@@ -7,6 +6,7 @@ import {
   Text,
   ScrollView,
   RefreshControl,
+  Platform,
 } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import Container from '../../../../components/Container'
@@ -14,7 +14,13 @@ import { color } from '../../../../styles'
 import RenderSettingItem from './RenderSettingItem'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
-import { SMap } from 'imobile_for_reactnative'
+import FetchUtils from '../../../../../src/utils/FetchUtils'
+import { FileTools } from '../../../../native'
+import RNFS from 'react-native-fs'
+
+import {
+  SMap
+} from 'imobile_for_reactnative'
 
 export default class Setting extends Component {
   props: {
@@ -54,7 +60,7 @@ export default class Setting extends Component {
         isRefresh: false,
       })
       Toast.show(
-        GLOBAL.language === 'CN'
+        global.language === 'CN'
           ? '请检查网络连接'
           : 'Please check the network connection',
       )
@@ -82,7 +88,7 @@ export default class Setting extends Component {
   }
   //检查更新
   onCheckUpdate = () => {
-    Toast.show(GLOBAL.APP_VERSION + '_' + GLOBAL.SYSTEM_VERSION)
+    Toast.show(global.APP_VERSION + '_' + global.SYSTEM_VERSION)
   }
   //意见反馈
   suggestionFeedback = () => {
@@ -91,33 +97,33 @@ export default class Setting extends Component {
   renderItems() {
     return (
       <View style={{ flex: 1, backgroundColor: color.content_white }}>
-        {this._renderItem(getLanguage(GLOBAL.language).Profile.STATUSBAR_HIDE)}
+        {this._renderItem(getLanguage(global.language).Profile.STATUSBAR_HIDE)}
         {this.state.bOpenLicense === true
           ? this.renderItemView(
             this.onLicense,
-            getLanguage(GLOBAL.language).Profile.SETTING_LICENSE,
+            getLanguage(global.language).Profile.SETTING_LICENSE,
           )
           : null}
         {this.renderItemView(
           this.onLocation,
-          getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_DEVICE,
+          getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
         )}
         {this.renderItemCheckVersion(
           this.onCheckUpdate,
-          getLanguage(GLOBAL.language).Profile.SETTING_CHECK_VERSION,
+          getLanguage(global.language).Profile.SETTING_CHECK_VERSION,
         )}
         {this.renderItemView(
           this.suggestionFeedback,
-          getLanguage(GLOBAL.language).Profile.SETTING_SUGGESTION_FEEDBACK,
+          getLanguage(global.language).Profile.SETTING_SUGGESTION_FEEDBACK,
         )}
         {/** 关于放在最后 */}
         {this.props.appConfig.about &&
           this.props.appConfig.about.isShow &&
           this.renderItemView(
             this.onAbout,
-            getLanguage(GLOBAL.language).Profile.SETTING_ABOUT +
+            getLanguage(global.language).Profile.SETTING_ABOUT +
               this.props.appConfig.alias +
-              getLanguage(GLOBAL.language).Profile.SETTING_ABOUT_AFTER,
+              getLanguage(global.language).Profile.SETTING_ABOUT_AFTER,
           )}
       </View>
     )
@@ -181,7 +187,7 @@ export default class Setting extends Component {
 
             <View style={{ marginRight: 20, alignItems: 'center' }}>
               <Text style={{ fontSize: scaleSize(24), marginLeft: 15 }}>
-                {GLOBAL.APP_VERSION + '_' + GLOBAL.SYSTEM_VERSION}
+                {global.APP_VERSION + '_' + global.SYSTEM_VERSION}
               </Text>
             </View>
           </View>
@@ -201,7 +207,7 @@ export default class Setting extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SETTINGS,
+          title: getLanguage(global.language).Profile.SETTINGS,
           //'设置',
           navigation: this.props.navigation,
         }}

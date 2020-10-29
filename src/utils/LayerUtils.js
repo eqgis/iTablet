@@ -1,4 +1,3 @@
-/* global GLOBAL */
 import { SMap, DatasetType, FieldType } from 'imobile_for_reactnative'
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
@@ -328,7 +327,7 @@ async function openDefaultBaseMap() {
   await addBaseMap([], data)
 }
 
-function getDefaultBaseMapData(language = GLOBAL.language) {
+function getDefaultBaseMapData(language = global.language) {
   if (language === 'CN') {
     return [ConstOnline.tiandituCN, ConstOnline.tianditu]
   } else {

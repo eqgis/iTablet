@@ -283,7 +283,7 @@ export default class Map3DToolBar extends React.Component {
 
   openWorkspace = item => {
     if (item.name === GLOBAL.sceneName) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.THE_SCENE_IS_OPENED)
+      Toast.show(getLanguage(global.language).Prompt.THE_SCENE_IS_OPENED)
       //'场景已打开,请勿重复打开场景')
       return
     }
@@ -326,8 +326,8 @@ export default class Map3DToolBar extends React.Component {
   renderItem = ({ item }) => {
     if (this.props.type === ConstToolType.SM_MAP3D_WORKSPACE_LIST) {
       let info
-      if (GLOBAL.language === 'CN') info = item.mtime
-      else if (GLOBAL.language === 'EN') {
+      if (global.language === 'CN') info = item.mtime
+      else if (global.language === 'EN') {
         let day = item.mtime
           .replace(/年|月|日/g, '/')
           .split('  ')[0]
@@ -357,7 +357,7 @@ export default class Map3DToolBar extends React.Component {
             <View style={styles.sceneItemcontent}>
               <Text style={[styles.workspaceItem]}>{item.name}</Text>
               <Text style={styles.itemTime}>
-                {getLanguage(GLOBAL.language).Prompt.LATEST}
+                {getLanguage(global.language).Prompt.LATEST}
                 {/* 最后修改时间:  */}
                 {info}
               </Text>
@@ -437,7 +437,7 @@ export default class Map3DToolBar extends React.Component {
               style={styles.sceneImg}
             />
             <Text style={styles.sceneTitle}>
-              {getLanguage(GLOBAL.language).Map_Label.SCENE}
+              {getLanguage(global.language).Map_Label.SCENE}
               {/* 场景 */}
             </Text>
           </View>

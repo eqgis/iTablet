@@ -75,7 +75,7 @@ class MyDataset extends MyDataPage {
         await SMap.openDatasource2(datasourceParams)
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Profile.OPEN_DATASROUCE_FAILED)
+      Toast.show(getLanguage(global.language).Profile.OPEN_DATASROUCE_FAILED)
     }
   }
 
@@ -141,12 +141,12 @@ class MyDataset extends MyDataPage {
 
   setProjection = () => {
     NavigationService.navigate('ProjectionTargetCoordsPage', {
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+      title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
       cb: async targetCoords => {
         NavigationService.goBack()
         GLOBAL.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.SET_PROJECTION,
+          getLanguage(global.language).Profile.SET_PROJECTION,
         )
         let result = false
         //设置数据集投影
@@ -158,9 +158,9 @@ class MyDataset extends MyDataPage {
         )
         GLOBAL.Loading.setLoading(false)
         if (result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+          Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
         }
       },
     })
@@ -171,22 +171,22 @@ class MyDataset extends MyDataPage {
       try {
         GLOBAL.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.BUILDING,
+          getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
         let result = await SMap.buildPyramid(this.state.title, datasetName)
         GLOBAL.Loading.setLoading(false)
         Toast.show(
           result
-            ? getLanguage(GLOBAL.language).Profile.BUILD_SUCCESS
-            : getLanguage(GLOBAL.language).Profile.BUILD_FAILED,
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
         )
       } catch (e) {
         GLOBAL.Loading.setLoading(false)
       }
     }
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.TIME_SPEND_OPERATION,
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
       confirmAction: build,
     })
     this.SimpleDialog.setVisible(true)
@@ -197,22 +197,22 @@ class MyDataset extends MyDataPage {
       try {
         GLOBAL.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.BUILDING,
+          getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
         let result = await SMap.updataStatistics(this.state.title, datasetName)
         GLOBAL.Loading.setLoading(false)
         Toast.show(
           result
-            ? getLanguage(GLOBAL.language).Profile.BUILD_SUCCESS
-            : getLanguage(GLOBAL.language).Profile.BUILD_FAILED,
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
         )
       } catch (e) {
         GLOBAL.Loading.setLoading(false)
       }
     }
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.TIME_SPEND_OPERATION,
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
       confirmAction: build,
     })
     this.SimpleDialog.setVisible(true)
@@ -221,7 +221,7 @@ class MyDataset extends MyDataPage {
   getCustomItemPopupData = () => {
     let data = [
       {
-        title: getLanguage(GLOBAL.language).Profile.SET_PROJECTION,
+        title: getLanguage(global.language).Profile.SET_PROJECTION,
         action: this.setProjection,
       },
     ]
@@ -231,11 +231,11 @@ class MyDataset extends MyDataPage {
         this.itemInfo.item.datasetType === DatasetType.MBImage)
     ) {
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DATASET_BUILD_PYRAMID,
+        title: getLanguage(global.language).Profile.DATASET_BUILD_PYRAMID,
         action: this.buildPyramid,
       })
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DATASET_BUILD_STATISTICS,
+        title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
         action: this.updataStatistics,
       })
     }
@@ -251,7 +251,7 @@ class MyDataset extends MyDataPage {
 
   getCustomPagePopupData = () => [
     {
-      title: getLanguage(GLOBAL.language).Profile.NEW_DATASET,
+      title: getLanguage(global.language).Profile.NEW_DATASET,
       action: () => {
         this._closeModal()
         NavigationService.navigate('NewDataset', {
@@ -284,7 +284,7 @@ class MyDataset extends MyDataPage {
 
   showUnableExportDialog = () => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.DATASET_EXPORT_NOT_SUPPORTED,
+      text: getLanguage(global.language).Profile.DATASET_EXPORT_NOT_SUPPORTED,
     })
     this.SimpleDialog.setVisible(true)
   }
@@ -332,7 +332,7 @@ class MyDataset extends MyDataPage {
     let dialogHeight =
       scaleSize(130) + Math.ceil(data.length / 2) * scaleSize(70)
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.SELECT_DATASET_EXPORT_TYPE,
+      text: getLanguage(global.language).Profile.SELECT_DATASET_EXPORT_TYPE,
       confirmAction: async () => {
         if (
           this.exportType === this.exportTypes.KML ||
@@ -342,7 +342,7 @@ class MyDataset extends MyDataPage {
           let datasetParams = Object.assign({}, this.itemInfo.item)
           if (!(await SMap.isPrgCoordSysWGS1984(datasetParams))) {
             this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Prompt.REQUIRE_PRJ_1984,
+              text: getLanguage(global.language).Prompt.REQUIRE_PRJ_1984,
             })
             this.SimpleDialog.setVisible(true)
             return

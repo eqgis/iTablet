@@ -24,7 +24,7 @@ class SelectModule extends Component {
 
   onPress = (module, index) => {
     NavigationService.navigate('MyMap', {
-      title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
+      title: getLanguage(global.language).Friends.SELECT_MAP,
       getItemCallback: ({ item }) => {
         let mapName = item.name.substring(0, item.name.lastIndexOf('.'))
         let map = {
@@ -38,21 +38,21 @@ class SelectModule extends Component {
 
   navigateToModule = async (module, index, map) => {
     let licenseStatus = await SMap.getEnvironmentStatus()
-    GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
-    if (!GLOBAL.isLicenseValid) {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
+    global.isLicenseValid = licenseStatus.isLicenseValid
+    if (!global.isLicenseValid) {
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
       return
     }
-    let tmpCurrentUser = GLOBAL.getFriend().props.user.currentUser
-    GLOBAL.getFriend().setCurMod(module)
+    let tmpCurrentUser = global.getFriend().props.user.currentUser
+    global.getFriend().setCurMod(module)
     this.props.setCurrentMapModule(index).then(() => {
       module.action(tmpCurrentUser, map)
     })
-    GLOBAL.getFriend().curChat.setCoworkMode(true)
-    GLOBAL.coworkMode = true
+    global.getFriend().curChat.setCoworkMode(true)
+    global.coworkMode = true
   }
 
   render() {
@@ -63,7 +63,7 @@ class SelectModule extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.SELECT_MODULE,
+          title: getLanguage(global.language).Friends.SELECT_MODULE,
           withoutBack: false,
           navigation: this.props.navigation,
         }}
@@ -74,7 +74,7 @@ class SelectModule extends Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
               if (
-                item.title === getLanguage(GLOBAL.language).Map_Module.MAP_3D
+                item.title === getLanguage(global.language).Map_Module.MAP_3D
               ) {
                 return null
               }

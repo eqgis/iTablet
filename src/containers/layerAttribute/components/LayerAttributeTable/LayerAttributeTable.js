@@ -349,7 +349,7 @@ export default class LayerAttributeTable extends React.Component {
 
         let data = item.data[0]
         if (
-          data.name === getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
+          data.name === getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
         ) {
           data = item.data[1]
         }
@@ -386,7 +386,7 @@ export default class LayerAttributeTable extends React.Component {
       typeof this.props.onPressHeader === 'function' &&
       item.columnIndex !== 0 &&
       item.data &&
-      item.data[0] !== getLanguage(GLOBAL.language).Map_Label.NAME
+      item.data[0] !== getLanguage(global.language).Map_Label.NAME
     ) {
       this.props.onPressHeader({
         fieldInfo: item.data[item.columnIndex].fieldInfo,
@@ -428,10 +428,10 @@ export default class LayerAttributeTable extends React.Component {
     if (
       this.props.startIndex >= 0 &&
       data.length > 0 &&
-      data[0].name !== getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
+      data[0].name !== getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
     ) {
       data.unshift({
-        name: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO,
+        name: getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO,
         value: this.props.startIndex + index,
         fieldInfo: {},
       })
@@ -556,11 +556,11 @@ export default class LayerAttributeTable extends React.Component {
       this.props.startIndex >= 0 &&
       titles.length > 0 &&
       titles[0].value !==
-        getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
+        getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
     ) {
       titles.unshift({
         isSystemField: false,
-        value: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO,
+        value: getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO,
       })
     }
     return (
@@ -668,7 +668,7 @@ export default class LayerAttributeTable extends React.Component {
         }}
       >
         <IndicatorLoading
-          title={getLanguage(GLOBAL.language).Prompt.LOADING}
+          title={getLanguage(global.language).Prompt.LOADING}
         />
       </View>
     )

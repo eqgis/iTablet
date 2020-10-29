@@ -295,7 +295,7 @@ export default class NavigationDataChangePage extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.LOADING}
               enabled={true}
             />
           }

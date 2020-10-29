@@ -112,7 +112,7 @@ export default class ProjectionParameterSetPage extends Component {
       <View style={{ backgroundColor: color.white }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.BASIC_PARAMETER}
+            {getLanguage(global.language).Analyst_Labels.BASIC_PARAMETER}
           </Text>
         </View>
         <AnalystItem
@@ -120,7 +120,7 @@ export default class ProjectionParameterSetPage extends Component {
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
           inputStyle={styles.inputStyle}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.RATIO_DIFFERENCE}
+          title={getLanguage(global.language).Analyst_Labels.RATIO_DIFFERENCE}
           value={this.state.ratitionDifference + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
@@ -147,7 +147,7 @@ export default class ProjectionParameterSetPage extends Component {
       <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.ROTATION_ANGLE_SECOND}
+            {getLanguage(global.language).Analyst_Labels.ROTATION_ANGLE_SECOND}
           </Text>
         </View>
         <AnalystItem
@@ -225,7 +225,7 @@ export default class ProjectionParameterSetPage extends Component {
       <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.OFFSET}
+            {getLanguage(global.language).Analyst_Labels.OFFSET}
           </Text>
         </View>
         <AnalystItem
@@ -303,13 +303,13 @@ export default class ProjectionParameterSetPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .PROJECTION_PARAMETER_SETTING,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

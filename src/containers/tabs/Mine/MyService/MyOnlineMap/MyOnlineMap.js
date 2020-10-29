@@ -171,7 +171,7 @@ export default class MyOnlineMap extends Component {
                   },
                 ]}
               >
-                {getLanguage(GLOBAL.language).Profile.BROWSE_MAP}
+                {getLanguage(global.language).Profile.BROWSE_MAP}
                 {/* 浏览地图 */}
               </Text>
             </View>
@@ -227,13 +227,13 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
 
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -241,7 +241,7 @@ export default class MyOnlineMap extends Component {
       } else {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -251,7 +251,7 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
@@ -290,7 +290,7 @@ export default class MyOnlineMap extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MAP_ONLINE,
+          title: getLanguage(global.language).Profile.MAP_ONLINE,
           //'在线地图',
           withoutBack: false,
           navigation: this.props.navigation,

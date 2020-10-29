@@ -19,6 +19,7 @@ function createPoint() {
       return
     }
     SScene.checkoutListener('startLabelOperate')
+    GLOBAL.Map3DSymbol = true
     SScene.startDrawFavorite(getLanguage(params.language).Prompt.POI)
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT, {
@@ -40,6 +41,7 @@ function createText() {
       return
     }
     SScene.checkoutListener('startLabelOperate')
+    GLOBAL.Map3DSymbol = true
     SScene.startDrawText({
       callback: result => {
         const dialog = params.dialog()
@@ -66,6 +68,7 @@ function createLine() {
     return
   }
   SScene.checkoutListener('startLabelOperate')
+  GLOBAL.Map3DSymbol = true
   try {
     SScene.startDrawLine()
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_LINE)
@@ -88,6 +91,7 @@ function createRegion() {
       return
     }
     SScene.checkoutListener('startLabelOperate')
+    GLOBAL.Map3DSymbol = true
     SScene.startDrawArea()
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_SURFACE)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT_SURFACE, {
@@ -107,6 +111,7 @@ function clearPlotting() {
     // '请打开场景')
     return
   }
+  GLOBAL.Map3DSymbol = true
   SScene.closeAllLabel()
   params.existFullMap && params.existFullMap()
   params.setToolbarVisible(false)
@@ -121,6 +126,7 @@ function close(type) {
     type === ConstToolType.SM_MAP3D_MARK_TEXT
   ) {
     SScene.clearAllLabel()
+    GLOBAL.Map3DSymbol = false
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
   }

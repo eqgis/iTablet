@@ -3,6 +3,7 @@ import PlotData from './PlotData'
 import PlotAction from './PlotAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
@@ -19,6 +20,10 @@ class PlotModule extends FunctionModule {
     this.setModuleData(this.type)
     switch (this.type) {
       case ConstToolType.SM_MAP_PLOT:
+        if (!GLOBAL.isInitSymbolPlotsEnd) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.MAP_LOADING)
+          return
+        }
         containerType = ToolbarType.tabs
         data = ToolbarModule.getToolbarSize(containerType, { data: _data.data })
         params.showFullMap && params.showFullMap(true)

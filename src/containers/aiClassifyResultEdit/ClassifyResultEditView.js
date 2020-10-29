@@ -105,7 +105,7 @@ export default class ClassifyResultEditView extends React.Component {
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_NAME
               }
             </Text>
@@ -120,7 +120,7 @@ export default class ClassifyResultEditView extends React.Component {
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_TIME
               }
             </Text>
@@ -129,7 +129,7 @@ export default class ClassifyResultEditView extends React.Component {
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS
               }
             </Text>
@@ -139,7 +139,7 @@ export default class ClassifyResultEditView extends React.Component {
               numberOfLines={2}
               onChangeText={text => (this.remarks = text)}
               placeholder={
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_PLEA_REMARKS
               }
               placeholderTextColor={'#A0A0A0'}
@@ -149,7 +149,7 @@ export default class ClassifyResultEditView extends React.Component {
             style={styles.btnSwitchModelsView}
             titleStyle={styles.txtBtnSwitchModelsView}
             title={
-              getLanguage(GLOBAL.language).Map_Main_Menu
+              getLanguage(global.language).Map_Main_Menu
                 .MAP_AR_AI_ASSISTANT_CLASSIFY_SAVE
             }
             type={'BLUE'}
@@ -166,7 +166,7 @@ export default class ClassifyResultEditView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           navigation: this.props.navigation,
           backAction: this.back,

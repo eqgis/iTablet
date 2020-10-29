@@ -134,7 +134,7 @@ export default class CreateNavDataPage extends Component {
       !selectedDataset.selectedFieldInfo
     ) {
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+        getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
       )
       return
     }
@@ -166,7 +166,7 @@ export default class CreateNavDataPage extends Component {
       getLanguage(GLOBAL.language).Prompt.CREATING,
     )
     let datasourcePath =
-      GLOBAL.homePath +
+      global.homePath +
       ConstPath.UserPath +
       this.props.currentUser.userName +
       '/' +
@@ -181,7 +181,7 @@ export default class CreateNavDataPage extends Component {
     if (rel) {
       this.getDatasource()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
     }
     this.container.setLoading(false)
     return true
@@ -461,7 +461,7 @@ class Item extends Component {
       this.props.item.fieldInfo.length === 0 &&
       !this.props.item.hasRoadName
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
     } else {
       this.props.onSelect && this.props.onSelect(this.props.item)
     }
@@ -523,7 +523,7 @@ class Item extends Component {
               }}
               defaultValue={
                 this.props.item.selectedFieldInfo ||
-                getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+                getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
               }
               options={this.props.item.fieldInfo}
             />

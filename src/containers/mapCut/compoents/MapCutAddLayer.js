@@ -101,7 +101,7 @@ export default class MapCutAddLayer extends React.Component {
     return (
       <View style={styles.popTopView}>
         {this.renderCheckButton()}
-        <Text style={[styles.content, {marginLeft: scaleSize(30)}]}>{getLanguage(GLOBAL.language).Profile.SELECT_ALL}</Text>
+        <Text style={[styles.content, {marginLeft: scaleSize(30)}]}>{getLanguage(global.language).Profile.SELECT_ALL}</Text>
       </View>
     )
   }

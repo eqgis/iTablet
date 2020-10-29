@@ -115,7 +115,7 @@ async function getData(type, params) {
       data = [
         {
           key: 'cancel',
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // '取消',
           action: () => {
             SScene.clearSelection()
@@ -154,7 +154,7 @@ async function getData(type, params) {
       data = [
         {
           key: 'startFly',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY_AROUND_POINT,
+          title: getLanguage(global.language).Map_Main_Menu.FLY_AROUND_POINT,
           // '绕点飞行',
           action: () => {
             GLOBAL.isCircleFlying = true

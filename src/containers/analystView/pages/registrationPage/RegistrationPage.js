@@ -25,15 +25,14 @@ export default class RegistrationPage extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
-    this.rectifyReferDatasetInfo = params?.rectifyReferDatasetInfo
     this.tempControlPoints = []
 
     let defaultArithmetic = {
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_OFFSET,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET,
       arithmeticMode: 4,
     }
     GLOBAL.RegistrationArithmeticMode = defaultArithmetic.arithmeticMode
+
     this.state = {
       isCanDo: true,
 
@@ -56,8 +55,8 @@ export default class RegistrationPage extends Component {
         if (GLOBAL.RectifyDatasetInfo) {
           await SRectifyView.setRectifyDataset(GLOBAL.RectifyDatasetInfo)
         }
-        if (this.rectifyReferDatasetInfo) {
-          await SRectifyView.setReferDataset(this.rectifyReferDatasetInfo)
+        if (GLOBAL.RectifyReferDatasetInfo) {
+          await SRectifyView.setReferDataset(GLOBAL.RectifyReferDatasetInfo)
         }
         if (GLOBAL.RegistrationArithmeticMode) {
           await SRectifyView.setTransformationMode(
@@ -118,11 +117,11 @@ export default class RegistrationPage extends Component {
     } else {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.CLOSING,
+        getLanguage(global.language).Prompt.CLOSING,
         //'正在关闭地图'
         { bgColor: '#rgba(0, 0, 0, 0.5)' },
       )
-      // Toast.show(getLanguage(GLOBAL.language).Prompt.CLOSING)
+      // Toast.show(getLanguage(global.language).Prompt.CLOSING)
       setTimeout(async function() {
         await SRectifyView.dispose()
         GLOBAL.Loading.setLoading(false)
@@ -157,7 +156,7 @@ export default class RegistrationPage extends Component {
   exit = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Prompt.CLOSING,
+      getLanguage(global.language).Prompt.CLOSING,
       //'正在关闭地图'
       { bgColor: '#rgba(0, 0, 0, 0.5)' },
     )
@@ -175,7 +174,7 @@ export default class RegistrationPage extends Component {
     let _isAllPointEffect = await SRectifyView.isAllPointEffect()
     if (!_isAllPointEffect) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Prompt
+        getLanguage(global.language).Analyst_Prompt
           .REGISTRATION_POINTS_NUMBER_ERROR,
       )
       return
@@ -193,7 +192,7 @@ export default class RegistrationPage extends Component {
       controlPoints.originalPoints.length != controlPoints.targetPoints.length
     ) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Prompt
+        getLanguage(global.language).Analyst_Prompt
           .REGISTRATION_POINTS_NUMBER_ERROR,
       )
     } else if (GLOBAL.RegistrationArithmeticMode != undefined) {
@@ -202,7 +201,7 @@ export default class RegistrationPage extends Component {
         case 1:
           if (controlPoints.originalPoints.length < 4) {
             Toast.show(
-              getLanguage(GLOBAL.language).Analyst_Prompt
+              getLanguage(global.language).Analyst_Prompt
                 .REGISTRATION_LINE_POINTS,
             )
           } else {
@@ -212,7 +211,7 @@ export default class RegistrationPage extends Component {
         case 2:
           if (controlPoints.originalPoints.length < 7) {
             Toast.show(
-              getLanguage(GLOBAL.language).Analyst_Prompt
+              getLanguage(global.language).Analyst_Prompt
                 .REGISTRATION_QUADRATIC_POINTS,
             )
           } else {
@@ -222,7 +221,7 @@ export default class RegistrationPage extends Component {
         case 0:
           if (controlPoints.originalPoints.length != 2) {
             Toast.show(
-              getLanguage(GLOBAL.language).Analyst_Prompt
+              getLanguage(global.language).Analyst_Prompt
                 .REGISTRATION_RECTANGLE_POINTS,
             )
           } else {
@@ -232,7 +231,7 @@ export default class RegistrationPage extends Component {
         case 4:
           if (controlPoints.originalPoints.length != 1) {
             Toast.show(
-              getLanguage(GLOBAL.language).Analyst_Prompt
+              getLanguage(global.language).Analyst_Prompt
                 .REGISTRATION_OFFSET_POINTS,
             )
           } else {
@@ -270,7 +269,7 @@ export default class RegistrationPage extends Component {
     let _isAllPointEffect = await SRectifyView.isAllPointEffect()
     if (!_isAllPointEffect) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Prompt
+        getLanguage(global.language).Analyst_Prompt
           .REGISTRATION_POINTS_NUMBER_ERROR,
       )
       return
@@ -290,28 +289,28 @@ export default class RegistrationPage extends Component {
       defaultName = GLOBAL.RectifyDatasetInfo[0].datasourceName
     }
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Analyst_Labels
+      headerTitle: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_EXPORT_FILE_NAME,
       value: defaultName,
-      placeholder: getLanguage(GLOBAL.language).Analyst_Labels
+      placeholder: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_EXPORT_FILE_NAME,
       type: 'name',
       cb: async value => {
         NavigationService.goBack()
         GLOBAL.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXPORT,
+          getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT,
         )
         let result = await SRectifyView.rectifyInfoSaveAs(value)
         GLOBAL.Loading.setLoading(false)
         if (result) {
           Toast.show(
-            getLanguage(GLOBAL.language).Analyst_Labels
+            getLanguage(global.language).Analyst_Labels
               .REGISTRATION_EXPORT_SUCCESS,
           )
         } else {
           Toast.show(
-            getLanguage(GLOBAL.language).Analyst_Labels
+            getLanguage(global.language).Analyst_Labels
               .REGISTRATION_EXPORT_FAILED,
           )
         }
@@ -322,23 +321,23 @@ export default class RegistrationPage extends Component {
   getToolBarItem = () => {
     return [
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels
+        title: getLanguage(global.language).Analyst_Labels
           .REGISTRATION_POINTS_DETAIL,
         image: getThemeAssets().analyst.analysis_connectivity,
         action: this.detalShow,
       },
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXECUTE,
+        title: getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTE,
         image: getThemeAssets().analyst.analysis_traveling,
         action: this.confirm,
       },
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXPORT,
+        title: getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT,
         image: getPublicAssets().mapTools.tools_new_thematic_map,
         action: this.export,
       },
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.ARITHMETIC,
+        title: getLanguage(global.language).Analyst_Labels.ARITHMETIC,
         image: getPublicAssets().mapTools.tools_modify_thematic_map,
         action: this.toRegistrationArithmeticPage,
       },
@@ -415,9 +414,9 @@ export default class RegistrationPage extends Component {
         <Button
           title={
             this.state.isAssociat
-              ? getLanguage(GLOBAL.language).Analyst_Labels
+              ? getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_ASSOCIATION_CLOCE
-              : getLanguage(GLOBAL.language).Analyst_Labels
+              : getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_ASSOCIATION
           }
           ref={ref => (this.sureButton = ref)}
@@ -460,7 +459,7 @@ export default class RegistrationPage extends Component {
     //   _controlPoints.originalPoints.length != _controlPoints.targetPoints.length
     // ) {
     //   Toast.show(
-    //     getLanguage(GLOBAL.language).Analyst_Prompt
+    //     getLanguage(global.language).Analyst_Prompt
     //       .REGISTRATION_POINTS_NUMBER_ERROR,
     //   )
     //   return
@@ -593,7 +592,7 @@ export default class RegistrationPage extends Component {
       >
         <View style={styles.detalItemHeaderView}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_ENUMBER +
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_ENUMBER +
               (index + 1)}
           </Text>
           <View
@@ -602,7 +601,7 @@ export default class RegistrationPage extends Component {
             }}
           >
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.DELETE}
+              btnText={getLanguage(global.language).Analyst_Labels.DELETE}
               textStyle={{
                 fontSize: scaleSize(24),
                 color: color.blue1,
@@ -614,7 +613,7 @@ export default class RegistrationPage extends Component {
 
             <TextBtn
               btnText={
-                getLanguage(GLOBAL.language).Analyst_Labels
+                getLanguage(global.language).Analyst_Labels
                   .REGISTRATION_RESELECT_POINT
               }
               textStyle={{
@@ -631,7 +630,7 @@ export default class RegistrationPage extends Component {
         <View style={styles.lineStyle} />
         <View style={styles.detalSubItemView}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_ORIGINAL +
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_ORIGINAL +
               'X'}
           </Text>
           <TextInput
@@ -663,7 +662,7 @@ export default class RegistrationPage extends Component {
         <View style={styles.lineSubStyle} />
         <View style={styles.detalSubItemView}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_ORIGINAL +
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_ORIGINAL +
               'Y'}
           </Text>
           <TextInput
@@ -688,7 +687,7 @@ export default class RegistrationPage extends Component {
         <View style={styles.lineSubStyle} />
         <View style={styles.detalSubItemView}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_TAREGT +
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_TAREGT +
               'X'}
           </Text>
           <TextInput
@@ -712,7 +711,7 @@ export default class RegistrationPage extends Component {
         <View style={styles.lineSubStyle} />
         <View style={styles.detalSubItemView}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_TAREGT +
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_TAREGT +
               'Y'}
           </Text>
           <TextInput
@@ -753,13 +752,13 @@ export default class RegistrationPage extends Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_POINTS_DETAIL,
           navigation: this.props.navigation,
           backAction: this.detalBack,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={
                 this.state.isCanDo
                   ? styles.headerBtnTitle
@@ -805,15 +804,15 @@ export default class RegistrationPage extends Component {
             ref={ref => (this.container = ref)}
             showFullInMap={true}
             headerProps={{
-              title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION,
+              title: getLanguage(global.language).Analyst_Labels.REGISTRATION,
               navigation: this.props.navigation,
               backAction: this.exit,
               headerRight: (
                 <TextBtn
                   btnText={
                     this.state.isEditPoint
-                      ? getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM
-                      : getLanguage(GLOBAL.language).Profile.LICENSE_EXIT
+                      ? getLanguage(global.language).Analyst_Labels.CONFIRM
+                      : getLanguage(global.language).Profile.LICENSE_EXIT
                   }
                   textStyle={styles.headerBtnTitle}
                   btnClick={this.sure}
@@ -838,7 +837,7 @@ export default class RegistrationPage extends Component {
                   alignItems: 'center',
                   backgroundColor: color.bgW,
                 }}
-                language={GLOBAL.language}
+                language={global.language}
               />
 
               {this.renderAssociatView()}

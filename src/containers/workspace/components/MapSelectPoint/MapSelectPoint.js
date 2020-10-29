@@ -8,10 +8,6 @@ export default class MapSelectPoint extends React.Component {
     headerProps: Object,
   }
 
-  static defaultProps = {
-    headerProps: {},
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -27,8 +23,8 @@ export default class MapSelectPoint extends React.Component {
     }
   }
 
-  setVisible = (iShow, title = this.props.headerProps.title || '') => {
-    this.setState({ show: iShow, title })
+  setVisible = iShow => {
+    this.setState({ show: iShow })
   }
 
   openSelectPointMap(wsData, point) {
@@ -74,7 +70,6 @@ export default class MapSelectPoint extends React.Component {
           <Header
             ref={ref => (this.containerHeader = ref)}
             {...this.props.headerProps}
-            title={this.state.title}
           />
           <View
             style={{

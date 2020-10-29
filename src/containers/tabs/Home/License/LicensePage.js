@@ -35,11 +35,11 @@ class LicensePage extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.user = params && params.user
-    GLOBAL.recycleCloudLicense = this._recycleCloudLicense
+    global.recycleCloudLicense = this._recycleCloudLicense
   }
 
   componentWillUnmount() {
-    GLOBAL.recycleCloudLicense = null
+    global.recycleCloudLicense = null
   }
 
   getLicenseInfo = async () => {
@@ -69,7 +69,7 @@ class LicensePage extends Component {
     try {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.LOADING,
+        getLanguage(global.language).Prompt.LOADING,
       )
       let serialNumber = await SMap.initSerialNumber('')
       if (serialNumber !== '') {
@@ -81,7 +81,7 @@ class LicensePage extends Component {
       }
       GLOBAL.Loading.setLoading(false)
     } catch (error) {
-      Toast.show(GLOBAL.language === 'CN' ? '归还失败' : 'return failed')
+      Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       GLOBAL.Loading.setLoading(false)
       this.getLicenseInfo()
     }
@@ -91,7 +91,7 @@ class LicensePage extends Component {
     try {
       let userInfo = this.props.cloudLicenseUser
       if (userInfo.isEmail === undefined) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_LOGIN)
+        Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN)
         NavigationService.navigate('LicenseJoinCloud', {
           callback: () => {
             NavigationService.goBack()
@@ -102,7 +102,7 @@ class LicensePage extends Component {
       }
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.LOADING,
+        getLanguage(global.language).Prompt.LOADING,
       )
       let licenseId = await AsyncStorage.getItem(constants.LICENSE_CLOUD_ID)
       let returnId = await AsyncStorage.getItem(
@@ -117,7 +117,7 @@ class LicensePage extends Component {
       }
       let days = await SMap.recycleCloudLicense(licenseId, returnId)
       if (days < 0) {
-        Toast.show(GLOBAL.language === 'CN' ? '归还失败' : 'return failed')
+        Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       } else {
         AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, '')
         AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, '')
@@ -127,7 +127,7 @@ class LicensePage extends Component {
       return days
     } catch (e) {
       this.getLicenseInfo()
-      Toast.show(GLOBAL.language === 'CN' ? '归还失败' : 'return failed')
+      Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       GLOBAL.Loading.setLoading(false)
       return -1
     }
@@ -144,16 +144,16 @@ class LicensePage extends Component {
       if (result) {
         let info = await SMap.getEnvironmentStatus()
         this.props.setLicenseInfo(info)
-        Toast.show(GLOBAL.language === 'CN' ? '试用成功' : 'Successful trial')
+        Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
       } else {
         Toast.show(
-          GLOBAL.language === 'CN'
+          global.language === 'CN'
             ? '您已经申请过试用许可,请接入正式许可'
             : 'You have applied for trial license, please access the formal license',
         )
       }
     } catch (error) {
-      Toast.show(GLOBAL.language === 'CN' ? '试用失败' : 'fail to get trial')
+      Toast.show(global.language === 'CN' ? '试用失败' : 'fail to get trial')
     }
   }
 
@@ -165,7 +165,7 @@ class LicensePage extends Component {
           style={styles.dialogHeaderImg}
         />
         <Text style={styles.promptTitle}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_CLEAN_ALERT}
+          {getLanguage(global.language).Profile.LICENSE_CLEAN_ALERT}
         </Text>
       </View>
     )
@@ -176,8 +176,8 @@ class LicensePage extends Component {
       <Dialog
         ref={ref => (this.cleanDialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(global.language).Prompt.CANCEL}
         confirmAction={() => {
           this.cleanDialog.setDialogVisible(false)
           this.recycleLicense()
@@ -215,7 +215,7 @@ class LicensePage extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SETTING_LICENSE,
+          title: getLanguage(global.language).Profile.SETTING_LICENSE,
           navigation: this.props.navigation,
         }}
       >

@@ -29,15 +29,15 @@ export default class GroupTab extends React.Component {
       for (let i = 0; i < result.length; i++) {
         if (result[i].name === '点符号库') {
           result[i].name = getLanguage(
-            GLOBAL.language,
+            global.language,
           ).Map_Main_Menu.POINT_SYMBOL_LIBRARY
         } else if (result[i].name === '线型符号库') {
           result[i].name = getLanguage(
-            GLOBAL.language,
+            global.language,
           ).Map_Main_Menu.LINE_SYMBOL_LIBRARY
         } else if (result[i].name === '填充符号库') {
           result[i].name = getLanguage(
-            GLOBAL.language,
+            global.language,
           ).Map_Main_Menu.REGION_SYMBOL_LIBRARY
         }
       }

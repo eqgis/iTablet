@@ -1,4 +1,3 @@
-/* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
 import { SMeasureView, SMap } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
@@ -17,17 +16,18 @@ function collectSceneForm() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
     // let time = await SCollectSceneFormView.getSystemTime()
     // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // GLOBAL.newcollectData = time
     // const datasourceAlias = time
     // const datasetName = 'CollectSceneForm'
     // const datasetPointName = 'CollectPointSceneForm'
@@ -41,10 +41,10 @@ function collectSceneForm() {
     NavigationService.navigate('EnterDatumPoint')
 
     // NavigationService.navigate('InputPage', {
-    //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_NEWDATA,
     //   value: '',
-    //   placeholder: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   placeholder: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME,
     //   type: 'name',
     //   cb: async value => {
@@ -52,8 +52,8 @@ function collectSceneForm() {
     //   },
     //   backcb: () => {
     //     NavigationService.goBack()
-    //     if (GLOBAL.arSwitchToMap) {
-    //       GLOBAL.arSwitchToMap = false
+    //     if (GLOBAL.isswitch) {
+    //       GLOBAL.isswitch = false
     //       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
     //     }
     //   },
@@ -67,7 +67,7 @@ function arMeasureCollect() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -81,10 +81,11 @@ function arMeasureCollect() {
         _params.user.currentUser.userName,
       )
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        let data = await SMap.newTaggingDataset(
           'Default_Tagging',
           _params.user.currentUser.userName,
         )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
       let datasetName = 'Default_Tagging'
@@ -106,7 +107,7 @@ function arMeasureCollect() {
     NavigationService.navigate('EnterDatumPoint')
 
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
   })()
@@ -118,7 +119,7 @@ function arDrawLine() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -132,10 +133,11 @@ function arDrawLine() {
         _params.user.currentUser.userName,
       )
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        let data = await SMap.newTaggingDataset(
           'Default_Tagging',
           _params.user.currentUser.userName,
         )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
       let datasetName = 'Default_Tagging'
@@ -158,7 +160,7 @@ function arDrawLine() {
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
     GLOBAL.MeasureCollectData.measureType = 'drawLine'
@@ -172,7 +174,7 @@ function arDrawArea() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -186,10 +188,11 @@ function arDrawArea() {
         _params.user.currentUser.userName,
       )
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        let data = await SMap.newTaggingDataset(
           'Default_Tagging',
           _params.user.currentUser.userName,
         )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
       let datasetName = 'Default_Tagging'
@@ -212,7 +215,7 @@ function arDrawArea() {
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 
@@ -227,7 +230,7 @@ function arDrawPoint() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     let currentLayer = GLOBAL.currentLayer
@@ -241,10 +244,11 @@ function arDrawPoint() {
         _params.user.currentUser.userName,
       )
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        let data = await SMap.newTaggingDataset(
           'Default_Tagging',
           _params.user.currentUser.userName,
         )
+        GLOBAL.TaggingDatasetName = data && data.datasetName
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
       let datasetName = 'Default_Tagging'
@@ -267,7 +271,7 @@ function arDrawPoint() {
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 

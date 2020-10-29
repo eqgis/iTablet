@@ -31,15 +31,15 @@ export default class EnterDatumPoint extends Component {
 
     let problemItems = []
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
+      title: getLanguage(global.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_PRODUCT_ADVICE,
+      title: getLanguage(global.language).Profile.SUGGESTION_PRODUCT_ADVICE,
       checked: false,
     })
     problemItems.push({
-      title: getLanguage(GLOBAL.language).Profile.SUGGESTION_OTHER_PROBLEMS,
+      title: getLanguage(global.language).Profile.SUGGESTION_OTHER_PROBLEMS,
       checked: false,
     })
     this.state = {
@@ -72,7 +72,7 @@ export default class EnterDatumPoint extends Component {
   getCurrentPosition = async () => {
     GLOBAL.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
     let map = await SMap.getCurrentPosition()
 
@@ -80,7 +80,7 @@ export default class EnterDatumPoint extends Component {
 
     GLOBAL.Loading.setLoading(false)
     Toast.show(
-      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
     )
   }
 
@@ -115,7 +115,7 @@ export default class EnterDatumPoint extends Component {
       let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
       wsData.layerIndex = 3
       let licenseStatus = await SMap.getEnvironmentStatus()
-      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
         // NavigationService.navigate('MapViewSingle', {
         // wsData,
@@ -152,7 +152,7 @@ export default class EnterDatumPoint extends Component {
           onPress={this.getCurrentPosition}
         >
           <Text style={styles.itemButton}>
-            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
           </Text>
         </TouchableOpacity>
 
@@ -161,7 +161,7 @@ export default class EnterDatumPoint extends Component {
           onPress={this.mapSelectPoint}
         >
           <Text style={styles.itemButton}>
-            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}
           </Text>
         </TouchableOpacity>
       </View>
@@ -174,7 +174,7 @@ export default class EnterDatumPoint extends Component {
         <View style={styles.itemHeader}>
           <Text style={styles.titleHeader}>
             {
-              getLanguage(GLOBAL.language).Profile
+              getLanguage(global.language).Profile
                 .MAP_AR_DATUM_ENTER_CURRENT_POSITION
             }
           </Text>
@@ -192,7 +192,7 @@ export default class EnterDatumPoint extends Component {
     let point = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
     if (!point) {
       Toast.show(
-        getLanguage(GLOBAL.language).Profile
+        getLanguage(global.language).Profile
           .MAP_AR_DATUM_ENTER_CURRENT_POSITION,
       )
       return
@@ -226,6 +226,9 @@ export default class EnterDatumPoint extends Component {
           )
 
           GLOBAL.mapView.setState({ map: { height: 0 } })
+          // GLOBAL.newcollectData = time
+          GLOBAL.newcollectData = datasourceAlias
+          // const datasourceAlias = time
           const datasetName = 'CollectSceneForm'
           const datasetPointName = 'CollectPointSceneForm'
           GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
@@ -277,6 +280,7 @@ export default class EnterDatumPoint extends Component {
 
     // let time = await SCollectSceneFormView.getSystemTime()
     // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // GLOBAL.newcollectData = time
     // const datasourceAlias = time
     // const datasetName = 'CollectSceneForm'
     // const datasetPointName = 'CollectPointSceneForm'
@@ -295,7 +299,7 @@ export default class EnterDatumPoint extends Component {
         {/* {this.renderHintText()} */}
         {
           <Button
-            title={getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_SURE}
+            title={getLanguage(global.language).Profile.MAP_AR_DATUM_SURE}
             type="BLUE"
             style={{
               width: '94%',
@@ -311,8 +315,8 @@ export default class EnterDatumPoint extends Component {
   }
 
   back = () => {
-    if (GLOBAL.arSwitchToMap) {
-      GLOBAL.arSwitchToMap = false
+    if (GLOBAL.isswitch) {
+      GLOBAL.isswitch = false
       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
     }
     GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(true)
@@ -327,7 +331,7 @@ export default class EnterDatumPoint extends Component {
       <View>
         <Text style={styles.itemSubTitle}>
           {
-            getLanguage(GLOBAL.language).Profile
+            getLanguage(global.language).Profile
               .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
           }
         </Text>
@@ -365,7 +369,7 @@ export default class EnterDatumPoint extends Component {
           }}
         >
           <Text style={{ marginLeft: scaleSize(15) }}>
-            {getLanguage(GLOBAL.language).Prompt.FLOOR}
+            {getLanguage(global.language).Prompt.FLOOR}
           </Text>
           <FlatList
             data={this.state.floorData}
@@ -401,7 +405,7 @@ export default class EnterDatumPoint extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_POSITION,
+          title: getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION,
           //'请选择当前位置坐标',
           navigation: this.props.navigation,
           backAction: this.back,

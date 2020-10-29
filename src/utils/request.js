@@ -23,12 +23,12 @@ export default function request(url, method = 'GET', { body, headers }) {
     .then(response => {
       const { map } = response.headers
       if (map['set-cookie']) {
-        GLOBAL.cookie = map['set-cookie']
+        global.cookie = map['set-cookie']
       }
       return response.json()
     })
     .then(responseJson => responseJson)
     .catch(() => {
-      GLOBAL.cookie = ''
+      global.cookie = ''
     })
 }

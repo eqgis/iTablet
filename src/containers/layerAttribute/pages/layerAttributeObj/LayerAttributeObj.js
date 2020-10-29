@@ -190,8 +190,8 @@ export default class LayerAttributeObj extends React.Component {
             // colHeight={this.state.colHeight}
             widthArr={[100, 100]}
             tableHead={[
-              getLanguage(GLOBAL.language).Map_Label.NAME,
-              getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+              getLanguage(global.language).Map_Label.NAME,
+              getLanguage(global.language).Map_Label.ATTRIBUTE,
               //'名称'
               //'属性值'
             ]}

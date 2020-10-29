@@ -3,7 +3,7 @@
  Author: Yangshanglong
  E-mail: yangshanglong@supermap.com
  */
-/*global GLOBAL*/
+
 import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'

@@ -50,27 +50,27 @@ export default class MeasureAreaView extends React.Component {
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA
       } else if (this.measureType === 'measureLength') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
       } else if (this.measureType === 'drawLine') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
       } else if (this.measureType === 'arDrawArea') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
       } else if (this.measureType === 'arDrawPoint') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
       } else if (this.measureType === 'arMeasureHeight') {
         this.title = getLanguage(
-          GLOBAL.language,
+          global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       }
 
@@ -227,7 +227,7 @@ export default class MeasureAreaView extends React.Component {
     let result = await SMeasureAreaView.saveDataset()
     if (result) {
       await SMeasureAreaView.clearAll()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY)
     }
   }
 
@@ -288,7 +288,7 @@ export default class MeasureAreaView extends React.Component {
         ref={ref => (this.DatumPointDialog = ref)}
         type={'modal'}
         cancelBtnVisible={false}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
         confirmAction={async () => {
           let fixedPoint = this.point
           //设置基点
@@ -313,7 +313,7 @@ export default class MeasureAreaView extends React.Component {
         />
         <Text style={styles.promptTitle}>
           {
-            getLanguage(GLOBAL.language).Profile
+            getLanguage(global.language).Profile
               .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
           }
         </Text>
@@ -445,7 +445,7 @@ export default class MeasureAreaView extends React.Component {
       <View style={styles.SwitchModelsView}>
         <Text style={styles.titleSwitchModelsView}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_CHOOSE_MODEL
           }
         </Text>
@@ -525,7 +525,7 @@ export default class MeasureAreaView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_MEASURE_LENGTH
                 }
               </Text>
@@ -560,7 +560,7 @@ export default class MeasureAreaView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_MEASURE_AREA
                 }
               </Text>
@@ -587,7 +587,7 @@ export default class MeasureAreaView extends React.Component {
     return (
       <View style={styles.totallengthChangeView}>
         <Text style={styles.titleTotal}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu
+          {getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
             this.state.totalLength +
             'm'}
@@ -600,7 +600,7 @@ export default class MeasureAreaView extends React.Component {
     return (
       <View style={[styles.totallengthChangeView, { top: scaleSize(200) }]}>
         <Text style={styles.titleTotal}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu
+          {getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
             this.state.totalArea +
             'm²'}
@@ -613,7 +613,7 @@ export default class MeasureAreaView extends React.Component {
     return (
       <View style={styles.tolastlengthChangeView}>
         <Text style={styles.titleTotal}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu
+          {getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE +
             this.state.currentLength +
             'm'}
@@ -626,7 +626,7 @@ export default class MeasureAreaView extends React.Component {
     return (
       <View style={styles.currentLengthChangeView}>
         <Text style={styles.title}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu
+          {getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH +
             this.state.tolastLength +
             'm'}
@@ -640,7 +640,7 @@ export default class MeasureAreaView extends React.Component {
       <View style={styles.currentLengthChangeView}>
         <Text style={styles.title}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING
           }
         </Text>

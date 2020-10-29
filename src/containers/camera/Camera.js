@@ -66,7 +66,7 @@ export default class Camera extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    GLOBAL.isPad && Orientation.lockToPortrait()
+    global.isPad && Orientation.lockToPortrait()
   }
 
   componentWillUnmount() {
@@ -75,7 +75,7 @@ export default class Camera extends React.Component {
       this.recordTimer = null
     }
     SMap.setDynamicviewsetVisible(true)
-    GLOBAL.isPad && Orientation.unlockAllOrientations()
+    global.isPad && Orientation.unlockAllOrientations()
   }
 
   componentDidMount() {

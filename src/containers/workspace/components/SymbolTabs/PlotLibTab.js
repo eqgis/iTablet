@@ -34,7 +34,7 @@ export default class PlotLibTab extends React.Component {
   action = async ({ item }) => {
     Toast.show(
       //'当前选择为:'
-      getLanguage(GLOBAL.language).Prompt.THE_CURRENT_SELECTION + item.name,
+      getLanguage(global.language).Prompt.THE_CURRENT_SELECTION + item.name,
     )
 
     let plotPath = await FileTools.appendingHomeDirectory(item.path)

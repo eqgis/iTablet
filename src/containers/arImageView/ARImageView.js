@@ -61,7 +61,7 @@ export default class ARImageView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

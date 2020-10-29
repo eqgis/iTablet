@@ -55,7 +55,7 @@ async function OpenData(data, index, callback) {
       }
     }
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
   }
   return true
 }
@@ -240,9 +240,9 @@ function layerManagerData() {
       title: 'Tianditu',
       action: callback => {
         GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
             if (GLOBAL.language === 'CN') {
@@ -266,9 +266,9 @@ function layerManagerData() {
       title: 'Tianditu Image',
       action: callback => {
         GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
             if (GLOBAL.language === 'CN') {
@@ -292,9 +292,9 @@ function layerManagerData() {
       title: 'Tianditu Terrain',
       action: callback => {
         GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
             data.push(ConstOnline.tiandituTerCN)
@@ -383,7 +383,7 @@ function layerManagerData() {
   ]
   data = data.filter(item => {
     if (
-      GLOBAL.language === 'CN' &&
+      global.language === 'CN' &&
       (item.title === 'Google RoadMap' ||
         item.title === 'Google Satellite' ||
         item.title === 'Google Terrain' ||

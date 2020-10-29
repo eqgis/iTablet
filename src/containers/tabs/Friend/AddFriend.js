@@ -246,7 +246,7 @@ class AddFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.ADD_FRIENDS,
+          title: getLanguage(global.language).Friends.ADD_FRIENDS,
           //'添加好友',
           withoutBack: false,
           navigation: this.props.navigation,

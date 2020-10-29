@@ -224,7 +224,7 @@ export default class CoworkInfo {
         this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
-          Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
+          Toast.show(getLanguage(global.language).Friends.ADD_DELETE_ERROR)
       }
       return result
     } catch (error) {
@@ -263,7 +263,7 @@ export default class CoworkInfo {
         } else {
           notify &&
             Toast.show(
-              getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,
+              getLanguage(global.language).Friends.UPDATE_NOT_EXIST_OBJ,
             )
         }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {

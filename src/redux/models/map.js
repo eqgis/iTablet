@@ -257,7 +257,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
   getState,
 ) => {
   if (isExporting) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.TYR_AGAIN_LATER)
+    Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
     // ''请稍后再试')
     return false
   }
@@ -319,7 +319,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
   } catch (e) {
     isExporting = false
     if (!exportResult) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // ConstInfo.EXPORT_WORKSPACE_FAILED)
     } else if (!zipResult) {
       Toast.show(ConstInfo.ZIP_FAILED)
@@ -337,7 +337,7 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
   const userName = getState().user.toJS().currentUser.userName || 'Customer'
   if (params.name) {
     if (isExporting) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.TYR_AGAIN_LATER)
+      Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
       // '请稍后再试')
       return false
     }
@@ -353,13 +353,13 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
       result = await FileTools.zipFile(path, zipPath)
       if (result) {
         await FileTools.deleteFile(path)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_START)
+        Toast.show(getLanguage(global.language).Prompt.SHARE_START)
         // '导出成功,开始分享')
         isExporting = false
         cb && cb(result, zipPath)
       }
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // '导出失败')
     }
     // let result = await SScene.is3DWorkspace({ server: params.server })

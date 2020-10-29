@@ -22,7 +22,7 @@ class AnalysisModule extends FunctionModule {
       let sdk = await SMap.getPhoneSDK()
       if (sdk <= 24) {
         Toast.show(
-          getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
         )
         return true
       }

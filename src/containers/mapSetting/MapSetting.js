@@ -155,7 +155,7 @@ export default class MapSetting extends Component {
       <View>
         {this._renderItemSeparatorComponent()}
         {/*<MapSettingItem*/}
-        {/*title={getLanguage(GLOBAL.language).Map_Setting.COLUMN_NAV_BAR}*/}
+        {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
         {/*type={'switch'}*/}
         {/*rightAction={value => {*/}
         {/*this.props.setColumnNavBar(value)*/}
@@ -167,7 +167,7 @@ export default class MapSetting extends Component {
         {CoworkInfo.coworkId !== '' && (
           <MapSettingItem
             type={'switch'}
-            title={getLanguage(GLOBAL.language).Map_Setting.REAL_TIME_SYNC}
+            title={getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
               CoworkInfo.setIsRealTime(value)
               this.setState({ isRealTime: value })

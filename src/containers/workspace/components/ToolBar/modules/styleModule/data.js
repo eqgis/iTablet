@@ -440,8 +440,8 @@ const text = param => [
     },
   },
   {
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
-    selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
+    key: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+    selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
       GLOBAL.toolBox &&
         GLOBAL.toolBox.setState({
@@ -453,8 +453,8 @@ const text = param => [
             ToolbarBtnType.MENU_FLEX,
             ToolbarBtnType.TOOLBAR_COMMIT,
           ],
-          selectName: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
-          selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
+          selectName: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+          selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
         })
     },
   },

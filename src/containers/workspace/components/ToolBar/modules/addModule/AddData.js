@@ -93,7 +93,7 @@ async function getUDBsAndMaps() {
         image: require('../../../../../../assets/mapTools/icon_add_white.png'),
         action: () => {
           NavigationService.navigate('MyDatasource', {
-            title: getLanguage(GLOBAL.language).Profile.DATA,
+            title: getLanguage(global.language).Profile.DATA,
             from: 'MapView',
             exitCallback: async () => {
               const params = ToolbarModule.getParams()
@@ -252,21 +252,21 @@ async function getSymbolsFromFile() {
             )
             Toast.show(
               result
-                ? getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS
-                : getLanguage(GLOBAL.language).Prompt.ADD_FAILED,
+                ? getLanguage(global.language).Prompt.ADD_SUCCESS
+                : getLanguage(global.language).Prompt.ADD_FAILED,
             )
           }
           if (!isEixst) {
             addSymbol(mapName, currentSymbolFile, data.id, false)
           } else {
             GLOBAL.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Prompt.OVERRIDE_SYMBOL,
+              text: getLanguage(global.language).Prompt.OVERRIDE_SYMBOL,
               confirmAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, true),
               cancelAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, false),
-              confirmText: getLanguage(GLOBAL.language).Prompt.OVERWRITE,
-              cancelText: getLanguage(GLOBAL.language).Prompt.CREATE,
+              confirmText: getLanguage(global.language).Prompt.OVERWRITE,
+              cancelText: getLanguage(global.language).Prompt.CREATE,
               disableBackTouch: false,
             })
             GLOBAL.SimpleDialog.setVisible(true)

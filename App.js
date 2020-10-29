@@ -1,4 +1,3 @@
-/*global GLOBAL*/
 import React, { Component } from 'react'
 import {
   View,
@@ -45,17 +44,19 @@ import { setShow }  from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
 import { FileTools }  from './src/native'
 import ConfigStore from './src/redux/store'
+import { SaveView } from './src/containers/workspace/components'
 import { scaleSize, Toast, screen } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
-import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
+import { ConstPath, ConstInfo, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService ,SpeechManager, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
+import constants from './src/containers/workspace/constants'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
 import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
@@ -193,8 +194,6 @@ class AppRoot extends Component {
     }
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
-
-    this.loginTimer = undefined
   }
 
   UNSAFE_componentWillMount(){
@@ -269,19 +268,22 @@ class AppRoot extends Component {
   }
 
   initGlobal = () => {
-    // GLOBAL.AppState = AppState.currentState
+    GLOBAL.AppState = AppState.currentState
+    GLOBAL.loginTimer = undefined
     GLOBAL.STARTX = undefined  //离线导航起点
     GLOBAL.ENDX = undefined  //离线导航终点
-    // GLOBAL.HASCHOSE = false  //离线数据选择
+    GLOBAL.HASCHOSE = false  //离线数据选择
     // TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理
     GLOBAL.ThemeType = ThemeType.LIGHT_THEME
+    GLOBAL.TaggingDatasetName = ''
     GLOBAL.BaseMapSize = 1
     //地图比例尺
     GLOBAL.scaleView = null
-    // TODO 从GLOBAL中去除SelectedSelectionAttribute
     GLOBAL.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
     this.setIsPad()
     this._getIs64System()
+    GLOBAL.isDownload = true //目标分类默认文件下载判断
+    GLOBAL.isProjectModelDownload = true //ar沙盘模型文件下载判断
     GLOBAL.getDevice = this.getDevice
     GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
     GLOBAL.clickWait = false // 防止重复点击
@@ -293,11 +295,11 @@ class AppRoot extends Component {
 
   _getIs64System = async () =>{
     try {
-      GLOBAL.SYSTEM_VERSION = "x64"
+      global.SYSTEM_VERSION = "x64"
       if (Platform.OS === 'android') {
         let b64 = await AppUtils.is64Bit()
         if(b64 === false){
-          GLOBAL.SYSTEM_VERSION = "x32"
+          global.SYSTEM_VERSION = "x32"
         }
       }
     }catch (e) {
@@ -335,9 +337,9 @@ class AppRoot extends Component {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
       if(result){
-        GLOBAL.getFriend().onUserLoggedin()
+        global.getFriend().onUserLoggedin()
       } else {
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
       let url = this.props.user.currentUser.serverUrl
@@ -350,11 +352,11 @@ class AppRoot extends Component {
 
   reCircleLogin(){
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      if(this.loginTimer !== undefined){
-        clearInterval(this.loginTimer)
-        this.loginTimer = undefined
+      if(GLOBAL.loginTimer !== undefined){
+        clearInterval(GLOBAL.loginTimer)
+        GLOBAL.loginTimer = undefined
       }
-      this.loginTimer = setInterval(this.loginOnline,60000 )
+      GLOBAL.loginTimer = setInterval(this.loginOnline,60000 )
     }
   }
 
@@ -418,12 +420,12 @@ class AppRoot extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
-
+  
   getVersion = async () => {
-    GLOBAL.language = this.props.language
+    global.language = this.props.language
     let appInfo = await AppInfo.getAppInfo()
     let bundleInfo = await AppInfo.getBundleVersion()
-    GLOBAL.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
+    global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
   }
 
@@ -453,25 +455,25 @@ class AppRoot extends Component {
   }
 
   onInvalidModule = () => {
-    GLOBAL.SimpleDialog.set({
+    global.SimpleDialog.set({
       text: getLanguage(this.props.language).Profile.INVALID_MODULE,
       confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
       confirmAction: () => {
         NavigationService.navigate('LicensePage')
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   onInvalidLicense = () => {
-    GLOBAL.SimpleDialog.set({
+    global.SimpleDialog.set({
       text: getLanguage(this.props.language).Profile.INVALID_LICENSE,
       confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
       confirmAction: () => {
         NavigationService.navigate('LicensePage')
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   handleStateChange = appState => {
@@ -497,8 +499,12 @@ class AppRoot extends Component {
     let status = await SMap.getEnvironmentStatus()
     this.props.setLicenseInfo(status)
     if (!status || !status.isLicenseValid) {
-      this.LicenseValidDialog.setDialogVisible(true)
+      GLOBAL.LicenseValidDialog.setDialogVisible(true)
     }
+    // else if(serialNumber === '' && !status.isTrailLicense)
+    // {
+    //   GLOBAL.isNotItableLicenseDialog.setDialogVisible(true)
+    // }
 
     // if(serialNumber!==''&&!status.isTrailLicense){
     //   let licenseInfo = await SMap.getSerialNumberAndModules()
@@ -608,9 +614,9 @@ class AppRoot extends Component {
   addGetShareResultListener = async () => {
     await FileTools.getShareResult({
       callback: () => {
-        // if(GLOBAL.shareFilePath&&GLOBAL.shareFilePath.length>1){
-        // FileTools.deleteFile(GLOBAL.shareFilePath)
-        // }
+        if(GLOBAL.shareFilePath&&GLOBAL.shareFilePath.length>1){
+          // FileTools.deleteFile(GLOBAL.shareFilePath)
+        }
         // result && this.import.setDialogVisible(true)
       },
     })
@@ -623,14 +629,14 @@ class AppRoot extends Component {
   }
 
   // 初始化录音
-  // initSpeechManager = async () => {
-  //   try {
-  //     GLOBAL.SpeechManager = new SpeechManager()
-  //     await GLOBAL.SpeechManager.init()
-  //   } catch (e) {
-  //     Toast.show('语音初始化失败')
-  //   }
-  // }
+  initSpeechManager = async () => {
+    try {
+      GLOBAL.SpeechManager = new SpeechManager()
+      await GLOBAL.SpeechManager.init()
+    } catch (e) {
+      Toast.show('语音初始化失败')
+    }
+  }
 
   // 初始化游客工作空间
   // initCustomerWorkspace = async () => {
@@ -693,7 +699,7 @@ class AppRoot extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle}
-          onPress={()=>this.LicenseValidDialog.setDialogVisible(false)}
+          onPress={()=>GLOBAL.LicenseValidDialog.setDialogVisible(false)}
         >
           <Text style={styles.btnTextStyle}>
             {getLanguage(this.props.language).Profile.LICENSE_CLEAN_CANCLE}
@@ -722,7 +728,7 @@ class AppRoot extends Component {
     //   let activateResult = await SMap.activateNativeLicense()
     //   if(activateResult === -1){
     //     //没有本地许可文件
-    //     this.noNativeLicenseDialog.setDialogVisible(true)
+    //     GLOBAL.noNativeLicenseDialog.setDialogVisible(true)
     //   }else if(activateResult === -2){
     //     //本地许可文件序列号无效
     //     Toast.show(
@@ -740,7 +746,7 @@ class AppRoot extends Component {
     //     }
     //     GLOBAL.modulesNumber = number
 
-    //     this.LicenseValidDialog.setDialogVisible(false)
+    //     GLOBAL.LicenseValidDialog.setDialogVisible(false)
     //     GLOBAL.getLicense && GLOBAL.getLicense()
     //     Toast.show(
     //       getLanguage(this.props.language).Profile
@@ -754,29 +760,29 @@ class AppRoot extends Component {
     //   return
     // }
 
-    this.LicenseValidDialog.setDialogVisible(false)
+    GLOBAL.LicenseValidDialog.setDialogVisible(false)
     NavigationService.navigate('LicenseTypePage')
   }
   //申请试用许可
   applyTrialLicense =async () => {
 
-    this.LicenseValidDialog.setDialogVisible(false)
+    GLOBAL.LicenseValidDialog.setDialogVisible(false)
     //if(Platform.OS === 'ios')
     {
       SMap.applyTrialLicense().then(async value => {
         if(value){
-          Toast.show(GLOBAL.language === 'CN' ? '试用成功' : 'Successful trial')
+          Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
         }else{
           // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
           Toast.show(
-            GLOBAL.language === 'CN'
+            global.language === 'CN'
               ? '您已经申请过试用许可,请接入正式许可'
               : 'You have applied for trial license, please access the formal license',
           )
         }
         let status = await SMap.getEnvironmentStatus()
         this.props.setLicenseInfo(status)
-        this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
+        GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
       })
       return
     }
@@ -826,7 +832,7 @@ class AppRoot extends Component {
     //       SMap.initTrailLicensePath()
     //       this.openWorkspace()
     //       Toast.show(this.props.language==='CN'?"试用成功":'Successful trial')
-    //       this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
+    //       GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
     //     })
     // }catch (e) {
     //   GLOBAL.Loading.setLoading(
@@ -834,13 +840,13 @@ class AppRoot extends Component {
     //     this.props.language==='CN'?"许可申请中...":"Applying"
     //   )
     //   Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
-    //   this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
+    //   GLOBAL.LicenseValidDialog.callback&&GLOBAL.LicenseValidDialog.callback()
     // }
     // NavigationService.navigate('Protocol', { type: 'ApplyLicense' })
   }
   renderDialog = () => {
     return (<Dialog
-      ref={ref => (this.LicenseValidDialog = ref)}
+      ref={ref => (GLOBAL.LicenseValidDialog = ref)}
       showBtns={false}
       type={Dialog.Type.NON_MODAL}
       opacity={1}
@@ -851,6 +857,55 @@ class AppRoot extends Component {
     >
       {this.renderLicenseDialogChildren()}
     </Dialog>
+    )
+  }
+  renderLicenseNotModuleChildren = () => {
+    return (
+      <View style={styles.dialogHeaderView}>
+        <Text style={styles.promptTtile}>
+          {getLanguage(this.props.language).Profile.LICENSE_NOT_CONTAIN_CURRENT_MODULE}
+          {/* 试用许可已过期,请更换许可后重启 */}
+        </Text>
+        <View style={{marginTop: scaleSize(30),width: '100%',height: 1,backgroundColor: color.item_separate_white}} />
+        <View
+          style={{height: scaleSize(200),
+            flexDirection: 'column',
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center'}}
+          onPress={this.inputOfficialLicense}
+        >
+          <Text style={{fontSize: scaleSize(20),marginLeft:scaleSize(30),marginRight:scaleSize(30)}}>
+            {getLanguage(this.props.language).Profile.LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB}
+          </Text>
+        </View>
+        <View style={{width: '100%',height: 1,backgroundColor: color.item_separate_white}} />
+        <TouchableOpacity
+          style={{height: scaleSize(80),
+            width: '100%',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'}}
+          onPress={()=>{ GLOBAL.licenseModuleNotContainDialog.setDialogVisible(false)}}
+        >
+          <Text style={styles.btnTextStyle}>
+            {getLanguage(this.props.language).Prompt.CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+  renderLicenseNotModuleDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (GLOBAL.licenseModuleNotContainDialog = ref)}
+        showBtns={false}
+        opacity={1}
+        opacityStyle={[styles.opacityView, { height: scaleSize(340) }]}
+        style={[styles.dialogBackground, { height: scaleSize(340) }]}
+      >
+        {this.renderLicenseNotModuleChildren()}
+      </Dialog>
     )
   }
 
@@ -868,7 +923,7 @@ class AppRoot extends Component {
               true,
               getLanguage(this.props.language).Friends.IMPORT_DATA,
             )
-            let homePath = GLOBAL.homePath
+            let homePath = global.homePath
             let importPath = homePath + '/iTablet/Import'
             let filePath = importPath + '/import.zip'
             let isImport = false
@@ -892,7 +947,7 @@ class AppRoot extends Component {
           }
         }}
         cancelAction={ async () => {
-          let homePath = GLOBAL.homePath
+          let homePath = global.homePath
           let importPath = homePath + ConstPath.Import
           await FileTools.deleteFile(importPath)
           this.import.setDialogVisible(false)
@@ -936,7 +991,7 @@ class AppRoot extends Component {
   //提示没有本地许可文件
   renderNoNativeOfficialLicenseDialog = () => {
     return (<Dialog
-      ref={ref => (this.noNativeLicenseDialog = ref)}
+      ref={ref => (GLOBAL.noNativeLicenseDialog = ref)}
       showBtns={false}
       type={Dialog.Type.NON_MODAL}
       opacity={1}
@@ -958,7 +1013,50 @@ class AppRoot extends Component {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center'}}
-          onPress={()=>{ this.noNativeLicenseDialog.setDialogVisible(false)}}
+          onPress={()=>{ GLOBAL.noNativeLicenseDialog.setDialogVisible(false)}}
+        >
+          <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
+            {getLanguage(this.props.language).Prompt.CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </Dialog>
+    )
+
+  }
+
+  //提示正式许可不是itablet app激活的许可
+  renderIsNotItabletLicenseDialog = () => {
+    return (<Dialog
+      ref={ref => (GLOBAL.isNotItableLicenseDialog = ref)}
+      showBtns={false}
+      type={Dialog.Type.NON_MODAL}
+      opacity={1}
+      opacityStyle={styles.opacityView}
+      style={styles.dialogBackground}
+    >
+      <View style={styles.dialogHeaderView}>
+        <Image
+          source={require('./src/assets/home/Frenchgrey/icon_prompt.png')}
+          style={styles.dialogHeaderImg}
+        />
+        <Text style={{fontSize: scaleSize(24),
+          height: scaleSize(120),
+          color: color.theme_white,
+          marginTop: scaleSize(5),
+          marginLeft: scaleSize(10),
+          marginRight: scaleSize(10),
+          textAlign: 'center'}}>
+          {getLanguage(GLOBAL.language).Profile.LICENSE_NOT_ITABLET_OFFICAL}
+        </Text>
+        <View style={{width: '100%',height: 1,backgroundColor: color.item_separate_white }}></View>
+        <TouchableOpacity
+          style={{height: scaleSize(60),
+            width: '100%',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'}}
+          onPress={()=>{ GLOBAL.isNotItableLicenseDialog.setDialogVisible(false)}}
         >
           <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
             {getLanguage(this.props.language).Prompt.CONFIRM}
@@ -971,13 +1069,13 @@ class AppRoot extends Component {
   }
 
   renderSimpleDialog = () => {
-    return <SimpleDialog ref={ref => GLOBAL.SimpleDialog = ref}/>
+    return <SimpleDialog ref={ref => global.SimpleDialog = ref}/>
   }
 
   renderARDeviceListDialog = () => {
     return  (
       <SimpleDialog
-        ref={ref => GLOBAL.ARDeviceListDialog = ref}
+        ref={ref => global.ARDeviceListDialog = ref}
         buttonMode={'list'}
         text={getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE}
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
@@ -1026,7 +1124,9 @@ class AppRoot extends Component {
         {this.renderSimpleDialog()}
         {this.renderImportDialog()}
         {this.renderARDeviceListDialog()}
+        {this.renderLicenseNotModuleDialog()}
         {this.renderNoNativeOfficialLicenseDialog()}
+        {this.renderIsNotItabletLicenseDialog()}
         {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
         <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false}/>
         <MyToast ref={ref => GLOBAL.Toast = ref} />

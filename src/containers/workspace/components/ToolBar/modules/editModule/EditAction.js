@@ -47,10 +47,10 @@ async function commit(type) {
         }
       }
       //协作时同步编辑对象
-      if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+      if (global.coworkMode && global.getFriend) {
         let event = ToolbarModule.getData().event
         //TODO 增加类型判断
-        let friend = GLOBAL.getFriend()
+        let friend = global.getFriend()
         friend.onGeometryEdit(
           event.layerInfo,
           event.fieldInfo,

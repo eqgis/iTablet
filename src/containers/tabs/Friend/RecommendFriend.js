@@ -251,7 +251,7 @@ class RecommendFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.RECOMMEND_FRIEND,
+          title: getLanguage(global.language).Friends.RECOMMEND_FRIEND,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

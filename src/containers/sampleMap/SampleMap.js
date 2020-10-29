@@ -155,7 +155,7 @@ export default class SampleMap extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+          title: getLanguage(global.language).Profile.SAMPLEDATA,
           //'公共地图',
           navigation: this.props.navigation,
           backAction: () => {
@@ -182,7 +182,7 @@ export default class SampleMap extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.LOADING}
               enabled={true}
             />
           }

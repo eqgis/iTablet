@@ -13,13 +13,13 @@ class arEffect extends FunctionModule {
   action = async () => {
     let isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
     if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
+      GLOBAL.isswitch = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
 

@@ -65,7 +65,7 @@ export default class CollectSceneFormView extends React.Component {
       rightcolor: {
         color: 'black',
       },
-      collectData: this.datasourceAlias,
+      collectData: GLOBAL.newcollectData,
       chooseDataSource: false,
       isnew: false,
     }
@@ -177,13 +177,13 @@ export default class CollectSceneFormView extends React.Component {
     // this.isRecording = !this.isRecording
     // if (this.isRecording) {
     //   Toast.show(
-    //     getLanguage(GLOBAL.language).Map_Main_Menu
+    //     getLanguage(global.language).Map_Main_Menu
     //       .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START,
     //   )
     //   await SCollectSceneFormView.startRecording()
     // } else {
     Toast.show(
-      getLanguage(GLOBAL.language).Map_Main_Menu
+      getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START,
     )
     await SCollectSceneFormView.startRecording()
@@ -200,10 +200,17 @@ export default class CollectSceneFormView extends React.Component {
   /** 历史 **/
   history = async () => {
     let data = await SCollectSceneFormView.getHistoryData()
-    NavigationService.navigate('CollectSceneFormHistoryView', {
-      history: data?.history || [],
-      datasourceAlias: this.datasourceAlias,
-    })
+    if (data && data.history.length > 0) {
+      const history = data.history
+      NavigationService.navigate('CollectSceneFormHistoryView', {
+        history,
+      })
+    } else {
+      const history = []
+      NavigationService.navigate('CollectSceneFormHistoryView', {
+        history,
+      })
+    }
   }
 
   /** 设置 */
@@ -230,7 +237,7 @@ export default class CollectSceneFormView extends React.Component {
     try {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
       )
       await SCollectSceneFormView.stopRecording()
       let result = await SCollectSceneFormView.saveData('line')
@@ -239,20 +246,20 @@ export default class CollectSceneFormView extends React.Component {
       this.setState({ isnew: false })
       if (result) {
         Toast.show(
-          getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
         )
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
     // NavigationService.navigate('InputPage', {
-    //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
     //   value: '',
-    //   placeholder: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   placeholder: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME,
     //   type: 'name',
     //   cb: async value => {
@@ -268,7 +275,7 @@ export default class CollectSceneFormView extends React.Component {
     try {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_REGION,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_REGION,
       )
       await SCollectSceneFormView.stopRecording()
       let result = await SCollectSceneFormView.saveRegionData()
@@ -277,14 +284,14 @@ export default class CollectSceneFormView extends React.Component {
       this.setState({ isnew: false })
       if (result) {
         Toast.show(
-          getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
         )
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   }
   /** 保存点 **/
@@ -292,24 +299,24 @@ export default class CollectSceneFormView extends React.Component {
     try {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
       )
       // await SCollectSceneFormView.stopRecording()
       await SCollectSceneFormView.saveGPSData('point')
       GLOBAL.Loading.setLoading(false)
       this.setState({ isnew: false })
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+        getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
       )
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
     // NavigationService.navigate('InputPage', {
-    //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
     //   value: '',
-    //   placeholder: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   placeholder: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NAME,
     //   type: 'name',
     //   cb: async value => {
@@ -326,8 +333,8 @@ export default class CollectSceneFormView extends React.Component {
       setTimeout(() => {
         this.clickAble = true
       }, 1500)
-      // if (GLOBAL.arSwitchToMap) {
-      //   GLOBAL.arSwitchToMap = false
+      // if (GLOBAL.isswitch) {
+      //   GLOBAL.isswitch = false
       //   GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
       // }
       GLOBAL.mapView.setState({
@@ -388,7 +395,7 @@ export default class CollectSceneFormView extends React.Component {
         ref={ref => (this.DatumPointDialog = ref)}
         // type={'modal'}
         cancelBtnVisible={false}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
         confirmAction={async () => {
           let point = this.datumPoint
           //设置基点
@@ -415,7 +422,7 @@ export default class CollectSceneFormView extends React.Component {
         />
         <Text style={styles.promptTitle}>
           {
-            getLanguage(GLOBAL.language).Profile
+            getLanguage(global.language).Profile
               .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
           }
         </Text>
@@ -622,7 +629,7 @@ export default class CollectSceneFormView extends React.Component {
         historyData: [],
       })
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY,
       )
     }
@@ -669,7 +676,7 @@ export default class CollectSceneFormView extends React.Component {
             style={styles.btn_image}
           >
             <Text style={[styles.historyTitle]}>
-              {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CANCEL}
+              {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CANCEL}
             </Text>
           </TouchableOpacity>
           {!this.state.chooseDataSource && (
@@ -680,7 +687,7 @@ export default class CollectSceneFormView extends React.Component {
               style={styles.btn_image2}
             >
               <Text style={[styles.historyTitle]}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CONFIRM}
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CONFIRM}
               </Text>
             </TouchableOpacity>
           )}
@@ -711,7 +718,7 @@ export default class CollectSceneFormView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_NEWDATA
                 }
               </Text>
@@ -736,7 +743,7 @@ export default class CollectSceneFormView extends React.Component {
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR}
               </Text>
             </View>
           </TouchableOpacity>
@@ -759,7 +766,7 @@ export default class CollectSceneFormView extends React.Component {
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
               </Text>
             </View>
           </TouchableOpacity>
@@ -783,7 +790,7 @@ export default class CollectSceneFormView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_SAVE_POINT
                 }
               </Text>
@@ -811,7 +818,7 @@ export default class CollectSceneFormView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_SAVE_REGION
                 }
               </Text>
@@ -838,7 +845,7 @@ export default class CollectSceneFormView extends React.Component {
               />
 
               <Text style={styles.buttonname}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
+                {getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CHANGE}
               </Text>
             </View>
           </TouchableOpacity> */}
@@ -880,7 +887,7 @@ export default class CollectSceneFormView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_SCENE_TRACK_COLLECT
                 }
               </Text>
@@ -919,7 +926,7 @@ export default class CollectSceneFormView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_SCENE_POINT_COLLECT
                 }
               </Text>
@@ -1016,7 +1023,7 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <View style={styles.lengthChangeView}>
         <Text style={styles.titleTotal}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu
+          {getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH +
             this.state.totalLength +
             'm'}
@@ -1029,7 +1036,7 @@ export default class CollectSceneFormView extends React.Component {
       <View style={styles.clickHintView}>
         <Text style={styles.clickHintText}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_SCENE_POINT_COLLECT_CLICK_HINT
           }
         </Text>
@@ -1042,7 +1049,7 @@ export default class CollectSceneFormView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,

@@ -78,7 +78,7 @@ function getSearchResult(params, location, cb = () => {}) {
     .then(response => response.json())
     .then(data => {
       if (data.error || data.poiInfos.length === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS)
+        Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
         cb && cb()
       } else {
         let poiInfos = data.poiInfos
@@ -88,7 +88,7 @@ function getSearchResult(params, location, cb = () => {}) {
             .then(data2 => {
               if (data.error || data.poiInfos.length === 0) {
                 Toast.show(
-                  getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS,
+                  getLanguage(global.language).Prompt.NO_SEARCH_RESULTS,
                 )
               } else {
                 poiInfos = data2.poiInfos

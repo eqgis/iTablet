@@ -117,18 +117,18 @@ export default class AnimationNodeListView extends React.Component {
   modifyAnimationNodeName = async item => {
     // NavigationService.navigate('InputPage', {
     NavigationService.navigate('AnimationNodeEditView', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Plotting
+      headerTitle: getLanguage(global.language).Map_Plotting
         .ANIMATION_NODE_EDIT,
       //'修改动画节点名称',
       value: item.name,
-      placeholder: getLanguage(GLOBAL.language).Map_Plotting
+      placeholder: getLanguage(global.language).Map_Plotting
         .ANIMATION_NODE_EDIT,
       type: 'name',
       index: item.index,
       cb: async () => {
         NavigationService.goBack()
         this.getAnimationNodeList()
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+        Toast.show(getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY)
       },
     })
   }

@@ -171,7 +171,7 @@ async function getSceneData() {
       action: addOnlineScene,
     }),
     renderRightButton({
-      title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+      title: getLanguage(global.language).Profile.SAMPLEDATA,
       action: () => {
         NavigationService.navigate('SampleMap', {
           refreshAction: getSceneData,

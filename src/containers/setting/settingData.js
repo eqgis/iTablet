@@ -5,35 +5,35 @@ async function getMap3DSettings() {
   const item = await SScene.getSetting()
   const data = [
     {
-      title: getLanguage(GLOBAL.language).Map_Setting.BASIC_SETTING,
+      title: getLanguage(global.language).Map_Setting.BASIC_SETTING,
       visible: true,
       index: 0,
       data: [
         {
-          name: getLanguage(GLOBAL.language).Map_Setting.SCENE_NAME,
+          name: getLanguage(global.language).Map_Setting.SCENE_NAME,
           // '场景名称',
           value: item.sceneNmae,
           isShow: true,
           index: 0,
         },
         {
-          name: getLanguage(GLOBAL.language).Map_Setting.FOV,
+          name: getLanguage(global.language).Map_Setting.FOV,
           // '相机角度',
           value: item.heading,
           isShow: true,
           index: 0,
         },
         {
-          name: getLanguage(GLOBAL.language).Map_Setting.SCENE_OPERATION_STATUS,
+          name: getLanguage(global.language).Map_Setting.SCENE_OPERATION_STATUS,
           // '场景操作状态',
           value: GLOBAL.action3d ? GLOBAL.action3d : 'NULL',
           isShow: true,
           index: 0,
         },
         {
-          name: getLanguage(GLOBAL.language).Map_Setting.VIEW_MODE,
+          name: getLanguage(global.language).Map_Setting.VIEW_MODE,
           // '视图模式',
-          value: getLanguage(GLOBAL.language).Map_Setting.SPHERICAL,
+          value: getLanguage(global.language).Map_Setting.SPHERICAL,
           // '球面',
           isShow: true,
           index: 0,

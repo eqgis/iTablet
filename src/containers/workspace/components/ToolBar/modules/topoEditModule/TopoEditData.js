@@ -88,7 +88,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_TOPO_OBJECT_EDIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: TopoEditAction.switchType,
           size: 'large',
           image: require('../../../../../../assets/function/icon_edit.png'),
@@ -99,7 +99,7 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_TOPO_MOVE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: TopoEditAction.changeAction,
           size: 'large',
           image: require('../../../../../../assets/mapTools/icon_move_black.png'),
@@ -164,7 +164,7 @@ async function getData(type) {
       data = [
         {
           key: constants.CANCEL_SELECT,
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: TopoEditAction.editCancel,
           size: 'large',

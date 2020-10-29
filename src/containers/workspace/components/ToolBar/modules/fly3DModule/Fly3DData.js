@@ -77,7 +77,7 @@ function getToolFly() {
   const data = [
     {
       key: 'startFly',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
       action: () => {
         SScene.flyStart()
       },
@@ -87,7 +87,7 @@ function getToolFly() {
     },
     {
       key: 'stop',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_PAUSE,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
       action: () => {
         SScene.flyPause()
       },
@@ -104,18 +104,18 @@ function getNewFly() {
   const data = [
     {
       key: 'startFly',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY_ADD_STOPS,
+      title: getLanguage(global.language).Map_Main_Menu.FLY_ADD_STOPS,
       // '添加站点',
       action: () => {
         try {
           SScene.saveCurrentRoutStop().then(result => {
             if (result) {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+              Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
               // '添加站点成功')
             }
           })
         } catch (error) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
           // Toast.show('添加站点失败')
         }
       },
@@ -125,13 +125,13 @@ function getNewFly() {
     },
     {
       key: 'stop',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
+      title: getLanguage(global.language).Map_Main_Menu.FLY,
       // '飞行',
       action: () => {
         try {
           SScene.saveRoutStop()
         } catch (error) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_ADD_STOP)
+          Toast.show(getLanguage(global.language).Prompt.PLEASE_ADD_STOP)
         }
       },
       size: 'large',
@@ -141,13 +141,13 @@ function getNewFly() {
     },
     {
       key: 'pause',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_PAUSE,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
       // '暂停',
       action: () => {
         try {
           SScene.pauseRoutStop()
         } catch (error) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.FIELD_TO_PAUSE)
+          Toast.show(getLanguage(global.language).Prompt.FIELD_TO_PAUSE)
         }
       },
       size: 'large',

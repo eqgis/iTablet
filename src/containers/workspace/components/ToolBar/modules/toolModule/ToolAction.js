@@ -45,17 +45,23 @@ function submit() {
   })()
 }
 
-function select(type) {
+async function select(type) {
   if (type === undefined) {
     type = ToolbarModule.getParams().type
   }
+  let action
   switch (type) {
     case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
-      SMap.setAction(Action.SELECT_BY_RECTANGLE)
-      // SMap.selectByRectangle()
+      action = await SMap.getAction()
+      if (action !== Action.SELECT_BY_RECTANGLE) {
+        await SMap.setAction(Action.SELECT_BY_RECTANGLE)
+      }
       break
     default:
-      SMap.setAction(Action.SELECT)
+      action = await SMap.getAction()
+      if (action !== Action.SELECT) {
+        await SMap.setAction(Action.SELECT)
+      }
       break
   }
 }
@@ -797,9 +803,15 @@ async function close(type) {
             ids: _params.selection[i].ids,
           })
         }
+        await _data?.actions?.select(_data.preType)
         await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
-        _params.setToolbarVisible(false)
+  
+        GLOBAL.toolBox &&
+        GLOBAL.toolBox.setVisible(true, _data.preType, {
+          containerType: 'table',
+          isFullScreen: false,
+        })
       },
     })
     // NavigationService.goBack()

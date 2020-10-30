@@ -32,7 +32,7 @@ class CollectionModule extends FunctionModule {
   }
 }
 
-export default function(type = ConstToolType.COLLECTION) {
+export default function(type = ConstToolType.SM_MAP_COLLECTION) {
   switch (type) {
     case ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE:
       return new CollectionModule({
@@ -46,7 +46,7 @@ export default function(type = ConstToolType.COLLECTION) {
     case ConstToolType.SM_MAP_COLLECTION:
     default:
       return new CollectionModule({
-        type,
+        type: ConstToolType.SM_MAP_COLLECTION,
         title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         size: 'large',
         image: getThemeAssets().functionBar.icon_tool_collection,

@@ -603,7 +603,7 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
-    GLOBAL.clickWait = false
+    GLOBAL.clickWait = false // MapView Unmount后将GLOBAL.clickWait设置为false，防止多次返回或返回到首页后闪现保存提示框
     SMap.setCurrentModule(0)
     if (
       GLOBAL.Type === ChunkType.MAP_AR ||
@@ -1117,7 +1117,7 @@ export default class MapView extends React.Component {
 
       this.setLoading(false)
       NavigationService.goBack()
-      GLOBAL.clickWait = false
+      // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
       this.setLoading(false)
@@ -1214,9 +1214,9 @@ export default class MapView extends React.Component {
         NavigationService.navigate('Chat', param)
         return true
       }
-      let result = await SMap.mapIsModified()
       if (GLOBAL.clickWait) return true
       GLOBAL.clickWait = true
+      let result = await SMap.mapIsModified()
       if (result && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
           this.props.setCurrentAttribute({})

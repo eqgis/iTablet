@@ -330,7 +330,7 @@ async function openDefaultBaseMap() {
 
 function getDefaultBaseMapData(language = GLOBAL.language) {
   if (language === 'CN') {
-    return [ConstOnline.tiandituCN, ConstOnline.tianditu]
+    return [ConstOnline.tiandituImgCN, ConstOnline.tiandituImg]
   } else {
     return { ...ConstOnline.Google, layerIndex: 1 }
   }

@@ -88,7 +88,9 @@ declare namespace GLOBAL {
   /** 注册横竖屏锁 */
   let ORIENTATIONLOCKED: boolean       
   /** 配准临时数据 */
-  let RectifyDatasetInfo: Array<object>    
+  let RectifyDatasetInfo: Array<object>     
+  /** 配准临时数据 */
+  let RectifyReferDatasetInfo: Array<object>  
   /** 配准-算法模式 */
   let RegistrationArithmeticMode: number   
   /** 被选中的框选属性中的一个属性 */

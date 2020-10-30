@@ -25,8 +25,6 @@ export default class RegistrationPage extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
-    this.rectifyReferDatasetInfo = params?.rectifyReferDatasetInfo
     this.tempControlPoints = []
 
     let defaultArithmetic = {
@@ -56,8 +54,8 @@ export default class RegistrationPage extends Component {
         if (GLOBAL.RectifyDatasetInfo) {
           await SRectifyView.setRectifyDataset(GLOBAL.RectifyDatasetInfo)
         }
-        if (this.rectifyReferDatasetInfo) {
-          await SRectifyView.setReferDataset(this.rectifyReferDatasetInfo)
+        if (GLOBAL.RectifyReferDatasetInfo) {
+          await SRectifyView.setReferDataset(GLOBAL.RectifyReferDatasetInfo)
         }
         if (GLOBAL.RegistrationArithmeticMode) {
           await SRectifyView.setTransformationMode(

@@ -458,7 +458,9 @@ export default class LayerManager_tolbar extends React.Component {
             this.props.navigation.navigate('InputPage', {
               headerTitle: getLanguage(GLOBAL.language).Map_Layer.ADD_LAYER_URL,
               value: '',
-              placeholder: 'eg http://ip:port/iserver/services/',
+              placeholder: section.header.type === 'Image'
+                ? 'http://<service address>/rest/realspace/datas/layer'
+                : 'http://<service address>/rest/realspace/datas/terrain',
               cb: async value => {
                 let bRes = false
                 let type = 'AddTerrain_second'

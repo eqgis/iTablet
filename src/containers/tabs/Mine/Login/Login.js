@@ -224,10 +224,10 @@ export default class Login extends React.Component {
       }
 
       if (typeof result === 'boolean' && result && userInfo !== false) {
-        await this.initUserDirectories(userName)
+        await this.initUserDirectories(userInfo.userId)
 
         let user = {
-          userName: userName,
+          userName: userInfo.userId,
           password: password,
           nickname: userInfo.nickname,
           email: userInfo.email,
@@ -296,13 +296,13 @@ export default class Login extends React.Component {
 
       let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
-        await this.initUserDirectories(userName)
         let info = await SIPortalService.getMyAccount()
         if (info) {
           let userInfo = JSON.parse(info)
+          await this.initUserDirectories(userInfo.name)
           this.props.setUser({
             serverUrl: url,
-            userName: userName,
+            userName: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,

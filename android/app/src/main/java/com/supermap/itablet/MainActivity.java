@@ -128,7 +128,7 @@ public class MainActivity extends ReactActivity {
     }
 
     private void initDefaultData() {
-        FileTools.initUserDefaultData("Customer", this);
+//        FileTools.initUserDefaultData("Customer", this);
     }
 
     private void requestPermissions() {

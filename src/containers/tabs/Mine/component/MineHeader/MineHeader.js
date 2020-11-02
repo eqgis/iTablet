@@ -119,8 +119,8 @@ export default class MineHeader extends Component {
   _renderMyProfile = () => {
     let isPro = !UserType.isProbationUser(this.props.user.currentUser)
     let headerTitle = isPro
-      ? this.props.user.currentUser.userName
-        ? this.props.user.currentUser.userName
+      ? this.props.user.currentUser.nickname
+        ? this.props.user.currentUser.nickname
         : Customer
       : getLanguage(this.props.language).Profile.LOGIN_NOW
     let statusText

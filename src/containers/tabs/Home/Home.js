@@ -228,6 +228,7 @@ export default class Home extends Component {
         this.props.deleteUser(this.props.user.currentUser)
         this.props.setUser({
           userName: 'Customer',
+          nickname: 'Customer',
           userType: UserType.PROBATION_USER,
         })
         this._closeModal()

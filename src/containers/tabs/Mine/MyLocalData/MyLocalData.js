@@ -85,10 +85,7 @@ export default class MyLocalData extends Component {
       let cachePath = homePath + ConstPath.CachePath2
       let userPath =
         homePath +
-        ConstPath.UserPath +
-        this.state.userName +
-        '/' +
-        ConstPath.RelativeFilePath.ExternalData
+        ConstPath.ExternalData
 
       let cachePromise = DataHandler.getExternalData(cachePath)
       let userPromise = DataHandler.getExternalData(userPath)
@@ -245,10 +242,7 @@ export default class MyLocalData extends Component {
 
       let exportDir =
         GLOBAL.homePath +
-        ConstPath.UserPath +
-        this.state.userName +
-        '/' +
-        ConstPath.RelativeFilePath.ExternalData
+        ConstPath.ExternalData
 
       let delDirs = []
       if (this.itemInfo.item.fileType === 'plotting') {

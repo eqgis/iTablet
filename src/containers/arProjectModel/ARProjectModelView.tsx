@@ -6,8 +6,9 @@ import {
   Text,
   FlatList,
   // AppState,
+  ListRenderItemInfo,
 } from 'react-native'
-import NavigationService from '../../containers/NavigationService'
+import NavigationService from '../NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../assets'
 import {
   SMProjectModelView,
@@ -20,32 +21,45 @@ import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { scaleSize } from '../../utils'
 import Orientation from 'react-native-orientation'
+import { NavigationScreenProp } from 'react-navigation'
 
+
+interface IProps {
+  navigation: NavigationScreenProp<{}>,
+  language: string,
+  user: Object,
+  nav: Object,
+}
+
+interface IState {
+  moduleListData: ModuleItem[],
+  bmoduleListDataShow: boolean,
+  showSandTable: boolean,
+}
+
+/** 模型列表数据 */
+interface ModuleItem {
+  title: string
+  type: string
+  /** 当前是否显示 */
+  show: boolean
+  
+  action: () => Promise<boolean>
+  index: number
+}
 /*
  * AR投射页面
  */
-export default class ARProjectModeView extends React.Component {
-  props: {
-    navigation: Object,
-    language: String,
-    user: Object,
-    nav: Object,
-  }
+export default class ARProjectModeView extends React.Component<IProps, IState> {
+  /** */
+  flage: boolean
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props)
 
     let _moduleListData = this.getModuleListData()
 
     this.state = {
-      currentLength: 0,
-      totalLength: 0,
-      tolastLength: 0,
-      totalArea: 0,
-      showModelViews: false,
-      SearchingSurfacesSucceed: false,
-      showSwithchButtons: false,
-
       moduleListData: _moduleListData,
       bmoduleListDataShow: false,
       showSandTable: true,
@@ -92,7 +106,7 @@ export default class ARProjectModeView extends React.Component {
     _moduleListData[2].show = state.marker
   }
 
-  getModuleListData() {
+  getModuleListData(): ModuleItem[] {
     let data = []
     data.push({
       title: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -121,7 +135,7 @@ export default class ARProjectModeView extends React.Component {
     return data
   }
 
-  onPressItem = item => {
+  onPressItem = (item: ModuleItem) => {
     item.action()
     let _moduleListData = this.state.moduleListData
     _moduleListData[item.index].show = !_moduleListData[item.index].show
@@ -130,7 +144,7 @@ export default class ARProjectModeView extends React.Component {
     })
   }
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item }: ListRenderItemInfo<ModuleItem>) => {
     return (
       <View style={styles.itemView}>
         <TouchableOpacity
@@ -151,7 +165,7 @@ export default class ARProjectModeView extends React.Component {
       </View>
     )
   }
-  _keyExtractor = item => item.title + item.type
+  _keyExtractor = (item: ModuleItem)=> item.title + item.type
 
   _renderItemSeparatorComponent = () => {
     return (
@@ -385,7 +399,6 @@ export default class ARProjectModeView extends React.Component {
             }}
           >
             <Container
-              ref={ref => (this.Container = ref)}
               headerProps={{
                 title: getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
@@ -397,7 +410,6 @@ export default class ARProjectModeView extends React.Component {
             >
               <SMProjectModelView
                 // <View
-                ref={ref => (this.SMProjectModelView = ref)}
                 style={{ height: '100%', width: '100%' }}
               />
             </Container>

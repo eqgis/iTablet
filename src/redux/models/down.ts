@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import RNFS from 'react-native-fs'
+import RNFS, {DownloadFileOptions, DownloadProgressCallbackResult} from 'react-native-fs'
 // Constants
 // --------------------------------------------------
 export const DOWN_SET = 'DOWN_SET'
@@ -9,10 +9,22 @@ export const DOWNLOADED_FILE_DELETE = 'DOWNLOADED_FILE_DELETE'
 export const DOWNLOADED_SET_IGNORE = 'DOWNLOADED_SET_IGNORE'
 // Actions
 // ---------------------------------.3-----------------
+/** 下载参数 */
+export type IDownloadProps  = {
+  key: string,
+} & DownloadFileOptions
+
+/** downloads结构 */
+export type Downloads = Array<{
+  id: string,
+  progress: number,
+  downloaded: boolean,  
+}>
+
 export const setDownInformation = (
   params = {},
   cb = () => {},
-) => async dispatch => {
+) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: DOWN_SET,
     payload: params,
@@ -20,7 +32,7 @@ export const setDownInformation = (
   cb && cb()
 }
 
-export const downloadFile = (params = {}) => async (dispatch, getState) => {
+export const downloadFile = (params: IDownloadProps) => async (dispatch: (arg0: { type: string; payload: { id: any; progress: number; downloaded: boolean; params: {} } | { id: any; progress: number; downloaded: boolean; params: {} } }) => any, getState: () => { (): any; new(): any; down: { (): any; new(): any; toJS: { (): { downloads: any }; new(): any } } }) => {
   let value = 0
   let timer = setInterval(async () => {
     let shouldUpdate = false
@@ -52,10 +64,10 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
     }
     if (value === 100) {
       clearInterval(timer)
-      timer = null
+      // timer = null
     }
   }, 2000)
-  params.progress = async res => {
+  params.progress = async (res: DownloadProgressCallbackResult) => {
     value = res.progress >= 0 ? ~~res.progress.toFixed(0) : 0
     if (value === 100) {
       const data = {
@@ -74,14 +86,14 @@ export const downloadFile = (params = {}) => async (dispatch, getState) => {
   return result.promise
 }
 
-export const deleteDownloadFile = (params = {}) => async dispatch => {
+export const deleteDownloadFile = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: DOWNLOADED_FILE_DELETE,
     payload: params,
   })
 }
 
-export const setIgnoreDownload = (params = {}) => async dispatch => {
+export const setIgnoreDownload = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: DOWNLOADED_SET_IGNORE,
     payload: params,
@@ -122,7 +134,7 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${DOWN_SET}`]: (state, { payload }) => {
+    [`${DOWN_SET}`]: (state: { toJS: () => { downList: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { downList } = state.toJS()
       if (payload.index) {
         const { index } = payload
@@ -140,7 +152,7 @@ export default handleActions(
       }
       return state.setIn(['downList'], fromJS(downList))
     },
-    [`${DOWNLOADING_FILE}`]: (state, { payload }) => {
+    [`${DOWNLOADING_FILE}`]: (state: { toJS: () => { downloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { downloads } = state.toJS()
       if (payload.id) {
         if (downloads.length > 0) {
@@ -165,7 +177,7 @@ export default handleActions(
       }
       return state.setIn(['downloads'], fromJS(downloads))
     },
-    [`${DOWNLOADED_FILE_DELETE}`]: (state, { payload }) => {
+    [`${DOWNLOADED_FILE_DELETE}`]: (state: { toJS: () => { downloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { downloads } = state.toJS()
       if (payload.id) {
         if (downloads.length > 0) {
@@ -180,7 +192,7 @@ export default handleActions(
       }
       return state.setIn(['downloads'], fromJS(downloads))
     },
-    [`${DOWNLOADED_SET_IGNORE}`]: (state, { payload }) => {
+    [`${DOWNLOADED_SET_IGNORE}`]: (state: { toJS: () => { ignoreDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { ignoreDownloads } = state.toJS()
       if (payload.id) {
         if (ignoreDownloads.length > 0) {

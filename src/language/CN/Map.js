@@ -796,6 +796,7 @@ const Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: '地图名称',
   SHOW_SCALE: '显示比例尺',
+  SHOW_LOCATION: '显示定位',
   ROTATION_GESTURE: '手势旋转',
   PITCH_GESTURE: '手势俯仰',
   ROTATION_ANGLE: '旋转角度',

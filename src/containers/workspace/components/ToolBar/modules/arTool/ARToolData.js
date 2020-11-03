@@ -46,6 +46,14 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_text,
     },
+    {
+      //AR文字
+      key: 'ar3D',
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_PIPELINE,
+      action: ARToolAction.ar3D,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_text,
+    },
   ]
 
   data = data.filter(item => {

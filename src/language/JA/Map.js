@@ -371,6 +371,7 @@ const Map_Main_Menu = {
   MAP_AR_EFFECT: 'AR特殊効果',
   MAP_AR_WEBVIEW: 'ウェブページ',
   MAP_AR_TEXT: 'ARテキスト',
+  MAP_AR_PIPELINE: 'ARパイプライン',
   MAP_AR_SELECT_EFFECT: '特殊効果の選択',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',

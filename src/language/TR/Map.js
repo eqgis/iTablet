@@ -371,6 +371,7 @@ const Map_Main_Menu = {
   MAP_AR_EFFECT: 'AR Etkisi',
   MAP_AR_WEBVIEW: 'AR WebSayfası',
   MAP_AR_TEXT: 'AR Text',
+  MAP_AR_PIPELINE: 'AR PipeLine',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',

@@ -371,6 +371,7 @@ const Map_Main_Menu = {
   MAP_AR_EFFECT: 'Effet RA',
   MAP_AR_WEBVIEW: 'Page Web RA',
   MAP_AR_TEXT: 'Texte RA',
+  MAP_AR_PIPELINE: 'PipeLine RA',
   MAP_AR_SELECT_EFFECT: 'Sélectionnez un effet',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Nouvelles données',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Remplissez le nom',

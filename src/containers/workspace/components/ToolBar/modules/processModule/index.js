@@ -8,9 +8,6 @@ import { getThemeAssets } from '../../../../../../assets'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SMap } from 'imobile_for_reactnative'
-import { Platform } from 'react-native'
-import { Toast } from '../../../../../../utils'
 
 class AnalysisModule extends FunctionModule {
   constructor(props) {
@@ -18,15 +15,6 @@ class AnalysisModule extends FunctionModule {
   }
 
   action = async () => {
-    if (this.type === ConstToolType.SM_MAP_PROCESS && Platform.OS === 'android') {
-      let sdk = await SMap.getPhoneSDK()
-      if (sdk <= 24) {
-        Toast.show(
-          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
-        )
-        return true
-      }
-    }
     const params = ToolbarModule.getParams()
     const _data = ProcessData.getData(this.type)
     const containerType = ToolbarType.table

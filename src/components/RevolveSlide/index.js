@@ -4,21 +4,15 @@ import { screen, scaleSize } from '../../utils'
 import SlideBar from '../SlideBar'
 import { getLanguage } from '../../language'
 
-export default class XYZSlide extends Component {
+export default class RevolveSlide extends Component {
   props: {
     style: Object,
-    rangeX: Array,
-    rangeY: Array,
-    rangeZ: Array,
-    onMoveX: () => {},
-    onMoveY: () => {},
-    onMoveZ: () => {},
+    rangeR: Array,
+    onMoveR: () => {},
   }
 
   static defaultProps = {
-    rangeX: [0, 100],
-    rangeY: [0, 100],
-    rangeZ: [0, 100],
+    rangeR: [0, 100],
     style:{ width: screen.getScreenWidth() - scaleSize(130) }
   }
 
@@ -45,23 +39,11 @@ export default class XYZSlide extends Component {
   renderItem = dir => {
     let range, onMove, labelLeft, labelRight
     switch (dir) {
-      case 'x':
-        labelLeft = getLanguage(global.language).Common.LEFT
-        labelRight = getLanguage(global.language).Common.RIGHT
-        range = this.props.rangeX
-        onMove = this.props.onMoveX
-        break
-      case 'y':
-        labelLeft = getLanguage(global.language).Common.DOWN
-        labelRight = getLanguage(global.language).Common.UP
-        range = this.props.rangeY
-        onMove = this.props.onMoveY
-        break
       default:
-        labelLeft = getLanguage(global.language).Common.BACK
-        labelRight = getLanguage(global.language).Common.FRONT
-        range = this.props.rangeZ
-        onMove = this.props.onMoveZ
+        labelLeft = -180
+        labelRight = 180
+        range = this.props.rangeR
+        onMove = this.props.onMoveR
         break
     }
     return (
@@ -112,9 +94,7 @@ export default class XYZSlide extends Component {
           },
         ]}
       >
-        {this.renderItem('x')}
-        {this.renderItem('y')}
-        {this.renderItem('z')}
+        {this.renderItem('r')}
       </View>
     )
   }

@@ -97,7 +97,7 @@ static NSString* g_sampleCodeName = @"#";;
   [self.window makeKeyAndVisible];
   
   
-  [self initDefaultData];
+//  [self initDefaultData];
 //  [self initEnvironment];
   self.allowRotation = UIInterfaceOrientationMaskAll;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];

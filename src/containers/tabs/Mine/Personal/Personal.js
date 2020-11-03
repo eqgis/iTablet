@@ -57,6 +57,7 @@ export default class Personal extends Component {
         }
         this.props.setUser({
           userName: 'Customer',
+          nickname: 'Customer',
           userType: UserType.PROBATION_USER,
         })
         NavigationService.popToTop()
@@ -173,7 +174,7 @@ export default class Personal extends Component {
         {this._renderItem(
           //'用户名'
           getLanguage(GLOBAL.language).Profile.USERNAME,
-          this.props.user.currentUser.userName,
+          this.props.user.currentUser.nickname,
         )}
         {this._renderItem(
           //'手机号'

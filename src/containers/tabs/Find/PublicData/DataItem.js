@@ -202,10 +202,7 @@ export default class DataItem extends Component {
     let appHome = await FileTools.appendingHomeDirectory()
     let externalPath =
       appHome +
-      ConstPath.UserPath +
-      this.props.user.currentUser.userName +
-      '/' +
-      ConstPath.RelativePath.ExternalData
+      ConstPath.ExternalData + '/'
     let index = fileName.lastIndexOf('.')
     let name, type
     if (index !== -1) {

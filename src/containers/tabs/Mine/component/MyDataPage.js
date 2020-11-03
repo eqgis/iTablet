@@ -132,11 +132,8 @@ export default class MyDataPage extends Component {
   }
 
   getRelativeExportPath = () => {
-    let userPath =
-      ConstPath.UserPath + this.props.user.currentUser.userName + '/'
     let relativeExportPath =
-      userPath +
-      ConstPath.RelativePath.ExternalData +
+      ConstPath.ExternalData + '/' +
       ConstPath.RelativeFilePath.ExportData
     return relativeExportPath
   }

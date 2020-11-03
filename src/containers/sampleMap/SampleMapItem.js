@@ -168,16 +168,13 @@ export default class SampleMapItem extends Component {
 
   unZipFile = async () => {
     let appHome = await FileTools.appendingHomeDirectory()
-    let userName =
-      this.props.user.currentUser.userType === UserType.PROBATION_USER
-        ? 'Customer'
-        : this.props.user.currentUser.userName
+    // let userName =
+    //   this.props.user.currentUser.userType === UserType.PROBATION_USER
+    //     ? 'Customer'
+    //     : this.props.user.currentUser.userName
     let fileDir =
       appHome +
-      ConstPath.UserPath +
-      userName +
-      '/' +
-      ConstPath.RelativePath.ExternalData +
+      ConstPath.ExternalData + '/' +
       this.titleName
     let exists = await RNFS.exists(fileDir)
     if (!exists) {

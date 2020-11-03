@@ -6,10 +6,45 @@ import axios from 'axios'
 // eslint-disable-next-line import/default
 import CookieManager from 'react-native-cookies'
 import RNFS from 'react-native-fs'
+import { UserType } from '../constants'
+
+/** 上传回调 */
+interface UploadCallBack {
+  /** 开始回调 */
+  onBegin?: (res: any) => void
+  /** 进度回调 */
+  onProgress?: (res: number) => void
+}
+
+/** 数据查询参数 */
+interface QueryParam {
+  orderBy?: string
+  orderType?: string
+  pageSize?: number
+  currentPage?: number
+  keywords?: string
+}
+
+interface CommonUserInfo {
+  nickname: string
+  name: string
+  email: string
+  /** iportal或online用户 */
+  userType: string
+}
 
 export default class OnlineServicesUtils {
-  constructor(type) {
+  /** iportal还是online */
+  type: 'iportal' | 'online'
+  /** iportal服务器地址或online地址 */
+  serverUrl: string
+  /** android only - 登录后的用户凭证 */
+  cookie: string
+
+  constructor(type: 'iportal' | 'online') {
     this.type = type
+    this.serverUrl = ''
+    this.cookie = ''
     if (type === 'iportal') {
       let url = SIPortalService.getIPortalUrl()
       if (url) {
@@ -18,23 +53,22 @@ export default class OnlineServicesUtils {
           this.serverUrl = 'http://' + url
         }
         if (Platform.OS === 'android') {
-          SIPortalService.getIPortalCookie().then(cookie => {
+          SIPortalService.getIPortalCookie().then((cookie: string) => {
             this.cookie = cookie
           })
         }
       }
-    }
-    if (type === 'online') {
+    } else {
       this.serverUrl = 'https://www.supermapol.com/web'
       if (Platform.OS === 'android') {
-        SOnlineService.getAndroidSessionID().then(cookie => {
+        SOnlineService.getAndroidSessionID().then((cookie: string )=> {
           this.cookie = cookie
         })
       }
     }
   }
 
-  getCookie = async () => {
+  getCookie = async (): Promise<string|undefined> => {
     if (Platform.OS === 'ios') {
       return undefined
     }
@@ -53,7 +87,49 @@ export default class OnlineServicesUtils {
     return cookie
   }
 
-  async publishService(id) {
+  /** 获取当前登录用户的详细信息 */
+  async getLoginUserInfo(): Promise<CommonUserInfo|false> {
+    try {
+      let url = this.serverUrl + '/mycontent/account.json'
+      
+      let headers = {}
+      let cookie = await this.getCookie()
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+        }
+      }
+
+      let response = fetch(url, {
+        headers: headers,
+      })
+      let result = await Promise.race([response, timeout(10)])
+      if (result === 'timeout') {
+        return false
+      }
+
+      if (result.status === 200) {
+        let info = await result.json()
+
+        return {
+          name: info.name,
+          nickname: info.nickname,
+          email: info.email,
+          userType: this.type === 'iportal' ? UserType.IPORTAL_COMMON_USER : UserType.COMMON_USER,
+        }
+      } else {
+        return false
+      }
+    } catch{
+      return false
+    }
+  }
+
+  /**
+   * 根据数据id发布服务
+   * @param id 数据id
+   */
+  async publishService(id: string): Promise<boolean> {
     let url =
       this.serverUrl +
       `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
@@ -71,7 +147,11 @@ export default class OnlineServicesUtils {
     return result.succeed
   }
 
-  async publishServiceByName(dataName) {
+  /**
+   * 根据数据名发布服务
+   * @param dataName 数据名
+   */
+  async publishServiceByName(dataName: string): Promise<boolean> {
     let id = await this.getDataIdByName(dataName)
     if (id) {
       return await this.publishService(id)
@@ -80,7 +160,11 @@ export default class OnlineServicesUtils {
     }
   }
 
-  async getDataIdByName(dataName) {
+  /**
+   * 根据数据名获取其id
+   * @param dataName 数据名
+   */
+  async getDataIdByName(dataName: string): Promise<string|undefined> {
     let url = this.serverUrl + `/mycontent/datas.rjson?fileName=${dataName}`
     let headers = {}
     let cookie = await this.getCookie()
@@ -98,7 +182,11 @@ export default class OnlineServicesUtils {
     return undefined
   }
 
-  async getService(id) {
+  /**
+   * 获取服务详情
+   * @param id 服务id
+   */
+  async getService(id: string): Promise<any|boolean> {
     let url = this.serverUrl + `/services.rjson?ids=[${id}]`
     let headers = {}
     let cookie = await this.getCookie()
@@ -117,7 +205,12 @@ export default class OnlineServicesUtils {
     return false
   }
 
-  async setServicesShareConfig(id, isPublic) {
+  /**
+   * 设置服务公开私有
+   * @param id 服务id
+   * @param isPublic 是否公开
+   */
+  async setServicesShareConfig(id: string, isPublic:boolean): Promise<boolean> {
     let url = this.serverUrl + `/services/sharesetting.rjson`
     let headers = {}
     let cookie = await this.getCookie()
@@ -126,7 +219,7 @@ export default class OnlineServicesUtils {
         cookie: cookie,
       }
     }
-    let entities
+    let entities: any[]
     if (isPublic) {
       entities = [
         {
@@ -148,7 +241,12 @@ export default class OnlineServicesUtils {
     return result.succeed
   }
 
-  async setDatasShareConfig(id, isPublic) {
+  /**
+   * 设置数据公开私有
+   * @param id 数据id
+   * @param isPublic 是否公开
+   */
+  async setDatasShareConfig(id: string, isPublic: boolean): Promise<boolean> {
     let url = this.serverUrl + `/mycontent/datas/sharesetting.rjson`
     let headers = {}
     let cookie = await this.getCookie()
@@ -157,7 +255,7 @@ export default class OnlineServicesUtils {
         cookie: cookie,
       }
     }
-    let entities
+    let entities: any[]
     if (isPublic) {
       entities = [
         {
@@ -179,7 +277,16 @@ export default class OnlineServicesUtils {
     return result.succeed
   }
 
-  async uploadFile(filePath, fileName, fileType, callback) {
+
+
+  /**
+   * 上传文件
+   * @param filePath 文件路径
+   * @param fileName 文件名
+   * @param fileType 文件类型
+   * @param callback 上传回调
+   */
+  async uploadFile(filePath: string, fileName: string, fileType: string, callback: UploadCallBack) {
     try {
       let id = await this._getUploadId(fileName, fileType)
       if (id) {
@@ -203,12 +310,12 @@ export default class OnlineServicesUtils {
           ],
           background: true,
           method: 'POST',
-          begin: res => {
+          begin: (res: any) => {
             if (callback && typeof callback.onBegin === 'function') {
               callback.onBegin(res)
             }
           },
-          progress: res => {
+          progress: (res: any) => {
             try {
               if (callback && typeof callback.onProgress === 'function') {
                 let progress = res.totalBytesSent / res.totalBytesExpectedToSend
@@ -231,7 +338,12 @@ export default class OnlineServicesUtils {
     }
   }
 
-  async _getUploadId(fileName, fileType) {
+  /**
+   * 根据文件名和类型获取上传id
+   * @param fileName 
+   * @param fileType 
+   */
+  async _getUploadId(fileName: string, fileType: string): Promise<string|boolean> {
     try {
       let url = this.serverUrl + `/mycontent/datas.rjson`
       let headers = {}
@@ -267,7 +379,7 @@ export default class OnlineServicesUtils {
    * @param {*} userName 用户id
    * @param {*} fileName 文件名
    */
-  async getPublicDataByName(userName, fileName) {
+  async getPublicDataByName(userName: string, fileName: string): Promise<object|boolean> {
     let url =
       this.serverUrl + `/datas.rjson?userName=${userName}&fileName=${fileName}`
 
@@ -281,12 +393,13 @@ export default class OnlineServicesUtils {
     }
   }
 
+
   /**
    * 根据类型查找数据
    * @param {*} types 类型数组
    * @param {*} orderBy
    */
-  async getPublicDataByTypes(types, params) {
+  async getPublicDataByTypes(types: Array<any>, params: QueryParam): Promise<any|boolean> {
     let { orderBy, orderType, pageSize, currentPage, keywords } = { ...params }
     orderBy = orderBy || 'LASTMODIFIEDTIME'
     orderType = orderType || 'DESC'
@@ -320,7 +433,13 @@ export default class OnlineServicesUtils {
   /************************ 公共数据相关（不用登陆）end ***************************/
 
   /************************ online账号相关 ***********************/
-  async login(userName, password, loginType) {
+  /**
+   * 登录online
+   * @param userName 用户昵称
+   * @param password 用户密码
+   * @param loginType 已弃用
+   */
+  async login(userName: string, password: string, loginType: string): Promise<boolean> {
     if (this.type === 'online') {
       try {
         let url =
@@ -359,9 +478,14 @@ export default class OnlineServicesUtils {
         return false
       }
     }
+    return false
   }
 
-  _obj2params(obj) {
+  /**
+   * 将对象转换为网址参数格式的字符串
+   * @param obj 
+   */
+  _obj2params(obj: any): string {
     var result = ''
     var item
     for (item in obj) {
@@ -375,8 +499,10 @@ export default class OnlineServicesUtils {
     return result
   }
 
-  /** 登录后获取用户名 online禁止手机号查找用户后需要此接口来获取手机登录用户的用户名，再根据用户名获取其他信息 */
-  getLoginUserName = async () => {
+  /**
+   *  登录后获取用户名 online禁止手机号查找用户后需要此接口来获取手机登录用户的用户名，再根据用户名获取其他信息
+   */
+  getLoginUserName = async (): Promise<string> => {
     let username = ''
     try {
       let url = 'https://www.supermapol.com/web/mycontent/cloud/account'
@@ -390,13 +516,12 @@ export default class OnlineServicesUtils {
       let response = fetch(url, {
         headers: headers,
       })
-      let result = await new Promise.race([response, timeout(10)])
+      let result = await Promise.race([response, timeout(10)])
       if (result === 'timeout') {
         return username
-      } else {
-        response = result
       }
-      let text = await response.text()
+
+      let text = await result.text()
       let page = cheerio.load(text)
       username = page('div[class="col-xs-8 userInfo"]').children().first().attr('title')
     } catch(e) { /** */}
@@ -404,12 +529,12 @@ export default class OnlineServicesUtils {
   }
 
   /**
-   * 获取用户信息，未登陆时获取nickname和id
+   * 获取online用户信息，未登陆时获取nickname和id
    * 登陆后还可获取相应账号的phone和email
    * @param userName nickname或email
    * @param isEmail 通过手机号查找已被禁止，请设置为true
    */
-  getUserInfo = async (userName, isEmail) => {
+  getUserInfo = async (userName: string, isEmail: boolean): Promise<object|false> => {
     try {
       let url
       //仅支持邮箱，用户名 zhangxt
@@ -434,22 +559,21 @@ export default class OnlineServicesUtils {
       let response = fetch(url, {
         headers: headers,
       })
-      let result = await new Promise.race([response, timeout(10)])
+      let result = await Promise.race([response, timeout(10)])
       if (result === 'timeout') {
         return false
-      } else {
-        response = result
       }
-      if (response.status === 200) {
-        let result = await response.json()
+
+      if (result.status === 200) {
+        let info = await result.json()
 
         return {
-          userId: result.name,
-          nickname: result.nickname,
-          phoneNumber: result.phoneNumber,
+          userId: info.name,
+          nickname: info.nickname,
+          phoneNumber: info.phoneNumber,
           email:
-            (result.email && result.email.indexOf('@isupermap.com')) === -1
-              ? result.email
+            (info.email && info.email.indexOf('@isupermap.com')) === -1
+              ? info.email
               : null,
         }
       } else {
@@ -460,10 +584,13 @@ export default class OnlineServicesUtils {
     }
   }
 
-  /**
-   * 手机注册
-   */
-  loadPhoneRegisterPage = async () => {
+  /** cheerio加载的注册页面 */
+  registerPage: any
+  /** 注册页面cookie */
+  registerCookie: string | undefined
+
+  /** 加载注册页面 */
+  loadPhoneRegisterPage = async (): Promise<void> => {
     try {
       let url =
         'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
@@ -482,7 +609,12 @@ export default class OnlineServicesUtils {
     }
   }
 
-  sendSMSVerifyCode = async (phoneNumber, area) => {
+  /**
+   * 发送验证码
+   * @param phoneNumber 手机号
+   * @param area 国家区号
+   */
+  sendSMSVerifyCode = async (phoneNumber: string, area: string): Promise<string|boolean> => {
     try {
       let url =
         'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
@@ -494,7 +626,8 @@ export default class OnlineServicesUtils {
           .value,
       }
       let paramStr = this._obj2params(paramObj)
-      let headers = {
+      let headers: any
+      headers = {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       }
       if (this.registerCookie) {
@@ -518,10 +651,15 @@ export default class OnlineServicesUtils {
     }
   }
 
-  register = async (type, param) => {
+  /**
+   * 注册online账号
+   * @param type 已废弃
+   * @param param 注册参数
+   */
+  register = async (type: string, param: any): Promise<string|boolean> => {
     try {
       let url
-      if (type === 'phone') {
+      // if (type === 'phone') {
         url =
           'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
         let paramObj = {
@@ -546,7 +684,8 @@ export default class OnlineServicesUtils {
         } else {
           AcceptLanguage = 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
-        let headers = {
+        let headers: any
+        headers = {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
           'Accept-Language': AcceptLanguage,
         }
@@ -571,15 +710,18 @@ export default class OnlineServicesUtils {
         } catch (e) {
           return true
         }
-      }
+      // }
     } catch (e) {
       return false
     }
   }
 }
 
-//超时
-function timeout(sec) {
+/**
+ * 超时返回‘timeout’
+ * @param sec 超时秒数
+ */
+function timeout(sec: number): Promise<'timeout'> {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve('timeout')

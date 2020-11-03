@@ -2,22 +2,37 @@ import * as React from 'react'
 import { SARWeather } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { scaleSize, OnlineServicesUtils, Toast } from '../../utils'
-import { View, TouchableOpacity, FlatList, Text } from 'react-native'
+import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo } from 'react-native'
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
+import { NavigationScreenProp } from 'react-navigation'
+import  { Downloads, IDownloadProps } from '../../redux/models/down'
 
-export default class ChooseWeather extends React.Component {
-  props: {
-    navigation: Object,
-    downloads: Object,
-    downloadFile: () => {},
-  }
+interface IProps {
+  navigation: NavigationScreenProp<{}>
+  downloads: Downloads,
+  downloadFile: (param: IDownloadProps) => void
+}
 
-  constructor(props) {
+interface IState {
+  data: IWeather[]
+}
+
+interface IWeather {
+  title: string,
+  key: string,
+}
+
+export default class ChooseWeather extends React.Component<IProps, IState> {
+    /** 当前使用的特效名 string */
+  currentItemKey: string
+    /** 切换特效回调 function */
+  onSelectCallback: (key: string) => void
+
+  constructor(props: IProps) {
     super(props)
     let params = this.props.navigation.state.params || {}
-    this.point = params.point
     this.currentItemKey = params.currentItemKey || ''
     this.onSelectCallback = params.onSelectCallback
     this.state = {
@@ -52,7 +67,7 @@ export default class ChooseWeather extends React.Component {
     },
   ]
 
-  renderItem = ({ item }) => {
+  renderItem = ({item}: ListRenderItemInfo<IWeather>) => {
     return (
       <WeatherItem
         item={item}
@@ -78,7 +93,6 @@ export default class ChooseWeather extends React.Component {
   render() {
     return (
       <Container
-        ref={ref => (this.Container = ref)}
         headerProps={{
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_SELECT_EFFECT,
@@ -92,24 +106,35 @@ export default class ChooseWeather extends React.Component {
   }
 }
 
-class WeatherItem extends React.Component {
-  props: {
-    item: Object,
-    currentItemKey: String,
-    downloads: Object,
-    downloadFile: () => {},
-    onSelectCallback: () => {},
-  }
+interface IWeatherProps {
+  item: IWeather,
+  currentItemKey: String,
+  downloads: Downloads,
+  downloadFile: (param: IDownloadProps) => void,
+  onSelectCallback: (key: string) => void,
+}
 
-  constructor(props) {
+interface IWeatherState {
+  /** 0.未下载 1.未使用 2.使用中 3.下载中 */
+  status: number
+}
+
+class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
+  /** 特效视频路径 */
+  path: string
+  /** 下载进度查询timer */
+  timer: NodeJS.Timer | null
+
+  constructor(props: IWeatherProps) {
     super(props)
     this.path =
       GLOBAL.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
     let isCurrent = this.props.currentItemKey === this.props.item.key
 
     this.state = {
-      status: isCurrent ? 2 : 1, //0.未下载 1.未使用 2.使用中 3.下载中
+      status: isCurrent ? 2 : 1,
     }
+    this.timer = null
   }
 
   componentDidMount() {
@@ -120,6 +145,7 @@ class WeatherItem extends React.Component {
     this.removeDownloadListner()
   }
 
+  /** 获取并设置此特效的状态 */
   getStatus = async () => {
     if (this.state.status !== 2) {
       let progress = this.getDownloadProgress()
@@ -127,7 +153,7 @@ class WeatherItem extends React.Component {
         this.setState({
           status: 3,
         })
-        this.addDownloadListner()
+        this.addDownloadListener()
       } else {
         let isExist = await FileTools.fileIsExist(this.path)
         if (!isExist) {
@@ -139,6 +165,10 @@ class WeatherItem extends React.Component {
     }
   }
 
+  /**
+   * 获取下载进度
+   * @returns {Number} 下载进度，1-100。未下载时返回-1
+   */
   getDownloadProgress = () => {
     let downloads = this.props.downloads
     if (downloads.length > 0) {
@@ -154,6 +184,7 @@ class WeatherItem extends React.Component {
     return -1
   }
 
+  /** 从online上下载特效视频 */
   download = async () => {
     this.setState({
       status: 3,
@@ -176,7 +207,7 @@ class WeatherItem extends React.Component {
           toFile: this.path,
           background: true,
         })
-        this.addDownloadListner()
+        this.addDownloadListener()
       }
     } catch (e) {
       this.setState({
@@ -186,7 +217,8 @@ class WeatherItem extends React.Component {
     }
   }
 
-  addDownloadListner = () => {
+  /** 下载完成监听 */
+  addDownloadListener = () => {
     this.timer = setInterval(() => {
       let downloaded = false
       let downloads = this.props.downloads
@@ -207,6 +239,7 @@ class WeatherItem extends React.Component {
     }, 2000)
   }
 
+  /** 移除下载监听 */
   removeDownloadListner() {
     if (this.timer !== null) {
       clearInterval(this.timer)
@@ -269,7 +302,7 @@ class WeatherItem extends React.Component {
                   this.props.onSelectCallback(this.props.item.key)
                 NavigationService.goBack()
               } else if (this.state.status === 0) {
-                this.download(this.props.item.key)
+                this.download()
               }
             }}
           >

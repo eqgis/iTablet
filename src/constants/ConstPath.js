@@ -19,7 +19,6 @@ const RelativePath = {
   Environment: 'Environment/',
   License: 'License/',
   Log: 'Log/',
-  ExternalData: 'ExternalData/',
   Data,
   Label: `${Data}Label/`,
   Datasource: `${Data}Datasource/`,
@@ -38,7 +37,6 @@ const RelativePath = {
 
 const RelativeFilePath = {
   ExportData: 'ExportData/',
-  ExternalData: 'ExternalData',
   WorkspaceFile: Workspace,
   // Workspace: Data + 'Workspace.smwu', // 工作空间
   DefaultData, // 默认数据文件夹目录
@@ -70,7 +68,8 @@ export default {
   // UserPath: AppPath + '/user/', // 存放用户数据
   LicensePath: `${AppPath}license/`, // 存放许可文件
   // Audio: AppPath + 'audio/', // 存放语音
-
+  /**  所有用户导入导出使用的文件夹,注意最后没有加'/' */
+  ExternalData: `${AppPath}ExternalData`,
   CachePath: `${AppPath}Cache/`,
   CachePath2: `${AppPath}Cache`,
   // SampleDataPath: AppPath + '/SampleData/', // 存放示例数据

@@ -72,7 +72,7 @@ function getSearchResult(params, location, cb = () => {}) {
   keys.map(key => {
     searchStr += `&${key}=${params[key]}`
   })
-  let url = `http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
+  let url = `https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
   //console.warn(url)
   fetch(url)
     .then(response => response.json())

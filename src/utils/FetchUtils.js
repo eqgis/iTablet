@@ -106,7 +106,7 @@ export default class FetchUtils {
     let data
     try {
       let params = `{startPoint:{"x":${startX},"y":${startY}},endPoint:{"x":${endX},"y":${endY}},routeType:MINLENGTH,to:910111}`
-      let url = `http://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
+      let url = `https://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
       data = await FetchUtils.getObjJson(url)
     } catch (e) {
       // Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
@@ -118,7 +118,7 @@ export default class FetchUtils {
   static getPointName = async (x, y) => {
     let data
     try {
-      let url = `http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China/geodecoding.json?location={"x":${x},"y":${y}}&key=fvV2osxwuZWlY0wJb8FEb2i5`
+      let url = `https://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China/geodecoding.json?location={"x":${x},"y":${y}}&key=fvV2osxwuZWlY0wJb8FEb2i5`
       let rel = await FetchUtils.getObjJson(url, 2000)
       if (rel.formatedAddress != '[]') {
         data = rel.formatedAddress

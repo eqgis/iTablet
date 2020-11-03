@@ -45,7 +45,7 @@ import { setShow }  from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
 import { FileTools }  from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen } from './src/utils'
+import { scaleSize, Toast, screen, OnlineServicesUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
@@ -209,13 +209,14 @@ class AppRoot extends Component {
       let users = await ConfigUtils.getUsers()
       let userName = 'Customer'
       // 创建游客目录
-      if (!(await FileTools.fileIsExist(userName))) {
+      if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
         await FileTools.initUserDefaultData(userName)
       }
-      if (users.length === 0) {
+      if (users.length === 0 || UserType.isProbationUser(users[0])) {
         // 若没有任何用户登录，则默认Customer登录
         this.props.setUser({
           userName: userName,
+          userId: userName,
           userType: UserType.PROBATION_USER,
         })
       } else {
@@ -315,15 +316,15 @@ class AppRoot extends Component {
   }
 
   loginOnline = async () => {
-    let isEmail = this.props.user.currentUser.isEmail
-    let userName = this.props.user.currentUser.userName
+    // let isEmail = this.props.user.currentUser.isEmail
+    let nickname = this.props.user.currentUser.nickname
     let password = this.props.user.currentUser.password
     let bLogin = false
-    if (isEmail === true) {
-      bLogin = await SOnlineService.login(userName, password)
-    } else if (isEmail === false) {
-      bLogin = await SOnlineService.loginWithPhoneNumber(userName, password)
-    }
+    // if (isEmail === true) {
+    bLogin = await SOnlineService.login(nickname, password)
+    // } else if (isEmail === false) {
+    //   bLogin = await SOnlineService.loginWithPhoneNumber(userName, password)
+    // }
     return bLogin
   }
 
@@ -335,6 +336,20 @@ class AppRoot extends Component {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
       if(result){
+        let JSOnlineservice = new OnlineServicesUtils('online')
+        //登录后更新用户信息 zhangxt
+        let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
+        let user = {
+          userName: userInfo.userId,
+          password: this.props.user.currentUser.password,
+          nickname: userInfo.nickname,
+          email: userInfo.email,
+          phoneNumber: userInfo.phoneNumber,
+          userId: userInfo.userId,
+          isEmail: true,
+          userType: UserType.COMMON_USER,
+        }
+        this.props.setUser(user)
         GLOBAL.getFriend().onUserLoggedin()
       } else {
         GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
@@ -344,7 +359,24 @@ class AppRoot extends Component {
       let userName = this.props.user.currentUser.userName
       let password = this.props.user.currentUser.password
       SIPortalService.init()
-      SIPortalService.login(url, userName, password, true)
+      let result = await SIPortalService.login(url, userName, password, true)
+      if (typeof result === 'boolean' && result) {
+        //登录后更新用户信息 zhangxt
+        let info = await SIPortalService.getMyAccount()
+        if (info) {
+          let userInfo = JSON.parse(info)
+          this.props.setUser({
+            serverUrl: url,
+            userName: userInfo.name,
+            password: password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            userType: UserType.IPORTAL_COMMON_USER,
+          })
+        }
+        this.container.setLoading(false)
+        NavigationService.popToTop()
+      }
     }
   }
 

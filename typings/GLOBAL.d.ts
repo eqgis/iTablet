@@ -155,6 +155,7 @@ declare namespace GLOBAL {
   /** 地图选点界面 EnterDatumPoint.js MapSelectPointLatitudeAndLongitude */
   let DATUMPOINTVIEW: any             
 
+  let currentUser: any
   // 全局方法
   /** 获取设备信息，待优化 App.js*/
   function getDevice(): Device        

@@ -91,7 +91,7 @@ export default class MyOnlineMap extends Component {
           this._showInfo('数据没有发布服务')
         } else {
           let subUrl = restUrl.substring(5, restUrl.length)
-          restUrl = 'http' + subUrl + '/maps.json'
+          restUrl = 'https' + subUrl + '/maps.json'
           let arrMapJson = await FetchUtils.getObjJson(restUrl)
           if (arrMapJson.errorMsg !== undefined) {
             this._showInfo('数据没有公开已有服务，无权限浏览')

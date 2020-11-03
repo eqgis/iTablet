@@ -110,11 +110,14 @@ export default class MapSetting extends Component {
         title={item.title}
         style={this.props.device.orientation.indexOf('LANDSCAPE') < 0 && {}}
         action={() => {
-          //图例单独处理
-          if (
+          if(item.action && typeof(item.action) === 'function') {
+            //先处理有自定义action的 zhangxt
+            item.action()
+          } else if (
             item.title ===
             getLanguage(this.props.language).Map_Settings.LEGEND_SETTING
           ) {
+            //图例单独处理
             legendModule().action()
           } else {
             //根据title跳转

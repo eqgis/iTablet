@@ -206,16 +206,13 @@ export default class RenderFindItem extends Component {
 
   async unZipFile() {
     let appHome = await FileTools.appendingHomeDirectory()
-    let userName =
-      this.props.user.currentUser.userType === UserType.PROBATION_USER
-        ? 'Customer'
-        : this.props.user.currentUser.userName
+    // let userName =
+    //   this.props.user.currentUser.userType === UserType.PROBATION_USER
+    //     ? 'Customer'
+    //     : this.props.user.currentUser.userName
     let fileDir =
       appHome +
-      ConstPath.UserPath +
-      userName +
-      '/' +
-      ConstPath.RelativePath.ExternalData +
+      ConstPath.ExternalData + '/' +
       this.titleName
     let exists = await RNFS.exists(fileDir)
     if (!exists) {

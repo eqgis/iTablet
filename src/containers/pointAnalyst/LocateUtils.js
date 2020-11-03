@@ -72,13 +72,13 @@ function getSearchResult(params, location, cb = () => {}) {
   keys.map(key => {
     searchStr += `&${key}=${params[key]}`
   })
-  let url = `http://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
+  let url = `https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
   //console.warn(url)
   fetch(url)
     .then(response => response.json())
     .then(data => {
       if (data.error || data.poiInfos.length === 0) {
-        Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS)
         cb && cb()
       } else {
         let poiInfos = data.poiInfos
@@ -88,7 +88,7 @@ function getSearchResult(params, location, cb = () => {}) {
             .then(data2 => {
               if (data.error || data.poiInfos.length === 0) {
                 Toast.show(
-                  getLanguage(global.language).Prompt.NO_SEARCH_RESULTS,
+                  getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS,
                 )
               } else {
                 poiInfos = data2.poiInfos

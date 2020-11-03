@@ -29,7 +29,7 @@ export default class SampleMapItem extends Component {
     this.downloadingPath = false
     this.aniMotion = null
     this.state = {
-      progress: getLanguage(global.language).Prompt.DOWNLOAD,
+      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
       rotateValue: new Animated.Value(0),
@@ -168,16 +168,13 @@ export default class SampleMapItem extends Component {
 
   unZipFile = async () => {
     let appHome = await FileTools.appendingHomeDirectory()
-    let userName =
-      this.props.user.currentUser.userType === UserType.PROBATION_USER
-        ? 'Customer'
-        : this.props.user.currentUser.userName
+    // let userName =
+    //   this.props.user.currentUser.userType === UserType.PROBATION_USER
+    //     ? 'Customer'
+    //     : this.props.user.currentUser.userName
     let fileDir =
       appHome +
-      ConstPath.UserPath +
-      userName +
-      '/' +
-      ConstPath.RelativePath.ExternalData +
+      ConstPath.ExternalData + '/' +
       this.titleName
     let exists = await RNFS.exists(fileDir)
     if (!exists) {
@@ -223,7 +220,7 @@ export default class SampleMapItem extends Component {
   //       style={[styles.itemDownloadView, styles.itemDownloadedView]}
   //     >
   //       <Text style={[styles.itemName, { marginHorizontal: scaleSize(22) }]}>
-  //         {getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY}
+  //         {getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY}
   //       </Text>
   //     </View>
   //   )

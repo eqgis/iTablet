@@ -11,7 +11,7 @@ const TOOLBAR_HEIGHT_2 = 80
 
 // 图例
 const LEGEND_CONST = {
-  SM_MAP_LEGEND: 'SM_MAP_LEGEND', // 图例
+  SM_MAP_LEGEND: 'SM_MAP_LEGEND', // 图例，模块类型
   // SM_MAP_LEGEND_NOT_VISIBLE: 'SM_MAP_LEGEND_NOT_VISIBLE', // 图例不可见
   SM_MAP_LEGEND_POSITION: 'SM_MAP_LEGEND_POSITION', // 图例位置
 }
@@ -21,7 +21,8 @@ const NAVIGATION_CONST = {
   SM_MAP_TOOL_INCREMENT: 'SM_MAP_TOOL_INCREMENT', //增量路网
   SM_MAP_TOOL_GPSINCREMENT: 'SM_MAP_TOOL_GPSINCREMENT', //GPS增量路网
   SM_MAP_NAVIGATION_MODULE: 'SM_MAP_NAVIGATION_MODULE', //导航
-  SM_MAP_INCREMENT: 'SM_MAP_INCREMENT', //增量模块
+
+  SM_MAP_INCREMENT: 'SM_MAP_INCREMENT', //增量模块，模块类型
   SM_MAP_INCREMENT_INNER: 'SM_MAP_INCREMENT_INNER', //增量室内
   SM_MAP_INCREMENT_POINTLINE: 'SM_MAP_INCREMENT_POINTLINE', //点绘式
   SM_MAP_INCREMENT_FREELINE: 'SM_MAP_INCREMENT_FREELINE', //自由式
@@ -31,7 +32,7 @@ const NAVIGATION_CONST = {
   SM_MAP_INCREMENT_EDIT: 'SM_MAP_INCREMENT_EDIT', //编辑
   SM_MAP_INCREMENT_CHANGE_NETWORK: 'SM_MAP_INCREMENT_CHANGE_NETWORK', //切换路网
 
-  SM_MAP_TOPO_EDIT: 'SM_MAP_TOPO_EDIT', //拓扑编辑
+  SM_MAP_TOPO_EDIT: 'SM_MAP_TOPO', //拓扑编辑，模块类型
   SM_MAP_TOPO_SWITCH_TYPE: 'SM_MAP_TOPO_SWITCH_TYPE', //拓扑编辑 切换当前编辑类型
   SM_MAP_TOPO_TOPING: 'SM_MAP_TOPO_TOPING', //拓扑编辑 编辑状态
   SM_MAP_TOPO_MERGE_DATASET: 'SM_MAP_TOPO_MERGE_DATASET', //合并数据集
@@ -56,11 +57,11 @@ const MAP_SETTINGS_CONST = {
 /** 图层设置 **/
 const MAP_LAYER_VISIBLE_CONST = {
   SM_MAP_LAYER_VISIBLE_SCALE: 'SM_MAP_LAYER_VISIBLE_SCALE',             //图层可见比例尺范围设置
-  SM_MAP_LAYER_VISIBLE_USER_DEFINE: 'SM_MAP_LAYER_VISIBLE_USER_DEFINE', //图层可见比例尺 用户自定义设置
+  SM_MAP_LAYER_VISIBLE_SCALE_USER_DEFINE: 'SM_MAP_LAYER_VISIBLE_SCALE_USER_DEFINE', //图层可见比例尺 用户自定义设置
 }
 
 const MAP_MARKS_CONST = {
-  SM_MAP_MARKS: 'SM_MAP_MARKS', //  标注模块
+  SM_MAP_MARKS: 'SM_MAP_MARKS', //  标注模块，模块类型
   SM_MAP_MARKS_DRAW: 'SM_MAP_MARKS_DRAW', //标注绘制
   SM_MAP_MARKS_DRAW_UNDO: 'SM_MAP_MARKS_DRAW_UNDO', //撤销
   SM_MAP_MARKS_DRAW_REDO: 'SM_MAP_MARKS_DRAW_REDO', //回退
@@ -126,7 +127,7 @@ const TOUCHPROGRESS_CONST = {
 
 /** 地图浏览 **/
 const MAP_EDIT_CONST = {
-  SM_MAP_EDIT: 'SM_MAP_EDIT',                                   // 地图编辑模块，Toolbar只有底部按钮栏（未选中任何对象时的编辑模式）
+  SM_MAP_EDIT: 'SM_MAP_EDIT',                                   // 地图编辑模块，Toolbar只有底部按钮栏（未选中任何对象时的编辑模式），模块类型
   SM_MAP_EDIT_POINT: 'SM_MAP_EDIT_POINT',                       // 编辑点
   SM_MAP_EDIT_LINE: 'SM_MAP_EDIT_LINE',                         // 编辑线
   SM_MAP_EDIT_REGION: 'SM_MAP_EDIT_REGION',                     // 编辑面
@@ -138,7 +139,7 @@ const MAP_EDIT_CONST = {
 
 /** 专题 **/
 const MAP_THEME_CONST = {
-  SM_MAP_THEME: 'SM_MAP_THEME',
+  SM_MAP_THEME: 'SM_MAP_THEME',                                                       // 专题模块，模块类型
   SM_MAP_THEME_CREATE: 'SM_MAP_THEME_CREATE',                                         // 新建专题图，选择专题图类型
   SM_MAP_THEME_CREATE_BY_LAYER: 'SM_MAP_THEME_CREATE_BY_LAYER',                       // 从图层页面，新建专题图，选择专题图类型
   SM_MAP_THEME_PARAM: 'SM_MAP_THEME_PARAM',                                           // 普通专题图
@@ -232,7 +233,7 @@ const MAP_THEME_CONST = {
 
 /** 推演动画 **/
 const PLOT_ANIMATION_CONST = {
-  SM_MAP_PLOT: 'SM_MAP_PLOT',                                                   // 标绘模块
+  SM_MAP_PLOT: 'SM_MAP_PLOT',                                                   // 标绘模块，模块类型
   SM_MAP_PLOT_LIB_CHANGE: 'SM_MAP_PLOT_LIB_CHANGE',
 
   SM_MAP_PLOT_ANIMATION: 'SM_MAP_PLOT_ANIMATION',                               // 推演模块
@@ -248,7 +249,7 @@ const PLOT_ANIMATION_CONST = {
 
 /** 分析模块 **/
 const MAP_ANALYSIS_CONST = {
-  SM_MAP_ANALYSIS: 'SM_MAP_ANALYSIS',                                               // 分析模块
+  SM_MAP_ANALYSIS: 'SM_MAP_ANALYSIS',                                               // 分析模块，模块类型
   SM_MAP_ANALYSIS_BUFFER_ANALYSIS: 'SM_MAP_ANALYSIS_BUFFER_ANALYSIS',               // 缓冲分析
   SM_MAP_ANALYSIS_OVERLAY_ANALYSIS: 'SM_MAP_ANALYSIS_OVERLAY_ANALYSIS',             // 叠加分析
   SM_MAP_ANALYSIS_ONLINE_ANALYSIS: 'SM_MAP_ANALYSIS_ONLINE_ANALYSIS',               // 在线分析
@@ -262,12 +263,12 @@ const MAP_ANALYSIS_CONST = {
 
 /** 处理模块 **/
 const MAP_PROCESS_CONST = {
-  SM_MAP_PROCESS: 'SM_MAP_PROCESS',                                                 // 分析处理
+  SM_MAP_PROCESS: 'SM_MAP_PROCESS',                                                 // 分析处理，模块类型
 }
 
 /** 图层设置 **/
 const LAYER_SETTING_CONST = {
-  SM_MAP_LAYER_SETTING_IMAGE: 'SM_MAP_LAYER_SETTING_IMAGE',                           // 图层设置
+  SM_MAP_LAYER_SETTING_IMAGE: 'SM_MAP_LAYER_SETTING_IMAGE',                           // 图层设置，模块类型
   SM_MAP_LAYER_SETTING_IMAGE_MENU: 'SM_MAP_LAYER_SETTING_IMAGE_MENU',                 // 展示图层设置
   SM_MAP_LAYER_SETTING_IMAGE_STRETCH_TYPE: 'SM_MAP_LAYER_SETTING_IMAGE_STRETCH_TYPE', // 拉伸方式
   SM_MAP_LAYER_SETTING_IMAGE_DISPLAY_MODE: 'SM_MAP_LAYER_SETTING_IMAGE_DISPLAY_MODE', // 显示模式
@@ -275,7 +276,7 @@ const LAYER_SETTING_CONST = {
 
 /** 三维标注 **/
 const MAP3D_MARK_CONST = {
-  SM_MAP3D_MARK: 'SM_MAP3D_MARK',                                  // 三维标注
+  SM_MAP3D_MARK: 'SM_MAP3D_MARK',                                  // 三维标注，模块类型
   SM_MAP3D_MARK_POINT: 'SM_MAP3D_MARK_POINT',                      // 三维标注点
   SM_MAP3D_MARK_TEXT: 'SM_MAP3D_MARK_TEXT',                        // 三维标注文字
   SM_MAP3D_MARK_POINT_LINE: 'SM_MAP3D_MARK_POINT_LINE',            // 三维标注线
@@ -284,7 +285,7 @@ const MAP3D_MARK_CONST = {
 
 /** 三维工具 **/
 const MAP3D_TOOL_CONST = {
-  SM_MAP3D_TOOL: 'SM_MAP3D_TOOL',                                  // 三维工具
+  SM_MAP3D_TOOL: 'SM_MAP3D_TOOL',                                  // 三维工具，模块类型
   SM_MAP3D_TOOL_DISTANCE_MEASURE: 'SM_MAP3D_TOOL_DISTANCE_MEASURE',  // 三维距离量算
   SM_MAP3D_TOOL_SURFACE_MEASURE: 'SM_MAP3D_TOOL_SURFACE_MEASURE',  // 三维面积量算
   SM_MAP3D_TOOL_HEIGHT_MEASURE: 'SM_MAP3D_TOOL_HEIGHT_MEASURE',      // 三维高度脸酸
@@ -309,7 +310,7 @@ const MAP3D_TOOL_CONST = {
 
 /** 三维飞行 **/
 const MAP3D_FLY_CONST = {
-  SM_MAP3D_FLY: 'SM_MAP3D_FLY',              // 播放飞行轨迹
+  SM_MAP3D_FLY: 'SM_MAP3D_FLY',              // 播放飞行轨迹，模块类型
   SM_MAP3D_FLY_NEW: 'SM_MAP3D_FLY_NEW',      // 新建飞行轨迹
   SM_MAP3D_FLY_LIST: 'SM_MAP3D_FLY_LIST',    // 获取飞行轨迹列表
 }
@@ -325,7 +326,7 @@ const MAP3D_LAYER3D_CONST = {
 
 /** 风格模块 **/
 const MAP_STYLE_CONST = {
-  SM_MAP_STYLE: 'SM_MAP_STYLE',                                         // 风格
+  SM_MAP_STYLE: 'SM_MAP_STYLE',                                         // 风格，模块类型
   SM_MAP_STYLE_GRID: 'SM_MAP_STYLE_GRID',                               // 栅格风格
   SM_MAP_STYLE_LINE_COLOR: 'SM_MAP_STYLE_LINE_COLOR',                   // 线颜色
   SM_MAP_STYLE_POINT_COLOR: 'SM_MAP_STYLE_POINT_COLOR',                 // 点颜色
@@ -338,7 +339,7 @@ const MAP_STYLE_CONST = {
 
 /** 工具模块 **/
 const MAP_TOOL_CONST = {
-  SM_MAP_TOOL: 'SM_MAP_TOOL',                                                         // 工具模块
+  SM_MAP_TOOL: 'SM_MAP_TOOL',                                                         // 工具模块，模块类型
   SM_MAP_TOOL_POINT_SELECT: 'SM_MAP_TOOL_POINT_SELECT',                               // 点选
   SM_MAP_TOOL_SELECT_BY_RECTANGLE: 'SM_MAP_TOOL_SELECT_BY_RECTANGLE',                 // 框选
   SM_MAP_TOOL_MEASURE_LENGTH: 'SM_MAP_TOOL_MEASURE_LENGTH',                           // 量算长度
@@ -353,7 +354,7 @@ const MAP_TOOL_CONST = {
 
 /** 采集模块 **/
 const MAP_COLLECTION_CONST = {
-  SM_MAP_COLLECTION: 'SM_MAP_COLLECTION',                                  // 采集模块
+  SM_MAP_COLLECTION: 'SM_MAP_COLLECTION',                                  // 采集模块，模块类型
   SM_MAP_COLLECTION_SYMBOL: 'SM_MAP_COLLECTION_SYMBOL',                    // 符号库（采集/标绘）
   SM_MAP_COLLECTION_POINT: 'SM_MAP_COLLECTION_POINT',                      // 采集点
   SM_MAP_COLLECTION_LINE: 'SM_MAP_COLLECTION_LINE',                        // 采集线
@@ -363,7 +364,7 @@ const MAP_COLLECTION_CONST = {
 
 /** 添加模块 **/
 const MAP_ADD_CONST = {
-  SM_MAP_ADD: 'SM_MAP_ADD',                                 // 添加模块
+  SM_MAP_ADD: 'SM_MAP_ADD',                                 // 添加模块，模块类型
   SM_MAP_ADD_SYMBOL_PATH: 'SM_MAP_ADD_SYMBOL_PATH',         // 根据路径获取本地符号树状列表
   SM_MAP_ADD_SYMBOL_SYMBOLS: 'SM_MAP_ADD_SYMBOL_SYMBOLS',   // 根据文件路径获取符号
   SM_MAP_ADD_DATASET: 'SM_MAP_ADD_DATASET',                 // 展示数据集列表
@@ -371,14 +372,14 @@ const MAP_ADD_CONST = {
 
 /** 开始模块 **/
 const MAP_START_CONST = {
-  SM_MAP_START: 'SM_MAP_START',                             // 开始模块
+  SM_MAP_START: 'SM_MAP_START',                             // 开始模块，模块类型
   SM_MAP_START_TEMPLATE: 'SM_MAP_START_TEMPLATE',           // 打开模板
   SM_MAP_START_CHANGE: 'SM_MAP_START_CHANGE',               // 切换地图
 }
 
 /** 三维开始模块 **/
 const MAP3D_START_CONST = {
-  SM_MAP3D_START: 'SM_MAP3D_START',                         // 三维开始模块
+  SM_MAP3D_START: 'SM_MAP3D_START',                         // 三维开始模块，模块类型
 }
 
 /** MAP_AR视频地图模块 **/

@@ -109,7 +109,7 @@ class ChatImageViewer extends React.Component {
           style={styles.bottomMenuStyle}
         >
           <Text style={styles.text}>
-            {getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
+            {getLanguage(GLOBAL.language).Friends.LOAD_ORIGIN_PIC +
               '(' +
               fileSizeText +
               ')'}

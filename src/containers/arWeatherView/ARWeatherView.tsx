@@ -8,19 +8,22 @@ import { getThemeAssets, getPublicAssets } from '../../assets'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { FileTools } from '../../native'
+import { NavigationScreenProp } from 'react-navigation'
 
-export default class ARWeatherView extends React.Component {
-  props: {
-    navigation: Object,
-    language: String,
-    user: Object,
-    nav: Object,
-  }
+interface IProps {
+  navigation: NavigationScreenProp<{}>
+}
 
-  constructor(props) {
+interface IState {
+  /** 当前使用特效文件名（不含扩展名） */
+  current: string,
+  /** 显示或隐藏特效 */
+  visible: boolean,
+}
+
+export default class ARWeatherView extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
-    let params = this.props.navigation.state.params || {}
-    this.point = params.point
     this.state = {
       current: '',
       visible: true,
@@ -39,12 +42,19 @@ export default class ARWeatherView extends React.Component {
 
   componentWillUnmount() {}
 
-  setCurrent = key => {
+  /**
+   * 设置当前使用的文件名（不含扩展名）
+   * @param {string} key
+   */
+  setCurrent = (key: string) => {
     this.setState({
       current: key,
     })
   }
 
+  /**
+   * 设置显示或隐藏特效
+   */
   setVisible = () => {
     let visible = !this.state.visible
     SARWeather.showWeather(visible)
@@ -53,14 +63,20 @@ export default class ARWeatherView extends React.Component {
     })
   }
 
+  /**
+   * 进入页面默认显示一个特效（如果文件存在）
+   */
   showDefault = async () => {
-    let path = global.homePath + '/iTablet/Common/Weather/Snow.mp4'
+    let path = GLOBAL.homePath + '/iTablet/Common/Weather/Snow.mp4'
     if (await FileTools.fileIsExist(path)) {
       SARWeather.setWeather(path)
       this.setCurrent('Snow')
     }
   }
 
+  /**
+   * 返回事件
+   */
   back = () => {
     SARWeather.onDestroy()
     NavigationService.goBack()
@@ -116,7 +132,7 @@ export default class ARWeatherView extends React.Component {
           onPress={() => {
             NavigationService.navigate('ChooseWeather', {
               currentItemKey: this.state.current,
-              onSelectCallback: key => this.setCurrent(key),
+              onSelectCallback: (key: string) => this.setCurrent(key),
             })
           }}
         >
@@ -132,9 +148,8 @@ export default class ARWeatherView extends React.Component {
   render() {
     return (
       <Container
-        ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

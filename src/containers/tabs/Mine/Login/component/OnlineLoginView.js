@@ -40,7 +40,7 @@ export default class OnlineLoginView extends React.Component {
             }}
           />
         </View>
-        {global.isPad && <View style={{ width: '100%', height: 15 }} />}
+        {GLOBAL.isPad && <View style={{ width: '100%', height: 15 }} />}
         <View style={styles.inputBackgroud}>
           <TextInput
             clearButtonMode={'while-editing'}
@@ -80,7 +80,7 @@ export default class OnlineLoginView extends React.Component {
             NavigationService.navigate('GetBack')
           }}
         >
-          {getLanguage(global.language).Profile.FORGET_PASSWORD}
+          {getLanguage(GLOBAL.language).Profile.FORGET_PASSWORD}
         </Text>
       </View>
     )

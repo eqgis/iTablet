@@ -46,20 +46,20 @@ export default class XYZSlide extends Component {
     let range, onMove, labelLeft, labelRight
     switch (dir) {
       case 'x':
-        labelLeft = getLanguage(global.language).Common.LEFT
-        labelRight = getLanguage(global.language).Common.RIGHT
+        labelLeft = getLanguage(GLOBAL.language).Common.LEFT
+        labelRight = getLanguage(GLOBAL.language).Common.RIGHT
         range = this.props.rangeX
         onMove = this.props.onMoveX
         break
       case 'y':
-        labelLeft = getLanguage(global.language).Common.DOWN
-        labelRight = getLanguage(global.language).Common.UP
+        labelLeft = getLanguage(GLOBAL.language).Common.DOWN
+        labelRight = getLanguage(GLOBAL.language).Common.UP
         range = this.props.rangeY
         onMove = this.props.onMoveY
         break
       default:
-        labelLeft = getLanguage(global.language).Common.BACK
-        labelRight = getLanguage(global.language).Common.FRONT
+        labelLeft = getLanguage(GLOBAL.language).Common.BACK
+        labelRight = getLanguage(GLOBAL.language).Common.FRONT
         range = this.props.rangeZ
         onMove = this.props.onMoveZ
         break

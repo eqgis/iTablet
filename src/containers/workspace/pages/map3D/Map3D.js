@@ -102,7 +102,7 @@ export default class Map3D extends React.Component {
   }
 
   componentDidMount() {
-    if (global.isLicenseValid) {
+    if (GLOBAL.isLicenseValid) {
       this.container.setLoading(
         true,
         getLanguage(this.props.language).Prompt.LOADING,
@@ -144,12 +144,12 @@ export default class Map3D extends React.Component {
       )
       BackHandler.addEventListener('hardwareBackPress', this.backHandler)
     } else {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
         confirmAction: () => NavigationService.goBack(),
         cancelAction: () => NavigationService.goBack(),
       })
-      global.SimpleDialog.setVisible(true)
+      GLOBAL.SimpleDialog.setVisible(true)
     }
   }
 
@@ -194,8 +194,20 @@ export default class Map3D extends React.Component {
   }
 
   getLayers = async () => {
-    let layerlist = await SScene.getLayerList()
-    let terrainLayerList = await SScene.getTerrainLayerList()
+    // 获取三维图层
+    let layerlist
+    try {
+      layerlist = await SScene.getLayerList()
+    } catch (e) {
+      layerlist = []
+    }
+    // 获取三维地形
+    let terrainLayerList
+    try {
+      terrainLayerList = await SScene.getTerrainLayerList()
+    } catch (e) {
+      terrainLayerList = []
+    }
     layerlist = JSON.parse(JSON.stringify(layerlist.concat(terrainLayerList)))
     let cutLayers = layerlist.map(layer => {
       layer.selected = true
@@ -274,6 +286,13 @@ export default class Map3D extends React.Component {
         }, 1500)
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
+      }).catch(() =>{
+        //reject异常处理 zhangxt
+        setTimeout(() => {
+          this.container.setLoading(false)
+          // Toast.show('无场景显示')
+          this.mapLoaded = true
+        }, 1500)
       })
     } catch (e) {
       setTimeout(() => {
@@ -296,7 +315,6 @@ export default class Map3D extends React.Component {
 
   _onGetInstance = sceneControl => {
     // console.warn("add scene")
-    GLOBAL.sceneControl = sceneControl
 
     //放到这里打开场景，更稳定 add xiezhy
     // let startOpen = false
@@ -682,7 +700,7 @@ export default class Map3D extends React.Component {
     return (
       <FunctionToolbar
         language={this.props.language}
-        ref={ref => (GLOBAL.FUNCTIONTOOLBAR = this.functionToolbar = ref)}
+        ref={ref => (this.functionToolbar = ref)}
         getToolRef={() => {
           return this.toolBox
         }}
@@ -1030,7 +1048,7 @@ export default class Map3D extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
-        {global.isLicenseValid && (
+        {GLOBAL.isLicenseValid && (
           <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
         )}
         <SurfaceView

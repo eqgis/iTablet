@@ -880,6 +880,8 @@ const Map_Settings = {
   CONFIRM: '确定',
   CANCEL: '取消',
   COPY: '复制',
+
+  CONFIDENCE: '置信度',
 }
 
 // 地图工具

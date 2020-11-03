@@ -90,7 +90,7 @@ async function _appendMyColor(data) {
       item.fileName = name
     })
     data.unshift({
-      title: getLanguage(global.language).Profile.MY_COLOR_SCHEME,
+      title: getLanguage(GLOBAL.language).Profile.MY_COLOR_SCHEME,
       data: myColor,
     })
   }
@@ -1203,7 +1203,7 @@ async function commit(type) {
         })
 
         _params.setToolbarVisible(false)
-        GLOBAL.dialog.setDialogVisible(true)
+        GLOBAL.prjDialog.setDialogVisible(true)
         Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
       } else {
         Toast.show(getLanguage(_params.language).Prompt.ADD_FAILED)
@@ -1225,7 +1225,7 @@ async function commit(type) {
       })
     if (result) {
       _params.setToolbarVisible(false)
-      GLOBAL.dialog.setDialogVisible(true)
+      GLOBAL.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
     } else {
       Toast.show(getLanguage(_params.language).Prompt.CREATE_THEME_FAILED)
@@ -1247,7 +1247,7 @@ async function commit(type) {
       })
     if (result) {
       _params.setToolbarVisible(false)
-      GLOBAL.dialog.setDialogVisible(true)
+      GLOBAL.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
     } else {
       Toast.show(getLanguage(_params.language).Prompt.CREATE_THEME_FAILED)

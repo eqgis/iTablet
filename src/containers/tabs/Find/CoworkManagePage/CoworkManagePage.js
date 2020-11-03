@@ -29,24 +29,24 @@ export default class CoworkManagePage extends React.Component {
     try {
       GLOBAL.Loading.setLoading(
         true,
-        getLanguage(global.language).Prompt.PREPARING,
+        getLanguage(GLOBAL.language).Prompt.PREPARING,
       )
       let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
-        global.SimpleDialog.set({
-          text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      if (!GLOBAL.isLicenseValid) {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
         })
-        global.SimpleDialog.setVisible(true)
+        GLOBAL.SimpleDialog.setVisible(true)
         return
       }
-      global.getFriend().setCurMod(module)
+      GLOBAL.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(index).then(() => {
         module.action(this.props.user.currentUser, map)
       })
-      global.getFriend().curChat &&
-        global.getFriend().curChat.setCoworkMode(true)
-      global.coworkMode = true
+      GLOBAL.getFriend().curChat &&
+        GLOBAL.getFriend().curChat.setCoworkMode(true)
+      GLOBAL.coworkMode = true
       CoworkInfo.setTalkId(targetId)
       setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
     } catch (error) {
@@ -55,11 +55,11 @@ export default class CoworkManagePage extends React.Component {
   }
 
   deleteInvite = data => {
-    global.SimpleDialog.set({
-      text: getLanguage(global.language).Friends.DELETE_COWORK_ALERT,
+    GLOBAL.SimpleDialog.set({
+      text: getLanguage(GLOBAL.language).Friends.DELETE_COWORK_ALERT,
       confirmAction: () => this.props.deleteInvite(data),
     })
-    global.SimpleDialog.setVisible(true)
+    GLOBAL.SimpleDialog.setVisible(true)
   }
 
   renderRight = () => {
@@ -73,7 +73,7 @@ export default class CoworkManagePage extends React.Component {
                 NavigationService.navigate('SelectModule', {
                   callBack: (module, index) => {
                     NavigationService.navigate('MyMap', {
-                      title: getLanguage(global.language).Friends.SELECT_MAP,
+                      title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
                       getItemCallback: ({ item }) => {
                         let mapName = item.name.substring(
                           0,
@@ -99,7 +99,7 @@ export default class CoworkManagePage extends React.Component {
         }}
       >
         <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
-          {getLanguage(global.language).Prompt.CREATE}
+          {getLanguage(GLOBAL.language).Prompt.CREATE}
         </Text>
       </TouchableOpacity>
     )
@@ -132,7 +132,7 @@ export default class CoworkManagePage extends React.Component {
       return (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ color: 'grey', marginTop: scaleSize(24) }}>
-            {getLanguage(global.language).Find.COWORK_LOGIN}
+            {getLanguage(GLOBAL.language).Find.COWORK_LOGIN}
           </Text>
         </View>
       )
@@ -146,7 +146,7 @@ export default class CoworkManagePage extends React.Component {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage(global.language).Find.ONLINE_COWORK,
+          title: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
         }}

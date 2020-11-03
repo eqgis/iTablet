@@ -31,7 +31,7 @@ export default class PublicData extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(global.language).Find.PUBLIC_DATA,
+      title: getLanguage(GLOBAL.language).Find.PUBLIC_DATA,
       data: [],
       initData: false,
       noData: false,
@@ -194,9 +194,9 @@ export default class PublicData extends React.Component {
   renderStatus = () => {
     let text
     if (this.state.noData) {
-      text = getLanguage(global.language).Find.NO_DATA
+      text = getLanguage(GLOBAL.language).Find.NO_DATA
     } else if (this.state.loadError) {
-      text = getLanguage(global.language).Find.NETWORK_ERROR
+      text = getLanguage(GLOBAL.language).Find.NETWORK_ERROR
     }
     if (text) {
       return (
@@ -220,7 +220,7 @@ export default class PublicData extends React.Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(global.language).Friends.LOADING}
+            title={getLanguage(GLOBAL.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -259,7 +259,7 @@ export default class PublicData extends React.Component {
               textAlign: 'center',
             }}
           >
-            {getLanguage(global.language).Find.NO_MORE_DATA}
+            {getLanguage(GLOBAL.language).Find.NO_MORE_DATA}
           </Text>
         </View>
       )
@@ -293,7 +293,7 @@ export default class PublicData extends React.Component {
               color: 'orange',
             }}
           >
-            {getLanguage(global.language).Prompt.LOADING}
+            {getLanguage(GLOBAL.language).Prompt.LOADING}
           </Text>
         </View>
       )

@@ -16,12 +16,12 @@ RCT_REMAP_METHOD(getTemplates, getTemplatesByUserName:(NSString *)userName strMo
     if (userName == nil || [userName isEqualToString:@""]) {
       userName = @"Customer";
     }
-    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@", @"/Documents/iTablet/User/", userName, @"/ExternalData"];
+    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
     
     if(strModule == nil || [strModule isEqualToString:@""]){
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@", @"/Documents/iTablet/User/", userName, @"/ExternalData"];
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
     }else {
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@%@", @"/Documents/iTablet/User/", userName, @"/ExternalData/", strModule];
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@", @"/Documents/iTablet/ExternalData/", strModule];
     }
     
     NSMutableArray* templateList = [NativeMethod getTemplate:templatePath];

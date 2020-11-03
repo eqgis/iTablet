@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import {
   SMap,
   Action,
@@ -36,7 +37,7 @@ function stop() {
 
 function submit() {
   (async function() {
-    if (GLOBAL.MapToolType === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
+    if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
       await SMap.addGPSRecordset()
     }
     await SMap.submit()
@@ -44,17 +45,23 @@ function submit() {
   })()
 }
 
-function select(type) {
+async function select(type) {
   if (type === undefined) {
     type = ToolbarModule.getParams().type
   }
+  let action
   switch (type) {
     case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
-      SMap.setAction(Action.SELECT_BY_RECTANGLE)
-      // SMap.selectByRectangle()
+      action = await SMap.getAction()
+      if (action !== Action.SELECT_BY_RECTANGLE) {
+        await SMap.setAction(Action.SELECT_BY_RECTANGLE)
+      }
       break
     default:
-      SMap.setAction(Action.SELECT)
+      action = await SMap.getAction()
+      if (action !== Action.SELECT) {
+        await SMap.setAction(Action.SELECT)
+      }
       break
   }
 }
@@ -79,7 +86,7 @@ function pointSelect() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-  
+
   const type = ConstToolType.SM_MAP_TOOL_POINT_SELECT
 
   _params.setToolbarVisible(true, type, {
@@ -332,7 +339,7 @@ async function setting() {
 
 // function name() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
+//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_NAME,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
@@ -351,7 +358,7 @@ async function setting() {
 
 // function remark() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS,
+//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_REMARKS,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
@@ -370,7 +377,7 @@ async function setting() {
 //
 // function address() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP,
+//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_HTTP,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
@@ -423,21 +430,6 @@ function captureImage() {
 function tour() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    // let {isTaggingLayer, layerInfo} = await SMap.getCurrentTaggingLayer(
-    //   ToolbarModule.getParams().user.currentUser.userName,
-    // )
-    //
-    // // TODO 判断是否是轨迹标注图层
-    // if (isTaggingLayer && GLOBAL.TaggingDatasetName) {
-    //   let dsDes = layerInfo && layerInfo.datasetDescription &&
-    //     layerInfo.datasetDescription !== 'NULL' && JSON.parse(layerInfo.datasetDescription)
-    //   dsDes && dsDes.type !== 'tour' && await SMap.setTaggingGrid(
-    //     GLOBAL.TaggingDatasetName,
-    //     ToolbarModule.getParams().user.currentUser.userName,
-    //   )
-    //   ImagePicker.AlbumListView.defaultProps.showDialog = false
-    //   ImagePicker.AlbumListView.defaultProps.dialogConfirm = null
-    // } else {
     const targetPath = await FileTools.appendingHomeDirectory(
       `${ConstPath.UserPath + _params.user.currentUser.userName}/${
         ConstPath.RelativeFilePath.Media
@@ -466,7 +458,6 @@ function tour() {
       }
       Toast.show(value)
     }
-    // }
 
     ImagePicker.AlbumListView.defaultProps.assetType = 'All'
     ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
@@ -476,7 +467,7 @@ function tour() {
       callback: async data => {
         if (data.length <= 1) {
           Toast.show(
-            getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
+            getLanguage(GLOBAL.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
           )
           return
         }
@@ -505,14 +496,14 @@ function matchPictureStyle() {
         ToolbarModule.getParams().setContainerLoading &&
           ToolbarModule.getParams().setContainerLoading(
             true,
-            getLanguage(global.language).Prompt.IMAGE_RECOGNITION_ING,
+            getLanguage(GLOBAL.language).Prompt.IMAGE_RECOGNITION_ING,
           )
         await SMap.matchPictureStyle(data[0].uri, res => {
           ToolbarModule.getParams().setContainerLoading &&
             ToolbarModule.getParams().setContainerLoading(false)
           if (!res || !res.result) {
             Toast.show(
-              getLanguage(global.language).Prompt.IMAGE_RECOGNITION_FAILED,
+              getLanguage(GLOBAL.language).Prompt.IMAGE_RECOGNITION_FAILED,
             )
           }
         })
@@ -737,26 +728,6 @@ async function listSelectableAction({ selectList }) {
   ToolbarModule.addData({ selectList })
 }
 
-// function toolbarBack() {
-//   const _params = ToolbarModule.getParams()
-//   if (
-//     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_SELECT_') !== -1 ||
-//     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_EDIT_') !== -1 ||
-//     GLOBAL.MapToolType.indexOf('MAP_TOOL_TAGGING_STYLE') !== -1
-//   ) {
-//     SMap.cancel()
-//     SMap.clearSelection()
-//     _params.setSelection()
-//     const type = ConstToolType.SM_MAP_TOOL_TAGGING_SELECT
-//
-//     _params.setToolbarVisible(true, type, {
-//       isFullScreen: false,
-//       // height: 0,
-//       cb: () => select(type),
-//     })
-//   }
-// }
-
 async function close(type) {
   const _params = ToolbarModule.getParams()
   const _data = ToolbarModule.getData()
@@ -832,9 +803,15 @@ async function close(type) {
             ids: _params.selection[i].ids,
           })
         }
+        await _data?.actions?.select(_data.preType)
         await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
-        _params.setToolbarVisible(false)
+  
+        GLOBAL.toolBox &&
+        GLOBAL.toolBox.setVisible(true, _data.preType, {
+          containerType: 'table',
+          isFullScreen: false,
+        })
       },
     })
     // NavigationService.goBack()
@@ -930,13 +907,12 @@ function setTouchProgressInfo(title, value) {
   let range = [-100, 100]
   if (value > range[1]) value = range[1]
   else if (value <= range[0]) value = range[0]
-  
+
   let arr = GLOBAL.toolBox && GLOBAL.toolBox.state && GLOBAL.toolBox.state.selectName || ''
   if (arr instanceof Array) {
     let mode = getMatchPictureMode(arr)
     SMap.updateMapFixColorsMode(mode, value)
   }
-  
 }
 
 export default {

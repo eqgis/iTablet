@@ -65,6 +65,7 @@ export default class LayerAttributeTable extends React.Component {
     tableTitle: [],
     tableData: [],
     widthArr: [40, 200, 200, 100, 100, 100, 80],
+    data: [],
     selectable: true,
     multiSelect: false,
     hasIndex: false,
@@ -79,7 +80,7 @@ export default class LayerAttributeTable extends React.Component {
     super(props)
     // let { dataList, colHeight } = this.dealData(props.tableTitle, props.data)
     const titles =
-      props.tableTitle.length > 0 ? props.tableTitle : this.getTitle(props.data)
+      props.tableTitle && props.tableTitle.length > 0 ? props.tableTitle : this.getTitle(props.data)
 
     const isMultiData =
       this.props.data instanceof Array &&
@@ -173,7 +174,7 @@ export default class LayerAttributeTable extends React.Component {
         tableHead: this.props.tableHead,
         isMultiData,
       })
-      if (prevProps.data && this.props.data.length < prevProps.data.length) {
+      if (prevProps.data && this.props.data && this.props.data.length < prevProps.data.length) {
         this.table &&
           this.table.scrollToLocation({
             animated: false,
@@ -349,7 +350,7 @@ export default class LayerAttributeTable extends React.Component {
 
         let data = item.data[0]
         if (
-          data.name === getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
+          data.name === getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
         ) {
           data = item.data[1]
         }
@@ -386,7 +387,7 @@ export default class LayerAttributeTable extends React.Component {
       typeof this.props.onPressHeader === 'function' &&
       item.columnIndex !== 0 &&
       item.data &&
-      item.data[0] !== getLanguage(global.language).Map_Label.NAME
+      item.data[0] !== getLanguage(GLOBAL.language).Map_Label.NAME
     ) {
       this.props.onPressHeader({
         fieldInfo: item.data[item.columnIndex].fieldInfo,
@@ -427,11 +428,11 @@ export default class LayerAttributeTable extends React.Component {
     let data = JSON.parse(JSON.stringify(item))
     if (
       this.props.startIndex >= 0 &&
-      data.length > 0 &&
-      data[0].name !== getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
+      data && data.length > 0 &&
+      data[0].name !== getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
     ) {
       data.unshift({
-        name: getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO,
+        name: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO,
         value: this.props.startIndex + index,
         fieldInfo: {},
       })
@@ -554,13 +555,13 @@ export default class LayerAttributeTable extends React.Component {
     let titles = section.title
     if (
       this.props.startIndex >= 0 &&
-      titles.length > 0 &&
+      titles && titles.length > 0 &&
       titles[0].value !==
-        getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
+        getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO
     ) {
       titles.unshift({
         isSystemField: false,
-        value: getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO,
+        value: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_NO,
       })
     }
     return (
@@ -668,7 +669,7 @@ export default class LayerAttributeTable extends React.Component {
         }}
       >
         <IndicatorLoading
-          title={getLanguage(global.language).Prompt.LOADING}
+          title={getLanguage(GLOBAL.language).Prompt.LOADING}
         />
       </View>
     )

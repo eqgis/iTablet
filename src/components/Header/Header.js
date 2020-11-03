@@ -120,13 +120,13 @@ class NavigationHeader extends Component {
     } = this.props
 
     let fontSize =
-      global.getDevice().orientation &&
-      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
+      GLOBAL.getDevice().orientation &&
+      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? setSpText(26)
         : setSpText(36)
     let imgSize =
-      global.getDevice().orientation &&
-      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
+      GLOBAL.getDevice().orientation &&
+      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? scaleSize(40)
         : scaleSize(60)
 

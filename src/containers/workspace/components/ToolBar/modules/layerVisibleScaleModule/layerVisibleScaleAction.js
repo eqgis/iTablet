@@ -48,16 +48,16 @@ function pickerCancel() {
 }
 
 async function rightSelect(item) {
-  if (item.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE) {
+  if (item.key === getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE) {
     const _params = ToolbarModule.getParams()
     let currentType = item.type
     let mapScale = await SMap.getMapScale()
     ToolbarModule.addData({ currentType, mapScale: (mapScale - 0).toFixed(6) })
     _params.setToolbarVisible(
       true,
-      ConstToolType.SM_MAP_LAYER_VISIBLE_USER_DEFINE,
+      ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE_USER_DEFINE,
       {
-        containerType: ToolbarType.fullScreen,
+        containerType: ToolbarType.buttons,
         isFullScreen: false,
       },
     )

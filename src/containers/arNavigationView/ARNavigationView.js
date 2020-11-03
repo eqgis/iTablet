@@ -50,12 +50,12 @@ export default class ARNavigationView extends React.Component {
     SARNavigationView.addListener({
       onDestination: () => {
         this.Dialog.set({
-          text: getLanguage(global.language).Prompt.ARRIVE_DESTINATION,
+          text: getLanguage(GLOBAL.language).Prompt.ARRIVE_DESTINATION,
         })
         this.Dialog.setVisible(true)
       },
       onDeviated: () => {
-        Toast.show(getLanguage(global.language).Prompt.DEVIATE_NAV_PATH)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DEVIATE_NAV_PATH)
       },
     })
   }
@@ -65,7 +65,7 @@ export default class ARNavigationView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Prompt.AR_NAVIGATION,
+          title: getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
           navigation: this.props.navigation,
           type: 'fix',
         }}

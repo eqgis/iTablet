@@ -884,6 +884,8 @@ const Map_Settings = {
   CONFIRM: 'تأكيد',
   CANCEL: 'الغاء',
   COPY: 'نسخ',
+
+  CONFIDENCE: 'Confidence', //待翻译
 }
 
 // 地图工具

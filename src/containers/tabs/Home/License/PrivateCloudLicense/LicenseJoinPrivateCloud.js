@@ -61,9 +61,9 @@ class LicenseJoinPrivateCloud extends Component {
       licenseInfo.licenseType === 1
     ) {
       GLOBAL.SimpleDialog.set({
-        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
+        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
-          let result = await global.recycleCloudLicense()
+          let result = await GLOBAL.recycleCloudLicense()
           if (result > -1) {
             this.activate(true)
           }
@@ -89,13 +89,13 @@ class LicenseJoinPrivateCloud extends Component {
         this.container &&
           this.container.setLoading(
             true,
-            getLanguage(global.language).Profile.LICENSE_ACTIVATING,
+            getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
           )
         let result = await SMap.applyPrivateCloudLicense(ids)
         if (result) {
           await SMap.setPrivateCloudCloseCallback(async () => {
             Toast.show(
-              global.language === 'CN'
+              GLOBAL.language === 'CN'
                 ? '与私有云服务器的连接已断开!'
                 : 'Lost connection with private cloud license server!',
             )
@@ -107,14 +107,14 @@ class LicenseJoinPrivateCloud extends Component {
           this.props.navigation.pop(2)
         } else {
           Toast.show(
-            getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL,
+            getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL,
           )
         }
         this.container && this.container.setLoading(false)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
 
@@ -138,32 +138,32 @@ class LicenseJoinPrivateCloud extends Component {
     switch (id) {
       case '18001':
       case '19001':
-        title = getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD
+        title = getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_STANDARD
         break
       case '18002':
       case '19002':
-        title = getLanguage(global.language).Profile
+        title = getLanguage(GLOBAL.language).Profile
           .LICENSE_EDITION_PROFESSIONAL
         break
       case '18003':
       case '19003':
-        title = getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED
+        title = getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_ADVANCED
         break
       case '18004':
       case '19004':
-        title = getLanguage(global.language).Map_Module.MAP_AR
+        title = getLanguage(GLOBAL.language).Map_Module.MAP_AR
         break
       case '18005':
       case '19005':
-        title = getLanguage(global.language).Map_Module.MAP_NAVIGATION
+        title = getLanguage(GLOBAL.language).Map_Module.MAP_NAVIGATION
         break
       case '18006':
       case '19006':
-        title = getLanguage(global.language).Map_Module.MAP_ANALYST
+        title = getLanguage(GLOBAL.language).Map_Module.MAP_ANALYST
         break
       case '18007':
       case '19007':
-        title = getLanguage(global.language).Map_Module.MAP_PLOTTING
+        title = getLanguage(GLOBAL.language).Map_Module.MAP_PLOTTING
         break
     }
     return title
@@ -294,21 +294,21 @@ class LicenseJoinPrivateCloud extends Component {
       >
         <View>
           <Text style={styles.moduleText}>
-            {getLanguage(global.language).Profile.LICENSE_TOTAL_NUM}
+            {getLanguage(GLOBAL.language).Profile.LICENSE_TOTAL_NUM}
           </Text>
           <Text style={styles.moduleText}>{item.totalNum}</Text>
         </View>
 
         <View>
           <Text style={styles.moduleText}>
-            {getLanguage(global.language).Profile.LICENSE_REMIAN_NUM}
+            {getLanguage(GLOBAL.language).Profile.LICENSE_REMIAN_NUM}
           </Text>
           <Text style={styles.moduleText}>{item.remainNum}</Text>
         </View>
 
         <View>
           <Text style={styles.moduleText}>
-            {getLanguage(global.language).Profile.LICENSE_DUE_DATE}
+            {getLanguage(GLOBAL.language).Profile.LICENSE_DUE_DATE}
           </Text>
           <Text style={styles.moduleText}>{timeString}</Text>
         </View>
@@ -321,7 +321,7 @@ class LicenseJoinPrivateCloud extends Component {
       <View style={{ marginTop: 10 }}>
         <View style={styles.moduleTitle}>
           <Text style={styles.moduleTitleText}>
-            {getLanguage(global.language).Profile.LICENSE_SELECT_EDITION}
+            {getLanguage(GLOBAL.language).Profile.LICENSE_SELECT_EDITION}
           </Text>
         </View>
         <FlatList
@@ -340,7 +340,7 @@ class LicenseJoinPrivateCloud extends Component {
       <View style={{ marginTop: 10 }}>
         <View style={styles.moduleTitle}>
           <Text style={styles.moduleTitleText}>
-            {getLanguage(global.language).Profile.LICENSE_SELECT_MODULE}
+            {getLanguage(GLOBAL.language).Profile.LICENSE_SELECT_MODULE}
           </Text>
         </View>
         <FlatList
@@ -357,7 +357,7 @@ class LicenseJoinPrivateCloud extends Component {
   renderActive = () => {
     return (
       <Button
-        title={getLanguage(global.language).Profile.LICENSE_ACTIVATE}
+        title={getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATE}
         type={this.state.selectEdition.id ? 'BLUE' : 'GRAY'}
         style={styles.activeButton}
         titleStyle={{ fontSize: scaleSize(24) }}
@@ -370,7 +370,7 @@ class LicenseJoinPrivateCloud extends Component {
     return (
       <View style={{ marginTop: scaleSize(50), alignSelf: 'center' }}>
         <Text style={{ fontSize: scaleSize(26), color: color.gray2 }}>
-          {getLanguage(global.language).Profile.LICENSE_QUERY_NONE}
+          {getLanguage(GLOBAL.language).Profile.LICENSE_QUERY_NONE}
         </Text>
       </View>
     )
@@ -382,7 +382,7 @@ class LicenseJoinPrivateCloud extends Component {
         ref={ref => (this.container = ref)}
         style={{ backgroundColor: color.background }}
         headerProps={{
-          title: getLanguage(global.language).Profile.LICENSE_SELECT_MODULE,
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_SELECT_MODULE,
           navigation: this.props.navigation,
         }}
       >

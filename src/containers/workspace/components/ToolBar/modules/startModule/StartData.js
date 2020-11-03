@@ -21,7 +21,7 @@ function getData(type, params) {
         // },
         {
           key: constants.OPEN,
-          title: getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_OPEN_MAP,
           // constants.OPEN,
           action: StartAction.openMap,
           size: 'large',
@@ -29,7 +29,7 @@ function getData(type, params) {
         },
         {
           key: constants.CREATE,
-          title: getLanguage(global.language).Map_Main_Menu.START_NEW_MAP,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
           // constants.CREATE,
           size: 'large',
           action: () => StartAction.isNeedToSave(StartAction.create),
@@ -37,7 +37,7 @@ function getData(type, params) {
         },
         {
           key: constants.HISTORY,
-          title: getLanguage(global.language).Map_Main_Menu.START_RECENT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_RECENT,
           // constants.HISTORY,
           size: 'large',
           action: StartAction.showHistory,
@@ -59,7 +59,7 @@ function getData(type, params) {
         // },
         {
           key: constants.SAVE,
-          title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
           // constants.SAVE,
           size: 'large',
           // TODO 保存地图
@@ -68,18 +68,18 @@ function getData(type, params) {
         },
         {
           key: constants.SAVE_AS,
-          title: getLanguage(global.language).Map_Main_Menu.START_SAVE_AS_MAP,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_AS_MAP,
           // constants.SAVE_AS,
           size: 'large',
           action: StartAction.saveMapAs,
           image: require('../../../../../../assets/mapTools/icon_save_as_black.png'),
         },
       ]
-      if (global.coworkMode && CoworkInfo.coworkId !== '') {
+      if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
         data = [
           {
             key: constants.SAVE,
-            title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
             // constants.SAVE,
             size: 'large',
             // TODO 保存地图

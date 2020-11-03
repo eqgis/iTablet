@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 
   componentDidMount() {
     this.getData()
-    if (!global.isPad) {
+    if (!GLOBAL.isPad) {
       Orientation.lockToPortrait()
       GLOBAL.ORIENTATIONLOCKED = true
     }
@@ -155,7 +155,7 @@ export default class Login extends React.Component {
           userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
         ) {
-          Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
+          Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_CURRENT)
           return
         }
         let startLogin = async () => {
@@ -206,13 +206,28 @@ export default class Login extends React.Component {
         result = res
       }
 
-      userInfo = await JSOnlineService.getUserInfo(userName, isEmail)
+      userInfo = await JSOnlineService.getUserInfo(userName, true)
+      //手机登录通过下面接口获取用户名后再次查询 zhangxt
+      if(!userInfo) {
+        let username =  await JSOnlineService.getLoginUserName()
+        if(username !== '') {
+          userInfo = await JSOnlineService.getUserInfo(username, true)
+        }
+        //手机登录后再检查是否是当前登录用户
+        if (
+          userInfo !== false &&
+          userInfo.userId === this.props.user.currentUser.userId
+        ) {
+          Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
+          return
+        }
+      }
 
       if (typeof result === 'boolean' && result && userInfo !== false) {
-        await this.initUserDirectories(userName)
+        await this.initUserDirectories(userInfo.userId)
 
         let user = {
-          userName: userName,
+          userName: userInfo.userId,
           password: password,
           nickname: userInfo.nickname,
           email: userInfo.email,
@@ -226,7 +241,7 @@ export default class Login extends React.Component {
         if (result === 'timeout') {
           Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else if (result) {
-          global.isLogging = true
+          GLOBAL.isLogging = true
           this.props.setUser(user)
           NavigationService.popToTop('Tabs')
         } else {
@@ -281,13 +296,13 @@ export default class Login extends React.Component {
 
       let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
-        await this.initUserDirectories(userName)
         let info = await SIPortalService.getMyAccount()
         if (info) {
           let userInfo = JSON.parse(info)
+          await this.initUserDirectories(userInfo.name)
           this.props.setUser({
             serverUrl: url,
-            userName: userName,
+            userName: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,
@@ -437,12 +452,12 @@ export default class Login extends React.Component {
   renderLogin = () => {
     if (this.state.type === 'Online') {
       return (
-        <OnlineLoginView language={global.language} login={this._loginOnline} />
+        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} />
       )
     } else if (this.state.type === 'iPortal') {
       return (
         <IPortalLoginView
-          language={global.language}
+          language={GLOBAL.language}
           login={this._loginIPortal}
         />
       )

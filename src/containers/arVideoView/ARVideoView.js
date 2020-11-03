@@ -61,7 +61,7 @@ export default class ARVideoView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

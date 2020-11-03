@@ -233,13 +233,15 @@ export default class MapController extends React.Component {
   location = async () => {
     if (this.props.type === 'MAP_3D') {
       await SScene.setHeading()
-      await SScene.resetCamera()
+      // 定位到当前位置
+      await SScene.location()
+      // await SScene.resetCamera()
       this.setCompass(0)
       return
     }
     SMap.moveToCurrent().then(result => {
       !result &&
-        Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
     })
 
     //{{ 更新地图选点控件 add jiakai

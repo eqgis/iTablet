@@ -5,7 +5,7 @@ import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import Toast from '../../../../utils/Toast'
-import { scaleSize } from '../../../../utils'
+import { OnlineServicesUtils, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import UserType from '../../../../constants/UserType'
 import { MineItem } from '../component'
@@ -38,34 +38,63 @@ export default class ToggleAccount extends Component {
         this.props.user.currentUser.userName === userName &&
         this.props.user.currentUser.password === password
       ) {
-        Toast.show(getLanguage(global.language).Profile.SWITCH_CURRENT)
+        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_CURRENT)
         return
       }
       if (this.containerRef) {
         this.containerRef.setLoading(
           true,
-          getLanguage(global.language).Profile.SWITCHING,
+          getLanguage(GLOBAL.language).Profile.SWITCHING,
         )
       }
       let result
+      let newUser
       if (userType === UserType.COMMON_USER) {
         result = await SOnlineService.login(userName, password)
         if (result) {
           result = await FriendListFileHandle.initFriendList(item)
         }
+        if(result){
+          let JSOnlineservice = new OnlineServicesUtils('online')
+          let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
+          newUser = {
+            userName: userInfo.userId,
+            password: this.props.user.currentUser.password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            phoneNumber: userInfo.phoneNumber,
+            userId: userInfo.userId,
+            isEmail: true,
+            userType: UserType.COMMON_USER,
+          }
+        }
       } else if (userType === UserType.IPORTAL_COMMON_USER) {
         let url = item.serverUrl
         result = await SIPortalService.login(url, userName, password, true)
+        if (typeof result === 'boolean' && result) {
+          let info = await SIPortalService.getMyAccount()
+          if (info) {
+            let userInfo = JSON.parse(info)
+            newUser = {
+              serverUrl: url,
+              userName: userInfo.name,
+              password: password,
+              nickname: userInfo.nickname,
+              email: userInfo.email,
+              userType: UserType.IPORTAL_COMMON_USER,
+            }
+          }
+        }
       }
 
       if (this.containerRef) {
         this.containerRef.setLoading(false)
       }
-      if (result) {
-        this.props.setUser(item)
+      if (result && newUser) {
+        this.props.setUser(newUser)
         NavigationService.popToTop()
       } else {
-        Toast.show(getLanguage(global.language).Profile.SWITCH_FAIL)
+        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_FAIL)
       }
     } catch (e) {
       if (this.containerRef) {
@@ -90,7 +119,7 @@ export default class ToggleAccount extends Component {
         this.props.deleteUser(item)
       }
     } catch (error) {
-      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
     }
   }
 
@@ -105,12 +134,13 @@ export default class ToggleAccount extends Component {
       let customPath = await FileTools.appendingHomeDirectory(
         ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-            global.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
       )
       this.props.deleteUser(this.props.user.currentUser)
       this.props.setUser({
         userName: 'Customer',
+        nickname: 'Customer',
         userType: UserType.PROBATION_USER,
       })
       this.props.openWorkspace({ server: customPath })
@@ -118,9 +148,9 @@ export default class ToggleAccount extends Component {
   }
 
   _renderItem = info => {
-    let userName = info.item.userName
+    let nickname = info.item.nickname
     let password = info.item.password
-    if (userName && password) {
+    if (nickname && password) {
       let imageSource = {
         uri:
           'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
@@ -129,7 +159,7 @@ export default class ToggleAccount extends Component {
         <MineItem
           item={info.item}
           image={imageSource}
-          text={userName}
+          text={nickname}
           onPress={this.toggleAccount}
           onPressMore={event => {
             this.item = info.item
@@ -150,7 +180,7 @@ export default class ToggleAccount extends Component {
     let data
     data = [
       {
-        title: getLanguage(global.language).Profile.DELETE_ACCOUNT,
+        title: getLanguage(GLOBAL.language).Profile.DELETE_ACCOUNT,
         action: this.deleteAccount,
       },
     ]
@@ -197,7 +227,7 @@ export default class ToggleAccount extends Component {
           }}
         >
           <Text style={{ fontSize: fontSize, color: color.fontColorBlack }}>
-            {getLanguage(global.language).Profile.ADD_ACCOUNT}
+            {getLanguage(GLOBAL.language).Profile.ADD_ACCOUNT}
             {/* 添加账号 */}
           </Text>
         </TouchableOpacity>
@@ -210,7 +240,7 @@ export default class ToggleAccount extends Component {
       <Container
         ref={ref => (this.containerRef = ref)}
         headerProps={{
-          title: getLanguage(global.language).Profile.MANAGE_ACCOUNT,
+          title: getLanguage(GLOBAL.language).Profile.MANAGE_ACCOUNT,
           //'账号管理',
           navigation: this.props.navigation,
         }}

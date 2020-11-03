@@ -65,16 +65,13 @@ export default class RenderFindItem extends Component {
         'https://www.supermapol.com/web/datas/' + dataId + '/download'
       let fileName = this.props.data.fileName
       let appHome = await FileTools.appendingHomeDirectory()
-      let userName =
-        this.props.user.currentUser.userType === UserType.PROBATION_USER
-          ? 'Customer'
-          : this.props.user.currentUser.userName
+      // let userName =
+      //   this.props.user.currentUser.userType === UserType.PROBATION_USER
+      //     ? 'Customer'
+      //     : this.props.user.currentUser.userName
       let fileDir =
         appHome +
-        ConstPath.UserPath +
-        userName +
-        '/' +
-        ConstPath.RelativePath.ExternalData
+        ConstPath.ExternalData + '/'
       let exists = await RNFS.exists(fileDir)
       if (!exists) {
         await RNFS.mkdir(fileDir)
@@ -104,10 +101,7 @@ export default class RenderFindItem extends Component {
               this.setState({ progress: '下载完成', isDownloading: false })
               let savePath =
                 appHome +
-                ConstPath.UserPath +
-                userName +
-                '/' +
-                ConstPath.RelativePath.ExternalData +
+                ConstPath.ExternalData + '/' +
                 fileName
               let result = await FileTools.unZipFile(
                 filePath,

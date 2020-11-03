@@ -100,6 +100,11 @@ class ModuleList extends Component {
     ) {
       data.push(new AppletAdd().getChunk(this.props.language))
     }
+
+    //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
+    if(GLOBAL.isAudit){
+      data.splice(data.length-1, 1)
+    }
     return data
   }
 
@@ -304,8 +309,8 @@ class ModuleList extends Component {
       }
 
       let licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
+      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      if (!GLOBAL.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
@@ -436,7 +441,7 @@ class ModuleList extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let downloadData = this.getDownloadData(global.language, item, index)
+    let downloadData = this.getDownloadData(GLOBAL.language, item, index)
     return (
       <ModuleItem
         key={item.key}
@@ -461,9 +466,11 @@ class ModuleList extends Component {
           item.key !== ChunkType.APPLET_ADD
         }
         isBeta={
+          //市场不允许出现beta标志，在审核期间把标去掉 add xiezhy
+          !GLOBAL.isAudit && (
           item.key === ChunkType.MAP_AR ||
           item.key === ChunkType.MAP_AR_MAPPING ||
-          item.key === ChunkType.MAP_AR_ANALYSIS
+          item.key === ChunkType.MAP_AR_ANALYSIS)
         }
         downloadData={this.getCurrentDownloadData(downloadData)}
         ref={ref => this.getRef({ item, index }, ref)}

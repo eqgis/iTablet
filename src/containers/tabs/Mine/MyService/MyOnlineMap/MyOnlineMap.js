@@ -91,7 +91,7 @@ export default class MyOnlineMap extends Component {
           this._showInfo('数据没有发布服务')
         } else {
           let subUrl = restUrl.substring(5, restUrl.length)
-          restUrl = 'http' + subUrl + '/maps.json'
+          restUrl = 'https' + subUrl + '/maps.json'
           let arrMapJson = await FetchUtils.getObjJson(restUrl)
           if (arrMapJson.errorMsg !== undefined) {
             this._showInfo('数据没有公开已有服务，无权限浏览')
@@ -171,7 +171,7 @@ export default class MyOnlineMap extends Component {
                   },
                 ]}
               >
-                {getLanguage(global.language).Profile.BROWSE_MAP}
+                {getLanguage(GLOBAL.language).Profile.BROWSE_MAP}
                 {/* 浏览地图 */}
               </Text>
             </View>
@@ -227,13 +227,13 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(global.language).Profile.MAP_2D,
+            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
 
           {
-            title: getLanguage(global.language).Profile.MAP_2D,
+            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -241,7 +241,7 @@ export default class MyOnlineMap extends Component {
       } else {
         sectionsData = [
           {
-            title: getLanguage(global.language).Profile.MAP_2D,
+            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -251,7 +251,7 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(global.language).Profile.MAP_2D,
+            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
@@ -290,7 +290,7 @@ export default class MyOnlineMap extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile.MAP_ONLINE,
+          title: getLanguage(GLOBAL.language).Profile.MAP_ONLINE,
           //'在线地图',
           withoutBack: false,
           navigation: this.props.navigation,

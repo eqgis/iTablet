@@ -45,7 +45,7 @@ const Friends = {
   TOAST_CHOOSE_2: 'أضف أكثر من 2 صديق للدردشة في المجموعة',
   NO_FRIEND: 'عفوًا ، لا يوجد صديق بعد',
   // AddFriend
-  ADD_FRIEND_PLACEHOLDER: 'البريد الإلكتروني / الهاتف / اللقب',
+  ADD_FRIEND_PLACEHOLDER: 'البريد الإلكتروني / اللقب',
   SEARCHING: 'جارى البحث...',
   SEARCH: 'بحث',
   ADD_SELF: 'لا يمكنك إضافة نفسك كصديق',

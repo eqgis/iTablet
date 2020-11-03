@@ -387,7 +387,7 @@ export default class LayerAttribute extends React.Component {
    * 定位到首位
    */
   locateToTop = () => {
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage = 0
     if (this.state.startIndex === 0) {
@@ -449,7 +449,7 @@ export default class LayerAttribute extends React.Component {
    */
   locateToBottom = () => {
     if (this.total <= 0) return
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage =
       this.total > 0 ? Math.floor((this.total - 1) / PAGE_SIZE) : 0
@@ -507,7 +507,7 @@ export default class LayerAttribute extends React.Component {
       // 相对定位
       currentIndex = this.state.currentIndex + data.index
       if (currentIndex < 0 || currentIndex >= this.total) {
-        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -528,7 +528,7 @@ export default class LayerAttribute extends React.Component {
     } else if (data.type === 'absolute') {
       // 绝对定位
       if (data.index <= 0 || data.index > this.total) {
-        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -548,7 +548,7 @@ export default class LayerAttribute extends React.Component {
       currentIndex = data.index - 1
     }
 
-    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     if (startIndex !== 0) {
       this.canBeRefresh = true
@@ -636,7 +636,7 @@ export default class LayerAttribute extends React.Component {
 
     items = [
       {
-        title: getLanguage(global.language).Map_Attribute.DETAIL,
+        title: getLanguage(GLOBAL.language).Map_Attribute.DETAIL,
         onPress: () => {
           (async function() {
             this.addPopModal &&
@@ -650,7 +650,7 @@ export default class LayerAttribute extends React.Component {
     ]
     if (this.state.attributes.data.length > 1) {
       items.push({
-        title: getLanguage(global.language).Map_Attribute.ASCENDING,
+        title: getLanguage(GLOBAL.language).Map_Attribute.ASCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' ASC'
@@ -662,7 +662,7 @@ export default class LayerAttribute extends React.Component {
         },
       })
       items.push({
-        title: getLanguage(global.language).Map_Attribute.DESCENDING,
+        title: getLanguage(GLOBAL.language).Map_Attribute.DESCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' DESC'
@@ -683,7 +683,7 @@ export default class LayerAttribute extends React.Component {
       fieldInfo.name !== 'MediaFilePaths'
     ) {
       items.push({
-        title: getLanguage(global.language).Profile.DELETE,
+        title: getLanguage(GLOBAL.language).Profile.DELETE,
         onPress: () => {
           if (!fieldInfo) {
             return
@@ -702,7 +702,7 @@ export default class LayerAttribute extends React.Component {
         fieldInfo.type === FieldType.DOUBLE)
     ) {
       items.push({
-        title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_STATISTIC,
+        title: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_STATISTIC,
         onPress: () => {
           NavigationService.navigate('LayerAttributeStatistic', {
             fieldInfo,
@@ -997,7 +997,7 @@ export default class LayerAttribute extends React.Component {
         }
         break
     }
-    this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
+    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
     //'修改中')
     try {
       this.props.setAttributeHistory &&
@@ -1184,7 +1184,7 @@ export default class LayerAttribute extends React.Component {
 
   renderMapLayerAttribute = () => {
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(global.language).Map_Tools.VIEW]
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.currentLayer.name,

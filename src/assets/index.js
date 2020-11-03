@@ -1,3 +1,4 @@
+/* global GLOBAL */
 import { DatasetType, ThemeType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 

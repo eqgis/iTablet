@@ -42,7 +42,7 @@ export default class Slide extends Component {
     this.setState({
       currentValue: value,
     })
-    this.props.onMove(value)
+    this.props.onMove && this.props.onMove(value)
   }
 
   renderItem = () => {

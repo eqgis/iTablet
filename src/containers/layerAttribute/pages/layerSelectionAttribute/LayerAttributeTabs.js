@@ -3,7 +3,7 @@
  Author: Yangshanglong
  E-mail: yangshanglong@supermap.com
  */
-
+/*global GLOBAL*/
 import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
@@ -524,7 +524,6 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   back = () => {
-    const _data = ToolbarModule.getData()
     if (!this.backClicked) {
       this.backClicked = true
       if (this.locationView && this.locationView.isShow()) {
@@ -536,19 +535,6 @@ export default class LayerAttributeTabs extends React.Component {
       GLOBAL.SelectedSelectionAttribute = null // 清除选择集中当前选中的属性
 
       NavigationService.goBack()
-
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.showFullMap &&
-        GLOBAL.toolBox.showFullMap(true)
-
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, this.preToolbarType, {
-          containerType: 'table',
-          isFullScreen: false,
-          cb: () => {
-            _data?.actions?.select(this.preToolbarType)
-          },
-        })
     }
   }
 

@@ -194,7 +194,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
   if (!params.type) {
     params.type = 'undo'
   }
-
+  let language = getState().setting.toJS().language
   let _type
 
   switch (params.type) {
@@ -212,7 +212,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
     // if (!params || !params.mapName || !params.layerPath)
     if (!params || !params.layerPath) {
       return {
-        msg: getLanguage(global.language).Prompt[`${_type}_FAILED`],
+        msg: getLanguage(language).Prompt[`${_type}_FAILED`],
         result: false,
       }
     }
@@ -221,7 +221,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
 
     if (attributesHistory.length === 0) {
       return {
-        msg: getLanguage(global.language).Prompt[`${_type}_FAILED`],
+        msg: getLanguage(language).Prompt[`${_type}_FAILED`],
         result: false,
       }
     }
@@ -401,7 +401,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
     }
   } catch (e) {
     return {
-      msg: getLanguage(global.language).Prompt[`${_type}_FAILED`],
+      msg: getLanguage(language).Prompt[`${_type}_FAILED`],
       result: false,
     }
   }
@@ -430,7 +430,8 @@ export const setCurrentLayer3d = (
   cb && cb()
 }
 
-export const refreshLayer3dList = (cb = () => {}) => async dispatch => {
+export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
+  let language = getState().setting.toJS().language
   const result = await SScene.getLayerList()
   const basemaplist = []
   const layerlist = []
@@ -481,28 +482,28 @@ export const refreshLayer3dList = (cb = () => {}) => async dispatch => {
 
   const data = [
     {
-      title: getLanguage(global.language).Map_Layer.PLOTS,
+      title: getLanguage(language).Map_Layer.PLOTS,
       // '我的标注',
       data: lablelist,
       visible: true,
       index: 0,
     },
     {
-      title: getLanguage(global.language).Map_Layer.LAYERS,
+      title: getLanguage(language).Map_Layer.LAYERS,
       // '我的图层',
       data: layerlist,
       visible: true,
       index: 1,
     },
     {
-      title: getLanguage(global.language).Map_Layer.BASEMAP,
+      title: getLanguage(language).Map_Layer.BASEMAP,
       // '我的底图',
       data: basemaplist,
       visible: true,
       index: 2,
     },
     {
-      title: getLanguage(global.language).Map_Layer.MY_TERRAIN,
+      title: getLanguage(language).Map_Layer.MY_TERRAIN,
       // '我的地形',
       data: terrainList,
       visible: true,
@@ -695,7 +696,7 @@ export default handleActions(
         currentLayer3d = payload
         Toast.show(
           // '当前图层为 '
-          `${getLanguage(global.language).Prompt.THE_CURRENT_LAYER}  ${
+          `${getLanguage(GLOBAL.language).Prompt.THE_CURRENT_LAYER}  ${
             currentLayer3d.name
           }`,
         )

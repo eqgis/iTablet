@@ -2,22 +2,37 @@ import * as React from 'react'
 import { SARWeather } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { scaleSize, OnlineServicesUtils, Toast } from '../../utils'
-import { View, TouchableOpacity, FlatList, Text } from 'react-native'
+import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo } from 'react-native'
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
+import { NavigationScreenProp } from 'react-navigation'
+import  { Downloads, IDownloadProps } from '../../redux/models/down'
 
-export default class ChooseWeather extends React.Component {
-  props: {
-    navigation: Object,
-    downloads: Object,
-    downloadFile: () => {},
-  }
+interface IProps {
+  navigation: NavigationScreenProp<{}>
+  downloads: Downloads,
+  downloadFile: (param: IDownloadProps) => void
+}
 
-  constructor(props) {
+interface IState {
+  data: IWeather[]
+}
+
+interface IWeather {
+  title: string,
+  key: string,
+}
+
+export default class ChooseWeather extends React.Component<IProps, IState> {
+    /** 当前使用的特效名 string */
+  currentItemKey: string
+    /** 切换特效回调 function */
+  onSelectCallback: (key: string) => void
+
+  constructor(props: IProps) {
     super(props)
     let params = this.props.navigation.state.params || {}
-    this.point = params.point
     this.currentItemKey = params.currentItemKey || ''
     this.onSelectCallback = params.onSelectCallback
     this.state = {
@@ -27,32 +42,32 @@ export default class ChooseWeather extends React.Component {
 
   weatherData = [
     {
-      title: global.language === 'CN' ? '春天' : 'spring',
+      title: GLOBAL.language === 'CN' ? '春天' : 'spring',
       key: 'SpringFlower',
     },
     {
-      title: global.language === 'CN' ? '夏天' : 'summer',
+      title: GLOBAL.language === 'CN' ? '夏天' : 'summer',
       key: 'CloudLightening',
     },
     {
-      title: global.language === 'CN' ? '秋天' : 'autumn',
+      title: GLOBAL.language === 'CN' ? '秋天' : 'autumn',
       key: 'AutumnLeave',
     },
     {
-      title: global.language === 'CN' ? '冬天' : 'winter',
+      title: GLOBAL.language === 'CN' ? '冬天' : 'winter',
       key: 'Snow',
     },
     {
-      title: global.language === 'CN' ? '雪花' : 'snow',
+      title: GLOBAL.language === 'CN' ? '雪花' : 'snow',
       key: 'CartoonSnow',
     },
     {
-      title: global.language === 'CN' ? '云' : 'Clouds',
+      title: GLOBAL.language === 'CN' ? '云' : 'Clouds',
       key: 'Clouds',
     },
   ]
 
-  renderItem = ({ item }) => {
+  renderItem = ({item}: ListRenderItemInfo<IWeather>) => {
     return (
       <WeatherItem
         item={item}
@@ -78,9 +93,8 @@ export default class ChooseWeather extends React.Component {
   render() {
     return (
       <Container
-        ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(global.language).Map_Main_Menu
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_SELECT_EFFECT,
           navigation: this.props.navigation,
         }}
@@ -92,24 +106,35 @@ export default class ChooseWeather extends React.Component {
   }
 }
 
-class WeatherItem extends React.Component {
-  props: {
-    item: Object,
-    currentItemKey: String,
-    downloads: Object,
-    downloadFile: () => {},
-    onSelectCallback: () => {},
-  }
+interface IWeatherProps {
+  item: IWeather,
+  currentItemKey: String,
+  downloads: Downloads,
+  downloadFile: (param: IDownloadProps) => void,
+  onSelectCallback: (key: string) => void,
+}
 
-  constructor(props) {
+interface IWeatherState {
+  /** 0.未下载 1.未使用 2.使用中 3.下载中 */
+  status: number
+}
+
+class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
+  /** 特效视频路径 */
+  path: string
+  /** 下载进度查询timer */
+  timer: NodeJS.Timer | null
+
+  constructor(props: IWeatherProps) {
     super(props)
     this.path =
-      global.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
+      GLOBAL.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
     let isCurrent = this.props.currentItemKey === this.props.item.key
 
     this.state = {
-      status: isCurrent ? 2 : 1, //0.未下载 1.未使用 2.使用中 3.下载中
+      status: isCurrent ? 2 : 1,
     }
+    this.timer = null
   }
 
   componentDidMount() {
@@ -120,6 +145,7 @@ class WeatherItem extends React.Component {
     this.removeDownloadListner()
   }
 
+  /** 获取并设置此特效的状态 */
   getStatus = async () => {
     if (this.state.status !== 2) {
       let progress = this.getDownloadProgress()
@@ -127,7 +153,7 @@ class WeatherItem extends React.Component {
         this.setState({
           status: 3,
         })
-        this.addDownloadListner()
+        this.addDownloadListener()
       } else {
         let isExist = await FileTools.fileIsExist(this.path)
         if (!isExist) {
@@ -139,6 +165,10 @@ class WeatherItem extends React.Component {
     }
   }
 
+  /**
+   * 获取下载进度
+   * @returns {Number} 下载进度，1-100。未下载时返回-1
+   */
   getDownloadProgress = () => {
     let downloads = this.props.downloads
     if (downloads.length > 0) {
@@ -154,12 +184,13 @@ class WeatherItem extends React.Component {
     return -1
   }
 
+  /** 从online上下载特效视频 */
   download = async () => {
     this.setState({
       status: 3,
     })
     try {
-      let path = global.homePath + '/iTablet/Common/Weather/'
+      let path = GLOBAL.homePath + '/iTablet/Common/Weather/'
       await FileTools.createDirectory(path)
       let onlineservice = new OnlineServicesUtils('online')
       let item = await onlineservice.getPublicDataByName(
@@ -176,17 +207,18 @@ class WeatherItem extends React.Component {
           toFile: this.path,
           background: true,
         })
-        this.addDownloadListner()
+        this.addDownloadListener()
       }
     } catch (e) {
       this.setState({
         status: 0,
       })
-      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
     }
   }
 
-  addDownloadListner = () => {
+  /** 下载完成监听 */
+  addDownloadListener = () => {
     this.timer = setInterval(() => {
       let downloaded = false
       let downloads = this.props.downloads
@@ -207,6 +239,7 @@ class WeatherItem extends React.Component {
     }, 2000)
   }
 
+  /** 移除下载监听 */
   removeDownloadListner() {
     if (this.timer !== null) {
       clearInterval(this.timer)
@@ -220,17 +253,17 @@ class WeatherItem extends React.Component {
     let progress
     switch (this.state.status) {
       case 0:
-        text = getLanguage(global.language).Prompt.DOWNLOAD
+        text = getLanguage(GLOBAL.language).Prompt.DOWNLOAD
         break
       case 1:
-        text = getLanguage(global.language).Profile.SWITCH
+        text = getLanguage(GLOBAL.language).Profile.SWITCH
         break
       case 2:
-        text = getLanguage(global.language).Profile.SWITCH
+        text = getLanguage(GLOBAL.language).Profile.SWITCH
         color = { backgroundColor: 'grey' }
         break
       case 3:
-        text = getLanguage(global.language).Prompt.DOWNLOADING
+        text = getLanguage(GLOBAL.language).Prompt.DOWNLOADING
         progress = this.getDownloadProgress()
         if (progress > -1) {
           text = progress + '%'
@@ -269,7 +302,7 @@ class WeatherItem extends React.Component {
                   this.props.onSelectCallback(this.props.item.key)
                 NavigationService.goBack()
               } else if (this.state.status === 0) {
-                this.download(this.props.item.key)
+                this.download()
               }
             }}
           >

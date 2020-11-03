@@ -140,7 +140,7 @@ export default class OnlineDataItem extends Component {
                 marginRight: 20,
               }}
             >
-              {getLanguage(global.language).Profile.PATH +
+              {getLanguage(GLOBAL.language).Profile.PATH +
                 `:${serverUrl}/mycontent/datas/${this.props.item.id}`}
             </Text>
           </View>

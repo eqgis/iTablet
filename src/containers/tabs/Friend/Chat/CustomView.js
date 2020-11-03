@@ -56,7 +56,7 @@ export default class CustomView extends React.Component {
      * 图片
      */
     if (type === MSGConstant.MSG_PICTURE) {
-      let homePath = global.homePath
+      let homePath = GLOBAL.homePath
       let uri = this.props.currentMessage.originMsg.message.message.filePath
       if (uri !== undefined && uri !== '') {
         if (Platform.OS === 'android') {

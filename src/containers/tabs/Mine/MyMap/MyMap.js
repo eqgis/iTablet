@@ -62,10 +62,7 @@ class MyMap extends MyDataPage {
     let homePath = await FileTools.appendingHomeDirectory()
     let path =
       homePath +
-      ConstPath.UserPath +
-      this.props.user.currentUser.userName +
-      '/' +
-      ConstPath.RelativePath.ExternalData +
+      ConstPath.ExternalData + '/' +
       ConstPath.RelativeFilePath.ExportData +
       mapName +
       '/' +

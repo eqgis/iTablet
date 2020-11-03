@@ -82,7 +82,7 @@ export default class FetchUtils {
       }
       resultData.content = arr
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     }
     return resultData
   }
@@ -96,7 +96,7 @@ export default class FetchUtils {
         url = arr.content[0].url
       }
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     }
     return url
   }
@@ -106,10 +106,10 @@ export default class FetchUtils {
     let data
     try {
       let params = `{startPoint:{"x":${startX},"y":${startY}},endPoint:{"x":${endX},"y":${endY}},routeType:MINLENGTH,to:910111}`
-      let url = `http://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
+      let url = `https://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
       data = await FetchUtils.getObjJson(url)
     } catch (e) {
-      // Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     }
     return data
   }
@@ -118,13 +118,13 @@ export default class FetchUtils {
   static getPointName = async (x, y) => {
     let data
     try {
-      let url = `http://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China/geodecoding.json?location={"x":${x},"y":${y}}&key=fvV2osxwuZWlY0wJb8FEb2i5`
+      let url = `https://www.supermapol.com/iserver/services/location-china/rest/locationanalyst/China/geodecoding.json?location={"x":${x},"y":${y}}&key=fvV2osxwuZWlY0wJb8FEb2i5`
       let rel = await FetchUtils.getObjJson(url, 2000)
       if (rel.formatedAddress != '[]') {
         data = rel.formatedAddress
       }
     } catch (e) {
-      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     }
     return data
   }

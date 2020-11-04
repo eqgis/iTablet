@@ -197,7 +197,7 @@ export default class Mine extends Component {
         case 'TEMPLATE':
           data.push({
             title: getLanguage(this.props.language).Profile.TEMPLATE,
-            image: require('../../../assets/function/icon_function_style.png'),
+            image: getThemeAssets().mine.icon_my_template,
             onClick: () =>
               this.goToMyTemplate(
                 getLanguage(this.props.language).Profile.TEMPLATE,

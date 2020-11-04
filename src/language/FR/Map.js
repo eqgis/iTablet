@@ -796,6 +796,7 @@ const Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'Nom de la carte',
   SHOW_SCALE: "Afficher l'échelle",
+  SHOW_LOCATION: 'Show Location',//待翻译
   ROTATION_GESTURE: 'Geste de rotation',
   PITCH_GESTURE: 'Le Pas de Geste',
   ROTATION_ANGLE: 'Angle de rotation',

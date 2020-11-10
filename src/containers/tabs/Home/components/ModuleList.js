@@ -102,9 +102,9 @@ class ModuleList extends Component {
     }
 
     //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
-    if(GLOBAL.isAudit){
-      data.splice(data.length-1, 1)
-    }
+    // if(GLOBAL.isAudit){
+    //   data.splice(data.length-1, 1)
+    // }
     return data
   }
 

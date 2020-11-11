@@ -335,7 +335,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Données de positionnement',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Localisation automatique réussie',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Point de sélection de carte réussi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Veuillez placer votre téléphone mobile face au sud et cliquez sur Sûr',
+  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Veuillez placer votre téléphone mobile face au nord et cliquez sur Sûr',
   MAP_AR_DATUM_SETTING: 'Réglage',
   X_COORDINATE: 'Coordonnée X',
   Y_COORDINATE: 'Coordonnée Y',

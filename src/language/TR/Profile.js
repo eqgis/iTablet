@@ -335,7 +335,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
+  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Lütfen telefonunuzu kuzeyinde doğrultun ve Tamam tıklayın',
   MAP_AR_DATUM_SETTING: 'Kurulum',
   X_COORDINATE: 'X Koordinatı',
   Y_COORDINATE: 'Y Koordinatı',

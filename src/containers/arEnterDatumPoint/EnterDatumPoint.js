@@ -328,7 +328,7 @@ export default class EnterDatumPoint extends Component {
         <Text style={styles.itemSubTitle}>
           {
             getLanguage(GLOBAL.language).Profile
-              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+              .MAP_AR_DATUM_PLEASE_TOWARDS_NORTH
           }
         </Text>
       </View>

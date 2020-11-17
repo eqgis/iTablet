@@ -91,7 +91,7 @@ export default class Setting extends Component {
   renderItems() {
     return (
       <View style={{ flex: 1, backgroundColor: color.content_white }}>
-        {this._renderItem(getLanguage(GLOBAL.language).Profile.STATUSBAR_HIDE)}
+        {/* {this._renderItem(getLanguage(GLOBAL.language).Profile.STATUSBAR_HIDE)} */}
         {this.state.bOpenLicense === true
           ? this.renderItemView(
             this.onLicense,

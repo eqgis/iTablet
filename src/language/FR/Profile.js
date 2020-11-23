@@ -36,8 +36,8 @@ const Profile = {
   USERNAME_ALL: "numéro de mobile/e-mail/nom d'utilisateur",
   ENTER_USERNAME_ALL: "Veuillez saisir votre numéro de mobile, adresse e-mail ou votre nom d'utilisateur",
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again', //待翻译
+  RE_ENTER_PASSWORD: 'veuillez resaisir votre mot de passe', //need to be translated
+  PASSWORD_DISMATCH: 'Les mots de passe sont différents, veuillez vérifier à nouveau', //need to be translated
   REGISTER: "S'inscrire",
   FORGET_PASSWORD: 'Mot de passe oublié',
   RESET_PASSWORD: 'Réinitialiser le mot de passe',
@@ -335,7 +335,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Données de positionnement',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Localisation automatique réussie',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Point de sélection de carte réussi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Veuillez placer votre téléphone mobile face au nord et cliquez sur Sûr',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Veuillez placer votre téléphone mobile face au sud et cliquez sur Sûr',
   MAP_AR_DATUM_SETTING: 'Réglage',
   X_COORDINATE: 'Coordonnée X',
   Y_COORDINATE: 'Coordonnée Y',

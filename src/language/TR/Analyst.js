@@ -199,7 +199,7 @@ const Analyst_Labels = {
   REGISTRATION_LINE_: 'Doğrusal kayıt',
   REGISTRATION_QUADRATIC_: 'İkinci dereceden polinom kaydı',
   REGISTRATION_RECTANGLE_: 'Dikdörtgen kayıt',
-  REGISTRATION_OFFSET_: 'Ofset kaydı',
+  REGISTRATION_OFFSET_: 'Ofset kayıt',
   REGISTRATION_ASSOCIATION: 'İlişkili tarama',
 
   REGISTRATION_ASSOCIATION_CLOCE: 'Bağlantı kaldırıldı',
@@ -217,18 +217,18 @@ const Analyst_Labels = {
   REGISTRATION_RESULT_DATASET: 'Sonuç veri kümesi',
   REGISTRATION_RESULT_DATASOURCE: 'Sonuç veri kaynağı',
   REGISTRATION_ORIGINAL_DATASOURCE: 'Ham veriler',
-  REGISTRATION_POINTS_DETAIL: 'görünüm',
+  REGISTRATION_POINTS_DETAIL: 'Nokta Detayı',
   REGISTRATION_EXECUTING: 'Devam ediyor',
   REGISTRATION_ENUMBER: 'Seri numarası',
   REGISTRATION_ORIGINAL: 'Kaynak noktası',
   REGISTRATION_TAREGT: 'Hedef nokta',
   REGISTRATION_RESELECT_POINT: 'Yeniden seçim noktası',
-  REGISTRATION_EXPORT: 'ihracat',
+  REGISTRATION_EXPORT: 'Dışa aktar',
   REGISTRATION_EXPORT_SUCCESS: 'Dışa aktarma başarılı',
   REGISTRATION_EXPORT_FAILED: 'Dışa aktarma başarısız',
   REGISTRATION_EXPORT_FILE_NAME: 'Kayıt bilgileri dosya adını dışa aktar',
   REGISTRATION_EXPORT_FILE: 'Kayıt bilgi dosyası',
-  REGISTRATION_PLEASE_SELECT: 'lütfen seç',
+  REGISTRATION_PLEASE_SELECT: 'Lütfen seç',
   REGISTRATION_NOT_SETLECT_DATASET: 'Lütfen bir kayıt veri kümesi seçin',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Lütfen bir referans veri kümesi seçin',
   //投影转换
@@ -250,10 +250,10 @@ const Analyst_Labels = {
   RESETING: 'Sıfırla',
   GEOCOORDSYS: 'Coğrafi koordinat sistemi',
   PRJCOORDSYS: 'Öngörülen koordinat sistemi',
-  CONVERTTING: 'dönüştürme',
+  CONVERTTING: 'Dönüştürme',
   CONVERT_SUCCESS: 'Dönüşüm başarılı',
   CONVERT_FAILED: 'Dönüştürülemedi',
-  ARITHMETIC: 'algoritması',
+  ARITHMETIC: 'Algoritması',
 }
 
 const Convert_Unit = {
@@ -274,7 +274,7 @@ const Convert_Unit = {
   /// 平方分米。
   SQUAREDECIMETER: 'Dm2',
   ///  英尺。
-  FOOT: 'Ayak',
+  FOOT: 'Fit',
   ///  平方英尺。
   SQUAREFOOT: 'Fit Kare',
   ///  码。
@@ -288,19 +288,19 @@ const Convert_Unit = {
   /// 千米。
   KILOMETER: 'km',
   /// 平方千米。
-  SQUAREKILOMETER: 'kilometre2',
+  SQUAREKILOMETER: 'Kilometre2',
   /// 平方英里。
   MILE: 'Mil kare',
   /// 英里。
   SQUAREMILE: 'mil2',
   ///  秒。
-  SECOND: 'ikinci',
+  SECOND: 'Saniye',
   ///  分。
   MINUTE: 'Dakika',
   ///  度。
-  DEGREE: 'derece',
+  DEGREE: 'Derece',
   /// 弧度。
-  RADIAN: 'radyan',
+  RADIAN: 'Radyan',
 }
 
 const Analyst_Params = {

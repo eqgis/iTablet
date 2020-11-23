@@ -17,7 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
-  CURRENT_SCENCE: 'Current', // 待翻译
+  CURRENT_SCENCE: 'Mevcut Manzara', // need to be translated
   // 地图制图及公共 开始
   START: 'Başla',
   START_OPEN_MAP: 'Haritayı Aç',
@@ -753,7 +753,7 @@ const Map_Settings = {
   DRAWING_RANGE: 'Çizim Aralığı',
 
   //目标识别二级菜单
-  Beta: '(Experimental Function)', //待翻译
+  Beta: '(Deneysel İşlem)', //need to be translated
 
   // 视频地图设置	一级菜单
   POI_SETTING: 'POI Ayarları',
@@ -796,7 +796,7 @@ const Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'Harita Adı',
   SHOW_SCALE: 'Ölçeği Göster',
-  SHOW_LOCATION: 'Show Location',//待翻译
+  SHOW_LOCATION: 'Show Location',//need to be translated
   ROTATION_GESTURE: 'Dönme Hareketi',
   PITCH_GESTURE: 'Saha Hareketi',
   ROTATION_ANGLE: 'Dönme Açısı',
@@ -881,7 +881,7 @@ const Map_Settings = {
   CANCEL: 'İptal',
   COPY: 'Kopyala',
 
-  CONFIDENCE: 'Confidence', //待翻译
+  CONFIDENCE: 'Gizlilik', //need to be translated
 }
 
 // 地图工具

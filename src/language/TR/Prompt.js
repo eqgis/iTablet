@@ -102,8 +102,8 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin',
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
-  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
-  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list', //待翻译
+  DONOT_SUPPORT_ARCORE: 'AR (Arttırılmış Gerçeklik) fonksiyonları bu cihazda desteklenmiyor.', //need to be translated
+  GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör', //need to be translated
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
@@ -319,43 +319,43 @@ const Prompt = {
 
   //导航增量路网
   SELECT_LINE_DATASET: 'Lütfen önce bir çizgi veri kümesi seçin',
-  CANT_UNDO: 'Irrevocable',
-  CANT_REDO: "Can't redo",
-  DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
-  SWITCH_LINE: 'Switch dataset',
-  HAS_NO_ROADNAME_FIELD_DATA: 'Dataset without road name field info',
-  MERGE_SUCCESS: 'Merged successfully',
-  MERGE_FAILD: 'Merge failed',
-  NOT_SUPPORT_PRJCOORDSYS: 'The coordinate system of the following data set does not support merging',
-  MERGEING: 'Merging',
-  NEW_NAV_DATA: 'Create Navigation Data',
-  INPUT_MODEL_FILE_NAME: 'Please enter a model file name',
-  SELECT_DESTINATION_DATASOURCE: 'Please select the target datasource',
-  FILENAME_ALREADY_EXIST: 'The file already exists, please re-enter the file name',
-  NETWORK_BUILDING: 'Building...',
-  BUILD_SUCCESS: 'Successfully built',
-  SELECT_LINE_SMOOTH: 'Please select the line that needs to be smoothed',
-  SELECT_A_POINT_INLINE: 'Please select an online point',
-  LINE_DATASET: 'Line Dataset',
-  DESTINATION_DATASOURCE: 'Target Datasource',
-  SMOOTH_FACTOR: 'Please enter smoothing factor',
-  SELECT_EXTEND_LINE: 'Please select the line that needs to be extended',
-  SELECT_SECOND_LINE: 'Please select the second line',
-  SELECT_TRIM_LINE: 'Please select the line to be trimmed',
-  SELECT_BASE_LINE: 'Please select a baseline',
-  SELECT_RESAMPLE_LINE: 'Please select the line that needs to be resampled',
-  SELECT_CHANGE_DIRECTION_LINE: 'Please select the line that needs to change direction',
-  EDIT_SUCCESS: 'Successful operation',
-  EDIT_FAILED: 'Operation failed',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
-  CONFIRM_EXIT: 'Are you sure to exit?',
-  TOPO_EDIT_END: 'Are you finished editing and exit?',
+  CANT_UNDO: 'Geri alınamaz',
+  CANT_REDO: "Yeniden yapılamaz",
+  DATASET_RENAME_FAILED: 'Veri kümesi adı yalnızca harf, rakam ve "_", "@", "#" içerebilir',
+  SWITCH_LINE: 'Veri kümesini değiştir',
+  HAS_NO_ROADNAME_FIELD_DATA: 'Yol adı alanı bilgisi olmayan veri kümesi',
+  MERGE_SUCCESS: 'Başarıyla birleştirildi',
+  MERGE_FAILD: 'Birleştirme başarısız oldu',
+  NOT_SUPPORT_PRJCOORDSYS: 'Aşağıdaki veri setinin koordinat sistemi birleştirmeyi desteklemiyor',
+  MERGEING: 'Birleştir',
+  NEW_NAV_DATA: 'Navigasyon Verileri Oluşturun',
+  INPUT_MODEL_FILE_NAME: 'Lütfen bir model dosya adı girin',
+  SELECT_DESTINATION_DATASOURCE: 'Lütfen hedef veri kaynağını seçin',
+  FILENAME_ALREADY_EXIST: 'Dosya zaten mevcut, lütfen dosya adını yeniden girin',
+  NETWORK_BUILDING: 'Uygulanıyor...',
+  BUILD_SUCCESS: 'Başarıyla uygulandı',
+  SELECT_LINE_SMOOTH: 'Lütfen düzeltilmesi gereken çizgiyi seçin',
+  SELECT_A_POINT_INLINE: 'Lütfen bir çevrimiçi nokta seçin',
+  LINE_DATASET: 'Çizgi Verikümesi',
+  DESTINATION_DATASOURCE: 'Hedef Veri Kaynağı',
+  SMOOTH_FACTOR: 'Lütfen düzeltme faktörünü girin',
+  SELECT_EXTEND_LINE: 'Lütfen uzatılması gereken çizgiyi seçin',
+  SELECT_SECOND_LINE: 'Lütfen ikinci çizgiyi seçin',
+  SELECT_TRIM_LINE: 'Lütfen kırpılacak çizgiyi seçin',
+  SELECT_BASE_LINE: 'Lütfen bir temel çizgi seçin',
+  SELECT_RESAMPLE_LINE: 'Lütfen yeniden örneklenmesi gereken çizgiyi seçin',
+  SELECT_CHANGE_DIRECTION_LINE: 'Lütfen yön değiştirmesi gereken çizgiyi seçin',
+  EDIT_SUCCESS: 'Başarılı işlem',
+  EDIT_FAILED: 'İşlem başarısız',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Düzeltme katsayısı 2 ~ 10 tam sayı olmalıdır',
+  CONFIRM_EXIT: 'Çıkmak istediğinizden emin misin?',
+  TOPO_EDIT_END: 'Düzenlemeyi bitirip çıkmak istediğinizden emin misiniz?',
   // 自定义专题图
   ONLY_INTEGER: 'Yalnızca tamsayılar girilebilir!',
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: 'Parametre hatası, ayar başarısız!',
 
-  SPEECH_TIP: "You may say \n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
+  SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: 'Tanımlı hata, lütfen daha sonra tekrar deneyiniz',
   SPEECH_NONE: 'Hiçbir şey konuşmadınız gibi görünüyor',
 
@@ -372,7 +372,7 @@ const Prompt = {
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 
   INVALID_DATA_SET_FAILED: 'Geçersiz veri türü. Ayarlama başarısız!',
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'Katman görünemez ve geçerli katmana ayarlanamaz', // need to be translated
 }
 
 export { Prompt }

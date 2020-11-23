@@ -36,8 +36,8 @@ const Profile = {
   USERNAME_ALL: 'Telefon numarası/E-mail/Kullanıcı Adı',
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again', //待翻译
+  RE_ENTER_PASSWORD: 'Lütfen şifrenizi tekrar girin', //need to be translated
+  PASSWORD_DISMATCH: 'Şifreler farklı, lütfen kontrol edin', //need to be translated
   REGISTER: 'Kayıt ol',
   FORGET_PASSWORD: 'Şifrenizi mi unuttunuz?',
   RESET_PASSWORD: 'Şifreyi Sıfırla',
@@ -335,7 +335,7 @@ const Profile = {
   MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Lütfen telefonunuzu kuzeyinde doğrultun ve Tamam tıklayın',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'Lütfen telefonunuzu güneye doğrultun ve Tamam tıklayın',
   MAP_AR_DATUM_SETTING: 'Kurulum',
   X_COORDINATE: 'X Koordinatı',
   Y_COORDINATE: 'Y Koordinatı',

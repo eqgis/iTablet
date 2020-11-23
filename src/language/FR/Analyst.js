@@ -260,7 +260,7 @@ const Convert_Unit = {
   ///  毫米。
   MILIMETER: 'Millimètre',
   /// 平方毫米。
-  SQUAREMILIMETER: 'Mm2',
+  SQUAREMILIMETER: 'mm2',
   ///  厘米。
   CENTIMETER: 'cm',
   /// 平方厘米。

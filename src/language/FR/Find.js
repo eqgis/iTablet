@@ -1,5 +1,5 @@
 const Find = {
-  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
+  TOGGLE_FIND_ITEM: "Afficher ou masquer des éléments dans 'Onglet Explorer", //need to be translated
   PUBLIC_DATA: 'Données publiques',
   APPLET: 'Applet',
   GIS_ACADEMY: 'Académie GIS',
@@ -25,7 +25,7 @@ const Find = {
   NO_MORE_DATA: 'Pas de données trouvées',
   DOWNLOADED: 'Téléchargement réussi. Vous pouvez importer ces données dans Importer',
 
-  LABORATORY: 'Laboratory', // 待翻译
+  LABORATORY: 'Laboratoire',
   ONLINE_COWORK: 'Coworking en ligne',
   COWORK_LOGIN: 'Veuillez vous connecter à SuperMap en ligne',
   APPLET_DOWNLOADED_RELOAD: "Téléchargement terminé, rechargez l'applet",
@@ -42,13 +42,13 @@ const Find = {
   SUPERMAP_FORUM_INFO: 'Bienvenue dans la communauté de communication sur la technologie SuperMap',
   GIS_ACADEMY_INFO: 'Fournit une grande quantité de tutoriels sur SuperMap GIS',
   ONLINE_COWORK_INFO: 'Prend en charge la coopération entre plusieurs utilisateurs.',
-  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
+  LABORATORY_INFO: 'Fonctionnalités expérimentales',
 
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.', //待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：Analyse RA-Analyse RA-Suivi des gestes\nSuivi des gestes，Vous pouvez parcourir la carte avec des gestes pour effectuer un zoom, un panoramique, etc.',
+  LAB_POSE_ESTIMATION_INFO: 'Position：Analyse RA-Analyse RA-Estimation de la pose\nEstimation de la pose，Vous pouvez parcourir la carte avec des gestes pour effectuer un zoom, un panoramique, etc..',
+  LAB_FORM_COLLECT_INFO: 'Position：Cartographie RA-Cartographie RA-Collecte de Haute-Précision\nCollecte de Haute-Précision，support l\'arpentage intérieur des points, ligne et région, panoramique etc..',
+  BETA_TIPS: 'Conseil: il ne s\'agit que d\'une fonctionnalité bêta expérimentale.',
 }
 
 export { Find }

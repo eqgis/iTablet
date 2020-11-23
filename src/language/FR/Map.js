@@ -17,7 +17,7 @@ const Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu = {
   CURRENT_MAP: 'Carte en cours',
-  CURRENT_SCENCE: 'Current', // 待翻译
+  CURRENT_SCENCE: 'en cours', // need to be translated
   // 地图制图及公共 开始
   START: 'Début',
   START_OPEN_MAP: 'Ovrir la carte',
@@ -70,7 +70,7 @@ const Map_Main_Menu = {
   LEGEND_POSITION: 'Position de la légende',
   TOP_LEFT: 'Alignement Haut-Gauche',
   TOP_RIGHT: 'Alignement Bas-Gauche',
-  LEFT_BOTTOM: 'Lower Left Alignment', //待翻译
+  LEFT_BOTTOM: 'Alignement inférieur gauche',
   RIGHT_BOTTOM: 'Alignement Bas-Droite',
 
   // 地图制图及公共 风格
@@ -753,7 +753,7 @@ const Map_Settings = {
   DRAWING_RANGE: 'Plage de dessin',
 
   //目标识别二级菜单
-  Beta: '(Experience Function)', //待翻译
+  Beta: '(Fonction d\'expérience)',
 
   // 视频地图设置
   POI_SETTING: 'Paramètres POI',
@@ -796,7 +796,7 @@ const Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'Nom de la carte',
   SHOW_SCALE: "Afficher l'échelle",
-  SHOW_LOCATION: 'Show Location',//待翻译
+  SHOW_LOCATION: 'Show Location',
   ROTATION_GESTURE: 'Geste de rotation',
   PITCH_GESTURE: 'Le Pas de Geste',
   ROTATION_ANGLE: 'Angle de rotation',
@@ -881,7 +881,7 @@ const Map_Settings = {
   CANCEL: 'Annuler',
   COPY: 'Copier',
 
-  CONFIDENCE: 'Confidence', //待翻译
+  CONFIDENCE: 'Confidence',
 }
 
 // 地图工具

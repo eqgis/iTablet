@@ -32,6 +32,7 @@ async function listAction(type, params = {}) {
         //     Type = ConstToolType.SM_ARSCENEMODULE_NOMAL
         //   }
         GLOBAL.ARContainer.setHeaderVisible(true)
+        GLOBAL.isSceneOpen = false
         ToolbarModule.getParams().setToolbarVisible(
           true,
           ConstToolType.SM_ARSCENEMODULE_NOMAL,

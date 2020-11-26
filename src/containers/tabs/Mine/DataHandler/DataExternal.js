@@ -227,6 +227,7 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
   }
 }
 
+
 /** 获取SCI数据源 */
 function getSCIDSList(path, contentList, uncheckedChildFileList) {
   let DS = []

@@ -172,7 +172,7 @@ class ModuleList extends Component {
           } else if (downloadData.mapType === Module.MapType.MAP) {
             await DataHandler.importWorkspace(tempData[0])
           } else {
-            await DataHandler.importWorkspace3DAR(this.props.currentUser, tempData[0])
+            await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
           }
           FileTools.deleteFile(fileDirPath + '_')
           FileTools.deleteFile(fileDirPath + '.zip')

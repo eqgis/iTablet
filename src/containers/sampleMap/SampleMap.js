@@ -109,7 +109,7 @@ export default class SampleMap extends Component {
       } else if (downloadData.mapType === Module.MapType.MAP) {
         await DataHandler.importWorkspace(tempData[0])
       } else {
-        await DataHandler.importWorkspace3DAR(downloadData.tmpCurrentUser, tempData[0])
+        await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
       }
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)

@@ -20,6 +20,7 @@ interface IProps {
 
 let ToolbarModule
 export default class ARSceneView extends React.Component<IProps> {
+  toolbar: any;
   constructor(props: IProps) {
     super(props)
   }

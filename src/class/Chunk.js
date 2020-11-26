@@ -63,17 +63,29 @@ export default class Chunk {
     switch (this.mapType) {
       case Chunk.MapType.SCENE: {
         // 三维地图
-        let fileName = 'OlympicGreen_EXAMPLE'
-        const homePath = await FileTools.appendingHomeDirectory()
-        const cachePath = homePath + ConstPath.CachePath
-        const fileDirPath = cachePath + fileName
-        const arrFile = await FileTools.getFilterFiles(fileDirPath)
-        if (arrFile.length === 0) {
-          NavigationService.navigate('Map3D', {})
-        } else {
-          // const name = 'OlympicGreen_EXAMPLE'
-          const name = 'OlympicGreen'
-          NavigationService.navigate('Map3D', { name })
+
+        let isOpenLastMap = false
+        if (lastMap) {
+          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
+            lastMap.path,
+          )
+        }
+        //三维也先获取一下上次场景 add xiezhy
+        if(isOpenLastMap){
+          NavigationService.navigate('Map3D', {name:lastMap.name})
+        }else{
+          let fileName = 'OlympicGreen_EXAMPLE'
+          const homePath = await FileTools.appendingHomeDirectory()
+          const cachePath = homePath + ConstPath.CachePath
+          const fileDirPath = cachePath + fileName
+          const arrFile = await FileTools.getFilterFiles(fileDirPath)
+          if (arrFile.length === 0) {
+            NavigationService.navigate('Map3D', {})
+          } else {
+            // const name = 'OlympicGreen_EXAMPLE'
+            const name = 'OlympicGreen'
+            NavigationService.navigate('Map3D', { name })
+          }
         }
         break
       }

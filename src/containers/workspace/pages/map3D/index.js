@@ -8,6 +8,7 @@ import {
 } from '../../../../redux/models/layers'
 import {
   setLatestMap,
+  setCurrentMap,
   exportmap3DWorkspace,
   importSceneWorkspace,
 } from '../../../../redux/models/map'
@@ -42,6 +43,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setEditLayer,
   setLatestMap,
+  setCurrentMap,
   setCurrentAttribute,
   exportmap3DWorkspace,
   importSceneWorkspace,

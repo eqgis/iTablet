@@ -242,11 +242,12 @@ export const setLatestMap = (params, cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setCurrentMap = (params, cb = () => {}) => async dispatch => {
+export const setCurrentMap = (params,extData, cb = () => {}) => async dispatch => {
   // let result = params && await SMap.importWorkspace(params)
   await dispatch({
     type: SET_CURRENT_MAP,
     payload: params || {},
+    extData: extData || {}
   })
   cb && cb()
 }
@@ -347,6 +348,7 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
         params.name
       }`,
     )
+
     let result = await SScene.export3DScenceName(params.name, path)
     if (result) {
       const zipPath = `${path}.zip`
@@ -362,17 +364,6 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
       Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
       // '导出失败')
     }
-    // let result = await SScene.is3DWorkspace({ server: params.server })
-    // if (result) {
-    //   let result2 = await SScene.import3DWorkspace({ server: params.server })
-    //   if (result2) {
-    //     Toast.show('倒入成功')
-    //   } else {
-    //     Toast.show('倒入失败')
-    //   }
-    // } else {
-    //   Toast.show('倒入失败')
-    // }
   }
 }
 // 导入三维工作空间

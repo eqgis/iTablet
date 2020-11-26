@@ -177,18 +177,20 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
             contentList,
             uncheckedChildFileList,
           )
+
+          //三维图层不再过滤 add xiezhy
           // 获取3维缓存图层的信息
-          const layerInfo = await _getLayerInfo3D(
-            `${path}/${contentList[i].name}`,
-            path,
-          )
-          _checkRelated3DLayer(
-            relatedFiles,
-            layerInfo,
-            path,
-            contentList,
-            uncheckedChildFileList,
-          )
+          // const layerInfo = await _getLayerInfo3D(
+          //   `${path}/${contentList[i].name}`,
+          //   path,
+          // )
+          // _checkRelated3DLayer(
+          //   relatedFiles,
+          //   layerInfo,
+          //   path,
+          //   contentList,
+          //   uncheckedChildFileList,
+          // )
           _checkRelated3DSymbols(
             relatedFiles,
             contentList[i].wsInfo.scenes,
@@ -196,7 +198,8 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
             contentList,
           )
           _checkFlyingFiles(relatedFiles, path, contentList)
-          if (layerInfo.length !== 0) {
+          //if (layerInfo.length !== 0)
+           {
             WS3D.push({
               directory: path,
               fileName: contentList[i].name,

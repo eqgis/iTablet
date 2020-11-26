@@ -1,5 +1,5 @@
-import actions from './action'
 import data from './data'
+import action from './action'
 import FunctionModule from '../../../class/FunctionModule'
 
 class arSceneModule extends FunctionModule {
@@ -22,7 +22,7 @@ export default function() {
   return new arSceneModule({
     type: 'SM_ARSCENEMODULE',
     getData: data.getData,
-    actions: actions,
     getMenuData: data.getMenuData,
+    actions: action,
   })
 }

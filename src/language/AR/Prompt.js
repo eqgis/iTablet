@@ -374,6 +374,10 @@ const Prompt = {
 
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+
+  //三维AR管线相关
+  FILE_NOT_EXISTS: 'File not exists,Please download the Example data',
+  MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
 }
 
 export { Prompt }

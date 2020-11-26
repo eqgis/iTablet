@@ -373,6 +373,10 @@ const Prompt = {
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+
+  //三维AR管线相关
+  FILE_NOT_EXISTS: 'データが存在しません。サンプルデータをダウンロードしてください',
+  MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
 }
 
 export { Prompt }

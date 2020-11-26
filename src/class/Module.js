@@ -9,6 +9,7 @@ export default class Module {
   static MapType = {
     MAP: 'MAP',
     SCENE: 'SCENE',
+    AR: 'AR',
   }
   
   constructor(props) {
@@ -39,6 +40,14 @@ export default class Module {
           ]
           break
         case Module.MapType.MAP:
+          this.tabModules = [
+            MapTabs.MapView,
+            MapTabs.LayerManager,
+            MapTabs.LayerAttribute,
+            MapTabs.MapSetting,
+          ]
+          break
+        case Module.MapType.AR:
           this.tabModules = [
             MapTabs.MapView,
             MapTabs.LayerManager,

@@ -18,6 +18,7 @@ const Map_Label = {
 const Map_Main_Menu = {
   CURRENT_MAP: 'الخريطة الحالية',
   CURRENT_SCENCE: 'Current', // 待翻译
+  CURRENT_MODEL: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'أبدء',
   START_OPEN_MAP: 'فتح الخريطة',
@@ -343,7 +344,7 @@ const Map_Main_Menu = {
   MAP_AR_MEASURE: 'AR Measure', //待翻译
   MAP_AR_ANALYZE: 'AR Analyze', //待翻译
   MAP_AR_MAPPING: 'AR Mapping',
-  MAP_AR_TOOL: 'AR Tool', //待翻译
+  MAP_AR_TOOL: 'Launch', //待翻译
   MAP_AR_CAMERA_EXCEPTION: 'الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
@@ -366,12 +367,12 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'صورة الواقع المعزز',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'نقاط رسم AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
-  MAP_AR_VIDEO: 'AR Video', //待翻译
-  MAP_AR_IMAGE: 'AR Picture',
-  MAP_AR_EFFECT: 'AR Effect',
-  MAP_AR_WEBVIEW: 'AR WebPage',
-  MAP_AR_TEXT: 'AR Text',
-  MAP_AR_PIPELINE: 'AR PipeLine',
+  MAP_AR_VIDEO: 'Video', //待翻译
+  MAP_AR_IMAGE: 'Picture',
+  MAP_AR_EFFECT: 'Effect',
+  MAP_AR_WEBVIEW: 'WebPage',
+  MAP_AR_TEXT: 'Text',
+  MAP_AR_PIPELINE: 'PipeLine',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'بيانات جديدة',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'ادخل الاسم',

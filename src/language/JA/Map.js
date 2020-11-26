@@ -18,6 +18,7 @@ const Map_Label = {
 const Map_Main_Menu = {
   CURRENT_MAP: '現在マップ',
   CURRENT_SCENCE: 'Current', // 待翻译
+  CURRENT_MODEL: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: '開始',
   START_OPEN_MAP: 'マップを開く',
@@ -343,7 +344,7 @@ const Map_Main_Menu = {
   MAP_AR_MEASURE: 'AR 計測', //ｊｐ0730
   MAP_AR_ANALYZE: 'AR 解析', //ｊｐ0730
   MAP_AR_MAPPING: 'AR マッピング',
-  MAP_AR_TOOL: 'AR ツール', //jp0917
+  MAP_AR_TOOL: '投入する', //jp0917
   MAP_AR_CAMERA_EXCEPTION: 'カメラ異常、権限を確認してください',
   MAP_AR_AI_ASSISTANT: 'AI\nアシスタント',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: '通常コレクション',
@@ -366,12 +367,12 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR画像',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'ARの高さ測定',
-  MAP_AR_VIDEO: 'AR 動画', //jp0730
-  MAP_AR_IMAGE: 'AR画像',
-  MAP_AR_EFFECT: 'AR特殊効果',
+  MAP_AR_VIDEO: '動画', //jp0730
+  MAP_AR_IMAGE: '画像',
+  MAP_AR_EFFECT: '特殊効果',
   MAP_AR_WEBVIEW: 'ウェブページ',
-  MAP_AR_TEXT: 'ARテキスト',
-  MAP_AR_PIPELINE: 'ARパイプライン',
+  MAP_AR_TEXT: 'テキスト',
+  MAP_AR_PIPELINE: 'パイプライン',
   MAP_AR_SELECT_EFFECT: '特殊効果の選択',
   MAP_AR_AI_ASSISTANT_NEWDATA: '新規',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'データソース名を入力してください',

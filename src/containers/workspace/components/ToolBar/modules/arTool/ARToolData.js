@@ -2,8 +2,10 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ARToolAction from './ARToolAction'
 import { Platform } from 'react-native'
+import ToolbarModule from '../ToolbarModule'
 
 function getData() {
+  const _params = ToolbarModule.getParams()
   let data = [
     {
       //AR沙盘
@@ -46,15 +48,26 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_text,
     },
-    {
-      //AR文字
-      key: 'ar3D',
-      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_PIPELINE,
-      action: ARToolAction.ar3D,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_text,
-    },
+    // {
+    //   //AR管线
+    //   key: 'ar3D',
+    //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_PIPELINE,
+    //   action: ARToolAction.ar3D,
+    //   size: 'large',
+    //   image: getThemeAssets().ar.functiontoolbar.ar_text,
+    // },
   ]
+
+  if (_params.laboratory.arPipe) {
+    data.push({
+        //AR管线
+        key: 'ar3D',
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_PIPELINE,
+        action: ARToolAction.ar3D,
+        size: 'large',
+        image: getThemeAssets().nav.icon_map_3d,
+      })
+  }
 
   data = data.filter(item => {
     if (Platform.OS === 'ios') {

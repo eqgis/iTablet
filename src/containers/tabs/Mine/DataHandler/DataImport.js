@@ -161,6 +161,66 @@ async function importWorkspace3D(user, item) {
   }
 }
 
+/**
+ * 1.遍历scenes，获取可用的文件夹名
+ * 2.生成对应的pxp
+ * 3.复制工作空间和相关文件
+ * 4.此接口用来过滤AR三维数据
+ */
+async function importWorkspace3DAR(user, item) {
+  try {
+    const userPath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + user.userName}/Data/Scene`,
+    )
+
+    const contentList = await FileTools.getDirectoryContent(userPath)
+
+    const workspaceName = item.fileName.substring(
+      0,
+      item.fileName.lastIndexOf('.'),
+    )
+    const workspaceFolder = _getAvailableName(
+      workspaceName,
+      contentList,
+      'directory',
+    )
+    const workspaceInfo = {
+      type: `${_getWorkspaceType(item.fileName)}`,
+      server: `${workspaceFolder}/${item.fileName}`,
+    }
+
+    for (let i = 0; i < item.wsInfo.scenes.length; i++) {
+      const scene = item.wsInfo.scenes[i]
+      const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
+      const pxpInfo = {
+        Name: scene,
+        Workspace: workspaceInfo,
+        Type: 0,
+      }
+      await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
+
+      const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
+      await FileTools.createDirectory(absoluteWorkspacePath)
+      await FileTools.copyFile(
+        item.filePath,
+        `${absoluteWorkspacePath}/${item.fileName}`,
+      )
+
+      for (let i = 0; i < item.relatedFiles.length; i++) {
+        const filePath = item.relatedFiles[i]
+        const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
+        await FileTools.copyFile(
+          filePath,
+          `${absoluteWorkspacePath}/${fileName}`,
+        )
+      }
+    }
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 async function importDatasource(user, item) {
   try {
     const userPath = await FileTools.appendingHomeDirectory(
@@ -448,6 +508,7 @@ export default {
   importSCI,
   importColor,
   importSymbol,
+  importWorkspace3DAR,
   // importTIF,
   // importSHP,
   // importMIF,

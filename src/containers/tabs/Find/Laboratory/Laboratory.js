@@ -55,6 +55,12 @@ class Laboratory extends React.Component {
           image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
           info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
         },
+        {
+          key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_PIPELINE,
+          value: 'arPipe',
+          image: getThemeAssets().nav.icon_map_3d,
+          info: getLanguage(this.props.language).Find.LAB_FORM_ARPIPE_INFO,
+        },
       ],
     })
   }

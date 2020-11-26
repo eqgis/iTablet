@@ -169,8 +169,10 @@ class ModuleList extends Component {
           let tempData = await DataHandler.getExternalData(fileDirPath) || []
           if (downloadData.itemData.mapType === Module.MapType.SCENE) {
             await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
-          } else {
+          } else if (downloadData.mapType === Module.MapType.MAP) {
             await DataHandler.importWorkspace(tempData[0])
+          } else {
+            await DataHandler.importWorkspace3DAR(this.props.currentUser, tempData[0])
           }
           FileTools.deleteFile(fileDirPath + '_')
           FileTools.deleteFile(fileDirPath + '.zip')
@@ -318,13 +320,13 @@ class ModuleList extends Component {
         return
       }
 
-      if (item.key === ChunkType.MAP_AR) {
-        this.props.setCurrentMapModule(index).then(async () => {
-          item.action && (await item.action(tmpCurrentUser, latestMap))
-          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
-        })
-        return
-      }
+      // if (item.key === ChunkType.MAP_AR) {
+      //   this.props.setCurrentMapModule(index).then(async () => {
+      //     item.action && (await item.action(tmpCurrentUser, latestMap))
+      //     item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
+      //   })
+      //   return
+      // }
 
       let downloadData = this.getDownloadData(language, item, index)
 

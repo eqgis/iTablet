@@ -2,8 +2,8 @@
 const Navigator_Label = {
   HOME: 'الرئيسية',
   FRIENDS: 'جهات الإتصال',
-  EXPLORE: 'يستكشف',
-  PROFILE: 'ملف شخصى',
+  EXPLORE: 'المستكشف',
+  PROFILE: 'الملف شخصى',
 
   LEFT_TOP_LOG: 'تسجيل الدخول',
   LEFT_TOP_REG: 'التسجيل',

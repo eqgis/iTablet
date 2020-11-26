@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>iTablet</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -47,7 +47,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQuenesSchemes</key>
 	<array>
 		<string>weixin</string>
@@ -60,7 +60,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>我们需要访问您的相机，用于照片拍摄</string>
+	<string>iTablet会在启用AR时访问您的相机权限</string>
 	<key>NSContactsUsageDescription</key>
 	<string>我们需要访问您的联系人，用于好友推荐</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

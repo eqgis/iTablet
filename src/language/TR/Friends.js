@@ -109,7 +109,7 @@ const Friends = {
   ADD_BLACKLIST: 'Kara listeye ekle',
   DELETE_FRIEND: 'Arkadaşı sil',
   LIST_MEMBERS: 'Üyeleri listele ',
-  MEMBERS: 'Members', //待翻译
+  MEMBERS: 'Üyeler', //need to be translated
   LEAVE_GROUP: 'Gruptan çık',
   CLEAR_HISTORY: 'Sohbet geçmişini temizle',
   DISBAND_GROUP: 'Grubu dağıt',
@@ -129,24 +129,24 @@ const Friends = {
   SYS_MSG_REMOVED_FROM_GROUP: 'Seni gruptan çıkarttı',
   SYS_MSG_LEAVE_GROUP: 'Bu gruptan ayrıldı',
   SYS_MSG_ETC: '... ',
-  SYS_MSG_REMOVE_OUT_GROUP: ' kaldırıldı ',
-  SYS_MSG_REMOVE_OUT_GROUP2: 'Grup dışı',
-  SYS_MSG_ADD_INTO_GROUP: ' eklendi ',
-  SYS_MSG_ADD_INTO_GROUP2: 'gruba',
+  SYS_MSG_REMOVE_OUT_GROUP: ' Grup dışı ',
+  SYS_MSG_REMOVE_OUT_GROUP2: 'Grup dışı2',
+  SYS_MSG_ADD_INTO_GROUP: ' Gruba ekle ',
+  SYS_MSG_ADD_INTO_GROUP2: 'Gruba ekle2',
   SYS_NO_SUCH_USER: 'Kullanıcı bulunamadı',
   SYS_FRIEND_ALREADY_IN_GROUP: 'Seçilen arkadaşlar zaten grupta',
   EXCEED_NAME_LIMIT: 'Ad 40 karakteri aşamaz (Çince için 20)',
-  SYS_MSG_MOD_GROUP_NAME: ' grup adını değiştirdi ',
+  SYS_MSG_MOD_GROUP_NAME: ' Grup adını değiştirdi ',
   SYS_LOGIN_ON_OTHER_DEVICE: 'Hesabınız başka bir cihazda oturum açtı',
   SYS_MSG_REJ: 'Karşı taraf seni henüz arkadaş olarak eklemedi',
   SYS_FRIEND_REQ_ACCEPT: 'Artık arkadaşsınız, keyfini çıkar!',
-  SYS_INVITE_TO_COWORK: ' seni işbirliğine davet etti',
+  SYS_INVITE_TO_COWORK: ' Seni işbirliğine davet etti',
   SYS_MSG_GEO_ADDED: '',
   SYS_MSG_GEO_DELETED: '',
   SYS_MSG_GEO_UPDATED: '',
-  SYS_MSG_GEO_ADDED2: 'ekle',
-  SYS_MSG_GEO_DELETED2: 'silin',
-  SYS_MSG_GEO_UPDATED2: 'güncelle',
-  ADDED: 'Added', //待翻译
+  SYS_MSG_GEO_ADDED2: 'Ekle',
+  SYS_MSG_GEO_DELETED2: 'Silindi',
+  SYS_MSG_GEO_UPDATED2: 'Güncellendi',
+  ADDED: 'Eklendi', //need to be translated
 }
 export { Friends }

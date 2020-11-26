@@ -36,8 +36,8 @@ const Profile = {
   USERNAME_ALL: 'Telefon numarası/E-mail/Kullanıcı Adı',
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again', //待翻译
+  RE_ENTER_PASSWORD: 'Lütfen şifrenizi tekrar girin', //need to be translated
+  PASSWORD_DISMATCH: 'Şifreler farklı, lütfen kontrol edin', //need to be translated
   REGISTER: 'Kayıt ol',
   FORGET_PASSWORD: 'Şifrenizi mi unuttunuz?',
   RESET_PASSWORD: 'Şifreyi Sıfırla',

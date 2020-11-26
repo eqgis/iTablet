@@ -104,12 +104,12 @@ const Friends = {
   SEND_MESSAGE: 'Envoyer le message',
   SET_MARKNAME: 'Définir un alias',
   SET_GROUPNAME: 'Définir le nom du groupe',
-  PUSH_FRIEND_CARD: "Carte d'ami push",
+  PUSH_FRIEND_CARD: "Appuyer sur Carte d'ami",
   FRIEND_MAP: "Carte d'amis",
   ADD_BLACKLIST: 'Ajouter à la liste noire',
   DELETE_FRIEND: 'Supprimer un ami',
   LIST_MEMBERS: 'Liste des membres',
-  MEMBERS: 'Members', //待翻译
+  MEMBERS: 'Membres',
   LEAVE_GROUP: 'Quitter le groupe',
   CLEAR_HISTORY: "Effacer l'historique de la discussion",
   DISBAND_GROUP: 'Dissoudre le groupe',
@@ -147,6 +147,6 @@ const Friends = {
   SYS_MSG_GEO_ADDED2: '',
   SYS_MSG_GEO_DELETED2: '',
   SYS_MSG_GEO_UPDATED2: '',
-  ADDED: 'Added', //待翻译
+  ADDED: 'Ajouté',
 }
 export { Friends }

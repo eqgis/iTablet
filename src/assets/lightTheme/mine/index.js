@@ -8,6 +8,7 @@ const my_map = require('./icon_my_map.png')
 const my_scene = require('./icon_my_scene.png')
 const my_basemap = require('./icon_my_basemap.png')
 const my_symbol = require('./icon_my_symbol.png')
+const icon_my_template = require('./icon_my_template.png')
 const my_color = require('./icon_my_color.png')
 const my_applets = require('./icon_my_applets.png')
 const my_applets_default = require('./icon_default_applet.png')
@@ -42,6 +43,7 @@ export default {
   my_scene,
   my_basemap,
   my_symbol,
+  icon_my_template,
   my_color,
   my_applets,
   my_applets_default,

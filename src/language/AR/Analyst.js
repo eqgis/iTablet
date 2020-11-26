@@ -7,17 +7,16 @@ const Analyst_Modules = {
   THIESSEN_POLYGON: 'منطقة سيسن',
   MEASURE_DISTANCE: 'قياس المسافة',
   ONLINE_ANALYSIS: 'التحليل عبر الإنترنت',
-  INTERPOLATION_ANALYSIS: 'Interpolation Analysis',
+  INTERPOLATION_ANALYSIS: 'تحليل الاستيفاء',
 
   OPTIMAL_PATH: 'المسار الأمثل',
   CONNECTIVITY_ANALYSIS: 'تحليل الاتصال',
-  FIND_TSP_PATH: 'Find TSP Path',
+  FIND_TSP_PATH: 'البحث عن مسار مشكلة بائع متجول',
   TRACING_ANALYSIS: 'تحليل التتبع',
-  
-  // 待翻译
-  REGISTRATION_CREATE: 'New Registration',
-  REGISTRATION_SPEEDINESS: 'Rapid Registration',
-  PROJECTION_TRANSFORMATION: 'Projection Transformation',
+
+  REGISTRATION_CREATE: 'تسجيل جديد',
+  REGISTRATION_SPEEDINESS: 'التسجيل السريع',
+  PROJECTION_TRANSFORMATION: 'تحويل الإسقاط',
 }
 
 const Analyst_Methods = {
@@ -26,7 +25,7 @@ const Analyst_Methods = {
   ERASE: 'مسح',
   INTERSECT: 'تقاطع',
   IDENTITY: 'تطابق',
-  XOR: 'XOR',
+  XOR: 'فرق متماثل',
   UPDATE: 'تحديث',
 
   DENSITY: 'تحليل الكثافة',
@@ -159,8 +158,8 @@ const Analyst_Labels = {
   ASSOCIATE_BROWSING_RESULT: 'نتيجة المتصفح المساعد',
 
   // 插值分析
-  INTERPOLATION_METHOD: 'Interpolation Analysis',
-  INTERPOLATION_FIELD: 'Interpolation Methods',
+  INTERPOLATION_METHOD: 'تحليل الاستيفاء',
+  INTERPOLATION_FIELD: 'نظرية الاستيفاء',
   SCALE_FACTOR: 'عامل المقياس',
   RESOLUTION: 'الدقة',
   PIXEL_FORMAT: 'تنسيق الخلية',
@@ -183,127 +182,126 @@ const Analyst_Labels = {
   RANGE: 'المدى',
   NUGGET_EFFECT: 'تأثير الكتلة',
   MEAN: 'متوسط',
-  EXPONENT: 'Exponent',
+  EXPONENT: 'الأس',
   HISTOGRAM: 'الرسم البياني',
   FUNCTION: 'وظيفة',
   SHOW_STATISTICS: 'عرض الاحصائيات',
   EXPORT_TO_ALBUM: 'تصدير الى الالبوم',
-  
-  // 待翻译
-  REGISTRATION_DATASET: 'Registration dataset',
-  REGISTRATION_REFER_DATASET_ADD: 'Registration refer dataset add',
-  REGISTRATION: 'Registration',
-  REGISTRATION_ARITHMETIC: 'Registration arithmetic',
-  REGISTRATION_LINE: 'Registration line (at least 4 control points)',
-  REGISTRATION_QUADRATIC: 'Registration quadratic (at least 7 control points)',
-  REGISTRATION_RECTANGLE: 'Registration rectangle (2 control points)',
-  REGISTRATION_OFFSET: 'Registration offset (1 control points)',
-  REGISTRATION_LINE_: 'Registration line',
-  REGISTRATION_QUADRATIC_: 'Registration quadratic',
-  REGISTRATION_RECTANGLE_: 'Registration rectangle',
-  REGISTRATION_OFFSET_: 'Registration offset',
-  REGISTRATION_ASSOCIATION: 'Association',
-  
-  REGISTRATION_ASSOCIATION_CLOCE: 'Cancel the associated',
-  REGISTRATION_EXECUTE: 'Run',
-  REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
-  REGISTRATION_EXECUTE_FAILED: 'Execute failed',
-  REGISTRATION_SAVE_AS: 'Save as',
-  REGISTRATION_RESAMPLE: 'Result resampling',
-  REGISTRATION_SAMPLE_MODE: 'Sampling mode',
-  REGISTRATION_SAMPLE_MODE_NO: 'No',
-  REGISTRATION_SAMPLE_MODE_NEAR: 'The method of adjacent',
-  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilinear interpolation',
-  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Cubic convolution interpolation',
-  REGISTRATION_SAMPLE_PIXEL: 'Sample pixel',
-  REGISTRATION_RESULT_DATASET: 'Result dataset',
-  REGISTRATION_RESULT_DATASOURCE: 'Result datasource',
-  REGISTRATION_ORIGINAL_DATASOURCE: 'Original dataset',
-  REGISTRATION_POINTS_DETAIL: 'Detail',
-  REGISTRATION_EXECUTING: 'In progress',
-  REGISTRATION_ENUMBER: 'Serial number',
-  REGISTRATION_ORIGINAL: 'Source',
-  REGISTRATION_TAREGT: 'Target',
-  REGISTRATION_RESELECT_POINT: 'Reselect point',
-  REGISTRATION_EXPORT: 'Export',
-  REGISTRATION_EXPORT_SUCCESS: 'Export success',
-  REGISTRATION_EXPORT_FAILED: 'Export failed',
-  REGISTRATION_EXPORT_FILE_NAME: 'Export file name',
-  REGISTRATION_EXPORT_FILE: 'Registration info file',
-  REGISTRATION_PLEASE_SELECT: 'Please select',
-  REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
-  REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
+
+  REGISTRATION_DATASET: 'تسجيل مجموعة بيانات ',
+  REGISTRATION_REFER_DATASET_ADD: 'يشير التسجيل إلى إضافة مجموعة البيانات',
+  REGISTRATION: 'التسجيل',
+  REGISTRATION_ARITHMETIC: 'خوارزمية التسجيل',
+  REGISTRATION_LINE: 'خط التسجيل 4 نقاط تحكم على الأقل',
+  REGISTRATION_QUADRATIC: 'تسجيل تربيعي 7 نقاط تحكم على الأقل',
+  REGISTRATION_RECTANGLE: 'مستطيل التسجيل نقطتا تحكم',
+  REGISTRATION_OFFSET: 'تعويض التسجيل نقطة تحكم واحدة',
+  REGISTRATION_LINE_: 'خط التسجيل',
+  REGISTRATION_QUADRATIC_: 'التسجيل التربيعي',
+  REGISTRATION_RECTANGLE_: 'مستطيل التسجيل',
+  REGISTRATION_OFFSET_: 'تعويض التسجيل',
+  REGISTRATION_ASSOCIATION: 'إرتباط',
+
+  REGISTRATION_ASSOCIATION_CLOCE: 'إلغاء الإرتباط',
+  REGISTRATION_EXECUTE: 'تشغيل',
+  REGISTRATION_EXECUTE_SUCCESS: 'نجاح التنفيذ',
+  REGISTRATION_EXECUTE_FAILED: 'فشل التنفيذ',
+  REGISTRATION_SAVE_AS: 'حفظ باسم',
+  REGISTRATION_RESAMPLE: 'نتيجة إعادة التشكيل',
+  REGISTRATION_SAMPLE_MODE: 'وضع أخذ العينات',
+  REGISTRATION_SAMPLE_MODE_NO: 'لا',
+  REGISTRATION_SAMPLE_MODE_NEAR: 'طريقة المجاور',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'استيفاء ثنائي الخطي',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'استيفاء التواء مكعب',
+  REGISTRATION_SAMPLE_PIXEL: 'نموذج بكسل',
+  REGISTRATION_RESULT_DATASET: 'مجموعة البيانات الناتجة',
+  REGISTRATION_RESULT_DATASOURCE: 'مصدر البيانات الناتج',
+  REGISTRATION_ORIGINAL_DATASOURCE: 'مجموعة البيانات الأصلية',
+  REGISTRATION_POINTS_DETAIL: 'التفاصيل',
+  REGISTRATION_EXECUTING: 'قيد التقدم',
+  REGISTRATION_ENUMBER: 'الرقم التسلسلي',
+  REGISTRATION_ORIGINAL: 'المصدر',
+  REGISTRATION_TAREGT: 'الهدف',
+  REGISTRATION_RESELECT_POINT: 'إعادة تحديد النقطة',
+  REGISTRATION_EXPORT: 'تصدير',
+  REGISTRATION_EXPORT_SUCCESS: 'نجاح التصدير',
+  REGISTRATION_EXPORT_FAILED: 'فشل التصدير',
+  REGISTRATION_EXPORT_FILE_NAME: 'اسم الملف التصدير',
+  REGISTRATION_EXPORT_FILE: 'ملف معلومات التسجيل',
+  REGISTRATION_PLEASE_SELECT: 'الرجاء التحديد',
+  REGISTRATION_NOT_SETLECT_DATASET: 'الرجاء تحديد مجموعة بيانات التسجيل',
+  REGISTRATION_NOT_SETLECT_REFER_DATASET: 'الرجاء تحديد مجموعة بيانات مرجعية',
   //投影转换
-  PROJECTION_SOURCE_COORDS: 'Source Coords',
-  PROJECTION_COORDS_NAME: 'Coords Name',
-  PROJECTION_COORDS_UNIT: 'Coords Unit',
-  PROJECTION_GROUND_DATUM: 'Ground Datum',
-  PROJECTION_REFERENCE_ELLIPSOID: 'Reference Ellipsoid',
-  
-  PROJECTION_CONVERT_SETTING: 'Reference system conversion settings',
-  PROJECTION_CONVERT_MOTHED: 'Convert method',
-  PROJECTION_PARAMETER_SETTING: 'Parameter Setting',
-  BASIC_PARAMETER: 'Basic Parameter',
-  ROTATION_ANGLE_SECOND: 'Rotation Angle (second)',
-  OFFSET: 'Offset',
-  RATIO_DIFFERENCE: 'Ratio Difference',
-  TARGET_COORDS: 'Target Coords',
-  COPY: 'Copy',
-  RESETING: 'Reset',
-  GEOCOORDSYS: 'Geographic coordinate system',
-  PRJCOORDSYS: 'Projected coordinate system',
-  CONVERTTING: 'Convertting',
-  CONVERT_SUCCESS: 'Convert success',
-  CONVERT_FAILED: 'Convert failed',
+  PROJECTION_SOURCE_COORDS: 'نظام تنسيق المصدر',
+  PROJECTION_COORDS_NAME: 'تنسيق اسم النظام',
+  PROJECTION_COORDS_UNIT: 'وحدة نظام التنسيق',
+  PROJECTION_GROUND_DATUM: 'تنسيق بيانات النظام',
+  PROJECTION_REFERENCE_ELLIPSOID: 'المرجع Ellipsoid',
+
+  PROJECTION_CONVERT_SETTING: 'إعدادات تحويل النظام المرجعية',
+  PROJECTION_CONVERT_MOTHED: 'طريقة التحويل',
+  PROJECTION_PARAMETER_SETTING: 'إعداد المعاملات',
+  BASIC_PARAMETER: 'المعاملات الأساسية',
+  ROTATION_ANGLE_SECOND: 'زاوية الدوران (ثانية)',
+  OFFSET: 'تعويض',
+  RATIO_DIFFERENCE: 'فرق النسبة',
+  TARGET_COORDS: 'نظام تنسيق الهدف',
+  COPY: 'نسخ',
+  RESETING: 'إعادة تعيين',
+  GEOCOORDSYS: 'نظام الإحداثيات الجغرافية',
+  PRJCOORDSYS: 'نظام الإحداثيات الاسقاط',
+  CONVERTTING: 'التحويل',
+  CONVERT_SUCCESS: 'نجاح التحويل',
+  CONVERT_FAILED: 'فشل التحويل',
   ARITHMETIC: 'خوارزمية',
 }
 
-// 待翻译
+// need to be translated
 const Convert_Unit = {
   ///  毫米。
-  MILIMETER: 'Milimeter',
+  MILIMETER: 'ميليمتر',
   /// 平方毫米。
-  SQUAREMILIMETER: 'Mm2',
+  SQUAREMILIMETER: 'ممملليمتر مربع',
   ///  厘米。
-  CENTIMETER: 'cm',
+  CENTIMETER: 'سم',
   /// 平方厘米。
-  SQUARECENTIMETER: 'cm2',
+  SQUARECENTIMETER: 'سنتيمتر مربع',
   /// 英寸。
-  INCH: 'inch',
+  INCH: 'بوصة',
   /// 平方英寸。
-  SQUAREINCH: 'Square inch',
+  SQUAREINCH: 'بوصة مربعة',
   /// 分米。
-  DECIMETER: 'Dm',
+  DECIMETER: 'ديسيمتر',
   /// 平方分米。
-  SQUAREDECIMETER: 'Square decimetres',
+  SQUAREDECIMETER: 'ديسيميتريس مربع',
   ///  英尺。
-  FOOT: 'Foot',
+  FOOT: 'قدم',
   ///  平方英尺。
-  SQUAREFOOT: 'Square feet',
+  SQUAREFOOT: 'قدم مربع',
   ///  码。
-  YARD: 'Yard',
+  YARD: 'ياردة',
   ///  平方码。
-  SQUAREYARD: 'Square yard',
+  SQUAREYARD: 'ياردة مربعة',
   ///  米。
-  METER: 'Meter',
+  METER: 'متر',
   ///  平方米。
-  SQUAREMETER: 'Square meter',
+  SQUAREMETER: 'متر مربع',
   /// 千米。
-  KILOMETER: 'km',
+  KILOMETER: 'كيلومتر',
   /// 平方千米。
-  SQUAREKILOMETER: 'square kilometer',
+  SQUAREKILOMETER: 'كيلوميتر مربع',
   /// 平方英里。
-  MILE: 'Square mile',
+  MILE: 'ميل',
   /// 英里。
-  SQUAREMILE: 'mile',
+  SQUAREMILE: 'ميل مربع',
   ///  秒。
-  SECOND: 'second',
+  SECOND: 'ثانية',
   ///  分。
-  MINUTE: 'Minute',
+  MINUTE: 'دقيقة',
   ///  度。
-  DEGREE: 'degree',
+  DEGREE: 'درجة',
   /// 弧度。
-  RADIAN: 'radian',
+  RADIAN: 'راديان',
 }
 
 const Analyst_Params = {
@@ -407,11 +405,11 @@ const Analyst_Prompt = {
   SELECT_DATA_SOURCE_FIRST: 'الرجاء تحديد مصدر البيانات أولاً',
   SELECT_DATA_SET_FIRST: 'يرجى تحديد مجموعة البيانات أولاً',
   PLEASE_SELECT_A_REGION: 'يرجى تحديد منطقة',
-  REGISTRATION_LINE_POINTS: 'Please set at least 4 control points', // 待翻译
-  REGISTRATION_QUADRATIC_POINTS: 'Please set at least 7 control points',
-  REGISTRATION_RECTANGLE_POINTS: 'Please set 2 control points',
-  REGISTRATION_OFFSET_POINTS: 'Please set 1 control point',
-  REGISTRATION_POINTS_NUMBER_ERROR: 'The number of control points does not match',
+  REGISTRATION_LINE_POINTS: 'يرجى تعيين 4 نقاط تحكم على الأقل',
+  REGISTRATION_QUADRATIC_POINTS: 'الرجاء تعيين 7 نقاط تحكم على الأقل',
+  REGISTRATION_RECTANGLE_POINTS: 'الرجاء تعيين نقطتي تحكم',
+  REGISTRATION_OFFSET_POINTS: 'الرجاء تعيين نقطة تحكم واحدة',
+  REGISTRATION_POINTS_NUMBER_ERROR: 'عدد نقاط التحكم غير مطابق',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

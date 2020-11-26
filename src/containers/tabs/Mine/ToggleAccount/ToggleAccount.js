@@ -50,13 +50,14 @@ export default class ToggleAccount extends Component {
       let result
       let newUser
       if (userType === UserType.COMMON_USER) {
-        result = await SOnlineService.login(userName, password)
+        //使用昵称登录online zhangxt
+        result = await SOnlineService.login(item.nickname, password)
         if (result) {
           result = await FriendListFileHandle.initFriendList(item)
         }
         if(result){
           let JSOnlineservice = new OnlineServicesUtils('online')
-          let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
+          let userInfo = await JSOnlineservice.getUserInfo(item.nickname, true)
           newUser = {
             userName: userInfo.userId,
             password: this.props.user.currentUser.password,
@@ -114,13 +115,25 @@ export default class ToggleAccount extends Component {
         this.props.user.currentUser.userName === userName &&
         this.props.user.currentUser.password === password
       ) {
-        this.logout()
+        this.showDeleteSelfDialog()
       } else {
         this.props.deleteUser(item)
       }
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
     }
+  }
+
+  /** 删除自己时弹出对话框 确定后退出并回退到首页*/
+  showDeleteSelfDialog = () => {
+    GLOBAL.SimpleDialog.set({
+      text: getLanguage(GLOBAL.language).Prompt.LOG_OUT,
+      confirmAction: () => {
+        this.logout()
+        NavigationService.popToTop()
+      },
+    })
+    GLOBAL.SimpleDialog.setVisible(true)
   }
 
   logout = async () => {

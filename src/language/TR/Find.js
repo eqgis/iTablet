@@ -1,5 +1,5 @@
 const Find = {
-  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
+  TOGGLE_FIND_ITEM: "'Keşfet' sekmesindeki öğeleri gösterin veya gizleyin",
   PUBLIC_DATA: 'Açık Veri',
   APPLET: 'Aplet',
   GIS_ACADEMY: 'CBS Akademi',
@@ -25,7 +25,7 @@ const Find = {
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
 
-  LABORATORY: 'Laboratory', // 待翻译
+  LABORATORY: 'Laboratuvar', // need to be translated
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_RELOAD: 'İndirme tamamlandı, yüklenebilir apleti yeniden yükleyin ',
@@ -42,13 +42,13 @@ const Find = {
   SUPERMAP_FORUM_INFO: 'SuperMap teknolojisi iletişim topluluğuna hoşgeldiniz',
   GIS_ACADEMY_INFO: 'SuperMap CBS hakkında çok sayıda Eğitim Dokümanı sağlar',
   ONLINE_COWORK_INFO: 'Birden çok kullanıcı arasında işbirliğini destekler.',
-  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
+  LABORATORY_INFO: 'Deneysel İşlevler', //need to be translated
 
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.', //待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //need to be translated
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //need to be translated
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //need to be translated
+  BETA_TIPS: 'İpuçları: Bu yalnızca deneysel bir beta özelliktir.', //need to be translated
   LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
 }
 

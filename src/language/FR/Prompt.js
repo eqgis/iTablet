@@ -27,7 +27,7 @@ const Prompt = {
   DOWNLOADING: 'Chargement',
   DOWNLOAD_SUCCESSFULLY: 'Termine',
   DOWNLOAD_FAILED: 'Échec de téléchargement',
-  UNZIPPING: '解压中',
+  UNZIPPING: 'décompresser',
 
   NO_REMINDER: 'Pas de rappel',
 
@@ -38,7 +38,7 @@ const Prompt = {
 
   DELETE_STOP: 'Êtes-vous sûr de vouloir supprimer stop?',
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
-  PLEASE_ADD_STOP: 'Please add stop',
+  PLEASE_ADD_STOP: 'Veuillez ajouter un arrêt',
 
   CONFIRM: 'Confirmer',
   COMPLETE: 'Complet',
@@ -80,7 +80,7 @@ const Prompt = {
   THE_CURRENT_LAYER: 'La couche actuelle est',
   ENTER_KEY_WORDS: 'Veuillez saisir des mots clés',
   SEARCHING: 'Recherche',
-  SEARCHING_DEVICE_NOT_FOUND: 'No device found',
+  SEARCHING_DEVICE_NOT_FOUND: 'Aucun appareil trouvé',
   READING_DATA: 'Lecture des données',
   CREATE_SUCCESSFULLY: 'Créé avec succès',
   SAVE_SUCCESSFULLY: 'Enregistré avec succès',
@@ -99,16 +99,16 @@ const Prompt = {
 
   PLEASE_ENTER_TEXT: "Veuillez saisir du texte'",
   PLEASE_SELECT_THEMATIC_LAYER: 'Veuillez sélectionner une couche thématique',
-  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Le calque actuel ne peut pas être stylisé et veuillez en sélectionner un autre',
+  THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'La couche actuelle ne peut pas être stylisée et veuillez en sélectionner une autre',
 
-  PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner le calque du tracé',
-  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
-  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list', //待翻译
-  PLEASE_NEW_PLOT_LAYER: 'Veuillez créer un nouveau calque de tracé',
+  PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner la couche du tracé',
+  DONOT_SUPPORT_ARCORE: 'Les fonctionnalités RA ne sont pas disponibles sur cet appareil',
+  GET_SUPPORTED_DEVICE_LIST: 'Afficher la liste des appareils pris en charge',
+  PLEASE_NEW_PLOT_LAYER: 'Veuillez créer une nouvelle couche de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
   SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
 
-  CHOOSE_LAYER: 'Choisir un calque',
+  CHOOSE_LAYER: 'Choisir une couche',
 
   COLLECT_SUCCESS: 'Recueillir le succès',
 
@@ -310,10 +310,10 @@ const Prompt = {
   DISTANCE_ERROR: 'La destination est trop proche du point de départ, veuillez resélectionner!',
   USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
   NOT_SUPPORT_ONLINE_NAVIGATION: "La navigation en ligne n'est pas encore prise en charge",
-  CREATE: 'New',
+  CREATE: 'Nouveau',
   NO_DATASOURCE: "Il n'y a pas de source de données dans l'espace de travail actuel, veuillez d'abord créer une nouvelle source de données",
   FLOOR: 'Sol',
-  AR_NAVIGATION: 'RA Navi',
+  AR_NAVIGATION: 'Navigation RA',
   ARRIVE_DESTINATION: 'Arrivé à destination',
   DEVIATE_NAV_PATH: 'Dévié du chemin de navigation',
 
@@ -355,7 +355,7 @@ const Prompt = {
   ONLY_INTEGER_GREATER_THAN_2: 'Seuls les nombres entiers supérieurs à 2 peuvent être saisis!',
   PARAMS_ERROR: 'Erreur de paramètres! Échec de paramètres!',
 
-  SPEECH_TIP: "You may say \n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
+  SPEECH_TIP: "You may say \n'Agrandir'，'Dézoomer'，'Localiser'，'Proche',\n 'Rechercher 'ou n'importe quelle adresse",
   SPEECH_ERROR: "Reconnaître l'erreur, veuillez réessayer plus tard",
   SPEECH_NONE: 'Vous ne sembliez rien dire',
 
@@ -372,11 +372,11 @@ const Prompt = {
   HEAT_MAP_DATASET_TYPE_ERROR: 'Seul le jeu de données ponctuel peut être créé',
 
   INVALID_DATA_SET_FAILED: 'Type de données non valide. Échec de paramètre',
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译 //待翻译
 
-  //三维AR管线相关
-  FILE_NOT_EXISTS: 'Les données ne sont pas disponibles.Téléchargez les données modèles',
-  MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "La couche n'est pas visible et ne peut pas être définie sur la couche actuelle",
+    //三维AR管线相关
+    FILE_NOT_EXISTS: 'Les données ne sont pas disponibles.Téléchargez les données modèles',
+    MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
 }
 
 export { Prompt }

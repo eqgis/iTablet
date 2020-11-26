@@ -36,8 +36,8 @@ const Profile = {
   USERNAME_ALL: "numéro de mobile/e-mail/nom d'utilisateur",
   ENTER_USERNAME_ALL: "Veuillez saisir votre numéro de mobile, adresse e-mail ou votre nom d'utilisateur",
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again', //待翻译
+  RE_ENTER_PASSWORD: 'veuillez resaisir votre mot de passe', //need to be translated
+  PASSWORD_DISMATCH: 'Les mots de passe sont différents, veuillez vérifier à nouveau', //need to be translated
   REGISTER: "S'inscrire",
   FORGET_PASSWORD: 'Mot de passe oublié',
   RESET_PASSWORD: 'Réinitialiser le mot de passe',

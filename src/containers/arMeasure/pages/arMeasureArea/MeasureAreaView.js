@@ -314,7 +314,7 @@ export default class MeasureAreaView extends React.Component {
         <Text style={styles.promptTitle}>
           {
             getLanguage(GLOBAL.language).Profile
-              .MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH
+              .MAP_AR_DATUM_PLEASE_TOWARDS_NORTH
           }
         </Text>
       </View>

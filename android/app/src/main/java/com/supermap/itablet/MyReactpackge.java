@@ -23,7 +23,6 @@ public class MyReactpackge implements  ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new IntentModule(reactContext));
-        modules.add(new FileTools(reactContext));
         modules.add(new NativeMethod(reactContext));
         modules.add(new SPUtils(reactContext));
         modules.add(new AppUtils(reactContext));

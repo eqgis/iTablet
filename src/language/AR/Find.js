@@ -1,15 +1,15 @@
 const Find = {
-  TOGGLE_FIND_ITEM: "Show or hide items in the 'Explore' tab", //待翻译
+  TOGGLE_FIND_ITEM: "إظهار العناصر أو إخفاؤها in the 'Explore' tab",
   PUBLIC_DATA: 'البيانات العامة',
-  APPLET: 'Applet', //待翻译
-  GIS_ACADEMY: 'GIS Academy', //待翻译
-  SEARCH_RESULT: 'Search Result', //待翻译
+  APPLET: 'Applet',
+  GIS_ACADEMY: 'GIS أكاديمية',
+  SEARCH_RESULT: 'نتيجة البحث',
   BACK: 'عودة',
-  CONFIRM: 'Search', //待翻译
-  RESET: 'Reset', //待翻译
+  CONFIRM: 'بحث',
+  RESET: 'إعادة تعيين',
 
-  ALL: 'All', //待翻译
-  ONLINE_WORKSPACE: '工作空间',
+  ALL: 'الكل',
+  ONLINE_WORKSPACE: 'مساحة العمل',
   ONLINE_DATASOURCE: 'مصدر البيانات',
   ONLINE_MAP_RESOURCE: 'مصدر الخريطة',
   ONLINE_COLORSCHEME: 'نظام الألوان',
@@ -23,31 +23,31 @@ const Find = {
   NO_DATA: 'لم يتتم العثور على بيانات',
   NETWORK_ERROR: 'خطأ في الشبكة ، يرجى المحاولة مرة أخرى لاحقًا',
   NO_MORE_DATA: 'لم يتم العثور على مزيد من البيانات',
-  DOWNLOADED: 'Download successful. You can import this data at Import',
+  DOWNLOADED: 'تم التنزيل بنجاح. يمكنك استيراد هذه البيانات عند استيراد',
 
-  LABORATORY: 'Laboratory', // 待翻译
-  ONLINE_COWORK: 'Online Cowork',
-  COWORK_LOGIN: 'Please login SuperMap Online',
-  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
-  RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
-  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
-  APPLET_RESETTING: 'Rest', // 待翻译
+  LABORATORY: 'مختبر',
+  ONLINE_COWORK: 'التعاون عبر الإنترنت',
+  COWORK_LOGIN: 'الرجاء تسجيل الدخول إلى سيوبرماب عبر الإنترنت',
+  APPLET_DOWNLOADED_RELOAD: 'اكتمل التنزيل ، أعد التحميل  ',
+  RELOAD: 'إعادة تحميل',
+  APPLET_RESET_OLD_VERSION: 'هل تريد إعادة التعيين إلى الإصدار السابق؟',
+  APPLET_OLD_VERSION_ALREADY: " نسخة الأصلية",
+  APPLET_RESET_FAILED: 'فشل إعادة التعيين',
+  APPLET_RESETTING: 'إعادة التعيين',
 
-  PUBLIC_MAP_INFO: 'Provides public services published by users',
-  PUBLIC_DATA_INFO: 'Provides various public data published by users',
-  SUPERMAP_INFO: 'Shares the latest news and brand activities',
-  SUPERMAP_KNOW_INFO: 'Get professional technical services and consultation',
-  SUPERMAP_FORUM_INFO: 'Welcome to SuperMap technology communication community',
-  GIS_ACADEMY_INFO: 'Provides a big amount of tutorials on SuperMap GIS',
-  ONLINE_COWORK_INFO: 'Supports cooperation among multiple users.',
-  LABORATORY_INFO: 'Experimental Functionalities', //待翻译
+  PUBLIC_MAP_INFO: 'توفير الخدمات العامة المنشورة من قبل المستخدمين',
+  PUBLIC_DATA_INFO: 'يوفر بيانات عامة متنوعة ينشرها المستخدمون',
+  SUPERMAP_INFO: 'يشارك آخر الأخبار وأنشطة العلامة التجارية',
+  SUPERMAP_KNOW_INFO: 'احصل على استشارات وخدمات فنية احترافية',
+  SUPERMAP_FORUM_INFO: 'مرحبًا بك في مجتمع اتصالات تقنية سيوبرماب',
+  GIS_ACADEMY_INFO: 'يوفر قدرًا كبيرًا من البرامج التعليمية حول برمامج سيوبرماب',
+  ONLINE_COWORK_INFO: 'يدعم التعاون بين عدة مستخدمين',
+  LABORATORY_INFO: 'الوظائف التجريبية',
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', // 待翻译
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', // 待翻译
-  BETA_TIPS: 'Tips: This is only a experimental beta feature.', // 待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone',
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation',
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect',
+  BETA_TIPS: 'نصائح: هذه مجرد ميزة تجريبية تجريبية',
 }
 
 export { Find }

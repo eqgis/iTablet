@@ -104,12 +104,10 @@ export default class SampleMap extends Component {
       await this.props.downloadFile(downloadOptions)
       await FileTools.unZipFile(fileCachePath, cachePath)
       let tempData = await DataHandler.getExternalData(fileDirPath) || []
-      if (downloadData.mapType === Module.MapType.SCENE) {
+      if (downloadData.mapType === Module.MapType.SCENE || downloadData.mapType === Module.MapType.AR) {
         await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
       } else if (downloadData.mapType === Module.MapType.MAP) {
         await DataHandler.importWorkspace(tempData[0])
-      } else {
-        await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
       }
       FileTools.deleteFile(fileDirPath + '_')
       FileTools.deleteFile(fileCachePath)

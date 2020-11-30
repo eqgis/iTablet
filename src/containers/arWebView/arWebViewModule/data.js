@@ -2,6 +2,7 @@ import * as React from 'react'
 import { getLanguage } from '../../../language'
 import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
 import { Toast } from '../../../utils'
+import { getThemeAssets } from '../../../assets'
 import { SARWebView } from 'imobile_for_reactnative'
 import ToolbarBtnType from '../../workspace/components/ToolBar/ToolbarBtnType'
 import action from './action'
@@ -111,7 +112,7 @@ function getData(type) {
         {
           key: 'modifyLocation',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-          image: require('../../../assets/function/icon_edit.png'),
+          image: getThemeAssets().mapTools.icon_edit,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
@@ -135,7 +136,7 @@ function getData(type) {
         {
           key: 'delete',
           title: getLanguage(GLOBAL.language).Analyst_Labels.DELETE,
-          image: require('../../../assets/mapTools/icon_delete_black.png'),
+          image: getThemeAssets().edit.icon_delete,
           action: () => {
             SARWebView.deleteItem()
             ToolbarModule.getParams().setToolbarVisible(

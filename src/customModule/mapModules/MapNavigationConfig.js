@@ -41,8 +41,8 @@ export default class MapNavigationConfig extends Module {
     return this.createChunk(language, {
       key: MapNavigationConfig.key,
       title: getLanguage(language).Map_Module.MAP_NAVIGATION,
-      moduleImage: getThemeAssets().nav.icon_map_navigation,
-      moduleImageTouch: getThemeAssets().nav.icon_map_navigation_touch,
+      moduleImage: getThemeAssets().module.icon_map_navigation,
+      moduleImageTouch: getThemeAssets().module.icon_map_navigation_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,

@@ -12,7 +12,7 @@ import { MapToolbar } from '../../../workspace/components'
 import { LayerAttributeTable } from '../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { getPublicAssets } from '../../../../assets'
+import { getThemeAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
 
 const PAGE_SIZE = 30
@@ -282,7 +282,7 @@ export default class LayerAttributeSearch extends React.Component {
   renderInfoView = ({ image, title }) => {
     return (
       <InfoView
-        image={image || getPublicAssets().attribute.info_no_attribute}
+        image={image || getThemeAssets().attribute.info_no_attribute}
         title={title}
       />
     )

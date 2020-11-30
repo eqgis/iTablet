@@ -34,7 +34,7 @@ export default class MapARAnalysis extends Module {
     return this.createChunk(language, {
       key: MapARAnalysis.key,
       title: getLanguage(language).Map_Module.MAP_AR_ANALYSIS,
-      moduleImage: getThemeAssets().nav.icon_map_ar_analysis,
+      moduleImage: getThemeAssets().module.icon_map_ar_analysis,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       openDefaultMap: false,

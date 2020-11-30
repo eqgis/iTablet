@@ -1,7 +1,10 @@
 const attribute_statistics = require('./attribute_statistics.png')
 const attribute_location = require('./attribute_location.png')
 const rightbar_tool_select_layerlist = require('./rightbar_tool_select_layerlist.png')
-const icon_attribute_browse = require('./icon_attribute_browse_light.png')
+const icon_relation = require('./icon_relation.png')
+const icon_unrelation = require('./icon_unrelation.png')
+const icon_location = require('./icon_location.png')
+const icon_unlocation = require('./icon_unlocation.png')
 const icon_delete = require('./icon_delete.png')
 const icon_setting = require('./icon_setting.png')
 const icon_sort = require('./icon_attribute_sort_light.png')
@@ -15,12 +18,16 @@ const icon_std = require('./icon_attribute_Std.png')
 const icon_variance = require('./icon_attribute_variance.png')
 const icon_attribute_show = require('./icon_nav_visible.png')
 const icon_attribute_hide = require('./icon_nav_invisible.png')
+const info_no_attribute = require('./info_no_attribute.png')
 
 export default {
   attribute_statistics,
   attribute_location,
   rightbar_tool_select_layerlist,
-  icon_attribute_browse,
+  icon_relation,
+  icon_unrelation,
+  icon_location,
+  icon_unlocation,
   // 删除
   icon_delete,
   // 设置
@@ -46,4 +53,6 @@ export default {
   // 属性-显示/隐藏
   icon_attribute_show,
   icon_attribute_hide,
+
+  info_no_attribute,
 }

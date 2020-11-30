@@ -44,8 +44,8 @@ export default class MapCollectionConfig extends Module {
     return this.createChunk(language, {
       key: MapCollectionConfig.key,
       title: getLanguage(language).Map_Module.MAP_COLLECTION,
-      moduleImage: getThemeAssets().nav.icon_map_collection,
-      moduleImageTouch: getThemeAssets().nav.icon_map_collection_touch,
+      moduleImage: getThemeAssets().module.icon_map_collection,
+      moduleImageTouch: getThemeAssets().module.icon_map_collection_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,

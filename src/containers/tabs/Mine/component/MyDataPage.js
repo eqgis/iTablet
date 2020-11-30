@@ -905,7 +905,7 @@ export default class MyDataPage extends Component {
           : ''
       switch (this.type) {
         case this.types.map:
-          img = require('../../../../assets/mapToolbar/list_type_map_black.png')
+          img = getThemeAssets().dataType.icon_map
           break
         case this.types.symbol:
           if (txtType === 'sym') {
@@ -932,7 +932,7 @@ export default class MyDataPage extends Component {
           if (info.item.img) {
             img = info.item.img
           } else {
-            img = require('../../../../assets/Mine/mine_my_online_data_black.png')
+            img = getThemeAssets().dataType.icon_data_source
           }
           break
       }

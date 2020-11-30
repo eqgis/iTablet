@@ -101,8 +101,8 @@ export default class LayerTopBar extends React.Component {
       },
       {
         icon: this.props.canLocated
-          ? getThemeAssets().attribute.attribute_location
-          : getThemeAssets().attribute.attribute_location,
+          ? getThemeAssets().attribute.icon_location
+          : getThemeAssets().attribute.icon_unlocation,
         key: '定位',
         title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_LOCATION,
@@ -111,8 +111,8 @@ export default class LayerTopBar extends React.Component {
       },
       {
         icon: this.props.canRelated
-          ? getThemeAssets().attribute.icon_attribute_browse
-          : getPublicAssets().attribute.icon_attribute_browse,
+          ? getThemeAssets().attribute.icon_relation
+          : getThemeAssets().attribute.icon_unrelation,
         key: '关联',
         title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_ASSOCIATION,

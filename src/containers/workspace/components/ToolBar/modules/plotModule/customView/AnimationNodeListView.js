@@ -11,6 +11,7 @@ import {
 import { color, size } from '../../../../../../../styles'
 import { Toast, scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
+import { getThemeAssets } from '../../../../../../../assets'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../../../containers/NavigationService'
 
@@ -88,7 +89,7 @@ export default class AnimationNodeListView extends React.Component {
               onPress={() => this.deleteAnimationNode(item)}
             >
               <Image
-                source={require('../../../../../../../assets/mapTools/icon_delete_black.png')}
+                source={getThemeAssets().edit.icon_delete}
                 style={styles.subOnpressView}
               />
             </TouchableOpacity>

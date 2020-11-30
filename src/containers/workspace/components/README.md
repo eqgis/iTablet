@@ -2,10 +2,8 @@
 
 
 > * AlertDialog             (提示框)
-> * CollectionToolbar       (采集二级菜单面板)
 > * DrawerView              (侧边栏)
 > * FunctionToolbar         (地图右侧菜单栏)
-> * LeftToolbar
 > * LegendView
 > * Map3DToolbar            (三维场景二级菜单面板)
 > * MapController           (地图左侧控件)
@@ -14,7 +12,6 @@
 > * MoreToolbar             (更多二级菜单面板)
 > * NetworkAnalystToolBar   (网络分析二级菜单面板)
 > * OverlayView
-> * PopList
 > * SaveView                (保存提示框)
 > * Setting                 (分析设置子组件)
 > * SymbolList              (符号列表)

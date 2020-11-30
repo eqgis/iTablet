@@ -46,8 +46,8 @@ export default class MapPlottingConfig extends Module {
     return this.createChunk(language, {
       key: MapPlottingConfig.key,
       title: getLanguage(language).Map_Module.MAP_PLOTTING,
-      moduleImage: getThemeAssets().nav.icon_map_plot,
-      moduleImageTouch: getThemeAssets().nav.icon_map_plot_touch,
+      moduleImage: getThemeAssets().module.icon_map_plot,
+      moduleImageTouch: getThemeAssets().module.icon_map_plot_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,

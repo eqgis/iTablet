@@ -7,7 +7,7 @@
 
 import React from 'react'
 import ToolbarBtnType from "../../ToolbarBtnType"
-import {getPublicAssets} from "../../../../../../assets"
+import { getPublicAssets, getThemeAssets} from "../../../../../../assets"
 import constants from "../../../../constants"
 import {getLanguage} from "../../../../../../language"
 import {ConstToolType} from "../../../../../../constants"
@@ -48,14 +48,14 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+          image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+          image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
@@ -82,14 +82,14 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+          image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+          image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.MAP_INCREMENT_ADD_POINT,

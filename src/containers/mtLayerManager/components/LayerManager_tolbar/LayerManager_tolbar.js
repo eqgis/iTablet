@@ -61,6 +61,8 @@ import { stat } from 'react-native-fs'
 /** 工具栏类型 **/
 const list = 'list'
 
+const imgSize = scaleSize(50)
+
 export default class LayerManager_tolbar extends React.Component {
   props: {
     language: string,
@@ -800,8 +802,8 @@ export default class LayerManager_tolbar extends React.Component {
                 <Image
                   source={item.image}
                   style={{
-                    width: scaleSize(60),
-                    height: scaleSize(60),
+                    width: imgSize,
+                    height: imgSize,
                   }}
                 />
               </TouchableOpacity>
@@ -819,8 +821,8 @@ export default class LayerManager_tolbar extends React.Component {
               <Image
                 source={item.image}
                 style={{
-                  width: scaleSize(60),
-                  height: scaleSize(60),
+                  width: imgSize,
+                  height: imgSize,
                 }}
               />
             </TouchableOpacity>
@@ -851,8 +853,8 @@ export default class LayerManager_tolbar extends React.Component {
                 resizeMode={'contain'}
                 style={{
                   marginLeft: scaleSize(60),
-                  height: scaleSize(60),
-                  width: scaleSize(60),
+                  height: imgSize,
+                  width: imgSize,
                 }}
                 source={item.image}
               />

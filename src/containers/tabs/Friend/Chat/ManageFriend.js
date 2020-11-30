@@ -16,7 +16,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import FriendListFileHandle from '../FriendListFileHandle'
 import MessageDataHandle from '../MessageDataHandle'
 import { SimpleDialog } from '../index'
-import MsgConstant from '../MsgConstant'
+import { MsgConstant } from '../../../../constants'
 import { connect } from 'react-redux'
 // let AppUtils = NativeModules.AppUtils
 

@@ -4,19 +4,19 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { PureComponent } from 'react'
-import { Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 
 import styles from './styles'
 
 export default class Button extends PureComponent {
   props: {
-    style?: StyleSheet,
-    titleStyle?: StyleSheet,
+    style?: any,
+    titleStyle?: any,
     title: string,
     activeOpacity?: number,
     type?: string,
     disabled?: Boolean,
-    onPress: () => {},
+    onPress?: () => void,
   }
 
   static defaultProps = {

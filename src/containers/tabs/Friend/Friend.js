@@ -37,7 +37,7 @@ import UserType from '../../../constants/UserType'
 import FriendListFileHandle from './FriendListFileHandle'
 import InformSpot from './InformSpot'
 import AddMore from './AddMore'
-import MSGConstant from './MsgConstant'
+import MSGConstant from '../../../constants/MsgConstant'
 import { getLanguage } from '../../../language/index'
 import MessageDataHandle from './MessageDataHandle'
 import { FileTools } from '../../../native'
@@ -73,6 +73,7 @@ export default class Friend extends Component {
     closeWorkspace: () => {},
     setCoworkNewMessage: () => {},
     addInvite: () => {},
+    addCoworkMsg: () => void,
   }
 
   constructor(props) {
@@ -1534,6 +1535,9 @@ export default class Friend extends Component {
     if (messageObj.type === MSGConstant.MSG_COWORK) {
       await this.handleCowork(messageObj)
       return
+    } else if (messageObj.type === MSGConstant.MSG_ONLINE_GROUP) {
+      this.props.addCoworkMsg(messageObj)
+      return
     }
 
     let bSystem = false
@@ -1963,6 +1967,7 @@ export default class Friend extends Component {
             language={this.props.language}
             user={this.props.user.currentUser}
             friend={this}
+            joinTypes={['CREATE', 'JOINED']}
           />
         </ScrollableTabView>
       </View>

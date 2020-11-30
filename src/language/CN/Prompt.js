@@ -28,6 +28,7 @@ const Prompt = {
   DOWNLOAD_SUCCESSFULLY: '已下载',
   DOWNLOAD_FAILED: '下载失败',
   UNZIPPING: '解压中',
+  ONLINE_DATA_ERROR: '网络数据已损坏，无法正常使用',
 
   NO_REMINDER: '下次不再提醒',
 

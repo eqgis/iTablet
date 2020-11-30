@@ -447,11 +447,11 @@ export default class MyDataPage extends Component {
     let result
     let { ext, onlineDataType } = this._getUploadType()
     if (ext && onlineDataType) {
-      result = await JSIPortalServce.uploadFile(
-        path,
-        fileName + '.' + ext,
-        onlineDataType,
-      )
+      result = await JSIPortalServce.uploadFile({
+        filePath: path,
+        fileName: fileName + '.' + ext,
+        fileType: onlineDataType,
+      })
       result && JSIPortalServce.setDatasShareConfig(result, true)
     } else {
       result = false
@@ -470,8 +470,9 @@ export default class MyDataPage extends Component {
 
   shareToFriend = async fileName => {
     NavigationService.navigate('SelectFriend', {
-      callBack: async targetId => {
+      callBack: async item => {
         try {
+          let targetId = item.id
           GLOBAL.Loading.setLoading(
             true,
             getLanguage(GLOBAL.language).Prompt.SHARE_PREPARE,

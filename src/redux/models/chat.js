@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import MSGConstant from '../../containers/tabs/Friend/MsgConstant'
+import MSGConstant from '../../constants/MsgConstant'
 import { ModelUtils } from '../../utils'
 // Constants
 // --------------------------------------------------

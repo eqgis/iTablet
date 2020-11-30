@@ -994,8 +994,8 @@ export default class LayerManager_tolbar extends React.Component {
         GLOBAL.SimpleDialog.setVisible(true)
       } else {
         NavigationService.navigate('SelectFriend', {
-          callBack: targetId => {
-            this.targetUser = GLOBAL.getFriend().getTargetUser(targetId)
+          callBack: item => {
+            this.targetUser = GLOBAL.getFriend().getTargetUser(item.id)
             GLOBAL.SimpleDialog.set({
               renderCustomeView: this.renderShare,
               confirmAction: share,

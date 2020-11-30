@@ -21,7 +21,7 @@ import { Toast, OnlineServicesUtils, scaleSize } from '../../../utils'
 import { getThemeAssets } from '../../../assets'
 import { size, color } from '../../../styles'
 import FriendListFileHandle from './FriendListFileHandle'
-import MsgConstant from './MsgConstant'
+import { MsgConstant } from '../../../constants'
 import NavigationService from '../../NavigationService'
 
 const JSOnlineServices = new OnlineServicesUtils('online')

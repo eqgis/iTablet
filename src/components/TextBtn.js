@@ -10,7 +10,7 @@ export default class TextBtn extends React.Component {
     width?: number,
     height?: number,
     btnText: string,
-    btnClick: () => {},
+    btnClick: (event: any) => void,
     textStyle?: any,
     containerStyle?: any,
   }
@@ -23,12 +23,12 @@ export default class TextBtn extends React.Component {
     }
   }
 
-  _btnClick = () => {
+  _btnClick = event => {
     // if (!this.state.clicked) {
     //   this.setState({ clicked: true });
     // }
     if (this.props.btnClick) {
-      this.props.btnClick()
+      this.props.btnClick(event)
     }
   }
 

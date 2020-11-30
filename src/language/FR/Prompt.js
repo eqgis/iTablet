@@ -27,7 +27,8 @@ const Prompt = {
   DOWNLOADING: 'Chargement',
   DOWNLOAD_SUCCESSFULLY: 'Termine',
   DOWNLOAD_FAILED: 'Échec de téléchargement',
-  UNZIPPING: '解压中',
+  UNZIPPING: '解压中', // 待翻译
+  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
 
   NO_REMINDER: 'Pas de rappel',
 

@@ -28,6 +28,7 @@ const Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'Done',
   DOWNLOAD_FAILED: 'Failed to Download',
   UNZIPPING: 'Decompressing',
+  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally',
 
   NO_REMINDER: 'No reminder',
 

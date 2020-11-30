@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
-import MsgConstant from '../MsgConstant'
+import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 

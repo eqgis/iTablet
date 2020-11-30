@@ -12,12 +12,12 @@ import InformMessage from './FriendMessage/InformMessage'
 import CreateGroupChat from './FriendGroup/CreateGroupChat'
 import GroupMemberList from './FriendGroup/GroupMemberList'
 import RecommendFriend from './RecommendFriend'
-import MsgConstant from './MsgConstant'
+import { MsgConstant } from '../../../constants'
 import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
 import { openWorkspace, closeWorkspace } from '../../../redux/models/map'
 import { setUser, deleteUser } from '../../../redux/models/user'
-import { addInvite } from '../../../redux/models/cowork'
+import { addInvite, addCoworkMsg } from '../../../redux/models/cowork'
 import {
   addChat,
   editChat,
@@ -44,6 +44,7 @@ const mapDispatchToProps = {
   closeWorkspace,
   setCoworkNewMessage,
   addInvite,
+  addCoworkMsg,
 }
 export default connect(
   mapStateToProps,

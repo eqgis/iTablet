@@ -22,7 +22,7 @@ import { getLanguage } from '../../../language/index'
 import { Toast, OnlineServicesUtils } from '../../../utils'
 import { size, color } from '../../../styles'
 import { getThemeAssets } from '../../../assets'
-import MSGConstant from './MsgConstant'
+import MSGConstant from '../../../constants/MsgConstant'
 
 const dismissKeyboard = require('dismissKeyboard')
 const JSOnlineServices = new OnlineServicesUtils('online')

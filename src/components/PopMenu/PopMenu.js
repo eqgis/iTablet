@@ -57,13 +57,13 @@ const bottomStyle = {
 
 export default class PopMenu extends PureComponent {
   props: {
-    hasCancel: boolean,
-    data: Object,
+    hasCancel?: boolean,
+    data?: Object,
     device: Object,
-    title: String,
-    getData: () => {},
+    title?: String,
+    getData?: () => {},
     close?: () => {},
-    fixOnPhone: boolean,
+    fixOnPhone?: boolean,
   }
 
   static defaultProps = {

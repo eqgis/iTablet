@@ -11,16 +11,16 @@ import styles from './styles'
 
 export default class SearchBar extends PureComponent {
   props: {
-    onBlur?: () => {}, // 失去焦点事件
-    onFocus?: () => {}, // 获得焦点事件
-    onClear?: () => {}, // 清除文字
-    onSubmitEditing?: () => {}, // 提交
+    onBlur?: () => void, // 失去焦点事件
+    onFocus?: () => void, // 获得焦点事件
+    onClear?: () => void, // 清除文字
+    onSubmitEditing?: (value: string) => void, // 提交
 
-    style?: StyleSheet, // 自定义内容样式
-    defaultValue: string, // 默认值
-    editable: string, // 是否可编辑
-    placeholder: string, // 占位符
-    placeholderTextColor: string, // 占位符颜色
+    style?: any, // 自定义内容样式
+    defaultValue?: string, // 默认值
+    editable?: string, // 是否可编辑
+    placeholder?: string, // 占位符
+    placeholderTextColor?: string, // 占位符颜色
     isFocused?: string, // 是否获得焦点
     keyboardAppearance?: string, // 键盘样式
     returnKeyType?: string, // Android上确定按钮文字

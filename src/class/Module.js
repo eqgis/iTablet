@@ -49,7 +49,11 @@ export default class Module {
       }
     }
   }
-  
+
+  /**
+   * 根据当前语言，获取对应语言地图名称
+   * @param {string} language
+   */
   getExampleName = (language = '') => {
     let _example, names = []
   
@@ -82,7 +86,7 @@ export default class Module {
         return []
       }
     }
-    
+
     let getNames = function (data) {
       let _name = '', _mapName = ''
       if (Platform.OS === 'ios' && data.name_ios) {
@@ -105,7 +109,7 @@ export default class Module {
         mapName: _mapName,
       }
     }
-  
+
     if (_example instanceof Array) {
       for (let i = 0; i < _example.length; i++) {
         names.push(getNames(_example[i]))
@@ -113,7 +117,7 @@ export default class Module {
     } else {
       names = [getNames(_example)]
     }
-    
+
     return names
   }
 

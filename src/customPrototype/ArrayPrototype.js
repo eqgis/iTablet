@@ -6,11 +6,11 @@ export default (function() {
   Array.prototype.clone = function() {
     return [].concat(this)
   }
-  
+
   Array.prototype.deepClone = function() {
     return deepClone(this)
   }
-  
+
   function deepClone(obj, hash = new WeakMap()) {
     if (!isObject(obj) || typeof obj === 'function') {
       return obj
@@ -25,14 +25,14 @@ export default (function() {
 
     let result = Object.keys(obj).map(key => {
       return {
-        [key]: deepClone(obj[key], hash)
+        [key]: deepClone(obj[key], hash),
       }
     })
     return Object.assign(cloneObj, ...result)
   }
-  
+
   function isObject(o) {
     return (typeof o === 'object' || typeof o === 'function') && o !== null
   }
-  
+
 })

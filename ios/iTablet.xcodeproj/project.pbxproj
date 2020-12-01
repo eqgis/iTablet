@@ -77,6 +77,7 @@
 		2AAEE1D0230E696800902D1D /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AAEE197230E696800902D1D /* libxml2.tbd */; };
 		2ABCAA1B2386616D0052EB6B /* detect.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 2ABCAA162386616D0052EB6B /* detect.tflite */; };
 		2ABCAA1C2386616D0052EB6B /* labelmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2ABCAA172386616D0052EB6B /* labelmap.txt */; };
+		2AE3B5F62575F73C002EFC47 /* add_toast.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AE3B5B82575F73B002EFC47 /* add_toast.png */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -661,6 +662,7 @@
 		2AAEE197230E696800902D1D /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		2ABCAA162386616D0052EB6B /* detect.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = detect.tflite; sourceTree = "<group>"; };
 		2ABCAA172386616D0052EB6B /* labelmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap.txt; sourceTree = "<group>"; };
+		2AE3B5B82575F73B002EFC47 /* add_toast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_toast.png; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* iTablet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iTablet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E13A8DD089744C6A9A2650C /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
@@ -940,6 +942,7 @@
 		0A16C40221AC0AB700A515FA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				2AE3B5B82575F73B002EFC47 /* add_toast.png */,
 				4E0D303D24DA9980001AE116 /* resources.bundle */,
 				4E045E35246AC6C6009F64CE /* PIL */,
 				4E045DD9246AC6A9009F64CE /* python2.7.zip */,
@@ -2027,6 +2030,7 @@
 				4E045E36246AC6C6009F64CE /* PIL in Resources */,
 				0A11D9E721F9641700AFE6D6 /* icon.png in Resources */,
 				2A15229923979D9F00CBC452 /* SuperMapAR.bundle in Resources */,
+				2AE3B5F62575F73C002EFC47 /* add_toast.png in Resources */,
 				0AA134942267432500606012 /* publicMap.txt in Resources */,
 				614D856823C71A1900BDEC31 /* SegmenationFree-Inception.prototxt in Resources */,
 				0A177FE921F7092E00EA39D6 /* Workspace.zip in Resources */,

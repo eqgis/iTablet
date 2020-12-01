@@ -37,6 +37,7 @@ export default class SampleMap extends Component {
       isRefresh: false,
       type:"",
     }
+    this.isfull = params && params.isfull || false
   }
   
   componentDidMount() {
@@ -166,7 +167,7 @@ export default class SampleMap extends Component {
             NavigationService.goBack()
           },
         }}
-        showFullInMap = {true}
+        showFullInMap = {this.isfull}
       >
         <FlatList
           style={{

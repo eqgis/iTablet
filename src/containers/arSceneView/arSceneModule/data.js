@@ -206,6 +206,7 @@ async function getData(type) {
               action: () => {
                 NavigationService.navigate('SampleMap', {
                   refreshAction: getSceneData,
+                  isfull: true,
                 })
               },
             }),

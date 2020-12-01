@@ -684,7 +684,6 @@ export default class MeasureAreaView extends React.Component {
           this.renderTotalAreaChangeView()}
         {this.state.showCurrentHeightView &&
           this.renderCurrentHeightChangeView()}
-          {this.renderCenterBtn()}
       </Container>
     )
   }

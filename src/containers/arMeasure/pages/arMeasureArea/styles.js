@@ -28,8 +28,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   iconView: {
-    width: scaleSize(50),
-    height: scaleSize(50),
+    width: scaleSize(120),
+    height: scaleSize(120),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',

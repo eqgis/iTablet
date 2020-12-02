@@ -508,12 +508,13 @@ export default class Home extends Component {
   }
 
   renderHeader = () => {
-    let avatar = !UserType.isProbationUser(this.props.user.currentUser)
-      ? {
-        uri:
-            'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-      }
-      : getPublicAssets().common.icon_avatar
+    let avatar = getPublicAssets().common.icon_avatar
+    // let avatar = !UserType.isProbationUser(this.props.user.currentUser)
+    //   ? {
+    //     uri:
+    //         'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+    //   }
+    //   : getPublicAssets().common.icon_avatar
     return (
       <View
         style={[

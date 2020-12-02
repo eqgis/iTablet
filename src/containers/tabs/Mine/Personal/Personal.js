@@ -122,12 +122,13 @@ export default class Personal extends Component {
     } else {
       let isCustomer =
         this.props.user.currentUser.userType === UserType.PROBATION_USER
-      let image = isCustomer
-        ? require('../../../../assets/home/system_default_header_image.png')
-        : {
-          uri:
-              'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-        }
+      let image = require('../../../../assets/home/system_default_header_image.png')
+      // let image = isCustomer
+      //   ? require('../../../../assets/home/system_default_header_image.png')
+      //   : {
+      //     uri:
+      //         'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+      //   }
       return (
         <View>
           <View style={{ width: '100%', height: 1 }} />

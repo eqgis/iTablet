@@ -75,12 +75,13 @@ export default class MineHeader extends Component {
     if (logos.logo2) {
       logo = logos.logo2
     } else {
-      logo = isPro
-        ? {
-            uri:
-              'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-          }
-        : require('../../../../../assets/home/system_default_header_image.png')
+      logo = require('../../../../../assets/home/system_default_header_image.png')
+      // logo = isPro
+      //   ? {
+      //       uri:
+      //         'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+      //     }
+      //   : require('../../../../../assets/home/system_default_header_image.png')
     }
     return (
       <View style={styles.logoView}>
@@ -131,12 +132,13 @@ export default class MineHeader extends Component {
     } else {
       statusText = null
     }
-    let headerImage = !isPro
-      ? require('../../../../../assets/home/system_default_header_image.png')
-      : {
-          uri:
-            'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-        }
+    let headerImage = require('../../../../../assets/home/system_default_header_image.png')
+    // let headerImage = !isPro
+    //   ? require('../../../../../assets/home/system_default_header_image.png')
+    //   : {
+    //       uri:
+    //         'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+    //     }
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let myProfileStyle, avatarContainer, profileTextStyle
     if (isLandscape) {

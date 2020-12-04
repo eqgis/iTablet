@@ -104,6 +104,9 @@ export default class MeasureAreaView extends React.Component {
 
       showCurrentHeightView: false,
       currentHeight: '0m',
+      showADDPoint:false,
+      showADD:false,
+      isfirst:true,
     }
   }
 
@@ -117,6 +120,27 @@ export default class MeasureAreaView extends React.Component {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
       (async function() {
+        if (Platform.OS === 'ios') {
+          iOSEventEmi.addListener(
+            'com.supermap.RN.SMeasureAreaView.ADD',
+            this.onAdd,
+          )
+        }else{
+          SMeasureAreaView.setAddListener({
+            callback: async result => {
+              if (result) {
+                if(this.state.isfirst){
+                  this.setState({showADD:true,showADDPoint:true})
+                }else{
+                  this.setState({showADD:true})
+                }
+              }else{
+                this.setState({showADD:false,showADDPoint:false})
+              }
+            },
+          })
+        }
+
         if (this.measureType) {
           if (this.measureType === 'measureArea') {
             SMeasureAreaView.setMeasureMode('MEASURE_AREA')
@@ -138,6 +162,7 @@ export default class MeasureAreaView extends React.Component {
               showCurrentHeightView: true,
             })
           }
+          this.setState({isfirst:true})
         }
 
         if (this.isDrawing) {
@@ -183,9 +208,23 @@ export default class MeasureAreaView extends React.Component {
     })
   }
 
+  /**添加按钮 */
+  onAdd = result => {
+    if (result.add) {
+      if(this.state.isfirst){
+        this.setState({showADD:true,showADDPoint:true})
+      }else{
+        this.setState({showADD:true})
+      }
+    }else{
+      this.setState({showADD:false,showADDPoint:false})
+    }
+  }
+
   /** 添加 **/
   addNewRecord = async () => {
     await SMeasureAreaView.addNewRecord()
+    this.setState({showADDPoint:false,isfirst:false})
   }
 
   /** 添加 **/
@@ -383,6 +422,19 @@ export default class MeasureAreaView extends React.Component {
           )}
         </View>
       </View>
+    )
+  }
+
+  renderADDPoint = () => {
+    let image 
+    GLOBAL.language === 'CN' ? image= getThemeAssets().ar.icon_ar_measure_add_toast : image= getThemeAssets().ar.icon_ar_measure_add_toast_en
+    return (
+      <ImageButton
+        containerStyle={styles.addcapture}
+        iconStyle={styles.addiconView}
+        activeOpacity={0.3}
+        icon={image}
+      />
     )
   }
 
@@ -684,6 +736,8 @@ export default class MeasureAreaView extends React.Component {
           this.renderTotalAreaChangeView()}
         {this.state.showCurrentHeightView &&
           this.renderCurrentHeightChangeView()}
+          {this.state.showADDPoint&&this.renderADDPoint()}
+          {this.state.showADD&&this.renderCenterBtn()}
       </Container>
     )
   }

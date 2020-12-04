@@ -75,8 +75,8 @@ export default class MapThemeConfig extends Module {
     return this.createChunk(language, {
       key: MapThemeConfig.key,
       title: getLanguage(language).Map_Module.MAP_THEME,
-      moduleImage: getThemeAssets().nav.icon_map_theme,
-      moduleImageTouch: getThemeAssets().nav.icon_map_theme_touch,
+      moduleImage: getThemeAssets().module.icon_map_theme,
+      moduleImageTouch: getThemeAssets().module.icon_map_theme_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,

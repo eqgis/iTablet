@@ -8,6 +8,7 @@ import { SScene } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ChunkType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import Mark3DAction from './Mark3DAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { Toast } from '../../../../../../utils'
@@ -30,7 +31,7 @@ async function getData(type, params) {
           // '兴趣点',
           action: Mark3DAction.createPoint,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_favorite.png'),
+          image: getThemeAssets().mapTools.icon_spot_collection,
         },
         {
           key: 'map3DText',
@@ -46,7 +47,7 @@ async function getData(type, params) {
           // ''点绘线',
           action: Mark3DAction.createLine,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_pointLine.png'),
+          image: getThemeAssets().mapTools.icon_collect_line,
         },
         {
           key: 'map3DPointSurface',
@@ -54,7 +55,7 @@ async function getData(type, params) {
           // ''点绘面',
           action: Mark3DAction.createRegion,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_pointSuerface.png'),
+          image: getThemeAssets().mapTools.icon_collect_region,
         },
         {
           key: 'closeAllLabel',

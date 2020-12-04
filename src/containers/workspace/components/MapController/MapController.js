@@ -8,7 +8,7 @@ import { View, Animated } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { Const } from '../../../../constants'
 import { scaleSize, Toast, screen } from '../../../../utils'
-import { getPublicAssets } from '../../../../assets'
+import { getThemeAssets } from '../../../../assets'
 import { SMap, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
@@ -272,7 +272,7 @@ export default class MapController extends React.Component {
               key={'controller_minus'}
               textColor={'black'}
               size={MTBtn.Size.NORMAL}
-              image={getPublicAssets().common.icon_navigation}
+              image={getThemeAssets().mapTools.icon_navigation}
               onPress={this.location}
             />
           </Animated.View>
@@ -294,7 +294,7 @@ export default class MapController extends React.Component {
           key={'controller_location'}
           textColor={'black'}
           size={MTBtn.Size.NORMAL}
-          image={getPublicAssets().common.icon_location}
+          image={getThemeAssets().mapTools.icon_location}
           onPress={this.location}
         />
       )
@@ -319,7 +319,7 @@ export default class MapController extends React.Component {
             key={'controller_plus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={getPublicAssets().common.icon_enlarge}
+            image={getThemeAssets().mapTools.icon_enlarge}
             onPress={this.plus}
             onPressIn={this.map3Dplus}
             onPressOut={this.cloestimer}
@@ -330,7 +330,7 @@ export default class MapController extends React.Component {
             key={'controller_minus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={getPublicAssets().common.icon_narrow}
+            image={getThemeAssets().mapTools.icon_narrow}
             onPress={this.minus}
             onPressIn={this.map3Dminus}
             onPressOut={this.cloestimer}

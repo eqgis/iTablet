@@ -88,7 +88,7 @@ function getData(type) {
       // constants.UNDO,
       action: () => CollectionAction.undo(type),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+      image: getThemeAssets().edit.icon_undo,
     })
     data.push({
       key: constants.REDO,
@@ -96,7 +96,7 @@ function getData(type) {
       // constants.REDO,
       action: () => CollectionAction.redo(type),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+      image: getThemeAssets().edit.icon_redo,
     })
   }
   data.push({

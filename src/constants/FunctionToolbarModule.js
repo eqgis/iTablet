@@ -5,6 +5,7 @@ import ToolbarType from './ToolbarType'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils } from '../utils'
+import { getThemeAssets } from '../assets'
 
 async function OpenData(data, index, callback) {
   const layers = await SMap.getLayersByType()
@@ -77,28 +78,28 @@ const layerAdd = [
 //     data: [
 //       {
 //         title: 'Google RoadMap',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.Google, 0)
 //         },
 //       },
 //       {
 //         title: 'Google Satellite',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.Google, 1)
 //         },
 //       },
 //       {
 //         title: 'Google Terrain',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.Google, 2)
 //         },
 //       },
 //       {
 //         title: 'Google Hybrid',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.Google, 3)
 //         },
@@ -116,7 +117,7 @@ const layerAdd = [
 //       // },
 //       {
 //         title: '全球矢量地图',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.TD, 0)
 //         },
@@ -129,7 +130,7 @@ const layerAdd = [
 //       // },
 //       {
 //         title: '全球影像地图服务',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.TDYXM, 0)
 //         },
@@ -147,7 +148,7 @@ const layerAdd = [
 //     data: [
 //       {
 //         title: 'Baidu Map',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.Baidu, 0)
 //         },
@@ -159,21 +160,21 @@ const layerAdd = [
 //     data: [
 //       {
 //         title: 'Standard',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.OSM, 0)
 //         },
 //       },
 //       {
 //         title: 'CycleMap',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.OSM, 1)
 //         },
 //       },
 //       {
 //         title: 'Transport',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.OSM, 2)
 //         },
@@ -185,7 +186,7 @@ const layerAdd = [
 //     data: [
 //       {
 //         title: 'quanguo',
-//         image: require('../assets/mapToolbar/list_type_map_black.png'),
+//         image: getThemeAssets().dataType.icon_map,
 //         action: () => {
 //           OpenData(ConstOnline.SuperMapCloud, 0)
 //         },

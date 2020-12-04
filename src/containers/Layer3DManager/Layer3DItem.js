@@ -70,49 +70,6 @@ export default class Layer3DItem extends Component {
     this.props.onRefresh()
   }
 
-  /*
-  const layer3dSettingCanSelect = param => [
-  {
-    title: '',
-    data: [
-      {
-        title: getLanguage(param).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
-        image: require('../../../../assets/layerToolbar/layer_this.png'),
-      },
-      {
-        title: getLanguage(param).Map_Layer.OPTIONAL,
-        image: require('../../../../assets/map/Frenchgrey/icon_selectable_selected.png'),
-      },
-    ],
-  },
-]
-
-const layer3dSettingCanNotSelect = param => [
-  {
-    title: '',
-    data: [
-      {
-        title: getLanguage(param).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
-        image: require('../../../../assets/layerToolbar/layer_this.png'),
-      },
-      {
-        title: getLanguage(param).Map_Layer.NOT_OPTIONAL,
-        image: require('../../../../assets/map/Frenchgrey/icon_selectable.png'),
-      },
-    ],
-  },
-]
-
- {
-      title: '',
-      data: [
-        {
-          title: getLanguage(param).Map_Layer.BASEMAP_SWITH,
-          image: require('../../../../assets/mapTools/icon_open_black.png'),
-        },
-      ],
-    },
-  */
   more() {
     let layer3dToolbar = this.props.getlayer3dToolbar
       ? this.props.getlayer3dToolbar()
@@ -239,10 +196,6 @@ const layer3dSettingCanNotSelect = param => [
     return layerIcon
   }
   render() {
-    // let selectImg = this.state.selectable
-    //   ? require('../../assets/map/Frenchgrey/icon_selectable_selected.png')
-    //   : require('../../assets/map/Frenchgrey/icon_selectable.png')
-    // let typeImg=require("")
     let visibleImg, textColor, moreImg
     if (
       this.props.toHeightItem.index === this.props.index &&

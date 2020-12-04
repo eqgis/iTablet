@@ -37,6 +37,7 @@
 		0A334D30229798BD00E4F302 /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D2D229797F800E4F302 /* libSupermap.a */; };
 		0A6180A722A604B300E3D69B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A61803A22A4F76200E3D69B /* libRCTVideo.a */; };
 		0A64601A21FEB82C00928DAD /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A64601921FEB82C00928DAD /* AppUtils.m */; };
+		0A76887F256F5CB400DE5C77 /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D2D229797F800E4F302 /* libSupermap.a */; };
 		0A7E6C8C22437A7100936CE4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A7E6C8B22437A7100936CE4 /* libstdc++.6.0.9.tbd */; };
 		0A7E6C8E22437A9A00936CE4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A7E6C8D22437A9A00936CE4 /* libstdc++.6.0.9.tbd */; };
 		0A8EEE0A21104C7100F206BB /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A8EEDF221104C7100F206BB /* SuperMap.bundle */; };
@@ -807,6 +808,7 @@
 				CFFC10A9D14645FBB08D3CBA /* CoreGraphics.framework in Frameworks */,
 				E0509A2D700743D5B7DAB506 /* libRNBackgroundTimer.a in Frameworks */,
 				DDAFB8CE1D4748E3B330DDE2 /* libRNGestureHandler.a in Frameworks */,
+				0A76887F256F5CB400DE5C77 /* libSupermap.a in Frameworks */,
 				E1C8733E9EBD46178B730F5A /* libRCTBEEPickerManager.a in Frameworks */,
 				D28F1D6B0B094F6FAFD062E4 /* libRCTImageResizer.a in Frameworks */,
 				7DC9BB94CCCC4845980BE3F8 /* libRNPhotoView.a in Frameworks */,

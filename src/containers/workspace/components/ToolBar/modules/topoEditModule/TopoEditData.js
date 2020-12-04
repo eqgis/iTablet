@@ -7,7 +7,7 @@
 // import React from 'react'
 import { ConstToolType } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { getPublicAssets } from '../../../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
 import TopoEditAction from './TopoEditAction'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
@@ -91,7 +91,7 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: require('../../../../../../assets/function/icon_edit.png'),
+          image: getThemeAssets().mapTools.icon_edit,
         },
       ]
       break
@@ -102,7 +102,7 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
           action: TopoEditAction.changeAction,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_move_black.png'),
+          image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.MAP_TOPO_DELETE_OBJECT,
@@ -117,21 +117,21 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
           action: TopoEditAction.undo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+          image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: TopoEditAction.redo,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+          image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.MAP_TOPO_ADD_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_add_node,
+          image: getThemeAssets().edit.icon_add_node,
         },
         {
           key: constants.MAP_TOPO_EDIT_NODE,
@@ -168,7 +168,8 @@ async function getData(type) {
           // constants.CANCEL_SELECT,
           action: TopoEditAction.editCancel,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          image: getThemeAssets().mapTools.icon_tool_cancel,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,

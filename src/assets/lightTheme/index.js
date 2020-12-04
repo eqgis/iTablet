@@ -17,6 +17,10 @@ import mapTools from './mapTools'
 import share from './share'
 import find from './find'
 import setting from './setting'
+import edit from './edit'
+import layer from './layer'
+import dataType from './dataType'
+import module from './module'
 
 export default {
   publicAssets,
@@ -38,4 +42,8 @@ export default {
   share,
   find,
   setting,
+  edit,
+  layer,
+  dataType,
+  module,
 }

@@ -41,8 +41,8 @@ export default class MapAnalystConfig extends Module {
     return this.createChunk(language, {
       key: MapAnalystConfig.key,
       title: getLanguage(language).Map_Module.MAP_ANALYST,
-      moduleImage: getThemeAssets().nav.icon_map_analysis,
-      moduleImageTouch: getThemeAssets().nav.icon_map_analysis_touch,
+      moduleImage: getThemeAssets().module.icon_map_analysis,
+      moduleImageTouch: getThemeAssets().module.icon_map_analysis_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,

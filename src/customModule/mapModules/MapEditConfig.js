@@ -55,8 +55,8 @@ export default class MapEditConfig extends Module {
     return this.createChunk(language, {
       key: MapEditConfig.key,
       title: getLanguage(language).Map_Module.MAP_EDIT,
-      moduleImage: getThemeAssets().nav.icon_map_edit,
-      moduleImageTouch: getThemeAssets().nav.icon_map_edit_touch,
+      moduleImage: getThemeAssets().module.icon_map_edit,
+      moduleImageTouch: getThemeAssets().module.icon_map_edit_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,

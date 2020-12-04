@@ -36,7 +36,7 @@ export default class MapARMapping extends Module {
     return this.createChunk(language, {
       key: MapARMapping.key,
       title: getLanguage(language).Map_Module.MAP_AR_MAPPING,
-      moduleImage: getThemeAssets().nav.icon_map_ar_mapping,
+      moduleImage: getThemeAssets().module.icon_map_ar_mapping,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       openDefaultMap: false,

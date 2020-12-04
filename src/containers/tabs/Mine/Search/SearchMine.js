@@ -17,13 +17,13 @@ import UserType from '../../../../constants/UserType'
 import { ConstPath } from '../../../../constants'
 import SearchItem from './SearchItem'
 import NavigationService from '../../../NavigationService'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
 const lineImg = require('../../../../assets/mapToolbar/dataset_type_line_black.png')
 const regionImg = require('../../../../assets/mapToolbar/dataset_type_region_black.png')
 const DataImg = require('../../../../assets/Mine/mine_my_online_data_black.png')
-const MapImg = require('../../../../assets/mapToolbar/list_type_map_black.png')
+const MapImg = getThemeAssets().dataType.icon_map
 const SceneImg = require('../../../../assets/mapTools/icon_scene.png')
 
 class SearchMine extends Component {

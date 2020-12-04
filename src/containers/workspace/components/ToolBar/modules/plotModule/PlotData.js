@@ -5,7 +5,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
-import { getPublicAssets } from '../../../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import PlotAction from './PlotAction'
 
@@ -110,8 +110,10 @@ function getPlotOperationData(type, params) {
           // '复原',
           action: () => PlotAction.reset(),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          // selectedImage: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          image: getThemeAssets().mapTools.icon_tool_cancel,
+          selectedImage: getThemeAssets().mapTools.icon_tool_cancel,
           // selectMode:"flash"
         },
       ]
@@ -155,7 +157,7 @@ function getAnimationWayData(type, params) {
         title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
         action: PlotAction.animationWayUndo,
         size: 'large',
-        image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+        image: getThemeAssets().edit.icon_undo,
       })
       data.push({
         key: constants.SUBMIT,
@@ -188,7 +190,7 @@ function getCollectionData(libId, symbolCode, params) {
     // constants.UNDO,
     action: PlotAction.undo,
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_undo_black.png'),
+    image: getThemeAssets().edit.icon_undo,
   })
   data.push({
     key: constants.REDO,
@@ -196,7 +198,7 @@ function getCollectionData(libId, symbolCode, params) {
     // constants.REDO,
     action: PlotAction.redo,
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_recover_black.png'),
+    image: getThemeAssets().edit.icon_redo,
   })
 
   data.push({

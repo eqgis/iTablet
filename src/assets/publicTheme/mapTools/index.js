@@ -1,9 +1,6 @@
-const tools_rectangle_cut = require('./tools_rectangle_cut.png')
-const tools_camera = require('./tools_camera.png')
-const tools_camera_disable = require('./tools_camera_disable.png')
+
 const tools_legend_on = require('./tab_legend_on.png')
 const tools_legend_off = require('./tab_legend_off.png')
-const tour = require('./tour_light.png')
 const tools_new_thematic_map = require('./new_thematic_map.png')
 const tools_modify_thematic_map = require('./modify_thematic_map.png')
 const tools_visible_scale_range = require('./visible_scale_range.png')
@@ -21,14 +18,9 @@ const scene_tool_clip_in = require('./scene_tool_clip_in.png')
 const scene_tool_clip_out = require('./scene_tool_clip_out.png')
 
 export default {
-  tools_rectangle_cut,
-  /* 多媒体采集 */
-  tools_camera,
-  tools_camera_disable,
   /* 图例开关 */
   tools_legend_on,
   tools_legend_off,
-  tour,
   /* 修改专题图 */
   tools_modify_thematic_map,
   /* 新建专题图 */

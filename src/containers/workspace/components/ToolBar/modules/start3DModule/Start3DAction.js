@@ -217,6 +217,10 @@ function openScene(item) {
     GLOBAL.action3d = 'PAN3D'
     GLOBAL.openWorkspace = true
     GLOBAL.sceneName = item.name
+    
+    // let MapInfo = {name:item.name,path:item.path},userName:_params.user.currentUser.userId,moduleName:"Map3D"}
+    //保存三维打开的历史场景 add xiezhy
+    _params.setCurrentMap({name:item.name,path:item.path},{userName:_params.user.currentUser.userId,moduleName:"MAP_3D"})
     _params.refreshLayer3dList && _params.refreshLayer3dList()
     _params.existFullMap && _params.existFullMap(true)
     _params.setToolbarVisible(false)

@@ -49,6 +49,7 @@ const Find = {
   LAB_POSE_ESTIMATION_INFO: 'Position：Analyse RA-Analyse RA-Estimation de la pose\nEstimation de la pose，Vous pouvez parcourir la carte avec des gestes pour effectuer un zoom, un panoramique, etc..',
   LAB_FORM_COLLECT_INFO: 'Position：Cartographie RA-Cartographie RA-Collecte de Haute-Précision\nCollecte de Haute-Précision，support l\'arpentage intérieur des points, ligne et région, panoramique etc..',
   BETA_TIPS: 'Conseil: il ne s\'agit que d\'une fonctionnalité bêta expérimentale.',
+  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
 }
 
 export { Find }

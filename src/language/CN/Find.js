@@ -49,6 +49,7 @@ const Find = {
   LAB_POSE_ESTIMATION_INFO: '位置指引：AR分析-AR分析-人体姿态\n人体姿态，您可以用手势操控地图，实现地图缩放、平移等操作',
   LAB_FORM_COLLECT_INFO: '位置指引：AR测图-AR测图-AR采集\nAR采集，您可以用于室内轨迹，点，线，面采集。',
   BETA_TIPS: '温馨提示：该功能仅为beta体验功能。',
+  LAB_FORM_ARPIPE_INFO: '位置指引：AR地图-投放-管线\nAR管线，您可以用于场景的三维模型投放。',
 }
 
 export { Find }

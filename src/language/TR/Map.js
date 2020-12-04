@@ -18,6 +18,7 @@ const Map_Label = {
 const Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
   CURRENT_SCENCE: 'Mevcut Manzara', // need to be translated
+  CURRENT_MODEL: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'Başla',
   START_OPEN_MAP: 'Haritayı Aç',
@@ -343,7 +344,7 @@ const Map_Main_Menu = {
   MAP_AR_MEASURE: 'AR Ölçüm',
   MAP_AR_ANALYZE: 'AR Analizi',
   MAP_AR_MAPPING: 'AR Haritalama',
-  MAP_AR_TOOL: 'AR Araç',
+  MAP_AR_TOOL: 'Fırlat',
   MAP_AR_CAMERA_EXCEPTION: 'Kamera anormal, lütfen iznin açık olup olmadığını kontrol edin.',
   MAP_AR_AI_ASSISTANT: 'AI Toplama',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Özel Toplama',
@@ -366,11 +367,12 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR resmi',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR çekme noktaları',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR çekme noktaları',
-  MAP_AR_VIDEO: 'AR Video',
-  MAP_AR_IMAGE: 'AR Resim',
-  MAP_AR_EFFECT: 'AR Etkisi',
-  MAP_AR_WEBVIEW: 'AR WebSayfası',
-  MAP_AR_TEXT: 'AR Text',
+  MAP_AR_VIDEO: 'Video',
+  MAP_AR_IMAGE: 'Resim',
+  MAP_AR_EFFECT: 'Etkisi',
+  MAP_AR_WEBVIEW: 'WebSayfası',
+  MAP_AR_TEXT: 'Text',
+  MAP_AR_PIPELINE: 'PipeLine',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'Yeni Veri',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'Adı doldurun',

@@ -42,6 +42,7 @@ class ModuleList extends Component {
     ignoreDownloads: Array,
     mapModules: Object,
     oldMapModules: Array,
+    laboratory: Object,
     importWorkspace: () => {},
     showDialog: () => {},
     getModuleItem: () => {},
@@ -167,9 +168,9 @@ class ModuleList extends Component {
         .then(async () => {
           await FileTools.unZipFile(fileCachePath, cachePath)
           let tempData = await DataHandler.getExternalData(fileDirPath) || []
-          if (downloadData.itemData.mapType === Module.MapType.SCENE) {
+          if (downloadData.itemData.mapType === Module.MapType.SCENE || downloadData.itemData.mapType === Module.MapType.AR) {
             await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
-          } else {
+          } else if (downloadData.itemData.mapType === Module.MapType.MAP) {
             await DataHandler.importWorkspace(tempData[0])
           }
           FileTools.deleteFile(fileDirPath + '_')
@@ -291,6 +292,7 @@ class ModuleList extends Component {
     return moduleKey
   }
 
+
   itemAction = async (language, { item, index }) => {
     try {
       item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(true)
@@ -318,7 +320,7 @@ class ModuleList extends Component {
         return
       }
 
-      if (item.key === ChunkType.MAP_AR) {
+      if (item.key === ChunkType.MAP_AR && !this.props.laboratory.arPipe) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
@@ -630,6 +632,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   downloads: state.down.toJS().downloads,
   ignoreDownloads: state.down.toJS().ignoreDownloads,
+  laboratory: state.setting.toJS().laboratory,
 })
 const mapDispatchToProps = {
   downloadFile,

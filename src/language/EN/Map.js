@@ -18,6 +18,7 @@ const Map_Label = {
 const Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
   CURRENT_SCENCE: 'Current', // 待翻译
+  CURRENT_MODEL: 'Current', // 待翻译
   // 地图制图及公共 开始
   START: 'Start',
   START_OPEN_MAP: 'Open Map',
@@ -343,7 +344,7 @@ const Map_Main_Menu = {
   MAP_AR_MEASURE: 'AR Measure',
   MAP_AR_ANALYZE: 'AR Analyze',
   MAP_AR_MAPPING: 'AR Mapping',
-  MAP_AR_TOOL: 'AR Tool',
+  MAP_AR_TOOL: 'Launch',
   MAP_AR_CAMERA_EXCEPTION: 'The camera is abnormal, please check whether the permission is open.',
   MAP_AR_AI_ASSISTANT: 'AI\nCollect',
   MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
@@ -366,11 +367,12 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR Draw Region',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR Draw Point',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Measure Height',
-  MAP_AR_VIDEO: 'AR Video',
-  MAP_AR_IMAGE: 'AR Picture',
-  MAP_AR_EFFECT: 'AR Effect',
-  MAP_AR_WEBVIEW: 'AR WebPage',
-  MAP_AR_TEXT: 'AR Text',
+  MAP_AR_VIDEO: 'Video',
+  MAP_AR_IMAGE: 'Picture',
+  MAP_AR_EFFECT: 'Effect',
+  MAP_AR_WEBVIEW: 'WebPage',
+  MAP_AR_TEXT: 'Text',
+  MAP_AR_PIPELINE: 'PipeLine',
   MAP_AR_SELECT_EFFECT: 'Select Effect',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'New Data',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: ' Fill in the name',

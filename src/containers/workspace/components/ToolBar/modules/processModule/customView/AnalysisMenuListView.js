@@ -14,6 +14,10 @@ import { getLanguage } from '../../../../../../../language'
 import { getThemeAssets } from '../../../../../../../assets'
 import { ConstToolType } from '../../../../../../../constants'
 
+import { SMap } from 'imobile_for_reactnative'
+import { Platform } from 'react-native'
+import { Toast } from '../../../../../../../utils'
+
 import NavigationService from '../../../../../../../containers/NavigationService'
 
 export default class AnalysisMenuListView extends React.Component {
@@ -47,6 +51,44 @@ export default class AnalysisMenuListView extends React.Component {
     }
   }
 
+  create = async() => {
+    if (Platform.OS === 'android') {
+      let sdk = await SMap.getPhoneSDK()
+      if (sdk <= 24) {
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+        )
+        return true
+      }else{
+        NavigationService.navigate('RegistrationDatasetPage', {})
+      }
+    }else{
+      NavigationService.navigate('RegistrationDatasetPage', {})
+    }
+  }
+
+  speediness = async() => {
+    if (Platform.OS === 'android') {
+      let sdk = await SMap.getPhoneSDK()
+      if (sdk <= 24) {
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+        )
+        return true
+      }else{
+        NavigationService.navigate('RegistrationDatasetPage', {
+          pageType: 1,
+          userName: this.userName,
+        })
+      }
+    }else{
+      NavigationService.navigate('RegistrationDatasetPage', {
+        pageType: 1,
+        userName: this.userName,
+      })
+    }
+  }
+
   /** 工具栏数据 * */
   getToolData() {
     let data = []
@@ -54,7 +96,7 @@ export default class AnalysisMenuListView extends React.Component {
       key: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_CREATE,
       title: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_CREATE,
       action: () => {
-        NavigationService.navigate('RegistrationDatasetPage', {})
+        this.create()
       },
       size: 'large',
       image: getThemeAssets().analyst.analysis_new_registration_light,
@@ -64,10 +106,7 @@ export default class AnalysisMenuListView extends React.Component {
       title: getLanguage(GLOBAL.language).Analyst_Modules
         .REGISTRATION_SPEEDINESS,
       action: () => {
-        NavigationService.navigate('RegistrationDatasetPage', {
-          pageType: 1,
-          userName: this.userName,
-        })
+       this.speediness()
       },
       size: 'large',
       image: getThemeAssets().analyst.analysis_rapid_registration_light,

@@ -6,7 +6,7 @@ const Prompt = {
   SAVE_YES: 'نعم',
   SAVE_NO: 'لا',
   CANCEL: 'الغاء',
-  COMMIT: 'Commit',
+  COMMIT: 'إرسال',
   REDO: 'إعادة',
   UNDO: 'الغاء',
   SHARE: 'مشاركة',
@@ -19,15 +19,15 @@ const Prompt = {
   WX_SHARE_FAILED: 'فشلت مشاركة الدردشة,من فضلك تأكد من تثبيت الدردشة',
   RENAME: 'اعادة التسمية',
   BATCH_DELETE: 'حذف الدفعة',
-  PREPARING: '准备中',
+  PREPARING: 'خطة',
 
   DOWNLOAD_SAMPLE_DATA: 'تنزيل البيانات النموذجية؟',
-  DOWNLOAD_DATA: 'Data Download', // 待翻译
+  DOWNLOAD_DATA: 'تنزيل البيانات',
   DOWNLOAD: 'تنزيل',
   DOWNLOADING: 'تحميل',
   DOWNLOAD_SUCCESSFULLY: 'تم',
   DOWNLOAD_FAILED: 'فشل فى التنزيل',
-  UNZIPPING: '解压中',
+  UNZIPPING: 'فك الضغط',
 
   NO_REMINDER: 'لا يوجد تذكير',
 
@@ -38,7 +38,7 @@ const Prompt = {
 
   DELETE_STOP: 'هل أنت متأكد أنك تريد حذف التوقف؟',
   DELETE_OBJECT: 'هل أنت متأكد من أنك تريد حذف الكائن نهائيًا؟',
-  PLEASE_ADD_STOP: '请添加站点',
+  PLEASE_ADD_STOP: 'الرجاء إضافة نقطة',
 
   CONFIRM: 'تأكيد',
   COMPLETE: 'اكتمال',
@@ -65,8 +65,8 @@ const Prompt = {
   SWITCHING_PLOT_LIB: 'تبديل',
   NON_SELECTED_OBJ: 'لم يتم اختيار كائن',
   CHANGE_BASE_MAP: 'خريطة أساسية فارغة ، يرجى التغيير أولاً ',
-  OVERRIDE_SYMBOL: 'Symbol with the same id exists, please select method to add', //待翻译
-  OVERWRITE: 'Overwrite',
+  OVERRIDE_SYMBOL: 'يوجد رمز بنفس المعرف ، يرجى تحديد طريقة للإضافة',
+  OVERWRITE: 'الكتابة فوق',
 
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',
@@ -80,7 +80,7 @@ const Prompt = {
   THE_CURRENT_LAYER: 'الطبقة الحالية تكون',
   ENTER_KEY_WORDS: 'يرجى إدخال الكلمات الرئيسية',
   SEARCHING: 'جارى البحث',
-  SEARCHING_DEVICE_NOT_FOUND: '未能搜索到外部设备',
+  SEARCHING_DEVICE_NOT_FOUND: 'لا يوجد جهاز',
   READING_DATA: 'جارى قراءه البيانات',
   CREATE_SUCCESSFULLY: 'تم إنشاؤه بنجاح',
   SAVE_SUCCESSFULLY: 'حفظ بنجاح',
@@ -95,15 +95,15 @@ const Prompt = {
   NO_FLY: 'لايوجد طيران فى المشهد الحالى',
   PLEASE_OPEN_SCENE: 'من فضلك افتح المشهد',
   NO_SCENE: 'لا يوجد مشهد',
-  ADD_ONLINE_SCENE: 'Add Online Scene', //待翻译
+  ADD_ONLINE_SCENE: 'أضف مشهدًا عبر الإنترنت',
 
   PLEASE_ENTER_TEXT: 'من فضلك ادخل النص',
   PLEASE_SELECT_THEMATIC_LAYER: 'من فضلك اختر طبقة موضوعية',
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'لا يمكن تصميم الطبقة الحالية ، والرجاء إعادة تحديد طبقة أخرى',
 
   PLEASE_SELECT_PLOT_LAYER: 'يرجى تحديد طبقة الرسم',
-  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
-  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
+  DONOT_SUPPORT_ARCORE: 'وظائف AR غير متوفرة على هذا الجهاز',
+  GET_SUPPORTED_DEVICE_LIST: 'عرض قائمة الأجهزة المدعومة',
   PLEASE_NEW_PLOT_LAYER: 'من فضلك أنشىء طبقة نقاط جديدة',
   DOWNLOADING_PLEASE_WAIT: 'من فضلك انتظر جارى التنزيل',
   SELECT_DELETE_BY_RECTANGLE: 'الرجاء تحديد حذف العنصر عن طريق تحديد المستطيل',
@@ -125,7 +125,7 @@ const Prompt = {
   READING_TEMPLATE: 'قالب القراءة',
   SWITCHED_TEMPLATE: 'تبديل القالب',
   THE_CURRENT_SELECTION: 'الاختيار الحالى هو',
-  THE_LAYER_DOES_NOT_EXIST: '该图层不存在',
+  THE_LAYER_DOES_NOT_EXIST: 'الطبقة غير موجودة',
 
   IMPORTING_DATA: 'استيراد البيانات',
   DATA_BEING_IMPORT: 'يتم استيراد البيانات',
@@ -173,7 +173,7 @@ const Prompt = {
   FIELD_TYPE: 'نوع الحقل',
 
   PLEASE_LOGIN_AND_SHARE: 'من فضك ادخل وشارك',
-  PLEASE_LOGIN: '请登录',
+  PLEASE_LOGIN: 'الرجاء تسجيل الدخول',
   SHARING: 'جارى المشاركة',
   SHARE_SUCCESS: 'تم المشاركة بنجاح',
   SHARE_FAILED: 'فشل فى المشاركة',
@@ -184,7 +184,7 @@ const Prompt = {
   EXPORT_SUCCESS: 'تم التصدير بنجاح',
   EXPORT_FAILED: 'فشل التصدير',
   EXPORT_TO: 'تم تصدير البيانات إلى',
-  REQUIRE_PRJ_1984: 'PrjCoordSys of the dataset must be WGS_1984',
+  REQUIRE_PRJ_1984: 'يجب أن يكون نظام إحداثيات مجموعة البيانات هو WGS_1984',
 
   UNDO_FAILED: 'فشل التراجع',
   REDO_FAILED: 'فشل الإعادة',
@@ -199,7 +199,7 @@ const Prompt = {
   USING: 'جارى الاستخدام',
   DEFAULT_MODEL: 'النموذج الافتراضي',
   DUSTBIN_MODEL: 'نموذج سلة المهملات',
-  PLANT_MODEL: '植物模型',
+  PLANT_MODEL: 'نموذج النبات',
   CHANGING: 'جارى التغيير',
   CHANGE_SUCCESS: 'تم التغيير بنجاح',
   CHANGE_FAULT: 'تغيير الخطأ',
@@ -276,7 +276,7 @@ const Prompt = {
   FIELD_ILLEGAL: 'الحقل غير قانونى',
   PLEASE_SELECT_A_RASTER_LAYER: 'يرجى تحديد طبقة البيانات النقطية',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'من فضلك اض مجموعه بيانات بشكل موحد', //待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'من فضلك اض مجموعه بيانات بشكل موحد',
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'لا تدعم الطبقة الحالية التعديل',
 
   FAILED_TO_CREATE_POINT: 'فشل في إنشاء نقطة',
@@ -299,8 +299,8 @@ const Prompt = {
   PLEASE_SELECT_A_POINT_INDOOR: 'يرجى تحديد نقطة داخلية',
   PATH_ANALYSIS_FAILED: 'فشل تحليل المسار! يرجى إعادة تحديد نقطتي البداية والنهاية',
   ROAD_NETWORK_UNLINK: 'فشل تحليل المسار بسبب انقطاع شبكة الطرق من نقطة البداية إلى نقطة النهاية',
-  CHANGE_TO_OUTDOOR: '是否切换到室外？',
-  CHANGE_TO_INDOOR: '是否切换到室内？',
+  CHANGE_TO_OUTDOOR: 'التبديل للخارج؟',
+  CHANGE_TO_INDOOR: 'التبديل للداخل؟',
   SET_START_AND_END_POINTS: 'يرجى تعيين نقطتي البداية والنهاية أولاً',
   SELECT_LAYER_NEED_INCREMENTED: 'يرجى تحديد الطبقة التي تحتاج إلى زيادة',
   SELECT_THE_FLOOR: 'يرجى تحديد الطابق التي تقع فيها الطبقة',
@@ -310,50 +310,50 @@ const Prompt = {
   DISTANCE_ERROR: 'الوجهة قريبة جدًا من نقطة البداية ، يرجى إعادة التحديد',
   USE_ONLINE_ROUTE_ANALYST: 'النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟',
   NOT_SUPPORT_ONLINE_NAVIGATION: 'التنقل عبر الإنترنت غير متاح حتى الآن',
-  CREATE: '新建',
-  NO_DATASOURCE: '当前工作空间无数据源，请先新建数据源',
-  FLOOR: 'Floor', //待翻译
+  CREATE: 'جديد',
+  NO_DATASOURCE: 'لا يوجد مصدر بيانات في مساحة العمل الحالية ، يرجى إنشاء مصدر بيانات جديد أولاً',
+  FLOOR: 'طابق',
   AR_NAVIGATION: 'AR Navi',
-  ARRIVE_DESTINATION: 'Arrived the destination',
-  DEVIATE_NAV_PATH: 'Deviated from the navigation path',
+  ARRIVE_DESTINATION: 'وصلت إلى الوجهة',
+  DEVIATE_NAV_PATH: 'انحرفت عن مسار التنقل',
 
   //导航增量路网
-  SELECT_LINE_DATASET: 'Please select a line dataset first', //待翻译
-  CANT_UNDO: 'Irrevocable',
-  CANT_REDO: "Can't redo",
-  DATASET_RENAME_FAILED: 'The dataset name can only contain letters, numbers and "_", "@", "#"',
-  SWITCH_LINE: 'Switch dataset',
-  HAS_NO_ROADNAME_FIELD_DATA: 'Dataset without road name field info',
-  MERGE_SUCCESS: 'Merged successfully',
-  MERGE_FAILD: 'Merge failed',
-  NOT_SUPPORT_PRJCOORDSYS: 'The coordinate system of the following data set does not support merging',
-  MERGEING: 'Merging',
-  NEW_NAV_DATA: 'Create Navigation Data',
-  INPUT_MODEL_FILE_NAME: 'Please enter a model file name',
-  SELECT_DESTINATION_DATASOURCE: 'Please select the target datasource',
-  FILENAME_ALREADY_EXIST: 'The file already exists, please re-enter the file name',
-  NETWORK_BUILDING: 'Building...',
-  BUILD_SUCCESS: 'Successfully built',
-  SELECT_LINE_SMOOTH: 'Please select the line that needs to be smoothed',
-  SELECT_A_POINT_INLINE: 'Please select an online point',
-  LINE_DATASET: 'Line Dataset',
-  DESTINATION_DATASOURCE: 'Target Datasource',
-  SMOOTH_FACTOR: 'Please enter smoothing factor',
-  SELECT_EXTEND_LINE: 'Please select the line that needs to be extended',
-  SELECT_SECOND_LINE: 'Please select the second line',
-  SELECT_TRIM_LINE: 'Please select the line to be trimmed',
-  SELECT_BASE_LINE: 'Please select a baseline',
-  SELECT_RESAMPLE_LINE: 'Please select the line that needs to be resampled',
-  SELECT_CHANGE_DIRECTION_LINE: 'Please select the line that needs to change direction',
-  EDIT_SUCCESS: 'Successful operation',
-  EDIT_FAILED: 'Operation failed',
-  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
-  CONFIRM_EXIT: 'Are you sure to exit?',
-  TOPO_EDIT_END: 'Are you finished editing and exit?',
-  // 自定义专题图 待翻译
-  ONLY_INTEGER: '只能输入整数！',
-  ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',
-  PARAMS_ERROR: '参数错误，设置失败！',
+  SELECT_LINE_DATASET: 'لرجاء تحديد مجموعة بيانات السطر أولاً',
+  CANT_UNDO: 'غير قابل للنقض',
+  CANT_REDO: "لا يمكن الإعادة",
+  DATASET_RENAME_FAILED: 'لا يمكن أن يحتوي اسم مجموعة البيانات إلا على أحرف وأرقام و" _ "،" @ "،" # "',
+  SWITCH_LINE: 'تبديل مجموعة البيانات',
+  HAS_NO_ROADNAME_FIELD_DATA: 'مجموعة بيانات بدون معلومات حقل اسم الطريق',
+  MERGE_SUCCESS: 'تم الدمج بنجاح',
+  MERGE_FAILD: 'فشل الدمج',
+  NOT_SUPPORT_PRJCOORDSYS: 'لنظام الإحداثي لمجموعة البيانات التالية لا يدعم الدمج',
+  MERGEING: 'الدمج',
+  NEW_NAV_DATA: 'إنشاء بيانات التنقل',
+  INPUT_MODEL_FILE_NAME: 'الرجاء إدخال اسم ملف نموذج',
+  SELECT_DESTINATION_DATASOURCE: 'الرجاء تحديد مصدر البيانات الهدف',
+  FILENAME_ALREADY_EXIST: 'الملف موجود بالفعل ، يرجى إعادة إدخال اسم الملف',
+  NETWORK_BUILDING: 'جاري البناء...',
+  BUILD_SUCCESS: 'تم بناؤه بنجاح',
+  SELECT_LINE_SMOOTH: 'الرجاء تحديد الخط الذي يحتاج إلى تجانس',
+  SELECT_A_POINT_INLINE: 'الرجاء تحديد نقطة على الإنترنت',
+  LINE_DATASET: 'خط مجموعة البيانات',
+  DESTINATION_DATASOURCE: 'مصدر البيانات الهدف',
+  SMOOTH_FACTOR: 'الرجاء إدخال عامل التنعيم',
+  SELECT_EXTEND_LINE: 'الرجاء تحديد السطر المراد تمديده',
+  SELECT_SECOND_LINE: 'الرجاء تحديد السطر الثاني',
+  SELECT_TRIM_LINE: 'الرجاء تحديد الخط المراد قصه',
+  SELECT_BASE_LINE: 'الرجاء تحديد الخط الأساسي',
+  SELECT_RESAMPLE_LINE: 'الرجاء تحديد السطر الذي تريد إعادة تشكيله',
+  SELECT_CHANGE_DIRECTION_LINE: 'الرجاء تحديد الخط الذي يحتاج إلى تغيير الاتجاه',
+  EDIT_SUCCESS: 'نجخت العملية',
+  EDIT_FAILED: 'فشلت العملية',
+  SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'يجب أن يكون معامل التنعيم 2 ~ 10 أعداد صحيحة',
+  CONFIRM_EXIT: 'هل أنت متأكد من الخروج؟',
+  TOPO_EDIT_END: 'هل انتهيت من التحرير والخروج؟',
+  // 自定义专题图 need to be translated
+  ONLY_INTEGER: 'يمكن إدخال الأعداد الصحيحة فقط!',
+  ONLY_INTEGER_GREATER_THAN_2: 'يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!',
+  PARAMS_ERROR: 'خطاء فى المعاملات! فشل التعيين!',
 
   SPEECH_TIP: 'يمكنك أن تقول',
   SPEECH_ERROR: 'التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق',
@@ -368,12 +368,17 @@ const Prompt = {
   ATTRIBUTE_ADD_FAILED: 'فشل اضافه البيانات',
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'القيمة الافتراضية خالية',
 
-  // 待翻译
-  CANNOT_COLLECT_IN_THEMATIC_LAYERS: '专题图层不能采集',
-  HEAT_MAP_DATASET_TYPE_ERROR: '只有点数据集可以创建',
+  CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'لا يمكن التجميع في الطبقات المواضيعية',
+  HEAT_MAP_DATASET_TYPE_ERROR: 'يمكن إنشاء مجموعة بيانات النقاط فقط',
 
-  INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set', // 待翻译
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+
+  //三维AR管线相关
+  FILE_NOT_EXISTS: 'File not exists,Please download the Example data',
+  MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
+
+  INVALID_DATA_SET_FAILED: 'نوع البيانات غير صالح. فشل تعيين',
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'الطبقة غير مرئية ولا يمكن تعيينها على الطبقة الحالية',
+
 }
 
 export { Prompt }

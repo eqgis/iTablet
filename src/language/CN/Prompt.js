@@ -373,6 +373,10 @@ const Prompt = {
 
   INVALID_DATA_SET_FAILED: '数据类型不合法，设置失败',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: '图层不可见，不能设置为当前图层',
+
+  //三维AR管线相关
+  FILE_NOT_EXISTS: '数据不存在，请先下载样例数据',
+  MOVE_PHONE_ADD_SCENE: '请缓慢移动手机，识别出平面后点击屏幕添加场景',
 }
 
 export { Prompt }

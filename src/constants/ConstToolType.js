@@ -427,6 +427,24 @@ const LAYER_TOOLBAR_CONST = {
   SM_MAP_LAYER_BASE_DEFAULT: 'SM_MAP_LAYER_BASE_DEFAULT',    // 图层-我的底图-更多
 }
 
+/** MAP_AR三维管线 **/
+const SM_ARSCENEMODULE_CONST = {
+  /** 三维AR管线界面菜单 **/
+  SM_ARSCENEMODULE: 'SM_ARSCENEMODULE',
+  /** 三维AR管线风格菜单 **/
+  SM_ARSCENEMODULE_modify_style: 'SM_ARSCENEMODULE_modify_style',
+  /** 三维AR管线模型切换 **/
+  SM_ARSCENEMODULE_CHANGE: 'SM_ARSCENEMODULE_CHANGE',
+    /** 三维AR管线工作空间切换 **/
+    SM_ARSCENEMODULE_WORKSPACE: 'SM_ARSCENEMODULE_WORKSPACE',
+  /** 三维AR管线位置调整 **/
+  SM_ARSCENEMODULE_TransLation: 'SM_ARSCENEMODULE_TransLation',
+  /** 三维AR管线角度调整 **/
+  SM_ARSCENEMODULE_Rotation:'SM_ARSCENEMODULE_Rotation',
+   /** 三维AR管线添加场景前初始界面 **/
+   SM_ARSCENEMODULE_NOMAL: 'SM_ARSCENEMODULE_NOMAL',
+}
+
 export default {
   ...LEGEND_CONST,
   ...NAVIGATION_CONST,
@@ -458,6 +476,8 @@ export default {
   
   ...MAP_COLOR_CONST,
   ...LAYER_TOOLBAR_CONST,
+
+  ...SM_ARSCENEMODULE_CONST,
 
   // 工具视图高度级别
   HEIGHT: [

@@ -35,7 +35,19 @@ export default class MapARConfig extends Module {
     super({
       key: MapARConfig.key,
       functionModules: modules,
-      mapType: Module.MapType.MAP,
+      mapType: Module.MapType.AR,
+      example: {
+        DEFAULT: [
+          {
+            name: '3Dpipe',
+            mapName: '3Dpipe',
+          },
+          {
+            name: 'Pipe66',
+            mapName: 'Pipe66',
+          },
+        ],
+      },
     })
   }
 

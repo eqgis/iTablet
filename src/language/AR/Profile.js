@@ -12,17 +12,17 @@ const Profile = {
   SETTINGS: 'إعدادات',
   COLOR_SCHEME: 'نظام الألوان',
   TEMPLATE: 'تنسيق الملف',
-  AIMODEL: 'AI Model', //待翻译
+  AIMODEL: 'نموذج الذكاء الاصطناعى',
   COLLECTION_TEMPLATE: 'تنسيق ملف مسح الاراضى',
   PLOTTING_TEMPLATE: 'تنسيق ملف توقيع النقاط',
   NAVIGATION: 'ملاحى',
   INCREMENT: 'زيادة',
   ENCLOSURE: 'نسيج',
 
-  MY_COLOR_SCHEME: 'My Color Scheme', //待翻译
-  MY_MODEL: 'My Model', //待翻译
+  MY_COLOR_SCHEME: 'مخطط الألوان الخاص بي',
+  MY_MODEL: 'نموذجي',
 
-  SELECT_MODEL: 'Select Model', //待翻译
+  SELECT_MODEL: 'اختر النموذج',
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',
@@ -33,11 +33,11 @@ const Profile = {
   EMAIL_LOGIN: 'تسجيل الدخول للبريد الإلكترونى',
   ENTER_EMAIL_OR_USERNAME: 'من فضلك أدخل أسم المستخدم أو البريد الإلكترونى',
   ENTER_MOBILE: 'من فضلك أدخل رقم هاتفك المحمول',
-  USERNAME_ALL: 'phone number/email/nickname', //待翻译
-  ENTER_USERNAME_ALL: 'Please enter your phone number, email or nickname', //待翻译
+  USERNAME_ALL: 'رقم الهاتف / البريد الإلكتروني / الاسم المستعار',
+  ENTER_USERNAME_ALL: 'الرجاء إدخال رقم هاتفك أو بريدك الإلكتروني أو لقبك',
   ENTER_PASSWORD: 'من فضلك أدخل رقمك السري',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again',
+  RE_ENTER_PASSWORD: 'الرجاء إعادة إدخال كلمة المرور الخاصة بك',
+  PASSWORD_DISMATCH: 'كلمات المرور مختلفة ، يرجى التحقق مرة أخرى',
   REGISTER: 'تسجيل',
   FORGET_PASSWORD: 'هل نسيت كلمة المرور؟',
   RESET_PASSWORD: 'إعادة تعيين كلمة المرور',
@@ -61,7 +61,7 @@ const Profile = {
   SWITCH_ACCOUNT: 'تبديل الحساب',
   LOG_OUT: 'تسجيل خروج',
 
-  SWITCH: 'Switch', //待翻译
+  SWITCH: 'تبديل',
   SWITCH_CURRENT: 'لقد قمت بتسجيل الدخول بالفعل مع هذا المستخدم',
   SWITCHING: 'جاري التبديل ...',
   SWITCH_FAIL: 'فشل التبديل ، يرجى محاولة تسجيل الدخول مع هذا المستخدم مرة أخرى',
@@ -124,16 +124,16 @@ const Profile = {
   DELETE_COLOR_SCHEME: 'حذف نظام الألوان',
   BATCH_SHARE: 'مشاركة الدفعة',
   BATCH_DELETE: 'حذف الدفعة',
-  BATCH_ADD: 'Batch Add', // 待翻译
+  BATCH_ADD: 'اضافة دفعة',
   BATCH_OPERATE: 'عمليات الدفعة',
 
-  // 待翻译
-  MY_APPLET: 'My Applet',
-  UN_DOWNLOADED_APPLET: 'Undownloaded Applet',
-  DELETE_APPLET: 'Delete Applet',
-  ADD_APPLET: 'Add Applet',
-  MOVE_UP: 'Move Up',
-  MOVE_DOWN: 'Move Down',
+
+  MY_APPLET: 'تطبيقاتي المصغرة',
+  UN_DOWNLOADED_APPLET: 'التطبيق الصغير الذي تم تنزيله',
+  DELETE_APPLET: 'حذف التطبيق الصغير',
+  ADD_APPLET: 'إضافة برنامج صغير',
+  MOVE_UP: 'تحريك لأعلى',
+  MOVE_DOWN: 'تحريك لأسفل',
 
   DELETE_SERVICE: 'حذف الخدمة',
   PUBLISH_SERVICE: 'نشر',
@@ -172,21 +172,21 @@ const Profile = {
   DATASET_TYPE_TEXT: 'نص',
   CLEAR: 'مسح',
   CREATE: 'أنشاء',
-  DATASET_BUILD_PYRAMID: 'Build Pyramid', //待翻译
-  DATASET_BUILD_STATISTICS: 'Statistics Model',
-  TIME_SPEND_OPERATION: 'This operation may take some time, would you like to continue?',
-  IMPORT_BUILD_PYRAMID: 'Do you want to build image pyramid(may take some time)？',
-  BUILDING: 'Building',
-  BUILD_SUCCESS: 'Build Sucessfully',
-  BUILD_FAILED: 'Build Failed',
+  DATASET_BUILD_PYRAMID: 'بناء هرم',
+  DATASET_BUILD_STATISTICS: 'نموذج الإحصاء',
+  TIME_SPEND_OPERATION: 'قد تستغرق هذه العملية بعض الوقت ، هل ترغب في المتابعة؟',
+  IMPORT_BUILD_PYRAMID: 'هل تريد بناء هرم صور (قد يستغرق بعض الوقت)',
+  BUILDING: 'جاري البناء',
+  BUILD_SUCCESS: 'تم البناء بنجاح',
+  BUILD_FAILED: 'فشل البناء',
 
   // 创建数据源
   NEW_DATASOURCE: 'أنشاء مجموعه بيانات',
   SET_DATASOURCE_NAME: 'تعيين اسم محموعه بيانات',
   ENTER_DATASOURCE_NAME: 'من فضلك ادخل اسم مجموعه البيانات',
   OPEN_DATASROUCE_FAILED: 'فشل فتح مجموعه البيانات',
-  DATASOURCE_TYPE: 'Datasource type', //待翻译
-  SERVICE_TYPE: 'Service type',
+  DATASOURCE_TYPE: 'نوع مصدر البيانات',
+  SERVICE_TYPE: 'نوع الخدمة',
 
   SELECT_DATASET_EXPORT_TYPE: 'أختر شكل التصدير',
   DATASET_EXPORT_NOT_SUPPORTED: 'تصدير مجموعة البيانات هذه غير متاح حتى الآن',
@@ -199,34 +199,34 @@ const Profile = {
   STATUSBAR_HIDE: 'إخفاء شريط المعلومات',
   SETTING_LICENSE: 'رخصة',
   SETTING_ABOUT_ITABLET: 'حول التابلت الذكى',
-  SETTING_ABOUT: 'About ', //待翻译
+  SETTING_ABOUT: 'حول ',
   SETTING_ABOUT_AFTER: '',
   SETTING_CHECK_VERSION: 'تحقق من الإصدار',
-  SETTING_SUGGESTION_FEEDBACK: 'Suggestion Feedback', //待翻译
+  SETTING_SUGGESTION_FEEDBACK: 'التعليقات و المفترحات',
   SETTING_LANGUAGE: 'اللغة',
   SETTING_LANGUAGE_AUTO: 'تلقائى',
-  SETTING_LOCATION_DEVICE: 'Location Device', //待翻译
-  SETTING_LOCATION_LOCAL: 'This device', //待翻译
+  SETTING_LOCATION_DEVICE: 'موقع الجهاز',
+  SETTING_LOCATION_LOCAL: 'هذا الجهاز',
 
   // 许可
-  LICENSE: 'License', //待翻译
+  LICENSE: 'الرخصة',
   LICENSE_CURRENT: 'الرخصة الحالية',
   LICENSE_TYPE: 'نوع الرخصة',
   LICENSE_TRIAL: 'رخصة تجريبية',
   LICENSE_OFFICIAL: 'الرخصة الرسمية',
   LICENSE_STATE: 'حالة الرخصة',
   LICENSE_SURPLUS: 'فائض ارخصة',
-  LICENSE_YEAR: 'YEAR', //待翻译
+  LICENSE_YEAR: 'السنة',
   LICENSE_DAY: 'يوم',
-  LICENSE_PERMANENT: 'Permanent', //待翻译
+  LICENSE_PERMANENT: 'دائم',
   LICENSE_CONTAIN_MODULE: 'ترخيص يحتوي على وحدة',
-  LICENSE_CONTAIN_EXPAND_MODULE: 'License Contain Expand Module', //待翻译
-  LICENSE_USER_NAME: 'User Name', //待翻译
-  LICENSE_REMIND_NUMBER: 'License Remind Number', //待翻译
+  LICENSE_CONTAIN_EXPAND_MODULE: 'الترخيص يحتوي على توسيع محتوى الوحدة ',
+  LICENSE_USER_NAME: 'اسم المستخدم',
+  LICENSE_REMIND_NUMBER: 'رقم تذكير الترخيص',
   LICENSE_OFFICIAL_INPUT: 'إدخال الرخصة الرسمية',
   LICENSE_TRIAL_APPLY: 'تطبيق الرخصة التجريبية',
   LICENSE_OFFICIAL_CLEAN: 'مسح الرخصة الرسمية',
-  LICENSE_OFFICIAL_RETURN: 'License Return', //待翻译
+  LICENSE_OFFICIAL_RETURN: 'العودة للترحيص',
   LICENSE_CLEAN_CANCLE: 'إلغاء المسح',
   LICENSE_CLEAN_CONTINUE: 'أستمرار المسح',
   LICENSE_CLEAN_ALERT: 'سيتم خصم عدد الرخيص من التنشيط التالي بعد مسح الرخص. رقم الرخص المتبقي الحالي',
@@ -238,11 +238,11 @@ const Profile = {
   LICENSE_HAVE_REGISTER: 'لديك تسجيل',
   LICENSE_NOT_CONTAIN_MODULE: 'لا تحتوي على وحدة',
   LICENSE_MODULE_REGISTER_SUCCESS: 'تسجيل الوحدة بنجاح',
-  LICENSE_MODULE_REGISTER_FAIL: 'Module Register Fail', //待翻译
+  LICENSE_MODULE_REGISTER_FAIL: 'فشل التسجيل فى الوحدة',
   LICENSE_EXIT: 'خروج',
   LICENSE_EXIT_FAILED: 'فشل الخروج',
-  LICENSE_EXIT_CLOUD_ACTIVATE: 'Do you want recycle cloud license and activate?', //待翻译
-  LICENSE_EXIT_CLOUD_LOGOUT: 'Do you want recycle cloud license and logout?', //待翻译
+  LICENSE_EXIT_CLOUD_ACTIVATE: 'هل تريد إعادة استخدام ترخيص السحابة وتنشيطه؟',
+  LICENSE_EXIT_CLOUD_LOGOUT: 'هل تريد إعادة استخدام ترخيص السحابة وتسجيل الخروج؟',
   LICENSE_CURRENT_EXPIRE: 'الرخصة الحالية غير صالحة',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE: 'لم يتم تضمين هذه الوحدة بموجب الترخيص الحالي',
   LICENSE_NOT_CONTAIN_CURRENT_MODULE_SUB: 'هذه الوحدة ليست مدرجة تحت الترخيص الحالي ، وبعض وظائفها لن تكون متاحة ！！！',
@@ -250,113 +250,113 @@ const Profile = {
   LICENSE_NOT_ITABLET_OFFICAL: 'لم يتم تفعيل هذا الترخيص الرسمي على التابلت الذكى، يرجى الانتقال إلى صفحة الترخيص لمسح الترخيص وإعادة تنشيطه   ',
   LICENSE_NATIVE_EXPIRE: 'رخصة أصلية غير صالحة',
 
-  // 待翻译
-  LICENSE_LONG_EFFECTIVE: 'Long Effective',
-  LICENSE_OFFLINE: 'License OffLine',
-  LICENSE_CLOUD: 'License Cloud',
-  LICENSE_PRIVATE_CLOUD: 'License Private Cloud',
-  LICENSE_NONE: 'None',
-  LICENSE_EDITION: 'License Edition',
-  LICENSE_EDITION_CURRENT: 'Current Edition',
-  LICENSE_IN_TRIAL: 'in Trial',
-  LICENSE_TRIAL_END: 'Trial End',
-  LICENSE_MODULE: 'Expand Module',
-  LICENSE_ACTIVATE: 'Activate',
-  LICENSE_ACTIVATING: 'Activating',
-  LICENSE_ACTIVATION_SUCCESS: 'Activate Success',
-  LICENSE_ACTIVATION_FAIL: 'Activate Failed',
-  LICENSE_SELECT_LICENSE: 'Select License',
-  LICENSE_REAMIN_DAYS: 'Remain Days',
-  LICENSE_SHOW_DETAIL: 'Show details',
-  LICENSE_QUERY_NONE: 'Unable to get license information',
-  LICENSE_PRIVATE_CLOUD_SERVER: 'Private Cloud Server',
+
+  LICENSE_LONG_EFFECTIVE: 'طويل الأمد',
+  LICENSE_OFFLINE: 'ترخيص بدون الاتصال بالإنترنت',
+  LICENSE_CLOUD: 'ترخيص السحابي',
+  LICENSE_PRIVATE_CLOUD: 'ترخيص سحابي خاص',
+  LICENSE_NONE: 'لا شيء',
+  LICENSE_EDITION: 'اصدارة الترخيص',
+  LICENSE_EDITION_CURRENT: 'الاصدارة الحالية',
+  LICENSE_IN_TRIAL: 'قيد التجربة',
+  LICENSE_TRIAL_END: 'نهاية النسخة التجريبية',
+  LICENSE_MODULE: 'توسيع الوحدة ',
+  LICENSE_ACTIVATE: 'تنشيط',
+  LICENSE_ACTIVATING: 'التنشيط',
+  LICENSE_ACTIVATION_SUCCESS: 'نجح التنشيط',
+  LICENSE_ACTIVATION_FAIL: 'فشل التنشيط',
+  LICENSE_SELECT_LICENSE: 'اختار الترخيص',
+  LICENSE_REAMIN_DAYS: 'الأيام المتبقية',
+  LICENSE_SHOW_DETAIL: 'إظهار التفاصيل',
+  LICENSE_QUERY_NONE: 'تعذر الحصول على معلومات الترخيص',
+  LICENSE_PRIVATE_CLOUD_SERVER: 'خادم السحابة الخاصة',
 
   LICENSE_EDUCATION: 'رخصة تعليمية',
   LICENSE_EDUCATION_CONNECT_FAIL: 'فشل اتصال الخدمة',
 
-  // 待翻译
-  LICENSE_QUERY: 'Query License',
-  LICENSE_QUERYING: 'Quering',
-  LICENSE_QUERY_FAIL: 'Query failed. Please check the server setting',
-  LICENSE_SELECT_MODULE: 'Select Module',
-  LICENSE_SELECT_EDITION: 'Select Edition',
-  LICENSE_TOTAL_NUM: 'Total Numbers',
-  LICENSE_REMIAN_NUM: 'Remain Numbers',
-  LICENSE_DUE_DATE: 'Expire at',
-  LICENSE_CLOUD_SITE_SWITCH: 'Switch',
-  LICENSE_CLOUD_SITE_DEFAULT: 'Default Site',
-  LICENSE_CLOUD_SITE_JP: 'Japan Site',
+
+  LICENSE_QUERY: 'الاستعلام عن الترخيص',
+  LICENSE_QUERYING: 'استعلام',
+  LICENSE_QUERY_FAIL: 'فشل الاستعلام. يرجى التحقق من إعداد الخادم',
+  LICENSE_SELECT_MODULE: 'اختيار الوحدة',
+  LICENSE_SELECT_EDITION: 'تحديد الإصدارة',
+  LICENSE_TOTAL_NUM: 'إجمالي الأرقام',
+  LICENSE_REMIAN_NUM: 'الأرقام المتبقية',
+  LICENSE_DUE_DATE: 'تنتهي الصلاحية في',
+  LICENSE_CLOUD_SITE_SWITCH: 'تبديل',
+  LICENSE_CLOUD_SITE_DEFAULT: 'الموقع الافتراضي',
+  LICENSE_CLOUD_SITE_JP: 'موقع اليابان',
   // itablet许可版本
-  LICENSE_EDITION_STANDARD: 'Standard Edition',
-  LICENSE_EDITION_PROFESSIONAL: 'Professional Edition',
-  LICENSE_EDITION_ADVANCED: 'Advanced Edition',
+  LICENSE_EDITION_STANDARD: 'الإصدارة القياسية',
+  LICENSE_EDITION_PROFESSIONAL: 'الإصدارة الاحترافية',
+  LICENSE_EDITION_ADVANCED: 'الإصدارة المتقدمة',
 
   // imobile许可模块
   Core_Dev: 'التطوير الاساسى',
   Core_Runtime: 'وقت التشغيل الأساسي',
   Navigation_Dev: 'تطوير التنقل',
   Navigation_Runtime: 'وقت التنقل',
-  Realspace_Dev: 'Realspace Dev',
-  Realspace_Runtime: 'Realspace Runtime',
+  Realspace_Dev: 'تطوير الواقع القعلى',
+  Realspace_Runtime:  'الوقت و الواقع القعلى',
   Plot_Dev: 'Plot Dev',
   Plot_Runtime: 'وقت تشغيل التوقيع',
-  Industry_Navigation_Dev: 'Industry Navigation Dev',
-  Industry_Navigation_Runtime: 'Industry Navigation Runtime',
-  Indoor_Navigation_Dev: 'Indoor Navigation Dev',
-  Indoor_Navigation_Runtime: 'Indoor Navigation Runtime',
+  Industry_Navigation_Dev: 'تطوير التنقل في الصناعة',
+  Industry_Navigation_Runtime: 'الوقت الفعلى للتنقل في الصناعة',
+  Indoor_Navigation_Dev: 'تطوير التنقل الداخلي',
+  Indoor_Navigation_Runtime: 'وقت الفعلى للتنقل الداخلي',
   Plot3D_Dev: 'Plot3D Dev',
   Plot3D_Runtime: 'وقت تشغيل التوقيع ثلاثى الابعاد',
-  Realspace_Analyst_Dev: 'Realspace Analyst Dev',
-  Realspace_Analyst_Runtime: 'Realspace Analyst Runtime',
-  Realspace_Effect_Dev: 'Realspace Effect Dev',
-  Realspace_Effect_Runtime: 'Realspace Effect Runtime',
+  Realspace_Analyst_Dev: 'تطوير تحليل الواقع الفعلى',
+  Realspace_Analyst_Runtime: ' تحليل الواقع والزمن الفعلى',
+  Realspace_Effect_Dev: ' تطوير التاثير فى الواقع الفعلى',
+  Realspace_Effect_Runtime: ' تاثير فى الواقع والزمن الفعلى',
 
-  // itablet许可模块 待翻译
-  ITABLET_ARMAP: 'Ar Map',
-  ITABLET_NAVIGATIONMAP: 'Navigation Map',
-  ITABLET_DATAANALYSIS: 'Data Analysis',
+  // itablet许可模块 need to be translated
+  ITABLET_ARMAP: 'خريطة عربية',
+  ITABLET_NAVIGATIONMAP: 'خريطة التنقل',
+  ITABLET_DATAANALYSIS: 'تحليل البيانات',
   ITABLET_PLOTTING: 'Plotting',
-  INVALID_MODULE: 'Invalid module. Unable to continue.',
-  INVALID_LICENSE: 'Invalid license. Unable to continue.',
-  GO_ACTIVATE: 'Go Activate',
+  INVALID_MODULE: 'وحدة غير صالحة. غير قادر على المتابعة.',
+  INVALID_LICENSE: 'ترخيص غير صالح. غير قادر على المتابعة.',
+  GO_ACTIVATE: 'ابدأ التنشيط',
 
-  // 意见反馈 待翻译
-  SUGGESTION_FUNCTION_ABNORMAL: 'Function Abnormal : Function abnormal or not can use',
-  SUGGESTION_PRODUCT_ADVICE: 'Product Suggestion : I have a suggestion',
-  SUGGESTION_OTHER_PROBLEMS: 'Other Problems',
-  SUGGESTION_SELECT_PROBLEMS: 'Please select the problems',
-  SUGGESTION_PROBLEMS_DETAIL: 'Please provide detailed problems and suggestion',
-  SUGGESTION_PROBLEMS_DESCRIPTION: 'Plese input problem description',
-  SUGGESTION_CONTACT_WAY: 'Contact Way',
-  SUGGESTION_CONTACT_WAY_INPUT: 'Please input contact way',
-  SUGGESTION_SUBMIT: 'Submit',
-  SUGGESTION_SUBMIT_SUCCEED: 'Submit Succeed',
-  SUGGESTION_SUBMIT_FAILED: 'Submit Failed',
+  // 意见反馈 need to be translated
+  SUGGESTION_FUNCTION_ABNORMAL: 'وظيفة غير طبيعية: وظيفة غير طبيعية أو لا يمكن استخدامها',
+  SUGGESTION_PRODUCT_ADVICE: 'اقتراح المنتج: لدي اقتراح',
+  SUGGESTION_OTHER_PROBLEMS: 'مشكلات أخرى',
+  SUGGESTION_SELECT_PROBLEMS: 'الرجاء تحديد المشاكل',
+  SUGGESTION_PROBLEMS_DETAIL: 'الرجاء تقديم تفاصيل المشاكل والاقتراح',
+  SUGGESTION_PROBLEMS_DESCRIPTION: 'الرجاء وصف مشكلة الإدخال',
+  SUGGESTION_CONTACT_WAY: 'طريقة الاتصال',
+  SUGGESTION_CONTACT_WAY_INPUT: 'الرجاء إدخال طريقة الاتصال',
+  SUGGESTION_SUBMIT: 'إرسال',
+  SUGGESTION_SUBMIT_SUCCEED: 'تم الإرسال بنجاح',
+  SUGGESTION_SUBMIT_FAILED: 'فشل الإرسال',
 
-  // ar地图校准 待翻译
-  MAP_AR_DATUM_LONGITUDE: 'Longitude',
-  MAP_AR_DATUM_LATITUDE: 'Latitude',
-  MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'Please enter current position',
-  MAP_AR_DATUM_AUTO_LOCATION: 'Auto location',
-  MAP_AR_DATUM_MAP_SELECT_POINT: 'Map select point',
-  MAP_AR_DATUM_SURE: 'Sure',
-  MAP_AR_DATUM_AUTO_LOCATIONING: 'Locationing',
-  MAP_AR_DATUM_POSITION: 'Datum position',
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Auto location succeed',
-  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Map select point succeed',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Please place your mobile phone facing north click sure',
-  MAP_AR_DATUM_SETTING: 'Setting',
-  X_COORDINATE: 'X Coordinate',
-  Y_COORDINATE: 'Y Coordinate',
+  // ar地图校准 need to be translated
+  MAP_AR_DATUM_LONGITUDE: 'خط الطول',
+  MAP_AR_DATUM_LATITUDE: 'خط العرض',
+  MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'الرجاء إدخال الموضع الحالي',
+  MAP_AR_DATUM_AUTO_LOCATION: 'الموقع تلقائي',
+  MAP_AR_DATUM_MAP_SELECT_POINT: 'نقطة تحديد الخريطة',
+  MAP_AR_DATUM_SURE: 'بالتأكيد',
+  MAP_AR_DATUM_AUTO_LOCATIONING: 'تحديد الموقع',
+  MAP_AR_DATUM_POSITION: 'موضع الإسناد',
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'نجح الموقع التلقائي',
+  MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'نجح تحديد نقطة تحديد الخريطة',
+  MAP_AR_DATUM_PLEASE_TOWARDS_SOUTH: 'الرجاء وضع هاتفك الجوال باتجاه الجنوب انقر للتأكيد',
+  MAP_AR_DATUM_SETTING: 'الإعداد',
+  X_COORDINATE: 'احداثيات X',
+  Y_COORDINATE: 'احداثيات Y',
 
-  // ar地图 待翻译
-  COLLECT_SCENE_RENAME: 'Rename',
-  COLLECT_SCENE_RENAME_SUCCEED: 'Rename succeed',
-  COLLECT_SCENE_ADD_REMARK: 'Add remark',
-  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'Add remark succeed',
+  // ar地图
+  COLLECT_SCENE_RENAME: 'إعادة تسمية',
+  COLLECT_SCENE_RENAME_SUCCEED: 'نجحت إعادة التسمية',
+  COLLECT_SCENE_ADD_REMARK: 'إضافة ملاحظة',
+  COLLECT_SCENE_ADD_REMARK_SUCCEED: 'نجحت إضافة الملاحظة',
 
   CHOOSE_COLOR: 'اختيار اللون',
-  SET_PROJECTION: 'Set projection', //待翻译
+  SET_PROJECTION: 'تعيين الإسقاط',
 }
 
 export { Profile }

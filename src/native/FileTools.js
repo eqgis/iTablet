@@ -259,6 +259,10 @@ async function getFilterFiles(
               fileName.indexOf('~[') !== -1 &&
               fileName.indexOf(']') !== -1 &&
               fileName.indexOf('@') !== -1
+            ) && !(
+              newPath.indexOf('~[') !== -1 &&
+              newPath.indexOf(']') !== -1 &&
+              newPath.indexOf('@') !== -1
             )
           ) {
             fileName = fileName.substring(0, fileName.length - 5)

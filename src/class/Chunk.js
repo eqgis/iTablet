@@ -10,6 +10,7 @@ export default class Chunk {
   static MapType = {
     MAP: 'MAP',
     SCENE: 'SCENE',
+    AR: 'AR',
   }
   constructor(props) {
     this.props = props
@@ -62,21 +63,101 @@ export default class Chunk {
     switch (this.mapType) {
       case Chunk.MapType.SCENE: {
         // 三维地图
-        let fileName = 'OlympicGreen_EXAMPLE'
-        const homePath = await FileTools.appendingHomeDirectory()
-        const cachePath = homePath + ConstPath.CachePath
-        const fileDirPath = cachePath + fileName
-        const arrFile = await FileTools.getFilterFiles(fileDirPath)
-        if (arrFile.length === 0) {
-          NavigationService.navigate('Map3D', {})
-        } else {
-          // const name = 'OlympicGreen_EXAMPLE'
-          const name = 'OlympicGreen'
-          NavigationService.navigate('Map3D', { name })
+
+        let isOpenLastMap = false
+        if (lastMap) {
+          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
+            lastMap.path,
+          )
+        }
+        //三维也先获取一下上次场景 add xiezhy
+        if(isOpenLastMap){
+          NavigationService.navigate('Map3D', {name:lastMap.name})
+        }else{
+          let fileName = 'OlympicGreen_EXAMPLE'
+          const homePath = await FileTools.appendingHomeDirectory()
+          const cachePath = homePath + ConstPath.CachePath
+          const fileDirPath = cachePath + fileName
+          const arrFile = await FileTools.getFilterFiles(fileDirPath)
+          if (arrFile.length === 0) {
+            NavigationService.navigate('Map3D', {})
+          } else {
+            // const name = 'OlympicGreen_EXAMPLE'
+            const name = 'OlympicGreen'
+            NavigationService.navigate('Map3D', { name })
+          }
         }
         break
       }
       case Chunk.MapType.MAP: {
+        // 二维地图
+        let data = this.baseMapSource
+        data.layerIndex = this.baseMapIndex
+        GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
+
+        let userPath = ConstPath.CustomerPath
+        if (user && user.userName) {
+          userPath = `${ConstPath.UserPath + user.userName}/`
+        }
+        const wsPath =
+          homePath +
+          userPath +
+          ConstPath.RelativeFilePath.Workspace[
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+          ]
+
+        let wsData
+        let isOpenLastMap = false
+
+        if (lastMap) {
+          isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
+            lastMap.path,
+          )
+        }
+
+        if (isOpenLastMap) {
+          data = {
+            type: 'Map',
+            ...lastMap,
+          }
+        } else if (this.openDefaultMap) {
+          const moduleMapFullName = `${this.defaultMapName}.xml`
+          // 地图用相对路径
+          const moduleMapPath =
+            userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
+          if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
+            data = {
+              type: 'Map',
+              path: moduleMapPath,
+              name: this.defaultMapName,
+            }
+          }
+        }
+
+        wsData = [
+          {
+            DSParams: { server: wsPath },
+            type: 'Workspace',
+          },
+        ]
+        if (data instanceof Array) {
+          wsData = wsData.concat(data)
+        } else {
+          wsData.push(data)
+        }
+        let param = {
+          wsData,
+          mapTitle: this.title,
+          isExample: this.isExample,
+        }
+        if (GLOBAL.coworkMode) {
+          NavigationService.navigate('CoworkMapStack', param)
+        } else {
+          NavigationService.navigate('MapView', param)
+        }
+        break
+      }
+      case Chunk.MapType.AR: {
         // 二维地图
         let data = this.baseMapSource
         data.layerIndex = this.baseMapIndex

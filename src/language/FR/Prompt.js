@@ -372,7 +372,11 @@ const Prompt = {
   HEAT_MAP_DATASET_TYPE_ERROR: 'Seul le jeu de données ponctuel peut être créé',
 
   INVALID_DATA_SET_FAILED: 'Type de données non valide. Échec de paramètre',
+
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "La couche n'est pas visible et ne peut pas être définie sur la couche actuelle",
+    //三维AR管线相关
+    FILE_NOT_EXISTS: 'Les données ne sont pas disponibles.Téléchargez les données modèles',
+    MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
 }
 
 export { Prompt }

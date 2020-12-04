@@ -8,6 +8,7 @@ import NavigationService from '../../../../../NavigationService'
 import { FileTools } from '../../../../../../native'
 import { ConstPath } from '../../../../../../constants'
 import FetchUtils from '../../../../../../utils/FetchUtils'
+import Orientation from 'react-native-orientation'
 
 let isProjectModelDownload = true // ar沙盘模型文件下载判断
 
@@ -170,6 +171,23 @@ async function arText() {
   NavigationService.navigate('EnterDatumPoint')
 }
 
+async function ar3D() {
+  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  if (!isSupportedARCore) {
+    global.ARDeviceListDialog.setVisible(true)
+    return
+  }
+
+  if (GLOBAL.showAIDetect) {
+    GLOBAL.isswitch = true
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  }
+
+  GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
+  NavigationService.navigate('ARSceneView')
+}
+
 export default {
   close,
   memu,
@@ -181,4 +199,5 @@ export default {
   arImage,
   arWebView,
   arText,
+  ar3D,
 }

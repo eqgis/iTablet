@@ -8,6 +8,7 @@ export default class SlideBar extends Component {
     onStart: () => {},
     onMove: () => {},
     onEnd: () => {},
+    defaultValue:number,
   }
 
   static defaultProps = {
@@ -91,6 +92,15 @@ export default class SlideBar extends Component {
     this.prevLeft = location
     this.onEnd(location)
   }
+
+  onClear = () => {
+    this.setState({
+      left: this.getLocation(this.props.defaultValue),
+    })
+    this.prevLeft = this.getLocation(this.props.defaultValue)
+    this.onEnd(this.prevLeft)
+  }
+
 
   render() {
     return (

@@ -4,7 +4,7 @@ import {
   SIPortalService,
 } from 'imobile_for_reactnative'
 import { UserType } from '../../../../../../constants'
-import { Toast } from '../../../../../../utils'
+import { Toast,OnlineServicesUtils } from '../../../../../../utils'
 import constants from '../../../../constants'
 import { FileTools } from '../../../../../../native'
 import NavigationService from '../../../../../NavigationService'
@@ -40,52 +40,125 @@ async function share3DMap(type, list = []) {
         ToolbarModule.getParams().exportmap3DWorkspace(
           { name: list[index] },
           async (result, zipPath) => {
-            if (result) {
-              if (type === constants.SUPERMAP_ONLINE) {
-                await SOnlineService.uploadFile(zipPath, dataName, {
-                  // onProgress: progress => {
-                  //   ToolbarModule.getParams().setSharing({
-                  //     module: GLOBAL.Type,
-                  //     name: dataName,
-                  //     progress: progress / 100,
-                  //   })
-                  // },
-                  onResult: async () => {
-                    GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
-                    Toast.show(
-                      getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
-                    )
-                    FileTools.deleteFile(zipPath)
-                    ToolbarModule.addData({ isSharing: false })
-                    setTimeout(() => {
-                      ToolbarModule.getParams().setSharing({
-                        module: GLOBAL.Type,
-                        name: dataName,
-                      })
-                    }, 2000)
-                  },
-                })
-              } else if (type === constants.SUPERMAP_IPORTAL) {
-                await SIPortalService.uploadData(zipPath, `${dataName}.zip`, {
-                  // onProgress:onProgeress,
-                  onResult: async () => {
-                    GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
-                    Toast.show(
-                      getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
-                    )
-                    FileTools.deleteFile(zipPath)
-                    ToolbarModule.addData({ isSharing: false })
-                    setTimeout(() => {
-                      ToolbarModule.getParams().setSharing({
-                        module: GLOBAL.Type,
-                        name: dataName,
-                      })
-                    }, 2000)
-                  },
+            let JSOnlineService
+            const onProgress = progress => {
+              progress = parseInt(progress)
+              if (progress % 10 !== 0) {
+                return
+              }
+              let currentSharingProgress = 0
+              for (
+                let i = 0;
+                i < ToolbarModule.getParams().online.share.length;
+                i++
+              ) {
+                if (
+                  ToolbarModule.getParams().online.share[i].module ===
+                    GLOBAL.Type &&
+                  ToolbarModule.getParams().online.share[i].name === dataName
+                ) {
+                  currentSharingProgress = ToolbarModule.getParams().online.share[
+                    i
+                  ].progress
+                  break
+                }
+              }
+              if (progress < 100 && currentSharingProgress !== progress / 100) {
+                // console.warn('uploading: ' + progress)
+                ToolbarModule.getParams().setSharing({
+                  module: GLOBAL.Type,
+                  name: dataName,
+                  progress: (progress > 95 ? 95 : progress) / 100,
                 })
               }
+            }
+            const onResult = async result => {
+              if (result) {
+                await JSOnlineService.setDatasShareConfig(result, true)
+                ToolbarModule.getParams().setSharing({
+                  module: GLOBAL.Type,
+                  name: dataName,
+                  progress: 1,
+                })
+              }
+              setTimeout(() => {
+                ToolbarModule.getParams().setSharing({
+                  module: GLOBAL.Type,
+                  name: dataName,
+                })
+              }, 2000)
+              GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+              Toast.show(
+                result
+                  ? getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS
+                  : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
+              )
+              FileTools.deleteFile(zipPath)
+              ToolbarModule.addData({ isSharing: false })
+            }
+            //使用统一接口上传 add xiezhy
+            if (result) {
+              if (type === constants.SUPERMAP_ONLINE) {
+                JSOnlineService = new OnlineServicesUtils('online')
+              } else if (type === constants.SUPERMAP_IPORTAL) {
+                JSOnlineService = new OnlineServicesUtils('iportal')
+              }
+              let uploadResult = await JSOnlineService.uploadFile(
+                zipPath,
+                `${dataName}.zip`,
+                'WORKSPACE',
+                { onProgress: onProgress },
+              )
+              onResult(uploadResult)
+              // if (type === constants.SUPERMAP_ONLINE) {
+              //   await SOnlineService.uploadFile(zipPath, dataName, {
+              //     // onProgress: progress => {
+              //     //   ToolbarModule.getParams().setSharing({
+              //     //     module: GLOBAL.Type,
+              //     //     name: dataName,
+              //     //     progress: progress / 100,
+              //     //   })
+              //     // },
+              //     onResult: async () => {
+              //       GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+              //       debugger
+              //       Toast.show(
+              //         getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
+              //       )
+              //       FileTools.deleteFile(zipPath)
+              //       ToolbarModule.addData({ isSharing: false })
+              //       setTimeout(() => {
+              //         ToolbarModule.getParams().setSharing({
+              //           module: GLOBAL.Type,
+              //           name: dataName,
+              //         })
+              //       }, 2000)
+              //     },
+              //   })
+              // } else if (type === constants.SUPERMAP_IPORTAL) {
+              //   await SIPortalService.uploadData(zipPath, `${dataName}.zip`, {
+              //     // onProgress:onProgeress,
+              //     onResult: async () => {
+              //       debugger
+              //       GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+              //       Toast.show(
+              //         getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
+              //       )
+              //       FileTools.deleteFile(zipPath)
+              //       ToolbarModule.addData({ isSharing: false })
+              //       setTimeout(() => {
+              //         ToolbarModule.getParams().setSharing({
+              //           module: GLOBAL.Type,
+              //           name: dataName,
+              //         })
+              //       }, 2000)
+              //     },
+              //   })
+              // }
             } else {
-              Toast.show('上传失败')
+              Toast.show(
+                  getLanguage(GLOBAL.language).Prompt.SHARE_FAILED
+              )
             }
           },
         )

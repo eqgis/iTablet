@@ -372,7 +372,11 @@ const Prompt = {
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 
   INVALID_DATA_SET_FAILED: 'Geçersiz veri türü. Ayarlama başarısız!',
+
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'Katman görünemez ve geçerli katmana ayarlanamaz', // need to be translated
+   //三维AR管线相关
+   FILE_NOT_EXISTS: 'Veri yok, lütfen örnek verilerini indirin',
+   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
 }
 
 export { Prompt }

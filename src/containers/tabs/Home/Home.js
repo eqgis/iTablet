@@ -68,7 +68,7 @@ export default class Home extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       if (Platform.OS === 'android') {
-        this.props.setBackAction({ action: this.showMorePop })
+        this.props.setBackAction({ action: this.showExitPop })
       }
     })
   }
@@ -319,6 +319,10 @@ export default class Home extends Component {
     }
   }
 
+  showExitPop = ()=> {
+    this.exit.setDialogVisible(true)
+  }
+
   renderExitDialogChildren = () => {
     return (
       <View style={styles.exitDialogHeaderView}>
@@ -560,7 +564,7 @@ export default class Home extends Component {
         showFullInMap={true}
         withoutHeader
         headerProps={{
-          backAction: this.showMorePop,
+          backAction: this.showExitPop,
         }}
         style={styles.container}
         bottomBar={this.renderTabBar()}

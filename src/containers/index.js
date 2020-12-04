@@ -157,6 +157,7 @@ import AIPoseEstimationView from './aiPoseEstimationView'
 import AIGestureBoneView from './aiGestureBoneView'
 import ARWebView from './arWebView'
 import ARTextView from './arTextView'
+import ARSceneView from './arSceneView'
 
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
@@ -1049,6 +1050,13 @@ export default function(appConfig) {
       },
       SuggestionFeedback: {
         screen: SuggestionFeedback,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
+      ARSceneView: {
+        screen: ARSceneView,
         navigationOptions: {
           header: null,
           gesturesEnabled: true,

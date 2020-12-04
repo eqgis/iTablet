@@ -10,7 +10,7 @@ const Friends = {
   NEW_GROUP_CHAT: 'دردشة جماعية جديدة',
   RECOMMEND_FRIEND: 'أقتراح صديق',
   SELECT_MODULE: 'أختر الوحدة',
-  SELECT_MAP: '选择地图',
+  SELECT_MAP: 'اختر الخريطة',
   // Friend
   MSG_SERVICE_FAILED: 'فشل الاتصال بخدمة الرسائل',
   MSG_SERVICE_NOT_CONNECT: 'تعذر الاتصال بخدمة الرسائل',
@@ -21,14 +21,14 @@ const Friends = {
   RECEIVE_FAIL_EXPIRE: 'فشل الاستلام ، ربما انتهت صلاحية الملف',
   RECEIVE_FAIL_NETWORK: 'فشل الإستلام,يرجى التحقق من شبكة الإنترنت',
   // FriendMessage
-  MARK_READ: 'Mark read', //*
-  MARK_UNREAD: 'Mark unread', //*
-  DEL: 'Delete', //*
-  NOTIFICATION: 'Notification', //*
-  CLEAR_NOTIFICATION: 'Clear notification', //*
-  CONFIRM: 'Yes', //*
-  CANCEL: 'Cancel', //*
-  ALERT_DEL_HISTORY: 'Clear this chat history?', //*
+  MARK_READ: 'وضع علامة كمقروء',
+  MARK_UNREAD: 'ضع علامة كغير مقروءة',
+  DEL: 'حذف',
+  NOTIFICATION: 'إشعارات',
+  CLEAR_NOTIFICATION: 'مسح الإشعارات',
+  CONFIRM: 'تأكيد',
+  CANCEL: 'إلغاء',
+  ALERT_DEL_HISTORY: 'مسح سجل الدردشة هذا؟',
   // FriendList
   SET_MARK_NAME: 'تعيين اسم العلامة',
   DEL_FRIEND: 'حذف صديق',
@@ -76,28 +76,28 @@ const Friends = {
   LOCATION: 'الموقع',
   PICTURE: 'صوره',
   LOCATION_FAILED: 'فشل في تحديد الموقع',
-  
-  // Cowork 待翻译
-  SEND_COWORK_INVITE: 'Do you want to send the cowork invitation?',
-  COWORK_INVITATION: 'Cowork Invitation',
-  COWORK_MEMBER: 'Cowork Members',
-  COWORK_IS_END: 'The cowork has ended',
-  COWORK_JOIN_FAIL: 'Unable to join this cowork now',
-  COWORK_UPDATE: 'Update',
-  COWORK_ADD: 'Add',
-  COWORK_IGNORE: 'Ignore',
-  NEW_MESSAGE: 'New Message',
-  NEW_MESSAGE_SHORT: 'New',
-  UPDATING: 'Updating',
-  SELECT_MESSAGE_TO_UPDATE: 'Please select a message to update',
-  UPDATE_NOT_EXIST_OBJ: 'The geometry is not exist, unbale to update',
-  ADD_DELETE_ERROR: 'Unbale to add the deleted geometry',
-  DELETE_COWORK_ALERT: 'Do you want to delete this cowork invitation?',
-  NO_SUCH_MAP: "Didn't find this map",
-  SELF: 'Me',
-  ONLINECOWORK_DISABLE_ADD: 'Unable to add when online cowork',
-  ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork', //待翻译
-  
+
+  // Cowork need to be translated
+  SEND_COWORK_INVITE: 'هل تريد إرسال دعوة للمشاركة في العمل؟',
+  COWORK_INVITATION: 'دعوة للعمل المشترك',
+  COWORK_MEMBER: 'أعضاء فريق العمل المشترك',
+  COWORK_IS_END: 'إنتهى العمل المشترك',
+  COWORK_JOIN_FAIL: 'يتعذر الانضمام إلى زميل العمل هذا الآن',
+  COWORK_UPDATE: 'تحديث',
+  COWORK_ADD: 'إضافة',
+  COWORK_IGNORE: 'تجاهل',
+  NEW_MESSAGE: 'رسالة جديدة',
+  NEW_MESSAGE_SHORT: 'جديد',
+  UPDATING: 'التحديث',
+  SELECT_MESSAGE_TO_UPDATE: 'الرجاء تحديد رسالة لتحديثها',
+  UPDATE_NOT_EXIST_OBJ: 'العلاقة الهندسية غير موجودة ، غير قادر على التحديث',
+  ADD_DELETE_ERROR: 'غير قادر على إضافة العلاقةالهندسية المحذوفة',
+  DELETE_COWORK_ALERT: 'هل تريد حذف دعوة العمل المشترك هذه؟',
+  NO_SUCH_MAP: "لم يتم العثور على هذه الخريطة",
+  SELF: 'انا',
+  ONLINECOWORK_DISABLE_ADD: 'غير قادر على الإضافة عند العمل المشترك عبر الإنترنت',
+  ONLINECOWORK_DISABLE_OPERATION: 'تعذر إجراء العملية عند العمل المشترك عبر الإنترنت',
+
   // RecommendFriend
   FIND_NONE: 'تعذر العثور على أصدقاء جدد من جهات الاتصال الخاصة بك',
   ALREADY_FRIEND: 'نحن بالفعل أصدقاء',
@@ -108,10 +108,10 @@ const Friends = {
   SET_GROUPNAME: 'تعيين إسم المجموعة',
   PUSH_FRIEND_CARD: 'دفع بطاقة صديق',
   FRIEND_MAP: 'خريطة صديق',
-  ADD_BLACKLIST: 'أضف إلى قائمة الحذر',
+  ADD_BLACKLIST: 'أضف إلى القائمة السوداء',
   DELETE_FRIEND: 'حذف صديق',
   LIST_MEMBERS: 'أعضاء القائمة',
-  MEMBERS: 'Members', // 待翻译
+  MEMBERS: 'الأعضاء',
   LEAVE_GROUP: 'غادر المجموعة',
   CLEAR_HISTORY: 'مسح تاريخ الدردشة',
   DISBAND_GROUP: 'حل المجموعة',
@@ -135,24 +135,23 @@ const Friends = {
   SYS_MSG_REMOVE_OUT_GROUP2: 'خارج المجموعة',
   SYS_MSG_ADD_INTO_GROUP: 'تم إضافته',
   SYS_MSG_ADD_INTO_GROUP2: 'داخل المجموعة',
-  SYS_NO_SUCH_USER: 'المستخد غير موجود',
+  SYS_NO_SUCH_USER: 'المستخدم غير موجود',
   SYS_FRIEND_ALREADY_IN_GROUP: 'تم تحديد الأصدقاء بالفعل في المجموعة',
   EXCEED_NAME_LIMIT: 'يجب أن يكون الاسم في حدود 40 كلمة',
   SYS_MSG_MOD_GROUP_NAME: 'تم تغيير اسم المجموعة إلى',
   SYS_LOGIN_ON_OTHER_DEVICE: 'تم تسجيل حسابك على جهاز آخر',
   SYS_MSG_REJ: 'المقابل لم يضفك كصديق بعد',
   SYS_FRIEND_REQ_ACCEPT: 'أنتم أصدقاء الأن,استمتعو بالحديث',
-  
-  // 待翻译
-  SYS_INVITE_TO_COWORK: ' invites you to join the cowork',
-  SYS_MSG_GEO_ADDED: 'Added',
-  SYS_MSG_GEO_DELETED: 'Deleted',
-  SYS_MSG_GEO_UPDATED: 'Updated',
-  
+
+  SYS_INVITE_TO_COWORK: ' يدعوك للانضمام إلى فريق العمل المشترك',
+  SYS_MSG_GEO_ADDED: 'تمت الإضافة',
+  SYS_MSG_GEO_DELETED: 'تم الحذف',
+  SYS_MSG_GEO_UPDATED: 'تم التحديث',
+
   SYS_MSG_GEO_ADDED2: '',
   SYS_MSG_GEO_DELETED2: '',
   SYS_MSG_GEO_UPDATED2: '',
-  
-  ADDED: 'Added', // 待翻译
+
+  ADDED: 'تمت الإضافة',
 }
 export { Friends }

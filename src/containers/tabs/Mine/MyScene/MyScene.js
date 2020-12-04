@@ -2,6 +2,7 @@ import { MyDataPage } from '../component'
 import DataHandler from '../DataHandler'
 import { FileTools } from '../../../../native'
 import RNFS from 'react-native-fs'
+import {SScene } from 'imobile_for_reactnative'
 
 class MyScene extends MyDataPage {
   constructor(props) {
@@ -49,13 +50,13 @@ class MyScene extends MyDataPage {
     let pxpPath = await FileTools.appendingHomeDirectory(
       this.itemInfo.item.path,
     )
-    // debugger
+    //  
     let value = await RNFS.readFile(pxpPath)
-    // debugger
+    //  
    
     let jsonValue  = JSON.parse(value)
    
-    // debugger
+    //  
     let dirName = jsonValue.Workspace.server.split('/')[0]
     let arr = pxpPath.split('/')
     let scenePath = pxpPath.replace(arr[arr.length-1],dirName)
@@ -72,30 +73,51 @@ class MyScene extends MyDataPage {
     let targetPath
     if (exportToTemp) {
       let tempPath = homePath + this.getRelativeTempPath()
-      let availableName = await this._getAvailableFileName(
-        tempPath,
-        'MyExport',
-        'zip',
-      )
-      targetPath = tempPath + availableName
-      this.exportPath = targetPath
+      // let availableName = await this._getAvailableFileName(
+      //   tempPath,
+      //   'MyExport',
+      //   '',
+      // )
+      targetPath = tempPath + "MyExport"
+      // this.exportPath = targetPath
     } else {
       let exportPath = homePath + this.getRelativeExportPath()
-      let availableName = await this._getAvailableFileName(
-        exportPath,
-        name,
-        'zip',
-      )
-      targetPath = exportPath + availableName
-      this.exportPath = this.getRelativeExportPath() + availableName
+      // let availableName = await this._getAvailableFileName(
+      //   exportPath,
+      //   name,
+      //   '',
+      // )
+      targetPath = exportPath + name
+      // this.exportPath = this.getRelativeExportPath() + availableName
     }
-    let archivePaths = []
+    // let archivePaths = []
 
-    let scenePath = homePath + this.itemInfo.item.path
-    let pxpPath = scenePath + '.pxp'
-    archivePaths = [scenePath, pxpPath]
+    // let scenePath = homePath + this.itemInfo.item.path
+    // let pxpPath = scenePath + '.pxp'
+    // archivePaths = [scenePath, pxpPath]
 
-    let result = await FileTools.zipFiles(archivePaths, targetPath)
+    // let result = await FileTools.zipFiles(archivePaths, targetPath)
+
+     
+    //重构了部分代码，尽量使用原有接口， add 谢直言
+    let result = await SScene.export3DScenceName(name, targetPath)
+     
+    if (result) {
+      const zipPath = targetPath+'.zip'
+       
+      result = await FileTools.zipFile(targetPath, zipPath)
+       
+      if (result) {
+         
+        await FileTools.deleteFile(targetPath)
+        this.exportPath = zipPath
+         
+      }
+    } else {
+       
+      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      // '导出失败')
+    }
     return result
   }
 }

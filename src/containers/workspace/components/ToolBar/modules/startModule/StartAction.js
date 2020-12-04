@@ -171,49 +171,7 @@ function openTemplateList() {
   if (!ToolbarModule.getParams().setToolbarVisible) return
   ToolbarModule.getParams().showFullMap &&
     ToolbarModule.getParams().showFullMap(true)
-  // ;(async function() {
-  //   ToolbarModule.getParams().setContainerLoading &&
-  //     ToolbarModule.getParams().setContainerLoading(true, ConstInfo.TEMPLATE_LIST_LOADING)
-  //   let templatePath = await FileTools.appendingHomeDirectory(
-  //     ConstPath.UserPath +
-  //       (ToolbarModule.getParams().user.currentUser.userName || 'Customer') +
-  //       '/' +
-  //       ConstPath.RelativePath.ExternalData,
-  //   )
-  //   FileTools.getFilterFiles(templatePath, { smwu: 'smwu', sxwu: 'sxwu' }).then(
-  //     async listData => {
-  //       let tpList = []
-  //       for (let i = 0; i < listData.length; i++) {
-  //         let item = listData[i]
-  //         let path = item.filePath
-  //         let is3D = await SScene.is3DWorkspace({ server: path })
-  //         if (!is3D) {
-  //           tpList.push({
-  //             name: item.fileName,
-  //             path: item.filePath,
-  //           })
-  //         }
-  //       }
-  //
-  //       let data = [
-  //         {
-  //           title: Const.CREATE_SYMBOL_COLLECTION,
-  //           data: [],
-  //         },
-  //         {
-  //           title: Const.MODULE,
-  //           data: tpList,
-  //         },
-  //       ]
-  //       ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.SM_MAP_START_TEMPLATE, {
-  //         containerType: ToolbarType.list,
-  //         height: ConstToolType.HEIGHT[3],
-  //         data,
-  //       })
-  //       ToolbarModule.getParams().setContainerLoading && ToolbarModule.getParams().setContainerLoading(false)
-  //     },
-  //   )
-  // }.bind(this)())
+    
   NativeMethod.getTemplates(
     ToolbarModule.getParams().user.currentUser.userName,
     ConstPath.Module.Collection,

@@ -164,10 +164,11 @@ export default class ToggleAccount extends Component {
     let nickname = info.item.nickname
     let password = info.item.password
     if (nickname && password) {
-      let imageSource = {
-        uri:
-          'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
-      }
+      let imageSource = require('../../../../assets/home/system_default_header_image.png')
+      // let imageSource = {
+      //   uri:
+      //     'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
+      // }
       return (
         <MineItem
           item={info.item}

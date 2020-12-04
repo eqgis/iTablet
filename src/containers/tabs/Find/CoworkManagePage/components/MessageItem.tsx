@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { Button } from '../../../../../components'
 import styles from './styles'
 
@@ -25,15 +25,10 @@ export default class MessageItem extends React.Component<Props, State> {
       title: '',
       content: [],
       buttonTitle: '',
-      buttonAction: () => {},
     }
   }
 
-  _onPress = () => {
-    if (this.state.buttonAction) {
-      this.state.buttonAction(this.state.content)
-    }
-  }
+  _onPress = () => {}
 
   _renderContentItemView = (item: State): JSX.Element => {
     return (
@@ -66,20 +61,24 @@ export default class MessageItem extends React.Component<Props, State> {
   _renderButtons = (): JSX.Element | null => {
     if (!this.state.buttonTitle) return null
     return (
-      <Button style={styles.button} title={this.state.buttonTitle} onPress={this._onPress} />
+      <Button style={styles.button} title={this.state.buttonTitle} />
     )
   }
 
   render() {
     return (
-      <View style={styles.itemContainer}>
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.itemContainer}
+        onPress={this._onPress}
+      >
         {
           this.state.title &&
           <Text style={styles.title}>{this.state.title}</Text>
         }
         {this._renderContentView()}
         {this._renderButtons()}
-      </View>
+      </TouchableOpacity>
     )
   }
 }

@@ -14,6 +14,7 @@ import { color } from '../../../../../styles'
 import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
+import DataHandler from '../../../Mine/DataHandler'
 
 export const itemHeight = 140
 export const imageWidth = 90
@@ -114,12 +115,12 @@ export default class SourceItem extends Component<Props, State> {
     this.downloading = false
     this.downloadingPath = ''
     this.titleName = ''
-    if (this.props.data.fileName) {
-      let index = this.props.data.fileName.lastIndexOf('.')
+    if (this.props.data.resourceName) {
+      let index = this.props.data.resourceName.lastIndexOf('.')
       this.titleName =
         index === -1
-          ? this.props.data.fileName
-          : this.props.data.fileName.substring(0, index)
+          ? this.props.data.resourceName
+          : this.props.data.resourceName.substring(0, index)
     }
     this.state = {
       progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
@@ -127,8 +128,6 @@ export default class SourceItem extends Component<Props, State> {
       isDownloading: false,
       selectedData: new Map(),
     }
-
-    this.unZipFile = this.unZipFile.bind(this)
   }
 
   async componentDidMount() {
@@ -198,25 +197,7 @@ export default class SourceItem extends Component<Props, State> {
     //       : this.props.data.fileName.substring(0, index)
     // }
   }
-  _navigator = (uri: string) => {
-    NavigationService.navigate('MyOnlineMap', {
-      uri: uri,
-    })
-  }
-  _nextView = async () => {
-    if (this.props.data.type === 'WORKSPACE') {
-      if (this.props.data.serviceStatus === 'UNPUBLISHED') {
-        let dataId = this.props.data.resourceId
-        let dataUrl = 'https://www.supermapol.com/web/datas/' + dataId + '.json'
-        this._navigator(dataUrl)
-      } else {
-        Toast.show('服务没有公开，无权限浏览')
-      }
-    } else {
-      let info = this.props.data.type + '数据无法浏览'
-      Toast.show(info)
-    }
-  }
+  
   _downloadFile = async () => {
     if (this.exist) {
       await this.unZipFile()
@@ -267,7 +248,20 @@ export default class SourceItem extends Component<Props, State> {
               //'下载完成',
               isDownloading: false,
             })
-            let result = await this.unZipFile()
+            let { result, path } = await this.unZipFile()
+
+            if (result) {
+              let dataList = await DataHandler.getExternalData(path)
+              let results = []
+              for (let i = 0; i < dataList.length; i++) {
+                results.push(
+                  await DataHandler.importExternalData(this.props.user.currentUser, dataList[i]),
+                )
+              }
+              result = results.some(value => value === true)
+              FileTools.deleteFile(this.path)
+            }
+
             if (result === false) {
               Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
             } else {
@@ -279,28 +273,27 @@ export default class SourceItem extends Component<Props, State> {
           .catch(() => {
             Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
             FileTools.deleteFile(this.path)
-            this.setState({ progress: '下载', isDownloading: false })
+            this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
           })
       } catch (e) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
         FileTools.deleteFile(this.path)
-        this.setState({ progress: '下载', isDownloading: false })
+        this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
       }
     } else {
       Toast.show('登录后可下载')
     }
   }
 
-  async unZipFile() {
-    let appHome = await FileTools.appendingHomeDirectory()
-    // let userName =
-    //   this.props.user.currentUser.userType === UserType.PROBATION_USER
-    //     ? 'Customer'
-    //     : this.props.user.currentUser.userName
-    let fileDir =
-      appHome +
-      ConstPath.ExternalData + '/' +
-      this.titleName
+  unZipFile = async () => {
+    if (!this.path) {
+      return {
+        result: false,
+        path: '',
+      }
+    }
+    let index = this.path.lastIndexOf('.')
+    let fileDir = this.path.substring(0, index)
     let exists = await RNFS.exists(fileDir)
     if (!exists) {
       await RNFS.mkdir(fileDir)
@@ -309,7 +302,10 @@ export default class SourceItem extends Component<Props, State> {
     if (!result) {
       FileTools.deleteFile(this.path)
     }
-    return result
+    return {
+      result,
+      path: fileDir,
+    }
   }
 
   _onPress = () => {
@@ -362,10 +358,6 @@ export default class SourceItem extends Component<Props, State> {
   }
   
   render() {
-    // let size =
-    //   this.props.data.size / 1024 / 1024 > 0.1
-    //     ? (this.props.data.size / 1024 / 1024).toFixed(2) + 'MB'
-    //     : (this.props.data.size / 1024).toFixed(2) + 'K'
     let fontColor = color.fontColorGray
     let titleFontColor = color.fontColorBlack
     return (
@@ -430,7 +422,8 @@ export default class SourceItem extends Component<Props, State> {
             </View>
 
           </TouchableOpacity>
-          {this.props.hasDownload && this._renderDownload()}
+          {this._renderDownload()}
+          {/* {this.props.hasDownload && this._renderDownload()} */}
         </View>
         <View
           style={[

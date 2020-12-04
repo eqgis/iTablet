@@ -8,6 +8,10 @@ export interface Message {
     name: string,
     id: string,
   },
+  to: {
+    name: string,
+    id: string,
+  },
   group: {
     groupName: string,
     groupID: string,

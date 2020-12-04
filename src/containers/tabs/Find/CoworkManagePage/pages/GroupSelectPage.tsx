@@ -59,7 +59,7 @@ class GroupSelectPage extends Component<Props, State> {
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_CREATE,
         action: () => {
-          NavigationService.navigate('CreateGroupPage', { callBack: this.groupList?.refresh })
+          NavigationService.navigate('CreateGroupPage', { callBack: () => this.groupList?.refresh(false) })
         },
       },
       {

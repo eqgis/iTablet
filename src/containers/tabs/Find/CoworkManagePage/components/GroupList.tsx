@@ -81,11 +81,11 @@ export default class GroupList extends Component<Props, State> {
     return shouldUpdate
   }
 
-  refresh = async () => {
+  refresh = async (refresh = true) => {
     if (this.isLoading) return
     this.isLoading = true
     this.isNoMore = false
-    this.setState({
+    refresh && this.setState({
       isRefresh: true,
     })
     await this.getContacts({

@@ -534,9 +534,9 @@ export default class Friend extends Component {
   //构造chat页面等需要的targetUser对象
   getTargetUser = targetId => {
     let name = ''
-    if (targetId.indexOf('Group_') != -1) {
+    if (targetId.indexOf('Group_') != -1 && targetId.indexOf('Group_Task_') === -1) {
       name = FriendListFileHandle.getGroup(targetId).groupName
-    } else {
+    } else if (targetId.indexOf('Group_Task_') === -1) {
       name = FriendListFileHandle.getFriend(targetId).markName
     }
 
@@ -803,7 +803,7 @@ export default class Friend extends Component {
         }
         let msgStr = JSON.stringify(msgObj)
         await this._sendMessage(msgStr, coworkId, false)
-        await SMessageService.exitSession(id, coworkId)
+        // await SMessageService.exitSession(id, coworkId)
         CoworkInfo.reset()
         this.locationTimer && clearInterval(this.locationTimer)
       }
@@ -866,7 +866,7 @@ export default class Friend extends Component {
         for (let i = 0; i < fieldInfos.length; i++) {
           let fieldInfo = fieldInfos[i]
           if (fieldInfo.name === 'geoID') {
-            geoID = parseInt(fieldInfo.value)
+            geoID = isNaN(fieldInfo.value) || fieldInfo.value === '' ? id : parseInt(fieldInfo.value)
             break
           }
         }
@@ -1568,12 +1568,12 @@ export default class Friend extends Component {
       //普通消息
       if (messageObj.type === 2) {
         //处理群组消息
-        let obj = FriendListFileHandle.findFromGroupList(
-          messageObj.user.groupID,
-        )
-        if (!obj) {
-          return
-        }
+        // let obj = FriendListFileHandle.findFromGroupList(
+        //   messageObj.user.groupID,
+        // )
+        // if (!obj) {
+        //   return
+        // }
       } else {
         //处理单人消息
         let isFriend = FriendListFileHandle.getIsFriend(messageObj.user.id)

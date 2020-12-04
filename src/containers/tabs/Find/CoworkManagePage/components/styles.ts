@@ -12,6 +12,14 @@ export default StyleSheet.create({
     borderRadius: scaleSize(8),
     borderColor: color.gray7,
   },
+  rowContainer: {
+    flexDirection: 'row',
+    marginHorizontal: scaleSize(30),
+    padding: scaleSize(20),
+    borderWidth: 1,
+    borderRadius: scaleSize(8),
+    borderColor: color.gray7,
+  },
   title: {
     fontSize: size.fontSize.fontSizeXl,
     color: color.fontColorBlack,

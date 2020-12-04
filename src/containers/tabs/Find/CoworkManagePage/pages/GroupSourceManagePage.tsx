@@ -3,10 +3,10 @@
  * @description 群组资源管理界面
  */
 import React, { Component } from 'react'
-import { StyleSheet, FlatList, RefreshControl } from 'react-native'
+import { StyleSheet, FlatList, RefreshControl, Text, View, Image } from 'react-native'
 import { Container, PopMenu, ListSeparator, ImageButton, TextBtn, Dialog } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { scaleSize, Toast } from '../../../../../utils'
+import { scaleSize, Toast, screen } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { UserType } from '../../../../../constants'
 import { getThemeAssets } from '../../../../../assets'
@@ -17,6 +17,9 @@ import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 import { SourceItem } from '../components'
 import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
+import ModalDropdown from 'react-native-modal-dropdown'
+
+const ITEM_HEIGHT = scaleSize(80)
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -26,6 +29,39 @@ const styles = StyleSheet.create({
   dialogStyle: {
     height: scaleSize(300),
   },
+  dropdown: {
+    width: '100%',
+    height: ITEM_HEIGHT,
+    justifyContent: 'center',
+  },
+  dropdownText: {
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorBlack,
+    marginLeft: scaleSize(30),
+  },
+  dropdownContent: {
+    width: '100%',
+    justifyContent: 'center',
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: ITEM_HEIGHT,
+  },
+  dropdownItemImage: {
+    width: scaleSize(48),
+    height: scaleSize(48),
+    marginRight: scaleSize(30),
+    marginLeft: scaleSize(60),
+  },
+  dropdownItemText: {
+    flex: 1,
+    fontSize: size.fontSize.fontSizeLg,
+  },
+  dropdownItemRightText: {
+    fontSize: size.fontSize.fontSizeLg,
+    marginRight: scaleSize(30),
+  },
 })
 
 interface Props {
@@ -33,6 +69,7 @@ interface Props {
   user: Users,
   language: string,
   device: any,
+  mapModules: any,
 }
 
 interface State {
@@ -40,6 +77,8 @@ interface State {
   isRefresh: boolean,
   isDelete: boolean, // 是否是删除模式
   selectedData: Map<string, any>,
+  currentModule: any,
+  currentModuleIndex: number,
 }
 
 class GroupSourceManagePage extends Component<Props, State> {
@@ -58,6 +97,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   isManage: boolean // 是否是资源管理模式
   list: FlatList<any> | null | undefined
   deleteDialog: Dialog | undefined | null
+  modules: Array<any>
   itemAction?: (data?: any) => void
 
   constructor(props: Props) {
@@ -74,16 +114,27 @@ class GroupSourceManagePage extends Component<Props, State> {
       this.servicesUtils = new SCoordination('iportal')
     }
 
+    if (!this.isManage) {
+      this.modules = this.props.mapModules.modules.map(item =>
+        item.getChunk(this.props.language),
+      )
+    } else {
+      this.modules = []
+    }
+
     this.state = {
       data: [],
       isRefresh: false,
       selectedData: new Map<string, Object>(),
       isDelete: false,
+      currentModuleIndex: 0,
+      currentModule: this.modules.length > 0 ? this.modules[0] : null,
     }
     this.pageSize = 20
     this.currentPage = 1
     this.isLoading = false // 防止同时重复加载多次
     this.isNoMore = false // 是否能加载更多
+
 
     this.popData = [
       {
@@ -243,7 +294,11 @@ class GroupSourceManagePage extends Component<Props, State> {
   _onPress = (data: any) => {
     let itemAction = this.props.navigation?.state?.params?.itemAction
     if (itemAction) {
-      itemAction(data)
+      itemAction({
+        data,
+        module: this.state.currentModule,
+        moduleIndex: this.state.currentModuleIndex,
+      })
     }
   }
 
@@ -322,7 +377,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
-  _renderItem = ({item, index}: any) => {
+  _renderItem = ({item}: any) => {
     return (
       <SourceItem
         user={this.props.user}
@@ -397,6 +452,47 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
+  _dropDownOnSelect = (idx: string, value: any) => {
+    this.setState({
+      currentModule: value.props,
+      currentModuleIndex: parseInt(idx),
+    })
+  }
+
+  _renderDropdownItem = (rowData: any) => {
+    return (
+      <View style={styles.dropdownItem}>
+        <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={rowData.moduleImage} />
+        <Text style={styles.dropdownItemText}>{rowData.title}</Text>
+      </View>
+    )
+  }
+
+  _renderPopMenu = () => {
+    if (this.isManage) return null
+    let maxHeight = this.modules.length * ITEM_HEIGHT
+    let limitHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth()) - screen.getHeaderHeight() - ITEM_HEIGHT
+
+    if (maxHeight > limitHeight) maxHeight = limitHeight
+    
+    return (
+      <ModalDropdown
+        style={styles.dropdown}
+        textStyle={styles.dropdownText}
+        dropdownStyle={[styles.dropdownContent, {height: maxHeight}]}
+        options={this.modules}
+        renderRow={this._renderDropdownItem}
+        onSelect={this._dropDownOnSelect}
+      >
+        <View style={[styles.dropdownItem, {backgroundColor: color.itemColorGray2}]}>
+          <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
+          <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
+          <Text style={styles.dropdownItemRightText}>{getLanguage(GLOBAL.language).Friends.SELECT_MODULE}</Text>
+        </View>
+      </ModalDropdown>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -409,6 +505,8 @@ class GroupSourceManagePage extends Component<Props, State> {
           headerLeft: this.state.isDelete && this._renderHeaderLeft(),
         }}
       >
+
+        {this._renderPopMenu()}
         {this._renderBatchHead()}
         {this._renderGroupList()}
         {this._renderPagePopup()}
@@ -423,6 +521,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatchToProps = {}

@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, FlatList, Text } from 'react-native'
-import CoworkInviteView from '../../Friend/Cowork/CoworkInviteView'
-import { scaleSize, OnlineServicesUtils } from '../../../../utils'
+import { scaleSize, Toast } from '../../../../utils'
+import { addCoworkMsg } from '../../../../redux/models/cowork'
+import { setCurrentMapModule } from '../../../../redux/models/mapModules'
+import { UserInfo } from '../../../../redux/models/user'
 import { ListSeparator } from '../../../../components'
 import { getLanguage } from '../../../../language'
-import { SCoordination } from 'imobile_for_reactnative'
+import { SCoordination, SMap } from 'imobile_for_reactnative'
 import { UserType } from '../../../../constants'
-import { color } from '../../../../styles'
 import { TaskMessageItem } from './components'
-import { GroupApplyMessageType } from './types'
+import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 
 import { connect } from 'react-redux'
 
@@ -23,8 +24,9 @@ interface Props {
   // invites: Array<any>,
   tasks: {[name: string]: Array<any>},
   groupInfo: any,
-  setCurrentMapModule: () => void,
-  deleteInvite: () => void,
+  mapModules: any,
+  setCurrentMapModule: (index: number) => void,
+  addCoworkMsg: () => void,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -36,7 +38,6 @@ class TaskManage extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.servicesUtils
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
@@ -55,8 +56,9 @@ class TaskManage extends React.Component<Props, State> {
     if (JSON.stringify(prevProps.tasks) !== JSON.stringify(this.props.tasks)) {
       // 当有新增数据时，自动滚动到首位
       if (
-        prevProps.tasks[this.props.user.currentUser.id][this.props.groupInfo.id].length <
-        this.props.tasks[this.props.user.currentUser.id][this.props.groupInfo.id].length
+        prevProps.tasks[this.props.user.currentUser.userId] !== this.props.tasks[this.props.user.currentUser.userId] ||
+        prevProps.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]?.length <
+        this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]?.length
       ) {
         // this.refresh()
         this.list && this.list.scrollToEnd({
@@ -74,40 +76,73 @@ class TaskManage extends React.Component<Props, State> {
     }, 1000)
   }
 
-  deleteInvite = data => {
-    GLOBAL.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Friends.DELETE_COWORK_ALERT,
-      confirmAction: () => this.props.deleteInvite(data),
-    })
-    GLOBAL.SimpleDialog.setVisible(true)
+  _onPress = (data: any) => {
+    if (data.message.map) {
+      let module
+      let index = data.message.module.index
+      if (index === undefined) {
+        for (let i = 0; i < this.props.mapModules.modules.length; i++) {
+          if (data.message.module.key === this.props.mapModules.modules[i].key) {
+            index = i
+            module = this.props.mapModules.modules[i].chunk
+              ? this.props.mapModules.modules[i].chunk
+              : this.props.mapModules.modules[i].getChunk()
+            break
+          }
+        }
+      } else {
+        module = this.props.mapModules.modules[index].chunk
+          ? this.props.mapModules.modules[index].chunk
+          : this.props.mapModules.modules[index].getChunk()
+      }
+      // let id = this.props.user.currentUser.userId === data.to.id ? data.user.id : data.to.id
+      this.createCowork(data.id, module, index, data.message.map)
+    } else {
+      Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
+    }
   }
 
-  _onPress = () => {
-
+  createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any) => void }, index: number, map: any) => {
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(GLOBAL.language).Prompt.PREPARING,
+      )
+      let licenseStatus = await SMap.getEnvironmentStatus()
+      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      if (!GLOBAL.isLicenseValid) {
+        GLOBAL.SimpleDialog.set({
+          text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
+        })
+        GLOBAL.SimpleDialog.setVisible(true)
+        return
+      }
+      CoworkInfo.setId(targetId)
+      // CoworkInfo.setId(this.props.groupInfo.id + '')
+      // CoworkInfo.setId(this.props.user.currentUser.userId + '')
+      GLOBAL.getFriend().setCurMod(module)
+      this.props.setCurrentMapModule(index).then(() => {
+        module.action(this.props.user.currentUser, map)
+      })
+      GLOBAL.getFriend().curChat &&
+        GLOBAL.getFriend().curChat.setCoworkMode(true)
+      GLOBAL.coworkMode = true
+      CoworkInfo.setTalkId(targetId)
+      setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
+    } catch (error) {
+      GLOBAL.Loading.setLoading(false)
+    }
   }
 
-  renderItem = ({ item }) => {
-    // return (
-    //   <CoworkInviteView
-    //     style={{
-    //       flexDirection: 'column',
-    //       marginHorizontal: scaleSize(30),
-    //       padding: scaleSize(20),
-    //       borderWidth: 1,
-    //       borderRadius: scaleSize(8),
-    //       borderColor: color.gray7,
-    //     }}
-    //     data={item}
-    //     onLongPress={data => this.deleteInvite(data)}
-    //   />
-    // )
-
+  renderItem = ({ item }: any) => {
     return (
       <TaskMessageItem
         data={item}
+        user={this.props.user}
         isSelf={item?.applicant !== this.props.user.currentUser.id}
         servicesUtils={this.servicesUtils}
-        onPress={(data: GroupApplyMessageType) => this._onPress(data, index)}
+        onPress={(data: any) => this._onPress(data)}
+        addCoworkMsg={this.props.addCoworkMsg}
       />
     )
   }
@@ -156,9 +191,12 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   language: state.setting.toJS().language,
   tasks: state.cowork.toJS().tasks,
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatchToProps = {
+  addCoworkMsg,
+  setCurrentMapModule,
 }
 
 export default connect(

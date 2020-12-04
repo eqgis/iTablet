@@ -217,6 +217,8 @@ const Friends = {
   RESOURCE_EXPORTING: '导出中',
   RESOURCE_UPLOADING: '上传中',
   RESOURCE_DELETE_INFO: '是否删除被选中的数据',
+  RESOURCE_SELECT_MODULE: '请选择模板',
+  RESOURCE_DOWNLOAD_INFO: '请下载任务',
 
   TASK_DOWNLOAD: '下载任务',
   TASK_DOWNLOADING: '下载中',
@@ -224,6 +226,9 @@ const Friends = {
   TASK_CREATOR: '所有者',
   TASK_TYPE: '数据类型',
   TASK_UPDATE_TIME: '更新时间',
+  TASK_CREATE_TIME: '创建时间',
+  TASK_SEND_TIME: '发送时间',
+  TASK_MODULE: '模块',
   // 提示消息
   GROUP_EXIST_INFO: '是否退出群组',
   GROUP_DELETE_INFO: '是否解散群组',

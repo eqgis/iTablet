@@ -93,7 +93,7 @@ class Chat extends React.Component {
   onFriendListChanged = () => {
     let newTitle = this.isGroupChat()
       ? FriendListFileHandle.getGroup(this.targetUser.id).groupName
-      : FriendListFileHandle.getFriend(this.targetUser.id).markName
+      : FriendListFileHandle.getFriend(this.targetUser.id)?.markName
     this.setState({ title: newTitle })
   }
   componentDidMount() {
@@ -1100,17 +1100,17 @@ class Chat extends React.Component {
   render() {
     let moreImg = getPublicAssets().common.icon_nav_imove
     return (
-        <Container
-          style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
-          ref={ref => (this.container = ref)}
-          showFullInMap={true}
-          hideInBackground={false}
-          headerProps={{
-            title: this.state.title,
-            withoutBack: false,
-            backAction: this.state.coworkMode && this.back,
-            navigation: this.props.navigation,
-            headerRight:
+      <Container
+        style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
+        ref={ref => (this.container = ref)}
+        showFullInMap={true}
+        hideInBackground={false}
+        headerProps={{
+          title: this.state.title,
+          withoutBack: false,
+          backAction: this.state.coworkMode && this.back,
+          navigation: this.props.navigation,
+          headerRight:
               this.targetUser.id.indexOf('Group_') === -1 ||
               FriendListFileHandle.isInGroup(
                 this.targetUser.id,
@@ -1139,101 +1139,102 @@ class Chat extends React.Component {
                 </TouchableOpacity>
               ) : null,
             /* eslint-enable */
-          }}
-        >
-          <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
-            {this.state.showInformSpot ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  backgroundColor: 'red',
-                  height: scaleSize(15),
-                  width: scaleSize(15),
-                  borderRadius: scaleSize(15),
-                  top: Top,
-                  left: scaleSize(75),
-                }}
-              />
-            ) : null}
-            {this.state.coworkMode ? (
-              <CoworkTouchableView
-                screen="Chat"
-                onPress={async () => {
-                  // let mapOpen
-                  // try {
-                  //   mapOpen = await SMap.isAnyMapOpened()
-                  // } catch (error) {
-                  //   mapOpen = false
-                  // }
-                  // if (!mapOpen) {
-                  this.friend.curMod.action(this.curUser)
-                  // } else {
-                  //   NavigationService.navigate('MapView')
-                  // }
-                }}
-              />
-            ) : null}
-            <GiftedChat
-              ref={ref => (this.GiftedChat = ref)}
-              locale={getLanguage(GLOBAL.language).Friends.LOCALE}
-              placeholder={getLanguage(GLOBAL.language).Friends.INPUT_MESSAGE}
-              messages={this.state.messages}
-              showAvatarForEveryMessage={false}
-              onSend={this.onSend}
-              loadEarlier={this.state.loadEarlier}
-              onLoadEarlier={this.onLoadEarlier}
-              isLoadingEarlier={this.state.isLoadingEarlier}
-              label={getLanguage(GLOBAL.language).Friends.LOAD_EARLIER}
-              showUserAvatar={this.state.showUserAvatar}
-              renderAvatarOnTop={false}
-              user={{
-                _id: this.curUser.userId, // sent messages should have same user._id
-                name: this.curUser.nickname,
+        }}
+      >
+        <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
+          {this.state.showInformSpot ? (
+            <View
+              style={{
+                position: 'absolute',
+                backgroundColor: 'red',
+                height: scaleSize(15),
+                width: scaleSize(15),
+                borderRadius: scaleSize(15),
+                top: Top,
+                left: scaleSize(75),
               }}
-              renderActions={this.renderCustomActions}
-              //被移出群组后不显示输入栏
-              renderInputToolbar={props => {
-                if (
-                  this.targetUser.id.indexOf('Group_') === -1 ||
+            />
+          ) : null}
+          {this.state.coworkMode ? (
+            <CoworkTouchableView
+              screen="Chat"
+              onPress={async () => {
+                // let mapOpen
+                // try {
+                //   mapOpen = await SMap.isAnyMapOpened()
+                // } catch (error) {
+                //   mapOpen = false
+                // }
+                // if (!mapOpen) {
+                this.friend.curMod.action(this.curUser)
+                // } else {
+                //   NavigationService.navigate('MapView')
+                // }
+              }}
+            />
+          ) : null}
+          <GiftedChat
+            ref={ref => (this.GiftedChat = ref)}
+            locale={getLanguage(GLOBAL.language).Friends.LOCALE}
+            placeholder={getLanguage(GLOBAL.language).Friends.INPUT_MESSAGE}
+            messages={this.state.messages}
+            showAvatarForEveryMessage={true}
+            onSend={this.onSend}
+            loadEarlier={this.state.loadEarlier}
+            onLoadEarlier={this.onLoadEarlier}
+            isLoadingEarlier={this.state.isLoadingEarlier}
+            label={getLanguage(GLOBAL.language).Friends.LOAD_EARLIER}
+            showUserAvatar={this.state.showUserAvatar}
+            renderAvatarOnTop={false}
+            user={{
+              _id: this.curUser.userId, // sent messages should have same user._id
+              name: this.curUser.nickname,
+            }}
+            renderActions={this.renderCustomActions}
+            //被移出群组后不显示输入栏
+            renderInputToolbar={props => {
+              if (
+                this.targetUser.id.indexOf('Group_Task') > -1 || // 在线协作任务群
+                this.targetUser.id.indexOf('Group_') === -1 ||   // 普通聊天群
                   FriendListFileHandle.isInGroup(
                     this.targetUser.id,
                     this.curUser.userId,
                   )
-                ) {
-                  return (
-                    <InputToolbar
-                      {...props}
-                      textStyle={{color: color.fontColorGray2}}
-                      label={getLanguage(GLOBAL.language).Friends.SEND}
-                    />
-                  )
-                }
-                return null
-              }}
-              renderBubble={this.renderBubble}
-              renderTicks={this.renderTicks}
-              renderSystemMessage={this.renderSystemMessage}
-              renderCustomView={this.renderCustomView}
-              renderFooter={this.renderFooter}
-              renderAvatar={this.renderAvatar}
-              renderMessageText={props => {
-                if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
-                  return null
-                }
+              ) {
                 return (
-                  <MessageText
+                  <InputToolbar
                     {...props}
-                    customTextStyle={{
-                      fontSize: scaleSize(20),
-                      lineHeight: scaleSize(25),
-                    }}
+                    textStyle={{color: color.fontColorGray2}}
+                    label={getLanguage(GLOBAL.language).Friends.SEND}
                   />
                 )
-              }}
-            />
-            {this.renderSimpleDialog()}
-          </Animated.View>
-        </Container>
+              }
+              return null
+            }}
+            renderBubble={this.renderBubble}
+            renderTicks={this.renderTicks}
+            renderSystemMessage={this.renderSystemMessage}
+            renderCustomView={this.renderCustomView}
+            renderFooter={this.renderFooter}
+            renderAvatar={this.renderAvatar}
+            renderMessageText={props => {
+              if (props.currentMessage.type !== MSGConstant.MSG_TEXT) {
+                return null
+              }
+              return (
+                <MessageText
+                  {...props}
+                  customTextStyle={{
+                    fontSize: scaleSize(20),
+                    lineHeight: scaleSize(25),
+                  }}
+                />
+              )
+            }}
+          />
+          {this.renderSimpleDialog()}
+        </Animated.View>
+      </Container>
     )
   }
 
@@ -1256,15 +1257,15 @@ class Chat extends React.Component {
   }
 
   renderAvatar = props => {
-    let backColor = 'rgba(229,125,33,1.0)'
-    if (props.currentMessage.user._id !== 1) {
-      backColor = 'rgba(51,151,218,1.0)'
-    }
+    // let backColor = 'rgba(229,125,33,1.0)'
+    // if (props.currentMessage.user._id !== 1) {
+    //   backColor = 'rgba(51,151,218,1.0)'
+    // }
 
-    let headerStr = ''
-    if (props.currentMessage.user.name) {
-      headerStr = props.currentMessage.user.name[0]
-    }
+    // let headerStr = ''
+    // if (props.currentMessage.user.name) {
+    //   headerStr = props.currentMessage.user.name[0]
+    // }
     return (
       <TouchableOpacity
         {...props}
@@ -1285,24 +1286,24 @@ class Chat extends React.Component {
           source={getThemeAssets().friend.contact_photo}
         />
         {/*<View*/}
-          {/*style={{*/}
-            {/*height: scaleSize(60),*/}
-            {/*width: scaleSize(60),*/}
-            {/*borderRadius: scaleSize(60),*/}
-            {/*backgroundColor: backColor,*/}
-            {/*alignItems: 'center',*/}
-            {/*justifyContent: 'center',*/}
-          {/*}}*/}
+        {/*style={{*/}
+        {/*height: scaleSize(60),*/}
+        {/*width: scaleSize(60),*/}
+        {/*borderRadius: scaleSize(60),*/}
+        {/*backgroundColor: backColor,*/}
+        {/*alignItems: 'center',*/}
+        {/*justifyContent: 'center',*/}
+        {/*}}*/}
         {/*>*/}
-          {/*<Text*/}
-            {/*style={{*/}
-              {/*fontSize: scaleSize(30),*/}
-              {/*color: 'white',*/}
-              {/*textAlign: 'center',*/}
-            {/*}}*/}
-          {/*>*/}
-            {/*{headerStr}*/}
-          {/*</Text>*/}
+        {/*<Text*/}
+        {/*style={{*/}
+        {/*fontSize: scaleSize(30),*/}
+        {/*color: 'white',*/}
+        {/*textAlign: 'center',*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*{headerStr}*/}
+        {/*</Text>*/}
         {/*</View>*/}
       </TouchableOpacity>
     )

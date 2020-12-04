@@ -11,6 +11,7 @@ async function importExternalData(user, item) {
       break
     case 'workspace':
       result = await importWorkspace(item)
+      result = result ? result.length > 0 : false
       break
     case 'workspace3d':
       result = await importWorkspace3D(user, item)
@@ -97,7 +98,7 @@ async function importWorkspace(item) {
       type,
     }
     let result = await SMap.importWorkspaceInfo(data)
-    return result ? result.length > 0 : false
+    return result
   } catch (error) {
     return false
   }

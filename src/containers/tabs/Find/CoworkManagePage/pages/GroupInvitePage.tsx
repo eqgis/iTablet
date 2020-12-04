@@ -116,8 +116,6 @@ class GroupInvitePage extends React.Component<Props, State> {
 
   search = (nickName: string) => {
     this.servicesUtils?.searchUserByName(nickName).then((result: any) => {
-      console.warn(JSON.stringify(result))
-
       if (result) {
         this.setState({
           data: result,
@@ -141,7 +139,6 @@ class GroupInvitePage extends React.Component<Props, State> {
         Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_SUCCESS)
         this.inviteDialog?.setDialogVisible(false)
 
-        // TODO 给用户发送邀请消息
         let timeStr = new Date().getTime()
         let message: any = {
           id: 'GROUP_APPLY_' + timeStr,
@@ -155,6 +152,10 @@ class GroupInvitePage extends React.Component<Props, State> {
           user: {
             name: this.props.user.currentUser.nickname || '',
             id: this.props.user.currentUser.userId || '',
+          },
+          to: {
+            name: this.state.selectedUser?.nickname,
+            id: this.state.selectedUser?.name,
           },
           group: {
             groupID: this.groupInfo.id,
@@ -174,7 +175,6 @@ class GroupInvitePage extends React.Component<Props, State> {
   }
 
   _itemPress = (item: SearchUserResponse, index: number) => {
-    console.warn(JSON.stringify(item))
     this.setState({
       selectedUser: item,
     }, () => {

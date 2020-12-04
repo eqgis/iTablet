@@ -268,7 +268,6 @@ class GroupSourceUploadPage extends Component<Props, State> {
             let _resultData = await this._exportData(name)
 
             result = result && _resultData.result
-            console.warn(JSON.stringify(_resultData))
 
             try {
               if (_resultData.result) {
@@ -282,7 +281,6 @@ class GroupSourceUploadPage extends Component<Props, State> {
                   this.setItemStatus(item[1], '')
                   resourceIds.push(resourceId)
                   let deleteResult = await FileTools.deleteFile(_resultData.zipPath)
-                  console.warn('deleteResult', deleteResult)
                 }
               } else {
                 this.setItemStatus(item[1], getLanguage(this.props.language).Friends.RESOURCE_EXPORT_FAILED)
@@ -308,7 +306,6 @@ class GroupSourceUploadPage extends Component<Props, State> {
               Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
             })
           }
-          console.warn(result)
         }}
       />
     )

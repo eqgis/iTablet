@@ -4,10 +4,10 @@ import styles from './styles'
 
 export default class DropdownView extends React.Component {
   props: {
-    children: any,
-    onBackgroudPress: () => {},
-    backgrourdColor: any,
-    visible: boolean,
+    children?: any,
+    onBackgroudPress?: () => void,
+    backgrourdColor?: any,
+    visible?: boolean,
   }
 
   constructor(props) {

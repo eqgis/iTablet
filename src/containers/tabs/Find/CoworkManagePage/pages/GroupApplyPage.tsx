@@ -90,6 +90,10 @@ class GroupApplyPage extends Component<Props, State> {
             name: this.props.user.currentUser.nickname || '',
             id: this.props.user.currentUser.userId || '',
           },
+          to: {
+            name: groupInfo.nickname,
+            id: groupInfo.creator,
+          },
           group: {
             groupID: groupInfo.id,
             groupName: groupInfo.groupName,

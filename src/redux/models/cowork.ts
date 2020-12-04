@@ -41,7 +41,7 @@ export const deleteInvite = (params = {}, cb = () => {}) => async (dispatch: (ar
   cb && cb()
 }
 
-export const addCoworkMsg = (params = {}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const addCoworkMsg = (params = {}, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   await dispatch({
     type: COWORK_GROUP_MSG_ADD,
@@ -129,6 +129,7 @@ export default handleActions(
           // 修改已有消息的状态
           if (payload.id === _task.id) {
             task = payload
+            tasks[i] = payload
             break
           }
         }

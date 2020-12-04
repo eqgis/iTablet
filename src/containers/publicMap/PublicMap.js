@@ -22,14 +22,12 @@ import { getLanguage } from '../../language'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import RNFS from 'react-native-fs'
-// import { Platform } from 'os'
-// import { FileTools } from '../../native'
-// import { ConstPath } from '../../constants'
-// import FriendListFileHandle from '../tabs/Friend/FriendListFileHandle'
+
 export default class PublicMap extends Component {
   props: {
     navigation: Object,
     user: Object,
+    downloadFile: () => {},
   }
 
   constructor(props) {
@@ -305,7 +303,12 @@ export default class PublicMap extends Component {
         ]}
         data={this.state.data}
         renderItem={data => {
-          return <RenderFindItem user={this.props.user} data={data.item} />
+          return <RenderFindItem 
+                  user={this.props.user} 
+                  data={data.item} 
+                  downloads={this.props.downloads}
+                  downloadFile={this.props.downloadFile}
+                />
         }}
         refreshControl={
           <RefreshControl

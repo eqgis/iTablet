@@ -135,7 +135,7 @@ export default class MeasureAreaView extends React.Component {
                   this.setState({showADD:true})
                 }
               }else{
-                this.setState({showADD:false})
+                this.setState({showADD:false,showADDPoint:false})
               }
             },
           })
@@ -217,7 +217,7 @@ export default class MeasureAreaView extends React.Component {
         this.setState({showADD:true})
       }
     }else{
-      this.setState({showADD:false})
+      this.setState({showADD:false,showADDPoint:false})
     }
   }
 

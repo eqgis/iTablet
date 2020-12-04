@@ -25,6 +25,8 @@ const navi_model_red_flag = require('./navi_model_red_flag.png')
 const icon_ar_camera_circle_bg = require('./icon_ar_camera_circle_bg.png')
 const navi_object_classify_capture = require('./navi_object_classify_capture.png')
 const ar_view_mode = require('./toolbar/ar_view_mode_black.png')
+const icon_ar_measure_add_toast = require('./add_toast.png')
+const icon_ar_measure_add_toast_en = require('./add_toast_en.png')
 
 export default {
   functiontoolbar,
@@ -52,4 +54,6 @@ export default {
   icon_ar_camera_circle_bg,
   navi_object_classify_capture,
   ar_view_mode,
+  icon_ar_measure_add_toast,
+  icon_ar_measure_add_toast_en,
 }

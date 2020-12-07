@@ -4,6 +4,7 @@ import { SScene } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { Toast, scaleSize } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Fly3DAction from './Fly3DAction'
@@ -82,8 +83,8 @@ function getToolFly() {
         SScene.flyStart()
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/icon_play.png'),
-      selectedImage: require('../../../../../../assets/mapEdit/icon_play.png'),
+      image: getThemeAssets().mapTools.icon_tool_play,
+      selectedImage: getThemeAssets().mapTools.icon_tool_play,
     },
     {
       key: 'stop',
@@ -92,8 +93,8 @@ function getToolFly() {
         SScene.flyPause()
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/icon_stop.png'),
-      selectedImage: require('../../../../../../assets/mapEdit/icon_stop.png'),
+      image: getThemeAssets().mapTools.icon_tool_suspend,
+      selectedImage: getThemeAssets().mapTools.icon_tool_suspend,
     },
   ]
   const buttons = [ToolbarBtnType.CANCEL]

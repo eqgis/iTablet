@@ -1,6 +1,6 @@
 import React from 'react'
 import { color } from '../../../../../styles'
-import { setSpText } from '../../../../../utils'
+import { scaleSize, setSpText } from '../../../../../utils'
 import { ToolbarType } from '../../../../../constants'
 import ToolbarModule from '../modules/ToolbarModule'
 import { MTBtn, ColorBtn, TableList } from '../../../../../components'
@@ -58,7 +58,7 @@ export default class ToolbarTableList extends React.Component {
         title={item.title}
         textColor={item.disable ? '#A0A0A0' : color.font_color_white}
         textStyle={{ fontSize: setSpText(20) }}
-        // size={MTBtn.Size.NORMAL}
+        size={MTBtn.Size.SMALL}
         image={item.image}
         background={item.background}
         onPressOut={() => {

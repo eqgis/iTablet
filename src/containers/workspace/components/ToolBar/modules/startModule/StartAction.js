@@ -9,6 +9,7 @@ import {
 } from 'imobile_for_reactnative'
 import { color, size } from '../../../../../../styles'
 import { FileTools, NativeMethod } from '../../../../../../native'
+import { getThemeAssets } from '../../../../../../assets'
 import {
   ConstToolType,
   ConstInfo,
@@ -98,7 +99,7 @@ function openMap() {
         item.name = name.split('.')[0]
         item.image = item.isTemplate
           ? require('../../../../../../assets/mapToolbar/list_type_template_black.png')
-          : require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+          : getThemeAssets().dataType.icon_map
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -378,7 +379,7 @@ function showHistory() {
     latestMap = ToolbarModule.getParams().map.latestMap[userName][GLOBAL.Type]
   }
   latestMap.forEach(item => {
-    item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+    item.image = getThemeAssets().dataType.icon_map
   })
   const data = [
     {

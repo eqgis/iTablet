@@ -4,26 +4,30 @@
  * https://github.com/AsortKeven
  */
 
-const search_icon_bank = require('./search_bank_light.png')
-const search_icon_bus = require('./search_bus_light.png')
-const search_icon_food = require('./search_food_light.png')
-const search_icon_gas_station = require('./search_gas_station_light.png')
-const search_icon_hospital = require('./search_hospital_light.png')
-const search_icon_hotel = require('./search_hotel_light.png')
-const search_icon_mall = require('./search_mall_light.png')
-const search_icon_market = require('./search_market_light.png')
-const search_icon_park = require('./search_park_light.png')
-const search_icon_scenic = require('./search_scenic_light.png')
-const search_icon_subway = require('./search_subway_light.png')
-const search_icon_toilet = require('./search_toilet_light.png')
+const search_icon_bank = require('./icon_search_bank.png')
+const search_icon_bus = require('./icon_search_bus.png')
+const search_icon_charger = require('./icon_search_charger.png')
+const search_icon_food = require('./icon_search_food.png')
+const search_icon_gas_station = require('./icon_search_gas_station.png')
+const search_icon_hospital = require('./icon_search_hospital.png')
+const search_icon_hotel = require('./icon_search_hotel.png')
+const search_icon_internet_bar = require('./icon_search_internet_bar.png')
+const search_icon_mall = require('./icon_search_mall.png')
+const search_icon_market = require('./icon_search_market.png')
+const search_icon_park = require('./icon_search_park.png')
+const search_icon_scenic = require('./icon_search_scenic.png')
+const search_icon_subway = require('./icon_search_subway.png')
+const search_icon_toilet = require('./icon_search_toilet.png')
 
 export default {
   search_icon_bank,
   search_icon_bus,
+  search_icon_charger,
   search_icon_food,
   search_icon_gas_station,
   search_icon_hospital,
   search_icon_hotel,
+  search_icon_internet_bar,
   search_icon_mall,
   search_icon_market,
   search_icon_park,

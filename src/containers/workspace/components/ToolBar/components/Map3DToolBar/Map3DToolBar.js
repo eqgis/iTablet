@@ -12,6 +12,7 @@ import { SScene } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 
 export default class Map3DToolBar extends React.Component {
   props: {
@@ -126,7 +127,7 @@ export default class Map3DToolBar extends React.Component {
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                source={require('../../../../../../assets/mapToolbar/list_type_map_black.png')}
+                source={getThemeAssets().dataType.icon_map}
                 style={styles.baseMapImg}
               />
               <View style={styles.baseMapTitle}>
@@ -351,7 +352,7 @@ export default class Map3DToolBar extends React.Component {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              source={require('../../../../../../assets/mapToolbar/list_type_map_black.png')}
+              source={getThemeAssets().dataType.icon_map}
               style={styles.sceneItemImg}
             />
             <View style={styles.sceneItemcontent}>

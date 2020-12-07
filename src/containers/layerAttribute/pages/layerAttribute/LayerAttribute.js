@@ -1329,7 +1329,7 @@ export default class LayerAttribute extends React.Component {
   renderInfoView = ({ image, title }) => {
     return (
       <InfoView
-        image={image || getPublicAssets().attribute.info_no_attribute}
+        image={image || getThemeAssets().attribute.info_no_attribute}
         title={title}
       />
     )

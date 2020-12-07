@@ -3,7 +3,7 @@ import { DatasetType, ThemeType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 
 function getThemeAssets() {
-  let asset = {}
+  let asset
   switch (GLOBAL.ThemeType) {
     case AppThemeType.DARK_THEME:
       asset = require('./darkTheme').default

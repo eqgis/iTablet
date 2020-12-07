@@ -4,6 +4,7 @@ import {
   ToolbarType,
 } from '../../../src/constants'
 import { Toast } from '../../../src/utils'
+import { getThemeAssets } from '../../../src/assets'
 import ToolbarModule from '../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import ToolbarBtnType from '../../../src/containers/workspace/components/ToolBar/ToolbarBtnType'
 import { FunctionExampleTypes } from './index'
@@ -167,13 +168,13 @@ function openDataList() {
     image: require('../../../src/assets/mapToolbar/list_type_maps.png'),
     data: [{
       title: 'AAA',
-      image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+      image: getThemeAssets().dataType.icon_map,
     }, {
       title: 'BBB',
-      image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+      image: getThemeAssets().dataType.icon_map,
     }, {
       title: 'CCC',
-      image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+      image: getThemeAssets().dataType.icon_map,
       info: {
         infoType: 'mtime',
         lastModifiedDate: '2020/10/15 09:48:30',
@@ -184,10 +185,10 @@ function openDataList() {
     image: require('../../../src/assets/mapToolbar/list_type_maps.png'),
     data: [{
       title: 'DDD',
-      image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+      image: getThemeAssets().dataType.icon_map,
     }, {
       title: 'EEE',
-      image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+      image: getThemeAssets().dataType.icon_map,
     }],
   }]
   // setToolbarVisible 展示/切换 底部Toolbar，
@@ -205,10 +206,10 @@ function openDataTable() {
   // table数据格式数组
   const data = [{
     title: 'DDD',
-    image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+    image: getThemeAssets().dataType.icon_map,
   }, {
     title: 'EEE',
-    image: require('../../../src/assets/mapToolbar/list_type_map_black.png'),
+    image: getThemeAssets().dataType.icon_map,
   }]
   const buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
   // setToolbarVisible 展示/切换 底部Toolbar

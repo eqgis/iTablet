@@ -7,7 +7,7 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Tool3DAction from './Tool3DAction'
 import { SelectList } from './CustomViews'
-import { getPublicAssets } from '../../../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
 
 async function getData(type, params) {
   if (params) {
@@ -28,7 +28,7 @@ async function getData(type, params) {
           // '距离量算',
           action: Tool3DAction.measureDistance,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_analystLien.png'),
+          image: getThemeAssets().mapTools.icon_tool_spatial_distance,
         },
         {
           key: 'suerfaceMeasure',
@@ -37,7 +37,7 @@ async function getData(type, params) {
           // ''面积量算',
           action: Tool3DAction.measureArea,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_analystSuerface.png'),
+          image: getThemeAssets().mapTools.icon_tool_spacearea,
         },
         {
           key: 'action3d',
@@ -107,7 +107,7 @@ async function getData(type, params) {
           title: getLanguage(params.language).Map_Main_Menu.TOOLS_BOX_CLIP,
           action: Tool3DAction.boxClip,
           size: 'large',
-          image: require('../../../../../../assets/mapToolbar/icon_sence_box_clip.png'),
+          image: getThemeAssets().mapTools.icon_tool_box,
         })
       }
       break
@@ -122,7 +122,8 @@ async function getData(type, params) {
             params.setAttributes && params.setAttributes({})
           },
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
+          image: getThemeAssets().mapTools.icon_tool_cancel,
         },
       ]
       buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE]
@@ -161,8 +162,8 @@ async function getData(type, params) {
             SScene.startCircleFly()
           },
           size: 'large',
-          image: require('../../../../../../assets/mapEdit/icon_play.png'),
-          selectedImage: require('../../../../../../assets/mapEdit/icon_play.png'),
+          image: getThemeAssets().mapTools.icon_tool_play,
+          selectedImage: getThemeAssets().mapTools.icon_tool_play,
         },
       ]
       buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.FLEX]

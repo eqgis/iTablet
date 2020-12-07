@@ -13,6 +13,7 @@ import { TreeList } from '../../../../../../components'
 import NavigationService from '../../../../../NavigationService'
 import React from 'react'
 import { color } from '../../../../../../styles'
+import { getThemeAssets } from '../../../../../../assets'
 import { View } from 'react-native'
 import AddAction from './AddAction'
 
@@ -46,7 +47,7 @@ async function getUDBsAndMaps() {
 
   let mapData = await DataHandler.getLocalData(user, 'MAP')
   mapData.forEach(item => {
-    item.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+    item.image = getThemeAssets().dataType.icon_map
     item.info = {
       infoType: 'mtime',
       lastModifiedDate: item.mtime,
@@ -70,7 +71,7 @@ async function getUDBsAndMaps() {
         image = require('../../../../../../assets/map/icon-shallow-polygon_black.png')
         break
       default:
-        image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+        image = getThemeAssets().dataType.icon_map
         break
     }
     item.name = name

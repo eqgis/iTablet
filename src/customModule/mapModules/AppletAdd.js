@@ -16,8 +16,8 @@ export default class AppletAdd extends Module {
     return this.createChunk(language, {
       key: AppletAdd.key,
       title: getLanguage(language).Map_Module.APPLET_ADD,
-      moduleImage: getThemeAssets().nav.icon_map_add,
-      moduleImageTouch: getThemeAssets().nav.icon_map_3d_touch,
+      moduleImage: getThemeAssets().module.icon_map_add,
+      moduleImageTouch: getThemeAssets().module.icon_map_3d_touch,
       action: () => {
         NavigationService.navigate('AppletManagement')
       },

@@ -11,7 +11,7 @@ import {
   Image,
   View,
 } from 'react-native'
-import { getPublicAssets } from '../../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../../assets'
 import { ColorScheme } from '../../../../../components'
 import ToolbarModule from '../modules/ToolbarModule'
 
@@ -669,51 +669,6 @@ export default class ToolBarSectionList extends React.Component {
   getDatasetTypeImg = item => {
     let img
     switch (item.datasetType.toUpperCase()) {
-      // case 'POINT':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_point.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_point_black.png'))
-      //   break
-      // case 'LINE':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_line.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_line_black.png'))
-      //   break
-      // case 'REGION':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_region.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_region_black.png'))
-      //   break
-      // case 'TEXT':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_text.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_text_black.png'))
-      //   break
-      // case 'IMAGE':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_image.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_image_black.png'))
-      //   break
-      // case 'CAD':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_cad.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_cad_black.png'))
-      //   break
-      // case 'GRID':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_grid.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_grid_black.png'))
-      //   break
-      // case 'NETWORK':
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/dataset_type_network.png'))
-      //     : (img = require('../../../../assets/mapToolbar/dataset_type_network_black.png'))
-      //   break
-      // default:
-      //   item.isSelected
-      //     ? (img = require('../../../../assets/mapToolbar/list_type_map.png'))
-      //     : (img = require('../../../../assets/mapToolbar/list_type_map_black.png'))
-      //   break
       case 'POINT':
         img = require('../../../../../assets/mapToolbar/dataset_type_point_black.png')
         break
@@ -745,7 +700,7 @@ export default class ToolBarSectionList extends React.Component {
         img = require('../../../../../assets/mapToolbar/dataset_type_network_black.png')
         break
       default:
-        img = require('../../../../../assets/mapToolbar/list_type_map_black.png')
+        img = getThemeAssets().dataType.icon_map
         break
     }
     return img

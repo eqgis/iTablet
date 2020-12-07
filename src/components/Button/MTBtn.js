@@ -156,6 +156,7 @@ export default class MTBtn extends React.Component {
           {this.props.title && (
             <Text
               style={[
+                { marginTop: scaleSize(5) },
                 textStyle,
                 this.props.textStyle,
                 this.props.textColor && { color: this.props.textColor },
@@ -191,8 +192,8 @@ const styles = StyleSheet.create({
     width: scaleSize(60),
   },
   smallImage: {
-    height: scaleSize(60),
-    width: scaleSize(60),
+    height: scaleSize(55),
+    width: scaleSize(55),
   },
   largeText: {
     fontSize: size.fontSize.fontSizeMd,

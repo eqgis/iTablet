@@ -66,7 +66,7 @@ async function getSceneData() {
             element.mtime = info
           }
           element.subTitle = element.mtime
-          element.image = require('../../../../../../assets/mapToolbar/list_type_map_black.png')
+          element.image = getThemeAssets().dataType.icon_map
           if (element.name === GLOBAL.sceneName && !element.isOnlineScence) {
             element.rightView = (
               <View

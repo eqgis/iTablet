@@ -1,6 +1,6 @@
 import { DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { ChunkType } from '../../../../constants'
 
 function getGroupData(language) {
@@ -8,12 +8,12 @@ function getGroupData(language) {
     {
       title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
       // '全副显示图层',
-      image: require('../../../../assets/layerToolbar/layer_full.png'),
+      image: getThemeAssets().mapTools.icon_tool_full,
     },
     {
       title: getLanguage(language).Map_Layer.LAYERS_RENAME,
       // '重命名',
-      image: getPublicAssets().mapTools.tools_layer_rename,
+      image: getThemeAssets().layer.icon_layer_rename,
     },
     {
       title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
@@ -32,27 +32,31 @@ function layersetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        // image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        // image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_LAYER_STYLE,
         // '图层风格',
-        image: require('../../../../assets/function/icon_function_style.png'),
+        // image: require('../../../../assets/function/icon_function_style.png'),
+        image: getThemeAssets().layer.icon_layer_style,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        // image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       // {
       //   title: getLanguage(language).Map_Layer.LAYERS_MOVE_UP,
@@ -81,7 +85,7 @@ function layersetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
@@ -142,17 +146,17 @@ function layerThemeCreateSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_CREATE_THEMATIC_MAP,
@@ -162,17 +166,17 @@ function layerThemeCreateSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_LAYER_STYLE,
         // '图层风格',
-        image: require('../../../../assets/function/icon_function_style.png'),
+        image: getThemeAssets().layer.icon_layer_style,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
@@ -197,17 +201,17 @@ function layerThemeModifySetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_MODIFY_THEMATIC_MAP,
@@ -217,12 +221,12 @@ function layerThemeModifySetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
@@ -246,7 +250,7 @@ const layerSettingCanVisit = language => [
   {
     title: getLanguage(language).Map_Layer.VISIBLE,
     // 设置图层可见
-    image: require('../../../../assets/layerToolbar/layer_can_visible.png'),
+    image: getThemeAssets().layer.icon_layer_visible,
   },
 ]
 
@@ -254,62 +258,62 @@ const layerSettingCanNotVisit = language => [
   {
     title: getLanguage(language).Map_Layer.NOT_VISIBLE,
     // 设置图层不可见
-    image: require('../../../../assets/layerToolbar/layer_can_not_visible.png'),
+    image: getThemeAssets().layer.icon_layer_unvisible,
   },
 ]
 
 const layerSettingCanSelect = language => [
   {
     title: getLanguage(language).Map_Layer.OPTIONAL,
-    image: require('../../../../assets/map/Frenchgrey/icon_selectable_selected.png'),
+    image: getThemeAssets().layer.icon_layer_selectable,
   },
 ]
 
 const layerSettingCanNotSelect = language => [
   {
     title: getLanguage(language).Map_Layer.NOT_OPTIONAL,
-    image: require('../../../../assets/map/Frenchgrey/icon_selectable.png'),
+    image: getThemeAssets().layer.icon_layer_unselectable,
   },
 ]
 
 const layerSettingCanEdit = language => [
   {
     title: getLanguage(language).Map_Layer.EDITABLE,
-    image: require('../../../../assets/layerToolbar/layer_can_edit.png'),
+    image: getThemeAssets().layer.icon_layer_editable,
   },
 ]
 
 const layerSettingCanNotEdit = language => [
   {
     title: getLanguage(language).Map_Layer.NOT_EDITABLE,
-    image: require('../../../../assets/layerToolbar/layer_can_not_edit.png'),
+    image: getThemeAssets().layer.icon_layer_uneditable,
   },
 ]
 
 const layerSettingCanSnap = language => [
   {
     title: getLanguage(language).Map_Layer.SNAPABLE,
-    image: require('../../../../assets/layerToolbar/layer_can_catch.png'),
+    image: getThemeAssets().layer.icon_layer_snap,
   },
 ]
 
 const layerSettingCanNotSnap = language => [
   {
     title: getLanguage(language).Map_Layer.NOT_SNAPABLE,
-    image: require('../../../../assets/layerToolbar/layer_can_not_catch.png'),
+    image: getThemeAssets().layer.icon_layer_unsnap,
   },
 ]
 
 const layer3dDefault = (language, selected) => {
   let data = {
     title: getLanguage(language).Map_Layer.NOT_OPTIONAL,
-    image: require('../../../../assets/map/Frenchgrey/icon_selectable_selected.png'),
+    image: getThemeAssets().layer.icon_layer_selectable,
     type: 'setLayerSelect',
   }
   if (selected === false) {
     data = {
       title: getLanguage(language).Map_Layer.OPTIONAL,
-      image: require('../../../../assets/map/Frenchgrey/icon_selectable.png'),
+      image: getThemeAssets().layer.icon_layer_unselectable,
       type: 'setLayerSelect',
     }
   }
@@ -320,7 +324,7 @@ const layer3dDefault = (language, selected) => {
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
           title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
-          image: getPublicAssets().mapTools.tools_visible_scale_range,
+          image: getThemeAssets().layer.icon_layer_visible_scale,
           type: 'scaleToLayer',
         },
         data,
@@ -337,7 +341,7 @@ function layere3dImage(language) {
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
           title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
-          image: getPublicAssets().mapTools.tools_visible_scale_range,
+          image: getThemeAssets().layer.icon_layer_visible_scale,
           type: 'scaleToLayer',
         },
         {
@@ -367,7 +371,7 @@ function layere3dTerrain(language) {
         {
           // title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
           title: getLanguage(language).Map_Layer.SCALE_TO_CURRENT_LAYER,
-          image: getPublicAssets().mapTools.tools_visible_scale_range,
+          image: getThemeAssets().layer.icon_layer_visible_scale,
           type: 'scaleToLayer',
         },
         {
@@ -412,17 +416,17 @@ function taggingData(language) {
         {
           title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
           // '全副显示图层',
-          image: require('../../../../assets/layerToolbar/layer_full.png'),
+          image: getThemeAssets().mapTools.icon_tool_full,
         },
         {
           title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
           // '设置为当前图层',
-          image: getPublicAssets().mapTools.tools_set_current_layer,
+          image: getThemeAssets().layer.icon_layer_set_current,
         },
         {
           title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
           // '可见比例尺范围',
-          image: getPublicAssets().mapTools.tools_visible_scale_range,
+          image: getThemeAssets().layer.icon_layer_visible_scale,
         },
       ],
     },
@@ -438,27 +442,27 @@ function layerPlottingSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
     ]
   }
@@ -478,27 +482,27 @@ function layerNavigationSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
@@ -523,17 +527,17 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
         // '全副显示图层',
-        image: require('../../../../assets/layerToolbar/layer_full.png'),
+        image: getThemeAssets().mapTools.icon_tool_full,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
         // '设置为当前图层',
-        image: getPublicAssets().mapTools.tools_set_current_layer,
+        image: getThemeAssets().layer.icon_layer_set_current,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
         // '可见比例尺范围',
-        image: getPublicAssets().mapTools.tools_visible_scale_range,
+        image: getThemeAssets().layer.icon_layer_visible_scale,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_COLLECT,
@@ -543,12 +547,12 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,
         // '重命名',
-        image: getPublicAssets().mapTools.tools_layer_rename,
+        image: getThemeAssets().layer.icon_layer_rename,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_SHARE,
         // '分享图层',
-        image: require('../../../../assets/function/icon_function_share.png'),
+        image: getThemeAssets().nav.icon_nav_share,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,

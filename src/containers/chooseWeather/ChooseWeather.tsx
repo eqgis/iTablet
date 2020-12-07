@@ -149,7 +149,7 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
   getStatus = async () => {
     if (this.state.status !== 2) {
       let progress = this.getDownloadProgress()
-      if (progress > 0) {
+      if (progress >= 0) {
         this.setState({
           status: 3,
         })

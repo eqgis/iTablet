@@ -25,8 +25,6 @@ export default class RenderFindItem extends Component {
     super(props)
     this.path = undefined
     this.exist = false
-    this.downloading = false
-    this.downloadingPath = false
     this.titleName = ''
     if (this.props.data.fileName) {
       let index = this.props.data.fileName.lastIndexOf('.')
@@ -38,79 +36,174 @@ export default class RenderFindItem extends Component {
     this.state = {
       progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
       // '下载',
-      isDownloading: false,
+      isDownloading: 0,//0 未下载，1 下载中，2 已完成
     }
-
+    // debugger
     this.unZipFile = this.unZipFile.bind(this)
+    this.timer = null
   }
 
-  async componentDidMount() {
-    this.path =
-      (await FileTools.getHomeDirectory()) +
-      ConstPath.UserPath +
-      this.props.user.currentUser.userName +
-      '/' +
-      ConstPath.RelativePath.Temp +
-      this.props.data.fileName
-
-    this.downloadingPath =
-      (await FileTools.getHomeDirectory()) +
-      ConstPath.UserPath +
-      this.props.user.currentUser.userName +
-      '/' +
-      ConstPath.RelativePath.Temp +
-      this.props.data.MD5
-
-    this.exist = false
-    let exist = await FileTools.fileIsExist(this.downloadingPath + '_')
-    if (exist) {
-      this.exist = true
-      this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
-        //'下载完成',
-        isDownloading: false,
-      })
+   /**
+   * 获取下载进度
+   * @returns {Number} 下载进度，1-100。未下载时返回-1
+   */
+  getDownloadProgress = () => {
+    let downloads = this.props.downloads
+    if (downloads.length > 0) {
+      for (let i = 0; i < downloads.length; i++) {
+        if (
+          downloads[i].id === this.props.data.MD5 &&
+          !downloads[i].downloaded
+        ) {
+          return downloads[i].progress
+        }
+      }
     }
-
-    //检测是否下载完成
-    exist = await FileTools.fileIsExist(this.downloadingPath)
-    if (exist) {
-      this.downloading = true
-      let timer = setInterval(async () => {
-        exist = await FileTools.fileIsExist(this.downloadingPath + '_')
-        if (exist) {
-          clearInterval(timer)
-          this.exist = true
+    return -1
+  }
+  /** 获取并设置此特效的状态 */
+  getStatus = async () => {
+      let progress = this.getDownloadProgress()
+      if (progress >= 0) {//下载中
+        this.setState({
+          progress: progress+'%',
+          isDownloading: 1,
+        })
+        this.addDownloadListener()
+      } else {
+        // debugger
+        this.exist = await FileTools.fileIsExist(this.path)
+        if (this.exist) {//文件存在，下载完成
           this.setState({
             progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
-            //'下载完成',
-            isDownloading: false,
+            isDownloading: 2,
           })
-        } else {
-          let result = await RNFS.readFile(this.downloadingPath)
+        }else{//文件不存在，可以下载
           this.setState({
-            progress: result,
-            //'下载完成',
-            isDownloading: true,
+            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+            isDownloading: 0,
           })
         }
-      }, 2000)
+      }
+  }
+  /** 下载完成监听 */
+  addDownloadListener = () => {
+    this.timer = setInterval(() => {
+      
+      let progress = this.getDownloadProgress()
+      if (progress >= 0) {//下载中
+        this.setState({
+          progress: progress+'%',
+          isDownloading: 1,
+        })
+      }else{
+        let downloaded = false
+        let downloads = this.props.downloads
+        if (downloads.length > 0) {
+          for (let i = 0; i < downloads.length; i++) {
+            if (downloads[i].id === this.props.data.MD5) {
+              downloaded = downloads[i].downloaded
+              break
+            }
+          }
+        }
+        if (downloaded) {
+          this.setState({
+            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+            isDownloading: 2,
+          })
+          this.removeDownloadListner()
+          this.unZipFile()
+        }
+      }
+    }, 2000)
+  }
+  /** 移除下载监听 */
+  removeDownloadListner() {
+    if (this.timer !== null) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+  }
+  componentWillUnmount() {
+    this.removeDownloadListner()
+  }
+  async componentDidMount() {
+
+    this.path =
+    (await FileTools.getHomeDirectory()) +
+    ConstPath.UserPath +
+    this.props.user.currentUser.userName +
+    '/' +
+    ConstPath.RelativePath.Temp +
+    this.props.data.fileName
+
+    this.getStatus()
+  }
+
+  _downloadFile = async () => {
+    if (this.exist) {
+      await this.unZipFile()
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      return
+    }
+    if (
+      this.props.user &&
+      this.props.user.currentUser &&
+      (this.props.user.currentUser.userType === UserType.PROBATION_USER ||
+        (this.props.user.currentUser.userName &&
+          this.props.user.currentUser.userName !== ''))
+    ) {
+      if (this.state.isDownloading == 1) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+        //'正在下载...')
+        return
+      }
       this.setState({
         progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
-        //'下载完成',
-        isDownloading: true,
+        isDownloading: 1,
       })
-    }
+      // RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
-    // this.titleName = ''
-    // if (this.props.data.fileName) {
-    //   let index = this.props.data.fileName.lastIndexOf('.')
-    //   this.titleName =
-    //     index === -1
-    //       ? this.props.data.fileName
-    //       : this.props.data.fileName.substring(0, index)
-    // }
+      let dataId = this.props.data.id
+      let dataUrl =
+        'https://www.supermapol.com/web/datas/' + dataId + '/download'
+      const downloadOptions = {
+        fromUrl: dataUrl,
+        toFile: this.path,
+        background: true,
+        key:this.props.data.MD5
+      }
+      
+
+      try {
+        this.props.downloadFile(downloadOptions)
+        this.addDownloadListener()
+      } catch (e) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+        FileTools.deleteFile(this.path)
+        this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: 0 })
+      }
+    } else {
+      Toast.show('登录后可下载')
+    }
   }
+
+  async unZipFile() {
+    let appHome = await FileTools.appendingHomeDirectory()
+
+    let fileDir =
+      appHome +
+      ConstPath.ExternalData + '/' +
+      this.titleName
+    let exists = await RNFS.exists(fileDir)
+    if (!exists) {
+      await RNFS.mkdir(fileDir)
+    }
+    let result = await FileTools.unZipFile(this.path, fileDir)
+    return result
+  }
+
   _navigator = uri => {
     NavigationService.navigate('MyOnlineMap', {
       uri: uri,
@@ -129,100 +222,6 @@ export default class RenderFindItem extends Component {
       let info = this.props.data.type + '数据无法浏览'
       Toast.show(info)
     }
-  }
-  _downloadFile = async () => {
-    if (this.exist) {
-      await this.unZipFile()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
-      return
-    }
-    if (
-      this.props.user &&
-      this.props.user.currentUser &&
-      (this.props.user.currentUser.userType === UserType.PROBATION_USER ||
-        (this.props.user.currentUser.userName &&
-          this.props.user.currentUser.userName !== ''))
-    ) {
-      if (this.state.isDownloading) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
-        //'正在下载...')
-        return
-      }
-      this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
-        isDownloading: true,
-      })
-      RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
-
-      let dataId = this.props.data.id
-      let dataUrl =
-        'https://www.supermapol.com/web/datas/' + dataId + '/download'
-      const downloadOptions = {
-        fromUrl: dataUrl,
-        toFile: this.path,
-        background: true,
-        progress: res => {
-          let value = ~~res.progress.toFixed(0)
-          let progress = value + '%'
-          if (this.state.progress !== progress) {
-            this.setState({ progress })
-          }
-          RNFS.writeFile(this.downloadingPath, progress, 'utf8')
-        },
-      }
-      try {
-        const ret = RNFS.downloadFile(downloadOptions)
-        ret.promise
-          .then(async () => {
-            this.setState({
-              progress: getLanguage(GLOBAL.language).Prompt
-                .DOWNLOAD_SUCCESSFULLY,
-              //'下载完成',
-              isDownloading: false,
-            })
-            let result = await this.unZipFile()
-            if (result === false) {
-              Toast.show('网络数据已损坏，无法正常使用')
-            } else {
-              this.exist = true
-            }
-            FileTools.deleteFile(this.downloadingPath)
-            RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
-          })
-          .catch(() => {
-            Toast.show('下载失败')
-            FileTools.deleteFile(this.path)
-            this.setState({ progress: '下载', isDownloading: false })
-          })
-      } catch (e) {
-        Toast.show('网络错误')
-        FileTools.deleteFile(this.path)
-        this.setState({ progress: '下载', isDownloading: false })
-      }
-    } else {
-      Toast.show('登录后可下载')
-    }
-  }
-
-  async unZipFile() {
-    let appHome = await FileTools.appendingHomeDirectory()
-    // let userName =
-    //   this.props.user.currentUser.userType === UserType.PROBATION_USER
-    //     ? 'Customer'
-    //     : this.props.user.currentUser.userName
-    let fileDir =
-      appHome +
-      ConstPath.ExternalData + '/' +
-      this.titleName
-    let exists = await RNFS.exists(fileDir)
-    if (!exists) {
-      await RNFS.mkdir(fileDir)
-    }
-    let result = await FileTools.unZipFile(this.path, fileDir)
-    if (!result) {
-      FileTools.deleteFile(this.path)
-    }
-    return result
   }
   render() {
     let date = new Date(this.props.data.lastModfiedTime)

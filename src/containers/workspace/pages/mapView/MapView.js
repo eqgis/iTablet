@@ -102,6 +102,7 @@ import IncrementData from '../../components/ToolBar/modules/incrementModule/Incr
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
+import { Bar } from 'react-native-progress'
 
 GLOBAL.markerTag = 118082
 
@@ -478,11 +479,11 @@ export default class MapView extends React.Component {
             cb: () => {
               if (
                 this.props.analyst.params.type ===
-                  ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH ||
+                ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH ||
                 this.props.analyst.params.type ===
-                  ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
+                ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS ||
                 this.props.analyst.params.type ===
-                  ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
+                ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
               ) {
                 this.container && this.container.setHeaderVisible(false)
               } else {
@@ -539,7 +540,7 @@ export default class MapView extends React.Component {
     if (
       this.props.downloads.length > 0 &&
       JSON.stringify(this.props.downloads) !==
-        JSON.stringify(prevProps.downloads)
+      JSON.stringify(prevProps.downloads)
     ) {
       let data
       for (let i = 0; i < this.props.downloads.length; i++) {
@@ -563,7 +564,7 @@ export default class MapView extends React.Component {
     }
 
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      (async function() {
+      (async function () {
         let currentFloorID = await SMap.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.navigation.state
@@ -613,12 +614,12 @@ export default class MapView extends React.Component {
       Orientation.unlockAllOrientations()
     }
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
-      (async function() {
+      (async function () {
         SAIDetectView.dispose()
       })()
     }
     if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-      (async function() {
+      (async function () {
         SMap.destroySpeakPlugin()
       })()
     }
@@ -684,7 +685,7 @@ export default class MapView extends React.Component {
                 info.indexOf('locate') !== -1 ||
                 info.indexOf('location') !== -1
               ) {
-                (async function() {
+                (async function () {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     // 定位到当前位置
@@ -758,7 +759,7 @@ export default class MapView extends React.Component {
           )
         }
         await SMap.indoorNavigation(1)
-        this.FloorListView?.setVisible(true)
+        this.FloorListView ?.setVisible(true)
         GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
       } else {
         await SMap.startNavigation(params)
@@ -771,7 +772,7 @@ export default class MapView extends React.Component {
             )
           }
           await SMap.outdoorNavigation(1)
-          this.FloorListView?.setVisible(false)
+          this.FloorListView ?.setVisible(false)
           SMap.setCurrentFloorID('')
           GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
@@ -872,10 +873,10 @@ export default class MapView extends React.Component {
     this.props.setTemplate() // 清空模板
   }
 
-  closeWorkspace = (cb = () => {}) => {
+  closeWorkspace = (cb = () => { }) => {
     if (!this.map || !this.mapControl || !this.workspace) return
     this.saveLatest(
-      async function() {
+      async function () {
         this.setLoading(true, '正在关闭', { bgColor: 'white' })
         this.clearData()
         this._removeGeometrySelectedListener()
@@ -885,7 +886,7 @@ export default class MapView extends React.Component {
     )
   }
 
-  saveLatest = (cb = () => {}) => {
+  saveLatest = (cb = () => { }) => {
     if (this.isExample) {
       cb()
       return
@@ -1126,7 +1127,7 @@ export default class MapView extends React.Component {
 
   // 删除图层中指定对象
   removeObject = () => {
-    (async function() {
+    (async function () {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
@@ -1257,7 +1258,7 @@ export default class MapView extends React.Component {
 
   /** 加载地图，mapview加载完成后调用 */
   _addMap = () => {
-    (async function() {
+    (async function () {
       try {
         let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
@@ -1316,7 +1317,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-              GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1328,15 +1329,15 @@ export default class MapView extends React.Component {
             (this.props.user.currentUser.userName || 'Customer')}/`
           const fillLibPath = await FileTools.appendingHomeDirectory(
             `${userPath +
-              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
           )
           const lineLibPath = await FileTools.appendingHomeDirectory(
             `${userPath +
-              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
           )
           const markerLibPath = await FileTools.appendingHomeDirectory(
             `${userPath +
-              ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
+            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
           )
           await SMap.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
           await SMap.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
@@ -1350,10 +1351,10 @@ export default class MapView extends React.Component {
           )
           let plotIconPath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath +
-              this.props.user.currentUser.userName +
-              '/' +
-              ConstPath.RelativePath.Plotting +
-              'PlotLibData',
+            this.props.user.currentUser.userName +
+            '/' +
+            ConstPath.RelativePath.Plotting +
+            'PlotLibData',
           )
           await this.props.getSymbolPlots({
             path: plotIconPath,
@@ -1469,13 +1470,13 @@ export default class MapView extends React.Component {
           currentDatasource: [], //当前使用的数据源
           currentDataset: {}, //当前使用的数据集
         }
-        ;(async function () {
-          //防止退出时没有清空
-          await SMap.removeUserCallout()
-          await SMap.clearUserTrack()
+          ; (async function () {
+            //防止退出时没有清空
+            await SMap.removeUserCallout()
+            await SMap.clearUserTrack()
 
-          this.startCowork()
-        }.bind(this)())
+            this.startCowork()
+          }.bind(this)())
 
         this.mapLoaded = true
       } catch (e) {
@@ -1613,9 +1614,9 @@ export default class MapView extends React.Component {
     if (this.props.user.currentUser.userName) {
       collectorDSPath = await FileTools.appendingHomeDirectory(
         ConstPath.UserPath +
-          this.props.user.currentUser.userName +
-          '/' +
-          ConstPath.RelativePath.Datasource,
+        this.props.user.currentUser.userName +
+        '/' +
+        ConstPath.RelativePath.Datasource,
       )
     } else {
       collectorDSPath = await FileTools.appendingHomeDirectory(
@@ -1642,7 +1643,7 @@ export default class MapView extends React.Component {
    * 下方的保存地图提示组建
    * @param visible
    */
-  setSaveViewVisible = (visible, setLoading, cb = () => {}) => {
+  setSaveViewVisible = (visible, setLoading, cb = () => { }) => {
     // this.SaveMapView && this.SaveMapView.setVisible(visible)
     let loadingAction = this.setLoading
     if (setLoading && typeof setLoading === 'function') {
@@ -1779,11 +1780,11 @@ export default class MapView extends React.Component {
   renderAnalystMapButtons = () => {
     if (
       this.props.analyst.params.type !==
-        ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH &&
+      ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH &&
       this.props.analyst.params.type !==
-        ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS &&
+      ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS &&
       this.props.analyst.params.type !==
-        ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
+      ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH
     )
       return null
     return (
@@ -1994,7 +1995,7 @@ export default class MapView extends React.Component {
 
   /** 展示撤销Modal **/
   showUndoView = () => {
-    (async function() {
+    (async function () {
       this.popModal && this.popModal.setVisible(true)
       let historyCount = await SMap.getMapHistoryCount()
       let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
@@ -2015,7 +2016,7 @@ export default class MapView extends React.Component {
    */
   captureImage = params => {
     //保存数据->跳转
-    (async function() {
+    (async function () {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
       let isTaggingLayer = false
@@ -2030,9 +2031,9 @@ export default class MapView extends React.Component {
         const datasetName = currentLayer.datasetName // 标注图层名称
         let targetPath = await FileTools.appendingHomeDirectory(
           ConstPath.UserPath +
-            this.props.user.currentUser.userName +
-            '/' +
-            ConstPath.RelativeFilePath.Media,
+          this.props.user.currentUser.userName +
+          '/' +
+          ConstPath.RelativeFilePath.Media,
         )
         SMediaCollector.initMediaCollector(targetPath)
 
@@ -2045,8 +2046,8 @@ export default class MapView extends React.Component {
           this.switchAr()
           Toast.show(
             params.mediaName +
-              ':' +
-              getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
+            ':' +
+            getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
           )
         }
       } else {
@@ -2157,7 +2158,7 @@ export default class MapView extends React.Component {
    * 开启动态投影弹框的确定事件
    */
   confirm = () => {
-    (async function() {
+    (async function () {
       let result = await SMap.setDynamicProjection()
       if (result) {
         GLOBAL.prjDialog.setDialogVisible(false)
@@ -2182,7 +2183,7 @@ export default class MapView extends React.Component {
         confirmBtnTitle={getLanguage(this.props.language).Prompt.TURN_ON}
         //{'是'}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.NO}
-        //{'否'}
+      //{'否'}
       />
     )
   }
@@ -2207,15 +2208,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeUndo) return
-            ;(async function() {
-              await SMap.undo()
-              let historyCount = await SMap.getMapHistoryCount()
-              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-              this.setState({
-                canBeUndo: currentHistoryCount >= 0,
-                canBeRedo: currentHistoryCount < historyCount - 1,
-              })
-            }.bind(this)())
+              ; (async function () {
+                await SMap.undo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
           }}
         />
         <MTBtn
@@ -2232,15 +2233,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeRedo) return
-            ;(async function() {
-              await SMap.redo()
-              let historyCount = await SMap.getMapHistoryCount()
-              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-              this.setState({
-                canBeUndo: currentHistoryCount >= 0,
-                canBeRedo: currentHistoryCount < historyCount - 1,
-              })
-            }.bind(this)())
+              ; (async function () {
+                await SMap.redo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
           }}
         />
         {/*<MTBtn*/}
@@ -2433,15 +2434,52 @@ export default class MapView extends React.Component {
       } else {
         info = buttonInfos[i]
       }
-      info &&
-        buttons.push(
-          <MTBtn
-            key={info.key}
-            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-            image={info.image}
-            onPress={info.action}
-          />,
-        )
+      if (buttonInfos[i] === MapHeaderButton.Share) {
+        info &&
+          buttons.push(
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <MTBtn
+                key={info.key}
+                imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+                image={info.image}
+                onPress={info.action}
+              />
+
+              {this.props.online.share[0] &&
+                GLOBAL.Type === this.props.online.share[0].module &&
+                this.props.online.share[0].progress !== undefined && (
+                  <Bar
+                    style={{
+                      width: scaleSize(size), height: 2, borderWidth: 0,
+                      backgroundColor: 'black', top: scaleSize(4)
+                    }}
+                    progress={
+                      this.props.online.share[this.props.online.share.length - 1]
+                        .progress
+                    }
+                    width={scaleSize(60)}
+                  />
+                )}
+            </View>
+
+          )
+      } else {
+        info &&
+          buttons.push(
+            <MTBtn
+              key={info.key}
+              imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+              image={info.image}
+              onPress={info.action}
+            />,
+          )
+      }
     }
     if (GLOBAL.coworkMode && this.state.onlineCowork) {
       buttons.push(
@@ -2590,7 +2628,7 @@ export default class MapView extends React.Component {
             }, Const.ANIMATED_DURATION)
           }}
           activeOpacity={0.5}
-          // separator={scaleSize(2)}
+        // separator={scaleSize(2)}
         />
       </View>
     )
@@ -2737,7 +2775,7 @@ export default class MapView extends React.Component {
         }}
         mapLoaded={this.mapLoaded}
         language={this.props.language}
-        // showModelList={this.showModelList}
+      // showModelList={this.showModelList}
       />
     )
   }
@@ -3285,14 +3323,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-          <RNLegendView
-            setMapLegend={this.props.setMapLegend}
-            legendSettings={this.props.mapLegend}
-            device={this.props.device}
-            language={this.props.language}
-            ref={ref => (GLOBAL.legend = ref)}
-          />
-        )}
+            <RNLegendView
+              setMapLegend={this.props.setMapLegend}
+              legendSettings={this.props.mapLegend}
+              device={this.props.device}
+              language={this.props.language}
+              ref={ref => (GLOBAL.legend = ref)}
+            />
+          )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
@@ -3301,18 +3339,18 @@ export default class MapView extends React.Component {
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
+            <SMAIDetectView
+              style={
+                screen.isIphoneX() && {
+                  paddingBottom: screen.getIphonePaddingBottom(),
+                }
               }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
-            language={this.props.language}
-            // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-            onArObjectClick={this._onArObjectClick}
-          />
-        )}
+              customStyle={this.state.showAIDetect ? null : styles.hidden}
+              language={this.props.language}
+              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+              onArObjectClick={this._onArObjectClick}
+            />
+          )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}

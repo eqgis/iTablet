@@ -38,7 +38,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: 80,
     height: 80,
-    bottom: Const.BOTTOM_HEIGHT+scaleSize(40)+60,
+    bottom: Const.BOTTOM_HEIGHT+scaleSize(40)+scaleSize(110),
     left: '50%',
     marginLeft: -40,
     // backgroundColor: 'white',

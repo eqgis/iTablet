@@ -36,7 +36,7 @@ async function getData(type, params) {
         {
           type: constants.REDO,
           action: MarkAction.redo,
-          image: getThemeAssets().edit.icon_recover_white,
+          image: require('../../../../../../assets/mapTools/icon_recover_white.png'),
         },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]

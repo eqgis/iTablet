@@ -142,7 +142,7 @@ class ManageGroup extends Component {
   renderSettings = () => {
     return (
       <ScrollView>
-        {!this.state.coworkMode && !this.chat.action && (
+        {/* {!this.state.coworkMode && !this.chat.action && (
           <TouchableItemView
             //地图协作
             image={getThemeAssets().friend.friend_map}
@@ -164,7 +164,7 @@ class ManageGroup extends Component {
               // this.chat.setCoworkMode(false)
             }}
           />
-        ) : null}
+        ) : null} */}
         <TouchableItemView
           //发消息
           image={getThemeAssets().friend.new_chat}

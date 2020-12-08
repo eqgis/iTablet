@@ -18,18 +18,19 @@ import { scaleSize, dataUtil } from '../../utils'
 
 export default class InputDialog extends PureComponent {
   props: {
-    confirmAction: () => {},
-    cancelAction: () => {},
-    workspace: boolean,
-    placeholder: string,
-    title: string,
-    label: string,
-    value: string,
-    defaultValue: string,
-    keyboardAppearance: string,
-    returnKeyType: string,
-    confirmBtnTitle: string,
-    cancelBtnTitle: string,
+    confirmAction?: (data?: any) => void,
+    cancelAction?: (data?: any) => void,
+    placeholder?: string,
+    title?: string,
+    label?: string,
+    value?: string,
+    defaultValue?: string,
+    keyboardAppearance?: string,
+    returnKeyType?: string,
+    confirmBtnTitle?: string,
+    cancelBtnTitle?: string,
+    legalCheck?: boolean,
+    multiline?: boolean,
   }
 
   static defaultProps = {
@@ -40,6 +41,8 @@ export default class InputDialog extends PureComponent {
     placeholder: '',
     confirmBtnTitle: '是',
     cancelBtnTitle: '否',
+    legalCheck: true,
+    multiline: false,
   }
 
   constructor(props) {
@@ -88,7 +91,7 @@ export default class InputDialog extends PureComponent {
   }
 
   confirm = () => {
-    if (!this.state.isLegalName) return
+    if (this.props.legalCheck && !this.state.isLegalName) return
     if (this.params.confirmAction) {
       this.params.confirmAction(this.state.value)
     } else if (this.props.confirmAction) {
@@ -117,21 +120,28 @@ export default class InputDialog extends PureComponent {
           accessibilityLabel={
             this.props.placeholder ? this.props.placeholder : '输入框'
           }
-          style={styles.input}
+          multiline={this.props.multiline}
+          style={[styles.input, this.props.multiline && {textAlign: 'left', paddingHorizontal: scaleSize(8)}]}
           placeholder={this.state.placeholder}
           underlineColorAndroid="transparent"
           placeholderTextColor={color.themePlaceHolder}
           value={this.state.value + ''}
           onChangeText={text => {
-            let { result, error } = dataUtil.isLegalName(text, GLOBAL.language)
-            this.setState({
-              isLegalName: result,
-              errorInfo: error,
-              value: text,
-            })
+            if (this.props.legalCheck) {
+              let { result, error } = dataUtil.isLegalName(text, GLOBAL.language)
+              this.setState({
+                isLegalName: result,
+                errorInfo: error,
+                value: text,
+              })
+            } else {
+              this.setState({
+                value: text,
+              })
+            }
           }}
           keyboardAppearance={this.props.keyboardAppearance}
-          returnKeyType={this.props.returnKeyType}
+          returnKeyType={this.props.multiline ? 'next' : this.props.returnKeyType}
         />
       </View>
     )
@@ -143,12 +153,12 @@ export default class InputDialog extends PureComponent {
         ref={ref => (this.dialog = ref)}
         title={this.props.title}
         // style={{ height: scaleSize(250) }}
-        opacityStyle={{ height: scaleSize(250) }}
+        // opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
         confirmBtnTitle={this.props.confirmBtnTitle}
         cancelBtnTitle={this.props.cancelBtnTitle}
-        confirmBtnDisable={!this.state.isLegalName}
+        confirmBtnDisable={this.props.legalCheck && !this.state.isLegalName}
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
@@ -156,7 +166,7 @@ export default class InputDialog extends PureComponent {
         >
           {this.renderInput()}
           <View style={styles.errorView}>
-            {!this.state.isLegalName && this.state.errorInfo && (
+            { this.props.legalCheck && !this.state.isLegalName && this.state.errorInfo && (
               <Text numberOfLines={2} style={styles.errorInfo}>
                 {this.state.errorInfo}
               </Text>

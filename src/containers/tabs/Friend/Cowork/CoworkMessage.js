@@ -7,7 +7,7 @@ import { getPublicAssets } from '../../../../assets'
 import { color } from '../../../../styles'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
-import MsgConstant from '../MsgConstant'
+import MsgConstant from '../../../../constants/MsgConstant'
 import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
 

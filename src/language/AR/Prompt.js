@@ -28,6 +28,7 @@ const Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'تم',
   DOWNLOAD_FAILED: 'فشل فى التنزيل',
   UNZIPPING: 'فك الضغط',
+  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
 
   NO_REMINDER: 'لا يوجد تذكير',
 

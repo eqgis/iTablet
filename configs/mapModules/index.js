@@ -3,6 +3,7 @@ import * as AppModule from '../../src/customModule/mapModules'
 
 /** 自定义模块 **/
 // import MapExample from './MapExample'
+// import TourModule from './TourModule'
 
 /** export顺序为首页模块显示顺序 **/
 const mapModules = [
@@ -17,6 +18,7 @@ const mapModules = [
   AppModule.MapPlottingConfig,
   AppModule.MapAnalystConfig,
   // MapExample,
+  // TourModule,
 ]
 
 export default (function () {

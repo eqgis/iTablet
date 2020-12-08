@@ -35,6 +35,8 @@ import {
 /** 自定义相关预留字段 **/
 import { AppTabs, ChunkType, MapTabs, MapHeaderButton } from './custom'
 
+import MsgConstant from './MsgConstant'
+
 export {
   ConstPath,
   ConstOnline,
@@ -68,4 +70,5 @@ export {
   AppTabs,
   MapTabs,
   MapHeaderButton,
+  MsgConstant,
 }

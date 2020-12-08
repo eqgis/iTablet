@@ -8,7 +8,7 @@ import { getThemeAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
 import FriendListFileHandle from '../FriendListFileHandle'
 import MessageDataHandle from '../MessageDataHandle'
-import MsgConstant from '../MsgConstant'
+import { MsgConstant } from '../../../../constants'
 import { SMessageService } from 'imobile_for_reactnative'
 import { SimpleDialog } from '../index'
 

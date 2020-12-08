@@ -3,6 +3,7 @@ export default {
   MSG_SINGLE: 1, // 单人消息
   MSG_GROUP: 2, // 群组消息
   MSG_COWORK: 3, // 协作消息
+  MSG_ONLINE_GROUP: 4, // 在线群组消息
 
   MSG_ADD_FRIEND: 901, // 添加好友
   MSG_DEL_FRIEND: 902, // 删除好友关系
@@ -35,4 +36,12 @@ export default {
   MSG_COWORK_ADD: 12, // 添加对象
   MSG_COWORK_DELETE: 13, // 删除对象
   MSG_COWORK_UPDATE: 14, // 更新对象
+
+  // MSG_ONLINE_GROUP 中message的type
+  /** 群组申请消息 */
+  MSG_ONLINE_GROUP_APPLY: 1,
+  /** 群组任务消息 */
+  MSG_ONLINE_GROUP_TASK: 2,
+  /** 邀请加入群组消息 */
+  MSG_ONLINE_MEMBER_INVITE: 3,
 }

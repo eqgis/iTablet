@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native'
 import { scaleSize } from '../../../../utils/screen'
-import MSGConstant from '../MsgConstant'
+import MSGConstant from '../../../../constants/MsgConstant'
 import CoworkInviteView from '../Cowork/CoworkInviteView'
 
 export default class CustomView extends React.Component {
@@ -227,7 +227,7 @@ export default class CustomView extends React.Component {
           time: this.props.currentMessage.originMsg.time,
           talkId: this.props.currentMessage.originMsg.user.groupId,
         }
-        return <CoworkInviteView data={info} />
+        return <CoworkInviteView data={info} style={styles.item} />
       } else {
         return this.renderUnsupported()
       }
@@ -278,6 +278,10 @@ const styles = StyleSheet.create({
   //   margin: 3,
   //   backgroundColor:'red',
   // },
+  item: {
+    padding: scaleSize(20),
+    width: scaleSize(500),
+  },
 })
 
 CustomView.defaultProps = {

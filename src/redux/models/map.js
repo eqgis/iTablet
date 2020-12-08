@@ -210,8 +210,6 @@ export const closeMap = (cb = () => {}) => async dispatch => {
     })
     cb && cb()
   } catch (e) {
-
-    console.warn(6)
     cb && cb()
   }
 }
@@ -317,6 +315,10 @@ export const exportWorkspace = (params, cb = () => {}) => async (
     await FileTools.deleteFile(parentPath)
     isExporting = false
     cb && cb(exportResult && zipResult, zipPath)
+    return {
+      result: exportResult && zipResult,
+      zipPath,
+    }
   } catch (e) {
     isExporting = false
     if (!exportResult) {
@@ -326,6 +328,10 @@ export const exportWorkspace = (params, cb = () => {}) => async (
       Toast.show(ConstInfo.ZIP_FAILED)
     }
     cb && cb(exportResult && zipResult, '')
+    return {
+      result: exportResult && zipResult,
+      zipPath: '',
+    }
   }
 }
 

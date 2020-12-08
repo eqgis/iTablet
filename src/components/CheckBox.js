@@ -10,7 +10,7 @@ import { getPublicAssets } from '../assets'
 
 export default class CheckBox extends React.Component {
   props: {
-    onChange: () => {},
+    onChange: (boolean) => void,
     style?: Object,
     imgStyle?: Object,
     disable?: boolean,

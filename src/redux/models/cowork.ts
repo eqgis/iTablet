@@ -9,7 +9,8 @@ export const ADD_COWORK_INVITE = 'ADD_COWORK_INVITE'
 export const DELETE_COWORK_INVITE = 'DELETE_COWORK_INVITE'
 export const COWORK_GROUP_MSG_ADD = 'COWORK_GROUP_MSG_ADD'
 export const COWORK_GROUP_APPLY = 'COWORK_GROUP_APPLY'
-export const COWORK_GROUP_TASK_ADD = 'COWORK_GROUP_TASK_ADD'
+export const COWORK_GROUP_SET = 'COWORK_GROUP_SET'
+export const COWORK_GROUP_EXIT = 'COWORK_GROUP_EXIT'
 
 // export interface Task {
 // }
@@ -41,6 +42,11 @@ export const deleteInvite = (params = {}, cb = () => {}) => async (dispatch: (ar
   cb && cb()
 }
 
+/**
+ * 添加群组/任务消息
+ * @param params 
+ * @param cb 
+ */
 export const addCoworkMsg = (params = {}, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   await dispatch({
@@ -51,10 +57,32 @@ export const addCoworkMsg = (params = {}, cb?: () => {}) => async (dispatch: (ar
   cb && cb()
 }
 
-export const addCoworkTask = (params = {}, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+/**
+ * 保存在线群组
+ * @param params Array<any>
+ * @param cb () => {}
+ */
+export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
   await dispatch({
-    type: COWORK_GROUP_TASK_ADD,
+    type: COWORK_GROUP_SET,
     payload: params,
+    userId: userId,
+  })
+  cb && cb()
+}
+
+/**
+ * 退出协作群组，删除groups和tasks中的数据
+ * @param params {groupID: number | string}
+ * @param cb () => {}
+ */
+export const exitGroup = (params: {groupID: number | string}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  await dispatch({
+    type: COWORK_GROUP_EXIT,
+    payload: params,
+    userId: userId,
   })
   cb && cb()
 }
@@ -63,6 +91,7 @@ const initialState = fromJS({
   invites: [],
   messages: {},
   tasks: {},
+  groups: {},
 })
 
 export default handleActions(
@@ -142,27 +171,27 @@ export default handleActions(
         return state.setIn(['tasks'], fromJS(allTask))
       }
     },
-    // [`${COWORK_GROUP_TASK_ADD}`]: (state: any, { payload }: any) => {
-    //   let tasks: any = state.toJS().tasks || []
-    //   let task
-    //   for (let i = 0; i < tasks.length; i++) {
-    //     let _task = tasks[i]
-    //     // 修改已有消息的状态
-    //     if (
-    //       payload.id === _task.id
-    //       // JSON.stringify(payload.user) === JSON.stringify(_message.user) &&
-    //       // JSON.stringify(payload.group) === JSON.stringify(_message.group)
-    //     ) {
-    //       task = payload
-    //       break
-    //     }
-    //   }
-    //   // 添加新消息
-    //   if (!task) {
-    //     tasks.push(payload)
-    //   }
-    //   return state.setIn(['tasks'], fromJS(tasks))
-    // },
+    [`${COWORK_GROUP_SET}`]: (state: any, { payload, userId }: any) => {
+      let groups = state.toJS().groups
+      if (!groups[userId]) groups[userId] = []
+      groups[userId] = payload
+      return state.setIn(['groups'], fromJS(groups))
+    },
+    [`${COWORK_GROUP_EXIT}`]: (state: any, { payload, userId }: any) => {
+      let groups = state.toJS().groups
+      let tasks = state.toJS().tasks
+      if (groups[userId]) {
+        let myGroups = groups[userId]
+        for (let i = 0; i < myGroups.length; i++) {
+          if (myGroups[i].id === payload.groupID) {
+            myGroups.splice(i, 1)
+            break
+          }
+        }
+      }
+      if (tasks[userId] && tasks[userId][payload.groupID]) delete tasks[userId][payload.groupID]
+      return state.setIn(['groups'], fromJS(groups)).setIn(['tasks'], fromJS(tasks))
+    },
     [REHYDRATE]: (state: any, { payload }: any) => {
       const _data = ModelUtils.checkModel(state, payload && payload.cowork)
       return _data

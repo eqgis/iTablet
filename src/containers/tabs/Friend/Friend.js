@@ -21,7 +21,7 @@ import ScrollableTabView, {
 } from 'react-native-scrollable-tab-view'
 
 // eslint-disable-next-line
-import { SMessageService, SOnlineService, SMap } from 'imobile_for_reactnative'
+import { SMessageService, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
 import NavigationService from '../../NavigationService'
 import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
@@ -64,6 +64,7 @@ export default class Friend extends Component {
     appConfig: Object,
     chat: Array,
     device: Object,
+    cowork: Object,
     addChat: () => {},
     editChat: () => {},
     setConsumer: () => {},
@@ -74,6 +75,7 @@ export default class Friend extends Component {
     setCoworkNewMessage: () => {},
     addInvite: () => {},
     addCoworkMsg: () => void,
+    setCoworkGroup: () => void,
   }
 
   constructor(props) {
@@ -162,8 +164,26 @@ export default class Friend extends Component {
     GLOBAL.homePath = await FileTools.appendingHomeDirectory()
   }
 
+  getOnlineGroup = async () => {
+    let servicesUtils = new SCoordination('online')
+    servicesUtils.getGroupInfos({
+      orderBy: 'CREATETIME',
+      orderType: 'DESC',
+      pageSize: 10000,
+      currentPage: 1,
+      keywords: '',
+      joinTypes: ['CREATE', 'JOINED'],
+    }).then(result => {
+      if (result && result.content) {
+        let _data = result.content
+        this.props.setCoworkGroup(_data)
+      }
+    })
+  }
+
   initServerInfo = async () => {
     try {
+      this.getOnlineGroup()
       let commonPath = await FileTools.appendingHomeDirectory(
         '/iTablet/Common/',
       )
@@ -467,7 +487,7 @@ export default class Friend extends Component {
           )
 
           this.startCheckAvailability()
-          this._closeCowork()
+          // this._closeCowork()
           g_connectService = true
         }
       } catch (error) {
@@ -1511,8 +1531,38 @@ export default class Friend extends Component {
     }
   }
 
+  /**
+   * 检查当前接收的消息是否是在线协作消息，并判断用户是否存在当前在线协作群组，若不存在，则退出群组
+   * @param {any} messageObj
+   */
+  checkGroup = async messageObj => {
+    let exist = false
+    let msgId = messageObj.user.groupID || messageObj.id
+    if (msgId && msgId.indexOf('Group_Task_') >= 0) {
+      let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userId]
+      for (let i = 0; i < onlineGroups?.length; i++) {
+        if (msgId.includes(onlineGroups[i].id)) {
+          exist = true
+          break
+        }
+      }
+      if (!exist) {
+        await SMessageService.exitSession(
+          this.props.user.currentUser.userId,
+          msgId,
+        )
+      }
+      return exist
+    }
+    return true
+  }
+
   async _receiveMessage(message) {
     let messageObj = JSON.parse(message['message'])
+
+    let exist = await this.checkGroup(messageObj)
+    if (!exist) return
+
     // messageObj.message.type=6;   桌面发送的文件类型是3，要接收桌面发送过来的文件需要把type改为6
     // messageObj.message.message.progress=0;    桌面发送的数据没有progress参数，不能显示进度
     if (messageObj.type === MSGConstant.MSG_LOGOUT) {
@@ -1566,14 +1616,14 @@ export default class Friend extends Component {
 
     if (!bSystem) {
       //普通消息
-      if (messageObj.type === 2) {
+      if (messageObj.type === 2 && messageObj.user.groupID.indexOf('Group_Task_') === -1) {
         //处理群组消息
-        // let obj = FriendListFileHandle.findFromGroupList(
-        //   messageObj.user.groupID,
-        // )
-        // if (!obj) {
-        //   return
-        // }
+        let obj = FriendListFileHandle.findFromGroupList(
+          messageObj.user.groupID,
+        )
+        if (!obj) {
+          return
+        }
       } else {
         //处理单人消息
         let isFriend = FriendListFileHandle.getIsFriend(messageObj.user.id)

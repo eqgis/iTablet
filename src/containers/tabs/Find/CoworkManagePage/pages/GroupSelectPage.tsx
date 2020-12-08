@@ -8,6 +8,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
+import { setCoworkGroup } from '../../../../../redux/models/cowork'
 import { GroupList } from '../components'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
@@ -17,6 +18,7 @@ interface Props {
   user: Users,
   language: string,
   device: any,
+  setCoworkGroup?: (data: any) => any,
 }
 
 interface State {
@@ -115,6 +117,7 @@ class GroupSelectPage extends Component<Props, State> {
         user={this.props.user.currentUser}
         joinTypes={['CREATE', 'JOINED']}
         onPress={this._itemPress}
+        setCoworkGroup={this.props.setCoworkGroup}
       />
     )
   }
@@ -144,7 +147,9 @@ const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setCoworkGroup,
+}
 
 export default connect(
   mapStateToProps,

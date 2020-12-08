@@ -23,6 +23,7 @@ import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
+import { exitGroup } from '../../../../../redux/models/cowork'
 import { SCoordination } from 'imobile_for_reactnative'
 import { Person } from '../types'
 
@@ -31,6 +32,7 @@ interface Props {
   navigation: Object,
   user: Users,
   device: any,
+  exitGroup: (params: {groupID: number | string, cb?: Function}) => any,
 }
 
 type State = {
@@ -129,6 +131,7 @@ class GroupFriendListPage extends Component<Props, State> {
               userIds: [this.props.user.currentUser.userId],
             }).then(result => {
               if (result.succeed) {
+                this.props.exitGroup && this.props.exitGroup({groupID: this.groupInfo.id})
                 this._setDialogVisible(false)
                 NavigationService.goBack('CoworkManagePage', null)
               }
@@ -408,7 +411,7 @@ class GroupFriendListPage extends Component<Props, State> {
             this.dialogAction()
           }
         }}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.DELETE}
+        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
       />
     )
@@ -540,7 +543,9 @@ const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  exitGroup,
+}
 
 export default connect(
   mapStateToProps,

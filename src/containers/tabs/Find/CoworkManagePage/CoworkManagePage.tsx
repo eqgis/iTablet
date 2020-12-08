@@ -95,6 +95,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
               callBack: (members: any) => {
                 NavigationService.navigate('GroupSourceManagePage', {
                   isManage: false,
+                  hasDownload: false, // 是否有下载按钮
                   title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
                   groupInfo: this.groupInfo,
                   itemAction: async ({data, module, moduleIndex}: any) => {
@@ -102,7 +103,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
                     // 向用户发送信息
                     let timeStr = new Date().getTime()
-                    let id = 'Group_Task_' + timeStr
+                    let id = `Group_Task_${this.groupInfo.id}_${timeStr}`
                     let message: any = {
                       id: id,
                       message: {

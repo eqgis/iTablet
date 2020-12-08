@@ -317,6 +317,7 @@ export default class SourceItem extends Component<Props, State> {
   }
 
   _renderDownload = () => {
+    if (!this.props.hasDownload) return null
     return (
       <View
         style={{
@@ -423,7 +424,6 @@ export default class SourceItem extends Component<Props, State> {
 
           </TouchableOpacity>
           {this._renderDownload()}
-          {/* {this.props.hasDownload && this._renderDownload()} */}
         </View>
         <View
           style={[

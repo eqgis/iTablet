@@ -95,6 +95,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   groupList: GroupList | null | undefined
   groupInfo: any
   isManage: boolean // 是否是资源管理模式
+  hasDownload: boolean // 是否有下载按钮
   list: FlatList<any> | null | undefined
   deleteDialog: Dialog | undefined | null
   modules: Array<any>
@@ -106,6 +107,9 @@ class GroupSourceManagePage extends Component<Props, State> {
     this.title = this.props.navigation?.state?.params?.title || getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE
     this.isManage = this.props.navigation?.state?.params?.isManage !== undefined
       ? this.props.navigation?.state?.params?.isManage
+      : true
+    this.hasDownload = this.props.navigation?.state?.params?.hasDownload !== undefined
+      ? this.props.navigation?.state?.params?.hasDownload
       : true
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
@@ -384,7 +388,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         data={item}
         onPress={this._onPress}
         openCheckBox={this.state.isDelete}
-        hasDownload={this.isManage}
+        hasDownload={this.hasDownload}
         checked={!!this.state.selectedData.get(item.resourceId)}
         checkAction={value => {
           this.setState(state => {

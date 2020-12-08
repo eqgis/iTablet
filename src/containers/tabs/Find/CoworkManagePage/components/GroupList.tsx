@@ -29,6 +29,7 @@ interface Props {
   user: UserInfo,
   joinTypes?: Array<string>,
   onPress: (data: any) => any,
+  setCoworkGroup?: (data: any) => any,
 }
 
 interface State {
@@ -105,8 +106,8 @@ export default class GroupList extends Component<Props, State> {
 
   getContacts = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
-      let getDataFunc, joinTypes: Array<string> = []
-      if (this.props.joinTypes?.indexOf('MINE') >= 0) {
+      let getDataFunc, joinTypes: Array<string> | undefined = []
+      if (this.props.joinTypes && this.props.joinTypes?.indexOf('MINE') >= 0) {
         getDataFunc = this.servicesUtils?.getMyGroupInfos
       } else {
         joinTypes = this.props.joinTypes
@@ -122,7 +123,7 @@ export default class GroupList extends Component<Props, State> {
         joinTypes: joinTypes,
       }).then(result => {
         if (result && result.content) {
-          let _data = []
+          let _data: any[] = []
           if (result.content.length > 0) {
             if (this.currentPage < currentPage) {
               _data = this.state.data.deepClone()
@@ -139,7 +140,10 @@ export default class GroupList extends Component<Props, State> {
           this.setState({
             data: _data,
             isRefresh: false,
-          }, () => this.isLoading = false)
+          }, () => {
+            this.isLoading = false
+            this.props.setCoworkGroup && this.props.setCoworkGroup(_data)
+          })
         } else {
           this.state.isRefresh && this.setState({ isRefresh: false, data: [] })
           this.isLoading = false

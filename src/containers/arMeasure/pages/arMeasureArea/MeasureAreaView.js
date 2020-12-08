@@ -117,7 +117,8 @@ export default class MeasureAreaView extends React.Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
+   
+    // InteractionManager.runAfterInteractions(() => {//这里表示下面代码是在动画结束后才执行，但是外面有动画在执行就会导致下面代码一直不执行，开发者需要自己考虑 add xiezhy
       // 初始化数据
       (async function() {
         if (Platform.OS === 'ios') {
@@ -129,6 +130,7 @@ export default class MeasureAreaView extends React.Component {
           SMeasureAreaView.setAddListener({
             callback: async result => {
               if (result) {
+                // Toast.show("add******")
                 if(this.state.isfirst){
                   this.setState({showADD:true,showADDPoint:true})
                 }else{
@@ -139,31 +141,7 @@ export default class MeasureAreaView extends React.Component {
               }
             },
           })
-        }
-
-        if (this.measureType) {
-          if (this.measureType === 'measureArea') {
-            SMeasureAreaView.setMeasureMode('MEASURE_AREA')
-            // SMeasureAreaView.setMeasureMode('DRAW_AREA')
-          } else if (this.measureType === 'measureLength') {
-            SMeasureAreaView.setMeasureMode('MEASURE_LINE')
-          } else if (this.measureType === 'drawLine') {
-            SMeasureAreaView.setMeasureMode('DRAW_LINE')
-          } else if (
-            this.measureType === 'arDrawArea' ||
-            this.measureType === 'arArea'
-          ) {
-            SMeasureAreaView.setMeasureMode('DRAW_AREA')
-          } else if (this.measureType === 'arDrawPoint') {
-            SMeasureAreaView.setMeasureMode('DRAW_POINT')
-          } else if (this.measureType === 'arMeasureHeight') {
-            SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
-            this.setState({
-              showCurrentHeightView: true,
-            })
-          }
-          this.setState({isfirst:true})
-        }
+        }   
 
         if (this.isDrawing) {
           SMeasureAreaView.initMeasureCollector(
@@ -190,7 +168,7 @@ export default class MeasureAreaView extends React.Component {
           )
         }
       }.bind(this)())
-    })
+    // })
   }
 
   componentWillUnmount() {
@@ -710,6 +688,33 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
+  /** 原生mapview加载完成回调 */
+  _onGetInstance = async () => {
+    //设置类型需要放到原生空间初始化完成，放到componentDidMount 也不靠谱 add xiezhy
+    if (this.measureType) {
+      if (this.measureType === 'measureArea') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+        // SMeasureAreaView.setMeasureMode('DRAW_AREA')
+      } else if (this.measureType === 'measureLength') {
+        SMeasureAreaView.setMeasureMode('MEASURE_LINE')
+      } else if (this.measureType === 'drawLine') {
+        SMeasureAreaView.setMeasureMode('DRAW_LINE')
+      } else if (
+        this.measureType === 'arDrawArea' ||
+        this.measureType === 'arArea'
+      ) {
+        SMeasureAreaView.setMeasureMode('DRAW_AREA')
+      } else if (this.measureType === 'arDrawPoint') {
+        SMeasureAreaView.setMeasureMode('DRAW_POINT')
+      } else if (this.measureType === 'arMeasureHeight') {
+        SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+        this.setState({
+          showCurrentHeightView: true,
+        })
+      }
+      this.setState({isfirst:true})
+    }
+  }
   render() {
     return (
       <Container
@@ -722,7 +727,10 @@ export default class MeasureAreaView extends React.Component {
         }}
         bottomProps={{ type: 'fix' }}
       >
-        <SMMeasureAreaView ref={ref => (this.SMMeasureAreaView = ref)} />
+        <SMMeasureAreaView 
+          ref={ref => (this.SMMeasureAreaView = ref)}
+          onGetInstance={this._onGetInstance}
+         />
         {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
         {this.renderBottomBtns()}
         {this.state.showModelViews && this.renderSwitchModels()}

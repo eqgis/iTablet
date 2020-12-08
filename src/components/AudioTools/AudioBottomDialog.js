@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     lineHeight: scaleSize(30),
     backgroundColor: 'transparent',
     textAlign: 'center',
+    color: color.contentColorBlack,
   },
 })
 

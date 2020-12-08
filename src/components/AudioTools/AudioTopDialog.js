@@ -5,7 +5,6 @@
  */
 import React, { PureComponent } from 'react'
 import {
-  View,
   Text,
   StyleSheet,
   TouchableOpacity,
@@ -13,10 +12,9 @@ import {
   Image,
   Platform,
   Animated,
-  Modal,
 } from 'react-native'
 import { scaleSize, screen } from '../../utils'
-import { size } from '../../styles'
+import { size, color } from '../../styles'
 import { ConstPath } from '../../constants'
 
 const styles = StyleSheet.create({
@@ -62,6 +60,7 @@ const styles = StyleSheet.create({
     lineHeight: scaleSize(30),
     backgroundColor: 'transparent',
     textAlign: 'center',
+    color: color.contentColorBlack,
   },
   closeBtn: {
     marginTop: scaleSize(100),

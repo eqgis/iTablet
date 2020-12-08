@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native'
 import { scaleSize } from '../../utils'
-import { size } from '../../styles'
+import { size, color } from '../../styles'
 import { ConstPath } from '../../constants'
 
 const styles = StyleSheet.create({
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     lineHeight: scaleSize(30),
     backgroundColor: 'transparent',
     textAlign: 'center',
+    color: color.contentColorBlack,
   },
 })
 

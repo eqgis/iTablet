@@ -12,6 +12,7 @@ import {
   AsyncStorage,
 } from 'react-native'
 import { Container } from '../../../components'
+import { UserType } from '../../../constants'
 import NavigationService from '../../NavigationService'
 import { color } from '../../../styles'
 import Toast from '../../../utils/Toast'
@@ -311,7 +312,15 @@ export default class Find extends Component {
               leftImagePath: getThemeAssets().find.onlineCowork,
               isInformSpot: false,
               onClick: () => {
-                NavigationService.navigate('CoworkManagePage')
+                if (UserType.isOnlineUser(this.props.user.currentUser)) {
+                  NavigationService.navigate('GroupSelectPage', {
+                    showType: 'group',
+                  })
+                } else {
+                  NavigationService.navigate('Login', {
+                    show: ['Online'],
+                  })
+                }
               },
             })}
           {this.props.find.showLab &&

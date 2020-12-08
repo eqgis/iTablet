@@ -529,7 +529,7 @@ export default class FriendListFileHandle {
   }
 
   static readGroupMemberList(groupId) {
-    let members = JSON.stringify(FriendListFileHandle.getGroup(groupId).members)
+    let members = JSON.stringify(FriendListFileHandle.getGroup(groupId)?.members || [])
     return JSON.parse(members)
   }
 

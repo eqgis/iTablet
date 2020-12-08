@@ -1,7 +1,7 @@
 import { Platform } from 'react-native'
 import JPushModule from 'jpush-react-native'
 import fetch from 'node-fetch'
-import MsgConstant from './MsgConstant'
+import { MsgConstant } from '../../../constants'
 import SMessageServiceHTTP from './SMessageServiceHTTP'
 
 export default class JPushService {

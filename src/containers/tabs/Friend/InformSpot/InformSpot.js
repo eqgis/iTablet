@@ -33,6 +33,7 @@ export default class InformSpot extends Component {
       currentUser = this.props.chat[this.props.user.currentUser.userId]
       let keys = Object.keys(currentUser)
       for (let i = 0, key = ''; i < keys.length; i++) {
+        if (key.indexOf('Group_Task_') === 0) continue
         key = keys[i]
         bInform = currentUser[key].unReadMsg
         if (bInform) break

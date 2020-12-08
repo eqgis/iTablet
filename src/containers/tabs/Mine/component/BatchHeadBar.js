@@ -9,8 +9,8 @@ export default class BatchHeadBar extends Component {
   props: {
     select: Number,
     total: Number,
-    selectAll: () => {},
-    deselectAll: () => {},
+    selectAll: () => void,
+    deselectAll: () => void,
   }
 
   constructor(props) {
@@ -32,9 +32,9 @@ export default class BatchHeadBar extends Component {
             style={styles.btn}
             onPress={() => {
               if (this.props.total === this.props.select) {
-                this.props.deselectAll()
+                this.props.deselectAll && this.props.deselectAll()
               } else {
-                this.props.selectAll()
+                this.props.selectAll && this.props.selectAll()
               }
             }}
           >

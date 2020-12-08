@@ -1,18 +1,21 @@
 import CoworkManagePage from './CoworkManagePage'
 import { connect } from 'react-redux'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
-import { deleteInvite } from '../../../../redux/models/cowork'
+import { deleteInvite, addCoworkMsg } from '../../../../redux/models/cowork' 
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),
-  invites: state.cowork.toJS().invites,
   appConfig: state.appConfig.toJS(),
   latestMap: state.map.toJS().latestMap,
+  device: state.device.toJS().device,
+  language: state.setting.toJS().language,
+  // cowork: state.cowork.toJS(),
 })
 
 const mapDispatchToProps = {
   setCurrentMapModule,
   deleteInvite,
+  addCoworkMsg,
 }
 
 export default connect(

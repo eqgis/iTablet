@@ -1,9 +1,9 @@
 import functionExample from './FunctionExample'
-import Tour from './Tour'
+// import Tour from './Tour'
 
 const CustomModules = {
   functionExample,
-  Tour,
+  // Tour,
 }
 
 function getModule (type) {
@@ -24,5 +24,5 @@ export default {
 
 export {
   functionExample,
-  Tour,
+  // Tour,
 }

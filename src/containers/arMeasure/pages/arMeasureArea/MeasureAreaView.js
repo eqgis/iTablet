@@ -107,6 +107,9 @@ export default class MeasureAreaView extends React.Component {
       showADDPoint:false,
       showADD:false,
       isfirst:true,
+      showLog:false,
+      dioLog:'',
+      diologStyle:{},
     }
   }
 
@@ -120,10 +123,15 @@ export default class MeasureAreaView extends React.Component {
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
       (async function() {
+        //提供测量等界面添加按钮及提示语的回调方法 add jiakai
         if (Platform.OS === 'ios') {
           iOSEventEmi.addListener(
             'com.supermap.RN.SMeasureAreaView.ADD',
             this.onAdd,
+          )
+          iOSEventEmi.addListener(
+            'com.supermap.RN.SMeasureAreaView.CLOSE',
+            this.onshowLog,
           )
         }else{
           SMeasureAreaView.setAddListener({
@@ -218,6 +226,35 @@ export default class MeasureAreaView extends React.Component {
       }
     }else{
       this.setState({showADD:false,showADDPoint:false})
+    }
+  }
+
+   /**提示语回调 */
+  onshowLog = result => {
+    if(result.close){
+      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE,showLog:true})
+    }
+
+    if(result.dark){
+      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK,showLog:true})
+    }
+
+    if(result.fast){
+      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAST,showLog:true})
+    }
+
+    if(result.nofeature){
+      if(this.state.dioLog!=getLanguage(GLOBAL.language).Map_Main_Menu
+      .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE,showLog:true})
+    }
+
+    if(result.none){
+      this.setState({dioLog:'',showLog:false})
     }
   }
 
@@ -450,6 +487,27 @@ export default class MeasureAreaView extends React.Component {
         }}
       />
     )
+  }
+
+  renderDioLog = () => {
+    return (
+      <View style={[{
+        position: 'absolute',
+        left: '50%',
+        marginLeft: scaleSize(-215),
+        height: scaleSize(50),
+        width: scaleSize(430),
+        top: scaleSize(300),
+        borderRadius: 15,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }]}>
+        <Text style={styles.dioLog}>
+          {this.state.dioLog}
+        </Text>
+      </View>)
   }
 
   renderModelItemFirst = () => {
@@ -738,6 +796,7 @@ export default class MeasureAreaView extends React.Component {
           this.renderCurrentHeightChangeView()}
           {this.state.showADDPoint&&this.renderADDPoint()}
           {this.state.showADD&&this.renderCenterBtn()}
+          {this.state.showLog&&this.renderDioLog()}
       </Container>
     )
   }

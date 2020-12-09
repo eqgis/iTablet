@@ -911,13 +911,13 @@ export default class MyDataPage extends Component {
         case this.types.symbol:
           if (txtType === 'sym') {
             // 点
-            img = require('../../../../assets/map/icon-shallow-dot_black.png')
+            img = getThemeAssets().layerType.layer_point
           } else if (txtType === 'lsl') {
             // 线
-            img = require('../../../../assets/map/icon-shallow-line_black.png')
+            img = getThemeAssets().layerType.layer_line
           } else if (txtType === 'bru') {
             // 面
-            img = require('../../../../assets/map/icon-shallow-polygon_black.png')
+            img = getThemeAssets().layerType.layer_region
           } else {
             // 默认
             img = require('../../../../assets/Mine/mine_my_online_data_black.png')

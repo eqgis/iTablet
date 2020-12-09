@@ -3,7 +3,7 @@ const analysis_buffer = require('./icon_analysis_buffer.png')
 const analysis_multibuffer = require('./icon_analysis_multibuffer.png')
 const analysis_closest_facility = require('./analysis_closest_facility_light.png')
 const analysis_connectivity = require('./icon_analysis_connectivity.png')
-const analysis_converter = require('./analysis_converter_light.png')
+const analysis_converter = require('./icon_projection_transformation.png')
 const analysis_critical_element = require('./analysis_critical_element_light.png')
 const analysis_density = require('./analysis_density_light.png')
 const analysis_histogram = require('./analysis_histogram_light.png')
@@ -40,8 +40,8 @@ const analysis_online_buffer = require('./analysis_online_buffer_light.png')
 const analysis_online_odline = require('./analysis_online_odline_light.png')
 const analysis_online_topology = require('./analysis_online_topology_light.png')
 const analysis_online_features = require('./analysis_online_features_light.png')
-const analysis_rapid_registration_light = require('./analysis_rapid_registration_light.png')
-const analysis_new_registration_light = require('./analysis_new_registration_light.png')
+const analysis_registration_fast = require('./icon_registration_fast.png')
+const analysis_registration_new = require('./icon_registration_new.png')
 
 /** 路径｜商旅分析* */
 const analysis_stop = require('./analysis_stop_light.png')
@@ -92,8 +92,8 @@ export default {
   analysis_online_odline,
   analysis_online_topology,
   analysis_online_features,
-  analysis_rapid_registration_light,
-  analysis_new_registration_light,
+  analysis_registration_fast,
+  analysis_registration_new,
 
   analysis_stop,
   analysis_barrier,

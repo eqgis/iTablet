@@ -66,7 +66,7 @@ async function getSceneData() {
             element.mtime = info
           }
           element.subTitle = element.mtime
-          element.image = getThemeAssets().dataType.icon_map
+          element.image = getThemeAssets().mine.my_scene
           if (element.name === GLOBAL.sceneName && !element.isOnlineScence) {
             element.rightView = (
               <View

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, Image, TouchableOpacity, Text } from 'react-native'
 import { PopBtnList } from '../../components'
+import { getThemeAssets } from '../../assets'
 import { DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import styles from './styles'
@@ -76,7 +77,7 @@ export default class DataSetListItem extends React.Component {
         image = require('../../assets/map/icon-surface.png')
         break
       case DatasetType.CAD:
-        image = require('../../assets/map/icon-cad.png')
+        image = getThemeAssets().layerType.layer_cad_selected
         break
       case DatasetType.TEXT:
         image = require('../../assets/map/icon-text.png')

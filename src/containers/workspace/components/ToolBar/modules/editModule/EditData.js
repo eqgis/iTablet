@@ -61,7 +61,6 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          // constants.DELETE,
           action: EditAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
@@ -70,7 +69,6 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
           action: EditAction.undo,
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
@@ -79,7 +77,6 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-          // cconstants.REDO,
           action: EditAction.redo,
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -88,7 +85,6 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
-          // constants.EDIT_NODE,
           action: EditAction.editNode,
           size: 'large',
           image: getThemeAssets().edit.icon_edit_node,
@@ -96,7 +92,6 @@ function getData(type) {
         {
           key: constants.DELETE_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
-          // constants.DELETE_NODE,
           action: EditAction.deleteNode,
           size: 'large',
           image: getThemeAssets().edit.icon_delete_node,
@@ -104,18 +99,10 @@ function getData(type) {
         {
           key: constants.ADD_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
-          // constants.ADD_NODE,
           action: EditAction.addNode,
           size: 'large',
           image: getThemeAssets().edit.icon_add_node,
         },
-        // {
-        //   key: constants.SUBMIT,
-        //   title: constants.SUBMIT,
-        //   action: mapSubmit,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_submit.png'),
-        // },
       ]
       break
     case ConstToolType.SM_MAP_EDIT_REGION:
@@ -123,7 +110,6 @@ function getData(type) {
         {
           key: constants.MOVE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
-          // constants.MOVE,
           action: EditAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
@@ -131,7 +117,6 @@ function getData(type) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          // constants.DELETE,
           size: 'large',
           action: EditAction.remove,
           image: getThemeAssets().edit.icon_delete,
@@ -139,7 +124,6 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
           size: 'large',
           action: EditAction.undo,
           image: getThemeAssets().edit.icon_undo,
@@ -147,7 +131,6 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-          // constants.REDO,
           size: 'large',
           action: EditAction.redo,
           image: getThemeAssets().edit.icon_redo,
@@ -155,15 +138,13 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
-          // constants.EDIT_NODE,
           size: 'large',
           action: EditAction.editNode,
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
-          // constants.DELETE_NODE,
           size: 'large',
           action: EditAction.deleteNode,
           image: getThemeAssets().edit.icon_delete_node,
@@ -171,7 +152,6 @@ function getData(type) {
         {
           key: constants.ADD_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
-          // constants.ADD_NODE,
           size: 'large',
           action: EditAction.addNode,
           image: getThemeAssets().edit.icon_add_node,
@@ -179,7 +159,6 @@ function getData(type) {
         {
           key: constants.ERASE_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ERASE,
-          // constants.ERASE_REGION,
           size: 'large',
           action: EditAction.eraseRegion,
           image: getThemeAssets().edit.icon_erase_noodles,
@@ -187,7 +166,6 @@ function getData(type) {
         {
           key: constants.SPLIT_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_SPLIT,
-          // constants.SPLIT_REGION,
           size: 'large',
           action: EditAction.splitRegion,
           image: getThemeAssets().edit.icon_cutting,
@@ -195,7 +173,6 @@ function getData(type) {
         {
           key: constants.MERGE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_UNION,
-          // constants.MERGE,
           size: 'large',
           action: EditAction.merge,
           image: getThemeAssets().edit.icon_merge,
@@ -203,7 +180,6 @@ function getData(type) {
         {
           key: constants.DRAWREGION_ERASE_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_DRAW_ERASE,
-          // constants.DRAWREGION_ERASE_REGION,
           size: 'large',
           action: EditAction.drawRegionEraseRegion,
           image: getThemeAssets().edit.icon_erase_spot,
@@ -211,7 +187,6 @@ function getData(type) {
         {
           key: constants.DRAWREGION_HOLLOW_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DRAW_HOLLOW,
-          // constants.DRAWREGION_HOLLOW_REGION,
           size: 'large',
           action: EditAction.drawRegionHollowRegion,
           image: getThemeAssets().edit.icon_hand_painted_Island_cave,
@@ -219,7 +194,6 @@ function getData(type) {
         {
           key: constants.FILL_HOLLOW_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_FILL_HOLLOW,
-          // constants.FILL_HOLLOW_REGION,
           size: 'large',
           action: EditAction.fillHollowRegion,
           image: getThemeAssets().edit.icon_filling_Island_hole,
@@ -227,18 +201,10 @@ function getData(type) {
         {
           key: constants.PATCH_HOLLOW_REGION,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_PATCH_HOLLOW,
-          // constants.PATCH_HOLLOW_REGION,
           size: 'large',
           action: EditAction.patchHollowRegion,
           image: getThemeAssets().edit.icon_supplement_Island_cave,
         },
-        // {
-        //   key: constants.SUBMIT,
-        //   title: constants.SUBMIT,
-        //   size: 'large',
-        //   action: mapSubmit,
-        //   image: require('../../../../assets/mapTools/icon_submit.png'),
-        // },
       ]
       break
     case ConstToolType.SM_MAP_EDIT_TEXT:
@@ -278,15 +244,13 @@ function getData(type) {
         {
           key: constants.EDIT_NODE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
-          // constants.EDIT_NODE,
           size: 'large',
           action: EditAction.editNode,
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          // constants.DELETE,
           action: EditAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
@@ -294,7 +258,6 @@ function getData(type) {
         {
           key: constants.UNDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-          // constants.UNDO,
           size: 'large',
           action: EditAction.undo,
           image: getThemeAssets().edit.icon_undo,
@@ -302,18 +265,10 @@ function getData(type) {
         {
           key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-          // constants.REDO,
           size: 'large',
           action: EditAction.redo,
           image: getThemeAssets().edit.icon_redo,
         },
-        // {
-        //   key: constants.CANCEL_SELECT,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
-        //   size: 'large',
-        //   action: cancel,
-        //   image: require('../../../../assets/mapTools/icon_close_black.png'),
-        // },
       ]
       break
   }

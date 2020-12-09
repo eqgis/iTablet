@@ -50,10 +50,9 @@ function getData(type) {
     data.push({
       key: 'addGPSPoint',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_ADD_POINT,
-      // '打点',
       action: () => SCollector.addGPSPoint(type),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_collection_point_collect.png'),
+      image: getThemeAssets().collection.icon_collect_point,
     })
   }
   if (
@@ -63,19 +62,16 @@ function getData(type) {
     data.push({
       key: 'start',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
-      // '开始',
       action: () => SCollector.startCollect(type),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_collection_path_start.png'),
+      image: getThemeAssets().collection.icon_track_start,
     })
     data.push({
       key: 'stop',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_STOP,
-      // '停止',
       action: () => SCollector.pauseCollect(type),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_pause.png'),
-      selectedImage: require('../../../../../../assets/mapTools/icon_collection_path_pause.png'),
+      image: getThemeAssets().collection.icon_track_stop,
     })
   }
   if (
@@ -85,7 +81,6 @@ function getData(type) {
     data.push({
       key: constants.UNDO,
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-      // constants.UNDO,
       action: () => CollectionAction.undo(type),
       size: 'large',
       image: getThemeAssets().edit.icon_undo,
@@ -93,7 +88,6 @@ function getData(type) {
     data.push({
       key: constants.REDO,
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-      // constants.REDO,
       action: () => CollectionAction.redo(type),
       size: 'large',
       image: getThemeAssets().edit.icon_redo,
@@ -102,18 +96,16 @@ function getData(type) {
   data.push({
     key: constants.CANCEL,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
-    // constants.CANCEL,
     action: () => CollectionAction.cancel(type),
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+    image: getThemeAssets().publicAssets.icon_cancel,
   })
   data.push({
     key: constants.SUBMIT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_SUBMIT,
-    // constants.SUBMIT,
     action: () => CollectionAction.collectionSubmit(type),
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+    image: getThemeAssets().publicAssets.icon_submit,
   })
   buttons = [
     ToolbarBtnType.CANCEL,
@@ -160,11 +152,10 @@ function getOperationData(type) {
   data.push({
     key: 'gpsPoint',
     title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
-    // 'GPS打点',
     action: () =>
       CollectionAction.showCollection(gpsPointType, _params.currentLayer.path),
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_collection_point_collect.png'),
+    image: getThemeAssets().collection.icon_collect_point,
   })
   if (type !== ConstToolType.SM_MAP_COLLECTION_POINT) {
     const gpsPathType =
@@ -174,11 +165,10 @@ function getOperationData(type) {
     data.push({
       key: 'gpsPath',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
-      // 'GPS轨迹',
       action: () =>
         CollectionAction.showCollection(gpsPathType, _params.currentLayer.path),
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_collection_path_start.png'),
+      image: getThemeAssets().collection.icon_track_start,
     })
   }
 
@@ -187,53 +177,40 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .COLLECTION_POINT_DRAW,
-          // '点绘式',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.POINT_HAND,
               _params.currentLayer.path,
             ),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_collection_point.png'),
+          image: getThemeAssets().mark.icon_mark_manage,
         },
-        // {
-        //   key: 'takePhoto',
-        //   title: '拍照',
-        //   action: () => showCollection(type),
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_take_photo.png'),
-        // },
       )
       break
     case ConstToolType.SM_MAP_COLLECTION_LINE:
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .COLLECTION_POINT_DRAW,
-          // '点绘式',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_POINT,
               _params.currentLayer.path,
             ),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_collection_line.png'),
+          image: getThemeAssets().mark.icon_dotted_lines,
         },
         {
           key: 'freeDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .COLLECTION_FREE_DRAW,
-          // '自由式',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_FREE_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_PATH,
               _params.currentLayer.path,
             ),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_collection_line_freedom.png'),
+          image: getThemeAssets().mark.icon_free_line,
         },
       )
       break
@@ -250,7 +227,7 @@ function getOperationData(type) {
               _params.currentLayer.path,
             ),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_collection_region.png'),
+          image: getThemeAssets().mark.icon_frame,
         },
         {
           key: 'freeDraw',
@@ -263,7 +240,7 @@ function getOperationData(type) {
               _params.currentLayer.path,
             ),
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_collection_region_freedom.png'),
+          image: getThemeAssets().mark.icon_free_region,
         },
       )
       break

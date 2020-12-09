@@ -110,34 +110,39 @@ function getLayerIconByType(type) {
       icon = getThemeAssets().layerType.layer_group
       break
     case DatasetType.POINT: // 点数据集
+      icon = getThemeAssets().layerType.layer_point
+      break
     case DatasetType.PointZ: // 三维点数据集
-      icon = require('./map/icon-shallow-dot_black.png')
+      icon = getThemeAssets().layer3dType.layer3d_point
       break
     case DatasetType.LINE: // 线数据集
+      icon = getThemeAssets().layerType.layer_line
+      break
     case DatasetType.LineZ: // 三维线数据集
-      icon = require('./map/icon-shallow-line_black.png')
+      icon = getThemeAssets().layer3dType.layer3d_line
       break
     case DatasetType.REGION: // 多边形数据集
+      icon = getThemeAssets().layerType.layer_region
+      break
     case DatasetType.RegionZ: // 三维多边形数据集
-      icon = require('./map/icon-shallow-polygon_black.png')
+      icon = getThemeAssets().layer3dType.layer3d_terrain_layer
       break
     case DatasetType.TEXT: // 文本数据集
-      icon = require('./map/icon-shallow-text_black.png')
+      icon = getThemeAssets().layerType.layer_text
       break
     case DatasetType.MBImage: // 多波段影像
     case DatasetType.IMAGE: // 影像数据集
-      // icon = require('./map/icon-shallow-image_black.png')
-      icon = getThemeAssets().layerType.layer_type_image
+      icon = getThemeAssets().layerType.layer_image
       break
     case DatasetType.CAD: // 复合数据集
-      // icon = require('./map/icon-cad_black.png')
-      icon = getThemeAssets().layerType.layer_type_CAD
+      icon = getThemeAssets().layerType.layer_cad
       break
     case DatasetType.Network: // 复合数据集
-      icon = getThemeAssets().layerType.layer_type_network
+    case DatasetType.NETWORK3D: // 三维复合数据集
+      icon = getThemeAssets().layerType.layer_network
       break
     case DatasetType.GRID: // GRID数据集
-      icon = require('./map/icon-grid_black.png')
+      icon = getThemeAssets().layerType.layer_grid
       break
     default:
       icon = getThemeAssets().layerType.icon_unknown
@@ -153,31 +158,39 @@ function getLayerWhiteIconByType(type) {
       icon = getThemeAssets().layerType.layer_group_selected
       break
     case DatasetType.POINT: // 点数据集
-      icon = require('./map/icon-shallow-dot.png')
+      icon = getThemeAssets().layerType.layer_point_selected
+      break
+    case DatasetType.PointZ: // 三维点数据集
+      icon = getThemeAssets().layer3dType.layer3d_point_selected
       break
     case DatasetType.LINE: // 线数据集
-      icon = require('./map/icon-shallow-line.png')
+      icon = getThemeAssets().layerType.layer_line_selected
+      break
+    case DatasetType.LineZ: // 三维线数据集
+      icon = getThemeAssets().layer3dType.layer3d_line_selected
       break
     case DatasetType.REGION: // 多边形数据集
-      icon = require('./map/icon-shallow-polygon.png')
+      icon = getThemeAssets().layerType.layer_region_selected
+      break
+    case DatasetType.RegionZ: // 三维多边形数据集
+      icon = getThemeAssets().layer3dType.layer3d_terrain_layer_selected
       break
     case DatasetType.TEXT: // 文本数据集
-      icon = require('./map/icon-shallow-text.png')
+      icon = getThemeAssets().layerType.layer_text_selected
       break
     case DatasetType.MBImage: // 多波段影像
     case DatasetType.IMAGE: // 影像数据集
-      // icon = require('./map/icon-shallow-image.png')
-      icon = getThemeAssets().layerType.layer_type_image_selected
+      icon = getThemeAssets().layerType.layer_image_selected
       break
     case DatasetType.CAD: // CAD数据集
       // icon = require('./map/icon-cad.png')
-      icon = getThemeAssets().layerType.layer_type_CAD_selected
+      icon = getThemeAssets().layerType.layer_cad_selected
       break
     case DatasetType.Network: // 网络数据集
-      icon = getThemeAssets().layerType.layer_type_network_selected
+      icon = getThemeAssets().layerType.layer_network_selected
       break
     case DatasetType.GRID: // GRID数据集
-      icon = require('./map/icon-grid.png')
+      icon = getThemeAssets().layerType.layer_grid_selected
       break
     default:
       icon = getThemeAssets().layerType.icon_unknown_selected

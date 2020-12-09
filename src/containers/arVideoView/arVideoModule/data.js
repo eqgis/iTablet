@@ -51,7 +51,7 @@ function getData(type) {
         {
           key: 'addAtPlane',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
-          image: require('../../../assets/mapTools/icon_free_point_select_black.png'),
+          image: getThemeAssets().mapTools.icon_tool_click,
           action: action.addAtPoint,
         },
       ]
@@ -112,7 +112,7 @@ function getData(type) {
         {
           key: 'modifyLocation',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-          image: getThemeAssets().mapTools.icon_edit,
+          image: getThemeAssets().mark.icon_edit,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
@@ -180,7 +180,7 @@ function getData(type) {
           key: 'modifyToPlane',
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_MOVE_TO_PLANE,
-          image: require('../../../assets/mapTools/icon_free_point_select_black.png'),
+          image: getThemeAssets().mapTools.icon_tool_click,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,

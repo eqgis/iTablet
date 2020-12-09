@@ -1,6 +1,7 @@
 import { ConstToolType } from '../../../../../../constants'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import Start3DAction from './Start3DAction'
 
@@ -34,7 +35,7 @@ function getData(type, params) {
       // '打开场景',
       action: Start3DAction.getSceneData,
       size: 'large',
-      image: require('../../../../../../assets/mapTools/icon_open_black.png'),
+      image: getThemeAssets().start.icon_open_map,
     },
     // {
     //   key: constants.BASE_MAP,

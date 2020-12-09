@@ -91,7 +91,7 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getThemeAssets().mapTools.icon_edit,
+          image: getThemeAssets().mark.icon_edit,
         },
       ]
       break
@@ -154,7 +154,7 @@ async function getData(type) {
             .MAP_INCREMENT_COMMIT,
           action: TopoEditAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       break
@@ -168,7 +168,6 @@ async function getData(type) {
           // constants.CANCEL_SELECT,
           action: TopoEditAction.editCancel,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
         },
         {
@@ -177,7 +176,7 @@ async function getData(type) {
             .MAP_INCREMENT_COMMIT,
           action: TopoEditAction.editConfirm,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       break

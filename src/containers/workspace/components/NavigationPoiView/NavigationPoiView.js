@@ -12,6 +12,7 @@ import PropTypes from 'prop-types'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
+import { getThemeAssets } from '../../../../assets'
 // import { color } from '../../../../styles'
 
 export default class NavigationPoiView extends React.Component {
@@ -184,7 +185,7 @@ export default class NavigationPoiView extends React.Component {
 
   render() {
     if (!this.props.navigationPoiView) return null
-    let closeIcon = require('../../../../assets/mapTools/icon_close_black.png')
+    let closeIcon = getThemeAssets().publicAssets.icon_cancel
     return (
       <Animated.View
         style={[

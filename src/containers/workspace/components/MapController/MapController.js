@@ -22,7 +22,6 @@ export default class MapController extends React.Component {
     style?: any,
     type?: any,
     compassStyle?: any,
-    type: any,
     device: any,
     currentFloorID: string,
   }

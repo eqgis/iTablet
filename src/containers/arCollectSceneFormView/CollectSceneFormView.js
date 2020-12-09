@@ -804,9 +804,7 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
-                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
-                source={require('../../assets/mapTools/icon_collection_region.png')}
+                source={getThemeAssets().mark.icon_ar_frame}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -874,7 +872,7 @@ export default class CollectSceneFormView extends React.Component {
               <Image
                 resizeMode={'contain'}
                 // source={getThemeAssets().ar.toolbar.icon_new}
-                source={require('../../assets/mapTools/icon_collection_path_start.png')}
+                source={getThemeAssets().collection.icon_track_start}
                 style={styles.smallIcon}
               />
 
@@ -913,7 +911,6 @@ export default class CollectSceneFormView extends React.Component {
               <Image
                 resizeMode={'contain'}
                 // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
-                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
                 source={require('../../assets/mapTools/icon_point_black.png')}
                 style={styles.smallIcon}
               />

@@ -99,17 +99,17 @@ export default class AnalysisMenuListView extends React.Component {
         this.create()
       },
       size: 'large',
-      image: getThemeAssets().analyst.analysis_new_registration_light,
+      image: getThemeAssets().analyst.analysis_registration_new,
     })
     data.push({
       key: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
       title: getLanguage(GLOBAL.language).Analyst_Modules
         .REGISTRATION_SPEEDINESS,
       action: () => {
-       this.speediness()
+        this.speediness()
       },
       size: 'large',
-      image: getThemeAssets().analyst.analysis_rapid_registration_light,
+      image: getThemeAssets().analyst.analysis_registration_fast,
     })
     data.push({
       key: getLanguage(GLOBAL.language).Analyst_Modules

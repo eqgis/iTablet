@@ -37,7 +37,7 @@ function getData(type, params) {
           // '距离量算',
           action: ToolAction.measureLength,
           size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_spatial_distance,
+          image: getThemeAssets().mapTools.icon_tool_horizontal_distance,
         },
         {
           key: 'coverComput',
@@ -46,7 +46,6 @@ function getData(type, params) {
           // '面积量算',
           action: ToolAction.measureArea,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_measure_area_black.png'),
           image: getThemeAssets().mapTools.icon_tool_area_measurement,
         },
         {
@@ -56,7 +55,6 @@ function getData(type, params) {
           // '方位角量算',
           action: ToolAction.measureAngle,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_measure_angle_black.png'),
           image: getThemeAssets().mapTools.icon_tool_azimuth,
         },
         {
@@ -65,7 +63,7 @@ function getData(type, params) {
           // '点选',
           action: ToolAction.pointSelect,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_free_point_select_black.png'),
+          image: getThemeAssets().mapTools.icon_tool_click,
         },
         {
           key: 'selectByRectangle',
@@ -74,30 +72,15 @@ function getData(type, params) {
           // '框选',
           action: ToolAction.selectByRectangle,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
+          image: getThemeAssets().mapTools.icon_tool_frame,
         },
         {
           key: 'fullScreen',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.FULL_SCREEN,
           action: ToolAction.viewEntire,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_full_screen.png'),
           image: getThemeAssets().mapTools.icon_tool_full,
         },
-        // {
-        //   key: 'boxSelect',
-        //   title: '框选',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_point_cover.png'),
-        // },
-        // {
-        //   key: 'roundSelect',
-        //   title: '圆选',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_free_cover.png'),
-        // },
         {
           key: 'rectangularCut',
           title: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -107,55 +90,6 @@ function getData(type, params) {
           size: 'large',
           image: getThemeAssets().mapTools.icon_tool_rectangle,
         },
-        // {
-        //   key: 'roundCut',
-        //   title: '圆形裁剪',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_road_track.png'),
-        // },
-        // {
-        //   key: 'polygonCut',
-        //   title: '多边形裁剪',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_equal_track.png'),
-        // },
-        // {
-        //   key: 'selectCut',
-        //   title: '选中对象裁剪',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_time_track.png'),
-        // },
-        // {
-        //   key: 'magnifier',
-        //   title: '放大镜',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_intelligence_track.png'),
-        // },
-        // {
-        //   key: 'eagleChart',
-        //   title: '鹰眼图',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_eagle_chart.png'),
-        // },
-        // {
-        //   key: 'play',
-        //   title: '播放',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_play.png'),
-        // },
-        // {
-        //   key: 'fullAmplitude',
-        //   title: '全幅',
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_full_amplitude.png'),
-        // },
         {
           key: 'captureImage',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
@@ -164,15 +98,15 @@ function getData(type, params) {
           disable: layerType !== 'TAGGINGLAYER',
           image:
             layerType !== 'TAGGINGLAYER'
-              ? getThemeAssets().mapTools.tools_camera_disable
-              : getThemeAssets().mapTools.tools_camera,
+              ? getThemeAssets().mapTools.icon_tool_multi_media_ash
+              : getThemeAssets().mapTools.icon_tool_multi_media,
         },
         {
           key: 'tour',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.TOUR,
           action: ToolAction.tour,
           size: 'large',
-          image: getThemeAssets().mapTools.tour,
+          image: getThemeAssets().mapTools.icon_tool_flightpath,
         },
         {
           key: 'matchPictureStyle',
@@ -181,40 +115,7 @@ function getData(type, params) {
           size: 'large',
           image: getThemeAssets().mapTools.icon_tool_aidrafting,
         },
-        // {
-        //   key: 'showEditLabel',
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
-        //   action: ToolAction.showEditLabel,
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_edit,
-        // },
-        // {
-        //   key: 'captureVideo',
-        //   title: '视频',
-        //   action: captureVideo,
-        //   size: 'large',
-        //   image: getPublicAssets().mapTools.tools_camera,
-        // },
-        // {
-        //   key: 'startCaptureAudio',
-        //   title: '开始录音',
-        //   action: startCaptureAudio,
-        //   size: 'large',
-        //   image: getPublicAssets().mapTools.tools_camera,
-        // },
-        // {
-        //   key: 'stopCaptureAudio',
-        //   title: '停止录音',
-        //   action: stopCaptureAudio,
-        //   size: 'large',
-        //   image: getPublicAssets().mapTools.tools_camera,
-        // },
       ]
-      // buttons = [
-      //   ToolbarBtnType.CANCEL,
-      //   ToolbarBtnType.PLACEHOLDER,
-      //   ToolbarBtnType.PLACEHOLDER,
-      // ]
       break
     case ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH:
     case ConstToolType.SM_MAP_TOOL_MEASURE_AREA:
@@ -243,27 +144,12 @@ function getData(type, params) {
     case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
     case ConstToolType.SM_MAP_TOOL_POINT_SELECT:
       data = [
-        // {
-        //   key: constants.SELECT_ALL,
-        //   title: constants.SELECT_ALL,
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_point.png'),
-        // },
-        // {
-        //   key: constants.SELECT_INVERSE,
-        //   title: constants.SELECT_INVERSE,
-        //   action: this.showBox,
-        //   size: 'large',
-        //   image: require('../../../../assets/mapTools/icon_words.png'),
-        // },
         {
           key: constants.CANCEL_SELECT,
           title: getLanguage(GLOBAL.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: ToolAction.cancelSelect,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
         },
       ]
@@ -308,7 +194,6 @@ function getData(type, params) {
             SMap.setAction(Action.DRAWLINE)
           },
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
         },
         {
@@ -317,7 +202,7 @@ function getData(type, params) {
           // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       buttons = [ToolbarBtnType.CANCEL]
@@ -344,7 +229,6 @@ function getData(type, params) {
           // constants.CANCEL_SELECT,
           action: ToolAction.close,
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
         },
         {
@@ -353,7 +237,7 @@ function getData(type, params) {
           // constants.CANCEL_SELECT,
           action: ToolAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       buttons = [ToolbarBtnType.CANCEL]

@@ -58,7 +58,6 @@ async function getData(type, params) {
         {
           key: constants.POINT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_POINT,
-          // constants.POINT,
           action: MarkAction.point,
           disable:
             (layerType !== 'TAGGINGLAYER' &&
@@ -73,14 +72,13 @@ async function getData(type, params) {
               layerType !== 'POINTLAYER') ||
             isTourLayer ||
             ToolbarModule.getParams().currentLayer.isHeatmap
-              ? getThemeAssets().mapTools.icon_collect_point
-              : require('../../../../../../assets/mapTools/icon_point_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_black.png'),
+              ? getThemeAssets().mark.icon_mark_manage_ash
+              : getThemeAssets().mark.icon_mark_manage,
+          selectedImage: getThemeAssets().mark.icon_mark_manage,
         },
         {
           key: constants.WORDS,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
-          // constants.WORDS,
           size: 'large',
           action: MarkAction.words,
           disable:
@@ -93,14 +91,13 @@ async function getData(type, params) {
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer
-              ? getThemeAssets().mapTools.icon_text_disable
-              : require('../../../../../../assets/mapTools/icon_words_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_words_black.png'),
+              ? getThemeAssets().mark.icon_text_ash
+              : getThemeAssets().mark.icon_text,
+          selectedImage: getThemeAssets().mark.icon_text,
         },
         {
           key: constants.POINTLINE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_LINE,
-          // constants.POINTLINE,
           size: 'large',
           action: MarkAction.pointline,
           disable:
@@ -113,14 +110,13 @@ async function getData(type, params) {
             layerType !== 'CADLAYER' &&
             layerType !== 'LINELAYER' ||
             isTourLayer
-              ? getThemeAssets().mapTools.icon_point_line_disable
-              : require('../../../../../../assets/mapTools/icon_point_line_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_line_black.png'),
+              ? getThemeAssets().mark.icon_dotted_lines_ash
+              : getThemeAssets().mark.icon_dotted_lines,
+          selectedImage: getThemeAssets().mark.icon_dotted_lines,
         },
         {
           key: constants.FREELINE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_LINE,
-          // constants.FREELINE,
           size: 'large',
           action: MarkAction.freeline,
           disable:
@@ -133,15 +129,13 @@ async function getData(type, params) {
             layerType !== 'CADLAYER' &&
             layerType !== 'LINELAYER' ||
             isTourLayer
-              // ? getThemeAssets().mapTools.icon_free_line_disable
-              ? getThemeAssets().mapTools.icon_collect_free_line
-              : require('../../../../../../assets/mapTools/icon_free_line_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_free_line_black.png'),
+              ? getThemeAssets().mark.icon_free_line_ash
+              : getThemeAssets().mark.icon_free_line,
+          selectedImage: getThemeAssets().mark.icon_free_line,
         },
         {
           key: constants.POINTCOVER,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_REGION,
-          // constants.POINTCOVER,
           size: 'large',
           action: MarkAction.pointcover,
           disable:
@@ -154,14 +148,13 @@ async function getData(type, params) {
             layerType !== 'CADLAYER' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer
-              ? getThemeAssets().mapTools.icon_collect_region
-              : require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_point_cover_black.png'),
+              ? getThemeAssets().mark.icon_frame_ash
+              : getThemeAssets().mark.icon_frame,
+          selectedImage: getThemeAssets().mark.icon_frame,
         },
         {
           key: constants.FREECOVER,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_REGION,
-          // constants.FREECOVER,
           size: 'large',
           action: MarkAction.freecover,
           disable:
@@ -174,23 +167,16 @@ async function getData(type, params) {
             layerType !== 'CADLAYER' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer
-              ? getThemeAssets().mapTools.icon_collect_free_region
-              : require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
-          selectedImage: require('../../../../../../assets/mapTools/icon_free_cover_black.png'),
+              ? getThemeAssets().mark.icon_free_region_ash
+              : getThemeAssets().mark.icon_free_region,
+          selectedImage: getThemeAssets().mark.icon_free_region,
         },
-        // {
-        //   key: constants.MOVE,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJMOVE,
-        //   action: MarkAction.move,
-        //   size: 'large',
-        //   image: getThemeAssets().edit.icon_translation,
-        // },
         {
           key: 'showEditLabel',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
           action: MarkAction.showEditLabel,
           size: 'large',
-          image: getThemeAssets().mapTools.icon_edit,
+          image: getThemeAssets().mark.icon_edit,
         },
       ]
       break
@@ -221,7 +207,7 @@ async function getData(type, params) {
           image: getThemeAssets().edit.icon_undo,
         },
         {
-          key: 'redo',
+          key: constants.REDO,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
@@ -279,7 +265,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
@@ -345,7 +331,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
@@ -495,7 +481,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
@@ -554,7 +540,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
-          image: getThemeAssets().edit.icon_delete_node,
+          image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,

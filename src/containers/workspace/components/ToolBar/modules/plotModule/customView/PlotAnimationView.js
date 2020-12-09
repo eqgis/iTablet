@@ -364,7 +364,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.START_FOLLOW_LAST
-                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
+                    ? getThemeAssets().publicAssets.icon_submit
                     : null
                 }
                 style={styles.startModeImage}
@@ -385,7 +385,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.POINT_START
-                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
+                    ? getThemeAssets().publicAssets.icon_submit
                     : null
                 }
                 style={styles.startModeImage}
@@ -406,7 +406,7 @@ export default class PlotAnimationView extends React.Component {
               <Image
                 source={
                   this.state.startMode == StartMode.START_TOGETHER_LAST
-                    ? require('../../../../../../../assets/mapTools/icon_submit_black.png')
+                    ? getThemeAssets().publicAssets.icon_submit
                     : null
                 }
                 style={styles.startModeImage}

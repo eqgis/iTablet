@@ -63,7 +63,7 @@ async function getData(type) {
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+          image: getThemeAssets().publicAssets.icon_cancel,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
@@ -71,7 +71,7 @@ async function getData(type) {
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       break
@@ -105,7 +105,7 @@ async function getData(type) {
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+          image: getThemeAssets().publicAssets.icon_cancel,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
@@ -113,7 +113,7 @@ async function getData(type) {
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       break
@@ -139,7 +139,7 @@ async function getData(type) {
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+          image: getThemeAssets().publicAssets.icon_cancel,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
@@ -147,7 +147,7 @@ async function getData(type) {
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
-          image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+          image: getThemeAssets().publicAssets.icon_submit,
         },
       ]
       break

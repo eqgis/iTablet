@@ -18,7 +18,7 @@ function getGroupData(language) {
     {
       title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
       // '移除',
-      image: require('../../../../assets/layerToolbar/layer_remove.png'),
+      image: getThemeAssets().layer.icon_remove_layer,
     },
   ]
 }
@@ -90,7 +90,7 @@ function layersetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
-        image: require('../../../../assets/layerToolbar/layer_remove.png'),
+        image: getThemeAssets().layer.icon_remove_layer,
       },
       // {
       //   title: '取消',
@@ -181,7 +181,7 @@ function layerThemeCreateSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
-        image: require('../../../../assets/layerToolbar/layer_remove.png'),
+        image: getThemeAssets().layer.icon_remove_layer,
       },
     ]
   }
@@ -231,7 +231,7 @@ function layerThemeModifySetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
-        image: require('../../../../assets/layerToolbar/layer_remove.png'),
+        image: getThemeAssets().layer.icon_remove_layer,
       },
     ]
   }
@@ -346,18 +346,14 @@ function layere3dImage(language) {
         },
         {
           title: getLanguage(language).Map_Layer.ADD_A_IMAGE_LAYER,
-          image: require('../../../../assets/mapTools/icon_create_black.png'),
+          image: getThemeAssets().start.icon_new_map,
           type: 'AddImage',
         },
         {
           title: getLanguage(language).Map_Layer.REMOVE_THE_CURRENT_LAYER,
-          image: require('../../../../assets/layerToolbar/layer_remove.png'),
+          image: getThemeAssets().layer.icon_remove_layer,
           type: 'RemoveLayer3d_image',
         },
-        // {
-        //   title: getLanguage(language).Map_Layer.BASEMAP_SWITH,
-        //   image: require('../../../../assets/mapTools/icon_open_black.png'),
-        // },
       ],
     },
   ]
@@ -376,12 +372,12 @@ function layere3dTerrain(language) {
         },
         {
           title: getLanguage(language).Map_Layer.ADD_A_TERRAIN_LAYER,
-          image: require('../../../../assets/mapTools/icon_create_black.png'),
+          image: getThemeAssets().start.icon_new_map,
           type: 'AddTerrain',
         },
         {
           title: getLanguage(language).Map_Layer.REMOVE_THE_CURRENT_LAYER,
-          image: require('../../../../assets/layerToolbar/layer_remove.png'),
+          image: getThemeAssets().layer.icon_remove_layer,
           type: 'RemoveLayer3d_terrain',
         },
       ],
@@ -396,12 +392,12 @@ function layereditsetting(language) {
       data: [
         {
           title: getLanguage(language).Map_Layer.BASEMAP_SWITH,
-          image: require('../../../../assets/mapTools/icon_open_black.png'),
+          image: getThemeAssets().start.icon_open_map,
         },
         {
           title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
           // '移除',
-          image: require('../../../../assets/layerToolbar/layer_remove.png'),
+          image: getThemeAssets().layer.icon_remove_layer,
         },
       ],
     },
@@ -507,7 +503,7 @@ function layerNavigationSetting(language, isGroup = false) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
-        image: require('../../../../assets/layerToolbar/layer_remove.png'),
+        image: getThemeAssets().layer.icon_remove_layer,
       },
     ]
   }
@@ -557,7 +553,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
-        image: require('../../../../assets/layerToolbar/layer_remove.png'),
+        image: getThemeAssets().layer.icon_remove_layer,
       },
     ]
     if (layerData) {

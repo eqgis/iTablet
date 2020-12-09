@@ -807,8 +807,8 @@ export default class MT_layerManager extends React.Component {
     ) {
       action = () => this.setAllLayersVisible(section)
       rightIcon = this.state.allLayersVisible
-        ? getPublicAssets().common.icon_invisible
-        : getPublicAssets().common.icon_visible
+        ? getThemeAssets().layer.icon_invisible
+        : getThemeAssets().layer.icon_visible
     }
     return (
       <TouchableOpacity

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: scaleSize(60),
     height: scaleSize(60),
     alignItems: 'center',
-    tintColor: color.imageColorBlack,
+    // tintColor: color.imageColorBlack,
   },
   spot: {
     position: 'absolute',

@@ -525,7 +525,7 @@ export default class MeasureView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={require('../../assets/mapTools/icon_point_line_black.png')}
+                source={getThemeAssets().mapTools.icon_dotted_lines}
                 style={styles.smallIcon}
               />
 
@@ -561,9 +561,7 @@ export default class MeasureView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
-                // source={require('../../../../../../assets/mapTools/icon_collection_point.png')}
-                source={require('../../assets/mapTools/icon_collection_region.png')}
+                source={getThemeAssets().mark.icon_frame}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>

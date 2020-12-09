@@ -6,6 +6,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { Height, ToolbarType } from '../../../../constants'
 import { ThemeType, SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
+import { getThemeAssets } from '../../../../assets'
 import { collectionModule } from '../ToolBar/modules'
 
 export default class TemplateTab extends React.Component {
@@ -89,13 +90,13 @@ export default class TemplateTab extends React.Component {
     let icon
     switch (item.type) {
       case 'Region':
-        icon = require('../../../../assets/map/icon-shallow-polygon_black.png')
+        icon = getThemeAssets().layerType.layer_region
         break
       case 'Line':
-        icon = require('../../../../assets/map/icon-shallow-line_black.png')
+        icon = getThemeAssets().layerType.layer_line
         break
       case 'Point':
-        icon = require('../../../../assets/map/icon-shallow-dot_black.png')
+        icon = getThemeAssets().layerType.layer_point
         break
     }
     return (

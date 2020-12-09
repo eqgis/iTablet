@@ -83,7 +83,7 @@ function getData(type) {
             action: AiActions.gestureBone,
             size: 'large',
             // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
-            image: require('../../../../../../assets/mapTools/icon_select_by_rectangle.png'),
+            image: getThemeAssets().mapTools.icon_tool_frame,
           })
         }
       }

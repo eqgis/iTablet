@@ -13,7 +13,8 @@ import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast, dataUtil } from '../../../../utils'
 import { color, size } from '../../../../styles'
-const closeImg = require('../../../../assets/mapTools/icon_close_black.png')
+import { getThemeAssets } from '../../../../assets'
+const closeImg = getThemeAssets().publicAssets.icon_cancel
 const addImg = require('../../../../assets/mapTool/icon_plus.png')
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
 const lineImg = require('../../../../assets/mapToolbar/dataset_type_line_black.png')

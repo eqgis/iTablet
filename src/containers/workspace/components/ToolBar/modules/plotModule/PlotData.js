@@ -110,8 +110,6 @@ function getPlotOperationData(type, params) {
           // '复原',
           action: () => PlotAction.reset(),
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
-          // selectedImage: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
           selectedImage: getThemeAssets().mapTools.icon_tool_cancel,
           // selectMode:"flash"
@@ -147,10 +145,9 @@ function getAnimationWayData(type, params) {
         key: constants.CANCEL,
         title: getLanguage(GLOBAL.language).Map_Plotting
           .PLOTTING_ANIMATION_BACK,
-        // constants.CANCEL,
         action: PlotAction.cancelAnimationWay,
         size: 'large',
-        image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+        image: getThemeAssets().publicAssets.icon_cancel,
       })
       data.push({
         key: constants.UNDO,
@@ -165,7 +162,7 @@ function getAnimationWayData(type, params) {
           .PLOTTING_ANIMATION_SAVE,
         action: PlotAction.endAnimationWayPoint,
         size: 'large',
-        image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+        image: getThemeAssets().publicAssets.icon_submit,
       })
       break
   }
@@ -207,7 +204,7 @@ function getCollectionData(libId, symbolCode, params) {
     // constants.CANCEL,
     action: () => PlotAction.cancel(libId, symbolCode),
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_close_black.png'),
+    image: getThemeAssets().publicAssets.icon_cancel,
   })
   data.push({
     key: constants.SUBMIT,
@@ -215,7 +212,7 @@ function getCollectionData(libId, symbolCode, params) {
     // constants.SUBMIT,
     action: () => PlotAction.collectionSubmit(libId, symbolCode),
     size: 'large',
-    image: require('../../../../../../assets/mapTools/icon_submit_black.png'),
+    image: getThemeAssets().publicAssets.icon_submit,
   })
   buttons = [
     ToolbarBtnType.CANCEL,

@@ -323,7 +323,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
               <Image
                 resizeMode={'contain'}
                 source={
-                  getThemeAssets().layer3dType.layer3d_type_image_selected
+                  getThemeAssets().layer3dType.layer3d_image_selected
                 }
                 style={styles.smallIcon}
               />

@@ -32,6 +32,6 @@ export default function() {
     type: ConstToolType.SM_MAP_AR_EFFECT,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
     size: 'large',
-    image: getThemeAssets().ar.functiontoolbar.ar_effect,
+    image: getThemeAssets().functionBar.icon_ar_special_effects,
   })
 }

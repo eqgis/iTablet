@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
 import { color } from '../../styles'
-import { getPublicAssets } from '../../assets'
+import { getPublicAssets, getThemeAssets } from '../../assets'
 
 const ROW_HEIGHT = scaleSize(40)
 export default class TreeListItem extends React.Component {
@@ -102,13 +102,13 @@ export default class TreeListItem extends React.Component {
     if (this.props.data.$ && this.props.data.$.type) {
       switch (this.props.data.$.type) {
         case 'Region':
-          icon = require('../../assets/map/icon-shallow-polygon_black.png')
+          icon = getThemeAssets().layerType.layer_region
           break
         case 'Line':
-          icon = require('../../assets/map/icon-shallow-line_black.png')
+          icon = getThemeAssets().layerType.layer_line
           break
         case 'Point':
-          icon = require('../../assets/map/icon-shallow-dot_black.png')
+          icon = getThemeAssets().layerType.layer_point
           break
       }
     }

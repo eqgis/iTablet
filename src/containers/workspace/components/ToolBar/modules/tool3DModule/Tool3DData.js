@@ -25,16 +25,14 @@ async function getData(type, params) {
           key: 'distanceMeasure',
           title: getLanguage(params.language).Map_Main_Menu
             .TOOLS_DISTANCE_MEASUREMENT,
-          // '距离量算',
           action: Tool3DAction.measureDistance,
           size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_spatial_distance,
+          image: getThemeAssets().mapTools.icon_tool_horizontal_distance,
         },
         {
           key: 'suerfaceMeasure',
           title: getLanguage(params.language).Map_Main_Menu
             .TOOLS_AREA_MEASUREMENT,
-          // ''面积量算',
           action: Tool3DAction.measureArea,
           size: 'large',
           image: getThemeAssets().mapTools.icon_tool_spacearea,
@@ -42,17 +40,16 @@ async function getData(type, params) {
         {
           key: 'action3d',
           title: getLanguage(params.language).Map_Main_Menu.TOOLS_SELECT,
-          // ''点选',
           action: Tool3DAction.select,
           size: 'large',
-          image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_action3d.png'),
+          image: getThemeAssets().mapTools.icon_tool_click,
         },
         {
           key: 'pointAnalyst',
           title: getLanguage(params.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS,
           action: Tool3DAction.pathAnalyst,
           size: 'large',
-          image: require('../../../../../../assets/mapToolbar/icon_scene_pointAnalyst.png'),
+          image: getThemeAssets().mapTools.icon_path_analysis,
         },
         // {
         //   key: 'planeClip',
@@ -116,13 +113,11 @@ async function getData(type, params) {
         {
           key: 'cancel',
           title: getLanguage(GLOBAL.language).Prompt.CANCEL,
-          // '取消',
           action: () => {
             SScene.clearSelection()
             params.setAttributes && params.setAttributes({})
           },
           size: 'large',
-          // image: require('../../../../../../assets/mapTools/icon_cancel_1.png'),
           image: getThemeAssets().mapTools.icon_tool_cancel,
         },
       ]

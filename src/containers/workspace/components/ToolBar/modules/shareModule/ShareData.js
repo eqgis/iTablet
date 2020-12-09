@@ -13,27 +13,6 @@ function getData(type, params) {
   ToolbarModule.setParams(params)
   if (type !== ConstToolType.SM_MAP_SHARE) return { data, buttons }
   data = [
-    // {
-    //   key: constants.QQ,
-    //   title: constants.QQ,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_point.png'),
-    // },
-    // {
-    //   key: constants.WECHAT,
-    //   title: constants.WECHAT,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_words.png'),
-    // },
-    // {
-    //   key: constants.WEIBO,
-    //   title: constants.WEIBO,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_point_line.png'),
-    // },
     {
       key: constants.SUPERMAP_ONLINE,
       title: constants.SUPERMAP_ONLINE,
@@ -48,27 +27,6 @@ function getData(type, params) {
       size: 'large',
       image: getThemeAssets().share.iportal,
     },
-    // {
-    //   key: constants.FRIEND,
-    //   title: constants.FRIEND,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_point_cover.png'),
-    // },
-    // {
-    //   key: constants.DISCOVERY,
-    //   title: constants.DISCOVERY,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_free_cover.png'),
-    // },
-    // {
-    //   key: constants.SAVE_AS_IMAGE,
-    //   title: constants.SAVE_AS_IMAGE,
-    //   action: this.showBox,
-    //   size: 'large',
-    //   image: require('../../../../assets/mapTools/icon_common_track.png'),
-    // },
   ]
 
   return { data, buttons }

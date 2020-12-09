@@ -7,6 +7,7 @@
 import * as React from 'react'
 import { View, FlatList, Text, Image, TouchableOpacity } from 'react-native'
 import { Container, ListSeparator } from '../../../components'
+import { getThemeAssets } from '../../../assets'
 import NavigationService from '../../NavigationService'
 import { DatasetType } from 'imobile_for_reactnative'
 
@@ -47,7 +48,7 @@ export default class ChooseDatasource extends React.Component {
           {
             key: 'CAD',
             value: DatasetType.CAD,
-            image: require('../../../assets/map/icon-cad.png'),
+            image: getThemeAssets().layerType.layer_cad_selected,
           },
           {
             key: '文本',

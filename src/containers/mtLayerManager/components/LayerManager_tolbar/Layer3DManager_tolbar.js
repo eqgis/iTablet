@@ -21,6 +21,7 @@ import styles from './styles'
 import { SScene } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
+import { getThemeAssets } from '../../../../assets'
 import { screen, scaleSize, setSpText, dataUtil } from '../../../../utils'
 // import Map3DToolBar from '../../../workspace/components/Map3DToolBar'
 import { getLanguage } from '../../../../language/index'
@@ -92,12 +93,12 @@ export default class LayerManager_tolbar extends React.Component {
             data: [
               {
                 title: getLanguage(GLOBAL.language).Map_Layer.ADD_A_IMAGE_LAYER,
-                image: require('../../../../assets/mapTools/icon_create_black.png'),
+                image: getThemeAssets().start.icon_new_map,
                 type: 'AddImage',
               },
               {
                 title: getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH,
-                image: require('../../../../assets/mapTools/icon_open_black.png'),
+                image: getThemeAssets().start.icon_open_map,
               },
             ],
           },

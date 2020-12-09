@@ -112,7 +112,7 @@ function getData(type) {
         {
           key: 'modifyLocation',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-          image: getThemeAssets().mapTools.icon_edit,
+          image: getThemeAssets().mark.icon_edit,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,

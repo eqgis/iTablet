@@ -6,6 +6,7 @@ import NavigationService from '../NavigationService'
 import { SMap, SAIDetectView } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
+import { getThemeAssets } from '../../assets'
 
 import { ConstToolType } from '../../constants'
 import ToolbarBtnType from '../../containers/workspace/components/ToolBar/ToolbarBtnType'
@@ -183,7 +184,7 @@ export default class ChooseTaggingLayer extends React.Component {
                   height: scaleSize(40),
                   width: scaleSize(40),
                 }}
-                source={require('../../assets/lightTheme/layerType/layer_type_CAD.png')}
+                source={getThemeAssets().layerType.layer_cad}
               />
             </TouchableOpacity>
           </View>

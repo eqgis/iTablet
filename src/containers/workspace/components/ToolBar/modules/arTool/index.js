@@ -34,7 +34,7 @@ export default function() {
     type: ConstToolType.SM_MAP_AR_TOOL,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TOOL,
     size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_tools,
+    image: getThemeAssets().functionBar.icon_tool_launch,
     getData: ARToolData.getData,
     actions: ARToolAction,
   })

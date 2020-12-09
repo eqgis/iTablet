@@ -283,14 +283,14 @@ export default class MenuList extends Component {
       ? require('../../../../../../../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../../../../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
 
-    let layerIcon = getThemeAssets().layer3dType.layer3d_type_normal
+    let layerIcon = getThemeAssets().layer3dType.layer3d_normal
 
     switch (item.type) {
       case 'IMAGEFILE':
-        layerIcon = getThemeAssets().layer3dType.layer3d_type_image
+        layerIcon = getThemeAssets().layer3dType.layer3d_image
         break
       case 'KML':
-        layerIcon = getThemeAssets().layer3dType.layer3d_type_kml
+        layerIcon = getThemeAssets().layer3dType.layer_kml
         break
       case 'Terrain':
         layerIcon = require('../../../../../../../../assets/map/Frenchgrey/icon_vectorfile.png')

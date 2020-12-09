@@ -62,13 +62,13 @@ async function getUDBsAndMaps() {
     let image
     switch (type) {
       case 'sym':
-        image = require('../../../../../../assets/map/icon-shallow-dot_black.png')
+        image = getThemeAssets().layerType.layer_point
         break
       case 'lsl':
-        image = require('../../../../../../assets/map/icon-shallow-line_black.png')
+        image = getThemeAssets().layerType.layer_line
         break
       case 'bru':
-        image = require('../../../../../../assets/map/icon-shallow-polygon_black.png')
+        image = getThemeAssets().layerType.layer_region
         break
       default:
         image = getThemeAssets().dataType.icon_map

@@ -21,6 +21,8 @@ import edit from './edit'
 import layer from './layer'
 import dataType from './dataType'
 import module from './module'
+import mark from './mark'
+import start from './start'
 
 export default {
   publicAssets,
@@ -46,4 +48,6 @@ export default {
   layer,
   dataType,
   module,
+  mark,
+  start,
 }

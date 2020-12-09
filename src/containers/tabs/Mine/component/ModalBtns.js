@@ -108,7 +108,6 @@ export default class ModalBtns extends Component {
               key={'cancel'}
               title={getLanguage(GLOBAL.language).Prompt.CANCEL}
               style={styles.button}
-              // image={require('../../../../assets/mapTools/icon_cancel_1.png')}
               image={getThemeAssets().mapTools.icon_tool_cancel}
               imageStyle={styles.headerBtn}
               onPress={() => {

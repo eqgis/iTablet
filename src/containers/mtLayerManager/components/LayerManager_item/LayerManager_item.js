@@ -607,15 +607,15 @@ export default class LayerManager_item extends React.Component {
       select = '#4680df'
       selectcolor = color.white
       visibleImg = visibleImgWhite
-      moreImg = getPublicAssets().common.icon_highlight_more_v
+      moreImg = getThemeAssets().publicAssets.icon_move_selected
       arrowImg = this.state.rowShow
-        ? getThemeAssets().publicAssets.icon_drop_down_white
-        : getThemeAssets().publicAssets.icon_drop_up_white
+        ? getThemeAssets().publicAssets.icon_dropdown_selected
+        : getThemeAssets().publicAssets.icon_dropup_selected
     } else {
       select = 'transparent'
       selectcolor = color.black
       visibleImg = visibleImgBlack
-      moreImg = getPublicAssets().common.icon_more_v
+      moreImg = getThemeAssets().publicAssets.icon_move
       arrowImg = this.state.rowShow
         ? getThemeAssets().publicAssets.icon_drop_down
         : getThemeAssets().publicAssets.icon_drop_up

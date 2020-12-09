@@ -40,7 +40,7 @@ class Laboratory extends React.Component {
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
           value: 'gestureBone',
-          image: require('../../../../assets/mapTools/icon_select_by_rectangle.png'),
+          image: getThemeAssets().mapTools.icon_tool_frame,
           info: getLanguage(this.props.language).Find.LAB_GESTURE_BONE_INFO,
         },
         {
@@ -58,7 +58,7 @@ class Laboratory extends React.Component {
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_PIPELINE,
           value: 'arPipe',
-          image: getThemeAssets().nav.icon_map_3d,
+          image: getThemeAssets().ar.functiontoolbar.ar_pipeline,
           info: getLanguage(this.props.language).Find.LAB_FORM_ARPIPE_INFO,
         },
       ],

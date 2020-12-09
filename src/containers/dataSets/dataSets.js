@@ -12,10 +12,11 @@ import NavigationService from '../NavigationService'
 import { DatasetType } from 'imobile_for_reactnative'
 import { scaleSize } from '../../utils'
 import { color, size } from '../../styles'
+import { getThemeAssets } from '../../assets'
 const point = require('../../assets/map/icon-dot.png')
 const line = require('../../assets/map/icon-line.png')
 const text = require('../../assets/map/icon-text.png')
-const cad = require('../../assets/map/icon-cad.png')
+const cad = getThemeAssets().layerType.layer_cad_selected
 const region = require('../../assets/map/icon-polygon.png')
 export default class DataSets extends React.Component {
   props: {

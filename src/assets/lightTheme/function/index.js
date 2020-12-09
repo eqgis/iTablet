@@ -17,6 +17,8 @@ const icon_tool_ar_mapping = require('./icon_tool_ar_mapping.png')
 const icon_tool_ar_measure = require('./icon_tool_ar_measure.png')
 const icon_tool_template = require('./icon_tool_template.png')
 const icon_tool_handle = require('./icon_tool_handle.png')
+const icon_tool_launch = require('./icon_tool_launch.png')
+const icon_ar_special_effects = require('./icon_ar_special_effects.png')
 
 export default {
   icon_tool_start,
@@ -38,4 +40,6 @@ export default {
   icon_tool_ar_measure,
   icon_tool_template,
   icon_tool_handle,
+  icon_tool_launch,
+  icon_ar_special_effects,
 }

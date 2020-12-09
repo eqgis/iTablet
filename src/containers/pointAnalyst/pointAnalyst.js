@@ -17,6 +17,7 @@ import PropTypes from 'prop-types'
 import PoiData from './PoiData'
 import color from '../../styles/color'
 import { TouchType, ChunkType } from '../../constants'
+import { getThemeAssets } from '../../assets'
 import LocateUtils from './LocateUtils'
 
 export default class PointAnalyst extends Component {
@@ -328,7 +329,7 @@ export default class PointAnalyst extends Component {
           </View>
           <Image
             resizeMode={'contain'}
-            source={require('../../assets/mapToolbar/icon_scene_pointAnalyst.png')}
+            source={getThemeAssets().mapTools.icon_path_analysis}
             style={styles.analyst}
           />
         </View>

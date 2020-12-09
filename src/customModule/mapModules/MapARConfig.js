@@ -15,7 +15,6 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
-import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR

@@ -144,7 +144,7 @@ export default class Layer3DItem extends Component {
       this.props.toHeightItem.index === this.props.index &&
       this.props.toHeightItem.itemName === item.name
     ) {
-      layerIcon = getThemeAssets().layer3dType.layer3d_type_normal_selected
+      layerIcon = getThemeAssets().layer3dType.layer3d_normal_selected
       if (item.name === 'TianDiTu' || item.name === 'BingMap') {
         layerIcon = require('../../assets/mapToolbar/Frenchgrey/icon_layer_selected.png')
         return layerIcon
@@ -156,10 +156,10 @@ export default class Layer3DItem extends Component {
       switch (item.type) {
         //todo  3维图层组类型是否是layerGroup
         case 'IMAGEFILE':
-          layerIcon = getThemeAssets().layer3dType.layer3d_type_image_selected
+          layerIcon = getThemeAssets().layer3dType.layer3d_image_selected
           return layerIcon
         case 'KML':
-          layerIcon = getThemeAssets().layer3dType.layer3d_type_kml_selected
+          layerIcon = getThemeAssets().layer3dType.layer_kml_selected
           return layerIcon
         case 'Terrain':
           layerIcon = require('../../assets/map/Frenchgrey/icon_vectorfile_white.png')
@@ -169,7 +169,7 @@ export default class Layer3DItem extends Component {
           return layerIcon
       }
     } else {
-      layerIcon = getThemeAssets().layer3dType.layer3d_type_normal
+      layerIcon = getThemeAssets().layer3dType.layer3d_normal
       if (item.name === 'TianDiTu' || item.name === 'BingMap') {
         layerIcon = require('../../assets/Mine/my_basemap.png')
         return layerIcon
@@ -180,10 +180,10 @@ export default class Layer3DItem extends Component {
       }
       switch (item.type) {
         case 'IMAGEFILE':
-          layerIcon = getThemeAssets().layer3dType.layer3d_type_image
+          layerIcon = getThemeAssets().layer3dType.layer3d_image
           return layerIcon
         case 'KML':
-          layerIcon = getThemeAssets().layer3dType.layer3d_type_kml
+          layerIcon = getThemeAssets().layer3dType.layer_kml
           return layerIcon
         case 'Terrain':
           layerIcon = require('../../assets/map/Frenchgrey/icon_vectorfile.png')

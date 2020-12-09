@@ -21,6 +21,7 @@ export default class ARTextView extends React.Component {
     super(props)
     let params = this.props.navigation.state.params || {}
     this.point = params.point
+    this.clickAble = true // 防止重复点击
   }
 
   // eslint-disable-next-line
@@ -46,10 +47,13 @@ export default class ARTextView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
-    SARText.onDestroy()
-    NavigationService.goBack()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    if (this.clickAble) {
+      this.clickAble = false
+      SARText.onDestroy()
+      NavigationService.goBack('ARTextView')
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+      GLOBAL.toolBox.switchAr()
+    }
   }
 
   // renderBottom = () => {

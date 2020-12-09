@@ -53,6 +53,7 @@ interface ModuleItem {
 export default class ARProjectModeView extends React.Component<IProps, IState> {
   /** */
   flage: boolean
+  clickAble: boolean
 
   constructor(props: IProps) {
     super(props)
@@ -66,6 +67,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
     }
 
     this.flage = false
+    this.clickAble = true // 防止重复点击
   }
 
   // eslint-disable-next-line
@@ -228,12 +230,15 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
   }
 
   back = () => {
-    SProjectModelView.onPause()
+    if (this.clickAble) {
+      this.clickAble = false
+      SProjectModelView.onPause()
 
-    NavigationService.goBack('ARProjectModeView')
-
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+      NavigationService.goBack('ARProjectModeView')
+  
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+      GLOBAL.toolBox.switchAr()
+    }
   }
 
   renderBottomBtns = () => {

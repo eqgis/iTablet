@@ -21,6 +21,7 @@ export default class ARWebView extends React.Component {
     super(props)
     let params = this.props.navigation.state.params || {}
     this.point = params.point
+    this.clickAble = true // 防止重复点击
   }
 
   // eslint-disable-next-line
@@ -46,10 +47,13 @@ export default class ARWebView extends React.Component {
   componentWillUnmount() {}
 
   back = () => {
-    SARWebView.onDestroy()
-    NavigationService.goBack()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    if (this.clickAble) {
+      SARWebView.onDestroy()
+      NavigationService.goBack('ARWebView')
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+      GLOBAL.toolBox.switchAr()
+      this.clickAble = false
+    }
   }
 
   renderToolbar = () => {

@@ -181,6 +181,7 @@ export default class Map3D extends React.Component {
         key: this.props.navigation.state.routeName,
       })
     }
+    GLOBAL.Type = null
     this.attributeListener && this.attributeListener.remove()
     this.circleFlyListen && this.circleFlyListen.remove()
     this.unsubscribeFocus && this.unsubscribeFocus.remove()

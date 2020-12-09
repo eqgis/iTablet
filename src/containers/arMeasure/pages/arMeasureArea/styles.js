@@ -399,4 +399,12 @@ export default StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
   },
+  dioLog: {
+    fontSize: setSpText(25),
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    padding: scaleSize(10),
+    backgroundColor: 'transparent',
+  },
 })

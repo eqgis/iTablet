@@ -22,6 +22,20 @@ class SelectFriend extends Component {
     let { params } = this.props.navigation.state
     this.showType = params.showType || 'friend'
     this.callBack = params.callBack
+    this.title = params.title || ''
+    if (this.title === '') {
+      switch(this.showType) {
+        case 'allGroup':  // 所有群组
+        case 'group':  // 我的群组
+        case 'joinedGroup':  // 我加入的群组
+        case 'createGroup':  // 我创建的群组
+        case 'canJoinGroup':  // 没加入的群组
+          this.title = getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_GROUP
+          break
+        default:
+          this.title = getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_FRIEND
+      }
+    }
   }
 
   renderFriendList = () => {
@@ -39,7 +53,7 @@ class SelectFriend extends Component {
     )
   }
 
-  renderGroupList = () => {
+  renderGroupList = (joinTypes = []) => {
     return (
       <FriendGroup
         ref={ref => (this.friendGroup = ref)}
@@ -50,6 +64,7 @@ class SelectFriend extends Component {
         callBack={targetId => {
           this.callBack && this.callBack(targetId)
         }}
+        joinTypes={joinTypes}
       />
     )
   }
@@ -116,22 +131,41 @@ class SelectFriend extends Component {
           }}
         >
           {this.renderFriendList()}
-          {this.renderGroupList()}
+          {this.renderGroupList(['MINE'])}
         </ScrollableTabView>
       </View>
     )
+  }
+
+  renderContent = () => {
+    switch(this.showType) {
+      case 'friend':
+        return this.renderFriendList()
+      case 'allGroup':
+        return this.renderGroupList()
+      case 'group':
+        return this.renderGroupList(['MINE'])
+      case 'joinedGroup':
+        return this.renderGroupList(['JOINED'])
+      case 'createGroup':
+        return this.renderGroupList(['CREATE'])
+      case 'canJoinGroup':
+        return this.renderGroupList(['CANJOIN'])
+      case 'all':
+      default:
+        return this.renderLists()
+    }
   }
 
   render() {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_FRIEND,
+          title: this.title,
           navigation: this.props.navigation,
         }}
       >
-        {this.showType === 'friend' && this.renderFriendList()}
-        {this.showType === 'all' && this.renderLists()}
+        {this.renderContent()}
       </Container>
     )
   }

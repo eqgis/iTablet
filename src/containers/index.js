@@ -170,6 +170,15 @@ import CustomModePage from './CustomModePage'
 import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
 import {
+  CreateGroupPage,
+  GroupSelectPage,
+  GroupFriendListPage,
+  GroupApplyPage,
+  GroupInvitePage,
+  GroupSourceManagePage,
+  GroupSourceUploadPage,
+} from './tabs/Find/CoworkManagePage/pages'
+import {
   TemplateManager,
   TemplateDetail,
   TemplateSource,
@@ -222,6 +231,48 @@ export default function(appConfig) {
       },
       CoworkMessage: {
         screen: CoworkMessage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      CreateGroupPage: {
+        screen: CreateGroupPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupSelectPage: {
+        screen: GroupSelectPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupFriendListPage: {
+        screen: GroupFriendListPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupApplyPage: {
+        screen: GroupApplyPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupInvitePage: {
+        screen: GroupInvitePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupSourceManagePage: {
+        screen: GroupSourceManagePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupSourceUploadPage: {
+        screen: GroupSourceUploadPage,
         navigationOptions: {
           header: null,
         },

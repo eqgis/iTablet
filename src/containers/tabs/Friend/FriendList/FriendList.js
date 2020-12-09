@@ -126,12 +126,12 @@ class FriendList extends Component {
     }
   }
 
-  _onFriendSelect = key => {
+  _onFriendSelect = item => {
     if (this.props.callBack !== undefined) {
-      this.props.callBack(key.id)
+      this.props.callBack(item)
     } else {
       NavigationService.navigate('Chat', {
-        targetId: key.id,
+        targetId: item.id,
       })
     }
   }

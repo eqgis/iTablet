@@ -15,13 +15,14 @@ export default class RadioGroup extends PureComponent {
     data: Array,
     column?: number,
     defaultValue?: any,
-    getSelected?: () => {},
-    renderRadio?: () => {},
-    onSubmitEditing?: () => {},
-    onFocus?: () => {},
-    onBlur?: () => {},
+    getSelected?: (any) => void,
+    renderRadio?: (any) => void,
+    onSubmitEditing?: (any) => void,
+    onFocus?: (any) => void,
+    onBlur?: (any) => void,
     separatorHeight?: number,
     disable?: boolean,
+    radioStyle?: any,
   }
 
   static defaultProps = {
@@ -114,6 +115,7 @@ export default class RadioGroup extends PureComponent {
           onSubmitEditing={this.onSubmitEditing}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          {...this.props.radioStyle}
           {...others}
         />,
       )

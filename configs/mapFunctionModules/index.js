@@ -3,6 +3,7 @@ import functionExample from './FunctionExample'
 
 const CustomModules = {
   functionExample,
+  // Tour,
 }
 
 function getModule (type) {
@@ -23,4 +24,5 @@ export default {
 
 export {
   functionExample,
+  // Tour,
 }

@@ -120,7 +120,7 @@ class CoworkInviteView extends React.Component {
       // user = `${user}，${group}`
     }
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', marginTop: scaleSize(20) }}>
         <Text style={{ flex: 1, fontSize: scaleSize(26), color: 'grey' }}>
           {user}
         </Text>
@@ -135,8 +135,6 @@ class CoworkInviteView extends React.Component {
       <View
         style={[
           {
-            padding: scaleSize(20),
-            width: scaleSize(500),
             backgroundColor: 'white',
           },
           this.props.style,

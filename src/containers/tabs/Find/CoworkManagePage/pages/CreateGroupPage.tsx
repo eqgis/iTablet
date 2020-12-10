@@ -157,7 +157,7 @@ class CreateGroupPage extends React.Component<Props, State> {
         this.callBack && this.callBack()
         NavigationService.goBack('CreateGroupPage', null)
       } else {
-        Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_SUCCUESS + (result.error || ''))
+        Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_FAILED)
       }
     })
   }

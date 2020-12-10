@@ -67,6 +67,14 @@ export default class PoiInfoContainer extends React.PureComponent {
     this.startAnim(animParams)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
+      JSON.stringify(nextProps.mapSearchHistory) !== JSON.stringify(this.props.mapSearchHistory)
+    )
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.device.orientation !== this.props.device.orientation ||
@@ -478,27 +486,29 @@ export default class PoiInfoContainer extends React.PureComponent {
             flex: 1,
           }}
         >
-          <View>
+          <View style={styles.rowContent}>
             <Text style={styles.title} numberOfLines={1} ellipsizeMode={'tail'}>
               {this.state.destination}
             </Text>
           </View>
-          <View>
+          <View style={styles.rowContent}>
             <Text style={styles.info} numberOfLines={1} ellipsizeMode={'tail'}>
               {this.state.address}
             </Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.search}
-            onPress={() => {
-              this.searchNeighbor()
-            }}
-          >
-            <Text style={styles.searchTxt}>
-              {getLanguage(GLOBAL.language).Prompt.SEARCH_AROUND}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.searchBox}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.navi}
+              onPress={() => {
+                this.searchNeighbor()
+              }}
+            >
+              <Text style={styles.searchTxt}>
+                {getLanguage(GLOBAL.language).Prompt.SEARCH_AROUND}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
     } else {
@@ -506,12 +516,13 @@ export default class PoiInfoContainer extends React.PureComponent {
         <View
           style={{
             flex: 1,
+            paddingTop: scaleSize(10),
           }}
         >
-          <View>
+          <View style={styles.rowContent}>
             <Text style={styles.title}>{this.state.destination}</Text>
           </View>
-          <View>
+          <View style={styles.rowContent}>
             <Text style={styles.info} numberOfLines={1} ellipsizeMode={'tail'}>
               {this.state.address}
             </Text>
@@ -648,6 +659,7 @@ export default class PoiInfoContainer extends React.PureComponent {
     )
   }
   render() {
+    console.warn(this.state.showMore, this.state.showList)
     return (
       <Animated.View
         style={{

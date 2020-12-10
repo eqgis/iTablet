@@ -23,6 +23,7 @@ import {
   getLayerIconByType,
   getLayerWhiteIconByType,
   getPublicAssets,
+  getThemeAssets,
 } from '../../../../../../../assets'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { color } from '../../../../../../../styles'
@@ -289,15 +290,15 @@ export default class LineList extends Component {
     let extraStyle, extraTxtStyle, lineImg
     let renameImg, deleteImg, addImage
     if (hasExtra) {
-      renameImg = getPublicAssets().navigation.icon_increment_rename_white
-      deleteImg = getPublicAssets().navigation.icon_increment_delete_white
+      renameImg = getThemeAssets().navigation.icon_increment_rename_white
+      deleteImg = getThemeAssets().navigation.icon_increment_delete_white
       addImage = require('../../../../../../../assets/map/Frenchgrey/scene_addfly_light.png')
       extraStyle = { backgroundColor: color.item_selected_bg }
       extraTxtStyle = { color: color.white }
       lineImg = getLayerWhiteIconByType(DatasetType.LINE)
     } else {
-      renameImg = getPublicAssets().navigation.icon_increment_rename
-      deleteImg = getPublicAssets().navigation.icon_increment_delete
+      renameImg = getThemeAssets().navigation.icon_increment_rename
+      deleteImg = getThemeAssets().navigation.icon_increment_delete
       addImage = getPublicAssets().common.icon_add
       extraStyle = {}
       extraTxtStyle = {}

@@ -17,7 +17,7 @@ import {
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
 import { SMap } from 'imobile_for_reactnative'
-import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 
 export default class TrafficView extends React.Component {
@@ -84,8 +84,8 @@ export default class TrafficView extends React.Component {
   render() {
     if (!this.props.mapLoaded) return null
     let trafficImg = this.state.hasAdded
-      ? getPublicAssets().navigation.icon_traffic_on
-      : getPublicAssets().navigation.icon_traffic_off
+      ? getThemeAssets().navigation.icon_traffic_on
+      : getThemeAssets().navigation.icon_traffic_off
     let networkImg = getThemeAssets().mine.mine_my_plot_new
     return (
       <Animated.View style={[styles.container, { left: this.state.left }]}>

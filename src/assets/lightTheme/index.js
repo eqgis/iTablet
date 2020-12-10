@@ -23,6 +23,7 @@ import dataType from './dataType'
 import module from './module'
 import mark from './mark'
 import start from './start'
+import navigation from './navigation'
 
 export default {
   publicAssets,
@@ -50,4 +51,5 @@ export default {
   module,
   mark,
   start,
+  navigation,
 }

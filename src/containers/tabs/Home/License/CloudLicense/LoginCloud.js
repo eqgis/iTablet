@@ -10,7 +10,7 @@ import {
   setCloudLicenseUser,
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
-import { getPublicAssets } from '../../../../../assets'
+import { getThemeAssets } from '../../../../../assets'
 import Orientation from 'react-native-orientation'
 
 class LoginCloud extends Component {
@@ -241,7 +241,7 @@ class LoginCloud extends Component {
         }}
       >
         <Image
-          source={getPublicAssets().navigation.icon_increment_change_direction}
+          source={getThemeAssets().navigation.icon_increment_change_direction}
           style={{ width: scaleSize(size), height: scaleSize(size) }}
         />
       </TouchableOpacity>

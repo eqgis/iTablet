@@ -65,14 +65,14 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   visibleImg: {
-    width: scaleSize(40),
-    height: scaleSize(40),
+    height: scaleSize(44),
+    width: scaleSize(44),
     // backgroundColor: 'blue',
     // marginLeft: scaleSize(10),
   },
   type: {
-    width: scaleSize(40),
-    height: scaleSize(40),
+    height: scaleSize(44),
+    width: scaleSize(44),
     // backgroundColor: '#A0A0A0',
     marginLeft: scaleSize(25),
   },
@@ -85,8 +85,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   moreImg: {
-    width: scaleSize(60),
-    height: scaleSize(60),
+    height: size.imageSize.middle,
+    width: size.imageSize.middle,
   },
   itemBtn: {
     flex: 1,

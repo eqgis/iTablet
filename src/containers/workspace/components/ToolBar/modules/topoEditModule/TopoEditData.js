@@ -7,7 +7,7 @@
 // import React from 'react'
 import { ConstToolType } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
+import { getThemeAssets } from '../../../../../../assets'
 import TopoEditAction from './TopoEditAction'
 import constants from '../../../../constants'
 import { getLanguage } from '../../../../../../language'
@@ -18,12 +18,12 @@ async function getData(type) {
     ToolbarBtnType.CANCEL,
     // {
     //   type: ToolbarBtnType.MENU,
-    //   image: getPublicAssets().navigation.btn_increment_merge_dataset,
+    //   image: getThemeAssets().navigation.btn_increment_merge_dataset,
     //   action: TopoEditAction.showMerge,
     // },
     {
       type: ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD,
-      image: getPublicAssets().navigation.btn_increment_change_type,
+      image: getThemeAssets().navigation.btn_increment_change_type,
       action: TopoEditAction.changeEditType,
     },
     ToolbarBtnType.MENU_FLEX,
@@ -41,42 +41,42 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_smooth,
+          image: getThemeAssets().navigation.icon_increment_smooth,
         },
         {
           key: constants.MAP_TOPO_SPLIT_LINE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_line_split_line,
+          image: getThemeAssets().navigation.icon_increment_line_split_line,
         },
         {
           key: constants.MAP_TOPO_SPLIT,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_incremnent_split,
+          image: getThemeAssets().navigation.icon_incremnent_split,
         },
         {
           key: constants.MAP_TOPO_EXTEND,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EXTEND,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_extend,
+          image: getThemeAssets().navigation.icon_increment_extend,
         },
         {
           key: constants.MAP_TOPO_TRIM,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_TRIM,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_incremnent_trim,
+          image: getThemeAssets().navigation.icon_incremnent_trim,
         },
         {
           key: constants.MAP_TOPO_RESAMPLE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_resample,
+          image: getThemeAssets().navigation.icon_increment_resample,
         },
         {
           key: constants.MAP_TOPO_CHANGE_DIRECTION,
@@ -84,7 +84,7 @@ async function getData(type) {
             .MAP_TOPO_CHANGE_DIRECTION,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_change_direction,
+          image: getThemeAssets().navigation.icon_increment_change_direction,
         },
         {
           key: constants.MAP_TOPO_OBJECT_EDIT,
@@ -110,7 +110,7 @@ async function getData(type) {
             .MAP_TOPO_DELETE_OBJECT,
           action: TopoEditAction.changeAction,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_delete_object,
+          image: getThemeAssets().navigation.icon_increment_delete_object,
         },
         {
           key: constants.UNDO,
@@ -138,7 +138,7 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_edit_node,
+          image: getThemeAssets().navigation.icon_increment_edit_node,
         },
         {
           key: constants.MAP_TOPO_DELETE_NODE,
@@ -146,7 +146,7 @@ async function getData(type) {
             .MAP_TOPO_DELETE_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
-          image: getPublicAssets().navigation.icon_increment_delete_node,
+          image: getThemeAssets().navigation.icon_increment_delete_node,
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,

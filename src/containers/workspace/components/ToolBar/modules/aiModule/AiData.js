@@ -82,8 +82,7 @@ function getData(type) {
             title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
             action: AiActions.gestureBone,
             size: 'large',
-            // image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
-            image: getThemeAssets().mapTools.icon_tool_frame,
+            image: getThemeAssets().ar.functiontoolbar.icon_ar_gesture,
           })
         }
       }

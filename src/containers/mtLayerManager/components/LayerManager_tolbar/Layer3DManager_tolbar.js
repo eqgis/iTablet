@@ -28,6 +28,8 @@ import { getLanguage } from '../../../../language/index'
 /** 工具栏类型 **/
 const list = 'list'
 
+const imgSize = scaleSize(44)
+
 export default class LayerManager_tolbar extends React.Component {
   props: {
     language: string,
@@ -115,7 +117,7 @@ export default class LayerManager_tolbar extends React.Component {
           {
             header: {
               title: getLanguage(GLOBAL.language).Map_Layer.ONLINE_BASE_MAP,
-              image: require('../../../../assets/map/layers_theme_unique_style.png'),
+              image: getThemeAssets().layer3dType.layer3d_normal_selected,
             },
             data: [
               // {
@@ -128,7 +130,7 @@ export default class LayerManager_tolbar extends React.Component {
                 title: 'TianDiTu',
                 name: 'TianDiTu',
                 type: 'AddTianditu',
-                image: require('../../../../assets/map/layers_theme_unique_style_black.png'),
+                image: getThemeAssets().layer3dType.layer3d_normal,
               },
             ],
           },
@@ -145,7 +147,7 @@ export default class LayerManager_tolbar extends React.Component {
         let terrainDatas = {
           header: {
             title: getLanguage(GLOBAL.language).Map_Layer.TERRAIN,
-            image: require('../../../../assets/map/Frenchgrey/icon_vectorfile_white.png'),
+            image: getThemeAssets().layer3dType.layer3d_terrain_layer_selected,
             type: 'Terrain',
           },
           data: [],
@@ -154,7 +156,7 @@ export default class LayerManager_tolbar extends React.Component {
         if (value) {
           for (let i = 0, n = value.length; i < n; i++) {
             let terrainData = {
-              image: require('../../../../assets/map/Frenchgrey/icon_vectorfile.png'),
+              image: getThemeAssets().layer3dType.layer3d_terrain_layer,
               type: 'AddTerrain_second',
             }
             terrainData.path = value[i].path
@@ -170,7 +172,7 @@ export default class LayerManager_tolbar extends React.Component {
         let terrainDatas = {
           header: {
             title: getLanguage(GLOBAL.language).Map_Layer.IMAGE,
-            image: require('../../../../assets/map/layers_theme_unique_style.png'),
+            image: getThemeAssets().layer3dType.layer3d_image_selected,
             type: 'Image',
           },
           data: [],
@@ -179,7 +181,7 @@ export default class LayerManager_tolbar extends React.Component {
         if (value) {
           for (let i = 0, n = value.length; i < n; i++) {
             let terrainData = {
-              image: require('../../../../assets/map/layers_theme_unique_style_black.png'),
+              image: getThemeAssets().layer3dType.layer3d_normal,
               type: 'AddImage_second',
             }
             terrainData.path = value[i].path
@@ -432,8 +434,8 @@ export default class LayerManager_tolbar extends React.Component {
           <Image
             source={section.header.image}
             style={{
-              width: scaleSize(55),
-              height: scaleSize(55),
+              width: imgSize,
+              height: imgSize,
               marginLeft: scaleSize(30),
             }}
           />
@@ -486,8 +488,8 @@ export default class LayerManager_tolbar extends React.Component {
           <Image
             source={require('../../../../assets/map/Frenchgrey/scene_addfly_light.png')}
             style={{
-              width: scaleSize(55),
-              height: scaleSize(55),
+              width: imgSize,
+              height: imgSize,
               marginRight: scaleSize(15),
             }}
           />
@@ -517,8 +519,8 @@ export default class LayerManager_tolbar extends React.Component {
                 resizeMode={'contain'}
                 style={{
                   marginLeft: scaleSize(60),
-                  height: scaleSize(60),
-                  width: scaleSize(60),
+                  height: imgSize,
+                  width: imgSize,
                 }}
                 source={item.image}
               />

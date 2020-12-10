@@ -40,7 +40,7 @@ class Laboratory extends React.Component {
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AI_GESTURE_BONE,
           value: 'gestureBone',
-          image: getThemeAssets().mapTools.icon_tool_frame,
+          image: getThemeAssets().ar.functiontoolbar.icon_ar_gesture,
           info: getLanguage(this.props.language).Find.LAB_GESTURE_BONE_INFO,
         },
         {
@@ -91,7 +91,8 @@ class Laboratory extends React.Component {
               style={{
                 width: scaleSize(50),
                 height: scaleSize(50),
-                marginHorizontal: scaleSize(10),
+                marginLeft: scaleSize(30),
+                marginRight: scaleSize(10),
               }}
             />
             <Text style={{ fontSize: scaleSize(26) }}>{item.key}</Text>

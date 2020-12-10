@@ -11,7 +11,7 @@ import {
 import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
 import { SMap, SMeasureView } from 'imobile_for_reactnative'
-import { getPublicAssets } from '../../../../assets'
+import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(225) : scaleSize(205)
@@ -257,68 +257,68 @@ export default class NavigationStartButton extends React.Component {
     let icon
     switch (type) {
       case 'start':
-        icon = getPublicAssets().navigation.icon_nav_start
+        icon = getThemeAssets().navigation.icon_nav_start
         break
       case 'end':
-        icon = getPublicAssets().navigation.icon_nav_end
+        icon = getThemeAssets().navigation.icon_nav_end
         break
       case 0:
-        icon = getPublicAssets().navigation.icon_go_straight
+        icon = getThemeAssets().navigation.icon_go_straight
         break
       case 1:
-        icon = getPublicAssets().navigation.icon_front_left_turn
+        icon = getThemeAssets().navigation.icon_front_left_turn
         break
       case 2:
-        icon = getPublicAssets().navigation.icon_front_right_turn
+        icon = getThemeAssets().navigation.icon_front_right_turn
         break
       case 3:
-        icon = getPublicAssets().navigation.icon_turn_left
+        icon = getThemeAssets().navigation.icon_turn_left
         break
       case 4:
-        icon = getPublicAssets().navigation.icon_turn_right
+        icon = getThemeAssets().navigation.icon_turn_right
         break
       case 5:
-        icon = getPublicAssets().navigation.icon_back_left_turn
+        icon = getThemeAssets().navigation.icon_back_left_turn
         break
       case 6:
-        icon = getPublicAssets().navigation.icon_back_right_turn
+        icon = getThemeAssets().navigation.icon_back_right_turn
         break
       case 7:
-        icon = getPublicAssets().navigation.icon_U_turn
+        icon = getThemeAssets().navigation.icon_U_turn
         break
       case 8:
       case 9:
         icon = null
         break
       case 10:
-        icon = getPublicAssets().navigation.icon_enter_roundabout
+        icon = getThemeAssets().navigation.icon_enter_roundabout
         break
       case 11:
-        icon = getPublicAssets().navigation.icon_exit_roundabout
+        icon = getThemeAssets().navigation.icon_exit_roundabout
         break
       case 12:
-        icon = getPublicAssets().navigation.icon_arrive_destination
+        icon = getThemeAssets().navigation.icon_arrive_destination
         break
       case 13:
-        icon = getPublicAssets().navigation.icon_elevator_up
+        icon = getThemeAssets().navigation.icon_elevator_up
         break
       case 14:
-        icon = getPublicAssets().navigation.icon_elevator_down
+        icon = getThemeAssets().navigation.icon_elevator_down
         break
       case 15:
-        icon = getPublicAssets().navigation.icon_escalator_up
+        icon = getThemeAssets().navigation.icon_escalator_up
         break
       case 16:
-        icon = getPublicAssets().navigation.icon_escalator_down
+        icon = getThemeAssets().navigation.icon_escalator_down
         break
       case 17:
-        icon = getPublicAssets().navigation.icon_stairs_up
+        icon = getThemeAssets().navigation.icon_stairs_up
         break
       case 18:
-        icon = getPublicAssets().navigation.icon_stairs_down
+        icon = getThemeAssets().navigation.icon_stairs_down
         break
       case 19:
-        icon = getPublicAssets().navigation.icon_route_point
+        icon = getThemeAssets().navigation.icon_route_point
         break
     }
     return icon

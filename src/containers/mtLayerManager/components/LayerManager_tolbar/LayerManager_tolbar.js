@@ -61,7 +61,7 @@ import { stat } from 'react-native-fs'
 /** 工具栏类型 **/
 const list = 'list'
 
-const imgSize = scaleSize(50)
+const imgSize = scaleSize(44)
 
 export default class LayerManager_tolbar extends React.Component {
   props: {

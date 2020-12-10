@@ -6,7 +6,7 @@ import { ConstToolType } from '../../constants'
 import { color } from '../../styles'
 import { scaleSize } from '../../utils'
 
-import { getThemeAssets } from '../../assets'
+import { getThemeAssets, getPublicAssets } from '../../assets'
 
 export default class Layer3DItem extends Component {
   props: {
@@ -162,7 +162,7 @@ export default class Layer3DItem extends Component {
           layerIcon = getThemeAssets().layer3dType.layer_kml_selected
           return layerIcon
         case 'Terrain':
-          layerIcon = require('../../assets/map/Frenchgrey/icon_vectorfile_white.png')
+          layerIcon = getThemeAssets().layer3dType.layer3d_terrain_layer_selected
           return layerIcon
         case 'layerGroup':
           layerIcon = getThemeAssets().layerType.layer_group_selected
@@ -186,7 +186,7 @@ export default class Layer3DItem extends Component {
           layerIcon = getThemeAssets().layer3dType.layer_kml
           return layerIcon
         case 'Terrain':
-          layerIcon = require('../../assets/map/Frenchgrey/icon_vectorfile.png')
+          layerIcon = getThemeAssets().layer3dType.layer3d_terrain_layer
           return layerIcon
         case 'layerGroup':
           layerIcon = getThemeAssets().layerType.layer_group
@@ -203,15 +203,15 @@ export default class Layer3DItem extends Component {
     ) {
       textColor = { color: color.bgW }
       visibleImg = this.state.visible
-        ? require('../../assets/mapTools/icon_multi_selected_disable.png')
-        : require('../../assets/mapTools/icon_multi_unselected_disable.png')
-      moreImg = require('../../assets/map/Frenchgrey/icon_more_white.png')
+        ? getPublicAssets().common.icon_disable_select
+        : getPublicAssets().common.icon_disable_none
+      moreImg = getThemeAssets().publicAssets.icon_move_selected
     } else {
       visibleImg = this.state.visible
-        ? require('../../assets/mapTools/icon_multi_selected_disable_black.png')
-        : require('../../assets/mapTools/icon_multi_unselected_disable_black.png')
+        ? getPublicAssets().common.icon_select
+        : getPublicAssets().common.icon_none
       textColor = { color: color.fontColorBlack }
-      moreImg = require('../../assets/map/Frenchgrey/icon_more.png')
+      moreImg = getThemeAssets().publicAssets.icon_move
     }
     let typeImg = this.getIconType(this.props.item)
     // console.log(this.state.visible, this.state.selectable)

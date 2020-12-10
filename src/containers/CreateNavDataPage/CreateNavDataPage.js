@@ -341,13 +341,13 @@ export default class CreateNavDataPage extends Component {
   }
 
   renderDatasourceItem = ({ item }) => {
-    let img = getPublicAssets().navigation.icon_datasource,
+    let img = getThemeAssets().navigation.icon_datasource,
       extraTxt = {},
       extraBack = {},
       name = item.datasourceName
     let selected = this.state.selectedDatasource.datasourceName === name
     if (selected) {
-      img = getPublicAssets().navigation.icon_datasource_white
+      img = getThemeAssets().navigation.icon_datasource_white
       extraTxt = {
         color: color.white,
       }

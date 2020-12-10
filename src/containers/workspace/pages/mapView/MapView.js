@@ -2861,8 +2861,8 @@ export default class MapView extends React.Component {
 
   /** 室内外路网采集的弹框 */
   renderIncrementDialog = () => {
-    const increment_indoor = getPublicAssets().navigation.increment_indoor
-    const increment_outdoor = getPublicAssets().navigation.increment_outdoor
+    const increment_indoor = getThemeAssets().navigation.increment_indoor
+    const increment_outdoor = getThemeAssets().navigation.increment_outdoor
     return (
       <IncrementRoadDialog ref={ref => (GLOBAL.IncrementRoadDialog = ref)}>
         <View style={styles.incrementContent}>

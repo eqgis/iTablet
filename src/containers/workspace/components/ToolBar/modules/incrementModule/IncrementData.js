@@ -7,7 +7,7 @@
 
 import React from 'react'
 import ToolbarBtnType from "../../ToolbarBtnType"
-import { getPublicAssets, getThemeAssets} from "../../../../../../assets"
+import { getThemeAssets} from "../../../../../../assets"
 import constants from "../../../../constants"
 import {getLanguage} from "../../../../../../language"
 import {ConstToolType} from "../../../../../../constants"
@@ -21,7 +21,7 @@ async function getData(type) {
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.MENU,
-      image: getPublicAssets().navigation.increment_switch_network,
+      image: getThemeAssets().navigation.increment_switch_network,
       action: IncrementAction.changeNetwork,
     },
     {
@@ -33,7 +33,7 @@ async function getData(type) {
     ToolbarBtnType.MENU_FLEX,
     {
       type: ToolbarBtnType.MAP_SYMBOL,
-      image: getPublicAssets().navigation.btn_increment_topo_edit,
+      image: getThemeAssets().navigation.btn_increment_topo_edit,
       action: IncrementAction.topoEdit,
     },
   ]
@@ -97,7 +97,7 @@ async function getData(type) {
             .MAP_INCREMENT_ADD_POINT,
           action: IncrementAction.addPoint,
           size: 'large',
-          image: getPublicAssets().navigation.increment_add_point,
+          image: getThemeAssets().navigation.increment_add_point,
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
@@ -124,14 +124,14 @@ async function getData(type) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_START,
           action: IncrementAction.start,
           size: 'large',
-          image: getPublicAssets().navigation.increment_start,
+          image: getThemeAssets().navigation.increment_start,
         },
         {
           key: constants.MAP_INCREMENT_STOP,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_STOP,
           action: IncrementAction.stop,
           size: 'large',
-          image: getPublicAssets().navigation.increment_stop,
+          image: getThemeAssets().navigation.increment_stop,
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
@@ -162,7 +162,7 @@ async function getData(type) {
               ConstToolType.SM_MAP_INCREMENT_GPS_POINT,
             ),
           size: 'large',
-          image: getPublicAssets().navigation.increment_add_point,
+          image: getThemeAssets().navigation.increment_add_point,
         },
         {
           key: constants.MAP_INCREMENT_GPS_TRACK,
@@ -173,7 +173,7 @@ async function getData(type) {
               ConstToolType.SM_MAP_INCREMENT_GPS_TRACK,
             ),
           size: 'large',
-          image: getPublicAssets().navigation.increment_gps_track,
+          image: getThemeAssets().navigation.increment_gps_track,
         },
         {
           key: constants.MAP_INCREMENT_POINTLINE,
@@ -184,7 +184,7 @@ async function getData(type) {
               ConstToolType.SM_MAP_INCREMENT_POINTLINE,
             ),
           size: 'large',
-          image: getPublicAssets().navigation.increment_pointline,
+          image: getThemeAssets().navigation.increment_pointline,
         },
         {
           key: constants.MAP_INCREMENT_FREELINE,
@@ -195,7 +195,7 @@ async function getData(type) {
               ConstToolType.SM_MAP_INCREMENT_FREELINE,
             ),
           size: 'large',
-          image: getPublicAssets().navigation.increment_freeline,
+          image: getThemeAssets().navigation.increment_freeline,
         },
       ]
       break

@@ -293,7 +293,7 @@ export default class MenuList extends Component {
         layerIcon = getThemeAssets().layer3dType.layer_kml
         break
       case 'Terrain':
-        layerIcon = require('../../../../../../../../assets/map/Frenchgrey/icon_vectorfile.png')
+        layerIcon = getThemeAssets().layer3dType.layer3d_terrain_layer
         break
     }
     if (item.title === 'TianDiTu' || item.title === 'BingMap') {

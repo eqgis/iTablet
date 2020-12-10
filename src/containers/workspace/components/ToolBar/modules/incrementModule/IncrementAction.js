@@ -11,7 +11,7 @@ import {
   ToolbarType,
   TouchType,
 } from '../../../../../../constants'
-import { getPublicAssets } from '../../../../../../assets'
+import { getThemeAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
 import { SMap, Action } from 'imobile_for_reactnative'
 import { Toast, LayerUtils } from '../../../../../../utils'
@@ -164,19 +164,19 @@ function getTypeImage(type) {
   if (type === ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD) return image
   switch (type) {
     case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
-      image = getPublicAssets().navigation.btn_increment_point_line
+      image = getThemeAssets().navigation.btn_increment_point_line
       break
     case ConstToolType.SM_MAP_INCREMENT_FREELINE:
-      image = getPublicAssets().navigation.btn_increment_freeline
+      image = getThemeAssets().navigation.btn_increment_freeline
       break
     case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
-      image = getPublicAssets().navigation.btn_increment_gps_point
+      image = getThemeAssets().navigation.btn_increment_gps_point
       break
     case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
-      image = getPublicAssets().navigation.btn_increment_gps_track
+      image = getThemeAssets().navigation.btn_increment_gps_track
       break
     default:
-      image = getPublicAssets().navigation.btn_increment_gps_track
+      image = getThemeAssets().navigation.btn_increment_gps_track
       break
   }
   return image

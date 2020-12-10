@@ -21,6 +21,7 @@ const ar_text = require('./icon_ar_written_words.png')
 const ar_pipeline = require('./icon_ar_pipeline.png')
 const icon_ar_measure_depth = require('./icon_ar_measure_depth.png')
 const icon_ar_measure_level = require('./icon_ar_measure_level.png')
+const icon_ar_gesture = require('./icon_ar_gesture.png')
 
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
@@ -48,4 +49,5 @@ export default {
   icon_ar_measure_depth,
   /** 水平仪 */
   icon_ar_measure_level,
+  icon_ar_gesture,
 }

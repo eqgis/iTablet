@@ -35,7 +35,7 @@ function getData(type, params) {
       // '打开场景',
       action: Start3DAction.getSceneData,
       size: 'large',
-      image: getThemeAssets().start.icon_open_map,
+      image: getThemeAssets().start.icon_open_scene,
     },
     // {
     //   key: constants.BASE_MAP,

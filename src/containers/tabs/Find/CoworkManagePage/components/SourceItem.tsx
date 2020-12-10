@@ -225,6 +225,7 @@ export default class SourceItem extends Component<Props, State> {
       let dataUrl =
         'https://www.supermapol.com/web/datas/' + dataId + '/download'
       const downloadOptions = {
+        // Android 访问online私有数据，需要冲抵cookie
         ...Platform.select({
           android: {
             headers: {

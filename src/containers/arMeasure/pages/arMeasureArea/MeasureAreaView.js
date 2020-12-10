@@ -478,7 +478,7 @@ export default class MeasureAreaView extends React.Component {
       <View style={[{
         top: scaleSize(300),
         borderRadius: 15,
-        opacity: 0.5,
+        // opacity: 0.5,
         backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',

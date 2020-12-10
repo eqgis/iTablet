@@ -149,6 +149,12 @@ export default class MeasureAreaView extends React.Component {
               }
             },
           })
+
+          SMeasureAreaView.setDioLogListener({
+            callback: async result => {
+              this.onshowLog(result)
+            },
+          })
         }   
 
         if (this.isDrawing) {
@@ -470,17 +476,13 @@ export default class MeasureAreaView extends React.Component {
   renderDioLog = () => {
     return (
       <View style={[{
-        position: 'absolute',
-        left: '50%',
-        marginLeft: scaleSize(-215),
-        height: scaleSize(50),
-        width: scaleSize(430),
         top: scaleSize(300),
         borderRadius: 15,
-        opacity: 0.5,
+        // opacity: 0.5,
         backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
+        alignSelf:'center',
       }]}>
         <Text style={styles.dioLog}>
           {this.state.dioLog}

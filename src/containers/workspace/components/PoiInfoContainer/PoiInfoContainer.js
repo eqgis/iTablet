@@ -659,7 +659,6 @@ export default class PoiInfoContainer extends React.PureComponent {
     )
   }
   render() {
-    console.warn(this.state.showMore, this.state.showList)
     return (
       <Animated.View
         style={{

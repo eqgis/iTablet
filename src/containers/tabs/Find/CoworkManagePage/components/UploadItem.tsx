@@ -142,7 +142,7 @@ export default class UploadItem extends Component<Props, State> {
           source={require('../../../../../assets/mapToolbar/list_type_map_black.png')}
         />
         <View style={styles.contentView}>
-          <Text style={styles.itemTitle}>{item.name}</Text>
+          <Text style={styles.itemTitle}>{item.name.replace('.xml', '')}</Text>
           <View style={styles.contentSubView}>
             {
               this.props.uploadingInfo &&

@@ -331,7 +331,6 @@ class Chat extends React.Component {
       groupID = this.targetUser.id
       groupName = this.targetUser.title
     }
-    console.warn(groupID)
     let ctime = new Date()
     let time = Date.parse(ctime)
     //要发送/保存的消息

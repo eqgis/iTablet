@@ -134,6 +134,19 @@ async function shareMap(type, list = [], name = '') {
   }
 }
 
+function isNeedToSave(cb = () => {}) {
+  let isAnyMapOpened = true // 是否有打开的地图
+  SMap.mapIsModified().then(async result => {
+    isAnyMapOpened = await SMap.isAnyMapOpened()
+    if (isAnyMapOpened && result) {
+      if (!ToolbarModule.getParams().setSaveViewVisible) return
+      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(true, null, cb)
+    } else {
+      cb()
+    }
+  })
+}
+
 function showSaveDialog(type) {
   if (
     (type === constants.SUPERMAP_ONLINE &&
@@ -149,22 +162,26 @@ function showSaveDialog(type) {
     Toast.show(ConstInfo.PLEASE_SAVE_MAP)
     return
   }
+
   if (ToolbarModule.getData().isSharing) {
     Toast.show(getLanguage(GLOBAL.language).Prompt.SHARING)
     // '分享中，请稍后')
     return
   }
-  NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
-    // '分享',
-    value: ToolbarModule.getParams().map.currentMap.name,
-    placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
-    type: 'name',
-    cb: async value => {
-      const list = [ToolbarModule.getParams().map.currentMap.name]
-      shareMap(type, list, value)
-      NavigationService.goBack()
-    },
+
+  isNeedToSave(() => {
+    NavigationService.navigate('InputPage', {
+      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
+      // '分享',
+      value: ToolbarModule.getParams().map.currentMap.name,
+      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+      type: 'name',
+      cb: async value => {
+        const list = [ToolbarModule.getParams().map.currentMap.name]
+        shareMap(type, list, value)
+        NavigationService.goBack()
+      },
+    })
   })
 }
 

@@ -106,28 +106,24 @@ function getNewFly() {
     {
       key: 'startFly',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY_ADD_STOPS,
-      // '添加站点',
       action: () => {
         try {
           SScene.saveCurrentRoutStop().then(result => {
             if (result) {
               Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
-              // '添加站点成功')
             }
           })
         } catch (error) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
-          // Toast.show('添加站点失败')
         }
       },
       size: 'large',
-      image: require('../../../../../../assets/map/Frenchgrey/scene_addstop_dark.png'),
-      selectedImage: require('../../../../../../assets/map/Frenchgrey/scene_addstop_dark.png'),
+      image: getThemeAssets().mapTools.icon_add_site,
+      selectedImage: getThemeAssets().mapTools.icon_add_site,
     },
     {
       key: 'stop',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
-      // '飞行',
       action: () => {
         try {
           SScene.saveRoutStop()
@@ -136,14 +132,12 @@ function getNewFly() {
         }
       },
       size: 'large',
-      image: require('../../../../../../assets/map/Frenchgrey/scene_play_dark.png'),
-      selectedImage: require('../../../../../../assets/map/Frenchgrey/scene_play_dark.png'),
-      // selectMode:"flash"
+      image: getThemeAssets().mapTools.icon_fly,
+      selectedImage: getThemeAssets().mapTools.icon_fly,
     },
     {
       key: 'pause',
       title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_PAUSE,
-      // '暂停',
       action: () => {
         try {
           SScene.pauseRoutStop()
@@ -152,25 +146,9 @@ function getNewFly() {
         }
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/icon_stop.png'),
-      selectedImage: require('../../../../../../assets/mapEdit/icon_stop.png'),
-      // selectMode:"flash"
+      image: getThemeAssets().mapTools.icon_suspend,
+      selectedImage: getThemeAssets().mapTools.icon_suspend,
     },
-    // {
-    //   key: 'stop',
-    //   title: '清除所有站点',
-    //   action: () => {
-    //     try {
-    //       SScene.clearRoutStops()
-    //     } catch (error) {
-    //       console.warn(error)
-    //     }
-    //   },
-    //   size: 'large',
-    //   image: require('../../../../assets/mapEdit/icon_stop.png'),
-    //   selectedImage: require('../../../../assets/mapEdit/icon_stop.png'),
-    //   // selectMode:"flash"
-    // },
   ]
   const buttons = [ToolbarBtnType.CANCEL]
   return { data, buttons }

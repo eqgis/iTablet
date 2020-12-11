@@ -65,6 +65,10 @@ const icon_narrow = require('./icon_narrow.png')
 const icon_navigation = require('./icon_navigation.png')
 const icon_location = require('./icon_location.png')
 
+const icon_add_site = require('./icon_add_site.png')
+const icon_fly = require('./icon_fly.png')
+const icon_suspend = require('./icon_suspend.png')
+
 export default {
   icon_free_line_disable,
   icon_text_disable,
@@ -127,4 +131,8 @@ export default {
   icon_narrow,
   icon_navigation,
   icon_location,
+
+  icon_add_site,
+  icon_fly,
+  icon_suspend,
 }

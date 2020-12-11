@@ -39,7 +39,7 @@ async function getData(type, params) {
           // ''文字',
           action: Mark3DAction.createText,
           size: 'large',
-          image: require('../../../../../../assets/function/Frenchgrey/icon_text.png'),
+          image: getThemeAssets().mark.icon_text,
         },
         {
           key: 'map3DPiontLine',
@@ -64,7 +64,7 @@ async function getData(type, params) {
           // ''清除标注',
           action: Mark3DAction.clearPlotting,
           size: 'large',
-          image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_clear.png'),
+          image: getThemeAssets().mark.icon_mark_erase,
         },
       ]
       break
@@ -84,9 +84,7 @@ async function getData(type, params) {
           action: async () => {
             try {
               if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
-              // getParams.getMap3DAttribute()
-              // Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
-              // '保存成功')
+              Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)
             }
@@ -117,9 +115,7 @@ async function getData(type, params) {
           action: async () => {
             try {
               if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
-              // getParams.getMap3DAttribute()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
-              // '保存成功')
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)
             }

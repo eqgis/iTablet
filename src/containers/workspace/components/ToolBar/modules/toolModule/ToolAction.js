@@ -132,7 +132,7 @@ function measureLength() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-  _params.showMeasureResult(true, 0)
+  _params.showMeasureResult(true, '0m')
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureLength(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
@@ -167,7 +167,7 @@ function measureArea() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-  _params.showMeasureResult(true, 0)
+  _params.showMeasureResult(true, '0㎡')
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureArea(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
@@ -202,7 +202,7 @@ function measureAngle() {
   const _params = ToolbarModule.getParams()
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
-  _params.showMeasureResult(true, 0)
+  _params.showMeasureResult(true, '0°')
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureAngle(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []

@@ -289,6 +289,7 @@ export default class CreateNavDataPage extends Component {
           height: scaleSize(60),
           borderBottomWidth: 1,
           borderBottomColor: color.USUAL_SEPARATORCOLOR,
+          backgroundColor: color.contentColorWhite,
         }}
         onPress={() => {
           this.onPressDatasetHeader(section)
@@ -341,13 +342,13 @@ export default class CreateNavDataPage extends Component {
   }
 
   renderDatasourceItem = ({ item }) => {
-    let img = getThemeAssets().navigation.icon_datasource,
+    let img = getThemeAssets().dataType.icon_data_source,
       extraTxt = {},
       extraBack = {},
       name = item.datasourceName
     let selected = this.state.selectedDatasource.datasourceName === name
     if (selected) {
-      img = getThemeAssets().navigation.icon_datasource_white
+      img = getThemeAssets().dataType.icon_data_source_selected
       extraTxt = {
         color: color.white,
       }
@@ -496,7 +497,7 @@ class Item extends Component {
           ]}
         >
           <Image source={img} style={styles.image} resizeMode={'contain'} />
-          <Text style={[{ fontSize: setSpText(18) }, fontColor]}>
+          <Text style={[{ marginLeft: scaleSize(10), fontSize: setSpText(18) }, fontColor]}>
             {this.props.item.datasetName}
           </Text>
         </TouchableOpacity>
@@ -566,6 +567,7 @@ const styles = StyleSheet.create({
   name: {
     flex: 1,
     fontSize: setSpText(20),
+    marginLeft: scaleSize(10),
   },
   imageWrap: {
     width: scaleSize(80),

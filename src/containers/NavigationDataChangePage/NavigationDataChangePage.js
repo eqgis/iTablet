@@ -195,8 +195,8 @@ export default class NavigationDataChangePage extends Component {
       : getPublicAssets().common.icon_uncheck
     let typeImg =
       section.title === 'datasource'
-        ? getThemeAssets().mine.my_local_data
-        : require('../../assets/Navigation/network.png')
+        ? getThemeAssets().dataType.icon_data_source
+        : getThemeAssets().layerType.layer_network
     let extraStyle = {},
       extraTxt = {}
     if (

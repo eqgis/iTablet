@@ -39,11 +39,15 @@ export default StyleSheet.create({
   //   width: scaleSize(40),
   //   height: scaleSize(40),
   // },
+  rowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: scaleSize(10),
+  },
   title: {
     fontSize: setSpText(24),
   },
   info: {
-    paddingTop: scaleSize(20),
     fontSize: setSpText(20),
     color: color.gray,
   },
@@ -104,7 +108,7 @@ export default StyleSheet.create({
     paddingRight: scaleSize(20),
   },
   searchBox: {
-    marginTop: scaleSize(20),
+    // marginTop: scaleSize(10),
     height: scaleSize(60),
     flex: 1,
     borderRadius: 5,

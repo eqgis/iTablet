@@ -206,6 +206,7 @@ export default class TaskMessageItem extends MessageItem {
           .catch((e) => {
             Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
             FileTools.deleteFile(this.path)
+            FileTools.deleteFile(this.downloadingPath + '_')
             this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
           })
       } catch (e) {

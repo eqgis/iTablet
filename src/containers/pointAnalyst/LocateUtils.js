@@ -75,7 +75,14 @@ function getSearchResult(params, location, cb = () => {}) {
   let url = `https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
   //console.warn(url)
   fetch(url)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        // TODO 根据状态提示错误消息
+        return {error: response.status}
+      }
+    })
     .then(data => {
       if (data.error || data.poiInfos.length === 0) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS)

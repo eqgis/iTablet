@@ -4,10 +4,9 @@
   E-mail: 756355668@qq.com
 */
 import React, { Component } from 'react'
-import { Image, Text, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { Image, Text, TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { Toast, scaleSize } from '../../../../../utils'
 import { CheckBox } from '../../../../../components'
-import NavigationService from '../../../../NavigationService'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../../native'
 import { color } from '../../../../../styles'
@@ -226,6 +225,14 @@ export default class SourceItem extends Component<Props, State> {
       let dataUrl =
         'https://www.supermapol.com/web/datas/' + dataId + '/download'
       const downloadOptions = {
+        // Android 访问online私有数据，需要冲抵cookie
+        ...Platform.select({
+          android: {
+            headers: {
+              cookie: GLOBAL.cookie,
+            }
+          },
+        }),
         fromUrl: dataUrl,
         toFile: this.path || '',
         background: true,
@@ -273,6 +280,7 @@ export default class SourceItem extends Component<Props, State> {
           .catch(() => {
             Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
             FileTools.deleteFile(this.path)
+            FileTools.deleteFile(this.downloadingPath + '_')
             this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
           })
       } catch (e) {

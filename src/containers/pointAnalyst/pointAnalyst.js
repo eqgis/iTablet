@@ -253,6 +253,7 @@ export default class PointAnalyst extends Component {
                 location: { x, y },
                 address,
                 showList: false,
+                showMore: false,
                 neighbor: [],
                 resultList: [],
               },

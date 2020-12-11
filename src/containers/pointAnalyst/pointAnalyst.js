@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   Image,
+  ScrollView,
 } from 'react-native'
 import { Container, SearchBar } from '../../components'
 import { SScene, SMap } from 'imobile_for_reactnative'
@@ -449,19 +450,30 @@ export default class PointAnalyst extends Component {
           width: '100%',
         }}
       >
-        <FlatList
+        {/* <FlatList
           style={styles.wrapper}
           renderItem={this.renderIcons}
           data={data}
           keyExtractor={(item, index) => item.title + index}
           numColumns={4}
-        />
+        /> */}
         {this.props.mapSearchHistory.length > 0 && (
           <FlatList
             style={{
               //最大高度为 屏幕高度 - 前一个Flatlist的高度 - 清除历史按键高度 - 顶部搜索栏高度
               maxHeight:
-                maxHeight - (scaleSize(440) + scaleSize(70) + headerHeight),
+                maxHeight - (scaleSize(70) + headerHeight),
+            }}
+            ListHeaderComponent={() => {
+              return (
+                <FlatList
+                  style={styles.wrapper}
+                  renderItem={this.renderIcons}
+                  data={data}
+                  keyExtractor={(item, index) => item.title + index}
+                  numColumns={4}
+                />
+              )
             }}
             renderItem={this.renderItem}
             data={this.props.mapSearchHistory}

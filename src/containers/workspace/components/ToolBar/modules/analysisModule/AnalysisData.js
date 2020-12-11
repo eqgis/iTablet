@@ -227,7 +227,7 @@ function getOptimalPathData() {
         GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_clear.png'),
+      image: getThemeAssets().mark.icon_mark_erase,
     },
   ]
   return { data, buttons }
@@ -285,7 +285,7 @@ function getConnectivityData() {
         GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_clear.png'),
+      image: getThemeAssets().mark.icon_mark_erase,
     },
   ]
   return { data, buttons }
@@ -341,7 +341,7 @@ function getTSPData() {
         GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       },
       size: 'large',
-      image: require('../../../../../../assets/mapEdit/Frenchgrey/icon_clear.png'),
+      image: getThemeAssets().mark.icon_mark_erase,
     },
   ]
   return { data, buttons }

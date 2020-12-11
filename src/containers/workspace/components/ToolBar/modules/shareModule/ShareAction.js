@@ -49,6 +49,9 @@ async function shareMap(type, list = [], name = '') {
         },
         async (result, path) => {
           if (!result) {
+            ToolbarModule.getParams().setSharing({
+              progress: undefined,
+            })
             Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
             return
           }

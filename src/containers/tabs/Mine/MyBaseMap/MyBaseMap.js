@@ -195,6 +195,7 @@ export default class MyBaseMap extends Component {
       <Container
         ref={ref => (this.container = ref)}
         hideInBackground={false}
+        showFullInMap={true}
         headerProps={{
           title: this.state.title,
           navigation: this.props.navigation,

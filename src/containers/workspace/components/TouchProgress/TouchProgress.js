@@ -24,6 +24,7 @@ import { Height } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 const IMAGE_SIZE = scaleSize(25)
 const MARGIN = scaleSize(30)
+const TIP_SPACE = '   '
 
 export default class TouchProgress extends Component {
   props: {
@@ -97,7 +98,7 @@ export default class TouchProgress extends Component {
   _updateBackLine = () => {
     this.backLine && this.backLine.setNativeProps(this._BackLine)
   }
-  
+
   /**
    * 更新进度条
    * @param value
@@ -106,17 +107,17 @@ export default class TouchProgress extends Component {
   _updateProgress = value => {
     if (isNaN(value)) return
     let panBtnDevLeft = MARGIN - IMAGE_SIZE / 2 // 图片相对左边偏差
-    
+
     let distance = this.valueToDistance(value)
-    
+
     this._panBtnStyles.style.left = distance + panBtnDevLeft
     this._previousLeft = distance
     this._BackLine.style.width = distance
-  
+
     this._updateNativeStyles()
     this._updateBackLine()
   }
-  
+
   /**
    * 初始化时去对应Toolbar的module找getTouchProgressInfo这个方法 获取信息
    * @param value
@@ -137,7 +138,7 @@ export default class TouchProgress extends Component {
       if (data.tips !== undefined && data.tips !== '') {
         _tipsValue = data.tips
       }
-      
+
       this._updateTips(_tipsValue)
       this._updateProgress(_tipsValue)
     } else {
@@ -155,7 +156,7 @@ export default class TouchProgress extends Component {
     // evt, gestureState
     return true
   }
-  
+
   _handleMoveShouldSetPanResponder = (evt, gestureState) => {
     // 解决PanResponder中的onPress无作用
     // 当大于5时才进入移动事件，有的情况下需要将onStartShouldSetPanResponderCapture设为false
@@ -219,7 +220,7 @@ export default class TouchProgress extends Component {
       await this.props.showMenu()
     } else return
   }
-  
+
   /**
    * @author ysl
    * 获取提示信息
@@ -228,11 +229,17 @@ export default class TouchProgress extends Component {
    * @private
    */
   _getTips = value => {
-    let _value = Math.floor(value)
-    if (isNaN(_value)) return ''
-    return this.title + '     ' + _value + this.unit
+    let _value
+    if (value === '-') {
+      _value = value
+    } else if (isNaN(value) || value === '') {
+      _value = ''
+    } else {
+      _value = Math.floor(value)
+    }
+    return this.title + TIP_SPACE + _value + this.unit
   }
-  
+
   /**
    * @author ysl
    * 更新提示信息
@@ -250,7 +257,7 @@ export default class TouchProgress extends Component {
       if (value > this.range[1]) value = this.range[1]
       tips = this._getTips(value)
     }
-  
+
     if (tips !== this.state.tips && tips !== undefined) {
       this.tempText = ~~value
       this.setState({
@@ -258,7 +265,7 @@ export default class TouchProgress extends Component {
       })
     }
   }
-  
+
   /**
    * @author ysl
    * 把数据转化为滑动距离
@@ -293,11 +300,11 @@ export default class TouchProgress extends Component {
   setData = async value => {
     const _value = ~~value
     const _data = ToolbarModule.getData()
-    
+
     if (value < this.range[0]) value = this.range[0]
     if (value > this.range[1]) value = this.range[1]
     let tips = this._getTips(value)
-  
+
     if (_data.actions && _data.actions.setTouchProgressInfo) {
       // 设置数据
       _data.actions.setTouchProgressInfo(this.title, value)
@@ -339,8 +346,8 @@ export default class TouchProgress extends Component {
       if (num) {
         strArray = this.state.tips.split(num)
       } else {
-        strArray = this.state.tips.split('   ')
-        strArray[0] += '   '
+        strArray = this.state.tips.split(TIP_SPACE)
+        strArray[0] += TIP_SPACE
       }
     }
     return (
@@ -348,7 +355,7 @@ export default class TouchProgress extends Component {
         style={[styles.box, { width: this.getWidthByOrientation() }]}
       >
         <View
-          style={{flex: 1, backgroundColor: 'transparent'}}
+          style={{ flex: 1, backgroundColor: 'transparent' }}
           {...this._panResponder.panHandlers}
         >
           <View style={[container, { width: this.getWidthByOrientation() }]}>

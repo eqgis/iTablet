@@ -332,13 +332,18 @@ export default class MeasureAreaView extends React.Component {
   }
 
   /** 设置 */
-  setting = () => {
+  setting = async () => {
+    let isSnap = await SMeasureAreaView.getIsSnapRange()
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
       fixedPositions: point => {
         NavigationService.goBack()
         SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
       },
+      isSnap:isSnap,
+      autoCatch: value => {
+        SMeasureAreaView.setIsSnapRange(value)
+      }
     })
   }
 

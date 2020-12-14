@@ -33,7 +33,7 @@ export default class ARWebView extends React.Component {
   componentDidMount() {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arWebViewModule)
-    ToolbarModule.setToolBarData('ARWEBVIEWMODULE')
+    ToolbarModule.setToolBarData('SM_ARWEBVIEWMODULE')
     this.toolbar.setVisible(true, 'SM_ARWEBVIEWMODULE', {
       type: 'table',
     })

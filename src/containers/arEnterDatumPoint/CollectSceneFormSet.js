@@ -5,12 +5,13 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  Switch,
 } from 'react-native'
 import { Container } from '../../components'
 
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView } from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView} from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
@@ -20,6 +21,7 @@ export default class CollectSceneFormSet extends Component {
   props: {
     navigation: Object,
     fixedPositions: Function,
+    autoCatch: Function,//AR测量等方法调用开启捕捉 add jiakai
   }
 
   constructor(props) {
@@ -27,6 +29,8 @@ export default class CollectSceneFormSet extends Component {
     const { params } = this.props.navigation.state
     this.fixedPositions = params && params.fixedPositions
     this.point = params && params.point
+    this.autoCatch = params && params.autoCatch
+    this.isSnap = params && params.isSnap//AR测量等方法调用开启捕捉 add jiakai
 
     let problemItems = []
     problemItems.push({
@@ -49,6 +53,7 @@ export default class CollectSceneFormSet extends Component {
 
       longitude: '',
       latitude: '',
+      isSnap:this.isSnap,//AR测量等方法调用开启捕捉 add jiakai
     }
   }
 
@@ -119,6 +124,38 @@ export default class CollectSceneFormSet extends Component {
     }
     GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
     GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+  }
+
+//AR测量等方法调用开启捕捉 add jiakai
+  renderSwitch() {
+    return (
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.separateLine} />
+      <View style={styles.item}>
+        <Text style={styles.itemtitle}>
+          {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_CATCH}
+        </Text>
+
+        <View style={styles.switchItem}>
+ 
+        <Switch
+            trackColor={{ false: color.bgG, true: color.switch }}
+            thumbColor={color.bgW}
+            ios_backgroundColor={
+              this.state.isSnap ? color.switch : color.bgG
+            }
+            value={this.state.isSnap}
+            onValueChange={value => {
+              this.setState({isSnap:value})
+              this.autoCatch(value)
+            }}
+          />
+      </View>
+
+      </View>
+      {/* <View style={styles.separateLine} /> */}
+    </View>
+    )
   }
 
   renderButtons() {
@@ -200,6 +237,7 @@ export default class CollectSceneFormSet extends Component {
 
           {this.renderTitle()}
           {this.renderButtons()}
+          {this.autoCatch&&this.renderSwitch()}
         </View>
       </ScrollView>
     )
@@ -318,5 +356,14 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(22),
     color: color.black,
     padding: scaleSize(10),
+  },
+  switchItem: {
+    height: scaleSize(80),
+    paddingRight: scaleSize(15),
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: color.white,
+    flex:1,
   },
 })

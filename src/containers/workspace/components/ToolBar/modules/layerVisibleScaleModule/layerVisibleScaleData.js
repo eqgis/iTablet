@@ -131,7 +131,7 @@ async function getBasicData(min, max, customMin, customMax) {
   const minOption = option.clone()
   let minInitItem =
     min === 0
-      ? { key: '0', value: 0 }
+      ? { key: getLanguage(GLOBAL.language).Analyst_Labels.CLEAR, value: 0 }
       : { key: `1 : ${dataUtil.NumberWithThousandSep(min)}`, value: min }
   let n = 0
   for (; n < minOption.length; n++) {
@@ -149,7 +149,7 @@ async function getBasicData(min, max, customMin, customMax) {
   const maxOption = option.clone()
   let maxInitItem =
     max === 0
-      ? { key: getLanguage(GLOBAL.language).Map_Layer.LAYER_NONE, value: 0 }
+      ? { key: getLanguage(GLOBAL.language).Analyst_Labels.CLEAR, value: 0 }
       : { key: `1 : ${dataUtil.NumberWithThousandSep(max)}`, value: max }
   n = 0
   for (; n < maxOption.length; n++) {

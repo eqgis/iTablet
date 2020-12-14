@@ -18,9 +18,10 @@ import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
 import Toast from '../../../../utils/Toast'
 import { getLanguage } from '../../../../language'
-import { ChunkType } from '../../../../constants'
+import { ChunkType, TouchType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import LocateUtils from '../../../pointAnalyst/LocateUtils'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default class PoiInfoContainer extends React.PureComponent {
   props: {
@@ -195,6 +196,7 @@ export default class PoiInfoContainer extends React.PureComponent {
     if (visible === this.state.visible) {
       return
     }
+    GLOBAL.TouchType = visible ? TouchType.MAP_NAVIGATION : TouchType.NORMAL
     let value = visible ? 0 : scaleSize(-screen.getScreenHeight())
     Animated.timing(this.bottom, {
       toValue: value,
@@ -689,6 +691,15 @@ export default class PoiInfoContainer extends React.PureComponent {
             this.state.resultList.length !== 0 &&
             !this.state.showMore &&
             this.renderList()}
+          {/* {
+            this.state.showList &&
+            <ScrollView
+              style={styles.wrapper}
+            >
+              {this.state.resultList.length === 0 && this.renderTable()}
+              {this.state.resultList.length !== 0 && !this.state.showMore && this.renderList()}
+            </ScrollView>
+          } */}
         </Animated.View>
       </Animated.View>
     )

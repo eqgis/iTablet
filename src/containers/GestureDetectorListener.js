@@ -63,13 +63,13 @@ async function touchCallback(event) {
       })()
       break
     case TouchType.NORMAL:
-      if (
-        GLOBAL.PoiInfoContainer &&
-        GLOBAL.PoiInfoContainer.state.resultList.length > 0 &&
-        !GLOBAL.PoiInfoContainer.state.showMore
-      ) {
-        GLOBAL.PoiInfoContainer.hidden()
-      }
+      // if (
+      //   GLOBAL.PoiInfoContainer &&
+      //   GLOBAL.PoiInfoContainer.state.resultList.length > 0 &&
+      //   !GLOBAL.PoiInfoContainer.state.showMore
+      // ) {
+      //   GLOBAL.PoiInfoContainer.hidden()
+      // }
       guideInfo = await SMap.isGuiding()
       if (
         !guideInfo.isOutdoorGuiding &&
@@ -86,6 +86,15 @@ async function touchCallback(event) {
           }
           isfull = !isfull
         }
+      }
+      break
+    case TouchType.MAP_NAVIGATION:
+      if (
+        GLOBAL.PoiInfoContainer &&
+        GLOBAL.PoiInfoContainer.state.resultList.length > 0 &&
+        !GLOBAL.PoiInfoContainer.state.showMore
+      ) {
+        GLOBAL.PoiInfoContainer.hidden()
       }
       break
     case TouchType.MAP_MARKS_TAGGING:

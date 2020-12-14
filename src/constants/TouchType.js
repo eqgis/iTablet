@@ -7,6 +7,8 @@ export default {
   NULL: 'NULL',
   //标注事件
   MAP_MARKS_TAGGING: 'MAP_MARKS_TAGGING',
+  //导航事件
+  MAP_NAVIGATION: 'MAP_NAVIGATION',
 
   // 网络分析事件
   SET_START_STATION: 'SET_START_STATION',

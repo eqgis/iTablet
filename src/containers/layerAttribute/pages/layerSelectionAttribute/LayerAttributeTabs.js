@@ -698,8 +698,8 @@ export default class LayerAttributeTabs extends React.Component {
           textColor={!this.state.canBeUndo && color.contentColorGray}
           image={
             this.state.canBeUndo
-              ? getThemeAssets().publicAssets.icon_undo
-              : getPublicAssets().attribute.icon_undo_disable
+              ? getThemeAssets().edit.icon_undo
+              : getThemeAssets().edit.icon_undo_ash
           }
           imageStyle={styles.headerBtn}
           onPress={() => this.setAttributeHistory('undo')}
@@ -711,8 +711,8 @@ export default class LayerAttributeTabs extends React.Component {
           style={styles.button}
           image={
             this.state.canBeRedo
-              ? getThemeAssets().publicAssets.icon_redo
-              : getPublicAssets().attribute.icon_redo_disable
+              ? getThemeAssets().edit.icon_redo
+              : getThemeAssets().edit.icon_redo_ash
           }
           imageStyle={styles.headerBtn}
           textColor={!this.state.canBeRedo && color.contentColorGray}
@@ -728,8 +728,8 @@ export default class LayerAttributeTabs extends React.Component {
           textColor={!this.state.canBeRevert && color.contentColorGray}
           image={
             this.state.canBeRevert
-              ? getThemeAssets().publicAssets.icon_revert
-              : getPublicAssets().attribute.icon_revert_disable
+              ? getThemeAssets().edit.icon_back_off
+              : getThemeAssets().edit.icon_back_off_ash
           }
           imageStyle={styles.headerBtn}
           onPress={() => this.setAttributeHistory('revert')}

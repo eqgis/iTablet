@@ -21,6 +21,7 @@ const icon_undo = require('./icon_undo.png')
 const icon_redo = require('./icon_redo.png')
 const icon_delete = require('./icon_delete.png')
 
+const icon_back_off = require('./icon_back_off.png')
 const icon_back_off_ash = require('./icon_back_off_ash.png')
 const icon_redo_ash = require('./icon_redo_ash.png')
 const icon_undo_ash = require('./icon_undo_ash.png')
@@ -50,5 +51,6 @@ export default {
   icon_redo,
   icon_redo_ash,
   icon_delete,
+  icon_back_off,
   icon_back_off_ash,
 }

@@ -450,37 +450,28 @@ export default class PointAnalyst extends Component {
           width: '100%',
         }}
       >
-        {/* <FlatList
-          style={styles.wrapper}
-          renderItem={this.renderIcons}
-          data={data}
-          keyExtractor={(item, index) => item.title + index}
-          numColumns={4}
-        /> */}
-        {this.props.mapSearchHistory.length > 0 && (
-          <FlatList
-            style={{
-              //最大高度为 屏幕高度 - 前一个Flatlist的高度 - 清除历史按键高度 - 顶部搜索栏高度
-              maxHeight:
-                maxHeight - (scaleSize(70) + headerHeight),
-            }}
-            ListHeaderComponent={() => {
-              return (
-                <FlatList
-                  style={styles.wrapper}
-                  renderItem={this.renderIcons}
-                  data={data}
-                  keyExtractor={(item, index) => item.title + index}
-                  numColumns={4}
-                />
-              )
-            }}
-            renderItem={this.renderItem}
-            data={this.props.mapSearchHistory}
-            keyExtractor={(item, index) => item.pointName + index}
-            numColumns={1}
-          />
-        )}
+        <FlatList
+          style={{
+            //最大高度为 屏幕高度 - 前一个Flatlist的高度 - 清除历史按键高度 - 顶部搜索栏高度
+            maxHeight:
+              maxHeight - (scaleSize(70) + headerHeight),
+          }}
+          ListHeaderComponent={() => {
+            return (
+              <FlatList
+                style={styles.wrapper}
+                renderItem={this.renderIcons}
+                data={data}
+                keyExtractor={(item, index) => item.title + index}
+                numColumns={4}
+              />
+            )
+          }}
+          renderItem={this.renderItem}
+          data={this.props.mapSearchHistory}
+          keyExtractor={(item, index) => item.pointName + index}
+          numColumns={1}
+        />
         {this.props.mapSearchHistory.length > 0 && (
           <TouchableOpacity
             style={{

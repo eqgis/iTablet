@@ -359,8 +359,8 @@ export default class Container extends Component {
           {headerOnTop && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
             <ContainerView style={[styles.container]}>
-              {!headerOnTop && this.renderHeader(fixHeader)}
               <View style={[styles.container, this.props.style]}>
+                {!headerOnTop && this.renderHeader(fixHeader)}
                 {this.props.children}
               </View>
               {/*{fixBottom && this.renderBottom(fixBottom)}*/}

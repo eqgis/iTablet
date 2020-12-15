@@ -47,14 +47,23 @@ export default class PanResponderView extends React.PureComponent {
     this.props.onHandleMoveEnd && this.props.onHandleMoveEnd(evt, gestureState)
   }
   _handleMoveShouldSetPanResponder = (evt, gestureState) => {
-    if (Math.abs(gestureState.dy) < 1) {
-      return false
-    } else {
-      return true
+    // if (Math.abs(gestureState.dy) < 1) {
+    //   return false
+    // } else {
+    //   return true
+    // }
+    if (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5) {
+      return true;
+    } else if (Math.abs(gestureState.dx) === 0 || Math.abs(gestureState.dy) === 0) {
+      return false;
     }
   }
 
   _handlePanResponderMove = (evt, gestureState) => {
+    let { dx, dy } = gestureState
+    if (Math.abs(dy) > Math.abs(dx)) {
+      return
+    }
     if (this.props.withTopBar) {
       let currentState = this.state.currentState
       if (gestureState.dx > 10 && currentState !== STATE_TYPE.RIGHT) {

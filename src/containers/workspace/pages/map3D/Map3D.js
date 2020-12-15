@@ -419,6 +419,14 @@ export default class Map3D extends React.Component {
     // GLOBAL.sceneName = ''
     if (!this.mapLoaded) return
     try {
+      if (this.state.showPanResponderView) {
+        this.setState({
+          showMenuDialog: false,
+          showPanResponderView: false,
+          tips: '',
+        })
+        return
+      }
       if (GLOBAL.isCircleFlying) {
         await SScene.stopCircleFly()
         await SScene.clearCirclePoint()

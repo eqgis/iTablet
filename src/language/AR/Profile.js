@@ -349,6 +349,7 @@ const Profile = {
   X_COORDINATE: 'احداثيات X',
   Y_COORDINATE: 'احداثيات Y',
   MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
 
   // ar地图
   COLLECT_SCENE_RENAME: 'إعادة تسمية',

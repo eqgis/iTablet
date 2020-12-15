@@ -339,7 +339,8 @@ const Profile = {
   MAP_AR_DATUM_SETTING: 'Setting',
   X_COORDINATE: 'X Coordinate',
   Y_COORDINATE: 'Y Coordinate',
-  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Rename',

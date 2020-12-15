@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Switch,
+  TextInput,
 } from 'react-native'
 import { Container } from '../../components'
 
@@ -22,6 +23,7 @@ export default class CollectSceneFormSet extends Component {
     navigation: Object,
     fixedPositions: Function,
     autoCatch: Function,//AR测量等方法调用开启捕捉 add jiakai
+    setTolerance: Function,//AR测量等方法设置捕捉容限 add jiakai
   }
 
   constructor(props) {
@@ -31,6 +33,9 @@ export default class CollectSceneFormSet extends Component {
     this.point = params && params.point
     this.autoCatch = params && params.autoCatch
     this.isSnap = params && params.isSnap//AR测量等方法调用开启捕捉 add jiakai
+    this.tole = params && params.tole//AR测量等捕捉容限 add jiakai
+    this.setTolerance = params && params.setTolerance//AR测量等方法设置捕捉容限 add jiakai
+    this.isMeasure = params && params.isMeasure//量算等界面不显示定位点 add jiakai
 
     let problemItems = []
     problemItems.push({
@@ -54,6 +59,7 @@ export default class CollectSceneFormSet extends Component {
       longitude: '',
       latitude: '',
       isSnap:this.isSnap,//AR测量等方法调用开启捕捉 add jiakai
+      Tolerance: this.tole,//AR测量等捕捉容限 add jiakai
     }
   }
 
@@ -126,36 +132,80 @@ export default class CollectSceneFormSet extends Component {
     GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
   }
 
-//AR测量等方法调用开启捕捉 add jiakai
+  //AR测量等方法调用开启捕捉 add jiakai
   renderSwitch() {
     return (
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.separateLine} />
-      <View style={styles.item}>
-        <Text style={styles.itemtitle}>
-          {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_CATCH}
-        </Text>
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_CATCH}
+          </Text>
 
-        <View style={styles.switchItem}>
- 
-        <Switch
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={color.bgW}
-            ios_backgroundColor={
-              this.state.isSnap ? color.switch : color.bgG
-            }
-            value={this.state.isSnap}
-            onValueChange={value => {
-              this.setState({isSnap:value})
-              this.autoCatch(value)
-            }}
-          />
-      </View>
+          <View style={styles.switchItem}>
 
+            <Switch
+              trackColor={{ false: color.bgG, true: color.switch }}
+              thumbColor={color.bgW}
+              ios_backgroundColor={
+                this.state.isSnap ? color.switch : color.bgG
+              }
+              value={this.state.isSnap}
+              onValueChange={value => {
+                this.setState({ isSnap: value })
+                this.autoCatch(value)
+              }}
+            />
+          </View>
+        </View>
       </View>
-      {/* <View style={styles.separateLine} /> */}
-    </View>
     )
+  }
+
+  //AR测量等方法捕捉容限 add jiakai
+  renderSnapTolerance() {
+    return (
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.separateLine} />
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_CATCH_TOLERANCE}
+          </Text>
+
+          <View style={styles.switchItem}>
+            <TextInput
+              editable={true}
+              style={styles.itemInput}
+              keyboardType="numeric"
+              onChangeText={text => {
+                let Tolerance = this.clearNoNum(text)
+                this.setState({
+                  Tolerance: Tolerance,
+                })
+              }}
+              value={this.state.Tolerance + ''}
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  clearNoNum = value => {
+    value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
+    value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
+    value = value
+      .replace('.', '$#$')
+      .replace(/\./g, '')
+      .replace('$#$', '.')
+    // value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+    if (value.indexOf('.') < 0 && value != '') {
+      //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+      value = parseFloat(value)
+    } else if (value == '') {
+      value = 0
+    }
+    return value
   }
 
   renderButtons() {
@@ -220,6 +270,7 @@ export default class CollectSceneFormSet extends Component {
         onPress={async () => {
           let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
           this.fixedPositions(point)
+          this.setTolerance(this.state.Tolerance)
         }}
       >
         <Text style={styles.textConfirm}>
@@ -235,9 +286,10 @@ export default class CollectSceneFormSet extends Component {
         <View style={{ flex: 1, backgroundColor: color.background }}>
           <View style={{ height: 10 }} />
 
-          {this.renderTitle()}
-          {this.renderButtons()}
+          {!this.isMeasure&&this.renderTitle()}
+          {!this.isMeasure&&this.renderButtons()}
           {this.autoCatch&&this.renderSwitch()}
+          {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}
         </View>
       </ScrollView>
     )
@@ -323,7 +375,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
   },
   itemInput: {
-    width: '100%',
+    width: scaleSize(100),
     // height: scaleSize(120),
     fontSize: scaleSize(22),
     padding: scaleSize(15),

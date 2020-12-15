@@ -46,6 +46,7 @@ export default class MeasureAreaView extends React.Component {
     this.measureType = params.measureType
 
     this.isDrawing = false
+    this.isMeasure = false
 
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
@@ -72,6 +73,12 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
+      }
+
+      if(this.measureType === 'arMeasureHeight' ||
+      this.measureType === 'measureLength' ||
+      this.measureType === 'measureArea') {
+        this.isMeasure = true
       }
 
       if (
@@ -331,9 +338,36 @@ export default class MeasureAreaView extends React.Component {
     await SMeasureAreaView.setMeasureMode(mode)
   }
 
+  /** 量算的设置（界面传入数据有区别）add jiakai */
+  Measuresetting = async () => {
+    let isSnap = await SMeasureAreaView.getIsSnapRange()
+    let tole = await SMeasureAreaView.getSnapTolerance()
+    NavigationService.navigate('CollectSceneFormSet', {
+      isMeasure:true,
+      fixedPositions: point => {
+        NavigationService.goBack()
+      },
+      isSnap:isSnap,
+      tole:tole,
+      autoCatch: value => {
+        SMeasureAreaView.setIsSnapRange(value)
+      },
+      setTolerance: value => {
+        if(value>100){
+          value=100
+        }
+        if(value<0){
+          value=0
+        }
+        SMeasureAreaView.setSnapTolerance(value)
+      }
+    })
+  }
+
   /** 设置 */
   setting = async () => {
     let isSnap = await SMeasureAreaView.getIsSnapRange()
+    let tole = await SMeasureAreaView.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
       fixedPositions: point => {
@@ -341,8 +375,18 @@ export default class MeasureAreaView extends React.Component {
         SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
       },
       isSnap:isSnap,
+      tole:tole,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
+      },
+      setTolerance: value => {
+        if(value>100){
+          value=100
+        }
+        if(value<0){
+          value=0
+        }
+        SMeasureAreaView.setSnapTolerance(value)
       }
     })
   }
@@ -436,6 +480,20 @@ export default class MeasureAreaView extends React.Component {
             <TouchableOpacity
               onPress={() => {
                 this.setting()
+              }}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                source={getThemeAssets().ar.toolbar.ai_setting}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
+          {this.isMeasure && (
+            <TouchableOpacity
+              onPress={() => {
+                this.Measuresetting()
               }}
               style={styles.iconView}
             >

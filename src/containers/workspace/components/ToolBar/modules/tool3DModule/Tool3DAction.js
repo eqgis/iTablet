@@ -168,7 +168,7 @@ async function map3dCut() {
     // this.props.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_BOX_CLIP)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIP, {
       isFullScreen: false,
-      // height: 0,
+      containerType: ToolbarType.typeNull,
     })
     params.setClipSetting && params.setClipSetting(rel)
   } else {

@@ -419,21 +419,22 @@ export default class Map3D extends React.Component {
     // GLOBAL.sceneName = ''
     if (!this.mapLoaded) return
     try {
-      if (this.state.showPanResponderView) {
-        this.setState({
-          showMenuDialog: false,
-          showPanResponderView: false,
-          tips: '',
-        })
-        return
-      }
       if (GLOBAL.isCircleFlying) {
         await SScene.stopCircleFly()
         await SScene.clearCirclePoint()
       }
       if (Platform.OS === 'android') {
+        if (this.state.showPanResponderView) {
+          this.setState({
+            showMenuDialog: false,
+            showPanResponderView: false,
+            tips: '',
+          })
+          return
+        }
         if (this.toolBox && this.toolBox.getState().isShow) {
-          this.toolBox.close()
+          // this.toolBox.close()
+          this.toolBox.getToolbarModule().getParams().buttonView.close()
           return true
         } else if (this.SaveDialog && this.SaveDialog.getState().visible) {
           this.SaveDialog.setDialogVisible(false)

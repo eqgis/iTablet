@@ -268,9 +268,13 @@ export default class CollectSceneFormSet extends Component {
       <TouchableOpacity
         key={'search'}
         onPress={async () => {
-          let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
-          this.fixedPositions(point)
-          this.setTolerance(this.state.Tolerance)
+          if(this.fixedPositions){
+            let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
+            this.fixedPositions(point)
+          }
+          if(this.setTolerance){
+            this.setTolerance(this.state.Tolerance)
+          }
         }}
       >
         <Text style={styles.textConfirm}>

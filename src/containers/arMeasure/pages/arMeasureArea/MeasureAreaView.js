@@ -344,15 +344,13 @@ export default class MeasureAreaView extends React.Component {
     let tole = await SMeasureAreaView.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure:true,
-      fixedPositions: point => {
-        NavigationService.goBack()
-      },
       isSnap:isSnap,
       tole:tole,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
       },
       setTolerance: value => {
+        NavigationService.goBack()
         if(value>100){
           value=100
         }

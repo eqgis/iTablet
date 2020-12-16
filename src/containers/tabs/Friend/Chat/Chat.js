@@ -29,7 +29,7 @@ import { ConstPath, ConstOnline } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { Toast, LayerUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
-import { color } from '../../../../styles'
+import { color, zIndexLevel } from '../../../../styles'
 import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../../../../constants/MsgConstant'
 import { getLanguage } from '../../../../language/index'
@@ -1110,6 +1110,9 @@ class Chat extends React.Component {
           withoutBack: false,
           backAction: this.state.coworkMode && this.back,
           navigation: this.props.navigation,
+          headerStyle: {
+            zIndex: zIndexLevel.THREE,
+          },
           headerRight:
               this.targetUser.id.indexOf('Group_') === -1 ||
               FriendListFileHandle.isInGroup(

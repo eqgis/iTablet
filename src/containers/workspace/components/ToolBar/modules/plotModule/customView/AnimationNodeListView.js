@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     height: scaleSize(30),
     color: color.themeText2,
     textAlign: 'center',
-    padding: scaleSize(3),
+    padding: scaleSize(0),
   },
   subView: {
     flexDirection: 'row',

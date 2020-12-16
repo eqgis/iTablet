@@ -52,7 +52,7 @@ export default class ToolbarContentView extends React.Component {
     const data = this.ToolbarModule.getToolbarSize(props.containerType, {
       data: props.data,
     })
-    this.height = data.height // ToolbarContentView当前类型，未收缩前的高度
+    this.height = this.props.customView ? 0 : data.height // ToolbarContentView当前类型，未收缩前的高度
     this.isBoxShow = false
     this.state = {
       column: data.column,
@@ -93,7 +93,7 @@ export default class ToolbarContentView extends React.Component {
       let _data = this.ToolbarModule.getToolbarSize(this.props.containerType, {
         data: this.props.data,
       })
-      this.height = _data.height
+      this.height = this.props.customView ? 0 : _data.height
       // 若转动屏幕前后，ContentView高度为0，为不显示状态，则不调用改变高度
       if (
         this.props.device.orientation !== prevProps.device.orientation &&

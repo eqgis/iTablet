@@ -419,6 +419,14 @@ export default class Map3D extends React.Component {
     // GLOBAL.sceneName = ''
     if (!this.mapLoaded) return
     try {
+      if (this.state.showPanResponderView) {
+        this.setState({
+          showMenuDialog: false,
+          showPanResponderView: false,
+          tips: '',
+        })
+        return
+      }
       if (GLOBAL.isCircleFlying) {
         await SScene.stopCircleFly()
         await SScene.clearCirclePoint()
@@ -620,12 +628,12 @@ export default class Map3D extends React.Component {
   //结束移动
   _onHandleMoveEnd = (evt, gestureState) => {
     let { dx, dy } = gestureState
-    if (Math.abs(dx) > 10) {
+    if (Math.abs(dx) > 10 && Math.abs(dy) < Math.abs(dx)) {
       this._changeClipSetting(0, async clipSetting => {
         this.changeLength = 0
         ToolbarModule.addData({ clipSetting })
       })
-    } else if (Math.abs(dy) > 10) {
+    } else if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) {
       this.setState({
         tips: '',
         showMenuDialog: true,
@@ -649,7 +657,7 @@ export default class Map3D extends React.Component {
     })
   }
   renderPanResponderView = () => {
-    let tips = this.state.tips
+    let tips = this.state.tips === '' ? this.state.clipSetting[this.selectKey] : this.state.tips
     tips = tips.toString().length > 8 ? tips.toFixed(6) : tips
     let needTips = !!tips
     let padding =

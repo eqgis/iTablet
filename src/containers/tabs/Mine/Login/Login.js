@@ -39,6 +39,7 @@ export default class Login extends React.Component {
     this.state = {
       data: [],
       type: '',
+      covered:false,//登录过程中用来遮盖按钮 add jiakai
     }
     this.scaleL = new Animated.Value(1)
     this.scaleR = new Animated.Value(0.7)
@@ -146,10 +147,12 @@ export default class Login extends React.Component {
       let userInfo
       let isConnected = await NetInfo.isConnected.fetch()
       if (isConnected) {
-        this.container.setLoading(
-          true,
-          getLanguage(this.props.language).Prompt.LOG_IN,
-        )
+        this.onlineLogin.logining()
+        this.setState({covered:true})
+        // this.container.setLoading(
+        //   true,
+        //   getLanguage(this.props.language).Prompt.LOG_IN,
+        // )
         userInfo = await JSOnlineService.getUserInfo(userName, isEmail)
         if (
           userInfo !== false &&
@@ -268,7 +271,9 @@ export default class Login extends React.Component {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
       //'登录异常')
     } finally {
-      this.container && this.container.setLoading(false)
+      this.setState({covered:false})
+      this.onlineLogin.loginResult()
+      // this.container && this.container.setLoading(false)
     }
   }
 
@@ -289,10 +294,12 @@ export default class Login extends React.Component {
         return
       }
 
-      this.container.setLoading(
-        true,
-        getLanguage(this.props.language).Prompt.LOG_IN,
-      )
+      this.iportalLogin.logining()
+      this.setState({covered:true})
+      // this.container.setLoading(
+      //   true,
+      //   getLanguage(this.props.language).Prompt.LOG_IN,
+      // )
 
       let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
@@ -309,10 +316,15 @@ export default class Login extends React.Component {
             userType: UserType.IPORTAL_COMMON_USER,
           })
         }
-        this.container.setLoading(false)
+        this.iportalLogin.loginResult()
+        this.setState({covered:false})
+        
+        // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {
-        this.container.setLoading(false)
+        this.iportalLogin.loginResult()
+        this.setState({covered:false})
+        // this.container.setLoading(false)
         if (result === false) {
           Toast.show(
             getLanguage(this.props.language).Prompt.INCORRECT_IPORTAL_ADDRESS,
@@ -326,9 +338,15 @@ export default class Login extends React.Component {
         }
       }
     } catch (e) {
-      this.container.setLoading(false)
+      this.iportalLogin.loginResult()
+      this.setState({covered:false})
+      // this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
     }
+  }
+
+  _connect = (value)  => {
+    this.setState({covered:value})
   }
 
   renderItem = ({ item, index }) => {
@@ -452,16 +470,24 @@ export default class Login extends React.Component {
   renderLogin = () => {
     if (this.state.type === 'Online') {
       return (
-        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} />
+        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} ref={ref => (this.onlineLogin = ref)}/>
       )
     } else if (this.state.type === 'iPortal') {
       return (
         <IPortalLoginView
           language={GLOBAL.language}
           login={this._loginIPortal}
+          connect={this._connect}
+          ref={ref => (this.iportalLogin = ref)}
         />
       )
     }
+  }
+
+  renderCovered = () => {
+    return (
+      <View style={{ width: '100%', height: '100%', position: 'absolute', backgroundColor: 'transparent' }} />
+    )
   }
 
   render() {
@@ -481,6 +507,7 @@ export default class Login extends React.Component {
       >
         {this.renderLoginType()}
         {this.renderLogin()}
+        {this.state.covered&&this.renderCovered()}
       </Container>
     )
   }

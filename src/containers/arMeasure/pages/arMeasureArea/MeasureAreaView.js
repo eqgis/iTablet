@@ -112,7 +112,7 @@ export default class MeasureAreaView extends React.Component {
       showCurrentHeightView: false,
       currentHeight: '0m',
       showADDPoint:false,
-      showADD:false,
+      showADD:true,//默认先显示
       isfirst:true,
       showLog:false,
       dioLog:'',
@@ -344,15 +344,13 @@ export default class MeasureAreaView extends React.Component {
     let tole = await SMeasureAreaView.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure:true,
-      fixedPositions: point => {
-        NavigationService.goBack()
-      },
       isSnap:isSnap,
       tole:tole,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
       },
       setTolerance: value => {
+        NavigationService.goBack()
         if(value>100){
           value=100
         }

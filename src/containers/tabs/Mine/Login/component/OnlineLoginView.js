@@ -20,6 +20,34 @@ export default class OnlineLoginView extends React.Component {
     super(props)
     this.state = {
       behavior: 'padding',
+      loginText:getLanguage(this.props.language).Profile.LOGIN,
+      canTouch: true,//登录按钮点击判断 add jiakai
+    }
+  }
+
+  //登录结果按钮状态及提示 add jiakai
+  loginResult = () => {
+    this.setState({loginText:getLanguage(this.props.language).Profile.LOGIN,canTouch:true})
+  }
+
+  //登录中按钮状态及提示 add jiakai
+  logining = () => {
+    this.setState({loginText:getLanguage(this.props.language).Profile.LOGINING,canTouch:false})
+  }
+
+  //登录按钮点击事件处理 add jiakai
+  loginTouch = () => {
+    if(this.state.canTouch){
+      Keyboard.dismiss()
+      let reg = /^[0-9]+$/
+      let isEmail = !reg.test(this.userName)
+      this.props.login({
+        isEmail: isEmail,
+        userName: this.userName,
+        password: this.password,
+      })
+    }else{
+      return
     }
   }
 
@@ -90,21 +118,14 @@ export default class OnlineLoginView extends React.Component {
     return (
       <TouchableOpacity
         accessible={true}
-        accessibilityLabel={getLanguage(this.props.language).Profile.LOGIN}
+        accessibilityLabel={this.state.loginText}
         style={styles.loginStyle}
         onPress={() => {
-          Keyboard.dismiss()
-          let reg = /^[0-9]+$/
-          let isEmail = !reg.test(this.userName)
-          this.props.login({
-            isEmail: isEmail,
-            userName: this.userName,
-            password: this.password,
-          })
+          this.loginTouch()
         }}
       >
         <Text style={[styles.buttonText]}>
-          {getLanguage(this.props.language).Profile.LOGIN}
+          {this.state.loginText}
         </Text>
       </TouchableOpacity>
     )

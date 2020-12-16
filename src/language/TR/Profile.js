@@ -26,6 +26,7 @@ const Profile = {
 
   // 我的——登录
   LOGIN: 'Giriş',
+  LOGINING: 'Logining..',//待翻译
   LOGIN_TIMEOUT: 'Giriş zaman aşımı lütfen daha sonra tekrar deneyin',
   LOGIN_CURRENT: 'Mevcut kullanıcı zaten giriş yaptı',
   LOGIN_INVALID: '’Girişin süresi doldu. Lütfen tekrar giriş yapın',

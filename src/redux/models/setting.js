@@ -322,6 +322,7 @@ const initialState = fromJS({
     gestureBone: false,
     estimation: false,
     highPrecisionCollect: false,
+    onlineCowork: false,
   },
 })
 

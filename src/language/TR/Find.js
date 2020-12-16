@@ -50,6 +50,7 @@ const Find = {
   LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //need to be translated
   BETA_TIPS: 'İpuçları: Bu yalnızca deneysel bir beta özelliktir.', //need to be translated
   LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
+  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map。', // 待翻译
 }
 
 export { Find }

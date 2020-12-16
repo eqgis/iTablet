@@ -12,6 +12,7 @@ class FindSettingPage extends React.Component {
   props: {
     navigation: Object,
     find: Object,
+    laboratory: Object,
     toggleFindItem: () => {},
   }
 
@@ -22,48 +23,53 @@ class FindSettingPage extends React.Component {
     }
   }
 
-  getData = () => [
-    {
-      key: getLanguage(GLOBAL.language).Prompt.PUBLIC_MAP,
-      value: 'showPublicMap',
-      image: getThemeAssets().find.public_map,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Find.PUBLIC_DATA,
-      value: 'showPublicData',
-      image: getThemeAssets().find.public_data,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_GROUP,
-      value: 'showSuperMapGroup',
-      image: getThemeAssets().find.supermap,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_KNOW,
-      value: 'showSuperMapKnow',
-      image: getThemeAssets().find.supermapkonw,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_FORUM,
-      value: 'showSuperMapForum',
-      image: getThemeAssets().find.forum,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Find.GIS_ACADEMY,
-      value: 'showGisAcademy',
-      image: getThemeAssets().find.college,
-    },
-    {
-      key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
-      value: 'showCowork',
-      image: getThemeAssets().find.onlineCowork,
-    },
-    {
+  getData = () => {
+    let data = [
+      {
+        key: getLanguage(GLOBAL.language).Prompt.PUBLIC_MAP,
+        value: 'showPublicMap',
+        image: getThemeAssets().find.public_map,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Find.PUBLIC_DATA,
+        value: 'showPublicData',
+        image: getThemeAssets().find.public_data,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_GROUP,
+        value: 'showSuperMapGroup',
+        image: getThemeAssets().find.supermap,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_KNOW,
+        value: 'showSuperMapKnow',
+        image: getThemeAssets().find.supermapkonw,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Prompt.SUPERMAP_FORUM,
+        value: 'showSuperMapForum',
+        image: getThemeAssets().find.forum,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Find.GIS_ACADEMY,
+        value: 'showGisAcademy',
+        image: getThemeAssets().find.college,
+      },
+    ]
+    if (this.props.laboratory.onlineCowork) {
+      data.push({
+        key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
+        value: 'showCowork',
+        image: getThemeAssets().find.onlineCowork,
+      })
+    }
+    data.push({
       key: getLanguage(GLOBAL.language).Find.LABORATORY,
       value: 'showLab',
       image: getThemeAssets().find.laboratory,
-    },
-  ]
+    })
+    return data
+  }
 
   renderItem = ({ index, item }) => {
     return (
@@ -151,6 +157,7 @@ class FindSettingPage extends React.Component {
 
 const mapStateToProps = state => ({
   find: state.setting.toJS().find,
+  laboratory: state.setting.toJS().laboratory,
 })
 
 const mapDispatchToProps = {

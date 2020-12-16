@@ -370,6 +370,7 @@ class FriendMessage extends Component {
           <View style={styles.ITemTextViewStyle}>
             {this._renderItemTitleView(item)}
             <Text
+              numberOfLines={2}
               style={{
                 fontSize: scaleSize(20),
                 color: 'grey',

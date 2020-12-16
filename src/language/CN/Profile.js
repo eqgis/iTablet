@@ -340,6 +340,7 @@ const Profile = {
   X_COORDINATE: 'X坐标',
   Y_COORDINATE: 'Y坐标',
   MAP_AR_DATUM_AUTO_CATCH: '自动捕捉',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: '捕捉容限',
 
   // ar地图
   COLLECT_SCENE_RENAME: '重命名',

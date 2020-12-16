@@ -340,6 +340,7 @@ const Profile = {
   X_COORDINATE: 'X Koordinatı',
   Y_COORDINATE: 'Y Koordinatı',
   MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

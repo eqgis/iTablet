@@ -340,6 +340,7 @@ const Profile = {
   X_COORDINATE: 'X 座標', //jp0730
   Y_COORDINATE: 'Y 座標',
   MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

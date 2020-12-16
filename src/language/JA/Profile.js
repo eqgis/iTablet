@@ -26,6 +26,7 @@ const Profile = {
 
   // 我的——登录
   LOGIN: 'ログイン',
+  LOGINING: 'Logining..',//待翻译
   LOGIN_TIMEOUT: 'ログインタイムアウト、後で再度試してださい。',
   LOGIN_CURRENT: '現在ユーザーはログインしました。',
   LOGIN_INVALID: 'ログインに失敗しました。再度ログインしてください。',

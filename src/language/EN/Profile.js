@@ -26,6 +26,7 @@ const Profile = {
 
   // 我的——登录
   LOGIN: 'Login',
+  LOGINING: 'Logining..',
   LOGIN_TIMEOUT: 'Login timeout, please try again later',
   LOGIN_CURRENT: 'Current user is already logged in',
   LOGIN_INVALID: 'Login expired. Please login again',

@@ -16,6 +16,7 @@ export default class IPortalLoginView extends React.Component {
   props: {
     language: string,
     login: () => {},
+    connect: () => {},
   }
 
   static defaultProps = {
@@ -28,15 +29,56 @@ export default class IPortalLoginView extends React.Component {
       behavior: 'padding',
       left: new Animated.Value(0),
       showServer: true,
+      loginText:getLanguage(this.props.language).Profile.LOGIN,
+      nextText:getLanguage(GLOBAL.language).Profile.NEXT,
+      canTouch: true,//登录按钮点击判断 add jiakai
+      connectTouch: true,//下一步按钮点击判断 add jiakai
+    }
+  }
+
+  //登录结果按钮状态及提示 add jiakai
+  loginResult = () => {
+    this.setState({loginText:getLanguage(this.props.language).Profile.LOGIN,canTouch:true})
+  }
+
+  //登录中按钮状态及提示 add jiakai
+  logining = () => {
+    this.setState({loginText:getLanguage(this.props.language).Profile.LOGINING,canTouch:false})
+  }
+
+  //登录按钮点击事件处理 add jiakai
+  loginTouch = () => {
+    if (this.state.canTouch) {
+      Keyboard.dismiss()
+      this.props.login({
+        url: this.iportalAddress,
+        userName: this.iportalUser,
+        password: this.iportalPassword,
+      })
+    } else {
+      return
+    }
+  }
+
+  //下一步按钮点击事件处理 add jiakai
+  connecting = () => {
+    if(this.state.connectTouch){
+      Keyboard.dismiss()
+      this.goNext()
+    }else{
+      return
     }
   }
 
   goNext = async () => {
     if (this.iportalAddress) {
-      GLOBAL.Loading.setLoading(
-        true,
-        getLanguage(GLOBAL.language).Profile.CONNECTING,
-      )
+      //下一步点击后按钮及提示状态 add jiakai
+      this.setState({nextText:getLanguage(GLOBAL.language).Profile.CONNECTING,connectTouch:false})
+      this.props.connect(true)
+      // GLOBAL.Loading.setLoading(
+      //   true,
+      //   getLanguage(GLOBAL.language).Profile.CONNECTING,
+      // )
       let url = this.iportalAddress + '/login.rjson'
       if (this.iportalAddress.indexOf('http') !== 0) {
         url = 'http://' + url
@@ -57,8 +99,9 @@ export default class IPortalLoginView extends React.Component {
       }
       if (status === 405) {
         setTimeout(() => {
-          GLOBAL.Loading.setLoading(false)
-          this.setState({ showServer: false })
+          // GLOBAL.Loading.setLoading(false)
+          this.props.connect(false)
+          this.setState({ showServer: false ,connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
           Animated.timing(this.state.left, {
             toValue: -this.screenWidth,
             duration: 500,
@@ -67,7 +110,9 @@ export default class IPortalLoginView extends React.Component {
       } else {
         setTimeout(() => {
           Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
-          GLOBAL.Loading.setLoading(false)
+          this.props.connect(false)
+          this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
+          // GLOBAL.Loading.setLoading(false)
         }, 1000)
       }
     } else {
@@ -101,15 +146,14 @@ export default class IPortalLoginView extends React.Component {
         </View>
         <TouchableOpacity
           accessible={true}
-          accessibilityLabel={'NEXT'}
+          accessibilityLabel={this.state.nextText}
           style={styles.loginStyle}
           onPress={() => {
-            Keyboard.dismiss()
-            this.goNext()
+            this.connecting()
           }}
         >
           <Text style={[styles.buttonText]}>
-            {getLanguage(GLOBAL.language).Profile.NEXT}
+            {this.state.nextText}
           </Text>
         </TouchableOpacity>
       </View>
@@ -156,20 +200,15 @@ export default class IPortalLoginView extends React.Component {
         </View>
         <TouchableOpacity
           accessible={true}
-          accessibilityLabel={getLanguage(this.props.language).Profile.LOGIN}
+          accessibilityLabel={this.state.loginText}
           style={styles.loginStyle}
           onPress={() => {
-            Keyboard.dismiss()
-            this.props.login({
-              url: this.iportalAddress,
-              userName: this.iportalUser,
-              password: this.iportalPassword,
-            })
+            this.loginTouch()
           }}
         >
           <Text style={[styles.buttonText]}>
             {/* 登录 */}
-            {getLanguage(this.props.language).Profile.LOGIN}
+            {this.state.loginText}
           </Text>
         </TouchableOpacity>
       </View>

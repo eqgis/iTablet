@@ -26,6 +26,7 @@ const Profile = {
 
   // 我的——登录
   LOGIN: 'connexion',
+  LOGINING: 'Logining..',//待翻译
   LOGIN_TIMEOUT: 'Délai de connexion, veuillez réessayer plus tard',
   LOGIN_CURRENT: "L'utilisateur actuel est déjà connecté",
   LOGIN_INVALID: 'La connexion a expiré. Veuillez vous reconnecter',

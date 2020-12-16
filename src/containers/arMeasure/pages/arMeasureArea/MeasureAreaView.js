@@ -112,7 +112,7 @@ export default class MeasureAreaView extends React.Component {
       showCurrentHeightView: false,
       currentHeight: '0m',
       showADDPoint:false,
-      showADD:false,
+      showADD:true,//默认先显示
       isfirst:true,
       showLog:false,
       dioLog:'',

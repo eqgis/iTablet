@@ -89,7 +89,7 @@ class ManageFriend extends Component {
   renderSettings = () => {
     return (
       <ScrollView>
-        {!this.state.coworkMode && !this.chat.action && (
+        {/* {!this.state.coworkMode && !this.chat.action && (
           <TouchableItemView
             //地图协作
             image={getThemeAssets().friend.friend_map}
@@ -98,7 +98,7 @@ class ManageFriend extends Component {
               NavigationService.navigate('SelectModule')
             }}
           />
-        )}
+        )} */}
         {this.state.coworkMode ? (
           <TouchableItemView
             //退出协作

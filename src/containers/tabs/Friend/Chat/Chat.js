@@ -1145,7 +1145,7 @@ class Chat extends React.Component {
         }}
       >
         <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
-          {this.state.showInformSpot ? (
+          {this.state.showInformSpot && !this.state.coworkMode ? (
             <View
               style={{
                 position: 'absolute',

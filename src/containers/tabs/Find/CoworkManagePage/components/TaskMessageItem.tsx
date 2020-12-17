@@ -8,6 +8,7 @@ import RNFS from 'react-native-fs'
 import { Toast } from '../../../../../utils'
 import DataHandler from '../../../Mine/DataHandler'
 import { FileTools } from '../../../../../native'
+import { SOnlineService } from 'imobile_for_reactnative'
 
 import MessageItem from './MessageItem'
 import styles from './styles'
@@ -132,7 +133,7 @@ export default class TaskMessageItem extends MessageItem {
         ...Platform.select({
           android: {
             headers: {
-              cookie: GLOBAL.cookie,
+              cookie: await SOnlineService.getAndroidSessionID(),
             }
           },
         }),

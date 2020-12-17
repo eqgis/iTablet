@@ -14,6 +14,7 @@ import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import DataHandler from '../../../Mine/DataHandler'
+import { SOnlineService } from 'imobile_for_reactnative'
 
 export const itemHeight = 140
 export const imageWidth = 90
@@ -229,7 +230,7 @@ export default class SourceItem extends Component<Props, State> {
         ...Platform.select({
           android: {
             headers: {
-              cookie: GLOBAL.cookie,
+              cookie: await SOnlineService.getAndroidSessionID(),
             }
           },
         }),

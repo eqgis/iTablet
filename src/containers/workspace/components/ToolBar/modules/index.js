@@ -30,6 +30,7 @@ import arMeasureModule from './arMeasure'
 import arToolModule from './arTool'
 import arEffecModule from './arEffect'
 import arMappingModule from './arMapping'
+import baseMapModule from './baseMapModule'
 export {
   startModule,
   start3DModule,
@@ -63,4 +64,5 @@ export {
   arToolModule,
   arEffecModule,
   arMappingModule,
+  baseMapModule,
 }

@@ -114,6 +114,8 @@ export default class ToolBar extends React.Component {
     //改变当前楼层ID
     changeFloorID: () => {},
     setToolbarStatus: () => {},
+    // 设置地图Title
+    setMapTitle?: () => {},
 
     getOverlay: () => {},
     toolbarModuleKey: String,

@@ -688,7 +688,7 @@ export default class MapView extends React.Component {
                 (async function () {
                   if (GLOBAL.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
-                    // 定位到当前位置
+                    // 定位到当前位置
                     await SScene.location()
                     // await SScene.resetCamera()
                     this.mapController.setCompass(0)
@@ -1317,7 +1317,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1470,13 +1470,13 @@ export default class MapView extends React.Component {
           currentDatasource: [], //当前使用的数据源
           currentDataset: {}, //当前使用的数据集
         }
-          ; (async function () {
-            //防止退出时没有清空
-            await SMap.removeUserCallout()
-            await SMap.clearUserTrack()
+        ;(async function () {
+          //防止退出时没有清空
+          await SMap.removeUserCallout()
+          await SMap.clearUserTrack()
 
-            this.startCowork()
-          }.bind(this)())
+          this.startCowork()
+        }.bind(this)())
 
         this.mapLoaded = true
       } catch (e) {
@@ -2117,6 +2117,12 @@ export default class MapView extends React.Component {
     return this.selectedData
   }
 
+  setMapTitle = title => {
+    this.setState({
+      mapTitle: title,
+    })
+  }
+
   //楼层控件
   _getFloorListView = () => {
     return this.FloorListView || null
@@ -2141,6 +2147,7 @@ export default class MapView extends React.Component {
         showMeasureResult={this.showMeasureResult}
         switchAr={this.switchAr}
         removeAIDetect={this.removeAIDetect}
+        setMapTitle={this.setMapTitle}
         getOverlay={() => GLOBAL.OverlayView}
         {...this.props}
       />
@@ -2208,15 +2215,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeUndo) return
-              ; (async function () {
-                await SMap.undo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                this.setState({
-                  canBeUndo: currentHistoryCount >= 0,
-                  canBeRedo: currentHistoryCount < historyCount - 1,
-                })
-              }.bind(this)())
+            ;(async function () {
+              await SMap.undo()
+              let historyCount = await SMap.getMapHistoryCount()
+              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+              this.setState({
+                canBeUndo: currentHistoryCount >= 0,
+                canBeRedo: currentHistoryCount < historyCount - 1,
+              })
+            }.bind(this)())
           }}
         />
         <MTBtn
@@ -2233,15 +2240,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeRedo) return
-              ; (async function () {
-                await SMap.redo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                this.setState({
-                  canBeUndo: currentHistoryCount >= 0,
-                  canBeRedo: currentHistoryCount < historyCount - 1,
-                })
-              }.bind(this)())
+            ;(async function () {
+              await SMap.redo()
+              let historyCount = await SMap.getMapHistoryCount()
+              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+              this.setState({
+                canBeUndo: currentHistoryCount >= 0,
+                canBeRedo: currentHistoryCount < historyCount - 1,
+              })
+            }.bind(this)())
           }}
         />
         {/*<MTBtn*/}
@@ -2352,7 +2359,7 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.isExample || this.props.analyst.params || this.state.showAIDetect)
+    if (this.props.analyst.params || this.state.showAIDetect)
       return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
@@ -2369,95 +2376,118 @@ export default class MapView extends React.Component {
       MapHeaderButton.Audio,
     ]
     let buttons = []
-    for (let i = 0; i < buttonInfos.length; i++) {
-      let info
-      if (typeof buttonInfos[i] === 'string') {
-        switch (buttonInfos[i]) {
-          case MapHeaderButton.Share:
-            info = {
-              key: MapHeaderButton.Share,
-              image: getThemeAssets().nav.icon_nav_share,
-              action: shareModule().action,
-            }
-            break
-          case MapHeaderButton.Audio:
-            info = {
-              key: MapHeaderButton.Audio,
-              image: getThemeAssets().nav.icon_nav_voice,
-              action: () => {
-                Audio.showAudio('top', { device: this.props.device })
-              },
-            }
-            break
-          case MapHeaderButton.Undo:
-            info = {
-              key: MapHeaderButton.Undo,
-              image: getThemeAssets().nav.icon_nav_undo,
-              action: this.showUndoView,
-            }
-            break
-          case MapHeaderButton.Search:
-            info = {
-              key: MapHeaderButton.Search,
-              image: getThemeAssets().nav.icon_nav_search,
-              action: async () => {
-                if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-                  let layers =
-                    this.props.getLayers && (await this.props.getLayers())
-                  let baseMap = layers.filter(layer =>
-                    LayerUtils.isBaseLayer(layer),
-                  )[0]
-                  if (
-                    baseMap &&
-                    baseMap.name !== 'baseMap' &&
-                    baseMap.isVisible
-                  ) {
+    if (this.isExample) {
+      return (
+        <MTBtn
+          key={'more'}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          image={getPublicAssets().common.icon_nav_imove}
+          onPress={async () => {
+            // const _params = ToolbarModule.getParams()
+            await ToolbarModule.setToolBarData(ConstToolType.SM_MAP_BASE_CHANGE)
+            ToolbarModule.addData({
+              data: this.wsData,
+            })
+            let {data, buttons} = await ToolbarModule.getToolBarData(ConstToolType.SM_MAP_BASE_CHANGE)
+            this.showFullMap(true)
+            this.toolBox?.setVisible(true, ConstToolType.SM_MAP_BASE_CHANGE, {
+              containerType: ToolbarType.list, // 数据展示类型为普通列表
+              isFullScreen: true,
+              data,
+              buttons,
+            })
+          }}
+        />
+      )
+    } else {
+      for (let i = 0; i < buttonInfos.length; i++) {
+        let info
+        if (typeof buttonInfos[i] === 'string') {
+          switch (buttonInfos[i]) {
+            case MapHeaderButton.Share:
+              info = {
+                key: MapHeaderButton.Share,
+                image: getThemeAssets().nav.icon_nav_share,
+                action: shareModule().action,
+              }
+              break
+            case MapHeaderButton.Audio:
+              info = {
+                key: MapHeaderButton.Audio,
+                image: getThemeAssets().nav.icon_nav_voice,
+                action: () => {
+                  Audio.showAudio('top', { device: this.props.device })
+                },
+              }
+              break
+            case MapHeaderButton.Undo:
+              info = {
+                key: MapHeaderButton.Undo,
+                image: getThemeAssets().nav.icon_nav_undo,
+                action: this.showUndoView,
+              }
+              break
+            case MapHeaderButton.Search:
+              info = {
+                key: MapHeaderButton.Search,
+                image: getThemeAssets().nav.icon_nav_search,
+                action: async () => {
+                  if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+                    let layers =
+                      this.props.getLayers && (await this.props.getLayers())
+                    let baseMap = layers.filter(layer =>
+                      LayerUtils.isBaseLayer(layer),
+                    )[0]
+                    if (
+                      baseMap &&
+                      baseMap.name !== 'baseMap' &&
+                      baseMap.isVisible
+                    ) {
+                      NavigationService.navigate('PointAnalyst', {
+                        type: 'pointSearch',
+                      })
+                      this.changeFloorID('')
+                    } else {
+                      Toast.show(
+                        getLanguage(this.props.language).Prompt
+                          .PLEASE_SET_BASEMAP_VISIBLE,
+                      )
+                    }
+                  } else {
                     NavigationService.navigate('PointAnalyst', {
                       type: 'pointSearch',
                     })
-                    this.changeFloorID('')
-                  } else {
-                    Toast.show(
-                      getLanguage(this.props.language).Prompt
-                        .PLEASE_SET_BASEMAP_VISIBLE,
-                    )
                   }
-                } else {
-                  NavigationService.navigate('PointAnalyst', {
-                    type: 'pointSearch',
-                  })
-                }
-              },
-            }
-            break
+                },
+              }
+              break
+          }
+        } else {
+          info = buttonInfos[i]
         }
-      } else {
-        info = buttonInfos[i]
-      }
-      if (buttonInfos[i] === MapHeaderButton.Share) {
-        info &&
-          buttons.push(
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <MTBtn
-                key={info.key}
-                imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-                image={info.image}
-                onPress={info.action}
-              />
-
-              {this.props.online.share[0] &&
-                GLOBAL.Type === this.props.online.share[0].module &&
-                this.props.online.share[0].progress !== undefined && (
+        if (buttonInfos[i] === MapHeaderButton.Share) {
+          info &&
+            buttons.push(
+              <View
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <MTBtn
+                  key={info.key}
+                  imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+                  image={info.image}
+                  onPress={info.action}
+                />
+                {this.props.online.share[0] &&
+                  GLOBAL.Type === this.props.online.share[0].module &&
+                  this.props.online.share[0].progress !== undefined && (
                   <Bar
                     style={{
                       width: scaleSize(size), height: 2, borderWidth: 0,
-                      backgroundColor: 'black', top: scaleSize(4)
+                      backgroundColor: 'black', top: scaleSize(4),
                     }}
                     progress={
                       this.props.online.share[this.props.online.share.length - 1]
@@ -2466,19 +2496,19 @@ export default class MapView extends React.Component {
                     width={scaleSize(60)}
                   />
                 )}
-            </View>
-
-          )
-      } else {
-        info &&
-          buttons.push(
-            <MTBtn
-              key={info.key}
-              imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-              image={info.image}
-              onPress={info.action}
-            />,
-          )
+              </View>
+            )
+        } else {
+          info &&
+            buttons.push(
+              <MTBtn
+                key={info.key}
+                imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+                image={info.image}
+                onPress={info.action}
+              />,
+            )
+        }
       }
     }
     if (GLOBAL.coworkMode && this.state.onlineCowork) {
@@ -3323,14 +3353,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
-            <RNLegendView
-              setMapLegend={this.props.setMapLegend}
-              legendSettings={this.props.mapLegend}
-              device={this.props.device}
-              language={this.props.language}
-              ref={ref => (GLOBAL.legend = ref)}
-            />
-          )}
+          <RNLegendView
+            setMapLegend={this.props.setMapLegend}
+            legendSettings={this.props.mapLegend}
+            device={this.props.device}
+            language={this.props.language}
+            ref={ref => (GLOBAL.legend = ref)}
+          />
+        )}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
@@ -3339,18 +3369,18 @@ export default class MapView extends React.Component {
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect && (
-            <SMAIDetectView
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
+          <SMAIDetectView
+            style={
+              screen.isIphoneX() && {
+                paddingBottom: screen.getIphonePaddingBottom(),
               }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )}
+            }
+            customStyle={this.state.showAIDetect ? null : styles.hidden}
+            language={this.props.language}
+            // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+            onArObjectClick={this._onArObjectClick}
+          />
+        )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
@@ -3382,10 +3412,11 @@ export default class MapView extends React.Component {
         {!this.isExample &&
           !this.props.analyst.params &&
           this.renderFunctionToolbar()}
-        {!this.isExample &&
+        {
+          // !this.isExample &&
           !this.props.analyst.params &&
           this.renderOverLayer()}
-        {!this.isExample && this.renderTool()}
+        {this.renderTool()}
         {!this.isExample &&
           this.props.analyst.params &&
           this.renderAnalystMapToolbar()}

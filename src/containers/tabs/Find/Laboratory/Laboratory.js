@@ -71,7 +71,7 @@ class Laboratory extends React.Component {
           key: getLanguage(this.props.language).Find.ONLINE_COWORK,
           value: 'onlineCowork',
           image: getThemeAssets().find.onlineCowork,
-          info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
+          info: getLanguage(this.props.language).Find.LAB_ONLINE_COWORK_INFO,
         },
       ],
     })

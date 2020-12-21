@@ -30,29 +30,78 @@ const styles = StyleSheet.create({
 })
 
 interface Props {
-  language: String,
-  navigation: Object,
+  device: any,
 }
 
 class ChatIcon extends Component<Props, {}> {
 
-  left: Animated.Value
+  right: Animated.Value
+  bottom: Animated.Value
   visible: boolean
 
   constructor(props: Props) {
     super(props)
-    this.left = new Animated.Value(scaleSize(20))
+    this.right = new Animated.Value(this.getRightDistance())
+    this.bottom = new Animated.Value(this.getBottomDistance())
     this.visible = true
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return (
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device)
+    )
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    // 切换用户，重新加载用户配置文件
+    if (prevProps.device.orientation !== this.props.device.orientation && this.visible) {
+      Animated.parallel([
+        Animated.timing(this.right, {
+          toValue: this.getRightDistance(),
+          duration: 300,
+        }),
+        Animated.timing(this.bottom, {
+          toValue: this.getBottomDistance(),
+          duration: 300,
+        }),
+      ]).start()
+    }
   }
 
   setVisible = (visible: boolean) => {
     if (visible !== this.visible) {
-      Animated.timing(this.left, {
-        toValue: visible ? scaleSize(20) : -500,
-        duration: 300,
-      }).start()
+      Animated.parallel([
+        Animated.timing(this.right, {
+          toValue: visible ? this.getRightDistance() : -500,
+          duration: 300,
+        }),
+        Animated.timing(this.bottom, {
+          toValue: this.getBottomDistance(),
+          duration: 300,
+        }),
+      ]).start()
       this.visible = visible
     }
+  }
+
+  getRightDistance = () => {
+    let distance
+    if (this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+      distance = scaleSize(20)
+    } else {
+      distance = scaleSize(116)
+    }
+    return distance
+  }
+
+  getBottomDistance = () => {
+    let distance
+    if (this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+      distance = scaleSize(135)
+    } else {
+      distance = scaleSize(26)
+    }
+    return distance
   }
 
   action = () => {
@@ -68,8 +117,8 @@ class ChatIcon extends Component<Props, {}> {
       <Animated.View
         style={{
           position: 'absolute',
-          right: this.left,
-          bottom: scaleSize(140),
+          right: this.right,
+          bottom: this.bottom,
         }}
       >
         <MTBtn
@@ -87,7 +136,7 @@ class ChatIcon extends Component<Props, {}> {
 }
 
 const mapStateToProps = (state: any) => ({
-  newMessage: state.chat.toJS().coworkNewMessage,
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {}

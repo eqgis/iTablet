@@ -21,11 +21,12 @@ import { UserType } from '../../../../../constants'
 import { Container, TextBtn, CheckBox, PopMenu, ImageButton, Dialog } from '../../../../../components'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
+import { MsgConstant } from '../../../Friend'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import { exitGroup } from '../../../../../redux/models/cowork'
-import { SCoordination } from 'imobile_for_reactnative'
-import { Person } from '../types'
+import { SCoordination, SMessageService } from 'imobile_for_reactnative'
+import { Person, GroupMessageType } from '../types'
 
 interface Props {
   language: String,
@@ -280,27 +281,38 @@ class GroupFriendListPage extends Component<Props, State> {
       >
         {
           (this.state.isManage || this.mode === 'multiSelect') &&
-          this.props.user.currentUser.userId !== item.userName &&
-          <CheckBox
-            style={{
-              marginLeft: scaleSize(32),
-              height: scaleSize(30),
-              width: scaleSize(30),
-            }}
-            checked={!!this.state.selectedMembers.get(item.userName + '')}
-            onChange={value => {
-              this.setState(state => {
-                const selected = new Map(state.selectedMembers)
-                const isSelected = selected.has(item.userName + '')
-                if (value && !isSelected) {
-                  selected.set(item.userName + '', item)
-                } else {
-                  selected.delete(item.userName + '')
-                }
-                return { selectedMembers: selected }
-              })
-            }}
-          />
+          (
+            this.props.user.currentUser.userId !== item.userName
+              ? (
+                <CheckBox
+                  style={{
+                    marginLeft: scaleSize(32),
+                    height: scaleSize(30),
+                    width: scaleSize(30),
+                  }}
+                  checked={!!this.state.selectedMembers.get(item.userName + '')}
+                  onChange={value => {
+                    this.setState(state => {
+                      const selected = new Map(state.selectedMembers)
+                      const isSelected = selected.has(item.userName + '')
+                      if (value && !isSelected) {
+                        selected.set(item.userName + '', item)
+                      } else {
+                        selected.delete(item.userName + '')
+                      }
+                      return { selectedMembers: selected }
+                    })
+                  }}
+                />
+              )
+              : (
+                <View style={{
+                  marginLeft: scaleSize(32),
+                  height: scaleSize(30),
+                  width: scaleSize(30),
+                }} />
+              )
+          )
         }
         <Image
           style={styles.itemImg}
@@ -354,6 +366,27 @@ class GroupFriendListPage extends Component<Props, State> {
                   userIds: userIds,
                 }).then(async result => {
                   if (result.succeed) {
+                    // 给删除对象发送被删除消息
+                    let timeStr = new Date().getTime()
+                    let message = {
+                      type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
+                      user: {
+                        name: this.props.user.currentUser.nickname || '',
+                        id: this.props.user.currentUser.userId || '',
+                      },
+                      group: {
+                        groupID: this.groupInfo.id,
+                        groupName: this.groupInfo.groupName,
+                        groupCreator: this.groupInfo.creator,
+                      },
+                      time: timeStr,
+                    }
+                    for (let i = 0; i < userIds.length; i++) {
+                      SMessageService.sendMessage(
+                        JSON.stringify(message),
+                        userIds[i],
+                      )
+                    }
                     await this.getContacts()
                     this._setDialogVisible(false)
                     this._setManage()

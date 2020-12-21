@@ -47,13 +47,25 @@ export const deleteInvite = (params = {}, cb = () => {}) => async (dispatch: (ar
  * @param params 
  * @param cb 
  */
-export const addCoworkMsg = (params = {}, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
-  await dispatch({
-    type: COWORK_GROUP_MSG_ADD,
-    payload: params,
-    userId: userId,
-  })
+  if (params.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE) {
+    // 接收到被踢出群组的消息，删除本地的群组
+    let _params = {
+      groupID: params.group.groupID
+    }
+    await dispatch({
+      type: COWORK_GROUP_EXIT,
+      payload: _params,
+      userId: userId,
+    })
+  } else {
+    await dispatch({
+      type: COWORK_GROUP_MSG_ADD,
+      payload: params,
+      userId: userId,
+    })
+  }
   cb && cb()
 }
 

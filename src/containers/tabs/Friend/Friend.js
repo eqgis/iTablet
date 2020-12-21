@@ -1585,7 +1585,11 @@ export default class Friend extends Component {
     if (messageObj.type === MSGConstant.MSG_COWORK) {
       await this.handleCowork(messageObj)
       return
-    } else if (messageObj.type === MSGConstant.MSG_ONLINE_GROUP) {
+    } else if (
+      typeof messageObj.type === 'number' &&
+      Math.floor(messageObj.type / 100) === MSGConstant.MSG_ONLINE_GROUP / 100
+      // messageObj.type === MSGConstant.MSG_ONLINE_GROUP
+    ) {
       this.props.addCoworkMsg(messageObj)
       return
     }

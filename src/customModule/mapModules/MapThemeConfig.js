@@ -27,6 +27,10 @@ export default class MapThemeConfig extends Module {
             name: 'SanFrancisco',
             mapName: 'SanFrancisco',
           },
+          {
+            name: 'Australia',
+            mapName: 'LandUse_800m_Secondary',
+          },
         ],
         DEFAULT: [
           {
@@ -53,11 +57,21 @@ export default class MapThemeConfig extends Module {
             name: '江苏餐馆分布格网图',
             mapName: '餐馆密度网格图',
           },
+          {
+            name: 'Australia',
+            mapName: 'LandUse_800m_Secondary',
+          },
         ],
-        JA: {
-          name: 'YamanashiMap',
-          mapName: '土地利用・植生図',
-        },
+        JA: [
+          {
+            name: 'YamanashiMap',
+            mapName: '土地利用・植生図',
+          },
+          {
+            name: 'Australia',
+            mapName: 'LandUse_800m_Secondary',
+          },
+        ],
       },
       functionModules: [
         startModule,

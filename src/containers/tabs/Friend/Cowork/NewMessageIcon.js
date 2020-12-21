@@ -5,6 +5,7 @@ import { scaleSize } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { connect } from 'react-redux'
 
+const DEFAULT_LEFT = scaleSize(34)
 class NewMessageIcon extends Component {
   props: {
     language: String,
@@ -14,14 +15,14 @@ class NewMessageIcon extends Component {
 
   constructor(props) {
     super(props)
-    this.left = new Animated.Value(scaleSize(10))
+    this.left = new Animated.Value(scaleSize(DEFAULT_LEFT))
     this.visible = true
   }
 
   setVisible = visible => {
     if (visible !== this.visible) {
       Animated.timing(this.left, {
-        toValue: visible ? scaleSize(10) : -500,
+        toValue: visible ? scaleSize(DEFAULT_LEFT) : -500,
         duration: 300,
       }).start()
       this.visible = visible

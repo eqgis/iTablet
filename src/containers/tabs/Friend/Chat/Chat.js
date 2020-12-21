@@ -171,13 +171,14 @@ class Chat extends React.Component {
 
   back = () => {
     if (this.state.coworkMode) {
-      this.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
-        confirmAction: () => {
-          this.endCowork()
-        },
-      })
-      this.SimpleDialog.setVisible(true)
+      // this.SimpleDialog.set({
+      //   text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
+      //   confirmAction: () => {
+      //     this.endCowork()
+      //   },
+      // })
+      // this.SimpleDialog.setVisible(true)
+      this.friend.curMod.action(this.curUser)
     }
     return true
   }
@@ -1158,7 +1159,7 @@ class Chat extends React.Component {
               }}
             />
           ) : null}
-          {this.state.coworkMode ? (
+          {/* {this.state.coworkMode ? (
             <CoworkTouchableView
               screen="Chat"
               onPress={async () => {
@@ -1175,7 +1176,7 @@ class Chat extends React.Component {
                 // }
               }}
             />
-          ) : null}
+          ) : null} */}
           <GiftedChat
             ref={ref => (this.GiftedChat = ref)}
             locale={getLanguage(GLOBAL.language).Friends.LOCALE}

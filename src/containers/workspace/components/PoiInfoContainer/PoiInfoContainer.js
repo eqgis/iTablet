@@ -23,7 +23,7 @@ import NavigationService from '../../../NavigationService'
 import LocateUtils from '../../../pointAnalyst/LocateUtils'
 import { ScrollView } from 'react-native-gesture-handler'
 
-export default class PoiInfoContainer extends React.PureComponent {
+export default class PoiInfoContainer extends React.Component {
   props: {
     device: Object,
     changeNavPathInfo: () => {},

@@ -278,4 +278,20 @@ export default StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  chatBtn: {
+    position: 'absolute',
+    left: scaleSize(10),
+    top: scaleSize(200),
+    backgroundColor: '#4680DF',
+    height: scaleSize(50),
+    width: scaleSize(200),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scaleSize(10),
+  },
+  chatBtnText: {
+    padding: 0,
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.white,
+  },
 })

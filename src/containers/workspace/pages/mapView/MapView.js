@@ -100,6 +100,7 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
+import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
@@ -1117,7 +1118,13 @@ export default class MapView extends React.Component {
       GLOBAL.clearMapData()
 
       this.setLoading(false)
-      NavigationService.goBack()
+      if (GLOBAL.coworkMode) {
+        GLOBAL.coworkMode = false
+        GLOBAL.getFriend().setCurMod(undefined)
+        NavigationService.goBack('CoworkTabs')
+      } else {
+        NavigationService.goBack()
+      }
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
@@ -1207,14 +1214,17 @@ export default class MapView extends React.Component {
         }
       }
 
-      if (GLOBAL.coworkMode) {
-        let param = {}
-        if (CoworkInfo.coworkId !== '') {
-          param.targetId = CoworkInfo.talkId
-        }
-        NavigationService.navigate('Chat', param)
-        return true
-      }
+      // if (GLOBAL.coworkMode) {
+      //   let param = {}
+      //   if (CoworkInfo.coworkId !== '') {
+      //     param.targetId = CoworkInfo.talkId
+      //   }
+      //   NavigationService.navigate('Chat', param)
+      //   NavigationService.replace('CoworkTabs', {
+      //     targetId: this.targetId,
+      //   })
+      //   return true
+      // }
       if (GLOBAL.clickWait) return true
       GLOBAL.clickWait = true
       let result = await SMap.mapIsModified()
@@ -1950,6 +1960,7 @@ export default class MapView extends React.Component {
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
     this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
+    this.ChatIcon && this.ChatIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -3477,6 +3488,28 @@ export default class MapView extends React.Component {
         {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
+        {GLOBAL.coworkMode && this.state.onlineCowork && (
+          <ChatIcon ref={ref => (this.ChatIcon = ref)} />
+        )}
+        {/* {
+          GLOBAL.coworkMode && (
+            <TouchableOpacity
+              style={styles.chatBtn}
+              onPress={() => {
+                if (GLOBAL.coworkMode) {
+                  let param = {}
+                  if (CoworkInfo.coworkId !== '') {
+                    param.targetId = CoworkInfo.talkId
+                  }
+                  NavigationService.navigate('Chat', param)
+                  return true
+                }
+              }}
+            >
+              <Text style={styles.chatBtnText}>{'聊天'}</Text>
+            </TouchableOpacity>
+          )
+        } */}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

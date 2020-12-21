@@ -1121,10 +1121,9 @@ export default class MapView extends React.Component {
       if (GLOBAL.coworkMode) {
         GLOBAL.coworkMode = false
         GLOBAL.getFriend().setCurMod(undefined)
-        NavigationService.goBack('CoworkTabs')
-      } else {
-        NavigationService.goBack()
+        // NavigationService.goBack('CoworkTabs')
       }
+      NavigationService.goBack()
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false

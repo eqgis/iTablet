@@ -178,7 +178,9 @@ class Chat extends React.Component {
       //   },
       // })
       // this.SimpleDialog.setVisible(true)
-      this.friend.curMod.action(this.curUser)
+      // this.friend.curMod.action(this.curUser)
+      // NavigationService.navigate('CoworkMapStack')
+      NavigationService.goBack('Chat')
     }
     return true
   }

@@ -150,11 +150,11 @@ export default class Chunk {
           mapTitle: this.title,
           isExample: this.isExample,
         }
-        if (GLOBAL.coworkMode) {
-          NavigationService.navigate('CoworkMapStack', param)
-        } else {
+        // if (GLOBAL.coworkMode) {
+        //   NavigationService.navigate('CoworkMapStack', param)
+        // } else {
           NavigationService.navigate('MapView', param)
-        }
+        // }
         break
       }
       case Chunk.MapType.AR: {
@@ -218,11 +218,11 @@ export default class Chunk {
           mapTitle: this.title,
           isExample: this.isExample,
         }
-        if (GLOBAL.coworkMode) {
-          NavigationService.navigate('CoworkMapStack', param)
-        } else {
+        // if (GLOBAL.coworkMode) {
+        //   NavigationService.navigate('CoworkMapStack', param)
+        // } else {
           NavigationService.navigate('MapView', param)
-        }
+        // }
         break
       }
       default:

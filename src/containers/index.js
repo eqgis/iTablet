@@ -27,7 +27,7 @@ import {
   MyDataset,
   NewDataset,
   SearchMine,
-  // Chat,
+  Chat,
   AddFriend,
   InformMessage,
   CreateGroupChat,
@@ -521,13 +521,13 @@ export default function(appConfig) {
       },
       /** ****************************** Friend ********************* */
       // onechat
-      // Chat: {
-      //   screen: Chat,
-      //   navigationOptions: {
-      //     header: null,
-      //     gesturesEnabled: true,
-      //   },
-      // },
+      Chat: {
+        screen: Chat,
+        navigationOptions: {
+          header: null,
+          gesturesEnabled: true,
+        },
+      },
       AddFriend: {
         screen: AddFriend,
         navigationOptions: {

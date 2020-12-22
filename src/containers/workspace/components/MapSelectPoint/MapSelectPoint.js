@@ -46,15 +46,14 @@ export default class MapSelectPoint extends React.Component {
   }
 
   renderBottom() {
-    console.warn(this.props.selectPointType)
     if (
       // this.props.headerProps.selectPointType &&
       // (this.props.headerProps.selectPointType === 'selectPoint' ||
       //   this.props.headerProps.selectPointType ===
       this.props.selectPointType &&
-      (this.props.selectPointType === 'selectPoint' ||
+      (this.props.selectPointType === 'selectPoint' || // 普通地图地图选点
         this.props.selectPointType ===
-          'SELECTPOINTFORARNAVIGATION_INDOOR')
+          'SELECTPOINTFORARNAVIGATION_INDOOR') // 室内导航地图选点
     ) {
       return (
         <MapSelectPointLatitudeAndLongitude

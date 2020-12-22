@@ -90,7 +90,6 @@ export default class CollectSceneFormSet extends Component {
   }
 
   mapSelectPoint = async () => {
-    GLOBAL.MapSelectPointType = 'selectPoint'
     GLOBAL.OverlayView.setVisible(false)
 
     GLOBAL.ToolBar.setVisible(false)
@@ -121,6 +120,7 @@ export default class CollectSceneFormSet extends Component {
         x: map.x,
         y: map.y,
       },
+      selectPointType: 'selectPoint',
     })
     GLOBAL.toolBox.showFullMap(true)
     GLOBAL.TouchType = TouchType.MAP_SELECT_POINT

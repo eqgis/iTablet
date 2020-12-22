@@ -89,18 +89,15 @@ export default class EnterDatumPoint extends Component {
       //暂存点，返回地图选点时使用
       GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
 
-      GLOBAL.MapSelectPointType = 'SELECTPOINTFORARNAVIGATION_INDOOR'
-
       GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
       GLOBAL.MAPSELECTPOINT.setVisible(true)
 
-      NavigationService.navigate('MapView')
+      NavigationService.navigate('MapView', {selectPointType: 'SELECTPOINTFORARNAVIGATION_INDOOR'})
       SMap.setAction(Action.PAN)
     } else {
       //暂存点，返回地图选点时使用
       GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
 
-      GLOBAL.MapSelectPointType = 'selectPoint'
       GLOBAL.ToolBar.setVisible(false)
 
       GLOBAL.MapXmlStr = await SMap.mapToXml()
@@ -126,6 +123,7 @@ export default class EnterDatumPoint extends Component {
         //   x: map.x,
         //   y: map.y,
         // },
+        selectPointType: 'selectPoint',
       })
       GLOBAL.toolBox.showFullMap(true)
       GLOBAL.TouchType = TouchType.MAP_SELECT_POINT

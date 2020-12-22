@@ -6,6 +6,8 @@ import MapSelectPointLatitudeAndLongitude from '../MapSelectPointLatitudeAndLong
 export default class MapSelectPoint extends React.Component {
   props: {
     headerProps: Object,
+    openSelectPointMap: () => any,
+    selectPointType: 'string',
   }
 
   static defaultProps = {
@@ -17,6 +19,14 @@ export default class MapSelectPoint extends React.Component {
     this.state = {
       show: false,
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.warn(this.props.selectPointType, nextProps.selectPointType)
+    return (
+      nextState.show !== this.state.show ||
+      nextProps.selectPointType !== this.props.selectPointType
+    )
   }
 
   updateLatitudeAndLongitude = point => {
@@ -36,10 +46,14 @@ export default class MapSelectPoint extends React.Component {
   }
 
   renderBottom() {
+    console.warn(this.props.selectPointType)
     if (
-      this.props.headerProps.selectPointType &&
-      (this.props.headerProps.selectPointType === 'selectPoint' ||
-        this.props.headerProps.selectPointType ===
+      // this.props.headerProps.selectPointType &&
+      // (this.props.headerProps.selectPointType === 'selectPoint' ||
+      //   this.props.headerProps.selectPointType ===
+      this.props.selectPointType &&
+      (this.props.selectPointType === 'selectPoint' ||
+        this.props.selectPointType ===
           'SELECTPOINTFORARNAVIGATION_INDOOR')
     ) {
       return (

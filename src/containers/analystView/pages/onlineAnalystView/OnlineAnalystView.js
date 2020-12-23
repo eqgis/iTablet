@@ -193,9 +193,7 @@ export default class OnlineAnalystView extends Component {
         this.cb('false')
       }
       Toast.show(
-        getLanguage(this.props.language).Analyst_Prompt.ANALYZING_FAILED +
-          '\n' +
-          res.error,
+        getLanguage(this.props.language).Analyst_Prompt.ANALYZING_FAILED
       )
     }
   }

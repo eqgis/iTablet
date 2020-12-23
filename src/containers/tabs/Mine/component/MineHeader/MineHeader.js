@@ -75,7 +75,8 @@ export default class MineHeader extends Component {
     if (logos.logo2) {
       logo = logos.logo2
     } else {
-      logo = require('../../../../../assets/home/system_default_header_image.png')
+      logo = getPublicAssets().common.icon_avatar_logining
+      // logo = require('../../../../../assets/home/system_default_header_image.png')
       // logo = isPro
       //   ? {
       //       uri:

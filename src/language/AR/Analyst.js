@@ -410,6 +410,7 @@ const Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'الرجاء تعيين نقطتي تحكم',
   REGISTRATION_OFFSET_POINTS: 'الرجاء تعيين نقطة تحكم واحدة',
   REGISTRATION_POINTS_NUMBER_ERROR: 'عدد نقاط التحكم غير مطابق',
+  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

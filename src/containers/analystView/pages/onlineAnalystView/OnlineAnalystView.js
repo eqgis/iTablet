@@ -104,20 +104,24 @@ export default class OnlineAnalystView extends Component {
 
   analyst = () => {
     if (!this.checkData()) return
-
+    
     switch (this.state.type) {
       case AnalystEntryData.onlineAnalysisTypes.AGGREGATE_POINTS_ANALYSIS: {
         if (!this.aggregatePointsView) break
-        this.container.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
-          {
-            timeout: 20000,
-            timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
-          },
-        )
+        // this.container.setLoading(
+        //   true,
+        //   getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
+        //   {
+        //     timeout: 20000,
+        //     timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
+        //   },
+        // )
         let analysisData = this.aggregatePointsView.getData()
         Object.assign(analysisData, { datasetName: this.state.datasetName })
+
+        if (this.cb && typeof this.cb === 'function') {
+          this.cb(this.state.title)
+        }
 
         SAnalyst.aggregatePointsOnline(
           this.props.iServerData,
@@ -129,17 +133,20 @@ export default class OnlineAnalystView extends Component {
       case AnalystEntryData.onlineAnalysisTypes.DENSITY:
       default: {
         if (!this.densityView) break
-        this.container.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
-          {
-            timeout: 20000,
-            timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
-          },
-        )
-
+        // this.container.setLoading(
+        //   true,
+        //   getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
+        //   {
+        //     timeout: 20000,
+        //     timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
+        //   },
+        // )
         let analysisData = this.densityView.getData()
         Object.assign(analysisData, { datasetName: this.state.datasetName })
+
+        if (this.cb && typeof this.cb === 'function') {
+          this.cb(this.state.title)
+        }
 
         SAnalyst.densityOnline(
           this.props.iServerData,
@@ -149,6 +156,7 @@ export default class OnlineAnalystView extends Component {
         break
       }
     }
+    NavigationService.goBack()
   }
 
   analystResult = async res => {
@@ -170,14 +178,20 @@ export default class OnlineAnalystView extends Component {
 
       let layers = await this.props.getLayers()
       layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
-      this.container.setLoading(false)
-      NavigationService.goBack('AnalystListEntry')
+      // this.container.setLoading(false)
+      // NavigationService.goBack('AnalystListEntry')
       // TabNavigationService.navigate('MapAnalystView')
       if (this.cb && typeof this.cb === 'function') {
-        this.cb()
+        this.cb('true')
       }
+      Toast.show(
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
+      )
     } else {
-      this.container.setLoading(false)
+      // this.container.setLoading(false)
+      if (this.cb && typeof this.cb === 'function') {
+        this.cb('false')
+      }
       Toast.show(
         getLanguage(this.props.language).Analyst_Prompt.ANALYZING_FAILED +
           '\n' +

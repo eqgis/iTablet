@@ -132,7 +132,8 @@ export default class MineHeader extends Component {
     } else {
       statusText = null
     }
-    let headerImage = require('../../../../../assets/home/system_default_header_image.png')
+    // let headerImage = require('../../../../../assets/home/system_default_header_image.png')
+    let headerImage = UserType.isProbationUser(this.props.user.currentUser)?getPublicAssets().common.icon_avatar:getPublicAssets().common.icon_avatar_logining
     // let headerImage = !isPro
     //   ? require('../../../../../assets/home/system_default_header_image.png')
     //   : {

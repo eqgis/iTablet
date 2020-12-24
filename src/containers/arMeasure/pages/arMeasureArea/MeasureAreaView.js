@@ -117,6 +117,7 @@ export default class MeasureAreaView extends React.Component {
       showLog:false,
       dioLog:'',
       diologStyle:{},
+      is_showLog:false,
     }
   }
 
@@ -147,7 +148,7 @@ export default class MeasureAreaView extends React.Component {
               if (result) {
                 // Toast.show("add******")
                 if(this.state.isfirst){
-                  this.setState({showADD:true,showADDPoint:true})
+                  this.setState({showADD:true,showADDPoint:true,is_showLog:true})
                 }else{
                   this.setState({showADD:true})
                 }
@@ -174,6 +175,13 @@ export default class MeasureAreaView extends React.Component {
             //设置基点
             SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
           }, 1000)
+        }
+
+        //没有动画回调的话提示语默认5秒后开启
+        if(!this.state.is_showLog){
+          setTimeout(() => {
+            this.setState({is_showLog:true})
+          }, 5000)
         }
 
         //注册监听
@@ -903,7 +911,7 @@ export default class MeasureAreaView extends React.Component {
           this.renderCurrentHeightChangeView()}
           {this.state.showADDPoint&&this.renderADDPoint()}
           {this.state.showADD&&this.renderCenterBtn()}
-          {this.state.showLog&&this.renderDioLog()}
+          {this.state.is_showLog&&this.state.showLog&&this.renderDioLog()}
       </Container>
     )
   }

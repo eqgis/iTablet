@@ -159,7 +159,7 @@ export default class Personal extends Component {
                 width: itemHeight,
                 height: itemHeight,
                 marginRight: marginRight,
-                borderRadius: scaleSize(80),
+                borderRadius: scaleSize(40),
               }}
             />
           </View>

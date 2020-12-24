@@ -158,7 +158,7 @@ class GroupApplyPage extends Component<Props, State> {
         headerProps={{
           title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
           navigation: this.props.navigation,
-          headerRight: this.renderRight(),
+          // headerRight: this.renderRight(),
         }}
       >
         <GroupList

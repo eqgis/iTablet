@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, Image, Platform } from 'react-native'
 import { Button } from '../../../../../components'
 import { ConstPath, UserType } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
+import { getThemeAssets } from '../../../../../assets'
 import { color } from '../../../../../styles'
 import RNFS from 'react-native-fs'
 import { Toast } from '../../../../../utils'
@@ -19,6 +20,7 @@ interface Props {
   isSelf: boolean,
   onPress: (data: any) => void,
   addCoworkMsg: (data: any) => void,
+  deleteCoworkMsg: (data: any) => void,
 }
 
 export default class TaskMessageItem extends MessageItem {
@@ -243,34 +245,7 @@ export default class TaskMessageItem extends MessageItem {
     }
   }
 
-  _renderButtons = () => {
-    if (this.state.isSelf) {
-      if (this.props.data.checkStatus === 'WAITING') {
-        return (
-          <View style={styles.buttons}>
-            <Button style={styles.button} title={getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE} onPress={this._disAgreeAction} />
-            <Button style={[styles.button, {marginLeft: 20}]} title={getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE} onPress={this._agreeAction} />
-          </View>
-        )
-      } else {
-        return (
-          <Button
-            disabled={true}
-            style={styles.button}
-            title={
-              this.props.data.checkStatus === 'ACCEPTED'
-                ? getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALREADY_AGREE
-                : getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALREADY_DISAGREE
-            }
-          />
-        )
-      }
-    } else {
-      return null
-    }
-  }
-
-  _renderDownload = () => {
+  _renderButton = ({image, title, action}: any) => {
     return (
       <View
         style={{
@@ -287,26 +262,27 @@ export default class TaskMessageItem extends MessageItem {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => {
-            this._downloadFile()
-          }}
+          onPress={action}
         >
           <Image
             style={{ width: 35, height: 35, tintColor: color.fontColorGray }}
-            source={require('../../../../../assets/tabBar/find_download.png')}
+            source={image}
           />
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 12,
-            textAlign: 'center',
-            width: 125,
-            color: color.fontColorGray,
-          }}
-          numberOfLines={1}
-        >
-          {this.state.progress}
-        </Text>
+        {/* {
+          title && */}
+          <Text
+            style={{
+              fontSize: 12,
+              textAlign: 'center',
+              width: 125,
+              color: color.fontColorGray,
+            }}
+            numberOfLines={1}
+          >
+            {title}
+          </Text>
+        {/* } */}
       </View>
     )
   }
@@ -326,9 +302,16 @@ export default class TaskMessageItem extends MessageItem {
             <Text style={styles.title}>{this.state.title}</Text>
           }
           {this._renderContentView()}
-          {this._renderButtons()}
         </View>
-        {this._renderDownload()}
+        {this._renderButton({
+          image: require('../../../../../assets/tabBar/find_download.png'),
+          title: this.state.progress,
+          action: this._downloadFile,
+        })}
+        {/* {this._renderButton({
+          image: getThemeAssets().edit.icon_delete,
+          action: () => this.props.deleteCoworkMsg(this.props.data),
+        })} */}
       </TouchableOpacity>
     )
   }

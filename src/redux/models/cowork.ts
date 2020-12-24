@@ -8,6 +8,7 @@ import { MsgConstant } from '../../constants'
 export const ADD_COWORK_INVITE = 'ADD_COWORK_INVITE'
 export const DELETE_COWORK_INVITE = 'DELETE_COWORK_INVITE'
 export const COWORK_GROUP_MSG_ADD = 'COWORK_GROUP_MSG_ADD'
+export const COWORK_GROUP_MSG_DELETE = 'COWORK_GROUP_MSG_DELETE'
 export const COWORK_GROUP_APPLY = 'COWORK_GROUP_APPLY'
 export const COWORK_GROUP_SET = 'COWORK_GROUP_SET'
 export const COWORK_GROUP_EXIT = 'COWORK_GROUP_EXIT'
@@ -66,6 +67,16 @@ export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (ar
       userId: userId,
     })
   }
+  cb && cb()
+}
+
+export const deleteCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  await dispatch({
+    type: COWORK_GROUP_MSG_DELETE,
+    payload: params,
+    userId: userId,
+  })
   cb && cb()
 }
 
@@ -155,7 +166,8 @@ export default handleActions(
         }
         // 添加新消息
         if (!message) {
-          messages.push(payload)
+          // messages.push(payload)
+          messages.unshift(payload)
         }
         myMessages[payload.group.groupID] = messages
         allMessages[userId] = myMessages
@@ -176,12 +188,27 @@ export default handleActions(
         }
         // 添加新消息
         if (!task) {
-          tasks.push(payload)
+          // tasks.push(payload)
+          tasks.unshift(payload)
         }
         myTasks[payload.group.groupID] = tasks
         allTask[userId] = myTasks
         return state.setIn(['tasks'], fromJS(allTask))
       }
+    },
+    [`${COWORK_GROUP_MSG_DELETE}`]: (state: any, { payload, userId }: any) => {
+      let allTask = state.toJS().tasks
+      let myTasks: any = allTask[userId] || {}
+      let tasks: any = myTasks[payload.group.groupID] || []
+      for (let i = 0; i < tasks.length; i++) {
+        let _task = tasks[i]
+        if (payload.id === _task.id) {
+          tasks.splice(i, 1)
+          break
+        }
+      }
+      allTask[userId] = myTasks
+      return state.setIn(['tasks'], fromJS(allTask))
     },
     [`${COWORK_GROUP_SET}`]: (state: any, { payload, userId }: any) => {
       let groups = state.toJS().groups

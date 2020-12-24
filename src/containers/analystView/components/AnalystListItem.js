@@ -1,7 +1,9 @@
-import React, { PureComponent } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import React, { Component } from 'react'
+import { View, Text, TouchableOpacity, Image, StyleSheet , Animated,  Easing} from 'react-native'
 import { color, size } from '../../../styles'
 import { scaleSize } from '../../../utils'
+import { getPublicAssets } from '../../../assets'
+import { getLanguage } from '../../../language'
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -9,6 +11,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: scaleSize(80),
+  },
+
+  loading: {
+    position: 'absolute',
+    top: scaleSize(20),
+    right: scaleSize(20),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
 
   titleView: {
@@ -37,7 +47,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class AnalystListItem extends PureComponent {
+export default class AnalystListItem extends Component {
   props: {
     title: string,
     icon: any,
@@ -45,6 +55,37 @@ export default class AnalystListItem extends PureComponent {
     style?: Object,
     imgStyle?: Object,
     titleStyle?: Object,
+    isAnalyst: Boolean,
+  }
+
+  constructor(props) {
+    super(props)
+    this._rotateValue = new Animated.Value(0)
+    this._aniMotion = null
+    this.state = {
+      is: false,
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.isAnalyst!=this.props.isAnalyst){
+      if(!this.props.isAnalyst){
+        if(this._aniMotion!=null){
+          this._aniMotion.stop()
+          this._aniMotion = null
+        }
+      }else{
+        if(this._aniMotion==null){
+            this._aniMotion = Animated.timing(this._rotateValue,{
+              toValue: this._rotateValue._value === 0 ? 1 : 0,
+              duration: 800,
+              easing: Easing.linear,
+              useNativeDriver: true,
+            });
+            Animated.loop(this._aniMotion).start()
+          }
+      }
+    }
   }
 
   _onPress = () => {
@@ -79,6 +120,35 @@ export default class AnalystListItem extends PureComponent {
             {this.props.title}
           </Text>
         </View>
+          {/* {(this.props.title == getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS && GLOBAL.AGGREGATE_POINTS_ANALYSIS) && */}
+          {this.props.isAnalyst &&
+            <Animated.Image
+              resizeMode={'contain'}
+              style={[
+                styles.loading,
+                {
+                  transform: [{rotate: this._rotateValue
+                    .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']})
+                  }]
+                }
+              ]}
+              source={getPublicAssets().common.icon_downloading}
+            />
+          }
+          {/* {(this.props.title == getLanguage(language).Analyst_Methods.DENSITY && GLOBAL.DENSITY) &&
+            <Animated.Image
+              resizeMode={'contain'}
+              style={[
+                styles.loading,
+                {
+                  transform: [{rotate: this._rotateValue
+                    .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']})
+                  }]
+                }
+              ]}
+              source={getPublicAssets().common.icon_downloading}
+            />
+          } */}
       </TouchableOpacity>
     )
   }

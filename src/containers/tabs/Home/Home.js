@@ -508,7 +508,7 @@ export default class Home extends Component {
   }
 
   renderHeader = () => {
-    let avatar = getPublicAssets().common.icon_avatar
+    let avatar = UserType.isProbationUser(this.props.user.currentUser)?getPublicAssets().common.icon_avatar:getPublicAssets().common.icon_avatar_logining
     // let avatar = !UserType.isProbationUser(this.props.user.currentUser)
     //   ? {
     //     uri:

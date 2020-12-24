@@ -79,52 +79,7 @@ function getOverlayAnalystData(language) {
   return data
 }
 
-/**
- * 在线分析列表回调
- * @param title
- * @param type
- * @param cb
- */
-function onlineCallback(title, type, cb) {
-  NavigationService.navigate('OnlineAnalystView', {
-    title,
-    type,
-    cb,
-  })
-}
 
-/**
- * 在线分析方式列表
- * @param language
- * @returns {[*,*]}
- */
-function getOnlineAnalystData(language) {
-  const data = [
-    {
-      key: getLanguage(language).Analyst_Methods.DENSITY,
-      title: getLanguage(language).Analyst_Methods.DENSITY,
-      action: (cb = () => {}) =>
-        onlineCallback(
-          getLanguage(language).Analyst_Methods.DENSITY,
-          onlineAnalysisTypes.DENSITY,
-          cb,
-        ),
-      image: getThemeAssets().analyst.analysis_online_density,
-    },
-    {
-      key: getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS,
-      title: getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS,
-      action: (cb = () => {}) =>
-        onlineCallback(
-          getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS,
-          onlineAnalysisTypes.AGGREGATE_POINTS_ANALYSIS,
-          cb,
-        ),
-      image: getThemeAssets().analyst.analysis_online_aggregate,
-    },
-  ]
-  return data
-}
 
 function getLocalAnalystEntryData(language, type) {
   const data = [
@@ -156,6 +111,6 @@ function getLocalAnalystEntryData(language, type) {
 export default {
   onlineAnalysisTypes,
   getOverlayAnalystData,
-  getOnlineAnalystData,
+  // getOnlineAnalystData,
   getLocalAnalystEntryData,
 }

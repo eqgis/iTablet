@@ -409,6 +409,7 @@ const Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'Veuillez définir 2 points de contrôle',
   REGISTRATION_OFFSET_POINTS: 'Veuillez définir 1 point de contrôle',
   REGISTRATION_POINTS_NUMBER_ERROR: 'Le nombre de points de contrôle ne correspond pas',
+  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

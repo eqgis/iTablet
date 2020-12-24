@@ -11,6 +11,7 @@ import styles from './styles'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { SimpleDialog } from '../../Friend'
+import { getPublicAssets } from '../../../../assets'
 
 export default class Personal extends Component {
   props: {
@@ -122,7 +123,8 @@ export default class Personal extends Component {
     } else {
       let isCustomer =
         this.props.user.currentUser.userType === UserType.PROBATION_USER
-      let image = require('../../../../assets/home/system_default_header_image.png')
+        let image = getPublicAssets().common.icon_avatar_logining
+      // let image = require('../../../../assets/home/system_default_header_image.png')
       // let image = isCustomer
       //   ? require('../../../../assets/home/system_default_header_image.png')
       //   : {
@@ -157,6 +159,7 @@ export default class Personal extends Component {
                 width: itemHeight,
                 height: itemHeight,
                 marginRight: marginRight,
+                borderRadius: scaleSize(40),
               }}
             />
           </View>

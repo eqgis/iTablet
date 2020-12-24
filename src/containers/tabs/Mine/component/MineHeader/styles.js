@@ -171,5 +171,6 @@ export default StyleSheet.create({
     height: fixedSize(100),
     marginTop: fixedSize(20),
     marginHorizontal: fixedSize(10),
+    borderRadius: scaleSize(80),
   },
 })

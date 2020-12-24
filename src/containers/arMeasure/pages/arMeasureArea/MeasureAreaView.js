@@ -117,6 +117,7 @@ export default class MeasureAreaView extends React.Component {
       showLog:false,
       dioLog:'',
       diologStyle:{},
+      is_showLog:false,
     }
   }
 
@@ -147,7 +148,7 @@ export default class MeasureAreaView extends React.Component {
               if (result) {
                 // Toast.show("add******")
                 if(this.state.isfirst){
-                  this.setState({showADD:true,showADDPoint:true})
+                  this.setState({showADD:true,showADDPoint:true,is_showLog:true})
                 }else{
                   this.setState({showADD:true})
                 }
@@ -174,6 +175,13 @@ export default class MeasureAreaView extends React.Component {
             //设置基点
             SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
           }, 1000)
+        }
+
+        //没有动画回调的话提示语默认5秒后开启
+        if(!this.state.is_showLog){
+          setTimeout(() => {
+            this.setState({is_showLog:true})
+          }, 5000)
         }
 
         //注册监听
@@ -508,15 +516,22 @@ export default class MeasureAreaView extends React.Component {
   }
 
   renderADDPoint = () => {
-    let image 
-    GLOBAL.language === 'CN' ? image= getThemeAssets().ar.icon_ar_measure_add_toast : image= getThemeAssets().ar.icon_ar_measure_add_toast_en
+    let text
+    GLOBAL.language === 'CN' ? text = '添加点' : text = 'Add Point'
+    let image = getThemeAssets().ar.icon_ar_measure_add_toast
+    // GLOBAL.language === 'CN' ? image = getThemeAssets().ar.icon_ar_measure_add_toast : image = getThemeAssets().ar.icon_ar_measure_add_toast_en
     return (
-      <ImageButton
-        containerStyle={styles.addcapture}
-        iconStyle={styles.addiconView}
-        activeOpacity={0.3}
-        icon={image}
-      />
+      <View style={styles.addcaptureView}>
+        <ImageButton
+          containerStyle={styles.addcapture}
+          iconStyle={styles.addiconView}
+          activeOpacity={0.3}
+          icon={image}
+        />
+        <Text style={styles.addText}>
+          {text}
+        </Text>
+      </View>
     )
   }
 
@@ -535,16 +550,45 @@ export default class MeasureAreaView extends React.Component {
   }
 
   renderDioLog = () => {
+    let img
+    switch (this.state.dioLog) {
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:
+        img = getThemeAssets().ar.icon_tips_aim
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAST:
+        img = getThemeAssets().ar.icon_tips_slow_down
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK:
+        img = getThemeAssets().ar.icon_tips_lighting
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:
+        img = getThemeAssets().ar.icon_tips_approach
+        break
+      default:
+        img = getThemeAssets().ar.icon_tips_move_away
+        break
+    }
     return (
       <View style={[{
         top: scaleSize(300),
         borderRadius: 15,
         // opacity: 0.5,
-        backgroundColor: 'black',
+        backgroundColor: '#464646',
         justifyContent: 'center',
         alignItems: 'center',
-        alignSelf:'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        paddingLeft: scaleSize(10),
+        paddingRight: scaleSize(10),
       }]}>
+        <Image
+          source={img}
+          style={styles.dioimg}
+        />
         <Text style={styles.dioLog}>
           {this.state.dioLog}
         </Text>
@@ -867,7 +911,7 @@ export default class MeasureAreaView extends React.Component {
           this.renderCurrentHeightChangeView()}
           {this.state.showADDPoint&&this.renderADDPoint()}
           {this.state.showADD&&this.renderCenterBtn()}
-          {this.state.showLog&&this.renderDioLog()}
+          {this.state.is_showLog&&this.state.showLog&&this.renderDioLog()}
       </Container>
     )
   }

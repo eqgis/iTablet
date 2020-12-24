@@ -56,7 +56,7 @@ export default class AnalysisMenuListView extends React.Component {
       let sdk = await SMap.getPhoneSDK()
       if (sdk <= 24) {
         Toast.show(
-          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE_SEVEN,
         )
         return true
       }else{
@@ -72,7 +72,7 @@ export default class AnalysisMenuListView extends React.Component {
       let sdk = await SMap.getPhoneSDK()
       if (sdk <= 24) {
         Toast.show(
-          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE,
+          getLanguage(global.language).Map_Main_Menu.MAP_AR_DONT_SUPPORT_DEVICE_SEVEN,
         )
         return true
       }else{

@@ -34,7 +34,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  addcapture: {
+  addcaptureView: {
     position: 'absolute',
     width: 80,
     height: 80,
@@ -46,6 +46,20 @@ export default StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  addcapture:{
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf:'center',
+  },
+  addText: {
+    fontSize: setSpText(30),
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    marginTop:-scaleSize(10),
   },
   addiconView: {
     width: scaleSize(180),
@@ -404,7 +418,11 @@ export default StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     textAlignVertical: 'center',
-    padding: scaleSize(10),
     backgroundColor: 'transparent',
+    maxWidth: scaleSize(300),
+  },
+  dioimg: {
+    width: scaleSize(120),
+    height: scaleSize(120),
   },
 })

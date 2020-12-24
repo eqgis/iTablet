@@ -340,6 +340,7 @@ const Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: '道路ネットワーク',
 
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
   MAP_AR_DONT_SUPPORT_DEVICE: '当デバイスをサポートしません',
   MAP_AR_MEASURE: 'AR 計測', //ｊｐ0730
   MAP_AR_ANALYZE: 'AR 解析', //ｊｐ0730

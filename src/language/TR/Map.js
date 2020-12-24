@@ -340,6 +340,7 @@ const Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: 'Yol Ağ',
 
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
   MAP_AR_DONT_SUPPORT_DEVICE: 'Bu cihazı desteklemiyor',
   MAP_AR_MEASURE: 'AR Ölçüm',
   MAP_AR_ANALYZE: 'AR Analizi',

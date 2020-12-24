@@ -27,6 +27,11 @@ const navi_object_classify_capture = require('./navi_object_classify_capture.png
 const ar_view_mode = require('./toolbar/ar_view_mode_black.png')
 const icon_ar_measure_add_toast = require('./add_toast.png')
 const icon_ar_measure_add_toast_en = require('./add_toast_en.png')
+const icon_tips_aim = require('./icon_tips_aim.png')
+const icon_tips_slow_down = require('./icon_tips_slow_down.png')
+const icon_tips_lighting = require('./icon_tips_lighting.png')
+const icon_tips_approach = require('./icon_tips_approach.png')
+const icon_tips_move_away = require('./icon_tips_move_away.png')
 
 export default {
   functiontoolbar,
@@ -56,4 +61,9 @@ export default {
   ar_view_mode,
   icon_ar_measure_add_toast,
   icon_ar_measure_add_toast_en,
+  icon_tips_aim,
+  icon_tips_slow_down,
+  icon_tips_lighting,
+  icon_tips_approach,
+  icon_tips_move_away,
 }

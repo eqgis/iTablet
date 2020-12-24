@@ -339,7 +339,7 @@ const Map_Main_Menu = {
   SHARE_EXPLORE: '发现',
 
   MAO_ROAD_DISTRIBUTION: '路网',
-
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: '不支持此设备,请使用android7以上设备',
   MAP_AR_DONT_SUPPORT_DEVICE: '不支持此设备',
   MAP_AR_MEASURE: 'AR量算',
   MAP_AR_ANALYZE: 'AR分析',

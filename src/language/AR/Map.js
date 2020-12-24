@@ -341,6 +341,7 @@ const Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'شبكة/الطرق',
 
   MAP_AR_DONT_SUPPORT_DEVICE: ' لا ندعم هذا الجهاز',
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
 
   MAP_AR_MEASURE: 'قياس الواقع المعزز', //need to be translated  AR Measure = Augmented Reality Measurement
   MAP_AR_ANALYZE: 'تحليل الواقع المعزز', //need to be translated

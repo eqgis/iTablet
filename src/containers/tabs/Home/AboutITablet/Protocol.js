@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, MTBtn } from '../../../../components'
-import { Toast, OnlineServicesUtils, screen } from '../../../../utils'
+import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
@@ -55,13 +55,12 @@ class Protocol extends Component {
     this.preLoad()
   }
 
+  userHelpPath = '/iTablet/Common/iTablet_help_1011/iTablet_1011.htm'
+
   preLoad = async () => {
     if (this.type === 'userHelp') {
-      let commonPath = await FileTools.appendingHomeDirectory(
-        '/iTablet/Common/',
-      )
-      let guidePath = 'iTablet_10i_sp1使用帮助/iTablet_10i_sp1使用帮助.html'
-      if (await RNFS.exists(commonPath + guidePath)) {
+      const homePath = await FileTools.getHomeDirectory()
+      if (await RNFS.exists(homePath + this.userHelpPath)) {
         this.setState({ isLoadWebView: true })
       } else {
         let result = await this.downloadUserGuide()
@@ -85,7 +84,7 @@ class Protocol extends Component {
       let JSOnlineService = new OnlineServicesUtils('online')
       let data = await JSOnlineService.getPublicDataByName(
         '927528',
-        'iTablet_10i_sp1使用帮助.zip',
+        'iTablet_help_1011.zip',
       )
       let url = `https://www.supermapol.com/web/datas/${data.id}/download`
 
@@ -245,13 +244,13 @@ class Protocol extends Component {
             uri:
               'file:///' +
               GLOBAL.homePath +
-              '/iTablet/Common/iTablet_10i_sp1使用帮助/iTablet_10i_sp1使用帮助.html',
+              this.userHelpPath,
           }
         } else {
           source = {
             uri:
               GLOBAL.homePath +
-              '/iTablet/Common/iTablet_10i_sp1使用帮助/iTablet_10i_sp1使用帮助.html',
+              this.userHelpPath,
           }
         }
         title = getLanguage(GLOBAL.language).Prompt.INSTRUCTION_MANUAL
@@ -334,13 +333,13 @@ class Protocol extends Component {
           title: title,
           headerLeft: headerLeft,
           navigation: this.props.navigation,
-          type: 'fix',
+          headerOnTop: true,
         }}
       >
         {this.state.isLoadWebView ? (
           <WebView
             ref={ref => (this.webView = ref)}
-            style={{ flex: 1, paddingTop: 0, marginTop: screen.getHeaderHeight(this.props.device.orientation) }}
+            style={{ flex: 1, paddingTop: 0}}
             source={source}
             /** 保证release版本时，可加载到html*/
             originWhitelist={['*']}

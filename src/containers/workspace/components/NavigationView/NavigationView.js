@@ -653,6 +653,9 @@ export default class NavigationView extends React.Component {
         navigation={this.props.navigation}
         withoutHeader={true}
         style={{ backgroundColor: '#ebebeb' }}
+        headerProps={{
+          backAction: this.close,
+        }}
       >
         <View
           style={{

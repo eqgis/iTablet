@@ -98,6 +98,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   hasDownload: boolean // 是否有下载按钮
   list: FlatList<any> | null | undefined
   deleteDialog: Dialog | undefined | null
+  dropdown: ModalDropdown
   modules: Array<any>
   itemAction?: (data?: any) => void
 
@@ -168,6 +169,12 @@ class GroupSourceManagePage extends Component<Props, State> {
     JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
     !this.state.selectedData.compare(nextState.selectedData)
     return shouldUpdate
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.device.orientation !== this.props.device.orientation) {
+      this.dropdown.hide()
+    }
   }
 
   componentDidMount() {
@@ -475,12 +482,13 @@ class GroupSourceManagePage extends Component<Props, State> {
   _renderPopMenu = () => {
     if (this.isManage) return null
     let maxHeight = this.modules.length * ITEM_HEIGHT
-    let limitHeight = Math.max(screen.getScreenHeight(), screen.getScreenWidth()) - screen.getHeaderHeight() - ITEM_HEIGHT
+    let limitHeight = screen.getScreenHeight(this.props.device.orientation) - screen.getHeaderHeight() - ITEM_HEIGHT
 
     if (maxHeight > limitHeight) maxHeight = limitHeight
     
     return (
       <ModalDropdown
+        ref={(ref: ModalDropdown) => this.dropdown = ref}
         style={styles.dropdown}
         textStyle={styles.dropdownText}
         dropdownStyle={[styles.dropdownContent, {height: maxHeight}]}

@@ -289,7 +289,11 @@ class CreateGroupPage extends React.Component<Props, State> {
           ),
         }}
       >
-        <ScrollView style={styles.container}>
+        <ScrollView
+         style={styles.container}
+         showsHorizontalScrollIndicator={false}
+         showsVerticalScrollIndicator={false}
+        >
           {this._renderTopView()}
           {this._renderSharingView()}
           {this._renderTypeView()}

@@ -288,7 +288,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
     if (params.maps && params.maps.length > 0) {
       const fileReplace =
         params.fileReplace === undefined ? true : params.fileReplace
-      if (params.isOpenMap) {
+      if (params.isOpenMap) { // isOpenMap需要打开地图后导出
         const isLogin =
           getState().user.toJS().currentUser.userType !==
           UserType.PROBATION_USER

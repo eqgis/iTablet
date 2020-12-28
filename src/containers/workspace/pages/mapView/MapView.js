@@ -273,6 +273,7 @@ export default class MapView extends React.Component {
       pathLength: '',
       onlineCowork: CoworkInfo.coworkId !== '',
       selectPointType: params && params.selectPointType || undefined,
+      mapLoaded: false, // 判断地图是否加载完成
     }
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -282,7 +283,7 @@ export default class MapView extends React.Component {
       title: '',
     }
 
-    this.mapLoaded = false // 判断地图是否加载完成
+    // this.mapLoaded = false // 判断地图是否加载完成
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = this.state.showAIDetect
@@ -1170,7 +1171,7 @@ export default class MapView extends React.Component {
   /** 返回事件 */
   back = async () => {
     try {
-      if (!this.mapLoaded) return
+      if (!this.state.mapLoaded) return
       // 最顶层的语音搜索，最先处理
       if (Audio.isShow()) {
         Audio.hideAudio()
@@ -1434,10 +1435,6 @@ export default class MapView extends React.Component {
           }
         }
 
-        //地图打开后显示比例尺，获取图例数据
-        this.setState({ showScaleView: true })
-        GLOBAL.legend && GLOBAL.legend.getLegendData()
-
         SMap.setDynamicviewsetVisible(true)
         this.showMarker &&
           SMap.showMarker(
@@ -1478,10 +1475,14 @@ export default class MapView extends React.Component {
           this.startCowork()
         }.bind(this)())
 
-        this.mapLoaded = true
+
+        //地图打开后显示比例尺，获取图例数据
+        this.setState({ showScaleView: true, mapLoaded: true })
+        GLOBAL.legend && GLOBAL.legend.getLegendData()
+        // this.mapLoaded = true
       } catch (e) {
         this.setLoading(false)
-        this.mapLoaded = true
+        this.setState({ mapLoaded: true })
       }
     }.bind(this)())
   }
@@ -2786,7 +2787,7 @@ export default class MapView extends React.Component {
         changeFloorID={this.changeFloorID}
         currentFloorID={this.state.currentFloorID}
         device={this.props.device}
-        mapLoaded={this.mapLoaded}
+        mapLoaded={this.state.mapLoaded}
         ref={ref => (GLOBAL.FloorListView = this.FloorListView = ref)}
       />
     )
@@ -2805,7 +2806,7 @@ export default class MapView extends React.Component {
           this.showFullMap(true)
           this.setState({ showIncrement: true })
         }}
-        mapLoaded={this.mapLoaded}
+        mapLoaded={this.state.mapLoaded}
         language={this.props.language}
       // showModelList={this.showModelList}
       />

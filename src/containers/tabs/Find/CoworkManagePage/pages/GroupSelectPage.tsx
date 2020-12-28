@@ -62,16 +62,16 @@ class GroupSelectPage extends Component<Props, State> {
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_CREATE,
         action: () => {
-          NavigationService.navigate('CreateGroupPage', { callBack: () => this.groupList?.refresh(false) })
+          NavigationService.navigate('CreateGroupPage', {
+            callBack: () => this.refresh(false),
+          })
         },
       },
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
         action: () => {
           if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            NavigationService.navigate('GroupApplyPage', {
-              callBack: this.groupList?.refresh,
-            })
+            NavigationService.navigate('GroupApplyPage')
           } else {
             NavigationService.navigate('Login', {
               show: ['Online'],
@@ -99,7 +99,7 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   _itemPress = (groupInfo: any) => {
-    NavigationService.navigate('CoworkManagePage', { groupInfo, callBack: this.groupList?.refresh })
+    NavigationService.navigate('CoworkManagePage', { groupInfo, callBack: this.refresh })
   }
 
   refresh = async (refresh = true) => {

@@ -42,7 +42,7 @@ class GroupApplyPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     let { params } = this.props.navigation.state
-    this.callBack = params.callBack
+    this.callBack = params?.callBack
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
@@ -158,7 +158,7 @@ class GroupApplyPage extends Component<Props, State> {
         headerProps={{
           title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
           navigation: this.props.navigation,
-          headerRight: this.renderRight(),
+          // headerRight: this.renderRight(),
         }}
       >
         <GroupList

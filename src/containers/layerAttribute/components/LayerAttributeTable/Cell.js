@@ -224,23 +224,23 @@ export default class Cell extends Component {
   render() {
     if (this.props.editable && this.state.editable) {
       return (
-          <TextInput
-            ref={ref => (this.cellInput = ref)}
-            value={this.state.value + ''}
-            style={[this.props.style, styles.input]}
-            underlineColorAndroid="transparent"
-            onChangeText={this._onChangeText}
-            onBlur={this._onBlur}
-            onEndEditing={this._onEndEditing}
-            onSubmitEditing={this._onSubmitEditing}
-            returnKeyType={'done'}
-            keyboardAppearance={'dark'}
-            returnKeyLabel={this.props.returnKeyLabel}
-            // keyboardType={this.state.keyboardType}
-            keyboardType={utils.getKeyboardType(
-              this.props.data.fieldInfo && this.props.data.fieldInfo.type,
-            )}
-          />
+        <TextInput
+          ref={ref => (this.cellInput = ref)}
+          value={this.state.value + ''}
+          style={[this.props.style, styles.input]}
+          underlineColorAndroid="transparent"
+          onChangeText={this._onChangeText}
+          onBlur={this._onBlur}
+          onEndEditing={this._onEndEditing}
+          onSubmitEditing={this._onSubmitEditing}
+          returnKeyType={'done'}
+          keyboardAppearance={'dark'}
+          returnKeyLabel={this.props.returnKeyLabel}
+          // keyboardType={this.state.keyboardType}
+          keyboardType={utils.getKeyboardType(
+            this.props.data.fieldInfo && this.props.data.fieldInfo.type,
+          )}
+        />
       )
     } else {
       return (

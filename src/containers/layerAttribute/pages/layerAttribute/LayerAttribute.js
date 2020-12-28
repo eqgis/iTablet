@@ -122,6 +122,14 @@ export default class LayerAttribute extends React.Component {
     })
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
+    return shouldUpdate
+  }
+
   componentDidUpdate(prevProps) {
     if (
       this.type === 'MAP_3D' &&
@@ -1269,7 +1277,10 @@ export default class LayerAttribute extends React.Component {
         buttonTitles={buttonTitles}
         isShowSystemFields={this.state.isShowSystemFields}
         onPressHeader={this.onPressHeader}
-        bottomOffset={this.props.device.orientation.indexOf('LANDSCAPE') < 0 ? scaleSize(90) : scaleSize(0)}
+        // bottomOffset={this.props.device.orientation.indexOf('LANDSCAPE') < 0 ? scaleSize(90) : scaleSize(0)}
+        keyboardVerticalOffset={
+          screen.getHeaderHeight(this.props.device.orientation) + scaleSize(130)
+        }
       />
     )
   }

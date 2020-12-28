@@ -1,4 +1,5 @@
 import { FieldType } from 'imobile_for_reactnative'
+import { Platform } from 'react-native'
 
 function getBoolean(value, defaultValue) {
   let _value
@@ -179,7 +180,12 @@ function getKeyboardType(type) {
     case FieldType.INT64:
     case FieldType.SINGLE:
     case FieldType.DOUBLE:
-      keyboardType = 'decimal-pad'
+      keyboardType = Platform.select({
+        android: 'numeric',
+        ios: 'numbers-and-punctuation',
+      })
+      console.warn(keyboardType)
+      // keyboardType = 'decimal-pad'
       break
     case FieldType.TEXT:
     case FieldType.BOOLEAN:

@@ -57,7 +57,7 @@ export default class TemplateSource extends React.Component {
       }
     } else {
       // 选择数据源
-      let _data = await SMap.getDatasources()
+      let _data = await SMap.getLocalDatasources()
       for (let item of _data) {
         if (!(item.alias.startsWith('Label_') && item.alias.endsWith('#'))) {
           data.push(item)

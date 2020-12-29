@@ -3,6 +3,7 @@ import { View, NetInfo, Text, TouchableOpacity, Image } from 'react-native'
 import { Container, DropdownView } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
+import { color } from '../../../../../styles'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
@@ -310,9 +311,11 @@ class LoginCloud extends Component {
           headerRight: !this.state.reLogin && this.renderRight(),
         }}
       >
-        {!this.state.reLogin && this.renderLoginType()}
-        {!this.state.reLogin && this.renderLogin()}
-        {this.renderPopMenu()}
+        <View style={{ flex: 1, backgroundColor: color.bgW }}>
+          {!this.state.reLogin && this.renderLoginType()}
+          {!this.state.reLogin && this.renderLogin()}
+          {this.renderPopMenu()}
+        </View>
       </Container>
     )
   }

@@ -412,7 +412,7 @@ export default class LicenseModule extends Component {
 
   renderModules = () => {
     return (
-      <ScrollView>
+      <ScrollView style={{ flex: 1, backgroundColor: color.bgW }}>
         <ModuleInfo selectedModule={this.getModuleID()} />
       </ScrollView>
     )

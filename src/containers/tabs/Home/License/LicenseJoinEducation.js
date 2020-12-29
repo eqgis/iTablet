@@ -11,6 +11,7 @@ import {
 import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { Toast } from '../../../../utils'
+import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import styles from './styles'
 import { connect } from 'react-redux'
@@ -223,8 +224,7 @@ class LicenseJoinEducation extends Component {
         }}
       >
         <KeyboardAvoidingView
-          enabled={true}
-          keyboardVerticalOffset={0}
+          style={{ flex: 1, backgroundColor: color.bgW }}
           behavior={Platform.OS === 'ios' && 'padding'}
         >
           {this.renderAddress()}

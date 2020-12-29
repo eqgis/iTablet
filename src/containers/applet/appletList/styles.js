@@ -5,8 +5,7 @@ import { scaleSize } from '../../../utils'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    // justifyContent: 'center',
+    backgroundColor: color.bgW,
   },
   btn: {
     flexDirection: 'column',
@@ -23,7 +22,7 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     color: color.white,
   },
-  
+
   // item's style
   item: {
     flexDirection: 'row',

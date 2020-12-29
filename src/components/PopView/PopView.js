@@ -57,7 +57,7 @@ export default class PopView extends PureComponent {
   _changeValue = visible => {
     let opacity = 1
     // height取横竖屏最大值，横竖屏切换透明背景占满屏幕
-    let height = Math.max(screen.getScreenWidth(), screen.getScreenHeight())
+    let height = Math.max(screen.getScreenWidth(), screen.getScreenSafeHeight())
     let time = 300
     let time2 = 50
     if (visible === false) {

@@ -26,7 +26,8 @@ interface Props {
   groupInfo: any,
   mapModules: any,
   setCurrentMapModule: (index: number) => void,
-  addCoworkMsg: () => void,
+  addCoworkMsg: (params: any, cb?: () => {}) => void,
+  deleteCoworkMsg: (params: any, cb?: () => {}) => void,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -61,19 +62,19 @@ class TaskManage extends React.Component<Props, State> {
         this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]?.length
       ) {
         // this.refresh()
-        this.list && this.list.scrollToEnd({
-          animated: true,
-        })
+        // this.list && this.list.scrollToEnd({
+        //   animated: true,
+        // })
       }
     }
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.list && this.list.scrollToEnd({
-        animated: false,
-      })
-    }, 1000)
+    // setTimeout(() => {
+    //   this.list && this.list.scrollToEnd({
+    //     animated: false,
+    //   })
+    // }, 1000)
   }
 
   _onPress = (data: any) => {
@@ -143,6 +144,7 @@ class TaskManage extends React.Component<Props, State> {
         servicesUtils={this.servicesUtils}
         onPress={(data: any) => this._onPress(data)}
         addCoworkMsg={this.props.addCoworkMsg}
+        deleteCoworkMsg={this.props.deleteCoworkMsg}
       />
     )
   }
@@ -157,7 +159,7 @@ class TaskManage extends React.Component<Props, State> {
         {
           UserType.isOnlineUser(this.props.user.currentUser)
             ? (
-              <View>
+              // <View>
                 <FlatList
                   ref={ref => this.list = ref}
                   data={
@@ -166,13 +168,13 @@ class TaskManage extends React.Component<Props, State> {
                       ? this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
                       : []
                   }
-                  inverted={true}
+                  // inverted={true}
                   extraData={this.state}
                   renderItem={this.renderItem}
-                  keyExtractor={(item, index) => index.toString()}
+                  keyExtractor={(item, index) => item.id.toString()}
                   ItemSeparatorComponent={this._renderItemSeparatorComponent}
                 />
-              </View>
+              // </View>
             )
             : (
               <View style={{ alignItems: 'center' }}>

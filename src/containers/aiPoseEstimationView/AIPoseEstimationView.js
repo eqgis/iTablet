@@ -149,7 +149,11 @@ export default class AIPoseEstimationView extends React.Component {
     return _poseTitle + '->' + arrStrs[1]
   }
 
-  back = () => {
+  back = async () => {
+    if (await SPoseEstimationView.isFaceCamera()) {
+      await SPoseEstimationView.switchCamera()
+    }
+
     NavigationService.goBack('AIPoseEstimationView')
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()

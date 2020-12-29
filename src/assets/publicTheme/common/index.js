@@ -31,7 +31,8 @@ const icon_drag = require('./icon_drag.png')
 const icon_audio = require('./icon_nav_voice.png')
 const icon_arrow_down = require('./arrow_down.png')
 const icon_more = require('./icon_more.png')
-const icon_avatar = require('./icon_avatar.png')
+const icon_avatar = require('./icon_my_before_login.png')
+const icon_avatar_logining = require('./icon_my_after_login.png')
 const icon_star = require('./icon_star.png')
 const icon_move = require('./icon_move.png')
 const icon_nav_imove = require('./icon_nav_imove.png')
@@ -103,6 +104,7 @@ export default {
   icon_arrow_down,
   icon_more,
   icon_avatar,
+  icon_avatar_logining,
   icon_star,
   icon_move,
   icon_nav_imove,

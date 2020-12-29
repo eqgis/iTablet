@@ -24,9 +24,7 @@ declare namespace GLOBAL {
   /** 首页模块类型 */ 
   let Type: string                    
   /** 地图触摸事件类型 */ 
-  let TouchType: string                
-  /** AR校准界面选点类型 */
-  let MapSelectPointType: string | undefined   
+  let TouchType: string
   /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */    
   let action3d: string                
   /** 当前导航模式 INDOOR | OUTDOOR */

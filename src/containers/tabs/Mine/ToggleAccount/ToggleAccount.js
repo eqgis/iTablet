@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList ,  Platform,} from 'react-native'
 import { Container, PopMenu } from '../../../../components'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
@@ -12,6 +12,7 @@ import { MineItem } from '../component'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
+import { getPublicAssets } from '../../../../assets'
 
 export default class ToggleAccount extends Component {
   props: {
@@ -164,7 +165,14 @@ export default class ToggleAccount extends Component {
     let nickname = info.item.nickname
     let password = info.item.password
     if (nickname && password) {
-      let imageSource = require('../../../../assets/home/system_default_header_image.png')
+      // let imageSource = require('../../../../assets/home/system_default_header_image.png')
+      let imageSource = getPublicAssets().common.icon_avatar_logining
+      let imageStyle
+      if (Platform.OS === 'ios') {
+        imageStyle = { width: scaleSize(70), height: scaleSize(70),    borderRadius: scaleSize(35)}
+      } else{
+        imageStyle = { width: scaleSize(70), height: scaleSize(70),    borderRadius: scaleSize(100)}
+      }
       // let imageSource = {
       //   uri:
       //     'https://cdn3.supermapol.com/web/cloud/84d9fac0/static/images/myaccount/icon_plane.png',
@@ -180,11 +188,11 @@ export default class ToggleAccount extends Component {
             this.ItemPopup.setVisible(true, {
               x: event.nativeEvent.pageX,
               y: event.nativeEvent.pageY,
-            })
+            }) 
           }}
           showSeperator={false}
           contentStyle={{ paddingLeft: scaleSize(30) }}
-          imageStyle={{ width: scaleSize(70), height: scaleSize(70) }}
+          imageStyle={imageStyle}
         />
       )
     }

@@ -14,6 +14,7 @@ import {
   Keyboard,
   UIManager,
   findNodeHandle,
+  TextInput,
 } from 'react-native'
 import { scaleSize, dataUtil, screen } from '../../../../utils'
 import { IndicatorLoading } from '../../../../components'
@@ -56,7 +57,8 @@ export default class LayerAttributeTable extends React.Component {
     hasIndex?: boolean,
     startIndex?: number,
     isShowSystemFields?: boolean,
-    bottomOffset?: number,
+    // bottomOffset?: number,
+    keyboardVerticalOffset?: number,
   }
 
   static defaultProps = {
@@ -73,7 +75,8 @@ export default class LayerAttributeTable extends React.Component {
     refreshing: false,
     stickySectionHeadersEnabled: true,
     indexColumn: -1,
-    bottomOffset: 0,
+    // bottomOffset: 0,
+    keyboardVerticalOffset: 0,
   }
 
   constructor(props) {
@@ -91,7 +94,6 @@ export default class LayerAttributeTable extends React.Component {
       colHeight: COL_HEIGHT,
       widthArr: props.widthArr,
       tableTitle: titles,
-      // tableData: props.tableData,
       tableHead: props.tableHead,
       // tableTitle: titleList,
       // tableData: dataList,
@@ -112,14 +114,11 @@ export default class LayerAttributeTable extends React.Component {
     this.canBeLoadMore = true // 控制是否可以加载更多
     this.isScrolling = false // 防止连续定位滚动
     this.itemClickPosition = 0 //当前item点击位置 IOS
-    // this.viewabilityConfig = {
-    //   waitForInteraction: true,
-    //   viewAreaCoveragePercentThreshold: 95,
-    // }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
+      this.props.keyboardVerticalOffset !== nextProps.keyboardVerticalOffset ||
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       nextProps.isShowSystemFields !== this.props.isShowSystemFields ||
       JSON.stringify(nextProps.tableTitle) !==
@@ -187,31 +186,31 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   //IOS avoidingView无效 手动滚动过去
-  componentDidMount() {
-    if (Platform.OS === 'ios') {
-      this.keyBoardDidShowListener = Keyboard.addListener(
-        'keyboardDidShow',
-        this._keyboardDidShow,
-      )
-    }
-  }
-  componentWillUnmount() {
-    if (Platform.OS === 'ios') {
-      this.keyBoardDidShowListener.remove()
-    }
-  }
-  _keyboardDidShow = e => {
-    let keyboardCoordinates = e.endCoordinates
-    if ((keyboardCoordinates.screenY - keyboardCoordinates.height - COL_HEIGHT) < this.itemClickPosition && this.scrollIndex >= 0 && this.table) {
-      UIManager.measure(findNodeHandle(this.table), (x, y, width, height) => {
-        this.table.scrollToLocation({
-          itemIndex: this.scrollIndex,
-          viewPosition: 0,
-          viewOffset: height - keyboardCoordinates.height + this.props.bottomOffset - COL_HEIGHT,
-        })
-      });
-    }
-  }
+  // componentDidMount() {
+  //   if (Platform.OS === 'ios') {
+  //     this.keyBoardDidShowListener = Keyboard.addListener(
+  //       'keyboardDidShow',
+  //       this._keyboardDidShow,
+  //     )
+  //   }
+  // }
+  // componentWillUnmount() {
+  //   if (Platform.OS === 'ios') {
+  //     this.keyBoardDidShowListener.remove()
+  //   }
+  // }
+  // _keyboardDidShow = e => {
+  //   let keyboardCoordinates = e.endCoordinates
+  //   if ((keyboardCoordinates.screenY - keyboardCoordinates.height - COL_HEIGHT) < this.itemClickPosition && this.scrollIndex >= 0 && this.table) {
+  //     UIManager.measure(findNodeHandle(this.table), (x, y, width, height) => {
+  //       this.table.scrollToLocation({
+  //         itemIndex: this.scrollIndex,
+  //         viewPosition: 0,
+  //         viewOffset: height - keyboardCoordinates.height + this.props.bottomOffset - COL_HEIGHT,
+  //       })
+  //     });
+  //   }
+  // }
 
   // 隐藏系统属性时，横向滚动到最左边
   horizontalScrollToStart = () => {
@@ -629,7 +628,6 @@ export default class LayerAttributeTable extends React.Component {
           onScroll={() => (this.canBeLoadMore = true)}
           // removeClippedSubviews={true} // ios使用后，底部有一行被透明行覆盖，无法选中
           onViewableItemsChanged={this._onViewableItemsChanged}
-          // viewabilityConfig={this.viewabilityConfig}
         />
       </ScrollView>
     )
@@ -676,29 +674,18 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   render() {
-    if (Platform.OS === 'android') {
-      return (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' && "padding"}
-          enabled
-          style={[styles.container, this.props.contentContainerStyle]}
-        >
-          {this.props.type === 'MULTI_DATA' && this.state.isMultiData
-            ? this.renderMultiDataTable()
-            : this.renderSingleDataTable()}
-          {/*{this.state.loading && this.renderFooter()}*/}
-          {/*</View>*/}
-        </KeyboardAvoidingView>
-      )
-    } else {
-      return (
-        <View style={styles.container}>
-          {this.props.type === 'MULTI_DATA' && this.state.isMultiData
-            ? this.renderMultiDataTable()
-            : this.renderSingleDataTable()}
-        </View>
-      )
-    }
+    return (
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' && "padding"}
+        enabled
+        style={[styles.container, this.props.contentContainerStyle]}
+        keyboardVerticalOffset={this.props.keyboardVerticalOffset}
+      >
+        {this.props.type === 'MULTI_DATA' && this.state.isMultiData
+          ? this.renderMultiDataTable()
+          : this.renderSingleDataTable()}
+      </KeyboardAvoidingView>
+    )
   }
 }
 

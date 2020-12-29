@@ -409,6 +409,7 @@ const Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: '2つの参照点を設定してください',
   REGISTRATION_OFFSET_POINTS: '1つの参照点を設定してください',
   REGISTRATION_POINTS_NUMBER_ERROR: '参照点の数が一致しません',
+  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

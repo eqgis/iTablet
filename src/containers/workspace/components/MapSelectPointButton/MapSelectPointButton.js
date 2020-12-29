@@ -44,6 +44,7 @@ export default class MapSelectPointButton extends React.Component {
           }(${GLOBAL.STARTX.toFixed(6)},${GLOBAL.STARTY.toFixed(6)})`
         if (this.state.firstpage) {
           GLOBAL.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+          GLOBAL.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
@@ -72,6 +73,7 @@ export default class MapSelectPointButton extends React.Component {
           }(${GLOBAL.ENDX.toFixed(6)},${GLOBAL.ENDY.toFixed(6)})`
         if (this.state.firstpage) {
           GLOBAL.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
+          GLOBAL.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })

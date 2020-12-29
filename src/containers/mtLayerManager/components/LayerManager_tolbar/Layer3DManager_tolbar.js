@@ -22,7 +22,7 @@ import { SScene } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
-import { screen, scaleSize, setSpText, dataUtil } from '../../../../utils'
+import { screen, scaleSize, setSpText, dataUtil, Toast } from '../../../../utils'
 // import Map3DToolBar from '../../../workspace/components/Map3DToolBar'
 import { getLanguage } from '../../../../language/index'
 /** 工具栏类型 **/
@@ -340,7 +340,11 @@ export default class LayerManager_tolbar extends React.Component {
         if (name) {
           this.props.layer3dRefresh()
           SScene.ensureVisibleLayer(name)
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
         }
+      }).catch(() => {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
       })
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'AddImage_second') {
@@ -351,7 +355,11 @@ export default class LayerManager_tolbar extends React.Component {
         if (name) {
           this.props.layer3dRefresh()
           SScene.ensureVisibleLayer(name)
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
         }
+      }).catch(() => {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
       })
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'RemoveLayer3d_image') {

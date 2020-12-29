@@ -52,6 +52,7 @@ export default class ToolBar extends React.Component {
     layerList?: Array, //三维图层
     toolbarStatus: Object,
     laboratory: Object,
+    selectPointType: string, // 地图点选组件类型
 
     confirm: () => {},
     showDialog: () => {},
@@ -414,7 +415,7 @@ export default class ToolBar extends React.Component {
         setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
       }
       !isShow &&
-        GLOBAL.MapSelectPointType !== 'selectPoint' &&
+        this.state.selectPointType !== 'selectPoint' &&
         this.props.existFullMap &&
         this.props.existFullMap()
       this.updateOverlayView()

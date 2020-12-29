@@ -409,6 +409,7 @@ const Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: '请设置2个控制点',
   REGISTRATION_OFFSET_POINTS: '请设置1个控制点',
   REGISTRATION_POINTS_NUMBER_ERROR: '控制点数量不匹配',
+  ANALYSIS_SUCCESS_TOWATCH: '分析成功,是否查看',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

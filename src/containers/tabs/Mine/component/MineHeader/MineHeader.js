@@ -75,7 +75,8 @@ export default class MineHeader extends Component {
     if (logos.logo2) {
       logo = logos.logo2
     } else {
-      logo = require('../../../../../assets/home/system_default_header_image.png')
+      logo = getPublicAssets().common.icon_avatar_logining
+      // logo = require('../../../../../assets/home/system_default_header_image.png')
       // logo = isPro
       //   ? {
       //       uri:
@@ -132,7 +133,8 @@ export default class MineHeader extends Component {
     } else {
       statusText = null
     }
-    let headerImage = require('../../../../../assets/home/system_default_header_image.png')
+    // let headerImage = require('../../../../../assets/home/system_default_header_image.png')
+    let headerImage = UserType.isProbationUser(this.props.user.currentUser)?getPublicAssets().common.icon_avatar:getPublicAssets().common.icon_avatar_logining
     // let headerImage = !isPro
     //   ? require('../../../../../assets/home/system_default_header_image.png')
     //   : {

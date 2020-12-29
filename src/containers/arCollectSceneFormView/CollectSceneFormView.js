@@ -804,7 +804,7 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().mark.icon_ar_frame}
+                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>

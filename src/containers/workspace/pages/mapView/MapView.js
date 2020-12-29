@@ -272,6 +272,8 @@ export default class MapView extends React.Component {
       path: '',
       pathLength: '',
       onlineCowork: CoworkInfo.coworkId !== '',
+      selectPointType: params && params.selectPointType || undefined,
+      mapLoaded: false, // 判断地图是否加载完成
     }
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -281,7 +283,7 @@ export default class MapView extends React.Component {
       title: '',
     }
 
-    this.mapLoaded = false // 判断地图是否加载完成
+    // this.mapLoaded = false // 判断地图是否加载完成
     this.fullMap = false
     this.analystRecommendVisible = false // 底部分析推荐列表 是否显示
     GLOBAL.showAIDetect = this.state.showAIDetect
@@ -575,33 +577,23 @@ export default class MapView extends React.Component {
           }
         })
       }.bind(this)())
-      // setTimeout(async () => {
-      //   let currentFloorID = await SMap.getCurrentFloorID()
-      //   this.changeFloorID(currentFloorID)
-      // }, 1000)
     }
-    // 显示切换图层按钮
-    // if (this.props.editLayer.name && this.popList) {
-    //   let bottom = this.popList.state.subPopShow
-    //     ? scaleSize(400)
-    //     : scaleSize(200)
-    //   bottom !== this.state.changeLayerBtnBottom &&
-    //     this.setState({
-    //       changeLayerBtnBottom: bottom,
-    //     })
-    // }
 
-    // if (
-    //   JSON.stringify(this.props.nav) !== JSON.stringify(prevProps.nav) &&
-    //   (
-    //     prevProps.nav.routes &&
-    //     this.props.nav.routes.length < prevProps.nav.routes.length &&
-    //     prevProps.nav.routes[prevProps.nav.routes.length - 1].routeName === 'LayerSelectionAttribute'
-    //   ) &&
-    //   this.checkMapViewIsUnique()
-    // ) {
-    //   this.resetMapView()
-    // }
+    // 地图选点组件MapSelectPoint
+    // 当导航到MapView时，传递过来的props中的selectPointType和state中的不一致时，更新state中的selectPointType
+    // MapSelectPoint根据selectPointType显示
+    if (
+      this.props.nav.routes[this.props.nav.index].routeName === 'MapStack' &&
+      prevProps.nav.routes && this.props.nav.routes && prevProps.nav.routes[prevProps.nav.index].key !== this.props.nav.routes[this.props.nav.index].key &&
+      (
+        prevProps.navigation.state.params.selectPointType !== this.props.navigation.state.params.selectPointType ||
+        this.state.selectPointType !== this.props.navigation.state.params.selectPointType
+      )
+    ) {
+      this.setState({
+        selectPointType: this.props.navigation.state.params.selectPointType,
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -1179,7 +1171,7 @@ export default class MapView extends React.Component {
   /** 返回事件 */
   back = async () => {
     try {
-      if (!this.mapLoaded) return
+      if (!this.state.mapLoaded) return
       // 最顶层的语音搜索，最先处理
       if (Audio.isShow()) {
         Audio.hideAudio()
@@ -1443,10 +1435,6 @@ export default class MapView extends React.Component {
           }
         }
 
-        //地图打开后显示比例尺，获取图例数据
-        this.setState({ showScaleView: true })
-        GLOBAL.legend && GLOBAL.legend.getLegendData()
-
         SMap.setDynamicviewsetVisible(true)
         this.showMarker &&
           SMap.showMarker(
@@ -1487,10 +1475,14 @@ export default class MapView extends React.Component {
           this.startCowork()
         }.bind(this)())
 
-        this.mapLoaded = true
+
+        //地图打开后显示比例尺，获取图例数据
+        this.setState({ showScaleView: true, mapLoaded: true })
+        GLOBAL.legend && GLOBAL.legend.getLegendData()
+        // this.mapLoaded = true
       } catch (e) {
         this.setLoading(false)
-        this.mapLoaded = true
+        this.setState({ mapLoaded: true })
       }
     }.bind(this)())
   }
@@ -2159,6 +2151,7 @@ export default class MapView extends React.Component {
         removeAIDetect={this.removeAIDetect}
         setMapTitle={this.setMapTitle}
         getOverlay={() => GLOBAL.OverlayView}
+        selectPointType={this.state.selectPointType}
         {...this.props}
       />
     )
@@ -2794,7 +2787,7 @@ export default class MapView extends React.Component {
         changeFloorID={this.changeFloorID}
         currentFloorID={this.state.currentFloorID}
         device={this.props.device}
-        mapLoaded={this.mapLoaded}
+        mapLoaded={this.state.mapLoaded}
         ref={ref => (GLOBAL.FloorListView = this.FloorListView = ref)}
       />
     )
@@ -2813,7 +2806,7 @@ export default class MapView extends React.Component {
           this.showFullMap(true)
           this.setState({ showIncrement: true })
         }}
-        mapLoaded={this.mapLoaded}
+        mapLoaded={this.state.mapLoaded}
         language={this.props.language}
       // showModelList={this.showModelList}
       />
@@ -3007,14 +3000,14 @@ export default class MapView extends React.Component {
   /** 地图选点header右边确定view */
   _renderMapSelectPointHeaderRight = () => {
     if (
-      GLOBAL.MapSelectPointType === 'selectPoint' ||
-      GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+      this.state.selectPointType === 'selectPoint' ||
+      this.state.selectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
     ) {
       return (
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            if (GLOBAL.MapSelectPointType === 'selectPoint') {
+            if (this.state.selectPointType === 'selectPoint') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               NavigationService.navigate('EnterDatumPoint', {})
@@ -3027,7 +3020,9 @@ export default class MapView extends React.Component {
                 GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
                 )
-              GLOBAL.MapSelectPointType = undefined
+              this.setState({
+                selectPointType: undefined,
+              })
               GLOBAL.AIDETECTCHANGE.setVisible(false)
               this.showFullMap(false)
               SMap.deleteMarker(GLOBAL.markerTag)
@@ -3039,7 +3034,7 @@ export default class MapView extends React.Component {
               )
               return
             } else if (
-              GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+              this.state.selectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
             ) {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.TouchType = TouchType.NORMAL
@@ -3052,7 +3047,9 @@ export default class MapView extends React.Component {
                 GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
                   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE,
                 )
-              GLOBAL.MapSelectPointType = undefined
+              this.setState({
+                selectPointType: undefined,
+              })
               Toast.show(
                 getLanguage(GLOBAL.language).Profile
                   .MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED,
@@ -3109,52 +3106,59 @@ export default class MapView extends React.Component {
     return (
       <MapSelectPoint
         ref={ref => (GLOBAL.MAPSELECTPOINT = ref)}
+        openSelectPointMap={this._openSelectPointMap}
+        selectPointType={this.state.selectPointType}
         headerProps={{
           title: getLanguage(this.props.language).Map_Main_Menu.SELECT_POINTS,
-          // subTitle:
-          //   GLOBAL.MapSelectPointType === 'selectPoint'
-          //     ? ''
-          //     : getLanguage(this.props.language).Map_Main_Menu
-          //       .LONG_PRESS_SELECT_POINTS,
           navigation: this.props.navigation,
           type: 'fix',
           headerRight: this._renderMapSelectPointHeaderRight(),
-          openSelectPointMap: this._openSelectPointMap,
-          selectPointType: GLOBAL.MapSelectPointType,
           backAction: async () => {
-            if (GLOBAL.MapSelectPointType === 'selectPoint') {
-              GLOBAL.MAPSELECTPOINT.setVisible(false)
-              // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+            if (this.state.selectPointType === 'selectPoint') {
+              GLOBAL.mapController.move({
+                bottom: scaleSize(-50),
+                left: 'default',
+              })
+
               NavigationService.navigate('EnterDatumPoint', {})
+              this.setState({
+                showScaleView: true,
+                selectPointType: undefined,
+              }, async () => {
+                GLOBAL.MAPSELECTPOINT.setVisible(false)
 
-              if (GLOBAL.MapXmlStr) {
-                await SMap.mapFromXml(GLOBAL.MapXmlStr)
-                GLOBAL.MapXmlStr = undefined
-              }
+                if (GLOBAL.MapXmlStr) {
+                  await SMap.mapFromXml(GLOBAL.MapXmlStr)
+                  GLOBAL.MapXmlStr = undefined
+                }
 
-              SMap.deleteMarker(GLOBAL.markerTag)
-              GLOBAL.MapSelectPointType = undefined
-              GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
-                GLOBAL.DATUMPOINTVIEW &&
-                GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
-                  GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
-                )
-              this.setState({ showScaleView: true })
+                SMap.deleteMarker(GLOBAL.markerTag)
+                GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP &&
+                  GLOBAL.DATUMPOINTVIEW &&
+                  GLOBAL.DATUMPOINTVIEW.updateLatitudeAndLongitude(
+                    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP,
+                  )
 
-              GLOBAL.AIDETECTCHANGE.setVisible(false)
-              this.showFullMap(false)
-              GLOBAL.toolBox.setVisible(false)
+                GLOBAL.AIDETECTCHANGE.setVisible(false)
+                this.showFullMap(false)
+                GLOBAL.toolBox.setVisible(false)
+              })
 
               return
             } else if (
-              GLOBAL.MapSelectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+              this.state.selectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
             ) {
-              NavigationService.navigate('EnterDatumPoint', {
-                type: 'ARNAVIGATION_INDOOR',
-              })
+
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               GLOBAL.TouchType = TouchType.NORMAL
-              GLOBAL.MapSelectPointType = undefined
+              this.setState({
+                // showScaleView: true,
+                selectPointType: undefined,
+              }, () => {
+                NavigationService.navigate('EnterDatumPoint', {
+                  type: 'ARNAVIGATION_INDOOR',
+                })
+              })
               SMap.deleteMarker(GLOBAL.markerTag)
               return
             }

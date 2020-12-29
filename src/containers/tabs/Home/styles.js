@@ -20,6 +20,7 @@ export default StyleSheet.create({
   userImg: {
     width: scaleSize(80),
     height: scaleSize(80),
+    borderRadius: scaleSize(40),
   },
   userView: {
     width: scaleSize(80),

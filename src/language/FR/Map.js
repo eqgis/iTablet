@@ -341,6 +341,7 @@ const Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: 'Route\nRéseau',
 
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
   MAP_AR_MEASURE: 'Mesure RA',
   MAP_AR_ANALYZE: 'Analyse RA',

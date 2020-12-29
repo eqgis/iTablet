@@ -807,6 +807,7 @@ export default class RegistrationPage extends Component {
               navigation: this.props.navigation,
               backAction: this.exit,
               headerRight: (
+                this.state.isEditPoint&&
                 <TextBtn
                   btnText={
                     this.state.isEditPoint

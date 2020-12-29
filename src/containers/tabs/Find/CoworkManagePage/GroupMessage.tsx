@@ -25,7 +25,7 @@ interface Props {
 
 class GroupMessage extends React.Component<Props, State> {
 
-  list: FlatList<object> | null | undefined
+  list: FlatList<any> | null | undefined
   pageSize: number
   currentPage: number
   isLoading:boolean // 防止同时重复加载多次
@@ -47,22 +47,26 @@ class GroupMessage extends React.Component<Props, State> {
     this.isNoMore = false // 是否能加载更多
   }
 
-  getGroupApply = ({pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', cb = () => {}}: any) => {
+  getGroupApply = ({pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'applyTime', cb = () => {}}: any) => {
     this.props.servicesUtils?.getGroupApply({
       groupId: this.props.groupInfo.id,
       currentPage: currentPage,
       pageSize: pageSize,
       orderType: orderType,
+      orderBy: orderBy,
       // checkStatus: 'WAITING',
     }).then((result: any) => {
       if (result && result.content) {
         let _data = []
         if (result.content.length > 0) {
+          // let resultData = result.content
           if (this.currentPage < currentPage) {
             _data = this.state.data.deepClone()
             _data = _data.concat(result.content)
+            // _data = result.content.concat(_data)
           } else {
             _data = result.content
+            // _data = resultData
           }
         }
         // 判断是否还有更多数据
@@ -115,22 +119,28 @@ class GroupMessage extends React.Component<Props, State> {
     // 切换用户，重新加载用户配置文件
     if (JSON.stringify(prevProps.messages) !== JSON.stringify(this.props.messages)) {
       // 当有新增数据时，自动滚动到首位
-      if (prevProps.messages.length < this.props.messages.length) {
+      // this.refresh()
+      if (
+        // 判断新群组信息
+        !prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] ||
+        // 判断新增message信息
+        prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] && this.props.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] &&
+        prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id].length < this.props.messages[this.props.user.currentUser.userId][this.props.groupInfo.id].length) {
         this.refresh()
-        this.list && this.list.scrollToEnd({
-          animated: true,
-        })
+        // this.list && this.list.scrollToEnd({
+        //   animated: true,
+        // })
       }
     }
   }
 
   componentDidMount() {
     this.refresh(() => {
-      setTimeout(() => {
-        this.list && this.list.scrollToEnd({
-          animated: false,
-        })
-      }, 1000)
+      // setTimeout(() => {
+      //   this.list && this.list.scrollToEnd({
+      //     animated: false,
+      //   })
+      // }, 1000)
     })
   }
 
@@ -173,7 +183,7 @@ class GroupMessage extends React.Component<Props, State> {
     // return null
   }
 
-  _keyExtractor = (item: object, index: number): string => index + ''
+  _keyExtractor = (item: any, index: number): string => item.id + ''
 
   _renderItemSeparatorComponent = () => {
     return <ListSeparator color={'transparent'} height={scaleSize(20)} />
@@ -181,10 +191,10 @@ class GroupMessage extends React.Component<Props, State> {
 
   render() {
     return (
-      <View>
+      // <View>
         <FlatList
           ref={ref => this.list = ref}
-          inverted={true}
+          // inverted={true}
           ItemSeparatorComponent={this._renderItemSeparatorComponent}
           // data={this.props.messages}
           data={this.state.data}
@@ -205,12 +215,12 @@ class GroupMessage extends React.Component<Props, State> {
           onEndReachedThreshold={0.5}
           onEndReached={this.loadMore}
         />
-      </View>
+      // </View>
     )
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   language: state.setting.toJS().language,
   messages: state.cowork.toJS().messages,

@@ -28,6 +28,19 @@ class TabBar extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.language !== this.props.language ||
+      JSON.stringify(nextProps.style) !== JSON.stringify(this.props.style) ||
+      JSON.stringify(nextProps.appConfig) !== JSON.stringify(this.props.appConfig) ||
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.language !== prevProps.language) {
       this.setState({

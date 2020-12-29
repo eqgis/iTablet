@@ -223,7 +223,8 @@ async function getTouchProgressInfo(title) {
  */
 function setTouchProgressInfo(title, value) {
   const _params = ToolbarModule.getParams()
-  let legendSettings = {..._params.mapLegend}
+  // let legendSettings = {..._params.mapLegend}
+  let legendSettings = JSON.parse(JSON.stringify(_params.mapLegend))
   let range = [1, 100]
   // switch (GLOBAL.ToolBar?.state?.selectName) {
   switch (title) {

@@ -73,7 +73,7 @@ class Chat extends React.Component {
       messageInfo: this.props.navigation.getParam('messageInfo', ''),
       showInformSpot: false,
       chatBottom: 0,
-      title: this.targetUser.title,
+      title: this.props.navigation.getParam('title') || this.targetUser.title,
       coworkMode: GLOBAL.coworkMode,
     }
 

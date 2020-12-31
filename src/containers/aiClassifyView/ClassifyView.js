@@ -335,7 +335,7 @@ export default class ClassifyView extends React.Component {
 
   back = () => {
     NavigationService.goBack()
-
+    GLOBAL.ISCLASSIFYVIEW = false
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()
     return true

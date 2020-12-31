@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Platform, InteractionManager } from 'react-native'
+import { Platform, InteractionManager,AppState, } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
@@ -33,6 +33,19 @@ export default class IllegallyParkView extends React.Component {
 
     this.state = {
       mediaName: params.mediaName || '',
+    }
+    AppState.addEventListener('change', this.handleStateChange)
+  }
+
+  handleStateChange = async appState => {
+    if (Platform.OS === 'android') {
+        if(appState === 'background'){
+          SIllegallyParkView.onPause()
+      }
+
+      if (appState === 'active') {
+        SIllegallyParkView.onResume()
+      }
     }
   }
 
@@ -94,6 +107,7 @@ export default class IllegallyParkView extends React.Component {
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
+    AppState.removeEventListener('change', this.handleStateChange)
     //移除监听
   }
 

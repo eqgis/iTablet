@@ -508,12 +508,7 @@ class AppRoot extends Component {
   }
 
   handleStateChange = appState => {
-    if (appState === 'active') {
-      if (Platform.OS === 'android') {
-        SMeasureAreaView.onResume()
-        // SAIDetectView.onResume()
-      }
-    
+    if (appState === 'active') {  
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.reCircleLogin()
       }
@@ -521,14 +516,6 @@ class AppRoot extends Component {
         this.props.setShow({orientation: orientation})
       })
     }
-
-    if(appState === 'background'){
-      if (Platform.OS === 'android') {
-        SMeasureAreaView.onPause()
-        // SAIDetectView.onPause()
-      }
-    }
-
   }
 
   inspectEnvironment = async () => {

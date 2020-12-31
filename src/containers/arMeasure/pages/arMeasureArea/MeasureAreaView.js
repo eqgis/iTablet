@@ -10,6 +10,7 @@ import {
   DeviceEventEmitter,
   NativeModules,
   NativeEventEmitter,
+  AppState,
 } from 'react-native'
 import NavigationService from '../../../../containers/NavigationService'
 import { getThemeAssets } from '../../../../assets'
@@ -119,6 +120,8 @@ export default class MeasureAreaView extends React.Component {
       diologStyle:{},
       is_showLog:false,
     }
+
+    AppState.addEventListener('change', this.handleStateChange)
   }
 
   // eslint-disable-next-line
@@ -206,6 +209,20 @@ export default class MeasureAreaView extends React.Component {
       'onCurrentHeightChanged',
       this.onCurrentHeightChanged,
     )
+
+    AppState.removeEventListener('change', this.handleStateChange)
+  }
+
+  handleStateChange = async appState => {
+    if (Platform.OS === 'android') {
+        if(appState === 'background'){
+          SMeasureAreaView.onPause()
+      }
+
+      if (appState === 'active') {
+          SMeasureAreaView.onResume()
+      }
+    }
   }
 
   /**高度变化 */

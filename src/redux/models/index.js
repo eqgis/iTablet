@@ -20,6 +20,7 @@ import appConfig from './appConfig'
 import license from './license'
 import cowork from './cowork'
 import mapModules from './mapModules'
+import ar from './ar'
 
 export {
   nav,
@@ -44,4 +45,5 @@ export {
   license,
   cowork,
   mapModules,
+  ar,
 }

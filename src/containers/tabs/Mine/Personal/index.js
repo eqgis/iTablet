@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Personal from './Personal'
-import { setUser } from '../../../../redux/models/user'
+import { setUser, deleteUser } from '../../../../redux/models/user'
 import { openWorkspace, closeWorkspace } from '../../../../redux/models/map'
 
 const mapStateToProps = state => ({
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   setUser,
+  deleteUser,
   openWorkspace,
   closeWorkspace,
 }

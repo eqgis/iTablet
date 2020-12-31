@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { StyleSheet, FlatList, RefreshControl, Text, View, Image } from 'react-native'
 import { Container, PopMenu, ListSeparator, ImageButton, TextBtn, Dialog } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { scaleSize, Toast, screen } from '../../../../../utils'
+import { scaleSize, Toast, screen, ResultInfo } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { UserType } from '../../../../../constants'
 import { getThemeAssets } from '../../../../../assets'
@@ -276,12 +276,17 @@ class GroupSourceManagePage extends Component<Props, State> {
       resourceIds: ids,
       groupResourceType: 'DATA',
     }).then(async result => {
+      debugger
       if (result.succeed) {
         this.getGroupResources({
           pageSize: this.pageSize,
           currentPage: 1,
           cb: this._setDelete,
         })
+      } else {
+        if (result.error?.errorMsg !== undefined) {
+          Toast.show(ResultInfo.resultError(result.error))
+        }
       }
     })
   }

@@ -386,7 +386,7 @@ class LicenseJoinPrivateCloud extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <ScrollView>
+        <ScrollView style={{ flex: 1, backgroundColor: color.bgW }}>
           {!this.state.hasData && this.renderNoData()}
           {this.state.hasData && this.renderEdition()}
           {this.state.hasData && this.renderModule()}

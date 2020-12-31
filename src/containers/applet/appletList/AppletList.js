@@ -144,14 +144,16 @@ export default class AppletList extends React.Component {
           },
         }}
       >
-        <FlatList
-          data={this.state.data}
-          renderItem={this._renderItem}
-          ItemSeparatorComponent={this._renderItemSeparatorComponent}
-          keyExtractor={(item, index) => index.toString()}
-          extraData={this.state.selected}
-        />
-        {this._renderButton()}
+        <View style={styles.container}>
+          <FlatList
+            data={this.state.data}
+            renderItem={this._renderItem}
+            ItemSeparatorComponent={this._renderItemSeparatorComponent}
+            keyExtractor={(item, index) => index.toString()}
+            extraData={this.state.selected}
+          />
+          {this._renderButton()}
+        </View>
       </Container>
     )
   }

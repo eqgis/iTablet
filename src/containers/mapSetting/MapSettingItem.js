@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     height: scaleSize(60),
   },
   itemText: {
-    lineHeight: scaleSize(28),
+    // lineHeight: scaleSize(28),
+    padding: 0,
     flex: 1,
     textAlign: 'left',
     fontSize: size.fontSize.fontSizeXl,

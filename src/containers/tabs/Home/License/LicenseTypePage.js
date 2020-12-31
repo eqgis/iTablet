@@ -154,11 +154,12 @@ class LicenseTypePage extends Component {
           title: getLanguage(GLOBAL.language).Profile.LICENSE_TYPE,
           navigation: this.props.navigation,
         }}
-        style={{
-          backgroundColor: color.background,
-        }}
       >
         <FlatList
+          style={{
+            flex: 1,
+            backgroundColor: color.background,
+          }}
           contentContainerStyle={{ backgroundColor: color.content_white }}
           data={this.getType()}
           renderItem={this.renderItem}

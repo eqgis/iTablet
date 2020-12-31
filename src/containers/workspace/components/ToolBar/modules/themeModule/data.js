@@ -2758,7 +2758,7 @@ async function getUnifyStyleAdd() {
     return !item.name.match(checkLabelAndPlot)
   })
   customFilterUDBs.map(item => {
-    item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+    item.image = getThemeAssets().dataType.icon_data_source
     item.info = {
       infoType: 'mtime',
       lastModifiedDate: item.mtime,
@@ -2784,7 +2784,7 @@ async function getUnifyStyleAdd() {
       return !item.name.match(checkLabelAndPlot)
     })
     userFilterUDBs.map(item => {
-      item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+      item.image = getThemeAssets().dataType.icon_data_source
       item.info = {
         infoType: 'mtime',
         lastModifiedDate: item.mtime,

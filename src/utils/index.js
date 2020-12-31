@@ -13,6 +13,7 @@ import AnalystTools from './AnalystTools'
 import StyleUtils from './StyleUtils'
 import OnlineServicesUtils from './OnlineServicesUtils'
 import Audio from './Audio'
+import ResultInfo from './ResultInfo'
 
 export {
   screen,
@@ -36,4 +37,5 @@ export {
   StyleUtils,
   OnlineServicesUtils,
   Audio,
+  ResultInfo,
 }

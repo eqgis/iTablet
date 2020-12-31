@@ -267,9 +267,9 @@ export default class AppletManagement extends React.Component {
             marginLeft: scaleSize(80),
             borderBottomWidth: 0,
           },
-          headerStyle: {
-            backgroundColor: color.itemColorGray2,
-          },
+          // headerStyle: {
+          //   backgroundColor: color.itemColorGray2,
+          // },
         }}
       >
         <ScrollView

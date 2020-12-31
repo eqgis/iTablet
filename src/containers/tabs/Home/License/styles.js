@@ -51,7 +51,8 @@ export default StyleSheet.create({
 
   //privatecloud
   addressView: {
-    width: '100%',
+    flex: 1,
+    // width: '100%',
     alignItems: 'center',
     paddingTop: scaleSize(150),
   },
@@ -71,7 +72,7 @@ export default StyleSheet.create({
     fontSize: scaleSize(26),
     borderBottomColor: color.borderLight,
     color: 'black',
-    marginTop: 10,
+    // marginTop: 10,
     textAlign: 'center',
   },
   connectStyle: {

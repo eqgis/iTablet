@@ -86,7 +86,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
       return !item.name.match(checkLabelAndPlot)
     })
     filterUDBs.map(item => {
-      item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+      item.image = getThemeAssets().dataType.icon_data_source
       item.info = {
         infoType: 'mtime',
         lastModifiedDate: item.mtime,
@@ -131,7 +131,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           return !item.name.match(checkLabelAndPlot)
         })
         filterUDBs.map(item => {
-          item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+          item.image = getThemeAssets().dataType.icon_data_source
           item.info = {
             infoType: 'mtime',
             lastModifiedDate: item.mtime,
@@ -159,7 +159,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
           return !item.name.match(checkLabelAndPlot)
         })
         filterUDBs.map(item => {
-          item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+          item.image = getThemeAssets().dataType.icon_data_source
           item.info = {
             infoType: 'mtime',
             lastModifiedDate: item.mtime,

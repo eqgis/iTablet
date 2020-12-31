@@ -71,6 +71,7 @@ export default class MyDataPage extends Component {
       isRefreshing: false,
       batchMode: false,
       selectedNum: 0,
+      showFullInMap: false,
     }
     JSOnlineService = new OnlineServicesUtils('online')
     JSIPortalServce = new OnlineServicesUtils('iportal')
@@ -1150,6 +1151,7 @@ export default class MyDataPage extends Component {
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
         }}
+        showFullInMap={this.state.showFullInMap}
       >
         {this.state.batchMode && this._renderBatchHead()}
         <SectionList

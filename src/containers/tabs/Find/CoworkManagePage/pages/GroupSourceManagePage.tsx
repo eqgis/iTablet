@@ -171,9 +171,9 @@ class GroupSourceManagePage extends Component<Props, State> {
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.device.orientation !== this.props.device.orientation) {
-      this.dropdown.hide()
+      this.dropdown?.hide()
     }
   }
 

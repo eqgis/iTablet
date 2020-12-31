@@ -10,6 +10,7 @@ import { getLayers } from '../../../../redux/models/layers'
 const mapStateToProps = state => ({
   latestMap: state.map.toJS().latestMap,
   appConfig: state.appConfig.toJS(),
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {

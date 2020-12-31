@@ -1,5 +1,5 @@
 const icon_ar_toolbar_close = require('./ai_clean.png')
-const icon_ar_toolbar_delete = require('./icon_toolbar_delete.png')
+const icon_ar_toolbar_delete = require('./icon_delete.png')
 const icon_ar_toolbar_undo = require('./icon_ar_toolbar_undo.png')
 const icon_ar_toolbar_switch = require('./icon_ar_toolbar_switch.png')
 const icon_ar_toolbar_submit = require('./icon_ar_toolbar_save.png')

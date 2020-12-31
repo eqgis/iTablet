@@ -93,6 +93,7 @@ import {
   Image,
   TouchableOpacity,
   BackHandler,
+  AppState,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -297,6 +298,21 @@ export default class MapView extends React.Component {
     }
     this.floorHiddenListener = null
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
+    AppState.addEventListener('change', this.handleStateChange)
+  }
+
+  handleStateChange = async appState => {
+    if (Platform.OS === 'android') {
+      if(!GLOBAL.ISCLASSIFYVIEW){
+        if(appState === 'background'){
+          SAIDetectView.onPause()
+      }
+
+      if (appState === 'active') {
+          SAIDetectView.onResume()
+      }
+      }
+    }
   }
 
   /** 添加楼层显隐监听 */
@@ -648,6 +664,7 @@ export default class MapView extends React.Component {
     GLOBAL.mapView && SMap.deleteGestureDetector()
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
+    AppState.removeEventListener('change', this.handleStateChange)
   }
 
   /** 添加语音识别监听 */

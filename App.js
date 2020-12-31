@@ -52,7 +52,7 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SMeasureAreaView,SAIDetectView} from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
@@ -509,12 +509,24 @@ class AppRoot extends Component {
 
   handleStateChange = appState => {
     if (appState === 'active') {
+      if (Platform.OS === 'android') {
+        SMeasureAreaView.onResume()
+        // SAIDetectView.onResume()
+      }
+    
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.reCircleLogin()
       }
       Orientation.getOrientation((e, orientation) => {
         this.props.setShow({orientation: orientation})
       })
+    }
+
+    if(appState === 'background'){
+      if (Platform.OS === 'android') {
+        SMeasureAreaView.onPause()
+        // SAIDetectView.onPause()
+      }
     }
 
   }

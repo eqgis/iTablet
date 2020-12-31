@@ -1770,7 +1770,7 @@ export default class Friend extends Component {
         /*
          * 拒收消息
          */
-        bSysStore = true
+        bSysStore = isFriend !== undefined
         bSysShow = true
       } else if (messageObj.type === MSGConstant.MSG_REMOVE_MEMBER) {
         /*

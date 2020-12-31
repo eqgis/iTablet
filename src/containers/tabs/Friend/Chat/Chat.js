@@ -360,7 +360,7 @@ class Chat extends React.Component {
     })
     //发送
     let isFriend = FriendListFileHandle.getIsFriend(this.targetUser.id)
-    if (isFriend === 0) {
+    if (isFriend === 0 && bGroup !== 2) {
       //对方还未添加您为好友
       this.showNoFriendNotify(msgId)
       return

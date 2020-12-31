@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { scaleSize } from '../../../../utils'
 import { View } from 'react-native'
+import FriendListFileHandle from '../FriendListFileHandle'
 export default class InformSpot extends Component {
   props: {
     navigation: Object,
@@ -34,7 +35,11 @@ export default class InformSpot extends Component {
       let keys = Object.keys(currentUser)
       for (let i = 0, key = ''; i < keys.length; i++) {
         key = keys[i]
-        if (key.indexOf('Group_Task_') === 0) continue
+        let isFriend = FriendListFileHandle.findFromFriendList(key)
+        if (
+          key.indexOf('Group_Task_') === 0 ||
+          !isFriend && key.indexOf('Group_') === -1 && key.toString() !== '1'
+        ) continue
         bInform = currentUser[key].unReadMsg
         if (bInform) break
       }

@@ -2825,6 +2825,7 @@ export default class MapView extends React.Component {
         }}
         mapLoaded={this.state.mapLoaded}
         language={this.props.language}
+        setLoading={this.setLoading}
       // showModelList={this.showModelList}
       />
     )

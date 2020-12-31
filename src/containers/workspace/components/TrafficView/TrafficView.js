@@ -26,6 +26,7 @@ export default class TrafficView extends React.Component {
     language: String,
     getLayers: () => {},
     incrementRoad: () => {},
+    setLoading?: () => void,
     mapLoaded: boolean,
     currentFloorID: String,
   }
@@ -81,6 +82,34 @@ export default class TrafficView extends React.Component {
     }
   }
 
+  trafficChange = async () => {
+    try {
+      this.props.setLoading && this.props.setLoading(true, getLanguage(this.props.language).Prompt.CHANGING)
+      if (this.state.hasAdded) {
+        await SMap.removeTrafficMap('tencent@TrafficMap')
+      } else {
+        let layers = await this.props.getLayers()
+        let baseMap = layers.filter(layer =>
+          LayerUtils.isBaseLayer(layer),
+        )[0]
+        if (
+          baseMap &&
+          baseMap.name !== 'baseMap' &&
+          baseMap.isVisible
+        ) {
+          await SMap.openTrafficMap(ConstOnline.TrafficMap.DSParams)
+        }
+      }
+      let hasAdded = !this.state.hasAdded
+      this.setState({
+        hasAdded,
+      })
+      this.props.setLoading && this.props.setLoading(false)
+    } catch (error) {
+      this.props.setLoading && this.props.setLoading(false)
+    }
+  }
+
   render() {
     if (!this.props.mapLoaded) return null
     let trafficImg = this.state.hasAdded
@@ -95,27 +124,7 @@ export default class TrafficView extends React.Component {
             style={{
               flex: 1,
             }}
-            onPress={async () => {
-              if (this.state.hasAdded) {
-                await SMap.removeTrafficMap('tencent@TrafficMap')
-              } else {
-                let layers = await this.props.getLayers()
-                let baseMap = layers.filter(layer =>
-                  LayerUtils.isBaseLayer(layer),
-                )[0]
-                if (
-                  baseMap &&
-                  baseMap.name !== 'baseMap' &&
-                  baseMap.isVisible
-                ) {
-                  await SMap.openTrafficMap(ConstOnline.TrafficMap.DSParams)
-                }
-              }
-              let hasAdded = !this.state.hasAdded
-              this.setState({
-                hasAdded,
-              })
-            }}
+            onPress={this.trafficChange}
           >
             <Image source={trafficImg} style={styles.icon} />
           </TouchableOpacity>

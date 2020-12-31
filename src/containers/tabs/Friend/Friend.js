@@ -538,16 +538,18 @@ export default class Friend extends Component {
 
   onReceiveProgress = value => {
     let msg = this.getMsgByMsgId(value.talkId, value.msgId)
-    msg.originMsg.message.message.progress = value.percentage
-    MessageDataHandle.editMessage({
-      userId: this.props.user.currentUser.userId,
-      talkId: value.talkId,
-      msgId: value.msgId,
-      editItem: msg,
-    })
+    if (msg?.originMsg?.message?.message) {
+      msg.originMsg.message.message.progress = value.percentage
+      MessageDataHandle.editMessage({
+        userId: this.props.user.currentUser.userId,
+        talkId: value.talkId,
+        msgId: value.msgId,
+        editItem: msg,
+      })
 
-    if (this.curChat && this.curChat.targetUser.id === value.talkId) {
-      this.curChat.onReceiveProgress(value)
+      if (this.curChat && this.curChat.targetUser.id === value.talkId) {
+        this.curChat.onReceiveProgress(value)
+      }
     }
   }
 

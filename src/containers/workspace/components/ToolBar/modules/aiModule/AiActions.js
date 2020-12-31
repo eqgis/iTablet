@@ -126,7 +126,6 @@ function aiClassify() {
           datasourceAlias,
           datasetName,
         })
-        GLOBAL.ISCLASSIFYVIEW = true
       } else {
         isDownload = false
         const downloadData = getDownloadData(

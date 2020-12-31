@@ -147,6 +147,8 @@ export default class MapView extends React.Component {
     toolbarStatus: PropTypes.object,
     laboratory: PropTypes.object,
 
+    isClassifyView: PropTypes.bool,
+
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
@@ -303,14 +305,14 @@ export default class MapView extends React.Component {
 
   handleStateChange = async appState => {
     if (Platform.OS === 'android') {
-      if(!GLOBAL.ISCLASSIFYVIEW){
-        if(appState === 'background'){
+      if (!this.props.isClassifyView) {
+        if (appState === 'background') {
           SAIDetectView.onPause()
-      }
+        }
 
-      if (appState === 'active') {
+        if (appState === 'active') {
           SAIDetectView.onResume()
-      }
+        }
       }
     }
   }

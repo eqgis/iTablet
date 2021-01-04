@@ -44,6 +44,10 @@ const Prompt = {
   CONFIRM: '确定',
   COMPLETE: '完成',
 
+  NO_PERMISSION_ALERT: '应用缺少运行所需的权限！',
+  EXIT: '退出',
+  REQUEST_PERMISSION: '申请权限',
+
   OPENING: '正在打开',
 
   QUIT: '确认退出SuperMap iTablet?',

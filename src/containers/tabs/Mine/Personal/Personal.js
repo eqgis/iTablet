@@ -18,6 +18,7 @@ export default class Personal extends Component {
     navigation: Object,
     user: Object,
     setUser: () => {},
+    deleteUser: () => {},
     openWorkspace: () => {},
     closeWorkspace: () => {},
   }
@@ -53,6 +54,7 @@ export default class Personal extends Component {
               GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ],
         )
+        this.props.deleteUser(this.props.user.currentUser)
         if (this.container) {
           this.container.setLoading(false)
         }

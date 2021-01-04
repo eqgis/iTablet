@@ -214,10 +214,12 @@ export default class DataItem extends Component {
     if (!type) {
       result = false
     } else if (type === 'zip') {
-      if (await RNFS.exists(externalPath + name)) {
-        await RNFS.unlink(externalPath + name)
+      let fileDir = externalPath + name
+      if (await RNFS.exists(fileDir)) {
+        // await RNFS.unlink(externalPath + name)
+        fileDir = fileDir + '_1'
       }
-      result = await FileTools.unZipFile(path, externalPath + name)
+      result = await FileTools.unZipFile(path, fileDir)
     } else {
       result = await FileTools.copyFile(path, externalPath + fileName, true)
     }

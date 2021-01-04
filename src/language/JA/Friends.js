@@ -77,6 +77,7 @@ const Friends = {
   PICTURE: '画像',
   LOCATION_FAILED: '位置取得にに失敗',
   // Cowork
+  COWORK_MESSAGE: 'Cowork Message', // 待翻译
   SEND_COWORK_INVITE: 'コラボレーション招待を送りしますか',
   COWORK_INVITATION: 'マップコラボレーション招待',
   COWORK_MEMBER: 'コラボレーションメンバー',

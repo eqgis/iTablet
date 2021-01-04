@@ -79,6 +79,7 @@ const Friends = {
   PICTURE: '图片',
   LOCATION_FAILED: '获取位置失败',
   // Cowork
+  COWORK_MESSAGE: '协作消息',
   SEND_COWORK_INVITE: '是否发送协作邀请？',
   COWORK_INVITATION: '协作邀请',
   COWORK_MEMBER: '协作人员',

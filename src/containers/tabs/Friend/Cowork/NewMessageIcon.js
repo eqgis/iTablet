@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Animated } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import { scaleSize } from '../../../../utils'
+import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { connect } from 'react-redux'
 
-const DEFAULT_LEFT = scaleSize(34)
+const DEFAULT_LEFT = scaleSize(0)
 class NewMessageIcon extends Component {
   props: {
     language: String,
@@ -39,16 +40,17 @@ class NewMessageIcon extends Component {
         style={{
           position: 'absolute',
           left: this.left,
-          top: scaleSize(140),
+          top: scaleSize(150),
         }}
       >
         <TouchableOpacity
           style={{
-            backgroundColor: '#4680DF',
-            height: scaleSize(50),
+            backgroundColor: color.contentColorGray,
+            height: scaleSize(60),
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: scaleSize(10),
+            borderTopRightRadius: scaleSize(30),
+            borderBottomRightRadius: scaleSize(30),
           }}
           onPress={() => {
             NavigationService.navigate('CoworkMessage')
@@ -59,9 +61,9 @@ class NewMessageIcon extends Component {
               paddingHorizontal: scaleSize(20),
             }}
           >
-            <Text style={{ color: 'white' }}>
+            <Text style={{ color: 'white', fontSize: size.fontSize.fontSizeLg }}>
               {`${
-                getLanguage(GLOBAL.language).Friends.NEW_MESSAGE_SHORT
+                getLanguage(GLOBAL.language).Friends.COWORK_MESSAGE
               }(${number})`}
             </Text>
           </View>

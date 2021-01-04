@@ -77,6 +77,7 @@ const Friends = {
   PICTURE: 'Resim',
   LOCATION_FAILED: 'Konumlandırma Başarısız',
   // Cowork
+  COWORK_MESSAGE: 'Cowork Message', // 待翻译
   SEND_COWORK_INVITE: 'İşbirliği daveti mi gönderiyorsun?',
   COWORK_INVITATION: 'İşbirliği davetisi',
   COWORK_MEMBER: 'İşbirliğici',

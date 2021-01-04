@@ -117,7 +117,15 @@ export default class TrafficView extends React.Component {
       : getThemeAssets().navigation.icon_traffic_off
     let networkImg = getThemeAssets().mine.mine_my_plot_new
     return (
-      <Animated.View style={[styles.container, { left: this.state.left }]}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            left: this.state.left,
+            top: scaleSize(GLOBAL.coworkMode ? 200 : 143) + screen.getIphonePaddingTop(),
+          },
+        ]}
+      >
         {!this.state.isIndoor ? (
           <TouchableOpacity
             underlayColor={constUtil.UNDERLAYCOLOR_TINT}
@@ -149,7 +157,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: scaleSize(60),
     height: scaleSize(60),
-    top: scaleSize(143) + screen.getIphonePaddingTop(),
     backgroundColor: color.content_white,
     borderRadius: scaleSize(4),
     elevation: 20,

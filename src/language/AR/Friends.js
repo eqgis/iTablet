@@ -78,6 +78,7 @@ const Friends = {
   LOCATION_FAILED: 'فشل في تحديد الموقع',
 
   // Cowork need to be translated
+  COWORK_MESSAGE: 'Cowork Message', // 待翻译
   SEND_COWORK_INVITE: 'هل تريد إرسال دعوة للمشاركة في العمل؟',
   COWORK_INVITATION: 'دعوة للعمل المشترك',
   COWORK_MEMBER: 'أعضاء فريق العمل المشترك',

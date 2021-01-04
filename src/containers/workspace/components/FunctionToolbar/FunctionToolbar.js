@@ -7,11 +7,12 @@ import * as React from 'react'
 import { View, Animated, FlatList, TouchableOpacity } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
-import { scaleSize, Toast, screen } from '../../../../utils'
+import { scaleSize, Toast, screen, LayerUtils } from '../../../../utils'
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import NavigationService from '../../../NavigationService'
 import styles, {
   MAX_VISIBLE_NUMBER,
   ITEM_VIEW_WIDTH_L,
@@ -280,8 +281,49 @@ export default class FunctionToolbar extends React.Component {
           }
         }
       }
-      data.push(_item)
+      if (
+        !GLOBAL.coworkMode ||
+        GLOBAL.coworkMode &&
+        _item.type !== ConstToolType.SM_MAP_ADD &&
+        _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
+        _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE &&
+        _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
+      ) {
+        data.push(_item)
+      }
     })
+    // 在线协作非三维模块，侧边栏新增多媒体采集
+    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0) {
+      data.push({
+        type: ConstToolType.SM_MAP_MEDIA,
+        getTitle: () => getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        size: 'large',
+        image: getThemeAssets().mapTools.icon_tool_multi_media,
+        disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
+        action: () => {
+          if (this.props.currentLayer) {
+            const layerType = LayerUtils.getLayerType(this.props.currentLayer)
+            const isTaggingLayer = layerType === 'TAGGINGLAYER'
+            if (isTaggingLayer) {
+              const { datasourceAlias } = this.props.currentLayer // 标注数据源名称
+              const { datasetName } = this.props.currentLayer // 标注图层名称
+              NavigationService.navigate('Camera', {
+                datasourceAlias,
+                datasetName,
+              })
+            }
+          } else {
+            Toast.show(
+              getLanguage(this.props.language).Prompt
+                .PLEASE_SELECT_PLOT_LAYER,
+            )
+            NavigationService.navigate('LayerManager')
+          }
+        }
+        // getData: MediaData.getData,
+        // actions: MediaAction,
+      })
+    }
     return data
   }
 

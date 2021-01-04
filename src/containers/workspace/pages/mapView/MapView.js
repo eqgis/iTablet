@@ -101,7 +101,7 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
-import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
+// import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
@@ -1970,7 +1970,7 @@ export default class MapView extends React.Component {
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
     this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
-    this.ChatIcon && this.ChatIcon.setVisible(full)
+    // this.ChatIcon && this.ChatIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -2391,7 +2391,9 @@ export default class MapView extends React.Component {
     const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type
     })
-    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
+    let buttonInfos = GLOBAL.coworkMode && [
+      MapHeaderButton.CoworkChat,
+    ] || (currentMapModule && currentMapModule.headerButtons) || [
       MapHeaderButton.Share,
       MapHeaderButton.Search,
       MapHeaderButton.Undo,
@@ -2483,6 +2485,20 @@ export default class MapView extends React.Component {
                 },
               }
               break
+            case MapHeaderButton.CoworkChat:
+              info = {
+                key: MapHeaderButton.CoworkChat,
+                image: getThemeAssets().cowork.icon_nav_chat,
+                action: async () => {
+                  let param = {}
+                  if (CoworkInfo.coworkId !== '') {
+                    param.targetId = CoworkInfo.talkId
+                    param.title = getLanguage(GLOBAL.language).Friends.GROUPS
+                  }
+                  NavigationService.navigate('Chat', param)
+                },
+              }
+              break
           }
         } else {
           info = buttonInfos[i]
@@ -2533,18 +2549,18 @@ export default class MapView extends React.Component {
         }
       }
     }
-    if (GLOBAL.coworkMode && this.state.onlineCowork) {
-      buttons.push(
-        <MTBtn
-          key={'CoworkMember'}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          image={getPublicAssets().common.icon_nav_imove}
-          onPress={async () => {
-            NavigationService.navigate('CoworkMember')
-          }}
-        />,
-      )
-    }
+    // if (GLOBAL.coworkMode && this.state.onlineCowork) {
+    //   buttons.push(
+    //     <MTBtn
+    //       key={'CoworkMember'}
+    //       imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+    //       image={getPublicAssets().common.icon_nav_imove}
+    //       onPress={async () => {
+    //         NavigationService.navigate('CoworkMember')
+    //       }}
+    //     />,
+    //   )
+    // }
     return (
       <View
         style={{
@@ -3511,9 +3527,9 @@ export default class MapView extends React.Component {
         {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
-        {GLOBAL.coworkMode && this.state.onlineCowork && (
+        {/* {GLOBAL.coworkMode && this.state.onlineCowork && (
           <ChatIcon ref={ref => (this.ChatIcon = ref)} />
-        )}
+        )} */}
         {/* {
           GLOBAL.coworkMode && (
             <TouchableOpacity

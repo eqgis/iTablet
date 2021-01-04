@@ -77,6 +77,7 @@ const Friends = {
   PICTURE: 'Image',
   LOCATION_FAILED: 'Impossible de localiser',
   // Cowork
+  COWORK_MESSAGE: 'Cowork Message', // 待翻译
   SEND_COWORK_INVITE: "Voulez-vous envoyer l'invitation de coworking?",
   COWORK_INVITATION: 'Invitation de coworking',
   COWORK_MEMBER: 'Membres du Coworking',

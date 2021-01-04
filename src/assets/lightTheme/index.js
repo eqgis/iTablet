@@ -24,6 +24,7 @@ import module from './module'
 import mark from './mark'
 import start from './start'
 import navigation from './navigation'
+import cowork from './cowork'
 
 export default {
   publicAssets,
@@ -52,4 +53,5 @@ export default {
   mark,
   start,
   navigation,
+  cowork,
 }

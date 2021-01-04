@@ -485,6 +485,8 @@ export default {
   ...SM_ARSCENEMODULE_CONST,
   ...MAP_BASE_CONST,
 
+  SM_MAP_MEDIA: 'SM_MAP_MEDIA',
+
   // 工具视图高度级别
   HEIGHT: [
     scaleSize(100),

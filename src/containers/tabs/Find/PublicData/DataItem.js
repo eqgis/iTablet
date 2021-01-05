@@ -217,7 +217,12 @@ export default class DataItem extends Component {
       let fileDir = externalPath + name
       if (await RNFS.exists(fileDir)) {
         // await RNFS.unlink(externalPath + name)
-        fileDir = fileDir + '_1'
+        for (let i = 1; ; i++) {
+          if(!await RNFS.exists(fileDir+'_'+i)){
+            fileDir = fileDir+'_'+i
+            break
+          }
+        }
       }
       result = await FileTools.unZipFile(path, fileDir)
     } else {

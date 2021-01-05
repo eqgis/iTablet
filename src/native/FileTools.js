@@ -153,10 +153,10 @@ function unZipFile(archivePath, targetPath) {
   if (!archivePath || !targetPath) return
   return FileTools.unZipFile(archivePath, targetPath)
 }
-
-function deleteFile(path) {
+//新增参数文件后缀postfix，默认为空
+function deleteFile(path,postfix='') {
   if (!path) return
-  return FileTools.deleteFile(path)
+  return FileTools.deleteFile(path,postfix)
 }
 
 function copyFile(fromPath, toPath, override = false) {

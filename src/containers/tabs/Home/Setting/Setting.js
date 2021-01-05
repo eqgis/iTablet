@@ -99,8 +99,7 @@ export default class Setting extends Component {
         let appHome = await FileTools.appendingHomeDirectory()
         let path = appHome+'/iTablet/User/'+GLOBAL.currentUser.userName+'/Data/Temp'
         if (await RNFS.exists(path)) {
-          await RNFS.unlink(path)
-          await RNFS.mkdir(path)
+          await FileTools.deleteFile(path,'zip')
           Toast.show(
             GLOBAL.language === 'CN'
               ? '清除成功'

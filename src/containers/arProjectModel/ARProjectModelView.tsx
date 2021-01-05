@@ -364,7 +364,6 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
             >
               <Image
                 resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
                 source={
                   this.state.showSandTable
                     ? getThemeAssets().layerType.layer_group_selected

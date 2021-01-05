@@ -149,8 +149,8 @@ const Friends = {
   SYS_MSG_GEO_UPDATED2: 'Güncellendi',
   ADDED: 'Eklendi', //need to be translated
 
-
   // 创建群组 待翻译
+  TASK: 'Task',
   TASK_DISTRIBUTION: '新建任务',
   GROUP_CREATE: '创建群组',
   GROUP_DELETE: '解散群组',

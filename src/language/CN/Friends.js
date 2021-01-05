@@ -98,7 +98,6 @@ const Friends = {
   SELF: '我',
   ONLINECOWORK_DISABLE_ADD: '在线协作中，不能添加',
   ONLINECOWORK_DISABLE_OPERATION: '在线协作中，不能进行此操作',
-  TASK: '任务',
   // RecommendFriend
   FIND_NONE: '未能从联系人中找到新的online好友',
   ALREADY_FRIEND: '你们已经是好友了',
@@ -153,6 +152,7 @@ const Friends = {
   ADDED: '已添加',
 
   // 创建群组
+  TASK: '任务',
   TASK_DISTRIBUTION: '新建任务',
   GROUP_CREATE: '创建群组',
   GROUP_DELETE: '解散群组',

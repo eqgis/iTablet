@@ -9,6 +9,7 @@ import * as Unit from './Unit'
 import * as Map from './Map'
 import { Prompt } from './Prompt'
 import * as Common from './Common'
+import * as Error from './Error'
 
 export default {
   Navigator_Label,
@@ -21,4 +22,5 @@ export default {
   ...Analyst,
   ...Unit,
   ...Common,
+  ...Error,
 }

@@ -65,9 +65,10 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
-        requestPermissions();
-        initEnvironment();
-        initDefaultData();
+        // 在JS申请权限以免没有权限导致崩溃
+//        requestPermissions();
+//        initEnvironment();
+//        initDefaultData();
         appManager.getAppManager().addActivity(this);
         IWXAPI iwxapi=appManager.getAppManager().registerWechat(this);
         FileTools.getUriState(this);

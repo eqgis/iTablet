@@ -208,6 +208,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'تلقائى',
   SETTING_LOCATION_DEVICE: 'موقع الجهاز',
   SETTING_LOCATION_LOCAL: 'هذا الجهاز',
+  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
 
   // 许可
   LICENSE: 'الرخصة',

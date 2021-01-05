@@ -14,6 +14,7 @@ class MyMap extends MyDataPage {
       shareToIPortal: true,
       shareToWechat: true,
       shareToFriend: true,
+      showFullInMap: true,
     }
   }
 

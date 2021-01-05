@@ -150,6 +150,7 @@ const Friends = {
   ADDED: 'Added',
   
   // 创建群组 待翻译
+  TASK: 'Task',
   TASK_DISTRIBUTION: '新建任务',
   GROUP_CREATE: '创建群组',
   GROUP_DELETE: '解散群组',

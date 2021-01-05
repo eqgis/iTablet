@@ -448,7 +448,7 @@ export default class CollectSceneFormView extends React.Component {
         return !item.name.match(checkLabelAndPlot)
       })
       filterUDBs.map(item => {
-        item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+        item.image = getThemeAssets().dataType.icon_data_source
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -473,7 +473,7 @@ export default class CollectSceneFormView extends React.Component {
         return !item.name.match(checkLabelAndPlot)
       })
       filterUDBs.map(item => {
-        item.image = require('../../assets/mapToolbar/list_type_udb_black.png')
+        item.image = getThemeAssets().dataType.icon_data_source
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -598,7 +598,7 @@ export default class CollectSceneFormView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
+              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -732,7 +732,7 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
+                source={getThemeAssets().ar.toolbar.icon_delete}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -778,7 +778,7 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
+                source={getThemeAssets().ar.toolbar.icon_save_spot}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -804,7 +804,7 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_save_point}
+                source={getThemeAssets().ar.toolbar.icon_save_region}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -910,7 +910,6 @@ export default class CollectSceneFormView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_close}
                 source={require('../../assets/mapTools/icon_point_black.png')}
                 style={styles.smallIcon}
               />

@@ -109,24 +109,34 @@ function openMap() {
           item.rightView = (
             <View
               style={{
-                height: scaleSize(30),
-                width: scaleSize(120),
-                borderRadius: scaleSize(4),
-                backgroundColor: color.bgG,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: scaleSize(30),
+                height: '100%',
+                flexDirection: 'column',
+                // justifyContent: 'center',
+                alignItems: 'flex-start',
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: size.fontSize.fontSizeSm,
-                  color: 'white',
-                  backgroundColor: 'transparent',
+                  marginTop: scaleSize(8),
+                  marginRight: scaleSize(8),
+                  height: scaleSize(30),
+                  width: scaleSize(120),
+                  borderRadius: scaleSize(4),
+                  backgroundColor: color.bgG,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                {getLanguage(_params.language).Map_Main_Menu.CURRENT_MAP}
-              </Text>
+                <Text
+                  style={{
+                    fontSize: size.fontSize.fontSizeSm,
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  {getLanguage(_params.language).Map_Main_Menu.CURRENT_MAP}
+                </Text>
+              </View>
             </View>
           )
         }

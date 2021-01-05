@@ -440,7 +440,7 @@ export default class ToolBarSectionList extends React.Component {
                 {item.name || item.title}
               </Text>
               {item.subTitle && (
-                <Text style={styles.subTitle}>
+                <Text style={styles.subTitle} numberOfLines={1} ellipsizeMode={'tail'}>
                   {getLanguage(GLOBAL.language).Prompt.LATEST}
                   {item.subTitle}
                 </Text>
@@ -949,7 +949,7 @@ const styles = StyleSheet.create({
     color: color.item_separate_white,
   },
   itemInfo: {
-    width: scaleSize(520),
+    // width: scaleSize(520),
     marginLeft: scaleSize(60),
     marginTop: scaleSize(4),
     fontSize: setSpText(16),
@@ -959,7 +959,7 @@ const styles = StyleSheet.create({
     color: color.item_separate_white,
   },
   itemInfo_expression_listSelectable: {
-    width: scaleSize(520),
+    // width: scaleSize(520),
     marginLeft: scaleSize(20),
     marginTop: scaleSize(4),
     fontSize: setSpText(16),

@@ -1,4 +1,12 @@
-function getLanguage(param) {
+interface OBJ {
+  [name: string]: string,
+}
+
+interface LANGUAGE {
+  [name: string]: OBJ,
+}
+
+function getLanguage(param: string): LANGUAGE {
   let language = {}
   switch (param) {
     case 'CN':

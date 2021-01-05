@@ -158,14 +158,20 @@ class LocationSetting extends React.Component {
           headerRight: this.renderRight(),
         }}
       >
-        {this.renderList()}
-        {this.state.showSearch && this.renderSearch()}
+        <View style={styles.container}>
+          {this.renderList()}
+          {this.state.showSearch && this.renderSearch()}
+        </View>
       </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',

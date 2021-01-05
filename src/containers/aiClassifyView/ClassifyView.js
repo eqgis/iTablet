@@ -39,6 +39,8 @@ export default class ClassifyView extends React.Component {
     user: Object,
     nav: Object,
     currentLayer: Object,
+    isClassifyView:Object,
+    setIsClassifyView: () => {},
   }
 
   constructor(props) {
@@ -74,6 +76,7 @@ export default class ClassifyView extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setIsClassifyView(true)
     this.Loading.setLoading(true)
     InteractionManager.runAfterInteractions(() => {
       // 初始化数据
@@ -335,7 +338,7 @@ export default class ClassifyView extends React.Component {
 
   back = () => {
     NavigationService.goBack()
-
+    this.props.setIsClassifyView(false)
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     GLOBAL.toolBox.switchAr()
     return true

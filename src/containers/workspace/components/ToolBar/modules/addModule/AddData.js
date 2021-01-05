@@ -35,9 +35,11 @@ async function getUDBsAndMaps() {
     return !item.name.match(checkLabelAndPlot)
   })
   filterUDBs.map(item => {
-    item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+    // item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
+    item.image = getThemeAssets().dataType.icon_data_source
     if (item.isDirectory) {
-      item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+      // item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+      item.image = getThemeAssets().dataType.icon_data_set
     }
     item.info = {
       infoType: 'mtime',

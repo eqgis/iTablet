@@ -456,7 +456,7 @@ class LicenseJoinCloud extends Component {
           navigation: this.props.navigation,
         }}
       >
-        <ScrollView>
+        <ScrollView style={{ flex: 1, backgroundColor: color.bgW }}>
           {this.renderLicense()}
           {this.renderLicenseDetail()}
           {this.renderActive()}

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Animated, StyleSheet } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils'
+import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
 import { connect } from 'react-redux'
@@ -108,6 +109,7 @@ class ChatIcon extends Component<Props, {}> {
     let param: any = {}
     if (CoworkInfo.coworkId !== '') {
       param.targetId = CoworkInfo.talkId
+      param.title = getLanguage(GLOBAL.language).Friends.GROUPS
     }
     NavigationService.navigate('Chat', param)
   }

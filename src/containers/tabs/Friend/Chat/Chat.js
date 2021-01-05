@@ -20,7 +20,7 @@ import {
 } from 'react-native-gifted-chat'
 import { SimpleDialog, ImageViewer } from '../index'
 import { SMap, EngineType, DatasetType } from 'imobile_for_reactnative'
-import Container from '../../../../components/Container'
+import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import CustomActions from './CustomActions'
@@ -34,7 +34,6 @@ import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../../../../constants/MsgConstant'
 import { getLanguage } from '../../../../language/index'
 import FriendListFileHandle from '../FriendListFileHandle'
-import CoworkTouchableView from '../CoworkTouchableView'
 // eslint-disable-next-line import/no-unresolved
 import ImageResizer from 'react-native-image-resizer'
 import DataHandler from '../../Mine/DataHandler'
@@ -49,6 +48,7 @@ if (Platform.OS === 'ios') {
 class Chat extends React.Component {
   props: {
     navigation: Object,
+    device: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     closeMap: () => {},
@@ -73,7 +73,7 @@ class Chat extends React.Component {
       messageInfo: this.props.navigation.getParam('messageInfo', ''),
       showInformSpot: false,
       chatBottom: 0,
-      title: this.targetUser.title,
+      title: this.props.navigation.getParam('title') || this.targetUser.title,
       coworkMode: GLOBAL.coworkMode,
     }
 
@@ -360,7 +360,7 @@ class Chat extends React.Component {
     })
     //发送
     let isFriend = FriendListFileHandle.getIsFriend(this.targetUser.id)
-    if (isFriend === 0) {
+    if (isFriend === 0 && bGroup !== 2) {
       //对方还未添加您为好友
       this.showNoFriendNotify(msgId)
       return
@@ -1100,6 +1100,33 @@ class Chat extends React.Component {
     this.SimpleDialog.setVisible(true)
   }
 
+  _headerLeft = () => {
+    let imgSize, dotLeft
+    if (GLOBAL.getDevice().orientation && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
+      imgSize = scaleSize(40)
+      dotLeft = scaleSize(35)
+    } else {
+      imgSize = scaleSize(60)
+      dotLeft = scaleSize(55)
+    }
+    return (
+      <View style={[styles.headerLeft]}>
+        <MTBtn
+          key={'backTo'}
+          image={getPublicAssets().common.icon_back}
+          style={styles.backView}
+          imageStyle={[styles.backImg, {width: imgSize, height: imgSize}]}
+          onPress={() => {
+            NavigationService.goBack('Chat')
+          }}
+        />
+        {this.state.showInformSpot && !this.state.coworkMode ? (
+          <View style={[styles.newDot, { left: dotLeft }]} />
+        ) : null}
+      </View>
+    )
+  }
+
   render() {
     let moreImg = getPublicAssets().common.icon_nav_imove
     return (
@@ -1116,6 +1143,8 @@ class Chat extends React.Component {
           headerStyle: {
             zIndex: zIndexLevel.THREE,
           },
+          headerLeft: this._headerLeft(),
+          headerLeftStyle: {marginLeft: scaleSize(25)},
           headerRight:
               this.targetUser.id.indexOf('Group_') === -1 ||
               FriendListFileHandle.isInGroup(
@@ -1148,19 +1177,6 @@ class Chat extends React.Component {
         }}
       >
         <Animated.View style={{ flex: 1, bottom: this.state.chatBottom }}>
-          {this.state.showInformSpot && !this.state.coworkMode ? (
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'red',
-                height: scaleSize(15),
-                width: scaleSize(15),
-                borderRadius: scaleSize(15),
-                top: Top,
-                left: scaleSize(75),
-              }}
-            />
-          ) : null}
           {/* {this.state.coworkMode ? (
             <CoworkTouchableView
               screen="Chat"
@@ -1477,6 +1493,25 @@ const styles = StyleSheet.create({
   },
   tickRight: {
     color: 'white',
+  },
+  headerLeft: {
+    width: 60,
+  },
+  backView: {
+    alignItems: 'flex-start',
+  },
+  backImg: {
+    width: scaleSize(60),
+    height: scaleSize(60),
+    marginRight: 3,
+  },
+  newDot: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    height: scaleSize(15),
+    width: scaleSize(15),
+    borderRadius: scaleSize(15),
+    top: 0,
   },
 })
 export default Chat

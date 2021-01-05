@@ -178,6 +178,7 @@ class GroupFriendListPage extends Component<Props, State> {
 
           letterArr.map((item, index) => {
             const module = persons.filter((it: Person) => {
+              if (!this.includeMe && it.userName === this.props.user.currentUser.userId) return false
               //遍历获取每一个首字母对应联系人
               let firstChar = getPinYinFirstCharacter(it.nickname, '-', true)
               let ch = firstChar[0]

@@ -91,6 +91,7 @@ const mapStateToProps = state => ({
   navBarDisplay: state.setting.toJS().navBarDisplay,
   laboratory: state.setting.toJS().laboratory,
   backActions: state.backActions.toJS(),
+  isClassifyView: state.ar.toJS().isClassifyView,
 })
 
 const mapDispatchToProps = {

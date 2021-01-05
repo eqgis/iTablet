@@ -121,13 +121,30 @@ function arDrawLine() {
       GLOBAL.ARDeviceListDialog.setVisible(true)
       return
     }
-    let currentLayer = GLOBAL.currentLayer
+    /*
     let isTaggingLayer = false
     if (currentLayer) {
       let layerType = LayerUtils.getLayerType(currentLayer)
       isTaggingLayer = layerType === 'TAGGINGLAYER'
+    }*/
+    /**
+     * 修改：原本只能绘制到标注图层
+     * 改为如果绘制类型和图层类型相同，或者图层是CAD图层，则绘制在当前图层，否则绘制到标注图层
+     * by zhaochaojie
+     */
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["LINELAYER","CADLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是线，也不是CAD图层，则绘制到标注图层
+      isDrawTaggingLayer = true
     }
-    if (!isTaggingLayer) {
+    if (isDrawTaggingLayer) {
       let hasDefaultTagging = await SMap.hasDefaultTagging(
         _params.user.currentUser.userName,
       )
@@ -144,8 +161,9 @@ function arDrawLine() {
         datasetName,
       }
     } else {
-      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-      const datasetName = currentLayer.datasetName // 标注图层名称
+      // 否则画到当前图层
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -176,12 +194,19 @@ function arDrawArea() {
       return
     }
     let currentLayer = GLOBAL.currentLayer
-    let isTaggingLayer = false
-    if (currentLayer) {
-      let layerType = LayerUtils.getLayerType(currentLayer)
-      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["REGIONLAYER","CADLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是面，也不是CAD图层，则绘制到标注图层
+      isDrawTaggingLayer = true
     }
-    if (!isTaggingLayer) {
+
+    if (isDrawTaggingLayer) {
       let hasDefaultTagging = await SMap.hasDefaultTagging(
         _params.user.currentUser.userName,
       )
@@ -198,8 +223,8 @@ function arDrawArea() {
         datasetName,
       }
     } else {
-      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-      const datasetName = currentLayer.datasetName // 标注图层名称
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -231,12 +256,19 @@ function arDrawPoint() {
       return
     }
     let currentLayer = GLOBAL.currentLayer
-    let isTaggingLayer = false
-    if (currentLayer) {
-      let layerType = LayerUtils.getLayerType(currentLayer)
-      isTaggingLayer = layerType === 'TAGGINGLAYER'
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["POINTLAYER","CADLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是点，也不是CAD图层，则绘制到标注图层
+      isDrawTaggingLayer = true
     }
-    if (!isTaggingLayer) {
+
+    if (isDrawTaggingLayer) {
       let hasDefaultTagging = await SMap.hasDefaultTagging(
         _params.user.currentUser.userName,
       )
@@ -253,8 +285,8 @@ function arDrawPoint() {
         datasetName,
       }
     } else {
-      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-      const datasetName = currentLayer.datasetName // 标注图层名称
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,

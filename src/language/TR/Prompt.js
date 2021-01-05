@@ -44,6 +44,10 @@ const Prompt = {
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
 
+  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
+  EXIT: 'Exit', //待翻译
+  REQUEST_PERMISSION: 'Request', //待翻译
+
   OPENING: 'Açılıyor',
 
   QUIT: 'SuperMap iTabletten çık?',

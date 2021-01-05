@@ -428,8 +428,10 @@ class AppRoot extends Component {
   }
 
   init = async () => {
-    await SMap.initEnvironment()
-    SLocation.openGPS()
+    if(Platform.OS === 'android') {
+      await SMap.initEnvironment()
+      SLocation.openGPS()
+    }
     this.inspectEnvironment()
     this.reCircleLogin()
     if(this.props.peripheralDevice !== 'local') {

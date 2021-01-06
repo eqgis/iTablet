@@ -138,6 +138,11 @@ export default class Setting extends Component {
           this.suggestionFeedback,
           getLanguage(GLOBAL.language).Profile.SETTING_SUGGESTION_FEEDBACK,
         )}
+        {/** add jiakai */}
+        {this.renderItemView(
+          this.clearCache,
+          getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
+        )}
         {/** 关于放在最后 */}
         {this.props.appConfig.about &&
           this.props.appConfig.about.isShow &&
@@ -147,11 +152,6 @@ export default class Setting extends Component {
               this.props.appConfig.alias +
               getLanguage(GLOBAL.language).Profile.SETTING_ABOUT_AFTER,
           )}
-          {/** add jiakai */}
-          {this.renderItemView(
-          this.clearCache,
-          getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
-        )}
       </View>
     )
   }

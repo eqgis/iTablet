@@ -12,7 +12,6 @@ import { UserType } from '../../../../../constants'
 import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
-import { GroupList } from '../components'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 import { SourceItem } from '../components'
@@ -92,7 +91,6 @@ class GroupSourceManagePage extends Component<Props, State> {
   currentPage: number
   isLoading:boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  groupList: GroupList | null | undefined
   groupInfo: any
   isManage: boolean // 是否是资源管理模式
   hasDownload: boolean // 是否有下载按钮
@@ -100,7 +98,6 @@ class GroupSourceManagePage extends Component<Props, State> {
   deleteDialog: Dialog | undefined | null
   dropdown: ModalDropdown
   modules: Array<any>
-  itemAction?: (data?: any) => void
 
   constructor(props: Props) {
     super(props)

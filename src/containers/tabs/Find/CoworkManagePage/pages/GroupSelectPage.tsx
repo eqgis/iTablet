@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { FlatList, RefreshControl, View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
-import { Container, PopMenu, ImageButton } from '../../../../../components'
+import { FlatList, SectionList, RefreshControl, View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
+import { Container, PopMenu, ImageButton, ListSeparator } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
@@ -9,7 +9,6 @@ import { UserType } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { setCoworkGroup } from '../../../../../redux/models/cowork'
-import { GroupList } from '../components'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 
@@ -25,6 +24,7 @@ interface Props {
 interface State {
   data: Array<any>,
   isRefresh: boolean,
+  sectionMap: Map<string, boolean>,
 }
 
 class GroupSelectPage extends Component<Props, State> {
@@ -38,20 +38,24 @@ class GroupSelectPage extends Component<Props, State> {
   currentPage: number
   isLoading:boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  groupList: GroupList | null | undefined
 
   constructor(props: Props) {
     super(props)
-   
+
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
       this.servicesUtils = new SCoordination('iportal')
     }
 
+    let sectionMap = new Map()
+    sectionMap.set(getLanguage(GLOBAL.language).Friends.MY_GROUPS, true)
+    sectionMap.set(getLanguage(GLOBAL.language).Friends.JOINED_GROUPS, true)
+
     this.state = {
       data: [],
       isRefresh: false,
+      sectionMap: sectionMap,
     }
     this.pageSize = 10000
     this.currentPage = 1
@@ -91,7 +95,9 @@ class GroupSelectPage extends Component<Props, State> {
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     if (
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-      JSON.stringify(nextState) !== JSON.stringify(this.state)
+      JSON.stringify(nextState.data) !== JSON.stringify(this.state.data) ||
+      nextState.isRefresh !== this.state.isRefresh ||
+      !this.state.sectionMap.compare(nextState.sectionMap)
     ) {
       return true
     }
@@ -135,7 +141,7 @@ class GroupSelectPage extends Component<Props, State> {
         joinTypes: ['CREATE', 'JOINED'],
       }).then(result => {
         if (result && result.content) {
-          let _data: any[] = []
+          let _data: any[] = [], myGroups: any[] = [], _joinedGroups: any[] = []
           if (result.content.length > 0) {
             if (this.currentPage < currentPage) {
               _data = this.state.data.deepClone()
@@ -144,13 +150,26 @@ class GroupSelectPage extends Component<Props, State> {
               _data = result.content
             }
           }
+          for (const group of result.content) {
+            if (group.creator === this.props.user.currentUser.userName) {
+              myGroups.push(group)
+            } else {
+              _joinedGroups.push(group)
+            }
+          }
           // 判断是否还有更多数据
           if (_data.length === result.total) {
             this.isNoMore = true
           }
           this.currentPage = currentPage
           this.setState({
-            data: _data,
+            data: [{
+              title: getLanguage(GLOBAL.language).Friends.MY_GROUPS,
+              data: myGroups,
+            }, {
+              title: getLanguage(GLOBAL.language).Friends.JOINED_GROUPS,
+              data: _joinedGroups,
+            }],
             isRefresh: false,
           }, () => {
             this.isLoading = false
@@ -193,9 +212,11 @@ class GroupSelectPage extends Component<Props, State> {
     )
   }
 
-  _keyExtractor = (item, index) => index.toString()
+  _keyExtractor = (item: { groupName: string }, index: { toString: () => string }) => item.groupName + '_' + index.toString()
 
-  _renderItem = ({ item, index }) => {
+  _renderItem = ({ section, item, index }: any) => {
+    let isShow = this.state.sectionMap.get(section.title)
+    if (!isShow) return null
     return (
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
@@ -214,42 +235,122 @@ class GroupSelectPage extends Component<Props, State> {
     )
   }
 
-  _renderGroupList = () => {
-    // return (
-    //   <GroupList
-    //     ref={ref => this.groupList = ref}
-    //     user={this.props.user.currentUser}
-    //     joinTypes={['CREATE', 'JOINED']}
-    //     onPress={this._itemPress}
-    //     setCoworkGroup={this.props.setCoworkGroup}
-    //   />
-    // )
-
+  _renderGroupMessage = () => {
     return (
-      <FlatList
-        style={styles.list}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.itemSeparator} />
-        }}
-        // data={this.state.data}
-        data={this.props.coworkGroups}
-        renderItem={this._renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefresh}
-            onRefresh={this.refresh}
-            colors={['orange', 'red']}
-            tintColor={'orange'}
-            titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
-            enabled={true}
+      <View>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.ITemHeadTextViewStyle}
+          onPress={() => {
+            NavigationService.navigate('GroupMessagePage')
+          }}
+        >
+          <View style={styles.arrowImgView}>
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().friend.icon_notice}
+              style={styles.arrowImg}
+            />
+          </View>
+          <Text style={styles.ITemHeadTextStyle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE}</Text>
+          <View style={styles.arrowImgView}>
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().publicAssets.icon_jump}
+              style={styles.arrowImg}
+            />
+          </View>
+        </TouchableOpacity>
+        <ListSeparator color={color.bgW} height={scaleSize(12)} />
+      </View>
+    )
+  }
+
+  sectionToggle = (section: any) => {
+    if (section.title === getLanguage(GLOBAL.language).Friends.MY_GROUPS) {
+      let myGroups = getLanguage(GLOBAL.language).Friends.MY_GROUPS
+      this.setState(state => {
+        const sectionMap = new Map().clone(state.sectionMap)
+        sectionMap.set(myGroups, !state.sectionMap.get(myGroups))
+        return { sectionMap }
+      })
+    } else if (section.title === getLanguage(GLOBAL.language).Friends.JOINED_GROUPS) {
+      let joinedGroups = getLanguage(GLOBAL.language).Friends.JOINED_GROUPS
+      this.setState(state => {
+        const sectionMap = new Map().clone(state.sectionMap)
+        sectionMap.set(joinedGroups, !state.sectionMap.get(joinedGroups))
+        return { sectionMap }
+      })
+    }
+  }
+
+  _renderSection = (sectionItem: any) => {
+    const { section } = sectionItem
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.ITemHeadTextViewStyle}
+        onPress={() => this.sectionToggle(section)}
+      >
+        <View style={styles.arrowImgView}>
+          <Image
+            resizeMode={'contain'}
+            source={this.state.sectionMap.get(section.title) ? getThemeAssets().publicAssets.icon_drop_up : getThemeAssets().publicAssets.icon_drop_down}
+            style={styles.arrowImg}
           />
-        }
-        onEndReachedThreshold={0.5}
-        onEndReached={this.loadMore}
+        </View>
+        <Text style={styles.ITemHeadTextStyle}>{section.title.toUpperCase()}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  _renderItemSeparatorComponent = ({ section }: any) => {
+    return this.state.sectionMap.get(section.title) ? <View style={styles.itemSeparator} /> : null
+  }
+
+  _renderSectionSeparatorComponent = ({trailingItem}: any) => {
+    return trailingItem ? null : <ListSeparator color={color.bgW} height={scaleSize(12)} />
+  }
+
+  _renderGroupList = () => {
+    return (
+      <SectionList
+        renderSectionHeader={this._renderSection}
+        renderItem={this._renderItem}
+        keyExtractor={this._keyExtractor}
+        sections={this.state.data}
+        style={styles.list}
+        ItemSeparatorComponent={this._renderItemSeparatorComponent}
+        SectionSeparatorComponent={this._renderSectionSeparatorComponent}
+        extraData={this.state.sectionMap}
       />
     )
+
+    // return (
+    //   <FlatList
+    //     style={styles.list}
+    //     ItemSeparatorComponent={() => {
+    //       return <View style={styles.itemSeparator} />
+    //     }}
+    //     // data={this.state.data}
+    //     data={this.props.coworkGroups}
+    //     renderItem={this._renderItem}
+    //     keyExtractor={(item, index) => index.toString()}
+    //     refreshControl={
+    //       <RefreshControl
+    //         refreshing={this.state.isRefresh}
+    //         onRefresh={this.refresh}
+    //         colors={['orange', 'red']}
+    //         tintColor={'orange'}
+    //         titleColor={'orange'}
+    //         title={getLanguage(GLOBAL.language).Friends.LOADING}
+    //         enabled={true}
+    //       />
+    //     }
+    //     onEndReachedThreshold={0.5}
+    //     onEndReached={this.loadMore}
+    //   />
+    // )
   }
 
   render() {
@@ -263,6 +364,7 @@ class GroupSelectPage extends Component<Props, State> {
           headerRight: this.renderRight(),
         }}
       >
+        {this._renderGroupMessage()}
         {this._renderGroupList()}
         {this._renderPagePopup()}
       </Container>
@@ -293,18 +395,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(44),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: color.white,
   },
   ITemHeadTextViewStyle: {
-    height: scaleSize(72),
-    backgroundColor: color.itemColorGray2,
+    height: scaleSize(114),
+    backgroundColor: color.white,
     flexDirection: 'row',
     alignItems: 'center',
   },
   ITemHeadTextStyle: {
+    flex: 1,
     fontSize: size.fontSize.fontSizeLg,
     color: color.contentColorBlack,
-    marginLeft: scaleSize(80),
+    // marginLeft: scaleSize(80),
   },
 
   ITemTextViewStyle: {
@@ -316,6 +419,16 @@ const styles = StyleSheet.create({
   ITemTextStyle: {
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorBlack,
+  },
+  arrowImgView: {
+    width: scaleSize(114),
+    height: scaleSize(114),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  arrowImg: {
+    width: scaleSize(52),
+    height: scaleSize(52),
   },
   itemImg: {
     height: scaleSize(60),
@@ -333,11 +446,11 @@ const styles = StyleSheet.create({
   itemSeparator: {
     height: scaleSize(2),
     backgroundColor: color.separateColorGray3,
-    marginLeft: scaleSize(150),
+    marginLeft: scaleSize(52),
   },
   list: {
     borderTopLeftRadius: scaleSize(36),
     borderTopRightRadius: scaleSize(36),
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
 })

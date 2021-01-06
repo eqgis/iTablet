@@ -76,10 +76,14 @@ export default class SearchBar extends PureComponent {
   }
 
   _clear = () => {
-    if (this.props.onClear && typeof this.props.onClear === 'function') {
-      this.props.onClear()
-    }
-    this.searchInput && this.searchInput.clear()
+    this.setState({
+      value: '',
+    }, () => {
+      if (this.props.onClear && typeof this.props.onClear === 'function') {
+        this.props.onClear()
+      }
+      this.searchInput && this.searchInput.clear()
+    })
   }
 
   _onSubmitEditing = () => {

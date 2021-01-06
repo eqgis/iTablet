@@ -16,7 +16,7 @@ export default class ListSeparator extends React.Component {
     width: PropTypes.number,
     mode: PropTypes.string,
     color: PropTypes.string,
-    newStyle: PropTypes.object,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -32,7 +32,7 @@ export default class ListSeparator extends React.Component {
             this.props.color && { backgroundColor: this.props.color },
             this.props.height && { height: this.props.height },
             this.props.width && { width: this.props.width },
-            this.props.newStyle,
+            this.props.style,
           ]}
         />
       )
@@ -44,7 +44,7 @@ export default class ListSeparator extends React.Component {
             this.props.color && { backgroundColor: this.props.color },
             this.props.height && { height: this.props.height },
             this.props.width && { width: this.props.width },
-            this.props.newStyle,
+            this.props.style,
           ]}
         />
       )

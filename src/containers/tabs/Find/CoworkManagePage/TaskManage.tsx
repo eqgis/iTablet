@@ -14,12 +14,12 @@ import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import { connect } from 'react-redux'
 
 interface State {
-  [name: string]: any, 
+  [name: string]: any
 }
 
 interface Props {
   tabLabel: string,
-  navigation: Object,
+  navigation: any,
   user: any,
   // invites: Array<any>,
   tasks: {[name: string]: Array<any>},

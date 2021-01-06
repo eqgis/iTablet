@@ -177,6 +177,7 @@ import {
   GroupInvitePage,
   GroupSourceManagePage,
   GroupSourceUploadPage,
+  GroupMessagePage,
 } from './tabs/Find/CoworkManagePage/pages'
 import {
   TemplateManager,
@@ -273,6 +274,12 @@ export default function(appConfig) {
       },
       GroupSourceUploadPage: {
         screen: GroupSourceUploadPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupMessagePage: {
+        screen: GroupMessagePage,
         navigationOptions: {
           header: null,
         },

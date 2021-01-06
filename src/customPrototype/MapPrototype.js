@@ -29,7 +29,7 @@ export default (function() {
       return false
     }
     const iterator = data.keys()
-    const key = iterator.next().value
+    let key = iterator.next().value
     while (key !== undefined) {
       isSame =
         isSame &&
@@ -37,6 +37,7 @@ export default (function() {
       if (!isSame) {
         return isSame
       }
+      key = iterator.next().value
     }
     return isSame
   }

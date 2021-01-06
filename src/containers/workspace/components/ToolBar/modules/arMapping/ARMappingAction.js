@@ -140,8 +140,8 @@ function arDrawLine() {
     if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
       // 当前没有选择图层，则绘制到标注图层
       isDrawTaggingLayer = true
-    } else if(["LINELAYER","CADLAYER"].indexOf(layerType) == -1) {
-      // 当前图层不是线，也不是CAD图层，则绘制到标注图层
+    } else if(["LINELAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是线/CAD/标记图层，则绘制到默认标注图层
       isDrawTaggingLayer = true
     }
     if (isDrawTaggingLayer) {
@@ -201,8 +201,8 @@ function arDrawArea() {
     if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
       // 当前没有选择图层，则绘制到标注图层
       isDrawTaggingLayer = true
-    } else if(["REGIONLAYER","CADLAYER"].indexOf(layerType) == -1) {
-      // 当前图层不是面，也不是CAD图层，则绘制到标注图层
+    } else if(["REGIONLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是面线/CAD/标记图层，则绘制到默认标注图层
       isDrawTaggingLayer = true
     }
 
@@ -263,8 +263,8 @@ function arDrawPoint() {
     if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
       // 当前没有选择图层，则绘制到标注图层
       isDrawTaggingLayer = true
-    } else if(["POINTLAYER","CADLAYER"].indexOf(layerType) == -1) {
-      // 当前图层不是点，也不是CAD图层，则绘制到标注图层
+    } else if(["POINTLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是点线/CAD/标记图层，则绘制到默认标注图层
       isDrawTaggingLayer = true
     }
 
@@ -292,7 +292,7 @@ function arDrawPoint() {
         datasetName,
       }
     }
-
+    
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point

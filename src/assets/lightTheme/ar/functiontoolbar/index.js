@@ -22,7 +22,8 @@ const ar_pipeline = require('./icon_ar_pipeline.png')
 const icon_ar_measure_depth = require('./icon_ar_measure_depth.png')
 const icon_ar_measure_level = require('./icon_ar_measure_level.png')
 const icon_ar_gesture = require('./icon_ar_gesture.png')
-
+const ar_draw_line_disable = require('../../mark/icon_dotted_lines_ash.png')
+const ar_draw_area_disable = require('../../mark/icon_frame_ash.png')
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
   rightbar_ai_classify_light, // 目标分类
@@ -36,6 +37,8 @@ export default {
   ar_draw_point,
   ar_draw_line, //ar画线
   ar_draw_area, //ar画面
+  ar_draw_line_disable,
+  ar_draw_area_disable,
   ar_measure_height, //ar测高
   ar_picture,
   ar_effect,

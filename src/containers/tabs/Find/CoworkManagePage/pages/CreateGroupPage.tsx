@@ -1,10 +1,11 @@
 import React from 'react'
 import { Container, CheckBox, RadioGroup, TextBtn } from '../../../../../components'
-import { View, Text, TextInput, ScrollView, StyleSheet, Platform } from 'react-native'
+import { View, Text, TextInput, ScrollView, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native'
 import { scaleSize, Toast } from '../../../../../utils'
 import { color, size } from '../../../../../styles'
 import { getLanguage } from '../../../../../language'
 import { UserType } from '../../../../../constants'
+import { getPublicAssets, getThemeAssets } from '../../../../../assets'
 import { SCoordination, CreateGroupResponse } from 'imobile_for_reactnative'
 
 import { connect } from 'react-redux'
@@ -31,20 +32,35 @@ interface Props {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: scaleSize(60),
-    marginRight: scaleSize(30),
+    // marginLeft: scaleSize(60),
+    // marginRight: scaleSize(30),
   },
   headerBtnTitle: {
-    color: color.fontColorBlack,
-    fontSize: 17,
+    color: color.fontColorGray3,
+    fontSize: size.fontSize.fontSizeLg,
+  },
+  topView: {
+    flexDirection: 'column',
+    backgroundColor: color.white,
+    marginHorizontal: scaleSize(40),
+    paddingLeft: scaleSize(36),
+    paddingRight: scaleSize(28),
+    paddingVertical: scaleSize(16),
+    borderRadius: scaleSize(40),
+    marginTop: scaleSize(30),
+    height: scaleSize(360),
   },
   subView: {
     flexDirection: 'column',
+    marginHorizontal: scaleSize(40),
+  },
+  title: {
+
   },
   topItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: scaleSize(30),
+    // marginTop: scaleSize(30),
   },
   topItemTitleView: {
     width: scaleSize(120),
@@ -52,13 +68,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-  topItemContentView: {
-    flex: 1,
-    borderBottomWidth: 1,
+  topItemSeparator: {
+    width: '100%',
+    height: scaleSize(2),
+    paddingLeft: scaleSize(36),
+    paddingRight: scaleSize(28),
+    backgroundColor: color.itemColorGray2,
   },
   itemTitle: {
     fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorBlack,
+    color: color.contentColorGray,
   },
   input: {
     flex: 1,
@@ -70,6 +89,75 @@ const styles = StyleSheet.create({
     }),
   },
   itemTitleView: {
+    marginTop: scaleSize(24),
+    marginLeft: scaleSize(20),
+    flexDirection: 'row',
+    height: scaleSize(80),
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  shareView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  shareItem: {
+    flex: 1,
+    backgroundColor: color.white,
+    borderRadius: scaleSize(40),
+    height: scaleSize(240),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: color.white,
+  },
+  shareChecked: {
+    borderWidth: 1,
+    borderColor: color.selected_blue,
+  },
+  shareItemImg: {
+    height: scaleSize(100),
+    width: scaleSize(100),
+    alignSelf: 'center',
+    marginTop: scaleSize(-40),
+  },
+  shareItemTitle: {
+    position: 'absolute',
+    left: scaleSize(34),
+    bottom: scaleSize(22),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorGray,
+  },
+  shareItemCheck: {
+    position: 'absolute',
+    right: scaleSize(20),
+    top: scaleSize(20),
+  },
+
+  typeView: {
+    flexDirection: 'column',
+    paddingVertical: scaleSize(20),
+    justifyContent: 'space-around',
+    borderRadius: scaleSize(40),
+    backgroundColor: color.white,
+  },
+  typeItem: {
+    flexDirection: 'row',
+    height: scaleSize(80),
+    alignItems: 'center',
+  },
+  typeTitle: {
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorGray,
+    marginLeft: scaleSize(34),
+  },
+  typeSubTitle: {
+    fontSize: size.fontSize.fontSizeMd,
+    color: color.fontColorGray3,
+    marginLeft: scaleSize(20),
+  },
+  typeCheckView: {
+    marginTop: scaleSize(24),
+    marginLeft: scaleSize(34),
     flexDirection: 'row',
     height: scaleSize(80),
     justifyContent: 'flex-start',
@@ -139,11 +227,23 @@ class CreateGroupPage extends React.Component<Props, State> {
       Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_NOT_EMPTY)
       return
     }
+    if (this.groupInfo.groupName.length > 20) {
+      Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER)
+      return
+    }
     if (!this.groupInfo.tags) {
       Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_NOT_EMPTY)
       return
     }
     let _tags = this.groupInfo.tags.split(',')
+    if (_tags.length > 6) {
+      Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER)
+      return
+    }
+    if (this.groupInfo.description.length > 100) {
+      Toast.show(getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER)
+      return
+    }
     this.servicesUtils.createGroup({
       groupName: this.groupInfo.groupName,
       tags: _tags,
@@ -166,91 +266,168 @@ class CreateGroupPage extends React.Component<Props, State> {
     })
   }
 
-  _renderTopItem = (title: string, placeholder: string, onChangeText: (text: string) => void) : any => {
+  _renderTopItem = (data: {title: string, placeholder: string, onChangeText: (text: string) => void}) : any => {
     return (
       <View style={styles.topItem}>
         <View style={styles.topItemTitleView}>
-          <Text style={styles.itemTitle}>{title}</Text>
+          <Text style={styles.itemTitle}>{data.title + ':'}</Text>
         </View>
-        <View style={styles.topItemContentView}>
-          <TextInput
-            placeholder={placeholder}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            placeholderTextColor={color.fontColorGray3}
-            onChangeText={text => {
-              if (onChangeText) onChangeText(text)
-            }}
-          />
-        </View>
+        <TextInput
+          placeholder={data.placeholder}
+          style={styles.input}
+          underlineColorAndroid="transparent"
+          placeholderTextColor={color.fontColorGray3}
+          onChangeText={text => {
+            if (data.onChangeText) data.onChangeText(text)
+          }}
+        />
       </View>
     )
   }
 
   _renderTopView = () => {
     return (
-      <View style={styles.subView}>
-        {this._renderTopItem(
-          getLanguage(this.props.language).Friends.NAME,
-          getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER,
-          text => this.groupInfo.groupName = text,
-        )}
-        {this._renderTopItem(
-          getLanguage(this.props.language).Friends.GROUP_TAG,
-          getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER,
-          text => this.groupInfo.tags = text,
-        )}
-        {this._renderTopItem(
-          getLanguage(this.props.language).Friends.GROUP_REMARK,
-          getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER,
-          text => this.groupInfo.description = text,
-        )}
+      <View style={styles.topView}>
+        {
+          this._renderTopItem({
+            title: getLanguage(this.props.language).Friends.NAME,
+            placeholder: getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER,
+            onChangeText: text => this.groupInfo.groupName = text,
+          })
+        }
+        <View style={styles.topItemSeparator} />
+        {
+          this._renderTopItem({
+            title: getLanguage(this.props.language).Friends.GROUP_TAG,
+            placeholder: getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER,
+            onChangeText: text => this.groupInfo.tags = text,
+          })
+        }
+        <View style={styles.topItemSeparator} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+          }}
+        >
+          <View style={styles.topItemTitleView}>
+            <Text style={styles.itemTitle}>{getLanguage(this.props.language).Friends.GROUP_REMARK + ':'}</Text>
+          </View>
+          <TextInput
+            placeholder={getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER}
+            style={[
+              styles.input,
+              {
+                height: scaleSize(140),
+                marginTop: scaleSize(15),
+                textAlignVertical: 'top',
+                ...Platform.select({
+                  android: {
+                    paddingTop: scaleSize(7),
+                  },
+                }),
+              }]}
+            underlineColorAndroid="transparent"
+            placeholderTextColor={color.fontColorGray3}
+            multiline={true}
+            onChangeText={text => this.groupInfo.description = text}
+          />
+        </View>
       </View>
+    )
+  }
+
+  _renderSharingItem = (data: {image: any, title: string, value: string, style?: any}): any => {
+    let checked = data.value === this.state.resourceSharer
+    return (
+      <TouchableOpacity
+        style={[styles.shareItem, data.style, checked && styles.shareChecked]}
+        activeOpacity={0.8}
+        onPress={() => {
+          this.setState({
+            resourceSharer: data.value,
+          })
+        }}
+      >
+        <Image resizeMode={'contain'} source={data.image} style={styles.shareItemImg} />
+        <Text style={styles.shareItemTitle}>{data.title}</Text>
+        <Image
+          style={styles.shareItemCheck}
+          resizeMode={'contain'}
+          source={checked ? getPublicAssets().common.icon_single_check : getPublicAssets().common.icon_none}
+        />
+      </TouchableOpacity>
     )
   }
 
   _renderSharingView = () => {
     return (
-      <View style={[styles.subView, {marginTop: scaleSize(30)}]}>
+      <View style={styles.subView}>
         <View style={styles.itemTitleView}>
           <Text style={styles.itemTitle}>{getLanguage(this.props.language).Friends.RESOURCE_SHARER}</Text>
         </View>
-        <RadioGroup
-          data={this.shareData}
-          column={1}
-          radioStyle={{
-            titleStyle: {
-              fontSize: size.fontSize.fontSizeLg,
-            },
-          }}
-          defaultValue={this.shareData[1].value}
-          getSelected={data => {
-            this.setState({
-              resourceSharer: data.value
-            })
-          }}
-        />
+        <View style={styles.shareView}>
+          {this._renderSharingItem({
+            title: getLanguage(this.props.language).Friends.CREATOR,
+            value: 'CREATOR',
+            image: getThemeAssets().cowork.icon_group_creator,
+          })}
+          {this._renderSharingItem({
+            title: getLanguage(this.props.language).Friends.ALL_MEMBER,
+            value: 'MEMBER',
+            image: getThemeAssets().cowork.icon_group_all,
+            style: { marginLeft: scaleSize(40) },
+          })}
+        </View>
       </View>
+    )
+  }
+
+  _renderTypeItem = (data: {title: any, subTitle: string}): any => {
+    let checked = false
+    if (this.state.isPublic && data.title === getLanguage(this.props.language).Friends.GROUP_TYPE_PUBLIC) {
+      checked = true
+    } else if (!this.state.isPublic && data.title === getLanguage(this.props.language).Friends.GROUP_TYPE_PRIVATE) {
+      checked = true
+    }
+    return (
+      <TouchableOpacity
+        style={styles.typeItem}
+        activeOpacity={0.8}
+        onPress={() => {
+          this.setState({
+            isPublic: data.title === getLanguage(this.props.language).Friends.GROUP_TYPE_PUBLIC,
+          })
+        }}
+      >
+        <Text style={styles.typeTitle} numberOfLines={1}>{data.title}</Text>
+        <Text style={styles.typeSubTitle} numberOfLines={1}>({data.subTitle})</Text>
+        <Image
+          style={styles.shareItemCheck}
+          resizeMode={'contain'}
+          source={checked ? getPublicAssets().common.icon_single_check : getPublicAssets().common.icon_none}
+        />
+      </TouchableOpacity>
     )
   }
 
   _renderTypeView = () => {
     return (
-      <View style={[styles.subView, {marginTop: scaleSize(30)}]}>
+      <View style={styles.subView}>
         <View style={styles.itemTitleView}>
           <Text style={styles.itemTitle}>{getLanguage(this.props.language).Friends.GROUP_TYPE}</Text>
         </View>
-        <RadioGroup
-          data={this.typeData}
-          column={1}
-          defaultValue={this.typeData[1].value}
-          getSelected={data => {
-            this.setState({
-              isPublic: data.value
-            })
-          }}
-        />
-         <View style={styles.itemTitleView}>
+        <View style={styles.typeView}>
+          {this._renderTypeItem({
+            title: getLanguage(this.props.language).Friends.GROUP_TYPE_PRIVATE,
+            subTitle: getLanguage(this.props.language).Friends.GROUP_TYPE_PRIVATE_INFO,
+          })}
+          {this._renderTypeItem({
+            title: getLanguage(this.props.language).Friends.GROUP_TYPE_PUBLIC,
+            subTitle: getLanguage(this.props.language).Friends.GROUP_TYPE_PUBLIC_INFO,
+          })}
+          <View style={styles.typeCheckView}>
             <CheckBox
               style={{
                 height: scaleSize(30),
@@ -263,12 +440,13 @@ class CreateGroupPage extends React.Component<Props, State> {
                 })
               }}
             />
-            <Text style={styles.itemTitle}>
+            <Text style={[styles.itemTitle, {marginLeft: scaleSize(20)}]}>
               {
                 getLanguage(GLOBAL.language).Friends.GROUP_TYPE_PUBLIC_CHECK_INFO
               }
             </Text>
           </View>
+        </View>
       </View>
     )
   }
@@ -287,12 +465,23 @@ class CreateGroupPage extends React.Component<Props, State> {
               btnClick={this.create}
             />
           ),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
+          headerStyle: {
+            borderBottomWidth: 0,
+            backgroundColor: color.bgW,
+          },
+        }}
+        style={{
+          backgroundColor: color.bgW,
         }}
       >
         <ScrollView
-         style={styles.container}
-         showsHorizontalScrollIndicator={false}
-         showsVerticalScrollIndicator={false}
+          style={styles.container}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           {this._renderTopView()}
           {this._renderSharingView()}

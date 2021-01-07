@@ -7,6 +7,8 @@ const icon_nav_set = require('./icon_nav_set.png')
 
 const icon_group_agree = require('./icon_group_agree.png')
 const icon_group_join = require('./icon_group_join.png')
+const icon_group_all = require('./icon_group_all.png')
+const icon_group_creator = require('./icon_group_creator.png')
 
 const bg_photo_data = require('./bg_photo_data.png')
 const bg_photo_news = require('./bg_photo_news.png')
@@ -22,6 +24,8 @@ export default {
 
   icon_group_agree,
   icon_group_join,
+  icon_group_all,
+  icon_group_creator,
 
   bg_photo_data,
   bg_photo_news,

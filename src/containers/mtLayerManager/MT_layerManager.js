@@ -957,7 +957,7 @@ export default class MT_layerManager extends React.Component {
           // backImg: require('../../assets/mapTools/icon_close.png'),
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           withoutBack: true,
         }}

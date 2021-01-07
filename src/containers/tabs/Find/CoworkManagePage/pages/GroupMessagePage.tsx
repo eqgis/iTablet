@@ -258,6 +258,10 @@ class GroupMessagePage extends Component<Props, State> {
           title: getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE,
           navigation: this.props.navigation,
           // headerRight: this._renderHeaderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         {

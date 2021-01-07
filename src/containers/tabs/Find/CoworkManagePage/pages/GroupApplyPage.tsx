@@ -116,23 +116,6 @@ class GroupApplyPage extends Component<Props, State> {
     })
   }
 
-  renderRight = () => {
-    return (
-      <TouchableOpacity
-        onPress={event => {
-          this.PagePopModal && this.PagePopModal.setVisible(true, {
-            x: event.nativeEvent.pageX,
-            y: event.nativeEvent.pageY,
-          })
-        }}
-      >
-        <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
-          {getLanguage(GLOBAL.language).Friends.GROUP_MANAGE}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
   _renderDialog = () => {
     return (
       <InputDialog
@@ -213,7 +196,13 @@ class GroupApplyPage extends Component<Props, State> {
         headerProps={{
           title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
           navigation: this.props.navigation,
-          // headerRight: this.renderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
+          headerStyle: {
+            borderBottomWidth: 0,
+          },
         }}
       >
         {this._renderSearchBar()}

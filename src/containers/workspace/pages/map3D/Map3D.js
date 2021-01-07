@@ -1041,7 +1041,7 @@ export default class Map3D extends React.Component {
           backAction: this.back,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           headerStyle: {
             right:

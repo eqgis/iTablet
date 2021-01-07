@@ -139,7 +139,7 @@ export default class AppletList extends React.Component {
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
             borderBottomWidth: 0,
           },
         }}

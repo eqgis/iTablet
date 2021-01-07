@@ -201,7 +201,8 @@ class GroupSelectPage extends Component<Props, State> {
   renderRight = () => {
     return (
       <ImageButton
-        icon={getThemeAssets().tabBar.tab_setting_selected}
+        iconStyle={{ width: scaleSize(44), height: scaleSize(44) }}
+        icon={getThemeAssets().cowork.icon_nav_add_friends}
         onPress={(event: any) => {
           this.PagePopModal && this.PagePopModal.setVisible(true, {
             x: event.nativeEvent.pageX,
@@ -362,6 +363,11 @@ class GroupSelectPage extends Component<Props, State> {
           title: getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_GROUP,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(90),
+            borderBottomWidth: 0,
+          },
         }}
       >
         {this._renderGroupMessage()}

@@ -797,7 +797,7 @@ export default class LayerAttributeTabs extends React.Component {
           backAction: this.back,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           headerRight: this._renderHeader(),
         }}

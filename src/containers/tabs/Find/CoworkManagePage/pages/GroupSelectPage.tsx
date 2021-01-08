@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, SectionList, RefreshControl, View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
+import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
 import { Container, PopMenu, ImageButton, ListSeparator } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
@@ -215,7 +215,7 @@ class GroupSelectPage extends Component<Props, State> {
 
   _keyExtractor = (item: { groupName: string }, index: { toString: () => string }) => item.groupName + '_' + index.toString()
 
-  _renderItem = ({ section, item, index }: any) => {
+  _renderItem = ({ section, item }: any) => {
     let isShow = this.state.sectionMap.get(section.title)
     if (!isShow) return null
     return (

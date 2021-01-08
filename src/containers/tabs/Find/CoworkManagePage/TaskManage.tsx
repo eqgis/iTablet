@@ -1,17 +1,59 @@
 import React from 'react'
-import { View, FlatList, Text } from 'react-native'
+import { View, FlatList, Text, Image, StyleSheet } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import { addCoworkMsg } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { UserInfo } from '../../../../redux/models/user'
-import { ListSeparator } from '../../../../components'
+import { ListSeparator, ImageButton } from '../../../../components'
 import { getLanguage } from '../../../../language'
+import { getThemeAssets } from '../../../../assets'
 import { SCoordination, SMap } from 'imobile_for_reactnative'
 import { UserType } from '../../../../constants'
+import { size, color } from '../../../../styles'
 import { TaskMessageItem } from './components'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 
 import { connect } from 'react-redux'
+
+const styles = StyleSheet.create({
+  nullView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nullSubView: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nullImage: {
+    height: scaleSize(270),
+    width: scaleSize(270),
+  },
+  nullTitle: {
+    marginTop: scaleSize(40),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.black,
+  },
+  nullSubTitle: {
+    marginTop: scaleSize(20),
+    fontSize: size.fontSize.fontSizeMd,
+    color: color.selected_blue,
+  },
+  newTaskBtn: {
+    position: 'absolute',
+    right: -scaleSize(120),
+    bottom: -scaleSize(40),
+    backgroundColor: color.contentColorGray,
+    height: scaleSize(120),
+    width: scaleSize(120),
+    borderRadius: scaleSize(60),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 
 interface State {
   [name: string]: any
@@ -25,6 +67,7 @@ interface Props {
   tasks: {[name: string]: Array<any>},
   groupInfo: any,
   mapModules: any,
+  createTask: () => void,
   setCurrentMapModule: (index: number) => void,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
   deleteCoworkMsg: (params: any, cb?: () => {}) => void,
@@ -153,36 +196,65 @@ class TaskManage extends React.Component<Props, State> {
     return <ListSeparator color={'transparent'} height={scaleSize(20)} />
   }
 
+  /**
+   * 没有任务的界面
+   */
+  _renderNull = () => {
+    return (
+      <View style={styles.nullView}>
+        <View style={styles.nullSubView}>
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
+            <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_TASK_NULL}</Text>
+            {
+              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
+              <Text style={styles.nullSubTitle}>{getLanguage(GLOBAL.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
+            }
+            {
+              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
+              // <View style={styles.newTaskBtn}/>
+              <ImageButton
+                icon={getThemeAssets().cowork.icon_group_join}
+                iconStyle={{height: scaleSize(80), width: scaleSize(80)}}
+                containerStyle={styles.newTaskBtn}
+                onPress={() => {
+                  this.props.createTask && this.props.createTask()
+                }}
+              />
+            }
+          </View>
+        </View>
+        <View style={{flex: 1, backgroundColor: 'black'}} />
+      </View>
+    )
+  }
+
   render() {
+    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userId]
+      && this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
+      ? this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
+      : []
     return (
       <View style={{flex: 1}}>
         {
-          UserType.isOnlineUser(this.props.user.currentUser)
+          data.length > 0
             ? (
-              // <View>
-                <FlatList
-                  ref={ref => this.list = ref}
-                  data={
-                    this.props.tasks && this.props.tasks[this.props.user.currentUser.userId] &&
-                    this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
-                      ? this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
-                      : []
-                  }
-                  // inverted={true}
-                  extraData={this.state}
-                  renderItem={this.renderItem}
-                  keyExtractor={(item, index) => item.id.toString()}
-                  ItemSeparatorComponent={this._renderItemSeparatorComponent}
-                />
-              // </View>
+              <FlatList
+                ref={ref => this.list = ref}
+                data={data}
+                extraData={this.state}
+                renderItem={this.renderItem}
+                keyExtractor={(item, index) => item.id.toString()}
+                ItemSeparatorComponent={this._renderItemSeparatorComponent}
+              />
             )
-            : (
-              <View style={{ alignItems: 'center' }}>
-                <Text style={{ color: 'grey', marginTop: scaleSize(24) }}>
-                  {getLanguage(GLOBAL.language).Find.COWORK_LOGIN}
-                </Text>
-              </View>
-            )
+            : this._renderNull()
         }
       </View>
     )

@@ -461,6 +461,10 @@ class GroupFriendListPage extends Component<Props, State> {
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
           headerLeft: this.state.isManage && this._renderHeaderLeft(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         <SectionList

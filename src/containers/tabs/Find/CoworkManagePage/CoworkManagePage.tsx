@@ -85,74 +85,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     if (this.props.user.currentUser.userId === this.groupInfo.creator) {
       this.popData.unshift({
         title: getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION,
-        action: () => {
-          if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            NavigationService.navigate('GroupFriendListPage', {
-              groupInfo: this.groupInfo,
-              mode: 'multiSelect', // 多选模式
-              includeMe: false, // 是否包含当前用户
-              hasSettingBtn: false, // 是否含有右上角设置按钮
-              callBack: (members: any) => {
-                NavigationService.navigate('GroupSourceManagePage', {
-                  isManage: false,
-                  hasDownload: false, // 是否有下载按钮
-                  title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
-                  groupInfo: this.groupInfo,
-                  itemAction: async ({data, module, moduleIndex}: any) => {
-                    NavigationService.goBack('GroupFriendListPage', null)
-
-                    // 向用户发送信息
-                    let timeStr = new Date().getTime()
-                    let id = `Group_Task_${this.groupInfo.id}_${timeStr}`
-                    let message: any = {
-                      id: id,
-                      message: {
-                        type: MsgConstant.MSG_ONLINE_GROUP_TASK,
-                        task: data,
-                        module: Object.assign({}, module, {index: moduleIndex}),
-                      },
-                      type: MsgConstant.MSG_ONLINE_GROUP,
-                      user: {
-                        name: this.props.user.currentUser.nickname || '',
-                        id: this.props.user.currentUser.userId || '',
-                      },
-                      group: {
-                        groupID: this.groupInfo.id,
-                        groupName: this.groupInfo.groupName,
-                        groupCreator: this.groupInfo.creator,
-                      },
-                      time: timeStr,
-                    }
-                    let _members = [{
-                      name: this.props.user.currentUser.nickname || '',
-                      id: this.props.user.currentUser.userId || '',
-                    }]
-                    for (const member of members) {
-                      message = Object.assign(message, {to: {
-                        name: member.nickname,
-                        id: member.userName,
-                      }})
-                      _members.push({
-                        name: member.nickname,
-                        id: member.userName,
-                      })
-                      SMessageService.sendMessage(
-                        JSON.stringify(message),
-                        member.userName,
-                      )
-                      this.props.addCoworkMsg(message)
-                    }
-                    await SMessageService.declareSession(_members, id)
-                  },
-                })
-              },
-            })
-          } else {
-            NavigationService.navigate('Login', {
-              show: ['Online'],
-            })
-          }
-        },
+        action: this.createTask,
       })
     }
   }
@@ -172,6 +105,75 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   componentWillUnmount() {
     this.servicesUtils = null
     this.onlineServicesUtils = null
+  }
+
+  createTask = () => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      NavigationService.navigate('GroupFriendListPage', {
+        groupInfo: this.groupInfo,
+        mode: 'multiSelect', // 多选模式
+        includeMe: false, // 是否包含当前用户
+        hasSettingBtn: false, // 是否含有右上角设置按钮
+        callBack: (members: any) => {
+          NavigationService.navigate('GroupSourceManagePage', {
+            isManage: false,
+            hasDownload: false, // 是否有下载按钮
+            title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
+            groupInfo: this.groupInfo,
+            itemAction: async ({data, module, moduleIndex}: any) => {
+              NavigationService.goBack('GroupFriendListPage', null)
+
+              // 向用户发送信息
+              let timeStr = new Date().getTime()
+              let id = `Group_Task_${this.groupInfo.id}_${timeStr}`
+              let message: any = {
+                id: id,
+                message: {
+                  type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+                  task: data,
+                  module: Object.assign({}, module, {index: moduleIndex}),
+                },
+                type: MsgConstant.MSG_ONLINE_GROUP,
+                user: {
+                  name: this.props.user.currentUser.nickname || '',
+                  id: this.props.user.currentUser.userId || '',
+                },
+                group: {
+                  groupID: this.groupInfo.id,
+                  groupName: this.groupInfo.groupName,
+                  groupCreator: this.groupInfo.creator,
+                },
+                time: timeStr,
+              }
+              let _members = [{
+                name: this.props.user.currentUser.nickname || '',
+                id: this.props.user.currentUser.userId || '',
+              }]
+              for (const member of members) {
+                message = Object.assign(message, {to: {
+                  name: member.nickname,
+                  id: member.userName,
+                }})
+                _members.push({
+                  name: member.nickname,
+                  id: member.userName,
+                })
+                SMessageService.sendMessage(
+                  JSON.stringify(message),
+                  member.userName,
+                )
+                this.props.addCoworkMsg(message)
+              }
+              await SMessageService.declareSession(_members, id)
+            },
+          })
+        },
+      })
+    } else {
+      NavigationService.navigate('Login', {
+        show: ['Online'],
+      })
+    }
   }
 
   deleteInvite = (data: any) => {
@@ -302,10 +304,20 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           title: this.groupInfo.groupName,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         {/* {this.renderContent()} */}
-        {this.renderTab()}
+        {/* {this.renderTab()} */}
+        <TaskManage
+          tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
+          groupInfo={this.groupInfo}
+          createTask={this.createTask}
+          {...this.props}
+        />
         {this._renderPagePopup()}
       </Container>
     )

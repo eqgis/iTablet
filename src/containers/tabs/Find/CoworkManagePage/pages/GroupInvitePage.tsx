@@ -261,6 +261,10 @@ class GroupInvitePage extends React.Component<Props, State> {
           //     btnClick={this.invite}
           //   />
           // ),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         {this._renderTopView()}

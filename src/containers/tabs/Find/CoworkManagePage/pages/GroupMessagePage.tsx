@@ -7,21 +7,16 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  SectionList,
   FlatList,
   RefreshControl,
   Image,
 } from 'react-native'
 import { connect } from 'react-redux'
-import NavigationService from '../../../../NavigationService'
-import { Toast, scaleSize } from '../../../../../utils'
-import { getPinYinFirstCharacter } from '../../../../../utils/pinyin'
+import { scaleSize } from '../../../../../utils'
 import { UserType } from '../../../../../constants'
-import { Container, ListSeparator, CheckBox, PopMenu, ImageButton, Dialog } from '../../../../../components'
+import { Container, ListSeparator, PopMenu } from '../../../../../components'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
-import { MsgConstant } from '../../../Friend'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import { exitGroup } from '../../../../../redux/models/cowork'
@@ -40,6 +35,7 @@ interface Props {
 type State = {
   data: Array<any>,
   isRefresh: boolean,
+  firstLoad: boolean,
 }
 
 class GroupMessagePage extends Component<Props, State> {
@@ -61,6 +57,7 @@ class GroupMessagePage extends Component<Props, State> {
     this.state = {
       data: [],
       isRefresh: false,
+      firstLoad: true,
     }
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -144,14 +141,17 @@ class GroupMessagePage extends Component<Props, State> {
         this.setState({
           data: _data,
           isRefresh: false,
+          firstLoad: false,
         }, () => {
           this.isLoading = false
           cb && cb()
         })
       } else {
-        this.state.isRefresh && this.setState({ isRefresh: false })
+        this.setState({ isRefresh: false, firstLoad: false })
         this.isLoading = false
       }
+    }).catch(() => {
+      this.setState({ isRefresh: false, firstLoad: false })
     })
   }
 
@@ -245,10 +245,15 @@ class GroupMessagePage extends Component<Props, State> {
   }
 
   _renderNull = () => {
-    <View>
-      <Image source={getThemeAssets().cowork.bg_photo_news} />
-      <Text></Text>
-    </View>
+    return (
+      <View style={[styles.nullView]}>
+        <View style={styles.nullView}>
+          <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
+          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE_NULL}</Text>
+        </View>
+        <View style={{flex: 1, backgroundColor: 'black'}} />
+      </View>
+    )
   }
 
   render() {
@@ -264,9 +269,7 @@ class GroupMessagePage extends Component<Props, State> {
           },
         }}
       >
-        {
-          this.state.data.length > 0 ? this._renderList() : this._renderNull()
-        }
+        {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderList()}
         {this._renderPagePopup()}
       </Container>
     )
@@ -340,6 +343,22 @@ const styles = StyleSheet.create({
   separator: {
     marginLeft: scaleSize(46),
     marginRight: scaleSize(200),
+  },
+
+  nullView: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nullImage: {
+    height: scaleSize(270),
+    width: scaleSize(270),
+  },
+  nullTitle: {
+    marginTop: scaleSize(40),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray3,
   },
 })
 

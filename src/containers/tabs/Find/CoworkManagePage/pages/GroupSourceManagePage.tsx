@@ -61,6 +61,21 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     marginRight: scaleSize(30),
   },
+  nullView: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nullImage: {
+    height: scaleSize(270),
+    width: scaleSize(270),
+  },
+  nullTitle: {
+    marginTop: scaleSize(40),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray3,
+  },
 })
 
 interface Props {
@@ -74,6 +89,7 @@ interface Props {
 interface State {
   data: Array<any>,
   isRefresh: boolean,
+  firstLoad: boolean,
   isDelete: boolean, // 是否是删除模式
   selectedData: Map<string, any>,
   currentModule: any,
@@ -89,7 +105,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   container: any
   pageSize: number
   currentPage: number
-  isLoading:boolean // 防止同时重复加载多次
+  isLoading: boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
   groupInfo: any
   isManage: boolean // 是否是资源管理模式
@@ -112,7 +128,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('iportal')
     }
 
@@ -126,6 +142,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
     this.state = {
       data: [],
+      firstLoad: true,
       isRefresh: false,
       selectedData: new Map<string, Object>(),
       isDelete: false,
@@ -160,11 +177,11 @@ class GroupSourceManagePage extends Component<Props, State> {
       },
     ]
   }
-  
+
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     let shouldUpdate = JSON.stringify(nextState) !== JSON.stringify(this.state) ||
-    JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-    !this.state.selectedData.compare(nextState.selectedData)
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      !this.state.selectedData.compare(nextState.selectedData)
     return shouldUpdate
   }
 
@@ -181,7 +198,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     })
   }
 
-  getGroupResources = ({pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', cb = () => {}}: any) => {
+  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', cb = () => { } }: any) => {
     this.servicesUtils?.getGroupResources({
       groupId: this.groupInfo.id,
       // resourceCreator: this.props.user.currentUser.userId,
@@ -207,14 +224,23 @@ class GroupSourceManagePage extends Component<Props, State> {
         this.setState({
           data: _data,
           isRefresh: false,
+          firstLoad: false,
         }, () => {
           this.isLoading = false
           cb && cb()
         })
       } else {
-        this.state.isRefresh && this.setState({ isRefresh: false })
+        this.setState({
+          isRefresh: false,
+          firstLoad: false,
+        })
         this.isLoading = false
       }
+    }).catch(() => {
+      this.setState({
+        isRefresh: false,
+        firstLoad: false,
+      })
     })
   }
 
@@ -273,7 +299,6 @@ class GroupSourceManagePage extends Component<Props, State> {
       resourceIds: ids,
       groupResourceType: 'DATA',
     }).then(async result => {
-      debugger
       if (result.succeed) {
         this.getGroupResources({
           pageSize: this.pageSize,
@@ -357,7 +382,7 @@ class GroupSourceManagePage extends Component<Props, State> {
       return (
         <TextBtn
           btnText={getLanguage(this.props.language).Prompt.DELETE}
-          textStyle={[styles.headerBtnTitle, this.state.isDelete && {color: 'red'}]}
+          textStyle={[styles.headerBtnTitle, this.state.isDelete && { color: 'red' }]}
           btnClick={() => {
             if (this.state.selectedData.size > 0) {
               this.deleteDialog?.setDialogVisible(true)
@@ -390,7 +415,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
-  _renderItem = ({item}: any) => {
+  _renderItem = ({ item }: any) => {
     return (
       <SourceItem
         user={this.props.user}
@@ -487,23 +512,35 @@ class GroupSourceManagePage extends Component<Props, State> {
     let limitHeight = screen.getScreenHeight(this.props.device.orientation) - screen.getHeaderHeight() - ITEM_HEIGHT
 
     if (maxHeight > limitHeight) maxHeight = limitHeight
-    
+
     return (
       <ModalDropdown
         ref={(ref: ModalDropdown) => this.dropdown = ref}
         style={styles.dropdown}
         textStyle={styles.dropdownText}
-        dropdownStyle={[styles.dropdownContent, {height: maxHeight}]}
+        dropdownStyle={[styles.dropdownContent, { height: maxHeight }]}
         options={this.modules}
         renderRow={this._renderDropdownItem}
         onSelect={this._dropDownOnSelect}
       >
-        <View style={[styles.dropdownItem, {backgroundColor: color.itemColorGray2}]}>
+        <View style={[styles.dropdownItem, { backgroundColor: color.itemColorGray2 }]}>
           <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
           <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
           <Text style={styles.dropdownItemRightText}>{getLanguage(GLOBAL.language).Friends.SELECT_MODULE}</Text>
         </View>
       </ModalDropdown>
+    )
+  }
+
+  _renderNull = () => {
+    return (
+      <View style={styles.nullView}>
+        <View style={styles.nullView}>
+          <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
+          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_DATA_NULL}</Text>
+        </View>
+        <View style={{ flex: 1, backgroundColor: 'black' }} />
+      </View>
     )
   }
 
@@ -517,12 +554,16 @@ class GroupSourceManagePage extends Component<Props, State> {
           navigation: this.props.navigation,
           headerRight: this.isManage && this._renderHeaderRight(),
           headerLeft: this.state.isDelete && this._renderHeaderLeft(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
 
         {this._renderPopMenu()}
         {this._renderBatchHead()}
-        {this._renderGroupList()}
+        {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderGroupList()}
         {this._renderPagePopup()}
         {this._renderDeleteDialog()}
       </Container>

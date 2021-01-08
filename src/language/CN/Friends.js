@@ -238,5 +238,10 @@ const Friends = {
   GROUP_EXIST_INFO: '是否退出群组',
   GROUP_DELETE_INFO: '是否解散群组',
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
+
+  GROUP_MESSAGE_NULL: '暂时没有群消息',
+  GROUP_DATA_NULL: '没有数据',
+  GROUP_TASK_NULL: '没有任务',
+  CREATE_FIRST_GROUP_TASK: '新建本群第一个任务',
 }
 export { Friends }

@@ -34,8 +34,6 @@ function getData() {
     //   size: 'large',
     //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_layout_light,
     // },
-    // 没有对应的disable图标，暂时在disable时隐藏 by zcj
-    /*
     {
       //AR画点
       key: 'arDrawArea',
@@ -43,10 +41,10 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
       action: ARMappingAction.arDrawPoint,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_point,
+      image: disablePoint ? getThemeAssets().ar.functiontoolbar.ar_draw_point_disable
+        : getThemeAssets().ar.functiontoolbar.ar_draw_point,
       disable: disablePoint,
     },
-    */
     {
       //AR画线
       key: 'arDrawLine',
@@ -70,19 +68,6 @@ function getData() {
       disable: disableArea,
     },
   ]
-  // 没有对应的disable图标，暂时在disable时隐藏 by zcj
-  if(!disablePoint){
-    data.unshift({
-      //AR画点
-      key: 'arDrawArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
-      action: ARMappingAction.arDrawPoint,
-      size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_draw_point,
-      disable: disablePoint,
-    },)
-  }
   if (_params.laboratory.highPrecisionCollect) {
     data.unshift({
       // 高精度采集

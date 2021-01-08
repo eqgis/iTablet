@@ -140,24 +140,13 @@ export default class ApplyItem extends Component<Props, State> {
     )
   }
 
-  // "checkUser": null,
-  // "checkUserNick": null,
-  // "groupName": "YSL",
-  // "checkStatus": "WAITING",
-  // "applicantNick": "刘LXY",
-  // "checkTime": 1609813200155,
-  // "groupId": 1731129121,
-  // "applyReason": "123\n",
-  // "checkInfo": null,
-  // "id": 468,
-  // "applyTime": 1609813200155,
-  // "applicant": "949941"
   render() {
     return (
       <View style={[styles.itemViewStyle, this.props.style]}>
         <View style={styles.contentView}>
           <Text style={styles.title}>{this.props.data.applicantNick}</Text>
           <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_APPLY_TO + ': ' + this.props.data.groupName}</Text>
+          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.APPLY_REASON + ': ' + this.props.data.applyReason}</Text>
           <Text style={styles.time}>{new Date(this.props.data.applyTime).Format("yyyy-MM-dd hh:mm:ss")}</Text>
         </View>
         {this._renderRight()}

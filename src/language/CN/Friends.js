@@ -204,7 +204,7 @@ const Friends = {
   GROUP_APPLY_TITLE: '申请加入群组',
   GROUP_APPLY_ALRADY_TITLE: '你的群组申请已经审核',
   APPLICANT: '申请人',
-  APPLY_REASON: '申请原因',
+  APPLY_REASON: '入群理由',
   APPLY_TIME: '申请时间',
   GROUP_NAME: '群组名称',
   CHECK_RESULT: '审核结果',

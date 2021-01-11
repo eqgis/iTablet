@@ -426,7 +426,7 @@ export default class ClassifyView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_delete}
+                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>

@@ -23,7 +23,7 @@ import { Container, Dialog } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
-import { Toast, dataUtil, scaleSize } from '../../utils'
+import { Toast, dataUtil, scaleSize, LayerUtils } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
 
@@ -44,10 +44,19 @@ export default class CollectSceneFormView extends React.Component {
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state || {}
-    this.datasourceAlias = params.datasourceAlias || ''
+    // this.datasourceAlias = params.datasourceAlias || ''
+    // this.datasetName = params.datasetName
+    // this.datasetPointName = params.datasetPointName
+    // 保存记录的数据集，使用当前数据集或者默认标注图层数据集，见this._checkSaveDatset() by zcj
+    this.datasourceAlias = ""
+    this.datasetName = ""
+    this.datasetPointName = ""
+    // 判断当前图层类型，用于禁用保存按钮
+    this.disablePoint = true
+    this.disableLine = true
+    this.disableRegion = true
+
     this.datumPoint = params.point
-    this.datasetName = params.datasetName
-    this.datasetPointName = params.datasetPointName
     this.SceneViewVisible = true
     this.isRecording = true
     this.isNewCreate = false
@@ -78,7 +87,7 @@ export default class CollectSceneFormView extends React.Component {
     Orientation.lockToPortrait()
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //安排任务在交互和动画完成之后执行
     // setTimeout(async () => {
     //   // 初始化数据
@@ -114,6 +123,9 @@ export default class CollectSceneFormView extends React.Component {
         this.onTotalLengthChanged,
       )
     }
+
+    // 判断图层类型，是否显示相应保存按钮
+    await this._checkSaveDatset()
   }
 
   componentWillUnmount() {
@@ -131,6 +143,45 @@ export default class CollectSceneFormView extends React.Component {
         'onTotalLengthChanged',
         this.onTotalLengthChanged,
       )
+    }
+  }
+
+  // 判断图层类型，是否显示相应保存按钮
+  _checkSaveDatset = async () => {
+    let layerType = "TAGGINGLAYER"
+    // 如果当前没有选择图层，则使用默认图层
+    if(GLOBAL.currentLayer.datasourceAlias === undefined){
+      const userName = ToolbarModule.getParams().user.currentUser.userName
+      let hasDefaultTagging = await SMap.hasDefaultTagging(userName)
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          userName,
+        )
+      }
+      this.datasourceAlias = 'Label_' + userName + '#'
+      this.datasetName = 'Default_Tagging'
+      this.datasetPointName = 'Default_Tagging'
+    }else{
+      // 否则使用当前图层
+      const {datasourceAlias,datasetName}=GLOBAL.currentLayer
+      this.datasourceAlias = datasourceAlias
+      this.datasetName = datasetName
+      this.datasetPointName = datasetName
+      layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    }
+
+    // 判断当前图层类型，如果是CAD/标注图层，可以保存点线面，否则只能保存对应类型
+    if(["CADLAYER","TAGGINGLAYER"].indexOf(layerType) != -1){
+      this.disablePoint = false
+      this.disableLine = false
+      this.disableRegion = false
+    }else if (layerType === "POINTLAYER"){
+      this.disablePoint = false
+    } else if(layerType === "REGIONLAYER"){
+      this.disableRegion = false
+    }else if(layerType === "LINELAYER"){
+      this.disableLine = false
     }
   }
 
@@ -740,6 +791,7 @@ export default class CollectSceneFormView extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
+          {!this.disableLine &&
           <TouchableOpacity
             onPress={() => this.save()}
             style={{
@@ -762,7 +814,8 @@ export default class CollectSceneFormView extends React.Component {
                 {getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE}
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>}
+          {!this.disablePoint &&
           <TouchableOpacity
             onPress={() => this.savepoint()}
             style={{
@@ -788,7 +841,8 @@ export default class CollectSceneFormView extends React.Component {
                 }
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>}
+          {!this.disableRegion &&
           <TouchableOpacity
             onPress={() => this.saveRegion()}
             style={{
@@ -814,7 +868,7 @@ export default class CollectSceneFormView extends React.Component {
                 }
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>}
           {/* <TouchableOpacity
               onPress={() => this.switchViewMode()}
               style={{
@@ -949,7 +1003,8 @@ export default class CollectSceneFormView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* 总是绘制在当前图层，不再需要了 by zcj */}
+          {/* <TouchableOpacity
             onPress={() => this.history()}
             style={styles.iconView}
           >
@@ -958,7 +1013,7 @@ export default class CollectSceneFormView extends React.Component {
               source={getThemeAssets().ar.toolbar.icon_classify_settings}
               style={styles.smallIcon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => {
               if (this.state.showSwithchButtons) {

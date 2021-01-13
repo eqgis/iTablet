@@ -68,7 +68,7 @@ function getData() {
       disable: disableArea,
     },
   ]
-  if (_params.laboratory.highPrecisionCollect) {
+  if (_params.laboratory.highPrecisionCollect && !(disableArea && disablePoint && disbaleLine)) {
     data.unshift({
       // 高精度采集
       key: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -78,6 +78,7 @@ function getData() {
       action: ARMappingAction.collectSceneForm,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+      disable: disableArea && disablePoint && disbaleLine,
     })
   }
 

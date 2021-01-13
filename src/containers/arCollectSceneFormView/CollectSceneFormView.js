@@ -148,28 +148,12 @@ export default class CollectSceneFormView extends React.Component {
 
   // 判断图层类型，是否显示相应保存按钮
   _checkSaveDatset = async () => {
-    let layerType = "TAGGINGLAYER"
-    // 如果当前没有选择图层，则使用默认图层
-    if(GLOBAL.currentLayer.datasourceAlias === undefined){
-      const userName = ToolbarModule.getParams().user.currentUser.userName
-      let hasDefaultTagging = await SMap.hasDefaultTagging(userName)
-      if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
-          'Default_Tagging',
-          userName,
-        )
-      }
-      this.datasourceAlias = 'Label_' + userName + '#'
-      this.datasetName = 'Default_Tagging'
-      this.datasetPointName = 'Default_Tagging'
-    }else{
-      // 否则使用当前图层
-      const {datasourceAlias,datasetName}=GLOBAL.currentLayer
-      this.datasourceAlias = datasourceAlias
-      this.datasetName = datasetName
-      this.datasetPointName = datasetName
-      layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
-    }
+    // 没有选择图层或者类型不正确时，外部按钮被禁用，所以不用判断是否有当前图层
+    let layerType = layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    const {datasourceAlias,datasetName}=GLOBAL.currentLayer
+    this.datasourceAlias = datasourceAlias
+    this.datasetName = datasetName
+    this.datasetPointName = datasetName
 
     // 判断当前图层类型，如果是CAD/标注图层，可以保存点线面，否则只能保存对应类型
     if(["CADLAYER","TAGGINGLAYER"].indexOf(layerType) != -1){
@@ -206,7 +190,7 @@ export default class CollectSceneFormView extends React.Component {
     setTimeout(function() {
       //设置基点
       // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
-      SCollectSceneFormView.startRecording()
+      // SCollectSceneFormView.startRecording()
       GLOBAL.Loading.setLoading(false)
       DatumPointDialogTemp.setDialogVisible(true)
     }, 500)

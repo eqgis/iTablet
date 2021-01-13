@@ -3,6 +3,7 @@ const rightbar_ai_classify_light = require('./icon_tool_ai_classify.png')
 const rightbar_ai_collect_light = require('./icon_tool_ai_collect.png')
 const rightbar_ai_layout_light = require('./icon_tool_ai_layout.png')
 const rightbar_ai_poi_light = require('./icon_tool_ai_poi.png')
+const rightbar_ai_poi_light_disable = require('./icon_tool_ai_poi_ash.png')
 const rightbar_ai_violation_light = require('./icon_tool_ai_violation.png')
 const ar_cast = require('./ar_cast.png')
 const ar_analyst_length = require('./icon_ar_measure_distance.png')
@@ -31,6 +32,7 @@ export default {
   rightbar_ai_collect_light, // 目标采集
   rightbar_ai_layout_light, // 户型图采集
   rightbar_ai_poi_light, // poi地图
+  rightbar_ai_poi_light_disable,
   rightbar_ai_violation_light, // 违章采集
   ar_cast,
   ar_analyst_length, //ar测距

@@ -68,7 +68,8 @@ function getData() {
       disable: disableArea,
     },
   ]
-  if (_params.laboratory.highPrecisionCollect && !(disableArea && disablePoint && disbaleLine)) {
+  const disableCollect = disableArea && disablePoint && disbaleLine
+  if (_params.laboratory.highPrecisionCollect) {
     data.unshift({
       // 高精度采集
       key: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -77,8 +78,9 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
       action: ARMappingAction.collectSceneForm,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
-      disable: disableArea && disablePoint && disbaleLine,
+      image: disableCollect ? getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light_disable :
+        getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+      disable: disableCollect,
     })
   }
 

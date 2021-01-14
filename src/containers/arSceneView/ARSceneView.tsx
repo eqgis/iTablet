@@ -76,8 +76,15 @@ export default class ARSceneView extends React.Component<IProps> {
     await SSceneAR.close()
     NavigationService.goBack()
     // Orientation.lockToPortrait()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    GLOBAL.Loading.setLoading(true,"Loading")
+  
+    setTimeout(() => {
+      GLOBAL.Loading.setLoading(false)
+      // NavigationService.goBack()
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+      GLOBAL.toolBox.switchAr()
+  }, 500)
+
   }
 
   renderToolbar = () => {

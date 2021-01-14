@@ -13,7 +13,7 @@ import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { connect } from 'react-redux'
-import { SCoordination } from 'imobile_for_reactnative'
+import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import { UploadItem } from '../components'
 import DataHandler from '../../../Mine/DataHandler'
 import { exportWorkspace } from '../../../../../redux/models/map'
@@ -77,6 +77,7 @@ interface Props {
   user: Users,
   language: string,
   device: any,
+  currentGroup: GroupType,
   exportWorkspace: (data: any, cb?: (result: boolean) => void) => Promise<{
     result: boolean,
     zipPath: string,
@@ -111,13 +112,11 @@ class GroupSourceUploadPage extends Component<Props, State> {
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  groupInfo: any
   list: FlatList<any> | null | undefined
   cb: () => void
 
   constructor(props: Props) {
     super(props)
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.cb = this.props.navigation?.state?.params?.cb
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
@@ -310,9 +309,9 @@ class GroupSourceUploadPage extends Component<Props, State> {
           }
           this.setState({ isUploading: false })
 
-          if (resourceIds.length > 0 && this.groupInfo.id) {
+          if (resourceIds.length > 0 && this.props.currentGroup.id) {
             this.servicesUtils?.shareDataToGroup({
-              groupId: this.groupInfo.id,
+              groupId: this.props.currentGroup.id,
               ids: resourceIds,
             }).then(result => {
               if (result.succeed) {
@@ -423,6 +422,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {

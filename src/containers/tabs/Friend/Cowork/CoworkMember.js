@@ -5,6 +5,7 @@ import { getLanguage } from '../../../../language/index'
 import { scaleSize } from '../../../../utils'
 import CoworkInfo from './CoworkInfo'
 import color from '../../../../styles/color'
+import CoworkFileHandle from '../../Find/CoworkManagePage/CoworkFileHandle'
 
 class CoworkMember extends Component {
   props: {
@@ -24,11 +25,10 @@ class CoworkMember extends Component {
   }
 
   getData = () => {
-    let data = []
-    if (CoworkInfo.coworkId !== '') {
-      data = data.concat(CoworkInfo.members)
-      this.setState({ data })
-    }
+    let groupId = this.props.navigation?.state?.params?.groupId
+    let userId = this.props.navigation?.state?.params?.userId
+    let data = CoworkFileHandle.getGroupMember(groupId, userId)
+    this.setState({ data: data || [] })
   }
 
   render() {

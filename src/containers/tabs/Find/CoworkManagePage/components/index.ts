@@ -5,6 +5,7 @@ import GroupSelectList from './GroupSelectList'
 import SourceItem from './SourceItem'
 import UploadItem from './UploadItem'
 import ApplyItem from './ApplyItem'
+import InviteItem from './InviteItem'
 
 export {
   TaskMessageItem,
@@ -14,4 +15,5 @@ export {
   SourceItem,
   UploadItem,
   ApplyItem,
+  InviteItem,
 }

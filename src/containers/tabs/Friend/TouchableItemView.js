@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   seperator: {
     height: px(1),
-    marginLeft: scaleSize(118),
+    marginLeft: scaleSize(80),
     backgroundColor: '#EEEEEE',
   },
 })

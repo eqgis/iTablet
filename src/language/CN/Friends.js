@@ -43,7 +43,6 @@ const Friends = {
   CONFIRM2: '确定',
   TITLE_CHOOSE_FRIEND: '选择好友',
   TITLE_CHOOSE_GROUP: '选择群组',
-  TITLE_CHOOSE_MEMBER: '选择成员',
   TOAST_CHOOSE_2: '少于两人不能发起群聊',
   NO_FRIEND: '您还未添加好友哦',
   // AddFriend
@@ -153,6 +152,8 @@ const Friends = {
   ADDED: '已添加',
 
   // 创建群组
+  TITLE_CHOOSE_MEMBER: '选择成员',
+  VIEW_MORE_MEMBERS: '查看更多成员',
   MY_GROUPS: '我创建的群组',
   JOINED_GROUPS: '我加入的群组',
   GROUP_MESSAGE: '群组消息',
@@ -163,6 +164,7 @@ const Friends = {
   GROUP_APPLY: '申请入群',
   GROUP_EXIST: '退出群组',
   GROUP_INVITE: '邀请入群',
+  GROUP_SETTING: '群组设置',
   GROUP_MEMBER_MANAGE: '成员管理',
   GROUP_MEMBER_DELETE: '删除成员',
   GROUP_RESOURCE: '资源管理',
@@ -209,7 +211,10 @@ const Friends = {
   GROUP_NAME: '群组名称',
   CHECK_RESULT: '审核结果',
   CHECK_TIME: '审核时间',
+  APPLY_MESSAGE: '申请消息',
   INVITE: '邀请',
+  INVITE_MESSAGE: '邀请消息',
+  INVITE_TO: '邀请您加入',
   INVITE_REASON: '邀请原因',
   INVITE_SUCCESS: '发送邀请成功',
   INVITE_FAILED: '发送邀请失败',
@@ -227,7 +232,8 @@ const Friends = {
 
   TASK_DOWNLOAD: '下载任务',
   TASK_DOWNLOADING: '下载中',
-  TASK_TITLE: '任务名称',
+  TASK_TITLE: '协作任务',
+  TASK_MAP: '协作地图',
   TASK_CREATOR: '所有者',
   TASK_TYPE: '数据类型',
   TASK_UPDATE_TIME: '更新时间',
@@ -243,5 +249,8 @@ const Friends = {
   GROUP_DATA_NULL: '没有数据',
   GROUP_TASK_NULL: '没有任务',
   CREATE_FIRST_GROUP_TASK: '新建本群第一个任务',
+
+  INVITE_CORWORK_MEMBERS: '邀请协作者',
+  DELETE_CORWORK_MEMBERS: '删除协作者',
 }
 export { Friends }

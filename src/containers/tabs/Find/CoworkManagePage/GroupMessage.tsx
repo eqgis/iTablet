@@ -3,10 +3,10 @@ import { ListSeparator } from '../../../../components'
 import { FlatList, View, RefreshControl } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import { SCoordination, SMessageService } from 'imobile_for_reactnative'
+import { SCoordination, SMessageService, GroupApplyMessageType } from 'imobile_for_reactnative'
 
 import { MemberMessageItem } from './components'
-import { GroupMessageType, GroupApplyMessageType } from './types'
+import { GroupMessageType } from './types'
 
 import { connect } from 'react-redux'
 

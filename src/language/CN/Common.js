@@ -13,6 +13,7 @@ const Common = {
   BACK: '后',
 
   PARAMETER: '参数',
+  CONFIRM: '确认',
 }
 
 export { Protocol, Common }

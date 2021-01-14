@@ -6,6 +6,8 @@ import GroupInvitePage from './GroupInvitePage'
 import GroupSourceManagePage from './GroupSourceManagePage'
 import GroupSourceUploadPage from './GroupSourceUploadPage'
 import GroupMessagePage from './GroupMessagePage'
+import SelectModulePage from './SelectModulePage'
+import GroupSettingPage from './GroupSettingPage'
 
 export {
   CreateGroupPage,
@@ -16,4 +18,6 @@ export {
   GroupSourceManagePage,
   GroupSourceUploadPage,
   GroupMessagePage,
+  SelectModulePage,
+  GroupSettingPage,
 }

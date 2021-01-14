@@ -15,10 +15,12 @@ export default class CheckBox extends React.Component {
     imgStyle?: Object,
     disable?: boolean,
     checked?: boolean,
+    type?: string,
   }
 
   static defaultProps = {
     disable: false,
+    type: 'square', // square 方形 | circle 圆形
   }
 
   constructor(props) {
@@ -75,17 +77,37 @@ export default class CheckBox extends React.Component {
     )
   }
 
-  render() {
+  getIcon = () => {
     let icon
-    if (!this.props.disable) {
-      icon = this.state.checked
-        ? getPublicAssets().common.icon_check
-        : getPublicAssets().common.icon_uncheck
-    } else {
-      icon = this.state.checked
-        ? getPublicAssets().common.icon_check_disable
-        : getPublicAssets().common.icon_uncheck_disable
+    switch(this.props.type) {
+      case 'circle':
+        if (!this.props.disable) {
+          icon = this.state.checked
+            ? getPublicAssets().common.icon_select
+            : getPublicAssets().common.icon_none
+        } else {
+          icon = this.state.checked
+            ? getPublicAssets().common.icon_disable_select
+            : getPublicAssets().common.icon_disable_none
+        }
+        break
+      case 'square':
+      default:
+        if (!this.props.disable) {
+          icon = this.state.checked
+            ? getPublicAssets().common.icon_check
+            : getPublicAssets().common.icon_uncheck
+        } else {
+          icon = this.state.checked
+            ? getPublicAssets().common.icon_check_disable
+            : getPublicAssets().common.icon_uncheck_disable
+        }
+        break
     }
+    return icon
+  }
+
+  render() {
     return (
       <TouchableOpacity
         disable={this.props.disable}
@@ -96,7 +118,7 @@ export default class CheckBox extends React.Component {
         <Image
           resizeMode={'contain'}
           style={[styles.btn_image, this.props.imgStyle]}
-          source={icon}
+          source={this.getIcon()}
         />
       </TouchableOpacity>
     )

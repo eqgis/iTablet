@@ -13,6 +13,7 @@ const Common = {
   BACK: 'Arka',
 
   PARAMETER: 'Parametre',
+  CONFIRM: 'Onayla',
 }
 
 export { Protocol, Common }

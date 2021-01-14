@@ -13,7 +13,7 @@ import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { connect } from 'react-redux'
-import { SCoordination } from 'imobile_for_reactnative'
+import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import { SourceItem } from '../components'
 import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -84,6 +84,7 @@ interface Props {
   language: string,
   device: any,
   mapModules: any,
+  currentGroup: GroupType,
 }
 
 interface State {
@@ -107,7 +108,6 @@ class GroupSourceManagePage extends Component<Props, State> {
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  groupInfo: any
   isManage: boolean // 是否是资源管理模式
   hasDownload: boolean // 是否有下载按钮
   list: FlatList<any> | null | undefined
@@ -117,7 +117,6 @@ class GroupSourceManagePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.title = this.props.navigation?.state?.params?.title || getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE
     this.isManage = this.props.navigation?.state?.params?.isManage !== undefined
       ? this.props.navigation?.state?.params?.isManage
@@ -161,7 +160,6 @@ class GroupSourceManagePage extends Component<Props, State> {
         action: () => {
           NavigationService.navigate('GroupSourceUploadPage', {
             title: getLanguage(this.props.language).Profile.MAP,
-            groupInfo: this.groupInfo,
             cb: () => {
               this.getGroupResources({
                 pageSize: this.pageSize,
@@ -200,7 +198,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
   getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', cb = () => { } }: any) => {
     this.servicesUtils?.getGroupResources({
-      groupId: this.groupInfo.id,
+      groupId: this.props.currentGroup.id,
       // resourceCreator: this.props.user.currentUser.userId,
       currentPage: currentPage,
       pageSize: pageSize,
@@ -295,7 +293,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   _delete = (ids: Array<string>) => {
     if (ids.length === 0) return
     this.servicesUtils?.deleteGroupResources({
-      groupId: this.groupInfo.id,
+      groupId: this.props.currentGroup.id,
       resourceIds: ids,
       groupResourceType: 'DATA',
     }).then(async result => {
@@ -332,11 +330,12 @@ class GroupSourceManagePage extends Component<Props, State> {
   _onPress = (data: any) => {
     let itemAction = this.props.navigation?.state?.params?.itemAction
     if (itemAction) {
-      itemAction({
-        data,
-        module: this.state.currentModule,
-        moduleIndex: this.state.currentModuleIndex,
-      })
+      let temp: any = {data}
+      if (this.dropdown) {
+        temp.module = this.state.currentModule
+        temp.moduleIndex = this.state.currentModuleIndex
+      }
+      itemAction(temp)
     }
   }
 
@@ -366,7 +365,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   renderRight = () => {
     return (
       <ImageButton
-        icon={getThemeAssets().tabBar.tab_setting_selected}
+        icon={getThemeAssets().cowork.icon_nav_set}
         onPress={(event: any) => {
           this.pagePopModal && this.pagePopModal.setVisible(true, {
             x: event.nativeEvent.pageX,
@@ -393,7 +392,8 @@ class GroupSourceManagePage extends Component<Props, State> {
     } else {
       return (
         <ImageButton
-          icon={getThemeAssets().tabBar.tab_setting_selected}
+          containerStyle={{marginRight: scaleSize(6)}}
+          icon={getThemeAssets().cowork.icon_nav_set}
           onPress={(event: any) => {
             this.pagePopModal?.setVisible(true, {
               x: event.nativeEvent.pageX,
@@ -544,6 +544,10 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
+  _closeDelete = () => {
+    this._setDelete(false)
+  }
+
   render() {
     return (
       <Container
@@ -553,7 +557,8 @@ class GroupSourceManagePage extends Component<Props, State> {
           title: this.title,
           navigation: this.props.navigation,
           headerRight: this.isManage && this._renderHeaderRight(),
-          headerLeft: this.state.isDelete && this._renderHeaderLeft(),
+          // headerLeft: this.state.isDelete && this._renderHeaderLeft(),
+          backAction: this.state.isDelete && this._closeDelete,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
@@ -561,7 +566,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         }}
       >
 
-        {this._renderPopMenu()}
+        {/* {this._renderPopMenu()} */}
         {this._renderBatchHead()}
         {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderGroupList()}
         {this._renderPagePopup()}
@@ -576,6 +581,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
   mapModules: state.mapModules.toJS(),
 })
 

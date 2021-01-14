@@ -6,58 +6,57 @@
 import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { Toast, scaleSize } from '../../../../../utils'
-import { CheckBox } from '../../../../../components'
+import { CheckBox, ListSeparator } from '../../../../../components'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../../native'
-import { color } from '../../../../../styles'
+import { color, size } from '../../../../../styles'
+import { getThemeAssets } from '../../../../../assets'
 import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import DataHandler from '../../../Mine/DataHandler'
 import { SOnlineService } from 'imobile_for_reactnative'
 
-export const itemHeight = 140
-export const imageWidth = 90
-export const imageHeight = 90
-const smallFontSize = 12
-const largeFontSize = 18
-const paddingLeft = 15
 const styles = StyleSheet.create({
-  itemViewStyle: {
-    width: '100%',
-    height: itemHeight,
+  rowContainer: {
     flexDirection: 'row',
-    padding: 10,
+    paddingRight: scaleSize(28),
+    paddingLeft: scaleSize(40),
+    paddingVertical: scaleSize(24),
+    height: scaleSize(160),
+    // backgroundColor: 'yellow',
     alignItems: 'center',
-    backgroundColor: color.content_white,
   },
-  imageStyle: {
-    width: imageWidth,
-    height: imageHeight,
-    backgroundColor: color.image_bg_white,
+  itemImage: {
+    height: scaleSize(80),
+    width: scaleSize(80),
   },
   contentView: {
     flex: 1,
     flexDirection: 'row',
   },
+  contentSubView: {
+    // flex: 1,
+    flexDirection: 'column',
+    marginLeft: scaleSize(40),
+    // justifyContent: 'space-between',
+  },
   restTitleTextStyle: {
     width: '100%',
-    fontSize: largeFontSize,
+    fontSize: size.fontSize.fontSizeXXl,
     fontWeight: 'bold',
     // color: 'white',
-    paddingLeft,
     textAlign: 'left',
     flexWrap: 'wrap',
-    marginRight: 100,
+    // marginRight: 100,
   },
 
   viewStyle2: {
-    width: '100%',
-    height: 20,
+    // width: '100%',
+    // height: 20,
     flexDirection: 'row',
-    paddingLeft,
-    marginTop: 10,
-    marginRight: 100,
+    // marginTop: 10,
+    // marginRight: 100,
   },
   imageStyle2: {
     width: 20,
@@ -66,8 +65,9 @@ const styles = StyleSheet.create({
   textStyle2: {
     textAlign: 'left',
     // color: 'white',
-    lineHeight: 20,
-    fontSize: smallFontSize,
+    // lineHeight: 20,
+    padding: 0,
+    fontSize: size.fontSize.fontSizeLg,
     paddingLeft: 5,
   },
   separateViewStyle: {
@@ -330,54 +330,94 @@ export default class SourceItem extends Component<Props, State> {
     return (
       <View
         style={{
-          width: 100,
+          // width: 100,
           height: '100%',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-end',
         }}
       >
         <TouchableOpacity
           style={{
-            width: 50,
-            height: 50,
+            flexDirection: 'column',
+            // width: 50,
+            height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            // backgroundColor: 'yellow',
           }}
           onPress={() => {
             this._downloadFile()
           }}
         >
           <Image
-            style={{ width: 35, height: 35, tintColor: color.fontColorGray }}
-            source={require('../../../../../assets/tabBar/find_download.png')}
+            style={{ width: scaleSize(50), height: scaleSize(50), tintColor: color.fontColorGray }}
+            source={getThemeAssets().cowork.icon_nav_import}
           />
+          {/* <Text
+            style={{
+              fontSize: size.fontSize.fontSizeXs,
+              textAlign: 'center',
+              width: '100%',
+              color: color.fontColorGray,
+            }}
+            numberOfLines={1}
+          >
+            {this.state.progress}
+          </Text> */}
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 12,
-            textAlign: 'center',
-            width: 125,
-            color: color.fontColorGray,
-          }}
-          numberOfLines={1}
-        >
-          {this.state.progress}
-        </Text>
       </View>
     )
   }
-  
+
+  _renderContentView = () => {
+    return (
+      <View style={styles.contentSubView}>
+        <Text
+          style={[styles.restTitleTextStyle, { color: color.fontColorBlack }]}
+          numberOfLines={2}
+        >
+          {this.props.data.resourceName.replace('.zip', '')}
+        </Text>
+        <View style={[styles.viewStyle2, {marginTop: scaleSize(20)}]}>
+          <Image
+            style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}
+            resizeMode={'contain'}
+            source={require('../../../../../assets/tabBar/tab_user.png')}
+          />
+          <Text
+            style={[styles.textStyle2, { color: color.fontColorGray }]}
+            numberOfLines={1}
+          >
+            {this.props.data.nickname}
+          </Text>
+        </View>
+        <View style={[styles.viewStyle2, {marginTop: scaleSize(15)}]}>
+          <Image
+            style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}
+            resizeMode={'contain'}
+            source={require('../../../../../assets/tabBar/find_time.png')}
+          />
+          <Text
+            style={[styles.textStyle2, { color: color.fontColorGray }]}
+            numberOfLines={1}
+          >
+            {new Date(this.props.data.updateTime).Format("yyyy-MM-dd hh:mm:ss")}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
   render() {
-    let fontColor = color.fontColorGray
-    let titleFontColor = color.fontColorBlack
     return (
       <View>
-        <View style={styles.itemViewStyle}>
+        <View style={styles.rowContainer}>
           {
             this.props.openCheckBox &&
             <CheckBox
               style={{
-                marginLeft: scaleSize(32),
+                // marginLeft: scaleSize(32),
+                marginRight: scaleSize(32),
                 height: scaleSize(30),
                 width: scaleSize(30),
               }}
@@ -392,56 +432,15 @@ export default class SourceItem extends Component<Props, State> {
           >
             <Image
               resizeMode={'stretch'}
-              style={styles.imageStyle}
-              source={{ uri: this.props.data.thumbnail }}
+              style={styles.itemImage}
+              // source={{ uri: this.props.data.thumbnail }}
+              source={getThemeAssets().cowork.icon_img_zip}
             />
-
-            <View style={{ flex: 1 }}>
-              <Text
-                style={[styles.restTitleTextStyle, { color: titleFontColor }]}
-                numberOfLines={2}
-              >
-                {this.props.data.resourceName}
-              </Text>
-              <View style={styles.viewStyle2}>
-                <Image
-                  style={[styles.imageStyle2, { tintColor: fontColor }]}
-                  resizeMode={'contain'}
-                  source={require('../../../../../assets/tabBar/tab_user.png')}
-                />
-                <Text
-                  style={[styles.textStyle2, { color: fontColor }]}
-                  numberOfLines={1}
-                >
-                  {this.props.data.nickname}
-                </Text>
-              </View>
-              <View style={[styles.viewStyle2, { marginTop: 5 }]}>
-                <Image
-                  style={[styles.imageStyle2, { tintColor: fontColor }]}
-                  resizeMode={'contain'}
-                  source={require('../../../../../assets/tabBar/find_time.png')}
-                />
-                <Text
-                  style={[styles.textStyle2, { color: fontColor }]}
-                  numberOfLines={1}
-                >
-                  {new Date(this.props.data.updateTime).Format("yyyy-MM-dd hh:mm:ss")}
-                </Text>
-              </View>
-            </View>
-
+            {this._renderContentView()}
           </TouchableOpacity>
           {this._renderDownload()}
         </View>
-        <View
-          style={[
-            styles.separateViewStyle,
-            {
-              backgroundColor: color.separateColorGray,
-            },
-          ]}
-        />
+        <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
       </View>
     )
   }

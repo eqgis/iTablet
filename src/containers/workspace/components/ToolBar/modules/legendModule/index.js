@@ -10,7 +10,7 @@ import { getLanguage } from '../../../../../../language'
 async function action(type) {
   const _params = ToolbarModule.getParams()
   const { mapLegend } = _params
-  if (mapLegend[GLOBAL.Type].isShow) {
+  if (mapLegend[GLOBAL.Type]) {
     mapLegend[GLOBAL.Type] = {
       isShow: true,
       backgroundColor: mapLegend[GLOBAL.Type].backgroundColor,

@@ -4,7 +4,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { addCoworkMsg } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { UserInfo } from '../../../../redux/models/user'
-import { ListSeparator, ImageButton } from '../../../../components'
+import { ListSeparator, ImageButton, PopMenu } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { SCoordination, SMap } from 'imobile_for_reactnative'
@@ -12,6 +12,7 @@ import { UserType } from '../../../../constants'
 import { size, color } from '../../../../styles'
 import { TaskMessageItem } from './components'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
+import NavigationService from '../../../NavigationService'
 
 import { connect } from 'react-redux'
 
@@ -63,6 +64,7 @@ interface Props {
   tabLabel: string,
   navigation: any,
   user: any,
+  device: any,
   // invites: Array<any>,
   tasks: {[name: string]: Array<any>},
   groupInfo: any,
@@ -75,13 +77,36 @@ interface Props {
 
 class TaskManage extends React.Component<Props, State> {
   servicesUtils: any
+  list: FlatList<any> | null | undefined
+  taskItemPop: PopMenu | null | undefined
+  popData: Array<any>
+
   static defaultProps = {
     tasks: [],
   }
-  list: FlatList<any> | null | undefined
 
   constructor(props: Props) {
     super(props)
+
+    this.popData = [
+      {
+        title: getLanguage(GLOBAL.language).Friends.INVITE_CORWORK_MEMBERS,
+        action: () => {
+          NavigationService.navigate('GroupSettingPage', {
+            // callBack: this.callBack,
+          })
+        },
+      },
+      {
+        title: getLanguage(GLOBAL.language).Friends.DELETE_CORWORK_MEMBERS,
+        action: () => {
+          NavigationService.navigate('GroupSettingPage', {
+            // callBack: this.callBack,
+          })
+        },
+      },
+    ]
+
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
@@ -146,6 +171,13 @@ class TaskManage extends React.Component<Props, State> {
     }
   }
 
+  _showMore = ({event, data} : {event: any, data: any}) => {
+    this.taskItemPop && this.taskItemPop.setVisible(true, {
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY,
+    })
+  }
+
   createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any) => void }, index: number, map: any) => {
     try {
       GLOBAL.Loading.setLoading(
@@ -184,16 +216,16 @@ class TaskManage extends React.Component<Props, State> {
         data={item}
         user={this.props.user}
         isSelf={item?.applicant !== this.props.user.currentUser.id}
-        servicesUtils={this.servicesUtils}
         onPress={(data: any) => this._onPress(data)}
         addCoworkMsg={this.props.addCoworkMsg}
         deleteCoworkMsg={this.props.deleteCoworkMsg}
+        showMore={this._showMore}
       />
     )
   }
 
   _renderItemSeparatorComponent = () => {
-    return <ListSeparator color={'transparent'} height={scaleSize(20)} />
+    return <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(50)}} />
   }
 
   /**
@@ -235,6 +267,17 @@ class TaskManage extends React.Component<Props, State> {
     )
   }
 
+  _renderPagePopup = () => {
+    return (
+      <PopMenu
+        ref={ref => (this.taskItemPop = ref)}
+        data={this.popData}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
+  }
+
   render() {
     let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userId]
       && this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
@@ -251,11 +294,12 @@ class TaskManage extends React.Component<Props, State> {
                 extraData={this.state}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => item.id.toString()}
-                ItemSeparatorComponent={this._renderItemSeparatorComponent}
+                // ItemSeparatorComponent={this._renderItemSeparatorComponent}
               />
             )
             : this._renderNull()
         }
+        {this._renderPagePopup()}
       </View>
     )
   }

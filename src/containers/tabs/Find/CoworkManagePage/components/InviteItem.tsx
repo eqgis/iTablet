@@ -94,7 +94,7 @@ interface Props {
   showMore?: (data: {data: any, index:number, event: any}) => void,
 }
 
-export default class ApplyItem extends Component<Props, State> {
+export default class InviteItem extends Component<Props, State> {
 
   _onPress = () => {
     this.props.onPress && this.props.onPress({data: this.props.data, index: this.props.index})
@@ -106,7 +106,7 @@ export default class ApplyItem extends Component<Props, State> {
 
   _renderRight = () => {
     let status = ''
-    switch(this.props.data.checkStatus) {
+    switch(this.props.data.feedbackStatus) {
       case 'WAITING':
         status = getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE
         return (
@@ -144,10 +144,10 @@ export default class ApplyItem extends Component<Props, State> {
     return (
       <View style={[styles.itemViewStyle, this.props.style]}>
         <View style={styles.contentView}>
-          <Text style={styles.title}>{this.props.data.applicantNick}</Text>
-          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_APPLY_TO + ': ' + this.props.data.groupName}</Text>
-          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.APPLY_REASON + ': ' + this.props.data.applyReason}</Text>
-          <Text style={styles.time}>{new Date(this.props.data.applyTime).Format("yyyy-MM-dd hh:mm:ss")}</Text>
+          <Text style={styles.title}>{this.props.data.inviterNick}</Text>
+          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.INVITE_TO + ': ' + this.props.data.groupName}</Text>
+          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.INVITE_REASON + ': ' + this.props.data.inviteReason}</Text>
+          <Text style={styles.time}>{new Date(this.props.data.inviteTime).Format("yyyy-MM-dd hh:mm:ss")}</Text>
         </View>
         {this._renderRight()}
       </View>

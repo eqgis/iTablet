@@ -156,6 +156,8 @@ const Friends = {
   ADDED: 'تمت الإضافة',
 
   // 创建群组 待翻译
+  TITLE_CHOOSE_MEMBER: 'Select Members',
+  VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',
   GROUP_MESSAGE: 'Group Message',
@@ -166,6 +168,7 @@ const Friends = {
   GROUP_APPLY: '申请入群',
   GROUP_EXIST: '退出群组',
   GROUP_INVITE: '邀请入群',
+  GROUP_SETTING: 'Group Setting',
   GROUP_MEMBER_MANAGE: '成员管理',
   GROUP_MEMBER_DELETE: '删除成员',
   GROUP_RESOURCE: '资源管理',
@@ -212,7 +215,10 @@ const Friends = {
   GROUP_NAME: '群组名称',
   CHECK_RESULT: '审核结果',
   CHECK_TIME: '审核时间',
-  INVITE: '邀请',
+  APPLY_MESSAGE: 'Apply Message',
+  INVITE: 'Invite',
+  INVITE_MESSAGE: 'Invitation message',
+  INVITE_TO: 'Invite you to join',
   INVITE_REASON: '邀请原因',
   INVITE_SUCCESS: '发送邀请成功',
   INVITE_FAILED: '发送邀请失败',
@@ -230,7 +236,8 @@ const Friends = {
 
   TASK_DOWNLOAD: '下载任务',
   TASK_DOWNLOADING: '下载中',
-  TASK_TITLE: '任务名称',
+  TASK_TITLE: 'Cowork Task',
+  TASK_MAP: 'Cowork Map',
   TASK_CREATOR: '所有者',
   TASK_TYPE: '数据类型',
   TASK_UPDATE_TIME: '更新时间',
@@ -247,5 +254,8 @@ const Friends = {
   GROUP_DATA_NULL: 'No Data',
   GROUP_TASK_NULL: 'No Task',
   CREATE_FIRST_GROUP_TASK: 'Create the first task',
+
+  INVITE_CORWORK_MEMBERS: 'Invite Members',
+  DELETE_CORWORK_MEMBERS: 'Delete Members',
 }
 export { Friends }

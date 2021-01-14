@@ -13,6 +13,7 @@ const Common = {
   BACK: 'Arrière',
 
   PARAMETER: 'Paramètre',
+  CONFIRM: 'confirmer',
 }
 
 export { Protocol, Common }

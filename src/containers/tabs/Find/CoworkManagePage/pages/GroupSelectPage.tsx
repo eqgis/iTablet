@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native'
+import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet, RefreshControl } from 'react-native'
 import { Container, PopMenu, ImageButton, ListSeparator } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
@@ -8,7 +8,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
-import { setCoworkGroup } from '../../../../../redux/models/cowork'
+import { setCoworkGroup, setCurrentGroup } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 
@@ -18,7 +18,9 @@ interface Props {
   language: string,
   device: any,
   coworkGroups: any,
-  setCoworkGroup?: (data: any) => any,
+  currentGroup: any,
+  setCoworkGroup: (data: any) => any,
+  setCurrentGroup: (data: any) => any,
 }
 
 interface State {
@@ -87,9 +89,7 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   componentDidMount() {
-    (async function() {
-      await this.refresh(false)
-    }.bind(this)())
+    this.refresh(false)
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -104,8 +104,20 @@ class GroupSelectPage extends Component<Props, State> {
     return false
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (
+      // 修改群组消息后，判断更新
+      JSON.stringify(prevProps.currentGroup) !== JSON.stringify(this.props.currentGroup) ||
+      // 退出/被踢出群组，判断更新
+      JSON.stringify(prevProps.coworkGroups) !== JSON.stringify(this.props.coworkGroups)
+    ) {
+      this.refresh(false)
+    }
+  }
+
   _itemPress = (groupInfo: any) => {
-    NavigationService.navigate('CoworkManagePage', { groupInfo, callBack: this.refresh })
+    this.props.setCurrentGroup && this.props.setCurrentGroup(groupInfo)
+    NavigationService.navigate('CoworkManagePage', { callBack: this.refresh })
   }
 
   refresh = async (refresh = true) => {
@@ -324,6 +336,17 @@ class GroupSelectPage extends Component<Props, State> {
         ItemSeparatorComponent={this._renderItemSeparatorComponent}
         SectionSeparatorComponent={this._renderSectionSeparatorComponent}
         extraData={this.state.sectionMap}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefresh}
+            onRefresh={this.refresh}
+            colors={['orange', 'red']}
+            tintColor={'orange'}
+            titleColor={'orange'}
+            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            enabled={true}
+          />
+        }
       />
     )
 
@@ -384,10 +407,12 @@ const mapStateToProps = (state: any) => ({
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
   coworkGroups: state.cowork.toJS().groups[state.user.toJS().currentUser.userId],
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {
   setCoworkGroup,
+  setCurrentGroup,
 }
 
 export default connect(

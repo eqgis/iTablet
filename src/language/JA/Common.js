@@ -13,6 +13,7 @@ const Common = {
   BACK: '後',
 
   PARAMETER: 'パラメータ',
+  CONFIRM: 'OK',
 }
 
 export { Protocol, Common }

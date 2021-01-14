@@ -4,32 +4,29 @@
 
 import React, { Component } from 'react'
 import {
-  StyleSheet,
   Text,
   View,
   FlatList,
   RefreshControl,
   Image,
 } from 'react-native'
-import { connect } from 'react-redux'
-import { scaleSize } from '../../../../../utils'
-import { UserType } from '../../../../../constants'
-import { Container, ListSeparator, PopMenu } from '../../../../../components'
-import { color, size } from '../../../../../styles'
-import { getThemeAssets } from '../../../../../assets'
-import { getLanguage } from '../../../../../language'
-import { Users } from '../../../../../redux/models/user'
-import { exitGroup } from '../../../../../redux/models/cowork'
-import { SCoordination, SMessageService } from 'imobile_for_reactnative'
-import { Person, GroupApplyMessageType } from '../types'
-import { ApplyItem } from '../components'
+import { Toast } from '../../../../../../utils'
+import { ListSeparator, PopMenu } from '../../../../../../components'
+import { color } from '../../../../../../styles'
+import { getThemeAssets } from '../../../../../../assets'
+import { getLanguage } from '../../../../../../language'
+import { Users } from '../../../../../../redux/models/user'
+import { SCoordination, SMessageService, GroupApplyMessageType } from 'imobile_for_reactnative'
+import { Person } from '../../types'
+import { ApplyItem } from '../../components'
+
+import styles from './styles'
 
 interface Props {
   language: string,
-  navigation: any,
   user: Users,
   device: any,
-  exitGroup: (params: {groupID: number | string, cb?: Function}) => any,
+  servicesUtils: SCoordination | undefined,
 }
 
 type State = {
@@ -38,9 +35,7 @@ type State = {
   firstLoad: boolean,
 }
 
-class GroupMessagePage extends Component<Props, State> {
-  servicesUtils: SCoordination | undefined
-  callBack: (data?: any) => any
+export default class ApplyMessages extends Component<Props, State> {
   popData: Array<any>
   pagePopModal: PopMenu | null | undefined
   pageSize: number
@@ -48,35 +43,31 @@ class GroupMessagePage extends Component<Props, State> {
   isLoading:boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
   currentData: any
-  currentDataIndex: number | undefined
+  currentDataIndex: number
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
 
     this.state = {
       data: [],
       isRefresh: false,
       firstLoad: true,
     }
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
-      this.servicesUtils = new SCoordination('iportal')
-    }
+    this.currentData = {}
+    this.currentDataIndex = -1
     this.popData = [
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE,
         action: () => {
           this.currentData.checkStatus = 'ACCEPTED'
-          this._popPress(this.currentData)
+          this._popPress(this.currentData, this.currentDataIndex)
         },
       },
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE,
         action: () => {
           this.currentData.checkStatus = 'REFUSED'
-          this._popPress(this.currentData)
+          this._popPress(this.currentData, this.currentDataIndex)
         },
       },
     ]
@@ -91,6 +82,13 @@ class GroupMessagePage extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
   }
 
   refresh = (cb?: () => any) => {
@@ -114,8 +112,8 @@ class GroupMessagePage extends Component<Props, State> {
     })
   }
 
-  getMessages = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'APPLYTIME', orderType = 'DESC', groupApplyRole = 'CHECKUSER', cb = () => {}}: any) => {
-    this.servicesUtils?.getApply({
+  getMessages = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'applyTime', orderType = 'DESC', groupApplyRole = 'CHECKUSER', cb = () => {}}: any) => {
+    this.props.servicesUtils?.getApply({
       currentPage: currentPage,
       pageSize: pageSize,
       orderBy: orderBy,
@@ -155,12 +153,15 @@ class GroupMessagePage extends Component<Props, State> {
     })
   }
 
-  _itemPress = (item: Person) => {
-    this.callBack && this.callBack([item])
+  _itemPress = ({data, index}: {data: GroupApplyMessageType, index: number}) => {
+    this.currentDataIndex = index
+    let _data = JSON.parse(JSON.stringify(data))
+    _data.checkStatus = 'ACCEPTED'
+    this._popPress(_data, index)
   }
 
   _showMore = ({data, index, event}: {data: Person, index: number, event: any}) => {
-    this.currentData = data
+    this.currentData = JSON.parse(JSON.stringify(data))
     this.currentDataIndex = index
     this.pagePopModal?.setVisible(true, {
       x: event.nativeEvent.pageX,
@@ -168,9 +169,10 @@ class GroupMessagePage extends Component<Props, State> {
     })
   }
 
-  _popPress = (data: GroupApplyMessageType) => {
-    if (!data) return
-    this.servicesUtils?.checkGroupApply({
+  _popPress = (message: GroupApplyMessageType, index: number) => {
+    if (!message || index === -1) return
+    let data = message
+    this.props.servicesUtils?.checkGroupApply({
       groupId: data.groupId,
       userIds: [data.id],
       isAccepted: data.checkStatus === 'ACCEPTED',
@@ -181,22 +183,24 @@ class GroupMessagePage extends Component<Props, State> {
           data.applicant,
         )
         let _data = this.state.data.deepClone()
-        _data[this.currentDataIndex] = data
+        _data[index] = message
         this.setState({
           data: _data,
         })
+      } else if (result.error?.errorMsg) {
+        Toast.show(result.error?.errorMsg)
       }
     })
   }
 
-  _renderItem = ({item, index}: {item: Person, index: number}) => {
+  _renderItem = ({item, index}: {item: GroupApplyMessageType, index: number}): React.ReactElement => {
     return (
       <ApplyItem
         style={styles.item}
         user={this.props.user}
         data={item}
         index={index}
-        onPress={(data: any) => this._itemPress(data)}
+        onPress={data => this._itemPress(data)}
         showMore={data => this._showMore(data)}
       />
     )
@@ -258,122 +262,11 @@ class GroupMessagePage extends Component<Props, State> {
 
   render() {
     return (
-      <Container
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE,
-          navigation: this.props.navigation,
-          // headerRight: this._renderHeaderRight(),
-          headerTitleViewStyle: {
-            justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
-          },
-        }}
-      >
+      <View style={styles.subContainer}>
         {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderList()}
         {this._renderPagePopup()}
-      </Container>
+      </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  headerBtnTitle: {
-    fontSize: scaleSize(24),
-    color: color.fontColorBlack,
-  },
-  HeadViewStyle: {
-    height: scaleSize(72),
-    backgroundColor: color.itemColorGray2,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  HeadTextStyle: {
-    fontSize: size.fontSize.fontSizeLg,
-    color: color.contentColorBlack,
-    marginLeft: scaleSize(80),
-  },
-  ItemViewStyle: {
-    paddingLeft: scaleSize(20),
-    paddingRight: scaleSize(30),
-    height: scaleSize(90),
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-
-  item: {
-    marginLeft: scaleSize(46),
-    marginRight: scaleSize(42),
-  },
-  itemImg: {
-    marginLeft: scaleSize(32),
-    height: scaleSize(60),
-    width: scaleSize(60),
-    borderRadius: scaleSize(30),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  ITemTextViewStyle: {
-    paddingHorizontal: scaleSize(32),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  ITemTextStyle: {
-    fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorBlack,
-  },
-  FlatListViewStyle: {
-    position: 'absolute',
-    width: scaleSize(26),
-    right: scaleSize(15),
-    top: scaleSize(35),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  FlatListItemViewStyle: {
-    marginVertical: 2,
-    height: scaleSize(30),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  separator: {
-    marginLeft: scaleSize(46),
-    marginRight: scaleSize(200),
-  },
-
-  nullView: {
-    flex: 2,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nullImage: {
-    height: scaleSize(270),
-    width: scaleSize(270),
-  },
-  nullTitle: {
-    marginTop: scaleSize(40),
-    fontSize: size.fontSize.fontSizeLg,
-    color: color.fontColorGray3,
-  },
-})
-
-const mapStateToProps = (state: any) => ({
-  user: state.user.toJS(),
-  device: state.device.toJS().device,
-  language: state.setting.toJS().language,
-})
-
-const mapDispatchToProps = {
-  exitGroup,
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupMessagePage)
 

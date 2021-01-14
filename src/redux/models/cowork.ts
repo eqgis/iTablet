@@ -12,6 +12,8 @@ export const COWORK_GROUP_MSG_DELETE = 'COWORK_GROUP_MSG_DELETE'
 export const COWORK_GROUP_APPLY = 'COWORK_GROUP_APPLY'
 export const COWORK_GROUP_SET = 'COWORK_GROUP_SET'
 export const COWORK_GROUP_EXIT = 'COWORK_GROUP_EXIT'
+/** 设置当前协作群组 */
+export const COWORK_GROUP_SET_CURRENT = 'COWORK_GROUP_SET_CURRENT'
 
 // export interface Task {
 // }
@@ -45,15 +47,15 @@ export const deleteInvite = (params = {}, cb = () => {}) => async (dispatch: (ar
 
 /**
  * 添加群组/任务消息
- * @param params 
- * @param cb 
+ * @param params
+ * @param cb
  */
 export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   if (params.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE) {
     // 接收到被踢出群组的消息，删除本地的群组
     let _params = {
-      groupID: params.group.groupID
+      groupID: params.group.groupID,
     }
     await dispatch({
       type: COWORK_GROUP_EXIT,
@@ -110,11 +112,25 @@ export const exitGroup = (params: {groupID: number | string}, cb = () => {}) => 
   cb && cb()
 }
 
+/**
+ * 设置当前进入的协作群组
+ * @param params
+ * @param cb
+ */
+export const setCurrentGroup = (params: any, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  await dispatch({
+    type: COWORK_GROUP_SET_CURRENT,
+    payload: params,
+  })
+  cb && cb()
+}
+
 const initialState = fromJS({
   invites: [],
   messages: {},
   tasks: {},
   groups: {},
+  currentGroup: {}, // 当前群组信息
 })
 
 export default handleActions(
@@ -216,6 +232,10 @@ export default handleActions(
       groups[userId] = payload
       return state.setIn(['groups'], fromJS(groups))
     },
+    [`${COWORK_GROUP_SET_CURRENT}`]: (state: any, { payload }: any) => {
+      // TODO 检测payload有效性
+      return state.setIn(['currentGroup'], fromJS(payload))
+    },
     [`${COWORK_GROUP_EXIT}`]: (state: any, { payload, userId }: any) => {
       let groups = state.toJS().groups
       let tasks = state.toJS().tasks
@@ -233,6 +253,7 @@ export default handleActions(
     },
     [REHYDRATE]: (state: any, { payload }: any) => {
       const _data = ModelUtils.checkModel(state, payload && payload.cowork)
+      _data.currentGroup = {} // 重置当前群组
       return _data
     },
   },

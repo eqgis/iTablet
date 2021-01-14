@@ -320,9 +320,11 @@ export default class MT_layerManager extends React.Component {
   }
 
   onPressRow = async ({ data, parentData, section }) => {
+    // 防止点击图层图标把底图设置为当前图层
+    const isBaseMap = (data.type === DatasetType.IMAGE || data.type === DatasetType.MBImage)
     // this.props.setMapLegend(false)
     if (GLOBAL.Type === ChunkType.MAP_EDIT) return
-    this.props.setCurrentLayer &&
+    !isBaseMap && this.props.setCurrentLayer &&
       this.props.setCurrentLayer(data, () => {
         // 切换地图，清除历史记录
         if (

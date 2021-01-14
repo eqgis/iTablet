@@ -206,6 +206,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'Auto',
   SETTING_LOCATION_DEVICE: 'Dispositif de localisation',
   SETTING_LOCATION_LOCAL: 'Cet appareil',
+  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
 
   // 许可
   LICENSE: 'License',

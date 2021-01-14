@@ -206,6 +206,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'システムと同様',
   SETTING_LOCATION_DEVICE: 'デバイスにポジショニング',
   SETTING_LOCATION_LOCAL: '当デバイス',
+  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
 
   // ライセンス
   LICENSE: 'ライセンス',

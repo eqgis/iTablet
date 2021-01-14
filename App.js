@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   StatusBar,
   TextInput,
+  PermissionsAndroid,
 } from 'react-native'
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -390,7 +391,47 @@ class AppRoot extends Component {
     }
   }
 
+  /** 先申请权限再初始化 */
   componentDidMount () {
+    if(Platform.OS === 'android') {
+      this.requestPermission()
+    } else {
+      this.init()
+    }
+  }
+
+  requestPermission = async () => {
+    const results = await PermissionsAndroid.requestMultiple([
+      'android.permission.READ_PHONE_STATE',
+      'android.permission.ACCESS_FINE_LOCATION',
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      'android.permission.CAMERA',
+      'android.permission.RECORD_AUDIO',
+    ])
+    let isAllGranted = true
+    for(let key in results) {
+      isAllGranted = results[key] === 'granted' && isAllGranted
+    }
+    if(isAllGranted) {
+      this.init()
+    } else {
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
+        cancelText: getLanguage(this.props.language).Prompt.EXIT,
+        cancelAction: AppUtils.AppExit,
+        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+        confirmAction: this.requestPermission,
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    }
+  }
+
+  init = async () => {
+    if(Platform.OS === 'android') {
+      await SMap.initEnvironment()
+      SLocation.openGPS()
+    }
     this.inspectEnvironment()
     this.reCircleLogin()
     if(this.props.peripheralDevice !== 'local') {
@@ -508,7 +549,7 @@ class AppRoot extends Component {
   }
 
   handleStateChange = appState => {
-    if (appState === 'active') {  
+    if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.reCircleLogin()
       }
@@ -1025,44 +1066,47 @@ class AppRoot extends Component {
   }
 
   render () {
-    if (!this.state.isInit) {
-      return <Loading info="Loading"/>
-    }
     return (
-      <View style={{flex: 1}}>
-        <View style={[
-          {flex: 1},
-          screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+      <>
+        {!this.state.isInit ? (
+          <Loading info="Loading"/>
+        ) : (
+          <View style={{flex: 1}}>
+            <View style={[
+              {flex: 1},
+              screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
           {
             backgroundColor: '#201F20',
           },
-          {
-            paddingTop:
+              {
+                paddingTop:
               screen.isIphoneX() &&
               this.props.device.orientation.indexOf('PORTRAIT') >= 0
                 ? screen.X_TOP
                 : 0,
-            paddingBottom: screen.getIphonePaddingBottom(),
-            ...screen.getIphonePaddingHorizontal(
-              this.props.device.orientation,
-            ),
-          },
-        ]}>
-          <RootNavigator
-            appConfig={this.props.appConfig}
-            setModules={this.props.setModules}
-            setNav={this.props.setNav}
-          />
-        </View>
-        {this.renderDialog()}
+                paddingBottom: screen.getIphonePaddingBottom(),
+                ...screen.getIphonePaddingHorizontal(
+                  this.props.device.orientation,
+                ),
+              },
+            ]}>
+              <RootNavigator
+                appConfig={this.props.appConfig}
+                setModules={this.props.setModules}
+                setNav={this.props.setNav}
+              />
+            </View>
+            {this.renderDialog()}
+            {this.renderImportDialog()}
+            {this.renderARDeviceListDialog()}
+            {this.renderNoNativeOfficialLicenseDialog()}
+            {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
+            <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false}/>
+            <MyToast ref={ref => GLOBAL.Toast = ref} />
+          </View>
+        )}
         {this.renderSimpleDialog()}
-        {this.renderImportDialog()}
-        {this.renderARDeviceListDialog()}
-        {this.renderNoNativeOfficialLicenseDialog()}
-        {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
-        <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false}/>
-        <MyToast ref={ref => GLOBAL.Toast = ref} />
-      </View>
+      </>
     )
   }
 }

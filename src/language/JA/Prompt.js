@@ -41,6 +41,10 @@ const Prompt = {
   DELETE_OBJECT: '当オブジェクトを削除しますか?',
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
 
+  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
+  EXIT: 'Exit', //待翻译
+  REQUEST_PERMISSION: 'Request', //待翻译
+
   CONFIRM: 'OK',
   COMPLETE: '完了',
 

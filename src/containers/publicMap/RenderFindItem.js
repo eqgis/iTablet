@@ -199,6 +199,13 @@ export default class RenderFindItem extends Component {
     let exists = await RNFS.exists(fileDir)
     if (!exists) {
       await RNFS.mkdir(fileDir)
+    } else {
+      for (let i = 1; ; i++) {
+        if(!await RNFS.exists(fileDir + '_' + i)){
+          fileDir = fileDir + '_' + i
+          break
+        }
+      }
     }
     let result = await FileTools.unZipFile(this.path, fileDir)
     return result

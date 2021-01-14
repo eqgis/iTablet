@@ -44,6 +44,10 @@ const Prompt = {
   CONFIRM: 'Confirmer',
   COMPLETE: 'Complet',
 
+  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
+  EXIT: 'Exit', //待翻译
+  REQUEST_PERMISSION: 'Request', //待翻译
+
   OPENING: 'Ouverture',
 
   QUIT: 'Quitter SuperMap iTablet',

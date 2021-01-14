@@ -206,6 +206,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: 'Otomatik',
   SETTING_LOCATION_DEVICE: 'Konumlandır',
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
+  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
 
   // 许可
   LICENSE: 'Lisans',

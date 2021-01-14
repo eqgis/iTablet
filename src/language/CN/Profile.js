@@ -206,6 +206,7 @@ const Profile = {
   SETTING_LANGUAGE_AUTO: '跟随系统',
   SETTING_LOCATION_DEVICE: '定位设备',
   SETTING_LOCATION_LOCAL: '此设备',
+  SETTING_CLEAR_CACHE: '清除缓存',
 
   // 许可
   LICENSE: '许可',

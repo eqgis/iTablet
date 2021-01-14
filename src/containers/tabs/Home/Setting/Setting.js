@@ -10,11 +10,14 @@ import {
 } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import Container from '../../../../components/Container'
+import { CustomAlertDialog } from '../../../../components'
 import { color } from '../../../../styles'
 import RenderSettingItem from './RenderSettingItem'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
 import { SMap } from 'imobile_for_reactnative'
+import RNFS from 'react-native-fs'
+import { FileTools } from '../../../../native'
 
 export default class Setting extends Component {
   props: {
@@ -88,6 +91,31 @@ export default class Setting extends Component {
   suggestionFeedback = () => {
     NavigationService.navigate('SuggestionFeedback')
   }
+  //清除缓存
+  clearCache = () => {
+    this.AlertDialog.setDialogVisible(true, {
+      // title: getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
+      confirmAction: async () => {
+        let appHome = await FileTools.appendingHomeDirectory()
+        let path = appHome+'/iTablet/User/'+GLOBAL.currentUser.userName+'/Data/Temp'
+        if (await RNFS.exists(path)) {
+          await FileTools.deleteFile(path,'zip')
+          Toast.show(
+            GLOBAL.language === 'CN'
+              ? '清除成功'
+              : 'Clear Success',
+          )
+        }else{
+          await RNFS.mkdir(path)
+        }
+      },
+      // cancelAction: () => { this.props.setAnalystSuccess(false) },
+      value: getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
+      contentHeight: scaleSize(200),
+    })
+  }
+
+
   renderItems() {
     return (
       <View style={{ flex: 1, backgroundColor: color.content_white }}>
@@ -110,6 +138,11 @@ export default class Setting extends Component {
           this.suggestionFeedback,
           getLanguage(GLOBAL.language).Profile.SETTING_SUGGESTION_FEEDBACK,
         )}
+        {/** add jiakai */}
+        {this.renderItemView(
+          this.clearCache,
+          getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
+        )}
         {/** 关于放在最后 */}
         {this.props.appConfig.about &&
           this.props.appConfig.about.isShow &&
@@ -122,6 +155,17 @@ export default class Setting extends Component {
       </View>
     )
   }
+
+/**
+ * 用户自定义信息弹窗
+ * @returns {*}
+ */
+renderCustomAlertDialog = () => {
+  return (
+    <CustomAlertDialog
+      ref={ref => (this.AlertDialog = ref)}
+    />)
+}
 
   renderItemView(action, label) {
     return (
@@ -200,6 +244,7 @@ export default class Setting extends Component {
   render() {
     return (
       <Container
+        ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(GLOBAL.language).Profile.SETTINGS,
           //'设置',
@@ -220,6 +265,7 @@ export default class Setting extends Component {
         >
           {this.renderItems()}
         </ScrollView>
+        {this.renderCustomAlertDialog()}
       </Container>
     )
   }

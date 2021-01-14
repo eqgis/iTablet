@@ -318,7 +318,7 @@ export default class MeasureAreaView extends React.Component {
     if (!this.datasourceAlias && !this.datasetName) return
     let result = await SMeasureAreaView.saveDataset()
     if (result) {
-      await SMeasureAreaView.clearAll()
+      //await SMeasureAreaView.clearAll()
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
     }
   }

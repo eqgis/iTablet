@@ -160,4 +160,63 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeSm,
     color: color.fontColorGray2,
   },
+  tabText: {
+    textAlign: 'center',
+    color: color.itemColorGray,
+    fontSize: scaleSize(20),
+  },
+  datasContainer: {
+    flex: 1,
+    backgroundColor: color.white,
+  },
+  scrollContentStyleP: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: scaleSize(30),
+  },
+  scrollContentStyleL: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: scaleSize(10),
+  },
+  itemView: {
+    marginVertical: scaleSize(15),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+  },
+  itemImg: {
+    width: scaleSize(45),
+    height: scaleSize(45),
+  },
+  itemText: {
+    marginTop: scaleSize(4),
+    textAlign: 'center',
+    fontSize: scaleSize(20),
+    color: color.fontColorGray2,
+  },
+  titleText: {
+    marginTop: scaleSize(4),
+    textAlign: 'center',
+    fontSize: scaleSize(30),
+    color: color.black,
+    fontWeight: 'bold',
+  },
+  knowText: {
+    textAlign: 'center',
+    fontSize: scaleSize(25),
+    color: color.white,
+    fontWeight: 'bold',
+  },
+  knowView: {
+    backgroundColor: color.itemColorGray,
+    borderRadius: scaleSize(50),
+    width: scaleSize(220),
+    height: scaleSize(70),
+    // bottom: scaleSize(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical:scaleSize(20),
+    marginVertical:scaleSize(20),
+  },
 })

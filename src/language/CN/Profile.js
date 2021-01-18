@@ -24,6 +24,17 @@ const Profile = {
 
   SELECT_MODEL: '选择模型',
 
+  // 我的  提示语
+  MY_GUIDE:'将“数据”导入后\n方可在首页模块中打开查看',
+  MY_GUIDE_KNOW:'知道了',
+  MY_GUIDE_SLIDE:'上划查看更多',
+  MY_GUIDE_SLIDE_LAND:'左划查看更多',
+  EFFECT_GUIDE:'为场景添加AR 特效',
+  LAUNCH_GUIDE:'将视频、文字、图片、网页等信息投放到场景中',
+  MEASURE_GUIDE:'测量地物距离、高度、面积',
+  MY_GUIDE_NEXT:'下一步',
+  MY_GUIDE_SKIP:'跳过',
+
   // 我的——登录
   LOGIN: '登录',
   LOGINING: '登录中..',
@@ -152,6 +163,8 @@ const Profile = {
   SERVICE_AGREEMENT: '服务协议',
   PRIVACY_POLICY: '隐私政策',
   HELP_MANUAL: '使用帮助',
+  NOVICE_GUIDE: '新手引导',
+  START_GUIDE:'开启引导',
 
   MAP_ONLINE: '在线地图',
   MAP_2D: '二维地图',

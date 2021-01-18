@@ -24,6 +24,17 @@ const Profile = {
 
   SELECT_MODEL: 'Model Seç',
 
+   // 我的  提示语
+   MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
+   MY_GUIDE_KNOW:'Know it',//待翻译
+   MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
+   MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
+   EFFECT_GUIDE:'Add effect to scene',//待翻译
+   LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
+   MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
+   MY_GUIDE_NEXT:'Next',//待翻译
+   MY_GUIDE_SKIP:'Skip',//待翻译
+
   // 我的——登录
   LOGIN: 'Giriş',
   LOGINING: 'Logining..',//待翻译
@@ -152,6 +163,8 @@ const Profile = {
   SERVICE_AGREEMENT: 'Hizmet Anlaşması',
   PRIVACY_POLICY: 'Gizlilik Politikası',
   HELP_MANUAL: 'Yardım Kılavuzu',
+  NOVICE_GUIDE: 'Novice Guide',//待翻译
+  START_GUIDE:'Start Guide',//待翻译
 
   MAP_ONLINE: 'Çevrimiçi Harita',
   MAP_2D: '2B Harita',

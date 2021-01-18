@@ -68,6 +68,7 @@ function getData() {
       disable: disableArea,
     },
   ]
+  const disableCollect = disableArea && disablePoint && disbaleLine
   if (_params.laboratory.highPrecisionCollect) {
     data.unshift({
       // 高精度采集
@@ -77,7 +78,9 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
       action: ARMappingAction.collectSceneForm,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+      image: disableCollect ? getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light_disable :
+        getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+      disable: disableCollect,
     })
   }
 

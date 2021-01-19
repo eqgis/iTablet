@@ -1,3 +1,7 @@
+/* eslint-disable react/jsx-indent-props */
+/* eslint-disable no-inner-declarations */
+/* eslint-disable no-case-declarations */
+/* eslint-disable indent */
 import * as React from 'react'
 import { getToolbarModule } from '../../workspace/components/ToolBar/modules/ToolbarModule'
 import { SSceneAR ,EngineType} from 'imobile_for_reactnative'
@@ -15,6 +19,15 @@ import { size, color } from '../../../styles'
 
 let ToolbarModule = getToolbarModule('AR')
 
+const trackData = {
+  type: 'track',
+  image: getThemeAssets().ar.toolbar.icon_ar_pipe_scan,
+  action: async () => {
+    await SSceneAR.imageTrack()
+    GLOBAL.Loading.setLoading(true,"识别中...")
+  },
+}
+
 async function getData(type) {
   // let defaultpath =(await FileTools.appendingHomeDirectory()) + ConstPath.Common
   let data = []
@@ -29,9 +42,10 @@ async function getData(type) {
           {
             type: ToolbarBtnType.PLACEHOLDER,
           },
-          {
-            type: ToolbarBtnType.PLACEHOLDER,
-          },
+          // {
+          //   type: ToolbarBtnType.PLACEHOLDER,
+          // },
+          trackData,
           {
             type: 'add',
             image: require('../../../assets/mapTools/icon_add_white.png'),
@@ -73,6 +87,7 @@ async function getData(type) {
             })
           },
         },
+        trackData,
         {
           type: 'add',
           image: require('../../../assets/mapTools/icon_add_white.png'),

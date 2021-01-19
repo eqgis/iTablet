@@ -22,7 +22,7 @@ import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
 import { downloadFile } from 'react-native-fs'
-let JSIPortalService
+let JSIPortalService, JSOnlineservice
 
 export default class MyLocalData extends Component {
   props: {
@@ -55,6 +55,7 @@ export default class MyLocalData extends Component {
     this.deleteDataing = false
     this.itemInfo = {}
     JSIPortalService = new OnlineServicesUtils('iportal')
+    JSOnlineservice = new OnlineServicesUtils('online')
   }
   componentDidMount() {
     this.getData()
@@ -567,9 +568,9 @@ export default class MyLocalData extends Component {
       let dataId = this.itemInfo.id + ''
       let result
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        result = await SOnlineService.publishServiceWithDataId(dataId)
+        result = await JSOnlineservice.publishService(dataId, this.itemInfo.type)
       } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-        result = await JSIPortalService.publishService(dataId)
+        result = await JSIPortalService.publishService(dataId, this.itemInfo.type)
       }
       if (typeof result === 'boolean' && result) {
         let sectionData = JSON.parse(JSON.stringify(this.state.sectionData))

@@ -1,5 +1,7 @@
+import CN from '../CN'
+
 // 待翻译
-const RequestError = {
+const RequestError: typeof CN.RequestError = {
   ERROR_400: 'Bad Request',
   ERROR_401: 'Unauthorized',
   // ERROR_402: 'Payment Required',

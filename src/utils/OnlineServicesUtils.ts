@@ -33,6 +33,12 @@ interface CommonUserInfo {
   userType: string
 }
 
+/** online / iportal 上的数据类型 */
+export interface OnlineDataType {
+  UDB: 'UDB'
+  WORKSPACE: 'WORKSPACE'
+}
+
 export default class OnlineServicesUtils {
   /** iportal还是online */
   type: 'iportal' | 'online'
@@ -128,11 +134,21 @@ export default class OnlineServicesUtils {
   /**
    * 根据数据id发布服务
    * @param id 数据id
+   * @param dataType 数据的类型
    */
-  async publishService(id: string): Promise<boolean> {
-    let url =
-      this.serverUrl +
-      `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
+  async publishService(id: string, dataType: keyof OnlineDataType): Promise<boolean> {
+    let url: string
+    if(dataType === 'UDB') {
+      url =
+        this.serverUrl +
+        `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTDATA`
+    } else if(dataType === 'WORKSPACE') {
+      url =
+        this.serverUrl +
+        `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
+    } else {
+      return false
+    }
     let headers = {}
     let cookie = await this.getCookie()
     if (cookie) {
@@ -151,10 +167,10 @@ export default class OnlineServicesUtils {
    * 根据数据名发布服务
    * @param dataName 数据名
    */
-  async publishServiceByName(dataName: string): Promise<boolean> {
+  async publishServiceByName(dataName: string, dataType: keyof OnlineDataType): Promise<boolean> {
     let id = await this.getDataIdByName(dataName)
     if (id) {
-      return await this.publishService(id)
+      return await this.publishService(id, dataType)
     } else {
       return false
     }

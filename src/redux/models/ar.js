@@ -10,6 +10,8 @@ export const SET_ANALYST_PARAMS = 'SET_ANALYST_PARAMS'
 export const BACK_ACTION_REMOVE = 'BACK_ACTION_REMOVE'
 
 export const MAP_ISCLASSIFY = 'MAP_ISCLASSIFY'
+export const MAP_AR_GUIDE = 'MAP_AR_GUIDE'
+export const MAP_AR_MAPPING_GUIDE = 'MAP_AR_MAPPING_GUIDE'
 
 // Actions
 // --------------------------------------------------
@@ -42,8 +44,24 @@ export const setIsClassifyView = (params = {}) => async dispatch => {
   })
 }
 
+export const setMapArGuide = (params = {}) => async dispatch => {
+  await dispatch({
+    type: MAP_AR_GUIDE,
+    payload: params,
+  })
+}
+
+export const setMapArMappingGuide = (params = {}) => async dispatch => {
+  await dispatch({
+    type: MAP_AR_MAPPING_GUIDE,
+    payload: params,
+  })
+}
+
 const initialState = fromJS({
     isClassifyView:false,//判断是否进入了目标分类界面
+    mapArGuide:true,//AR地图新手引导显示
+    mapArMappingGuide:true,//AR测图新手引导显示
 })
 
 export default handleActions(
@@ -59,6 +77,16 @@ export default handleActions(
           data = false
         }
         return state.setIn(['isClassifyView'], fromJS(data))
+      },
+      [`${MAP_AR_GUIDE}`]: (state, { payload }) => {
+        let data = state.toJS().mapArGuide
+          data = payload
+        return state.setIn(['mapArGuide'], fromJS(data))
+      },
+      [`${MAP_AR_MAPPING_GUIDE}`]: (state, { payload }) => {
+        let data = state.toJS().mapArMappingGuide
+          data = payload
+        return state.setIn(['mapArMappingGuide'], fromJS(data))
       },
       [REHYDRATE]: (state, { payload }) => {
         if (payload && payload.ar) {

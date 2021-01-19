@@ -6,11 +6,15 @@ import styles from './styles'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
 import { scaleSize } from '../../../../utils'
+import { CustomAlertDialog } from '../../../../components'
 export default class AboutITablet extends Component {
   props: {
     language: string,
     navigation: Object,
     device: Object,
+    setGuideShow: () => {},
+    setMapArGuide: () => {},
+    setMapArMappingGuide: () => {},
   }
   constructor(props) {
     super(props)
@@ -34,6 +38,30 @@ export default class AboutITablet extends Component {
   userHelp = () => {
     NavigationService.navigate('Protocol', { type: 'userHelp' })
   }
+
+  noviceGuide = () => {
+    this.AlertDialog.setDialogVisible(true, {
+      confirmAction: async () => {
+        this.props.setGuideShow(true)
+        this.props.setMapArGuide(true)
+        this.props.setMapArMappingGuide(true)
+        NavigationService.goBack('Setting')
+      },
+      value: getLanguage(GLOBAL.language).Profile.START_GUIDE,
+      contentHeight: scaleSize(200),
+    })
+  }
+
+/**
+ * 用户自定义信息弹窗
+ * @returns {*}
+ */
+renderCustomAlertDialog = () => {
+  return (
+    <CustomAlertDialog
+      ref={ref => (this.AlertDialog = ref)}
+    />)
+}
 
   renderHeader = () => {
     let iTablet = require('../../../../assets/home/Frenchgrey/icon_about_iTablet.png')
@@ -117,6 +145,37 @@ export default class AboutITablet extends Component {
             {this.props.language === 'CN' ? '转' : '-'}
             6156
           </Text>
+        </TouchableOpacity>
+        <View
+          style={[
+            styles.separator,
+            {
+              width: 0.956 * this.props.device.width,
+              marginLeft: 0.022 * this.props.device.width,
+            },
+          ]}
+        />
+        <TouchableOpacity
+          style={[
+            styles.consult,
+            { height: 0.06 * this.props.device.height },
+          ]}
+          onPress={this.noviceGuide}
+        >
+          <Text style={[styles.consultTitle, marginLeft]}>
+            {/* {getLanguage(this.props.language).Profile.SALES_CONSULTATION} */}
+            {/* 销售咨询 */}
+            {getLanguage(this.props.language).Profile.NOVICE_GUIDE}
+            {/* {'使用帮助'} */}
+          </Text>
+          <Image
+            style={[
+              imgMarginRight,
+              { width: scaleSize(40), height: scaleSize(40) },
+            ]}
+            source={getPublicAssets().common.icon_about_itablet_more}
+            resizeMode={'contain'}
+          />
         </TouchableOpacity>
         <View
           style={[
@@ -227,6 +286,7 @@ export default class AboutITablet extends Component {
           {this.renderBottom()}
           {this.renderCopyright()}
         </View>
+        {this.renderCustomAlertDialog()}
       </Container>
     )
   }

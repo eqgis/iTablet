@@ -1,13 +1,7 @@
-interface OBJ {
-  [name: string]: string,
-}
+import CN from './CN/index'
 
-interface LANGUAGE {
-  [name: string]: OBJ,
-}
-
-function getLanguage(param: string): LANGUAGE {
-  let language = {}
+function getLanguage(param: string = GLOBAL.language): typeof CN{
+  let language: typeof CN
   switch (param) {
     case 'CN':
       language = require('./CN/index').default

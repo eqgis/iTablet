@@ -501,6 +501,7 @@ class AppRoot extends Component {
     GLOBAL.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
     GLOBAL.isAudit = await SMap.isAudit()
+    GLOBAL.GUIDE_VERSION = bundleInfo.GuideVersion
   }
 
   openWorkspace = async () => {

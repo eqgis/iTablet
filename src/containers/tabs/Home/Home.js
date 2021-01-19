@@ -8,6 +8,7 @@ import {
   InteractionManager,
   Platform,
   NetInfo,
+  ScrollView,
 } from 'react-native'
 import { Container, Dialog, PopMenu, Button } from '../../../components'
 import { ModuleList } from './components'
@@ -24,12 +25,13 @@ import ConstPath from '../../../constants/ConstPath'
 import NavigationService from '../../NavigationService'
 import UserType from '../../../constants/UserType'
 import { getLanguage } from '../../../language'
-import { getPublicAssets } from '../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../assets'
 import color from '../../../styles/color'
-import { scaleSize } from '../../../utils'
+import { scaleSize, screen } from '../../../utils'
 import { SimpleDialog } from '../Friend'
 import TabBar from '../TabBar'
 import ImageButton from '../../../components/ImageButton'
+import { readDir } from 'react-native-fs'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {
@@ -45,6 +47,9 @@ export default class Home extends Component {
     user: Object,
     appConfig: Object,
     mapModules: Object,
+    guideshow: Object,
+    mineModules: Array,
+    version: Object,
     importSceneWorkspace: () => {},
     importWorkspace: () => {},
     closeWorkspace: () => {},
@@ -54,6 +59,10 @@ export default class Home extends Component {
     setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
+    setGuideShow: () => {},
+    setVersion: () => {},
+    setMapArGuide: () => {},
+    setMapArMappingGuide: () => {},
   }
 
   constructor(props) {
@@ -62,10 +71,18 @@ export default class Home extends Component {
       isDownloaded: false,
       dialogCheck: false,
       downloadData: null,
+      mineguide: true,
+      slide: false,
     }
   }
 
   componentDidMount() {
+    if(this.props.version!==GLOBAL.GUIDE_VERSION){
+      this.props.setVersion(GLOBAL.GUIDE_VERSION)
+      this.props.setGuideShow(true)
+      this.props.setMapArGuide(true)
+      this.props.setMapArMappingGuide(true)
+    }
     InteractionManager.runAfterInteractions(() => {
       if (Platform.OS === 'android') {
         this.props.setBackAction({ action: this.showExitPop })
@@ -221,9 +238,9 @@ export default class Home extends Component {
         SOnlineService.removeCookie()
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
-            ConstPath.RelativeFilePath.Workspace[
-              GLOBAL.language === 'CN' ? 'CN' : 'EN'
-            ],
+          ConstPath.RelativeFilePath.Workspace[
+          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+          ],
         )
         this.props.deleteUser(this.props.user.currentUser)
         this.props.setUser({
@@ -279,7 +296,7 @@ export default class Home extends Component {
     //先判断是否有网
     NetInfo.isConnected.fetch().done(isConnected => {
       if (isConnected) {
-        let confirm = this.dialogConfirm ? this.dialogConfirm : () => {}
+        let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
         confirm &&
           confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
       } else {
@@ -289,7 +306,7 @@ export default class Home extends Component {
   }
 
   cancel = () => {
-    let cancel = this.dialogCancel ? this.dialogCancel : () => {}
+    let cancel = this.dialogCancel ? this.dialogCancel : () => { }
     cancel &&
       cancel(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
   }
@@ -319,7 +336,7 @@ export default class Home extends Component {
     }
   }
 
-  showExitPop = ()=> {
+  showExitPop = () => {
     this.exit.setDialogVisible(true)
   }
 
@@ -507,8 +524,418 @@ export default class Home extends Component {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
 
+  //首页新手引导 add jiakai
+  renderGuide = () => {
+    let mineStyle = {
+      width: screen.getScreenWidth(this.props.device.orientation) / 4,
+      height: scaleSize(120),
+    }
+    let mineViewStyle = {
+      width: scaleSize(120),
+      height: scaleSize(120),
+      borderRadius: scaleSize(60),
+    }
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      mineStyle = {
+        width: scaleSize(90),
+        height: screen.getScreenHeight(this.props.device.orientation) / 4,
+      }
+      mineViewStyle = {
+        width: scaleSize(120),
+        height: scaleSize(120),
+        borderRadius: scaleSize(60),
+      }
+    }
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'black',
+            opacity: 0.8,
+          }}
+        />
+        <TouchableOpacity
+           style={{
+            position: 'absolute',
+            right:scaleSize(50),
+            top:scaleSize(50)+ screen.getIphonePaddingTop(),
+            backgroundColor:'white',
+            borderRadius: scaleSize(20),
+            opacity: 0.8,
+          }} 
+          onPress={this.skip}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: scaleSize(25),
+              color: 'black',
+              fontWeight: 'bold',
+              padding: scaleSize(10),
+            }}>
+            {getLanguage(this.props.language).Profile.MY_GUIDE_SKIP}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: 'white',
+            borderRadius: scaleSize(20),
+            width: this.width,
+            height: this.height,
+            bottom: scaleSize(150),
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={styles.titleText}
+          >
+            {getLanguage(this.props.language).Profile.MY_GUIDE}
+          </Text>
+
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={
+              this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? styles.scrollContentStyleL
+                : styles.scrollContentStyleP
+            }
+          >
+            {this._renderItems()}
+          </ScrollView>
+
+          <TouchableOpacity
+            style={styles.knowView}
+            onPress={this.knowClick}
+          >
+            <Text
+              style={styles.knowText}
+            >
+              {getLanguage(this.props.language).Profile.MY_GUIDE_KNOW}
+            </Text>
+          </TouchableOpacity>
+
+        </View>
+
+        <View
+          style={[{
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            // opacity: 0.1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }, mineStyle]}
+        >
+          <View
+            style={[{
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }, mineViewStyle]}
+          >
+            <Image
+              resizeMode="contain"
+              source={
+                getThemeAssets().tabBar.tab_mine_selected
+              }
+              style={{
+                width: scaleSize(60),
+                height: scaleSize(60),
+              }}
+            />
+            <Text style={styles.tabText}>{getLanguage(GLOBAL.language).Navigator_Label.PROFILE}</Text>
+          </View>
+
+        </View>
+      </View>
+    )
+  }
+
+  _renderItems = () => {
+    let colNum =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 5 : 4
+    let items = this._getItems()
+    let renderItems = []
+    let key = 0
+    for (let i = 0; i < items.length; i++) {
+      renderItems.push(this.renderItem(items[i], colNum, key++))
+    }
+    return renderItems
+  }
+
+  renderItem = (item, colNum, key) => {
+    if (item.title === getLanguage(this.props.language).Profile.IMPORT) {
+      return (
+        <TouchableOpacity
+          key={key}
+          style={[
+            styles.itemView,
+            {
+              width: this.width / colNum,
+            },
+          ]}
+        >
+          <View
+            style={[{
+              width: scaleSize(80),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'nowrap',
+              borderRadius: scaleSize(80) / 2,
+              backgroundColor: '#ededed',
+            }]}>
+            <Image style={styles.itemImg} source={item.image} />
+            <Text style={styles.itemText}>{item.title}</Text>
+          </View>
+
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          key={key}
+          style={[
+            styles.itemView,
+            {
+              width: this.width / colNum,
+            },
+          ]}
+        >
+          <Image style={styles.itemImg} source={item.image} />
+          <Text style={styles.itemText}>{item.title}</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  _getItems = () => {
+    let data = []
+    for (let i = 0; i < this.props.mineModules.length; i++) {
+      switch (this.props.mineModules[i].key) {
+        case 'IMPORT':
+          data.push({
+            title: getLanguage(this.props.language).Profile.IMPORT,
+            image: getThemeAssets().mine.my_import,
+          })
+          break
+        case 'MY_SERVICE':
+          data.push({
+            title: getLanguage(this.props.language).Profile.MY_SERVICE,
+            image: getThemeAssets().mine.my_service,
+          })
+          break
+        case 'DATA':
+          data.push({
+            title: getLanguage(this.props.language).Profile.DATA,
+            image: getThemeAssets().mine.my_data,
+          })
+          break
+        case 'MARK':
+          data.push({
+            title: getLanguage(this.props.language).Profile.MARK,
+            image: getThemeAssets().mine.my_plot,
+          })
+          break
+        case 'MAP':
+          data.push({
+            title: getLanguage(this.props.language).Profile.MAP,
+            image: getThemeAssets().mine.my_map,
+          })
+          break
+        case 'SCENE':
+          data.push({
+            title: getLanguage(this.props.language).Profile.SCENE,
+            image: getThemeAssets().mine.my_scene,
+          })
+          break
+        case 'BASE_MAP':
+          data.push({
+            title: getLanguage(this.props.language).Profile.BASEMAP,
+            image: getThemeAssets().mine.my_basemap,
+          })
+          break
+        case 'SYMBOL':
+          data.push({
+            title: getLanguage(this.props.language).Profile.SYMBOL,
+            image: getThemeAssets().mine.my_symbol,
+          })
+          break
+        case 'TEMPLATE':
+          data.push({
+            title: getLanguage(this.props.language).Profile.TEMPLATE,
+            image: getThemeAssets().mine.icon_my_template,
+          })
+          break
+        case 'MyColor':
+          data.push({
+            title: getLanguage(this.props.language).Profile.COLOR_SCHEME,
+            image: getThemeAssets().mine.my_color,
+          })
+          break
+        case 'MyApplet':
+          data.push({
+            title: getLanguage(this.props.language).Find.APPLET,
+            image: getThemeAssets().mine.my_applets,
+          })
+          break
+        case 'AIModel':
+          data.push({
+            title: getLanguage(this.props.language).Profile.AIMODEL,
+            image: getThemeAssets().mine.my_ai,
+          })
+          break
+      }
+    }
+    return data
+  }
+
+  knowClick = () => {
+    this.setState({ mineguide: false, slide: true })
+  }
+
+  SlideClick = () => {
+    this.props.setGuideShow(false)
+    this.setState({ slide: false, mineguide: true })
+  }
+
+  skip = () => {
+    this.props.setGuideShow(false)
+    this.setState({ slide: false, mineguide: true })
+  }
+
+  //首页新手引导 add jiakai
+  renderSlide = () => {
+    let slideLand = false
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      slideLand = true
+    }
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'black',
+            opacity: 0.5,
+          }}
+          onPress={this.SlideClick}
+        />
+
+        {!slideLand && <TouchableOpacity
+          style={{
+            backgroundColor: '#a7a7a7',
+            borderRadius: scaleSize(150),
+            width: scaleSize(150),
+            height: scaleSize(300),
+            alignItems: 'center',
+            opacity: 0.8,
+            marginTop: scaleSize(500),
+          }}
+          onPress={this.SlideClick}
+        >
+          <View
+            style={{
+              backgroundColor: 'white',
+              borderRadius: scaleSize(50),
+              width: scaleSize(100),
+              height: scaleSize(100),
+              marginTop: scaleSize(20),
+            }}
+          />
+          <Image
+            style={{
+              position: 'absolute',
+              width: scaleSize(120),
+              height: scaleSize(120),
+              top: scaleSize(60),
+              left: scaleSize(70),
+            }}
+            source={getThemeAssets().mine.icon_gesture} />
+        </TouchableOpacity>}
+
+        {slideLand && <TouchableOpacity
+          style={{
+            backgroundColor: '#a7a7a7',
+            borderRadius: scaleSize(150),
+            width: scaleSize(300),
+            height: scaleSize(150),
+            justifyContent: 'center',
+            opacity: 0.8,
+          }}
+          onPress={this.SlideClick}
+        >
+          <View
+            style={{
+              backgroundColor: 'white',
+              borderRadius: scaleSize(50),
+              width: scaleSize(100),
+              height: scaleSize(100),
+              marginLeft: scaleSize(20),
+            }}
+          />
+          <Image
+            style={{
+              position: 'absolute',
+              width: scaleSize(120),
+              height: scaleSize(120),
+              top: scaleSize(50),
+              left: scaleSize(80),
+            }}
+            source={getThemeAssets().mine.icon_gesture} />
+        </TouchableOpacity>}
+
+        {!slideLand && <Text
+          style={{
+            textAlign: 'center',
+            fontSize: scaleSize(25),
+            color: color.white,
+            marginTop: scaleSize(20),
+          }}>
+          {getLanguage(this.props.language).Profile.MY_GUIDE_SLIDE}
+        </Text>}
+
+        {slideLand && <Text
+          style={{
+            textAlign: 'center',
+            fontSize: scaleSize(25),
+            color: color.white,
+            marginTop: scaleSize(20),
+          }}>
+          {getLanguage(this.props.language).Profile.MY_GUIDE_SLIDE_LAND}
+        </Text>}
+
+      </View>
+    )
+  }
+
   renderHeader = () => {
-    let avatar = UserType.isProbationUser(this.props.user.currentUser)?getPublicAssets().common.icon_avatar:getPublicAssets().common.icon_avatar_logining
+    let avatar = UserType.isProbationUser(this.props.user.currentUser) ? getPublicAssets().common.icon_avatar : getPublicAssets().common.icon_avatar_logining
     // let avatar = !UserType.isProbationUser(this.props.user.currentUser)
     //   ? {
     //     uri:
@@ -558,43 +985,54 @@ export default class Home extends Component {
   }
 
   render() {
+    this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
+    // this.width = scaleSize(600)
+    // this.height = screen.getScreenSafeHeight(this.props.device.orientation) - screen.getScreenSafeHeight(this.props.device.orientation)/2
+    this.height = scaleSize(600)
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      this.height = scaleSize(400)
+    }
     return (
-      <Container
-        ref={ref => (this.container = ref)}
-        hideInBackground={false}
-        showFullInMap={true}
-        withoutHeader
-        headerProps={{
-          backAction: this.showExitPop,
-        }}
-        style={styles.container}
-        bottomBar={this.renderTabBar()}
-      >
-        {this.renderHeader()}
-        <View
-          style={{
-            flex: 1,
-            width: '100%',
-            backgroundColor: color.white,
+      <View style={{ flex: 1 }}>
+        <Container
+          ref={ref => (this.container = ref)}
+          hideInBackground={false}
+          showFullInMap={true}
+          withoutHeader
+          headerProps={{
+            backAction: this.showExitPop,
           }}
+          style={styles.container}
+          bottomBar={this.renderTabBar()}
         >
-          <ModuleList
-            importWorkspace={this._onImportWorkspace}
-            setDownInformation={this.props.setDownInformation}
-            currentUser={this.props.currentUser}
-            device={this.props.device}
-            showDialog={this.showDialog}
-            getModuleItem={this.getModuleItem}
-            latestMap={this.props.latestMap}
-            oldMapModules={this.props.appConfig.oldMapModules}
-            mapModules={this.props.mapModules}
-          />
-          {this.renderPopMenu()}
-          {this.renderDialog()}
-          {this.renderExitDialog()}
-          {this._renderSimpleDialog()}
-        </View>
-      </Container>
+          {this.renderHeader()}
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: color.white,
+            }}
+          >
+            <ModuleList
+              importWorkspace={this._onImportWorkspace}
+              setDownInformation={this.props.setDownInformation}
+              currentUser={this.props.currentUser}
+              device={this.props.device}
+              showDialog={this.showDialog}
+              getModuleItem={this.getModuleItem}
+              latestMap={this.props.latestMap}
+              oldMapModules={this.props.appConfig.oldMapModules}
+              mapModules={this.props.mapModules}
+            />
+            {this.renderPopMenu()}
+            {this.renderDialog()}
+            {this.renderExitDialog()}
+            {this._renderSimpleDialog()}
+          </View>
+        </Container>
+        {this.props.guideshow && this.state.mineguide && this.renderGuide()}
+        {this.props.guideshow && this.state.slide && this.renderSlide()}
+      </View>
     )
   }
 }

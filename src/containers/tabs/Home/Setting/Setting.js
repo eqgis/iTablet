@@ -100,6 +100,7 @@ export default class Setting extends Component {
         let path = appHome+'/iTablet/User/'+GLOBAL.currentUser.userName+'/Data/Temp'
         if (await RNFS.exists(path)) {
           await FileTools.deleteFile(path,'zip')
+          await FileTools.deleteFile(path,'bru')
           Toast.show(
             GLOBAL.language === 'CN'
               ? '清除成功'

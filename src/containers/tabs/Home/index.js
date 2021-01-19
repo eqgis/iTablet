@@ -16,6 +16,14 @@ import {
 } from '../../../redux/models/backActions'
 import AboutITablet from './AboutITablet'
 import Setting from './Setting'
+import {
+  setGuideShow,
+  setVersion,
+} from '../../../redux/models/home'
+import {
+  setMapArGuide,
+  setMapArMappingGuide,
+} from '../../../redux/models/ar'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -25,6 +33,9 @@ const mapStateToProps = state => ({
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
   user: state.user.toJS(),
+  guideshow: state.home.toJS().guideshow,
+  mineModules: state.appConfig.toJS().mineModules,
+  version: state.home.toJS().version,
 })
 const mapDispatchToProps = {
   setLanguage,
@@ -38,6 +49,10 @@ const mapDispatchToProps = {
   setDownInformation,
   setBackAction,
   removeBackAction,
+  setGuideShow,
+  setVersion,
+  setMapArGuide,
+  setMapArMappingGuide,
 }
 export default connect(
   mapStateToProps,

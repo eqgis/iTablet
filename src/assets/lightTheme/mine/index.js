@@ -34,6 +34,8 @@ const my_local_data = require('./mine_my_local_data_light.png')
 const bg_my = require('./bg_my.png')
 const bg_my_transverse = require('./bg_my_transverse.png')
 
+const icon_gesture = require('./icon_gesture.png')
+
 export default {
   mine_my_plot_new,
   my_import,
@@ -69,4 +71,6 @@ export default {
 
   bg_my,
   bg_my_transverse,
+
+  icon_gesture,
 }

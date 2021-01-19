@@ -353,9 +353,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.transOverlay,
+    // backgroundColor: '#rgba(0, 0, 0, 0.5)',
   },
   dialogView: {
-    height: '100%',
+    height: "100%",
     width: VIEW_WIDTH,
     flexDirection: 'column',
     backgroundColor: color.transOverlay,
@@ -367,7 +368,9 @@ const styles = StyleSheet.create({
     minHeight: scaleSize(200),
     width: VIEW_WIDTH,
     flexDirection: 'column',
-    backgroundColor: color.transView,
+    // transView 会导致安卓(Redmi k30)在全面屏下看不到整个menu，暂时不做透明
+    // backgroundColor: color.transView,
+    backgroundColor: 'rgb(240, 240, 240)',
   },
   moveView: {
     position: 'absolute',

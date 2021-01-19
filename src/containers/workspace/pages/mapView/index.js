@@ -92,6 +92,8 @@ const mapStateToProps = state => ({
   laboratory: state.setting.toJS().laboratory,
   backActions: state.backActions.toJS(),
   isClassifyView: state.ar.toJS().isClassifyView,
+  mapArGuide: state.ar.toJS().mapArGuide,
+  mapArMappingGuide: state.ar.toJS().mapArMappingGuide,
 })
 
 const mapDispatchToProps = {

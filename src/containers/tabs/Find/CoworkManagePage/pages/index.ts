@@ -8,6 +8,7 @@ import GroupSourceUploadPage from './GroupSourceUploadPage'
 import GroupMessagePage from './GroupMessagePage'
 import SelectModulePage from './SelectModulePage'
 import GroupSettingPage from './GroupSettingPage'
+import CoworkMember from './CoworkMember'
 
 export {
   CreateGroupPage,
@@ -20,4 +21,5 @@ export {
   GroupMessagePage,
   SelectModulePage,
   GroupSettingPage,
+  CoworkMember,
 }

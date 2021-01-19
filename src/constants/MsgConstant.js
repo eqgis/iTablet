@@ -42,8 +42,10 @@ export default {
   MSG_ONLINE_GROUP_APPLY: 401,
   /** 群组任务消息 */
   MSG_ONLINE_GROUP_TASK: 402,
+  /** 删除群组任务消息 */
+  MSG_ONLINE_GROUP_TASK_DELETE: 403,
   /** 邀请加入群组消息 */
-  MSG_ONLINE_MEMBER_INVITE: 403,
+  MSG_ONLINE_MEMBER_INVITE: 404,
   /** 删除群组成员 */
-  MSG_ONLINE_MEMBER_DELETE: 404,
+  MSG_ONLINE_MEMBER_DELETE: 405,
 }

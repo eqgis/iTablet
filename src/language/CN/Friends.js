@@ -244,6 +244,7 @@ const Friends = {
   GROUP_EXIST_INFO: '是否退出群组',
   GROUP_DELETE_INFO: '是否解散群组',
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
+  GROUP_TASK_DELETE_INFO: '是否删除任务',
 
   GROUP_MESSAGE_NULL: '暂时没有群消息',
   GROUP_DATA_NULL: '没有数据',
@@ -252,5 +253,6 @@ const Friends = {
 
   INVITE_CORWORK_MEMBERS: '邀请协作者',
   DELETE_CORWORK_MEMBERS: '删除协作者',
+  DELETE_CORWORK_TASK: '删除任务',
 }
 export { Friends }

@@ -1539,7 +1539,8 @@ export default class Friend extends Component {
    */
   checkGroup = async messageObj => {
     let exist = false
-    let msgId = messageObj.user.groupID || messageObj.id
+    // let msgId = messageObj.user.groupID || messageObj.id
+    let msgId = messageObj.id
     if (msgId && msgId.indexOf('Group_Task_') >= 0) {
       let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userId]
       for (let i = 0; i < onlineGroups?.length; i++) {

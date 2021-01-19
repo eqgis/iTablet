@@ -53,6 +53,11 @@ interface SectionType {
   data: any,
 }
 
+interface Filter {
+  except?: Array<string>,  // 过滤掉的成员ID
+  include?: Array<string>, // 包含的成员ID
+}
+
 class GroupFriendListPage extends Component<Props, State> {
   title: string
   servicesUtils: SCoordination | undefined
@@ -64,6 +69,7 @@ class GroupFriendListPage extends Component<Props, State> {
   pagePopModal: PopMenu | null | undefined
   dialog: Dialog | null | undefined
   dialogAction: (() => void) | null | undefined
+  filter: Filter | undefined
 
   constructor(props: Props) {
     super(props)
@@ -71,6 +77,7 @@ class GroupFriendListPage extends Component<Props, State> {
     this.mode = this.props.navigation?.state?.params?.mode === undefined ? 'select' : this.props.navigation?.state?.params?.mode
     this.includeMe = this.props.navigation?.state?.params?.includeMe === undefined ? true : this.props.navigation?.state?.params?.includeMe
     this.title = this.props.navigation?.state?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
+    this.filter = this.props.navigation?.state?.params?.filter
 
     this.state = {
       allData: [], // 所有数组
@@ -123,11 +130,36 @@ class GroupFriendListPage extends Component<Props, State> {
           for (let i = 0; i < persons.length; i++) {
             let person = persons[i]
             if (!this.includeMe && person.userName === this.props.user.currentUser.userName) continue // 过滤当前用户
-            let name = person.nickname
-            let firstChar = getPinYinFirstCharacter(name, '-', true)
-            let ch = firstChar[0]
-            if (letterArr.indexOf(ch) === -1) {
-              letterArr.push(ch)
+            // 过滤用户
+            if (this.filter?.except && this.filter.except.length > 0) {
+              let isExist = false
+              for (let j = 0; j < this.filter.except.length; j++) {
+                if (this.filter.except[j] === person.userName) {
+                  isExist = true
+                  break
+                }
+              }
+              if (isExist) continue
+            }
+            // 返回指定用户
+            if (this.filter?.include && this.filter.include.length > 0) {
+              for (let j = 0; j < this.filter.include.length; j++) {
+                if (this.filter.include[j] === person.userName) {
+                  let name = person.nickname
+                  let firstChar = getPinYinFirstCharacter(name, '-', true)
+                  let ch = firstChar[0]
+                  if (letterArr.indexOf(ch) === -1) {
+                    letterArr.push(ch)
+                  }
+                }
+              }
+            } else {
+              let name = person.nickname
+              let firstChar = getPinYinFirstCharacter(name, '-', true)
+              let ch = firstChar[0]
+              if (letterArr.indexOf(ch) === -1) {
+                letterArr.push(ch)
+              }
             }
           }
 
@@ -137,9 +169,28 @@ class GroupFriendListPage extends Component<Props, State> {
             const module = persons.filter((it: Person) => {
               if (!this.includeMe && it.userName === this.props.user.currentUser.userName) return false
               //遍历获取每一个首字母对应联系人
-              let firstChar = getPinYinFirstCharacter(it.nickname, '-', true)
-              let ch = firstChar[0]
-              return ch === item
+              if (this.filter?.except && this.filter.except.length > 0) {
+                let isExist = false
+                for (let j = 0; j < this.filter.except.length; j++) {
+                  if (this.filter.except[j] === it.userName) {
+                    isExist = true
+                    break
+                  }
+                }
+                if (isExist) return false
+              }
+              // 返回指定用户
+              if (this.filter?.include && this.filter.include.length > 0) {
+                for (let j = 0; j < this.filter.include.length; j++) {
+                  if (this.filter.include[j] === it.userName) {
+                    return true
+                  }
+                }
+              } else {
+                let firstChar = getPinYinFirstCharacter(it.nickname, '-', true)
+                let ch = firstChar[0]
+                return ch === item
+              }
             })
 
             sections.push({ key: item, title: item, data: module })

@@ -163,8 +163,8 @@ export default class InviteMessages extends Component<Props, State> {
     this._popPress(_data, index)
   }
 
-  _showMore = ({data, index, event}: {data: Person, index: number, event: any}) => {
-    this.currentData = data
+  _showMore = ({data, index, event}: {data: any, index: number, event: any}) => {
+    this.currentData = JSON.parse(JSON.stringify(data))
     this.currentDataIndex = index
     this.pagePopModal?.setVisible(true, {
       x: event.nativeEvent.pageX,

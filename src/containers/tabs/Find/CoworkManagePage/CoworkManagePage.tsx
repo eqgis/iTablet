@@ -14,6 +14,8 @@ import ScrollableTabView, {
 import GroupMessage from './GroupMessage'
 import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
+import CoworkFileHandle from './CoworkFileHandle'
+import CoworkMessageUtil from './CoworkMessageUtil'
 
 interface Props {
   navigation: Object,
@@ -107,45 +109,50 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                   // 向用户发送信息
                   let timeStr = new Date().getTime()
                   let id = `Group_Task_${this.props.currentGroup.id}_${timeStr}`
-                  let message: any = {
-                    id: id,
-                    message: {
-                      type: MsgConstant.MSG_ONLINE_GROUP_TASK,
-                      task: data,
-                      module: Object.assign({}, moduleData.module, {index: moduleData.index}),
-                    },
-                    type: MsgConstant.MSG_ONLINE_GROUP,
-                    user: {
-                      name: this.props.user.currentUser.nickname || '',
-                      id: this.props.user.currentUser.userName || '',
-                    },
-                    group: {
-                      groupID: this.props.currentGroup.id,
-                      groupName: this.props.currentGroup.groupName,
-                      groupCreator: this.props.currentGroup.creator,
-                    },
-                    time: timeStr,
-                  }
+
                   let _members = [{
                     name: this.props.user.currentUser.nickname || '',
                     id: this.props.user.currentUser.userName || '',
                   }]
                   for (const member of members) {
-                    message = Object.assign(message, {to: {
-                      name: member.nickname,
-                      id: member.userName,
-                    }})
                     _members.push({
                       name: member.nickname,
                       id: member.userName,
                     })
+                  }
+
+                  let message = {
+                    id: id,
+                    groupID: this.props.currentGroup.id,
+                    user: {
+                      name: this.props.user.currentUser.nickname || '',
+                      id: this.props.user.currentUser.userName || '',
+                    },
+                    creator: this.props.user.currentUser.userName,
+                    members: _members,
+                    name: data.resourceName.replace('.zip', ''),
+                    module: {
+                      key: moduleData.module.key,
+                      index: moduleData.index,
+                    },
+                    resource: {
+                      resourceId: data.resourceId,
+                      resourceName: data.resourceName,
+                      nickname: data.nickname,
+                      resourceCreator: data.resourceCreator,
+                    },
+                    type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+                    time: timeStr,
+                  }
+                  for (const member of members) {
+                    if (member.id === this.props.user.currentUser.userName) continue
                     SMessageService.sendMessage(
                       JSON.stringify(message),
                       member.userName,
                     )
-                    this.props.addCoworkMsg(message)
                   }
                   await SMessageService.declareSession(_members, id)
+                  this.props.addCoworkMsg(message)
                 },
               })
             },

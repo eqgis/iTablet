@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     paddingRight: scaleSize(28),
-    paddingLeft: scaleSize(40),
+    paddingLeft: scaleSize(30),
     paddingVertical: scaleSize(24),
     height: scaleSize(160),
     // backgroundColor: 'yellow',
@@ -416,7 +416,7 @@ export default class SourceItem extends Component<Props, State> {
             this.props.openCheckBox &&
             <CheckBox
               style={{
-                // marginLeft: scaleSize(32),
+                marginLeft: scaleSize(15),
                 marginRight: scaleSize(32),
                 height: scaleSize(30),
                 width: scaleSize(30),

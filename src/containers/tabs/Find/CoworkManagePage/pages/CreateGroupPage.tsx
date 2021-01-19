@@ -205,7 +205,7 @@ class CreateGroupPage extends React.Component<Props, State> {
         value: 'MEMBER',
       },
     ]
-    let isPublic = this.initData?.isPublic !== undefined ? this.initData.isPublic : false
+    let isPublic = this.initData?.isPublic !== undefined ? this.initData.isPublic : true
     this.typeData = [
       {
         title: getLanguage(props.language).Friends.GROUP_TYPE_PRIVATE,

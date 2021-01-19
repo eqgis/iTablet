@@ -167,7 +167,6 @@ import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
 import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
-import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
 import {
   CreateGroupPage,
@@ -180,6 +179,7 @@ import {
   GroupMessagePage,
   SelectModulePage,
   GroupSettingPage,
+  CoworkMember,
 } from './tabs/Find/CoworkManagePage/pages'
 import {
   TemplateManager,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, Image, Platform } from 'react-native'
 import { ListSeparator, Progress } from '../../../../../components'
-import { ConstPath, UserType } from '../../../../../constants'
+import { ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { getThemeAssets } from '../../../../../assets'
 import { color, size } from '../../../../../styles'
@@ -21,14 +21,19 @@ interface Props {
   addCoworkMsg: (data: any) => void,
   deleteCoworkMsg: (data: any) => void,
   showMore: (item: {data: any, event: any}) => void,
+  getModule?: (key: string, index: number) => any,
 }
 
 interface State {
   progress: number,
   isDownloading: boolean,
   isSelf: boolean,
-  data: any,
+  module: any,
   exist: boolean,
+  mapData: {
+    name: string,
+    path: string,
+  } | undefined,
 }
 
 export default class TaskMessageItem extends React.Component<Props, State> {
@@ -46,9 +51,10 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     this.state = {
       isDownloading: false,
       isSelf: props.isSelf,
-      data: props.data,
+      module: this.props.getModule && this.props.getModule(this.props.data.module.key, this.props.data.module.index),
       progress: 0,
       exist: false,
+      mapData: undefined,
     }
   }
 
@@ -59,7 +65,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       this.props.user.currentUser.userName +
       '/' +
       ConstPath.RelativePath.Temp +
-      this.props.data.message.task.resourceName
+      this.props.data.resource.resourceName
 
     this.downloadingPath =
       (await FileTools.getHomeDirectory()) +
@@ -71,21 +77,40 @@ export default class TaskMessageItem extends React.Component<Props, State> {
 
     let exist = await FileTools.fileIsExist(this.downloadingPath + '_')
     if (exist) {
+      let mapStr = await FileTools.readFile(this.downloadingPath + '_')
       this.setState({
         isDownloading: false,
         exist: true,
+        mapData: JSON.parse(mapStr),
       })
     }
   }
 
-  // componentDidUpdate() {
-  //   if (this.itemProgress) {
-  //     this.itemProgress.progress = this.state.progress
-  //   }
-  // }
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
+  }
+
+  async componentDidUpdate(prevProps: Props) {
+    if (
+      this.props.getModule &&
+      (
+        this.props.data.module.key !== prevProps.data.module.key ||
+        this.props.data.module.index !== prevProps.data.module.key
+      )
+    ) {
+      let module = this.props.getModule(this.props.data.module.key, this.props.data.module.index)
+      this.setState({
+        module: module,
+      })
+    }
+  }
 
   _onPress = () => {
-    this.props.onPress(this.props.data)
+    let data = Object.assign({map: this.state.mapData}, this.props.data)
+    this.props.onPress(data)
   }
 
   _showMore = (event: any) => {
@@ -110,7 +135,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     })
     RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
-    let dataId = this.props.data.message.task.resourceId
+    let dataId = this.props.data.resource.resourceId
     let dataUrl =
       'https://www.supermapol.com/web/datas/' + dataId + '/download'
 
@@ -156,25 +181,15 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             FileTools.deleteFile(this.path)
           }
 
+          let mapData
           if (results.length > 0) {
             let mapName = results[0]
             let mapPath = `${ConstPath.UserPath + this.props.user.currentUser.userName}/${ConstPath.RelativePath.Map + mapName}.xml`
-            let mapExist = await FileTools.fileIsExistInHomeDirectory(
-              mapPath,
-            )
-            if (mapExist) {
-              let _data = Object.assign({}, this.props.data)
-              _data.message.map = {
-                name: mapName,
-                path: mapPath,
-              }
-              this.props.addCoworkMsg(_data)
+            mapData = {
+              name: mapName,
+              path: mapPath,
             }
           }
-
-          this.setState({
-            isDownloading: false,
-          })
 
           if (result.length === 0) {
             this.setState({
@@ -185,10 +200,11 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             this.setState({
               isDownloading: false,
               exist: true,
+              mapData,
             })
           }
           FileTools.deleteFile(this.downloadingPath)
-          RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
+          RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
         })
         .catch(() => {
           Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
@@ -230,13 +246,13 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     }
   }
 
-  _renderButton = ({ image, title, action }: any) => {
+  _renderButton = ({ image, title, action, style }: any) => {
     return (
       <View
-        style={{
+        style={[{
           justifyContent: 'center',
           alignItems: 'center',
-        }}
+        }, style]}
       >
         <TouchableOpacity
           style={{
@@ -299,7 +315,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.props.data.message.module.title}
+          {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.state.module.title}
         </Text>
         <Text
           numberOfLines={1}
@@ -308,7 +324,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.message.task.resourceName.replace('.zip', '')}
+          {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')}
         </Text>
         <Text
           numberOfLines={1}
@@ -324,6 +340,9 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   render() {
+    if (!this.state.module) {
+      return <View />
+    }
     return (
       <View>
         <TouchableOpacity
@@ -331,7 +350,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           onPress={this._onPress}
           style={styles.rowContainer}
         >
-          <Image style={styles.itemImage} source={this.props.data.message.module.moduleImage} />
+          <Image style={styles.itemImage} source={this.state.module.moduleImage} />
           <View
             style={{ flex: 1, flexDirection: 'column', marginLeft: scaleSize(40) }}
           >
@@ -342,13 +361,14 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             title: this.state.progress,
             action: this._downloadFile,
           })}
-          {/* {
-            this.state.exist &&
+          {
+            // this.state.exist &&
             this._renderButton({
               image: getThemeAssets().publicAssets.icon_move,
               action: this._showMore,
+              style: {marginLeft: scaleSize(24)},
             })
-          } */}
+          }
           {/* {this._renderButton({
             image: getThemeAssets().edit.icon_delete,
             action: () => this.props.deleteCoworkMsg(this.props.data),

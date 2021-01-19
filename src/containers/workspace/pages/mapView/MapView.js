@@ -2549,18 +2549,18 @@ export default class MapView extends React.Component {
         }
       }
     }
-    // if (GLOBAL.coworkMode && this.state.onlineCowork) {
-    //   buttons.push(
-    //     <MTBtn
-    //       key={'CoworkMember'}
-    //       imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-    //       image={getPublicAssets().common.icon_nav_imove}
-    //       onPress={async () => {
-    //         NavigationService.navigate('CoworkMember')
-    //       }}
-    //     />,
-    //   )
-    // }
+    if (GLOBAL.coworkMode && this.state.onlineCowork) {
+      buttons.push(
+        <MTBtn
+          key={'CoworkMember'}
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          image={getPublicAssets().common.icon_nav_imove}
+          onPress={async () => {
+            NavigationService.navigate('CoworkMember')
+          }}
+        />,
+      )
+    }
     return (
       <View
         style={{

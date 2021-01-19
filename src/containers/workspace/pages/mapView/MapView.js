@@ -1153,14 +1153,16 @@ export default class MapView extends React.Component {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
         let result = true
-        this.props.selection.forEach(async item => {
+        //使用for循环等待，在forEach里await没有用
+        for(let i = 0; i < this.props.selection.length; i++) {
+          let item = this.props.selection[i]
           if (item.ids.length > 0) {
             result =
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))
-            await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
+            result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
           }
-        })
+        }
 
         if (result) {
           Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)

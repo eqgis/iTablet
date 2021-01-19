@@ -1158,6 +1158,7 @@ export default class MapView extends React.Component {
             result =
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))
+            await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
           }
         })
 

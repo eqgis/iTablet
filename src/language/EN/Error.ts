@@ -1,4 +1,6 @@
-const RequestError = {
+import CN from '../CN'
+
+const RequestError: typeof CN.RequestError = {
   ERROR_400: 'Bad Request',
   ERROR_401: 'Unauthorized',
   // ERROR_402: 'Payment Required',

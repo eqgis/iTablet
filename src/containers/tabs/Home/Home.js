@@ -77,8 +77,8 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if(this.props.version!==(GLOBAL.APP_VERSION + '_' + GLOBAL.SYSTEM_VERSION)){
-      this.props.setVersion((GLOBAL.APP_VERSION + '_' + GLOBAL.SYSTEM_VERSION))
+    if(this.props.version!==GLOBAL.GUIDE_VERSION){
+      this.props.setVersion(GLOBAL.GUIDE_VERSION)
       this.props.setGuideShow(true)
       this.props.setMapArGuide(true)
       this.props.setMapArMappingGuide(true)

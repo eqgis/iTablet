@@ -175,7 +175,7 @@ export default class GuideViewMapArModel extends React.Component {
           style={{
             position: 'absolute',
             right: scaleSize(50),
-            bottom: scaleSize(50),
+            bottom: scaleSize(30),
             backgroundColor: 'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,
@@ -198,7 +198,7 @@ export default class GuideViewMapArModel extends React.Component {
           style={{
             position: 'absolute',
             right: scaleSize(50),
-            top: scaleSize(50),
+            top: scaleSize(30)+ screen.getIphonePaddingTop(),
             backgroundColor: 'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,

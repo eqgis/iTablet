@@ -172,7 +172,7 @@ export default StyleSheet.create({
   scrollContentStyleP: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingTop: scaleSize(30),
+    paddingTop: scaleSize(20),
   },
   scrollContentStyleL: {
     flexDirection: 'row',
@@ -196,7 +196,7 @@ export default StyleSheet.create({
     color: color.fontColorGray2,
   },
   titleText: {
-    marginTop: scaleSize(4),
+    marginTop: scaleSize(10),
     textAlign: 'center',
     fontSize: scaleSize(30),
     color: color.black,

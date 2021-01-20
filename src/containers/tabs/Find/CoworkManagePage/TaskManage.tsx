@@ -303,6 +303,9 @@ class TaskManage extends React.Component<Props, State> {
       let index = data.module.index
       let module = this._getModule(data.module.key, index)
       this.props.setCurrentTask(data)
+
+      let members = CoworkFileHandle.getTaskGroupMembers(data.groupID, data.id)
+      CoworkInfo.setMembers(members)
       this.createCowork(data.id, module, index, data.map)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)

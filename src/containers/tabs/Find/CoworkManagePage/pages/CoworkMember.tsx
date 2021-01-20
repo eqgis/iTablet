@@ -105,10 +105,12 @@ class CoworkMember extends Component<Props, State> {
   }
 
   getData = () => {
-    let groupId = this.props.currentGroup.id
-    let taskId = CoworkInfo.talkId
-    let data = CoworkFileHandle.getTaskGroupMembers(groupId, taskId)
-    this.setState({ data: data || [] })
+    // let groupId = this.props.currentGroup.id
+    // let taskId = CoworkInfo.talkId
+    // let data = CoworkFileHandle.getTaskGroupMembers(groupId, taskId)
+    // CoworkInfo.setMembers(data)
+    // this.setState({ data: data || [] })
+    this.setState({ data: CoworkInfo.members || [] })
   }
 
   invite = () => {
@@ -143,6 +145,10 @@ class CoworkMember extends Component<Props, State> {
         }
         currentTask.members = currentTask.members.concat(_members)
         for (const member of members) {
+          CoworkInfo.addMember({
+            id: member.userName,
+            name: member.nickname,
+          })
           SMessageService.sendMessage(
             JSON.stringify(currentTask),
             member.userName,
@@ -175,7 +181,7 @@ class CoworkMember extends Component<Props, State> {
 
   _renderItem = ({item}: any) => {
     // TODO Switch
-    // let allowed = item.allowed === undefined ? true : item.allowed
+    let show = item.show === undefined ? true : item.show
     return (
       <View style={styles.item}>
         <Image
@@ -186,24 +192,25 @@ class CoworkMember extends Component<Props, State> {
         <Text style={styles.itemTitle}>
           {item.name}
         </Text>
-        {/* {
-          this.props.currentGroup.creator === this.props.user.currentUser.userName &&
-          this.props.currentGroup.creator !== item.id &&
+        {
+          // this.props.currentGroup.creator === this.props.user.currentUser.userName &&
+          // this.props.currentGroup.creator !== item.id &&
           <Switch
             trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={allowed ? color.bgW : color.bgW}
-            ios_backgroundColor={allowed ? color.switch : color.bgG}
-            value={allowed}
-            onValueChange={value => {
+            thumbColor={show ? color.bgW : color.bgW}
+            ios_backgroundColor={show ? color.switch : color.bgG}
+            value={show}
+            onValueChange={async value => {
               if (value) {
-                CoworkInfo.showUserTrack(item.id)
+                await CoworkInfo.showUserTrack(item.id)
               } else {
-                CoworkInfo.hideUserTrack(item.id)
+                await CoworkInfo.hideUserTrack(item.id)
               }
-              this.getData()
+              // this.getData()
+              this.setState({ data: CoworkInfo.members || [] })
             }}
           />
-        } */}
+        }
       </View>
     )
   }
@@ -233,6 +240,7 @@ class CoworkMember extends Component<Props, State> {
           data={this.state.data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={this._renderItem}
+          extraData={this.state}
         />
         {this._renderBottom()}
       </Container>

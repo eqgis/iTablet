@@ -291,7 +291,7 @@ export default class CoworkFileHandle {
     return promise
   }
 
-  static async saveHelper(friendsStr: string, callback: (params: any) => any) {
+  static async saveHelper(friendsStr: string, callback?: (params: any) => any) {
     if (await FileTools.fileIsExist(CoworkFileHandle.coworkListFile)) {
       await RNFS.unlink(CoworkFileHandle.coworkListFile)
     }

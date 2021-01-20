@@ -35,6 +35,7 @@ import FriendList from './FriendList/FriendList'
 import UserType from '../../../constants/UserType'
 // import Chat from './Chat/Chat'
 import FriendListFileHandle from './FriendListFileHandle'
+import CoworkFileHandle from '../Find/CoworkManagePage/CoworkFileHandle'
 import InformSpot from './InformSpot'
 import AddMore from './AddMore'
 import MSGConstant from '../../../constants/MsgConstant'
@@ -389,6 +390,7 @@ export default class Friend extends Component {
     JPushService.init(this.props.user.currentUser.userId)
     if (this.props.user.currentUser.userId === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
+      CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     }
   }
 

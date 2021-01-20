@@ -7,7 +7,7 @@ import { UserInfo } from '../../../../redux/models/user'
 import { ListSeparator, ImageButton, PopMenu, Dialog } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
-import { setCurrentTask, addTaskMembers } from '../../../../redux/models/cowork'
+import { setCurrentTask } from '../../../../redux/models/cowork'
 import { SCoordination, SMap, SMessageService } from 'imobile_for_reactnative'
 import { UserType, MsgConstant } from '../../../../constants'
 import { size, color } from '../../../../styles'
@@ -77,11 +77,6 @@ interface Props {
   deleteCoworkMsg: (params: any, cb?: () => {}) => void,
   setCoworkTaskGroup: (params: any, cb?: () => {}) => void,
   setCurrentTask: (params: any, cb?: () => {}) => void,
-  addTaskMembers: (params: {
-    groupID: string,
-    id: string,
-    members: Array<{id: string, name: string}>,
-  }, cb?: () => {}) => void,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -214,17 +209,24 @@ class TaskManage extends React.Component<Props, State> {
           })
         }
         currentTask.members = currentTask.members.concat(_members)
-        for (const member of members) {
+        for (const member of currentTask.members) {
+          CoworkInfo.addMember({
+            id: member.id,
+            name: member.name,
+          })
+          if (member.id === this.props.user.currentUser.userName) continue
           SMessageService.sendMessage(
             JSON.stringify(currentTask),
-            member.userName,
+            member.id,
           )
         }
-        this.props.addTaskMembers({
-          groupID: currentTask.groupID,
-          id: currentTask.id,
-          members: _members,
-        })
+        currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
+        await this.props.addCoworkMsg(currentTask)
+        // this.props.addTaskMembers({
+        //   groupID: currentTask.groupID,
+        //   id: currentTask.id,
+        //   members: _members,
+        // })
         // 添加协作任务成员
         // await CoworkFileHandle.addTaskGroupMember(
         //   currentTask.groupID,
@@ -493,7 +495,6 @@ const mapDispatchToProps = {
   setCurrentMapModule,
   setCoworkTaskGroup,
   setCurrentTask,
-  addTaskMembers,
 }
 
 export default connect(

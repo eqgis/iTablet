@@ -165,19 +165,19 @@ export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (
  * @param params
  * @param cb
  */
-export const addTaskMembers = (params: {
-  groupID: string,
-  id: string,
-  members: Array<{id: string, name: string}>,
-}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
-  await dispatch({
-    type: COWORK_TAST_MEMBERS_ADD,
-    payload: params,
-    userId,
-  })
-  cb && cb()
-}
+// export const addTaskMembers = (params: {
+//   groupID: string,
+//   id: string,
+//   members: Array<{id: string, name: string}>,
+// }, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+//   const userId = getState().user.toJS().currentUser.userId || 'Customer'
+//   await dispatch({
+//     type: COWORK_TAST_MEMBERS_ADD,
+//     payload: params,
+//     userId,
+//   })
+//   cb && cb()
+// }
 
 /**
  * 添加/修改任务
@@ -250,6 +250,46 @@ const deleteTask = (state: any, { payload, userId }: any): Array<any> => {
   return allTask
 }
 
+/**
+ * 添加任务成员
+ * @param state
+ * @param param
+ */
+const addTaskMembers = (state: any, { payload, userId }: any): Array<any> => {
+  let allTask = state.toJS().tasks
+  let myTasks: any = allTask[userId] || {}
+  let tasks: any = myTasks[payload.groupID] || []
+  if (payload.members.length > 0) {
+    let task
+    for (let i = 0; i < tasks.length; i++) {
+      // 修改已有消息的状态
+      if (payload.id === tasks[i].id) {
+        task = tasks[i]
+        task.members = task.members.concat(payload.members)
+        var obj: {[name: string]: any} = {}
+        // 去重
+        task.members = task.members.reduce(function(item: Array<{id: string, name: string}>, next: {id: string, name: string}) {
+          obj[next.id] ? '' : obj[next.id] = true && item.push(next)
+          return item
+        }, [])
+
+        // 添加协作任务成员
+        CoworkFileHandle.addTaskGroupMember(
+          payload.groupID,
+          payload.id,
+          payload.members,
+        )
+        // 新成员加入多人对话
+        SMessageService.declareSession(payload.members, payload.id)
+        break
+      }
+    }
+  }
+  myTasks[payload.groupID] = tasks
+  allTask[userId] = myTasks
+  return allTask
+}
+
 const initialState = fromJS({
   invites: [],
   messages: {},
@@ -318,6 +358,8 @@ export default handleActions(
         return state.setIn(['tasks'], fromJS(addTask(state, { payload, userId })))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE) { // 删除任务
         return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
+      } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN) { // 任务成员加入消息
+        return state.setIn(['tasks'], fromJS(addTaskMembers(state, { payload, userId })))
       }
     },
     [`${COWORK_GROUP_MSG_DELETE}`]: (state: any, { payload, userId }: any) => {

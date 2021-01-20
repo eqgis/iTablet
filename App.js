@@ -336,7 +336,10 @@ class AppRoot extends Component {
       result = await this.loginOnline()
       if(result){
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
-        await CoworkFileHandle.initFriendList(this.props.user.currentUser)
+      }
+      if (result) {
+        // 初始化协作文件
+        CoworkFileHandle.initCoworkList(this.props.user.currentUser)
       }
       if(result){
         let JSOnlineservice = new OnlineServicesUtils('online')

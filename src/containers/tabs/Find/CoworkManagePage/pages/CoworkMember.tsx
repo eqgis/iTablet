@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, Switch, Image, StyleSheet } from 'react-native'
 import { Container, TextBtn } from '../../../../../components'
+import { MsgConstant } from '../../../../../constants'
 import { getLanguage } from '../../../../../language/index'
 import { scaleSize } from '../../../../../utils'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
-import { addTaskMembers } from '../../../../../redux/models/cowork'
+import { addCoworkMsg } from '../../../../../redux/models/cowork'
 import NavigationService from '../../../../NavigationService'
 import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
 import CoworkFileHandle from '../CoworkFileHandle'
@@ -80,11 +81,7 @@ interface Props {
   currentGroup: GroupType,
   currentTask: any,
   mapModules: any,
-  addTaskMembers: (params: {
-    groupID: string,
-    id: string,
-    members: Array<{id: string, name: string}>,
-  }, cb?: () => {}) => void,
+  addCoworkMsg: (params: any, cb?: () => {}) => void,
 }
 
 interface State {
@@ -144,21 +141,24 @@ class CoworkMember extends Component<Props, State> {
           })
         }
         currentTask.members = currentTask.members.concat(_members)
-        for (const member of members) {
+        for (const member of currentTask.members) {
           CoworkInfo.addMember({
-            id: member.userName,
-            name: member.nickname,
+            id: member.id,
+            name: member.name,
           })
+          if (member.userName === this.props.user.currentUser.userName) continue
           SMessageService.sendMessage(
             JSON.stringify(currentTask),
-            member.userName,
+            member.id,
           )
         }
-        this.props.addTaskMembers({
-          groupID: currentTask.groupID,
-          id: currentTask.id,
-          members: _members,
-        })
+        currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
+        await this.props.addCoworkMsg(currentTask)
+        // this.props.addTaskMembers({
+        //   groupID: currentTask.groupID,
+        //   id: currentTask.id,
+        //   members: _members,
+        // })
         // 添加协作任务成员
         // CoworkFileHandle.addTaskGroupMember(
         //   this.props.currentGroup.id,
@@ -257,7 +257,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = {
-  addTaskMembers,
+  addCoworkMsg,
 }
 
 export default connect(

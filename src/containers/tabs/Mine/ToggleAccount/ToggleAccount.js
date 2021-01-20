@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList ,  Platform,} from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Platform} from 'react-native'
 import { Container, PopMenu } from '../../../../components'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
@@ -10,6 +10,7 @@ import { getLanguage } from '../../../../language/index'
 import UserType from '../../../../constants/UserType'
 import { MineItem } from '../component'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
+import CoworkFileHandle from '../../Find/CoworkManagePage/CoworkFileHandle'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
@@ -55,6 +56,10 @@ export default class ToggleAccount extends Component {
         result = await SOnlineService.login(item.nickname, password)
         if (result) {
           result = await FriendListFileHandle.initFriendList(item)
+        }
+        if (result) {
+          // 初始化协作文件
+          CoworkFileHandle.initCoworkList(item)
         }
         if(result){
           let JSOnlineservice = new OnlineServicesUtils('online')

@@ -36,7 +36,7 @@ export default class CoworkFileHandle {
   static waitUploading: boolean = false
 
   /**
-   * 初始化friendlist路径
+   * 初始化coworklist路径
    * @param {*} user currentUser
    */
   static async init(user: any) {
@@ -55,7 +55,7 @@ export default class CoworkFileHandle {
     )
 
     let coworkListFile = userPath + '/cowork.list'
-    let onlineList = userPath + '/ol_fl'
+    let onlineList = userPath + '/ol_cl'
 
     CoworkFileHandle.coworkListFile = coworkListFile
     CoworkFileHandle.coworkListFile_ol = onlineList
@@ -65,7 +65,7 @@ export default class CoworkFileHandle {
    * 初始化后读取本地列表
    * @param {*} user currentUser
    */
-  static async initLocalFriendList(user) {
+  static async initLocalCoworkList(user: any) {
     await CoworkFileHandle.init(user)
     //读取本地文件并刷新
     CoworkFileHandle.getLocalCoworkList()
@@ -75,7 +75,7 @@ export default class CoworkFileHandle {
    * 初始化后读取本地列表，再读取online列表
    * @param {*} user currentUser
    */
-  static async initFriendList(user) {
+  static async initCoworkList(user: any) {
     await CoworkFileHandle.init(user)
     //读取本地文件并刷新
     await CoworkFileHandle.getLocalCoworkList()
@@ -100,7 +100,7 @@ export default class CoworkFileHandle {
       }
     }
 
-    // CoworkFileHandle.checkFriendList()
+    // CoworkFileHandle.checkCoworkList()
     CoworkFileHandle.refreshCallback && CoworkFileHandle.refreshCallback()
     CoworkFileHandle.refreshMessageCallback && CoworkFileHandle.refreshMessageCallback()
     return CoworkFileHandle.cowork
@@ -133,13 +133,13 @@ export default class CoworkFileHandle {
                     !CoworkFileHandle.cowork ||
                     onlineVersion.rev > CoworkFileHandle.cowork.rev
                   ) {
-                    //没有本地friendlist或online的版本较新，更新本地文件
+                    //没有本地coworklist或online的版本较新，更新本地文件
                     CoworkFileHandle.cowork = onlineVersion
                     await RNFS.writeFile(
                       CoworkFileHandle.coworkListFile,
                       value,
                     )
-                    // CoworkFileHandle.checkFriendList()
+                    // CoworkFileHandle.checkCoworkList()
                     CoworkFileHandle.refreshCallback && CoworkFileHandle.refreshCallback()
                     CoworkFileHandle.refreshMessageCallback && CoworkFileHandle.refreshMessageCallback()
                   } else if (
@@ -177,7 +177,7 @@ export default class CoworkFileHandle {
     return CoworkFileHandle.cowork
   }
 
-  static checkFriendList() {
+  static checkCoworkList() {
     // let fl = CoworkFileHandle.cowork
     // if (!fl) {
     //   return
@@ -291,11 +291,11 @@ export default class CoworkFileHandle {
     return promise
   }
 
-  static async saveHelper(friendsStr: string, callback?: (params: any) => any) {
+  static async saveHelper(coworksStr: string, callback?: (params: any) => any) {
     if (await FileTools.fileIsExist(CoworkFileHandle.coworkListFile)) {
       await RNFS.unlink(CoworkFileHandle.coworkListFile)
     }
-    await RNFS.writeFile(CoworkFileHandle.coworkListFile, friendsStr)
+    await RNFS.writeFile(CoworkFileHandle.coworkListFile, coworksStr)
     if (CoworkFileHandle.refreshCallback) {
       CoworkFileHandle.refreshCallback(true)
     }
@@ -437,11 +437,11 @@ export default class CoworkFileHandle {
    * @param callback 回调函数
    */
   static async delTaskGroup(groupId: string|number, taskId: string, callback?: () => void) {
-    let group = CoworkFileHandle.cowork.groups[groupId + ''].task
+    let group = CoworkFileHandle.cowork.groups[groupId + '']
     if (CoworkFileHandle.cowork && group) {
-      for (let key = 0; key < group.task.length; key++) {
-        if (group.task[key].id === taskId) {
-          group.task.splice(key, 1)
+      for (let key = 0; key < group.tasks.length; key++) {
+        if (group.tasks[key].id === taskId) {
+          group.tasks.splice(key, 1)
           break
         }
       }
@@ -449,8 +449,8 @@ export default class CoworkFileHandle {
 
     CoworkFileHandle.cowork['rev'] += 1
 
-    let friendsStr = JSON.stringify(CoworkFileHandle.cowork)
-    await CoworkFileHandle.saveHelper(friendsStr)
+    let coworksStr = JSON.stringify(CoworkFileHandle.cowork)
+    await CoworkFileHandle.saveHelper(coworksStr)
 
     callback && callback()
   }
@@ -467,8 +467,8 @@ export default class CoworkFileHandle {
 
     CoworkFileHandle.cowork['rev'] += 1
 
-    let friendsStr = JSON.stringify(CoworkFileHandle.cowork)
-    await CoworkFileHandle.saveHelper(friendsStr)
+    let coworksStr = JSON.stringify(CoworkFileHandle.cowork)
+    await CoworkFileHandle.saveHelper(coworksStr)
   }
 
   /**
@@ -488,8 +488,8 @@ export default class CoworkFileHandle {
       }
       taskGroup.members = _members
       CoworkFileHandle.cowork['rev'] += 1
-      let friendsStr = JSON.stringify(CoworkFileHandle.cowork)
-      await CoworkFileHandle.saveHelper(friendsStr)
+      let coworksStr = JSON.stringify(CoworkFileHandle.cowork)
+      await CoworkFileHandle.saveHelper(coworksStr)
     }
   }
 
@@ -511,8 +511,8 @@ export default class CoworkFileHandle {
         }
       }
       CoworkFileHandle.cowork['rev'] += 1
-      let friendsStr = JSON.stringify(CoworkFileHandle.cowork)
-      await CoworkFileHandle.saveHelper(friendsStr)
+      let coworksStr = JSON.stringify(CoworkFileHandle.cowork)
+      await CoworkFileHandle.saveHelper(coworksStr)
     }
   }
 }

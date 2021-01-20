@@ -362,7 +362,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'تصنيف الهدف',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'التجميع الكلي',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'جمع الهدف',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'جمع عالي الدقة',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'تجميع المتنزهات غير القانونية',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'منطقة AR',

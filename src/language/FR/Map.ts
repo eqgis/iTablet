@@ -362,7 +362,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'Classifier cible',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'Rassembler la collecte',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'Collecter cible',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'Collecte de haute précision',
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illégalement-Pack Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Modèle en fonte',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone RA',

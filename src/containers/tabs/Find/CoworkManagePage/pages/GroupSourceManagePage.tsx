@@ -62,6 +62,14 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(30),
   },
   nullView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: scaleSize(100),
+    bottom: 0,
+    alignItems: 'center',
+  },
+  nullSubView: {
     flex: 2,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -535,11 +543,11 @@ class GroupSourceManagePage extends Component<Props, State> {
   _renderNull = () => {
     return (
       <View style={styles.nullView}>
-        <View style={styles.nullView}>
+        <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
           <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_DATA_NULL}</Text>
         </View>
-        <View style={{ flex: 1, backgroundColor: 'black' }} />
+        <View style={{ flex: 1, backgroundColor: 'transparent' }} />
       </View>
     )
   }
@@ -568,7 +576,8 @@ class GroupSourceManagePage extends Component<Props, State> {
 
         {/* {this._renderPopMenu()} */}
         {this._renderBatchHead()}
-        {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderGroupList()}
+        {this.state.data.length === 0 && !this.state.firstLoad && this._renderNull()}
+        {this._renderGroupList()}
         {this._renderPagePopup()}
         {this._renderDeleteDialog()}
       </Container>

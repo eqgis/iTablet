@@ -50,6 +50,7 @@ export default class Home extends Component {
     guideshow: Object,
     mineModules: Array,
     version: Object,
+    isAgreeToProtocol: Object,
     importSceneWorkspace: () => {},
     importWorkspace: () => {},
     closeWorkspace: () => {},
@@ -63,6 +64,7 @@ export default class Home extends Component {
     setVersion: () => {},
     setMapArGuide: () => {},
     setMapArMappingGuide: () => {},
+    setMapAnalystGuide: () => {},
   }
 
   constructor(props) {
@@ -78,10 +80,13 @@ export default class Home extends Component {
 
   componentDidMount() {
     if(this.props.version!==GLOBAL.GUIDE_VERSION){
-      this.props.setVersion(GLOBAL.GUIDE_VERSION)
-      this.props.setGuideShow(true)
-      this.props.setMapArGuide(true)
-      this.props.setMapArMappingGuide(true)
+      if(this.props.isAgreeToProtocol){
+        this.props.setVersion(GLOBAL.GUIDE_VERSION)
+        this.props.setGuideShow(true)
+        this.props.setMapArGuide(true)
+        this.props.setMapArMappingGuide(true)
+        this.props.setMapAnalystGuide(true)
+      }
     }
     InteractionManager.runAfterInteractions(() => {
       if (Platform.OS === 'android') {
@@ -535,6 +540,10 @@ export default class Home extends Component {
       height: scaleSize(120),
       borderRadius: scaleSize(60),
     }
+    let skipStyle = {
+      right:scaleSize(40),
+      top:scaleSize(30)+ screen.getIphonePaddingTop(),
+    }
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       mineStyle = {
         width: scaleSize(90),
@@ -544,6 +553,10 @@ export default class Home extends Component {
         width: scaleSize(120),
         height: scaleSize(120),
         borderRadius: scaleSize(60),
+      }
+      skipStyle = {
+        right:scaleSize(20),
+        top:scaleSize(30),
       }
     }
     return (
@@ -565,17 +578,17 @@ export default class Home extends Component {
             height: '100%',
             backgroundColor: 'black',
             opacity: 0.8,
+            borderColor:'black',
+            borderWidth:scaleSize(2),
           }}
         />
         <TouchableOpacity
-           style={{
+           style={[{
             position: 'absolute',
-            right:scaleSize(50),
-            top:scaleSize(50)+ screen.getIphonePaddingTop(),
             backgroundColor:'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,
-          }} 
+          },skipStyle]} 
           onPress={this.skip}
         >
           <Text

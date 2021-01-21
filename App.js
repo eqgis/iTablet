@@ -42,9 +42,9 @@ import { setMapModule } from './src/redux/models/mapModules'
 import { Dialog, Loading, MyToast } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
-import { setShow }  from './src/redux/models/device'
+import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
-import { FileTools }  from './src/native'
+import { FileTools } from './src/native'
 import ConfigStore from './src/redux/store'
 import { scaleSize, Toast, screen, OnlineServicesUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
@@ -53,7 +53,7 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SMeasureAreaView,SAIDetectView} from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo, SMeasureAreaView, SAIDetectView } from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
@@ -64,12 +64,22 @@ let AppUtils = NativeModules.AppUtils
 import config from './configs/config'
 import _mapModules, { mapModules } from './configs/mapModules'
 import { BackHandlerUtil } from './src/containers/workspace/util'
+import {
+  setGuideShow,
+  setVersion,
+  setMapAnalystGuide,
+} from './src/redux/models/home'
+
+import {
+  setMapArGuide,
+  setMapArMappingGuide,
+} from './src/redux/models/ar'
 
 //字体不随系统字体变化
-Text.defaultProps = Object.assign({}, Text.defaultProps, {allowFontScaling: false})
-TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false})
+Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
+TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, { defaultProps: false })
 
-const {persistor, store} = ConfigStore()
+const { persistor, store } = ConfigStore()
 
 const styles = StyleSheet.create({
   map: {
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
     height: 1,
   },
   dialogHeaderView: {
-    paddingTop:scaleSize(30),
+    paddingTop: scaleSize(30),
     flex: 1,
     //  backgroundColor:"pink",
     flexDirection: 'column',
@@ -144,6 +154,7 @@ class AppRoot extends Component {
     isAgreeToProtocol: PropTypes.bool,
     device: PropTypes.object,
     appConfig: PropTypes.object,
+    version: PropTypes.string,
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
@@ -170,9 +181,14 @@ class AppRoot extends Component {
     setModules: PropTypes.func,
     setMapModule: PropTypes.func,
     setLicenseInfo: PropTypes.func,
+    setGuideShow: PropTypes.func,
+    setVersion: PropTypes.func,
+    setMapArGuide: PropTypes.func,
+    setMapArMappingGuide: PropTypes.func,
+    setMapAnalystGuide: PropTypes.func,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       sceneStyle: styles.invisibleMap,
@@ -185,9 +201,9 @@ class AppRoot extends Component {
     // this.login = this.login.bind(this)
     this.reCircleLogin = this.reCircleLogin.bind(this)
 
-    if(config.language && !this.props.configLangSet) {
+    if (config.language && !this.props.configLangSet) {
       this.props.setLanguage(config.language, true)
-    } else if(this.props.autoLanguage) {
+    } else if (this.props.autoLanguage) {
       this.props.setLanguage('AUTO')
     } else {
       this.props.setLanguage(this.props.language)
@@ -198,7 +214,7 @@ class AppRoot extends Component {
     this.loginTimer = undefined
   }
 
-  UNSAFE_componentWillMount(){
+  UNSAFE_componentWillMount() {
     SOnlineService.init()
     // this.initOrientation()
   }
@@ -293,22 +309,22 @@ class AppRoot extends Component {
     return this.props.device
   }
 
-  _getIs64System = async () =>{
+  _getIs64System = async () => {
     try {
       GLOBAL.SYSTEM_VERSION = "x64"
       if (Platform.OS === 'android') {
         let b64 = await AppUtils.is64Bit()
-        if(b64 === false){
+        if (b64 === false) {
           GLOBAL.SYSTEM_VERSION = "x32"
         }
       }
-    }catch (e) {
+    } catch (e) {
     }
   }
 
   setIsPad = async () => {
     let isPad
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       isPad = Platform.isPad
     } else {
       isPad = await AppUtils.isPad()
@@ -333,10 +349,10 @@ class AppRoot extends Component {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
-      if(result){
+      if (result) {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
-      if(result){
+      if (result) {
         let JSOnlineservice = new OnlineServicesUtils('online')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
@@ -355,7 +371,7 @@ class AppRoot extends Component {
       } else {
         GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       }
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       let url = this.props.user.currentUser.serverUrl
       let userName = this.props.user.currentUser.userName
       let password = this.props.user.currentUser.password
@@ -381,19 +397,19 @@ class AppRoot extends Component {
     }
   }
 
-  reCircleLogin(){
+  reCircleLogin() {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      if(this.loginTimer !== undefined){
+      if (this.loginTimer !== undefined) {
         clearInterval(this.loginTimer)
         this.loginTimer = undefined
       }
-      this.loginTimer = setInterval(this.loginOnline,60000 )
+      this.loginTimer = setInterval(this.loginOnline, 60000)
     }
   }
 
   /** 先申请权限再初始化 */
-  componentDidMount () {
-    if(Platform.OS === 'android') {
+  componentDidMount() {
+    if (Platform.OS === 'android') {
       this.requestPermission()
     } else {
       this.init()
@@ -410,10 +426,10 @@ class AppRoot extends Component {
       'android.permission.RECORD_AUDIO',
     ])
     let isAllGranted = true
-    for(let key in results) {
+    for (let key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted
     }
-    if(isAllGranted) {
+    if (isAllGranted) {
       this.init()
     } else {
       GLOBAL.SimpleDialog.set({
@@ -428,40 +444,40 @@ class AppRoot extends Component {
   }
 
   init = async () => {
-    if(Platform.OS === 'android') {
+    if (Platform.OS === 'android') {
       await SMap.initEnvironment()
       SLocation.openGPS()
     }
     this.inspectEnvironment()
     this.reCircleLogin()
-    if(this.props.peripheralDevice !== 'local') {
+    if (this.props.peripheralDevice !== 'local') {
       SLocation.changeDevice(this.props.peripheralDevice)
     }
-    if(Platform.OS === 'android') {
-    //  this.initSpeechManager()
+    if (Platform.OS === 'android') {
+      //  this.initSpeechManager()
       SSpeechRecognizer.init('5dafb910')
     } else {
       SSpeechRecognizer.init('5b63b509')
     }
     AppState.addEventListener('change', this.handleStateChange)
-    ;(async function () {
-      await this.initDirectories()
-      await this.initUser()
-      SOnlineService.init()
-      // SOnlineService.removeCookie()
-      SIPortalService.init()
-      await this.getVersion()
-      await this.getImportState()
-      await this.addImportExternalDataListener()
-      await this.addGetShareResultListener()
-      await this.openWorkspace()
-      await this.initOrientation()
+      ; (async function () {
+        await this.initDirectories()
+        await this.initUser()
+        SOnlineService.init()
+        // SOnlineService.removeCookie()
+        SIPortalService.init()
+        await this.getVersion()
+        await this.getImportState()
+        await this.addImportExternalDataListener()
+        await this.addGetShareResultListener()
+        await this.openWorkspace()
+        await this.initOrientation()
 
-      // 显示界面，之前的为预加载
-      this.setState({isInit: true}, () => {
-        this.login()
-      })
-    }).bind(this)()
+        // 显示界面，之前的为预加载
+        this.setState({ isInit: true }, () => {
+          this.login()
+        })
+      }).bind(this)()
 
     GLOBAL.clearMapData = () => {
       this.props.setEditLayer(null) // 清空地图图层中的数据
@@ -478,7 +494,7 @@ class AppRoot extends Component {
     Platform.OS === 'android' && SplashScreen.hide()
 
     Platform.OS === 'android' &&
-    BackHandler.addEventListener('hardwareBackPress', this.back)
+      BackHandler.addEventListener('hardwareBackPress', this.back)
   }
 
   componentDidUpdate(prevProps) {
@@ -520,7 +536,7 @@ class AppRoot extends Component {
     // let customerPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN']
     // path = await FileTools.appendingHomeDirectory(customerPath)
 
-    this.props.openWorkspace({server: path})
+    this.props.openWorkspace({ server: path })
   }
 
   back = () => {
@@ -555,7 +571,7 @@ class AppRoot extends Component {
         this.reCircleLogin()
       }
       Orientation.getOrientation((e, orientation) => {
-        this.props.setShow({orientation: orientation})
+        this.props.setShow({ orientation: orientation })
       })
     }
   }
@@ -563,8 +579,8 @@ class AppRoot extends Component {
   inspectEnvironment = async () => {
 
     //todo 初始化云许可，私有云许可状态
-    let serialNumber =await SMap.initSerialNumber('')
-    if(serialNumber!==''){
+    let serialNumber = await SMap.initSerialNumber('')
+    if (serialNumber !== '') {
       await SMap.reloadLocalLicense()
     }
 
@@ -597,7 +613,7 @@ class AppRoot extends Component {
   showStatusBar = async orientation => {
     let result = await AsyncStorage.getItem('StatusBarVisible')
     let visible = result === 'true'
-    if(orientation.indexOf('LANDSCAPE') === 0) {
+    if (orientation.indexOf('LANDSCAPE') === 0) {
       StatusBar.setHidden(true, 'slide')
     } else {
       StatusBar.setHidden(visible, 'slide')
@@ -616,14 +632,14 @@ class AppRoot extends Component {
     if (Platform.OS === 'ios') {
       Orientation.getSpecificOrientation((e, orientation) => {
         this.showStatusBar(orientation)
-        this.props.setShow({orientation: orientation})
+        this.props.setShow({ orientation: orientation })
       })
       Orientation.removeSpecificOrientationListener(this.orientation)
       Orientation.addSpecificOrientationListener(this.orientation)
     } else {
       Orientation.getOrientation((e, orientation) => {
         this.showStatusBar(orientation)
-        this.props.setShow({orientation: orientation})
+        this.props.setShow({ orientation: orientation })
       })
       Orientation.removeOrientationListener(this.orientation)
       Orientation.addOrientationListener(this.orientation)
@@ -692,7 +708,7 @@ class AppRoot extends Component {
 
   getImportState = async () => {
     let result = await FileTools.getImportState()
-    if (result === null)return
+    if (result === null) return
     result && this.import.setDialogVisible(true)
   }
 
@@ -751,7 +767,7 @@ class AppRoot extends Component {
           {getLanguage(this.props.language).Profile.LICENSE_CURRENT_EXPIRE}
           {/* 试用许可已过期,请更换许可后重启 */}
         </Text>
-        <View style={{marginTop: scaleSize(30),width: '100%',height: 1,backgroundColor: color.item_separate_white}}></View>
+        <View style={{ marginTop: scaleSize(30), width: '100%', height: 1, backgroundColor: color.item_separate_white }}></View>
         <TouchableOpacity style={styles.btnStyle}
           onPress={this.inputOfficialLicense}
         >
@@ -767,7 +783,7 @@ class AppRoot extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle}
-          onPress={()=>this.LicenseValidDialog.setDialogVisible(false)}
+          onPress={() => this.LicenseValidDialog.setDialogVisible(false)}
         >
           <Text style={styles.btnTextStyle}>
             {getLanguage(this.props.language).Profile.LICENSE_CLEAN_CANCLE}
@@ -777,7 +793,7 @@ class AppRoot extends Component {
     )
   }
   //退出app
-  exitApp= async () => {
+  exitApp = async () => {
     try {
       await AppUtils.AppExit()
     } catch (error) {
@@ -785,7 +801,7 @@ class AppRoot extends Component {
     }
   }
   //接入正式许可
-  inputOfficialLicense=async () =>{
+  inputOfficialLicense = async () => {
 
     // if(Platform.OS === 'ios'){
     //   GLOBAL.Loading.setLoading(
@@ -832,15 +848,15 @@ class AppRoot extends Component {
     NavigationService.navigate('LicenseTypePage')
   }
   //申请试用许可
-  applyTrialLicense =async () => {
+  applyTrialLicense = async () => {
 
     this.LicenseValidDialog.setDialogVisible(false)
     //if(Platform.OS === 'ios')
     {
       SMap.applyTrialLicense().then(async value => {
-        if(value){
+        if (value) {
           Toast.show(GLOBAL.language === 'CN' ? '试用成功' : 'Successful trial')
-        }else{
+        } else {
           // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
           Toast.show(
             GLOBAL.language === 'CN'
@@ -850,7 +866,7 @@ class AppRoot extends Component {
         }
         let status = await SMap.getEnvironmentStatus()
         this.props.setLicenseInfo(status)
-        this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
+        this.LicenseValidDialog.callback && this.LicenseValidDialog.callback()
       })
       return
     }
@@ -920,7 +936,7 @@ class AppRoot extends Component {
       opacity={1}
       opacityStyle={styles.opacityView}
       style={styles.dialogBackground}
-      confirmBtnTitle={this.props.language==='CN' ? '试用' : 'The trial'}
+      confirmBtnTitle={this.props.language === 'CN' ? '试用' : 'The trial'}
       cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
     >
       {this.renderLicenseDialogChildren()}
@@ -946,11 +962,11 @@ class AppRoot extends Component {
             let importPath = homePath + '/iTablet/Import'
             let filePath = importPath + '/import.zip'
             let isImport = false
-            if(await FileTools.fileIsExist(filePath)) {
+            if (await FileTools.fileIsExist(filePath)) {
               await FileTools.unZipFile(filePath, importPath)
               let dataList = await DataHandler.getExternalData(importPath)
               let results = []
-              for(let i = 0; i < dataList.length; i++) {
+              for (let i = 0; i < dataList.length; i++) {
                 results.push(await DataHandler.importExternalData(this.props.user.currentUser, dataList[i]))
               }
               isImport = results.some(value => value === true)
@@ -965,7 +981,7 @@ class AppRoot extends Component {
             GLOBAL.Loading.setLoading(false)
           }
         }}
-        cancelAction={ async () => {
+        cancelAction={async () => {
           let homePath = GLOBAL.homePath
           let importPath = homePath + ConstPath.Import
           await FileTools.deleteFile(importPath)
@@ -990,6 +1006,8 @@ class AppRoot extends Component {
         confirm={isAgree => {
           this.props.setAgreeToProtocol && this.props.setAgreeToProtocol(isAgree)
           this.protocolDialog.setVisible(false)
+          //开启新手引导 add jiakai
+          this.props.setGuideShow(true)
         }}
       />
     )
@@ -1025,14 +1043,16 @@ class AppRoot extends Component {
         <Text style={styles.promptTtile}>
           {getLanguage(GLOBAL.language).Profile.LICENSE_NO_NATIVE_OFFICAL}
         </Text>
-        <View style={{width: '100%',height: 1,backgroundColor: color.item_separate_white ,marginTop:scaleSize(40)}}></View>
+        <View style={{ width: '100%', height: 1, backgroundColor: color.item_separate_white, marginTop: scaleSize(40) }}></View>
         <TouchableOpacity
-          style={{height: scaleSize(60),
+          style={{
+            height: scaleSize(60),
             width: '100%',
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center'}}
-          onPress={()=>{ this.noNativeLicenseDialog.setDialogVisible(false)}}
+            alignItems: 'center'
+          }}
+          onPress={() => { this.noNativeLicenseDialog.setDialogVisible(false) }}
         >
           <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
             {getLanguage(this.props.language).Prompt.CONFIRM}
@@ -1045,67 +1065,67 @@ class AppRoot extends Component {
   }
 
   renderSimpleDialog = () => {
-    return <SimpleDialog ref={ref => GLOBAL.SimpleDialog = ref}/>
+    return <SimpleDialog ref={ref => GLOBAL.SimpleDialog = ref} />
   }
 
   renderARDeviceListDialog = () => {
-    return  (
+    return (
       <SimpleDialog
         ref={ref => GLOBAL.ARDeviceListDialog = ref}
         buttonMode={'list'}
         text={getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE}
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
-        confirmAction={()=>{
+        confirmAction={() => {
           NavigationService.navigate('Protocol', {
             type: 'ARDevice',
           })
         }}
-        confirmTitleStyle={{color: '#4680DF'}}
-        cancelTitleStyle={{color: '#4680DF'}}
+        confirmTitleStyle={{ color: '#4680DF' }}
+        cancelTitleStyle={{ color: '#4680DF' }}
       />
     )
   }
 
-  render () {
+  render() {
     return (
       <>
         {!this.state.isInit ? (
-          <Loading info="Loading"/>
+          <Loading info="Loading" />
         ) : (
-          <View style={{flex: 1}}>
-            <View style={[
-              {flex: 1},
-              screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
-          {
-            backgroundColor: '#201F20',
-          },
-              {
-                paddingTop:
-              screen.isIphoneX() &&
-              this.props.device.orientation.indexOf('PORTRAIT') >= 0
-                ? screen.X_TOP
-                : 0,
-                paddingBottom: screen.getIphonePaddingBottom(),
-                ...screen.getIphonePaddingHorizontal(
-                  this.props.device.orientation,
-                ),
-              },
-            ]}>
-              <RootNavigator
-                appConfig={this.props.appConfig}
-                setModules={this.props.setModules}
-                setNav={this.props.setNav}
-              />
+            <View style={{ flex: 1 }}>
+              <View style={[
+                { flex: 1 },
+                screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+                {
+                  backgroundColor: '#201F20',
+                },
+                {
+                  paddingTop:
+                    screen.isIphoneX() &&
+                      this.props.device.orientation.indexOf('PORTRAIT') >= 0
+                      ? screen.X_TOP
+                      : 0,
+                  paddingBottom: screen.getIphonePaddingBottom(),
+                  ...screen.getIphonePaddingHorizontal(
+                    this.props.device.orientation,
+                  ),
+                },
+              ]}>
+                <RootNavigator
+                  appConfig={this.props.appConfig}
+                  setModules={this.props.setModules}
+                  setNav={this.props.setNav}
+                />
+              </View>
+              {this.renderDialog()}
+              {this.renderImportDialog()}
+              {this.renderARDeviceListDialog()}
+              {this.renderNoNativeOfficialLicenseDialog()}
+              {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
+              <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
+              <MyToast ref={ref => GLOBAL.Toast = ref} />
             </View>
-            {this.renderDialog()}
-            {this.renderImportDialog()}
-            {this.renderARDeviceListDialog()}
-            {this.renderNoNativeOfficialLicenseDialog()}
-            {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
-            <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false}/>
-            <MyToast ref={ref => GLOBAL.Toast = ref} />
-          </View>
-        )}
+          )}
         {this.renderSimpleDialog()}
       </>
     )
@@ -1128,6 +1148,7 @@ const mapStateToProps = state => {
     backActions: state.backActions.toJS(),
     isAgreeToProtocol: state.setting.toJS().isAgreeToProtocol,
     appConfig: state.appConfig.toJS(),
+    version: state.home.toJS().version,
   }
 }
 
@@ -1154,6 +1175,11 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setModules,
   setMapModule,
   setLicenseInfo,
+  setGuideShow,
+  setVersion,
+  setMapArGuide,
+  setMapArMappingGuide,
+  setMapAnalystGuide,
 })(AppRoot)
 
 const App = () =>

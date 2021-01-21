@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
 import AboutITablet from './AboutITablet'
 import {
-  setGuideShow
+  setGuideShow,
+  setMapAnalystGuide,
 } from '../../../../redux/models/home'
 import {
   setMapArGuide,
@@ -16,6 +17,7 @@ const mapDispatchToProps = {
   setGuideShow,
   setMapArGuide,
   setMapArMappingGuide,
+  setMapAnalystGuide,
 }
 export default connect(
   mapStateToProps,

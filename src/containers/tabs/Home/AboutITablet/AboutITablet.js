@@ -15,6 +15,7 @@ export default class AboutITablet extends Component {
     setGuideShow: () => {},
     setMapArGuide: () => {},
     setMapArMappingGuide: () => {},
+    setMapAnalystGuide: () => {},
   }
   constructor(props) {
     super(props)
@@ -45,6 +46,7 @@ export default class AboutITablet extends Component {
         this.props.setGuideShow(true)
         this.props.setMapArGuide(true)
         this.props.setMapArMappingGuide(true)
+        this.props.setMapAnalystGuide(true)
         NavigationService.goBack('Setting')
       },
       value: getLanguage(GLOBAL.language).Profile.START_GUIDE,

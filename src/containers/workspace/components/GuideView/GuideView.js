@@ -18,6 +18,7 @@ export default class GuideView extends React.Component {
     title: any,//显示内容
     arrowstyle: any,//弹窗风格
     style: any,//弹窗箭头风格
+    type: any,
   }
 
 
@@ -35,16 +36,20 @@ export default class GuideView extends React.Component {
   render() {
     return (
       <View
-        style={[{
-          position: 'absolute',
-          backgroundColor: 'transparent',
-          top: scaleSize(350) + screen.getIphonePaddingTop(),
-          right: scaleSize(120),
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-        }, this.props.style]}>
+        style={[this.props.style]}>
+
+        {this.props.type &&
+          <View style={[{
+            width: 0,
+            height: 0,
+            borderTopWidth: 8,
+            borderTopColor: 'transparent',
+            borderLeftWidth: 9,
+            borderLeftColor: 'white',
+            borderBottomWidth: 8,
+            borderBottomColor: 'transparent',
+            // opacity: 0.5,
+          }, this.props.arrowstyle]} />}
 
         <View
           style={{
@@ -69,17 +74,20 @@ export default class GuideView extends React.Component {
             {this.props.title}
           </Text>
         </View>
-        <View style={[{
-          width: 0,
-          height: 0,
-          borderTopWidth: 8,
-          borderTopColor: 'transparent',
-          borderLeftWidth: 9,
-          borderLeftColor: 'white',
-          borderBottomWidth: 8,
-          borderBottomColor: 'transparent',
-          // opacity: 0.5,
-        }, this.props.arrowstyle]} />
+
+        {!this.props.type &&
+          <View style={[{
+            width: 0,
+            height: 0,
+            borderTopWidth: 8,
+            borderTopColor: 'transparent',
+            borderLeftWidth: 9,
+            borderLeftColor: 'white',
+            borderBottomWidth: 8,
+            borderBottomColor: 'transparent',
+            // opacity: 0.5,
+          }, this.props.arrowstyle]} />}
+
       </View>
     )
   }

@@ -107,6 +107,7 @@ import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
 import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
+import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
 
 GLOBAL.markerTag = 118082
 
@@ -152,6 +153,7 @@ export default class MapView extends React.Component {
     isClassifyView: PropTypes.bool,
     mapArGuide: PropTypes.bool,
     mapArMappingGuide: PropTypes.bool,
+    mapAnalystGuide: PropTypes.bool,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -3361,6 +3363,16 @@ export default class MapView extends React.Component {
     )
   }
 
+  //数据处理引导界面 add jiakai
+  renderMapAnalystGuideView = () => {
+      return(
+        <GuideViewMapAnalystModel
+          language={this.props.language}
+          device={this.props.device}
+        />
+      )
+  }
+
 
   renderContainer = () => {
     return (
@@ -3620,6 +3632,7 @@ export default class MapView extends React.Component {
           this.renderIncrementDialog()}
         {(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
         {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
+        {(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
       </View>
     )
   }

@@ -192,6 +192,7 @@ class CreateGroupPage extends React.Component<Props, State> {
     tags: '',
     description: '',
   }
+  isCreating: boolean // 防止重复创建
 
   constructor(props: Props) {
     super(props)
@@ -235,6 +236,7 @@ class CreateGroupPage extends React.Component<Props, State> {
         description: this.initData.description,
       }
     }
+    this.isCreating = false
     this.state = {
       isPublic: isPublic,
       resourceSharer: this.initData?.resourceSharer || 'MEMBER',
@@ -274,7 +276,8 @@ class CreateGroupPage extends React.Component<Props, State> {
   }
 
   create = () => {
-    if (!this.checkData()) return
+    if (this.isCreating || !this.checkData()) return
+    this.isCreating = true
     let _tags = this.groupInfo.tags.split(',')
     this.servicesUtils.createGroup({
       groupName: this.groupInfo.groupName,
@@ -288,13 +291,17 @@ class CreateGroupPage extends React.Component<Props, State> {
         Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_SUCCUESS)
         this.callBack && this.callBack()
         NavigationService.goBack('CreateGroupPage', null)
+        this.isCreating = false
       } else {
+        this.isCreating = false
         if (result.error?.errorMsg) {
           Toast.show(result.error.errorMsg)
         } else {
           Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_FAILED)
         }
       }
+    }).catch(e => {
+      this.isCreating = false
     })
   }
 

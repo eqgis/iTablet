@@ -35,6 +35,7 @@ import FriendList from './FriendList/FriendList'
 import UserType from '../../../constants/UserType'
 // import Chat from './Chat/Chat'
 import FriendListFileHandle from './FriendListFileHandle'
+import CoworkFileHandle from '../Find/CoworkManagePage/CoworkFileHandle'
 import InformSpot from './InformSpot'
 import AddMore from './AddMore'
 import MSGConstant from '../../../constants/MsgConstant'
@@ -389,6 +390,7 @@ export default class Friend extends Component {
     JPushService.init(this.props.user.currentUser.userId)
     if (this.props.user.currentUser.userId === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
+      CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     }
   }
 
@@ -943,7 +945,6 @@ export default class Friend extends Component {
     try {
       if (CoworkInfo.coworkId !== '') {
         let location = await SMap.getCurrentLocation()
-
         if (
           this.lastLocation &&
           this.getDistance(location, this.lastLocation) < 5
@@ -959,6 +960,11 @@ export default class Friend extends Component {
           if (initial.length > 2) {
             initial = initial.slice(0, 2)
           }
+          CoworkInfo.setUserLocation(this.props.user.currentUser.userId, {
+            longitude: location.longitude,
+            latitude: location.latitude,
+            initial,
+          })
           SMap.addLocationCallout(
             location.longitude,
             location.latitude,
@@ -1511,6 +1517,10 @@ export default class Friend extends Component {
             CoworkInfo.isRealTime &&
             CoworkInfo.isUserShow(messageObj.user.id)
           ) {
+            CoworkInfo.setUserLocation(messageObj.user.id, {
+              longitude: messageObj.message.longitude,
+              latitude: messageObj.message.latitude,
+            })
             SMap.addLocationCallout(
               messageObj.message.longitude,
               messageObj.message.latitude,
@@ -1539,7 +1549,8 @@ export default class Friend extends Component {
    */
   checkGroup = async messageObj => {
     let exist = false
-    let msgId = messageObj.user.groupID || messageObj.id
+    // let msgId = messageObj.user.groupID || messageObj.id
+    let msgId = messageObj.id
     if (msgId && msgId.indexOf('Group_Task_') >= 0) {
       let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userId]
       for (let i = 0; i < onlineGroups?.length; i++) {

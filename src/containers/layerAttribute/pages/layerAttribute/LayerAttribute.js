@@ -1446,7 +1446,7 @@ export default class LayerAttribute extends React.Component {
           // backImg: require('../../../../assets/mapTools/icon_close.png'),
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           withoutBack: true,
           headerRight: this._renderHeader(),

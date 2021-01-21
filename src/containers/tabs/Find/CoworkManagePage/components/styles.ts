@@ -14,11 +14,11 @@ export default StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    marginHorizontal: scaleSize(30),
-    padding: scaleSize(20),
-    borderWidth: 1,
-    borderRadius: scaleSize(8),
-    borderColor: color.gray7,
+    paddingRight: scaleSize(28),
+    paddingLeft: scaleSize(40),
+    paddingVertical: scaleSize(24),
+    height: scaleSize(160),
+    alignItems: 'center',
   },
   title: {
     fontSize: size.fontSize.fontSizeXl,
@@ -48,7 +48,7 @@ export default StyleSheet.create({
   },
   contentText: {
     fontSize: size.fontSize.fontSizeLg,
-    color: 'grey',
+    color: color.fontColorGray3,
   },
   buttons: {
     flexDirection: 'row',
@@ -58,5 +58,9 @@ export default StyleSheet.create({
   button: {
     flex: 1,
     marginTop: scaleSize(8),
+  },
+  itemImage: {
+    height: scaleSize(64),
+    width: scaleSize(64),
   },
 })

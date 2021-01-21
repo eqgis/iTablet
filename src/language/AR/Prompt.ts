@@ -386,6 +386,10 @@ const Prompt: typeof CN.Prompt = {
   INVALID_DATA_SET_FAILED: 'نوع البيانات غير صالح. فشل تعيين',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'الطبقة غير مرئية ولا يمكن تعيينها على الطبقة الحالية',
 
+  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
+  TRACKING_LOADING: 'Tracking...',
+  SCENE_OPEN: 'success',
+
 }
 
 export { Prompt }

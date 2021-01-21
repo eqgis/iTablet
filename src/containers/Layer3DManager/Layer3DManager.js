@@ -210,7 +210,7 @@ export default class Layer3DManager extends Component {
           //MAP_MODULE.MAP_3D,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           navigation: this.props.navigation,
           withoutBack: true,

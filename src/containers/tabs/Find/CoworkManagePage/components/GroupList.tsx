@@ -27,9 +27,11 @@ import { UserInfo, Users } from '../../../../../redux/models/user'
 
 interface Props {
   user: UserInfo,
+  style?: any,
   joinTypes?: Array<string>,
   onPress: (data: any) => any,
   setCoworkGroup?: (data: any) => any,
+  renderItem?: (data: { item: any, index: number }) => any
 }
 
 interface State {
@@ -68,7 +70,7 @@ export default class GroupList extends Component<Props, State> {
 
 
   componentDidMount() {
-    this.getContacts({
+    this.getGroups({
       pageSize: this.pageSize,
       currentPage: 1,
     })
@@ -89,7 +91,7 @@ export default class GroupList extends Component<Props, State> {
     refresh && this.setState({
       isRefresh: true,
     })
-    await this.getContacts({
+    await this.getGroups({
       pageSize: this.pageSize,
       currentPage: 1,
     })
@@ -98,19 +100,21 @@ export default class GroupList extends Component<Props, State> {
   loadMore = () => {
     if (this.isLoading || this.isNoMore) return
     this.isLoading = true
-    this.getContacts({
+    this.getGroups({
       pageSize: this.pageSize,
       currentPage: this.currentPage + 1,
     })
   }
 
-  getContacts = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
+  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC', keywords = '', joinTypes = []}) => {
     try {
-      let getDataFunc, joinTypes: Array<string> | undefined = []
-      if (this.props.joinTypes && this.props.joinTypes?.indexOf('MINE') >= 0) {
+      let getDataFunc, _joinTypes: Array<string> | undefined = joinTypes
+      if (!_joinTypes || _joinTypes.length === 0) {
+        _joinTypes = this.props.joinTypes
+      }
+      if (_joinTypes && _joinTypes?.indexOf('MINE') >= 0) {
         getDataFunc = this.servicesUtils?.getMyGroupInfos
       } else {
-        joinTypes = this.props.joinTypes
         getDataFunc = this.servicesUtils?.getGroupInfos
       }
       if (!getDataFunc) return
@@ -119,8 +123,8 @@ export default class GroupList extends Component<Props, State> {
         orderType: orderType,
         pageSize: pageSize,
         currentPage: currentPage,
-        keywords: '',
-        joinTypes: joinTypes,
+        keywords: keywords,
+        joinTypes: _joinTypes,
       }).then(result => {
         if (result && result.content) {
           let _data: any[] = []
@@ -160,9 +164,12 @@ export default class GroupList extends Component<Props, State> {
     this.props.onPress && this.props.onPress(groupInfo)
   }
 
-  _keyExtractor = (item, index) => index.toString()
+  _keyExtractor = (item: any, index: number) => index.toString()
 
-  _renderItem = ({ item, index }) => {
+  _renderItem = ({ item, index }: { item: any, index: number }) => {
+    if (this.props.renderItem) {
+      return this.props.renderItem({ item, index })
+    }
     return (
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
@@ -184,16 +191,16 @@ export default class GroupList extends Component<Props, State> {
   render() {
     return (
       <View
-        style={{
+        style={[{
           flex: 1,
           flexDirection: 'column',
           justifyContent: 'flex-start',
           backgroundColor: 'white',
           marginTop: scaleSize(20),
-          borderTopLeftRadius: scaleSize(36),
-          borderTopRightRadius: scaleSize(36),
+          // borderTopLeftRadius: scaleSize(36),
+          // borderTopRightRadius: scaleSize(36),
           overflow: 'hidden',
-        }}
+        }, this.props.style]}
       >
         <FlatList
           style={styles.list}
@@ -270,8 +277,8 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(150),
   },
   list: {
-    borderTopLeftRadius: scaleSize(36),
-    borderTopRightRadius: scaleSize(36),
+    // borderTopLeftRadius: scaleSize(36),
+    // borderTopRightRadius: scaleSize(36),
     backgroundColor: color.bgW,
   },
 })

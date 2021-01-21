@@ -39,6 +39,26 @@ export default class CoworkInfo {
     this.talkId = id
   }
 
+  static setMembers(members) {
+    for (let i = 0; i < members.length; i++) {
+      if (members[i].show === undefined) {
+        members[i] = {
+          id: members[i].id,
+          name: members[i].name,
+          show: true,
+        }
+        break
+      } else {
+        members[i] = {
+          id: members[i].id,
+          name: members[i].name,
+          show: members[i].show,
+        }
+      }
+    }
+    this.members = members
+  }
+
   static addMember(member) {
     try {
       let isMember = false
@@ -121,6 +141,16 @@ export default class CoworkInfo {
     }
   }
 
+  static setUserLocation(userID, location) {
+    for (let i = 0; i < this.members.length; i++) {
+      let member = this.members[i]
+      if (member.id === userID) {
+        member.location = location
+        break
+      }
+    }
+  }
+
   static hideUserTrack(userID) {
     for (let i = 0; i < this.members.length; i++) {
       let member = this.members[i]
@@ -138,6 +168,20 @@ export default class CoworkInfo {
       let member = this.members[i]
       if (member.id === userID) {
         member.show = true
+        let location = member.location
+        if (this.isRealTime && location?.longitude && location?.latitude) {
+          let initial = location.initial
+          if (initial && initial.length > 2) {
+            initial = initial.slice(0, 2)
+          }
+          SMap.addLocationCallout(
+            location.longitude,
+            location.latitude,
+            member.name,
+            member.id,
+            initial,
+          )
+        }
         break
       }
     }
@@ -151,7 +195,7 @@ export default class CoworkInfo {
     for (let i = 0; i < this.members.length; i++) {
       let member = this.members[i]
       if (member.id === userID) {
-        isShow = member.show
+        isShow = member.show === undefined ? true : member.show
         break
       }
     }

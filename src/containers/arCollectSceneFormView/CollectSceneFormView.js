@@ -19,7 +19,7 @@ import {
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-import { Container, Dialog } from '../../components'
+import { Container, Dialog, ImageButton } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
@@ -66,7 +66,9 @@ export default class CollectSceneFormView extends React.Component {
       historyData: Array,
       showbuttons: true,
       showSwithchButtons: false,
-      isClickCollect: false, //是否是打点采集
+      isClickCollect: true, //是否是打点采集
+      /** 是否打点采集了第一个点 */
+      isClickFirst: false,
       isLine: true,
       leftcolor: {
         color: 'black',
@@ -131,7 +133,6 @@ export default class CollectSceneFormView extends React.Component {
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
-    SCollectSceneFormView.onDestroy()
     //移除监听
     if (Platform.OS === 'ios') {
       nativeEvt.removeListener(
@@ -198,6 +199,7 @@ export default class CollectSceneFormView extends React.Component {
 
   _onGetInstance = async view => {
     this.view = view
+    SCollectSceneFormView.setViewMode(1)
     this._initData()
   }
 
@@ -355,6 +357,16 @@ export default class CollectSceneFormView extends React.Component {
     // })
   }
 
+  /** 打点采集时添加点 */
+  addNewRecord = () => {
+    SCollectSceneFormView.addPoint()
+    if(!this.state.isClickFirst) {
+      this.setState({
+        isClickFirst: true,
+      })
+    }
+  }
+
   back = async () => {
     if (this.clickAble) {
       this.clickAble = false
@@ -377,6 +389,7 @@ export default class CollectSceneFormView extends React.Component {
         },
       })
       await SCollectSceneFormView.closeCurrentDatasource()
+      await SCollectSceneFormView.onDestroy()
       NavigationService.goBack('CollectSceneFormView')
 
       GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
@@ -1072,6 +1085,41 @@ export default class CollectSceneFormView extends React.Component {
     )
   }
 
+  renderADDPoint = () => {
+    let text
+    GLOBAL.language === 'CN' ? text = '添加点' : text = 'Add Point'
+    let image = getThemeAssets().ar.icon_ar_measure_add_toast
+    // GLOBAL.language === 'CN' ? image = getThemeAssets().ar.icon_ar_measure_add_toast : image = getThemeAssets().ar.icon_ar_measure_add_toast_en
+    return (
+      <View style={styles.addcaptureView}>
+        <ImageButton
+          containerStyle={styles.addcapture}
+          iconStyle={styles.addiconView}
+          activeOpacity={0.3}
+          icon={image}
+        />
+        <Text style={styles.addText}>
+          {text}
+        </Text>
+      </View>
+    )
+  }
+
+  renderCenterBtn = () => {
+    return (
+      <ImageButton
+        containerStyle={styles.capture}
+        iconStyle={styles.addButtonView}
+        activeOpacity={0.5}
+        icon={getThemeAssets().ar.icon_ar_measure_add}
+        onPress={() => {
+          this.addNewRecord()
+        }}
+      />
+    )
+  }
+
+
   render() {
     return (
       <Container
@@ -1094,7 +1142,9 @@ export default class CollectSceneFormView extends React.Component {
         {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
         {this.renderBottomBtn()}
         {this.renderLengthChangeView()}
-        {this.state.isClickCollect && this.renderClickCollectHintView()}
+        {/* {this.state.isClickCollect && this.renderClickCollectHintView()} */}
+        {this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}
+        {this.state.isClickCollect && this.renderCenterBtn()}
         {this.renderDialog()}
       </Container>
     )

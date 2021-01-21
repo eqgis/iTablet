@@ -53,11 +53,12 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo, SMeasureAreaView, SAIDetectView } from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
+import CoworkFileHandle from './src/containers/tabs/Find/CoworkManagePage/CoworkFileHandle'
 import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
@@ -353,6 +354,10 @@ class AppRoot extends Component {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
       if (result) {
+        // 初始化协作文件
+        CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+      }
+      if(result){
         let JSOnlineservice = new OnlineServicesUtils('online')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)

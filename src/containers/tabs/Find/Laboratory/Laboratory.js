@@ -29,12 +29,12 @@ class Laboratory extends React.Component {
   getData = () => {
     return Platform.select({
       ios: [
-        {
-          key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-          value: 'highPrecisionCollect',
-          image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
-          info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
-        },
+        // {
+        //   key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+        //   value: 'highPrecisionCollect',
+        //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+        //   info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
+        // },
         {
           key: getLanguage(this.props.language).Find.ONLINE_COWORK,
           value: 'onlineCowork',
@@ -55,12 +55,12 @@ class Laboratory extends React.Component {
           image: getThemeAssets().ar.functiontoolbar.ar_bodyposture,
           info: getLanguage(this.props.language).Find.LAB_POSE_ESTIMATION_INFO,
         },
-        {
-          key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-          value: 'highPrecisionCollect',
-          image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
-          info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
-        },
+        // {
+        //   key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+        //   value: 'highPrecisionCollect',
+        //   image: getThemeAssets().ar.functiontoolbar.rightbar_ai_poi_light,
+        //   info: getLanguage(this.props.language).Find.LAB_FORM_COLLECT_INFO,
+        // },
         {
           key: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_PIPELINE,
           value: 'arPipe',

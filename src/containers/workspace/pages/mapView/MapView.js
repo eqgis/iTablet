@@ -101,7 +101,7 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
-import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
+// import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
@@ -1155,14 +1155,16 @@ export default class MapView extends React.Component {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
         let result = true
-        this.props.selection.forEach(async item => {
+        //使用for循环等待，在forEach里await没有用
+        for(let i = 0; i < this.props.selection.length; i++) {
+          let item = this.props.selection[i]
           if (item.ids.length > 0) {
             result =
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))
-            await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
+            result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
           }
-        })
+        }
 
         if (result) {
           Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
@@ -1977,7 +1979,7 @@ export default class MapView extends React.Component {
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
     this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
-    this.ChatIcon && this.ChatIcon.setVisible(full)
+    // this.ChatIcon && this.ChatIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -2398,7 +2400,9 @@ export default class MapView extends React.Component {
     const currentMapModule = this.props.mapModules.modules.find(item => {
       return item.key === this.type
     })
-    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
+    let buttonInfos = GLOBAL.coworkMode && [
+      MapHeaderButton.CoworkChat,
+    ] || (currentMapModule && currentMapModule.headerButtons) || [
       MapHeaderButton.Share,
       MapHeaderButton.Search,
       MapHeaderButton.Undo,
@@ -2487,6 +2491,20 @@ export default class MapView extends React.Component {
                       type: 'pointSearch',
                     })
                   }
+                },
+              }
+              break
+            case MapHeaderButton.CoworkChat:
+              info = {
+                key: MapHeaderButton.CoworkChat,
+                image: getThemeAssets().cowork.icon_nav_chat,
+                action: async () => {
+                  let param = {}
+                  if (CoworkInfo.coworkId !== '') {
+                    param.targetId = CoworkInfo.talkId
+                    param.title = getLanguage(GLOBAL.language).Friends.GROUPS
+                  }
+                  NavigationService.navigate('Chat', param)
                 },
               }
               break
@@ -3385,7 +3403,7 @@ export default class MapView extends React.Component {
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           headerStyle: {
             right:
@@ -3547,9 +3565,9 @@ export default class MapView extends React.Component {
         {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
-        {GLOBAL.coworkMode && this.state.onlineCowork && (
+        {/* {GLOBAL.coworkMode && this.state.onlineCowork && (
           <ChatIcon ref={ref => (this.ChatIcon = ref)} />
-        )}
+        )} */}
         {/* {
           GLOBAL.coworkMode && (
             <TouchableOpacity

@@ -13,7 +13,7 @@ interface State {
 
 interface Props {
   [name: string]: any,
-  data: any, 
+  data: any,
 }
 
 export default class MessageItem extends React.Component<Props, State> {
@@ -30,7 +30,7 @@ export default class MessageItem extends React.Component<Props, State> {
 
   _onPress = () => {}
 
-  _renderContentItemView = (item: State): JSX.Element => {
+  _renderContentItemView = (item: State): React.ReactNode => {
     return (
       <View style={styles.contentItemView}>
         <View style={styles.contentTextView}>
@@ -44,7 +44,7 @@ export default class MessageItem extends React.Component<Props, State> {
     )
   }
 
-  _renderContentView = (): JSX.Element | null => {
+  _renderContentView = (): React.ReactNode | null => {
     if (!this.state.content) return null
     return (
       <View style={styles.contentView}>
@@ -58,7 +58,7 @@ export default class MessageItem extends React.Component<Props, State> {
   /**
    * 可自定义button
    */
-  _renderButtons = (): JSX.Element | null => {
+  _renderButtons = (): React.ReactNode | null => {
     if (!this.state.buttonTitle) return null
     return (
       <Button style={styles.button} title={this.state.buttonTitle} />

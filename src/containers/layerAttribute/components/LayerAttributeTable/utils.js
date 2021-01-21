@@ -184,7 +184,6 @@ function getKeyboardType(type) {
         android: 'numeric',
         ios: 'numbers-and-punctuation',
       })
-      console.warn(keyboardType)
       // keyboardType = 'decimal-pad'
       break
     case FieldType.TEXT:

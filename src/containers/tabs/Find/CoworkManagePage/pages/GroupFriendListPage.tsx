@@ -25,20 +25,20 @@ import { MsgConstant } from '../../../Friend'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import { exitGroup } from '../../../../../redux/models/cowork'
-import { SCoordination, SMessageService } from 'imobile_for_reactnative'
-import { Person, GroupMessageType } from '../types'
+import { SCoordination, SMessageService, GroupType } from 'imobile_for_reactnative'
+import { Person } from '../types'
 
 interface Props {
-  language: String,
+  language: string,
   navigation: Object,
+  currentGroup: GroupType,
   user: Users,
   device: any,
-  exitGroup: (params: {groupID: number | string, cb?: Function}) => any,
 }
 
 type State = {
-  sections: Array<any>
-  listData: Array<any>, //源数组
+  allData: Array<any>,
+  sections: Array<any>,
   letterArr: Array<string>, //首字母数组
   isRefresh: boolean,
   inputText: string,
@@ -47,16 +47,20 @@ type State = {
   dialogInfo: string,
 }
 
-interface SectionType  {
-  key: string
-  title: string
-  data: any
+interface SectionType {
+  key: string,
+  title: string,
+  data: any,
+}
+
+interface Filter {
+  except?: Array<string>,  // 过滤掉的成员ID
+  include?: Array<string>, // 包含的成员ID
 }
 
 class GroupFriendListPage extends Component<Props, State> {
   title: string
   servicesUtils: SCoordination | undefined
-  groupInfo: any
   SectionList: any
   mode: string // 'manage' 管理模式，含删除 ｜ 'multiSelect' 多选 ｜ 'select' 单选（默认）
   includeMe: boolean // 是否包含当前用户
@@ -65,18 +69,19 @@ class GroupFriendListPage extends Component<Props, State> {
   pagePopModal: PopMenu | null | undefined
   dialog: Dialog | null | undefined
   dialogAction: (() => void) | null | undefined
+  filter: Filter | undefined
 
   constructor(props: Props) {
     super(props)
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.callBack = this.props.navigation?.state?.params?.callBack
     this.mode = this.props.navigation?.state?.params?.mode === undefined ? 'select' : this.props.navigation?.state?.params?.mode
     this.includeMe = this.props.navigation?.state?.params?.includeMe === undefined ? true : this.props.navigation?.state?.params?.includeMe
     this.title = this.props.navigation?.state?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
-    
+    this.filter = this.props.navigation?.state?.params?.filter
+
     this.state = {
+      allData: [], // 所有数组
       sections: [], //section数组
-      listData: [], //源数组
       letterArr: [], //首字母数组
       isRefresh: false,
       inputText: '',
@@ -86,21 +91,12 @@ class GroupFriendListPage extends Component<Props, State> {
     }
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('iportal')
     }
-    this.popData = [
-      // {
-      //   title: getLanguage(GLOBAL.language).Friends.GROUP_INVITE,
-      //   action: () => {
-      //     NavigationService.navigate('GroupInvitePage', {
-      //       groupInfo: this.groupInfo,
-      //     })
-      //   },
-      // },
-    ]
+    this.popData = []
 
-    if (this.props.user.currentUser.userId === this.groupInfo.creator) {
+    if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
       this.popData = this.popData.concat([
         {
           title: getLanguage(this.props.language).Friends.GROUP_MEMBER_DELETE,
@@ -108,38 +104,7 @@ class GroupFriendListPage extends Component<Props, State> {
             this._setManage(true)
           },
         },
-        {
-          title: getLanguage(GLOBAL.language).Friends.GROUP_DELETE,
-          action: () => {
-            this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO)
-            this.dialogAction = () => {
-              this.servicesUtils?.deleteGroup([this.groupInfo.id]).then((result: any) => {
-                this._setDialogVisible(false)
-                NavigationService.goBack('CoworkManagePage', null)
-              })
-            }
-          },
-        },
       ])
-    } else {
-      this.popData.push({
-        title: getLanguage(GLOBAL.language).Friends.GROUP_EXIST,
-        action: () => {
-          this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_EXIST_INFO)
-          this.dialogAction = () => {
-            this.servicesUtils?.deleteGroupMembers({
-              groupId: this.groupInfo.id,
-              userIds: [this.props.user.currentUser.userId],
-            }).then(result => {
-              if (result.succeed) {
-                this.props.exitGroup && this.props.exitGroup({groupID: this.groupInfo.id})
-                this._setDialogVisible(false)
-                NavigationService.goBack('CoworkManagePage', null)
-              }
-            })
-          }
-        },
-      })
     }
   }
 
@@ -154,7 +119,7 @@ class GroupFriendListPage extends Component<Props, State> {
 
   getContacts = async () => {
     this.servicesUtils?.getGroupMembers({
-      groupId: this.groupInfo.id,
+      groupId: this.props.currentGroup.id,
     }).then((result: any) => {
       let persons = result.content
       if (persons.length > 0) {
@@ -162,45 +127,88 @@ class GroupFriendListPage extends Component<Props, State> {
           let sections: SectionType[] = [],
             letterArr = []
 
-          // TODO 过滤当前用户
           for (let i = 0; i < persons.length; i++) {
             let person = persons[i]
-            if (!this.includeMe && person.userName === this.props.user.currentUser.userId) continue // 过滤当前用户
-            let name = person.nickname
-            let firstChar = getPinYinFirstCharacter(name, '-', true)
-            let ch = firstChar[0]
-            if (letterArr.indexOf(ch) === -1) {
-              letterArr.push(ch)
+            if (!this.includeMe && person.userName === this.props.user.currentUser.userName) continue // 过滤当前用户
+            // 过滤用户
+            if (this.filter?.except && this.filter.except.length > 0) {
+              let isExist = false
+              for (let j = 0; j < this.filter.except.length; j++) {
+                if (this.filter.except[j] === person.userName) {
+                  isExist = true
+                  break
+                }
+              }
+              if (isExist) continue
+            }
+            // 返回指定用户
+            if (this.filter?.include && this.filter.include.length > 0) {
+              for (let j = 0; j < this.filter.include.length; j++) {
+                if (this.filter.include[j] === person.userName) {
+                  let name = person.nickname
+                  let firstChar = getPinYinFirstCharacter(name, '-', true)
+                  let ch = firstChar[0]
+                  if (letterArr.indexOf(ch) === -1) {
+                    letterArr.push(ch)
+                  }
+                }
+              }
+            } else {
+              let name = person.nickname
+              let firstChar = getPinYinFirstCharacter(name, '-', true)
+              let ch = firstChar[0]
+              if (letterArr.indexOf(ch) === -1) {
+                letterArr.push(ch)
+              }
             }
           }
-  
+
           letterArr.sort()
 
-          letterArr.map((item, index) => {
+          letterArr.map(item => {
             const module = persons.filter((it: Person) => {
-              if (!this.includeMe && it.userName === this.props.user.currentUser.userId) return false
+              if (!this.includeMe && it.userName === this.props.user.currentUser.userName) return false
               //遍历获取每一个首字母对应联系人
-              let firstChar = getPinYinFirstCharacter(it.nickname, '-', true)
-              let ch = firstChar[0]
-              return ch === item
+              if (this.filter?.except && this.filter.except.length > 0) {
+                let isExist = false
+                for (let j = 0; j < this.filter.except.length; j++) {
+                  if (this.filter.except[j] === it.userName) {
+                    isExist = true
+                    break
+                  }
+                }
+                if (isExist) return false
+              }
+              // 返回指定用户
+              if (this.filter?.include && this.filter.include.length > 0) {
+                for (let j = 0; j < this.filter.include.length; j++) {
+                  if (this.filter.include[j] === it.userName) {
+                    return true
+                  }
+                }
+              } else {
+                let firstChar = getPinYinFirstCharacter(it.nickname, '-', true)
+                let ch = firstChar[0]
+                return ch === item
+              }
             })
 
             sections.push({ key: item, title: item, data: module })
           })
-  
+
           this.setState({
             letterArr,
             sections,
+            allData: persons,
           })
-          // eslint-disable-next-line
         } catch (err) {
-          //console.log('err', err)
           Toast.show(err.message)
         }
       } else {
         this.setState({
           letterArr: [],
           sections: [],
+          allData: [],
         })
       }
     })
@@ -223,12 +231,6 @@ class GroupFriendListPage extends Component<Props, State> {
       sectionIndex: key,
       viewOffset: scaleSize(35),
     })
-  }
-
-  _itemPress = (item: Person, index: number) => {
-    if (this.mode === 'select') {
-      this.callBack && this.callBack([item])
-    }
   }
 
   _multiSelectConfirm = () => {
@@ -256,17 +258,69 @@ class GroupFriendListPage extends Component<Props, State> {
     }
   }
 
+  _btnAction = () => {
+    if (this.mode === 'select') return null
+    let isMultiSelect = this.mode === 'multiSelect'
+    if (isMultiSelect) {
+      if (this.state.selectedMembers.size === 0) {
+        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+        return
+      }
+      this._multiSelectConfirm()
+    } else if (this.state.isManage) {
+      if (this.state.selectedMembers.size === 0) {
+        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+        return
+      }
+
+      this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO)
+      this.dialogAction = () => {
+        let userIds: Array<string> = []
+        this.state.selectedMembers.forEach((member: any) => {
+          userIds.push(member.userName + '')
+        })
+        this.servicesUtils?.deleteGroupMembers({
+          groupId: this.props.currentGroup.id,
+          userIds: userIds,
+        }).then(async result => {
+          if (result.succeed) {
+            // 给删除对象发送被删除消息
+            let timeStr = new Date().getTime()
+            let message = {
+              type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
+              user: {
+                name: this.props.user.currentUser.nickname || '',
+                id: this.props.user.currentUser.userName || '',
+              },
+              group: {
+                groupID: this.props.currentGroup.id,
+                groupName: this.props.currentGroup.groupName,
+                groupCreator: this.props.currentGroup.creator,
+              },
+              time: timeStr,
+            }
+            for (let i = 0; i < userIds.length; i++) {
+              SMessageService.sendMessage(
+                JSON.stringify(message),
+                userIds[i],
+              )
+            }
+            await this.getContacts()
+            this.callBack && this.callBack()
+            this._setDialogVisible(false)
+            this._setManage()
+          }
+        })
+      }
+    }
+  }
+
   _renderSectionHeader = (sectionItem: any) => {
     const { section } = sectionItem
-    let isFirstSection = section.key === this.state.sections[0].key &&
-      section.title === this.state.sections[0].title
     return (
       <View style={[
         styles.HeadViewStyle,
-        isFirstSection && {
-          borderTopLeftRadius: scaleSize(36),
-          borderTopRightRadius: scaleSize(36),
-        },
+        (this.mode === 'multiSelect' || this.state.isManage) && {marginLeft: scaleSize(62)},
       ]}>
         <Text style={styles.HeadTextStyle}>{section.title.toUpperCase()}</Text>
       </View>
@@ -275,22 +329,17 @@ class GroupFriendListPage extends Component<Props, State> {
 
   _renderItem = (item: Person, index: number) => {
     return (
-      <TouchableOpacity
+      <View
         style={[styles.ItemViewStyle]}
-        activeOpacity={0.75}
-        onPress={() => this._itemPress(item, index)}
       >
         {
           (this.state.isManage || this.mode === 'multiSelect') &&
           (
-            this.props.user.currentUser.userId !== item.userName
+            this.props.user.currentUser.userName !== item.userName
               ? (
                 <CheckBox
-                  style={{
-                    marginLeft: scaleSize(32),
-                    height: scaleSize(30),
-                    width: scaleSize(30),
-                  }}
+                  type={'circle'}
+                  style={styles.checkBtn}
                   checked={!!this.state.selectedMembers.get(item.userName + '')}
                   onChange={value => {
                     this.setState(state => {
@@ -323,102 +372,21 @@ class GroupFriendListPage extends Component<Props, State> {
         <View style={styles.ITemTextViewStyle}>
           <Text style={styles.ITemTextStyle}>{item.nickname}</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     )
   }
 
   _renderHeaderRight = () => {
-    if (this.mode === 'select') return null
-    let isMultiSelect = this.mode === 'multiSelect'
-    if (this.state.isManage || isMultiSelect) {
-      return (
-        <TextBtn
-          btnText={
-            isMultiSelect
-             ? getLanguage(this.props.language).Friends.CONFIRM
-             : (
-              this.state.isManage
-                ? getLanguage(this.props.language).Prompt.DELETE
-                : getLanguage(this.props.language).Friends.GROUP_MANAGE
-             )
-          }
-          textStyle={[styles.headerBtnTitle, !isMultiSelect && this.state.isManage && {color: 'red'}]}
-          btnClick={event => {
-            if (isMultiSelect) {
-              if (this.state.selectedMembers.size === 0) {
-                Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-                return
-              }
-              this._multiSelectConfirm()
-            } else if (this.state.isManage) {
-              if (this.state.selectedMembers.size === 0) {
-                Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-                return
-              }
-
-              this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO)
-              this.dialogAction = () => {
-                let userIds: Array<string> = []
-                this.state.selectedMembers.forEach((member: any) => {
-                  userIds.push(member.userName + '')
-                })
-                this.servicesUtils?.deleteGroupMembers({
-                  groupId: this.groupInfo.id,
-                  userIds: userIds,
-                }).then(async result => {
-                  if (result.succeed) {
-                    // 给删除对象发送被删除消息
-                    let timeStr = new Date().getTime()
-                    let message = {
-                      type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
-                      user: {
-                        name: this.props.user.currentUser.nickname || '',
-                        id: this.props.user.currentUser.userId || '',
-                      },
-                      group: {
-                        groupID: this.groupInfo.id,
-                        groupName: this.groupInfo.groupName,
-                        groupCreator: this.groupInfo.creator,
-                      },
-                      time: timeStr,
-                    }
-                    for (let i = 0; i < userIds.length; i++) {
-                      SMessageService.sendMessage(
-                        JSON.stringify(message),
-                        userIds[i],
-                      )
-                    }
-                    await this.getContacts()
-                    this._setDialogVisible(false)
-                    this._setManage()
-                  }
-                })
-              }
-            }
-          }}
-        />
-      )
-    } else {
-      return (
-        <ImageButton
-          icon={getThemeAssets().tabBar.tab_setting_selected}
-          onPress={(event: any) => {
-            this.pagePopModal?.setVisible(true, {
-              x: event.nativeEvent.pageX,
-              y: event.nativeEvent.pageY,
-            })
-          }}
-        />
-      )
-    }
-  }
-
-  _renderHeaderLeft = () => {
+    if (this.mode === 'select' || this.mode === 'multiSelect' || this.state.isManage || this.popData.length === 0) return null
     return (
-      <TextBtn
-        btnText={getLanguage(this.props.language).Friends.CANCEL}
-        textStyle={[styles.headerBtnTitle]}
-        btnClick={() => this._setManage(false)}
+      <ImageButton
+        icon={getThemeAssets().cowork.icon_nav_set}
+        onPress={(event: any) => {
+          this.pagePopModal?.setVisible(true, {
+            x: event.nativeEvent.pageX,
+            y: event.nativeEvent.pageY,
+          })
+        }}
       />
     )
   }
@@ -451,21 +419,66 @@ class GroupFriendListPage extends Component<Props, State> {
     )
   }
 
+  _renderBottom = () => {
+    if (this.state.isManage || this.mode === 'multiSelect') {
+      return (
+        <View style={styles.bottomView}>
+          <CheckBox
+            type={'circle'}
+            style={styles.checkBtn}
+            checked={this.state.selectedMembers.size === this.state.allData.length - 1} // -1是减去管理者自己
+            onChange={value => {
+              this.setState(state => {
+                const selected = new Map(state.selectedMembers)
+                this.state.allData.forEach(item => {
+                  if (this.props.user.currentUser.userName === item.userName) return
+                  const isSelected = selected.has(item.userName + '')
+                  if (value && !isSelected) {
+                    selected.set(item.userName + '', item)
+                  } else if (!value && isSelected) {
+                    selected.delete(item.userName + '')
+                  }
+                })
+                return { selectedMembers: selected }
+              })
+            }}
+          />
+          <Text style={styles.selectAll}>{getLanguage(GLOBAL.language).Profile.SELECT_ALL}</Text>
+          {/* <TouchableOpacity></TouchableOpacity> */}
+          <TextBtn
+            btnText={getLanguage(this.props.language).Common.CONFIRM}
+            containerStyle={styles.bottomBtn}
+            textStyle={styles.bottomBtnText}
+            btnClick={this._btnAction}
+          />
+        </View>
+      )
+    }
+    return null
+  }
+
+  _closeManage = () => {
+    this._setManage(false)
+  }
+
   render() {
     const { letterArr, sections } = this.state
     return (
       <Container
-        // ref={(ref: any) => (this.container = ref)}
         headerProps={{
           title: this.title,
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
-          headerLeft: this.state.isManage && this._renderHeaderLeft(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
+          backAction: this.state.isManage && this._closeManage,
         }}
       >
         <SectionList
           ref={ref => (this.SectionList = ref)}
-          style={{marginTop: scaleSize(20)}}
+          style={{ marginTop: scaleSize(20) }}
           renderSectionHeader={this._renderSectionHeader}
           sections={sections}
           keyExtractor={(item, index) => index + ''}
@@ -502,6 +515,7 @@ class GroupFriendListPage extends Component<Props, State> {
             />
           </View>
         )}
+        {this._renderBottom()}
         {this._renderPagePopup()}
         {this._renderDeleteDialog()}
       </Container>
@@ -510,30 +524,32 @@ class GroupFriendListPage extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  headerRightBtn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   headerBtnTitle: {
     fontSize: scaleSize(24),
     color: color.fontColorBlack,
+    textAlign: 'right',
   },
   HeadViewStyle: {
     height: scaleSize(72),
-    backgroundColor: color.itemColorGray2,
     flexDirection: 'row',
     alignItems: 'center',
   },
   HeadTextStyle: {
     fontSize: size.fontSize.fontSizeLg,
     color: color.contentColorBlack,
-    marginLeft: scaleSize(80),
+    marginLeft: scaleSize(56),
   },
   ItemViewStyle: {
-    paddingLeft: scaleSize(20),
-    paddingRight: scaleSize(30),
     height: scaleSize(90),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  
+
   itemImg: {
     marginLeft: scaleSize(32),
     height: scaleSize(60),
@@ -569,12 +585,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  checkBtn: {
+    marginLeft: scaleSize(32),
+    height: scaleSize(30),
+    width: scaleSize(30),
+  },
+
+  bottomView: {
+    flexDirection: 'row',
+    height: scaleSize(120),
+    backgroundColor: color.white,
+    alignItems: 'center',
+  },
+  selectAll: {
+    flex: 1,
+    marginLeft: scaleSize(32),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.contentColorGray,
+  },
+  bottomBtn: {
+    width: scaleSize(224),
+    height: scaleSize(80),
+    marginRight: scaleSize(24),
+    borderRadius: scaleSize(40),
+    backgroundColor: color.contentColorGray,
+  },
+  bottomBtnText: {
+    fontSize: size.fontSize.fontSizeXXXl,
+    color: color.white,
+  },
 })
 
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {

@@ -167,7 +167,6 @@ import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
 import LocationSetting from './locationSetting'
 import CustomModePage from './CustomModePage'
-import CoworkMember from './tabs/Friend/Cowork/CoworkMember'
 import CoworkMessage from './tabs/Friend/Cowork/CoworkMessage'
 import {
   CreateGroupPage,
@@ -177,6 +176,10 @@ import {
   GroupInvitePage,
   GroupSourceManagePage,
   GroupSourceUploadPage,
+  GroupMessagePage,
+  SelectModulePage,
+  GroupSettingPage,
+  CoworkMember,
 } from './tabs/Find/CoworkManagePage/pages'
 import {
   TemplateManager,
@@ -273,6 +276,24 @@ export default function(appConfig) {
       },
       GroupSourceUploadPage: {
         screen: GroupSourceUploadPage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupMessagePage: {
+        screen: GroupMessagePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      SelectModulePage: {
+        screen: SelectModulePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      GroupSettingPage: {
+        screen: GroupSettingPage,
         navigationOptions: {
           header: null,
         },

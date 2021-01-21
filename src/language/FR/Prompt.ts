@@ -384,6 +384,9 @@ const Prompt: typeof CN.Prompt = {
   //三维AR管线相关
   FILE_NOT_EXISTS: 'Les données ne sont pas disponibles.Téléchargez les données modèles',
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
+  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
+  TRACKING_LOADING: 'Tracking...',
+  SCENE_OPEN: 'success',
 }
 
 export { Prompt }

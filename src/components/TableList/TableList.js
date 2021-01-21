@@ -20,7 +20,7 @@ export default class TableList extends React.Component {
     style?: Object, // 表格样式
     cellStyle?: Object, // Cell样式
     rowStyle?: Object, // 行样式
-    renderCell: () => {}, // 自定义Cell， 必填
+    renderCell: (data: { item: any, rowIndex: number, cellIndex: number }) => any, // 自定义Cell， 必填
     type?: string, // normal 固定 | scroll 滚动
     device?: string, // 设备信息
     isAutoType?: Boolean, // 是否根据个数，自适应滚动或固定表格

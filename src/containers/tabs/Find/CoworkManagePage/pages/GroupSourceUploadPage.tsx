@@ -3,17 +3,17 @@
  * @description 群组资源管理界面
  */
 import React, { Component } from 'react'
-import { StyleSheet, FlatList, RefreshControl } from 'react-native'
+import { StyleSheet, FlatList, RefreshControl, View, Text, Image } from 'react-native'
 import { Container, PopMenu, ListSeparator, TextBtn } from '../../../../../components'
 import { ConstPath, UserType } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { scaleSize, Toast, OnlineServicesUtils } from '../../../../../utils'
-import { color } from '../../../../../styles'
+import { color, size } from '../../../../../styles'
+import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
-import { GroupList } from '../components'
 import { connect } from 'react-redux'
-import { SCoordination } from 'imobile_for_reactnative'
+import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import { UploadItem } from '../components'
 import DataHandler from '../../../Mine/DataHandler'
 import { exportWorkspace } from '../../../../../redux/models/map'
@@ -54,6 +54,22 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(26),
     color: color.fontColorGray,
   },
+
+  nullView: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nullImage: {
+    height: scaleSize(270),
+    width: scaleSize(270),
+  },
+  nullTitle: {
+    marginTop: scaleSize(40),
+    fontSize: size.fontSize.fontSizeLg,
+    color: color.fontColorGray3,
+  },
 })
 
 interface Props {
@@ -61,6 +77,7 @@ interface Props {
   user: Users,
   language: string,
   device: any,
+  currentGroup: GroupType,
   exportWorkspace: (data: any, cb?: (result: boolean) => void) => Promise<{
     result: boolean,
     zipPath: string,
@@ -77,8 +94,9 @@ interface LocalMapData {
 
 interface State {
   data: Array<any>,
-  isRefresh: boolean
-  isUploading: boolean
+  isRefresh: boolean,
+  isUploading: boolean,
+  firstLoad: boolean,
   selectedData: Map<string, LocalMapData>,
   uploadData: Map<string, LocalMapData>,
 }
@@ -92,22 +110,19 @@ class GroupSourceUploadPage extends Component<Props, State> {
   container: any
   pageSize: number
   currentPage: number
-  isLoading:boolean // 防止同时重复加载多次
+  isLoading: boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  groupList: GroupList | null | undefined
-  groupInfo: any
   list: FlatList<any> | null | undefined
   cb: () => void
 
   constructor(props: Props) {
     super(props)
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.cb = this.props.navigation?.state?.params?.cb
-   
+
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
       this.onlineServicesUtils = new OnlineServicesUtils('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('iportal')
       this.onlineServicesUtils = new OnlineServicesUtils('iportal')
     }
@@ -118,6 +133,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
       isUploading: false,
       selectedData: new Map<string, LocalMapData>(),
       uploadData: new Map<string, LocalMapData>(),
+      firstLoad: true,
     }
     this.pageSize = 20
     this.currentPage = 1
@@ -139,7 +155,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
       },
     ]
   }
-  
+
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     let shouldUpdate = JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
@@ -168,14 +184,16 @@ class GroupSourceUploadPage extends Component<Props, State> {
         this.props.user.currentUser,
         'MAP',
       )
-  
+
       this.setState({
         data: data,
         isRefresh: false,
+        firstLoad: false,
       })
     } catch (error) {
       this.setState({
         isRefresh: false,
+        firstLoad: false,
       })
     }
   }
@@ -225,7 +243,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
       const isSelected = selected.has(item.name)
       if (isSelected) {
         if (status) {
-          let _item = Object.assign({status: status}, item)
+          let _item = Object.assign({ status: status }, item)
           selected.set(item.name, _item)
         } else {
           selected.delete(item.name)
@@ -291,9 +309,9 @@ class GroupSourceUploadPage extends Component<Props, State> {
           }
           this.setState({ isUploading: false })
 
-          if (resourceIds.length > 0 && this.groupInfo.id) {
+          if (resourceIds.length > 0 && this.props.currentGroup.id) {
             this.servicesUtils?.shareDataToGroup({
-              groupId: this.groupInfo.id,
+              groupId: this.props.currentGroup.id,
               ids: resourceIds,
             }).then(result => {
               if (result.succeed) {
@@ -311,7 +329,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
     )
   }
 
-  _renderItem = ({item}: any) => {
+  _renderItem = ({ item }: any) => {
     return (
       <UploadItem
         data={item}
@@ -364,6 +382,18 @@ class GroupSourceUploadPage extends Component<Props, State> {
     )
   }
 
+  _renderNull = () => {
+    return (
+      <View style={styles.nullView}>
+        <View style={styles.nullView}>
+          <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
+          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_DATA_NULL}</Text>
+        </View>
+        <View style={{ flex: 1, backgroundColor: 'black' }} />
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -374,9 +404,13 @@ class GroupSourceUploadPage extends Component<Props, State> {
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
           // headerLeft: this.state.isManage && this._renderHeaderLeft(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
-        {this._renderGroupList()}
+        {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderGroupList()}
         {this._renderPagePopup()}
       </Container>
     )
@@ -388,6 +422,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {

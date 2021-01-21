@@ -71,6 +71,7 @@ export default class ToolbarTableList extends React.Component {
   render() {
     return (
       <TableList
+        style={{flex: 1}}
         data={this.props.data}
         column={this.props.column}
         numberOfRows={this.props.row}

@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   latestMap: state.map.toJS().latestMap,
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
   // cowork: state.cowork.toJS(),
 })
 

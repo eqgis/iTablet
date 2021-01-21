@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { Container, PopMenu, InputDialog } from '../../../../../components'
+import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native'
+import { Container, PopMenu, InputDialog, SearchBar } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { scaleSize, Toast } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
+import { getThemeAssets } from '../../../../../assets'
 import { UserType, MsgConstant } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
@@ -29,6 +30,7 @@ class GroupApplyPage extends Component<Props, State> {
 
   servicesUtils: SCoordination | undefined
   onlineServicesUtils: any
+  list: GroupList | null | undefined
   PagePopModal: PopMenu | null | undefined
   applyDialog: InputDialog | null | undefined
   container: any
@@ -114,23 +116,6 @@ class GroupApplyPage extends Component<Props, State> {
     })
   }
 
-  renderRight = () => {
-    return (
-      <TouchableOpacity
-        onPress={event => {
-          this.PagePopModal && this.PagePopModal.setVisible(true, {
-            x: event.nativeEvent.pageX,
-            y: event.nativeEvent.pageY,
-          })
-        }}
-      >
-        <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
-          {getLanguage(GLOBAL.language).Friends.GROUP_MANAGE}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
   _renderDialog = () => {
     return (
       <InputDialog
@@ -150,6 +135,59 @@ class GroupApplyPage extends Component<Props, State> {
     )
   }
 
+  _renderItem = ({item, index}: { item: any, index: number }) => {
+    return (
+      <View style={[styles.itemView]}>
+        <Image
+          style={styles.itemImg}
+          resizeMode={'contain'}
+          source={getThemeAssets().friend.contact_photo}
+        />
+        <View style={styles.titleView}>
+          <Text numberOfLines={2} style={styles.title}>{item.groupName}</Text>
+        </View>
+        <TouchableOpacity activeOpacity={0.8} style={styles.btnView} onPress={() => this._itemPress(item)}>
+          <Image
+            style={styles.imageStyle}
+            resizeMode={'contain'}
+            source={getThemeAssets().cowork.icon_group_join}
+          />
+          <Text style={styles.rightText}>{'加入'}</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  _renderSearchBar = () => {
+    return (
+      <SearchBar
+        style={styles.searchBar}
+        ref={ref => (this.searchBar = ref)}
+        onSubmitEditing={async searchKey => {
+          GLOBAL.Loading.setLoading(
+            true,
+            getLanguage(GLOBAL.language).Prompt.SEARCHING,
+          )
+          // this.search(searchKey)
+          await this.list?.getGroups({
+            keywords: searchKey,
+            joinTypes: ['CANJOIN'],
+            pageSize: 1000,
+            currentPage: 1,
+          })
+          GLOBAL.Loading.setLoading(false)
+        }}
+        onClear={() => {
+          this.list?.getGroups({
+            keywords: '',
+            joinTypes: ['CANJOIN'],
+          })
+        }}
+        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+      />
+    )
+  }
+
   render() {
     return (
       <Container
@@ -158,12 +196,21 @@ class GroupApplyPage extends Component<Props, State> {
         headerProps={{
           title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
           navigation: this.props.navigation,
-          // headerRight: this.renderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
+          headerStyle: {
+            borderBottomWidth: 0,
+          },
         }}
       >
+        {this._renderSearchBar()}
         <GroupList
+          ref={ref => this.list = ref}
           user={this.props.user.currentUser}
           joinTypes={['CANJOIN']}
+          renderItem={this._renderItem}
           onPress={this._itemPress}
         />
         {this._renderDialog()}
@@ -173,32 +220,27 @@ class GroupApplyPage extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-  ItemViewStyle: {
+  searchBar: {
+    marginHorizontal: scaleSize(44),
+    marginVertical: scaleSize(10),
+    height: scaleSize(60),
+    borderRadius: scaleSize(30),
+  },
+
+  itemView: {
     height: scaleSize(114),
     paddingHorizontal: scaleSize(44),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: color.white,
   },
-  ITemHeadTextViewStyle: {
-    height: scaleSize(72),
-    backgroundColor: color.itemColorGray2,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ITemHeadTextStyle: {
-    fontSize: size.fontSize.fontSizeLg,
-    color: color.contentColorBlack,
-    marginLeft: scaleSize(80),
-  },
-
-  ITemTextViewStyle: {
+  titleView: {
     marginLeft: scaleSize(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
   },
-  ITemTextStyle: {
+  title: {
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorBlack,
   },
@@ -209,11 +251,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  timeStr: {
-    marginRight: scaleSize(44),
-    fontSize: size.fontSize.fontSizeSm,
-    color: 'grey',
-    textAlign: 'right',
+
+  btnView: {
+    paddingHorizontal: scaleSize(20),
+    height: scaleSize(56),
+    borderRadius: scaleSize(28),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.itemColorGray,
+  },
+  imageStyle: {
+    width: scaleSize(36),
+    height: scaleSize(36),
+  },
+  rightText: {
+    fontSize: size.fontSize.fontSizeMd,
+    color: color.white,
   },
 })
 

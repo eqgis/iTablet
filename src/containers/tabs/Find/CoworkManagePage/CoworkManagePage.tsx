@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import { scaleSize, OnlineServicesUtils, screen } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { getLanguage } from '../../../../language'
-import { SCoordination, SMessageService } from 'imobile_for_reactnative'
+import { SCoordination, SMessageService, GroupType, GroupApplyMessageType } from 'imobile_for_reactnative'
 import { UserType, MsgConstant } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 import { size } from '../../../../styles'
@@ -14,7 +14,8 @@ import ScrollableTabView, {
 import GroupMessage from './GroupMessage'
 import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
-import { GroupApplyMessageType } from './types'
+import CoworkFileHandle from './CoworkFileHandle'
+import CoworkMessageUtil from './CoworkMessageUtil'
 
 interface Props {
   navigation: Object,
@@ -22,6 +23,7 @@ interface Props {
   // cowork: Cowork,
   appConfig: Object,
   latestMap: Object,
+  currentGroup: GroupType,
   device: any,
   setCurrentMapModule: (index: number) => void,
   deleteInvite: () => void,
@@ -39,12 +41,10 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   popData: Array<any>
   PagePopModal: PopMenu | null | undefined
   container: any
-  groupInfo: any
   callBack: (data?: any) => any
 
   constructor(props: Props) {
     super(props)
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.callBack = this.props.navigation?.state?.params?.callBack
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -56,103 +56,19 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_MANAGE,
+        title: getLanguage(GLOBAL.language).Friends.GROUP_SETTING,
         action: () => {
-          if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            NavigationService.navigate('GroupFriendListPage', {
-              groupInfo: this.groupInfo,
-              mode: 'manage', // 管理模式
-              title: getLanguage(GLOBAL.language).Friends.GROUP_MEMBER,
-              callBack: this.callBack,
-            })
-          } else {
-            NavigationService.navigate('Login', {
-              show: ['Online'],
-            })
-          }
-        },
-      },
-      {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE,
-        action: () => {
-          NavigationService.navigate('GroupSourceManagePage', {
-            groupInfo: this.groupInfo,
+          NavigationService.navigate('GroupSettingPage', {
+            callBack: this.callBack,
           })
         },
       },
     ]
     // 只有群主才能分配任务
-    if (this.props.user.currentUser.userId === this.groupInfo.creator) {
+    if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
       this.popData.unshift({
         title: getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION,
-        action: () => {
-          if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            NavigationService.navigate('GroupFriendListPage', {
-              groupInfo: this.groupInfo,
-              mode: 'multiSelect', // 多选模式
-              includeMe: false, // 是否包含当前用户
-              hasSettingBtn: false, // 是否含有右上角设置按钮
-              callBack: (members: any) => {
-                NavigationService.navigate('GroupSourceManagePage', {
-                  isManage: false,
-                  hasDownload: false, // 是否有下载按钮
-                  title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
-                  groupInfo: this.groupInfo,
-                  itemAction: async ({data, module, moduleIndex}: any) => {
-                    NavigationService.goBack('GroupFriendListPage', null)
-
-                    // 向用户发送信息
-                    let timeStr = new Date().getTime()
-                    let id = `Group_Task_${this.groupInfo.id}_${timeStr}`
-                    let message: any = {
-                      id: id,
-                      message: {
-                        type: MsgConstant.MSG_ONLINE_GROUP_TASK,
-                        task: data,
-                        module: Object.assign({}, module, {index: moduleIndex}),
-                      },
-                      type: MsgConstant.MSG_ONLINE_GROUP,
-                      user: {
-                        name: this.props.user.currentUser.nickname || '',
-                        id: this.props.user.currentUser.userId || '',
-                      },
-                      group: {
-                        groupID: this.groupInfo.id,
-                        groupName: this.groupInfo.groupName,
-                        groupCreator: this.groupInfo.creator,
-                      },
-                      time: timeStr,
-                    }
-                    let _members = [{
-                      name: this.props.user.currentUser.nickname || '',
-                      id: this.props.user.currentUser.userId || '',
-                    }]
-                    for (const member of members) {
-                      message = Object.assign(message, {to: {
-                        name: member.nickname,
-                        id: member.userName,
-                      }})
-                      _members.push({
-                        name: member.nickname,
-                        id: member.userName,
-                      })
-                      SMessageService.sendMessage(
-                        JSON.stringify(message),
-                        member.userName,
-                      )
-                      this.props.addCoworkMsg(message)
-                    }
-                    await SMessageService.declareSession(_members, id)
-                  },
-                })
-              },
-            })
-          } else {
-            NavigationService.navigate('Login', {
-              show: ['Online'],
-            })
-          }
-        },
+        action: this.createTask,
       })
     }
   }
@@ -174,6 +90,82 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     this.onlineServicesUtils = null
   }
 
+  createTask = () => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      NavigationService.navigate('SelectModulePage', {
+        callBack: (moduleData: {module: any, index: number}) => {
+          NavigationService.navigate('GroupSourceManagePage', {
+            isManage: false,
+            hasDownload: false, // 是否有下载按钮
+            title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
+            itemAction: async ({data}: any) => {
+              NavigationService.navigate('GroupFriendListPage', {
+                mode: 'multiSelect', // 多选模式
+                includeMe: false, // 是否包含当前用户
+                hasSettingBtn: false, // 是否含有右上角设置按钮
+                callBack: async (members: any) => {
+                  NavigationService.goBack('SelectModulePage', null)
+
+                  // 向用户发送信息
+                  let timeStr = new Date().getTime()
+                  let id = `Group_Task_${this.props.currentGroup.id}_${timeStr}`
+
+                  let _members = [{
+                    name: this.props.user.currentUser.nickname || '',
+                    id: this.props.user.currentUser.userName || '',
+                  }]
+                  for (const member of members) {
+                    _members.push({
+                      name: member.nickname,
+                      id: member.userName,
+                    })
+                  }
+
+                  let message = {
+                    id: id,
+                    groupID: this.props.currentGroup.id,
+                    user: {
+                      name: this.props.user.currentUser.nickname || '',
+                      id: this.props.user.currentUser.userName || '',
+                    },
+                    creator: this.props.user.currentUser.userName,
+                    members: _members,
+                    name: data.resourceName.replace('.zip', ''),
+                    module: {
+                      key: moduleData.module.key,
+                      index: moduleData.index,
+                    },
+                    resource: {
+                      resourceId: data.resourceId,
+                      resourceName: data.resourceName,
+                      nickname: data.nickname,
+                      resourceCreator: data.resourceCreator,
+                    },
+                    type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+                    time: timeStr,
+                  }
+                  for (const member of members) {
+                    if (member.id === this.props.user.currentUser.userName) continue
+                    SMessageService.sendMessage(
+                      JSON.stringify(message),
+                      member.userName,
+                    )
+                  }
+                  await SMessageService.declareSession(_members, id)
+                  this.props.addCoworkMsg(message)
+                },
+              })
+            },
+          })
+        },
+      })
+    } else {
+      NavigationService.navigate('Login', {
+        show: ['Online'],
+      })
+    }
+  }
+
   deleteInvite = (data: any) => {
     GLOBAL.SimpleDialog.set({
       text: getLanguage(GLOBAL.language).Friends.DELETE_COWORK_ALERT,
@@ -182,18 +174,36 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     GLOBAL.SimpleDialog.setVisible(true)
   }
 
-  renderRight = () => {
-    return (
+  renderRight = (): Array<React.ReactNode> => {
+    return [
       <ImageButton
-        icon={getThemeAssets().tabBar.tab_setting_selected}
+        key={'source'}
+        containerStyle={{
+          width: scaleSize(44),
+          height: scaleSize(44),
+        }}
+        icon={getThemeAssets().cowork.icon_nav_resource}
+        onPress={() => {
+          NavigationService.navigate('GroupSourceManagePage')
+        }}
+      />,
+      <ImageButton
+        key={'setting'}
+        containerStyle={{
+          marginLeft: scaleSize(30),
+          marginRight: scaleSize(6),
+          width: scaleSize(44),
+          height: scaleSize(44),
+        }}
+        icon={getThemeAssets().cowork.icon_nav_set}
         onPress={(event: any) => {
           this.PagePopModal && this.PagePopModal.setVisible(true, {
             x: event.nativeEvent.pageX,
             y: event.nativeEvent.pageY,
           })
         }}
-      />
-    )
+      />,
+    ]
   }
 
   renderTab() {
@@ -268,11 +278,11 @@ export default class CoworkManagePage extends React.Component<Props, State> {
             tabLabel={getLanguage(GLOBAL.language).Friends.MESSAGES}
             user={this.props.user}
             servicesUtils={this.servicesUtils}
-            groupInfo={this.groupInfo}
+            groupInfo={this.props.currentGroup}
           />
           <TaskManage
             tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
-            groupInfo={this.groupInfo}
+            groupInfo={this.props.currentGroup}
             {...this.props}
           />
         </ScrollableTabView>
@@ -299,13 +309,23 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         hideInBackground={false}
         headerProps={{
           // title: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
-          title: this.groupInfo.groupName,
+          title: this.props.currentGroup.groupName,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         {/* {this.renderContent()} */}
-        {this.renderTab()}
+        {/* {this.renderTab()} */}
+        <TaskManage
+          tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
+          groupInfo={this.props.currentGroup}
+          createTask={this.createTask}
+          {...this.props}
+        />
         {this._renderPagePopup()}
       </Container>
     )

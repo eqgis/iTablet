@@ -191,7 +191,7 @@ export default class setting extends Component {
           title: getLanguage(this.props.language).Map_Module.MAP_3D,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
-            marginLeft: scaleSize(80),
+            marginLeft: scaleSize(90),
           },
           navigation: this.props.navigation,
           withoutBack: true,

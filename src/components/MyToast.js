@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   centerView: {
     alignSelf:'center',
-    marginTop:100
+    marginTop:100,
   },
   topView: {
     position: 'absolute',
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
   },
   modalTxt: {
     color: '#fff',
-    textAlign:'center',
-    backgroundColor:'#0000',
-    lineHeight:30
-  }
+    textAlign: 'center',
+    backgroundColor: '#0000',
+    lineHeight: 30,
+  },
 })

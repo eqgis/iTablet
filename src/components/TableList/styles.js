@@ -4,12 +4,12 @@ import { color } from '../../styles'
 
 export default StyleSheet.create({
   scrollContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     backgroundColor: color.content_white,
   },
   normalContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     backgroundColor: color.content_white,

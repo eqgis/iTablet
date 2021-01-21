@@ -16,6 +16,7 @@ const icon_dropdown_selected = require('./icon_dropdown_selected.png')
 const icon_dropup_selected = require('./icon_dropup_selected.png')
 const icon_move = require('./icon_move.png')
 const icon_move_selected = require('./icon_move_selected.png')
+const icon_jump = require('./icon_jump.png')
 
 const icon_cancel = require('./icon_cancel.png')
 const icon_redo = require('./icon_redo.png')
@@ -41,6 +42,7 @@ export default {
   icon_dropup_selected,
   icon_move,
   icon_move_selected,
+  icon_jump,
 
   icon_cancel,
   icon_submit,

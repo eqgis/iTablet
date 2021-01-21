@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { color, size } from '../../../styles'
 import { scaleSize } from '../../../utils'
-import { getPublicAssets } from '../../../assets'
+import { getPublicAssets, getThemeAssets } from '../../../assets'
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -133,7 +133,7 @@ export default class Find extends PureComponent {
           <Image
             style={styles.rightImage}
             resizeMode={'contain'}
-            source={rightImagePath || getPublicAssets().common.icon_move}
+            source={rightImagePath || getThemeAssets().publicAssets.icon_jump}
           />
         </TouchableOpacity>
       </View>

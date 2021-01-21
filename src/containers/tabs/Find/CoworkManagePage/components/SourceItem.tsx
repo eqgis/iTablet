@@ -6,58 +6,57 @@
 import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { Toast, scaleSize } from '../../../../../utils'
-import { CheckBox } from '../../../../../components'
+import { CheckBox, ListSeparator, Progress } from '../../../../../components'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../../native'
-import { color } from '../../../../../styles'
+import { color, size } from '../../../../../styles'
+import { getThemeAssets } from '../../../../../assets'
 import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import DataHandler from '../../../Mine/DataHandler'
 import { SOnlineService } from 'imobile_for_reactnative'
 
-export const itemHeight = 140
-export const imageWidth = 90
-export const imageHeight = 90
-const smallFontSize = 12
-const largeFontSize = 18
-const paddingLeft = 15
 const styles = StyleSheet.create({
-  itemViewStyle: {
-    width: '100%',
-    height: itemHeight,
+  rowContainer: {
     flexDirection: 'row',
-    padding: 10,
+    paddingRight: scaleSize(28),
+    paddingLeft: scaleSize(30),
+    paddingVertical: scaleSize(24),
+    height: scaleSize(160),
+    // backgroundColor: 'yellow',
     alignItems: 'center',
-    backgroundColor: color.content_white,
   },
-  imageStyle: {
-    width: imageWidth,
-    height: imageHeight,
-    backgroundColor: color.image_bg_white,
+  itemImage: {
+    height: scaleSize(80),
+    width: scaleSize(80),
   },
   contentView: {
     flex: 1,
     flexDirection: 'row',
   },
+  contentSubView: {
+    // flex: 1,
+    flexDirection: 'column',
+    marginLeft: scaleSize(40),
+    // justifyContent: 'space-between',
+  },
   restTitleTextStyle: {
     width: '100%',
-    fontSize: largeFontSize,
+    fontSize: size.fontSize.fontSizeXXl,
     fontWeight: 'bold',
     // color: 'white',
-    paddingLeft,
     textAlign: 'left',
     flexWrap: 'wrap',
-    marginRight: 100,
+    // marginRight: 100,
   },
 
   viewStyle2: {
-    width: '100%',
-    height: 20,
+    // width: '100%',
+    // height: 20,
     flexDirection: 'row',
-    paddingLeft,
-    marginTop: 10,
-    marginRight: 100,
+    // marginTop: 10,
+    // marginRight: 100,
   },
   imageStyle2: {
     width: 20,
@@ -66,8 +65,9 @@ const styles = StyleSheet.create({
   textStyle2: {
     textAlign: 'left',
     // color: 'white',
-    lineHeight: 20,
-    fontSize: smallFontSize,
+    // lineHeight: 20,
+    padding: 0,
+    fontSize: size.fontSize.fontSizeLg,
     paddingLeft: 5,
   },
   separateViewStyle: {
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
 })
 
 interface State {
-  progress: number | string,
+  // progress: number | string,
+  exist: boolean,
   isDownloading: boolean,
   selectedData: Map<string, Object>, //被选中人员数组数组
 }
@@ -99,10 +100,10 @@ interface Props {
 export default class SourceItem extends Component<Props, State> {
 
   path: string | undefined
-  exist: boolean
   downloading: boolean
   downloadingPath: string
   titleName: string
+  itemProgress: Progress | undefined | null
 
   static defaultProps = {
     hasDownload: true,
@@ -111,7 +112,6 @@ export default class SourceItem extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.path = undefined
-    this.exist = false
     this.downloading = false
     this.downloadingPath = ''
     this.titleName = ''
@@ -123,8 +123,7 @@ export default class SourceItem extends Component<Props, State> {
           : this.props.data.resourceName.substring(0, index)
     }
     this.state = {
-      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
-      // '下载',
+      exist: false,
       isDownloading: false,
       selectedData: new Map(),
     }
@@ -147,13 +146,10 @@ export default class SourceItem extends Component<Props, State> {
       ConstPath.RelativePath.Temp +
       this.props.data.resourceId
 
-    this.exist = false
     let exist = await FileTools.fileIsExist(this.downloadingPath + '_')
     if (exist) {
-      this.exist = true
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
-        //'下载完成',
+        exist: true,
         isDownloading: false,
       })
     }
@@ -166,40 +162,26 @@ export default class SourceItem extends Component<Props, State> {
         exist = await FileTools.fileIsExist(this.downloadingPath + '_')
         if (exist) {
           clearInterval(timer)
-          this.exist = true
           this.setState({
-            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
-            //'下载完成',
+            exist: true,
             isDownloading: false,
           })
         } else {
-          let result = await RNFS.readFile(this.downloadingPath)
           this.setState({
-            progress: result,
-            //'下载完成',
+            exist: false,
             isDownloading: true,
           })
         }
       }, 2000)
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
-        //'下载完成',
+        exist: false,
         isDownloading: true,
       })
     }
-
-    // this.titleName = ''
-    // if (this.props.data.fileName) {
-    //   let index = this.props.data.fileName.lastIndexOf('.')
-    //   this.titleName =
-    //     index === -1
-    //       ? this.props.data.fileName
-    //       : this.props.data.fileName.substring(0, index)
-    // }
   }
-  
+
   _downloadFile = async () => {
-    if (this.exist) {
+    if (this.state.exist) {
       await this.unZipFile()
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
@@ -213,11 +195,9 @@ export default class SourceItem extends Component<Props, State> {
     ) {
       if (this.state.isDownloading) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
-        //'正在下载...')
         return
       }
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
         isDownloading: true,
       })
       RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
@@ -231,7 +211,7 @@ export default class SourceItem extends Component<Props, State> {
           android: {
             headers: {
               cookie: await SOnlineService.getAndroidSessionID(),
-            }
+            },
           },
         }),
         fromUrl: dataUrl,
@@ -239,23 +219,15 @@ export default class SourceItem extends Component<Props, State> {
         background: true,
         progress: (res: any) => {
           let value = ~~res.progress.toFixed(0)
-          let progress = value + '%'
-          if (this.state.progress !== progress) {
-            this.setState({ progress })
+          if (this.itemProgress) {
+            this.itemProgress.progress = value / 100
           }
-          RNFS.writeFile(this.downloadingPath, progress, 'utf8')
         },
       }
       try {
         const ret = RNFS.downloadFile(downloadOptions)
         ret.promise
           .then(async () => {
-            this.setState({
-              progress: getLanguage(GLOBAL.language).Prompt
-                .DOWNLOAD_SUCCESSFULLY,
-              //'下载完成',
-              isDownloading: false,
-            })
             let { result, path } = await this.unZipFile()
 
             if (result) {
@@ -271,9 +243,15 @@ export default class SourceItem extends Component<Props, State> {
             }
 
             if (result === false) {
+              this.setState({
+                isDownloading: false,
+              })
               Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
             } else {
-              this.exist = true
+              this.setState({
+                exist: true,
+                isDownloading: false,
+              })
             }
             FileTools.deleteFile(this.downloadingPath)
             RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
@@ -282,12 +260,16 @@ export default class SourceItem extends Component<Props, State> {
             Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
             FileTools.deleteFile(this.path)
             FileTools.deleteFile(this.downloadingPath + '_')
-            this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
+            this.setState({
+              isDownloading: false,
+            })
           })
       } catch (e) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
         FileTools.deleteFile(this.path)
-        this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: false })
+        this.setState({
+          isDownloading: false,
+        })
       }
     } else {
       Toast.show('登录后可下载')
@@ -325,59 +307,106 @@ export default class SourceItem extends Component<Props, State> {
     this.props.checkAction && this.props.checkAction(value)
   }
 
+  _renderProgress = () => {
+    if (!this.state.isDownloading) return null
+    return (
+      <Progress
+        ref={ref => (this.itemProgress = ref)}
+        pointerEvents={'box-none'}
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          height: scaleSize(160),
+          width: '100%',
+        }}
+        progressAniDuration={0}
+        progressColor={'#rgba(70, 128, 223, 0.2)'}
+      />
+    )
+  }
+
   _renderDownload = () => {
     if (!this.props.hasDownload) return null
     return (
       <View
         style={{
-          width: 100,
           height: '100%',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-end',
         }}
       >
         <TouchableOpacity
           style={{
-            width: 50,
-            height: 50,
+            flexDirection: 'column',
+            // width: 50,
+            height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            // backgroundColor: 'yellow',
           }}
           onPress={() => {
             this._downloadFile()
           }}
         >
           <Image
-            style={{ width: 35, height: 35, tintColor: color.fontColorGray }}
-            source={require('../../../../../assets/tabBar/find_download.png')}
+            style={{ width: scaleSize(50), height: scaleSize(50), tintColor: color.fontColorGray }}
+            source={getThemeAssets().cowork.icon_nav_import}
           />
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 12,
-            textAlign: 'center',
-            width: 125,
-            color: color.fontColorGray,
-          }}
-          numberOfLines={1}
-        >
-          {this.state.progress}
-        </Text>
       </View>
     )
   }
-  
+
+  _renderContentView = () => {
+    return (
+      <View style={styles.contentSubView}>
+        <Text
+          style={[styles.restTitleTextStyle, { color: color.fontColorBlack }]}
+          numberOfLines={2}
+        >
+          {this.props.data.resourceName.replace('.zip', '')}
+        </Text>
+        <View style={[styles.viewStyle2, {marginTop: scaleSize(20)}]}>
+          <Image
+            style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}
+            resizeMode={'contain'}
+            source={require('../../../../../assets/tabBar/tab_user.png')}
+          />
+          <Text
+            style={[styles.textStyle2, { color: color.fontColorGray }]}
+            numberOfLines={1}
+          >
+            {this.props.data.nickname}
+          </Text>
+        </View>
+        <View style={[styles.viewStyle2, {marginTop: scaleSize(15)}]}>
+          <Image
+            style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}
+            resizeMode={'contain'}
+            source={require('../../../../../assets/tabBar/find_time.png')}
+          />
+          <Text
+            style={[styles.textStyle2, { color: color.fontColorGray }]}
+            numberOfLines={1}
+          >
+            {new Date(this.props.data.updateTime).Format("yyyy-MM-dd hh:mm:ss")}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
   render() {
-    let fontColor = color.fontColorGray
-    let titleFontColor = color.fontColorBlack
     return (
       <View>
-        <View style={styles.itemViewStyle}>
+        <View style={styles.rowContainer}>
           {
             this.props.openCheckBox &&
             <CheckBox
               style={{
-                marginLeft: scaleSize(32),
+                marginLeft: scaleSize(15),
+                marginRight: scaleSize(32),
                 height: scaleSize(30),
                 width: scaleSize(30),
               }}
@@ -392,56 +421,16 @@ export default class SourceItem extends Component<Props, State> {
           >
             <Image
               resizeMode={'stretch'}
-              style={styles.imageStyle}
-              source={{ uri: this.props.data.thumbnail }}
+              style={styles.itemImage}
+              // source={{ uri: this.props.data.thumbnail }}
+              source={getThemeAssets().cowork.icon_img_zip}
             />
-
-            <View style={{ flex: 1 }}>
-              <Text
-                style={[styles.restTitleTextStyle, { color: titleFontColor }]}
-                numberOfLines={2}
-              >
-                {this.props.data.resourceName}
-              </Text>
-              <View style={styles.viewStyle2}>
-                <Image
-                  style={[styles.imageStyle2, { tintColor: fontColor }]}
-                  resizeMode={'contain'}
-                  source={require('../../../../../assets/tabBar/tab_user.png')}
-                />
-                <Text
-                  style={[styles.textStyle2, { color: fontColor }]}
-                  numberOfLines={1}
-                >
-                  {this.props.data.nickname}
-                </Text>
-              </View>
-              <View style={[styles.viewStyle2, { marginTop: 5 }]}>
-                <Image
-                  style={[styles.imageStyle2, { tintColor: fontColor }]}
-                  resizeMode={'contain'}
-                  source={require('../../../../../assets/tabBar/find_time.png')}
-                />
-                <Text
-                  style={[styles.textStyle2, { color: fontColor }]}
-                  numberOfLines={1}
-                >
-                  {new Date(this.props.data.updateTime).Format("yyyy-MM-dd hh:mm:ss")}
-                </Text>
-              </View>
-            </View>
-
+            {this._renderContentView()}
           </TouchableOpacity>
           {this._renderDownload()}
         </View>
-        <View
-          style={[
-            styles.separateViewStyle,
-            {
-              backgroundColor: color.separateColorGray,
-            },
-          ]}
-        />
+        {this._renderProgress()}
+        <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
       </View>
     )
   }

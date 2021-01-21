@@ -27,7 +27,7 @@ const region = require('./layer_region.png')
 const icon_save_region = require('./icon_toolbar_region.png')
 const icon_save_line = require('./icon_toolbar_saveline.png')
 const icon_save_spot = require('./icon_toolbar_savespot.png')
-
+const icon_ar_pipe_scan = require('./icon_ar_pipe_scan.png')
 export default {
   icon_save_line,
   icon_save_spot,
@@ -39,6 +39,7 @@ export default {
   icon_ar_toolbar_switch,
   icon_ar_toolbar_save,
   icon_ar_toolbar_submit,
+  icon_ar_pipe_scan, // AR管线图片识别
   icon_save,
   icon_delete,
   icon_classify_settings,

@@ -14,6 +14,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   language: state.setting.toJS().language,
   device: state.device.toJS().device,
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {
@@ -87,7 +88,6 @@ class GroupInvitePage extends React.Component<Props, State> {
   servicesUtils: any
   onlineServicesUtils: any
   container: any
-  groupInfo: any
   inviteDialog: InputDialog | undefined | null
 
   constructor(props: Props) {
@@ -97,7 +97,6 @@ class GroupInvitePage extends React.Component<Props, State> {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
       this.servicesUtils = new SCoordination('iportal')
     }
-    this.groupInfo = this.props.navigation?.state?.params?.groupInfo
     this.state = {
       data: [],
       selectedUser: undefined,
@@ -131,7 +130,7 @@ class GroupInvitePage extends React.Component<Props, State> {
   invite = (reason: string) => {
     if (!this.state.selectedUser) return
     this.servicesUtils?.inviteToGroup({
-      groupId: this.groupInfo.id,
+      groupId: this.props.currentGroup.id,
       inviteReason: reason || '',
       inviteNames: [this.state.selectedUser.name],
     }).then((result: any) => {
@@ -158,9 +157,9 @@ class GroupInvitePage extends React.Component<Props, State> {
             id: this.state.selectedUser?.name,
           },
           group: {
-            groupID: this.groupInfo.id,
-            groupName: this.groupInfo.groupName,
-            groupCreator: this.groupInfo.creator,
+            groupID: this.props.currentGroup.id,
+            groupName: this.props.currentGroup.groupName,
+            groupCreator: this.props.currentGroup.creator,
           },
           time: timeStr,
         }
@@ -261,6 +260,10 @@ class GroupInvitePage extends React.Component<Props, State> {
           //     btnClick={this.invite}
           //   />
           // ),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(80),
+          },
         }}
       >
         {this._renderTopView()}

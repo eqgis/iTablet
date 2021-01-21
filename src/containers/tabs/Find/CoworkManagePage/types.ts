@@ -33,10 +33,10 @@ export interface ResourceType {
   updateTime: number | string,
   serviceRootUrlId: number | string | null,
   sourceSubtype: string,
-  /** 
+  /**
    * [ '用户数据' ],
    */
-  tags: Array<string>
+  tags: Array<string>,
   visitCount: number,
   sourceType: string | null,
   createTime: number | string,
@@ -73,17 +73,15 @@ export interface Person {
   userName: string,
 }
 
-export interface GroupApplyMessageType {
-  checkUser: any
-  checkUserNick: any
-  groupName: string
-  checkStatus: string
-  applicantNick: string
-  checkTime: string | number
-  groupId: number
-  applyReason: string
-  checkInfo: any
-  id: number
-  applyTime: string | number
-  applicant: string
+/** 从online上获取群组消息 */
+export interface GroupMessageInfoType {
+  receiver: string,
+  createTime: string | number,
+  updateTime: string | number,
+  id: string | number,
+  type: string, // NOTIFICATION | ...
+  objectInfo: any,
+  objectId: number,
+  status: string, // READ | UNREAD
+  objectType: string, // INVITEINFO | APPLYINFO | ...
 }

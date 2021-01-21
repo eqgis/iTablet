@@ -13,7 +13,6 @@ import {
   Image,
 } from 'react-native'
 
-import NavigationService from '../../../../NavigationService'
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
@@ -23,7 +22,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 import { UserType } from '../../../../../constants'
 import { SCoordination } from 'imobile_for_reactnative'
-import { UserInfo, Users } from '../../../../../redux/models/user'
+import { UserInfo } from '../../../../../redux/models/user'
 
 interface Props {
   user: UserInfo,

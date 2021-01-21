@@ -382,6 +382,9 @@ const Prompt = {
   //三维AR管线相关
   FILE_NOT_EXISTS: '数据不存在，请先下载样例数据',
   MOVE_PHONE_ADD_SCENE: '请缓慢移动手机，识别出平面后点击屏幕添加场景',
+  IDENTIFY_TIMEOUT: '识别图片超时，是否重试？',
+  TRACKING_LOADING: '识别中...',
+  SCENE_OPEN: '加载成功',
 }
 
 export { Prompt }

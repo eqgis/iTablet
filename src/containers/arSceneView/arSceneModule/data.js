@@ -19,12 +19,13 @@ import { size, color } from '../../../styles'
 
 let ToolbarModule = getToolbarModule('AR')
 
+// 图片识别按钮
 const trackData = {
   type: 'track',
   image: getThemeAssets().ar.toolbar.icon_ar_pipe_scan,
   action: async () => {
     await SSceneAR.imageTrack()
-    GLOBAL.Loading.setLoading(true,"识别中...")
+    GLOBAL.Loading.setLoading(true,getLanguage(GLOBAL.language).Prompt.TRACKING_LOADING)
   },
 }
 
@@ -38,6 +39,8 @@ async function getData(type) {
   let Rotation
   switch (type) {
     case ConstToolType.SM_ARSCENEMODULE_NOMAL:
+        // 退出打开样例数据时的showFullMap
+        GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
         buttons = [
           {
             type: ToolbarBtnType.PLACEHOLDER,
@@ -61,6 +64,8 @@ async function getData(type) {
         ]
       break
     case ConstToolType.SM_ARSCENEMODULE:
+      // 退出打开样例数据时的showFullMap
+      GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
       buttons = [
         {
           type: 'style',
@@ -87,7 +92,6 @@ async function getData(type) {
             })
           },
         },
-        trackData,
         {
           type: 'add',
           image: require('../../../assets/mapTools/icon_add_white.png'),
@@ -221,8 +225,10 @@ async function getData(type) {
               action: () => {
                 NavigationService.navigate('SampleMap', {
                   refreshAction: getSceneData,
-                  isfull: true,
+                  // isfull: false,
                 })
+                // 样例数据界面半屏显示，并且隐藏上一层控件 by zcj
+                GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
               },
             }),
           ]
@@ -238,6 +244,8 @@ async function getData(type) {
             {
               type: ToolbarBtnType.TOOLBAR_BACK,
               action: () =>{
+                // 退出打开样例数据时的showFullMap
+                GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
                 GLOBAL.ARContainer.setHeaderVisible(true)
                 ToolbarModule.getParams().setToolbarVisible(
                   true,

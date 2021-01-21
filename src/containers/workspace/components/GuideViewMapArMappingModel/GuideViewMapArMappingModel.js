@@ -7,6 +7,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
 } from 'react-native'
 import {
   scaleSize,
@@ -27,6 +28,9 @@ import { MTBtn } from '../../../../components'
 import styles from './styles'
 import { getThemeAssets } from '../../../../assets'
 
+import ARMeasureData from '../../components/ToolBar/modules/arMeasure/ARMeasureData'
+import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
+
 //AR测图引导界面
 export default class GuideViewMapArMappingModel extends React.Component {
   props: {
@@ -42,6 +46,8 @@ export default class GuideViewMapArMappingModel extends React.Component {
     super(props)
     this.state = {
       measure: true,
+      tool:false,
+      backgroundStyle:{},
     }
   }
 
@@ -49,17 +55,46 @@ export default class GuideViewMapArMappingModel extends React.Component {
 
   }
 
-  renderMapArMappingGuide = () => {
-    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
+  renderMeasureGuide = () => {
       return (
         <GuideView
           title={getLanguage(this.props.language).Profile.MEASURE_GUIDE}
+          style={{
+            position: 'absolute',
+            backgroundColor: 'transparent',
+            top: scaleSize(350) + screen.getIphonePaddingTop(),
+            right: scaleSize(120),
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+          }}
         />
       )
-    }
   }
 
-  renderMaparMappingbackgr = () => {
+  renderToolGuide = () => {
+    return (
+      <GuideView
+        title={getLanguage(this.props.language).Profile.CHOOSE_MEASURE_TYPE}
+        style={{
+          alignItems: 'center',
+          alignSelf: 'center', 
+          top:Platform.OS === 'ios' ? scaleSize(360) : scaleSize(510),
+        }}
+        arrowstyle={{
+          borderTopWidth: 9,
+          borderTopColor: 'white',
+          borderLeftWidth: 8,
+          borderLeftColor: 'transparent',
+          borderRightWidth: 8,
+          borderRightColor: 'transparent',
+        }}
+      />
+    )
+  }
+
+  renderMeasurebackgr = () => {
     return (
       <View
         style={{
@@ -91,10 +126,33 @@ export default class GuideViewMapArMappingModel extends React.Component {
   }
 
   next = () => {
-    this.props.setMapArMappingGuide(false)
+    if(this.state.measure){
+      this.setState({
+        measure:false,
+        tool:true,
+        backgroundStyle: { opacity: 0 },
+      })
+      const params = ToolbarModule.getParams()
+      const _data = ARMeasureData.getData()
+      const containerType = ToolbarType.table
+      const data = ToolbarModule.getToolbarSize(containerType, {
+        data: _data.data,
+      })
+      params.showFullMap && params.showFullMap(true)
+      params.setToolbarVisible(true, ConstToolType.SM_MAP_AR_MEASURE, {
+        containerType,
+        isFullScreen: true,
+        data: _data.data,
+        ...data,
+      })
+    }else{
+      ToolbarModule.getParams().setToolbarVisible(false)
+      this.props.setMapArMappingGuide(false)
+    }
   }
 
   skip = () => {
+    ToolbarModule.getParams().setToolbarVisible(false)
     this.props.setMapArMappingGuide(false)
   }
 
@@ -105,27 +163,33 @@ export default class GuideViewMapArMappingModel extends React.Component {
           position: 'absolute',
           width: '100%',
           height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
         }}>
         <View
-          style={{
+          style={[{
             position: 'absolute',
             backgroundColor: 'black',
             width: '100%',
             height: '100%',
             opacity: 0.8,
-          }} />
-        {this.renderMapArMappingGuide()}
+          },this.state.backgroundStyle]} />
+        {this.state.measure && this.renderMeasureGuide()}
+        {this.state.tool && this.renderToolGuide()}
 
-        {this.renderMaparMappingbackgr()}
+        {this.state.measure&&this.renderMeasurebackgr()}
 
         <TouchableOpacity
           style={{
             position: 'absolute',
-            right: scaleSize(50),
+            right: scaleSize(40),
             bottom: scaleSize(30),
             backgroundColor: 'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,
+            borderColor: 'black',
+            borderWidth: scaleSize(2),
           }}
           onPress={this.next}
         >
@@ -144,11 +208,13 @@ export default class GuideViewMapArMappingModel extends React.Component {
         <TouchableOpacity
           style={{
             position: 'absolute',
-            right: scaleSize(50),
-            top: scaleSize(30)+ screen.getIphonePaddingTop(),
+            right: scaleSize(40),
+            top: scaleSize(30) + screen.getIphonePaddingTop(),
             backgroundColor: 'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,
+            borderColor: 'black',
+            borderWidth: scaleSize(2),
           }}
           onPress={this.skip}
         >

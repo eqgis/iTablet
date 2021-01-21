@@ -8,6 +8,7 @@ import { REHYDRATE } from 'redux-persist'
 // --------------------------------------------------
 export const GUIDE_SHOW = 'GUIDE_SHOW'
 export const VERSION = 'VERSION'
+export const DATA_GUIDE = 'DATA_GUIDE'
 
 // Actions
 // --------------------------------------------------
@@ -26,9 +27,17 @@ export const setVersion = (params = {}) => async dispatch => {
   })
 }
 
+export const setMapAnalystGuide = (params = {}) => async dispatch => {
+  await dispatch({
+    type: DATA_GUIDE,
+    payload: params,
+  })
+}
+
 const initialState = fromJS({
-    guideshow: true,
-    version: '',
+    guideshow: false,//首页引导显隐
+    version: '',//新手引导版本号
+    mapAnalystGuide:true,//数据处理模块引导
 })
 
 export default handleActions(
@@ -46,6 +55,11 @@ export default handleActions(
         let data = state.toJS().version
         data = payload
         return state.setIn(['version'], fromJS(data))
+      },
+      [`${DATA_GUIDE}`]: (state, { payload }) => {
+        let data = state.toJS().mapAnalystGuide
+        data = payload
+        return state.setIn(['mapAnalystGuide'], fromJS(data))
       },
       [REHYDRATE]: (state, { payload }) => {
         if (payload && payload.home) {

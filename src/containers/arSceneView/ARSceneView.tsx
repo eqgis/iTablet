@@ -8,7 +8,7 @@ import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
 import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arSceneModule from './arSceneModule'
-import { scaleSize,Toast } from '../../utils'
+import { scaleSize,Toast, screen } from '../../utils'
 import { FileTools } from '../../native'
 import { ConstPath} from '../../constants'
 
@@ -52,10 +52,13 @@ export default class ARSceneView extends React.Component<IProps> {
       callback: async result => {
         if (result) {
           GLOBAL.isSceneOpen = true
-          this.toolbar.setVisible(true, 'SM_ARSCENEMODULE', {
+          this.toolbar && this.toolbar.setVisible(true, 'SM_ARSCENEMODULE', {
             type: 'table',
           })
           GLOBAL.Loading.setLoading(false)
+          setTimeout(()=>{
+            Toast.show(getLanguage(GLOBAL.language).Prompt.SCENE_OPEN)
+          },1000)
         }else{
           GLOBAL.isSceneOpen = false
         }
@@ -93,6 +96,7 @@ export default class ARSceneView extends React.Component<IProps> {
     await SSceneAR.close()
     // Orientation.lockToPortrait()
     GLOBAL.Loading.setLoading(true,"Loading")
+    GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
     NavigationService.goBack()
     setTimeout(() => {
       GLOBAL.Loading.setLoading(false)
@@ -106,10 +110,11 @@ export default class ARSceneView extends React.Component<IProps> {
   onDialogConfirm = async () => {
     const { firstDialog } = this.state
     this.dialog.setDialogVisible(false)
+    // 超时继续识别
     if(!firstDialog){
       // SSceneAR.setLoadModelState(false)
       await SSceneAR.imageTrack()
-      GLOBAL.Loading.setLoading(true,"识别中...")
+      GLOBAL.Loading.setLoading(true,getLanguage(GLOBAL.language).Prompt.TRACKING_LOADING)
     }
 
   }
@@ -117,6 +122,7 @@ export default class ARSceneView extends React.Component<IProps> {
   onDialogCancel = () => {
     const { firstDialog } = this.state
     this.dialog.setDialogVisible(false)
+    // 超时取消继续识别
     if(firstDialog){
       SSceneAR.setLoadModelState(true)
     }
@@ -131,9 +137,10 @@ export default class ARSceneView extends React.Component<IProps> {
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
-        // type={'modal'}
         cancelBtnVisible={!firstDialog}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+        confirmBtnTitle={firstDialog ? getLanguage(GLOBAL.language).Prompt.CONFIRM
+          : getLanguage(GLOBAL.language).Prompt.YES}
+        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.NO}
         confirmAction={async ()=>{
           this.dialog && this.onDialogConfirm()
         }}
@@ -149,7 +156,7 @@ export default class ARSceneView extends React.Component<IProps> {
           <Text style={styles.titleText}>{
             firstDialog ?
               getLanguage(GLOBAL.language).Prompt.MOVE_PHONE_ADD_SCENE
-              : "识别超时，是否继续识别"
+              : getLanguage(GLOBAL.language).Prompt.IDENTIFY_TIMEOUT
           }</Text>
         </View>
       </Dialog>
@@ -158,24 +165,29 @@ export default class ARSceneView extends React.Component<IProps> {
 
   render() {
     return (
-      <Container
-        ref={ref => (GLOBAL.ARContainer = ref)}
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_PIPELINE,
-          navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
-          headerStyle: {
-            marginRight: scaleSize(96),
-          },
-        }}
-        showFullInMap = {true}
-        bottomProps={{ type: 'fix' }}
-      >
-        <SMSceneARView style={{ flex: 1 }} />
-        {this.renderDialog()}
-        {this.renderToolbar()}
-      </Container>
+      <View style={{flex: 1}}>
+        <Container
+          ref={ref => (GLOBAL.ARContainer = ref)}
+          headerProps={{
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_PIPELINE,
+            navigation: this.props.navigation,
+            backAction: this.back,
+            type: 'fix',
+            headerStyle: {
+              marginRight: scaleSize(96),
+            },
+          }}
+          showFullInMap = {true}
+          bottomProps={{ type: 'fix' }}
+        >
+          <SMSceneARView style={{ flex: 1}} />
+          {this.renderDialog()}
+          {this.renderToolbar()}
+        </Container>
+        {/* AR管线界面在打开toolbar时，系统兼容问题导致container左侧部分不渲染
+            这里在container外使用一个View来避免，这个view必须可见，不能使用透明背景 by zcj */}
+        <View style={styles.placeholderView}></View>
+      </View>
     )
   }
 }
@@ -199,5 +211,11 @@ const styles = StyleSheet.create({
     width: scaleSize(80),
     height: scaleSize(80),
     opacity: 1,
+  },
+  placeholderView: {
+    position: 'absolute',
+    width: 1,
+    height: screen.deviceWidth,
+    backgroundColor: '#000',
   },
 })

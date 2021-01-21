@@ -19,6 +19,7 @@ import Setting from './Setting'
 import {
   setGuideShow,
   setVersion,
+  setMapAnalystGuide,
 } from '../../../redux/models/home'
 import {
   setMapArGuide,
@@ -36,6 +37,7 @@ const mapStateToProps = state => ({
   guideshow: state.home.toJS().guideshow,
   mineModules: state.appConfig.toJS().mineModules,
   version: state.home.toJS().version,
+  isAgreeToProtocol: state.setting.toJS().isAgreeToProtocol,
 })
 const mapDispatchToProps = {
   setLanguage,
@@ -53,6 +55,7 @@ const mapDispatchToProps = {
   setVersion,
   setMapArGuide,
   setMapArMappingGuide,
+  setMapAnalystGuide,
 }
 export default connect(
   mapStateToProps,

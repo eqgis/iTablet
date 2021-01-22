@@ -24,9 +24,10 @@ export default class ARSceneView extends React.Component<IProps> {
   toolbar: any;
   constructor(props: IProps) {
     super(props)
-    _trackListener = null
+    this._trackListener = null
     this.state = {
       firstDialog: true, // 第一次用于渲染提示，后面渲染超时
+      showPlaceholderView: true,
     }
   }
 
@@ -98,6 +99,7 @@ export default class ARSceneView extends React.Component<IProps> {
   }
 
   back = async () => {
+    this.setState({showPlaceholderView:false})
     await SSceneAR.close()
     // Orientation.lockToPortrait()
     GLOBAL.Loading.setLoading(true,"Loading")
@@ -194,7 +196,7 @@ export default class ARSceneView extends React.Component<IProps> {
         </Container>
         {/* AR管线界面在打开toolbar时，系统兼容问题导致container左侧部分不渲染
             这里在container外使用一个View来避免，这个view必须可见，不能使用透明背景 by zcj */}
-        <View style={styles.placeholderView}></View>
+        {this.state.showPlaceholderView && <View style={styles.placeholderView}></View>}
       </View>
     )
   }

@@ -74,7 +74,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: 80,
     height: 80,
-    bottom: 110,
+    bottom: scaleSize(190),
     left: '50%',
     marginLeft: -40,
     // backgroundColor: 'white',

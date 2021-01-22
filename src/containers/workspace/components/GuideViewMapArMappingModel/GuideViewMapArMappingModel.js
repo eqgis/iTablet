@@ -130,7 +130,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
       this.setState({
         measure:false,
         tool:true,
-        backgroundStyle: { opacity: 0 },
+        backgroundStyle: { opacity: 0.2 },
       })
       const params = ToolbarModule.getParams()
       const _data = ARMeasureData.getData()

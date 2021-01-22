@@ -186,7 +186,7 @@ export default class GuideViewMapArModel extends React.Component {
       this.setState({
         launch: false,
         tool: true,
-        backgroundStyle: { opacity: 0 },
+        backgroundStyle: { opacity: 0.2 },
       })
 
       const params = ToolbarModule.getParams()

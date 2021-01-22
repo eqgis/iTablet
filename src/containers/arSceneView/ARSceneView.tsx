@@ -24,6 +24,7 @@ export default class ARSceneView extends React.Component<IProps> {
   toolbar: any;
   constructor(props: IProps) {
     super(props)
+    _trackListener = null
     this.state = {
       firstDialog: true, // 第一次用于渲染提示，后面渲染超时
     }
@@ -64,24 +65,28 @@ export default class ARSceneView extends React.Component<IProps> {
         }
       },
     })
-    SSceneAR.setImageTrackingCallback({
-      onSuccess: () => {
-        GLOBAL.Loading.setLoading(false)
-      },
-      onTimeout: () => {
-        GLOBAL.Loading.setLoading(false)
-        this.setState({ firstDialog:false })
-        setTimeout(()=>{
-          this.dialog.setDialogVisible(true)
-        },1000)
-      },
-    })
+
+    this._trackListener = SSceneAR.setImageTrackingCallback(this._trackCb)
     this.customerPath()
     // Toast.show(getLanguage(GLOBAL.language).Prompt.MOVE_PHONE_ADD_SCENE)
   }
 
   componentWillUnmount() {
- 
+    SSceneAR.removeImageTrackingCallback(this._trackListener)
+  }
+
+  // 图片识别回调
+  _trackCb = result => {
+    // 成功
+    if(result){
+      GLOBAL.Loading.setLoading(false)
+    }else{
+      // 超时
+      GLOBAL.Loading.setLoading(false)
+      setTimeout(()=>{
+        this.dialog && this.dialog.setDialogVisible(true)
+      },1000)
+    }
   }
 
   customerPath = async() => {
@@ -96,7 +101,6 @@ export default class ARSceneView extends React.Component<IProps> {
     await SSceneAR.close()
     // Orientation.lockToPortrait()
     GLOBAL.Loading.setLoading(true,"Loading")
-    GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
     NavigationService.goBack()
     setTimeout(() => {
       GLOBAL.Loading.setLoading(false)
@@ -111,7 +115,9 @@ export default class ARSceneView extends React.Component<IProps> {
     const { firstDialog } = this.state
     this.dialog.setDialogVisible(false)
     // 超时继续识别
-    if(!firstDialog){
+    if(firstDialog){
+      this.setState({ firstDialog:false })
+    }else{
       // SSceneAR.setLoadModelState(false)
       await SSceneAR.imageTrack()
       GLOBAL.Loading.setLoading(true,getLanguage(GLOBAL.language).Prompt.TRACKING_LOADING)
@@ -124,6 +130,8 @@ export default class ARSceneView extends React.Component<IProps> {
     this.dialog.setDialogVisible(false)
     // 超时取消继续识别
     if(firstDialog){
+      this.setState({ firstDialog:false })
+    }else{
       SSceneAR.setLoadModelState(true)
     }
   }

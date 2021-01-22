@@ -253,7 +253,7 @@ export default class InviteMessages extends Component<Props, State> {
   _renderNull = () => {
     return (
       <View style={[styles.nullView]}>
-        <View style={styles.nullView}>
+        <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
           <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE_NULL}</Text>
         </View>
@@ -265,7 +265,8 @@ export default class InviteMessages extends Component<Props, State> {
   render() {
     return (
       <View style={styles.subContainer}>
-        {this.state.data.length === 0 && !this.state.firstLoad ? this._renderNull() : this._renderList()}
+        {this.state.data.length === 0 && !this.state.firstLoad && this._renderNull()}
+        {this._renderList()}
         {this._renderPagePopup()}
       </View>
     )

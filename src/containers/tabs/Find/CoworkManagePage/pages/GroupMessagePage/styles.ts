@@ -75,6 +75,14 @@ export default StyleSheet.create({
   },
 
   nullView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: scaleSize(100),
+    bottom: 0,
+    alignItems: 'center',
+  },
+  nullSubView: {
     flex: 2,
     flexDirection: 'column',
     justifyContent: 'center',

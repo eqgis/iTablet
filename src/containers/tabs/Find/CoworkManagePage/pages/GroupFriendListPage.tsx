@@ -426,7 +426,10 @@ class GroupFriendListPage extends Component<Props, State> {
           <CheckBox
             type={'circle'}
             style={styles.checkBtn}
-            checked={this.state.selectedMembers.size === this.state.allData.length - 1} // -1是减去管理者自己
+            checked={
+              this.state.selectedMembers.size === this.state.allData.length - 1 &&
+              this.state.selectedMembers.size > 0
+            } // -1是减去管理者自己
             onChange={value => {
               this.setState(state => {
                 const selected = new Map(state.selectedMembers)
@@ -443,11 +446,23 @@ class GroupFriendListPage extends Component<Props, State> {
               })
             }}
           />
-          <Text style={styles.selectAll}>{getLanguage(GLOBAL.language).Profile.SELECT_ALL}</Text>
+          <Text
+            style={[
+              styles.selectAll,
+              this.state.selectedMembers.size === 0 &&
+              {color: color.itemColorGray3},
+            ]}
+          >
+            {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+          </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn
             btnText={getLanguage(this.props.language).Common.CONFIRM}
-            containerStyle={styles.bottomBtn}
+            containerStyle={[
+              styles.bottomBtn,
+              this.state.selectedMembers.size === 0 &&
+              {backgroundColor: color.itemColorGray3},
+            ]}
             textStyle={styles.bottomBtnText}
             btnClick={this._btnAction}
           />

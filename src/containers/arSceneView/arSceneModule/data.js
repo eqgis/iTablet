@@ -314,32 +314,40 @@ async function getData(type) {
               hasTitle={true}
               onMoveX={value => {
                 let currentX = value*10
-                ToolbarModule.addData({ currentX })
+                // 每次调整位置，基于上次位置偏移 by zcj
+                let total = currentX + TransLation.TransLationx
+                ToolbarModule.addData({ currentX: total })
                 let { currentY, currentZ } = ToolbarModule.getData()
                 currentY = currentY === undefined ? 0 : currentY
                 currentZ = currentZ === undefined ? 0 : currentZ
-                SSceneAR.setSceneTransLation(currentX, currentZ, currentY)
+                SSceneAR.setSceneTransLation(total, currentZ, currentY)
               }}
               onMoveY={value => {
                 let currentY = value*10
-                ToolbarModule.addData({ currentY })
+                let total = currentY + TransLation.TransLationz
+                ToolbarModule.addData({ currentY: total })
                 let { currentX, currentZ } = ToolbarModule.getData()
                 currentX = currentX === undefined ? 0 : currentX
                 currentZ = currentZ === undefined ? 0 : currentZ
-                SSceneAR.setSceneTransLation(currentX, currentZ, currentY)
+                SSceneAR.setSceneTransLation(currentX, currentZ, total)
               }}
               onMoveZ={value => {
                 let currentZ = value*10
-                ToolbarModule.addData({ currentZ })
+                let total = currentZ + TransLation.TransLationy
+                ToolbarModule.addData({ currentZ: total })
                 let { currentX, currentY } = ToolbarModule.getData()
                 currentX = currentX === undefined ? 0 : currentX
                 currentY = currentY === undefined ? 0 : currentY
-                SSceneAR.setSceneTransLation(currentX, currentZ, currentY)
+                SSceneAR.setSceneTransLation(currentX, total , currentY)
               }}
               style={{ width: 280 }}
-              defaultValuex={TransLation.TransLationx/10}
-              defaultValuey={TransLation.TransLationz/10}
-              defaultValuez={TransLation.TransLationy/10}
+              // defaultValuex={TransLation.TransLationx/10}
+              // defaultValuey={TransLation.TransLationz/10}
+              // defaultValuez={TransLation.TransLationy/10}
+              // 每次调整位置时，起始位置在上次位置
+              defaultValuex={0}
+              defaultValuey={0}
+              defaultValuez={0}
             />
           )
           break

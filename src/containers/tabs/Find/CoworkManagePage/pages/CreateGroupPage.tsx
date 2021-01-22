@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, CheckBox, RadioGroup, TextBtn } from '../../../../../components'
+import { Container, CheckBox, TextBtn } from '../../../../../components'
 import { View, Text, TextInput, ScrollView, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native'
 import { scaleSize, Toast } from '../../../../../utils'
 import { color, size } from '../../../../../styles'
@@ -149,11 +149,22 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     color: color.contentColorGray,
     marginLeft: scaleSize(34),
+    padding: 0,
   },
   typeSubTitle: {
+    flex: 1,
     fontSize: size.fontSize.fontSizeMd,
     color: color.fontColorGray3,
     marginLeft: scaleSize(20),
+    ...Platform.select({
+      android: {
+        height: scaleSize(80),
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+  typeItemCheck: {
+    marginRight: scaleSize(20),
   },
   typeCheckView: {
     marginTop: scaleSize(24),
@@ -181,6 +192,7 @@ class CreateGroupPage extends React.Component<Props, State> {
     tags: '',
     description: '',
   }
+  isCreating: boolean // 防止重复创建
 
   constructor(props: Props) {
     super(props)
@@ -224,6 +236,7 @@ class CreateGroupPage extends React.Component<Props, State> {
         description: this.initData.description,
       }
     }
+    this.isCreating = false
     this.state = {
       isPublic: isPublic,
       resourceSharer: this.initData?.resourceSharer || 'MEMBER',
@@ -263,7 +276,8 @@ class CreateGroupPage extends React.Component<Props, State> {
   }
 
   create = () => {
-    if (!this.checkData()) return
+    if (this.isCreating || !this.checkData()) return
+    this.isCreating = true
     let _tags = this.groupInfo.tags.split(',')
     this.servicesUtils.createGroup({
       groupName: this.groupInfo.groupName,
@@ -277,13 +291,17 @@ class CreateGroupPage extends React.Component<Props, State> {
         Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_SUCCUESS)
         this.callBack && this.callBack()
         NavigationService.goBack('CreateGroupPage', null)
+        this.isCreating = false
       } else {
+        this.isCreating = false
         if (result.error?.errorMsg) {
           Toast.show(result.error.errorMsg)
         } else {
           Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_FAILED)
         }
       }
+    }).catch(e => {
+      this.isCreating = false
     })
   }
 
@@ -457,9 +475,9 @@ class CreateGroupPage extends React.Component<Props, State> {
         }}
       >
         <Text style={styles.typeTitle} numberOfLines={1}>{data.title}</Text>
-        <Text style={styles.typeSubTitle} numberOfLines={1}>({data.subTitle})</Text>
+        <Text style={styles.typeSubTitle} numberOfLines={2}>({data.subTitle})</Text>
         <Image
-          style={styles.shareItemCheck}
+          style={styles.typeItemCheck}
           resizeMode={'contain'}
           source={checked ? getPublicAssets().common.icon_single_check : getPublicAssets().common.icon_none}
         />

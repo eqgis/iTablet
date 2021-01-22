@@ -29,9 +29,7 @@ interface Props {
 }
 
 type State = {
-  data: Array<any>,
-  isRefresh: boolean,
-  firstLoad: boolean,
+  scrollTabViewLocked: boolean,
 }
 
 class GroupMessagePage extends Component<Props, State> {
@@ -50,13 +48,13 @@ class GroupMessagePage extends Component<Props, State> {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
       this.servicesUtils = new SCoordination('iportal')
     }
+    this.state = {
+      scrollTabViewLocked: false,
+    }
   }
 
   _getWidth = () => {
     let width = screen.getScreenWidth(this.props.device.orientation)
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      width = width - scaleSize(96)
-    }
     return width
   }
 
@@ -88,6 +86,7 @@ class GroupMessagePage extends Component<Props, State> {
                     paddingBottom: scaleSize(10),
                   }}
                   key={name}
+                  activeOpacity={1}
                   accessible={true}
                   accessibilityLabel={name}
                   accessibilityTraits="button"

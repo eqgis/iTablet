@@ -48,6 +48,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
       measure: true,
       tool:false,
       backgroundStyle:{},
+      nextStyle:{},
     }
   }
 
@@ -132,6 +133,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
         measure:false,
         tool:true,
         backgroundStyle: { opacity: 0.2 },
+        nextStyle: { bottom : scaleSize(120)},
       })
       const params = ToolbarModule.getParams()
       const _data = ARMeasureData.getData()
@@ -179,7 +181,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
         {this.state.measure&&this.renderMeasurebackgr()}
 
         <TouchableOpacity
-          style={{
+          style={[{
             position: 'absolute',
             right: scaleSize(40),
             bottom: scaleSize(30),
@@ -188,7 +190,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
             opacity: 0.8,
             borderColor: 'black',
             borderWidth: scaleSize(2),
-          }}
+          },this.state.nextStyle]}
           onPress={this.next}
         >
           <Text

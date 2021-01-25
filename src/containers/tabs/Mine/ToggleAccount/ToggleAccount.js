@@ -57,10 +57,10 @@ export default class ToggleAccount extends Component {
         if (result) {
           result = await FriendListFileHandle.initFriendList(item)
         }
-        if (result) {
-          // 初始化协作文件
-          CoworkFileHandle.initCoworkList(item)
-        }
+        // if (result) {
+        //   // 初始化协作文件
+        //   CoworkFileHandle.initCoworkList(item)
+        // }
         if(result){
           let JSOnlineservice = new OnlineServicesUtils('online')
           let userInfo = await JSOnlineservice.getUserInfo(item.nickname, true)

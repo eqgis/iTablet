@@ -241,8 +241,8 @@ export default class Login extends React.Component {
           userType: UserType.COMMON_USER,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
-        let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
-        result = await new Promise.race([friendListResult, coworkListResult, timeout(15)])
+        // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
+        result = await new Promise.race([friendListResult, timeout(15)])
         if (result === 'timeout') {
           Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else if (result) {

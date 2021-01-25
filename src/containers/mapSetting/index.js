@@ -6,6 +6,7 @@ import {
   setColumnNavBar,
 } from '../../redux/models/setting'
 import { closeMap } from '../../redux/models/map'
+import { setIsRealTime } from '../../redux/models/cowork'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -17,6 +18,7 @@ const mapStateToProps = state => ({
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
+  currentTask: state.cowork.toJS().currentTask,
 })
 
 const mapDispatchToProps = {
@@ -24,6 +26,7 @@ const mapDispatchToProps = {
   closeMap,
   setMapLegend,
   setColumnNavBar,
+  setIsRealTime,
 }
 
 export default connect(

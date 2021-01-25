@@ -13,6 +13,7 @@ import color from '../../styles/color'
 import CoworkInfo from '../tabs/Friend/Cowork/CoworkInfo'
 import MapSettingItem from './MapSettingItem'
 import { legendModule } from '../workspace/components/ToolBar/modules'
+import { TaskRealTimeParams } from '../../redux/models/cowork'
 
 export default class MapSetting extends Component {
   props: {
@@ -24,6 +25,7 @@ export default class MapSetting extends Component {
     setMapSetting: () => {},
     closeMap: () => {},
     mapSetting: any,
+    currentTask: any,
     device: Object,
     mapLegend: Object,
     appConfig: Object,
@@ -31,6 +33,7 @@ export default class MapSetting extends Component {
     setMapLegend: () => {},
     mapColumnNavBar: boolean,
     setColumnNavBar: () => {},
+    setIsRealTime: (params: TaskRealTimeParams) => Promise<any>,
   }
 
   constructor(props) {
@@ -173,6 +176,11 @@ export default class MapSetting extends Component {
             title={getLanguage(GLOBAL.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
               CoworkInfo.setIsRealTime(value)
+              // this.props.setIsRealTime({
+              //   groupId: this.props.currentTask.groupID,
+              //   taskId: this.props.currentTask.id,
+              //   isRealTime: value,
+              // })
               this.setState({ isRealTime: value })
             }}
             value={this.state.isRealTime}

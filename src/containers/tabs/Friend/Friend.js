@@ -74,9 +74,11 @@ export default class Friend extends Component {
     openWorkspace: () => {},
     closeWorkspace: () => {},
     setCoworkNewMessage: () => {},
+    readTaskMessage: (params: any) => Promise<any>,
     addInvite: () => {},
     addCoworkMsg: () => void,
     setCoworkGroup: () => void,
+    addTaskMessage: () => any,
   }
 
   constructor(props) {
@@ -88,6 +90,7 @@ export default class Friend extends Component {
     this.curMod = undefined
     MessageDataHandle.setHandle(this.props.addChat)
     CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
+    CoworkInfo.setReadMsgHandle(this.props.readTaskMessage)
     FriendListFileHandle.refreshCallback = this.refreshList
     FriendListFileHandle.refreshMessageCallback = this.refreshMsg
     this.state = {
@@ -390,7 +393,7 @@ export default class Friend extends Component {
     JPushService.init(this.props.user.currentUser.userId)
     if (this.props.user.currentUser.userId === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
-      CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+      // CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     }
   }
 
@@ -693,6 +696,7 @@ export default class Friend extends Component {
 
   /**
    * 向好友或群组发送协作邀请
+   * @Deprecated
    */
   sendCoworkInvitation = async (talkId, moduleId, mapName) => {
     let time = new Date().getTime()
@@ -725,7 +729,7 @@ export default class Friend extends Component {
       }
 
       CoworkInfo.setId(coworkId)
-      CoworkInfo.setTalkId(talkId)
+      CoworkInfo.setGroupId(talkId)
       let member = {
         id: this.props.user.currentUser.userId,
         name: this.props.user.currentUser.nickname,
@@ -763,6 +767,7 @@ export default class Friend extends Component {
 
   /**
    * 加入协作
+   * 
    */
   joinCowork = async (coworkId, talkId) => {
     try {
@@ -785,7 +790,7 @@ export default class Friend extends Component {
         let msgStr = JSON.stringify(msgObj)
         await this._sendMessage(msgStr, coworkId, false)
         CoworkInfo.setId(coworkId)
-        CoworkInfo.setTalkId(talkId)
+        CoworkInfo.setGroupId(talkId)
         let member = {
           id: this.props.user.currentUser.userId,
           name: this.props.user.currentUser.nickname,
@@ -900,8 +905,11 @@ export default class Friend extends Component {
           user: {
             name: this.props.user.currentUser.nickname,
             id: this.props.user.currentUser.userId,
-            groupID: CoworkInfo.coworkId,
+            groupID: CoworkInfo.coworkId,     // 任务群组
             groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
           },
           message: {
             type: MSGConstant.MSG_COWORK_UPDATE,
@@ -1537,7 +1545,8 @@ export default class Friend extends Component {
           /**
            * 对象添加更改的协作消息
            */
-          CoworkInfo.pushMessage(messageObj)
+          // CoworkInfo.pushMessage(messageObj)
+          this.props.addTaskMessage(messageObj, true)
         }
       }
     }

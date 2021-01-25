@@ -1,4 +1,5 @@
-import { AsyncStorage } from 'react-native'
+// TODO CoworkInfo 方法待优化。 移除？
+// import { AsyncStorage } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
@@ -6,37 +7,46 @@ import { getLanguage } from '../../../../language'
 
 export default class CoworkInfo {
   static coworkId = ''
-  static talkId = ''
+  static groupId = ''
   static members = []
   static prevMessages = []
   static messages = []
   static isRealTime = true
   static adding = false
   static addMessageNum = undefined
+  static readMsgHandle = undefined
 
   static setNewMsgHandle(handle) {
     this.addMessageNum = handle
   }
 
+  static setReadMsgHandle(handle) {
+    this.readMsgHandle = handle
+  }
+
   static reset() {
     this.coworkId = ''
-    this.talkId = ''
+    this.groupId = ''
     this.members = []
     this.prevMessages = []
     this.messages = []
     this.isRealTime = true
     this.adding = false
     this.addMessageNum && this.addMessageNum(0)
-    AsyncStorage.setItem('COWORKID', '')
+    // AsyncStorage.setItem('COWORKID', '')
   }
 
   static setId(Id) {
     this.coworkId = Id
-    AsyncStorage.setItem('COWORKID', Id)
+    // AsyncStorage.setItem('COWORKID', Id)
   }
 
-  static setTalkId(id) {
-    this.talkId = id
+  static setGroupId(id) {
+    this.groupId = id
+  }
+
+  static setMessages(messages) {
+    this.messages = messages
   }
 
   static setMembers(members) {
@@ -202,51 +212,57 @@ export default class CoworkInfo {
     return isShow
   }
 
-  static pushMessage(message) {
-    this.prevMessages.push(message)
-    if (this.isRealTime && !this.adding) {
-      this.addNewMessage()
-    }
-  }
+  // static pushMessage(message) {
+  //   this.prevMessages.push(message)
+  //   if (this.isRealTime && !this.adding) {
+  //     this.addNewMessage()
+  //   }
+  // }
 
-  static addNewMessage() {
-    this.adding = true
-    while (this.prevMessages.length > 0) {
-      let message = this.prevMessages.shift()
-      message.consume = false
-      message.messageID = this.messages.length
-      this.messages.push(message)
-      this.addMessageNum && this.addMessageNum(1),
-      async function() {
-        try {
-          let result = await SMap.isUserGeometryExist(
-            message.message.layerPath,
-            message.message.id,
-            message.message.geoUserID,
-          )
-          if (result) {
-            SMap.addMessageCallout(
-              message.message.layerPath,
-              message.message.id,
-              message.message.geoUserID,
-              message.user.name,
-              message.messageID,
-            )
-          }
-        } catch (error) {
-          //
-        }
-      }.bind(this)()
-    }
-    this.adding = false
-  }
+  // static addNewMessage() {
+  //   this.adding = true
+  //   while (this.prevMessages.length > 0) {
+  //     let message = this.prevMessages.shift()
+  //     message.consume = false
+  //     message.messageID = this.messages.length
+  //     this.messages.push(message)
+  //     this.addMessageNum && this.addMessageNum(1),
+  //     async function() {
+  //       try {
+  //         let result = await SMap.isUserGeometryExist(
+  //           message.message.layerPath,
+  //           message.message.id,
+  //           message.message.geoUserID,
+  //         )
+  //         if (result) {
+  //           SMap.addMessageCallout(
+  //             message.message.layerPath,
+  //             message.message.id,
+  //             message.message.geoUserID,
+  //             message.user.name,
+  //             message.messageID,
+  //           )
+  //         }
+  //       } catch (error) {
+  //         //
+  //       }
+  //     }.bind(this)()
+  //   }
+  //   this.adding = false
+  // }
 
   static consumeMessage(messageID) {
-    if (!this.messages[messageID].consume) {
-      this.messages[messageID].consume = true
-      this.addMessageNum && this.addMessageNum(-1)
-      SMap.removeMessageCallout(messageID)
-    }
+    this.readMsgHandle({
+      groupId: this.groupId,
+      taskId: this.coworkId,
+      messageID: messageID,
+    })
+
+    // if (!this.messages[messageID].consume) {
+    //   this.messages[messageID].consume = true
+    //   this.addMessageNum && this.addMessageNum(-1)
+    //   SMap.removeMessageCallout(messageID)
+    // }
   }
 
   static async add(messageID, notify = true) {

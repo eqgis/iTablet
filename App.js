@@ -353,10 +353,10 @@ class AppRoot extends Component {
       if (result) {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
-      if (result) {
-        // 初始化协作文件
-        CoworkFileHandle.initCoworkList(this.props.user.currentUser)
-      }
+      // if (result) {
+      //   // 初始化协作文件
+      //   CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+      // }
       if(result){
         let JSOnlineservice = new OnlineServicesUtils('online')
         //登录后更新用户信息 zhangxt

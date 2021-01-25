@@ -311,7 +311,7 @@ export default class CoworkFileHandle {
    * @param taskId  任务群组ID
    */
   static getTaskGroup(groupId: string | number, taskId: string) {
-    if (CoworkFileHandle.cowork) {
+    if (CoworkFileHandle?.cowork?.groups) {
       let tasks = CoworkFileHandle.cowork.groups[groupId + '']?.tasks || []
       for (let key = 0; key < tasks.length; key++) {
         if (tasks[key].id === taskId) {
@@ -399,6 +399,9 @@ export default class CoworkFileHandle {
         }
       } else {
         CoworkFileHandle.cowork['rev'] += 1
+      }
+      if (!CoworkFileHandle.cowork.groups) {
+        CoworkFileHandle.cowork.groups = {}
       }
       if (!CoworkFileHandle.cowork.groups[group.id + '']) {
         CoworkFileHandle.cowork.groups[group.id + ''] = {

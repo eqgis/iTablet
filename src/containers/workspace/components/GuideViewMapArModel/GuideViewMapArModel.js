@@ -49,6 +49,7 @@ export default class GuideViewMapArModel extends React.Component {
       launch: false,
       tool: false,
       backgroundStyle: {},
+      nextStyle: {},
     }
   }
 
@@ -97,9 +98,10 @@ export default class GuideViewMapArModel extends React.Component {
       <GuideView
         title={getLanguage(this.props.language).Profile.CHOOSE_TYPE}
         style={{
+          position: 'absolute',
           alignItems: 'center',
           alignSelf: 'center', 
-          top:Platform.OS === 'ios' ? scaleSize(360) : scaleSize(400),
+          bottom:Platform.OS === 'ios' ? scaleSize(110) : scaleSize(240),
         }}
         arrowstyle={{
           borderTopWidth: 9,
@@ -186,7 +188,8 @@ export default class GuideViewMapArModel extends React.Component {
       this.setState({
         launch: false,
         tool: true,
-        backgroundStyle: { opacity: 0 },
+        backgroundStyle: { opacity: 0.2 },
+        nextStyle: {bottom: Platform.OS === 'ios' ? scaleSize(120) : scaleSize(250)},
       })
 
       const params = ToolbarModule.getParams()
@@ -220,9 +223,6 @@ export default class GuideViewMapArModel extends React.Component {
           position: 'absolute',
           width: '100%',
           height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
         }}>
         <View
           style={[{
@@ -242,7 +242,7 @@ export default class GuideViewMapArModel extends React.Component {
 
 
         <TouchableOpacity
-          style={{
+          style={[{
             position: 'absolute',
             right: scaleSize(40),
             bottom: scaleSize(30),
@@ -251,7 +251,7 @@ export default class GuideViewMapArModel extends React.Component {
             opacity: 0.8,
             borderColor: 'black',
             borderWidth: scaleSize(2),
-          }}
+          },this.state.nextStyle]}
           onPress={this.next}
         >
           <Text

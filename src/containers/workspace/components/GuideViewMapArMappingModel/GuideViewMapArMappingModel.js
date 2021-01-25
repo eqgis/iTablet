@@ -48,6 +48,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
       measure: true,
       tool:false,
       backgroundStyle:{},
+      nextStyle:{},
     }
   }
 
@@ -78,9 +79,10 @@ export default class GuideViewMapArMappingModel extends React.Component {
       <GuideView
         title={getLanguage(this.props.language).Profile.CHOOSE_MEASURE_TYPE}
         style={{
+          position: 'absolute',
           alignItems: 'center',
           alignSelf: 'center', 
-          top:Platform.OS === 'ios' ? scaleSize(360) : scaleSize(510),
+          bottom:Platform.OS === 'ios' ? scaleSize(110) : scaleSize(110),
         }}
         arrowstyle={{
           borderTopWidth: 9,
@@ -130,7 +132,8 @@ export default class GuideViewMapArMappingModel extends React.Component {
       this.setState({
         measure:false,
         tool:true,
-        backgroundStyle: { opacity: 0 },
+        backgroundStyle: { opacity: 0.2 },
+        nextStyle: { bottom : scaleSize(120)},
       })
       const params = ToolbarModule.getParams()
       const _data = ARMeasureData.getData()
@@ -163,9 +166,6 @@ export default class GuideViewMapArMappingModel extends React.Component {
           position: 'absolute',
           width: '100%',
           height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
         }}>
         <View
           style={[{
@@ -181,7 +181,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
         {this.state.measure&&this.renderMeasurebackgr()}
 
         <TouchableOpacity
-          style={{
+          style={[{
             position: 'absolute',
             right: scaleSize(40),
             bottom: scaleSize(30),
@@ -190,7 +190,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
             opacity: 0.8,
             borderColor: 'black',
             borderWidth: scaleSize(2),
-          }}
+          },this.state.nextStyle]}
           onPress={this.next}
         >
           <Text

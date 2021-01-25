@@ -332,12 +332,16 @@ export default class CollectSceneFormView extends React.Component {
         getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_POINT,
       )
       // await SCollectSceneFormView.stopRecording()
-      await SCollectSceneFormView.saveGPSData('point')
+      let result =  await SCollectSceneFormView.saveGPSData('point')
       GLOBAL.Loading.setLoading(false)
       this.setState({ isnew: false })
-      Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
-      )
+      if (result) {
+        Toast.show(
+          getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS,
+        )
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
@@ -1143,8 +1147,8 @@ export default class CollectSceneFormView extends React.Component {
         {this.renderBottomBtn()}
         {this.renderLengthChangeView()}
         {/* {this.state.isClickCollect && this.renderClickCollectHintView()} */}
-        {this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}
-        {this.state.isClickCollect && this.renderCenterBtn()}
+        {this.state.isnew && this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}
+        {this.state.isnew && this.state.isClickCollect && this.renderCenterBtn()}
         {this.renderDialog()}
       </Container>
     )

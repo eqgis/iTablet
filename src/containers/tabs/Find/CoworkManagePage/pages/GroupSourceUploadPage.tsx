@@ -282,14 +282,13 @@ class GroupSourceUploadPage extends Component<Props, State> {
             if (index > 0) {
               name = name.substring(0, index)
             }
-            this.setItemStatus(item[1], getLanguage(this.props.language).Friends.RESOURCE_EXPORTING)
+            this.setItemStatus(item[1], getLanguage(this.props.language).Friends.RESOURCE_UPLOADING)
             let _resultData = await this._exportData(name)
 
             result = result && _resultData.result
 
             try {
               if (_resultData.result) {
-                this.setItemStatus(item[1], getLanguage(this.props.language).Friends.RESOURCE_UPLOADING)
                 let resourceId = await this.onlineServicesUtils.uploadFile(
                   _resultData.zipPath,
                   `${name}.zip`,
@@ -298,7 +297,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
                 if (resourceId) {
                   this.setItemStatus(item[1], '')
                   resourceIds.push(resourceId)
-                  let deleteResult = await FileTools.deleteFile(_resultData.zipPath)
+                  await FileTools.deleteFile(_resultData.zipPath)
                 }
               } else {
                 this.setItemStatus(item[1], getLanguage(this.props.language).Friends.RESOURCE_EXPORT_FAILED)

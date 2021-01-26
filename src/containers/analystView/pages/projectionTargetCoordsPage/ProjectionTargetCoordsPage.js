@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
-import { View, Text, SectionList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
@@ -36,7 +36,7 @@ export default class ProjectionTargetCoordsPage extends Component {
 
     this._allGeoCoordSysTypes = undefined
     this._allPrjCoordSysTypes = undefined
-
+    this._allCommonCoordSysTypes = undefined
     this.clickAble = true // 防止重复点击
 
     this.state = {
@@ -47,6 +47,7 @@ export default class ProjectionTargetCoordsPage extends Component {
       showCoordSysData: [], //展示的坐标系数据
       allGeoCoordSysTypes: [], //所有地理坐标系类型
       allPrjCoordSysTypes: [], //所有投影坐标系类型
+      allCommonCoordSysTypes: [], // 常用坐标系类型
 
       coordSysSelectItem: null, //选中的坐标系类型
       // 弹出框数据
@@ -63,6 +64,10 @@ export default class ProjectionTargetCoordsPage extends Component {
     //获取投影坐标系类型
     let allPrjCoordSysTypes = await SProcess.getPrjCoordSysTypes()
     this._allPrjCoordSysTypes = allPrjCoordSysTypes
+
+    // 获取常用坐标系类型
+    let allCommonCoordSysTypes = await SProcess.getCommonCoordSysTypes()
+    this._allCommonCoordSysTypes = allCommonCoordSysTypes
 
     let geoCoordSysTypes = allGeoCoordSysTypes.slice(0, 20)
     let prjCoordSysTypes = allPrjCoordSysTypes.slice(0, 20)
@@ -84,6 +89,14 @@ export default class ProjectionTargetCoordsPage extends Component {
         index: 1,
         allData: allPrjCoordSysTypes,
       },
+      {
+        title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+        //'常用坐标系',
+        data: allCommonCoordSysTypes,
+        visible: false,
+        index: 2,
+        allData: allCommonCoordSysTypes,
+      },
     ]
     //如果是设置数据集投影暂时屏蔽掉地理坐标系
     // if(this.title && this.title ===getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS){
@@ -93,6 +106,7 @@ export default class ProjectionTargetCoordsPage extends Component {
       coordSysData: _data,
       allGeoCoordSysTypes: allGeoCoordSysTypes,
       allPrjCoordSysTypes: allPrjCoordSysTypes,
+      allCommonCoordSysTypes,
     })
   }
 
@@ -265,12 +279,17 @@ export default class ProjectionTargetCoordsPage extends Component {
               })
             }}
           >
-            <Text
-              style={[styles.rightItem, { width: '100%' }]}
-              numberOfLines={1}
-            >
-              {info.item.title}
-            </Text>
+            <View>
+              <Text
+                style={[styles.rightItem, { width: '100%' }]}
+                numberOfLines={1}
+              >
+                {info.item.title}
+              </Text>
+              {info.item.type !== undefined &&
+                <Text style={styles.tipText}>{info.item.type == 0 ? getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS :
+                  getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS}</Text>}
+            </View>
           </TouchableOpacity>
         </View>
       )
@@ -403,18 +422,18 @@ export default class ProjectionTargetCoordsPage extends Component {
   }
 
   search = searchKey => {
-    if (!(this._allGeoCoordSysTypes && this._allPrjCoordSysTypes)) {
+    if (!(this._allGeoCoordSysTypes && this._allPrjCoordSysTypes && this._allCommonCoordSysTypes)) {
       GLOBAL.Loading.setLoading(false)
       return
     }
     // searchKey
-    if (searchKey === '') {
+    if (searchKey === '' || !searchKey) {
       let allGeoCoordSysTypes = this._allGeoCoordSysTypes
       let allPrjCoordSysTypes = this._allPrjCoordSysTypes
 
       let geoCoordSysTypes = allGeoCoordSysTypes.slice(0, 20)
       let prjCoordSysTypes = allPrjCoordSysTypes.slice(0, 20)
-
+      let commonCoordSysTypes = this._allCommonCoordSysTypes
       let _data = [
         {
           title: getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS,
@@ -432,16 +451,25 @@ export default class ProjectionTargetCoordsPage extends Component {
           index: 1,
           allData: allPrjCoordSysTypes,
         },
+        {
+          title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+          //'常用坐标系',
+          data: commonCoordSysTypes,
+          visible: false,
+          index: 2,
+          allData: commonCoordSysTypes,
+        },
       ]
       this.setState({
         coordSysData: _data,
         allGeoCoordSysTypes: allGeoCoordSysTypes,
         allPrjCoordSysTypes: allPrjCoordSysTypes,
+        allCommonCoordSysTypes: commonCoordSysTypes,
       })
     } else {
       let allGeoCoordSysTypes = []
       let allPrjCoordSysTypes = []
-
+      let allCommonCST = []
       let tempSearchKey = searchKey.toUpperCase()
       for (let i = 0; i < this._allGeoCoordSysTypes.length; i++) {
         // if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
@@ -462,6 +490,12 @@ export default class ProjectionTargetCoordsPage extends Component {
           allPrjCoordSysTypes.push(this._allPrjCoordSysTypes[i])
         }
       }
+
+      this._allCommonCoordSysTypes.forEach(item => {
+        if(item.title.toUpperCase().indexOf(tempSearchKey) != -1){
+          allCommonCST.push(item)
+        }
+      })
 
       let geoCoordSysTypes =
         allGeoCoordSysTypes.length > 20
@@ -492,11 +526,20 @@ export default class ProjectionTargetCoordsPage extends Component {
           index: 1,
           allData: allPrjCoordSysTypes,
         },
+        {
+          title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+          //'常用坐标系',
+          data: allCommonCST,
+          visible: false,
+          index: 2,
+          allData: allCommonCST,
+        },
       ]
       this.setState({
         coordSysData: _data,
         allGeoCoordSysTypes: allGeoCoordSysTypes,
         allPrjCoordSysTypes: allPrjCoordSysTypes,
+        allCommonCoordSysTypes: allCommonCST,
       })
     }
     GLOBAL.Loading.setLoading(false)

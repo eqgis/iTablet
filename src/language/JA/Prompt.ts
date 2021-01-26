@@ -56,6 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'マップロード中',
   LOADING: 'ロード中',
   THE_MAP_IS_OPENED: '当マップは開いています',
+  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
   SWITCHING: 'マップ切り替え中',
@@ -74,6 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: '現在ベースマップはありません。ベースマップを切替えてください。',
   OVERRIDE_SYMBOL: '同じIDのシンボルを上書きしますか？', //jp0730
   OVERWRITE: '上書き',
+  CHOOSE_DATASET: 'Please choose dataset',//待翻译
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',

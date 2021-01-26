@@ -582,6 +582,11 @@ async function changeMap(item) {
       // ConstInfo.MAP_ALREADY_OPENED)
       return
     }
+    let exist = await FileTools.fileIsExistInHomeDirectory(item.path)
+    if(!exist){
+      Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_NOTEXIST)
+      return
+    }
     params.setOpenOnlineMap(true)
     params.setContainerLoading(
       true,

@@ -56,6 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'تحميل',
   LOADING: 'تحميل',
   THE_MAP_IS_OPENED: 'تم فتح الخريطة',
+  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
   THE_SCENE_IS_OPENED: 'تم فتح المشهد',
   NO_SCENE_LIST: 'لاتوجد بيانات',
   SWITCHING: 'تبديل',
@@ -74,6 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'خريطة أساسية فارغة ، يرجى التغيير أولاً ',
   OVERRIDE_SYMBOL: 'يوجد رمز بنفس المعرف ، يرجى تحديد طريقة للإضافة',
   OVERWRITE: 'الكتابة فوق',
+  CHOOSE_DATASET: 'Please choose dataset',//待翻译
 
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',

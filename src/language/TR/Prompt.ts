@@ -56,6 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
   THE_MAP_IS_OPENED: 'Harita açıldı',
+  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
   SWITCHING: 'Değiştiriliyor',
@@ -74,6 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'Altlık harita boş, lütfen ilk önce değiştirin',
   OVERRIDE_SYMBOL: 'Aynı kimliğe sahip sembol mevcut, lütfen eklemek için yöntem seçin!',
   OVERWRITE: 'Overwrite',
+  CHOOSE_DATASET: 'Please choose dataset',//待翻译
 
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
   SET_ALL_MAP_INVISIBLE: 'Tamamı Görünmez',

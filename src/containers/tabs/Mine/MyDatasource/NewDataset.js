@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Container, Input } from '../../../../components'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SProcess } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast, dataUtil } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
+import NavigationService from '../../../NavigationService'
+
 const closeImg = getThemeAssets().publicAssets.icon_cancel
 const addImg = require('../../../../assets/mapTool/icon_plus.png')
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
@@ -46,6 +48,8 @@ class NewDataset extends Component {
           key: new Date().getTime(),
           datasetName: this._getAvailableName('New_Point'),
           datasetType: DatasetType.POINT,
+          datasetPrjName: "PCS_SPHERE_MERCATOR", // 投影坐标系
+          datasetPrjValue: 53004,
         },
       ],
     })
@@ -121,6 +125,8 @@ class NewDataset extends Component {
       key: new Date().getTime(),
       datasetName: datasetName,
       datasetType: datasetType,
+      datasetPrjName: "PCS_SPHERE_MERCATOR", // 投影坐标系
+      datasetPrjValue: 53004,
     }
     let datasets = this.state.datasets.clone()
     datasets.push(data)
@@ -149,6 +155,8 @@ class NewDataset extends Component {
         key: new Date().getTime(),
         datasetName: this._getAvailableName('New_Point', false),
         datasetType: DatasetType.POINT,
+        datasetPrjName: "PCS_SPHERE_MERCATOR", // 投影坐标系
+        datasetPrjValue: 53004,
       },
     ]
     this.setState(state => {
@@ -213,11 +221,17 @@ class NewDataset extends Component {
           }, 1000)
         } else {
           for (let i = 0; i < newDatasets.length; i++) {
-            await SMap.createDataset(
+            let result = await SMap.createDataset(
               this.state.title,
               newDatasets[i].datasetName,
               newDatasets[i].datasetType,
             )
+            if(result){
+              await SProcess.setPrjCoordSys(
+                this.state.title,
+                newDatasets[i].datasetName,
+                Number(newDatasets[i].datasetPrjValue))
+            }
           }
           setTimeout(async () => {
             Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_SUCCESSFULLY)
@@ -254,12 +268,28 @@ class NewDataset extends Component {
     }
   }
 
+    // 设置投影坐标系
+    _setProjection = (item, index) => {
+      NavigationService.navigate('ProjectionTargetCoordsPage',{
+        title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+        // 投影坐标系选择界面确定时回调
+        cb: targetCoords =>{
+          NavigationService.goBack()
+          const {value, title} = targetCoords
+          const datasets = JSON.parse(JSON.stringify(this.state.datasets))
+          const ds = {...datasets[index], datasetPrjName: title, datasetPrjValue: value}
+          datasets.splice(index,1,ds)
+          this.setState({datasets:datasets})
+        },
+      })
+    }
+
   _renderItem = ({ item, index }) => {
     return (
       <View style={styles.itemStyle}>
         {this._renderItemHead(index)}
         <View style={styles.longSeperator} />
-        {this._renderItemBody(item)}
+        {this._renderItemBody(item, index)}
       </View>
     )
   }
@@ -279,7 +309,7 @@ class NewDataset extends Component {
     )
   }
 
-  _renderItemBody = item => {
+  _renderItemBody = (item, index) => {
     return (
       <View style={styles.itemBodyStyle}>
         <View style={styles.datasetNameStyle}>
@@ -318,6 +348,22 @@ class NewDataset extends Component {
             {this._renderDatasetType(item, DatasetType.TEXT)}
             {this._renderDatasetType(item, DatasetType.CAD)}
           </View>
+        </View>
+        <View style={styles.longSeperator} />
+        {/* 设置数据集投影 */}
+        <View style={{marginBottom:scaleSize(10)}}>
+          <Text style={styles.textStyle}>
+            {getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS}
+          </Text>
+          <TouchableOpacity onPress={()=>{
+            this._setProjection(item,index)
+          }}>
+            <View>
+              <Text style={[styles.textStyle, { color: '#4680DF' }]}>
+                {item.datasetPrjName}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     )

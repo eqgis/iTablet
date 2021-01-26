@@ -54,6 +54,7 @@ const Prompt = {
   MAP_LOADING: '地图加载中',
   LOADING: '加载中',
   THE_MAP_IS_OPENED: '该地图已打开',
+  THE_MAP_IS_NOTEXIST: '该地图不存在',
   THE_SCENE_IS_OPENED: '该场景已打开',
   NO_SCENE_LIST: '无场景列表',
   SWITCHING: '正在切换地图',
@@ -72,6 +73,7 @@ const Prompt = {
   CHANGE_BASE_MAP: '当前底图为空，请先切换底图',
   OVERRIDE_SYMBOL: '存在相同id的符号，请选择添加方式',
   OVERWRITE: '覆盖',
+  CHOOSE_DATASET: '请选择数据集',
 
   SET_ALL_MAP_VISIBLE: '全部显示',
   SET_ALL_MAP_INVISIBLE: '全部隐藏',

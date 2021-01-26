@@ -56,6 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'Loading',
   LOADING: 'Loading',
   THE_MAP_IS_OPENED: 'The map is opened',
+  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
   THE_SCENE_IS_OPENED: 'The scene is opened',
   NO_SCENE_LIST: 'No data',
   SWITCHING: 'Switching',
@@ -74,6 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'Empty base map, please change first',
   OVERRIDE_SYMBOL: 'Symbol with the same id exists, please select method to add',
   OVERWRITE: 'Overwrite',
+  CHOOSE_DATASET: 'Please choose dataset',//待翻译
 
   SET_ALL_MAP_VISIBLE: 'All visible',
   SET_ALL_MAP_INVISIBLE: 'All invisible',

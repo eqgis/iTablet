@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#A0A0A0',
+    backgroundColor: 'white',
   },
   preview: {
     flex: 1,
@@ -128,15 +128,15 @@ export default StyleSheet.create({
     flex: 1,
     position: 'absolute',
     flexDirection: 'column',
-    // height: '100%',
-    // width: '100%',
+    height: '100%',
+    width: '100%',
     // paddingVertical: scaleSize(20),
     // backgroundColor: '#2D2D2F',
     backgroundColor: '#A0A0A0',
     top: scaleSize(100),
-    left: scaleSize(20),
-    right: scaleSize(20),
-    bottom: scaleSize(20),
+    // left: scaleSize(20),
+    // right: scaleSize(20),
+    // bottom: scaleSize(20),
   },
   titleSwitchModelsView: {
     position: 'absolute',
@@ -181,6 +181,8 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: scaleSize(1),
   },
   img: {
     position: 'absolute',

@@ -190,7 +190,7 @@ export default class ClassifySettingsView extends React.Component {
         <Text style={styles.titleSwitchModelsView}>
           {getLanguage(this.props.language).Prompt.DEFAULT_MODEL}
         </Text>
-        <View style={styles.DividingLine} />
+        {/* <View style={styles.DividingLine} /> */}
       </View>
     )
   }
@@ -219,7 +219,7 @@ export default class ClassifySettingsView extends React.Component {
         <Text style={styles.titleSwitchModelsView}>
           {getLanguage(this.props.language).Prompt.DUSTBIN_MODEL}
         </Text>
-        <View style={styles.DividingLine} />
+        {/* <View style={styles.DividingLine} /> */}
       </View>
     )
   }
@@ -245,7 +245,7 @@ export default class ClassifySettingsView extends React.Component {
         <Text style={styles.titleSwitchModelsView}>
           {getLanguage(this.props.language).Prompt.PLANT_MODEL}
         </Text>
-        <View style={styles.DividingLine} />
+        {/* <View style={styles.DividingLine} /> */}
       </View>
     )
   }
@@ -335,7 +335,7 @@ export default class ClassifySettingsView extends React.Component {
         <Text style={styles.titleSwitchModelsView}>
           {getLanguage(this.props.language).Profile.MY_MODEL}
         </Text>
-        <View style={styles.DividingLine} />
+        {/* <View style={styles.DividingLine} /> */}
       </View>
     )
   }

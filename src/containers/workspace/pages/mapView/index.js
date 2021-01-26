@@ -95,6 +95,8 @@ const mapStateToProps = state => ({
   mapArGuide: state.ar.toJS().mapArGuide,
   mapArMappingGuide: state.ar.toJS().mapArMappingGuide,
   mapAnalystGuide: state.home.toJS().mapAnalystGuide,
+  coworkInfo: state.cowork.toJS().coworkInfo,
+  currentTask: state.cowork.toJS().currentTask,
 })
 
 const mapDispatchToProps = {

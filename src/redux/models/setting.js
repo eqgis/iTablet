@@ -322,7 +322,7 @@ const initialState = fromJS({
     gestureBone: false,
     estimation: false,
     // highPrecisionCollect: false,
-    onlineCowork: false,
+    onlineCowork: true, // TODO 待去掉
   },
 })
 

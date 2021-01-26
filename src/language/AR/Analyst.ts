@@ -252,6 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'إعادة تعيين',
   GEOCOORDSYS: 'نظام الإحداثيات الجغرافية',
   PRJCOORDSYS: 'نظام الإحداثيات الاسقاط',
+  COMMONCOORDSYS: 'Common coordinate system', // 待翻译
   CONVERTTING: 'التحويل',
   CONVERT_SUCCESS: 'نجاح التحويل',
   CONVERT_FAILED: 'فشل التحويل',

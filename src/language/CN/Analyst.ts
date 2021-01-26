@@ -250,6 +250,7 @@ const Analyst_Labels = {
   RESETING: '重设',
   GEOCOORDSYS: '地理坐标系',
   PRJCOORDSYS: '投影坐标系',
+  COMMONCOORDSYS: '常用坐标系',
   CONVERTTING: '转换中',
   CONVERT_SUCCESS: '转换成功',
   CONVERT_FAILED: '转换失败',

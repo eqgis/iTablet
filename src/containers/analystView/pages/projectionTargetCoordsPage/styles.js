@@ -80,4 +80,9 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorBlack,
   },
+  tipText: {
+    marginLeft: scaleSize(30),
+    fontSize: size.fontSize.fontSizeSm,
+    color: color.fontColorGray2,
+  },
 })

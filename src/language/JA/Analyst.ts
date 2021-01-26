@@ -252,6 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'リセット',
   GEOCOORDSYS: '地理座標系',
   PRJCOORDSYS: '投影座標系',
+  COMMONCOORDSYS: '常用座標系', // 待翻译
   CONVERTTING: '変換中',
   CONVERT_SUCCESS: '変換に成功しました',
   CONVERT_FAILED: '変換に失敗しました',

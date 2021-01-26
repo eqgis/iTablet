@@ -17,12 +17,18 @@ import SelectFriend from './SelectFriend'
 import { SimpleDialog, ImageViewer } from './Component'
 import { openWorkspace, closeWorkspace } from '../../../redux/models/map'
 import { setUser, deleteUser } from '../../../redux/models/user'
-import { addInvite, addCoworkMsg, setCoworkGroup } from '../../../redux/models/cowork'
+import {
+  addInvite,
+  addCoworkMsg,
+  setCoworkGroup,
+  setCoworkNewMessage,
+  addTaskMessage,
+  readTaskMessage,
+} from '../../../redux/models/cowork'
 import {
   addChat,
   editChat,
   setConsumer,
-  setCoworkNewMessage,
 } from '../../../redux/models/chat'
 
 const mapStateToProps = state => ({
@@ -44,6 +50,8 @@ const mapDispatchToProps = {
   openWorkspace,
   closeWorkspace,
   setCoworkNewMessage,
+  addTaskMessage,
+  readTaskMessage,
   addInvite,
   addCoworkMsg,
   setCoworkGroup,

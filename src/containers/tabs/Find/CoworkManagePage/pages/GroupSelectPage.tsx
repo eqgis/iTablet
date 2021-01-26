@@ -11,6 +11,7 @@ import { Users } from '../../../../../redux/models/user'
 import { setCoworkGroup, setCurrentGroup } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
+import CoworkFileHandle from '../CoworkFileHandle'
 
 interface Props {
   navigation: Object,
@@ -89,6 +90,7 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   componentDidMount() {
+    CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     this.refresh(false)
   }
 

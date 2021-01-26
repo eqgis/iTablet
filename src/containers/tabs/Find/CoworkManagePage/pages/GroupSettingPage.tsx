@@ -260,14 +260,12 @@ class GroupSettingPage extends Component<Props, State> {
       title = getLanguage(this.props.language).Friends.GROUP_EXIST
     }
     return (
-      // <View style={styles.bottomView}>
-        <TextBtn
-          btnText={title}
-          containerStyle={styles.bottomBtn}
-          textStyle={styles.bottomBtnText}
-          btnClick={this._bottomBtnAction}
-        />
-      // </View>
+      <TextBtn
+        btnText={title}
+        containerStyle={styles.bottomBtn}
+        textStyle={styles.bottomBtnText}
+        btnClick={this._bottomBtnAction}
+      />
     )
   }
 
@@ -454,7 +452,7 @@ const styles = StyleSheet.create({
     flex: 2,
     fontSize: size.fontSize.fontSizeXXl,
     color: color.fontColorGray,
-    marginLeft: scaleSize(30),
+    // marginLeft: scaleSize(30),
     marginTop: scaleSize(10),
   },
 

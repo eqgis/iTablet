@@ -101,7 +101,6 @@ import styles from './styles'
 import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
-// import ChatIcon from '../../../../containers/tabs/Friend/Cowork/ChatIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
@@ -154,6 +153,9 @@ export default class MapView extends React.Component {
     mapArGuide: PropTypes.bool,
     mapArMappingGuide: PropTypes.bool,
     mapAnalystGuide: PropTypes.bool,
+
+    coworkInfo: PropTypes.object,
+    currentTask: PropTypes.object,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -1134,6 +1136,10 @@ export default class MapView extends React.Component {
       // GLOBAL.Type = null
       GLOBAL.clearMapData()
 
+      // 移除协作时，个人/新操作的callout
+      await SMap.removeUserCallout()
+      await SMap.clearUserTrack()
+
       this.setLoading(false)
       if (GLOBAL.coworkMode) {
         GLOBAL.coworkMode = false
@@ -1233,17 +1239,6 @@ export default class MapView extends React.Component {
         }
       }
 
-      // if (GLOBAL.coworkMode) {
-      //   let param = {}
-      //   if (CoworkInfo.coworkId !== '') {
-      //     param.targetId = CoworkInfo.talkId
-      //   }
-      //   NavigationService.navigate('Chat', param)
-      //   NavigationService.replace('CoworkTabs', {
-      //     targetId: this.targetId,
-      //   })
-      //   return true
-      // }
       if (GLOBAL.clickWait) return true
       GLOBAL.clickWait = true
       let result = await SMap.mapIsModified()
@@ -1495,13 +1490,12 @@ export default class MapView extends React.Component {
           currentDatasource: [], //当前使用的数据源
           currentDataset: {}, //当前使用的数据集
         }
-          ; (async function () {
-            //防止退出时没有清空
-            await SMap.removeUserCallout()
-            await SMap.clearUserTrack()
 
-            this.startCowork()
-          }.bind(this)())
+        //防止退出时没有清空
+        await SMap.removeUserCallout()
+        await SMap.clearUserTrack()
+        // 开始协作
+        await this.startCowork()
 
 
         //地图打开后显示比例尺，获取图例数据
@@ -1516,43 +1510,66 @@ export default class MapView extends React.Component {
   }
 
   /** 开始在线协作 */
-  startCowork = () => {
+  startCowork = async () => {
     if (GLOBAL.coworkMode && CoworkInfo.coworkId === '') {
-      //创建
-      if (CoworkInfo.talkId !== '') {
-        //从发现创建
-        try {
-          let friend = GLOBAL.getFriend()
-          let talkId = CoworkInfo.talkId
-          let mapName = this.props.map.currentMap.name
-          friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
-          this.setState({ onlineCowork: true })
-        } catch (error) {
-          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
-        }
-      } else if (this.props.map.currentMap.name) {
-        //从好友创建
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Friends.SEND_COWORK_INVITE,
-          confirmAction: () => {
-            try {
-              let friend = GLOBAL.getFriend()
-              let talkId = friend.curChat.targetId
-              let mapName = this.props.map.currentMap.name
-              friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
-              this.setState({ onlineCowork: true })
-            } catch (error) {
-              Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
-            }
-          },
-        })
-        GLOBAL.SimpleDialog.setVisible(true)
-      }
+      // //创建
+      // if (CoworkInfo.talkId !== '') {
+      //   //从发现创建
+      //   try {
+      //     let friend = GLOBAL.getFriend()
+      //     let talkId = CoworkInfo.talkId
+      //     let mapName = this.props.map.currentMap.name
+      //     friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+      //     this.setState({ onlineCowork: true })
+      //   } catch (error) {
+      //     Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
+      //   }
+      // } else if (this.props.map.currentMap.name) {
+      //   //从好友创建
+      //   GLOBAL.SimpleDialog.set({
+      //     text: getLanguage(GLOBAL.language).Friends.SEND_COWORK_INVITE,
+      //     confirmAction: () => {
+      //       try {
+      //         let friend = GLOBAL.getFriend()
+      //         let talkId = friend.curChat.targetId
+      //         let mapName = this.props.map.currentMap.name
+      //         friend.sendCoworkInvitation(talkId, GLOBAL.Type, mapName)
+      //         this.setState({ onlineCowork: true })
+      //       } catch (error) {
+      //         Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
+      //       }
+      //     },
+      //   })
+      //   GLOBAL.SimpleDialog.setVisible(true)
+      // }
     } else if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
       //加入
       try {
         let friend = GLOBAL.getFriend()
         friend.startSendLocation()
+
+        let messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
+          [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
+
+        // 把没有更新/追加/忽略的操作的标志添加到地图上
+        for (let i = 0; i < messages.length; i++) {
+          let _message = messages[i]
+          if (_message.consume) continue
+          let result = await SMap.isUserGeometryExist(
+            messages[i].message.layerPath,
+            messages[i].message.id,
+            messages[i].message.geoUserID,
+          )
+          if (result) {
+            await SMap.addMessageCallout(
+              messages[i].message.layerPath,
+              messages[i].message.id,
+              messages[i].message.geoUserID,
+              messages[i].user.name,
+              messages[i].messageID,
+            )
+          }
+        }
       } catch (error) {
         //
       }
@@ -1979,7 +1996,6 @@ export default class MapView extends React.Component {
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
     this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
-    // this.ChatIcon && this.ChatIcon.setVisible(full)
     if (
       !(
         !full &&
@@ -2501,7 +2517,7 @@ export default class MapView extends React.Component {
                 action: async () => {
                   let param = {}
                   if (CoworkInfo.coworkId !== '') {
-                    param.targetId = CoworkInfo.talkId
+                    param.targetId = CoworkInfo.coworkId
                     param.title = getLanguage(GLOBAL.language).Friends.GROUPS
                   }
                   NavigationService.navigate('Chat', param)
@@ -3565,28 +3581,6 @@ export default class MapView extends React.Component {
         {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
-        {/* {GLOBAL.coworkMode && this.state.onlineCowork && (
-          <ChatIcon ref={ref => (this.ChatIcon = ref)} />
-        )} */}
-        {/* {
-          GLOBAL.coworkMode && (
-            <TouchableOpacity
-              style={styles.chatBtn}
-              onPress={() => {
-                if (GLOBAL.coworkMode) {
-                  let param = {}
-                  if (CoworkInfo.coworkId !== '') {
-                    param.targetId = CoworkInfo.talkId
-                  }
-                  NavigationService.navigate('Chat', param)
-                  return true
-                }
-              }}
-            >
-              <Text style={styles.chatBtnText}>{'聊天'}</Text>
-            </TouchableOpacity>
-          )
-        } */}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

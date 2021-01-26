@@ -961,7 +961,7 @@ export default class LayerManager_tolbar extends React.Component {
     if (type === 'friend') {
       if (GLOBAL.coworkMode) {
         if (CoworkInfo.coworkId !== '') {
-          this.targetUser = GLOBAL.getFriend().getTargetUser(CoworkInfo.talkId)
+          this.targetUser = GLOBAL.getFriend().getTargetUser(CoworkInfo.coworkId)
         } else {
           this.targetUser = GLOBAL.getFriend().curChat.targetUser
         }

@@ -6,21 +6,28 @@ import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { connect } from 'react-redux'
 
-const DEFAULT_LEFT = scaleSize(0)
-class NewMessageIcon extends Component {
-  props: {
-    language: String,
-    navigation: Object,
-    newMessage: Number,
-  }
+interface Props {
+  language: string,
+  navigation: any,
+  newMessage: number,
+  coworkInfo: any,
+  currentTask: any,
+  currentUser: any,
+}
 
-  constructor(props) {
+const DEFAULT_LEFT = scaleSize(0)
+class NewMessageIcon extends Component<Props, {}> {
+
+  left: Animated.Value
+  visible: boolean
+
+  constructor(props: Props) {
     super(props)
     this.left = new Animated.Value(scaleSize(DEFAULT_LEFT))
     this.visible = true
   }
 
-  setVisible = visible => {
+  setVisible = (visible: boolean) => {
     if (visible !== this.visible) {
       Animated.timing(this.left, {
         toValue: visible ? scaleSize(DEFAULT_LEFT) : -500,
@@ -31,7 +38,8 @@ class NewMessageIcon extends Component {
   }
 
   render() {
-    let number = this.props.newMessage
+    let number = this.props.coworkInfo?.[this.props.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]?.unread || 0
+    // let number = this.props.newMessage
     if (number > 99) {
       number = '99+'
     }
@@ -74,7 +82,10 @@ class NewMessageIcon extends Component {
 }
 
 const mapStateToProps = state => ({
-  newMessage: state.chat.toJS().coworkNewMessage,
+  newMessage: state.cowork.toJS().coworkNewMessage,
+  currentUser: state.user.toJS().currentUser,
+  coworkInfo: state.cowork.toJS().coworkInfo,
+  currentTask: state.cowork.toJS().currentTask,
 })
 
 const mapDispatchToProps = {}

@@ -103,8 +103,8 @@ class CoworkMember extends Component<Props, State> {
 
   getData = () => {
     // let groupId = this.props.currentGroup.id
-    // let taskId = CoworkInfo.talkId
-    // let data = CoworkFileHandle.getTaskGroupMembers(groupId, taskId)
+    // let taskId = CoworkInfo.coworkId
+    // let data = CoworkFileHandle.getTaskGroupMembers(groupId, coworkId)
     // CoworkInfo.setMembers(data)
     // this.setState({ data: data || [] })
     this.setState({ data: CoworkInfo.members || [] })

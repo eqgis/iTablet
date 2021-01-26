@@ -3,8 +3,10 @@ import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { ModelUtils } from '../../utils'
 import { MsgConstant } from '../../constants'
-import { SMessageService } from 'imobile_for_reactnative'
+import { SMessageService, SMap } from 'imobile_for_reactnative'
 import CoworkFileHandle from '../../containers/tabs/Find/CoworkManagePage/CoworkFileHandle'
+import CoworkInfo from '../../containers/tabs/Friend/Cowork/CoworkInfo'
+
 // Constants
 // --------------------------------------------------
 export const ADD_COWORK_INVITE = 'ADD_COWORK_INVITE'
@@ -18,19 +20,56 @@ export const COWORK_GROUP_EXIT = 'COWORK_GROUP_EXIT'
 /** 设置当前协作群组 */
 export const COWORK_GROUP_SET_CURRENT = 'COWORK_GROUP_SET_CURRENT'
 /** 设置当前协作群组任务 */
-export const COWORK_TAST_SET_CURRENT = 'COWORK_TAST_SET_CURRENT'
+export const COWORK_TASK_SET_CURRENT = 'COWORK_TASK_SET_CURRENT'
 /** 协作群组任务添加成员 */
-export const COWORK_TAST_MEMBERS_ADD = 'COWORK_TAST_MEMBERS_ADD'
+export const COWORK_TASK_MEMBERS_ADD = 'COWORK_TASK_MEMBERS_ADD'
+/** 协作群组任务添加成员 */
+export const COWORK_NEW_MESSAGE_SET = 'COWORK_NEW_MESSAGE_SET'
+
+export const COWORK_TASK_INFO_ADD = 'COWORK_TASK_INFO_ADD'
+export const COWORK_TASK_INFO_READ = 'COWORK_TASK_INFO_READ'
+export const COWORK_TASK_INFO_REALTIME_SET = 'COWORK_TASK_INFO_REALTIME_SET'
 
 // export interface Task {
 // }
 
+export interface TaskInfoParams {
+  groupId: string,
+  taskId: string,
+  message: {
+    // messageID: number,
+    user: {
+      id: string,
+      name: string,
+    },
+    message: {
+      id: string,
+      layerPath: string,
+      geoUserID: string,
+      // consume: boolean,
+    },
+  },
+}
+
+export interface TaskReadParams {
+  groupId: string,
+  taskId: string,
+  messageID: boolean,
+}
+
+export interface TaskRealTimeParams {
+  groupId: string,
+  taskId: string,
+  isRealTime: boolean,
+}
 
 export interface Cowork {
   invites: [],
   tasks: {[userId: string]: {[groupId: string]: Array<any>}},
   messages: {[userId: string]: {[groupId: string]: Array<any>}},
 }
+
+let adding = false // 防止重复添加消息
 
 // Actions
 // ---------------------------------.3-----------------
@@ -154,11 +193,78 @@ export const setCurrentGroup = (params: any, cb = () => {}) => async (dispatch: 
  */
 export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (arg0: any) => any) => {
   await dispatch({
-    type: COWORK_TAST_SET_CURRENT,
+    type: COWORK_TASK_SET_CURRENT,
     payload: params,
   })
   cb && cb()
 }
+
+/**
+ * 添加消息到地图上
+ * @param params TaskInfoParams
+ */
+export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  if (adding) return
+  adding = true
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  let result = await dispatch({
+    type: COWORK_TASK_INFO_ADD,
+    payload: params,
+    userId,
+    isRealTime,
+  })
+  adding = false
+  return result
+}
+
+/**
+ * 任务消息已读
+ * @param params TaskReadParams
+ */
+export const readTaskMessage = (params: TaskReadParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const coworkInfo = getState().cowork.toJS().coworkInfo
+  // 若任务不存在，则设置失败
+  if (
+    !coworkInfo.hasOwnProperty(userId) ||
+    !coworkInfo[userId].hasOwnProperty(params.groupId) ||
+    !coworkInfo[userId][params.groupId].hasOwnProperty(params.taskId)
+  ) {
+    return false
+  }
+  let result = await dispatch({
+    type: COWORK_TASK_INFO_READ,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/**
+ * 设置实时消息
+ * @param params TaskRealTimeParams
+ * @param cb
+ */
+export const setIsRealTime = (params: TaskRealTimeParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const coworkInfo = getState().cowork.toJS().coworkInfo
+  // 若任务不存在，则设置失败
+  if (
+    !coworkInfo.hasOwnProperty(userId) ||
+    !coworkInfo[userId].hasOwnProperty(params.groupId) ||
+    !coworkInfo[userId][params.groupId].hasOwnProperty(params.taskId)
+  ) {
+    return false
+  }
+  let result = await dispatch({
+    type: COWORK_TASK_INFO_REALTIME_SET,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/****************************** 本地方法 *********************************/
 
 /**
  * 添加任务成员
@@ -172,12 +278,23 @@ export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (
 // }, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
 //   const userId = getState().user.toJS().currentUser.userId || 'Customer'
 //   await dispatch({
-//     type: COWORK_TAST_MEMBERS_ADD,
+//     type: COWORK_TASK_MEMBERS_ADD,
 //     payload: params,
 //     userId,
 //   })
 //   cb && cb()
 // }
+
+export const setCoworkNewMessage = (
+  params = {},
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  await dispatch({
+    type: COWORK_NEW_MESSAGE_SET,
+    payload: params,
+  })
+  cb && cb()
+}
 
 /**
  * 添加/修改任务
@@ -290,6 +407,94 @@ const addTaskMembers = (state: any, { payload, userId }: any): Array<any> => {
   return allTask
 }
 
+function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
+  while (prevMessages.length > 0) {
+    let message = prevMessages.shift()
+    message.consume = false
+    message.messageID = messages.length
+    messages.push(message)
+    // this.addMessageNum && this.addMessageNum(1),
+    ;(async function() {
+      try {
+        let result = await SMap.isUserGeometryExist(
+          message.message.layerPath,
+          message.message.id,
+          message.message.geoUserID,
+        )
+        if (result) {
+          SMap.addMessageCallout(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+            message.user.name,
+            message.messageID,
+          )
+        }
+      } catch (error) {
+        //
+      }
+    })()
+  }
+  return {
+    prevMessages,
+    messages,
+  }
+}
+
+/**
+ * 获取/初始化 任务消息
+ * @param coworkInfo 所有任务消息
+ * @param userId 用户ID
+ * @param groupId Online群组ID
+ * @param taskId 任务ID
+ * @param create 是否创建
+ */
+function getTaskInfo(
+  coworkInfo: any,
+  userId: string,
+  groupId: string,
+  taskId: string,
+  create?: boolean,
+) {
+  if (create === undefined) create = true
+  if (!coworkInfo.hasOwnProperty(userId)) {
+    if (create === false) return undefined
+    coworkInfo[userId] = {}
+  }
+  if (!coworkInfo[userId].hasOwnProperty(groupId)) {
+    if (create === false) return undefined
+    coworkInfo[userId][groupId] = {}
+  }
+  if (!coworkInfo[userId][groupId].hasOwnProperty(taskId)) {
+    if (create === false) return undefined
+    coworkInfo[userId][groupId][taskId] = {
+      messages: [],
+      prevMessages: [],
+      unread: 0,
+    }
+  }
+  return coworkInfo[userId][groupId][taskId]
+}
+
+function deleteTaskInfo(
+  coworkInfo: any,
+  userId: string,
+  groupId: string,
+  taskId: string,
+) {
+  if (!coworkInfo.hasOwnProperty(userId)) {
+    return undefined
+  }
+  if (!coworkInfo[userId].hasOwnProperty(groupId)) {
+    return undefined
+  }
+  if (!coworkInfo[userId][groupId].hasOwnProperty(taskId)) {
+    delete coworkInfo[userId][groupId][taskId]
+    return coworkInfo
+  }
+  return undefined
+}
+
 const initialState = fromJS({
   invites: [],
   messages: {},
@@ -297,6 +502,22 @@ const initialState = fromJS({
   groups: {},
   currentGroup: {}, // 当前群组信息
   currentTask: {}, // 当前协作任务信息
+  coworkNewMessage: 0, // 协作更新地图消息
+  /**
+   * {
+   *    userId: {
+   *      groupId: {
+   *        taskId: {
+   *          messages: [],        // 添加到地图上的消息
+   *          prevMessages: [],    // 未添加到地图上的消息
+   *          unread: 0,
+   *          isRealTime: true,    // 是否是实时添加
+   *        }
+   *      }
+   *    }
+   * }
+   */
+  coworkInfo: {},
 })
 
 export default handleActions(
@@ -355,9 +576,14 @@ export default handleActions(
         allMessages[userId] = myMessages
         return state.setIn(['messages'], fromJS(allMessages))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 添加/修改任务
-        return state.setIn(['tasks'], fromJS(addTask(state, { payload, userId })))
+        let tasks = addTask(state, { payload, userId })
+        let coworkInfo = state.toJS().coworkInfo
+        getTaskInfo(coworkInfo, userId, payload.groupID, payload.id, true)
+        return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE) { // 删除任务
+        let coworkInfo = state.toJS().coworkInfo
         return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
+          .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, payload.id)))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN) { // 任务成员加入消息
         return state.setIn(['tasks'], fromJS(addTaskMembers(state, { payload, userId })))
       }
@@ -391,7 +617,7 @@ export default handleActions(
       groups[userId] = payload
       return state.setIn(['groups'], fromJS(groups))
     },
-    [`${COWORK_TAST_MEMBERS_ADD}`]: (state: any, { payload, userId }: any) => {
+    [`${COWORK_TASK_MEMBERS_ADD}`]: (state: any, { payload, userId }: any) => {
       let allTask = state.toJS().tasks
       let myTasks: any = allTask[userId] || {}
       let tasks: any = myTasks[payload.groupID] || []
@@ -429,7 +655,7 @@ export default handleActions(
       // TODO 检测payload有效性
       return state.setIn(['currentGroup'], fromJS(payload))
     },
-    [`${COWORK_TAST_SET_CURRENT}`]: (state: any, { payload }: any) => {
+    [`${COWORK_TASK_SET_CURRENT}`]: (state: any, { payload }: any) => {
       // TODO 检测payload有效性
       return state.setIn(['currentTask'], fromJS(payload))
     },
@@ -447,6 +673,61 @@ export default handleActions(
       }
       if (tasks[userId] && tasks[userId][payload.groupID]) delete tasks[userId][payload.groupID]
       return state.setIn(['groups'], fromJS(groups)).setIn(['tasks'], fromJS(tasks))
+    },
+    [`${COWORK_NEW_MESSAGE_SET}`]: (state: any, { payload }: any) => {
+      let coworkNewMessage = state.toJS().coworkNewMessage
+      let num = coworkNewMessage + payload
+      if (payload === 0) {
+        num = 0
+      }
+      return state.setIn(['coworkNewMessage'], fromJS(num))
+    },
+    [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId, isRealTime }: any) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.user.coworkGroupId, payload.user.groupID, true)
+      taskInfo.prevMessages.push(payload)
+      if (!isRealTime) {
+        coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+        return fromJS(coworkInfo)
+      }
+      let {
+        prevMessages,
+        messages,
+      } = _addNewMessage(taskInfo.prevMessages, taskInfo.messages)
+      taskInfo.prevMessages = prevMessages
+      taskInfo.messages = messages
+      taskInfo.unread++
+      coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+      CoworkInfo.setMessages(messages)
+      // return fromJS(coworkInfo)
+      return state.setIn(['coworkInfo'], fromJS(coworkInfo))
+    },
+    [`${COWORK_TASK_INFO_READ}`]: (state: any, { payload, userId }: any) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupId, payload.taskId, false)
+      if (!taskInfo) {
+        return state
+      }
+      for(let i = 0; i < taskInfo.messages.length; i++) {
+        if (taskInfo.messages[i].messageID === payload.messageID && !taskInfo.messages[i].consume) {
+          taskInfo.messages[i].consume = true
+          taskInfo.unread--
+          SMap.removeMessageCallout(payload.messageID)
+          break
+        }
+      }
+      return state.setIn(['coworkInfo'], fromJS(coworkInfo))
+    },
+    [`${COWORK_TASK_INFO_REALTIME_SET}`]: (state: any, { payload, userId }: any) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupID, payload.taskId, false)
+
+      if (taskInfo) {
+        taskInfo.unread = payload.unread
+        coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+        return state.setIn(['coworkInfo'], fromJS(coworkInfo))
+      }
+      return state
     },
     [REHYDRATE]: (state: any, { payload }: any) => {
       const _data = ModelUtils.checkModel(state, payload && payload.cowork)

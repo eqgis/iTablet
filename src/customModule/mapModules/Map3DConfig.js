@@ -33,6 +33,12 @@ export default class Map3DConfig extends Module {
             name: '珠峰',
             mapName: '珠峰',
           },
+          {
+            name_ios: 'MaSai_IOS',
+            mapName_ios: 'MaSai',
+            name_android: 'MaSai_Android',
+            mapName_android: 'MaSai',
+          },
         ],
       },
       functionModules: [start3DModule, mark3DModule, fly3DModule, tool3DModule],

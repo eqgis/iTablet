@@ -11,14 +11,22 @@ import MsgConstant from '../../../../constants/MsgConstant'
 import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
 
-class CoworkMessage extends Component {
-  props: {
-    language: String,
-    navigation: Object,
-    newMessage: Number,
-  }
 
-  constructor(props) {
+interface Props {
+  language: string,
+  navigation: any,
+  cowork: any,
+  coworkInfo: any,
+  currentUser: any,
+}
+
+interface State {
+  messages: Array<any>,
+  selected: Array<any>,
+}
+
+class CoworkMessage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       messages: [],
@@ -30,22 +38,36 @@ class CoworkMessage extends Component {
     this.getMessage()
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.newMessage !== this.props.newMessage) {
+  componentDidUpdate(prevProps: Props) {
+    if (
+      prevProps.cowork.newMessage !== this.props.cowork.newMessage ||
+      JSON.stringify(
+        prevProps.coworkInfo[prevProps.currentUser.userName][prevProps.cowork.currentTask.groupID][prevProps.cowork.currentTask.id]
+      ) !==
+      JSON.stringify(
+        this.props.coworkInfo[this.props.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+      )
+    ) {
       this.getMessage()
     }
   }
 
   getMessage = () => {
-    try {
-      if (GLOBAL.coworkMode) {
-        let messages = CoworkInfo.messages
-        let rvsMsg = messages.clone().reverse()
-        this.setState({ messages: rvsMsg })
-      }
-    } catch (error) {
-      //
-    }
+    let messages = this.props.coworkInfo[this.props.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]?.messages || []
+    messages = messages.clone().reverse()
+    this.setState({
+      messages: messages,
+    })
+    // try {
+    //   if (GLOBAL.coworkMode) {
+    //     let messages = CoworkInfo.messages
+    //     let rvsMsg = messages.clone().reverse()
+    //     this.setState({ messages: rvsMsg })
+    //     this.setState({ messages: this.props.coworkInfo[this.props.cowork.currentTask.groupID] })
+    //   }
+    // } catch (error) {
+    //   //
+    // }
   }
 
   selecteAll = () => {
@@ -60,7 +82,7 @@ class CoworkMessage extends Component {
     }
   }
 
-  onButtomPress = async type => {
+  onButtomPress = async (type: string) => {
     try {
       if (this.state.selected.length > 0) {
         let notify = this.state.selected.length === 1
@@ -168,7 +190,7 @@ class CoworkMessage extends Component {
     )
   }
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item }: any) => {
     let message = item
     let messageID = message.messageID
     let isConsumed = message.consume
@@ -221,6 +243,7 @@ class CoworkMessage extends Component {
             height: scaleSize(180),
             alignItems: 'center',
             marginBottom: scaleSize(20),
+            paddingLeft: scaleSize(30),
           },
           isConsumed && {
             backgroundColor: '#F5F5F5',
@@ -290,7 +313,6 @@ class CoworkMessage extends Component {
     return (
       <Container
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
-        ref={ref => (this.container = ref)}
         headerProps={{
           title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
           withoutBack: false,
@@ -311,8 +333,10 @@ class CoworkMessage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  newMessage: state.chat.toJS().coworkNewMessage,
+const mapStateToProps = (state: any) => ({
+  cowork: state.cowork.toJS(),
+  currentUser: state.user.toJS().currentUser,
+  coworkInfo: state.cowork.toJS().coworkInfo,
 })
 
 const mapDispatchToProps = {}

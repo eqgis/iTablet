@@ -70,6 +70,7 @@ interface Props {
   // invites: Array<any>,
   tasks: {[name: string]: Array<any>},
   groupInfo: any,
+  coworkInfo: any,
   mapModules: any,
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
@@ -165,7 +166,7 @@ class TaskManage extends React.Component<Props, State> {
     // 若redux中数据为空，则从Online下载的cowork文件中读取是否有文件
     if (data.length === 0) {
       CoworkFileHandle.getLocalCoworkList().then(async cowork => {
-        if (cowork && cowork.groups[this.props.groupInfo.id]) {
+        if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
           let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
           if (tasks.length === 0) return
           await this.props.setCoworkTaskGroup({
@@ -308,6 +309,7 @@ class TaskManage extends React.Component<Props, State> {
 
       let members = CoworkFileHandle.getTaskGroupMembers(data.groupID, data.id)
       CoworkInfo.setMembers(members)
+      CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
       this.createCowork(data.id, module, index, data.map)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
@@ -347,7 +349,7 @@ class TaskManage extends React.Component<Props, State> {
       GLOBAL.getFriend().curChat &&
         GLOBAL.getFriend().curChat.setCoworkMode(true)
       GLOBAL.coworkMode = true
-      CoworkInfo.setTalkId(targetId)
+      CoworkInfo.setGroupId(this.props.groupInfo.id)
       setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
     } catch (error) {
       GLOBAL.Loading.setLoading(false)
@@ -487,6 +489,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   language: state.setting.toJS().language,
   tasks: state.cowork.toJS().tasks,
+  coworkInfo: state.cowork.toJS().coworkInfo,
   mapModules: state.mapModules.toJS(),
 })
 

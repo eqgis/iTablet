@@ -252,6 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'Réinitialiser',
   GEOCOORDSYS: 'Système de coordonnées géographiques',
   PRJCOORDSYS: 'Système de coordonnées projeté',
+  COMMONCOORDSYS: 'Common coordinate system', // 待翻译
   CONVERTTING: 'Conversion',
   CONVERT_SUCCESS: 'Convertie avec succès',
   CONVERT_FAILED: 'Conversion échouée',

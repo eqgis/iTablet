@@ -56,6 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'Chargement',
   LOADING: 'Chargement',
   THE_MAP_IS_OPENED: 'La carte est ouverte',
+  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
   THE_SCENE_IS_OPENED: 'La scène est ouverte',
   NO_SCENE_LIST: 'Aucune donnée',
   SWITCHING: 'Commutation',
@@ -74,6 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: "Carte de base vide, veuillez d'abord changer",
   OVERRIDE_SYMBOL: 'Un symbole avec le même identifiant existe, veuillez sélectionner la méthode à ajouter', //Need to be translated
   OVERWRITE: 'Écraser',
+  CHOOSE_DATASET: 'Please choose dataset',//待翻译
 
   SET_ALL_MAP_VISIBLE: 'Tout visible',
   SET_ALL_MAP_INVISIBLE: 'Tout invisible',

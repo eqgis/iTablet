@@ -206,7 +206,7 @@ async function commit() {
     GLOBAL.prjDialog.setDialogVisible(true)
     Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
   } else {
-    Toast.show(getLanguage(_params.language).Prompt.ADD_FAILED)
+    Toast.show(getLanguage(_params.language).Prompt.CHOOSE_DATASET)
   }
 }
 

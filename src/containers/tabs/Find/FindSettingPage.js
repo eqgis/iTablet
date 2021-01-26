@@ -56,13 +56,11 @@ class FindSettingPage extends React.Component {
         image: getThemeAssets().find.college,
       },
     ]
-    if (this.props.laboratory.onlineCowork) {
-      data.push({
-        key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
-        value: 'showCowork',
-        image: getThemeAssets().find.onlineCowork,
-      })
-    }
+    data.push({
+      key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
+      value: 'showCowork',
+      image: getThemeAssets().find.onlineCowork,
+    })
     data.push({
       key: getLanguage(GLOBAL.language).Find.LABORATORY,
       value: 'showLab',

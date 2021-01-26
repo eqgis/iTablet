@@ -111,11 +111,12 @@ export default class ApplyItem extends Component<Props, State> {
         status = getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE
         return (
           <TouchableOpacity activeOpacity={0.8} style={styles.btnView} onPress={this._onPress}>
-            <Image
+            {/* <Image
               style={styles.imageStyle}
               resizeMode={'contain'}
               source={getThemeAssets().cowork.icon_group_agree}
-            />
+            /> */}
+            <View style={styles.imageStyle} />
             <Text style={styles.rightText}>{status}</Text>
             <TouchableOpacity activeOpacity={0.8} style={styles.showBtn} onPress={this._showMore}>
               <Image

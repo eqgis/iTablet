@@ -258,5 +258,10 @@ const Friends: typeof CN.Friends = {
   INVITE_CORWORK_MEMBERS: 'Invite Members',
   DELETE_CORWORK_MEMBERS: 'Delete Members',
   DELETE_CORWORK_TASK: 'Delete Task',
+
+  INVITE_GROUP_MEMBERS: 'Inivite Members',
+  INVITE_GROUP_MEMBERS_INFO: 'Whether to invite members immediately',
+  INVITE_GROUP_MEMBERS_ERROR_1: 'The user already exists',
+  INVITE_GROUP_MEMBERS_ERROR_2: 'The group has invited the user',
 }
 export { Friends }

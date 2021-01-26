@@ -55,17 +55,17 @@ class FindSettingPage extends React.Component {
         value: 'showGisAcademy',
         image: getThemeAssets().find.college,
       },
+      {
+        key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
+        value: 'showCowork',
+        image: getThemeAssets().find.onlineCowork,
+      },
+      {
+        key: getLanguage(GLOBAL.language).Find.LABORATORY,
+        value: 'showLab',
+        image: getThemeAssets().find.laboratory,
+      },
     ]
-    data.push({
-      key: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
-      value: 'showCowork',
-      image: getThemeAssets().find.onlineCowork,
-    })
-    data.push({
-      key: getLanguage(GLOBAL.language).Find.LABORATORY,
-      value: 'showLab',
-      image: getThemeAssets().find.laboratory,
-    })
     return data
   }
 

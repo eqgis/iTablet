@@ -89,9 +89,16 @@ class GroupInvitePage extends React.Component<Props, State> {
   onlineServicesUtils: any
   container: any
   inviteDialog: InputDialog | undefined | null
+  currentGroup: {
+    id: string,
+    groupName: string,
+    creator: string,
+    [name: string]: any,
+  }
 
   constructor(props: Props) {
     super(props)
+    this.currentGroup = this.props.navigation?.state?.params?.groupInfo || this.props.currentGroup
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
@@ -130,7 +137,7 @@ class GroupInvitePage extends React.Component<Props, State> {
   invite = (reason: string) => {
     if (!this.state.selectedUser) return
     this.servicesUtils?.inviteToGroup({
-      groupId: this.props.currentGroup.id,
+      groupId: this.currentGroup.id,
       inviteReason: reason || '',
       inviteNames: [this.state.selectedUser.name],
     }).then((result: any) => {
@@ -157,9 +164,9 @@ class GroupInvitePage extends React.Component<Props, State> {
             id: this.state.selectedUser?.name,
           },
           group: {
-            groupID: this.props.currentGroup.id,
-            groupName: this.props.currentGroup.groupName,
-            groupCreator: this.props.currentGroup.creator,
+            groupID: this.currentGroup.id,
+            groupName: this.currentGroup.groupName,
+            groupCreator: this.currentGroup.creator,
           },
           time: timeStr,
         }
@@ -168,7 +175,17 @@ class GroupInvitePage extends React.Component<Props, State> {
           this.state.selectedUser?.name,
         )
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_SUCCESS)
+        if (result?.error?.errorMsg) {
+          if (result.error.errorMsg.toString().indexOf('已经存在于') >= 0) {
+            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_ERROR_1)
+          } else if (result.error.errorMsg.toString().indexOf('已经邀请过') >= 0) {
+            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_ERROR_2)
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_FAILED)
+          }
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_FAILED)
+        }
       }
     })
   }

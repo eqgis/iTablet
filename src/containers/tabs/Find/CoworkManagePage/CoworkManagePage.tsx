@@ -54,23 +54,23 @@ export default class CoworkManagePage extends React.Component<Props, State> {
       this.onlineServicesUtils = new OnlineServicesUtils('iportal')
     }
 
-    this.popData = [
-      {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_SETTING,
-        action: () => {
-          NavigationService.navigate('GroupSettingPage', {
-            callBack: this.callBack,
-          })
-        },
-      },
-    ]
+    // this.popData = [
+    //   {
+    //     title: getLanguage(GLOBAL.language).Friends.GROUP_SETTING,
+    //     action: () => {
+    //       NavigationService.navigate('GroupSettingPage', {
+    //         callBack: this.callBack,
+    //       })
+    //     },
+    //   },
+    // ]
     // 只有群主才能分配任务
-    if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
-      this.popData.unshift({
-        title: getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION,
-        action: this.createTask,
-      })
-    }
+    // if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
+    //   this.popData.unshift({
+    //     title: getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION,
+    //     action: this.createTask,
+    //   })
+    // }
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -196,11 +196,14 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           height: scaleSize(44),
         }}
         icon={getThemeAssets().cowork.icon_nav_set}
-        onPress={(event: any) => {
-          this.PagePopModal && this.PagePopModal.setVisible(true, {
-            x: event.nativeEvent.pageX,
-            y: event.nativeEvent.pageY,
+        onPress={() => {
+          NavigationService.navigate('GroupSettingPage', {
+            callBack: this.callBack,
           })
+          // this.PagePopModal && this.PagePopModal.setVisible(true, {
+          //   x: event.nativeEvent.pageX,
+          //   y: event.nativeEvent.pageY,
+          // })
         }}
       />,
     ]
@@ -326,7 +329,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           createTask={this.createTask}
           {...this.props}
         />
-        {this._renderPagePopup()}
+        {/* {this._renderPagePopup()} */}
       </Container>
     )
   }

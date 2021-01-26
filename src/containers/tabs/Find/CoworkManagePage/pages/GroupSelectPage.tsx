@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet, RefreshControl } from 'react-native'
-import { Container, PopMenu, ImageButton, ListSeparator } from '../../../../../components'
+import { Container, PopMenu, ImageButton, ListSeparator, Dialog } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
@@ -36,11 +36,17 @@ class GroupSelectPage extends Component<Props, State> {
   onlineServicesUtils: any
   popData: Array<any>
   PagePopModal: PopMenu | null | undefined
+  dialog: Dialog | null | undefined
   container: any
   pageSize: number
   currentPage: number
   isLoading:boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
+  newGroupData: {
+    id: string,
+    groupName: string,
+    creator: string,
+  } | undefined // 新建群组基本信息
 
   constructor(props: Props) {
     super(props)
@@ -70,7 +76,15 @@ class GroupSelectPage extends Component<Props, State> {
         title: getLanguage(GLOBAL.language).Friends.GROUP_CREATE,
         action: () => {
           NavigationService.navigate('CreateGroupPage', {
-            callBack: () => this.refresh(false),
+            callBack: (newGroup: {
+              id: string,
+              groupName: string,
+              creator: string,
+            }) => {
+              this.newGroupData = newGroup
+              this.dialog && this.dialog.setDialogVisible(true)
+              this.refresh(false)
+            },
           })
         },
       },
@@ -257,7 +271,7 @@ class GroupSelectPage extends Component<Props, State> {
           activeOpacity={1}
           style={styles.ITemHeadTextViewStyle}
           onPress={() => {
-            NavigationService.navigate('GroupMessagePage')
+            NavigationService.navigate('GroupMessagePage', { callBack: this.refresh })
           }}
         >
           <View style={styles.arrowImgView}>
@@ -310,7 +324,7 @@ class GroupSelectPage extends Component<Props, State> {
         <View style={styles.arrowImgView}>
           <Image
             resizeMode={'contain'}
-            source={this.state.sectionMap.get(section.title) ? getThemeAssets().publicAssets.icon_drop_up : getThemeAssets().publicAssets.icon_drop_down}
+            source={this.state.sectionMap.get(section.title) ? getThemeAssets().publicAssets.icon_drop_down : getThemeAssets().publicAssets.icon_drop_up}
             style={styles.arrowImg}
           />
         </View>
@@ -351,32 +365,28 @@ class GroupSelectPage extends Component<Props, State> {
         }
       />
     )
+  }
 
-    // return (
-    //   <FlatList
-    //     style={styles.list}
-    //     ItemSeparatorComponent={() => {
-    //       return <View style={styles.itemSeparator} />
-    //     }}
-    //     // data={this.state.data}
-    //     data={this.props.coworkGroups}
-    //     renderItem={this._renderItem}
-    //     keyExtractor={(item, index) => index.toString()}
-    //     refreshControl={
-    //       <RefreshControl
-    //         refreshing={this.state.isRefresh}
-    //         onRefresh={this.refresh}
-    //         colors={['orange', 'red']}
-    //         tintColor={'orange'}
-    //         titleColor={'orange'}
-    //         title={getLanguage(GLOBAL.language).Friends.LOADING}
-    //         enabled={true}
-    //       />
-    //     }
-    //     onEndReachedThreshold={0.5}
-    //     onEndReached={this.loadMore}
-    //   />
-    // )
+  /**
+   * 创建任务成功后，提示邀请成员提示框
+   */
+  _renderInviteDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.dialog = ref)}
+        type={Dialog.Type.MODAL}
+        info={getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_INFO}
+        confirmAction={() => {
+          if (this.newGroupData) {
+            this.dialog && this.dialog.setDialogVisible(false)
+            NavigationService.navigate('GroupInvitePage', {groupInfo: this.newGroupData})
+          }
+        }}
+        confirmBtnTitle={getLanguage(this.props.language).Friends.INVITE_GROUP_MEMBERS}
+        confirmTitleStyle={{color: color.selected_blue}}
+        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
+      />
+    )
   }
 
   render() {
@@ -398,6 +408,7 @@ class GroupSelectPage extends Component<Props, State> {
         {this._renderGroupMessage()}
         {this._renderGroupList()}
         {this._renderPagePopup()}
+        {this._renderInviteDialog()}
       </Container>
     )
   }

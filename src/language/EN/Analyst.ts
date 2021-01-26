@@ -252,6 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'Reset',
   GEOCOORDSYS: 'Geographic coordinate system',
   PRJCOORDSYS: 'Projected coordinate system',
+  COMMONCOORDSYS: 'Common coordinate system',
   CONVERTTING: 'Convertting',
   CONVERT_SUCCESS: 'Convert success',
   CONVERT_FAILED: 'Convert failed',

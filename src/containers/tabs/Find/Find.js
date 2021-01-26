@@ -306,7 +306,6 @@ export default class Find extends Component {
           {/*},*/}
           {/*})}*/}
           {this.props.find.showCowork &&
-            this.props.laboratory.onlineCowork &&
             this._renderItem({
               title: getLanguage(this.props.language).Find.ONLINE_COWORK,
               subTitle: getLanguage(this.props.language).Find

@@ -101,6 +101,8 @@ export default class Setting extends Component {
         if (await RNFS.exists(path)) {
           await FileTools.deleteFile(path,'zip')
           await FileTools.deleteFile(path,'bru')
+          await FileTools.deleteFile(path,'sym')
+          await FileTools.deleteFile(path,'lsl')
           Toast.show(
             GLOBAL.language === 'CN'
               ? '清除成功'

@@ -859,6 +859,9 @@ export default class Friend extends Component {
             id: this.props.user.currentUser.userId,
             groupID: CoworkInfo.coworkId,
             groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
           },
           message: {
             type: MSGConstant.MSG_COWORK_ADD,
@@ -995,6 +998,9 @@ export default class Friend extends Component {
             id: this.props.user.currentUser.userId,
             groupID: coworkId,
             groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
           },
           message: {
             type: MSGConstant.MSG_COWORK_GPS,
@@ -1641,8 +1647,11 @@ export default class Friend extends Component {
     }
 
     if (!bSystem) {
+      if (messageObj.user.groupID.indexOf('Group_Task_') === 0) {
+        // 协作群组消息不作处理
+      } else
       //普通消息
-      if (messageObj.type === 2 && messageObj.user.groupID.indexOf('Group_Task_') === -1) {
+      if (messageObj.type === 2) {
         //处理群组消息
         let obj = FriendListFileHandle.findFromGroupList(
           messageObj.user.groupID,

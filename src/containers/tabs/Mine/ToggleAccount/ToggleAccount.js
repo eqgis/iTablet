@@ -66,7 +66,7 @@ export default class ToggleAccount extends Component {
           let userInfo = await JSOnlineservice.getUserInfo(item.nickname, true)
           newUser = {
             userName: userInfo.userId,
-            password: this.props.user.currentUser.password,
+            password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,
             phoneNumber: userInfo.phoneNumber,

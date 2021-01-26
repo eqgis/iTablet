@@ -225,11 +225,7 @@ export const readTaskMessage = (params: TaskReadParams) => async (dispatch: (arg
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   const coworkInfo = getState().cowork.toJS().coworkInfo
   // 若任务不存在，则设置失败
-  if (
-    !coworkInfo.hasOwnProperty(userId) ||
-    !coworkInfo[userId].hasOwnProperty(params.groupId) ||
-    !coworkInfo[userId][params.groupId].hasOwnProperty(params.taskId)
-  ) {
+  if (!coworkInfo?.[userId]?.[params.groupId]?.[params.taskId]) {
     return false
   }
   let result = await dispatch({
@@ -249,11 +245,7 @@ export const setIsRealTime = (params: TaskRealTimeParams) => async (dispatch: (a
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   const coworkInfo = getState().cowork.toJS().coworkInfo
   // 若任务不存在，则设置失败
-  if (
-    !coworkInfo.hasOwnProperty(userId) ||
-    !coworkInfo[userId].hasOwnProperty(params.groupId) ||
-    !coworkInfo[userId][params.groupId].hasOwnProperty(params.taskId)
-  ) {
+  if (!coworkInfo?.[userId]?.[params.groupId]?.[params.taskId]) {
     return false
   }
   let result = await dispatch({
@@ -457,6 +449,10 @@ function getTaskInfo(
   create?: boolean,
 ) {
   if (create === undefined) create = true
+  if (!coworkInfo) {
+    if (create === false) return undefined
+    coworkInfo = {}
+  }
   if (!coworkInfo.hasOwnProperty(userId)) {
     if (create === false) return undefined
     coworkInfo[userId] = {}
@@ -482,17 +478,11 @@ function deleteTaskInfo(
   groupId: string,
   taskId: string,
 ) {
-  if (!coworkInfo.hasOwnProperty(userId)) {
-    return undefined
+  if (!coworkInfo?.[userId]?.[groupId]?.[taskId]) {
+    return coworkInfo || {}
   }
-  if (!coworkInfo[userId].hasOwnProperty(groupId)) {
-    return undefined
-  }
-  if (!coworkInfo[userId][groupId].hasOwnProperty(taskId)) {
-    delete coworkInfo[userId][groupId][taskId]
-    return coworkInfo
-  }
-  return undefined
+  delete coworkInfo[userId][groupId][taskId]
+  return coworkInfo
 }
 
 const initialState = fromJS({

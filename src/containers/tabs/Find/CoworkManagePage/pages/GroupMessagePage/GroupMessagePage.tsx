@@ -142,6 +142,7 @@ class GroupMessagePage extends Component<Props, State> {
           user={this.props.user}
           device={this.props.device}
           servicesUtils={this.servicesUtils}
+          callBack={this.callBack}
         />
       </ScrollableTabView>
     )

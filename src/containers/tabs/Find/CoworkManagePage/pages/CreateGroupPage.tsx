@@ -24,6 +24,7 @@ interface State {
   isPublic: boolean,
   resourceSharer: string,
   isNeedCheck: boolean,
+  dataAvailable: boolean,
 }
 
 interface Props {
@@ -241,6 +242,7 @@ class CreateGroupPage extends React.Component<Props, State> {
       isPublic: isPublic,
       resourceSharer: this.initData?.resourceSharer || 'MEMBER',
       isNeedCheck: this.initData?.isNeedCheck === undefined ? true : this.initData.isNeedCheck,
+      dataAvailable: !this.checkData(),
     }
   }
 
@@ -250,33 +252,33 @@ class CreateGroupPage extends React.Component<Props, State> {
     return shouldUpdate
   }
 
-  checkData = (): boolean => {
+  checkData = (): string => {
     if (!this.groupInfo.groupName) {
-      Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_NOT_EMPTY)
-      return false
+      return getLanguage(this.props.language).Friends.GROUP_NAME_NOT_EMPTY
     }
     if (this.groupInfo.groupName.length > 20) {
-      Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER)
-      return false
+      return getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER
     }
     if (!this.groupInfo.tags) {
-      Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_NOT_EMPTY)
-      return false
+      return getLanguage(this.props.language).Friends.GROUP_TAG_NOT_EMPTY
     }
     let _tags = this.groupInfo.tags.split(',')
     if (_tags.length > 6) {
-      Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER)
-      return false
+      return getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER
     }
     if (this.groupInfo.description.length > 100) {
-      Toast.show(getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER)
-      return false
+      return getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER
     }
-    return true
+    return ''
   }
 
   create = () => {
-    if (this.isCreating || !this.checkData()) return
+    if (this.isCreating) return
+    let msg = this.checkData()
+    if (msg) {
+      Toast.show(msg)
+      return
+    }
     this.isCreating = true
     let _tags = this.groupInfo.tags.split(',')
     this.servicesUtils.createGroup({
@@ -289,7 +291,11 @@ class CreateGroupPage extends React.Component<Props, State> {
     }).then((result: CreateGroupResponse) => {
       if (result.succeed) {
         Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_SUCCUESS)
-        this.callBack && this.callBack()
+        this.callBack && this.callBack({
+          id: result.newResourceID,
+          groupName: this.groupInfo.groupName,
+          creator: this.props.user.currentUser.userName,
+        })
         NavigationService.goBack('CreateGroupPage', null)
         this.isCreating = false
       } else {
@@ -300,13 +306,17 @@ class CreateGroupPage extends React.Component<Props, State> {
           Toast.show(getLanguage(this.props.language).Friends.GROUP_CREATE_FAILED)
         }
       }
-    }).catch(e => {
+    }).catch(() => {
       this.isCreating = false
     })
   }
 
   modify = () => {
-    if (!this.checkData()) return
+    let msg = this.checkData()
+    if (msg) {
+      Toast.show(msg)
+      return
+    }
     let _tags = this.groupInfo.tags.split(',')
     let modifyData = {
       groupName: this.groupInfo.groupName,
@@ -335,6 +345,25 @@ class CreateGroupPage extends React.Component<Props, State> {
     })
   }
 
+  _checkAvailable = () => {
+    if (!this.groupInfo.groupName) {
+      return false
+    }
+    if (this.groupInfo.groupName.length > 20) {
+      return false
+    }
+    if (!this.groupInfo.tags) {
+      return false
+    }
+    let _tags = this.groupInfo.tags.split(',')
+    if (_tags.length > 6) {
+      return false
+    }
+    if (this.groupInfo.description.length > 100) {
+      return false
+    }
+  }
+
   _renderTopItem = (data: {title: string, defaultValue: string, placeholder: string, onChangeText: (text: string) => void}) : any => {
     return (
       <View style={styles.topItem}>
@@ -349,6 +378,15 @@ class CreateGroupPage extends React.Component<Props, State> {
           placeholderTextColor={color.fontColorGray3}
           onChangeText={text => {
             if (data.onChangeText) data.onChangeText(text)
+            if (!this.checkData() && !this.state.dataAvailable) {
+              this.setState({
+                dataAvailable: true,
+              })
+            } else if (this.checkData() && this.state.dataAvailable) {
+              this.setState({
+                dataAvailable: false,
+              })
+            }
           }}
         />
       </View>
@@ -404,7 +442,18 @@ class CreateGroupPage extends React.Component<Props, State> {
             underlineColorAndroid="transparent"
             placeholderTextColor={color.fontColorGray3}
             multiline={true}
-            onChangeText={text => this.groupInfo.description = text}
+            onChangeText={text => {
+              this.groupInfo.description = text
+              if (!this.checkData() && !this.state.dataAvailable) {
+                this.setState({
+                  dataAvailable: true,
+                })
+              } else if (this.checkData() && this.state.dataAvailable) {
+                this.setState({
+                  dataAvailable: false,
+                })
+              }
+            }}
           />
         </View>
       </View>
@@ -537,7 +586,7 @@ class CreateGroupPage extends React.Component<Props, State> {
           headerRight: (
             <TextBtn
               btnText={this.initData ? getLanguage(this.props.language).Prompt.SAVE_YES : getLanguage(this.props.language).Friends.CREATE}
-              textStyle={styles.headerBtnTitle}
+              textStyle={[styles.headerBtnTitle, !this.checkData() && {color: color.contentColorGray}]}
               btnClick={this.initData ? this.modify : this.create}
             />
           ),

@@ -27,6 +27,7 @@ interface Props {
   user: Users,
   device: any,
   servicesUtils: SCoordination | undefined,
+  callBack?: () => void,
 }
 
 type State = {
@@ -188,6 +189,8 @@ export default class InviteMessages extends Component<Props, State> {
         _data[index] = data
         this.setState({
           data: _data,
+        }, () => {
+          this.props.callBack && this.props.callBack()
         })
       } else if (result.error?.errorMsg) {
         Toast.show(result.error?.errorMsg)

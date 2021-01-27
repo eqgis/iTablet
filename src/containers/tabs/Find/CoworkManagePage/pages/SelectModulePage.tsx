@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { ScrollView, FlatList, View, TouchableOpacity, Text, Image, StyleSheet } from 'react-native'
+import { FlatList, View, TouchableOpacity, Text, Image, StyleSheet } from 'react-native'
 import { Container, ListSeparator } from '../../../../../components'
+import { ChunkType } from '../../../../../constants'
 // import TouchableItemView from '../TouchableItemView'
 import { getLanguage } from '../../../../../language'
 import { connect } from 'react-redux'
-import { SMap } from 'imobile_for_reactnative'
 import { setCurrentMapModule } from '../../../../../redux/models/mapModules'
-import NavigationService from '../../../../NavigationService'
 import { scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 
@@ -51,9 +50,14 @@ class SelectModulePage extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.callBack = this.props.navigation.getParam('callBack')
-    let _modules = this.props.mapModules.modules.map((item: any) =>
-      item.getChunk(this.props.language),
-    )
+    let _modules = this.props.mapModules.modules
+      .filter((item: any) => {
+        return item.key === ChunkType.MAP_EDIT ||
+        item.key === ChunkType.MAP_COLLECTION
+      })
+      .map((item: any) => {
+        return item.getChunk(this.props.language)
+      })
     this.state = {
       modules: _modules,
     }

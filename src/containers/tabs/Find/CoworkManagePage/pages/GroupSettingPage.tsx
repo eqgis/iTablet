@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  RefreshControl,
 } from 'react-native'
 import { connect } from 'react-redux'
 import NavigationService from '../../../../NavigationService'
@@ -37,6 +38,7 @@ interface Props {
 type State = {
   data: Array<any>,
   dialogInfo: string,
+  isRefresh: boolean,
 }
 
 interface ItemType {
@@ -60,6 +62,7 @@ class GroupSettingPage extends Component<Props, State> {
     this.state = {
       data: [], // 所有数组
       dialogInfo: '',
+      isRefresh: false,
     }
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -88,12 +91,18 @@ class GroupSettingPage extends Component<Props, State> {
       if (persons.length > 0) {
         this.setState({
           data: persons,
+          isRefresh: false,
         })
       } else {
         this.setState({
           data: [],
+          isRefresh: false,
         })
       }
+    }).catch(() => {
+      this.state.isRefresh && this.setState({
+        isRefresh: false,
+      })
     })
   }
 
@@ -332,6 +341,17 @@ class GroupSettingPage extends Component<Props, State> {
             flexDirection: 'column',
             paddingTop: scaleSize(20),
           }}
+          contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefresh}
+              onRefresh={this.getMembers}
+              colors={['orange', 'red']}
+              tintColor={'orange'}
+              titleColor={'orange'}
+              enabled={true}
+            />
+          }
         >
           {this._renderMembers()}
           {this._renderSettings()}
@@ -455,6 +475,9 @@ const styles = StyleSheet.create({
     // marginLeft: scaleSize(30),
     marginTop: scaleSize(10),
   },
+  list: {
+    paddingBottom: scaleSize(130),
+  },
 
   // 底部按钮
   bottomView: {
@@ -469,7 +492,7 @@ const styles = StyleSheet.create({
     width: scaleSize(480),
     height: scaleSize(80),
     borderRadius: scaleSize(40),
-    bottom: scaleSize(94),
+    bottom: scaleSize(38),
     left: '50%',
     right: '50%',
     marginLeft: scaleSize(-240),

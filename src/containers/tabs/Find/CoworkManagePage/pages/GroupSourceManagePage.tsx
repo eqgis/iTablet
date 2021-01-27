@@ -173,7 +173,7 @@ class GroupSourceManagePage extends Component<Props, State> {
                 pageSize: this.pageSize,
                 currentPage: 1,
               })
-            }
+            },
           })
         },
       },
@@ -385,6 +385,25 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   _renderHeaderRight = () => {
+    if (!this.isManage) {
+      return (
+        <ImageButton
+          containerStyle={{marginRight: scaleSize(6)}}
+          icon={getThemeAssets().cowork.icon_nav_export}
+          onPress={() => {
+            NavigationService.navigate('GroupSourceUploadPage', {
+              title: getLanguage(this.props.language).Profile.MAP,
+              cb: () => {
+                this.getGroupResources({
+                  pageSize: this.pageSize,
+                  currentPage: 1,
+                })
+              },
+            })
+          }}
+        />
+      )
+    }
     if (this.state.isDelete) {
       return (
         <TextBtn
@@ -564,7 +583,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         headerProps={{
           title: this.title,
           navigation: this.props.navigation,
-          headerRight: this.isManage && this._renderHeaderRight(),
+          headerRight: this._renderHeaderRight(),
           // headerLeft: this.state.isDelete && this._renderHeaderLeft(),
           backAction: this.state.isDelete && this._closeDelete,
           headerTitleViewStyle: {

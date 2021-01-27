@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, FlatList, Text, Image, StyleSheet } from 'react-native'
+import { View, FlatList, Text, Image, StyleSheet, Platform } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import { addCoworkMsg, setCoworkTaskGroup } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { UserInfo } from '../../../../redux/models/user'
-import { ListSeparator, ImageButton, PopMenu, Dialog } from '../../../../components'
+import { ListSeparator, ImageButton, PopMenu, Dialog, TextBtn } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { setCurrentTask } from '../../../../redux/models/cowork'
@@ -55,6 +55,36 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(60),
     justifyContent: 'center',
     alignItems: 'center',
+    ...Platform.select({
+      android: {
+        elevation: 5,
+      },
+      ios: {
+        shadowOffset: { width: 5, height: 5 },
+        shadowColor: '#eee',
+        shadowOpacity: 1,
+        shadowRadius: 2,
+      },
+    }),
+  },
+  list: {
+    paddingBottom: scaleSize(130),
+  },
+  // 底部按钮
+  bottomBtn: {
+    position: 'absolute',
+    width: scaleSize(480),
+    height: scaleSize(80),
+    borderRadius: scaleSize(40),
+    bottom: scaleSize(38),
+    left: '50%',
+    right: '50%',
+    marginLeft: scaleSize(-240),
+    backgroundColor: color.contentColorGray,
+  },
+  bottomBtnText: {
+    fontSize: size.fontSize.fontSizeXXXl,
+    color: color.white,
   },
 })
 
@@ -222,7 +252,7 @@ class TaskManage extends React.Component<Props, State> {
           )
         }
         currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        await this.props.addCoworkMsg(currentTask)
+        this.props.addCoworkMsg(currentTask)
         // this.props.addTaskMembers({
         //   groupID: currentTask.groupID,
         //   id: currentTask.id,
@@ -457,6 +487,19 @@ class TaskManage extends React.Component<Props, State> {
     )
   }
 
+  _renderBottom = () => {
+    return (
+      <TextBtn
+        btnText={getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION}
+        containerStyle={styles.bottomBtn}
+        textStyle={styles.bottomBtnText}
+        btnClick={() => {
+          this.props.createTask && this.props.createTask()
+        }}
+      />
+    )
+  }
+
   render() {
     let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userId]
       && this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
@@ -469,14 +512,21 @@ class TaskManage extends React.Component<Props, State> {
             ? (
               <FlatList
                 ref={ref => this.list = ref}
+                // style={styles.list}
                 data={data}
                 extraData={this.state}
                 renderItem={this.renderItem}
                 keyExtractor={(item, index) => item.id.toString()}
+                contentContainerStyle={styles.list}
                 // ItemSeparatorComponent={this._renderItemSeparatorComponent}
               />
             )
             : this._renderNull()
+        }
+        {
+          data.length > 0 &&
+          this.props.user.currentUser.userName === this.props.groupInfo.creator &&
+          this._renderBottom()
         }
         {this._renderPagePopup()}
         {this._renderDeleteDialog()}

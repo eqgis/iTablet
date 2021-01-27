@@ -254,5 +254,10 @@ const Friends = {
   INVITE_CORWORK_MEMBERS: '邀请协作者',
   DELETE_CORWORK_MEMBERS: '删除协作者',
   DELETE_CORWORK_TASK: '删除任务',
+
+  INVITE_GROUP_MEMBERS: '邀请成员',
+  INVITE_GROUP_MEMBERS_INFO: '是否立刻邀请成员',
+  INVITE_GROUP_MEMBERS_ERROR_1: '该用户已存在',
+  INVITE_GROUP_MEMBERS_ERROR_2: '群组已经邀请过该用户',
 }
 export { Friends }

@@ -358,10 +358,11 @@ class NewDataset extends Component {
           <TouchableOpacity onPress={()=>{
             this._setProjection(item,index)
           }}>
-            <View>
+            <View style={{flex: 1,justifyContent:'center'}}>
               <Text style={[styles.textStyle, { color: '#4680DF' }]}>
                 {item.datasetPrjName}
               </Text>
+              <Image source={getThemeAssets().publicAssets.icon_arrow_right} style={styles.arrowStyle}/>
             </View>
           </TouchableOpacity>
         </View>
@@ -576,6 +577,12 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeSm,
     color: color.red,
     textAlign: 'left',
+  },
+  arrowStyle: {
+    width: scaleSize(20),
+    height: scaleSize(20),
+    position: 'absolute',
+    right: scaleSize(10),
   },
 })
 

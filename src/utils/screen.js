@@ -10,6 +10,11 @@ let deviceSafeHeight // 设备安全高度
 // const defaultPixel = 2.25
 // const fontScale = PixelRatio.getFontScale()
 
+/** RN原本的单位 */
+export function dp(size) {
+  return size
+}
+
 function getScreenWidth(orientation) {
   deviceWidth = Dimensions.get('window').width
   if (!orientation) return deviceWidth
@@ -237,6 +242,7 @@ function getHeaderHeight(orientation) {
 }
 
 export default {
+  dp,
   getScreenWidth,
   getScreenHeight,
   getScreenSafeHeight,

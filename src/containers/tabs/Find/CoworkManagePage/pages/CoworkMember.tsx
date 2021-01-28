@@ -114,7 +114,7 @@ class CoworkMember extends Component<Props, State> {
     // let data = CoworkFileHandle.getTaskGroupMembers(groupId, coworkId)
     // CoworkInfo.setMembers(data)
     // this.setState({ data: data || [] })
-    this.setState({ data: CoworkInfo.members || [] })
+    // this.setState({ data: CoworkInfo.members || [] })
   }
 
   invite = () => {
@@ -123,8 +123,9 @@ class CoworkMember extends Component<Props, State> {
     } = {
       except: [],
     }
-    for (let i = 0; i < this.state.data.length; i++) {
-      filter.except.push(this.state.data[i].id)
+    let members = this.props.currentTaskInfo?.members || []
+    for (let i = 0; i < members.length; i++) {
+      filter.except.push(members[i].id)
     }
     NavigationService.navigate('GroupFriendListPage', {
       mode: 'multiSelect', // 多选模式
@@ -160,7 +161,7 @@ class CoworkMember extends Component<Props, State> {
           )
         }
         currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        await this.props.addCoworkMsg(currentTask)
+        this.props.addCoworkMsg(currentTask)
         // this.props.addTaskMembers({
         //   groupID: currentTask.groupID,
         //   id: currentTask.id,
@@ -172,7 +173,7 @@ class CoworkMember extends Component<Props, State> {
         //   currentTask.id,
         //   _members,
         // )
-        this.getData()
+        // this.getData()
       },
     })
   }

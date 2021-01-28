@@ -532,6 +532,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_SELECT_ALL: 'تحديد الكل',
   MERGE_ADD: 'إلحاق',
   MERGE_DATASET: 'دمج مجموعات البيانات',
+
+  // 专题制图加载/输出xml 待翻译
+  MAP_OUTPUT_XML: 'Output',
+  MAP_LOAD_XML: 'Load',
 }
 
 // 推演动画

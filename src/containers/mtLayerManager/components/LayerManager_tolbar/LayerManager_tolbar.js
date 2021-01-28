@@ -25,6 +25,7 @@ import {
   layerSettingCanNotSnap,
   layerSettingCanNotEdit,
   layerNavigationSetting,
+  getXmlTemplateData,
 } from './LayerToolbarData'
 import {
   View,
@@ -86,6 +87,7 @@ export default class LayerManager_tolbar extends React.Component {
     currentLayer: Object,
     curUserBaseMaps: Array,
     currentScale: Number,
+    mapFromXml?: () => {}
   }
 
   static defaultProps = {
@@ -172,7 +174,7 @@ export default class LayerManager_tolbar extends React.Component {
     this.height = boxHeight
   }
 
-  getData = (type, isGroup = false, layerData) => {
+  getData = async (type, isGroup = false, layerData) => {
     let data = []
     let headerData = layerSettingCanVisit(this.props.language)
     !isGroup && headerData.concat(layerSettingCanSelect(this.props.language))
@@ -247,6 +249,12 @@ export default class LayerManager_tolbar extends React.Component {
       }
       case ConstToolType.SM_MAP_EDIT_TAGGING:
         data = taggingData(GLOBAL.language)
+        break
+      case "GET_XML_TEMPLATE":
+        data = await getXmlTemplateData()
+        if(data[0].data.length === 0){
+          Toast.show(getLanguage(GLOBAL.language).Prompt.NO_TEMPLATE)
+        }
         break
     }
     // 屏蔽在线协作-移除图层
@@ -326,7 +334,7 @@ export default class LayerManager_tolbar extends React.Component {
    *   layerData:       图层数据
    * }
    **/
-  setVisible = (isShow, type, params = {}) => {
+  setVisible = async (isShow, type, params = {}) => {
     this.height =
       params && typeof params.height === 'number'
         ? params.height
@@ -338,7 +346,7 @@ export default class LayerManager_tolbar extends React.Component {
         params.layerData &&
         params.layerData.type &&
         params.layerData.type === 'layerGroup'
-      let data = this.getData(type, isGroup, params.layerData)
+      let data = await this.getData(type, isGroup, params.layerData)
       newState = this.updateMenuState(data, params.layerData)
     }
     if (isShow) {
@@ -444,7 +452,7 @@ export default class LayerManager_tolbar extends React.Component {
     } else return
   }
 
-  listAction = ({ section }) => {
+  listAction = ({ section, type }) => {
     if (section.action) {
       (async function() {
         await section.action(() => {
@@ -673,6 +681,15 @@ export default class LayerManager_tolbar extends React.Component {
       //分享图层
       //this.setVisible(true, 'Share', { layerData: this.state.layerData })
       this._onShare('friend')
+    } else if (type && type === 'GET_XML_TEMPLATE'){
+      this.setVisible(false)
+      GLOBAL.Loading.setLoading(true)
+      this.props.mapFromXml({xmlFile: section.title}, res => {
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(res ? getLanguage(this.props.language).Prompt.SUCCESS :
+          getLanguage(this.props.language).Prompt.FAILED)
+        res && this.props.getLayers()
+      })
     }
   }
 
@@ -821,12 +838,13 @@ export default class LayerManager_tolbar extends React.Component {
       </View>
     )
   }
-  renderItem = ({ item }) => {
+  renderItem = data => {
+    const { item, section:{ type } } = data
     return (
       <View>
         <TouchableHighlight
           onPress={() => {
-            this.listAction({ section: item })
+            this.listAction({ section: item, type })
           }}
           underlayColor={color.headerBackground}
         >
@@ -1214,6 +1232,7 @@ export default class LayerManager_tolbar extends React.Component {
           case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
           case ConstToolType.SM_MAP_LAYER_BASE_CHANGE:
           case ConstToolType.SM_MAP_LAYER_NAVIGATION:
+          case 'GET_XML_TEMPLATE':
             box = this.renderList()
             break
         }

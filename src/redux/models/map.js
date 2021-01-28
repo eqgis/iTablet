@@ -20,6 +20,46 @@ let isExporting = false
 
 // Actions
 // --------------------------------------------------
+// 地图导出为xml
+export const mapToXml = (params, cb = () =>{}) => async () => {
+  try{
+    const {mapName = 'DefaultMap'} = params
+    const fileDir = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.Module.XmlTemplate)
+    let exists = await fs.exists(fileDir)
+    if(!exists){
+      await fs.mkdir(fileDir)
+    }
+    const xml = await SMap.mapToXml()
+    let xmlFileName = `/${mapName}_template.xml`
+    let postFix = 0
+    while(await fs.exists(fileDir + xmlFileName)){
+      xmlFileName = `/${mapName}_template_${++postFix}.xml`
+    }
+    await fs.writeFile(fileDir + xmlFileName,xml,'utf8')
+    cb && cb(true)
+    return true
+  }catch (e){
+    cb && cb(false)
+    return false
+  }
+}
+// 加载xml地图
+export const mapFromXml = (params, cb = () =>{}) => async (dispatch, getState) => {
+  try{
+    const { xmlFile } = params
+    const { userName } = getState().user.toJS().currentUser
+    const filePath = await FileTools.appendingHomeDirectory(
+      `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Attribute}/${xmlFile}.xml`)
+
+    let result = await SMap.mapFromXml(await fs.readFile(filePath))
+    console.log(userName)
+    cb && cb(result)
+    return result
+  }catch (e){
+    cb && cb(false)
+    return false
+  }
+}
 // 打开工作空间
 export const openWorkspace = (params, cb = () => {}) => async dispatch => {
   try {

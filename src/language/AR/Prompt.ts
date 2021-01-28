@@ -390,8 +390,13 @@ const Prompt: typeof CN.Prompt = {
 
   IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
   TRACKING_LOADING: 'Tracking...',
-  SCENE_OPEN: 'success',
 
+  // 专题制图加载/输出xml
+  SUCCESS: 'Successful operation',
+  FAILED: 'Operation failed',
+  NO_TEMPLATE: 'No templates available',
+  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
+  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
 }
 
 export { Prompt }

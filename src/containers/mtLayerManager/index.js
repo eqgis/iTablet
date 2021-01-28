@@ -7,7 +7,7 @@ import {
   clearAttributeHistory,
 } from '../../redux/models/layers'
 import { setMapLegend } from '../../redux/models/setting'
-import { closeMap } from '../../redux/models/map'
+import { closeMap, mapToXml, mapFromXml } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -30,6 +30,8 @@ const mapDispatchToProps = {
   closeMap,
   clearAttributeHistory,
   setMapLegend,
+  mapToXml,
+  mapFromXml,
 }
 
 export default connect(

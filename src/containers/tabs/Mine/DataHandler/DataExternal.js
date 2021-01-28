@@ -37,6 +37,8 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let SYMBOL = []
     let AIMODEL = []
 
+    // 专题制图导出的xml
+    let Xml_Template = []
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
@@ -59,6 +61,8 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     COLOR = getColorList(path, contentList)
     SYMBOL = getSymbolList(path, contentList)
     AIMODEL = getAIModelList(path, contentList)
+
+    Xml_Template = await getXmlTemplateList(path, contentList)
     resultList = resultList
       .concat(PL)
       .concat(WS)
@@ -77,10 +81,42 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(COLOR)
       .concat(SYMBOL)
       .concat(AIMODEL)
+      .concat(Xml_Template)
     return resultList
   } catch (e) {
     // console.log(e)
     return resultList
+  }
+}
+
+async function getXmlTemplateList(path, contentList) {
+  let xmlList = []
+  try{
+    let xmlDirContent = []
+    let dirName
+    // 找到xmlTemplate文件夹
+    for(let i = 0;i < contentList.length; i++){
+      if(contentList[i].name === 'XmlTemplate') {
+        contentList[i].check = true
+        dirName = contentList[i].name
+        xmlDirContent = contentList[i].contentList
+        break
+      }
+    }
+    // 找到该文件夹下xml文件
+    for(let i = 0;i < xmlDirContent.length; i++){
+      if(xmlDirContent[i].type === 'file'){
+        xmlList.push({
+          directory: `${path}/${dirName}`,
+          fileName: xmlDirContent[i].name,
+          filePath: `${path}/${dirName}/${xmlDirContent[i].name}`,
+          fileType: 'xmltemplate',
+        })
+      }
+    }
+    return xmlList
+  }catch (e){
+    return xmlList
   }
 }
 

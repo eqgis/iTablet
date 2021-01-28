@@ -318,6 +318,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
+            marginRight: scaleSize(150),
           },
         }}
       >

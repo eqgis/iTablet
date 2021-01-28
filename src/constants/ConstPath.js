@@ -6,11 +6,13 @@ const MapEdit = 'MapEdit'
 const MapTheme = 'Map/MapTheme'
 const Workspace = 'Workspace.sxwu' // 工作空间
 const Plotting = 'Plotting'
+const XmlTemplate = 'XmlTemplate'
 const Module = {
   Collection,
   MapEdit,
   MapTheme,
   Plotting,
+  XmlTemplate,
 }
 
 // 该目录下的数据会被创建在 '/iTablet/'下，不要轻易加

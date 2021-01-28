@@ -388,7 +388,13 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?',
   TRACKING_LOADING: 'Tracking...',
-  SCENE_OPEN: 'success',
+
+  // 专题制图加载/输出xml
+  SUCCESS: 'Successful operation',
+  FAILED: 'Operation failed',
+  NO_TEMPLATE: 'No templates available',
+  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
+  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
 }
 
 export { Prompt }

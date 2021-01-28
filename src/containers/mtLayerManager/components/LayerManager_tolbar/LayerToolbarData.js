@@ -1,7 +1,29 @@
 import { DatasetType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
-import { ChunkType } from '../../../../constants'
+import { ChunkType, ConstPath } from '../../../../constants'
+import { FileTools } from '../../../../native'
+
+// 获取用户目录下导入的xml
+async function getXmlTemplateData() {
+  const data = []
+  const dir = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + GLOBAL.currentUser.userName}/${ConstPath.RelativePath.Attribute}/`
+  )
+  const files = await FileTools.getDirectoryContent(dir)
+  files.forEach(item => {
+    if(item.type === 'file' && (item.name.indexOf('.xml') != -1)) {
+      data.push({title: item.name.replace('.xml','')})
+    }
+  })
+  return [
+    {
+      title: '',
+      data,
+      type: 'GET_XML_TEMPLATE',
+    },
+  ]
+}
 
 function getGroupData(language) {
   return [
@@ -635,4 +657,5 @@ export {
   layerSettingCanNotEdit,
   layerSettingCanSnap,
   layerSettingCanNotSnap,
+  getXmlTemplateData,
 }

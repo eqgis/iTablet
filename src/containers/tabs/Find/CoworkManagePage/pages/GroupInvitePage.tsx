@@ -9,6 +9,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { SCoordination, SearchUserResponse, SMessageService } from 'imobile_for_reactnative'
 
 import { connect } from 'react-redux'
+import FriendList, { FriendInfo } from '../../../Friend/FriendList/FriendList'
 
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
 
 class GroupInvitePage extends React.Component<Props, State> {
 
-  servicesUtils: any
+  servicesUtils: SCoordination | undefined
   onlineServicesUtils: any
   container: any
   inviteDialog: InputDialog | undefined | null
@@ -121,7 +122,7 @@ class GroupInvitePage extends React.Component<Props, State> {
   }
 
   search = (nickName: string) => {
-    this.servicesUtils?.searchUserByName(nickName).then((result: any) => {
+    this.servicesUtils?.searchUserByName(nickName).then((result) => {
       if (result) {
         this.setState({
           data: result,
@@ -132,6 +133,14 @@ class GroupInvitePage extends React.Component<Props, State> {
     }, () => {
       GLOBAL.Loading.setLoading(false)
     })
+  }
+
+  getUserSerachInfo = (user: FriendInfo): SearchUserResponse => {
+    return {
+      roles: ["PORTAL_USER","NOPASSWORD","DATA_CENTER"],
+      nickname: user.name,
+      name: user.id,
+    }
   }
 
   invite = (reason: string) => {
@@ -190,7 +199,7 @@ class GroupInvitePage extends React.Component<Props, State> {
     })
   }
 
-  _itemPress = (item: SearchUserResponse, index: number) => {
+  _itemPress = (item: SearchUserResponse) => {
     this.setState({
       selectedUser: item,
     }, () => {
@@ -226,7 +235,7 @@ class GroupInvitePage extends React.Component<Props, State> {
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
         activeOpacity={0.75}
-        onPress={() => this._itemPress(item, index)}
+        onPress={() => this._itemPress(item)}
       >
         <Image
           style={styles.itemImg}
@@ -290,6 +299,18 @@ class GroupInvitePage extends React.Component<Props, State> {
           data={this.state.data}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
+          ListEmptyComponent={() => {
+            return (
+              <FriendList
+              language={GLOBAL.language}
+              user={this.props.user.currentUser}
+              callBack={(user) => {
+                const info = this.getUserSerachInfo(user)
+                this._itemPress(info)
+              }}
+            />
+            )
+          }}
         />
         {this._renderDialog()}
       </Container>

@@ -49,4 +49,22 @@ export default StyleSheet.create({
     marginLeft: scaleSize(6),
     marginRight: scaleSize(6),
   },
+  dialogContent: {
+    paddingTop: scaleSize(30),
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  dialogTextStyle: {
+    fontSize: scaleSize(24),
+    marginTop: scaleSize(5),
+    marginLeft: scaleSize(10),
+    marginRight: scaleSize(10),
+    textAlign: 'center',
+  },
+  dialogTitleImg: {
+    width: scaleSize(80),
+    height: scaleSize(80),
+    opacity: 1,
+  },
 })

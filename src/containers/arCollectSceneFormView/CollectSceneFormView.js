@@ -1038,13 +1038,6 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <View style={styles.toolbarb}>
         <View style={styles.buttonViewb}>
-          <TouchableOpacity onPress={() => this.back()} style={styles.iconView}>
-            <Image
-              resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_cancel}
-              style={styles.smallIcon}
-            />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               NavigationService.navigate('ChooseLayer')

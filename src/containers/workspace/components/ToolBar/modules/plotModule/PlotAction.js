@@ -196,24 +196,27 @@ async function animationWayUndo() {
 }
 
 async function collectionSubmit(libId, symbolCode) {
-  await SMap.submit()
-  await SMap.refreshMap()
-  SMap.setPlotSymbol(libId, symbolCode)
+  await SMap.submit().then(async result => {
+    if (result) {
+      await SMap.refreshMap()
+      SMap.setPlotSymbol(libId, symbolCode)
 
-  ToolbarModule.getParams().getLayers(-1, async layers => {
-    let plotLayer
-    for (let i = 0; i < layers.length; i++) {
-      if (layers[i].name.indexOf('PlotEdit_') !== -1) {
-        plotLayer = layers[i]
-        break
-      }
-    }
-    if (plotLayer) {
-      ToolbarModule.getParams().setCurrentLayer(plotLayer)
-      if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-        let friend = GLOBAL.getFriend()
-        friend.onGeometryAdd(plotLayer)
-      }
+      ToolbarModule.getParams().getLayers(-1, async layers => {
+        let plotLayer
+        for (let i = 0; i < layers.length; i++) {
+          if (layers[i].name.indexOf('PlotEdit_') !== -1) {
+            plotLayer = layers[i]
+            break
+          }
+        }
+        if (plotLayer) {
+          ToolbarModule.getParams().setCurrentLayer(plotLayer)
+          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+            let friend = GLOBAL.getFriend()
+            friend.onGeometryAdd(plotLayer)
+          }
+        }
+      })
     }
   })
 }

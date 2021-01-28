@@ -173,17 +173,20 @@ function commit(type) {
         _params.user.currentUser.userName,
       )
       SMap.setLayerEditable(currentLayer.name, true).then(() => {
-        SMap.submit()
-        SMap.refreshMap()
-        //提交标注后 需要刷新属性表
-        GLOBAL.NEEDREFRESHTABLE = true
-        if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-          let layerType = LayerUtils.getLayerType(currentLayer)
-          if (layerType !== 'TAGGINGLAYER') {
-            let friend = GLOBAL.getFriend()
-            friend.onGeometryAdd(currentLayer)
+        SMap.submit().then(result => {
+          if (result) {
+            SMap.refreshMap()
+            //提交标注后 需要刷新属性表
+            GLOBAL.NEEDREFRESHTABLE = true
+            if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+              let layerType = LayerUtils.getLayerType(currentLayer)
+              if (layerType !== 'TAGGINGLAYER') {
+                let friend = GLOBAL.getFriend()
+                friend.onGeometryAdd(currentLayer)
+              }
+            }
           }
-        }
+        })
       })
     } else {
       SMap.submit().then(async () => {

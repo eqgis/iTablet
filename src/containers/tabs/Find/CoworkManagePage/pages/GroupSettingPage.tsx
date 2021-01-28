@@ -209,9 +209,11 @@ class GroupSettingPage extends Component<Props, State> {
     } else {
       _data = this.state.data.concat([])
     }
-    _data.push({
-      title: 'plus',
-    })
+    if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
+      _data.push({
+        title: 'plus',
+      })
+    }
 
     return (
       <View style={styles.tableView}>

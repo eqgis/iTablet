@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   user: state.user.toJS(),
   find: state.setting.toJS().find,
   laboratory: state.setting.toJS().laboratory,
+  coworkMessages: state.cowork.toJS().messages,
 })
 
 const mapDispatchToProps = {

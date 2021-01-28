@@ -64,6 +64,7 @@ import SinglePicker from './SinglePicker'
 import ColorScheme from './ColorScheme'
 import BottomBar from './BottomBar'
 import MyToast from './MyToast'
+import RedDot from './RedDot'
 export {
   Container,
   BtnOne,
@@ -141,4 +142,5 @@ export {
   ColorScheme,
   BottomBar,
   MyToast,
+  RedDot,
 }

@@ -1932,6 +1932,18 @@ export default class Friend extends Component {
         }
       } else {
         JPushService.sendLocalNotification(messageObj)
+        // 记录协作聊天消息数量
+        if (messageObj.user.groupID.indexOf('Group_Task_') === 0) {
+          let _tempMsg = JSON.parse(JSON.stringify(messageObj))
+          _tempMsg.type = MSGConstant.MSG_ONLINE_GROUP_CHAT
+          this.props.addCoworkMsg({
+            type: MSGConstant.MSG_ONLINE_GROUP_CHAT,
+            groupId: messageObj.user.coworkGroupId,
+            taskId: messageObj.user.groupID,
+            message: messageObj.message,
+            time: messageObj.time,
+          })
+        }
       }
     }
   }

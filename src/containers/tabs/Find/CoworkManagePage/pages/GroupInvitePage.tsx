@@ -149,12 +149,12 @@ class GroupInvitePage extends React.Component<Props, State> {
         let message: any = {
           id: 'GROUP_APPLY_' + timeStr,
           message: {
-            type: MsgConstant.MSG_ONLINE_MEMBER_INVITE,
+            // type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
             checkStatus: 'WAITTING',
             applicant: this.props.user.currentUser.userId || '',
             applyTime: timeStr,
           },
-          type: MsgConstant.MSG_ONLINE_GROUP,
+          type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
           user: {
             name: this.props.user.currentUser.nickname || '',
             id: this.props.user.currentUser.userId || '',

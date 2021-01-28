@@ -37,6 +37,7 @@ export default class Find extends Component {
     user: Object,
     find: Object,
     laboratory: Object,
+    coworkMessages: any,
   }
 
   constructor(props) {
@@ -199,6 +200,8 @@ export default class Find extends Component {
   }
 
   _selectionRender = () => {
+    let applyMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
+    let inviteMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
     return (
       <View opacity={1} style={{ flex: 1, backgroundColor: color.bgW }}>
         <ScrollView
@@ -311,7 +314,7 @@ export default class Find extends Component {
               subTitle: getLanguage(this.props.language).Find
                 .ONLINE_COWORK_INFO,
               leftImagePath: getThemeAssets().find.onlineCowork,
-              isInformSpot: false,
+              isInformSpot: (applyMessagesUnread + inviteMessagesUnread) > 0,
               onClick: () => {
                 if (UserType.isOnlineUser(this.props.user.currentUser)) {
                   NavigationService.navigate('GroupSelectPage', {

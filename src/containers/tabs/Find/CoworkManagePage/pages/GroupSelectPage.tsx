@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet, RefreshControl } from 'react-native'
-import { Container, PopMenu, ImageButton, ListSeparator, Dialog } from '../../../../../components'
+import { Container, PopMenu, ImageButton, ListSeparator, Dialog, RedDot } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
@@ -8,7 +8,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
-import { setCoworkGroup, setCurrentGroup } from '../../../../../redux/models/cowork'
+import { setCoworkGroup, setCurrentGroup, MessageType } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 import CoworkFileHandle from '../CoworkFileHandle'
@@ -20,6 +20,9 @@ interface Props {
   device: any,
   coworkGroups: any,
   currentGroup: any,
+  coworkMessages: {
+    [name: string]: MessageType,
+  },
   setCoworkGroup: (data: any) => any,
   setCurrentGroup: (data: any) => any,
 }
@@ -265,6 +268,8 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   _renderGroupMessage = () => {
+    let applyMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
+    let inviteMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
     return (
       <View>
         <TouchableOpacity
@@ -280,6 +285,17 @@ class GroupSelectPage extends Component<Props, State> {
               source={getThemeAssets().friend.icon_notice}
               style={styles.arrowImg}
             />
+            {
+              applyMessagesUnread + inviteMessagesUnread > 0 &&
+              (
+                <RedDot
+                  style={{
+                    top: scaleSize(30),
+                    right: scaleSize(30),
+                  }}
+                />
+              )
+            }
           </View>
           <Text style={styles.ITemHeadTextStyle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE}</Text>
           <View style={styles.arrowImgView}>
@@ -421,6 +437,7 @@ const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
   coworkGroups: state.cowork.toJS().groups[state.user.toJS().currentUser.userId],
   currentGroup: state.cowork.toJS().currentGroup,
+  coworkMessages: state.cowork.toJS().messages,
 })
 
 const mapDispatchToProps = {

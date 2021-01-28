@@ -25,10 +25,11 @@ import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import CustomActions from './CustomActions'
 import CustomView from './CustomView'
-import { ConstPath, ConstOnline } from '../../../../constants'
+import { ConstPath, ConstOnline, MsgConstant } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import { Toast, LayerUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import { ReadMsgParams } from '../../../../redux/models/cowork'
 import { color, zIndexLevel } from '../../../../styles'
 import RNFS, { stat } from 'react-native-fs'
 import MSGConstant from '../../../../constants/MsgConstant'
@@ -49,10 +50,12 @@ class Chat extends React.Component {
   props: {
     navigation: Object,
     device: Object,
+    currentTask: Object,
     setBackAction: () => {},
     removeBackAction: () => {},
     closeMap: () => {},
     getLayers: () => {},
+    readCoworkGroupMsg: (params: ReadMsgParams) => Promise<any>,
   }
   constructor(props) {
     super(props)
@@ -97,10 +100,18 @@ class Chat extends React.Component {
     this.setState({ title: newTitle })
   }
   componentDidMount() {
-    if (Platform.OS === 'android' && this.state.coworkMode) {
-      this.props.setBackAction({
+    if (this.state.coworkMode) {
+      Platform.OS === 'android' && this.props.setBackAction({
         key: this.props.navigation.state.routeName,
         action: () => this.back(),
+      })
+
+      this.props.readCoworkGroupMsg({
+        target: { //若存在，则为群组消息
+          groupId: this.props.currentTask.groupID,
+          taskId: this.props.currentTask.id,
+        },
+        type: MSGConstant.MSG_ONLINE_GROUP_CHAT,
       })
     }
     let curMsg = []
@@ -348,6 +359,9 @@ class Chat extends React.Component {
       },
       time: time,
     }
+    if (CoworkInfo.coworkId !== '') {
+      message.user.coworkGroupId = this.props.currentTask.groupID
+    }
     let msgId = this.friend.getMsgId(this.targetUser.id)
     //保存
     let storeMsg = this.friend.storeMessage(message, this.targetUser.id, msgId)
@@ -398,6 +412,9 @@ class Chat extends React.Component {
       },
       time: time,
     }
+    if (CoworkInfo.coworkId !== '') {
+      message.user.coworkGroupId = this.props.currentTask.groupID
+    }
     let msgId = this.friend.getMsgId(this.targetUser.id)
     //保存
     let storeMsg = this.friend.storeMessage(message, this.targetUser.id, msgId)
@@ -415,7 +432,7 @@ class Chat extends React.Component {
       this.showNoFriendNotify(msgId)
       return
     }
-    this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
+    this.friend.userMessagesessage(JSON.stringify(message), this.targetUser.id, false)
   }
 
   async onSendFile(type, filePath, fileName, extraInfo) {
@@ -605,6 +622,9 @@ class Chat extends React.Component {
           progress: 0,
         },
       },
+    }
+    if (CoworkInfo.coworkId !== '') {
+      message.user.coworkGroupId = this.props.currentTask.groupID
     }
 
     let msgId = this.friend.getMsgId(this.targetUser.id)

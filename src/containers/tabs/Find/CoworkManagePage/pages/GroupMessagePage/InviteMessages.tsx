@@ -12,10 +12,12 @@ import {
 } from 'react-native'
 import { Toast } from '../../../../../../utils'
 import { ListSeparator, PopMenu } from '../../../../../../components'
+import { MsgConstant } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import { Users } from '../../../../../../redux/models/user'
+import { ReadMsgParams } from '../../../../../../redux/models/cowork'
 import { SCoordination, SMessageService, GroupInviteMessageType } from 'imobile_for_reactnative'
 import { Person } from '../../types'
 import { InviteItem } from '../../components'
@@ -27,7 +29,9 @@ interface Props {
   user: Users,
   device: any,
   servicesUtils: SCoordination | undefined,
+  unread: number,
   callBack?: () => void,
+  readCoworkGroupMsg: (params: ReadMsgParams) => Promise<any>,
 }
 
 type State = {
@@ -85,6 +89,9 @@ export default class InviteMessages extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
+    // this.props.readCoworkGroupMsg({
+    //   type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
+    // })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -92,6 +99,15 @@ export default class InviteMessages extends Component<Props, State> {
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       JSON.stringify(nextState) !== JSON.stringify(this.state)
     )
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.unread !== prevProps.unread) {
+      this.getMessages({
+        pageSize: this.pageSize,
+        currentPage: 1,
+      })
+    }
   }
 
   refresh = (cb?: () => any) => {

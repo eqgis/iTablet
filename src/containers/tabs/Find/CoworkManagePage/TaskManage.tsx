@@ -338,7 +338,7 @@ class TaskManage extends React.Component<Props, State> {
       this.props.setCurrentTask(data)
 
       let members = CoworkFileHandle.getTaskGroupMembers(data.groupID, data.id)
-      CoworkInfo.setMembers(members)
+      // CoworkInfo.setMembers(members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
       this.createCowork(data.id, module, index, data.map)
     } else {

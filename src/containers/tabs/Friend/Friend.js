@@ -52,6 +52,9 @@ import SMessageServiceHTTP from './SMessageServiceHTTP'
 import RNFS from 'react-native-fs'
 import TabBar from '../TabBar'
 import CoworkInfo from './Cowork/CoworkInfo'
+import {
+  TaskMemberLocationParams,
+} from '../../../redux/models/cowork'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -79,6 +82,7 @@ export default class Friend extends Component {
     addCoworkMsg: () => void,
     setCoworkGroup: () => void,
     addTaskMessage: () => any,
+    addMemberLocation: (params: TaskMemberLocationParams) => any,
   }
 
   constructor(props) {
@@ -508,7 +512,7 @@ export default class Friend extends Component {
   _closeCowork = async () => {
     try {
       let coworkId = await AsyncStorage.getItem('COWORKID')
-      if (CoworkInfo.coworkId === '' && coworkId && coworkId !== '') {
+      if (this.props.cowork.currentTask.id === '' && coworkId && coworkId !== '') {
         await SMessageService.exitSession(
           this.props.user.currentUser.userId,
           coworkId,
@@ -814,8 +818,8 @@ export default class Friend extends Component {
    */
   leaveCowork = async () => {
     try {
-      if (CoworkInfo.coworkId !== '') {
-        let coworkId = CoworkInfo.coworkId
+      if (this.props.cowork.currentTask.id !== '') {
+        let coworkId = this.props.cowork.currentTask.id
         let id = this.props.user.currentUser.userId
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
@@ -843,7 +847,7 @@ export default class Friend extends Component {
 
   onGeometryAdd = async layerInfo => {
     try {
-      if (CoworkInfo.coworkId !== '') {
+      if (this.props.cowork.currentTask.id !== '') {
         let geoInfo = await SMap.getUserAddGeometry(
           layerInfo.path,
           this.props.user.currentUser.userId,
@@ -857,7 +861,7 @@ export default class Friend extends Component {
           user: {
             name: this.props.user.currentUser.nickname,
             id: this.props.user.currentUser.userId,
-            groupID: CoworkInfo.coworkId,
+            groupID: this.props.cowork.currentTask.id,
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
             coworkGroupName: this.props.cowork.currentTask.groupName,
@@ -875,7 +879,7 @@ export default class Friend extends Component {
           },
         }
         let msgStr = JSON.stringify(msgObj)
-        await this._sendMessage(msgStr, CoworkInfo.coworkId, false)
+        await this._sendMessage(msgStr, this.props.cowork.currentTask.id, false)
       }
     } catch (error) {
       //
@@ -884,7 +888,7 @@ export default class Friend extends Component {
 
   onGeometryEdit = async (layerInfo, fieldInfos, id, geoType) => {
     try {
-      if (CoworkInfo.coworkId !== '') {
+      if (this.props.cowork.currentTask.id !== '') {
         let geometry = await SMap.getUserEditGeometry(layerInfo.path, id)
         let geoUserID = ''
         for (let i = 0; i < fieldInfos.length; i++) {
@@ -908,7 +912,7 @@ export default class Friend extends Component {
           user: {
             name: this.props.user.currentUser.nickname,
             id: this.props.user.currentUser.userId,
-            groupID: CoworkInfo.coworkId,     // 任务群组
+            groupID: this.props.cowork.currentTask.id,     // 任务群组
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
             coworkGroupName: this.props.cowork.currentTask.groupName,
@@ -926,15 +930,19 @@ export default class Friend extends Component {
           },
         }
         let msgStr = JSON.stringify(msgObj)
-        await this._sendMessage(msgStr, CoworkInfo.coworkId, false)
+        await this._sendMessage(msgStr, this.props.cowork.currentTask.id, false)
       }
     } catch (error) {
       //
     }
   }
 
-  startSendLocation = () => {
-    this.sendCurrentLocation()
+  /**
+   * 开始发送位置
+   * @param {*} forceShow 第一次是否强制显示
+   */
+  startSendLocation = (forceShow = false) => {
+    this.sendCurrentLocation(forceShow)
     this.locationTimer = setInterval(() => {
       this.sendCurrentLocation()
     }, 3000)
@@ -952,66 +960,91 @@ export default class Friend extends Component {
     )
   }
 
-  sendCurrentLocation = async () => {
+  /**
+   * 发送当前位置
+   * @param {*} forceShow 是否强制显示
+   */
+  sendCurrentLocation = async (forceShow = false) => {
     try {
-      if (CoworkInfo.coworkId !== '') {
+      if (this.props.cowork.currentTask.id !== '') {
         let location = await SMap.getCurrentLocation()
         if (
+          !forceShow &&
           this.lastLocation &&
           this.getDistance(location, this.lastLocation) < 5
         ) {
           return
         }
 
-        if (
-          CoworkInfo.isRealTime &&
-          CoworkInfo.isUserShow(this.props.user.currentUser.userId)
-        ) {
-          let initial = getLanguage(this.props.language).Friends.SELF
-          if (initial.length > 2) {
-            initial = initial.slice(0, 2)
+        let initial = getLanguage(this.props.language).Friends.SELF
+        if (initial.length > 2) {
+          initial = initial.slice(0, 2)
+        }
+        this.props.addMemberLocation({
+          groupId: this.props.cowork.currentTask.groupID,
+          taskId: this.props.cowork.currentTask.id,
+          memberId: this.props.user.currentUser.userId,
+          show: true,
+          location: {
+            longitude: location.longitude,
+            latitude: location.latitude,
+            initial,
+          },
+        }).then (async result => {
+          let coworkId = this.props.cowork.currentTask.id
+          let msgObj = {
+            type: MSGConstant.MSG_COWORK,
+            time: new Date().getTime(),
+            user: {
+              name: this.props.user.currentUser.nickname,
+              id: this.props.user.currentUser.userId,
+              groupID: coworkId,
+              groupName: '',
+              coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+              coworkGroupName: this.props.cowork.currentTask.groupName,
+              taskId: this.props.cowork.currentTask.id,
+            },
+            message: {
+              type: MSGConstant.MSG_COWORK_GPS,
+              longitude: location.longitude,
+              latitude: location.latitude,
+            },
           }
-          CoworkInfo.setUserLocation(this.props.user.currentUser.userId, {
-            longitude: location.longitude,
-            latitude: location.latitude,
-            initial,
-          })
-          SMap.addLocationCallout(
-            location.longitude,
-            location.latitude,
-            this.props.user.currentUser.nickname,
-            this.props.user.currentUser.userId,
-            initial,
-          )
-        }
-        SMap.addUserTrack(
-          location.longitude,
-          location.latitude,
-          this.props.user.currentUser.userId,
-        )
-        let coworkId = CoworkInfo.coworkId
-        let msgObj = {
-          type: MSGConstant.MSG_COWORK,
-          time: new Date().getTime(),
-          user: {
-            name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
-            groupID: coworkId,
-            groupName: '',
-            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
-            coworkGroupName: this.props.cowork.currentTask.groupName,
-            taskId: this.props.cowork.currentTask.id,
-          },
-          message: {
-            type: MSGConstant.MSG_COWORK_GPS,
-            longitude: location.longitude,
-            latitude: location.latitude,
-          },
-        }
-        let msgStr = JSON.stringify(msgObj)
-        await this._sendMessage(msgStr, coworkId, false)
+          let msgStr = JSON.stringify(msgObj)
+          await this._sendMessage(msgStr, coworkId, false)
 
-        this.lastLocation = location
+          this.lastLocation = location
+        })
+        // let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
+        // let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+        // if (
+        //   isRealTime &&
+        //   // CoworkInfo.isRealTime &&
+        //   CoworkInfo.isUserShow(this.props.user.currentUser.userId)
+        // ) {
+        //   let initial = getLanguage(this.props.language).Friends.SELF
+        //   if (initial.length > 2) {
+        //     initial = initial.slice(0, 2)
+        //   }
+        //   this.props.setMemberShow()
+        //   CoworkInfo.setUserLocation(this.props.user.currentUser.userId, {
+        //     longitude: location.longitude,
+        //     latitude: location.latitude,
+        //     initial,
+        //   })
+        //   SMap.addLocationCallout(
+        //     location.longitude,
+        //     location.latitude,
+        //     this.props.user.currentUser.nickname,
+        //     this.props.user.currentUser.userId,
+        //     initial,
+        //   )
+        // }
+        // SMap.addUserTrack(
+        //   location.longitude,
+        //   location.latitude,
+        //   this.props.user.currentUser.userId,
+        // )
       }
     } catch (error) {
       //
@@ -1436,7 +1469,7 @@ export default class Friend extends Component {
         SOnlineService.logout()
       }
       GLOBAL.coworkMode = false
-      if (CoworkInfo.coworkId !== '') {
+      if (this.props.cowork.currentTask.id !== '') {
         this.leaveCowork()
       }
       this.props.closeWorkspace(async () => {
@@ -1467,7 +1500,7 @@ export default class Friend extends Component {
   }
 
   handleCowork = async messageObj => {
-    let coworkId = CoworkInfo.coworkId
+    let coworkId = this.props.cowork.currentTask.id
     if (coworkId !== '') {
       let masterId = coworkId.split('_').pop()
       let coworkType = messageObj.message.type
@@ -1527,26 +1560,40 @@ export default class Friend extends Component {
             //暂不处理
           }
         } else if (coworkType === MSGConstant.MSG_COWORK_GPS) {
-          if (
-            CoworkInfo.isRealTime &&
-            CoworkInfo.isUserShow(messageObj.user.id)
-          ) {
-            CoworkInfo.setUserLocation(messageObj.user.id, {
+          this.props.addMemberLocation({
+            groupId: messageObj.user.coworkGroupId,
+            taskId: messageObj.user.taskId,
+            memberId: messageObj.user.id,
+            show: true,
+            location: {
               longitude: messageObj.message.longitude,
               latitude: messageObj.message.latitude,
-            })
-            SMap.addLocationCallout(
-              messageObj.message.longitude,
-              messageObj.message.latitude,
-              messageObj.user.name,
-              messageObj.user.id,
-            )
-          }
-          SMap.addUserTrack(
-            messageObj.message.longitude,
-            messageObj.message.latitude,
-            messageObj.user.id,
-          )
+              initial: messageObj.user.name,
+            },
+          })
+          // let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
+          // let isRealTime = currentTaskInfo.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+          // if (
+          //   isRealTime &&
+          //   // CoworkInfo.isRealTime &&
+          //   CoworkInfo.isUserShow(messageObj.user.id)
+          // ) {
+          //   CoworkInfo.setUserLocation(messageObj.user.id, {
+          //     longitude: messageObj.message.longitude,
+          //     latitude: messageObj.message.latitude,
+          //   })
+          //   SMap.addLocationCallout(
+          //     messageObj.message.longitude,
+          //     messageObj.message.latitude,
+          //     messageObj.user.name,
+          //     messageObj.user.id,
+          //   )
+          // }
+          // SMap.addUserTrack(
+          //   messageObj.message.longitude,
+          //   messageObj.message.latitude,
+          //   messageObj.user.id,
+          // )
         } else {
           /**
            * 对象添加更改的协作消息

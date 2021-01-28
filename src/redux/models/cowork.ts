@@ -29,6 +29,10 @@ export const COWORK_NEW_MESSAGE_SET = 'COWORK_NEW_MESSAGE_SET'
 export const COWORK_TASK_INFO_ADD = 'COWORK_TASK_INFO_ADD'
 export const COWORK_TASK_INFO_READ = 'COWORK_TASK_INFO_READ'
 export const COWORK_TASK_INFO_REALTIME_SET = 'COWORK_TASK_INFO_REALTIME_SET'
+/** 添加成员是否显示轨迹和位置 */
+export const COWORK_TASK_INFO_MEMBER_LOCATION_ADD = 'COWORK_TASK_INFO_MEMBER_LOCATION_ADD'
+/** 设置成员是否显示轨迹和位置 */
+export const COWORK_TASK_INFO_MEMBER_LOCATION_SHOW = 'COWORK_TASK_INFO_MEMBER_LOCATION_SHOW'
 
 // export interface Task {
 // }
@@ -63,10 +67,44 @@ export interface TaskRealTimeParams {
   isRealTime: boolean,
 }
 
+export interface TaskMemberLocationParams {
+  groupId: string,
+  taskId: string,
+  memberId?: string, // 没有指定memberId，则是全部成员
+  show: boolean,
+  location?: Location,
+}
+
+export interface TaskInfo {
+  messages: Array<any>,          // 添加到地图上的消息
+  prevMessages: Array<any>,      // 未添加到地图上的消息
+  unread: number,
+  isRealTime: boolean,           // 是否是实时添加
+  members: Array<CoworkMember>,  // 本地储存的成员，
+}
+
 export interface Cowork {
   invites: [],
   tasks: {[userId: string]: {[groupId: string]: Array<any>}},
   messages: {[userId: string]: {[groupId: string]: Array<any>}},
+}
+
+export interface Location {
+  longitude: number,
+  latitude: number,
+  initial?: string,
+}
+
+export interface Member {
+  id: string,
+  name: string,
+}
+
+export interface CoworkMember {
+  id: string,
+  name: string,
+  location?: Location,
+  show: boolean,
 }
 
 let adding = false // 防止重复添加消息
@@ -256,7 +294,35 @@ export const setIsRealTime = (params: TaskRealTimeParams) => async (dispatch: (a
   return result
 }
 
-/****************************** 本地方法 *********************************/
+/**
+ * 设置成员是否显示轨迹和位置
+ * @param params TaskMemberLocationParams
+ */
+export const setMemberShow = (params: TaskMemberLocationParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  let result = await dispatch({
+    type: COWORK_TASK_INFO_MEMBER_LOCATION_SHOW,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/**
+ * 添加成员是否显示轨迹和位置
+ * @param params TaskMemberLocationParams
+ */
+export const addMemberLocation = (params: TaskMemberLocationParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  let result = await dispatch({
+    type: COWORK_TASK_INFO_MEMBER_LOCATION_ADD,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/********************************************** 本地方法 *************************************************/
 
 /**
  * 添加任务成员
@@ -414,7 +480,7 @@ function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
           message.message.geoUserID,
         )
         if (result) {
-          SMap.addMessageCallout(
+          await SMap.addMessageCallout(
             message.message.layerPath,
             message.message.id,
             message.message.geoUserID,
@@ -422,8 +488,9 @@ function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
             message.messageID,
           )
         }
+        adding = false
       } catch (error) {
-        //
+        adding = false
       }
     })()
   }
@@ -431,6 +498,29 @@ function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
     prevMessages,
     messages,
   }
+}
+
+/**
+ * 获取/初始化 任务
+ * @param tasks 所有任务
+ * @param userId 用户ID
+ * @param groupId Online群组ID
+ * @param taskId 任务ID
+ */
+function getTask(
+  allTask: any,
+  userId: string,
+  groupId: string,
+  taskId: string,
+) {
+  let myTasks: any = allTask[userId] || {}
+  let tasks: any = myTasks[groupId] || []
+  for (let i = 0 ; i < tasks.length; i++) {
+    if (tasks[i].id === taskId) {
+      return tasks[i]
+    }
+  }
+  return undefined
 }
 
 /**
@@ -467,6 +557,8 @@ function getTaskInfo(
       messages: [],
       prevMessages: [],
       unread: 0,
+      isRealTime: true,
+      members: [],
     }
   }
   return coworkInfo[userId][groupId][taskId]
@@ -485,10 +577,182 @@ function deleteTaskInfo(
   return coworkInfo
 }
 
+/**
+ * 添加成员到本地数据
+ * @param coworkInfo 所有任务消息
+ * @param userId 用户ID
+ * @param groupId Online群组ID
+ * @param taskId 任务ID
+ * @param members 添加的成员
+ */
+function addTaskInfoMember(
+  coworkInfo: any,
+  userId: string,
+  groupId: string,
+  taskId: string,
+  members: Array<Member>,
+) {
+  // 添加成员到本地数据中
+  let taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
+  if (taskInfo) {
+    let taskInfoMembers = taskInfo.members || []
+    members.forEach((m: Member) => {
+      let exsit = false
+      for (let j = 0; j < taskInfoMembers.length; j++) {
+        if (m.id === taskInfoMembers[j].id) {
+          exsit = true
+          break
+        }
+      }
+      if (!exsit) {
+        taskInfoMembers.push(Object.assign({}, m, {show: true}))
+      }
+    })
+    // CoworkInfo.setMembers(taskInfoMembers)
+  }
+  return coworkInfo
+}
+
+/**
+ * 删除本地数据成员
+ * @param coworkInfo 所有任务消息
+ * @param userId 用户ID
+ * @param groupId Online群组ID
+ * @param taskId 任务ID
+ * @param members 添加的成员
+ */
+function deleteTaskInfoMember(
+  coworkInfo: any,
+  userId: string,
+  groupId: string,
+  taskId: string,
+  members: Array<Member>,
+) {
+  // 添加成员到本地数据中
+  let taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
+  if (taskInfo) {
+    let taskInfoMembers = taskInfo.members || []
+    members.forEach((m: Member) => {
+      for (let j = 0; j < taskInfoMembers.length; j++) {
+        if (m.id === taskInfoMembers[j].id) {
+          delete taskInfoMembers[j]
+          break
+        }
+      }
+    })
+  }
+
+  return coworkInfo
+}
+
+/**
+ * 隐藏所有成员路径和位置
+ * @param members 所有成员
+ */
+function hideAll(members: Array<any>) {
+  try {
+    SMap.removeUserCallout()
+    for (let i = 0; i < members.length; i++) {
+      let userID = members[i].id
+      SMap.hideUserTrack(userID)
+    }
+  } catch (error) {
+    //
+  }
+}
+
+/**
+ * 显示所有成员路径和位置
+ * @param members 所有成员
+ * @param messages 所有消息
+ */
+function showAll(members: Array<any>, messages: Array<any>) {
+  try {
+    for (let n = 0; n < members.length; n++) {
+      let member = members[n]
+      let userID = member.id
+      if (member.show) {
+        SMap.showUserTrack(userID)
+      }
+      for (let i = 0; i < messages.length; i++) {
+        let message = messages[i]
+        if (!message.consume && message.user.id === userID) {
+          SMap.isUserGeometryExist(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+          ).then((result: boolean) => {
+            if (result) {
+              SMap.addMessageCallout(
+                message.message.layerPath,
+                message.message.id,
+                message.message.geoUserID,
+                message.user.name,
+                message.messageID,
+              )
+            }
+          }).catch(e => {
+
+          })
+        }
+      }
+    }
+  } catch (error) {
+    //
+  }
+}
+
+
+/**
+ * 设置成员位置
+ * @param members 所有成员
+ * @param userID 指定成员ID
+ * @param location 位置
+ */
+function setUserLocation(members: Array<any>, userID: string, location: Location): Array<any> {
+  for (let i = 0; i < members.length; i++) {
+    let member = members[i]
+    if (member.id === userID) {
+      member.location = location
+      break
+    }
+  }
+  return members
+}
+
+/**
+ * 显示/隐藏 指定成员路径和位置
+ * @param member 指定成员
+ */
+function setUserTrack(member: CoworkMember, isShow: boolean): void {
+  if (isShow) {
+    let location = member.location
+    if (location) {
+      let initial = location.initial
+      if (initial && initial.length > 2) {
+        initial = initial.slice(0, 2)
+      }
+      SMap.addLocationCallout(
+        location.longitude,
+        location.latitude,
+        member.name,
+        member.id,
+        initial,
+      )
+    }
+    member.show = true
+    SMap.showUserTrack(member.id)
+  } else {
+    member.show = false
+    SMap.removeLocationCallout(member.id)
+    SMap.hideUserTrack(member.id)
+  }
+}
+
 const initialState = fromJS({
   invites: [],
   messages: {},
-  tasks: {},
+  tasks: {},        // 要储存在文件中，并上传到online的数据
   groups: {},
   currentGroup: {}, // 当前群组信息
   currentTask: {}, // 当前协作任务信息
@@ -502,6 +766,7 @@ const initialState = fromJS({
    *          prevMessages: [],    // 未添加到地图上的消息
    *          unread: 0,
    *          isRealTime: true,    // 是否是实时添加
+   *          members: [],         // 本地储存的成员，
    *        }
    *      }
    *    }
@@ -509,6 +774,8 @@ const initialState = fromJS({
    */
   coworkInfo: {},
 })
+
+/*************************************** Actions *******************************************/
 
 export default handleActions(
   {
@@ -568,14 +835,20 @@ export default handleActions(
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 添加/修改任务
         let tasks = addTask(state, { payload, userId })
         let coworkInfo = state.toJS().coworkInfo
+        // 创建TaskInfo
         getTaskInfo(coworkInfo, userId, payload.groupID, payload.id, true)
+        // 初始化TaskInfo中的成员
+        addTaskInfoMember(coworkInfo, userId, payload.groupID, payload.id, payload.members) // 给本地成员赋值
+
         return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE) { // 删除任务
         let coworkInfo = state.toJS().coworkInfo
         return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
           .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, payload.id)))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN) { // 任务成员加入消息
+        let coworkInfo = state.toJS().coworkInfo
         return state.setIn(['tasks'], fromJS(addTaskMembers(state, { payload, userId })))
+          .setIn(['coworkInfo'], fromJS(addTaskInfoMember(coworkInfo, userId, payload.groupID, payload.id, payload.members)))
       }
     },
     [`${COWORK_GROUP_MSG_DELETE}`]: (state: any, { payload, userId }: any) => {
@@ -611,6 +884,9 @@ export default handleActions(
       let allTask = state.toJS().tasks
       let myTasks: any = allTask[userId] || {}
       let tasks: any = myTasks[payload.groupID] || []
+
+      let coworkInfo = state.toJS().coworkInfo
+
       if (payload.members.length > 0) {
         let task
         for (let i = 0; i < tasks.length; i++) {
@@ -631,6 +907,10 @@ export default handleActions(
               payload.id,
               payload.members,
             )
+
+            // 添加成员到本地数据中
+            coworkInfo = addTaskInfoMember(coworkInfo, userId, payload.groupId, payload.taskId, payload.members)
+
             // 新成员加入多人对话
             SMessageService.declareSession(payload.members, payload.id)
             break
@@ -639,7 +919,7 @@ export default handleActions(
       }
       myTasks[payload.groupID] = tasks
       allTask[userId] = myTasks
-      return state.setIn(['tasks'], fromJS(allTask))
+      return state.setIn(['tasks'], fromJS(allTask)).setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [`${COWORK_GROUP_SET_CURRENT}`]: (state: any, { payload }: any) => {
       // TODO 检测payload有效性
@@ -710,14 +990,86 @@ export default handleActions(
     },
     [`${COWORK_TASK_INFO_REALTIME_SET}`]: (state: any, { payload, userId }: any) => {
       let coworkInfo = state.toJS().coworkInfo
-      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupID, payload.taskId, false)
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupId, payload.taskId, false)
 
-      if (taskInfo) {
-        taskInfo.unread = payload.unread
-        coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+      let allTask = state.toJS().tasks
+      let task = getTask(allTask, userId, payload.groupId, payload.taskId)
+
+      if (taskInfo && task) {
+        if (payload.isRealTime) {
+          showAll(taskInfo.members, taskInfo.messages)
+          if (!adding) {
+            let {
+              prevMessages,
+              messages,
+            } = _addNewMessage(taskInfo.prevMessages, taskInfo.messages)
+            taskInfo.prevMessages = prevMessages
+            taskInfo.messages = messages
+            // taskInfo.unread++
+            coworkInfo[userId][payload.groupId][payload.taskId] = taskInfo
+            CoworkInfo.setMessages(messages)
+          }
+        } else {
+          hideAll(taskInfo.members)
+        }
+
+        taskInfo.isRealTime = payload.isRealTime
+        coworkInfo[userId][payload.groupId][payload.taskId] = taskInfo
         return state.setIn(['coworkInfo'], fromJS(coworkInfo))
       }
       return state
+    },
+    [`${COWORK_TASK_INFO_MEMBER_LOCATION_ADD}`]: (state: any, { payload, userId }: {payload: TaskMemberLocationParams, userId: string}) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupId, payload.taskId, false)
+      if (taskInfo) {
+        let taskInfoMembers = taskInfo.members || []
+        for (let j = 0; j < taskInfoMembers.length; j++) {
+          if (payload.memberId && payload.memberId === taskInfoMembers[j].id) { // 显示/隐藏指定成员
+            if (payload.location) {
+              taskInfoMembers[j].location = payload.location
+              SMap.addUserTrack(
+                payload.location.longitude,
+                payload.location.latitude,
+                payload.memberId,
+              )
+            }
+            if (!taskInfo.isRealTime || !taskInfoMembers[j].show) continue // 若不是实时协作 或 当前用户为不显示状态，只保存位置不显示
+            taskInfoMembers[j].show = payload.show
+            setUserTrack(taskInfoMembers[j], payload.show)
+            break
+          }
+        }
+        // CoworkInfo.setMembers(taskInfoMembers)
+      }
+      return state.setIn(['coworkInfo'], fromJS(coworkInfo))
+    },
+    [`${COWORK_TASK_INFO_MEMBER_LOCATION_SHOW}`]: (state: any, { payload, userId }: {payload: TaskMemberLocationParams, userId: string}) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupId, payload.taskId, false)
+      if (taskInfo) {
+        let taskInfoMembers = taskInfo.members || []
+        for (let j = 0; j < taskInfoMembers.length; j++) {
+          if (payload.memberId === undefined) { // 全部显示/隐藏
+            if (payload.location) {
+              taskInfoMembers[j].location = payload.location
+            }
+            if (!taskInfo.isRealTime) continue // 若不是实时协作，只保存位置不显示
+            taskInfoMembers[j].show = payload.show
+            setUserTrack(taskInfoMembers[j], payload.show)
+          } else if (payload.memberId === taskInfoMembers[j].id) { // 显示/隐藏指定成员
+            if (payload.location) {
+              taskInfoMembers[j].location = payload.location
+            }
+            if (!taskInfo.isRealTime) continue // 若不是实时协作，只保存位置不显示
+            taskInfoMembers[j].show = payload.show
+            setUserTrack(taskInfoMembers[j], payload.show)
+            break
+          }
+        }
+        // CoworkInfo.setMembers(taskInfoMembers)
+      }
+      return state.setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [REHYDRATE]: (state: any, { payload }: any) => {
       const _data = ModelUtils.checkModel(state, payload && payload.cowork)

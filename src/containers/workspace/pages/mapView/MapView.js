@@ -1546,7 +1546,7 @@ export default class MapView extends React.Component {
       //加入
       try {
         let friend = GLOBAL.getFriend()
-        friend.startSendLocation()
+        friend.startSendLocation(true)
 
         let messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
           [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []

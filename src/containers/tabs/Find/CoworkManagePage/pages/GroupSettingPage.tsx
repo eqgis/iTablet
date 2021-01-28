@@ -245,10 +245,10 @@ class GroupSettingPage extends Component<Props, State> {
     return (
       <View style={{flex: 1}}>
         <View
-          style={styles.settingItem}
+          style={styles.settingItem2}
         >
           <Text numberOfLines={1} style={styles.settingItemTitle}>{getLanguage(this.props.language).Friends.GROUP_NAME}</Text>
-          <Text numberOfLines={1} style={styles.settingItemContent}>{this.props.currentGroup.groupName}</Text>
+          <Text numberOfLines={1} style={styles.settingItemContent2}>{this.props.currentGroup.groupName}</Text>
         </View>
 
         <View style={styles.settingItem2}>

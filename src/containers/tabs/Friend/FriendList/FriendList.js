@@ -24,13 +24,22 @@ import FriendListFileHandle from '../FriendListFileHandle'
 import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../language/index'
 
+export interface FriendInfo {
+  id: string,
+  markName: string,
+  name: string,
+  info: {
+    isFriend: boolean,
+  },
+}
+
 class FriendList extends Component {
   props: {
     language: String,
-    navigation: Object,
+    // navigation: Object,
     user: Object,
-    friend: Object,
-    callBack: () => {},
+    // friend: Object,
+    callBack: (friend: FriendInfo) => void,
   }
 
   constructor(props) {
@@ -156,6 +165,7 @@ class FriendList extends Component {
         style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}
       >
         <SectionList
+          style={{flex: 1}}
           ref={ref => (this.SectionList = ref)}
           renderSectionHeader={this._renderSectionHeader}
           sections={sections}

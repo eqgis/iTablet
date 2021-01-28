@@ -345,6 +345,18 @@ class GroupSourceUploadPage extends Component<Props, State> {
             return { selectedData: selected }
           })
         }}
+        onPress={value => {
+          this.setState(state => {
+            const selected = new Map(state.selectedData)
+            const isSelected = selected.has(item.name)
+            if (value && !isSelected) {
+              selected.set(item.name, item)
+            } else {
+              selected.delete(item.name)
+            }
+            return { selectedData: selected }
+          })
+        }}
         isUploading={!!this.state.uploadData.get(item.name) && !!this.state.uploadData.get(item.name)?.status && this.state.isUploading}
         uploadingInfo={this.state.uploadData.get(item.name)?.status}
       />

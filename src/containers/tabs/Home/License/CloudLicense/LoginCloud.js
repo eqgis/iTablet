@@ -78,7 +78,7 @@ class LoginCloud extends Component {
 
   _queryLicense = async () => {
     let result
-    this.onlineLogin.logining()
+    this.onlineLogin?.logining()
     // this.container && this.container.setLoading(true)
     try {
       result = await SMap.queryCloudLicense()
@@ -88,7 +88,7 @@ class LoginCloud extends Component {
         hasTrial: false,
       }
     }
-    this.onlineLogin.loginResult()
+    this.onlineLogin?.loginResult()
     // this.container && this.container.setLoading(false)
     this.props.navigation.navigate('LicenseJoinCloud', {
       licenseInfo: result,
@@ -110,7 +110,7 @@ class LoginCloud extends Component {
 
       let isConnected = await NetInfo.isConnected.fetch()
       if (isConnected) {
-        this.onlineLogin.logining()
+        this.onlineLogin?.logining()
         // this.container.setLoading(
         //   true,
         //   getLanguage(GLOBAL.language).Prompt.LOG_IN,
@@ -157,7 +157,7 @@ class LoginCloud extends Component {
       SMap.logoutCloudLicense()
       return false
     } finally {
-      this.onlineLogin.loginResult()
+      this.onlineLogin?.loginResult()
       // this.container && this.container.setLoading(false)
     }
   }

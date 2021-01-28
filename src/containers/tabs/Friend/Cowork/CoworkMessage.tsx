@@ -42,10 +42,10 @@ class CoworkMessage extends Component<Props, State> {
     if (
       prevProps.cowork.newMessage !== this.props.cowork.newMessage ||
       JSON.stringify(
-        prevProps.coworkInfo[prevProps.currentUser.userName][prevProps.cowork.currentTask.groupID][prevProps.cowork.currentTask.id]
+        prevProps.coworkInfo?.[prevProps.currentUser.userName][prevProps.cowork.currentTask.groupID][prevProps.cowork.currentTask.id] || {}
       ) !==
       JSON.stringify(
-        this.props.coworkInfo[this.props.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+        this.props.coworkInfo?.[this.props.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id] || {}
       )
     ) {
       this.getMessage()

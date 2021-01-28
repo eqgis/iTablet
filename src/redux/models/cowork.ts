@@ -229,10 +229,12 @@ export const setCurrentGroup = (params: any, cb = () => {}) => async (dispatch: 
  * @param params
  * @param cb
  */
-export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (arg0: any) => any) => {
+export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
   await dispatch({
     type: COWORK_TASK_SET_CURRENT,
     payload: params,
+    userId,
   })
   cb && cb()
 }
@@ -925,9 +927,17 @@ export default handleActions(
       // TODO 检测payload有效性
       return state.setIn(['currentGroup'], fromJS(payload))
     },
-    [`${COWORK_TASK_SET_CURRENT}`]: (state: any, { payload }: any) => {
+    [`${COWORK_TASK_SET_CURRENT}`]: (state: any, { payload, userId }: any) => {
       // TODO 检测payload有效性
-      return state.setIn(['currentTask'], fromJS(payload))
+      let coworkInfo = state.toJS().coworkInfo
+      let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupID, payload.id, true)
+      if (taskInfo.members.length !== payload.members.length) {
+        taskInfo.members = payload.members
+        taskInfo.members.forEach((item: CoworkMember) => {
+          item.show = true
+        })
+      }
+      return state.setIn(['currentTask'], fromJS(payload)).setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [`${COWORK_GROUP_EXIT}`]: (state: any, { payload, userId }: any) => {
       let groups = state.toJS().groups

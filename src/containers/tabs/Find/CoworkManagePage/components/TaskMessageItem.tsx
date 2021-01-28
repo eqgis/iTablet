@@ -163,9 +163,6 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       const ret = RNFS.downloadFile(downloadOptions)
       ret.promise
         .then(async () => {
-          this.setState({
-            isDownloading: false,
-          })
           let { result, path } = await this.unZipFile()
 
           let results: any[] = []
@@ -191,6 +188,9 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             }
           }
 
+          await FileTools.deleteFile(this.downloadingPath)
+          await RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
+
           if (result.length === 0) {
             this.setState({
               isDownloading: false,
@@ -203,8 +203,6 @@ export default class TaskMessageItem extends React.Component<Props, State> {
               mapData,
             })
           }
-          FileTools.deleteFile(this.downloadingPath)
-          RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
         })
         .catch(() => {
           Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)

@@ -32,6 +32,9 @@ async function importExternalData(user, item) {
     case 'aimodel':
       result = await importAIModel(user, item)
       break
+    case 'xmltemplate':
+      result = await importXmlTemplate(user,item)
+      break
     default:
       break
   }
@@ -76,6 +79,13 @@ async function importDataset(
   }
   importParams = Object.assign(params, importParams)
   return await _importDataset(type, filePath, datasourceItem, importParams)
+}
+
+async function importXmlTemplate(user,item) {
+  const userPath = await FileTools.appendingHomeDirectory(
+    `${ConstPath.UserPath + user.userName}/${ConstPath.RelativePath.Attribute}`,
+  )
+  return await _copyFile(item, userPath)
 }
 
 async function importPlotLib(item) {

@@ -1,4 +1,4 @@
-import screen, { scaleSize, fixedSize, setSpText, fixedText } from './screen'
+import screen, { scaleSize, fixedSize, setSpText, fixedText, dp } from './screen'
 import dataUtil from './dataUtil'
 import Toast from './Toast'
 import * as constUtil from './constUtil'
@@ -17,6 +17,7 @@ import ResultInfo from './ResultInfo'
 
 export {
   screen,
+  dp,
   scaleSize,
   fixedSize,
   dataUtil,

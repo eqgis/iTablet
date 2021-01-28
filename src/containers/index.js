@@ -158,6 +158,7 @@ import AIGestureBoneView from './aiGestureBoneView'
 import ARWebView from './arWebView'
 import ARTextView from './arTextView'
 import ARSceneView from './arSceneView'
+import ChooseLayer from './chooseLayer'
 
 import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
@@ -433,6 +434,12 @@ export default function(appConfig) {
       },
       ChoosePage: {
         screen: ChoosePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      ChooseLayer: {
+        screen: ChooseLayer,
         navigationOptions: {
           header: null,
         },

@@ -22,12 +22,16 @@ interface IState {
 }
 
 export default class ARWeatherView extends React.Component<IProps, IState> {
+  /** */
+  clickAble: boolean
+
   constructor(props: IProps) {
     super(props)
     this.state = {
       current: '',
       visible: true,
     }
+    this.clickAble = true // 防止重复点击
   }
 
   // eslint-disable-next-line
@@ -78,10 +82,13 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
    * 返回事件
    */
   back = () => {
-    SARWeather.onDestroy()
-    NavigationService.goBack()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    if(this.clickAble){
+      this.clickAble = false
+      SARWeather.onDestroy()
+      NavigationService.goBack()
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+      GLOBAL.toolBox.switchAr()
+    }
   }
 
   renderBottom = () => {

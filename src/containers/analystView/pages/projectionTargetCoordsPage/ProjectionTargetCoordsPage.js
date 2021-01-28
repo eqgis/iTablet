@@ -93,7 +93,7 @@ export default class ProjectionTargetCoordsPage extends Component {
         title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
         //'常用坐标系',
         data: allCommonCoordSysTypes,
-        visible: false,
+        visible: true,
         index: 2,
         allData: allCommonCoordSysTypes,
       },
@@ -455,7 +455,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
           //'常用坐标系',
           data: commonCoordSysTypes,
-          visible: false,
+          visible: true,
           index: 2,
           allData: commonCoordSysTypes,
         },
@@ -508,7 +508,12 @@ export default class ProjectionTargetCoordsPage extends Component {
 
       let geoCoordVisiable = allGeoCoordSysTypes.length !== 0
       let prjCoordVisiable = allGeoCoordSysTypes.length === 0
-
+      let commonVisible = false
+      if(allCommonCST.length != 0){
+        commonVisible = true
+        geoCoordVisiable = false
+        prjCoordVisiable = false
+      }
       let _data = [
         {
           title: getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS,
@@ -530,7 +535,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
           //'常用坐标系',
           data: allCommonCST,
-          visible: false,
+          visible: commonVisible,
           index: 2,
           allData: allCommonCST,
         },

@@ -79,7 +79,8 @@ export default class ToolbarTableList extends React.Component {
         renderCell={
           this.props.containerType === '' ||
           this.props.containerType === ToolbarType.table ||
-          this.props.containerType === ToolbarType.scrollTable
+          this.props.containerType === ToolbarType.scrollTable ||
+          this.props.containerType === ToolbarType.arMeasure
             ? this._renderItem
             : this._renderColorItem
         }

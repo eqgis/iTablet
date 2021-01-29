@@ -833,14 +833,16 @@ export default class MyLocalData extends Component {
   getPopMenuData = () => {
     let data = []
     let item = this.itemInfo
+    const fileType = item.item && item.item.fileType
     if (item) {
-      data = [
-        {
+      data = []
+      // 专题制图导出的xml不用导入到用户目录
+      if(fileType !== 'xmltemplate'){
+        data.push({
           title: getLanguage(this.props.language).Profile.IMPORT_DATA,
           action: this.importData,
-        },
-      ]
-
+        })
+      }
       if (item.dataItemServices) {
         if (
           item.serviceStatus !== 'PUBLISHED' &&

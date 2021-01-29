@@ -5,6 +5,7 @@ import ToolBarSectionList from './ToolBarSectionList'
 import ToolList from './ToolList'
 import ToolbarMenuDialog from './ToolbarMenuDialog'
 import ToolbarTableList from './ToolbarTableList'
+import ToolbarArMeasure from './ToolbarArMeasure'
 
 export {
   ToolbarBottomButtons,
@@ -14,4 +15,5 @@ export {
   ToolList,
   ToolbarMenuDialog,
   ToolbarTableList,
+  ToolbarArMeasure,
 }

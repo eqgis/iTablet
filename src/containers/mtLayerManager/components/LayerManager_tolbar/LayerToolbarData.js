@@ -4,18 +4,20 @@ import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { ChunkType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
 
-// 获取用户目录下导入的xml
+// 获取外部导入目录下的xml
 async function getXmlTemplateData() {
   const data = []
   const dir = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + GLOBAL.currentUser.userName}/${ConstPath.RelativePath.Attribute}/`
+    `${ConstPath.ExternalData}/${ConstPath.Module.XmlTemplate}/`
   )
-  const files = await FileTools.getDirectoryContent(dir)
-  files.forEach(item => {
-    if(item.type === 'file' && (item.name.indexOf('.xml') != -1)) {
-      data.push({title: item.name.replace('.xml','')})
-    }
-  })
+  if(await FileTools.fileIsExist(dir)){
+    const files = await FileTools.getDirectoryContent(dir)
+    files.forEach(item => {
+      if(item.type === 'file' && (item.name.indexOf('.xml') != -1)) {
+        data.push({title: item.name.replace('.xml','')})
+      }
+    })
+  }
   return [
     {
       title: '',

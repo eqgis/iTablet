@@ -385,6 +385,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: '選択ポイントの追加',
   MAP_AR_MOVE_TO_CURRENT_POSITION: '現在位置に変更',
   MAP_AR_MOVE_TO_PLANE: '選択ポイントの変更',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: '左折してください',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: '右に曲がる',

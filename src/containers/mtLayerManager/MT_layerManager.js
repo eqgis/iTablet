@@ -39,7 +39,7 @@ import {
 import NavigationService from '../../containers/NavigationService'
 import { getLanguage } from '../../language'
 import styles from './styles'
-
+import { getXmlTemplateData } from './components/LayerManager_tolbar/LayerToolbarData'
 export default class MT_layerManager extends React.Component {
   props: {
     language: string,
@@ -995,7 +995,7 @@ export default class MT_layerManager extends React.Component {
     )
   }
 
-  _onDialogConfirm = () => {
+  _onDialogConfirm = async () => {
     const { isOutput } = this.state
     this.dialog.setDialogVisible(false)
     if(isOutput) {
@@ -1009,6 +1009,11 @@ export default class MT_layerManager extends React.Component {
       })
     }else {
       // 打开加载xml到地图的xml模版列表
+      const data = await getXmlTemplateData()
+      if(data[0].data.length === 0){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_TEMPLATE)
+        return
+      }
       this.toolBox.setVisible(true, "GET_XML_TEMPLATE")
     }
   }

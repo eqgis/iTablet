@@ -44,15 +44,13 @@ export const mapToXml = (params, cb = () =>{}) => async () => {
   }
 }
 // 加载xml地图
-export const mapFromXml = (params, cb = () =>{}) => async (dispatch, getState) => {
+export const mapFromXml = (params, cb = () =>{}) => async () => {
   try{
     const { xmlFile } = params
-    const { userName } = getState().user.toJS().currentUser
     const filePath = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Attribute}/${xmlFile}.xml`)
+      `${ConstPath.ExternalData}/${ConstPath.Module.XmlTemplate}/${xmlFile}.xml`)
 
     let result = await SMap.mapFromXml(await fs.readFile(filePath))
-    console.log(userName)
     cb && cb(result)
     return result
   }catch (e){

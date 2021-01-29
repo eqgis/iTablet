@@ -432,7 +432,7 @@ class Chat extends React.Component {
       this.showNoFriendNotify(msgId)
       return
     }
-    this.friend.userMessagesessage(JSON.stringify(message), this.targetUser.id, false)
+    this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
   }
 
   async onSendFile(type, filePath, fileName, extraInfo) {

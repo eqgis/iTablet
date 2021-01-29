@@ -240,21 +240,23 @@ async function createCollector(type, layerName) {
 
 async function collectionSubmit(type) {
   const result = await SCollector.submit(type)
-  switch (type) {
-    case SMCollectorType.LINE_GPS_PATH:
-    case SMCollectorType.REGION_GPS_PATH:
-      await SCollector.stopCollect()
-      await SCollector.cancel(type) // 防止GPS轨迹提交后，点击开始无法再次采集
-      break
+  if (result) {
+    switch (type) {
+      case SMCollectorType.LINE_GPS_PATH:
+      case SMCollectorType.REGION_GPS_PATH:
+        await SCollector.stopCollect()
+        await SCollector.cancel(type) // 防止GPS轨迹提交后，点击开始无法再次采集
+        break
+    }
+    if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
+      SMap.setLayerFieldInfo(
+        ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
+        ToolbarModule.getParams().template.currentTemplateInfo.field,
+      )
+    }
+    // 采集后 需要刷新属性表
+    GLOBAL.NEEDREFRESHTABLE = true
   }
-  if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
-    SMap.setLayerFieldInfo(
-      ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
-      ToolbarModule.getParams().template.currentTemplateInfo.field,
-    )
-  }
-  // 采集后 需要刷新属性表
-  GLOBAL.NEEDREFRESHTABLE = true
   return result
 }
 

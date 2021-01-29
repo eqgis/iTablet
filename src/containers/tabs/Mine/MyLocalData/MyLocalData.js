@@ -410,7 +410,8 @@ export default class MyLocalData extends Component {
         fileType === 'sci' ||
         fileType === 'color' ||
         fileType === 'symbol' ||
-        fileType === 'aimodel'
+        fileType === 'aimodel' ||
+        fileType === 'xmltemplate'
       ) {
         this._onImportExternalData(this.itemInfo.item)
       } else if (

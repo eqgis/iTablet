@@ -6,7 +6,12 @@ import { getLanguage } from '../../../../../language/index'
 import { scaleSize } from '../../../../../utils'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
-import { addCoworkMsg } from '../../../../../redux/models/cowork'
+import {
+  addCoworkMsg,
+  setMemberShow,
+  TaskMemberLocationParams,
+  TaskInfo,
+} from '../../../../../redux/models/cowork'
 import NavigationService from '../../../../NavigationService'
 import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
 import CoworkFileHandle from '../CoworkFileHandle'
@@ -80,8 +85,10 @@ interface Props {
   user: any,
   currentGroup: GroupType,
   currentTask: any,
+  currentTaskInfo: TaskInfo,
   mapModules: any,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
+  setMemberShow: (params: TaskMemberLocationParams) => Promise<any>,
 }
 
 interface State {
@@ -107,7 +114,7 @@ class CoworkMember extends Component<Props, State> {
     // let data = CoworkFileHandle.getTaskGroupMembers(groupId, coworkId)
     // CoworkInfo.setMembers(data)
     // this.setState({ data: data || [] })
-    this.setState({ data: CoworkInfo.members || [] })
+    // this.setState({ data: CoworkInfo.members || [] })
   }
 
   invite = () => {
@@ -116,8 +123,9 @@ class CoworkMember extends Component<Props, State> {
     } = {
       except: [],
     }
-    for (let i = 0; i < this.state.data.length; i++) {
-      filter.except.push(this.state.data[i].id)
+    let members = this.props.currentTaskInfo?.members || []
+    for (let i = 0; i < members.length; i++) {
+      filter.except.push(members[i].id)
     }
     NavigationService.navigate('GroupFriendListPage', {
       mode: 'multiSelect', // 多选模式
@@ -153,7 +161,7 @@ class CoworkMember extends Component<Props, State> {
           )
         }
         currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        await this.props.addCoworkMsg(currentTask)
+        this.props.addCoworkMsg(currentTask)
         // this.props.addTaskMembers({
         //   groupID: currentTask.groupID,
         //   id: currentTask.id,
@@ -165,7 +173,7 @@ class CoworkMember extends Component<Props, State> {
         //   currentTask.id,
         //   _members,
         // )
-        this.getData()
+        // this.getData()
       },
     })
   }
@@ -173,7 +181,7 @@ class CoworkMember extends Component<Props, State> {
   _renderTop = () => {
     return (
       <View style={styles.topView}>
-        <Text style={styles.topTitle}>{`${getLanguage(this.props.language).Friends.COWORK_MEMBER} (${this.state.data.length})`}</Text>
+        <Text style={styles.topTitle}>{`${getLanguage(this.props.language).Friends.COWORK_MEMBER} (${this.props.currentTaskInfo?.members.length})`}</Text>
         <Text style={styles.topSubTitle}>{`${getLanguage(this.props.language).Friends.CREATOR}: ${this.props.currentGroup.nickname}`}</Text>
       </View>
     )
@@ -201,11 +209,17 @@ class CoworkMember extends Component<Props, State> {
             ios_backgroundColor={show ? color.switch : color.bgG}
             value={show}
             onValueChange={async value => {
-              if (value) {
-                await CoworkInfo.showUserTrack(item.id)
-              } else {
-                await CoworkInfo.hideUserTrack(item.id)
-              }
+              // if (value) {
+              //   await CoworkInfo.showUserTrack(item.id)
+              // } else {
+              //   await CoworkInfo.hideUserTrack(item.id)
+              // }
+              this.props.setMemberShow({
+                groupId: this.props.currentTask.groupID,
+                taskId: this.props.currentTask.id,
+                memberId: item.id,
+                show: value,
+              })
               // this.getData()
               this.setState({ data: CoworkInfo.members || [] })
             }}
@@ -237,7 +251,8 @@ class CoworkMember extends Component<Props, State> {
       >
         {this._renderTop()}
         <FlatList
-          data={this.state.data}
+          // data={this.state.data}
+          data={this.props.currentTaskInfo?.members || []}
           keyExtractor={(item, index) => index.toString()}
           renderItem={this._renderItem}
           extraData={this.state}
@@ -248,16 +263,24 @@ class CoworkMember extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  user: state.user.toJS(),
-  language: state.setting.toJS().language,
-  currentGroup: state.cowork.toJS().currentGroup,
-  currentTask: state.cowork.toJS().currentTask,
-  mapModules: state.mapModules.toJS(),
-})
+const mapStateToProps = (state: any) => {
+  let currentUser = state.user.toJS().currentUser
+  let cowork = state.cowork.toJS()
+  let currentTaskInfo = cowork.coworkInfo?.[currentUser.userName]?.[cowork.currentTask.groupID]?.[cowork.currentTask.id]
+  return {
+    user: state.user.toJS(),
+    language: state.setting.toJS().language,
+    currentGroup: state.cowork.toJS().currentGroup,
+    currentTask: state.cowork.toJS().currentTask,
+    coworkInfo: state.cowork.toJS().coworkInfo,
+    currentTaskInfo: currentTaskInfo,
+    mapModules: state.mapModules.toJS(),
+  }
+}
 
 const mapDispatchToProps = {
   addCoworkMsg,
+  setMemberShow,
 }
 
 export default connect(

@@ -1,8 +1,9 @@
-/* global GLOBAL */
-import { DatasetType, ThemeType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, ThemeType, TThemeType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
+import LightTheme from './lightTheme'
+import PublicTheme from './publicTheme'
 
-function getThemeAssets() {
+function getThemeAssets(): typeof LightTheme {
   let asset
   switch (GLOBAL.ThemeType) {
     case AppThemeType.DARK_THEME:
@@ -16,12 +17,12 @@ function getThemeAssets() {
   return asset
 }
 
-function getPublicAssets() {
+function getPublicAssets(): typeof PublicTheme {
   return require('./publicTheme').default
 }
 
 /** 获取专题类型Icon * */
-function getThemeIconByType(type) {
+function getThemeIconByType(type: TThemeType) {
   let icon
   switch (type) {
     case ThemeType.UNIQUE: // 单值专题图
@@ -61,7 +62,7 @@ function getThemeIconByType(type) {
   return icon
 }
 
-function getThemeWhiteIconByType(type) {
+function getThemeWhiteIconByType(type: TThemeType) {
   let icon
   switch (type) {
     case ThemeType.UNIQUE: // 单值专题图
@@ -101,12 +102,11 @@ function getThemeWhiteIconByType(type) {
   return icon
 }
 
-const LAYER_GROUP = 'layerGroup'
 /** 获取图层类型Icon * */
-function getLayerIconByType(type) {
+function getLayerIconByType(type: SMap.LayerInfo['type']) {
   let icon
   switch (type) {
-    case LAYER_GROUP:
+    case 'layerGroup':
       icon = getThemeAssets().layerType.layer_group
       break
     case DatasetType.POINT: // 点数据集
@@ -151,10 +151,10 @@ function getLayerIconByType(type) {
   return icon
 }
 
-function getLayerWhiteIconByType(type) {
+function getLayerWhiteIconByType(type: SMap.LayerInfo['type']) {
   let icon
   switch (type) {
-    case LAYER_GROUP:
+    case 'layerGroup':
       icon = getThemeAssets().layerType.layer_group_selected
       break
     case DatasetType.POINT: // 点数据集

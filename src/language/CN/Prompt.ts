@@ -386,7 +386,13 @@ const Prompt = {
   MOVE_PHONE_ADD_SCENE: '请缓慢移动手机，识别出平面后点击屏幕添加场景',
   IDENTIFY_TIMEOUT: '识别图片超时，是否重试？',
   TRACKING_LOADING: '识别中...',
-  SCENE_OPEN: '加载成功',
+
+  // 专题制图加载/输出xml
+  SUCCESS: '操作成功',
+  FAILED: '操作失败',
+  NO_TEMPLATE: '没有可用模版',
+  CONFIRM_LOAD_TEMPLATE: '确定加载地图模版？',
+  CONFIRM_OUTPUT_TEMPLATE: '确定输出地图模版？',
 }
 
 export { Prompt }

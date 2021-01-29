@@ -6,7 +6,7 @@
 /* global GLOBAL */
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
-import { Container } from '../../components'
+import { Container, MTBtn, Dialog } from '../../components'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import {
@@ -58,6 +58,8 @@ export default class MT_layerManager extends React.Component {
     setMapLegend: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
+    mapToXml: () => {},
+    mapFromXml: () => {},
     user: Object,
     baseMaps: Object,
     appConfig: Object,
@@ -89,10 +91,12 @@ export default class MT_layerManager extends React.Component {
       data: [],
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
       allLayersVisible: false,
+      isOutput: true, // 点击了输出/加载按钮，用于判断dialog行为
     }
     this.itemRefs = {} // 记录列表items
     this.currentItemRef = {} // 当前被选中的item
     this.prevItemRef = {} // 上一个被选中的item
+    this.dialog = undefined
   }
 
   componentDidUpdate(prevProps) {
@@ -942,7 +946,99 @@ export default class MT_layerManager extends React.Component {
         device={this.props.device}
         user={this.props.user}
         navigation={this.props.navigation}
+        mapFromXml={this.props.mapFromXml}
       />
+    )
+  }
+
+  // 专题制图导入导出按钮
+  _renderHeaderRight = () =>{
+    if(this.state.type !== "MAP_THEME") return null
+    let itemWidth =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
+    let size =
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 30 : 40
+    let buttons = [
+      <MTBtn
+        key={'import'}
+        image={getThemeAssets().nav.icon_nav_import}
+        title={getLanguage(this.props.language).Map_Main_Menu.MAP_LOAD_XML}
+        imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        onPress={()=>{
+          this.setState({
+            isOutput: false,
+          })
+          this.dialog.setDialogVisible(true)
+        }} />,
+      <MTBtn
+        key={'export'}
+        image={getThemeAssets().nav.icon_nav_export}
+        title={getLanguage(this.props.language).Map_Main_Menu.MAP_OUTPUT_XML}
+        imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        onPress={()=>{
+          this.setState({
+            isOutput: true,
+          })
+          this.dialog.setDialogVisible(true)
+        }} />,
+    ]
+
+    return (
+      <View style={{
+        width: scaleSize(itemWidth * buttons.length),
+        flexDirection: 'row',
+        justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
+        alignItems: 'center',
+      }}>
+        {buttons}
+      </View>
+    )
+  }
+
+  _onDialogConfirm = () => {
+    const { isOutput } = this.state
+    this.dialog.setDialogVisible(false)
+    if(isOutput) {
+      // 地图输出为xml
+      const mapName = this.props.map.currentMap.name || 'DefaultMap'
+      GLOBAL.Loading.setLoading(true)
+      this.props.mapToXml({mapName}, result => {
+        GLOBAL.Loading.setLoading(false)
+        Toast.show(result ? getLanguage(this.props.language).Prompt.SUCCESS :
+          getLanguage(this.props.language).Prompt.FAILED)
+      })
+    }else {
+      // 打开加载xml到地图的xml模版列表
+      this.toolBox.setVisible(true, "GET_XML_TEMPLATE")
+    }
+  }
+
+  _renderDialog = () => {
+    const { isOutput } = this.state
+    return (
+      <Dialog
+        ref={ref => (this.dialog = ref)}
+        cancelBtnVisible={true}
+        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.YES}
+        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.NO}
+        confirmAction={async ()=>{
+          this.dialog && this._onDialogConfirm()
+        }}
+        cancelAction={async ()=>{
+          this.dialog && this.dialog.setDialogVisible(false)
+        }}
+        opacity={1}
+        defaultVisible={false}
+        style={{height: scaleSize(300),backgroundColor: "#fff"}}
+      >
+        <View style={styles.dialogContent}>
+          <Image source={require('../../assets/home/Frenchgrey/icon_prompt.png')} style={styles.dialogTitleImg}/>
+          <Text style={styles.dialogTextStyle}>{
+            isOutput ? getLanguage(GLOBAL.language).Prompt.CONFIRM_OUTPUT_TEMPLATE :
+              getLanguage(GLOBAL.language).Prompt.CONFIRM_LOAD_TEMPLATE
+          }</Text>
+        </View>
+      </Dialog>
     )
   }
 
@@ -962,6 +1058,7 @@ export default class MT_layerManager extends React.Component {
             marginLeft: scaleSize(90),
           },
           withoutBack: true,
+          headerRight: this._renderHeaderRight(),
         }}
         onOverlayPress={() => {
           this.props.navigation.navigate('MapView')
@@ -971,6 +1068,7 @@ export default class MT_layerManager extends React.Component {
         {this.renderList()}
         {this.renderOverLayer()}
         {this.renderTool()}
+        {this._renderDialog()}
       </Container>
     )
   }

@@ -59,7 +59,7 @@ export default class ARSceneView extends React.Component<IProps> {
           })
           GLOBAL.Loading.setLoading(false)
           setTimeout(()=>{
-            Toast.show(getLanguage(GLOBAL.language).Prompt.SCENE_OPEN)
+            Toast.show(getLanguage(GLOBAL.language).Prompt.SUCCESS)
           },1000)
         }else{
           GLOBAL.isSceneOpen = false

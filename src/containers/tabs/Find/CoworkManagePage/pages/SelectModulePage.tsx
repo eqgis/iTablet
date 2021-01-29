@@ -65,7 +65,14 @@ class SelectModulePage extends Component<Props, State> {
 
   _onPress = (module: any, index: number) => {
     if (this.callBack) {
-      this.callBack({module, index})
+      let moduleIndex = index
+      for (let i = 0; i < this.props.mapModules.modules.length; i++) {
+        if (this.props.mapModules.modules[i].key === module.key) {
+          moduleIndex = i
+          break
+        }
+      }
+      this.callBack({module, index: moduleIndex})
     }
   }
 

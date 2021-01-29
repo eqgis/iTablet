@@ -57,7 +57,7 @@ export interface GroupMessageType extends Message {
   message: {
     applyTime: number,
     applicant: string | number,
-    type: string | number,
+    // type: string | number,
     checkStatus: string | GroupCheckStatus,
   },
 }

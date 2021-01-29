@@ -56,6 +56,7 @@ export default class CoworkInfo {
           id: members[i].id,
           name: members[i].name,
           show: true,
+          location: members[i].location,
         }
         break
       } else {
@@ -63,6 +64,7 @@ export default class CoworkInfo {
           id: members[i].id,
           name: members[i].name,
           show: members[i].show,
+          location: members[i].location,
         }
       }
     }
@@ -94,9 +96,9 @@ export default class CoworkInfo {
     this.isRealTime = isRealTime
     if (isRealTime) {
       this.showAll()
-      if (!this.adding) {
-        this.addNewMessage()
-      }
+      // if (!this.adding) {
+      //   this.addNewMessage()
+      // }
     } else {
       this.hideAll()
     }
@@ -212,44 +214,44 @@ export default class CoworkInfo {
     return isShow
   }
 
-  // static pushMessage(message) {
-  //   this.prevMessages.push(message)
-  //   if (this.isRealTime && !this.adding) {
-  //     this.addNewMessage()
-  //   }
-  // }
+  static pushMessage(message) {
+    this.prevMessages.push(message)
+    if (this.isRealTime && !this.adding) {
+      this.addNewMessage()
+    }
+  }
 
-  // static addNewMessage() {
-  //   this.adding = true
-  //   while (this.prevMessages.length > 0) {
-  //     let message = this.prevMessages.shift()
-  //     message.consume = false
-  //     message.messageID = this.messages.length
-  //     this.messages.push(message)
-  //     this.addMessageNum && this.addMessageNum(1),
-  //     async function() {
-  //       try {
-  //         let result = await SMap.isUserGeometryExist(
-  //           message.message.layerPath,
-  //           message.message.id,
-  //           message.message.geoUserID,
-  //         )
-  //         if (result) {
-  //           SMap.addMessageCallout(
-  //             message.message.layerPath,
-  //             message.message.id,
-  //             message.message.geoUserID,
-  //             message.user.name,
-  //             message.messageID,
-  //           )
-  //         }
-  //       } catch (error) {
-  //         //
-  //       }
-  //     }.bind(this)()
-  //   }
-  //   this.adding = false
-  // }
+  static addNewMessage() {
+    this.adding = true
+    while (this.prevMessages.length > 0) {
+      let message = this.prevMessages.shift()
+      message.consume = false
+      message.messageID = this.messages.length
+      this.messages.push(message)
+      this.addMessageNum && this.addMessageNum(1),
+      async function() {
+        try {
+          let result = await SMap.isUserGeometryExist(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+          )
+          if (result) {
+            SMap.addMessageCallout(
+              message.message.layerPath,
+              message.message.id,
+              message.message.geoUserID,
+              message.user.name,
+              message.messageID,
+            )
+          }
+        } catch (error) {
+          //
+        }
+      }.bind(this)()
+    }
+    this.adding = false
+  }
 
   static consumeMessage(messageID) {
     this.readMsgHandle({

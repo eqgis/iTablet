@@ -14,6 +14,7 @@ import CoworkInfo from '../tabs/Friend/Cowork/CoworkInfo'
 import MapSettingItem from './MapSettingItem'
 import { legendModule } from '../workspace/components/ToolBar/modules'
 import { TaskRealTimeParams } from '../../redux/models/cowork'
+import { UserInfo } from '../../redux/models/user'
 
 export default class MapSetting extends Component {
   props: {
@@ -25,6 +26,9 @@ export default class MapSetting extends Component {
     setMapSetting: () => {},
     closeMap: () => {},
     mapSetting: any,
+    // cowork: any,
+    // currentUser: UserInfo,
+    currentTaskInfo: any,
     currentTask: any,
     device: Object,
     mapLegend: Object,
@@ -42,7 +46,7 @@ export default class MapSetting extends Component {
     this.type = params && params.type
     this.state = {
       data: [],
-      isRealTime: CoworkInfo.isRealTime,
+      // isRealTime: CoworkInfo.isRealTime,
     }
   }
 
@@ -175,15 +179,18 @@ export default class MapSetting extends Component {
             type={'switch'}
             title={getLanguage(GLOBAL.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
-              CoworkInfo.setIsRealTime(value)
-              // this.props.setIsRealTime({
-              //   groupId: this.props.currentTask.groupID,
-              //   taskId: this.props.currentTask.id,
-              //   isRealTime: value,
-              // })
-              this.setState({ isRealTime: value })
+              // CoworkInfo.setIsRealTime(value)
+              this.props.setIsRealTime({
+                groupId: this.props.currentTask.groupID,
+                taskId: this.props.currentTask.id,
+                isRealTime: value,
+              })
+              // this.setState({ isRealTime: value })
             }}
-            value={this.state.isRealTime}
+            // value={this.state.isRealTime}
+            value={
+              this.props.currentTaskInfo?.isRealTime === undefined ? true : this.props.currentTaskInfo.isRealTime
+            }
             leftImage={getThemeAssets().setting.icon_horizontal_screen}
           />
         )}

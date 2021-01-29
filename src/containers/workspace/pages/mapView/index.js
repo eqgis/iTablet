@@ -97,6 +97,7 @@ const mapStateToProps = state => ({
   mapAnalystGuide: state.home.toJS().mapAnalystGuide,
   coworkInfo: state.cowork.toJS().coworkInfo,
   currentTask: state.cowork.toJS().currentTask,
+  coworkMessages: state.cowork.toJS().messages,
 })
 
 const mapDispatchToProps = {

@@ -4,7 +4,8 @@ const icon_nav_search = require('./icon_nav_search.png')
 const icon_nav_share = require('./icon_nav_share.png')
 const icon_nav_undo = require('./icon_nav_undo.png')
 const icon_nav_voice = require('./icon_nav_voice.png')
-
+const icon_nav_import = require('./import_template.png')
+const icon_nav_export = require('./export_template.png')
 export default {
   icon_back,
   icon_nav_close,
@@ -12,4 +13,6 @@ export default {
   icon_nav_share,
   icon_nav_undo,
   icon_nav_voice,
+  icon_nav_import,
+  icon_nav_export,
 }

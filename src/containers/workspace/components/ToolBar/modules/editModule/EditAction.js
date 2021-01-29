@@ -22,48 +22,51 @@ async function commit(type) {
     })
   } else {
     try {
-      await SMap.submit()
-      await SMap.setAction(Action.SELECT)
-      const fieldInfo = ToolbarModule.getData().fieldInfo || []
-      const layerInfo = ToolbarModule.getData().layerInfo || {}
-      if (layerInfo.name && await SMediaCollector.isTourLayer(layerInfo.name)) {
-        // 编辑旅行轨迹对象后，更新位置
-        await SMediaCollector.updateTour(params.selection[0].layerInfo.name)
-      } else {
-        // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
-        if (ToolbarModule.getData().fieldInfo) {
-          let geoID = -1
-          for (let i = 0; i < fieldInfo.length; i++) {
-            if (
-              fieldInfo[i].name === 'MediaFilePaths' &&
-              fieldInfo[i].value !== ''
-            ) {
-              geoID = fieldInfo[0].value
+      await SMap.submit().then(async result => {
+        if (result) {
+          await SMap.setAction(Action.SELECT)
+          const fieldInfo = ToolbarModule.getData().fieldInfo || []
+          const layerInfo = ToolbarModule.getData().layerInfo || {}
+          if (layerInfo.name && await SMediaCollector.isTourLayer(layerInfo.name)) {
+            // 编辑旅行轨迹对象后，更新位置
+            await SMediaCollector.updateTour(params.selection[0].layerInfo.name)
+          } else {
+            // 编辑对象含有多媒体文件，在更新对象位置后，需要更新多媒体文件的位置
+            if (ToolbarModule.getData().fieldInfo) {
+              let geoID = -1
+              for (let i = 0; i < fieldInfo.length; i++) {
+                if (
+                  fieldInfo[i].name === 'MediaFilePaths' &&
+                  fieldInfo[i].value !== ''
+                ) {
+                  geoID = fieldInfo[0].value
+                }
+              }
+              layerInfo.name !== undefined &&
+              geoID > -1 &&
+              (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
             }
           }
-          layerInfo.name !== undefined &&
-          geoID > -1 &&
-          (await SMediaCollector.updateMedia(layerInfo.name, [geoID]))
+          //协作时同步编辑对象
+          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+            let event = ToolbarModule.getData().event
+            //TODO 增加类型判断
+            let friend = GLOBAL.getFriend()
+            friend.onGeometryEdit(
+              event.layerInfo,
+              event.fieldInfo,
+              event.id,
+              event.geometryType,
+            )
+          }
+          currentToolbarType = ConstToolType.SM_MAP_EDIT
+          // 编辑完成关闭Toolbar
+          // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
+          params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT, {
+            isFullScreen: false,
+            // height: 0,
+          })
         }
-      }
-      //协作时同步编辑对象
-      if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-        let event = ToolbarModule.getData().event
-        //TODO 增加类型判断
-        let friend = GLOBAL.getFriend()
-        friend.onGeometryEdit(
-          event.layerInfo,
-          event.fieldInfo,
-          event.id,
-          event.geometryType,
-        )
-      }
-      currentToolbarType = ConstToolType.SM_MAP_EDIT
-      // 编辑完成关闭Toolbar
-      // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-      params.setToolbarVisible(true, ConstToolType.SM_MAP_EDIT, {
-        isFullScreen: false,
-        // height: 0,
       })
     } catch (e) {
       SMap.cancel()

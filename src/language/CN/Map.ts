@@ -527,6 +527,10 @@ const Map_Main_Menu = {
   MERGE_SELECT_ALL: '全选',
   MERGE_ADD: '追加',
   MERGE_DATASET: '合并数据集',
+
+  // 专题制图加载/输出xml
+  MAP_OUTPUT_XML: '输出',
+  MAP_LOAD_XML: '加载',
 }
 
 // 推演动画

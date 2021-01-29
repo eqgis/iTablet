@@ -9,11 +9,13 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleSize, screen } from '../../../../../../utils'
-import { Container, PopMenu } from '../../../../../../components'
-import { UserType } from '../../../../../../constants'
+import { Container, PopMenu, RedDot } from '../../../../../../components'
+import { UserType, MsgConstant } from '../../../../../../constants'
 import { size } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
 import { Users } from '../../../../../../redux/models/user'
+import { readCoworkGroupMsg, ReadMsgParams } from '../../../../../../redux/models/cowork'
+import NavigationService from '../../../../../NavigationService'
 import { SCoordination } from 'imobile_for_reactnative'
 import ScrollableTabView, {
   DefaultTabBar,
@@ -26,6 +28,8 @@ interface Props {
   navigation: any,
   user: Users,
   device: any,
+  cowork: any,
+  readCoworkGroupMsg: (params: ReadMsgParams) => Promise<any>,
 }
 
 type State = {
@@ -90,7 +94,16 @@ class GroupMessagePage extends Component<Props, State> {
                   accessible={true}
                   accessibilityLabel={name}
                   accessibilityTraits="button"
-                  onPress={() => onPressHandler(page)}
+                  onPress={() => {
+                    onPressHandler(page)
+                    let type = MsgConstant.MSG_ONLINE_GROUP_APPLY
+                    if (name === getLanguage(this.props.language).Friends.INVITE_MESSAGE) {
+                      type = MsgConstant.MSG_ONLINE_GROUP_INVITE
+                    }
+                    this.props.readCoworkGroupMsg({
+                      type: type,
+                    })
+                  }}
                 >
                   <Text
                     style={{
@@ -102,15 +115,22 @@ class GroupMessagePage extends Component<Props, State> {
                   >
                     {name}
                   </Text>
-                  {/* {name ===
-                    getLanguage(this.props.language).Friends.MESSAGES && (
-                    <InformSpot
-                      style={{
-                        top: scaleSize(15),
-                        right: '38%',
-                      }}
-                    />
-                  )} */}
+                  {
+                    (
+                      name === getLanguage(this.props.language).Friends.APPLY_MESSAGE &&
+                      this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread > 0 ||
+                      name === getLanguage(this.props.language).Friends.INVITE_MESSAGE &&
+                      this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread > 0
+                    ) &&
+                    (
+                      <RedDot
+                        style={{
+                          top: scaleSize(15),
+                          right: '38%',
+                        }}
+                      />
+                    )
+                  }
                 </TouchableOpacity>
               )
             }}
@@ -134,6 +154,8 @@ class GroupMessagePage extends Component<Props, State> {
           user={this.props.user}
           device={this.props.device}
           servicesUtils={this.servicesUtils}
+          readCoworkGroupMsg={this.props.readCoworkGroupMsg}
+          unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread || 0}
         />
         <InviteMessages
           // ref={ref => (this.inviteMessages = ref)}
@@ -143,9 +165,19 @@ class GroupMessagePage extends Component<Props, State> {
           device={this.props.device}
           servicesUtils={this.servicesUtils}
           callBack={this.callBack}
+          readCoworkGroupMsg={this.props.readCoworkGroupMsg}
+          unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread || 0}
         />
       </ScrollableTabView>
     )
+  }
+
+  _back = () => {
+    // 退出消息页面，把第一页未读消息归0
+    this.props.readCoworkGroupMsg({
+      type: MsgConstant.MSG_ONLINE_GROUP_APPLY,
+    })
+    NavigationService.goBack('GroupMessagePage', null)
   }
 
   render() {
@@ -159,6 +191,7 @@ class GroupMessagePage extends Component<Props, State> {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
+          backAction: this._back,
         }}
       >
         {this._renderTabs()}
@@ -172,9 +205,12 @@ const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  cowork: state.cowork.toJS(),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  readCoworkGroupMsg,
+}
 
 export default connect(
   mapStateToProps,

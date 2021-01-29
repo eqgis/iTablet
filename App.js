@@ -1013,6 +1013,7 @@ class AppRoot extends Component {
           this.protocolDialog.setVisible(false)
           //开启新手引导 add jiakai
           this.props.setGuideShow(true)
+          this.props.setVersion(GLOBAL.GUIDE_VERSION)
         }}
       />
     )

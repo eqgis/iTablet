@@ -156,56 +156,61 @@ function getData(type) {
           action: EditAction.addNode,
           image: getThemeAssets().edit.icon_add_node,
         },
-        {
-          key: constants.ERASE_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ERASE,
-          size: 'large',
-          action: EditAction.eraseRegion,
-          image: getThemeAssets().edit.icon_erase_noodles,
-        },
-        {
-          key: constants.SPLIT_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_SPLIT,
-          size: 'large',
-          action: EditAction.splitRegion,
-          image: getThemeAssets().edit.icon_cutting,
-        },
-        {
-          key: constants.MERGE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_UNION,
-          size: 'large',
-          action: EditAction.merge,
-          image: getThemeAssets().edit.icon_merge,
-        },
-        {
-          key: constants.DRAWREGION_ERASE_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_DRAW_ERASE,
-          size: 'large',
-          action: EditAction.drawRegionEraseRegion,
-          image: getThemeAssets().edit.icon_erase_spot,
-        },
-        {
-          key: constants.DRAWREGION_HOLLOW_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DRAW_HOLLOW,
-          size: 'large',
-          action: EditAction.drawRegionHollowRegion,
-          image: getThemeAssets().edit.icon_hand_painted_Island_cave,
-        },
-        {
-          key: constants.FILL_HOLLOW_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_FILL_HOLLOW,
-          size: 'large',
-          action: EditAction.fillHollowRegion,
-          image: getThemeAssets().edit.icon_filling_Island_hole,
-        },
-        {
-          key: constants.PATCH_HOLLOW_REGION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_PATCH_HOLLOW,
-          size: 'large',
-          action: EditAction.patchHollowRegion,
-          image: getThemeAssets().edit.icon_supplement_Island_cave,
-        },
       ]
+      //协作时暂不支持以下操作
+      if(!GLOBAL.coworkMode) {
+        data.push(
+          {
+            key: constants.ERASE_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ERASE,
+            size: 'large',
+            action: EditAction.eraseRegion,
+            image: getThemeAssets().edit.icon_erase_noodles,
+          },
+          {
+            key: constants.SPLIT_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_SPLIT,
+            size: 'large',
+            action: EditAction.splitRegion,
+            image: getThemeAssets().edit.icon_cutting,
+          },
+          {
+            key: constants.MERGE,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_UNION,
+            size: 'large',
+            action: EditAction.merge,
+            image: getThemeAssets().edit.icon_merge,
+          },
+          {
+            key: constants.DRAWREGION_ERASE_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_DRAW_ERASE,
+            size: 'large',
+            action: EditAction.drawRegionEraseRegion,
+            image: getThemeAssets().edit.icon_erase_spot,
+          },
+          {
+            key: constants.DRAWREGION_HOLLOW_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DRAW_HOLLOW,
+            size: 'large',
+            action: EditAction.drawRegionHollowRegion,
+            image: getThemeAssets().edit.icon_hand_painted_Island_cave,
+          },
+          {
+            key: constants.FILL_HOLLOW_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_FILL_HOLLOW,
+            size: 'large',
+            action: EditAction.fillHollowRegion,
+            image: getThemeAssets().edit.icon_filling_Island_hole,
+          },
+          {
+            key: constants.PATCH_HOLLOW_REGION,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_PATCH_HOLLOW,
+            size: 'large',
+            action: EditAction.patchHollowRegion,
+            image: getThemeAssets().edit.icon_supplement_Island_cave,
+          },
+        )
+      }
       break
     case ConstToolType.SM_MAP_EDIT_TEXT:
       data = [

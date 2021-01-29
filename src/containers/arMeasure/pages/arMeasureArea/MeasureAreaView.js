@@ -53,7 +53,7 @@ export default class MeasureAreaView extends React.Component {
       if (this.measureType === 'measureArea') {
         this.title = getLanguage(
           GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
         this.title = getLanguage(
           GLOBAL.language,
@@ -77,11 +77,11 @@ export default class MeasureAreaView extends React.Component {
       } else if (this.measureType === 'arMeasureCircle') {
         this.title = getLanguage(
           GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
       } else if (this.measureType === 'arMeasureRectangle') {
         this.title = getLanguage(
           GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
       }
 
       if(this.measureType === 'arMeasureHeight' ||

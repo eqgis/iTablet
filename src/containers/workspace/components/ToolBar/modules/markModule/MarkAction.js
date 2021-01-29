@@ -209,7 +209,7 @@ function commit(type) {
         if (
           _params.selection[0] &&
           _params.selection[0].layerInfo &&
-          (await SMediaCollector.isMediaLayer(
+          (await SMediaCollector.isTourLayer(
             _params.selection[0].layerInfo.name,
           ))
         ) {

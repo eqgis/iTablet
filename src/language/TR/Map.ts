@@ -385,6 +385,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: 'Nokta Seç',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'Şu Andaki',
   MAP_AR_MOVE_TO_PLANE: 'Nokta Seç',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Sola çevirin',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Sağa dönün',

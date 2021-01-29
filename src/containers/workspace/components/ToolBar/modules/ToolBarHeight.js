@@ -79,6 +79,21 @@ function getToolbarSize(type, orientation, additional = {}) {
     case ToolbarType.typeNull:
       height = 0
       break
+    case ToolbarType.arMeasure:
+      if (additional.data === undefined) additional.data = []
+      let maxLimit = 6
+      if (orientation.indexOf('LANDSCAPE') === 0) {
+        row = additional.row !== undefined ? additional.row : 5
+        column = Math.ceil(additional.data.length / row)
+        column = column > maxLimit ? maxLimit : column // 限制最大高度
+        height = Height.TABLE_ROW_HEIGHT_5 * column
+      } else {
+        column = additional.column !== undefined ? additional.column : 4
+        row = Math.ceil(additional.data.length / column)
+        row = row > maxLimit ? maxLimit : row // 限制最大宽度
+        height = Height.TABLE_ROW_HEIGHT_6 * row
+      }
+      break
   }
   if (additional.height !== undefined) {
     height = additional.height

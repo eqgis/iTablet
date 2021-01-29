@@ -1,5 +1,8 @@
 import { SMeasureView } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
+import ARMeasureData from './ARMeasureData'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import ToolbarModule from '../ToolbarModule'
 
 function close() {}
 
@@ -12,6 +15,36 @@ function commit() {}
 // AR测量面积
 function arMeasureArea() {
   (async function() {
+    // const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    // if (!isSupportedARCore) {
+    //   GLOBAL.ARDeviceListDialog.setVisible(true)
+    //   return
+    // }
+
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    const _data = ARMeasureData.getMeasureAreaData()
+    const containerType = ToolbarType.arMeasure
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    GLOBAL.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
+      containerType,
+      data:_data.data,
+      ...data,
+    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'measureArea',
+    // })
+  })()
+}
+
+//AR测量面积 多边形
+function arMeasurePolygon() {
+  (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       GLOBAL.ARDeviceListDialog.setVisible(true)
@@ -23,11 +56,55 @@ function arMeasureArea() {
       GLOBAL.arSwitchToMap = true
       ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     }
+
     NavigationService.navigate('MeasureAreaView', {
       measureType: 'measureArea',
     })
   })()
 }
+
+//AR测量面积 矩形
+function arMeasureRectanglet() {
+  (async function() {
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'arMeasureRectangle',
+    })
+  })()
+}
+
+//AR测量面积 圆
+function arMeasureCircular() {
+  (async function() {
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'arMeasureCircle',
+    })
+  })()
+}
+
 
 // AR测量距离
 function arMeasureLength() {
@@ -78,4 +155,8 @@ export default {
   arMeasureArea,
   arMeasureLength,
   arMeasureHeight,
+
+  arMeasurePolygon,
+  arMeasureRectanglet,
+  arMeasureCircular,
 }

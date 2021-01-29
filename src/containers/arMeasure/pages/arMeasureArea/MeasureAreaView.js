@@ -53,7 +53,7 @@ export default class MeasureAreaView extends React.Component {
       if (this.measureType === 'measureArea') {
         this.title = getLanguage(
           GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON
       } else if (this.measureType === 'measureLength') {
         this.title = getLanguage(
           GLOBAL.language,
@@ -74,6 +74,14 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
+      } else if (this.measureType === 'arMeasureCircle') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR
+      } else if (this.measureType === 'arMeasureRectangle') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE
       }
 
       if(this.measureType === 'arMeasureHeight' ||
@@ -893,6 +901,10 @@ export default class MeasureAreaView extends React.Component {
         this.setState({
           showCurrentHeightView: true,
         })
+      } else if (this.measureType === 'arMeasureCircle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
+      } else if (this.measureType === 'arMeasureRectangle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
       }
       this.setState({isfirst:true})
     }

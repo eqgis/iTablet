@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, Text, FlatList } from 'react-native'
+import { View, Animated, Text, FlatList, Image ,TouchableOpacity} from 'react-native'
 import {
   ToolbarType,
   ConstToolType,
@@ -17,6 +17,8 @@ import ToolList from '../ToolList'
 import ToolbarTableList from '../ToolbarTableList'
 import ToolbarModule from '../../modules/ToolbarModule'
 import styles from './styles'
+import ToolbarArMeasure from '../ToolbarArMeasure'
+import ARMeasureData from '../../modules/arMeasure/ARMeasureData'
 
 export default class ToolbarContentView extends React.Component {
   props: {
@@ -73,10 +75,10 @@ export default class ToolbarContentView extends React.Component {
       this.props.language !== nextProps.language ||
       JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
       JSON.stringify(this.props.currentLayer) !==
-        JSON.stringify(nextProps.currentLayer) ||
+      JSON.stringify(nextProps.currentLayer) ||
       JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
       JSON.stringify(this.props.selection) !==
-        JSON.stringify(nextProps.selection) ||
+      JSON.stringify(nextProps.selection) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     ) {
       return true
@@ -309,6 +311,23 @@ export default class ToolbarContentView extends React.Component {
     )
   }
 
+  /***************************************** arMeasure ***************************************/
+  renderMeasure = () => {
+    return (
+      <ToolbarArMeasure
+      data={this.props.data}
+      secdata={ARMeasureData.getMeasureAreaData().measureAreadata}
+      type={this.props.type}
+      containerType={ToolbarType.table}
+      column={this.state.column}
+      row={this.state.row}
+      device={this.props.device}
+      language={this.props.language}
+      getToolbarModule={this.props.getToolbarModule}
+      />
+    )
+  }
+
   /***************************************** Table ***************************************/
   renderTable = () => {
     return (
@@ -479,6 +498,9 @@ export default class ToolbarContentView extends React.Component {
           break
         case ToolbarType.colorTable:
           box = this.renderColorTable()
+          break
+        case ToolbarType.arMeasure:
+          box = this.renderMeasure()
           break
         case ToolbarType.table:
         default:

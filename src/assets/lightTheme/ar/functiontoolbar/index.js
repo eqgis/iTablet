@@ -26,6 +26,9 @@ const icon_ar_gesture = require('./icon_ar_gesture.png')
 const ar_draw_line_disable = require('../../mark/icon_dotted_lines_ash.png')
 const ar_draw_area_disable = require('../../mark/icon_frame_ash.png')
 const ar_draw_point_disable = require('./icon_ar_drawpoint_ash.png')
+const icon_ar_polygon = require('./icon_ar_polygon.png')
+const icon_ar_rectangle = require('./icon_ar_rectangle.png')
+const icon_ar_circular = require('./icon_ar_circular.png')
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
   rightbar_ai_classify_light, // 目标分类
@@ -57,4 +60,7 @@ export default {
   /** 水平仪 */
   icon_ar_measure_level,
   icon_ar_gesture,
+  icon_ar_polygon,
+  icon_ar_rectangle,
+  icon_ar_circular,
 }

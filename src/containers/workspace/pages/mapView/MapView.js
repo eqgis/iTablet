@@ -2525,7 +2525,7 @@ export default class MapView extends React.Component {
                   NavigationService.navigate('Chat', param)
                 },
                 newInfo: this.props.coworkMessages?.[this.props.user.currentUser.userName]
-                  ?.chatMessages?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]?.unread || 0,
+                  ?.coworkGroupMessages?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]?.unread || 0,
               }
               break
           }

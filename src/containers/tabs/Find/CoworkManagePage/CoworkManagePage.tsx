@@ -14,9 +14,7 @@ import ScrollableTabView, {
 import GroupMessage from './GroupMessage'
 import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
-import CoworkFileHandle from './CoworkFileHandle'
-import CoworkMessageUtil from './CoworkMessageUtil'
-
+import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowork'
 interface Props {
   navigation: Object,
   user: Users,
@@ -26,8 +24,10 @@ interface Props {
   currentGroup: GroupType,
   device: any,
   setCurrentMapModule: (index: number) => void,
-  deleteInvite: () => void,
+  deleteInvite: (params: DeleteInviteParams) => Promise<any>,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
+  readCoworkGroupMsg: (params: ReadMsgParams) => Promise<any>,
+  setCurrentGroup: (data: any) => any,
 }
 
 type State = {
@@ -38,7 +38,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
   servicesUtils: SCoordination | undefined | null
   onlineServicesUtils: any
-  popData: Array<any>
+  // popData: Array<any>
   PagePopModal: PopMenu | null | undefined
   container: any
   callBack: (data?: any) => any
@@ -83,9 +83,16 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     (async function() {
       GLOBAL.cookie = await this.onlineServicesUtils.getCookie()
     }.bind(this)())
+    this.props.readCoworkGroupMsg({
+      target: {
+        groupId: this.props.currentGroup.id + '',
+      },
+      type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+    })
   }
 
   componentWillUnmount() {
+    this.props.setCurrentGroup(undefined)
     this.servicesUtils = null
     this.onlineServicesUtils = null
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, Image, Platform } from 'react-native'
-import { ListSeparator, Progress } from '../../../../../components'
+import { ListSeparator, Progress, RedDot } from '../../../../../components'
 import { ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { getThemeAssets } from '../../../../../assets'
@@ -17,6 +17,7 @@ interface Props {
   data: any,
   user: any,
   isSelf: boolean,
+  unread: number,
   onPress: (data: any) => void,
   addCoworkMsg: (data: any) => void,
   deleteCoworkMsg: (data: any) => void,
@@ -372,6 +373,10 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             action: () => this.props.deleteCoworkMsg(this.props.data),
           })} */}
         </TouchableOpacity>
+        {
+          this.props.unread > 0 &&
+          <RedDot style={{position: 'absolute', top: scaleSize(30), left: scaleSize(30)}} />
+        }
         {this._renderProgress()}
         <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
       </View>

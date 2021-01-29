@@ -118,7 +118,7 @@ export interface ReadMsgParams {
   read?: number, //read为undefined时，则归0
   target?: { //若存在，则为群组消息
     groupId: string,
-    taskId: string,
+    taskId?: string, //若存在，则为任务群组消息
   },
   type: number,
 }
@@ -135,12 +135,15 @@ export const addInvite = (params = {}, cb = () => {}) => async (dispatch: (arg0:
   cb && cb()
 }
 
-export const deleteInvite = (params = {}, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  await dispatch({
+export interface DeleteInviteParams {
+  userId: string,
+  coworkId: string,
+}
+export const deleteInvite = (params: DeleteInviteParams) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+  return await dispatch({
     type: DELETE_COWORK_INVITE,
     payload: params,
   })
-  cb && cb()
 }
 
 /**
@@ -387,12 +390,16 @@ export const setCoworkNewMessage = (
 /**
  * 添加/修改任务
  */
-const addTask = (state: any, { payload, userId }: any): Array<any> => {
+const addTask = (state: any, { payload, userId }: any): {
+  tasks: Array<any>,
+  type: number, // 1:add 2:edit 3:delete
+} => {
   let allTask = state.toJS().tasks
   let myTasks: any = allTask[userId] || {}
   let tasks: any = myTasks[payload.groupID] || []
   let task
   let existInTaskMember = false // 判断新的任务成员是否包含当前用户，若不存在，则删除该任务
+  let type = 1
   for (let i = 0; i < tasks.length; i++) {
     let _task = tasks[i]
     // 修改已有消息的状态
@@ -414,11 +421,13 @@ const addTask = (state: any, { payload, userId }: any): Array<any> => {
     }
   }
   if (!existInTaskMember && task) {
+    type = 2
     CoworkFileHandle.delTaskGroup(
       payload.groupID,
       payload.id,
     )
   } else if (!task) { // 添加新消息
+    type = 1
     // tasks.push(payload)
     tasks.unshift(payload)
     // 协作任务群组上传到Online
@@ -427,12 +436,16 @@ const addTask = (state: any, { payload, userId }: any): Array<any> => {
       groupName: payload.name,
     }, payload)
   } else { // 修改群组消息
+    type = 3
     CoworkFileHandle.setTaskGroup(payload.groupID, payload)
   }
 
   myTasks[payload.groupID] = tasks
   allTask[userId] = myTasks
-  return allTask
+  return {
+    tasks: allTask,
+    type: type,
+  }
 }
 
 /**
@@ -605,6 +618,24 @@ function deleteTaskInfo(
   }
   delete coworkInfo[userId][groupId][taskId]
   return coworkInfo
+}
+
+function deleteTaskMessages(
+  messages: {[userId: string]: any},
+  userId: string,
+  groupId?: string,
+  taskId?: string,
+) {
+  if (taskId === undefined && groupId === undefined && messages[userId]) {
+    delete messages[userId]
+  }
+  if (taskId === undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]) {
+    delete messages[userId].coworkGroupMessages[groupId]
+  }
+  if (taskId !== undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]?.[taskId]) {
+    delete messages[userId].coworkGroupMessages[groupId][taskId]
+  }
+  return messages
 }
 
 /**
@@ -780,8 +811,8 @@ function setUserTrack(member: CoworkMember, isShow: boolean): void {
 }
 
 function initMessages(userMessages: MessageType) {
-  if (!userMessages.chatMessages) {
-    userMessages.chatMessages = {
+  if (!userMessages.coworkGroupMessages) {
+    userMessages.coworkGroupMessages = {
       // messages: [],
       unread: 0,
     }
@@ -808,8 +839,13 @@ export interface MessageType {
   inviteMessages: {
     unread: number,
   },
-  chatMessages: {
-    unread: number,
+  coworkGroupMessages: {
+    [groupId: string]: {
+      unread: number,
+      [taskId: string]: number | {
+        unread: number,
+      },
+    },
   },
 }
 
@@ -823,10 +859,11 @@ const initialState = fromJS({
    *  inviteMessages: {
    *    unread: number
    *  },
-   *  chatMessages: {
+   *  coworkGroupMessages: {
    *    [groupId: string]: {
+   *      unread: number,       // 群未读消息
    *      [taskId: string]: {
-   *        unread: number,
+   *        unread: number,     // 群任务未读消息
    *      }
    *    }
    *  },
@@ -896,21 +933,21 @@ export default handleActions(
         let messages = state.toJS().messages
         if (!messages[userId]) messages[userId] = {}
         messages[userId] = initMessages(messages[userId])
-        let chatMessages = messages[userId].chatMessages
+        let coworkGroupMessages = messages[userId].coworkGroupMessages
 
-        // if (chatMessages.unread === undefined) {
-        //   chatMessages.unread = 0
+        // if (coworkGroupMessages.unread === undefined) {
+        //   coworkGroupMessages.unread = 0
         // }
-        chatMessages.unread++
-        if (!chatMessages[payload.groupId]) {
-          chatMessages[payload.groupId] = {}
+        coworkGroupMessages.unread++
+        if (!coworkGroupMessages[payload.groupId]) {
+          coworkGroupMessages[payload.groupId] = {}
         }
-        if (!chatMessages[payload.groupId][payload.taskId]) {
-          chatMessages[payload.groupId][payload.taskId] = {
+        if (!coworkGroupMessages[payload.groupId][payload.taskId]) {
+          coworkGroupMessages[payload.groupId][payload.taskId] = {
             unread: 0,
           }
         }
-        chatMessages[payload.groupId][payload.taskId].unread++
+        coworkGroupMessages[payload.groupId][payload.taskId].unread++
 
         return state.setIn(['messages'], fromJS(messages))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_APPLY) { // 申请消息
@@ -938,18 +975,40 @@ export default handleActions(
 
         return state.setIn(['messages'], fromJS(messages))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 添加/修改任务
-        let tasks = addTask(state, { payload, userId })
+        let {tasks, type} = addTask(state, { payload, userId })
         let coworkInfo = state.toJS().coworkInfo
         // 创建TaskInfo
         getTaskInfo(coworkInfo, userId, payload.groupID, payload.id, true)
         // 初始化TaskInfo中的成员
         addTaskInfoMember(coworkInfo, userId, payload.groupID, payload.id, payload.members) // 给本地成员赋值
 
+        // 当为添加任务时，添加新消息
+        // 当创建者是当前用户，则不添加新消息
+        // 当创建者不是当前用户，且正在当前群组任务管理界面中时，则不添加新消息
+        let currentGroup = state.toJS().currentGroup
+        if (type === 1 && payload.creator !== userId && currentGroup?.id !== payload.groupID) {
+          let messages = state.toJS().messages
+          if (!messages[userId]) messages[userId] = {}
+          messages[userId] = initMessages(messages[userId])
+          let coworkGroupMessages = messages[userId].coworkGroupMessages
+
+          coworkGroupMessages.unread++
+          if (!coworkGroupMessages[payload.groupID]) {
+            coworkGroupMessages[payload.groupID] = {
+              unread: 0,
+            }
+          }
+          coworkGroupMessages[payload.groupID].unread++
+          return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo)).setIn(['messages'], fromJS(messages))
+        }
+
         return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE) { // 删除任务
         let coworkInfo = state.toJS().coworkInfo
+        let messages = state.toJS().messages
         return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
           .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, payload.id)))
+          .setIn(['messages'], fromJS(deleteTaskMessages(messages, userId, payload.groupID, payload.id)))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN) { // 任务成员加入消息
         let coworkInfo = state.toJS().coworkInfo
         return state.setIn(['tasks'], fromJS(addTaskMembers(state, { payload, userId })))
@@ -966,14 +1025,18 @@ export default handleActions(
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_INVITE) { // 读群邀请消息
         _messages = messages[userId].inviteMessages
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_CHAT) { // 读任务群聊消息
+        if (payload.target && payload.target.taskId) {
+          if (!messages[userId].coworkGroupMessages[payload.target.groupId]) {
+            messages[userId].coworkGroupMessages[payload.target.groupId] = {}
+          }
+          if (!messages[userId].coworkGroupMessages[payload.target.groupId][payload.target.taskId]) {
+            messages[userId].coworkGroupMessages[payload.target.groupId][payload.target.taskId] = {unread: 0}
+          }
+          _messages = messages[userId].coworkGroupMessages[payload.target.groupId][payload.target.taskId]
+        }
+      } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 读群组新任务消息
         if (payload.target) {
-          if (!messages[userId].chatMessages[payload.target.groupId]) {
-            messages[userId].chatMessages[payload.target.groupId] = {}
-          }
-          if (!messages[userId].chatMessages[payload.target.groupId][payload.target.taskId]) {
-            messages[userId].chatMessages[payload.target.groupId][payload.target.taskId] = {unread: 0}
-          }
-          _messages = messages[userId].chatMessages[payload.target.groupId][payload.target.taskId]
+          _messages = messages[userId].coworkGroupMessages[payload.target.groupId]
         }
       }
       if (_messages.unread > 0) {
@@ -1060,11 +1123,12 @@ export default handleActions(
       return state.setIn(['tasks'], fromJS(allTask)).setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [`${COWORK_GROUP_SET_CURRENT}`]: (state: any, { payload }: any) => {
-      // TODO 检测payload有效性
+      if (!payload || !payload.id) { // 退出当前群组页面，并清空当前任务数据
+        return state.setIn(['currentGroup'], fromJS({})).setIn(['currentTask'], fromJS({}))
+      }
       return state.setIn(['currentGroup'], fromJS(payload))
     },
     [`${COWORK_TASK_SET_CURRENT}`]: (state: any, { payload, userId }: any) => {
-      // TODO 检测payload有效性
       let coworkInfo = state.toJS().coworkInfo
       let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupID, payload.id, true)
       if (taskInfo.members.length !== payload.members.length) {

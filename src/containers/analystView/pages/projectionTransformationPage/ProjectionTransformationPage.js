@@ -389,6 +389,7 @@ export default class ProjectionTransformationPage extends Component {
 
   //参考系转换设置界面
   renderTransMethodView() {
+    const noSpace = ['JA','CN'].indexOf(GLOBAL.language) != -1
     return (
       <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
@@ -436,9 +437,9 @@ export default class ProjectionTransformationPage extends Component {
             if (!this.state.transMothodData) {
               Toast.show(
                 getLanguage(GLOBAL.language).Analyst_Labels
-                  .REGISTRATION_PLEASE_SELECT +
+                  .REGISTRATION_PLEASE_SELECT + (noSpace ? '' : ' ') +
                   getLanguage(GLOBAL.language).Analyst_Labels
-                    .PROJECTION_CONVERT_MOTHED,
+                    .PROJECTION_CONVERT_MOTHED.toLowerCase(),
               )
               return
             }

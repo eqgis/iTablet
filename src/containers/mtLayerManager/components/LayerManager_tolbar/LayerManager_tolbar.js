@@ -252,9 +252,6 @@ export default class LayerManager_tolbar extends React.Component {
         break
       case "GET_XML_TEMPLATE":
         data = await getXmlTemplateData()
-        if(data[0].data.length === 0){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.NO_TEMPLATE)
-        }
         break
     }
     // 屏蔽在线协作-移除图层
@@ -1124,7 +1121,7 @@ export default class LayerManager_tolbar extends React.Component {
             alignItems: 'center',
           }}
         >
-          <View
+          {/* <View
             style={{
               marginLeft: scaleSize(10),
               height: scaleSize(50),
@@ -1143,7 +1140,13 @@ export default class LayerManager_tolbar extends React.Component {
             >
               {(title && title[0].toUpperCase()) || ''}
             </Text>
-          </View>
+          </View> */}
+          <Image source={getThemeAssets().friend.contact_photo} style={{
+            marginLeft: scaleSize(10),
+            height: scaleSize(50),
+            width: scaleSize(50),
+            borderRadius: scaleSize(50),
+          }}/>
           <View
             style={{
               marginLeft: scaleSize(20),

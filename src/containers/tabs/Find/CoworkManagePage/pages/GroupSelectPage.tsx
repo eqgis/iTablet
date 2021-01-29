@@ -249,17 +249,31 @@ class GroupSelectPage extends Component<Props, State> {
   _renderItem = ({ section, item }: any) => {
     let isShow = this.state.sectionMap.get(section.title)
     if (!isShow) return null
+    let unread = this.props.coworkMessages[this.props.user.currentUser.userName]?.coworkGroupMessages?.[item.id]?.unread || 0
     return (
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
         activeOpacity={0.75}
         onPress={() => this._itemPress(item)}
       >
-        <Image
-          style={styles.itemImg}
-          resizeMode={'contain'}
-          source={getThemeAssets().friend.contact_photo}
-        />
+        <View>
+          <Image
+            style={styles.itemImg}
+            resizeMode={'contain'}
+            source={getThemeAssets().friend.contact_photo}
+          />
+          {
+            unread > 0 &&
+            (
+              <RedDot
+                style={{
+                  top: 0,
+                  right: 0,
+                }}
+              />
+            )
+          }
+        </View>
         <View style={styles.ITemTextViewStyle}>
           <Text numberOfLines={2} style={styles.ITemTextStyle}>{item.groupName}</Text>
         </View>

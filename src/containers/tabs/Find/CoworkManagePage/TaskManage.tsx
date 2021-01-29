@@ -101,6 +101,8 @@ interface Props {
   tasks: {[name: string]: Array<any>},
   groupInfo: any,
   coworkInfo: any,
+  currentTask: any,
+  coworkMessages: any,
   mapModules: any,
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
@@ -387,6 +389,8 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   renderItem = ({ item }: any) => {
+    let unread = this.props.coworkMessages?.[this.props.user.currentUser.userName]
+      ?.coworkGroupMessages?.[item.groupID]?.[item.id]?.unread || 0
     return (
       <TaskMessageItem
         data={item}
@@ -397,6 +401,7 @@ class TaskManage extends React.Component<Props, State> {
         addCoworkMsg={this.props.addCoworkMsg}
         deleteCoworkMsg={this.props.deleteCoworkMsg}
         showMore={this._showMore}
+        unread={unread}
       />
     )
   }
@@ -540,6 +545,8 @@ const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
   tasks: state.cowork.toJS().tasks,
   coworkInfo: state.cowork.toJS().coworkInfo,
+  currentTask: state.cowork.toJS().currentTask,
+  coworkMessages: state.cowork.toJS().messages,
   mapModules: state.mapModules.toJS(),
 })
 

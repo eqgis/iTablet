@@ -114,13 +114,23 @@ function getData(type) {
       image: getThemeAssets().collection.icon_collection_change,
       action: () => CollectionAction.changeCollection(type),
     },
-    {
+    // {
+    //   type: ToolbarBtnType.MAP_SYMBOL,
+    //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+    //   action: CollectionAction.showSymbol,
+    // },
+    // ToolbarBtnType.COMPLETE,
+  ]
+
+  const _params = ToolbarModule.getParams()
+  // 若是在线协作采集，则没有打开符号库
+  if (!_params.currentTask?.id) {
+    buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
       image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
       action: CollectionAction.showSymbol,
-    },
-    // ToolbarBtnType.COMPLETE,
-  ]
+    })
+  }
 
   return { data, buttons }
 }
@@ -249,12 +259,21 @@ function getOperationData(type) {
   buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.PLACEHOLDER,
-    {
+    // {
+    //   type: ToolbarBtnType.MAP_SYMBOL,
+    //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+    //   action: CollectionAction.showSymbol,
+    // },
+  ]
+
+  // 若是在线协作采集，则没有打开符号库
+  if (!_params.currentTask?.id) {
+    buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
       image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
       action: CollectionAction.showSymbol,
-    },
-  ]
+    })
+  }
   return { data, buttons }
 }
 

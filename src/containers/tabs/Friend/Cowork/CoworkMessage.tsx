@@ -76,6 +76,7 @@ class CoworkMessage extends Component<Props, State> {
       let selected = []
       if (this.state.messages.length !== this.state.selected.length) {
         for (let i = 0; i < this.state.messages.length; i++) {
+          if (this.state.messages[i].status === 2) continue
           selected.push(i)
         }
       }
@@ -196,7 +197,7 @@ class CoworkMessage extends Component<Props, State> {
   renderItem = ({ item }: any) => {
     let message = item
     let messageID = message.messageID
-    let isConsumed = message.consume
+    let isConsumed = message.status
     let time = moment(new Date(message.time)).format('YYYY/MM/DD HH:mm')
     let action = ''
     let actionAfter = ''
@@ -253,6 +254,8 @@ class CoworkMessage extends Component<Props, State> {
           },
         ]}
         onPress={() => {
+          // 忽略之后不可点击
+          if (message.status === 2) return
           let selected = this.state.selected.clone()
           if (selected.includes(messageID)) {
             selected.splice(selected.indexOf(messageID), 1)
@@ -262,14 +265,21 @@ class CoworkMessage extends Component<Props, State> {
           this.setState({ selected })
         }}
       >
-        <Image
-          source={
-            this.state.selected.includes(messageID)
-              ? getPublicAssets().common.icon_check
-              : getPublicAssets().common.icon_uncheck
-          }
-          style={{ height: scaleSize(50), width: scaleSize(50) }}
-        />
+        {
+          // 忽略之后没有选择框
+          message.status === 2
+            ? <View style={{ height: scaleSize(50), width: scaleSize(50) }} />
+            : (
+              <Image
+                source={
+                  this.state.selected.includes(messageID)
+                    ? getPublicAssets().common.icon_check
+                    : getPublicAssets().common.icon_uncheck
+                }
+                style={{ height: scaleSize(50), width: scaleSize(50) }}
+              />
+            )
+        }
         <View style={{ flex: 1, marginHorizontal: scaleSize(20) }}>
           <View>
             <View>

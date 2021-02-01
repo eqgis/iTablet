@@ -126,7 +126,7 @@ export default class CoworkInfo {
         }
         for (let i = 0; i < this.messages.length; i++) {
           let message = this.messages[i]
-          if (!message.consume && message.user.id === userID) {
+          if (!message.status && message.user.id === userID) {
             try {
               let result = await SMap.isUserGeometryExist(
                 message.message.layerPath,
@@ -225,7 +225,7 @@ export default class CoworkInfo {
     this.adding = true
     while (this.prevMessages.length > 0) {
       let message = this.prevMessages.shift()
-      message.consume = false
+      message.status = 0
       message.messageID = this.messages.length
       this.messages.push(message)
       this.addMessageNum && this.addMessageNum(1),
@@ -260,8 +260,8 @@ export default class CoworkInfo {
       messageID: messageID,
     })
 
-    // if (!this.messages[messageID].consume) {
-    //   this.messages[messageID].consume = true
+    // if (!this.messages[messageID].status) {
+    //   this.messages[messageID].status = true
     //   this.addMessageNum && this.addMessageNum(-1)
     //   SMap.removeMessageCallout(messageID)
     // }
@@ -341,6 +341,12 @@ export default class CoworkInfo {
 
   static async ignore(messageID) {
     let message = this.messages[messageID]
-    this.consumeMessage(message.messageID)
+    // this.consumeMessage(message.messageID)
+    this.readMsgHandle({
+      groupId: this.groupId,
+      taskId: this.coworkId,
+      messageID: message.messageID,
+      status: 2,
+    })
   }
 }

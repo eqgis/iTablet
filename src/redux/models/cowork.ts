@@ -51,7 +51,7 @@ export interface TaskInfoParams {
       id: string,
       layerPath: string,
       geoUserID: string,
-      // consume: boolean,
+      // status: boolean,
     },
   },
 }
@@ -60,6 +60,7 @@ export interface TaskReadParams {
   groupId: string,
   taskId: string,
   messageID: boolean,
+  status?: number, // 0 未读，1 已读，2 忽略
 }
 
 export interface TaskRealTimeParams {
@@ -511,7 +512,7 @@ const addTaskMembers = (state: any, { payload, userId }: any): Array<any> => {
 function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
   while (prevMessages.length > 0) {
     let message = prevMessages.shift()
-    message.consume = false
+    message.status = false
     message.messageID = messages.length
     messages.push(message)
     // this.addMessageNum && this.addMessageNum(1),
@@ -737,7 +738,7 @@ function showAll(members: Array<any>, messages: Array<any>) {
       }
       for (let i = 0; i < messages.length; i++) {
         let message = messages[i]
-        if (!message.consume && message.user.id === userID) {
+        if (!message.status && message.user.id === userID) {
           SMap.isUserGeometryExist(
             message.message.layerPath,
             message.message.id,
@@ -1189,9 +1190,10 @@ export default handleActions(
         return state
       }
       for(let i = 0; i < taskInfo.messages.length; i++) {
-        if (taskInfo.messages[i].messageID === payload.messageID && !taskInfo.messages[i].consume) {
-          taskInfo.messages[i].consume = true
+        if (taskInfo.messages[i].messageID === payload.messageID && !taskInfo.messages[i].status) {
+          taskInfo.messages[i].status = payload.hasOwnProperty('status') ? payload.status : 1
           taskInfo.unread--
+          if (taskInfo.unread < 0) taskInfo.unread = 0
           SMap.removeMessageCallout(payload.messageID)
           break
         }

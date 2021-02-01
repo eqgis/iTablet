@@ -461,7 +461,7 @@ class GroupFriendListPage extends Component<Props, State> {
           </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn
-            btnText={getLanguage(this.props.language).Common.CONFIRM}
+            btnText={getLanguage(this.props.language).Prompt.CONFIRM}
             containerStyle={[
               styles.bottomBtn,
               this.state.selectedMembers.size === 0 &&

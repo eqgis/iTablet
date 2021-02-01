@@ -1557,7 +1557,7 @@ export default class MapView extends React.Component {
         // 把没有更新/追加/忽略的操作的标志添加到地图上
         for (let i = 0; i < messages.length; i++) {
           let _message = messages[i]
-          if (_message.consume) continue
+          if (_message.status) continue
           let result = await SMap.isUserGeometryExist(
             messages[i].message.layerPath,
             messages[i].message.id,

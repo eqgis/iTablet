@@ -866,6 +866,15 @@ export default class ProjectionTargetCoordsPage extends Component {
               btnClick={this.confirm}
             />
           ),
+          // 部分界面国际化下标题过长遮盖
+          headerTitleViewStyle: {
+            position: 'absolute',
+            zIndex: -1,
+            left: scaleSize(80),
+            right: scaleSize(160),
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
         }}
       >
         {this.renderPlotTab()}

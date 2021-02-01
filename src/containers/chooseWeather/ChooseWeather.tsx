@@ -288,7 +288,8 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
             style={[
               {
                 height: scaleSize(60),
-                width: scaleSize(100),
+                // width: scaleSize(160),
+                paddingHorizontal: scaleSize(10),
                 borderRadius: scaleSize(10),
                 justifyContent: 'center',
                 alignItems: 'center',

@@ -283,7 +283,7 @@ export default class CoworkInfo {
           message.message.geometry,
           message.message.geoType,
         )
-        this.consumeMessage(message.messageID)
+        result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
           Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
@@ -307,7 +307,7 @@ export default class CoworkInfo {
           message.message.geometry,
           message.message.geoType,
         )
-        this.consumeMessage(message.messageID)
+        result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
         let exist = await SMap.isUserGeometryExist(
           message.message.layerPath,
@@ -321,7 +321,7 @@ export default class CoworkInfo {
             message.message.geoUserID,
             message.message.geometry,
           )
-          this.consumeMessage(message.messageID)
+          result && this.consumeMessage(message.messageID)
         } else {
           notify &&
             Toast.show(
@@ -331,7 +331,7 @@ export default class CoworkInfo {
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         //TODO 处理删除
         result = true
-        this.consumeMessage(message.messageID)
+        result && this.consumeMessage(message.messageID)
       }
       return result
     } catch (error) {

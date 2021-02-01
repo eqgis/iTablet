@@ -189,39 +189,41 @@ function commit(type) {
         })
       })
     } else {
-      SMap.submit().then(async () => {
-        const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
+      SMap.submit().then(async result => {
+        if (result) {
+          const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
-        if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-          let event = ToolbarModule.getData().event
-          let layerType = LayerUtils.getLayerType(event.layerInfo)
-          if (layerType !== 'TAGGINGLAYER') {
-            let friend = GLOBAL.getFriend()
-            friend.onGeometryEdit(
-              event.layerInfo,
-              event.fieldInfo,
-              event.id,
-              event.geometryType,
-            )
+          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+            let event = ToolbarModule.getData().event
+            let layerType = LayerUtils.getLayerType(event.layerInfo)
+            if (layerType !== 'TAGGINGLAYER') {
+              let friend = GLOBAL.getFriend()
+              friend.onGeometryEdit(
+                event.layerInfo,
+                event.fieldInfo,
+                event.id,
+                event.geometryType,
+              )
+            }
           }
-        }
 
-        if (
-          _params.selection[0] &&
-          _params.selection[0].layerInfo &&
-          (await SMediaCollector.isTourLayer(
-            _params.selection[0].layerInfo.name,
-          ))
-        ) {
-          // 编辑旅行轨迹对象后，更新位置
-          await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
-        }
+          if (
+            _params.selection[0] &&
+            _params.selection[0].layerInfo &&
+            (await SMediaCollector.isTourLayer(
+              _params.selection[0].layerInfo.name,
+            ))
+          ) {
+            // 编辑旅行轨迹对象后，更新位置
+            await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
+          }
 
-        _params.setToolbarVisible(true, type, {
-          isFullScreen: false,
-          // height: 0,
-          cb: select,
-        })
+          _params.setToolbarVisible(true, type, {
+            isFullScreen: false,
+            // height: 0,
+            cb: select,
+          })
+        }
       })
       // return false
     }

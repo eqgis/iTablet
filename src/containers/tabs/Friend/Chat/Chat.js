@@ -492,6 +492,9 @@ class Chat extends React.Component {
     if (extraInfo) {
       Object.assign(informMsg.message.message, extraInfo)
     }
+    if (CoworkInfo.coworkId !== '') {
+      informMsg.user.coworkGroupId = this.props.currentTask.groupID
+    }
 
     let msgId = this.friend.getMsgId(this.targetUser.id)
     //保存

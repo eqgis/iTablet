@@ -1039,7 +1039,7 @@ export default handleActions(
           _messages = messages[userId].coworkGroupMessages[payload.target.groupId]
         }
       }
-      if (_messages.unread > 0) {
+      if (_messages?.unread > 0) {
         if (!_messages.messages) {
           _messages.messages = []
           _messages.unread = 0

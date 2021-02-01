@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import MsgConstant from '../../../../constants/MsgConstant'
 import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
+import NavigationService from '../../../NavigationService'
 
 
 interface Props {
@@ -88,6 +89,7 @@ class CoworkMessage extends Component<Props, State> {
         let notify = this.state.selected.length === 1
         let selection = this.state.selected.clone()
         selection.sort()
+        let result = false
         for (let i = 0; i < selection.length; i++) {
           GLOBAL.Loading.setLoading(
             true,
@@ -95,13 +97,14 @@ class CoworkMessage extends Component<Props, State> {
           )
           let messageID = selection[i]
           if (type === 'update') {
-            await CoworkInfo.update(messageID, notify)
+            result = await CoworkInfo.update(messageID, notify)
           } else if (type === 'add') {
-            await CoworkInfo.add(messageID, notify)
+            result = await CoworkInfo.add(messageID, notify)
           } else if (type === 'ignore') {
             await CoworkInfo.ignore(messageID)
           }
         }
+        result && NavigationService.goBack('CoworkMessage', null)
         this.getMessage()
         GLOBAL.Loading.setLoading(false)
       } else {

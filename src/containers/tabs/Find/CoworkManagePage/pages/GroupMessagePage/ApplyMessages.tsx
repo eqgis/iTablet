@@ -86,9 +86,9 @@ export default class ApplyMessages extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
-    // this.props.readCoworkGroupMsg({
-    //   type: MsgConstant.MSG_ONLINE_GROUP_APPLY,
-    // })
+    this.props.readCoworkGroupMsg({
+      type: MsgConstant.MSG_ONLINE_GROUP_APPLY,
+    })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {

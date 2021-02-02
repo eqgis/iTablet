@@ -512,7 +512,7 @@ const addTaskMembers = (state: any, { payload, userId }: any): Array<any> => {
 function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
   while (prevMessages.length > 0) {
     let message = prevMessages.shift()
-    message.status = false
+    message.status = 0
     message.messageID = messages.length
     messages.push(message)
     // this.addMessageNum && this.addMessageNum(1),
@@ -1190,11 +1190,13 @@ export default handleActions(
         return state
       }
       for(let i = 0; i < taskInfo.messages.length; i++) {
-        if (taskInfo.messages[i].messageID === payload.messageID && !taskInfo.messages[i].status) {
+        if (taskInfo.messages[i].messageID === payload.messageID) {
+          if (!taskInfo.messages[i].status) {
+            taskInfo.unread--
+            if (taskInfo.unread < 0) taskInfo.unread = 0
+            SMap.removeMessageCallout(payload.messageID)
+          }
           taskInfo.messages[i].status = payload.hasOwnProperty('status') ? payload.status : 1
-          taskInfo.unread--
-          if (taskInfo.unread < 0) taskInfo.unread = 0
-          SMap.removeMessageCallout(payload.messageID)
           break
         }
       }

@@ -378,6 +378,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Default value is null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect in Thematic layers',
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers',
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Only point dataset can be created',
 
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set',

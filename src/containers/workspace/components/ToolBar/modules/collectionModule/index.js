@@ -5,7 +5,7 @@ import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast } from '../../../../../../utils'
+import { Toast, LayerUtils } from '../../../../../../utils'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'
@@ -30,17 +30,27 @@ class CollectionModule extends FunctionModule {
     } else {
       if (params.currentTask.id) {
         // 若没有当前图层或者当前图层不是我的图层
-        if (
-          !params.currentLayer ||
-          !params.currentLayer.name ||
-          params.currentLayer.name.includes('@Label_')
-        ) {
+        let layerType = LayerUtils.getLayerType(params.currentLayer)
+        if (layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'TEXTLAYER' ) {
+          let info = ''
+          switch(layerType) {
+            case 'TAGGINGLAYER':
+              info = getLanguage(params.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT + getLanguage(params.language).Map_Layer.LAYERS
+              break
+            case 'CADLAYER':
+              info = getLanguage(params.language).Prompt.CANNOT_COLLECT_IN_CAD_LAYERS
+              break
+            case 'TEXTLAYER':
+              info = getLanguage(params.language).Prompt.CANNOT_COLLECT_IN_TEXT_LAYERS
+              break
+          }
           NavigationService.navigate('LayerManager')
-          Toast.show(getLanguage(params.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT + getLanguage(params.language).Map_Layer.LAYERS, {
+          Toast.show(info, {
             duration: 3500,
           })
           return
         }
+        // 不能在专题图层采集
         if (
           params.currentLayer.themeType > 0 ||
           params.currentLayer.isHeatmap

@@ -378,6 +378,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'La valeur par défaut est null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Impossible de collecter dans les couches thématiques',
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
   HEAT_MAP_DATASET_TYPE_ERROR: 'Seul le jeu de données ponctuel peut être créé',
 
   INVALID_DATA_SET_FAILED: 'Type de données non valide. Échec de paramètre',

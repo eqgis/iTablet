@@ -378,6 +378,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'القيمة الافتراضية خالية',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'لا يمكن التجميع في الطبقات المواضيعية',
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
   HEAT_MAP_DATASET_TYPE_ERROR: 'يمكن إنشاء مجموعة بيانات النقاط فقط',
 
 

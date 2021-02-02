@@ -378,6 +378,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917

@@ -452,7 +452,7 @@ export default class Friend extends Component {
         )
         if (!res) {
           Toast.show(
-            getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED + '1',
+            getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           )
         } else {
           //是否有其他连接
@@ -500,7 +500,7 @@ export default class Friend extends Component {
           g_connectService = true
         }
       } catch (error) {
-        Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED + '2')
+        Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
       }
     }
@@ -1097,7 +1097,7 @@ export default class Friend extends Component {
               : null
         }
         Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED + '3',
+          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
         )
       }
@@ -1114,7 +1114,7 @@ export default class Friend extends Component {
               : null
         }
         Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED + '4',
+          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
         )
       }

@@ -40,6 +40,10 @@ export default {
   // MSG_ONLINE_GROUP 中message的type
   /** 群组申请消息 */
   MSG_ONLINE_GROUP_APPLY: 401,
+  /** 同意加入群组消息 */
+  MSG_ONLINE_GROUP_APPLY_AGREE: 410,
+  /** 被踢出群组消息 */
+  MSG_ONLINE_GROUP_DELETE: 411,
   /** 群组邀请消息 */
   MSG_ONLINE_GROUP_INVITE: 402,
   /** 群组任务消息 */

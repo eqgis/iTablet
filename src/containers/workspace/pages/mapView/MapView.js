@@ -311,6 +311,7 @@ export default class MapView extends React.Component {
     this.floorHiddenListener = null
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
     AppState.addEventListener('change', this.handleStateChange)
+    CoworkInfo.closeMapHandle = this.back
   }
 
   handleStateChange = async appState => {
@@ -1127,7 +1128,7 @@ export default class MapView extends React.Component {
   }
 
   /** 关闭地图，并返回首页 **/
-  closeMapHandler = async () => {
+  closeMapHandler = async (baskFrom) => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.props.closeMap()
@@ -1148,7 +1149,8 @@ export default class MapView extends React.Component {
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
-      NavigationService.goBack()
+      NavigationService.goBack(baskFrom)
+      
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
@@ -1204,8 +1206,11 @@ export default class MapView extends React.Component {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
-  /** 返回事件 */
-  back = async () => {
+  /**
+   * 返回事件
+   * @param {*} params {baskFrom?: string // 从该页面返回}
+   */
+  back = async params => {
     try {
       if (!this.state.mapLoaded) return
       // 最顶层的语音搜索，最先处理
@@ -1252,7 +1257,7 @@ export default class MapView extends React.Component {
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             this._removeNavigationListeners()
           }
-          await this.closeMapHandler()
+          await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
         })
       } else {
@@ -1264,7 +1269,7 @@ export default class MapView extends React.Component {
               SMap.stopGuide()
             })
           }
-          await this.closeMapHandler()
+          await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
           GLOBAL.clickWait = false
           this.setLoading(false)

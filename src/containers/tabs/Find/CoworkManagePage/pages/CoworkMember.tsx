@@ -150,10 +150,10 @@ class CoworkMember extends Component<Props, State> {
         }
         currentTask.members = currentTask.members.concat(_members)
         for (const member of currentTask.members) {
-          CoworkInfo.addMember({
-            id: member.id,
-            name: member.name,
-          })
+          // CoworkInfo.addMember({
+          //   id: member.id,
+          //   name: member.name,
+          // })
           if (member.userName === this.props.user.currentUser.userName) continue
           SMessageService.sendMessage(
             JSON.stringify(currentTask),

@@ -165,6 +165,7 @@ class TaskManage extends React.Component<Props, State> {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
       this.servicesUtils = new SCoordination('iportal')
     }
+    CoworkInfo.setGroupId(this.props.groupInfo.id)
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -243,10 +244,10 @@ class TaskManage extends React.Component<Props, State> {
         }
         currentTask.members = currentTask.members.concat(_members)
         for (const member of currentTask.members) {
-          CoworkInfo.addMember({
-            id: member.id,
-            name: member.name,
-          })
+          // CoworkInfo.addMember({
+          //   id: member.id,
+          //   name: member.name,
+          // })
           if (member.id === this.props.user.currentUser.userName) continue
           SMessageService.sendMessage(
             JSON.stringify(currentTask),
@@ -381,7 +382,7 @@ class TaskManage extends React.Component<Props, State> {
       GLOBAL.getFriend().curChat &&
         GLOBAL.getFriend().curChat.setCoworkMode(true)
       GLOBAL.coworkMode = true
-      CoworkInfo.setGroupId(this.props.groupInfo.id)
+      // CoworkInfo.setGroupId(this.props.groupInfo.id)
       setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
     } catch (error) {
       GLOBAL.Loading.setLoading(false)

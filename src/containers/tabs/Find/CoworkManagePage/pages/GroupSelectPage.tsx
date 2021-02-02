@@ -7,6 +7,7 @@ import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
+import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
 import { Users } from '../../../../../redux/models/user'
 import { setCoworkGroup, setCurrentGroup, MessageType } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
@@ -104,6 +105,7 @@ class GroupSelectPage extends Component<Props, State> {
         },
       },
     ]
+    CoworkInfo.setGroupGetHandle(() => this.refresh(false))
   }
 
   componentDidMount() {
@@ -146,7 +148,7 @@ class GroupSelectPage extends Component<Props, State> {
     refresh && this.setState({
       isRefresh: true,
     })
-    await this.getContacts({
+    await this.getGroups({
       pageSize: this.pageSize,
       currentPage: 1,
     })
@@ -155,13 +157,13 @@ class GroupSelectPage extends Component<Props, State> {
   loadMore = () => {
     if (this.isLoading || this.isNoMore) return
     this.isLoading = true
-    this.getContacts({
+    this.getGroups({
       pageSize: this.pageSize,
       currentPage: this.currentPage + 1,
     })
   }
 
-  getContacts = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
+  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
       this.servicesUtils?.getGroupInfos({
         orderBy: orderBy,

@@ -1,23 +1,40 @@
-// TODO CoworkInfo 方法待优化。 移除？
 // import { AsyncStorage } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
+import NavigationService from '../../../NavigationService'
 
 export default class CoworkInfo {
   static coworkId = ''
   static groupId = ''
   static members = []
-  static prevMessages = []
-  static messages = []
-  static isRealTime = true
-  static adding = false
-  static addMessageNum = undefined
   static readMsgHandle = undefined
+  static getGroupHandle = undefined
 
-  static setNewMsgHandle(handle) {
-    this.addMessageNum = handle
+  /** 群组被删除后，群成员若在该群组中，则退出到群组列表中 */
+  static deleteGroupHandle = function(messageObj) {
+    if (!this.groupId) return
+    let nav = NavigationService.getTopLevelNavigator().state.nav
+    for (let i = nav.routes.length - 1; i >= 0; i--) {
+      if (nav.routes[i].routeName === 'MapStack' && messageObj.message.groupId === this.groupId) {
+        CoworkInfo.getGroupHandle()
+        CoworkInfo.closeMapHandle({baskFrom: 'CoworkManagePage'})
+        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
+        break
+      } else if (nav.routes[i].routeName === 'CoworkManagePage' && messageObj.message.groupId === this.groupId) {
+        // 从当前任务群组中退出
+        CoworkInfo.getGroupHandle()
+        NavigationService.goBack('CoworkManagePage', null)
+        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
+        break
+      }
+    }
+  }
+  static closeMapHandle = undefined
+
+  static setGroupGetHandle(handle) {
+    this.getGroupHandle = handle
   }
 
   static setReadMsgHandle(handle) {
@@ -28,17 +45,13 @@ export default class CoworkInfo {
     this.coworkId = ''
     this.groupId = ''
     this.members = []
-    this.prevMessages = []
-    this.messages = []
-    this.isRealTime = true
-    this.adding = false
-    this.addMessageNum && this.addMessageNum(0)
-    // AsyncStorage.setItem('COWORKID', '')
+    this.readMsgHandle = undefined
+    this.getGroupHandle = undefined
+    this.getGroupHandle = undefined
   }
 
   static setId(Id) {
     this.coworkId = Id
-    // AsyncStorage.setItem('COWORKID', Id)
   }
 
   static setGroupId(id) {
@@ -49,222 +62,12 @@ export default class CoworkInfo {
     this.messages = messages
   }
 
-  static setMembers(members) {
-    for (let i = 0; i < members.length; i++) {
-      if (members[i].show === undefined) {
-        members[i] = {
-          id: members[i].id,
-          name: members[i].name,
-          show: true,
-          location: members[i].location,
-        }
-        break
-      } else {
-        members[i] = {
-          id: members[i].id,
-          name: members[i].name,
-          show: members[i].show,
-          location: members[i].location,
-        }
-      }
-    }
-    this.members = members
-  }
-
-  static addMember(member) {
-    try {
-      let isMember = false
-      for (let i = 0; i < this.members.length; i++) {
-        if (this.members[i].id === member.id) {
-          isMember = true
-          break
-        }
-      }
-      if (!isMember) {
-        this.members.push({
-          id: member.id,
-          name: member.name,
-          show: true,
-        })
-      }
-    } catch (error) {
-      //
-    }
-  }
-
-  static setIsRealTime(isRealTime) {
-    this.isRealTime = isRealTime
-    if (isRealTime) {
-      this.showAll()
-      // if (!this.adding) {
-      //   this.addNewMessage()
-      // }
-    } else {
-      this.hideAll()
-    }
-  }
-
-  static async hideAll() {
-    try {
-      SMap.removeUserCallout()
-      for (let i = 0; i < this.members.length; i++) {
-        let userID = this.members[i].id
-        SMap.hideUserTrack(userID)
-      }
-    } catch (error) {
-      //
-    }
-  }
-
-  static async showAll() {
-    try {
-      for (let n = 0; n < this.members.length; n++) {
-        let member = this.members[n]
-        let userID = member.id
-        if (member.show) {
-          SMap.showUserTrack(userID)
-        }
-        for (let i = 0; i < this.messages.length; i++) {
-          let message = this.messages[i]
-          if (!message.status && message.user.id === userID) {
-            try {
-              let result = await SMap.isUserGeometryExist(
-                message.message.layerPath,
-                message.message.id,
-                message.message.geoUserID,
-              )
-              if (result) {
-                SMap.addMessageCallout(
-                  message.message.layerPath,
-                  message.message.id,
-                  message.message.geoUserID,
-                  message.user.name,
-                  message.messageID,
-                )
-              }
-            } catch (error) {
-              //
-            }
-          }
-        }
-      }
-    } catch (error) {
-      //
-    }
-  }
-
-  static setUserLocation(userID, location) {
-    for (let i = 0; i < this.members.length; i++) {
-      let member = this.members[i]
-      if (member.id === userID) {
-        member.location = location
-        break
-      }
-    }
-  }
-
-  static hideUserTrack(userID) {
-    for (let i = 0; i < this.members.length; i++) {
-      let member = this.members[i]
-      if (member.id === userID) {
-        member.show = false
-        break
-      }
-    }
-    SMap.removeLocationCallout(userID)
-    SMap.hideUserTrack(userID)
-  }
-
-  static showUserTrack(userID) {
-    for (let i = 0; i < this.members.length; i++) {
-      let member = this.members[i]
-      if (member.id === userID) {
-        member.show = true
-        let location = member.location
-        if (this.isRealTime && location?.longitude && location?.latitude) {
-          let initial = location.initial
-          if (initial && initial.length > 2) {
-            initial = initial.slice(0, 2)
-          }
-          SMap.addLocationCallout(
-            location.longitude,
-            location.latitude,
-            member.name,
-            member.id,
-            initial,
-          )
-        }
-        break
-      }
-    }
-    if (this.isRealTime) {
-      SMap.showUserTrack(userID)
-    }
-  }
-
-  static isUserShow(userID) {
-    let isShow = false
-    for (let i = 0; i < this.members.length; i++) {
-      let member = this.members[i]
-      if (member.id === userID) {
-        isShow = member.show === undefined ? true : member.show
-        break
-      }
-    }
-    return isShow
-  }
-
-  static pushMessage(message) {
-    this.prevMessages.push(message)
-    if (this.isRealTime && !this.adding) {
-      this.addNewMessage()
-    }
-  }
-
-  static addNewMessage() {
-    this.adding = true
-    while (this.prevMessages.length > 0) {
-      let message = this.prevMessages.shift()
-      message.status = 0
-      message.messageID = this.messages.length
-      this.messages.push(message)
-      this.addMessageNum && this.addMessageNum(1),
-      async function() {
-        try {
-          let result = await SMap.isUserGeometryExist(
-            message.message.layerPath,
-            message.message.id,
-            message.message.geoUserID,
-          )
-          if (result) {
-            SMap.addMessageCallout(
-              message.message.layerPath,
-              message.message.id,
-              message.message.geoUserID,
-              message.user.name,
-              message.messageID,
-            )
-          }
-        } catch (error) {
-          //
-        }
-      }.bind(this)()
-    }
-    this.adding = false
-  }
-
   static consumeMessage(messageID) {
     this.readMsgHandle({
       groupId: this.groupId,
       taskId: this.coworkId,
       messageID: messageID,
     })
-
-    // if (!this.messages[messageID].status) {
-    //   this.messages[messageID].status = true
-    //   this.addMessageNum && this.addMessageNum(-1)
-    //   SMap.removeMessageCallout(messageID)
-    // }
   }
 
   static async add(messageID, notify = true) {

@@ -243,6 +243,7 @@ const Friends = {
   // 提示消息
   GROUP_EXIST_INFO: '是否退出群组',
   GROUP_DELETE_INFO: '是否解散群组',
+  GROUP_DELETE_INFO2: '当前群组已被解散',
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
   GROUP_TASK_DELETE_INFO: '是否删除任务',
 

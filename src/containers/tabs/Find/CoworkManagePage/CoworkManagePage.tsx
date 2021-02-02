@@ -15,6 +15,7 @@ import GroupMessage from './GroupMessage'
 import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
 import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowork'
+import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 interface Props {
   navigation: Object,
   user: Users,
@@ -95,6 +96,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     this.props.setCurrentGroup(undefined)
     this.servicesUtils = null
     this.onlineServicesUtils = null
+    CoworkInfo.reset()
   }
 
   createTask = () => {

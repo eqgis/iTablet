@@ -211,11 +211,13 @@ export default class NavigationStartButton extends React.Component {
         }
       } else if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
         let naviData = this.props.getNavigationDatas()
+        //判断是否在当前导航的室外数据集范围内
         let isInBounds = await SMap.isInBounds(
           position,
-          naviData.selectedDataset,
+          naviData.currentDataset.datasetName,
         )
         if (isInBounds) {
+          GLOBAL.mapController?.setGuiding(true)
           await SMap.outdoorNavigation(0)
           this.setVisible(false)
           GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)

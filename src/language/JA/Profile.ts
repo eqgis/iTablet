@@ -27,26 +27,26 @@ const Profile: typeof CN.Profile = {
   SELECT_MODEL: 'モデルの選択', //jp0730
 
    // 我的  提示语
-   MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
-   MY_GUIDE_KNOW:'Know it',//待翻译
-   MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
-   MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
-   EFFECT_GUIDE:'Add effect to scene',//待翻译
-   LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
-   MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
-   MY_GUIDE_NEXT:'Next',//待翻译
-   MY_GUIDE_SKIP:'Skip',//待翻译
-   ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
-   PROCESS_GUIDE:'Registration and projection conversion',//待翻译
-   CHOOSE_TYPE:'Choose Launch Type',//待翻译
-   CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
-   SELECT_DATASET:'Check to add dataset',//待翻译
-   ADD_SELECT_DATASET:'Add Dataset',//待翻译
-   MOVE_BROWSING:'"Move left and right" to browse complete information',//待翻译
+   MY_GUIDE: '「データ」をインポートした後\ n、ホームページモジュールで開いて表示できます',
+   MY_GUIDE_KNOW:'了解しました',
+   MY_GUIDE_SLIDE: '上にスライドして詳細を表示',
+   MY_GUIDE_SLIDE_LAND:'左にスライドして詳細を表示',
+   EFFECT_GUIDE:'AR特殊効果をシーンに追加',
+   LAUNCH_GUIDE:'ビデオ、テキスト、写真、Webページ、その他の情報をシーンに入れる',
+   MEASURE_GUIDE:'距離、高さ、および面積を測定する',
+   MY_GUIDE_NEXT:'次へ',
+   MY_GUIDE_SKIP:'スキップ',
+   ANALYST_GUIDE:'ネットワーク解析、ベクトル解析などを実行できます',
+   PROCESS_GUIDE:'幾何補正、投影変換などを実行できます',
+   CHOOSE_TYPE:'プット情報のタイプを選択してください',
+   CHOOSE_MEASURE_TYPE:'測定タイプを選択してください',
+   SELECT_DATASET:'「チェック」してデータセットを追加します',
+   ADD_SELECT_DATASET:'データを追加',
+   MOVE_BROWSING:'左右に移動して完全な情報を閲覧する',
 
   // 我的——登录
   LOGIN: 'ログイン',
-  LOGINING: 'Logining..',//待翻译
+  LOGINING: 'ログイン中..',
   LOGIN_TIMEOUT: 'ログインタイムアウト、後で再度試してださい。',
   LOGIN_CURRENT: '現在ユーザーはログインしました。',
   LOGIN_INVALID: 'ログインに失敗しました。再度ログインしてください。',
@@ -57,8 +57,8 @@ const Profile: typeof CN.Profile = {
   USERNAME_ALL: '携帯番号/メールアドレス/ニックネーム',
   ENTER_USERNAME_ALL: '携帯番号、メールアドレスまたはニックネームを入力してください',
   ENTER_PASSWORD: 'パスワードを入力してください',
-  RE_ENTER_PASSWORD: 'Please re-enter your password', //待翻译
-  PASSWORD_DISMATCH: 'The passwords are different, please check again',
+  RE_ENTER_PASSWORD: '確認パスワードを入力してください', 
+  PASSWORD_DISMATCH: 'パスワードが一致しません。再確認してください',
   REGISTER: 'レジスタ',
   FORGET_PASSWORD: 'パスワードを忘れましたか？',
   RESET_PASSWORD: 'パスワードの再設定',
@@ -172,8 +172,8 @@ const Profile: typeof CN.Profile = {
   SERVICE_AGREEMENT: 'サービス協議',
   PRIVACY_POLICY: 'プライバシーポリシー',
   HELP_MANUAL: 'ヘルプ',
-  NOVICE_GUIDE: 'Novice Guide',//待翻译
-  START_GUIDE:'Start Guide',//待翻译
+  NOVICE_GUIDE: '開始ガイド',
+  START_GUIDE:'ガイドを使用',
 
   MAP_ONLINE: 'オンラインマップ',
   MAP_2D: '2Dマップ',
@@ -228,7 +228,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LANGUAGE_AUTO: 'システムと同様',
   SETTING_LOCATION_DEVICE: 'デバイスにポジショニング',
   SETTING_LOCATION_LOCAL: '当デバイス',
-  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
+  SETTING_CLEAR_CACHE: 'キャッシュのクリア',
 
   // ライセンス
   LICENSE: 'ライセンス',
@@ -363,8 +363,8 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_SETTING: '設定',
   X_COORDINATE: 'X 座標', //jp0730
   Y_COORDINATE: 'Y 座標',
-  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
-  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH: '自動でキャッシュ使用',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'スナップトレランス',
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

@@ -1233,12 +1233,19 @@ export default class MapView extends React.Component {
       // Android物理返回事件
       if (Platform.OS === 'android') {
         // Toolbar显示时，返回事件Toolbar的close
-        if (this.toolBox && this.toolBox.getState().isShow) {
-          this.toolBox.buttonView.close()
+        if (this.toolBox && this.toolBox.isShow) {
+          //在此处理 toolbar 显示时的返回事件
+          // this.toolBox.buttonView.close()
+          return true
+        }
+
+        //处理导航时返回键
+        if(GLOBAL.NAVIGATIONSTARTHEAD?.state.show) {
+          GLOBAL.NAVIGATIONSTARTHEAD?.close()
           return true
         }
         // 删除对象Dialog显示时，返回事件关闭Dialog
-        else if (
+        if (
           GLOBAL.removeObjectDialog &&
           GLOBAL.removeObjectDialog.getState().visible
         ) {

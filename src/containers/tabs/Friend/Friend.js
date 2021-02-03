@@ -35,7 +35,6 @@ import FriendList from './FriendList/FriendList'
 import UserType from '../../../constants/UserType'
 // import Chat from './Chat/Chat'
 import FriendListFileHandle from './FriendListFileHandle'
-import CoworkFileHandle from '../Find/CoworkManagePage/CoworkFileHandle'
 import InformSpot from './InformSpot'
 import AddMore from './AddMore'
 import MSGConstant from '../../../constants/MsgConstant'
@@ -54,6 +53,7 @@ import TabBar from '../TabBar'
 import CoworkInfo from './Cowork/CoworkInfo'
 import {
   TaskMemberLocationParams,
+  TaskMemberDeleteParams,
 } from '../../../redux/models/cowork'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
@@ -83,6 +83,7 @@ export default class Friend extends Component {
     setCoworkGroup: () => void,
     addTaskMessage: () => any,
     addMemberLocation: (params: TaskMemberLocationParams) => any,
+    deleteTaskMembers: (params: TaskMemberDeleteParams) => any,
   }
 
   constructor(props) {
@@ -95,6 +96,7 @@ export default class Friend extends Component {
     MessageDataHandle.setHandle(this.props.addChat)
     // CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
     CoworkInfo.setReadMsgHandle(this.props.readTaskMessage)
+    CoworkInfo.setDeleteHandle(this.props.deleteTaskMembers)
     FriendListFileHandle.refreshCallback = this.refreshList
     FriendListFileHandle.refreshMessageCallback = this.refreshMsg
     this.state = {

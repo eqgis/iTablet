@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, FlatList, Text, Image, StyleSheet, Platform } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
-import { addCoworkMsg, setCoworkTaskGroup } from '../../../../redux/models/cowork'
+import { addCoworkMsg, setCoworkTaskGroup, deleteTaskMembers, TaskMemberDeleteParams } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { UserInfo } from '../../../../redux/models/user'
 import { ListSeparator, ImageButton, PopMenu, Dialog, TextBtn } from '../../../../components'
@@ -88,8 +88,21 @@ const styles = StyleSheet.create({
   },
 })
 
+type Members = Array<{name: string, id: string}>
+type Members2 = Array<{
+  groupId: number,
+  groupRole: string,
+  id: number,
+  joinTime: number,
+  memberDescription: string | null,
+  nickname: string,
+  roleUpdateTime: number | null,
+  userName: string,
+}>
+
 interface State {
-  [name: string]: any
+  dialogInfo: string,
+  members: Members2,
 }
 
 interface Props {
@@ -110,6 +123,7 @@ interface Props {
   deleteCoworkMsg: (params: any, cb?: () => {}) => void,
   setCoworkTaskGroup: (params: any, cb?: () => {}) => void,
   setCurrentTask: (params: any, cb?: () => {}) => void,
+  deleteTaskMembers: (params: TaskMemberDeleteParams) => Promise<any>
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -158,6 +172,7 @@ class TaskManage extends React.Component<Props, State> {
     this.currentData = undefined
     this.state = {
       dialogInfo: '',
+      members: [],
     }
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
@@ -209,6 +224,14 @@ class TaskManage extends React.Component<Props, State> {
         }
       })
     }
+  }
+
+  getMembers = async () => {
+    if (!this.props.groupInfo.id) return
+    let result = await this.servicesUtils?.getGroupMembers({
+      groupId: this.props.groupInfo.id,
+    })
+    return result.content
   }
 
   /** 邀请协作人员 */
@@ -334,14 +357,47 @@ class TaskManage extends React.Component<Props, State> {
     return module
   }
 
+  _checkMembers = async (data: any, members: Members): Promise<Members> =>  {
+    let _members = []
+    let groupMembers = await this.getMembers()
+    for (let i = members.length - 1; i >= 0; i--) {
+      let exist = false
+      for (let j = 0; j < groupMembers.length; j++) {
+        if (groupMembers[j].userName === members[i].id) {
+          exist = true
+          break
+        }
+      }
+      if (!exist) {
+        _members.push(members[i])
+        // members.splice(i, 1)
+      }
+    }
+    if (_members.length > 0) {
+      this.props.deleteTaskMembers({
+        groupId: data.groupID,
+        taskId: data.id,
+        members: _members,
+      })
+      // CoworkFileHandle.removeTaskGroupMember(
+      //   data.groupID,
+      //   data.id,
+      //   _members,
+      // )
+    }
+    return members
+  }
+
   _onPress = (data: any) => {
     if (data.map) {
       let index = data.module.index
       let module = this._getModule(data.module.key, index)
       this.props.setCurrentTask(data)
 
-      let members = CoworkFileHandle.getTaskGroupMembers(data.groupID, data.id)
+      // let members = CoworkFileHandle.getTaskGroupMembers(data.groupID, data.id)
+      let _members = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.members || []
       // CoworkInfo.setMembers(members)
+      this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
       this.createCowork(data.id, module, index, data.map)
     } else {
@@ -556,6 +612,7 @@ const mapDispatchToProps = {
   setCurrentMapModule,
   setCoworkTaskGroup,
   setCurrentTask,
+  deleteTaskMembers,
 }
 
 export default connect(

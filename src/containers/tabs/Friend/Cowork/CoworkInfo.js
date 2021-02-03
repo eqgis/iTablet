@@ -11,10 +11,24 @@ export default class CoworkInfo {
   static members = []
   static readMsgHandle = undefined
   static getGroupHandle = undefined
+  static delTaskMemberHandle = undefined
 
   /** 群组被删除后，群成员若在该群组中，则退出到群组列表中 */
   static deleteGroupHandle = function(messageObj) {
     if (!this.groupId) return
+
+    // 群成员退出群组，其他群成员更新成员列表
+    if (messageObj.message.creator !== messageObj.user.id) {
+      if (!this.coworkId) return
+      this.delTaskMemberHandle({
+        groupId: this.groupId,
+        taskId: this.coworkId,
+        members: [messageObj.user],
+      })
+      return
+    }
+
+    // 群组被删除后，群成员若在该群组中，则退出到群组列表中
     let nav = NavigationService.getTopLevelNavigator().state.nav
     for (let i = nav.routes.length - 1; i >= 0; i--) {
       if (nav.routes[i].routeName === 'MapStack' && messageObj.message.groupId === this.groupId) {
@@ -41,13 +55,16 @@ export default class CoworkInfo {
     this.readMsgHandle = handle
   }
 
+  static setDeleteHandle(handle) {
+    this.delTaskMemberHandle = handle
+  }
+
   static reset() {
     this.coworkId = ''
     this.groupId = ''
     this.members = []
-    this.readMsgHandle = undefined
-    this.getGroupHandle = undefined
-    this.getGroupHandle = undefined
+    // this.readMsgHandle = undefined
+    // this.getGroupHandle = undefined
   }
 
   static setId(Id) {

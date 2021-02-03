@@ -1128,7 +1128,7 @@ export default class MapView extends React.Component {
   }
 
   /** 关闭地图，并返回首页 **/
-  closeMapHandler = async (baskFrom) => {
+  closeMapHandler = async baskFrom => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.props.closeMap()
@@ -1145,12 +1145,13 @@ export default class MapView extends React.Component {
 
       this.setLoading(false)
       if (GLOBAL.coworkMode) {
+        CoworkInfo.setId('') // 退出任务清空任务ID
         GLOBAL.coworkMode = false
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
       NavigationService.goBack(baskFrom)
-      
+
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false

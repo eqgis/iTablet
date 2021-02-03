@@ -121,6 +121,37 @@ class GroupSettingPage extends Component<Props, State> {
     }
   }
 
+  _sendDeleteMsg = () => {
+    let timeStr = new Date().getTime()
+    let _message = {
+      id: 'GROUP_DELETE_' + timeStr,
+      message: {
+        groupId: this.props.currentGroup.id,
+        creator: this.props.currentGroup.creator,
+        type: MsgConstant.MSG_ONLINE_GROUP_DELETE,
+      },
+      type: MsgConstant.MSG_COWORK,
+      user: {
+        name: this.props.user.currentUser.nickname || '',
+        id: this.props.user.currentUser.userId || '',
+      },
+      time: timeStr,
+    }
+
+    for (let i = 0; i < this.state.data.length; i++) {
+      if (this.state.data[i].userName === this.props.user.currentUser.userName) {
+        continue
+      }
+      SMessageService.sendMessage(
+        JSON.stringify(_message),
+        this.state.data[i].userName,
+      )
+    }
+    this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
+    this._setDialogVisible(false)
+    NavigationService.goBack('CoworkManagePage', null)
+  }
+
   _bottomBtnAction = () => {
     if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
       // deleteGroup
@@ -129,35 +160,10 @@ class GroupSettingPage extends Component<Props, State> {
         this.servicesUtils?.deleteGroup([this.props.currentGroup.id]).then((result: any) => {
           // MSG_ONLINE_GROUP_DELETE
           if (result.succeed) {
-            let timeStr = new Date().getTime()
-            let _message = {
-              id: 'GROUP_DELETE_' + timeStr,
-              message: {
-                groupId: this.props.currentGroup.id,
-                type: MsgConstant.MSG_ONLINE_GROUP_DELETE,
-              },
-              type: MsgConstant.MSG_COWORK,
-              user: {
-                name: this.props.user.currentUser.nickname || '',
-                id: this.props.user.currentUser.userId || '',
-              },
-              time: timeStr,
-            }
-
-            for (let i = 0; i < this.state.data.length; i++) {
-              if (this.state.data[i].userName === this.props.user.currentUser.userName) {
-                continue
-              }
-              SMessageService.sendMessage(
-                JSON.stringify(_message),
-                this.state.data[i].userName,
-              )
-            }
-            
-
-            this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
-            this._setDialogVisible(false)
-            NavigationService.goBack('CoworkManagePage', null)
+            this._sendDeleteMsg()
+            // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
+            // this._setDialogVisible(false)
+            // NavigationService.goBack('CoworkManagePage', null)
           }
         })
       }
@@ -169,9 +175,10 @@ class GroupSettingPage extends Component<Props, State> {
           userIds: [this.props.user.currentUser.userName],
         }).then(result => {
           if (result.succeed) {
-            this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
-            this._setDialogVisible(false)
-            NavigationService.goBack('CoworkManagePage', null)
+            this._sendDeleteMsg()
+            // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
+            // this._setDialogVisible(false)
+            // NavigationService.goBack('CoworkManagePage', null)
           }
         })
       }

@@ -112,8 +112,8 @@ export default class CustomAlertDialog extends PureComponent {
         opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
-        confirmBtnTitle={this.state.confirmBtnTitle}
-        cancelBtnTitle={this.state.cancelBtnTitle}
+        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
       >
         <View style={contentStyle}>
           <Image

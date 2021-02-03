@@ -93,7 +93,7 @@ export default class Friend extends Component {
     this.curChat = undefined
     this.curMod = undefined
     MessageDataHandle.setHandle(this.props.addChat)
-    CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
+    // CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
     CoworkInfo.setReadMsgHandle(this.props.readTaskMessage)
     FriendListFileHandle.refreshCallback = this.refreshList
     FriendListFileHandle.refreshMessageCallback = this.refreshMsg
@@ -738,7 +738,7 @@ export default class Friend extends Component {
         id: this.props.user.currentUser.userId,
         name: this.props.user.currentUser.nickname,
       }
-      CoworkInfo.addMember(member)
+      // CoworkInfo.addMember(member)
       await SMessageService.declareSession([member], coworkId)
       this.startSendLocation()
 
@@ -799,7 +799,7 @@ export default class Friend extends Component {
           id: this.props.user.currentUser.userId,
           name: this.props.user.currentUser.nickname,
         }
-        CoworkInfo.addMember(member)
+        // CoworkInfo.addMember(member)
         await SMessageService.declareSession([member], coworkId)
         return true
       } else {
@@ -1500,66 +1500,12 @@ export default class Friend extends Component {
   }
 
   handleCowork = async messageObj => {
-    let coworkId = this.props.cowork.currentTask.id
-    if (coworkId !== '') {
-      let masterId = coworkId.split('_').pop()
-      let coworkType = messageObj.message.type
-      if (messageObj.user.groupID === masterId) {
-        //群主发送的单人协作消息
-        if (coworkType === MSGConstant.MSG_COWORK_LIST) {
-          /**
-           * 更新协作成员列表
-           */
-          let members = messageObj.message.members
-          for (let i = 0; i < members.length; i++) {
-            CoworkInfo.addMember(members[i])
-          }
-        }
-      } else if (messageObj.user.groupID === coworkId) {
-        //面向所有群员的协作消息
-        if (coworkType === MSGConstant.MSG_JOIN_COWORK) {
-          /**
-           * 加入协作群
-           */
-          CoworkInfo.addMember({
-            id: messageObj.user.id,
-            name: messageObj.user.name,
-          })
-          if (this.props.user.currentUser.userId === masterId) {
-            let members = []
-            for (let i = 0; i < CoworkInfo.members.length; i++) {
-              members.push({
-                id: CoworkInfo.members[i].id,
-                name: CoworkInfo.members[i].name,
-              })
-            }
-            let msgObj = {
-              type: MSGConstant.MSG_COWORK,
-              time: new Date().getTime(),
-              user: {
-                name: this.props.user.currentUser.nickname,
-                id: this.props.user.currentUser.userId,
-                groupID: this.props.user.currentUser.userId,
-                groupName: '',
-              },
-              message: {
-                type: MSGConstant.MSG_COWORK_LIST,
-                members: members,
-              },
-            }
-            let msgStr = JSON.stringify(msgObj)
-            await this._sendMessage(msgStr, messageObj.user.id, false)
-          }
-        } else if (coworkType === MSGConstant.MSG_LEAVE_COWORK) {
-          /**
-           * 退出协作群
-           */
-          if (masterId === messageObj.user.id) {
-            //协作结束
-          } else {
-            //暂不处理
-          }
-        } else if (coworkType === MSGConstant.MSG_COWORK_GPS) {
+    let coworkId = this.props.cowork?.currentTask?.id
+    let coworkType = messageObj.message.type
+    if (coworkId) {
+
+      if (messageObj.user.groupID === coworkId) {
+        if (coworkType === MSGConstant.MSG_COWORK_GPS) {
           this.props.addMemberLocation({
             groupId: messageObj.user.coworkGroupId,
             taskId: messageObj.user.taskId,
@@ -1571,29 +1517,6 @@ export default class Friend extends Component {
               initial: messageObj.user.name,
             },
           })
-          // let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
-          // let isRealTime = currentTaskInfo.isRealTime === undefined ? true : currentTaskInfo.isRealTime
-          // if (
-          //   isRealTime &&
-          //   // CoworkInfo.isRealTime &&
-          //   CoworkInfo.isUserShow(messageObj.user.id)
-          // ) {
-          //   CoworkInfo.setUserLocation(messageObj.user.id, {
-          //     longitude: messageObj.message.longitude,
-          //     latitude: messageObj.message.latitude,
-          //   })
-          //   SMap.addLocationCallout(
-          //     messageObj.message.longitude,
-          //     messageObj.message.latitude,
-          //     messageObj.user.name,
-          //     messageObj.user.id,
-          //   )
-          // }
-          // SMap.addUserTrack(
-          //   messageObj.message.longitude,
-          //   messageObj.message.latitude,
-          //   messageObj.user.id,
-          // )
         } else {
           /**
            * 对象添加更改的协作消息
@@ -1602,6 +1525,12 @@ export default class Friend extends Component {
           this.props.addTaskMessage(messageObj, true)
         }
       }
+    }
+    // 同意加入群组消息
+    if (coworkType === MSGConstant.MSG_ONLINE_GROUP_APPLY_AGREE) {
+      CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
+    } else if (coworkType === MSGConstant.MSG_ONLINE_GROUP_DELETE) {
+      CoworkInfo.deleteGroupHandle && CoworkInfo.deleteGroupHandle(messageObj)
     }
   }
 
@@ -1612,7 +1541,7 @@ export default class Friend extends Component {
   checkGroup = async messageObj => {
     let exist = false
     // let msgId = messageObj.user.groupID || messageObj.id
-    let msgId = messageObj.id
+    let msgId = messageObj.id + ''
     if (msgId && msgId.indexOf('Group_Task_') >= 0) {
       let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userId]
       for (let i = 0; i < onlineGroups?.length; i++) {

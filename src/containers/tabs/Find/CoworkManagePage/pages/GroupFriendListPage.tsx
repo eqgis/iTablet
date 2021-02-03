@@ -165,6 +165,7 @@ class GroupFriendListPage extends Component<Props, State> {
 
           letterArr.sort()
 
+          let allPersons = []
           letterArr.map(item => {
             const module = persons.filter((it: Person) => {
               if (!this.includeMe && it.userName === this.props.user.currentUser.userName) return false
@@ -194,12 +195,14 @@ class GroupFriendListPage extends Component<Props, State> {
             })
 
             sections.push({ key: item, title: item, data: module })
+            allPersons = allPersons.concat(module)
           })
 
           this.setState({
             letterArr,
             sections,
-            allData: persons,
+            // allData: persons,
+            allData: allPersons,
           })
         } catch (err) {
           Toast.show(err.message)
@@ -427,7 +430,7 @@ class GroupFriendListPage extends Component<Props, State> {
             type={'circle'}
             style={styles.checkBtn}
             checked={
-              this.state.selectedMembers.size === this.state.allData.length - 1 &&
+              this.state.selectedMembers.size === this.state.allData.length &&
               this.state.selectedMembers.size > 0
             } // -1是减去管理者自己
             onChange={value => {
@@ -449,7 +452,8 @@ class GroupFriendListPage extends Component<Props, State> {
           <Text
             style={[
               styles.selectAll,
-              this.state.selectedMembers.size === 0 &&
+              // this.state.selectedMembers.size === 0 &&
+              this.state.allData.length === 0 &&
               {color: color.itemColorGray3},
             ]}
           >
@@ -457,7 +461,7 @@ class GroupFriendListPage extends Component<Props, State> {
           </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn
-            btnText={getLanguage(this.props.language).Common.CONFIRM}
+            btnText={getLanguage(this.props.language).Prompt.CONFIRM}
             containerStyle={[
               styles.bottomBtn,
               this.state.selectedMembers.size === 0 &&

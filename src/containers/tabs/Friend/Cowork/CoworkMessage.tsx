@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language/index'
@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import MsgConstant from '../../../../constants/MsgConstant'
 import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
+import NavigationService from '../../../NavigationService'
 
 
 interface Props {
@@ -52,22 +53,13 @@ class CoworkMessage extends Component<Props, State> {
     }
   }
 
-  getMessage = () => {
+  getMessage = (selected = this.state.selected) => {
     let messages = this.props.coworkInfo[this.props.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]?.messages || []
     messages = messages.clone().reverse()
     this.setState({
       messages: messages,
+      selected,
     })
-    // try {
-    //   if (GLOBAL.coworkMode) {
-    //     let messages = CoworkInfo.messages
-    //     let rvsMsg = messages.clone().reverse()
-    //     this.setState({ messages: rvsMsg })
-    //     this.setState({ messages: this.props.coworkInfo[this.props.cowork.currentTask.groupID] })
-    //   }
-    // } catch (error) {
-    //   //
-    // }
   }
 
   selecteAll = () => {
@@ -75,7 +67,8 @@ class CoworkMessage extends Component<Props, State> {
       let selected = []
       if (this.state.messages.length !== this.state.selected.length) {
         for (let i = 0; i < this.state.messages.length; i++) {
-          selected.push(i)
+          if (this.state.messages[i].status === 2 || this.state.selected.includes(this.state.messages[i].messageID)) continue
+          selected.push(this.state.messages[i].messageID)
         }
       }
       this.setState({ selected })
@@ -87,22 +80,25 @@ class CoworkMessage extends Component<Props, State> {
       if (this.state.selected.length > 0) {
         let notify = this.state.selected.length === 1
         let selection = this.state.selected.clone()
-        selection.sort()
-        for (let i = 0; i < selection.length; i++) {
+        selection.sort((a: number, b: number) => b - a)
+        let result = false
+        for (let i = selection.length - 1; i >= 0; i--) {
           GLOBAL.Loading.setLoading(
             true,
             getLanguage(GLOBAL.language).Friends.UPDATING,
           )
           let messageID = selection[i]
           if (type === 'update') {
-            await CoworkInfo.update(messageID, notify)
+            result = await CoworkInfo.update(messageID, notify)
           } else if (type === 'add') {
-            await CoworkInfo.add(messageID, notify)
+            result = await CoworkInfo.add(messageID, notify)
           } else if (type === 'ignore') {
+            selection.splice(i, 1)
             await CoworkInfo.ignore(messageID)
           }
         }
-        this.getMessage()
+        result && NavigationService.goBack('CoworkMessage', null)
+        this.getMessage(selection)
         GLOBAL.Loading.setLoading(false)
       } else {
         Toast.show(
@@ -191,9 +187,91 @@ class CoworkMessage extends Component<Props, State> {
   }
 
   renderItem = ({ item }: any) => {
-    let message = item
-    let messageID = message.messageID
-    let isConsumed = message.consume
+    return (
+      <CoworkMessageItem
+        key={item.time + '_' + item.messageID}
+        data={item}
+        selected={this.state.selected.includes(item.messageID)}
+        onPress={data => {
+          // 忽略之后不可点击
+          if (data.status === 2) return
+          let selected = this.state.selected.clone()
+          if (selected.includes(data.messageID)) {
+            selected.splice(selected.indexOf(data.messageID), 1)
+          } else {
+            selected.push(data.messageID)
+          }
+          this.setState({ selected })
+        }}
+      />
+    )
+  }
+
+  renderHeaderRight = () => {
+    return (
+      <TouchableOpacity onPress={this.selecteAll}>
+        <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
+          {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  render() {
+    return (
+      <Container
+        style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
+        headerProps={{
+          title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
+          withoutBack: false,
+          navigation: this.props.navigation,
+          headerRight: this.renderHeaderRight(),
+        }}
+      >
+        <FlatList
+          style={{ marginBottom: scaleSize(120) }}
+          data={this.state.messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={this.renderItem}
+          extraData={this.state.selected}
+        />
+        {this.renderButtoms()}
+      </Container>
+    )
+  }
+}
+
+const mapStateToProps = (state: any) => ({
+  cowork: state.cowork.toJS(),
+  currentUser: state.user.toJS().currentUser,
+  coworkInfo: state.cowork.toJS().coworkInfo,
+})
+
+const mapDispatchToProps = {}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CoworkMessage)
+
+interface ItemProps {
+  data: any,
+  selected: boolean,
+  onPress: (data: any) => void,
+}
+
+class CoworkMessageItem extends PureComponent<ItemProps, {}> {
+  constructor(props: ItemProps) {
+    super(props)
+  }
+
+  _onPress = () => {
+    this.props.onPress(this.props.data)
+  }
+
+  render() {
+    let message = this.props.data
+    let isConsumed = message.status
     let time = moment(new Date(message.time)).format('YYYY/MM/DD HH:mm')
     let action = ''
     let actionAfter = ''
@@ -249,24 +327,23 @@ class CoworkMessage extends Component<Props, State> {
             backgroundColor: '#F5F5F5',
           },
         ]}
-        onPress={() => {
-          let selected = this.state.selected.clone()
-          if (selected.includes(messageID)) {
-            selected.splice(selected.indexOf(messageID), 1)
-          } else {
-            selected.push(messageID)
-          }
-          this.setState({ selected })
-        }}
+        onPress={this._onPress}
       >
-        <Image
-          source={
-            this.state.selected.includes(messageID)
-              ? getPublicAssets().common.icon_check
-              : getPublicAssets().common.icon_uncheck
-          }
-          style={{ height: scaleSize(50), width: scaleSize(50) }}
-        />
+        {
+          // 忽略之后没有选择框
+          message.status === 2
+            ? <View style={{ height: scaleSize(50), width: scaleSize(50) }} />
+            : (
+              <Image
+                source={
+                  this.props.selected
+                    ? getPublicAssets().common.icon_check
+                    : getPublicAssets().common.icon_uncheck
+                }
+                style={{ height: scaleSize(50), width: scaleSize(50) }}
+              />
+            )
+        }
         <View style={{ flex: 1, marginHorizontal: scaleSize(20) }}>
           <View>
             <View>
@@ -298,50 +375,5 @@ class CoworkMessage extends Component<Props, State> {
       </TouchableOpacity>
     )
   }
-
-  renderHeaderRight = () => {
-    return (
-      <TouchableOpacity onPress={this.selecteAll}>
-        <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
-          {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  render() {
-    return (
-      <Container
-        style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
-          withoutBack: false,
-          navigation: this.props.navigation,
-          headerRight: this.renderHeaderRight(),
-        }}
-      >
-        <FlatList
-          style={{ marginBottom: scaleSize(120) }}
-          data={this.state.messages}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={this.renderItem}
-          extraData={this.state.selected}
-        />
-        {this.renderButtoms()}
-      </Container>
-    )
-  }
 }
 
-const mapStateToProps = (state: any) => ({
-  cowork: state.cowork.toJS(),
-  currentUser: state.user.toJS().currentUser,
-  coworkInfo: state.cowork.toJS().coworkInfo,
-})
-
-const mapDispatchToProps = {}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CoworkMessage)

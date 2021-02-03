@@ -241,6 +241,12 @@ async function createCollector(type, layerName) {
 async function collectionSubmit(type) {
   const result = await SCollector.submit(type)
   if (result) {
+    //协作时同步编辑对象
+    if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+      const params = ToolbarModule.getParams()
+      let friend = GLOBAL.getFriend()
+      friend.onGeometryAdd(params.currentLayer)
+    }
     switch (type) {
       case SMCollectorType.LINE_GPS_PATH:
       case SMCollectorType.REGION_GPS_PATH:

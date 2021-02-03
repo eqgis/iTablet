@@ -15,14 +15,14 @@ import {
 import { connect } from 'react-redux'
 import NavigationService from '../../../../NavigationService'
 import { scaleSize } from '../../../../../utils'
-import { UserType } from '../../../../../constants'
+import { UserType, MsgConstant } from '../../../../../constants'
 import { Container, TextBtn, TableList, ImageButton, Dialog } from '../../../../../components'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets, getPublicAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import { setCurrentGroup, exitGroup } from '../../../../../redux/models/cowork'
-import { SCoordination, GroupType } from 'imobile_for_reactnative'
+import { SCoordination, GroupType, SMessageService } from 'imobile_for_reactnative'
 import { Person } from '../types'
 
 interface Props {
@@ -127,7 +127,34 @@ class GroupSettingPage extends Component<Props, State> {
       this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO)
       this.dialogAction = () => {
         this.servicesUtils?.deleteGroup([this.props.currentGroup.id]).then((result: any) => {
+          // MSG_ONLINE_GROUP_DELETE
           if (result.succeed) {
+            let timeStr = new Date().getTime()
+            let _message = {
+              id: 'GROUP_DELETE_' + timeStr,
+              message: {
+                groupId: this.props.currentGroup.id,
+                type: MsgConstant.MSG_ONLINE_GROUP_DELETE,
+              },
+              type: MsgConstant.MSG_COWORK,
+              user: {
+                name: this.props.user.currentUser.nickname || '',
+                id: this.props.user.currentUser.userId || '',
+              },
+              time: timeStr,
+            }
+
+            for (let i = 0; i < this.state.data.length; i++) {
+              if (this.state.data[i].userName === this.props.user.currentUser.userName) {
+                continue
+              }
+              SMessageService.sendMessage(
+                JSON.stringify(_message),
+                this.state.data[i].userName,
+              )
+            }
+            
+
             this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
             this._setDialogVisible(false)
             NavigationService.goBack('CoworkManagePage', null)

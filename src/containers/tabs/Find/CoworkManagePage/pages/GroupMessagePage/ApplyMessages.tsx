@@ -86,9 +86,9 @@ export default class ApplyMessages extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
-    // this.props.readCoworkGroupMsg({
-    //   type: MsgConstant.MSG_ONLINE_GROUP_APPLY,
-    // })
+    this.props.readCoworkGroupMsg({
+      type: MsgConstant.MSG_ONLINE_GROUP_APPLY,
+    })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -194,10 +194,26 @@ export default class ApplyMessages extends Component<Props, State> {
       isAccepted: data.checkStatus === 'ACCEPTED',
     }).then(result => {
       if (result.succeed) {
-        SMessageService.sendMessage(
-          JSON.stringify(data),
-          data.applicant,
-        )
+        if (data.checkStatus === 'ACCEPTED') {
+          let timeStr = new Date().getTime()
+          let _message = {
+            id: 'GROUP_APPLY_' + timeStr,
+            message: {
+              ...message,
+              type: MsgConstant.MSG_ONLINE_GROUP_APPLY_AGREE,
+            },
+            type: MsgConstant.MSG_COWORK,
+            user: {
+              name: this.props.user.currentUser.nickname || '',
+              id: this.props.user.currentUser.userId || '',
+            },
+            time: timeStr,
+          }
+          SMessageService.sendMessage(
+            JSON.stringify(_message),
+            data.applicant,
+          )
+        }
         let _data = this.state.data.deepClone()
         _data[index] = message
         this.setState({

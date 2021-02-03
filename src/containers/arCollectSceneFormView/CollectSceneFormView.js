@@ -415,18 +415,6 @@ export default class CollectSceneFormView extends React.Component {
       //   GLOBAL.arSwitchToMap = false
       //   GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
       // }
-      GLOBAL.mapView.setState({
-        map: {
-          flex: 1,
-          alignSelf: 'stretch',
-          backgroundColor: '#ffbcbc',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          flexDirection: 'column',
-        },
-      })
-      await SCollectSceneFormView.closeCurrentDatasource()
       await SCollectSceneFormView.onDestroy()
       NavigationService.goBack('CollectSceneFormView')
 

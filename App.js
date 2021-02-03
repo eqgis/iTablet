@@ -573,6 +573,7 @@ class AppRoot extends Component {
   handleStateChange = appState => {
     if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        this.loginOnline()
         this.reCircleLogin()
       }
       Orientation.getOrientation((e, orientation) => {

@@ -5,11 +5,12 @@ import CollectionData from './CollectionData'
 import CollectionAction from './CollectionAction'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast } from '../../../../../../utils'
+import { Toast, LayerUtils } from '../../../../../../utils'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'
 import ToolbarModule from '../ToolbarModule'
+import { SMCollectorType } from 'imobile_for_reactnative'
 
 class CollectionModule extends FunctionModule {
   constructor(props) {
@@ -27,7 +28,59 @@ class CollectionModule extends FunctionModule {
         Toast.show(getLanguage(params.language).Template.TEMPLATE_ERROR)
       }
     } else {
-      CollectionAction.openTemplate(this.type)
+      if (params.currentTask.id) {
+        // 若没有当前图层或者当前图层不是我的图层
+        let layerType = LayerUtils.getLayerType(params.currentLayer)
+        if (layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'TEXTLAYER' ) {
+          let info = ''
+          switch(layerType) {
+            case 'TAGGINGLAYER':
+              info = getLanguage(params.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT + getLanguage(params.language).Map_Layer.LAYERS
+              break
+            case 'CADLAYER':
+              info = getLanguage(params.language).Prompt.CANNOT_COLLECT_IN_CAD_LAYERS
+              break
+            case 'TEXTLAYER':
+              info = getLanguage(params.language).Prompt.CANNOT_COLLECT_IN_TEXT_LAYERS
+              break
+          }
+          NavigationService.navigate('LayerManager')
+          Toast.show(info, {
+            duration: 3500,
+          })
+          return
+        }
+        // 不能在专题图层采集
+        if (
+          params.currentLayer.themeType > 0 ||
+          params.currentLayer.isHeatmap
+        ) {
+          NavigationService.navigate('LayerManager')
+          Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS, {
+            duration: 3500,
+          })
+          return
+        }
+        let type = ''
+        switch (params.currentLayer.type) {
+          case 1:
+            type = SMCollectorType.POINT_HAND
+            break
+          case 3:
+            type = SMCollectorType.LINE_HAND_POINT
+            break
+          case 5:
+            type = SMCollectorType.REGION_HAND_POINT
+            break
+        }
+        ToolbarModule.setData() // 清除之前ToolbarModule中的数据
+        CollectionAction.showCollection(
+          type,
+          params.currentLayer.name,
+        )
+      } else {
+        CollectionAction.openTemplate(this.type)
+      }
     }
   }
 }

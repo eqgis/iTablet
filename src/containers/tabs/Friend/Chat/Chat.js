@@ -432,7 +432,7 @@ class Chat extends React.Component {
       this.showNoFriendNotify(msgId)
       return
     }
-    this.friend.userMessagesessage(JSON.stringify(message), this.targetUser.id, false)
+    this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
   }
 
   async onSendFile(type, filePath, fileName, extraInfo) {
@@ -491,6 +491,9 @@ class Chat extends React.Component {
     }
     if (extraInfo) {
       Object.assign(informMsg.message.message, extraInfo)
+    }
+    if (CoworkInfo.coworkId !== '') {
+      informMsg.user.coworkGroupId = this.props.currentTask.groupID
     }
 
     let msgId = this.friend.getMsgId(this.targetUser.id)

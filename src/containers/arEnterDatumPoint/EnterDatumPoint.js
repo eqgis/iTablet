@@ -223,7 +223,6 @@ export default class EnterDatumPoint extends Component {
             datasourceAlias,
           )
 
-          GLOBAL.mapView.setState({ map: { height: 0 } })
           const datasetName = 'CollectSceneForm'
           const datasetPointName = 'CollectPointSceneForm'
           GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)

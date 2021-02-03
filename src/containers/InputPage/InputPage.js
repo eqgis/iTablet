@@ -8,7 +8,7 @@ import { View, Text } from 'react-native'
 import { Container, Input, TextBtn } from '../../components'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { dataUtil } from '../../utils'
+import { dataUtil, scaleSize } from '../../utils'
 import styles from './styles'
 
 /**
@@ -134,6 +134,14 @@ export default class InputPage extends React.Component {
               btnClick={this.confirm}
             />
           ),
+          headerTitleViewStyle: {
+            position: 'absolute',
+            zIndex: -1,
+            left: scaleSize(80),
+            right: scaleSize(160),
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
         }}
       >
         <View style={styles.subContainer}>

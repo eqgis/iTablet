@@ -155,6 +155,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'Eklendi', //need to be translated
 
   // 创建群组 待翻译
+  JOIN: 'Join', // 待翻译
   TITLE_CHOOSE_MEMBER: 'Select Members',
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',

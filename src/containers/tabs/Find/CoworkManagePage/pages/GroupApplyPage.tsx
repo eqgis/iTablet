@@ -151,7 +151,7 @@ class GroupApplyPage extends Component<Props, State> {
             resizeMode={'contain'}
             source={getThemeAssets().cowork.icon_group_join}
           />
-          <Text style={styles.rightText}>{'加入'}</Text>
+          <Text style={styles.rightText}>{getLanguage(GLOBAL.language).Friends.JOIN}</Text>
         </TouchableOpacity>
       </View>
     )

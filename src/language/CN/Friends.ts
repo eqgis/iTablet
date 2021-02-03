@@ -152,6 +152,7 @@ const Friends = {
   ADDED: '已添加',
 
   // 创建群组
+  JOIN: '加入',
   TITLE_CHOOSE_MEMBER: '选择成员',
   VIEW_MORE_MEMBERS: '查看更多成员',
   MY_GROUPS: '我创建的群组',

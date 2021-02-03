@@ -156,6 +156,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'Added', // 待翻译
 
   // 创建群组 待翻译
+  JOIN: '参加',
   TITLE_CHOOSE_MEMBER: 'Select Members',
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',

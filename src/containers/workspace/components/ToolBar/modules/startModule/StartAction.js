@@ -119,8 +119,9 @@ function openMap() {
                 style={{
                   marginTop: scaleSize(8),
                   marginRight: scaleSize(8),
-                  height: scaleSize(30),
-                  width: scaleSize(120),
+                  paddingHorizontal: scaleSize(8),
+                  // height: scaleSize(30),
+                  // width: scaleSize(140),
                   borderRadius: scaleSize(4),
                   backgroundColor: color.bgG,
                   justifyContent: 'center',
@@ -473,7 +474,6 @@ function saveMap() {
       // ) {
       //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
       // }
-
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,

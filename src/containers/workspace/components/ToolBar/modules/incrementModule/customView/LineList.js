@@ -462,16 +462,20 @@ const styles = StyleSheet.create({
   titleTxt: {
     color: 'white',
     fontSize: setSpText(22),
+    flex: 1,
+    textAlign: 'center',
   },
   actionTxt: {
     color: 'white',
     fontSize: setSpText(20),
   },
   titleTxtWrap: {
-    width: scaleSize(80),
+    width: scaleSize(120),
+    minWidth: scaleSize(110),
     height: scaleSize(80),
     alignItems: 'center',
     justifyContent: 'center',
+    flex: -1,
   },
   section: {
     width: '100%',

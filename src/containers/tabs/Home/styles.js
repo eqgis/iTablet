@@ -97,7 +97,6 @@ export default StyleSheet.create({
   },
   dialogHeaderBtnView: {
     marginRight: scaleSize(5),
-    marginTop: scaleSize(-64),
     width: scaleSize(64),
     height: scaleSize(64),
     justifyContent: 'center',

@@ -517,7 +517,9 @@ export default class RegistrationDatasetPage extends Component {
             type={'BLUE'}
             style={{
               width: '50%',
-              height: scaleSize(60),
+              // height: scaleSize(60),
+              height: "auto",
+              paddingVertical: scaleSize(10),
               marginTop: scaleSize(30),
               marginBottom: scaleSize(30),
             }}

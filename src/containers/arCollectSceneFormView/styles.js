@@ -130,7 +130,7 @@ export default StyleSheet.create({
   toolbar: {
     position: 'absolute',
     flexDirection: 'row',
-    height: Const.BOTTOM_HEIGHT,
+    minHeight: Const.BOTTOM_HEIGHT,
     paddingHorizontal: scaleSize(20),
     backgroundColor: color.white,
     justifyContent: 'space-between',
@@ -152,9 +152,10 @@ export default StyleSheet.create({
     bottom: 0,
   },
   buttonView: {
-    position: 'absolute',
+    position: 'relative',
+    flex: 1,
     flexDirection: 'row',
-    height: Const.BOTTOM_HEIGHT,
+    minHeight: Const.BOTTOM_HEIGHT,
     paddingHorizontal: scaleSize(20),
     backgroundColor: color.white,
     justifyContent: 'space-between',

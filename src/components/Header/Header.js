@@ -36,6 +36,8 @@ class NavigationHeader extends Component {
     headerCenter?: any, // 自定义Header中间View
     backImg?: any, // 返回按钮图片
     statusVisible?: boolean, // 状态栏是否可见
+    isResponseHeader?: boolean, // 是否使用flex三栏布局（标题响应宽度）
+    responseHeaderTitleStyle?: StyleSheet //  三栏布局时Title的覆盖样式
   }
 
   static defaultProps = {
@@ -53,6 +55,7 @@ class NavigationHeader extends Component {
     count: 0,
     darkBackBtn: false,
     headerCenter: null,
+    isResponseHeader: false,
   }
 
   constructor(props) {
@@ -117,6 +120,7 @@ class NavigationHeader extends Component {
       count,
       headerCenter,
       backImg,
+      responseHeaderTitleStyle,
     } = this.props
 
     let fontSize =
@@ -144,7 +148,7 @@ class NavigationHeader extends Component {
       <TouchableOpacity
         accessible={true}
         accessibilityLabel={'返回'}
-        style={backStyle}
+        style={this.props.isResponseHeader ? {} : backStyle}
         activeOpacity={activeOpacity}
         onPress={event => {
           this.handleBack(navigation, event)
@@ -186,7 +190,8 @@ class NavigationHeader extends Component {
     }
 
     return (
-      <View style={[styles.navigationHeader, headerViewStyle]}>
+    <>
+      {!this.props.isResponseHeader ? <View style={[styles.navigationHeader, headerViewStyle]}>
         {headerLeft ? (
           <View style={[styles.headerLeftView, headerLeftStyle]}>
             {headerLeft}
@@ -196,7 +201,39 @@ class NavigationHeader extends Component {
         )}
         {titleView}
         {headerRight && <View style={rightStyle}>{headerRight}</View>}
-      </View>
+      </View> :
+        (
+          <View style={styles.responseHeader}>
+            {headerLeft ? (
+              <View style={styles.responseHeaderLeft}>
+                {headerLeft}
+              </View>
+            ) : (
+              <View style={styles.responseHeaderLeft}>
+                {!withoutBack && backBtn}
+              </View>
+            )}
+            <View style={styles.responseHeaderTitle}>
+              <Text
+                style={{
+                  ...styles.headerTitle,
+                  fontSize: fontSize, textAlign:'left' ,
+                  paddingLeft: scaleSize(withoutBack ? 70 : 30),
+                  ...responseHeaderTitleStyle,
+                }}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
+                {title}
+                {subTitle ? (
+                  <Text style={subTitleStyle}>{subTitle}</Text>
+                ) : null}
+              </Text>
+            </View>
+
+            {headerRight && <View style={styles.responseHeaderRight}>{headerRight}</View>}
+          </View>)}
+    </>
     )
   }
 

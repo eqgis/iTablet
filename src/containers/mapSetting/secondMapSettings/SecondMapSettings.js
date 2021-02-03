@@ -1493,19 +1493,7 @@ export default class SecondMapSettings extends Component {
           headerRight: this.renderRight(),
           headerOnTop: this.state.showConfidence,
           // 国际版标题过长
-          headerTitleViewStyle: {
-            position: 'absolute',
-            zIndex: -1,
-            left: scaleSize(80),
-            right: scaleSize(160),
-            alignItems: 'center',
-            justifyContent: 'center',
-            // borderColor: '#f00',
-            // borderWidth: 1,
-          },
-          headerRightStyle: {
-            right: scaleSize(0),
-          },
+          isResponseHeader: true,
         }}
       >
         <FlatList

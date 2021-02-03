@@ -2,13 +2,13 @@ import * as React from 'react'
 import { SARWeather } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { scaleSize, OnlineServicesUtils, Toast } from '../../utils'
-import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo } from 'react-native'
+import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo, Image } from 'react-native'
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { NavigationScreenProp } from 'react-navigation'
 import  { Downloads, IDownloadProps } from '../../redux/models/down'
-
+import { getThemeAssets, getPublicAssets } from '../../assets'
 interface IProps {
   navigation: NavigationScreenProp<{}>
   downloads: Downloads,
@@ -247,26 +247,49 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
     }
   }
 
+  // 渲染按钮图片
+  _renderBtnImage = image => {
+    return (
+      <Image source={image} style={{
+        height: scaleSize(60),
+        width: scaleSize(60),
+      }}/>
+    )
+  }
+
   render() {
     let text = ''
+    let image = null
     let color = { backgroundColor: '#1296db' }
     let progress
+    let buttonContent = null
+    this.animation && this.animation.stop()
     switch (this.state.status) {
       case 0:
-        text = getLanguage(GLOBAL.language).Prompt.DOWNLOAD
+        // text = getLanguage(GLOBAL.language).Prompt.DOWNLOAD
+        image = getThemeAssets().collection.icon_ar_effect_download
+        buttonContent = this._renderBtnImage(image)
         break
       case 1:
-        text = getLanguage(GLOBAL.language).Profile.SWITCH
+        // text = getLanguage(GLOBAL.language).Profile.SWITCH
+        image = getThemeAssets().collection.icon_collection_change
+        buttonContent = this._renderBtnImage(image)
         break
       case 2:
-        text = getLanguage(GLOBAL.language).Profile.SWITCH
+        // text = getLanguage(GLOBAL.language).Profile.SWITCH
+        image = getThemeAssets().collection.icon_collection_change
+        buttonContent = this._renderBtnImage(image)
         color = { backgroundColor: 'grey' }
         break
       case 3:
-        text = getLanguage(GLOBAL.language).Prompt.DOWNLOADING
+        // text = getLanguage(GLOBAL.language).Prompt.DOWNLOADING
         progress = this.getDownloadProgress()
         if (progress > -1) {
           text = progress + '%'
+          buttonContent = (<Text style={{color: '#fff'}}>{text}</Text>)
+        }else {
+          image = getPublicAssets().common.icon_downloading
+          buttonContent = this._renderBtnImage(image)
         }
         break
     }
@@ -288,7 +311,7 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
             style={[
               {
                 height: scaleSize(60),
-                // width: scaleSize(160),
+                width: scaleSize(120),
                 paddingHorizontal: scaleSize(10),
                 borderRadius: scaleSize(10),
                 justifyContent: 'center',
@@ -307,7 +330,8 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
               }
             }}
           >
-            <Text style={{ color: 'white' }}>{text}</Text>
+            {/* <Text style={{ color: 'white' }}>{text}</Text> */}
+            {buttonContent}
           </TouchableOpacity>
         </View>
         <View

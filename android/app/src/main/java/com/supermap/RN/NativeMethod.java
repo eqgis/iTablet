@@ -106,6 +106,46 @@ public class NativeMethod extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void getTemplatesList(String userName, String strModule, Promise promise) {
+        try {
+            if (userName == null || userName.equals("")) {
+                userName = "Customer";
+            }
+            String templatePath = "";
+            WritableArray templateList = Arguments.createArray();
+            if (strModule == null || strModule.equals("")) {
+                templatePath = SDCARD + "iTablet/ExternalData";
+            } else {
+                templatePath = SDCARD + "iTablet/User/"+userName+ "/Data/" + strModule;
+            }
+
+            File file = new File(templatePath);
+
+            if (file.exists() && file.isDirectory()) {
+                File[] tempsArray = file.listFiles();
+                for (int i = 0; i < tempsArray.length; i++) {
+                        String tempFileName = tempsArray[i].getName();
+                        String suffix = tempFileName.substring(tempFileName.lastIndexOf(".") + 1).toLowerCase();
+                        if (suffix.equals("xml")) {
+                            WritableMap tempInfo = Arguments.createMap();
+                            String fileName = tempFileName.substring(0, tempFileName.lastIndexOf("."));
+
+                            tempInfo.putString("name", fileName);
+                            tempInfo.putString("path", tempsArray[i].getAbsolutePath());
+
+                            templateList.pushMap(tempInfo);
+                    }
+                }
+
+            }
+            promise.resolve(templateList);
+
+        } catch (Exception e) {
+            promise.reject(e);
+        }
+    }
+
     public static WritableArray getTemplate(String path) {
         WritableArray templateList = Arguments.createArray();
         File file = new File(path);

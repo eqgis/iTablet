@@ -19,8 +19,8 @@ const Map_Label: typeof CN.Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: '現在マップ',
-  CURRENT_SCENCE: 'Current', // 待翻译
-  CURRENT_MODEL: 'Current', // 待翻译
+  CURRENT_SCENCE: '現在シーン', 
+  CURRENT_MODEL: '現在モデル', 
   // 地图制图及公共 开始
   START: '開始',
   START_OPEN_MAP: 'マップを開く',
@@ -342,7 +342,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: '道路ネットワーク',
 
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: '対応できないデバイスです。android7以上のデバイスをしようしてください',
   MAP_AR_DONT_SUPPORT_DEVICE: '当デバイスをサポートしません',
   MAP_AR_MEASURE: 'AR 計測', //ｊｐ0730
   MAP_AR_ANALYZE: 'AR 解析', //ｊｐ0730
@@ -361,13 +361,13 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: '目標分類',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: '状況コレクション',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: '目標コレクション',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译,
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'ARトラック', 
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: '交通違反コレクション',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'モデル再生',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'ARエリア',
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'ARレンジング',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR線画',
-  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR画像',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'ARライン追加',
+  MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'ARポリゴン描画',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'ARの高さ測定',
   MAP_AR_VIDEO: '動画', //jp0730
@@ -385,12 +385,12 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: '選択ポイントの追加',
   MAP_AR_MOVE_TO_CURRENT_POSITION: '現在位置に変更',
   MAP_AR_MOVE_TO_PLANE: '選択ポイントの変更',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circular Measure',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'ポリゴン',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: '矩形',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: '円形',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'ポリゴン計測',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: '矩形計測',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: '円形計測',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: '左折してください',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: '右に曲がる',
@@ -406,10 +406,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: '平面を検索中',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: 'ビューポイント距離:',
 
-  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Stay Away',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Too Dim,Take More Light',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Too Fast,Please Slow Down',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'Move Device To Find Feature',//待翻译
+  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'離れてください',
+  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'現在の環境は暗すぎます。適切な照明を提供してください',
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'デバイスの動きが速すぎます。速度を落としてください',
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'現在の平面の特徴点が少なくなっています。引き続き電話を動かしてください',
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: '総長さ:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: '現在長さ:',
@@ -533,9 +533,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_SELECT_ALL: 'すべて選択',
   MERGE_ADD: '追加',
   MERGE_DATASET: 'データセットのマージ',
-  // 专题制图加载/输出xml 待翻译
-  MAP_OUTPUT_XML: 'Output',
-  MAP_LOAD_XML: 'Load',
+  // 专题制图加载/输出xml 
+  MAP_OUTPUT_XML: '出力',
+  MAP_LOAD_XML: 'ロード',
 }
 
 // 推演动画
@@ -815,7 +815,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'マップ名',
   SHOW_SCALE: '表示スケール',
-  SHOW_LOCATION: 'Show Location',//待翻译
+  SHOW_LOCATION: 'ロケーションの表示',
   ROTATION_GESTURE: 'ジェスチャー回転',
   PITCH_GESTURE: 'ジェスチャー俯仰',
   ROTATION_ANGLE: '回転角度',
@@ -900,7 +900,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   CANCEL: 'キャンセル',
   COPY: 'コピー',
 
-  CONFIDENCE: 'Confidence', //待翻译
+  CONFIDENCE: '信頼度',
 }
 
 // 地图工具

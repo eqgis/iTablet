@@ -61,42 +61,51 @@ class MyTemplate extends MyDataPage {
 
   exportData = async (name, exportToTemp = true) => {
     let homePath = await FileTools.appendingHomeDirectory()
-    let fromPath
-    if (
-      this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
-    ) {
-      fromPath = this.itemInfo.item.path.substring(
-        0,
-        this.itemInfo.item.path.lastIndexOf('/'),
-      )
-    } else if (
-      this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
-    ) {
-      fromPath = this.itemInfo.item.path
-    }
+    let fromPath = this.itemInfo.item.path
+    // if (
+    //   this.itemInfo.section.title ===
+    //   getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
+    // ) {
+    //   fromPath = this.itemInfo.item.path.substring(
+    //     0,
+    //     this.itemInfo.item.path.lastIndexOf('/'),
+    //   )
+    // } else if (
+    //   this.itemInfo.section.title ===
+    //   getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
+    // ) {
+    //   fromPath = this.itemInfo.item.path
+    // }
 
     let toPath
-    if (exportToTemp) {
-      let tempPath = homePath + this.getRelativeTempPath()
-      let availableName = await this._getAvailableFileName(
-        tempPath,
-        'MyExport',
-        'zip',
-      )
-      toPath = tempPath + availableName
-      this.exportPath = toPath
-    } else {
-      let exportPath = homePath + this.getRelativeExportPath()
-      let availableName = await this._getAvailableFileName(
-        exportPath,
-        name,
-        'zip',
-      )
-      toPath = exportPath + availableName
-      this.exportPath = this.getRelativeExportPath() + availableName
-    }
+    // if (exportToTemp) {
+    //   let tempPath = homePath + this.getRelativeTempPath()
+    //   let availableName = await this._getAvailableFileName(
+    //     tempPath,
+    //     'MyExport',
+    //     'zip',
+    //   )
+    //   toPath = tempPath + availableName
+    //   this.exportPath = toPath
+    // } else {
+    //   let exportPath = homePath + this.getRelativeExportPath()
+    //   let availableName = await this._getAvailableFileName(
+    //     exportPath,
+    //     name,
+    //     'zip',
+    //   )
+    //   toPath = exportPath + availableName
+    //   this.exportPath = this.getRelativeExportPath() + availableName
+    // }
+    let exportPath = homePath + this.getRelativeExportPath()
+    let availableName = await this._getAvailableFileName(
+      exportPath,
+      name,
+      'zip',
+    )
+    toPath = exportPath + availableName
+    this.exportPath = this.getRelativeExportPath() + availableName
+
     let result = await FileTools.zipFile(fromPath, toPath)
     return result
   }

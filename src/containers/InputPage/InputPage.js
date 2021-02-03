@@ -131,17 +131,12 @@ export default class InputPage extends React.Component {
                   ? styles.headerBtnTitle
                   : styles.headerBtnTitleDisable
               }
+              containerStyle={{width:'auto'}}
               btnClick={this.confirm}
             />
           ),
-          headerTitleViewStyle: {
-            position: 'absolute',
-            zIndex: -1,
-            left: scaleSize(80),
-            right: scaleSize(160),
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
+          isResponseHeader: true,
+          responseHeaderTitleStyle: { textAlign: 'center', paddingLeft: 0},
         }}
       >
         <View style={styles.subContainer}>

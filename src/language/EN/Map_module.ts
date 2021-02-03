@@ -14,6 +14,6 @@ const Map_Module: typeof CN.Map_Module = {
   MAP_PLOTTING: 'Plotting',
   MAP_ANALYST: 'Data Processing',
 
-  APPLET_ADD: 'Add Applets', // 待翻译
+  APPLET_ADD: 'Add Applets', 
 }
 export { Map_Module }

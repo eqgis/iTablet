@@ -46,17 +46,17 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'Confirm',
   COMPLETE: 'Complete',
 
-  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
-  EXIT: 'Exit', //待翻译
-  REQUEST_PERMISSION: 'Request', //待翻译
+  NO_PERMISSION_ALERT: 'Doesn\'t have permission to run the application',
+  EXIT: 'Exit', 
+  REQUEST_PERMISSION: 'Request Permission',
 
   OPENING: 'Opening',
 
   QUIT: 'Quit SuperMap iTablet?',
-  MAP_LOADING: 'Loading',
+  MAP_LOADING: 'Map Loading',
   LOADING: 'Loading',
   THE_MAP_IS_OPENED: 'The map is opened',
-  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
+  THE_MAP_IS_NOTEXIST: 'The map doesn\'t exist',
   THE_SCENE_IS_OPENED: 'The scene is opened',
   NO_SCENE_LIST: 'No data',
   SWITCHING: 'Switching',
@@ -75,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'Empty base map, please change first',
   OVERRIDE_SYMBOL: 'Symbol with the same id exists, please select method to add',
   OVERWRITE: 'Overwrite',
-  CHOOSE_DATASET: 'Please choose dataset',//待翻译
+  CHOOSE_DATASET: 'Please select dataset',
 
   SET_ALL_MAP_VISIBLE: 'All visible',
   SET_ALL_MAP_INVISIBLE: 'All invisible',
@@ -256,7 +256,7 @@ const Prompt: typeof CN.Prompt = {
   VIEW_BOUNDS_ERROR: 'Range error! Please enter a number',
   VIEW_BOUNDS_RANGE_ERROR: 'Parameter error! Both height and width of the view should be greater than zero',
   MAP_CENTER_ERROR: 'Coordinate error! Both X and Y should be numbers',
-  COPY_SUCCESS: 'Coping success!',
+  COPY_SUCCESS: 'Copied successfully!',
   // 复制坐标系
   COPY_COORD_SYSTEM_SUCCESS: 'Coordinate system replication successfully',
   COPY_COORD_SYSTEM_FAIL: 'Coordinate system replication failed',
@@ -378,12 +378,10 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Default value is null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect in Thematic layers',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers',
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Only point dataset can be created',
 
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set',
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is invisible, and so you cannot set it to the current layer',
 
   //三维AR管线相关
   FILE_NOT_EXISTS: 'File not exists,Please download the Example data',

@@ -57,7 +57,7 @@ export default class TouchableItemView extends Component {
     return (
       <Text
         style={[styles.upperText, this.props.textStyle]}
-        numberOfLines={1}
+        // numberOfLines={1}
         ellipsizeMode={'tail'}
       >
         {this.props.text}

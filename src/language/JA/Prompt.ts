@@ -30,7 +30,7 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'ダウンロード済',
   DOWNLOAD_FAILED: 'ダウンロードに失敗しました',
   UNZIPPING: '解凍中',
-  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
+  ONLINE_DATA_ERROR: 'ネットワークデータは壊れました、使用できません',
 
   NO_REMINDER: '次回からヒントを表示しません',
 
@@ -43,9 +43,9 @@ const Prompt: typeof CN.Prompt = {
   DELETE_OBJECT: '当オブジェクトを削除しますか?',
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
 
-  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
-  EXIT: 'Exit', //待翻译
-  REQUEST_PERMISSION: 'Request', //待翻译
+  NO_PERMISSION_ALERT: '実行に必要な権限はありません',
+  EXIT: '閉じる',
+  REQUEST_PERMISSION: '権限の申請', 
 
   CONFIRM: 'OK',
   COMPLETE: '完了',
@@ -56,7 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'マップロード中',
   LOADING: 'ロード中',
   THE_MAP_IS_OPENED: '当マップは開いています',
-  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
+  THE_MAP_IS_NOTEXIST: '当マップは存在しません',
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
   SWITCHING: 'マップ切り替え中',
@@ -75,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: '現在ベースマップはありません。ベースマップを切替えてください。',
   OVERRIDE_SYMBOL: '同じIDのシンボルを上書きしますか？', //jp0730
   OVERWRITE: '上書き',
-  CHOOSE_DATASET: 'Please choose dataset',//待翻译
+  CHOOSE_DATASET: 'データセットを選択してください',
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',
@@ -104,15 +104,15 @@ const Prompt: typeof CN.Prompt = {
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',
   NO_SCENE: 'シーン表示無し',
-  ADD_ONLINE_SCENE: 'オンラインシーンの追加', //待翻译
+  ADD_ONLINE_SCENE: 'オンラインシーンの追加', 
 
   PLEASE_ENTER_TEXT: 'テキスト内容を入力してください',
   PLEASE_SELECT_THEMATIC_LAYER: '主題図レイヤーを選択してください',
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: '現在レイヤーにスタイルを設定できません。レイヤーを再度選択してください。',
 
   PLEASE_SELECT_PLOT_LAYER: 'マークレイヤーを選択、または新規してください',
-  DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device', //待翻译
-  GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
+  DONOT_SUPPORT_ARCORE: '当デバイスはARを対応しません',
+  GET_SUPPORTED_DEVICE_LIST: '対応しているデバイスのリストを表示',
   PLEASE_NEW_PLOT_LAYER: '新規マークレイヤーを作成しますか',
   DOWNLOADING_PLEASE_WAIT: 'ダウンロード中、お待ちください',
   SELECT_DELETE_BY_RECTANGLE: '削除オブジェクトを選択してください',
@@ -285,7 +285,7 @@ const Prompt: typeof CN.Prompt = {
   FIELD_ILLEGAL: 'フィールドは無効です',
   PLEASE_SELECT_A_RASTER_LAYER: 'ラスタレイヤーを選択してください',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください', //待翻译
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください', 
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'ヒント:現在レイヤーは変更をサポートしません',
 
   FAILED_TO_CREATE_POINT: 'ポイント追加に失敗',
@@ -322,9 +322,9 @@ const Prompt: typeof CN.Prompt = {
   CREATE: '新規',
   NO_DATASOURCE: '現在のワークスペースにはデータソースがありません。新規データソースを作成してください',
   FLOOR: '階', //jp0730
-  AR_NAVIGATION: 'AR Navi',
-  ARRIVE_DESTINATION: 'Arrived the destination',
-  DEVIATE_NAV_PATH: 'Deviated from the navigation path',
+  AR_NAVIGATION: 'AR ナビ',
+  ARRIVE_DESTINATION: '目的地に到着しました',
+  DEVIATE_NAV_PATH: '計画ルートを外れる',
 
   //导航增量路网
   SELECT_LINE_DATASET: 'ラインデータセットを選択してください',
@@ -378,25 +378,23 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is not visible and cannot be set to the current layer', // 待翻译
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: '非表示レイヤーを現在レイヤーに設定できません。', 
 
   //三维AR管线相关
   FILE_NOT_EXISTS: 'データが存在しません。サンプルデータをダウンロードしてください',
   MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
-  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
-  TRACKING_LOADING: 'Tracking...',
+  IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?', 
+  TRACKING_LOADING: 'トラキング...',
 
-  // 专题制图加载/输出xml
-  SUCCESS: 'Successful operation',
-  FAILED: 'Operation failed',
-  NO_TEMPLATE: 'No templates available',
-  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
-  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
+  // 专题制图加载/输出xml 
+  SUCCESS: '操作に成功しました',
+  FAILED: '操作に失敗しました',
+  NO_TEMPLATE: '使用可能なテンプレートはありません',
+  CONFIRM_LOAD_TEMPLATE: 'テンプレートをロードしますか?',
+  CONFIRM_OUTPUT_TEMPLATE: 'マップを出力しますか?',
 }
 
 export { Prompt }

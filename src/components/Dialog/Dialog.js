@@ -15,6 +15,7 @@ import {
 import { scaleSize } from '../../utils'
 
 import styles from './styles'
+import { getLanguage } from '../../language/index'
 
 export default class Dialog extends PureComponent {
   props: {
@@ -53,8 +54,8 @@ export default class Dialog extends PureComponent {
   static defaultProps = {
     type: 'non_modal',
     activeOpacity: 0.8,
-    cancelBtnTitle: '取消',
-    confirmBtnTitle: '确定',
+    cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+    confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
     showBtns: true,
     confirmBtnVisible: true,
     cancelBtnVisible: true,

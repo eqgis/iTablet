@@ -12,4 +12,5 @@
 
 @interface NativeMethod : NSObject<RCTBridgeModule>
 + (NSMutableArray *)getTemplate:(NSString *)path;
++ (NSMutableArray *)getTemplateList:(NSString *)path;
 @end

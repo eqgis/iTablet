@@ -36,8 +36,8 @@ const Profile: typeof CN.Profile = {
   MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
   MY_GUIDE_NEXT:'Next',//待翻译
   MY_GUIDE_SKIP:'Skip',//待翻译
-  ANALYST_GUIDE:'Registration and projection conversion',//待翻译
-  PROCESS_GUIDE:'Network analysis and vector analysis',//待翻译
+  ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
+  PROCESS_GUIDE:'Registration and projection conversion',//待翻译
   CHOOSE_TYPE:'Choose Launch Type',//待翻译
   CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
   SELECT_DATASET:'Check to add dataset',//待翻译

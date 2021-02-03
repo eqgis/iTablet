@@ -32,6 +32,49 @@ RCT_REMAP_METHOD(getTemplates, getTemplatesByUserName:(NSString *)userName strMo
   }
 }
 
+RCT_REMAP_METHOD(getTemplatesList, getTemplatesListByUserName:(NSString *)userName strModule:(NSString *)strModule resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+  @try {
+    if (userName == nil || [userName isEqualToString:@""]) {
+      userName = @"Customer";
+    }
+    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+    
+    if(strModule == nil || [strModule isEqualToString:@""]){
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+    }else {
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@%@", @"/Documents/iTablet/User/",userName, @"/Data/", strModule];
+    }
+    
+    NSMutableArray* templateList = [NativeMethod getTemplateList:templatePath];
+    
+    resolve(templateList);
+  } @catch (NSException *exception) {
+    reject(@"zipFile", exception.reason, nil);
+  }
+}
+
++ (NSMutableArray *)getTemplateList:(NSString *)path {
+  NSMutableArray* templateList = [NSMutableArray array];
+  BOOL flag = YES;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&flag]) {
+    NSArray* tempsArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+    NSMutableDictionary* templateInfo = [[NSMutableDictionary alloc] init];
+    
+    for (NSString* fileName in tempsArray) {
+      if (templateInfo == nil) {
+        templateInfo = [[NSMutableDictionary alloc] init];
+      }
+        NSString* tempPath = [path stringByAppendingPathComponent:fileName];
+        NSString* name = [fileName stringByDeletingPathExtension];
+        [templateInfo setObject:name forKey:@"name"];
+        [templateInfo setObject:tempPath forKey:@"path"];
+        [templateList addObject:templateInfo];
+        templateInfo = nil;
+    }
+  }
+  return templateList;
+}
+
 + (NSMutableArray *)getTemplate:(NSString *)path {
   NSMutableArray* templateList = [NSMutableArray array];
   BOOL flag = YES;

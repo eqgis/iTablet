@@ -118,6 +118,10 @@ export default class MyDataPage extends Component {
     return false
   }
 
+  exporttemplate = async () => {
+    return false
+  }
+
   /**item 文字下方的view */
   renderExtra = () => {
     return null
@@ -137,6 +141,13 @@ export default class MyDataPage extends Component {
       ConstPath.ExternalData + '/' +
       ConstPath.RelativeFilePath.ExportData
     return relativeExportPath
+  }
+
+  getRelativeExportTemplatePath = () => {
+    let relativeExportTemplatePath =
+    ConstPath.ExternalData + '/' +
+    'Collection/'
+  return relativeExportTemplatePath
   }
 
   //页面popup选项，不会合并公共选项
@@ -314,7 +325,7 @@ export default class MyDataPage extends Component {
 
       this.setLoading(
         true,
-        type === 'local'
+        type === 'local' || type === 'template'
           ? getLanguage(GLOBAL.language).Prompt.EXPORTING
           : getLanguage(GLOBAL.language).Prompt.SHARING,
       )
@@ -352,6 +363,9 @@ export default class MyDataPage extends Component {
         case 'friend':
           result = await this.shareToFriend(fileName)
           break
+        case 'template':
+          result = await this.exportData(fileName,false,true)//导出地图为模版
+          break
         default:
           result = false
           break
@@ -360,7 +374,7 @@ export default class MyDataPage extends Component {
       if (result !== undefined) {
         if (result) {
           Toast.show(
-            type === 'local'
+            type === 'local' || type === 'template'
               ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
               : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
           )
@@ -369,7 +383,7 @@ export default class MyDataPage extends Component {
           }
         } else {
           Toast.show(
-            type === 'local'
+            type === 'local' || type === 'template'
               ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
               : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
           )
@@ -377,7 +391,7 @@ export default class MyDataPage extends Component {
       }
     } catch (error) {
       Toast.show(
-        type === 'local'
+        type === 'local' || type === 'template'
           ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
           : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
       )
@@ -1197,9 +1211,17 @@ export default class MyDataPage extends Component {
         {this.renderSimpleDialog()}
         {this.renderInputDialog()}
         <ModalBtns
+          type = {this.type}
           ref={ref => {
             this.ShareModal = ref
           }}
+          actionOftemplateLocal={
+            this.state.shareToLocal
+              ? () => {
+                this._onShareData('template')
+              }
+              : undefined
+          }
           actionOfLocal={
             this.state.shareToLocal
               ? () => {

@@ -2,6 +2,7 @@ import { MyDataPage } from '../component'
 import DataHandler from '../DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
+import RNFS from 'react-native-fs'
 
 class MyMap extends MyDataPage {
   constructor(props) {
@@ -46,11 +47,11 @@ class MyMap extends MyDataPage {
     let dataPath = this.itemInfo.item.path.split('Data')
     let animationPath = await FileTools.appendingHomeDirectory(
       dataPath[0] +
-        'Data/Animation/' +
-        this.itemInfo.item.name.substring(
-          0,
-          this.itemInfo.item.name.lastIndexOf('.'),
-        ),
+      'Data/Animation/' +
+      this.itemInfo.item.name.substring(
+        0,
+        this.itemInfo.item.name.lastIndexOf('.'),
+      ),
     )
     let path = animationPath
     result && (await FileTools.deleteFile(path))
@@ -58,7 +59,39 @@ class MyMap extends MyDataPage {
     return result
   }
 
-  exportData = async (name, exportToTemp = true) => {
+  //新增参数template判断导出地图是否为模版
+  exportData = async (name, exportToTemp = true, template = false) => {
+    if (!this.itemInfo) return false
+    let mapPath = await FileTools.appendingHomeDirectory(
+      this.itemInfo.item.path,
+    )
+    let mapExpPath = mapPath.substring(0, mapPath.lastIndexOf('.')) + '.exp'
+
+    let info = await RNFS.readFile(mapExpPath)
+    let infoJson = JSON.parse(info)
+    let Teminfo = infoJson.Template
+
+    if (Teminfo) {
+      let homePath = await FileTools.appendingHomeDirectory()
+      let filePath = homePath + '/iTablet/User/' + Teminfo
+      let toPath = homePath +
+        ConstPath.ExternalData + '/' +
+        ConstPath.RelativeFilePath.ExportData +
+        name
+      if (template) {
+        toPath = homePath +
+          ConstPath.ExternalData + '/' +
+          'Collection/' +
+          name
+      }
+      await FileTools.createDirectory(toPath)
+      await FileTools.copyFile(filePath, toPath + Teminfo.substring(Teminfo.lastIndexOf('/')), true)
+    }else {
+      if (template) {
+        return false
+      }
+    }
+
     let mapName = name
     let homePath = await FileTools.appendingHomeDirectory()
     let path =
@@ -69,6 +102,16 @@ class MyMap extends MyDataPage {
       '/' +
       mapName +
       '.smwu'
+    if (template) {
+      path =
+        homePath +
+        ConstPath.ExternalData + '/' +
+        'Collection/' +
+        mapName +
+        '/' +
+        mapName +
+        '.smwu'
+    }
     let zipPath
     if (exportToTemp) {
       let tempPath = homePath + this.getRelativeTempPath()
@@ -81,6 +124,9 @@ class MyMap extends MyDataPage {
       this.exportPath = zipPath
     } else {
       let exportPath = homePath + this.getRelativeExportPath()
+      if (template) {
+        exportPath = homePath + this.getRelativeExportTemplatePath()
+      }
       let availableName = await this._getAvailableFileName(
         exportPath,
         name,
@@ -88,15 +134,24 @@ class MyMap extends MyDataPage {
       )
       zipPath = exportPath + availableName
       this.exportPath = this.getRelativeExportPath() + availableName
+      if (template) {
+        this.exportPath = ConstPath.ExternalData + '/' +
+        'Collection/' +
+        mapName +
+        '/' +
+        mapName +
+        '.smwu'
+      }
     }
 
     let exportResult = false
     await this.props.exportWorkspace(
-      { maps: [mapName], outPath: path, isOpenMap: true, zipPath },
+      { maps: [mapName], outPath: path, isOpenMap: true, zipPath, template: template },
       result => {
         exportResult = result
       },
     )
+
     return exportResult
   }
 }

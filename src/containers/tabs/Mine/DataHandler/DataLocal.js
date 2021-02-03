@@ -22,9 +22,9 @@ async function getLocalData(user, type) {
       dataList = await _getPlotDataList(user)
       break
     case 'TEMPLAE_COLLECTING':
-      dataList = await NativeMethod.getTemplates(
+      dataList = await NativeMethod.getTemplatesList(
         user.userName,
-        ConstPath.Module.Collection,
+        'Template',
       )
       break
     case 'AIMODEL':

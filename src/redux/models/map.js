@@ -21,31 +21,31 @@ let isExporting = false
 // Actions
 // --------------------------------------------------
 // 地图导出为xml
-export const mapToXml = (params, cb = () =>{}) => async () => {
-  try{
-    const {mapName = 'DefaultMap'} = params
+export const mapToXml = (params, cb = () => { }) => async () => {
+  try {
+    const { mapName = 'DefaultMap' } = params
     const fileDir = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.Module.XmlTemplate)
     let exists = await fs.exists(fileDir)
-    if(!exists){
+    if (!exists) {
       await fs.mkdir(fileDir)
     }
     const xml = await SMap.mapToXml()
     let xmlFileName = `/${mapName}_template.xml`
     let postFix = 0
-    while(await fs.exists(fileDir + xmlFileName)){
+    while (await fs.exists(fileDir + xmlFileName)) {
       xmlFileName = `/${mapName}_template_${++postFix}.xml`
     }
-    await fs.writeFile(fileDir + xmlFileName,xml,'utf8')
+    await fs.writeFile(fileDir + xmlFileName, xml, 'utf8')
     cb && cb(true)
     return true
-  }catch (e){
+  } catch (e) {
     cb && cb(false)
     return false
   }
 }
 // 加载xml地图
-export const mapFromXml = (params, cb = () =>{}) => async () => {
-  try{
+export const mapFromXml = (params, cb = () => { }) => async () => {
+  try {
     const { xmlFile } = params
     const filePath = await FileTools.appendingHomeDirectory(
       `${ConstPath.ExternalData}/${ConstPath.Module.XmlTemplate}/${xmlFile}.xml`)
@@ -53,13 +53,13 @@ export const mapFromXml = (params, cb = () =>{}) => async () => {
     let result = await SMap.mapFromXml(await fs.readFile(filePath))
     cb && cb(result)
     return result
-  }catch (e){
+  } catch (e) {
     cb && cb(false)
     return false
   }
 }
 // 打开工作空间
-export const openWorkspace = (params, cb = () => {}) => async dispatch => {
+export const openWorkspace = (params, cb = () => { }) => async dispatch => {
   try {
     const result = await SMap.openWorkspace(params)
     await dispatch({
@@ -79,7 +79,7 @@ export const openWorkspace = (params, cb = () => {}) => async dispatch => {
 }
 
 // 关闭工作空间
-export const closeWorkspace = (cb = () => {}) => async dispatch => {
+export const closeWorkspace = (cb = () => { }) => async dispatch => {
   try {
     // await SMap.closeDatasource()
     const result = await SMap.closeWorkspace()
@@ -100,7 +100,7 @@ export const closeWorkspace = (cb = () => {}) => async dispatch => {
 }
 
 // 打开地图
-export const openMap = (params, cb = () => {}) => async (
+export const openMap = (params, cb = () => { }) => async (
   dispatch,
   getState,
 ) => {
@@ -156,7 +156,7 @@ export const openMap = (params, cb = () => {}) => async (
 }
 
 // 保存地图地图
-export const saveMap = (params = {}, cb = () => {}) => async (
+export const saveMap = (params = {}, cb = () => { }) => async (
   dispatch,
   getState,
 ) => {
@@ -189,9 +189,8 @@ export const saveMap = (params = {}, cb = () => {}) => async (
         params.addition,
         params.isNew,
       )
-      path = `${ConstPath.UserPath + userName}/${
-        ConstPath.RelativePath.Map
-      }${mapName}.xml`
+      path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map
+        }${mapName}.xml`
     } else {
       await SMap.saveMap(params.mapName, false, false)
     }
@@ -223,7 +222,7 @@ export const saveMap = (params = {}, cb = () => {}) => async (
 }
 
 // 关闭地图
-export const closeMap = (cb = () => {}) => async dispatch => {
+export const closeMap = (cb = () => { }) => async dispatch => {
   try {
     if (GLOBAL.coworkMode) {
       await SMap.removeUserCallout()
@@ -253,7 +252,7 @@ export const closeMap = (cb = () => {}) => async dispatch => {
 }
 
 // 获取当前工作空间的地图列表
-export const getMaps = (cb = () => {}) => async dispatch => {
+export const getMaps = (cb = () => { }) => async dispatch => {
   try {
     const maps = await SMap.getMaps()
     await dispatch({
@@ -270,7 +269,7 @@ export const getMaps = (cb = () => {}) => async dispatch => {
   }
 }
 
-export const setLatestMap = (params, cb = () => {}) => async dispatch => {
+export const setLatestMap = (params, cb = () => { }) => async dispatch => {
   await dispatch({
     type: SET_LATEST_MAP,
     payload: params || {},
@@ -278,7 +277,7 @@ export const setLatestMap = (params, cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setCurrentMap = (params,extData, cb = () => {}) => async dispatch => {
+export const setCurrentMap = (params, extData, cb = () => { }) => async dispatch => {
   // let result = params && await SMap.importWorkspace(params)
   await dispatch({
     type: SET_CURRENT_MAP,
@@ -289,7 +288,7 @@ export const setCurrentMap = (params,extData, cb = () => {}) => async dispatch =
 }
 
 // 导出模版
-export const exportWorkspace = (params, cb = () => {}) => async (
+export const exportWorkspace = (params, cb = () => { }) => async (
   dispatch,
   getState,
 ) => {
@@ -310,12 +309,12 @@ export const exportWorkspace = (params, cb = () => {}) => async (
     let parentPath = ''
     let { zipPath } = params
     let exportResult = false
+    let template = params.template
     if (!path) {
       fileName = workspace.server.substr(workspace.server.lastIndexOf('/') + 1)
       fileNameWithoutExtension = fileName.substr(0, fileName.lastIndexOf('.'))
       parentPath = await FileTools.appendingHomeDirectory(
-        `${ConstPath.UserPath + userName}/${
-          ConstPath.RelativePath.Temp
+        `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Temp
         }${fileNameWithoutExtension}`,
       )
       path = `${parentPath}/${fileName}`
@@ -344,19 +343,29 @@ export const exportWorkspace = (params, cb = () => {}) => async (
       }
     }
     // console.warn(exportResult)
-    // 压缩工作空间
-    if (exportResult) {
-      zipPath = zipPath || `${parentPath}.zip`
-      zipResult = await FileTools.zipFile(parentPath, zipPath)
+    if (!template) {
+      // 压缩工作空间
+      if (exportResult) {
+        zipPath = zipPath || `${parentPath}.zip`
+        zipResult = await FileTools.zipFile(parentPath, zipPath)
+      }
+      // 删除导出的工作空间
+      await FileTools.deleteFile(parentPath)
+      isExporting = false
+      cb && cb(exportResult && zipResult, zipPath)
+      return {
+        result: exportResult && zipResult,
+        zipPath,
+      }
+    } else {
+      isExporting = false
+      cb && cb(exportResult)
+      return {
+        result: exportResult,
+        zipPath,
+      }
     }
-    // 删除导出的工作空间
-    await FileTools.deleteFile(parentPath)
-    isExporting = false
-    cb && cb(exportResult && zipResult, zipPath)
-    return {
-      result: exportResult && zipResult,
-      zipPath,
-    }
+
   } catch (e) {
     isExporting = false
     if (!exportResult) {
@@ -374,7 +383,7 @@ export const exportWorkspace = (params, cb = () => {}) => async (
 }
 
 // 导出工作空间
-export const exportmap3DWorkspace = (params, cb = () => {}) => async (
+export const exportmap3DWorkspace = (params, cb = () => { }) => async (
   dispatch,
   getState,
 ) => {
@@ -388,8 +397,7 @@ export const exportmap3DWorkspace = (params, cb = () => {}) => async (
     }
     isExporting = true
     const path = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Temp}${
-        params.name
+      `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Temp}${params.name
       }`,
     )
 
@@ -437,7 +445,7 @@ export const importSceneWorkspace = params => async (dispatch, getState) => {
   }
 }
 
-export const setBaseMap = (params, cb = () => {}) => async dispatch => {
+export const setBaseMap = (params, cb = () => { }) => async dispatch => {
   await dispatch({
     type: SET_BASEMAP,
     payload: params || {},

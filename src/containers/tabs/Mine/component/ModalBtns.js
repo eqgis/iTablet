@@ -17,11 +17,16 @@ export default class ModalBtns extends Component {
     actionOfFriend: () => {},
     showCancel: Boolean,
     style: Object,
+    actionOftemplateLocal: () => {}, //分享地图模版 add jiakai
+    type: Object,
   }
   constructor(props) {
     super(props)
     this.showCancel =
       this.props.showCancel !== undefined ? this.props.showCancel : true
+    this.state = {
+      shareMap: true,//分享地图分为地图和模版两种 add jiakai
+    }
   }
 
   setVisible = visible => {
@@ -31,7 +36,7 @@ export default class ModalBtns extends Component {
   render() {
     return (
       <PopView ref={ref => (this.PopView = ref)}>
-        <View style={[styles.bottomBtns, { width: '100%' }, this.props.style]}>
+        {this.state.shareMap && <View style={[styles.bottomBtns, { width: '100%' }, this.props.style]}>
           {this.props.actionOfLocal && (
             <MTBtn
               key={'lcoal'}
@@ -40,7 +45,11 @@ export default class ModalBtns extends Component {
               image={getThemeAssets().share.local}
               imageStyle={styles.headerBtn}
               onPress={() => {
-                this.props.actionOfLocal && this.props.actionOfLocal()
+                if(this.props.type === 'MAP'){
+                  this.setState({ shareMap: false })
+                }else{
+                  this.props.actionOfLocal && this.props.actionOfLocal()
+                }    
               }}
             />
           )}
@@ -118,7 +127,53 @@ export default class ModalBtns extends Component {
           )}
           {!this.showCancel && <View style={styles.button} />}
           <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
-        </View>
+        </View>}
+
+
+        {!this.state.shareMap && <View style={[styles.bottomBtns, { width: '100%' }, this.props.style]}>
+          {
+            <MTBtn
+              key={'lcoal'}
+              title={getLanguage(GLOBAL.language).Profile.MAP}
+              style={styles.button}
+              image={getThemeAssets().mine.my_map}
+              imageStyle={styles.headerBtn}
+              onPress={() => {
+                this.setState({ shareMap: true })
+                this.props.actionOfLocal && this.props.actionOfLocal()
+              }}
+            />
+          }
+          {
+            <MTBtn
+              key={'wechat'}
+              title={getLanguage(GLOBAL.language).Profile.TEMPLATE}
+              style={styles.button}
+              image={getThemeAssets().mine.icon_my_template}
+              imageStyle={styles.headerBtn}
+              onPress={() => {
+                this.setState({ shareMap: true })
+                this.props.actionOftemplateLocal && this.props.actionOftemplateLocal()
+              }}
+            />
+          }
+          {<View style={styles.button} />}
+          {<View style={styles.button} />}
+          {
+            <MTBtn
+              key={'cancel'}
+              title={getLanguage(GLOBAL.language).Prompt.CANCEL}
+              style={styles.button}
+              image={getThemeAssets().mapTools.icon_tool_cancel}
+              imageStyle={styles.headerBtn}
+              onPress={() => {
+                this.setState({ shareMap: true })
+                this.setVisible(false)
+                this.props.cancel && this.props.cancel()
+              }}
+            />
+          }
+        </View>}
       </PopView>
     )
   }

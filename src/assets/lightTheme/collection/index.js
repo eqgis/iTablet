@@ -8,7 +8,7 @@ const icon_analysis_critical_element = require('./icon_analysis_critical_element
 const icon_ar_frame = require('./icon_ar_frame.png')
 const icon_collect_free_line = require('./icon_collect_free_line.png')
 const icon_collect_point = require('./icon_collect_point.png')
-
+const icon_ar_effect_download = require('./ar_effect_download.png')
 export default {
   icon_collection_change,
 
@@ -20,4 +20,5 @@ export default {
   icon_ar_frame,
   icon_collect_free_line,
   icon_collect_point,
+  icon_ar_effect_download,
 }

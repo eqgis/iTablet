@@ -1445,11 +1445,12 @@ export default class LayerAttribute extends React.Component {
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),
           headerTitleViewStyle: {
-            justifyContent: 'flex-start',
-            marginLeft: scaleSize(90),
+            // justifyContent: 'flex-start',
+            // marginLeft: scaleSize(90),
           },
           withoutBack: true,
           headerRight: this._renderHeader(),
+          isResponseHeader: true,
         }}
         bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
         style={styles.container}

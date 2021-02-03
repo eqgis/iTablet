@@ -663,6 +663,8 @@ export default class ProjectionTransformationPage extends Component {
               btnClick={this.confirm}
             />
           ),
+          // 部分界面国际化下标题过长遮盖
+          isResponseHeader: true,
         }}
       >
         <ScrollView style={{ backgroundColor: color.background }}>

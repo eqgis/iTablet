@@ -3432,8 +3432,9 @@ export default class MapView extends React.Component {
           title: this.state.mapTitle,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
-            justifyContent: 'flex-start',
-            marginLeft: scaleSize(90),
+            // justifyContent: 'flex-start',
+            // marginLeft: scaleSize(90),
+            textAlign: 'left',
           },
           headerStyle: {
             right:
@@ -3451,6 +3452,7 @@ export default class MapView extends React.Component {
           type: 'fix',
           headerCenter: this.renderSearchBar(),
           headerRight: this.renderHeaderRight(),
+          isResponseHeader: true,
         }}
         bottomBar={
           // this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&

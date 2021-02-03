@@ -129,4 +129,21 @@ export default StyleSheet.create({
     color: '#fa575c',
     left: 38,
   },
+  responseHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  responseHeaderLeft: {
+    flex: 0,
+    marginLeft: scaleSize(20),
+  },
+  responseHeaderRight: {
+    flex: 0,
+    paddingHorizontal: scaleSize(10),
+  },
+  responseHeaderTitle: {
+    flex: 1,
+    // width: scaleSize(240),
+  },
 })

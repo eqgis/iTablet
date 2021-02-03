@@ -99,10 +99,6 @@ async function importPlotLib(item) {
 async function importWorkspace(item) {
   try {
     const { filePath } = item
-    const index = filePath.lastIndexOf('/')
-    const path = filePath.substring(0, index)
-    const snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
-    await SMap.copyNaviSnmFile(snmFiles)
     const type = _getWorkspaceType(filePath)
     const data = {
       server: filePath,

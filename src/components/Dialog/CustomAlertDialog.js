@@ -9,6 +9,7 @@ import { View, Text, Image } from 'react-native'
 import Dialog from './Dialog'
 import styles from './styles'
 import { scaleSize } from '../../utils'
+import { getLanguage } from '../../language/index'
 
 export default class CustomAlertDialog extends PureComponent {
   props: {
@@ -25,8 +26,8 @@ export default class CustomAlertDialog extends PureComponent {
   static defaultProps = {
     title: '',
     value: '',
-    confirmBtnTitle: '是',
-    cancelBtnTitle: '否',
+    confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.YES,
+    cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.NO,
   }
 
   constructor(props) {

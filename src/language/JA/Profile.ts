@@ -30,7 +30,7 @@ const Profile: typeof CN.Profile = {
    MY_GUIDE: '「データ」をインポートした後\ n、ホームページモジュールで開いて表示できます',
    MY_GUIDE_KNOW:'了解しました',
    MY_GUIDE_SLIDE: '上にスライドして詳細を表示',
-   MY_GUIDE_SLIDE_LAND:''左にスライドして詳細を表示',
+   MY_GUIDE_SLIDE_LAND:'左にスライドして詳細を表示',
    EFFECT_GUIDE:'AR特殊効果をシーンに追加',
    LAUNCH_GUIDE:'ビデオ、テキスト、写真、Webページ、その他の情報をシーンに入れる',
    MEASURE_GUIDE:'距離、高さ、および面積を測定する',

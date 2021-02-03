@@ -113,10 +113,6 @@ export default class Home extends Component {
   _onImportWorkspace = async filePath => {
     try {
       if (filePath !== undefined) {
-        let index = filePath.lastIndexOf('/')
-        let path = filePath.substring(0, index)
-        let snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
-        await SMap.copyNaviSnmFile(snmFiles)
         // if (isFirstImportWorkspace === true) {
         //   this.container && this.container.setLoading(true, '导入数据中...')
         // }

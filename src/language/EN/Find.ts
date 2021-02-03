@@ -25,17 +25,17 @@ const Find: typeof CN.Find = {
   NO_DATA: 'Data no found',
   NETWORK_ERROR: 'Network error, please try again later',
   NO_MORE_DATA: 'No more data found',
-  DOWNLOADED: 'Download successful. You can import this data at Import',
+  DOWNLOADED: 'Data was downloaded successfully. You can import this data at Import',
 
-  LABORATORY: 'Laboratory', // 待翻译
+  LABORATORY: 'Laboratory',
   ONLINE_COWORK: 'Online Cowork',
-  COWORK_LOGIN: 'Please login SuperMap Online',
-  APPLET_DOWNLOADED_RELOAD: 'Download completed, reload the loadable applet',
+  COWORK_LOGIN: 'Please log in to SuperMap Online',
+  APPLET_DOWNLOADED_RELOAD: 'Successfully downloaded. Please reload the applet',
   RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset back to the previous version?', // 待翻译
-  APPLET_OLD_VERSION_ALREADY: "It's the original version", // 待翻译
-  APPLET_RESET_FAILED: 'Failed to reset', // 待翻译
-  APPLET_RESETTING: 'Rest', // 待翻译
+  APPLET_RESET_OLD_VERSION: 'Whether to reset to the previous version?', 
+  APPLET_OLD_VERSION_ALREADY: "The current version is the original version",
+  APPLET_RESET_FAILED: 'Failed to reset',
+  APPLET_RESETTING: 'Rest',
 
   PUBLIC_MAP_INFO: 'Provides public services published by users',
   PUBLIC_DATA_INFO: 'Provides various public data published by users',
@@ -52,7 +52,7 @@ const Find: typeof CN.Find = {
   LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.',
   BETA_TIPS: 'Tips: This is only a experimental beta feature.',
   LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
-  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map。', // 待翻译
+  LAB_ONLINE_COWORK_INFO: 'Position：AR：Explore-Online Cowork\nOnline Cowork，You can work with your team on maps.',
 }
 
 export { Find }

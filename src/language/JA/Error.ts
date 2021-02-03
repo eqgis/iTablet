@@ -2,15 +2,15 @@ import CN from '../CN'
 
 // 待翻译
 const RequestError: typeof CN.RequestError = {
-  ERROR_400: 'Bad Request',
-  ERROR_401: 'Unauthorized',
-  // ERROR_402: 'Payment Required',
-  // ERROR_403: 'Forbidden',
-  ERROR_404: 'Not Found',
+  ERROR_400: 'リクエストパラメータが正しくありません',
+  ERROR_401: '権限がありません',
+  // ERROR_402: 'パラメータ',
+  // ERROR_403: 'パラメータ',
+  ERROR_404: 'リクエストに失敗しました',
   // ERROR_405: 'Method Not Allowed',
   // ERROR_406: 'Not Acceptable',
-  ERROR_407: 'Proxy Authentication Required',
-  ERROR_408: 'Request Timeout',
+  ERROR_407: '権限がありません',
+  ERROR_408: 'リクエストがタイムアウトしました',
 }
 
 export {

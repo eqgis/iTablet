@@ -396,7 +396,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   PLEASE_CONNECT_TO_ISERVER: 'Please connect to iServer',
   PLEASE_CHOOSE_INPUT_METHOD: 'Please choose input method',
   PLEASE_CHOOSE_DATASET: 'Please choose dataset',
-  LOGIN_ISERVER_FAILED: 'Failed to connect iServer, please check ip, username and password',
+  LOGIN_ISERVER_FAILED: 'Failed to connect iServer, please check ip, username, and password',
   BEING_ANALYZED: 'Being analyzed',
   ANALYZING_FAILED: 'Analyzing failed',
   LOADING_MODULE: 'Module Loading',
@@ -412,7 +412,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'Please set 2 control points',
   REGISTRATION_OFFSET_POINTS: 'Please set 1 control point',
   REGISTRATION_POINTS_NUMBER_ERROR: 'The number of control points does not match',
-  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
+  ANALYSIS_SUCCESS_TOWATCH: 'The analysis was finished successfully. Do you want to check the results?',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

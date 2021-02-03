@@ -27,22 +27,22 @@ const Profile: typeof CN.Profile = {
   SELECT_MODEL: 'Select Model',
 
   // 我的  提示语
-  MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
-  MY_GUIDE_KNOW: 'Know it',//待翻译
-  MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
-  MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
-  EFFECT_GUIDE:'Add effect to scene',//待翻译
-  LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
-  MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
-  MY_GUIDE_NEXT:'Next',//待翻译
-  MY_GUIDE_SKIP:'Skip',//待翻译
-  ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
-  PROCESS_GUIDE:'Registration and projection conversion',//待翻译
-  CHOOSE_TYPE:'Choose Launch Type',//待翻译
-  CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
-  SELECT_DATASET:'Check to add dataset',//待翻译
-  ADD_SELECT_DATASET:'Add Dataset',//待翻译
-  MOVE_BROWSING:'"Move left and right" to browse complete information',//待翻译
+  MY_GUIDE: 'You can open the data from the home module\n after importing it',
+  MY_GUIDE_KNOW: 'Got it',
+  MY_GUIDE_SLIDE: 'Swipe up to get more',
+  MY_GUIDE_SLIDE_LAND:'Swipe left to get more',
+  EFFECT_GUIDE:'Add AR special effects on scene',
+  LAUNCH_GUIDE:'Project information like videos, text, pictures, and webs to scene',
+  MEASURE_GUIDE:'Measure the distance, height, and area',
+  MY_GUIDE_NEXT:'Next',
+  MY_GUIDE_SKIP:'Skip',
+  ANALYST_GUIDE:'You can perform network analysis and vector analysis on data',
+  PROCESS_GUIDE:'You can perform registration and projection transformation',
+  CHOOSE_TYPE:'Data Type',
+  CHOOSE_MEASURE_TYPE:'Measure Type',
+  SELECT_DATASET:'Check the checkbox Add Dataset',
+  ADD_SELECT_DATASET:'Add Data',
+  MOVE_BROWSING:'"Swipe left or right" to browse complete information',
 
   // 我的——登录
   LOGIN: 'Login',
@@ -167,13 +167,13 @@ const Profile: typeof CN.Profile = {
   // 关于
   ABOUT: 'About',
   SERVICE_HOTLINE: 'Service Hotline',
-  SALES_CONSULTATION: 'Consultation',
+  SALES_CONSULTATION: 'Consult',
   BUSINESS_WEBSITE: 'Business Website',
   SERVICE_AGREEMENT: 'Service Agreement',
   PRIVACY_POLICY: 'Privacy Policy',
   HELP_MANUAL: 'Help Manual',
-  NOVICE_GUIDE: 'Novice Guide',//待翻译
-  START_GUIDE:'Start Guide',//待翻译
+  NOVICE_GUIDE: 'Novice Guide',
+  START_GUIDE:'Enable Guide',
 
   MAP_ONLINE: 'Online Map',
   MAP_2D: '2D Map',
@@ -228,7 +228,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LANGUAGE_AUTO: 'Auto',
   SETTING_LOCATION_DEVICE: 'Location Device',
   SETTING_LOCATION_LOCAL: 'This device',
-  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
+  SETTING_CLEAR_CACHE: 'Clear Cache',
 
   // 许可
   LICENSE: 'License',

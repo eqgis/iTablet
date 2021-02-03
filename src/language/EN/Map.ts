@@ -19,8 +19,8 @@ const Map_Label: typeof CN.Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: 'Current Map',
-  CURRENT_SCENCE: 'Current', // 待翻译
-  CURRENT_MODEL: 'Current', // 待翻译
+  CURRENT_SCENCE: 'Current Scene',
+  CURRENT_MODEL: 'Current Model',
   // 地图制图及公共 开始
   START: 'Start',
   START_OPEN_MAP: 'Open Map',
@@ -342,8 +342,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: 'Road\nNetwork',
 
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
-  MAP_AR_DONT_SUPPORT_DEVICE: 'Don not support this device',
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Does not support this device. Please use a version newer than android7',
+  MAP_AR_DONT_SUPPORT_DEVICE: 'Does not support this device',
   MAP_AR_MEASURE: 'AR Measure',
   MAP_AR_ANALYZE: 'AR Analyze',
   MAP_AR_MAPPING: 'AR Survey',
@@ -361,7 +361,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'Target Classify',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'Aggregate Collect',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'Target Collect',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illegally-Park Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Measure Area',
@@ -385,12 +385,12 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: 'Select Point',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'to Current',
   MAP_AR_MOVE_TO_PLANE: 'Select Point',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circular Measure',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circle Measure',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Turn left',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Turn right',
@@ -816,7 +816,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'Map Name',
   SHOW_SCALE: 'Show Scale',
-  SHOW_LOCATION: 'Show Location',//待翻译
+  SHOW_LOCATION: 'Show Location',
   ROTATION_GESTURE: 'Rotation Gesture',
   PITCH_GESTURE: 'Pitch Gesture',
   ROTATION_ANGLE: 'Rotation Angle',
@@ -949,7 +949,7 @@ const Template: typeof CN.Template = {
   CREATE_CHILD_NODE: 'Create Chile Node',
   INSERT_NODE: 'Insert Node',
 
-  TEMPLATE_ERROR: 'Can not use the Template while the map not be saved',
+  TEMPLATE_ERROR: 'Can not use the Template without saving the map',
 }
 
 export { Map_Main_Menu, Map_Label, Map_Layer, Map_Plotting, Map_Attribute, Map_Setting, Map_Settings, Map_Tools, Map_PoiTitle, Template }

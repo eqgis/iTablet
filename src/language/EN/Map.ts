@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'Display Map',
   START_FROM_START_POINT: 'Starting from the initial point',
   ARRIVE_AT_THE_DESTINATION: 'Arriving at the destination',
-  REAL_NAVIGATION: 'Start Navigation',
+  START_NAVIGATION: 'Start Navigation',
   SIMULATED_NAVIGATION: 'Simulated Navigation',
+  WALK_NAVIGATION: 'Walk Navi', //待翻译
+  CAR_NAVIGATION: 'Car Navi', //待翻译
+  CRUISE_NAVIGATION: 'Cruise', //待翻译
   GO_STRAIGHT: 'Going straight',
   SELECT_START_POINT: 'Select Start',
   SELECT_DESTINATION: 'Select Destination',

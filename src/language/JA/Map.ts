@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'マップの表示',
   START_FROM_START_POINT: '開始点から出発',
   ARRIVE_AT_THE_DESTINATION: '終点に到達',
-  REAL_NAVIGATION: 'ナビ',
+  START_NAVIGATION: 'ナビ',
   SIMULATED_NAVIGATION: 'シミュレーションナビ',
+  WALK_NAVIGATION: 'Walk Navi', //待翻译
+  CAR_NAVIGATION: 'Car Navi', //待翻译
+  CRUISE_NAVIGATION: 'Cruise', //待翻译
   GO_STRAIGHT: '直進',
   SELECT_START_POINT: '起点の選択',
   SELECT_DESTINATION: '終点の選択',

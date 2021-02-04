@@ -486,8 +486,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'عرض الخريطة',
   START_FROM_START_POINT: 'بدءا من النقطة الأولية',
   ARRIVE_AT_THE_DESTINATION: 'الوصول الى المكان المقصود',
-  REAL_NAVIGATION: 'بدء التنقل',
+  START_NAVIGATION: 'بدء التنقل',
   SIMULATED_NAVIGATION: 'التنقل المحاكي',
+  WALK_NAVIGATION: 'Walk Navi', //待翻译
+  CAR_NAVIGATION: 'Car Navi', //待翻译
+  CRUISE_NAVIGATION: 'Cruise', //待翻译
   GO_STRAIGHT: 'الذهاب مباشرة',
   SELECT_START_POINT: 'اختر البداية',
   SELECT_DESTINATION: 'اختر المكان المقصود',

@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'Haritayı Göster',
   START_FROM_START_POINT: 'Başlangıç noktasından başlayarak',
   ARRIVE_AT_THE_DESTINATION: 'Hedefe varma',
-  REAL_NAVIGATION: 'Gezinme Başlat',
+  START_NAVIGATION: 'Gezinme Başlat',
   SIMULATED_NAVIGATION: 'Simüle Edilmiş Gezinme',
+  WALK_NAVIGATION: 'Walk Navi', //待翻译
+  CAR_NAVIGATION: 'Car Navi', //待翻译
+  CRUISE_NAVIGATION: 'Cruise', //待翻译
   GO_STRAIGHT: 'Düz Git',
   SELECT_START_POINT: 'Başlangıç noktası seçin',
   SELECT_DESTINATION: 'Hedefi Seçin',

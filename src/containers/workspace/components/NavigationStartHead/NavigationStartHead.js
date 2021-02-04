@@ -136,7 +136,6 @@ export default class NavigationStartHead extends React.Component {
           // backgroundColor: color.background,
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: scaleSize(20),
           marginHorizontal: scaleSize(5),
         },
         this.state.naviType === type && {
@@ -169,6 +168,9 @@ export default class NavigationStartHead extends React.Component {
       <View style={{
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingHorizontal: scaleSize(5),
+        marginTop: scaleSize(20),
       }}>
         {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButtom(
           0,
@@ -178,10 +180,10 @@ export default class NavigationStartHead extends React.Component {
           3,
           getLanguage().Map_Main_Menu.WALK_NAVIGATION,
         )}
-        {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButtom(
+        {/* {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButtom(
           2,
           getLanguage().Map_Main_Menu.CRUISE_NAVIGATION ,
-        )}
+        )} */}
         {this.renderButtom(
           1,
           getLanguage(GLOBAL.language).Map_Main_Menu.SIMULATED_NAVIGATION,

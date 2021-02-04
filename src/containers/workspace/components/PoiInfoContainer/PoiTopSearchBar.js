@@ -11,6 +11,7 @@ import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
+import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 
 export default class PoiTopSearchBar extends React.Component {
   props: {
@@ -141,6 +142,7 @@ export default class PoiTopSearchBar extends React.Component {
           },
         ]}
       >
+        <HardwareBackHandler onBackPress={this.back}/>
         <Header
           ref={ref => (this.containerHeader = ref)}
           navigation={this.props.navigation}

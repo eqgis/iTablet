@@ -206,6 +206,9 @@ export default class MapView extends React.Component {
     setToolbarStatus: PropTypes.func,
   }
 
+  /** 是否导航中 */
+  isGuiding = false
+
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
@@ -820,6 +823,7 @@ export default class MapView extends React.Component {
   }
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
+    this.isGuiding = false
     SMap.clearPoint()
     this.showFullMap(false)
     this.props.setMapNavigation({ isShow: false, name: '' })
@@ -1244,6 +1248,12 @@ export default class MapView extends React.Component {
           GLOBAL.NAVIGATIONSTARTHEAD?.close()
           return true
         }
+
+        //处理导航中返回键
+        if(this.isGuiding) {
+          return true
+        }
+
         // 删除对象Dialog显示时，返回事件关闭Dialog
         if (
           GLOBAL.removeObjectDialog &&
@@ -3332,6 +3342,9 @@ export default class MapView extends React.Component {
         path={this.state.path}
         pathLength={this.state.pathLength}
         ref={ref => (GLOBAL.NAVIGATIONSTARTBUTTON = ref)}
+        onNavigationStart={() => {
+          this.isGuiding = true
+        }}
       />
     )
   }

@@ -7,6 +7,7 @@
 
 import React, { Component } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 import { color } from '../../../../styles'
 
 export default class IncrementRoadDialog extends Component {
@@ -19,6 +20,11 @@ export default class IncrementRoadDialog extends Component {
     this.state = {
       visible: false,
     }
+  }
+
+  onBack = () => {
+    this.setVisible(false)
+    return true
   }
 
   setVisible = visible => {
@@ -38,6 +44,7 @@ export default class IncrementRoadDialog extends Component {
           this.setVisible(false)
         }}
       >
+        <HardwareBackHandler onBackPress={this.onBack}/>
         {this.props.children}
       </TouchableOpacity>
     )

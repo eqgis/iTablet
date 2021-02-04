@@ -21,6 +21,7 @@ export default class NavigationStartButton extends React.Component {
     path: Array,
     getNavigationDatas: () => {},
     device: Object,
+    onNavigationStart: () => void,
   }
   static defaultProps = {
     pathLength: { length: 0 },
@@ -217,6 +218,7 @@ export default class NavigationStartButton extends React.Component {
           await SMap.indoorNavigation(type)
           this.setVisible(false)
           GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+          this.props.onNavigationStart()
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
         }
@@ -232,6 +234,7 @@ export default class NavigationStartButton extends React.Component {
           await SMap.outdoorNavigation(type)
           this.setVisible(false)
           GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+          this.props.onNavigationStart()
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
         }
@@ -260,6 +263,7 @@ export default class NavigationStartButton extends React.Component {
       GLOBAL.mapController?.setGuiding(true)
       this.setVisible(false)
       GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+      this.props.onNavigationStart()
     } catch (error) {
       this.setVisible(true)
       GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)

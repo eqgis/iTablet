@@ -4,6 +4,7 @@ import Header from '../../../../components/Header'
 
 import { scaleSize, screen } from '../../../../utils'
 import { getLanguage } from '../../../../language'
+import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 
 export default class IncrementRoadView extends React.Component {
   props: {
@@ -14,6 +15,13 @@ export default class IncrementRoadView extends React.Component {
 
   constructor(props) {
     super(props)
+  }
+
+  onBack = () => {
+    if(this.props.headerProps.backAction) {
+      this.props.headerProps.backAction()
+    }
+    return true
   }
 
   render() {
@@ -43,6 +51,7 @@ export default class IncrementRoadView extends React.Component {
           height: '100%',
         }}
       >
+        <HardwareBackHandler onBackPress={this.onBack}/>
         <Header {...this.props.headerProps} />
         <View style={[styles.table, { marginTop: screen.getHeaderHeight() }]}>
           <TouchableOpacity

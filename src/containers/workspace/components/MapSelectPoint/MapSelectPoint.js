@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { View } from 'react-native'
+import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 import Header from '../../../../components/Header'
 import MapSelectPointLatitudeAndLongitude from '../MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
 
@@ -45,6 +46,13 @@ export default class MapSelectPoint extends React.Component {
     this.props.headerProps.openSelectPointMap(wsData, point)
   }
 
+  onBack = () => {
+    if(this.props.headerProps.backAction) {
+      this.props.headerProps.backAction()
+    }
+    return true
+  }
+
   renderBottom() {
     if (
       // this.props.headerProps.selectPointType &&
@@ -84,6 +92,7 @@ export default class MapSelectPoint extends React.Component {
           }}
           pointerEvents={'box-none'}
         >
+          <HardwareBackHandler onBackPress={this.onBack}/>
           <Header
             ref={ref => (this.containerHeader = ref)}
             {...this.props.headerProps}

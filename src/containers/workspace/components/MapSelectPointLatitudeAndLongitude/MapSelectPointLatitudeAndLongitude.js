@@ -24,10 +24,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 
   componentDidMount = async () => {
     let position
-    if(GLOBAL.DATUMPOINTHISTORY){
-      position = GLOBAL.DATUMPOINTHISTORY
-    }
-    else if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
+    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
       position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
     } else {
       position = await SMap.getCurrentPosition()

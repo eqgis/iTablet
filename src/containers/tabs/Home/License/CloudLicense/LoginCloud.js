@@ -298,6 +298,7 @@ class LoginCloud extends Component {
         language={GLOBAL.language}
         login={this.login}
         showRegister={false}
+        useDefaultName={true}
       />
     )
   }

@@ -44,11 +44,12 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(20),
     fontSize: size.fontSize.fontSizeMd,
     color: color.selected_blue,
+    textAlign: 'center',
   },
   newTaskBtn: {
-    position: 'absolute',
-    right: -scaleSize(120),
-    bottom: -scaleSize(40),
+    // position: 'absolute',
+    // right: -scaleSize(120),
+    // bottom: -scaleSize(40),
     backgroundColor: color.contentColorGray,
     height: scaleSize(120),
     width: scaleSize(120),
@@ -483,22 +484,31 @@ class TaskManage extends React.Component<Props, State> {
           >
             <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
             <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_TASK_NULL}</Text>
-            {
-              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
-              <Text style={styles.nullSubTitle}>{getLanguage(GLOBAL.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
-            }
-            {
-              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
-              // <View style={styles.newTaskBtn}/>
-              <ImageButton
-                icon={getThemeAssets().cowork.icon_group_join}
-                iconStyle={{height: scaleSize(80), width: scaleSize(80)}}
-                containerStyle={styles.newTaskBtn}
-                onPress={() => {
-                  this.props.createTask && this.props.createTask()
-                }}
-              />
-            }
+            { this.props.groupInfo.creator === this.props.user.currentUser.userId &&
+              <View style={{
+                flex: 1,
+                flexDirection: 'row',
+              }}>
+                <View style={{
+                  flex: 1,
+                  marginLeft: scaleSize(120),
+                }}>
+                  <Text style={styles.nullSubTitle}>{getLanguage(GLOBAL.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
+                </View>
+                <View style={{
+                  flex: 0,
+                  width: scaleSize(120),
+                }}>
+                  <ImageButton
+                    icon={getThemeAssets().cowork.icon_group_join}
+                    iconStyle={{height: scaleSize(80), width: scaleSize(80)}}
+                    containerStyle={styles.newTaskBtn}
+                    onPress={() => {
+                      this.props.createTask && this.props.createTask()
+                    }}
+                  />
+                </View>
+              </View>}
           </View>
         </View>
         <View style={{flex: 1, backgroundColor: 'black'}} />

@@ -104,8 +104,9 @@ class MyTemplate extends MyDataPage {
       'zip',
     )
     toPath = exportPath + availableName
-    this.exportPath = this.getRelativeExportPath() + availableName
-
+    // 之前没有从根目录起，导致uploadFiles失败 by zcj
+    this.exportPath = homePath + this.getRelativeExportPath() + availableName
+    // this.exportPath = this.getRelativeExportPath() + availableName
     let result = await FileTools.zipFile(fromPath, toPath)
     return result
   }

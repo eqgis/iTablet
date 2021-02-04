@@ -192,40 +192,42 @@ function commit(type) {
       SMap.submit().then(async result => {
         if (result) {
           const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
-
-          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-            let event = ToolbarModule.getData().event
-            let layerType = LayerUtils.getLayerType(event.layerInfo)
-            if (layerType !== 'TAGGINGLAYER') {
-              let friend = GLOBAL.getFriend()
-              friend.onGeometryEdit(
-                event.layerInfo,
-                event.fieldInfo,
-                event.id,
-                event.geometryType,
-              )
+          try {
+            if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+              let event = ToolbarModule.getData().event
+              let layerType = LayerUtils.getLayerType(event.layerInfo)
+              if (layerType !== 'TAGGINGLAYER') {
+                let friend = GLOBAL.getFriend()
+                friend.onGeometryEdit(
+                  event.layerInfo,
+                  event.fieldInfo,
+                  event.id,
+                  event.geometryType,
+                )
+              }
             }
-          }
 
-          if (
-            _params.selection[0] &&
-            _params.selection[0].layerInfo &&
-            (await SMediaCollector.isTourLayer(
-              _params.selection[0].layerInfo.name,
-            ))
-          ) {
-            // 编辑旅行轨迹对象后，更新位置
-            await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
-          } else if (
-            _params.selection?.[0]?.layerInfo?.name &&
-            SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
-          ) {
-            // 编辑多媒体对象后，更新位置
-            let geoID = _params.selection[0].ids[0] || -1
-            geoID > -1 &&
-            (await SMediaCollector.updateMedia(_params.selection[0].layerInfo.name, [geoID]))
+            if (
+              _params.selection[0] &&
+              _params.selection[0].layerInfo &&
+              (await SMediaCollector.isTourLayer(
+                _params.selection[0].layerInfo.name,
+              ))
+            ) {
+              // 编辑旅行轨迹对象后，更新位置
+              await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
+            } else if (
+              _params.selection?.[0]?.layerInfo?.name &&
+              SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
+            ) {
+              // 编辑多媒体对象后，更新位置
+              let geoID = _params.selection[0].ids[0] || -1
+              geoID > -1 &&
+              (await SMediaCollector.updateMedia(_params.selection[0].layerInfo.name, [geoID]))
+            }
+          } catch(e) {
+            //
           }
-
           _params.setToolbarVisible(true, type, {
             isFullScreen: false,
             // height: 0,

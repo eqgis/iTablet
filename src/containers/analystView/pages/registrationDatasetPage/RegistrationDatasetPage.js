@@ -352,6 +352,7 @@ export default class RegistrationDatasetPage extends Component {
           borderLeftColor: 'transparent',
           borderRightWidth: 8,
           borderRightColor: 'transparent',
+          marginBottom: scaleSize(45),
         }}
       />
     )
@@ -371,7 +372,9 @@ export default class RegistrationDatasetPage extends Component {
           type={'BLUE'}
           style={{
             width: '50%',
-            height: scaleSize(60),
+            // height: scaleSize(60),
+            height: "auto",
+            paddingVertical: scaleSize(10),
             marginTop: scaleSize(30),
             marginBottom: scaleSize(30),
           }}

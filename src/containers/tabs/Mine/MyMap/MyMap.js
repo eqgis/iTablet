@@ -71,6 +71,9 @@ class MyMap extends MyDataPage {
     let infoJson = JSON.parse(info)
     let Teminfo = infoJson.Template
 
+    // 存放模版的文件目录
+    let collectionDirName = name
+
     if (Teminfo) {
       let homePath = await FileTools.appendingHomeDirectory()
       let filePath = homePath + '/iTablet/User/' + Teminfo
@@ -79,10 +82,18 @@ class MyMap extends MyDataPage {
         ConstPath.RelativeFilePath.ExportData +
         name
       if (template) {
+        let collectionPath = `${homePath + ConstPath.ExternalData}/Collection/`
+        let tempName = name
+        let postfix = 0
+        // 模版文件目录重名处理
+        while(await FileTools.fileIsExist(collectionPath + tempName)){
+          tempName = name + '_' + (++postfix)
+        }
+        collectionDirName = tempName
         toPath = homePath +
           ConstPath.ExternalData + '/' +
           'Collection/' +
-          name
+          collectionDirName
       }
       await FileTools.createDirectory(toPath)
       await FileTools.copyFile(filePath, toPath + Teminfo.substring(Teminfo.lastIndexOf('/')), true)
@@ -107,7 +118,7 @@ class MyMap extends MyDataPage {
         homePath +
         ConstPath.ExternalData + '/' +
         'Collection/' +
-        mapName +
+        collectionDirName +
         '/' +
         mapName +
         '.smwu'
@@ -129,7 +140,7 @@ class MyMap extends MyDataPage {
       }
       let availableName = await this._getAvailableFileName(
         exportPath,
-        name,
+        collectionDirName,
         'zip',
       )
       zipPath = exportPath + availableName
@@ -137,7 +148,7 @@ class MyMap extends MyDataPage {
       if (template) {
         this.exportPath = ConstPath.ExternalData + '/' +
         'Collection/' +
-        mapName +
+        collectionDirName +
         '/' +
         mapName +
         '.smwu'

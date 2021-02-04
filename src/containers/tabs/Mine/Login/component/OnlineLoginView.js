@@ -10,10 +10,12 @@ export default class OnlineLoginView extends React.Component {
     language: string,
     login: () => {},
     showRegister: Boolean,
+    useDefaultName?: Boolean,  // 是否自动填入登录名，用于许可界面自动填入app登录账号
   }
 
   static defaultProps = {
     showRegister: true,
+    useDefaultName: false,
   }
 
   constructor(props) {
@@ -24,9 +26,11 @@ export default class OnlineLoginView extends React.Component {
       canTouch: true,//登录按钮点击判断 add jiakai
     }
     // 在云许可登录时，如果当前app已登录，则默认填入账号
-    const { nickname, userType  } = GLOBAL.currentUser
-    if(nickname !== 'Customer' && userType !== "probation_user"){
-      this.userName = nickname
+    if(props.useDefaultName){
+      const { nickname, userType  } = GLOBAL.currentUser
+      if(nickname !== 'Customer' && userType !== "probation_user"){
+        this.userName = nickname
+      }
     }
   }
 

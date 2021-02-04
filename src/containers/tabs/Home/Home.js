@@ -240,7 +240,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -383,9 +383,15 @@ export default class Home extends Component {
         style={styles.dialog}
       >
         <View style={styles.dialogHeader}>
-          <Text style={styles.promptTitle}>
-            {getLanguage(this.props.language).Prompt.DOWNLOAD_DATA}
-          </Text>
+          <View style={{
+            width: scaleSize(392 - 69*2),
+            height: '100%',
+            alignItems: 'center',
+          }}>
+            <Text style={styles.promptTitle}>
+              {getLanguage(this.props.language).Prompt.DOWNLOAD_DATA}
+            </Text>
+          </View>
           <ImageButton
             iconBtnStyle={styles.dialogHeaderBtnView}
             iconStyle={styles.dialogHeaderBtn}
@@ -579,7 +585,7 @@ export default class Home extends Component {
           }}
         />
         <TouchableOpacity
-           style={[{
+          style={[{
             position: 'absolute',
             backgroundColor:'white',
             borderRadius: scaleSize(20),

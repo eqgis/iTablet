@@ -90,10 +90,9 @@ export default StyleSheet.create({
     color: color.theme_white,
     textAlign: 'center',
     fontWeight: 'bold',
-    // position: 'absolute',
+    position: 'absolute',
     right: 0,
     left: 0,
-    width: scaleSize(392 - 69*2),
   },
   dialogHeaderBtnView: {
     marginRight: scaleSize(5),

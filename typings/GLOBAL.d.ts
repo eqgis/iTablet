@@ -64,7 +64,9 @@ declare namespace GLOBAL {
   /** 导航数据数组 */
   let NAV_PARAMS: Array<object>        
   /** 暂存点，返回地图选点时使用 */
-  let SELECTPOINTLATITUDEANDLONGITUDETEMP: Point  
+  let SELECTPOINTLATITUDEANDLONGITUDETEMP: Point
+  /** 地图选点历史记录，用于二次进入保留上次选点 */
+  let DATUMPOINTHISTORY: Point
   /** 地图选点时使用? */
   let SELECTPOINTLATITUDEANDLONGITUDE: Point      
   /** 标绘动画数据 */

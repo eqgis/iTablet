@@ -23,7 +23,7 @@ import styles, { fontSize } from './Styles'
 import { getLanguage } from '../../../../language/index'
 import { color } from '../../../../styles'
 import Orientation from 'react-native-orientation'
-
+import Input from '../../../../components/Input/index'
 let JSOnlineService = undefined
 export default class Register extends React.Component {
   props: {
@@ -146,20 +146,20 @@ export default class Register extends React.Component {
   }
 
   renderRegister() {
+    const inputStyle = { textAlign: 'left'}
     return (
       <View key={'phone'} style={{ width: '70%' }}>
-        <TextInput
+        <Input
           keyboardType={'email-address'}
-          //'请输入昵称'
           placeholder={getLanguage(this.props.language).Profile.ENTER_USERNAME}
           placeholderTextColor={'#A7A7A7'}
-          clearButtonMode={'while-editing'}
           style={styles.textInputStyle}
+          inputStyle={inputStyle}
+          showClear={true}
           defaultValue={this.txtPhoneNumberNickname}
           onChangeText={text => {
             this.txtPhoneNumberNickname = text
-          }}
-        />
+          }}/>
         {/* <TextInput
           keyboardType={'email-address'}
           //'请输入真实姓名'
@@ -196,27 +196,29 @@ export default class Register extends React.Component {
             this.txtPhoneNumberEmail = text
           }}
         /> */}
-        <TextInput
+        <Input
           secureTextEntry={true}
-          clearButtonMode={'while-editing'}
           //'请输入密码'
           placeholder={getLanguage(this.props.language).Profile.ENTER_PASSWORD}
           placeholderTextColor={'#A7A7A7'}
           style={styles.textInputStyle}
+          inputStyle={inputStyle}
+          showClear={true}
           defaultValue={this.txtPhoneNumberPassword}
           onChangeText={text => {
             this.txtPhoneNumberPassword = text
           }}
         />
-        <TextInput
+        <Input
           secureTextEntry={true}
-          clearButtonMode={'while-editing'}
           //'确认密码'
           placeholder={
             getLanguage(this.props.language).Profile.RE_ENTER_PASSWORD
           }
           placeholderTextColor={'#A7A7A7'}
           style={styles.textInputStyle}
+          inputStyle={inputStyle}
+          showClear={true}
           defaultValue={this.passwordconfirm}
           onChangeText={text => {
             this.passwordconfirm = text
@@ -250,7 +252,7 @@ export default class Register extends React.Component {
               this.setState({ telArea: text })
             }}
           />
-          <TextInput
+          <Input
             keyboardType={'phone-pad'}
             //'请输入手机号'
             placeholder={getLanguage(this.props.language).Profile.ENTER_MOBILE}
@@ -261,12 +263,13 @@ export default class Register extends React.Component {
             onChangeText={text => {
               this.txtPhoneNumber = text
             }}
+            inputStyle={inputStyle}
+            showClear={true}
           />
         </View>
         <View style={styles.verifyCodeViewStyle}>
-          <TextInput
+          <Input
             keyboardType={'phone-pad'}
-            clearButtonMode={'while-editing'}
             //'请输入验证码'
             placeholder={getLanguage(this.props.language).Profile.ENTER_CODE}
             placeholderTextColor={'#A7A7A7'}
@@ -275,11 +278,15 @@ export default class Register extends React.Component {
               fontSize: scaleSize(fontSize),
               padding: 0,
               color: 'black',
+              backgroundColor: 'transparent',
+              height: scaleSize(60),
             }}
             defaultValue={this.txtVerifyCode}
             onChangeText={text => {
               this.txtVerifyCode = text
             }}
+            inputStyle={inputStyle}
+            showClear={true}
           />
           <TouchableOpacity
             onPress={() => {

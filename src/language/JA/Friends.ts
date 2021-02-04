@@ -198,7 +198,7 @@ const Friends: typeof CN.Friends = {
   GROUP_NAME_NOT_EMPTY: 'グループ名を空にすることはできません',
   GROUP_ALREADY_JOINED: 'すでにグループに参加しています',
   GROUP_APPLY_REASON: '申請理由',
-  APPLY: 'Apply',
+  APPLY: '申請',
   GROUP_APPLY_INFO: '適用',
   GROUP_APPLY_AGREE: '同意',
   GROUP_APPLY_REFUSE: '拒否',

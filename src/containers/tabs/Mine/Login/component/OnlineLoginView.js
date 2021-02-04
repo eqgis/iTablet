@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { TextInput, Text, View, TouchableOpacity, Keyboard } from 'react-native'
+import { TextInput, Text, View, TouchableOpacity, Keyboard, Platform, Image } from 'react-native'
 import styles from './styles'
 import NavigationService from '../../../../NavigationService'
 import { getLanguage } from '../../../../../language/index'
 import { scaleSize } from '../../../../../utils'
-
+import Input from '../../../../../components/Input'
 export default class OnlineLoginView extends React.Component {
   props: {
     language: string,
@@ -22,6 +22,11 @@ export default class OnlineLoginView extends React.Component {
       behavior: 'padding',
       loginText:getLanguage(this.props.language).Profile.LOGIN,
       canTouch: true,//登录按钮点击判断 add jiakai
+    }
+    // 在云许可登录时，如果当前app已登录，则默认填入账号
+    const { nickname, userType  } = GLOBAL.currentUser
+    if(nickname !== 'Customer' && userType !== "probation_user"){
+      this.userName = nickname
     }
   }
 
@@ -55,7 +60,7 @@ export default class OnlineLoginView extends React.Component {
     return (
       <View>
         <View style={styles.inputBackgroud}>
-          <TextInput
+          {/* <TextInput
             clearButtonMode={'while-editing'}
             keyboardType={'email-address'}
             placeholder={getLanguage(this.props.language).Profile.USERNAME_ALL}
@@ -66,11 +71,26 @@ export default class OnlineLoginView extends React.Component {
             onChangeText={text => {
               this.userName = text
             }}
+            ref = {ref => this.inputEmail = ref}
+          /> */}
+          {/* 改为具有清除按钮的输入框 */}
+          <Input
+            keyboardType={'email-address'}
+            placeholder={getLanguage(this.props.language).Profile.USERNAME_ALL}
+            placeholderTextColor={'#A7A7A7'}
+            multiline={false}
+            defaultValue={this.userName || ''}
+            style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+            onChangeText={text => {
+              this.userName = text
+            }}
+            showClear={true}
+            inputStyle={styles.customInputStyle}
           />
         </View>
         {GLOBAL.isPad && <View style={{ width: '100%', height: 15 }} />}
         <View style={styles.inputBackgroud}>
-          <TextInput
+          {/* <TextInput
             clearButtonMode={'while-editing'}
             secureTextEntry={true}
             placeholder={
@@ -84,6 +104,24 @@ export default class OnlineLoginView extends React.Component {
             onChangeText={text => {
               this.password = text
             }}
+            ref = {ref => this.inputPwd = ref}
+          />
+          */}
+          <Input
+            secureTextEntry={true}
+            placeholder={
+              getLanguage(this.props.language).Profile.ENTER_PASSWORD
+            }
+            placeholderTextColor={'#A7A7A7'}
+            multiline={false}
+            password={true}
+            style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+            defaultValue={this.password || ''}
+            onChangeText={text => {
+              this.password = text
+            }}
+            showClear={true}
+            inputStyle={styles.customInputStyle}
           />
         </View>
       </View>

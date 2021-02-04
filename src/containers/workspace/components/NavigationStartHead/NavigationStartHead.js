@@ -125,7 +125,7 @@ export default class NavigationStartHead extends React.Component {
     }
   }
 
-  renderButtom = (type, text) => {
+  renderButton = (type, text) => {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
@@ -163,32 +163,32 @@ export default class NavigationStartHead extends React.Component {
     )
   }
 
-  renderBottons = () => {
+  renderButtons = () => {
     return (
       <View style={{
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         paddingHorizontal: scaleSize(5),
-        marginTop: scaleSize(20),
+        marginVertical: scaleSize(10),
       }}>
-        {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButtom(
+        {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
           0,
           getLanguage().Map_Main_Menu.CAR_NAVIGATION,
         )}
-        {this.renderButtom(
+        {this.renderButton(
           3,
           getLanguage().Map_Main_Menu.WALK_NAVIGATION,
         )}
-        {/* {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButtom(
+        {/* {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
           2,
           getLanguage().Map_Main_Menu.CRUISE_NAVIGATION ,
         )} */}
-        {this.renderButtom(
+        {this.renderButton(
           1,
           getLanguage(GLOBAL.language).Map_Main_Menu.SIMULATED_NAVIGATION,
         )}
-        {Platform.OS === 'ios' && this.renderButtom(
+        {Platform.OS === 'ios' && this.renderButton(
           4,
           getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
         )}
@@ -319,7 +319,7 @@ export default class NavigationStartHead extends React.Component {
             </View>
           </View>
           <View>
-            {this.renderBottons()}
+            {this.renderButtons()}
           </View>
         </Animated.View>
       )

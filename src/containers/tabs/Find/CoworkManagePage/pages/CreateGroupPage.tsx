@@ -268,7 +268,7 @@ class CreateGroupPage extends React.Component<Props, State> {
       return getLanguage(this.props.language).Friends.GROUP_TAG_NOT_EMPTY
     }
     let _tags = this.groupInfo.tags.split(',')
-    if (_tags.length > 6) {
+    if (_tags.length > 5) {
       return getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER
     }
     if (this.groupInfo.description.length > 100) {
@@ -361,7 +361,7 @@ class CreateGroupPage extends React.Component<Props, State> {
       return false
     }
     let _tags = this.groupInfo.tags.split(',')
-    if (_tags.length > 6) {
+    if (_tags.length > 5) {
       return false
     }
     if (this.groupInfo.description.length > 100) {
@@ -416,7 +416,12 @@ class CreateGroupPage extends React.Component<Props, State> {
             title: getLanguage(this.props.language).Friends.NAME,
             placeholder: getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER,
             defaultValue: this.groupInfo.groupName,
-            onChangeText: text => this.groupInfo.groupName = text,
+            onChangeText: text => {
+              this.groupInfo.groupName = text
+              if (this.groupInfo.groupName.length > 20) {
+                Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER)
+              }
+            },
             keyValue: 'name',
           })
         }
@@ -426,7 +431,13 @@ class CreateGroupPage extends React.Component<Props, State> {
             title: getLanguage(this.props.language).Friends.GROUP_TAG,
             placeholder: getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER,
             defaultValue: this.groupInfo.tags,
-            onChangeText: text => this.groupInfo.tags = text,
+            onChangeText: text => {
+              this.groupInfo.tags = text
+              let _tags = this.groupInfo.tags.split(',')
+              if (_tags.length > 5) {
+                Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER)
+              }
+            },
             keyValue: 'tag',
           })
         }
@@ -466,8 +477,11 @@ class CreateGroupPage extends React.Component<Props, State> {
                 this.setState({
                   dataAvailable: true,
                 })
-              } else if (this.checkData() && this.state.dataAvailable) {
-                this.setState({
+              } else if (this.checkData()) {
+                if (this.groupInfo.description.length > 100) {
+                  Toast.show(getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER)
+                }
+                this.state.dataAvailable && this.setState({
                   dataAvailable: false,
                 })
               }

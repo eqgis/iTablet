@@ -96,7 +96,7 @@ class GroupSelectPage extends Component<Props, State> {
         title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
         action: () => {
           if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            NavigationService.navigate('GroupApplyPage')
+            NavigationService.navigate('GroupApplyPage', {callBack: () => this.refresh(false)})
           } else {
             NavigationService.navigate('Login', {
               show: ['Online'],

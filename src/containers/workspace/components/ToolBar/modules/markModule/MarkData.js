@@ -20,6 +20,7 @@ async function getData(type, params) {
   let data = []
   let buttons = []
   ToolbarModule.setParams(params)
+  const event = ToolbarModule.getData().event
   let layerType = '', isTourLayer = false
   switch (type) {
     case ConstToolType.SM_MAP_MARKS_DRAW:
@@ -213,14 +214,23 @@ async function getData(type, params) {
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
         },
-        {
+        // {
+        //   key: 'tagging_style',
+        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+        //   action: MarkAction.selectLabelToStyle,
+        //   size: 'large',
+        //   image: require('../../../../../../assets/function/icon_function_style.png'),
+        // },
+      ]
+      if (!LayerUtils.isMediaData(event.fieldInfo)) {
+        data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
-        },
-      ]
+        })
+      }
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         ToolbarBtnType.FLEX,
@@ -281,14 +291,23 @@ async function getData(type, params) {
           size: 'large',
           image: getThemeAssets().edit.icon_add_node,
         },
-        {
+        // {
+        //   key: 'tagging_style',
+        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+        //   action: MarkAction.selectLabelToStyle,
+        //   size: 'large',
+        //   image: require('../../../../../../assets/function/icon_function_style.png'),
+        // },
+      ]
+      if (!LayerUtils.isMediaData(event.fieldInfo)) {
+        data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
-        },
-      ]
+        })
+      }
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         ToolbarBtnType.FLEX,

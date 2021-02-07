@@ -247,7 +247,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'グループから脱退しますか?',
   GROUP_DELETE_INFO: 'グループを解除しますか?',
+  GROUP_DELETE_INFO2: 'The current group has been disbanded', // 待翻译
   GROUP_MEMBER_DELETE_INFO: '選択したメンバーを削除しますか?',
+  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', // 待翻译
   GROUP_TASK_DELETE_INFO: 'タスクを削除しますか?',
 
   

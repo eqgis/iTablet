@@ -246,6 +246,7 @@ const Friends = {
   GROUP_DELETE_INFO: '是否解散群组',
   GROUP_DELETE_INFO2: '当前群组已被解散',
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
+  GROUP_MEMBER_DELETE_INFO2: '您已经被踢出当前群组',
   GROUP_TASK_DELETE_INFO: '是否删除任务',
 
   GROUP_MESSAGE_NULL: '暂时没有群消息',

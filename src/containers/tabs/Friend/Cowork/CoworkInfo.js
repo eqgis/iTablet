@@ -10,12 +10,18 @@ export default class CoworkInfo {
   static groupId = ''
   static members = []
   static readMsgHandle = undefined
+  static exitGroup = undefined
   static getGroupHandle = undefined
   static delTaskMemberHandle = undefined
 
   /** 群组被删除后，群成员若在该群组中，则退出到群组列表中 */
   static deleteGroupHandle = function(messageObj) {
-    if (!this.groupId) return
+    // 未进入在线协作群组中收到消息时
+    if (!this.groupId) {
+      CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
+      CoworkInfo.exitGroup && CoworkInfo.exitGroup({ groupID: messageObj.message.groupId })
+      return
+    }
 
     // 群成员退出群组，其他群成员更新成员列表
     if (messageObj.message.creator !== messageObj.user.id) {
@@ -32,13 +38,19 @@ export default class CoworkInfo {
     let nav = NavigationService.getTopLevelNavigator().state.nav
     for (let i = nav.routes.length - 1; i >= 0; i--) {
       if (nav.routes[i].routeName === 'MapStack' && messageObj.message.groupId === this.groupId) {
-        CoworkInfo.getGroupHandle()
-        CoworkInfo.closeMapHandle({baskFrom: 'CoworkManagePage'})
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
+        CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
+        CoworkInfo.exitGroup && CoworkInfo.exitGroup({ groupID: messageObj.message.groupId })
+        CoworkInfo.closeMapHandle && CoworkInfo.closeMapHandle({baskFrom: 'CoworkManagePage'})
+        Toast.show(
+          messageObj.message.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE
+            ? getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO2
+            : getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2
+        )
         break
       } else if (nav.routes[i].routeName === 'CoworkManagePage' && messageObj.message.groupId === this.groupId) {
         // 从当前任务群组中退出
-        CoworkInfo.getGroupHandle()
+        CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
+        CoworkInfo.exitGroup && CoworkInfo.exitGroup({ groupID: messageObj.message.groupId })
         NavigationService.goBack('CoworkManagePage', null)
         Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
         break
@@ -49,6 +61,10 @@ export default class CoworkInfo {
 
   static setGroupGetHandle(handle) {
     this.getGroupHandle = handle
+  }
+
+  static setExitGroupHandle(handle) {
+    this.exitGroup = handle
   }
 
   static setReadMsgHandle(handle) {

@@ -247,7 +247,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'Do you want to leave the group',
   GROUP_DELETE_INFO: 'Do you want to delete the group',
+  GROUP_DELETE_INFO2: 'The current group has been disbanded',
   GROUP_MEMBER_DELETE_INFO: 'Do you want to delete the selected member',
+  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group',
   GROUP_TASK_DELETE_INFO: 'Do you want to delete tasks?',
 
   GROUP_MESSAGE_NULL: 'No Message',

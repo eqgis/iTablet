@@ -241,14 +241,13 @@ export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (
  * @param params {groupID: number | string}
  * @param cb () => {}
  */
-export const exitGroup = (params: {groupID: number | string}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const exitGroup = (params: {groupID: number | string}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
-  await dispatch({
+  return await dispatch({
     type: COWORK_GROUP_EXIT,
     payload: params,
     userId: userId,
   })
-  cb && cb()
 }
 
 /**
@@ -1267,7 +1266,8 @@ export default handleActions(
           if (!taskInfo.messages[i].status) {
             taskInfo.unread--
             if (taskInfo.unread < 0) taskInfo.unread = 0
-            SMap.removeMessageCallout(payload.messageID)
+            // SMap.removeMessageCallout(payload.messageID)
+            SMap.removeMessageCallout(payload.geoUserID)
           }
           taskInfo.messages[i].status = payload.hasOwnProperty('status') ? payload.status : 1
           break

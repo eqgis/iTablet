@@ -252,8 +252,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: '是否退出群组',
   GROUP_DELETE_INFO: '是否解散群组',
-  GROUP_DELETE_INFO2: 'The current group has been disbanded',
+  GROUP_DELETE_INFO2: 'The current group has been disbanded', // 待翻译
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
+  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', // 待翻译
   GROUP_TASK_DELETE_INFO: 'Do you want to delete tasks?',
 
   // 待翻译

@@ -32,7 +32,7 @@ interface Props {
   device: any,
   currentGroup: GroupType,
   setCurrentGroup: (data: any) => void,
-  exitGroup: (params: { groupID: number | string, cb?: Function }) => any,
+  exitGroup: (params: { groupID: number | string }) => any,
 }
 
 type State = {

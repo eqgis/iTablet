@@ -433,6 +433,7 @@ class CreateGroupPage extends React.Component<Props, State> {
             defaultValue: this.groupInfo.tags,
             onChangeText: text => {
               this.groupInfo.tags = text
+              this.groupInfo.tags = this.groupInfo.tags.replace(/，/g,',') // 替换中文逗号
               let _tags = this.groupInfo.tags.split(',')
               if (_tags.length > 5) {
                 Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER)

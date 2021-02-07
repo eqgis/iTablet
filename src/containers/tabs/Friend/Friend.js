@@ -1504,7 +1504,16 @@ export default class Friend extends Component {
   }
 
   handleCowork = async messageObj => {
-    let coworkId = this.props.cowork?.currentTask?.id
+    // let coworkId = this.props.cowork?.currentTask?.id
+    let coworkId
+    let userTasks = this.props.cowork?.tasks?.[this.props.user.currentUser.userName] || {}
+    let groupTask = userTasks[messageObj?.user?.coworkGroupId] || []
+    for (let i = 0; i < groupTask.length; i++) {
+      if (groupTask[i].id === messageObj?.user?.taskId) {
+        coworkId = groupTask[i].id
+        break
+      }
+    }
     let coworkType = messageObj.message.type
     if (coworkId) {
 

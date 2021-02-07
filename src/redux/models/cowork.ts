@@ -1266,8 +1266,7 @@ export default handleActions(
           if (!taskInfo.messages[i].status) {
             taskInfo.unread--
             if (taskInfo.unread < 0) taskInfo.unread = 0
-            // SMap.removeMessageCallout(payload.messageID)
-            SMap.removeMessageCallout(payload.geoUserID)
+            SMap.removeMessageCallout(payload.messageID)
           }
           taskInfo.messages[i].status = payload.hasOwnProperty('status') ? payload.status : 1
           break

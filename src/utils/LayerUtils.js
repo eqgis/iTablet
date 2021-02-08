@@ -444,23 +444,27 @@ function setLayersSelectable(layers, selectable, modifyTrue = false) {
  * @param {*} fieldInfo
  */
 function isMediaData(fieldInfo) {
-  let tag = 0, isTourLine = false, hasMedia
-  fieldInfo.forEach(item => {
-    // 判断是否含有旅行轨迹线对象
-    if (item.name === "MediaName" && item.value === 'TourLine') {
-      isTourLine = true
-    }
-    // 判断是否含有多媒体文件
-    if (item.name === "MediaFilePaths" && item.value !== '') {
-      hasMedia = true
-    }
-    if (
-      item.name === "ModifiedDate" || item.name === "Description" || item.name === "HttpAddress"
-    ) {
-      tag++
-    }
-  })
-  return tag === 3 && (isTourLine || hasMedia)
+  try {
+    let tag = 0, isTourLine = false, hasMedia
+    fieldInfo.forEach(item => {
+      // 判断是否含有旅行轨迹线对象
+      if (item.name === "MediaName" && item.value === 'TourLine') {
+        isTourLine = true
+      }
+      // 判断是否含有多媒体文件
+      if (item.name === "MediaFilePaths" && item.value !== '') {
+        hasMedia = true
+      }
+      if (
+        item.name === "ModifiedDate" || item.name === "Description" || item.name === "HttpAddress"
+      ) {
+        tag++
+      }
+    })
+    return tag === 3 && (isTourLine || hasMedia)
+  } catch (error) {
+    return false
+  }
 }
 
 export default {

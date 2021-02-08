@@ -219,6 +219,17 @@ export default class MeasureAreaView extends React.Component {
     )
 
     AppState.removeEventListener('change', this.handleStateChange)
+
+    if (Platform.OS === 'ios') {
+      iOSEventEmi.removeListener(
+        'com.supermap.RN.SMeasureAreaView.ADD',
+        this.onAdd,
+      )
+      iOSEventEmi.removeListener(
+        'com.supermap.RN.SMeasureAreaView.CLOSE',
+        this.onshowLog,
+      )
+    }
   }
 
   handleStateChange = async appState => {

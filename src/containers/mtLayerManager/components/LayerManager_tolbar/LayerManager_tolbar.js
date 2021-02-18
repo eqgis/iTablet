@@ -687,7 +687,11 @@ export default class LayerManager_tolbar extends React.Component {
         GLOBAL.Loading.setLoading(false)
         Toast.show(res ? getLanguage(this.props.language).Prompt.SUCCESS :
           getLanguage(this.props.language).Prompt.FAILED)
-        res && this.props.getLayers()
+        if(res){
+          this.props.getLayers()
+          // 地图是否是xml加载而来，用于在保存地图时判断
+          GLOBAL.IS_MAP_FROM_XML = true
+        }
       })
     }
   }

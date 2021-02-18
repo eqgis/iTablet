@@ -657,6 +657,17 @@ export default class NavigationView extends React.Component {
           backAction: this.close,
         }}
       >
+        {/* k30 bug 横屏锁屏，竖屏解锁后container背景出现在蒙层下
+         这里额外使用一个View当背景 这个View不能填满屏幕（top） 否则也会在蒙层下 zcj*/}
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#ebebeb',
+            top: scaleSize(205),
+          }} />
+
         <View
           style={{
             paddingTop: TOOLBARHEIGHT + scaleSize(20),

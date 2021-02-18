@@ -326,6 +326,7 @@ class NewDataset extends Component {
               let { error } = dataUtil.isLegalName(text, GLOBAL.language)
               this.setErrorMap(item.key, error)
             }}
+            showClear={true}
           />
         </View>
         <View style={styles.errorView}>

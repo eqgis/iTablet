@@ -88,7 +88,7 @@ export default class Container extends Component {
   }
 
   setBottomVisible = (visible, immediately = false) => {
-    if (this.bottomVisible === visible) return
+    // if (this.bottomVisible === visible) return
     Animated.timing(this.state.bottom, {
       toValue: visible ? 0 : scaleSize(-200),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
@@ -116,6 +116,10 @@ export default class Container extends Component {
   }
 
   onOrientationChange = () => {
+    // 解决横屏收起bottomView 竖屏显示 再次横屏bottomView不显示
+    if(this.bottomVisible){
+      this.setBottomVisible(true, true)
+    }
     let width = this.getCurrentOverlayWidth()
     Animated.timing(this.overlayWidth, {
       toValue: width,
@@ -221,6 +225,11 @@ export default class Container extends Component {
           GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
         let x = visible ? 0 : isLandscape ? GLOBAL.getDevice().width : 0
         let duration = isLandscape ? 300 : 0
+        // 解决遮罩层在右时，View跳出两次 zcj
+        if(!this.props.isOverlayBefore){
+          x = x * (-1)
+        }
+        console.log(x)
         Animated.timing(this.viewX, {
           toValue: x,
           duration: duration,
@@ -311,7 +320,7 @@ export default class Container extends Component {
     }
     let bottom = isLandscape
       ? { right: this.state.bottom, height: this.props.device.height }
-      : { bottom: this.state.bottom }
+      : { bottom: this.state.bottom, width: this.props.device.width }
     return (
       <AnimatedView style={[style, bottom]}>
         {this.props.bottomBar}

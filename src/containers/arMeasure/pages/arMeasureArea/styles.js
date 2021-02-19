@@ -88,7 +88,7 @@ export default StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     height: Const.BOTTOM_HEIGHT,
-    paddingHorizontal: scaleSize(20),
+    // paddingHorizontal: scaleSize(20),
     backgroundColor: '#2D2D2F',
     justifyContent: 'space-between',
     alignItems: 'center',

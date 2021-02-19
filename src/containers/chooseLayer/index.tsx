@@ -17,17 +17,31 @@ interface State {
 }
 
 class ChooseLayer extends React.Component<Props, State> {
+  /** 是否显示点图层 */
+  hasPointLayer = true
+  /** 是否显示线图层 */
+  hasLineLayer = true
+  /** 是否显示面图层 */
+  hasRegionLayer = true
+
   constructor(props: Props) {
     super(props)
+
+    const params = this.props.navigation.state.params
+    if(params && params.filters && params.filters.length > 0) {
+      this.hasPointLayer = params.filters.indexOf(DatasetType.POINT) > -1
+      this.hasLineLayer =  params.filters.indexOf(DatasetType.LINE) > -1
+      this.hasRegionLayer = params.filters.indexOf(DatasetType.REGION) > -1
+    }
   }
 
 
   renderLayer = ({item}:  ListRenderItemInfo<SMap.LayerInfo>) => {
     if(item.themeType === 0 && (
       item.type === DatasetType.CAD ||
-      item.type === DatasetType.POINT ||
-      item.type === DatasetType.LINE ||
-      item.type === DatasetType.REGION)
+      (item.type === DatasetType.POINT && this.hasPointLayer) ||
+      (item.type === DatasetType.LINE && this.hasLineLayer) ||
+      (item.type === DatasetType.REGION && this.hasRegionLayer))
     ) {
       const isCurrent = this.props.currentLayer.name === item.name
       return (

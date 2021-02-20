@@ -72,6 +72,7 @@ export default class Container extends Component {
     this.overlayWidth = new Animated.Value(this.getCurrentOverlayWidth())
     this.viewX = new Animated.Value(0)
     this.visible = true
+    this.overlayCanClick = true
   }
 
   setHeaderVisible = (visible, immediately = false) => {
@@ -229,7 +230,7 @@ export default class Container extends Component {
         if(!this.props.isOverlayBefore){
           x = x * (-1)
         }
-        console.log(x)
+
         Animated.timing(this.viewX, {
           toValue: x,
           duration: duration,
@@ -255,6 +256,11 @@ export default class Container extends Component {
   }
 
   onOverlayPress = () => {
+    // 防止动画过程中重复点击
+    if(this.overlayCanClick){
+      this.overlayCanClick = false
+    }else return
+
     if (this.props.onOverlayPress) {
       this.props.onOverlayPress()
     } else if (this.props.headerProps) {

@@ -30,7 +30,7 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'تم',
   DOWNLOAD_FAILED: 'فشل فى التنزيل',
   UNZIPPING: 'فك الضغط',
-  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
+  ONLINE_DATA_ERROR: 'بيانات الشبكة تالفة ولا يمكن استخدامها بشكل طبيعي',
 
   NO_REMINDER: 'لا يوجد تذكير',
 
@@ -46,9 +46,9 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'تأكيد',
   COMPLETE: 'اكتمال',
 
-  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
-  EXIT: 'Exit', //待翻译
-  REQUEST_PERMISSION: 'Request', //待翻译
+  NO_PERMISSION_ALERT: 'التطبيق ليس لديه أذونات كافية للتشغيل',
+  EXIT: 'خروج',
+  REQUEST_PERMISSION: 'طلب',
 
   OPENING: 'جارى الفتح',
 
@@ -56,7 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'تحميل',
   LOADING: 'تحميل',
   THE_MAP_IS_OPENED: 'تم فتح الخريطة',
-  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
+  THE_MAP_IS_NOTEXIST: 'الخريطة غير موجودة',
   THE_SCENE_IS_OPENED: 'تم فتح المشهد',
   NO_SCENE_LIST: 'لاتوجد بيانات',
   SWITCHING: 'تبديل',
@@ -75,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'خريطة أساسية فارغة ، يرجى التغيير أولاً ',
   OVERRIDE_SYMBOL: 'يوجد رمز بنفس المعرف ، يرجى تحديد طريقة للإضافة',
   OVERWRITE: 'الكتابة فوق',
-  CHOOSE_DATASET: 'Please choose dataset',//待翻译
+  CHOOSE_DATASET: 'الرجاء اختيار مجموعة البيانات',
 
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',
@@ -359,7 +359,7 @@ const Prompt: typeof CN.Prompt = {
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'يجب أن يكون معامل التنعيم 2 ~ 10 أعداد صحيحة',
   CONFIRM_EXIT: 'هل أنت متأكد من الخروج؟',
   TOPO_EDIT_END: 'هل انتهيت من التحرير والخروج؟',
-  // 自定义专题图 need to be translated
+  // 自定义专题图
   ONLY_INTEGER: 'يمكن إدخال الأعداد الصحيحة فقط!',
   ONLY_INTEGER_GREATER_THAN_2: 'يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!',
   PARAMS_ERROR: 'خطاء فى المعاملات! فشل التعيين!',
@@ -378,27 +378,27 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'القيمة الافتراضية خالية',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'لا يمكن التجميع في الطبقات المواضيعية',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //need to be translated
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //need to be translated
   HEAT_MAP_DATASET_TYPE_ERROR: 'يمكن إنشاء مجموعة بيانات النقاط فقط',
 
 
   //三维AR管线相关
-  FILE_NOT_EXISTS: 'File not exists,Please download the Example data',
-  MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
+  FILE_NOT_EXISTS: 'الملف غير موجود ، يرجى تحميل بيانات العينة',
+  MOVE_PHONE_ADD_SCENE: 'الرجاء نقل الهاتف ببطء ، وتحديد واجهة انقر على الشاشة لإضافة مشاهد',
 
   INVALID_DATA_SET_FAILED: 'نوع البيانات غير صالح. فشل تعيين',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'الطبقة غير مرئية ولا يمكن تعيينها على الطبقة الحالية',
 
-  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
-  TRACKING_LOADING: 'Tracking...',
+  IDENTIFY_TIMEOUT: 'انتهاء مهلة تتبع الصورة ، حاول مرة أخرى؟',
+  TRACKING_LOADING: 'تتبع...',
 
   // 专题制图加载/输出xml
-  SUCCESS: 'Successful operation',
-  FAILED: 'Operation failed',
-  NO_TEMPLATE: 'No templates available',
-  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
-  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
+  SUCCESS: 'عملية ناجحة',
+  FAILED: 'فشلت العملية',
+  NO_TEMPLATE: 'لا توجد قوالب متاحة',
+  CONFIRM_LOAD_TEMPLATE: 'هل أنت متأكد من تحميل النموذج؟',
+  CONFIRM_OUTPUT_TEMPLATE: 'هل أنت متأكد من إخراج الخريطة؟',
 }
 
 export { Prompt }

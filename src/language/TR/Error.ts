@@ -1,16 +1,15 @@
 import CN from '../CN'
 
-// 待翻译
 const RequestError: typeof CN.RequestError = {
-  ERROR_400: 'Bad Request',
-  ERROR_401: 'Unauthorized',
-  // ERROR_402: 'Payment Required',
-  // ERROR_403: 'Forbidden',
-  ERROR_404: 'Not Found',
-  // ERROR_405: 'Method Not Allowed',
-  // ERROR_406: 'Not Acceptable',
-  ERROR_407: 'Proxy Authentication Required',
-  ERROR_408: 'Request Timeout',
+  ERROR_400: 'Hatalı istek',
+  ERROR_401: 'Yetki yok',
+  // ERROR_402: 'Ödeme Gerekli',
+  // ERROR_403: 'Yasak',
+  ERROR_404: 'Bulunamadı',
+  // ERROR_405: 'İzin Verilmeyen Yöntem',
+  // ERROR_406: 'Kabul Edilemez',
+  ERROR_407: 'Proxy Yetkilendirmesi Gerekli',
+  ERROR_408: 'İstek Zamanaşımı',
 }
 
 export {

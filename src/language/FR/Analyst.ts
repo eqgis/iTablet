@@ -252,7 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'Réinitialiser',
   GEOCOORDSYS: 'Système de coordonnées géographiques',
   PRJCOORDSYS: 'Système de coordonnées projeté',
-  COMMONCOORDSYS: 'Common coordinate system', // 待翻译
+  COMMONCOORDSYS: 'Système de coordonnées commun',
   CONVERTTING: 'Conversion',
   CONVERT_SUCCESS: 'Convertie avec succès',
   CONVERT_FAILED: 'Conversion échouée',
@@ -412,7 +412,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'Veuillez définir 2 points de contrôle',
   REGISTRATION_OFFSET_POINTS: 'Veuillez définir 1 point de contrôle',
   REGISTRATION_POINTS_NUMBER_ERROR: 'Le nombre de points de contrôle ne correspond pas',
-  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
+  ANALYSIS_SUCCESS_TOWATCH: 'Analyse réussie voulez-vous visualiser le resultat?',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

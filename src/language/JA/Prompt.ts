@@ -45,7 +45,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',
   EXIT: '閉じる',
-  REQUEST_PERMISSION: '権限の申請', 
+  REQUEST_PERMISSION: '権限の申請',
 
   CONFIRM: 'OK',
   COMPLETE: '完了',
@@ -104,7 +104,7 @@ const Prompt: typeof CN.Prompt = {
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',
   NO_SCENE: 'シーン表示無し',
-  ADD_ONLINE_SCENE: 'オンラインシーンの追加', 
+  ADD_ONLINE_SCENE: 'オンラインシーンの追加',
 
   PLEASE_ENTER_TEXT: 'テキスト内容を入力してください',
   PLEASE_SELECT_THEMATIC_LAYER: '主題図レイヤーを選択してください',
@@ -285,7 +285,7 @@ const Prompt: typeof CN.Prompt = {
   FIELD_ILLEGAL: 'フィールドは無効です',
   PLEASE_SELECT_A_RASTER_LAYER: 'ラスタレイヤーを選択してください',
 
-  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください', 
+  PLEASE_ADD_DATASOURCE_BY_UNIFORM: 'データソースを追加してください',
   CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION: 'ヒント:現在レイヤーは変更をサポートしません',
 
   FAILED_TO_CREATE_POINT: 'ポイント追加に失敗',
@@ -378,18 +378,20 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //Need to be translated
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //Need to be translated
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: '非表示レイヤーを現在レイヤーに設定できません。', 
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: '非表示レイヤーを現在レイヤーに設定できません。',
 
   //三维AR管线相关
   FILE_NOT_EXISTS: 'データが存在しません。サンプルデータをダウンロードしてください',
   MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
-  IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?', 
+  IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?',
   TRACKING_LOADING: 'トラキング...',
 
-  // 专题制图加载/输出xml 
+  // 专题制图加载/输出xml
   SUCCESS: '操作に成功しました',
   FAILED: '操作に失敗しました',
   NO_TEMPLATE: '使用可能なテンプレートはありません',

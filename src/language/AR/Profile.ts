@@ -27,26 +27,26 @@ const Profile: typeof CN.Profile = {
   SELECT_MODEL: 'اختر النموذج',
 
   // 我的  提示语
-  MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
-  MY_GUIDE_KNOW:'Know it',//待翻译
-  MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
-  MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
-  EFFECT_GUIDE:'Add effect to the scene',//待翻译
-  LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
-  MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
-  MY_GUIDE_NEXT:'Next',//待翻译
-  MY_GUIDE_SKIP:'Skip',//待翻译
-  ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
-  PROCESS_GUIDE:'Registration and projection conversion',//待翻译
-  CHOOSE_TYPE:'Choose Launch Type',//待翻译
-  CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
-  SELECT_DATASET:'Check to add dataset',//待翻译
-  ADD_SELECT_DATASET:'Add Dataset',//待翻译
-  MOVE_BROWSING:'"Move left and right" to browse complete information',//待翻译
+  MY_GUIDE: 'بعد استيراد البيانات \n يمكن فتحها في الوحدة النمطية الرئيسية',
+  MY_GUIDE_KNOW:'اعرفها',
+  MY_GUIDE_SLIDE: 'مشروع التفتيش',
+  MY_GUIDE_SLIDE_LAND:'تحقق من زولا',
+  EFFECT_GUIDE:'إضافة تأثير إلى المشهد',
+  LAUNCH_GUIDE:'أضف مقطع فيديو ، كلمات ، صورة ، ويب إلى المشهد',
+  MEASURE_GUIDE:'قم بقياس المسافة والارتفاع والمساحة',
+  MY_GUIDE_NEXT:'التالي',
+  MY_GUIDE_SKIP:'تخطي',
+  ANALYST_GUIDE:'تحليل الشبكة وتحليل المتجهات',
+  PROCESS_GUIDE:'التسجيل وتحويل العرض',
+  CHOOSE_TYPE:'اختر نوع الإطلاق',
+  CHOOSE_MEASURE_TYPE:'اختر نوع القياس',
+  SELECT_DATASET:'حدد لإضافة مجموعة بيانات',
+  ADD_SELECT_DATASET:'إضافة مجموعة بيانات',
+  MOVE_BROWSING:'"تحرك إلى اليسار واليمين" لتصفح المعلومات الكاملة',
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',
-  LOGINING: 'Logining..',//待翻译
+  LOGINING: 'تسجيل الدخول ..',
   LOGIN_TIMEOUT: 'نفذ وقت تسجيل الدخول,يرجى إعادة المحاولة لاحقا',
   LOGIN_CURRENT: 'تم تسجيل دخول المستخدم الحالي بالفعل',
   LOGIN_INVALID: 'انتهت صلاحية تسجيل الدخول. الرجاد الدخول على الحساب من جديد',
@@ -174,8 +174,8 @@ const Profile: typeof CN.Profile = {
   SERVICE_AGREEMENT: 'اتفاقية خدمات',
   PRIVACY_POLICY: 'سياسة الخصوصية',
   HELP_MANUAL: 'دليل المساعدة',
-  NOVICE_GUIDE: 'Novice Guide',//待翻译
-  START_GUIDE:'Start Guide',//待翻译
+  NOVICE_GUIDE: 'دليل المبتدئ',
+  START_GUIDE:'دليل البدء',
 
   MAP_ONLINE: 'خريطة عبر الإنترنت',
   MAP_2D: 'خريطة ثنائية الأبعاد',
@@ -230,7 +230,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LANGUAGE_AUTO: 'تلقائى',
   SETTING_LOCATION_DEVICE: 'موقع الجهاز',
   SETTING_LOCATION_LOCAL: 'هذا الجهاز',
-  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
+  SETTING_CLEAR_CACHE: 'مسح ذاكرة التخزين المؤقت',
 
   // 许可
   LICENSE: 'الرخصة',
@@ -335,16 +335,16 @@ const Profile: typeof CN.Profile = {
   Realspace_Effect_Dev: ' تطوير التاثير فى الواقع الفعلى',
   Realspace_Effect_Runtime: ' تاثير فى الواقع والزمن الفعلى',
 
-  // itablet许可模块 need to be translated
+  // itablet许可模块
   ITABLET_ARMAP: 'خريطة عربية',
   ITABLET_NAVIGATIONMAP: 'خريطة التنقل',
   ITABLET_DATAANALYSIS: 'تحليل البيانات',
-  ITABLET_PLOTTING: 'Plotting',
+  ITABLET_PLOTTING: 'التخطيط',
   INVALID_MODULE: 'وحدة غير صالحة. غير قادر على المتابعة.',
   INVALID_LICENSE: 'ترخيص غير صالح. غير قادر على المتابعة.',
   GO_ACTIVATE: 'ابدأ التنشيط',
 
-  // 意见反馈 need to be translated
+  // 意见反馈
   SUGGESTION_FUNCTION_ABNORMAL: 'وظيفة غير طبيعية: وظيفة غير طبيعية أو لا يمكن استخدامها',
   SUGGESTION_PRODUCT_ADVICE: 'اقتراح المنتج: لدي اقتراح',
   SUGGESTION_OTHER_PROBLEMS: 'مشكلات أخرى',
@@ -357,7 +357,7 @@ const Profile: typeof CN.Profile = {
   SUGGESTION_SUBMIT_SUCCEED: 'تم الإرسال بنجاح',
   SUGGESTION_SUBMIT_FAILED: 'فشل الإرسال',
 
-  // ar地图校准 need to be translated
+  // ar地图校准
   MAP_AR_DATUM_LONGITUDE: 'خط الطول',
   MAP_AR_DATUM_LATITUDE: 'خط العرض',
   MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'الرجاء إدخال الموضع الحالي',
@@ -368,12 +368,12 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_POSITION: 'موضع الإسناد',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'نجح الموقع التلقائي',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'نجح تحديد نقطة تحديد الخريطة',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: '请把手机后置摄像头朝北点击确定', //待翻译
+  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'من فضلك ضع هاتفك المحمول في مواجهة الشمال انقر بالتأكيد',
   MAP_AR_DATUM_SETTING: 'الإعداد',
   X_COORDINATE: 'احداثيات X',
   Y_COORDINATE: 'احداثيات Y',
-  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
-  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH: 'الالتقاط التلقائي',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'التسامح مع الخطأ',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'إعادة تسمية',

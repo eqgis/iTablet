@@ -30,7 +30,7 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'Termine',
   DOWNLOAD_FAILED: 'Échec de téléchargement',
   UNZIPPING: 'décompresser',
-  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
+  ONLINE_DATA_ERROR: 'Les données du réseau ont été corrompues et ne peuvent pas être utilisées normalement',
 
   NO_REMINDER: 'Pas de rappel',
 
@@ -46,9 +46,9 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'Confirmer',
   COMPLETE: 'Complet',
 
-  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
-  EXIT: 'Exit', //待翻译
-  REQUEST_PERMISSION: 'Request', //待翻译
+  NO_PERMISSION_ALERT: "L’application n’a pas les autorisations nécessaires pour s’exécuter",
+  EXIT: 'Sortie',
+  REQUEST_PERMISSION: 'Demande',
 
   OPENING: 'Ouverture',
 
@@ -56,7 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'Chargement',
   LOADING: 'Chargement',
   THE_MAP_IS_OPENED: 'La carte est ouverte',
-  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
+  THE_MAP_IS_NOTEXIST: "La carte n'existe pas",
   THE_SCENE_IS_OPENED: 'La scène est ouverte',
   NO_SCENE_LIST: 'Aucune donnée',
   SWITCHING: 'Commutation',
@@ -73,9 +73,9 @@ const Prompt: typeof CN.Prompt = {
   SWITCHING_PLOT_LIB: 'Commutation',
   NON_SELECTED_OBJ: 'Aucun objet sélectionné',
   CHANGE_BASE_MAP: "Carte de base vide, veuillez d'abord changer",
-  OVERRIDE_SYMBOL: 'Un symbole avec le même identifiant existe, veuillez sélectionner la méthode à ajouter', //Need to be translated
+  OVERRIDE_SYMBOL: 'Un symbole avec le même identifiant existe, veuillez sélectionner la méthode à ajouter',
   OVERWRITE: 'Écraser',
-  CHOOSE_DATASET: 'Please choose dataset',//待翻译
+  CHOOSE_DATASET: "Veuillez choisir l'ensemble de données",
 
   SET_ALL_MAP_VISIBLE: 'Tout visible',
   SET_ALL_MAP_INVISIBLE: 'Tout invisible',
@@ -378,8 +378,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'La valeur par défaut est null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Impossible de collecter dans les couches thématiques',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //Need to be translated
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //Need to be translated
   HEAT_MAP_DATASET_TYPE_ERROR: 'Seul le jeu de données ponctuel peut être créé',
 
   INVALID_DATA_SET_FAILED: 'Type de données non valide. Échec de paramètre',
@@ -388,15 +388,15 @@ const Prompt: typeof CN.Prompt = {
   //三维AR管线相关
   FILE_NOT_EXISTS: 'Les données ne sont pas disponibles.Téléchargez les données modèles',
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
-  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
-  TRACKING_LOADING: 'Tracking...',
+  IDENTIFY_TIMEOUT: "Délai d'expiration de l'image de suivi, réessayez?",
+  TRACKING_LOADING: 'Suivi...',
 
   // 专题制图加载/输出xml
-  SUCCESS: 'Successful operation',
-  FAILED: 'Operation failed',
-  NO_TEMPLATE: 'No templates available',
-  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
-  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
+  SUCCESS: 'Opération réussie',
+  FAILED: "L'opération a échoué",
+  NO_TEMPLATE: 'Aucun modèle disponible',
+  CONFIRM_LOAD_TEMPLATE: 'Êtes-vous sûr de charger le modèle?',
+  CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
 }
 
 export { Prompt }

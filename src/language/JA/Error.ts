@@ -1,6 +1,5 @@
 import CN from '../CN'
 
-// 待翻译
 const RequestError: typeof CN.RequestError = {
   ERROR_400: 'リクエストパラメータが正しくありません',
   ERROR_401: '権限がありません',

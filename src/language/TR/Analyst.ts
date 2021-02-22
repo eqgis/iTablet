@@ -252,7 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'Sıfırla',
   GEOCOORDSYS: 'Coğrafi koordinat sistemi',
   PRJCOORDSYS: 'Öngörülen koordinat sistemi',
-  COMMONCOORDSYS: 'Common coordinate system', // 待翻译
+  COMMONCOORDSYS: 'Yaygın koordinat sistemi',
   CONVERTTING: 'Dönüştürme',
   CONVERT_SUCCESS: 'Dönüşüm başarılı',
   CONVERT_FAILED: 'Dönüştürülemedi',
@@ -412,7 +412,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'Lütfen 2 kontrol noktası ayarlayın',
   REGISTRATION_OFFSET_POINTS: 'Lütfen 1 kontrol noktası ayarlayın',
   REGISTRATION_POINTS_NUMBER_ERROR: 'Kontrol noktalarının sayısı eşleşmiyor',
-  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
+  ANALYSIS_SUCCESS_TOWATCH: 'Analiz gözlem için başarıyla uygulandı',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

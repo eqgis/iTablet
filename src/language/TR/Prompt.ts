@@ -30,7 +30,7 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_SUCCESSFULLY: 'Tamamlandı',
   DOWNLOAD_FAILED: 'İndirme Başarısız',
   UNZIPPING: 'Sıçrama',
-  ONLINE_DATA_ERROR: 'The network data has been corrupted and cannot be used normally', // 待翻译
+  ONLINE_DATA_ERROR: 'Ağ verileri bozulmuş ve normal şekilde kullanılamaz',
 
   NO_REMINDER: 'Hatırlatma Yok',
 
@@ -46,9 +46,9 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
 
-  NO_PERMISSION_ALERT: 'Application doesn\'t have enough permission to run', //待翻译
-  EXIT: 'Exit', //待翻译
-  REQUEST_PERMISSION: 'Request', //待翻译
+  NO_PERMISSION_ALERT: 'İzin Yok',
+  EXIT: 'Çıkış',
+  REQUEST_PERMISSION: 'İstek',
 
   OPENING: 'Açılıyor',
 
@@ -56,7 +56,7 @@ const Prompt: typeof CN.Prompt = {
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
   THE_MAP_IS_OPENED: 'Harita açıldı',
-  THE_MAP_IS_NOTEXIST: 'The map is not exist',//待翻译
+  THE_MAP_IS_NOTEXIST: 'Harita mevcut değil',
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
   SWITCHING: 'Değiştiriliyor',
@@ -75,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   CHANGE_BASE_MAP: 'Altlık harita boş, lütfen ilk önce değiştirin',
   OVERRIDE_SYMBOL: 'Aynı kimliğe sahip sembol mevcut, lütfen eklemek için yöntem seçin!',
   OVERWRITE: 'Overwrite',
-  CHOOSE_DATASET: 'Please choose dataset',//待翻译
+  CHOOSE_DATASET: 'Lütfen veri kümesi seçin',
 
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
   SET_ALL_MAP_INVISIBLE: 'Tamamı Görünmez',
@@ -111,8 +111,8 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin',
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
-  DONOT_SUPPORT_ARCORE: 'AR (Arttırılmış Gerçeklik) fonksiyonları bu cihazda desteklenmiyor.', //need to be translated
-  GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör', //need to be translated
+  DONOT_SUPPORT_ARCORE: 'AR (Arttırılmış Gerçeklik) fonksiyonları bu cihazda desteklenmiyor.',
+  GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör',
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
@@ -378,25 +378,25 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Varsayılan değer boş',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', // 待翻译
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', // 待翻译
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers',// Need to be translated
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers',// Need to be translated
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 
   INVALID_DATA_SET_FAILED: 'Geçersiz veri türü. Ayarlama başarısız!',
 
-  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'Katman görünemez ve geçerli katmana ayarlanamaz', // need to be translated
+  INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'Katman görünemez ve geçerli katmana ayarlanamaz',
   //三维AR管线相关
   FILE_NOT_EXISTS: 'Veri yok, lütfen örnek verilerini indirin',
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
-  IDENTIFY_TIMEOUT: 'Tracking image timeout,try again?', // 待翻译
-  TRACKING_LOADING: 'Tracking...',
+  IDENTIFY_TIMEOUT: 'İzleme görüntüsü zaman aşımı, tekrar denemek ister misiniz?',
+  TRACKING_LOADING: 'İzleniyor...',
 
   // 专题制图加载/输出xml
-  SUCCESS: 'Successful operation',
-  FAILED: 'Operation failed',
-  NO_TEMPLATE: 'No templates available',
-  CONFIRM_LOAD_TEMPLATE: 'Are you sure to load the template?',
-  CONFIRM_OUTPUT_TEMPLATE: 'Are you sure to output the map?',
+  SUCCESS: 'Başarılı işlem',
+  FAILED: 'Başarısız işlem',
+  NO_TEMPLATE: 'Kullanılabilir şablon yok',
+  CONFIRM_LOAD_TEMPLATE: 'Şablonu yükleyeceğinizden emin misiniz?',
+  CONFIRM_OUTPUT_TEMPLATE: 'Haritanın çıktısını alacağınızdan emin misiniz?',
 }
 
 export { Prompt }

@@ -26,27 +26,27 @@ const Profile: typeof CN.Profile = {
 
   SELECT_MODEL: 'Sélectionnez un modèle',
 
-   // 我的  提示语
-   MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
-   MY_GUIDE_KNOW:'Know it',//待翻译
-   MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
-   MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
-   EFFECT_GUIDE:'Add effect to scene',//待翻译
-   LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
-   MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
-   MY_GUIDE_NEXT:'Next',//待翻译
-   MY_GUIDE_SKIP:'Skip',//待翻译
-   ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
-   PROCESS_GUIDE:'Registration and projection conversion',//待翻译
-   CHOOSE_TYPE:'Choose Launch Type',//待翻译
-   CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
-   SELECT_DATASET:'Check to add dataset',//待翻译
-   ADD_SELECT_DATASET:'Add Dataset',//待翻译
-   MOVE_BROWSING:'"Move left and right" to browse complete information',//待翻译
+  // 我的  提示语
+  MY_GUIDE: "Après l'importation des données\npeut être ouvert dans le module d'accueil",
+  MY_GUIDE_KNOW:'A savoir',
+  MY_GUIDE_SLIDE: 'Dessinez pour vérifier',
+  MY_GUIDE_SLIDE_LAND:'Dessinez à gauche pour vérifier',
+  EFFECT_GUIDE:'Ajouter un effet à la scène',
+  LAUNCH_GUIDE:'Ajouter une vidéo, des mots, une image Web à la scène',
+  MEASURE_GUIDE:'Mesurer la distance, la hauteur et la surface',
+  MY_GUIDE_NEXT:'Suivant',
+  MY_GUIDE_SKIP:'Sauter',
+  ANALYST_GUIDE:'Analyse de réseau et analyse vectorielle',
+  PROCESS_GUIDE:'Enregistrement et conversion de projection',
+  CHOOSE_TYPE:'Choisissez le type de lancement',
+  CHOOSE_MEASURE_TYPE:'Choisissez le type de mesure',
+  SELECT_DATASET:'Cocher pour ajouter un ensemble de données',
+  ADD_SELECT_DATASET:'Ajouter un ensemble de données',
+  MOVE_BROWSING:'Déplacer vers la gauche et vers la droite "pour parcourir les informations complètes',
 
   // 我的——登录
   LOGIN: 'connexion',
-  LOGINING: 'Logining..',//待翻译
+  LOGINING: 'Connexion..',
   LOGIN_TIMEOUT: 'Délai de connexion, veuillez réessayer plus tard',
   LOGIN_CURRENT: "L'utilisateur actuel est déjà connecté",
   LOGIN_INVALID: 'La connexion a expiré. Veuillez vous reconnecter',
@@ -57,8 +57,8 @@ const Profile: typeof CN.Profile = {
   USERNAME_ALL: "numéro de mobile/e-mail/nom d'utilisateur",
   ENTER_USERNAME_ALL: "Veuillez saisir votre numéro de mobile, adresse e-mail ou votre nom d'utilisateur",
   ENTER_PASSWORD: 'Veuillez saisir votre mot de passe',
-  RE_ENTER_PASSWORD: 'veuillez resaisir votre mot de passe', //need to be translated
-  PASSWORD_DISMATCH: 'Les mots de passe sont différents, veuillez vérifier à nouveau', //need to be translated
+  RE_ENTER_PASSWORD: 'veuillez resaisir votre mot de passe',
+  PASSWORD_DISMATCH: 'Les mots de passe sont différents, veuillez vérifier à nouveau',
   REGISTER: "S'inscrire",
   FORGET_PASSWORD: 'Mot de passe oublié',
   RESET_PASSWORD: 'Réinitialiser le mot de passe',
@@ -172,8 +172,8 @@ const Profile: typeof CN.Profile = {
   SERVICE_AGREEMENT: 'Service Agreement',
   PRIVACY_POLICY: 'Politique de confidentialité',
   HELP_MANUAL: "Manuel d'aide",
-  NOVICE_GUIDE: 'Novice Guide',//待翻译
-  START_GUIDE:'Start Guide',//待翻译
+  NOVICE_GUIDE: 'Guide pour novice',
+  START_GUIDE:'Guide de démarrage',
 
   MAP_ONLINE: 'Carte en ligne',
   MAP_2D: 'Carte 2D',
@@ -228,7 +228,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LANGUAGE_AUTO: 'Auto',
   SETTING_LOCATION_DEVICE: 'Dispositif de localisation',
   SETTING_LOCATION_LOCAL: 'Cet appareil',
-  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
+  SETTING_CLEAR_CACHE: 'Vider le cache',
 
   // 许可
   LICENSE: 'License',
@@ -363,8 +363,8 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_SETTING: 'Réglage',
   X_COORDINATE: 'Coordonnée X',
   Y_COORDINATE: 'Coordonnée Y',
-  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
-  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH: 'Capture automatique',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolérance',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Renommer',

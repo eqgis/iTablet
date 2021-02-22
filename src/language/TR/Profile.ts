@@ -26,27 +26,27 @@ const Profile: typeof CN.Profile = {
 
   SELECT_MODEL: 'Model Seç',
 
-   // 我的  提示语
-   MY_GUIDE: 'After import data\ncan be opened in the home module',//待翻译
-   MY_GUIDE_KNOW:'Know it',//待翻译
-   MY_GUIDE_SLIDE: 'Draw up to check',//待翻译
-   MY_GUIDE_SLIDE_LAND:'Draw left to check',//待翻译
-   EFFECT_GUIDE:'Add effect to scene',//待翻译
-   LAUNCH_GUIDE:'Add video,words,picture,web to the scene',//待翻译
-   MEASURE_GUIDE:'Measure the distance, height and area',//待翻译
-   MY_GUIDE_NEXT:'Next',//待翻译
-   MY_GUIDE_SKIP:'Skip',//待翻译
-   ANALYST_GUIDE:'Network analysis and vector analysis',//待翻译
-   PROCESS_GUIDE:'Registration and projection conversion',//待翻译
-   CHOOSE_TYPE:'Choose Launch Type',//待翻译
-   CHOOSE_MEASURE_TYPE:'Choose Measure Type',//待翻译
-   SELECT_DATASET:'Check to add dataset',//待翻译
-   ADD_SELECT_DATASET:'Add Dataset',//待翻译
-   MOVE_BROWSING:'"Move left and right" to browse complete information',//待翻译
+  // 我的  提示语
+  MY_GUIDE: 'Veriler içe aktarıldıktan sonra \n ana modülde açılabilir',
+  MY_GUIDE_KNOW:'Biliyorum',
+  MY_GUIDE_SLIDE: 'Kontrol etmek için çizin',
+  MY_GUIDE_SLIDE_LAND:'Kontrol etmek için sola çizin',
+  EFFECT_GUIDE:'Sahneye efekt ekleyin',
+  LAUNCH_GUIDE:'Sahneye video, kelimeler, resim, web ekleyin',
+  MEASURE_GUIDE:'Mesafe, yükseklik ve alanı ölçün',
+  MY_GUIDE_NEXT:'İleri',
+  MY_GUIDE_SKIP:'Geç',
+  ANALYST_GUIDE:'Ağ analizi ve vektör analizi',
+  PROCESS_GUIDE:'Kayıt ve projeksiyon dönüştürme',
+  CHOOSE_TYPE:'Başlatma Türünü Seçin',
+  CHOOSE_MEASURE_TYPE:'Ölçü Türünü Seçin',
+  SELECT_DATASET:'Veri kümesi eklemek için kontrol edin',
+  ADD_SELECT_DATASET:'Veri Kümesi Ekle ',
+  MOVE_BROWSING:'Tüm bilgilere göz atmak için "sola ve sağa hareket edin"',
 
   // 我的——登录
   LOGIN: 'Giriş',
-  LOGINING: 'Logining..',//待翻译
+  LOGINING: 'Giriş yapılıyor..',
   LOGIN_TIMEOUT: 'Giriş zaman aşımı lütfen daha sonra tekrar deneyin',
   LOGIN_CURRENT: 'Mevcut kullanıcı zaten giriş yaptı',
   LOGIN_INVALID: '’Girişin süresi doldu. Lütfen tekrar giriş yapın',
@@ -57,8 +57,8 @@ const Profile: typeof CN.Profile = {
   USERNAME_ALL: 'Telefon numarası/E-mail/Kullanıcı Adı',
   ENTER_USERNAME_ALL: 'Lütfen cep telefon numaranızı, e-postanızı ya da kullanıcı adınızı girin',
   ENTER_PASSWORD: 'Lütfen şifrenizi girin',
-  RE_ENTER_PASSWORD: 'Lütfen şifrenizi tekrar girin', //need to be translated
-  PASSWORD_DISMATCH: 'Şifreler farklı, lütfen kontrol edin', //need to be translated
+  RE_ENTER_PASSWORD: 'Lütfen şifrenizi tekrar girin',
+  PASSWORD_DISMATCH: 'Şifreler farklı, lütfen kontrol edin',
   REGISTER: 'Kayıt ol',
   FORGET_PASSWORD: 'Şifrenizi mi unuttunuz?',
   RESET_PASSWORD: 'Şifreyi Sıfırla',
@@ -172,8 +172,8 @@ const Profile: typeof CN.Profile = {
   SERVICE_AGREEMENT: 'Hizmet Anlaşması',
   PRIVACY_POLICY: 'Gizlilik Politikası',
   HELP_MANUAL: 'Yardım Kılavuzu',
-  NOVICE_GUIDE: 'Novice Guide',//待翻译
-  START_GUIDE:'Start Guide',//待翻译
+  NOVICE_GUIDE: 'Yeni Başlayan Rehberi',
+  START_GUIDE:'Başlangıç Rehberi',
 
   MAP_ONLINE: 'Çevrimiçi Harita',
   MAP_2D: '2B Harita',
@@ -206,7 +206,7 @@ const Profile: typeof CN.Profile = {
   SET_DATASOURCE_NAME: 'Verikaynağı Adı Ayarla',
   ENTER_DATASOURCE_NAME: 'Lütfen verikaynağı adı girin',
   OPEN_DATASROUCE_FAILED: 'Verikaynağı açılamadı',
-  DATASOURCE_TYPE: 'veri türü',
+  DATASOURCE_TYPE: 'Veri türü',
   SERVICE_TYPE: 'Servis tipi',
 
   SELECT_DATASET_EXPORT_TYPE: 'Dışa Aktarma için format seçin',
@@ -223,12 +223,12 @@ const Profile: typeof CN.Profile = {
   SETTING_ABOUT: '',
   SETTING_ABOUT_AFTER: ' Hakkında',
   SETTING_CHECK_VERSION: 'Sürüm Kontrolü',
-  SETTING_SUGGESTION_FEEDBACK: 'geribesleme',
+  SETTING_SUGGESTION_FEEDBACK: 'Geri Bildirim',
   SETTING_LANGUAGE: 'Dil',
   SETTING_LANGUAGE_AUTO: 'Otomatik',
   SETTING_LOCATION_DEVICE: 'Konumlandır',
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
-  SETTING_CLEAR_CACHE: 'Clear Cache',//待翻译
+  SETTING_CLEAR_CACHE: 'Çerezleri temizle',
 
   // 许可
   LICENSE: 'Lisans',
@@ -272,24 +272,24 @@ const Profile: typeof CN.Profile = {
   LICENSE_NOT_ITABLET_OFFICAL: 'Bu resmi lisans iTablette aktif değil, lütfen lisansı temizlemek ve yeniden etkinleştirmek için lisans sayfasına gidin',
   LICENSE_NATIVE_EXPIRE: 'Yerel Lisans Geçersiz',
   LICENSE_LONG_EFFECTIVE: 'Uzun vadeli etkili',
-  LICENSE_OFFLINE: 'çevrimdışı Lisans',
+  LICENSE_OFFLINE: 'Çevrimdışı Lisans',
   LICENSE_CLOUD: 'Bulut Lisans',
-  LICENSE_PRIVATE_CLOUD: 'özel Bulut Lisans',
+  LICENSE_PRIVATE_CLOUD: 'Özel Bulut Lisans',
   LICENSE_NONE: 'Yok',
-  LICENSE_EDITION: 'Lisans Baskı',
-  LICENSE_EDITION_CURRENT: 'şimdiki　Baskı',
+  LICENSE_EDITION: 'Lisans Versiyonu',
+  LICENSE_EDITION_CURRENT: 'Güncel Lisans',
   LICENSE_IN_TRIAL: 'Deneme',
   LICENSE_TRIAL_END: 'Deneme Sonu',
   LICENSE_MODULE: 'Modülü',
-  LICENSE_ACTIVATE: 'Aktivasyonu',
-  LICENSE_ACTIVATING: 'Aktivasyonu',
-  LICENSE_ACTIVATION_SUCCESS: 'Aktivasyonu Başarılı',
-  LICENSE_ACTIVATION_FAIL: 'Aktivasyonu Başarısız',
+  LICENSE_ACTIVATE: 'Aktivasyon',
+  LICENSE_ACTIVATING: 'Aktivasyon yapılıyor',
+  LICENSE_ACTIVATION_SUCCESS: 'Aktivasyon Başarılı',
+  LICENSE_ACTIVATION_FAIL: 'Aktivasyon Başarısız',
   LICENSE_SELECT_LICENSE: 'Lisans seçin',
-  LICENSE_REAMIN_DAYS: 'kalan günler',
-  LICENSE_SHOW_DETAIL: 'detayları göster',
+  LICENSE_REAMIN_DAYS: 'Kalan günler',
+  LICENSE_SHOW_DETAIL: 'Detayları göster',
   LICENSE_QUERY_NONE: 'Lisans Sorgu Başarısız',
-  LICENSE_PRIVATE_CLOUD_SERVER: 'özel bulut sunucu',
+  LICENSE_PRIVATE_CLOUD_SERVER: 'Özel bulut sunucu',
   LICENSE_EDUCATION: 'Eğitim lisansı',
   LICENSE_EDUCATION_CONNECT_FAIL: 'Hizmet bağlantısı başarısız oldu',
   LICENSE_QUERY: 'Sorgu',
@@ -298,15 +298,15 @@ const Profile: typeof CN.Profile = {
   LICENSE_SELECT_MODULE: 'Modülü Seçin',
   LICENSE_SELECT_EDITION: 'Lisans Seçin',
   LICENSE_TOTAL_NUM: 'Toplam',
-  LICENSE_REMIAN_NUM: 'kalmak',
-  LICENSE_DUE_DATE: 'son tarih',
+  LICENSE_REMIAN_NUM: 'Kalan',
+  LICENSE_DUE_DATE: 'Bitiş tarihi',
   LICENSE_CLOUD_SITE_SWITCH: 'Değiştir',
   LICENSE_CLOUD_SITE_DEFAULT: 'Varsayılan Site',
   LICENSE_CLOUD_SITE_JP: 'Japon Site',
   // itablet许可版本
-  LICENSE_EDITION_STANDARD: 'Standart Baskı',
-  LICENSE_EDITION_PROFESSIONAL: 'Profesyonel Baskı',
-  LICENSE_EDITION_ADVANCED: 'Ileri Baskı',
+  LICENSE_EDITION_STANDARD: 'Standart Versiyon',
+  LICENSE_EDITION_PROFESSIONAL: 'Profesyonel Versiyon',
+  LICENSE_EDITION_ADVANCED: 'İleri Versiyon',
   // imobile许可模块
   Core_Dev: 'Core Dev',
   Core_Runtime: 'Core Runtime',
@@ -344,27 +344,27 @@ const Profile: typeof CN.Profile = {
   SUGGESTION_PROBLEMS_DESCRIPTION: 'Lütfen sorunun bir açıklamasını girin',
   SUGGESTION_CONTACT_WAY: 'İletişim bilgileri',
   SUGGESTION_CONTACT_WAY_INPUT: 'Lütfen iletişim bilgilerini girin',
-  SUGGESTION_SUBMIT: 'sunmak',
-  SUGGESTION_SUBMIT_SUCCEED: 'Başarıyla gönder',
+  SUGGESTION_SUBMIT: 'Gönder',
+  SUGGESTION_SUBMIT_SUCCEED: 'Başarıyla gönderildi',
   SUGGESTION_SUBMIT_FAILED: 'İşlem başarısız oldu',
 
   // ar地图校准
-  MAP_AR_DATUM_LONGITUDE: 'boylam',
-  MAP_AR_DATUM_LATITUDE: 'enlem',
+  MAP_AR_DATUM_LONGITUDE: 'Boylam',
+  MAP_AR_DATUM_LATITUDE: 'Enlem',
   MAP_AR_DATUM_ENTER_CURRENT_POSITION: 'Lütfen geçerli konum koordinatlarını girin',
   MAP_AR_DATUM_AUTO_LOCATION: 'Otomatik konumlandırma',
   MAP_AR_DATUM_MAP_SELECT_POINT: 'Harita seçimi',
-  MAP_AR_DATUM_SURE: 'belirlemek',
+  MAP_AR_DATUM_SURE: 'Belirle',
   MAP_AR_DATUM_AUTO_LOCATIONING: 'Konumlandırma',
   MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: '请把手机后置摄像头朝北点击确定', //待翻译
+  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Lütfen cep telefonunuzu kuzeye bakacak şekilde yerleştirin.', 
   MAP_AR_DATUM_SETTING: 'Kurulum',
   X_COORDINATE: 'X Koordinatı',
   Y_COORDINATE: 'Y Koordinatı',
-  MAP_AR_DATUM_AUTO_CATCH: 'Auto Catch',//待翻译
-  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerance',//待翻译
+  MAP_AR_DATUM_AUTO_CATCH: 'Otomatik yakala',
+  MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerans',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

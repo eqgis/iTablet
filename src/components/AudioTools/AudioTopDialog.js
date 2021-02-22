@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: size.fontSize.fontSizeMd,
     backgroundColor: 'transparent',
-    top: scaleSize(30),
+    marginTop: scaleSize(30),
   },
   tip: {
     fontSize: size.fontSize.fontSizeXl,

@@ -252,14 +252,13 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'إعادة تعيين',
   GEOCOORDSYS: 'نظام الإحداثيات الجغرافية',
   PRJCOORDSYS: 'نظام الإحداثيات الاسقاط',
-  COMMONCOORDSYS: 'Common coordinate system', // 待翻译
+  COMMONCOORDSYS: 'نظام الإحداثيات الشائع',
   CONVERTTING: 'التحويل',
   CONVERT_SUCCESS: 'نجاح التحويل',
   CONVERT_FAILED: 'فشل التحويل',
   ARITHMETIC: 'خوارزمية',
 }
 
-// need to be translated
 const Convert_Unit: typeof CN.Convert_Unit = {
   ///  毫米。
   MILIMETER: 'ميليمتر',
@@ -276,7 +275,7 @@ const Convert_Unit: typeof CN.Convert_Unit = {
   /// 分米。
   DECIMETER: 'ديسيمتر',
   /// 平方分米。
-  SQUAREDECIMETER: 'ديسيميتريس مربع',
+  SQUAREDECIMETER: 'ديسيميتر مربع',
   ///  英尺。
   FOOT: 'قدم',
   ///  平方英尺。
@@ -386,7 +385,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   // 半变异函数
   SPHERICAL: 'كروي',
   EXPONENTIAL: 'متسارع',
-  GAUSSIAN: 'Gaussian',
+  GAUSSIAN: 'غاوسي',
 }
 
 const Analyst_Prompt: typeof CN.Analyst_Prompt = {
@@ -413,7 +412,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: 'الرجاء تعيين نقطتي تحكم',
   REGISTRATION_OFFSET_POINTS: 'الرجاء تعيين نقطة تحكم واحدة',
   REGISTRATION_POINTS_NUMBER_ERROR: 'عدد نقاط التحكم غير مطابق',
-  ANALYSIS_SUCCESS_TOWATCH: 'Analysis successfully whether to watch',//待翻译
+  ANALYSIS_SUCCESS_TOWATCH: 'تم التحليل بنجاح لمشاهدة',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

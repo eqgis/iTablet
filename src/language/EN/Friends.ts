@@ -81,7 +81,7 @@ const Friends: typeof CN.Friends = {
   PICTURE: 'Picture',
   LOCATION_FAILED: 'Failed to locate',
   // Cowork
-  COWORK_MESSAGE: 'Cowork Message', 
+  COWORK_MESSAGE: 'Cowork Message',
   SEND_COWORK_INVITE: 'Do you want to send the cowork invitation?',
   COWORK_INVITATION: 'Cowork Invitation',
   COWORK_MEMBER: 'Cowork Members',
@@ -154,9 +154,8 @@ const Friends: typeof CN.Friends = {
   SYS_MSG_GEO_UPDATED2: '',
   ADDED: 'Added',
 
-  // 创建群组 待翻译
-  JOIN: 'Join', // 待翻译
-  TITLE_CHOOSE_MEMBER: 'Select Members',
+  // 创建群组
+  JOIN: 'Join', // need to be translated
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',

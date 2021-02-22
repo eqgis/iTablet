@@ -32,7 +32,7 @@ const Find: typeof CN.Find = {
   COWORK_LOGIN: 'Please log in to SuperMap Online',
   APPLET_DOWNLOADED_RELOAD: 'Successfully downloaded. Please reload the applet',
   RELOAD: 'Reload',
-  APPLET_RESET_OLD_VERSION: 'Whether to reset to the previous version?', 
+  APPLET_RESET_OLD_VERSION: 'Whether to reset to the previous version?',
   APPLET_OLD_VERSION_ALREADY: "The current version is the original version",
   APPLET_RESET_FAILED: 'Failed to reset',
   APPLET_RESETTING: 'Rest',

@@ -252,7 +252,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   RESETING: 'リセット',
   GEOCOORDSYS: '地理座標系',
   PRJCOORDSYS: '投影座標系',
-  COMMONCOORDSYS: '常用座標系', // 待翻译
+  COMMONCOORDSYS: '常用座標系',
   CONVERTTING: '変換中',
   CONVERT_SUCCESS: '変換に成功しました',
   CONVERT_FAILED: '変換に失敗しました',
@@ -412,7 +412,7 @@ const Analyst_Prompt: typeof CN.Analyst_Prompt = {
   REGISTRATION_RECTANGLE_POINTS: '2つの参照点を設定してください',
   REGISTRATION_OFFSET_POINTS: '1つの参照点を設定してください',
   REGISTRATION_POINTS_NUMBER_ERROR: '参照点の数が一致しません',
-  ANALYSIS_SUCCESS_TOWATCH: '解析に成功しました。確認しますか？',//待翻译
+  ANALYSIS_SUCCESS_TOWATCH: '解析に成功しました。確認しますか？',
 }
 
 export { Analyst_Modules, Analyst_Methods, Analyst_Labels, Analyst_Params, Analyst_Prompt, Convert_Unit }

@@ -3,7 +3,7 @@ import CN from '../CN'
 const Find: typeof CN.Find = {
   TOGGLE_FIND_ITEM: "إظهار العناصر أو إخفاؤها in the 'Explore' tab",
   PUBLIC_DATA: 'البيانات العامة',
-  APPLET: 'Applet',
+  APPLET: ' برنامج صغير ',
   GIS_ACADEMY: 'GIS أكاديمية',
   SEARCH_RESULT: 'نتيجة البحث',
   BACK: 'عودة',
@@ -46,12 +46,12 @@ const Find: typeof CN.Find = {
   ONLINE_COWORK_INFO: 'يدعم التعاون بين عدة مستخدمين',
   LABORATORY_INFO: 'الوظائف التجريبية',
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone',
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation',
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect',
+  LAB_GESTURE_BONE_INFO: 'طريق：AR Analyze-AR Analyze-Gesture Bone',
+  LAB_POSE_ESTIMATION_INFO: 'طريق：AR Analyze-AR Analyze-Pose Estimation',
+  LAB_FORM_COLLECT_INFO: 'طريق：AR Mapping-AR Mapping-High-Precision Collect',
   BETA_TIPS: 'نصائح: هذه مجرد ميزة تجريبية تجريبية',
-  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
-  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map。', // 待翻译
+  LAB_FORM_ARPIPE_INFO: 'طريق：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
+  LAB_ONLINE_COWORK_INFO: 'طريق：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map.',
 
 }
 

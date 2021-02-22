@@ -6,7 +6,7 @@ const FieldType: typeof CN.FieldType = {
   INT16: 'Int16',
   INT32: 'Int32',
   INT64: 'Int64',
-  SINGLE: 'Seul',
+  SINGLE: 'Unique',
   DOUBLE: 'Double',
   LONGBINARY: 'Long Binaire',
   TEXT: 'Texte',

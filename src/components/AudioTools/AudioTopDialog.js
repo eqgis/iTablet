@@ -7,6 +7,7 @@ import React, { PureComponent } from 'react'
 import {
   Text,
   StyleSheet,
+  View,
   TouchableOpacity,
   ScrollView,
   Image,
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(20),
     maxHeight: scaleSize(200),
     backgroundColor: 'white',
-    flexDirection: 'row',
+    flexDirection: 'column',
     elevation: 20,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'black',
@@ -45,15 +46,35 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     alignItems: 'center',
   },
+  allContentStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: 'yellow',
+  },
   contentView: {
     padding: scaleSize(20),
     borderRadius: scaleSize(20),
     // marginHorizontal: scaleSize(30),
     height: scaleSize(200),
   },
+  topView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    height: scaleSize(50),
+    paddingHorizontal: scaleSize(20),
+    alignItems: 'center',
+  },
+  topImage: {
+    width: scaleSize(40),
+    height: scaleSize(40),
+  },
   content: {
     fontSize: size.fontSize.fontSizeMd,
     backgroundColor: 'transparent',
+    top: scaleSize(30),
   },
   tip: {
     fontSize: size.fontSize.fontSizeXl,
@@ -176,10 +197,31 @@ export default class AudioTopDialog extends PureComponent {
     return distance
   }
 
+  renderTop = () => {
+    if (!this.state.recording) return null
+    return (
+      <View style={styles.topView}>
+        <Image
+          resizeMode={'contain'}
+          style={styles.topImage}
+          accessible={true}
+          accessibilityLabel={'语音'}
+          source={require('../../assets/public/icon-audio.png')}
+        />
+        <Text>正在听</Text>
+      </View>
+    )
+  }
+
   renderAudioBtn = () => {
-    let image = this.state.recording
-      ? require('../../assets/public/icon-recording.png')
-      : require('../../assets/public/icon-audio.png')
+    // let image = this.state.recording
+    //   ? require('../../assets/public/icon-audio.png')
+    //   : require('../../assets/public/icon-recording.png')
+    if (this.state.recording) {
+      return (
+        <View style={styles.audioBtn} />
+      )
+    }
     return (
       <TouchableOpacity
         activeOpacity={this.props.activeOpacity}
@@ -191,7 +233,7 @@ export default class AudioTopDialog extends PureComponent {
           style={styles.audioImage}
           accessible={true}
           accessibilityLabel={'语音'}
-          source={image}
+          source={require('../../assets/public/icon-recording.png')}
         />
       </TouchableOpacity>
     )
@@ -220,14 +262,17 @@ export default class AudioTopDialog extends PureComponent {
       <Animated.View
         style={[styles.dialogStyle, { left: this.left, right: this.right }]}
       >
-        <ScrollView style={styles.contentView}>
-          <Text style={styles.content}>{this.state.content}</Text>
-          {this.state.content === '' && (
-            <Text style={styles.tip}>{this.props.defaultText}</Text>
-          )}
-        </ScrollView>
-        {this.renderAudioBtn()}
-        {this.renderCloseBtn()}
+        {this.renderTop()}
+        <View style={styles.allContentStyle}>
+          <ScrollView style={styles.contentView}>
+            <Text style={styles.content}>{this.state.content}</Text>
+            {this.state.content === '' && (
+              <Text style={styles.tip}>{this.props.defaultText}</Text>
+            )}
+          </ScrollView>
+          {this.renderAudioBtn()}
+          {this.renderCloseBtn()}
+        </View>
       </Animated.View>
     )
   }

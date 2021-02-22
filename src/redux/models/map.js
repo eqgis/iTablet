@@ -188,6 +188,9 @@ export const saveMap = (params = {}, cb = () => { }) => async (
         params.nModule || '',
         params.addition,
         params.isNew,
+        undefined,
+        undefined,
+        params.isMapFromXML,
       )
       path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map
         }${mapName}.xml`

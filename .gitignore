@@ -129,3 +129,9 @@ android/local.properties
 .watchmanconfig
 
 bundles/
+ios/ZipArchive_2.framework/Headers/SSZipArchive.h
+ios/ZipArchive_2.framework/Headers/SSZipCommon.h
+ios/ZipArchive_2.framework/Headers/ZipArchive.h
+ios/ZipArchive_2.framework/Info.plist
+ios/ZipArchive_2.framework/Modules/module.modulemap
+ios/ZipArchive_2.framework/ZipArchive

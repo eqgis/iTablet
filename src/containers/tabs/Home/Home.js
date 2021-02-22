@@ -383,15 +383,9 @@ export default class Home extends Component {
         style={styles.dialog}
       >
         <View style={styles.dialogHeader}>
-          <View style={{
-            width: scaleSize(392 - 69*2),
-            height: '100%',
-            alignItems: 'center',
-          }}>
-            <Text style={styles.promptTitle}>
-              {getLanguage(this.props.language).Prompt.DOWNLOAD_DATA}
-            </Text>
-          </View>
+          <Text style={styles.promptTitle}>
+            {getLanguage(this.props.language).Prompt.DOWNLOAD_DATA}
+          </Text>
           <ImageButton
             iconBtnStyle={styles.dialogHeaderBtnView}
             iconStyle={styles.dialogHeaderBtn}

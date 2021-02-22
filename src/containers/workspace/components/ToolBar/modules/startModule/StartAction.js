@@ -264,6 +264,8 @@ function openTemplateList() {
 
 /** 新建 * */
 async function create() {
+  // 不是从xml加载地图
+  GLOBAL.IS_MAP_FROM_XML = false
   if (GLOBAL.Type === ChunkType.MAP_COLLECTION) {
     openTemplateList()
     return
@@ -474,9 +476,13 @@ function saveMap() {
       // ) {
       //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
       // }
+      const isMapFromXML = GLOBAL.IS_MAP_FROM_XML
+      GLOBAL.IS_MAP_FROM_XML = false
+      console.log(isMapFromXML,'xxx')
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,
+        isMapFromXML,
       })
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
@@ -576,6 +582,8 @@ function saveMapAs() {
 /** 切换地图 * */
 async function changeMap(item) {
   const params = ToolbarModule.getParams()
+  // 不是从xml加载地图
+  GLOBAL.IS_MAP_FROM_XML = false
   try {
     if (params.map.currentMap && params.map.currentMap.path === item.path) {
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_OPENED)

@@ -93,6 +93,7 @@ export default StyleSheet.create({
     position: 'absolute',
     right: 0,
     left: 0,
+    paddingHorizontal: scaleSize(69),
   },
   dialogHeaderBtnView: {
     marginRight: scaleSize(5),

@@ -4,14 +4,17 @@
  * https://github.com/AsortKeven
  */
 import * as React from 'react'
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, PanResponder, Platform } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import color from '../../../../styles/color'
 
 const FOOTER_HEIGHT = scaleSize(88)
-
+const TOP_DEFAULT = Platform.select({
+  android: 0,
+  ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
+})
 export default class RNLegendView extends React.Component {
   props: {
     device: Object,
@@ -44,13 +47,44 @@ export default class RNLegendView extends React.Component {
     this.startTime = 0
     this.endTime = 0
     this.INTERVAL = 300
+
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+      onPanResponderMove: this._handlePanResponderMove,
+      onPanResponderRelease: this._handlePanResponderEnd,
+      onPanResponderTerminate: this._handlePanResponderEnd,
+    })
+
+    // 初始化位置
+    let legendPosition = this.props.legendSettings[GLOBAL.Type].position
+    this._previousTop = legendPosition?.y > 0
+      ? legendPosition.y
+      : screen.getHeaderHeight(this.props.device.orientation) + scaleSize(8)
+    this._previousLeft = legendPosition?.x > 0 ? legendPosition.x : 0
+    const position = this._getAvailablePosition(this._previousLeft, this._previousTop)
+    this._previousTop = position.y
+    this._previousLeft = position.x
+    this._moveViewStyles = {
+      style: {
+        top: this._previousTop,
+        left: this._previousLeft,
+      },
+    }
   }
 
-  // setMapLegend = ({ backgroundColor }) => {
-  //   let settings = this.props.legendSettings
-  //   settings[GLOBAL.Type].backgroundColor = backgroundColor
-  //   this.props.setMapLegend && this.props.setMapLegend(settings)
-  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      const position = this._getAvailablePosition(this._moveViewStyles.style.left, this._moveViewStyles.style.top)
+
+      this._moveViewStyles.style.top = position.y
+      this._moveViewStyles.style.left = position.x
+      this._previousTop = position.y
+      this._previousLeft = position.x
+
+      this._updateNativeStyles()
+    }
+  }
 
   UNSAFE_componentWillMount() {
     if (this.state.legendSource === '') {
@@ -59,17 +93,8 @@ export default class RNLegendView extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     let returnFlag = false
-    //方向改变 setState 不更新组件， 组件更新放到下一次调用SCU时判断state变化
     if (this.props.device.orientation !== nextProps.device.orientation) {
-      let top = screen.getHeaderHeight(nextProps.device.orientation)
-      let bottom = FOOTER_HEIGHT
-      this.setState({
-        topLeft: { left: 0, top },
-        topRight: { right: 0, top },
-        leftBottom: { left: 0, bottom },
-        rightBottom: { right: 0, bottom },
-      })
-      returnFlag = false
+      returnFlag = true
     } else if (
       nextState.legendSource !== this.state.legendSource ||
       JSON.stringify(nextProps.legendSettings[GLOBAL.Type]) !==
@@ -89,29 +114,80 @@ export default class RNLegendView extends React.Component {
   componentWillUnmount() {
     SMap.removeLegendListener()
   }
+
   /**
-   *  更改图例属性
-   * @param title 标题
-   * @param column 列数
-   * @param bgcolor 背景色
-   * @param width 宽度
-   * @param height 高度
-   * @param position 位置
-   * 位置的四个值 topLeft topRight leftBottom rightBottom
+   * 获取图例可用位置, 不能超出屏幕
    */
-  // changeLegendConfig = ({
-  //   title = '图例',
-  //   column = 2,
-  //   bgcolor = 'white',
-  //   width = 300,
-  //   height = 325,
-  //   position = 'topLeft',
-  // } = {}) => {
-  //   let legendConfig = { title, column, bgcolor, width, height, position }
-  //   this.setState({
-  //     legendConfig,
-  //   })
-  // }
+  _getAvailablePosition = (x, y) => {
+    if (y < TOP_DEFAULT && this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+      y = TOP_DEFAULT
+    } else if (y < 0 && this.props.device.orientation.indexOf('LANDSCAPE') >= 0) {
+      y = 0
+    } else if (y > screen.getScreenHeight(this.props.device.orientation) - scaleSize(
+      (this.state.height *
+        this.props.legendSettings[GLOBAL.Type].heightPercent) /
+        100,
+    )) {
+      y = screen.getScreenHeight(this.props.device.orientation) - scaleSize(
+        (this.state.height *
+          this.props.legendSettings[GLOBAL.Type].heightPercent) /
+          100,
+      )
+    }
+    if (x < 0) {
+      x = 0
+    } else if (x > screen.getScreenWidth(this.props.device.orientation) - scaleSize(
+      (this.state.width *
+        this.props.legendSettings[GLOBAL.Type].widthPercent) /
+        100,
+    )) {
+      x = screen.getScreenWidth(this.props.device.orientation) - scaleSize(
+        (this.state.width *
+          this.props.legendSettings[GLOBAL.Type].widthPercent) /
+          100,
+      )
+    }
+    return {x, y}
+  }
+
+  _handleStartShouldSetPanResponder = () => {
+    return true
+  }
+
+  _handleMoveShouldSetPanResponder = (evt, gestureState) => {
+    if (Math.abs(gestureState.dy) < 1 && Math.abs(gestureState.dx) < 1) {
+      return false
+    }
+    return true
+  }
+
+  _handlePanResponderMove = (evt, gestureState) => {
+    let y = this._previousTop + gestureState.dy
+    let x = this._previousLeft + gestureState.dx
+
+    const position = this._getAvailablePosition(x, y)
+
+    this._moveViewStyles.style.top = position.y
+    this._moveViewStyles.style.left = position.x
+
+    this._updateNativeStyles()
+  }
+
+  _handlePanResponderEnd = (evt, gestureState) => {
+    this._previousTop += gestureState.dy
+    this._previousLeft += gestureState.dx
+
+    let legendData = this.props.legendSettings
+    legendData[GLOBAL.Type].position = {
+      x: this._moveViewStyles.style.left,
+      y: this._moveViewStyles.style.top,
+    }
+    this.props.setMapLegend(legendData)
+  }
+
+  _updateNativeStyles = () => {
+    this.moveView && this.moveView.setNativeProps(this._moveViewStyles)
+  }
 
   /**
    * 获取图例数据方法
@@ -245,44 +321,9 @@ export default class RNLegendView extends React.Component {
 
   render() {
     if (this.props.legendSettings[GLOBAL.Type]) {
-      let frontStyle =
-        this.props.language === 'CN'
-          ? {
-            position: 'absolute',
-            top: 0,
-            left: '46%',
-            letterSpacing: scaleSize(2),
-            fontSize: setSpText(18),
-          }
-          : {
-            position: 'absolute',
-            top: 0,
-            left: '35%',
-            letterSpacing: scaleSize(2),
-            fontSize: setSpText(18),
-          }
-      let backStyle =
-        this.props.language === 'CN'
-          ? {
-            left: '46%',
-            position: 'absolute',
-            top: 0,
-            fontSize: setSpText(18),
-            letterSpacing: scaleSize(2),
-            color: color.white,
-            fontWeight: '900',
-          }
-          : {
-            left: '35%',
-            position: 'absolute',
-            top: 0,
-            fontSize: setSpText(18),
-            letterSpacing: scaleSize(1.1),
-            color: color.white,
-            fontWeight: '900',
-          }
       return (
         <View
+          ref={ref => this.moveView = ref}
           style={{
             position: 'absolute',
             width: scaleSize(
@@ -295,26 +336,43 @@ export default class RNLegendView extends React.Component {
                 this.props.legendSettings[GLOBAL.Type].heightPercent) /
                 100,
             ),
-            borderColor: 'black',
+            borderColor: color.separateColorGray4,
+            borderRadius: scaleSize(16),
             borderWidth: scaleSize(3),
-            paddingRight: scaleSize(5),
+            paddingHorizontal: scaleSize(5),
+            overflow: 'hidden',
             backgroundColor: this.props.legendSettings[GLOBAL.Type]
               .backgroundColor,
-            ...this.state[
-              this.props.legendSettings[GLOBAL.Type].legendPosition
-            ],
+            ...this._moveViewStyles.style,
           }}
         >
           <View
             style={{
               width: '100%',
-              height: scaleSize(30),
-              backgroundColor: this.props.legendSettings[GLOBAL.Type]
-                .backgroundColor,
+              height: scaleSize(60),
+              // backgroundColor: 'yellow',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-around',
             }}
+            {...this._panResponder.panHandlers}
           >
-            <Text style={backStyle}>{this.state.title}</Text>
-            <Text style={frontStyle}>{this.state.title}</Text>
+            <View
+              style={{
+                height: scaleSize(8),
+                width: scaleSize(60),
+                borderRadius: scaleSize(4),
+                backgroundColor: color.separateColorGray4,
+              }}
+            />
+            <Text
+              style={{
+                letterSpacing: scaleSize(2),
+                fontSize: setSpText(18),
+              }}
+            >
+              {this.state.title}
+            </Text>
           </View>
           <FlatList
             style={{

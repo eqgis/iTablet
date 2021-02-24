@@ -4,7 +4,7 @@ import {
   legendColor,
   ToolbarType,
 } from '../../../../../../constants'
-import { getPublicAssets } from '../../../../../../assets'
+import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
@@ -183,24 +183,24 @@ function getMenuData(type) {
       selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
       selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
     },
-    {
-      key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
-      action: () => {
-        const _data = getData(ConstToolType.SM_MAP_LEGEND_POSITION)
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND_POSITION, {
-            containerType: ToolbarType.picker,
-            isFullScreen: false,
-            selectName: getLanguage(_params.language).Map_Main_Menu
-              .LEGEND_POSITION,
-            selectKey: getLanguage(_params.language).Map_Main_Menu
-              .LEGEND_POSITION,
-            ..._data,
-          })
-      },
-      selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
-      selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
-    },
+    // {
+    //   key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
+    //   action: () => {
+    //     const _data = getData(ConstToolType.SM_MAP_LEGEND_POSITION)
+    //     GLOBAL.toolBox &&
+    //       GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND_POSITION, {
+    //         containerType: ToolbarType.picker,
+    //         isFullScreen: false,
+    //         selectName: getLanguage(_params.language).Map_Main_Menu
+    //           .LEGEND_POSITION,
+    //         selectKey: getLanguage(_params.language).Map_Main_Menu
+    //           .LEGEND_POSITION,
+    //         ..._data,
+    //       })
+    //   },
+    //   selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
+    //   selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
+    // },
   ]
   return data
 }
@@ -218,7 +218,8 @@ function getButtons(type) {
           {
             type: ToolbarBtnType.VISIBLE,
             action: LegendAction.changeLegendVisible,
-            image: getPublicAssets().mapTools.tools_legend_on,
+            // image: getPublicAssets().mapTools.tools_legend_on,
+            image: getThemeAssets().layer.icon_visible,
           },
           ToolbarBtnType.MENU,
           // ToolbarBtnType.FLEX,
@@ -231,7 +232,8 @@ function getButtons(type) {
           {
             type: ToolbarBtnType.NOT_VISIBLE,
             action: LegendAction.changeLegendVisible,
-            image: getPublicAssets().mapTools.tools_legend_off,
+            // image: getPublicAssets().mapTools.tools_legend_off,
+            image: getThemeAssets().layer.icon_invisible,
           },
           ToolbarBtnType.MENU,
           // ToolbarBtnType.FLEX,

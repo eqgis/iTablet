@@ -437,7 +437,9 @@ class AppRoot extends Component {
     for (let key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted
     }
-    if (isAllGranted) {
+    //申请 android 11 读写权限
+    let permisson11 = await AppUtils.requestStoragePermissionR()
+    if (isAllGranted && permisson11) {
       this.init()
     } else {
       GLOBAL.SimpleDialog.set({

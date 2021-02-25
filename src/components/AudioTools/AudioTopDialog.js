@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     padding: scaleSize(20),
     borderRadius: scaleSize(20),
     // marginHorizontal: scaleSize(30),
-    height: scaleSize(200),
+    height: scaleSize(210),
   },
   topView: {
     position: 'absolute',
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeXl,
     lineHeight: scaleSize(30),
     backgroundColor: 'transparent',
-    textAlign: 'center',
+    textAlign: 'left',
+    paddingTop: scaleSize(20),
     color: color.contentColorBlack,
   },
   closeBtn: {
@@ -265,10 +266,15 @@ export default class AudioTopDialog extends PureComponent {
         {this.renderTop()}
         <View style={styles.allContentStyle}>
           <ScrollView style={styles.contentView}>
-            <Text style={styles.content}>{this.state.content}</Text>
+            {/* <Text style={styles.content}>{this.state.content}</Text>
             {this.state.content === '' && (
               <Text style={styles.tip}>{this.props.defaultText}</Text>
-            )}
+            )} */}
+            {this.state.content !== '' ?
+              (<Text style={styles.content}>{this.state.content}</Text>) :
+              (
+                <Text style={styles.tip}>{this.props.defaultText}</Text>
+              )}
           </ScrollView>
           {this.renderAudioBtn()}
           {this.renderCloseBtn()}

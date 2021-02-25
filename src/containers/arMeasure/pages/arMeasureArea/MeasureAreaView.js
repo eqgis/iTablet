@@ -317,6 +317,12 @@ export default class MeasureAreaView extends React.Component {
   /** 撤销 **/
   undo = async () => {
     await SMeasureAreaView.undoDraw()
+    if (this.measureType === 'arMeasureHeight') {
+      let height = await SMeasureAreaView.getCurrentHeight()
+      this.setState({
+        currentHeight: height + 'm',
+      })
+    }
   }
 
   /** 连续测量 **/

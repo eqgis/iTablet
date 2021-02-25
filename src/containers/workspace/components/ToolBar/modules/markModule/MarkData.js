@@ -42,7 +42,7 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.SHOW_ATTRIBUTE,
           action: MarkAction.showAttribute,
-          image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+          image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
         },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
@@ -56,7 +56,7 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.SHOW_ATTRIBUTE,
           action: () => MarkAction.showAttribute,
-          image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+          image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
         },
       ]
       break

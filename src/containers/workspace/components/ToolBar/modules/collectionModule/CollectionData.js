@@ -118,7 +118,7 @@ function getData(type) {
     {
       type: ToolbarBtnType.SHOW_ATTRIBUTE,
       action: () => CollectionAction.showAttribute(),
-      image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+      image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
     },
     // {
     //   type: ToolbarBtnType.MAP_SYMBOL,

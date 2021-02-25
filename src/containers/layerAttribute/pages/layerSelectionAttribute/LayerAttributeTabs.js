@@ -8,7 +8,7 @@ import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
-import { Toast, scaleSize, StyleUtils } from '../../../../utils'
+import { Toast, scaleSize, StyleUtils, LayerUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { color, zIndexLevel } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
@@ -119,6 +119,7 @@ export default class LayerAttributeTabs extends React.Component {
       }
     }
 
+
     this.state = {
       isShowView: false,
       currentIndex: initIndex,
@@ -135,6 +136,7 @@ export default class LayerAttributeTabs extends React.Component {
       canBeRevert: false,
 
       isShowSystemFields: true,
+      isCollection: params && params.isCollection ? params.isCollection : false,
     }
 
     // 选择集中当前选中的属性
@@ -150,13 +152,28 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   componentDidMount() {
-    (async function() {
+    (async function () {
       await this.props.setBackAction({
         key: this.props.navigation.state.routeName,
         action: this.back,
       })
       if (this.preAction && typeof this.preAction === 'function') {
         await this.preAction()
+      }
+      if (this.state.isCollection) {
+        let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
+        this.props.setSelection && this.props.setSelection([{
+          layerInfo: {
+            path: GLOBAL.currentLayer.name,
+            type: 149,
+            selectTable: true,
+            Visible: true,
+            editable: false,
+            caption: GLOBAL.currentLayer.name,
+            name: GLOBAL.currentLayer.name,
+          },
+          ids: id,
+        }])
       }
       this.setState({
         isShowView: true,
@@ -385,7 +402,7 @@ export default class LayerAttributeTabs extends React.Component {
             relativeIndex: 0,
             currentIndex: 0,
           },
-          () => {},
+          () => { },
         )
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
@@ -395,6 +412,46 @@ export default class LayerAttributeTabs extends React.Component {
     return false
   }
 
+  /** 删除事件 **/
+  deleteAction = async () => {
+    let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path, this.state.currentIndex, this.state.isCollection)
+    if (result) {
+      Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+    } else {
+      Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
+    }
+    for (let i = 0; i < this.props.selection.length; i++) {
+      this.currentTabRefs[i].getAttribute(
+        {
+          type: 'reset',
+          currentPage: 0,
+          startIndex: 0,
+          relativeIndex: 0,
+          currentIndex: 0,
+        },
+      )
+    }
+    this.setState({
+      currentIndex: -1,
+      currentFieldInfo: [],
+    })
+  }
+
+    /** 拍照后刷新事件 **/
+    refreshAction = async () => {
+      for (let i = 0; i < this.props.selection.length; i++) {
+        this.currentTabRefs[i].getAttribute(
+          {
+            type: 'reset',
+            currentPage: 0,
+            startIndex: 0,
+            relativeIndex: 0,
+            currentIndex: 0,
+          },
+        )
+      }
+    }
+
   /** 关联事件 **/
   relateAction = () => {
     if (
@@ -403,7 +460,7 @@ export default class LayerAttributeTabs extends React.Component {
     )
       return
     let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-        .layerSelection.layerInfo.path,
+      .layerSelection.layerInfo.path,
       selection = this.currentTabRefs[this.state.currentTabIndex].getSelection()
 
     if (!selection || !selection.data) return
@@ -573,7 +630,7 @@ export default class LayerAttributeTabs extends React.Component {
                 relativeIndex: 0,
                 currentIndex: 0,
               },
-              () => {},
+              () => { },
             )
           } else {
             Toast.show(
@@ -683,6 +740,7 @@ export default class LayerAttributeTabs extends React.Component {
         onAttributeFieldDelete={this.onAttributeFieldDelete}
         showAddModal={this.showLayerAddView}
         isShowSystemFields={this.state.isShowSystemFields}
+        navigation={this.props.navigation}
       />
     )
   }
@@ -809,11 +867,16 @@ export default class LayerAttributeTabs extends React.Component {
           tabsAction={this.showDrawer}
           canLocated={this.state.attributes.data.length > 1}
           canRelated={this.state.currentIndex >= 0}
+          canDelete={this.state.currentIndex >= 0}
           relateAction={this.relateAction}
+          deleteAction={this.deleteAction}
           locateAction={this.showLocationView}
           canAddField={true}
           addFieldAction={() => this.showLayerAddView(true)}
           attributesData={this.state.attributes.head}
+          currentIndex={this.state.currentIndex}
+          refreshAction={this.refreshAction}
+          selectionAttribute={true}
         />
         {this.state.isShowView && (
           <View
@@ -827,14 +890,14 @@ export default class LayerAttributeTabs extends React.Component {
               this.props.selection.length > 1 ? (
                 this.renderTabs()
               ) : (
-                this.renderTable({
-                  data: this.props.selection[0],
-                  index: 0,
-                })
-              )
+                  this.renderTable({
+                    data: this.props.selection[0],
+                    index: 0,
+                  })
+                )
             ) : (
-              <View style={{ flex: 1 }} />
-            )}
+                <View style={{ flex: 1 }} />
+              )}
             <LocationView
               language={this.props.language}
               ref={ref => (this.locationView = ref)}

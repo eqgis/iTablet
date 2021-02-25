@@ -142,7 +142,7 @@ export default class LayerAttribute extends React.Component {
     } else if (
       prevProps.currentLayer &&
       JSON.stringify(prevProps.currentLayer) !==
-        JSON.stringify(this.props.currentLayer)
+      JSON.stringify(this.props.currentLayer)
     ) {
       this.filter = ''
       // 切换图层，重置属性界面
@@ -180,7 +180,7 @@ export default class LayerAttribute extends React.Component {
     this.props.setCurrentAttribute({})
   }
 
-  getMap3DAttribute = async (cb = () => {}) => {
+  getMap3DAttribute = async (cb = () => { }) => {
     !this.state.showTable &&
       this.setState({
         showTable: true,
@@ -190,7 +190,7 @@ export default class LayerAttribute extends React.Component {
   }
 
   /** 下拉刷新 **/
-  refresh = (cb = () => {}, resetCurrent = false) => {
+  refresh = (cb = () => { }, resetCurrent = false) => {
     if (!this.canBeRefresh) {
       //Toast.show('已经是最新的了')
       this.getAttribute(
@@ -224,7 +224,7 @@ export default class LayerAttribute extends React.Component {
   }
 
   /** 加载更多 **/
-  loadMore = (cb = () => {}) => {
+  loadMore = (cb = () => { }) => {
     if (this.isLoading) return
     if (this.noMore) {
       cb && cb()
@@ -256,7 +256,7 @@ export default class LayerAttribute extends React.Component {
    * @param cb 回调函数
    * @param resetCurrent 是否重置当前选择的对象
    */
-  getAttribute = (params = {}, cb = () => {}, resetCurrent = false) => {
+  getAttribute = (params = {}, cb = () => { }, resetCurrent = false) => {
     if (!this.props.currentLayer.path || params.currentPage < 0) {
       this.setLoading(false)
       return
@@ -264,131 +264,131 @@ export default class LayerAttribute extends React.Component {
     let { currentPage, pageSize, type, ...others } = params
     let result = {},
       attributes = {}
-    ;(async function() {
-      try {
-        let checkData = this.checkToolIsViable()
-        result = await LayerUtils.getLayerAttribute(
-          JSON.parse(JSON.stringify(this.state.attributes)),
-          this.props.currentLayer.path,
-          currentPage,
-          pageSize !== undefined ? pageSize : PAGE_SIZE,
-          {
-            filter: this.filter,
-          },
-          type,
-        )
-
-        this.total = result.total || 0
-        attributes = result.attributes || []
-
-        // this.noMore =
-        //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
-        //   attributes.data.length < PAGE_SIZE
-
-        if (attributes.data.length === 1) {
-          this.setState({
-            showTable: true,
-            attributes,
-            currentIndex: 0,
-            relativeIndex: 0,
-            currentFieldInfo: attributes.data[0],
-            startIndex: 0,
-            ...checkData,
-            ...others,
-          })
-          this.setLoading(false)
-        } else {
-          let newAttributes = JSON.parse(JSON.stringify(attributes))
-          let startIndex =
-            others.startIndex >= 0
-              ? others.startIndex
-              : this.state.startIndex || 0
-          // 截取数据，最多显示 ROWS_LIMIT 行
-          if (attributes.data.length > ROWS_LIMIT) {
-            if (type === 'refresh') {
-              newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
-              startIndex = result.startIndex
-            } else {
-              startIndex = result.startIndex + result.resLength - ROWS_LIMIT
-              startIndex =
-                parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
-
-              let sliceStartIndex = 0
-              if (attributes.data.length >= ROWS_LIMIT) {
-                sliceStartIndex =
-                  parseInt(
-                    (
-                      (attributes.data.length - ROWS_LIMIT) /
-                      PAGE_SIZE
-                    ).toFixed(),
-                  ) * PAGE_SIZE
-              }
-              newAttributes.data = newAttributes.data.slice(
-                sliceStartIndex,
-                attributes.data.length,
-              )
-            }
-          }
-
-          let currentIndex = resetCurrent
-            ? -1
-            : others.currentIndex !== undefined
-              ? others.currentIndex
-              : this.state.currentIndex
-          let relativeIndex =
-            resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
-          // : currentIndex - startIndex - 1
-          let prevStartIndex = this.state.startIndex
-          this.currentPage = Math.floor(
-            (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
-          )
-          this.noMore = startIndex + newAttributes.data.length === this.total
-          this.setState(
+      ; (async function () {
+        try {
+          let checkData = this.checkToolIsViable()
+          result = await LayerUtils.getLayerAttribute(
+            JSON.parse(JSON.stringify(this.state.attributes)),
+            this.props.currentLayer.path,
+            currentPage,
+            pageSize !== undefined ? pageSize : PAGE_SIZE,
             {
-              showTable: true,
-              attributes: newAttributes,
-              currentIndex,
-              relativeIndex,
-              currentFieldInfo:
-                relativeIndex >= 0 && relativeIndex < newAttributes.data.length
-                  ? newAttributes.data[relativeIndex]
-                  : this.state.currentFieldInfo,
-              startIndex,
-              ...checkData,
-              // ...others,
+              filter: this.filter,
             },
-            () => {
-              setTimeout(() => {
-                if (type === 'refresh') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: prevStartIndex - startIndex,
-                      sectionIndex: 0,
-                      viewPosition: 0,
-                      viewOffset: COL_HEIGHT,
-                    })
-                } else if (type === 'loadMore') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: newAttributes.data.length - result.resLength,
-                      sectionIndex: 0,
-                      viewPosition: 1,
-                    })
-                }
-                this.setLoading(false)
-                cb && cb(attributes)
-              }, 0)
-            },
+            type,
           )
+
+          this.total = result.total || 0
+          attributes = result.attributes || []
+
+          // this.noMore =
+          //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
+          //   attributes.data.length < PAGE_SIZE
+
+          if (attributes.data.length === 1) {
+            this.setState({
+              showTable: true,
+              attributes,
+              currentIndex: 0,
+              relativeIndex: 0,
+              currentFieldInfo: attributes.data[0],
+              startIndex: 0,
+              ...checkData,
+              ...others,
+            })
+            this.setLoading(false)
+          } else {
+            let newAttributes = JSON.parse(JSON.stringify(attributes))
+            let startIndex =
+              others.startIndex >= 0
+                ? others.startIndex
+                : this.state.startIndex || 0
+            // 截取数据，最多显示 ROWS_LIMIT 行
+            if (attributes.data.length > ROWS_LIMIT) {
+              if (type === 'refresh') {
+                newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
+                startIndex = result.startIndex
+              } else {
+                startIndex = result.startIndex + result.resLength - ROWS_LIMIT
+                startIndex =
+                  parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
+
+                let sliceStartIndex = 0
+                if (attributes.data.length >= ROWS_LIMIT) {
+                  sliceStartIndex =
+                    parseInt(
+                      (
+                        (attributes.data.length - ROWS_LIMIT) /
+                        PAGE_SIZE
+                      ).toFixed(),
+                    ) * PAGE_SIZE
+                }
+                newAttributes.data = newAttributes.data.slice(
+                  sliceStartIndex,
+                  attributes.data.length,
+                )
+              }
+            }
+
+            let currentIndex = resetCurrent
+              ? -1
+              : others.currentIndex !== undefined
+                ? others.currentIndex
+                : this.state.currentIndex
+            let relativeIndex =
+              resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
+            // : currentIndex - startIndex - 1
+            let prevStartIndex = this.state.startIndex
+            this.currentPage = Math.floor(
+              (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
+            )
+            this.noMore = startIndex + newAttributes.data.length === this.total
+            this.setState(
+              {
+                showTable: true,
+                attributes: newAttributes,
+                currentIndex,
+                relativeIndex,
+                currentFieldInfo:
+                  relativeIndex >= 0 && relativeIndex < newAttributes.data.length
+                    ? newAttributes.data[relativeIndex]
+                    : this.state.currentFieldInfo,
+                startIndex,
+                ...checkData,
+                // ...others,
+              },
+              () => {
+                setTimeout(() => {
+                  if (type === 'refresh') {
+                    this.table &&
+                      this.table.scrollToLocation({
+                        animated: false,
+                        itemIndex: prevStartIndex - startIndex,
+                        sectionIndex: 0,
+                        viewPosition: 0,
+                        viewOffset: COL_HEIGHT,
+                      })
+                  } else if (type === 'loadMore') {
+                    this.table &&
+                      this.table.scrollToLocation({
+                        animated: false,
+                        itemIndex: newAttributes.data.length - result.resLength,
+                        sectionIndex: 0,
+                        viewPosition: 1,
+                      })
+                  }
+                  this.setLoading(false)
+                  cb && cb(attributes)
+                }, 0)
+              },
+            )
+          }
+        } catch (e) {
+          this.isLoading = false
+          this.setLoading(false)
+          cb && cb(attributes)
         }
-      } catch (e) {
-        this.isLoading = false
-        this.setLoading(false)
-        cb && cb(attributes)
-      }
-    }.bind(this)())
+      }.bind(this)())
   }
 
   /**
@@ -636,6 +636,12 @@ export default class LayerAttribute extends React.Component {
         currentIndex: -1,
       })
     }
+
+    // GLOBAL.SelectedSelectionAttribute = {
+    //   index:this.state.startIndex + index,
+    //   layerInfo:this.props.layerSelection.layerInfo,
+    //   data,
+    // }
   }
 
   //显示详情和删除的弹框
@@ -646,7 +652,7 @@ export default class LayerAttribute extends React.Component {
       {
         title: getLanguage(GLOBAL.language).Map_Attribute.DETAIL,
         onPress: () => {
-          (async function() {
+          (async function () {
             this.addPopModal &&
               this.addPopModal.setVisible(true, {
                 data: { fieldInfo },
@@ -753,6 +759,27 @@ export default class LayerAttribute extends React.Component {
   showLayerAddView = () => {
     // GLOBAL.ToolBar.showFullMap(true)
     this.addPopModal && this.addPopModal.setVisible(true)
+  }
+
+  /** 删除事件 **/
+  deleteAction = async () => {
+    let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.currentLayer.name, this.state.currentIndex, false)
+    if (result) {
+      Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+    } else {
+      Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
+    }
+    this.refresh()
+    this.setState({
+      currentFieldInfo: [],
+      relativeIndex: -1,
+      currentIndex: -1,
+    })
+  }
+
+  /** 拍照后刷新事件 **/
+  refreshAction = async () => {
+    this.refresh()
   }
 
   /** 添加属性字段 **/
@@ -916,11 +943,10 @@ export default class LayerAttribute extends React.Component {
             ],
             params: {
               // index: int,      // 当前对象所在记录集中的位置
-              filter: `SmID=${
-                isSingleData
-                  ? this.state.attributes.data[0][0].value
-                  : data.rowData[1].value // 0为序号
-              }`, // 过滤条件
+              filter: `SmID=${isSingleData
+                ? this.state.attributes.data[0][0].value
+                : data.rowData[1].value // 0为序号
+                }`, // 过滤条件
               cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           },
@@ -1054,7 +1080,7 @@ export default class LayerAttribute extends React.Component {
                     if (
                       attributes.data[0][0].value <= fieldInfo[j].smID &&
                       attributes.data[attributes.data.length - 1][0].value >=
-                        fieldInfo[j].smID
+                      fieldInfo[j].smID
                     ) {
                       for (let _data of attributes.data) {
                         if (_data[0].value === fieldInfo[j].smID) {
@@ -1067,9 +1093,9 @@ export default class LayerAttribute extends React.Component {
                   } else {
                     if (
                       attributes.data[0][fieldInfo[j].index].name ===
-                        fieldInfo[j].name &&
+                      fieldInfo[j].name &&
                       attributes.data[0][fieldInfo[j].index].value !==
-                        fieldInfo[j].value
+                      fieldInfo[j].value
                     ) {
                       attributes.data[0][fieldInfo[j].index].value =
                         fieldInfo[j].value
@@ -1460,6 +1486,7 @@ export default class LayerAttribute extends React.Component {
             orientation={this.props.device.orientation}
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
+            canDelete={this.state.currentIndex >= 0}
             canAddField={
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
@@ -1469,7 +1496,10 @@ export default class LayerAttribute extends React.Component {
             locateAction={this.showLocationView}
             relateAction={this.relateAction}
             addFieldAction={this.showLayerAddView}
+            deleteAction={this.deleteAction}
             attributesData={this.state.attributes.head}
+            currentIndex={this.state.currentIndex}
+            refreshAction={this.refreshAction}
           />
         )}
         <View

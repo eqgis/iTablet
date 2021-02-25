@@ -10,7 +10,9 @@ import { ImageButton } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { screen, scaleSize } from '../../../../utils'
+import { screen, scaleSize ,LayerUtils} from '../../../../utils'
+import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
+import NavigationService from '../../../NavigationService'
 
 const itemGap = scaleSize(20)
 
@@ -18,6 +20,8 @@ export default class LayerTopBar extends React.Component {
   props: {
     locateAction: () => {},
     undoAction: () => {},
+    deleteAction: () => {},
+    refreshAction:() => {},
     relateAction: () => {},
     addFieldAction: () => {},
     tabsAction?: () => {}, // 显示侧滑栏
@@ -29,6 +33,9 @@ export default class LayerTopBar extends React.Component {
     hasTabBtn?: boolean, // 是否可点击关联
     canAddField?: boolean, // 是否可点击添加属性
     orientation?: String,
+    canDelete?: boolean, //是否可以点击删除
+    currentIndex?: Object,//点击的数据集字段位置
+    selectionAttribute?: Object,
   }
 
   static defaultProps = {
@@ -38,6 +45,9 @@ export default class LayerTopBar extends React.Component {
     canRelated: false,
     canAddField: false,
     hasTabBtn: false,
+    canDelete:false,
+    currentIndex:0,
+    selectionAttribute:false,
   }
 
   constructor(props) {
@@ -78,6 +88,49 @@ export default class LayerTopBar extends React.Component {
     }
   }
 
+  deleteAction = () => {
+    if (
+      this.props.deleteAction &&
+      typeof this.props.deleteAction === 'function'
+    ) {
+      this.props.deleteAction()
+    }
+  }
+
+  // 多媒体采集
+ captureImage = () => {
+    const selectionAttribute = this.props.selectionAttribute
+    const index = this.props.currentIndex
+    const _params = ToolbarModule.getParams()
+    const { currentLayer } = _params
+
+    if (currentLayer) {
+        const { datasourceAlias } = currentLayer // 标注数据源名称
+        const { datasetName } = currentLayer // 标注图层名称
+        NavigationService.navigate('Camera', {
+          datasourceAlias,
+          datasetName,
+          index,
+          attribute:true,
+          selectionAttribute,
+          atcb: () => {
+            if (
+              this.props.refreshAction &&
+              typeof this.props.refreshAction === 'function'
+            ) {
+              this.props.refreshAction()
+            }
+          },
+        })
+    } else {
+      Toast.show(
+        getLanguage(ToolbarModule.getParams().language).Prompt
+          .PLEASE_SELECT_PLOT_LAYER,
+      )
+      ToolbarModule.getParams().navigation.navigate('LayerManager')
+    }
+}
+
   addAttributeFieldAction = fieldInfo => {
     if (
       this.props.addFieldAction &&
@@ -117,6 +170,25 @@ export default class LayerTopBar extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Attribute
           .ATTRIBUTE_ASSOCIATION,
         action: this.relateAction,
+        enabled: this.props.canRelated,
+      },
+      {
+        icon: this.props.canDelete
+        ? getThemeAssets().attribute.icon_delete_select
+        : getThemeAssets().attribute.icon_delete_un_select,
+        key: '删除',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .EDIT_DELETE,
+        action: this.deleteAction,
+        enabled: this.props.canDelete,
+      },
+      {
+        icon: this.props.canRelated
+        ? getThemeAssets().mapTools.icon_tool_multi_media
+        : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+        key: '拍照',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        action: this.captureImage,
         enabled: this.props.canRelated,
       }
     ]

@@ -53,6 +53,10 @@ export default class Camera extends React.Component {
     this.limit = params.limit >= 0 ? params.limit : 9
     this.cb = params.cb
     this.camera = null
+    this.index = params.index || 0
+    this.attribute = params.attribute || false
+    this.atcb = params.atcb
+    this.selectionAttribute = params.selectionAttribute || false
 
     this.state = {
       data: null,
@@ -192,9 +196,12 @@ export default class Camera extends React.Component {
       datasourceName: this.datasourceAlias,
       datasetName: this.datasetName,
       mediaPaths,
-    })
-    if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
+    },!this.attribute,this.attribute,this.index,this.selectionAttribute)
+    if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)&&!this.attribute) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
+    }
+    if(this.atcb){
+      this.atcb()
     }
     return result
   }

@@ -114,6 +114,11 @@ function getData(type) {
       image: getThemeAssets().collection.icon_collection_change,
       action: () => CollectionAction.changeCollection(type),
     },
+    {
+      type: ToolbarBtnType.SHOW_ATTRIBUTE,
+      action: () => CollectionAction.showAttribute(),
+      image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+    },
     // {
     //   type: ToolbarBtnType.MAP_SYMBOL,
     //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),

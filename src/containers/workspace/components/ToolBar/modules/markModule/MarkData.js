@@ -38,6 +38,11 @@ async function getData(type, params) {
           action: MarkAction.redo,
           image: require('../../../../../../assets/mapTools/icon_recover_white.png'),
         },
+        {
+          type: ToolbarBtnType.SHOW_ATTRIBUTE,
+          action: MarkAction.showAttribute,
+          image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+        },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
@@ -46,6 +51,11 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.CANCEL,
           action: MarkAction.back,
+        },
+        {
+          type: ToolbarBtnType.SHOW_ATTRIBUTE,
+          action: () => MarkAction.showAttribute,
+          image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
         },
       ]
       break

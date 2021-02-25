@@ -270,7 +270,7 @@ export default class ToolList extends React.Component {
   render() {
     return (
       <ToolBarSectionList
-        style={{ flex: 1, backgroundColor: color.content_white }}
+        style={{ flex: 1, backgroundColor: color.white, paddingTop: scaleSize(20) }}
         ref={ref => (this.toolBarSectionList = ref)}
         listSelectable={this.props.containerType === ToolbarType.selectableList}
         sections={this.state.data}

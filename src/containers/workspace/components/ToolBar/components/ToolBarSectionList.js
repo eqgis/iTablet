@@ -11,7 +11,7 @@ import {
   Image,
   View,
 } from 'react-native'
-import { getPublicAssets, getThemeAssets } from '../../../../../assets'
+import { getPublicAssets, getThemeAssets, getLayerIconByType } from '../../../../../assets'
 import { ColorScheme } from '../../../../../components'
 import ToolbarModule from '../modules/ToolbarModule'
 
@@ -27,11 +27,14 @@ export default class ToolBarSectionList extends React.Component {
     sections: Array,
     renderItem?: () => {},
     renderSectionHeader?: () => {},
+    renderSectionFooter?: () => {},
+    renderSectionSeparator?: () => {},
+    renderSeparator?: () => {},
     keyExtractor: () => {},
     itemAction?: () => {},
     headerAction?: () => {},
     device: Object,
-    layerManager?: boolean,
+    // layerManager?: boolean,
     initialNumToRender?: number,
     // selectList: Object,
     listSelectableAction?: () => {}, //多选刷新列表时调用
@@ -276,15 +279,17 @@ export default class ToolBarSectionList extends React.Component {
       return this.props.renderSectionHeader({ section })
     }
     let allSelectImg = this.state.allSelected
-      ? require('../../../../../assets/mapTools/icon_multi_selected.png')
-      : require('../../../../../assets/mapTools/icon_multi_unselected.png')
+      ? require('../../../../../assets/mapTools/icon_multi_selected_disable_black.png')
+      : require('../../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
     let showSysImg = this.state.sectionSelected
-      ? getPublicAssets().mapTools.tools_legend_on
-      : getPublicAssets().mapTools.tools_legend_off
+      // ? getPublicAssets().mapTools.tools_legend_on
+      // : getPublicAssets().mapTools.tools_legend_off
+      ? getThemeAssets().layer.icon_visible
+      : getThemeAssets().layer.icon_invisible
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         activeOpacity={this.props.activeOpacity}
-        underlayColor={this.props.underlayColor}
+        // underlayColor={this.props.underlayColor}
         style={[styles.sectionHeader, this.props.sectionStyle]}
         onPress={() => this.headerAction({ section })}
       >
@@ -309,16 +314,20 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.datasetType && (
             <Image
-              source={this.getSectionDatasetTypeImg(section)}
+              source={getLayerIconByType(
+                typeof section.datasetType === 'number'
+                  ? section.datasetType
+                  : section.datasetType.toUpperCase()
+              )}
               resizeMode={'contain'}
-              style={styles.section_dataset_type}
+              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(10)}]}
             />
           )}
           {section.image && (
             <Image
               source={section.image}
               resizeMode={'contain'}
-              style={styles.section_dataset_type}
+              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(10)}]}
             />
           )}
           <Text
@@ -376,7 +385,7 @@ export default class ToolBarSectionList extends React.Component {
             </TouchableOpacity>
           )}
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 
@@ -469,7 +478,7 @@ export default class ToolBarSectionList extends React.Component {
           styles.headerImg,
           this.props.listSelectable
             ? { marginLeft: scaleSize(10) }
-            : { marginLeft: scaleSize(50) },
+            : { marginLeft: scaleSize(30) },
         ]}
       />
     )
@@ -620,98 +629,20 @@ export default class ToolBarSectionList extends React.Component {
   getDatasetImage = item => {
     return (
       <Image
-        source={this.getDatasetTypeImg(item)}
+        source={getLayerIconByType(
+          typeof item.datasetType === 'number'
+            ? item.datasetType
+            : item.datasetType.toUpperCase()
+        )}
         resizeMode={'contain'}
         style={[
           styles.dataset_type_img,
           this.props.listSelectable
             ? { marginLeft: scaleSize(10) }
-            : { marginLeft: scaleSize(50) },
+            : { marginLeft: scaleSize(30) },
         ]}
       />
     )
-  }
-
-  getSectionDatasetTypeImg = item => {
-    let img
-    switch (
-      typeof item.datasetType === 'number'
-        ? item.datasetType
-        : item.datasetType.toUpperCase()
-    ) {
-      case 'POINT':
-        img = require('../../../../../assets/mapToolbar/dataset_type_point.png')
-        break
-      case 'LINE':
-        img = require('../../../../../assets/mapToolbar/dataset_type_line.png')
-        break
-      case 'REGION':
-        img = require('../../../../../assets/mapToolbar/dataset_type_region.png')
-        break
-      case 'TEXT':
-        img = require('../../../../../assets/mapToolbar/dataset_type_text.png')
-        break
-      case 'IMAGE':
-        img = require('../../../../../assets/mapToolbar/dataset_type_image.png')
-        break
-      case 'CAD':
-        img = require('../../../../../assets/mapToolbar/dataset_type_cad.png')
-        break
-      case 'GRID':
-        img = require('../../../../../assets/mapToolbar/dataset_type_grid.png')
-        break
-      case 'NETWORK':
-        img = require('../../../../../assets/mapToolbar/dataset_type_network.png')
-        break
-      default:
-        img = require('../../../../../assets/mapToolbar/list_type_map.png')
-        break
-    }
-    return img
-  }
-
-  getDatasetTypeImg = item => {
-    let img
-    switch (
-      typeof item.datasetType === 'number'
-        ? item.datasetType
-        : item.datasetType.toUpperCase()
-    ) {
-      case 'POINT':
-        img = require('../../../../../assets/mapToolbar/dataset_type_point_black.png')
-        break
-      case 'LINE':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_line_black.png')
-        break
-      case 'REGION':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_region_black.png')
-        break
-      case 'TEXT':
-        img = require('../../../../../assets/mapToolbar/dataset_type_text_black.png')
-        break
-      case 'IMAGE':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_image_black.png')
-        break
-      case 'CAD':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_cad_black.png')
-        break
-      case 'GRID':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_grid_black.png')
-        break
-      case 'NETWORK':
-        // item.isSelected
-        img = require('../../../../../assets/mapToolbar/dataset_type_network_black.png')
-        break
-      default:
-        img = getThemeAssets().dataType.icon_map
-        break
-    }
-    return img
   }
 
   getItemLayout = (data, index) => {
@@ -723,22 +654,46 @@ export default class ToolBarSectionList extends React.Component {
   }
 
   /**行与行之间的分隔线组件 */
-  renderSeparator = ({ leadingItem, section }) => {
-    if (
-      section.expressionType &&
-      leadingItem.isSystemField &&
-      this.state.sectionSelected
-    )
-      return null
-    return <View style={styles.separateViewStyle} />
+  renderSeparator = info => {
+    if (this.props.renderSeparator) {
+      return this.props.renderSeparator(info)
+    }
+    return null
+    // if (
+    //   info.section.expressionType &&
+    //   info.leadingItem.isSystemField &&
+    //   this.state.sectionSelected
+    // )
+    //   return null
+    // return <View style={styles.separateViewStyle} />
   }
 
   /**Section之间的分隔线组件 */
-  renderSectionFooter = () => {
-    if (this.props.layerManager) {
-      return null
+  renderSectionFooter = info => {
+    // if (this.props.layerManager) {
+    //   return null
+    // }
+    // return <View style={styles.sectionSeparateViewStyle} />
+    if (this.props.renderSectionFooter) {
+      return this.props.renderSectionFooter(info)
     }
-    return <View style={styles.sectionSeparateViewStyle} />
+    return null
+  }
+
+  renderSectionSeparator = info => {
+    // if (this.props.layerManager) {
+    //   return null
+    // }
+    if (this.props.renderSectionSeparator) {
+      return this.props.renderSectionSeparator(info)
+    }
+    if (info.trailingItem === undefined && info.trailingSection) {
+      return <View style={styles.sectionSeparateViewStyle} />
+    }
+    if (info.trailingItem) {
+      return <View style={styles.sectionTrailingSeparateViewStyle} />
+    }
+    return null
   }
 
   render() {
@@ -769,6 +724,7 @@ export default class ToolBarSectionList extends React.Component {
           keyExtractor={(item, index) => index}
           getItemLayout={this.getItemLayout}
           ItemSeparatorComponent={this.renderSeparator}
+          SectionSeparatorComponent={this.renderSectionSeparator}
           renderSectionFooter={this.renderSectionFooter}
           initialNumToRender={this.props.initialNumToRender}
           stickySectionHeadersEnabled={true}
@@ -780,7 +736,7 @@ export default class ToolBarSectionList extends React.Component {
 
 const styles = StyleSheet.create({
   sectionHeader: {
-    backgroundColor: color.section_bg,
+    backgroundColor: color.white,
     height: scaleSize(80),
     alignItems: 'center',
     flexDirection: 'row',
@@ -790,7 +746,7 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(30),
     fontSize: size.fontSize.fontSizeLg,
     fontWeight: 'bold',
-    color: color.section_text,
+    color: color.fontColorBlack,
     textAlign: 'left',
     textAlignVertical: 'center',
   },
@@ -798,7 +754,7 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeMd,
     height: scaleSize(30),
     backgroundColor: 'transparent',
-    color: color.section_text,
+    color: color.fontColorBlack,
     textAlignVertical: 'center',
     textAlign: 'right',
   },
@@ -811,7 +767,7 @@ const styles = StyleSheet.create({
   },
   item: {
     height: scaleSize(80),
-    backgroundColor: color.content_white,
+    backgroundColor: color.white,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -861,6 +817,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   selectImgView: {
+    marginLeft: scaleSize(20),
     width: scaleSize(60),
     height: scaleSize(60),
     alignItems: 'center',
@@ -927,16 +884,21 @@ const styles = StyleSheet.create({
     color: color.font_color_white,
   },
   sectionSeparateViewStyle: {
-    height: 1,
+    height: scaleSize(12),
     marginHorizontal: 0,
-    backgroundColor: color.separateColorGray,
+    backgroundColor: color.separateColorGray4,
+  },
+  sectionTrailingSeparateViewStyle: {
+    height: scaleSize(2),
+    marginHorizontal: scaleSize(30),
+    backgroundColor: color.separateColorGray4,
   },
   separateViewStyle: {
     flex: 1,
     flexDirection: 'row',
     width: '100%',
     height: 1,
-    backgroundColor: color.separateColorGray,
+    backgroundColor: color.separateColorGray4,
   },
   imgItemInfo: {
     width: scaleSize(520),
@@ -970,8 +932,8 @@ const styles = StyleSheet.create({
   },
   headerImg: {
     marginLeft: scaleSize(50),
-    width: scaleSize(40),
-    height: scaleSize(40),
+    width: scaleSize(50),
+    height: scaleSize(50),
   },
   itemSelected: {
     height: scaleSize(80),

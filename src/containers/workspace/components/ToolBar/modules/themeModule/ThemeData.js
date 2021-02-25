@@ -4,6 +4,7 @@
 import { SThemeCartography } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
+import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ThemeMenuData from './data'
 import ThemeAction from './ThemeAction'
@@ -77,7 +78,8 @@ async function getDatasets(type, params = {}) {
     data = [
       {
         title: alias,
-        image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        image: getThemeAssets().dataType.icon_data_source,
         data: list,
         allSelectType: true,
       },

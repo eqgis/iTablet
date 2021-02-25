@@ -19,8 +19,8 @@ const Map_Label: typeof CN.Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: 'Mevcut Harita',
-  CURRENT_SCENCE: 'Mevcut Manzara', // need to be translated
-  CURRENT_MODEL: 'Current', // 待翻译
+  CURRENT_SCENCE: 'Mevcut Manzara',
+  CURRENT_MODEL: 'Mevcut Model',
   // 地图制图及公共 开始
   START: 'Başla',
   START_OPEN_MAP: 'Haritayı Aç',
@@ -342,7 +342,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: 'Yol Ağ',
 
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Bu cihazı desteklemiyor,En az Android 7 üstü sürüm olmalı.',
   MAP_AR_DONT_SUPPORT_DEVICE: 'Bu cihazı desteklemiyor',
   MAP_AR_MEASURE: 'AR Ölçüm',
   MAP_AR_ANALYZE: 'AR Analizi',
@@ -361,7 +361,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'Hedef Sınıflandır',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'Kümeleme Toplama',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'Hedef Toplama',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR İzleme',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Yasadışı Park Toplama',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Eğilim Modeli',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'AR alanı',
@@ -385,12 +385,12 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: 'Nokta Seç',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'Şu Andaki',
   MAP_AR_MOVE_TO_PLANE: 'Nokta Seç',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circular Measure Area',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Poligon',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Dikdörtgen',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Dairesel',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Poligon Ölçümü',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Dikdörtgen Ölçümü',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Dairesel Ölçüm',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Sola çevirin',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Sağa dönün',
@@ -406,10 +406,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: 'Yüzey Arama',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: 'Görüş Mesafesi: ',
 
-  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Stay Away',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Too Dim,Take More Light',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Too Fast,Please Slow Down',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'Move Device To Find Feature',//待翻译
+  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Uzaklaş',
+  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Çok Loş, Daha Fazla Işık Alın',
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Çok Hızlı, Lütfen Yavaşlayın',
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'Özelliği Bulmak İçin Cihazı Hareket Ettirin',
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: 'Toplam Uzunluk: ',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: 'Son Uzunluğa: ',
@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'Haritayı Göster',
   START_FROM_START_POINT: 'Başlangıç noktasından başlayarak',
   ARRIVE_AT_THE_DESTINATION: 'Hedefe varma',
-  REAL_NAVIGATION: 'Gezinme Başlat',
+  START_NAVIGATION: 'Gezinme Başlat',
   SIMULATED_NAVIGATION: 'Simüle Edilmiş Gezinme',
+  WALK_NAVIGATION: 'Walk Navi', //need to be translated
+  CAR_NAVIGATION: 'Car Navi', //need to be translated
+  CRUISE_NAVIGATION: 'Cruise', //need to be translated
   GO_STRAIGHT: 'Düz Git',
   SELECT_START_POINT: 'Başlangıç noktası seçin',
   SELECT_DESTINATION: 'Hedefi Seçin',
@@ -533,9 +536,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_SELECT_ALL: 'Hepsini seç',
   MERGE_ADD: 'Ekle',
   MERGE_DATASET: 'Veri Kümelerini Birleştir',
-  // 专题制图加载/输出xml 待翻译
-  MAP_OUTPUT_XML: 'Output',
-  MAP_LOAD_XML: 'Load',
+  // 专题制图加载/输出xml
+  MAP_OUTPUT_XML: 'Çıktı',
+  MAP_LOAD_XML: 'Yükleme',
 }
 
 // 推演动画
@@ -772,7 +775,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   DRAWING_RANGE: 'Çizim Aralığı',
 
   //目标识别二级菜单
-  Beta: '(Deneysel İşlem)', //need to be translated
+  Beta: '(Deneysel İşlem)',
 
   // 视频地图设置	一级菜单
   POI_SETTING: 'POI Ayarları',
@@ -815,7 +818,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'Harita Adı',
   SHOW_SCALE: 'Ölçeği Göster',
-  SHOW_LOCATION: 'Show Location',//need to be translated
+  SHOW_LOCATION: 'Konumu Göster',
   ROTATION_GESTURE: 'Dönme Hareketi',
   PITCH_GESTURE: 'Saha Hareketi',
   ROTATION_ANGLE: 'Dönme Açısı',
@@ -900,7 +903,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   CANCEL: 'İptal',
   COPY: 'Kopyala',
 
-  CONFIDENCE: 'Gizlilik', //need to be translated
+  CONFIDENCE: 'Gizlilik',
 }
 
 // 地图工具
@@ -932,7 +935,7 @@ const Map_PoiTitle: typeof CN.Map_PoiTitle = {
 
 // 采集模板
 const Template: typeof CN.Template = {
-  COLLECTION_TEMPLATE_MANAGEMENT: 'Şablon Yönetici', // Need to be translated
+  COLLECTION_TEMPLATE_MANAGEMENT: 'Şablon Yönetici',
   COLLECTION_TEMPLATE_CREATE: 'Şablon Oluştur',
   COLLECTION_TEMPLATE_NAME: 'Şablon Adı',
   ELEMENT_SETTINGS: 'Element Ayarları',

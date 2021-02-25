@@ -98,8 +98,8 @@ function openMap() {
         item.title = name
         item.name = name.split('.')[0]
         item.image = item.isTemplate
-          ? require('../../../../../../assets/mapToolbar/list_type_template_black.png')
-          : getThemeAssets().dataType.icon_map
+          ? getThemeAssets().dataType.icon_map_template
+          : getThemeAssets().dataType.icon_mapdata
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -147,7 +147,7 @@ function openMap() {
     data.push({
       title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN_MAP,
       // '我的地图',
-      image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
+      image: getThemeAssets().dataType.icon_map,
       data: userFileList || [],
       extraData: {
         title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
@@ -264,6 +264,8 @@ function openTemplateList() {
 
 /** 新建 * */
 async function create() {
+  // 不是从xml加载地图
+  GLOBAL.IS_MAP_FROM_XML = false
   if (GLOBAL.Type === ChunkType.MAP_COLLECTION) {
     openTemplateList()
     return
@@ -390,7 +392,8 @@ function showHistory() {
     latestMap = ToolbarModule.getParams().map.latestMap[userName][GLOBAL.Type]
   }
   latestMap.forEach(item => {
-    item.image = getThemeAssets().dataType.icon_map
+    // item.image = getThemeAssets().dataType.icon_map
+    item.image = getThemeAssets().dataType.icon_mapdata
   })
   const data = [
     {
@@ -474,9 +477,13 @@ function saveMap() {
       // ) {
       //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
       // }
+      const isMapFromXML = GLOBAL.IS_MAP_FROM_XML
+      GLOBAL.IS_MAP_FROM_XML = false
+      console.log(isMapFromXML,'xxx')
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,
+        isMapFromXML,
       })
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
@@ -576,6 +583,8 @@ function saveMapAs() {
 /** 切换地图 * */
 async function changeMap(item) {
   const params = ToolbarModule.getParams()
+  // 不是从xml加载地图
+  GLOBAL.IS_MAP_FROM_XML = false
   try {
     if (params.map.currentMap && params.map.currentMap.path === item.path) {
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_OPENED)

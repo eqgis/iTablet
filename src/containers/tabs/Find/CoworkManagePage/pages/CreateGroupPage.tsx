@@ -11,6 +11,8 @@ import { SCoordination, CreateGroupResponse } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
 import NavigationService from '../../../../NavigationService'
 
+import { InputClearBtn } from '../../../../../components/Button/index'
+
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   language: state.setting.toJS().language,
@@ -194,7 +196,7 @@ class CreateGroupPage extends React.Component<Props, State> {
     description: '',
   }
   isCreating: boolean // 防止重复创建
-
+  inputRef: Object // 输入框Ref
   constructor(props: Props) {
     super(props)
 
@@ -244,6 +246,9 @@ class CreateGroupPage extends React.Component<Props, State> {
       isNeedCheck: this.initData?.isNeedCheck === undefined ? true : this.initData.isNeedCheck,
       dataAvailable: !this.checkData(),
     }
+
+    // 输入框ref
+    this.inputRef = {}
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -263,7 +268,7 @@ class CreateGroupPage extends React.Component<Props, State> {
       return getLanguage(this.props.language).Friends.GROUP_TAG_NOT_EMPTY
     }
     let _tags = this.groupInfo.tags.split(',')
-    if (_tags.length > 6) {
+    if (_tags.length > 5) {
       return getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER
     }
     if (this.groupInfo.description.length > 100) {
@@ -356,7 +361,7 @@ class CreateGroupPage extends React.Component<Props, State> {
       return false
     }
     let _tags = this.groupInfo.tags.split(',')
-    if (_tags.length > 6) {
+    if (_tags.length > 5) {
       return false
     }
     if (this.groupInfo.description.length > 100) {
@@ -364,13 +369,14 @@ class CreateGroupPage extends React.Component<Props, State> {
     }
   }
 
-  _renderTopItem = (data: {title: string, defaultValue: string, placeholder: string, onChangeText: (text: string) => void}) : any => {
+  _renderTopItem = (data: {title: string, defaultValue: string, placeholder: string, onChangeText: (text: string) => void, keyValue: string}) : any => {
     return (
       <View style={styles.topItem}>
         <View style={styles.topItemTitleView}>
           <Text style={styles.itemTitle}>{data.title + ':'}</Text>
         </View>
         <TextInput
+          clearButtonMode={'while-editing'}
           placeholder={data.placeholder}
           style={styles.input}
           defaultValue={data.defaultValue}
@@ -388,6 +394,15 @@ class CreateGroupPage extends React.Component<Props, State> {
               })
             }
           }}
+          ref={ ref => this.inputRef[data.keyValue] = ref}
+        />
+        {/* 安卓下模拟清除按钮 使用Input组件要大量改变样式 所以外部加一个 */}
+        <InputClearBtn
+          os="android"
+          onPress={()=> {
+            this.inputRef[data.keyValue]?.clear()
+            data.onChangeText('')
+          }}
         />
       </View>
     )
@@ -401,7 +416,13 @@ class CreateGroupPage extends React.Component<Props, State> {
             title: getLanguage(this.props.language).Friends.NAME,
             placeholder: getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER,
             defaultValue: this.groupInfo.groupName,
-            onChangeText: text => this.groupInfo.groupName = text,
+            onChangeText: text => {
+              this.groupInfo.groupName = text
+              if (this.groupInfo.groupName.length > 20) {
+                Toast.show(getLanguage(this.props.language).Friends.GROUP_NAME_PLACEHOLDER)
+              }
+            },
+            keyValue: 'name',
           })
         }
         <View style={styles.topItemSeparator} />
@@ -410,7 +431,15 @@ class CreateGroupPage extends React.Component<Props, State> {
             title: getLanguage(this.props.language).Friends.GROUP_TAG,
             placeholder: getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER,
             defaultValue: this.groupInfo.tags,
-            onChangeText: text => this.groupInfo.tags = text,
+            onChangeText: text => {
+              this.groupInfo.tags = text
+              this.groupInfo.tags = this.groupInfo.tags.replace(/，/g,',') // 替换中文逗号
+              let _tags = this.groupInfo.tags.split(',')
+              if (_tags.length > 5) {
+                Toast.show(getLanguage(this.props.language).Friends.GROUP_TAG_PLACEHOLDER)
+              }
+            },
+            keyValue: 'tag',
           })
         }
         <View style={styles.topItemSeparator} />
@@ -425,6 +454,7 @@ class CreateGroupPage extends React.Component<Props, State> {
             <Text style={styles.itemTitle}>{getLanguage(this.props.language).Friends.GROUP_REMARK + ':'}</Text>
           </View>
           <TextInput
+            clearButtonMode={'while-editing'}
             placeholder={getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER}
             defaultValue={this.groupInfo.description}
             style={[
@@ -448,13 +478,23 @@ class CreateGroupPage extends React.Component<Props, State> {
                 this.setState({
                   dataAvailable: true,
                 })
-              } else if (this.checkData() && this.state.dataAvailable) {
-                this.setState({
+              } else if (this.checkData()) {
+                if (this.groupInfo.description.length > 100) {
+                  Toast.show(getLanguage(this.props.language).Friends.GROUP_REMARK_PLACEHOLDER)
+                }
+                this.state.dataAvailable && this.setState({
                   dataAvailable: false,
                 })
               }
             }}
+            ref={ref => this.inputRef['remark'] = ref}
           />
+          <InputClearBtn os="android"
+            onPress={()=> {
+              this.inputRef['remark']?.clear()
+              this.groupInfo.description = ''
+            }}
+            style={{ alignSelf: 'center' }} />
         </View>
       </View>
     )

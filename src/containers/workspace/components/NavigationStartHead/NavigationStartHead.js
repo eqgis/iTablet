@@ -15,7 +15,7 @@ import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
-const HEADER_HEIGHT = TOOLBARHEIGHT + scaleSize(205)
+const HEADER_HEIGHT = TOOLBARHEIGHT + scaleSize(270)
 export default class NavigationStartHead extends React.Component {
   props: {
     device: Object,
@@ -25,6 +25,7 @@ export default class NavigationStartHead extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      naviType: 0,
       show: false,
       width:
         props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -123,126 +124,202 @@ export default class NavigationStartHead extends React.Component {
       GLOBAL.ENDNAME = null
     }
   }
+
+  renderButton = (type, text) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[{
+          height: scaleSize(60),
+          flex: 1,
+          borderRadius: scaleSize(30),
+          // backgroundColor: color.background,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: scaleSize(5),
+        },
+        this.state.naviType === type && {
+          backgroundColor: color.blue1,
+        }]}
+        onPress={() => {
+          this.setState({
+            naviType: type,
+          })
+        }}
+      >
+        <Text
+          style={[{
+            fontSize: setSpText(20),
+            color: color.black,
+            textAlign: 'center',
+          },
+          this.state.naviType === type && {
+            color: color.white,
+          }]}
+        >
+          {text}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderButtons = () => {
+    return (
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingHorizontal: scaleSize(5),
+        marginVertical: scaleSize(10),
+      }}>
+        {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
+          0,
+          getLanguage().Map_Main_Menu.CAR_NAVIGATION,
+        )}
+        {this.renderButton(
+          3,
+          getLanguage().Map_Main_Menu.WALK_NAVIGATION,
+        )}
+        {/* {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
+          2,
+          getLanguage().Map_Main_Menu.CRUISE_NAVIGATION ,
+        )} */}
+        {this.renderButton(
+          1,
+          getLanguage(GLOBAL.language).Map_Main_Menu.SIMULATED_NAVIGATION,
+        )}
+        {Platform.OS === 'ios' && this.renderButton(
+          4,
+          getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
+        )}
+      </View>
+    )
+  }
+
   _renderSearchView = () => {
     if (this.state.show) {
       return (
         <Animated.View
           style={{
             paddingTop: TOOLBARHEIGHT + scaleSize(20),
-            height: scaleSize(205) + TOOLBARHEIGHT,
+            height: HEADER_HEIGHT,
             width: this.state.width,
             backgroundColor: color.content_white,
-            flexDirection: 'row',
             position: 'absolute',
             top: 0,
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              this.close()
-            }}
-            style={{
-              width: scaleSize(60),
-              alignItems: 'center',
-              paddingTop: scaleSize(10),
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Image
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_back}
-              style={styles.backbtn}
-            />
-          </TouchableOpacity>
-          <View style={styles.pointAnalystView}>
-            <View
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => {
+                this.close()
+              }}
               style={{
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                flex: 1,
-                marginHorizontal: scaleSize(20),
+                width: scaleSize(60),
+                alignItems: 'center',
+                paddingTop: scaleSize(10),
+                justifyContent: 'flex-start',
               }}
             >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-              >
-                <View
-                  style={{
-                    width: scaleSize(12),
-                    height: scaleSize(12),
-                    borderRadius: scaleSize(6),
-                    marginRight: scaleSize(20),
-                    backgroundColor: '#0dc66d',
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.onInput}
-                  onPress={() => {
-                    this._onSelectPointPress(true)
-                  }}
-                >
-                  <Text
-                    numberOfLines={2}
-                    ellipsizeMode={'tail'}
-                    style={{
-                      fontSize: setSpText(24),
-                      // lineHeight: scaleSize(26),
-                      padding: 0,
-                    }}
-                  >
-                    {GLOBAL.STARTNAME}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  height: 2,
-                  backgroundColor: color.separateColorGray,
-                }}
+              <Image
+                resizeMode={'contain'}
+                source={getPublicAssets().common.icon_back}
+                style={styles.backbtn}
               />
+            </TouchableOpacity>
+            <View style={styles.pointAnalystView}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
                   flex: 1,
+                  marginHorizontal: scaleSize(20),
                 }}
               >
                 <View
                   style={{
-                    width: scaleSize(12),
-                    height: scaleSize(12),
-                    borderRadius: scaleSize(6),
-                    marginRight: scaleSize(20),
-                    backgroundColor: '#f14343',
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.secondInput}
-                  onPress={() => {
-                    this._onSelectPointPress(false)
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    flex: 1,
                   }}
                 >
-                  <Text
-                    numberOfLines={2}
-                    ellipsizeMode={'tail'}
+                  <View
                     style={{
-                      fontSize: setSpText(24),
-                      // lineHeight: scaleSize(26),
-                      padding: 0,
+                      width: scaleSize(12),
+                      height: scaleSize(12),
+                      borderRadius: scaleSize(6),
+                      marginRight: scaleSize(20),
+                      backgroundColor: '#0dc66d',
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={styles.onInput}
+                    onPress={() => {
+                      this._onSelectPointPress(true)
                     }}
                   >
-                    {GLOBAL.ENDNAME}
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      numberOfLines={2}
+                      ellipsizeMode={'tail'}
+                      style={{
+                        fontSize: setSpText(24),
+                        // lineHeight: scaleSize(26),
+                        padding: 0,
+                      }}
+                    >
+                      {GLOBAL.STARTNAME}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 2,
+                    backgroundColor: color.separateColorGray,
+                  }}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    flex: 1,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: scaleSize(12),
+                      height: scaleSize(12),
+                      borderRadius: scaleSize(6),
+                      marginRight: scaleSize(20),
+                      backgroundColor: '#f14343',
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={styles.secondInput}
+                    onPress={() => {
+                      this._onSelectPointPress(false)
+                    }}
+                  >
+                    <Text
+                      numberOfLines={2}
+                      ellipsizeMode={'tail'}
+                      style={{
+                        fontSize: setSpText(24),
+                        // lineHeight: scaleSize(26),
+                        padding: 0,
+                      }}
+                    >
+                      {GLOBAL.ENDNAME}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
+          </View>
+          <View>
+            {this.renderButtons()}
           </View>
         </Animated.View>
       )

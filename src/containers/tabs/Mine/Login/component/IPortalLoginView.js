@@ -8,10 +8,10 @@ import {
   Animated,
   Dimensions,
 } from 'react-native'
-import { Toast } from '../../../../../utils/index'
+import { Toast, scaleSize  } from '../../../../../utils/index'
 import styles from './styles'
 import { getLanguage } from '../../../../../language/index'
-
+import Input from '../../../../../components/Input'
 export default class IPortalLoginView extends React.Component {
   props: {
     language: string,
@@ -125,7 +125,7 @@ export default class IPortalLoginView extends React.Component {
       <View style={styles.sectionViewStyle}>
         <View style={styles.inpuViewStyle}>
           <View style={styles.inputBackgroud}>
-            <TextInput
+            {/* <TextInput
               clearButtonMode={'while-editing'}
               keyboardType={'default'}
               placeholder={
@@ -138,6 +138,22 @@ export default class IPortalLoginView extends React.Component {
               onChangeText={text => {
                 this.iportalAddress = text
               }}
+              ref = {ref => this.inputRef = ref}
+            /> */}
+            <Input
+              keyboardType={'default'}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_SERVER_ADDRESS
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              defaultValue={this.iportalAddress || ''}
+              style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+              onChangeText={text => {
+                this.iportalAddress = text
+              }}
+              showClear={true}
+              inputStyle={styles.customInputStyle}
             />
           </View>
           <Text style={styles.textStyle}>
@@ -165,7 +181,7 @@ export default class IPortalLoginView extends React.Component {
       <View style={styles.sectionViewStyle}>
         <View style={styles.inpuViewStyle}>
           <View style={styles.inputBackgroud}>
-            <TextInput
+            {/* <TextInput
               clearButtonMode={'while-editing'}
               keyboardType={'default'}
               placeholder={
@@ -178,10 +194,25 @@ export default class IPortalLoginView extends React.Component {
               onChangeText={text => {
                 this.iportalUser = text
               }}
+            /> */}
+            <Input
+              keyboardType={'default'}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_USERNAME2
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              defaultValue={this.iportalUser || ''}
+              style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+              onChangeText={text => {
+                this.iportalUser = text
+              }}
+              showClear={true}
+              inputStyle={styles.customInputStyle}
             />
           </View>
           <View style={styles.inputBackgroud}>
-            <TextInput
+            {/* <TextInput
               clearButtonMode={'while-editing'}
               secureTextEntry={true}
               placeholder={
@@ -195,6 +226,23 @@ export default class IPortalLoginView extends React.Component {
               onChangeText={text => {
                 this.iportalPassword = text
               }}
+            /> */}
+            <Input
+              clearButtonMode={'while-editing'}
+              secureTextEntry={true}
+              placeholder={
+                getLanguage(this.props.language).Profile.ENTER_PASSWORD
+              }
+              placeholderTextColor={'#A7A7A7'}
+              multiline={false}
+              password={true}
+              style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+              defaultValue={this.iportalPassword || ''}
+              onChangeText={text => {
+                this.iportalPassword = text
+              }}
+              showClear={true}
+              inputStyle={styles.customInputStyle}
             />
           </View>
         </View>

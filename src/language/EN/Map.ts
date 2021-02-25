@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'Display Map',
   START_FROM_START_POINT: 'Starting from the initial point',
   ARRIVE_AT_THE_DESTINATION: 'Arriving at the destination',
-  REAL_NAVIGATION: 'Start Navigation',
+  START_NAVIGATION: 'Start Navigation',
   SIMULATED_NAVIGATION: 'Simulated Navigation',
+  WALK_NAVIGATION: 'Walk Navi', //need to be translated
+  CAR_NAVIGATION: 'Car Navi', //need to be translated
+  CRUISE_NAVIGATION: 'Cruise', //need to be translated
   GO_STRAIGHT: 'Going straight',
   SELECT_START_POINT: 'Select Start',
   SELECT_DESTINATION: 'Select Destination',
@@ -534,7 +537,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_ADD: 'Append',
   MERGE_DATASET: 'Merge Datasets',
 
-  // 专题制图加载/输出xml 待翻译
+  // 专题制图加载/输出xml
   MAP_OUTPUT_XML: 'Output',
   MAP_LOAD_XML: 'Load',
 }
@@ -901,7 +904,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   CANCEL: 'Cancel',
   COPY: 'Copy',
 
-  CONFIDENCE: 'Confidence', //待翻译
+  CONFIDENCE: 'Confidence', //need to be translated
 }
 
 // 地图工具

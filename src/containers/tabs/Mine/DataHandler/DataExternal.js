@@ -235,7 +235,8 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
           )
           _checkFlyingFiles(relatedFiles, path, contentList)
           //if (layerInfo.length !== 0)
-           {
+          _checkWS3DKML(relatedFiles, path, contentList)
+          {
             WS3D.push({
               directory: path,
               fileName: contentList[i].name,
@@ -263,6 +264,15 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
   }
 }
 
+// 过滤掉三维工作空间下的kml
+function _checkWS3DKML(relatedFiles, path, contentList){
+  for(let i = 0; i < contentList.length; i++){
+    if(contentList[i].type === 'file' && contentList[i].name.indexOf('.kml') > 0){
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+    }
+  }
+}
 
 /** 获取SCI数据源 */
 function getSCIDSList(path, contentList, uncheckedChildFileList) {

@@ -5,7 +5,7 @@ import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
-
+import Input from '../../../../components/Input'
 export default class MapSelectPointLatitudeAndLongitude extends React.Component {
   props: {
     isEdit: Boolean,
@@ -82,7 +82,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
               <Text style={styles.itemtitle}>
                 {getLanguage(GLOBAL.language).Profile.X_COORDINATE}
               </Text>
-              <TextInput
+              {/* <TextInput
                 editable={this.state.isEdit}
                 style={styles.itemInput}
                 keyboardType="numeric"
@@ -94,6 +94,22 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
                   })
                 }}
                 value={this.state.longitude + ''}
+              /> */}
+              {/* 替换为具有清除按钮的输入框 */}
+              <Input
+                editable={this.state.isEdit}
+                style={styles.itemInput}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  // let longitude=Number(text)
+                  let longitude = this.clearNoNum(text)
+                  this.setState({
+                    longitude: longitude,
+                  })
+                }}
+                value={this.state.longitude + ''}
+                showClear={true}
+                inputStyle={{textAlign: 'left'}}
               />
             </View>
 
@@ -103,7 +119,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
               <Text style={styles.itemtitle}>
                 {getLanguage(GLOBAL.language).Profile.Y_COORDINATE}
               </Text>
-              <TextInput
+              {/* <TextInput
                 editable={this.state.isEdit}
                 style={styles.itemInput}
                 keyboardType="numeric"
@@ -114,6 +130,20 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
                   })
                 }}
                 value={this.state.latitude + ''}
+              /> */}
+              <Input
+                editable={this.state.isEdit}
+                style={styles.itemInput}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  let latitude = this.clearNoNum(text)
+                  this.setState({
+                    latitude: latitude,
+                  })
+                }}
+                value={this.state.latitude + ''}
+                showClear={true}
+                inputStyle={{textAlign: 'left'}}
               />
             </View>
             <View style={styles.separateLine} />
@@ -186,7 +216,8 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
   },
   itemInput: {
-    width: '100%',
+    // width: '100%',
+    flex: 1,
     // height: scaleSize(120),
     fontSize: scaleSize(22),
     padding: scaleSize(15),

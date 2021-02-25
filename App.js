@@ -350,14 +350,17 @@ class AppRoot extends Component {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
-      if (result) {
+      if (result === true) {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
+      } else {
+        // iOS防止第一次登录timeout
+        result = await this.loginOnline()
       }
       // if (result) {
       //   // 初始化协作文件
       //   CoworkFileHandle.initCoworkList(this.props.user.currentUser)
       // }
-      if(result){
+      if(result === true){
         let JSOnlineservice = new OnlineServicesUtils('online')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
@@ -434,7 +437,9 @@ class AppRoot extends Component {
     for (let key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted
     }
-    if (isAllGranted) {
+    //申请 android 11 读写权限
+    let permisson11 = await AppUtils.requestStoragePermissionR()
+    if (isAllGranted && permisson11) {
       this.init()
     } else {
       GLOBAL.SimpleDialog.set({
@@ -465,24 +470,24 @@ class AppRoot extends Component {
       SSpeechRecognizer.init('5b63b509')
     }
     AppState.addEventListener('change', this.handleStateChange)
-      ; (async function () {
-        await this.initDirectories()
-        await this.initUser()
-        SOnlineService.init()
-        // SOnlineService.removeCookie()
-        SIPortalService.init()
-        await this.getVersion()
-        await this.getImportState()
-        await this.addImportExternalDataListener()
-        await this.addGetShareResultListener()
-        await this.openWorkspace()
-        await this.initOrientation()
+    ; (async function () {
+      await this.initDirectories()
+      await this.initUser()
+      SOnlineService.init()
+      // SOnlineService.removeCookie()
+      SIPortalService.init()
+      await this.getVersion()
+      await this.getImportState()
+      await this.addImportExternalDataListener()
+      await this.addGetShareResultListener()
+      await this.openWorkspace()
+      await this.initOrientation()
 
-        // 显示界面，之前的为预加载
-        this.setState({ isInit: true }, () => {
-          this.login()
-        })
-      }).bind(this)()
+      // 显示界面，之前的为预加载
+      this.setState({ isInit: true }, () => {
+        this.login()
+      })
+    }).bind(this)()
 
     GLOBAL.clearMapData = () => {
       this.props.setEditLayer(null) // 清空地图图层中的数据
@@ -573,7 +578,7 @@ class AppRoot extends Component {
   handleStateChange = appState => {
     if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        this.loginOnline()
+        this.login()
         this.reCircleLogin()
       }
       Orientation.getOrientation((e, orientation) => {

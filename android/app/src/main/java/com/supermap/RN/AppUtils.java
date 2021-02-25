@@ -5,16 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Environment;
 import android.provider.Settings;
-import android.util.Log;
 
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.bridge.CatalystInstance;
-import com.facebook.react.bridge.CatalystInstanceImpl;
-import com.facebook.react.bridge.JSBundleLoader;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -25,11 +20,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.supermap.containts.EventConst;
 import com.supermap.interfaces.utils.SLocation;
 import com.supermap.itablet.MainActivity;
-import com.supermap.itablet.MainApplication;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
 
@@ -62,6 +53,40 @@ public class AppUtils extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * android 11 external storage 读写权限申请code
+     */
+    public static final int REQUEST_CODE = 1234;
+
+    static Promise permissionPromise;
+
+    public static void onPermissionResult(boolean result) {
+        if(permissionPromise != null) {
+            permissionPromise.resolve(result);
+            permissionPromise = null;
+        }
+    }
+
+    @ReactMethod
+    public void requestStoragePermissionR(Promise promise) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // 先判断有没有权限
+                if (Environment.isExternalStorageManager()) {
+                    promise.resolve(true);
+                } else {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + mReactContext.getPackageName()));
+                    mReactContext.getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
+                    permissionPromise = promise;
+                }
+            } else {
+                promise.resolve(true);
+            }
+        } catch (Exception e) {
+            promise.resolve(false);
+        }
+    }
 
     private  boolean is64bitCPU() {
         String CPU_ABI = null;

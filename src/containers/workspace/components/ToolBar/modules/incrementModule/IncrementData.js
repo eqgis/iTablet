@@ -21,7 +21,8 @@ async function getData(type) {
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.MENU,
-      image: getThemeAssets().navigation.increment_switch_network,
+      // image: getThemeAssets().navigation.increment_switch_network,
+      image: getThemeAssets().toolbar.icon_list,
       action: IncrementAction.changeNetwork,
     },
     {
@@ -33,7 +34,8 @@ async function getData(type) {
     ToolbarBtnType.MENU_FLEX,
     {
       type: ToolbarBtnType.MAP_SYMBOL,
-      image: getThemeAssets().navigation.btn_increment_topo_edit,
+      // image: getThemeAssets().navigation.btn_increment_topo_edit,
+      image: getThemeAssets().mark.icon_edit,
       action: IncrementAction.topoEdit,
     },
   ]

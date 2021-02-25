@@ -166,37 +166,43 @@ export default class ToolbarBottomButtons extends React.Component {
         case ToolbarBtnType.TOOLBAR_COMMIT:
           image =
             image ||
-            require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
+            // require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
+            getThemeAssets().toolbar.icon_toolbar_submit
           action = action || this.commit
           break
         case ToolbarBtnType.TOOLBAR_DONE:
-          image = image || getThemeAssets().publicAssets.tab_done
+          image = image ||
+            // getThemeAssets().publicAssets.tab_done
+            getThemeAssets().toolbar.icon_toolbar_submit
           action = action || this.commit
           break
         case ToolbarBtnType.MENU_FLEX:
           //菜单框-显示与隐藏
           image =
             image ||
-            require('../../../../../../assets/mapEdit/icon_function_theme_param_style.png')
+            // require('../../../../../../assets/mapEdit/icon_function_theme_param_style.png')
+            getThemeAssets().toolbar.icon_toolbar_style
           action = action || this.showMenuBox
           break
         case ToolbarBtnType.CANCEL:
           image =
             image ||
-            require('../../../../../../assets/mapEdit/icon_function_cancel.png')
+            // require('../../../../../../assets/mapEdit/icon_function_cancel.png')
+            getThemeAssets().toolbar.icon_toolbar_quit
           action = action || this.close
           break
         case ToolbarBtnType.MENU:
           image =
             image ||
-            require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png')
+            // require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png')
+            getThemeAssets().toolbar.icon_toolbar_option
           action = action || this.menu
           break
         case ToolbarBtnType.UNDO:
           //二三维 量算功能 撤销按钮
           if (this.props.toolbarStatus.canUndo) {
             action = action || this.undo
-            image = image || getThemeAssets().publicAssets.icon_undo_dark
+            image = image || getThemeAssets().publicAssets.icon_undo_light
           } else {
             image = image || getThemeAssets().publicAssets.icon_undo_disable
           }
@@ -205,26 +211,30 @@ export default class ToolbarBottomButtons extends React.Component {
           //二三维 量算功能 撤销按钮
           if (this.props.toolbarStatus.canRedo) {
             action = action || this.redo
-            image = image || getThemeAssets().publicAssets.icon_redo_dark
+            image = image || getThemeAssets().publicAssets.icon_redo_light
           } else {
             image = image || getThemeAssets().publicAssets.icon_redo_disable
           }
           break
         case ToolbarBtnType.FLEX:
-          image = require('../../../../../../assets/mapEdit/icon_function_theme_param_style.png')
+          // image = require('../../../../../../assets/mapEdit/icon_function_theme_param_style.png')
+          image = getThemeAssets().toolbar.icon_toolbar_style
           action = () => this.props.showBox()
           break
         case ToolbarBtnType.FLEX_FULL:
-          image = require('../../../../../../assets/mapEdit/flex.png')
+          // image = require('../../../../../../assets/mapEdit/flex.png')
+          image = getThemeAssets().toolbar.icon_toolbar_style
           action = () => this.props.showBox(true)
           break
 
         case ToolbarBtnType.COMPLETE:
-          image = require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
+          // image = require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
+          image = getThemeAssets().toolbar.icon_toolbar_submit
           action = this.props.close
           break
         case ToolbarBtnType.CANCEL_2:
-          image = require('../../../../../../assets/mapEdit/icon_function_cancel.png')
+          // image = require('../../../../../../assets/mapEdit/icon_function_cancel.png')
+          image = getThemeAssets().toolbar.icon_toolbar_quit
           action = () => this.props.close(this.props.type, true)
           break
         // case ToolbarBtnType.TAGGING_BACK:
@@ -233,7 +243,8 @@ export default class ToolbarBottomButtons extends React.Component {
         //   action = this.taggingBack
         //   break
         case ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE:
-          image = require('../../../../../../assets/mapTools/icon_attribute_white.png')
+          // image = require('../../../../../../assets/mapTools/icon_attribute_white.png')
+          image = getThemeAssets().tabBar.tab_attribute
           action = () => {
             NavigationService.navigate('LayerAttribute3D', { type: 'MAP_3D' })
           }
@@ -250,7 +261,8 @@ export default class ToolbarBottomButtons extends React.Component {
         //   break
         case ToolbarBtnType.TOOLBAR_BACK:
           //返回上一级
-          image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
+          // image = require('../../../../../../assets/public/Frenchgrey/icon-back-white.png')
+          image = getThemeAssets().toolbar.icon_toolbar_quit
           action = action || this.back
           break
       }
@@ -306,7 +318,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: Height.TOOLBAR_BUTTONS,
     paddingHorizontal: scaleSize(20),
-    backgroundColor: color.theme,
+    backgroundColor: color.white,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -315,7 +327,7 @@ const styles = StyleSheet.create({
     width: Height.TOOLBAR_BUTTONS,
     // height: '100%',
     paddingVertical: scaleSize(20),
-    backgroundColor: color.theme,
+    backgroundColor: color.white,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -325,7 +337,7 @@ const styles = StyleSheet.create({
     width: scaleSize(60),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.theme,
+    backgroundColor: color.white,
   },
   img: {
     height: scaleSize(45),

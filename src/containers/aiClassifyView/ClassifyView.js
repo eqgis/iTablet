@@ -426,7 +426,7 @@ export default class ClassifyView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+                source={getThemeAssets().edit.icon_delete}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -438,7 +438,7 @@ export default class ClassifyView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_save}
+                source={getThemeAssets().start.icon_save}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -468,7 +468,8 @@ export default class ClassifyView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.ai_setting}
+                // source={getThemeAssets().ar.toolbar.ai_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_setting}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>

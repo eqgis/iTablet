@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.JSBundleLoader;
 import com.rnfs.RNFSManager;
+import com.supermap.RN.AppUtils;
 import com.supermap.RN.appManager;
 import com.supermap.RNUtils.AppInfo;
 import com.supermap.RNUtils.FileTools;
@@ -130,6 +132,14 @@ public class MainActivity extends ReactActivity {
 
     private void initDefaultData() {
 //        FileTools.initUserDefaultData("Customer", this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppUtils.REQUEST_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            AppUtils.onPermissionResult(android.os.Environment.isExternalStorageManager());
+        }
     }
 
     private void requestPermissions() {

@@ -18,6 +18,7 @@ import {
   SMMeasureAreaView,
   SMeasureAreaView,
   SMap,
+  DatasetType,
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
@@ -38,6 +39,7 @@ export default class MeasureAreaView extends React.Component {
     language: String,
     user: Object,
     nav: Object,
+    currentLayer: SMap.LayerInfo
   }
 
   constructor(props) {
@@ -139,75 +141,75 @@ export default class MeasureAreaView extends React.Component {
   }
 
   componentDidMount() {
-   
+
     // InteractionManager.runAfterInteractions(() => {//这里表示下面代码是在动画结束后才执行，但是外面有动画在执行就会导致下面代码一直不执行，开发者需要自己考虑 add xiezhy
-      // 初始化数据
-      (async function() {
-        //提供测量等界面添加按钮及提示语的回调方法 add jiakai
-        if (Platform.OS === 'ios') {
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.ADD',
-            this.onAdd,
-          )
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.CLOSE',
-            this.onshowLog,
-          )
-        }else{
-          SMeasureAreaView.setAddListener({
-            callback: async result => {
-              if (result) {
-                // Toast.show("add******")
-                if(this.state.isfirst){
-                  this.setState({showADD:true,showADDPoint:true,is_showLog:true})
-                }else{
-                  this.setState({showADD:true})
-                }
+    // 初始化数据
+    (async function() {
+      //提供测量等界面添加按钮及提示语的回调方法 add jiakai
+      if (Platform.OS === 'ios') {
+        iOSEventEmi.addListener(
+          'com.supermap.RN.SMeasureAreaView.ADD',
+          this.onAdd,
+        )
+        iOSEventEmi.addListener(
+          'com.supermap.RN.SMeasureAreaView.CLOSE',
+          this.onshowLog,
+        )
+      }else{
+        SMeasureAreaView.setAddListener({
+          callback: async result => {
+            if (result) {
+              // Toast.show("add******")
+              if(this.state.isfirst){
+                this.setState({showADD:true,showADDPoint:true,is_showLog:true})
               }else{
-                this.setState({showADD:false,showADDPoint:false})
+                this.setState({showADD:true})
               }
-            },
-          })
+            }else{
+              this.setState({showADD:false,showADDPoint:false})
+            }
+          },
+        })
 
-          SMeasureAreaView.setDioLogListener({
-            callback: async result => {
-              this.onshowLog(result)
-            },
-          })
-        }   
+        SMeasureAreaView.setDioLogListener({
+          callback: async result => {
+            this.onshowLog(result)
+          },
+        })
+      }
 
-        if (this.isDrawing) {
-          SMeasureAreaView.initMeasureCollector(
-            this.datasourceAlias,
-            this.datasetName,
-          )
-          let fixedPoint = this.point
-          setTimeout(function() {
-            //设置基点
-            SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
-          }, 1000)
-        }
+      if (this.isDrawing) {
+        SMeasureAreaView.initMeasureCollector(
+          this.datasourceAlias,
+          this.datasetName,
+        )
+        let fixedPoint = this.point
+        setTimeout(function() {
+          //设置基点
+          SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
+        }, 1000)
+      }
 
-        //没有动画回调的话提示语默认5秒后开启
-        if(!this.state.is_showLog){
-          setTimeout(() => {
-            this.setState({is_showLog:true})
-          }, 5000)
-        }
+      //没有动画回调的话提示语默认5秒后开启
+      if(!this.state.is_showLog){
+        setTimeout(() => {
+          this.setState({is_showLog:true})
+        }, 5000)
+      }
 
-        //注册监听
-        if (Platform.OS === 'ios') {
-          iOSEventEmi.addListener(
-            'onCurrentHeightChanged',
-            this.onCurrentHeightChanged,
-          )
-        } else {
-          DeviceEventEmitter.addListener(
-            'onCurrentHeightChanged',
-            this.onCurrentHeightChanged,
-          )
-        }
-      }.bind(this)())
+      //注册监听
+      if (Platform.OS === 'ios') {
+        iOSEventEmi.addListener(
+          'onCurrentHeightChanged',
+          this.onCurrentHeightChanged,
+        )
+      } else {
+        DeviceEventEmitter.addListener(
+          'onCurrentHeightChanged',
+          this.onCurrentHeightChanged,
+        )
+      }
+    }.bind(this)())
     // })
   }
 
@@ -219,16 +221,27 @@ export default class MeasureAreaView extends React.Component {
     )
 
     AppState.removeEventListener('change', this.handleStateChange)
+
+    if (Platform.OS === 'ios') {
+      iOSEventEmi.removeListener(
+        'com.supermap.RN.SMeasureAreaView.ADD',
+        this.onAdd,
+      )
+      iOSEventEmi.removeListener(
+        'com.supermap.RN.SMeasureAreaView.CLOSE',
+        this.onshowLog,
+      )
+    }
   }
 
   handleStateChange = async appState => {
     if (Platform.OS === 'android') {
-        if(appState === 'background'){
-          SMeasureAreaView.onPause()
+      if(appState === 'background'){
+        SMeasureAreaView.onPause()
       }
 
       if (appState === 'active') {
-          SMeasureAreaView.onResume()
+        SMeasureAreaView.onResume()
       }
     }
   }
@@ -253,7 +266,7 @@ export default class MeasureAreaView extends React.Component {
     }
   }
 
-   /**提示语回调 */
+  /**提示语回调 */
   onshowLog = result => {
     if(result.close){
       this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
@@ -272,9 +285,9 @@ export default class MeasureAreaView extends React.Component {
 
     if(result.nofeature){
       if(this.state.dioLog!=getLanguage(GLOBAL.language).Map_Main_Menu
-      .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
-      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE,showLog:true})
+        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+        this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE,showLog:true})
     }
 
     if(result.none){
@@ -304,6 +317,12 @@ export default class MeasureAreaView extends React.Component {
   /** 撤销 **/
   undo = async () => {
     await SMeasureAreaView.undoDraw()
+    if (this.measureType === 'arMeasureHeight') {
+      let height = await SMeasureAreaView.getCurrentHeight()
+      this.setState({
+        currentHeight: height + 'm',
+      })
+    }
   }
 
   /** 连续测量 **/
@@ -323,8 +342,22 @@ export default class MeasureAreaView extends React.Component {
 
   /** 保存 **/
   save = async () => {
-    if (!this.datasourceAlias && !this.datasetName) return
-    let result = await SMeasureAreaView.saveDataset()
+    if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
+    let datasourceAlias = this.props.currentLayer.datasourceAlias
+    let datasetName =  this.props.currentLayer.datasetName
+    if(this.props.currentLayer.themeType !== 0 || (
+      this.props.currentLayer.type !== DatasetType.CAD &&
+        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.measureType === 'arDrawPoint' &&  this.props.currentLayer.type !== DatasetType.POINT)
+    )) {
+      datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
+      datasetName = 'Default_Tagging'
+    }
+    let result = await SMeasureAreaView.saveDataset(
+      datasourceAlias,
+      datasetName
+    )
     if (result) {
       //await SMeasureAreaView.clearAll()
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
@@ -391,7 +424,7 @@ export default class MeasureAreaView extends React.Component {
           value=0
         }
         SMeasureAreaView.setSnapTolerance(value)
-      }
+      },
     })
   }
 
@@ -418,7 +451,7 @@ export default class MeasureAreaView extends React.Component {
           value=0
         }
         SMeasureAreaView.setSnapTolerance(value)
-      }
+      },
     })
   }
 
@@ -462,23 +495,50 @@ export default class MeasureAreaView extends React.Component {
   }
 
   renderBottomBtns = () => {
+    let filters
+    if(this.measureType === 'drawLine') {
+      filters = [DatasetType.LINE]
+    } else if (this.measureType === 'arDrawArea') {
+      filters = [DatasetType.REGION]
+    } else if (this.measureType === 'arDrawPoint') {
+      filters = [DatasetType.POINT]
+    }
     return (
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
+          {(this.measureType === 'drawLine' ||
+            this.measureType === 'arDrawArea' ||
+            this.measureType === 'arDrawPoint') && (
+            <TouchableOpacity
+              onPress={() =>  NavigationService.navigate('ChooseLayer', {
+                filters: filters,
+              })}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_classify_settings}
+                source={getThemeAssets().toolbar.icon_toolbar_option}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => this.clearAll()}
             style={styles.iconView}
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+              source={getThemeAssets().toolbar.icon_toolbar_delete}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.undo()} style={styles.iconView}>
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_undo}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_undo}
+              source={getThemeAssets().toolbar.icon_toolbar_undo}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -490,7 +550,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -502,7 +563,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -516,7 +578,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.ai_setting}
+                // source={getThemeAssets().ar.toolbar.ai_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_setting}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -530,7 +593,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.ai_setting}
+                // source={getThemeAssets().ar.toolbar.ai_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_setting}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -921,10 +985,10 @@ export default class MeasureAreaView extends React.Component {
         }}
         bottomProps={{ type: 'fix' }}
       >
-        <SMMeasureAreaView 
+        <SMMeasureAreaView
           ref={ref => (this.SMMeasureAreaView = ref)}
           onGetInstance={this._onGetInstance}
-         />
+        />
         {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
         {this.renderBottomBtns()}
         {this.state.showModelViews && this.renderSwitchModels()}
@@ -938,9 +1002,9 @@ export default class MeasureAreaView extends React.Component {
           this.renderTotalAreaChangeView()}
         {this.state.showCurrentHeightView &&
           this.renderCurrentHeightChangeView()}
-          {this.state.showADDPoint&&this.renderADDPoint()}
-          {this.state.showADD&&this.renderCenterBtn()}
-          {this.state.is_showLog&&this.state.showLog&&this.renderDioLog()}
+        {this.state.showADDPoint&&this.renderADDPoint()}
+        {this.state.showADD&&this.renderCenterBtn()}
+        {this.state.is_showLog&&this.state.showLog&&this.renderDioLog()}
       </Container>
     )
   }

@@ -14,13 +14,14 @@ import { SMap, SMeasureView } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
-const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(225) : scaleSize(205)
+const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(295) : scaleSize(270)
 export default class NavigationStartButton extends React.Component {
   props: {
     pathLength: Object,
     path: Array,
     getNavigationDatas: () => {},
     device: Object,
+    onNavigationStart: () => void,
   }
   static defaultProps = {
     pathLength: { length: 0 },
@@ -191,7 +192,18 @@ export default class NavigationStartButton extends React.Component {
       )
     }
   }
-  realNavigation = async () => {
+
+  startNavi = type => {
+    if(type === 1) {
+      this.simulatedNavigation()
+    } else if (type === 4) {
+      this.arNavigation()
+    }else {
+      this.realNavigation(type)
+    }
+  }
+
+  realNavigation = async type => {
     try {
       if (this.isOnline) {
         Toast.show(
@@ -203,9 +215,10 @@ export default class NavigationStartButton extends React.Component {
       if (GLOBAL.CURRENT_NAV_MODE === 'INDOOR') {
         let isindoor = await SMap.isIndoorPoint(position.x, position.y)
         if (isindoor) {
-          await SMap.indoorNavigation(0)
+          await SMap.indoorNavigation(type)
           this.setVisible(false)
           GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+          this.props.onNavigationStart()
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
         }
@@ -218,9 +231,10 @@ export default class NavigationStartButton extends React.Component {
         )
         if (isInBounds) {
           GLOBAL.mapController?.setGuiding(true)
-          await SMap.outdoorNavigation(0)
+          await SMap.outdoorNavigation(type)
           this.setVisible(false)
           GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+          this.props.onNavigationStart()
         } else {
           Toast.show(getLanguage(GLOBAL.language).Prompt.POSITION_OUT_OF_MAP)
         }
@@ -249,9 +263,29 @@ export default class NavigationStartButton extends React.Component {
       GLOBAL.mapController?.setGuiding(true)
       this.setVisible(false)
       GLOBAL.NAVIGATIONSTARTHEAD.setVisible(false)
+      this.props.onNavigationStart()
     } catch (error) {
       this.setVisible(true)
       GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
+    }
+  }
+
+  arNavigation = async () => {
+    let isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+    if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
+      NavigationService.navigate('ARNavigationView')
+    } else {
+      GLOBAL.EnterDatumPointType = 'arNavigation'
+      //隐藏导航界面
+      GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(false)
+      GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(false)
+      NavigationService.navigate('EnterDatumPoint', {
+        type: 'ARNAVIGATION_INDOOR',
+      })
     }
   }
 
@@ -511,91 +545,23 @@ export default class NavigationStartButton extends React.Component {
                 marginRight: scaleSize(20),
               }}
               onPress={() => {
-                this.realNavigation()
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: setSpText(20),
-                  color: color.white,
-                  textAlign: 'center',
-                }}
-              >
-                {getLanguage(GLOBAL.language).Map_Main_Menu.REAL_NAVIGATION}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                height: scaleSize(60),
-                flex: 1,
-                borderRadius: 5,
-                backgroundColor: color.blue1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: scaleSize(20),
-                marginRight: scaleSize(20),
-              }}
-              onPress={() => {
-                this.simulatedNavigation()
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: setSpText(20),
-                  color: color.white,
-                  textAlign: 'center',
-                }}
-              >
-                {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
-                    .SIMULATED_NAVIGATION
+                if(GLOBAL.NAVIGATIONSTARTHEAD) {
+                  this.startNavi(
+                    GLOBAL.NAVIGATIONSTARTHEAD.state.naviType
+                  )
                 }
-              </Text>
-            </TouchableOpacity>
-            {Platform.OS === 'ios' && (
-              <TouchableOpacity
-                activeOpacity={0.5}
+              }}
+            >
+              <Text
                 style={{
-                  height: scaleSize(60),
-                  flex: 1,
-                  borderRadius: 5,
-                  backgroundColor: color.blue1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: scaleSize(20),
-                  marginRight: scaleSize(20),
-                }}
-                onPress={async () => {
-                  let isSupportedARCore = await SMeasureView.isSupportedARCore()
-                  if (!isSupportedARCore) {
-                    GLOBAL.ARDeviceListDialog.setVisible(true)
-                    return
-                  }
-                  if (GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR') {
-                    NavigationService.navigate('ARNavigationView')
-                  } else {
-                    GLOBAL.EnterDatumPointType = 'arNavigation'
-                    //隐藏导航界面
-                    GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(false)
-                    GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(false)
-                    NavigationService.navigate('EnterDatumPoint', {
-                      type: 'ARNAVIGATION_INDOOR',
-                    })
-                  }
+                  fontSize: setSpText(20),
+                  color: color.white,
+                  textAlign: 'center',
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: setSpText(20),
-                    color: color.white,
-                    textAlign: 'center',
-                  }}
-                >
-                  {getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION}
-                </Text>
-              </TouchableOpacity>
-            )}
+                {getLanguage().Map_Main_Menu.START_NAVIGATION}
+              </Text>
+            </TouchableOpacity>
           </View>
         </Animated.View>
       )

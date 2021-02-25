@@ -447,6 +447,35 @@ function setLayersSelectable(layers, selectable, modifyTrue = false) {
   })
 }
 
+/**
+ * 判断当前对象是否是多媒体对象
+ * 用于判断多媒体采集和旅行轨迹对象判断
+ * @param {*} fieldInfo
+ */
+function isMediaData(fieldInfo) {
+  try {
+    let tag = 0, isTourLine = false, hasMedia
+    fieldInfo.forEach(item => {
+      // 判断是否含有旅行轨迹线对象
+      if (item.name === "MediaName" && item.value === 'TourLine') {
+        isTourLine = true
+      }
+      // 判断是否含有多媒体文件
+      if (item.name === "MediaFilePaths" && item.value !== '') {
+        hasMedia = true
+      }
+      if (
+        item.name === "ModifiedDate" || item.name === "Description" || item.name === "HttpAddress"
+      ) {
+        tag++
+      }
+    })
+    return tag === 3 && (isTourLine || hasMedia)
+  } catch (error) {
+    return false
+  }
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -468,4 +497,6 @@ export default {
   setLayersSelectable,
 
   getCurrentGeometryID,
+
+  isMediaData,
 }

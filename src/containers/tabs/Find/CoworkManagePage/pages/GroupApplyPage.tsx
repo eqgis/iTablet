@@ -77,7 +77,7 @@ class GroupApplyPage extends Component<Props, State> {
       applyReason: applyReason,
       applicant: this.props.user.currentUser.userId || '',
     }).then(result => {
-      if (result.succeed) {
+      if (result.succeed && groupInfo.isNeedCheck) {
         let timeStr = new Date().getTime()
         let message: GroupMessageType = {
           id: 'GROUP_APPLY_' + timeStr,
@@ -107,8 +107,12 @@ class GroupApplyPage extends Component<Props, State> {
           groupInfo.creator,
         )
         NavigationService.goBack('GroupApplyPage', null)
-        this.callBack && this.callBack(groupInfo)
+        // this.callBack && this.callBack(groupInfo)
         Toast.show(getLanguage(this.props.language).Friends.GROUP_APPLY_INFO)
+      } else if (result.succeed && !groupInfo.isNeedCheck) {
+        // 不需要审核
+        NavigationService.goBack('GroupApplyPage', null)
+        this.callBack && this.callBack(groupInfo)
       } else if (result.error) {
         Toast.show(result.error.errorMsg)
       }
@@ -151,7 +155,7 @@ class GroupApplyPage extends Component<Props, State> {
             resizeMode={'contain'}
             source={getThemeAssets().cowork.icon_group_join}
           />
-          <Text style={styles.rightText}>{'加入'}</Text>
+          <Text style={styles.rightText}>{getLanguage(GLOBAL.language).Friends.JOIN}</Text>
         </TouchableOpacity>
       </View>
     )

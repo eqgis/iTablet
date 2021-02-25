@@ -35,7 +35,6 @@ import FriendList from './FriendList/FriendList'
 import UserType from '../../../constants/UserType'
 // import Chat from './Chat/Chat'
 import FriendListFileHandle from './FriendListFileHandle'
-import CoworkFileHandle from '../Find/CoworkManagePage/CoworkFileHandle'
 import InformSpot from './InformSpot'
 import AddMore from './AddMore'
 import MSGConstant from '../../../constants/MsgConstant'
@@ -54,6 +53,7 @@ import TabBar from '../TabBar'
 import CoworkInfo from './Cowork/CoworkInfo'
 import {
   TaskMemberLocationParams,
+  TaskMemberDeleteParams,
 } from '../../../redux/models/cowork'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
@@ -83,6 +83,8 @@ export default class Friend extends Component {
     setCoworkGroup: () => void,
     addTaskMessage: () => any,
     addMemberLocation: (params: TaskMemberLocationParams) => any,
+    deleteTaskMembers: (params: TaskMemberDeleteParams) => any,
+    exitGroup: (params: {groupID: number | string}) => Promise<any>,
   }
 
   constructor(props) {
@@ -95,6 +97,8 @@ export default class Friend extends Component {
     MessageDataHandle.setHandle(this.props.addChat)
     // CoworkInfo.setNewMsgHandle(this.props.setCoworkNewMessage)
     CoworkInfo.setReadMsgHandle(this.props.readTaskMessage)
+    CoworkInfo.setDeleteHandle(this.props.deleteTaskMembers)
+    CoworkInfo.setExitGroupHandle(this.props.exitGroup)
     FriendListFileHandle.refreshCallback = this.refreshList
     FriendListFileHandle.refreshMessageCallback = this.refreshMsg
     this.state = {
@@ -1500,7 +1504,16 @@ export default class Friend extends Component {
   }
 
   handleCowork = async messageObj => {
-    let coworkId = this.props.cowork?.currentTask?.id
+    // let coworkId = this.props.cowork?.currentTask?.id
+    let coworkId
+    let userTasks = this.props.cowork?.tasks?.[this.props.user.currentUser.userName] || {}
+    let groupTask = userTasks[messageObj?.user?.coworkGroupId] || []
+    for (let i = 0; i < groupTask.length; i++) {
+      if (groupTask[i].id === messageObj?.user?.taskId) {
+        coworkId = groupTask[i].id
+        break
+      }
+    }
     let coworkType = messageObj.message.type
     if (coworkId) {
 
@@ -1529,7 +1542,10 @@ export default class Friend extends Component {
     // 同意加入群组消息
     if (coworkType === MSGConstant.MSG_ONLINE_GROUP_APPLY_AGREE) {
       CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
-    } else if (coworkType === MSGConstant.MSG_ONLINE_GROUP_DELETE) {
+    } else if (
+      coworkType === MSGConstant.MSG_ONLINE_GROUP_DELETE ||
+      coworkType === MSGConstant.MSG_ONLINE_MEMBER_DELETE
+    ) {
       CoworkInfo.deleteGroupHandle && CoworkInfo.deleteGroupHandle(messageObj)
     }
   }

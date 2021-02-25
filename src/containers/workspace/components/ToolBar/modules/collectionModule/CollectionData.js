@@ -111,7 +111,8 @@ function getData(type) {
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.CHANGE_COLLECTION,
-      image: getThemeAssets().collection.icon_collection_change,
+      // image: getThemeAssets().collection.icon_collection_change,
+      image: getThemeAssets().toolbar.icon_toolbar_switch,
       action: () => CollectionAction.changeCollection(type),
     },
     {
@@ -132,7 +133,8 @@ function getData(type) {
   if (!_params.currentTask?.id) {
     buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
-      image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+      // image: require('../../../../../../assets/function/icon_function_symbol.png'),
+      image: getThemeAssets().collection.icon_symbol,
       action: CollectionAction.showSymbol,
     })
   }
@@ -275,7 +277,8 @@ function getOperationData(type) {
   if (!_params.currentTask?.id) {
     buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
-      image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+      // image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+      image: getThemeAssets().collection.icon_symbol,
       action: CollectionAction.showSymbol,
     })
   }

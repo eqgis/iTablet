@@ -19,8 +19,8 @@ const Map_Label: typeof CN.Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: '現在マップ',
-  CURRENT_SCENCE: '現在シーン', 
-  CURRENT_MODEL: '現在モデル', 
+  CURRENT_SCENCE: '現在シーン',
+  CURRENT_MODEL: '現在モデル',
   // 地图制图及公共 开始
   START: '開始',
   START_OPEN_MAP: 'マップを開く',
@@ -361,7 +361,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: '目標分類',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: '状況コレクション',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: '目標コレクション',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'ARトラック', 
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'ARトラック',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: '交通違反コレクション',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'モデル再生',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'ARエリア',
@@ -481,8 +481,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'マップの表示',
   START_FROM_START_POINT: '開始点から出発',
   ARRIVE_AT_THE_DESTINATION: '終点に到達',
-  REAL_NAVIGATION: 'ナビ',
+  START_NAVIGATION: 'ナビ',
   SIMULATED_NAVIGATION: 'シミュレーションナビ',
+  WALK_NAVIGATION: 'Walk Navi', //need to be translated
+  CAR_NAVIGATION: 'Car Navi', //need to be translated
+  CRUISE_NAVIGATION: 'Cruise', //need to be translated
   GO_STRAIGHT: '直進',
   SELECT_START_POINT: '起点の選択',
   SELECT_DESTINATION: '終点の選択',
@@ -533,7 +536,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_SELECT_ALL: 'すべて選択',
   MERGE_ADD: '追加',
   MERGE_DATASET: 'データセットのマージ',
-  // 专题制图加载/输出xml 
+  // 专题制图加载/输出xml
   MAP_OUTPUT_XML: '出力',
   MAP_LOAD_XML: 'ロード',
 }

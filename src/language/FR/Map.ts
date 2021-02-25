@@ -20,8 +20,8 @@ const Map_Label: typeof CN.Map_Label = {
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: 'Carte en cours',
 
-  CURRENT_SCENCE: 'en cours', // need to be translated
-  CURRENT_MODEL: 'Current', // 待翻译
+  CURRENT_SCENCE: 'en cours',
+  CURRENT_MODEL: 'en cours',
   // 地图制图及公共 开始
   START: 'Début',
   START_OPEN_MAP: 'Ovrir la carte',
@@ -343,7 +343,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAO_ROAD_DISTRIBUTION: 'Route\nRéseau',
 
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Ne support pas cet appareil, supérieur à Android7',
   MAP_AR_DONT_SUPPORT_DEVICE: 'Ne supporte pas ce dispositif',
   MAP_AR_MEASURE: 'Mesure RA',
   MAP_AR_ANALYZE: 'Analyse RA',
@@ -362,7 +362,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'Classifier cible',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'Rassembler la collecte',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'Collecter cible',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'Piste RA',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illégalement-Pack Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Modèle en fonte',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone RA',
@@ -386,12 +386,12 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_ADD_TO_PLANE: 'Sélectionnez un point',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'Au courant',
   MAP_AR_MOVE_TO_PLANE: 'Sélectionnez un point',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circular Measure Area',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygone',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circulaire',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Mesure de polygone',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Mesure rectangle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Mesure circulaire',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Tournez à gauche',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Tournez à droite',
@@ -407,10 +407,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: 'Surface de recherche',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: 'Distance de vue:',
 
-  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Stay Away',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Too Dim,Take More Light',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Too Fast,Please Slow Down',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'Move Device To Find Feature',//待翻译
+  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Restez loin',
+  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Trop faible, prenez plus de lumière',
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Trop rapide, veuillez ralentir',
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:"Déplacer l'appareil pour rechercher les caractéristiques",//Need to be translated
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: 'Longueur totale:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: "Jusqu'à la dernière longueur:",
@@ -482,8 +482,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'Afficher la carte',
   START_FROM_START_POINT: 'À partir du point initial',
   ARRIVE_AT_THE_DESTINATION: 'Arrivée à destination',
-  REAL_NAVIGATION: 'Démarrer la navigation',
+  START_NAVIGATION: 'Démarrer la navigation',
   SIMULATED_NAVIGATION: 'Navigation simulée',
+  WALK_NAVIGATION: 'Walk Navi', //need to be translated
+  CAR_NAVIGATION: 'Car Navi', //need to be translated
+  CRUISE_NAVIGATION: 'Cruise', //need to be translated
   GO_STRAIGHT: 'Aller droit',
   SELECT_START_POINT: 'Sélectionnez Démarrer',
   SELECT_DESTINATION: 'Sélectionner la destination',
@@ -535,9 +538,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_ADD: 'Joindre',
   MERGE_DATASET: 'Fusionner les ensembles de données',
 
-  // 专题制图加载/输出xml 待翻译
-  MAP_OUTPUT_XML: 'Output',
-  MAP_LOAD_XML: 'Load',
+  // 专题制图加载/输出xml
+  MAP_OUTPUT_XML: 'Resultat',
+  MAP_LOAD_XML: 'Charge',
 }
 
 // 推演动画
@@ -664,7 +667,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_MODIFY_THEMATIC_MAP: 'Modifier la carte thématique',
 
   BASEMAP: 'Mon fond de carte',
-  BASEMAP_SWITH: 'interchanger fond de  carte',
+  BASEMAP_SWITH: 'interchanger fond de carte',
   MY_TERRAIN: 'Mon terrain',
 
   SCALE_TO_CURRENT_LAYER: "Mettre à l'échelle la couche actuelle",

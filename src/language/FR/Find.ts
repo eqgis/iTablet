@@ -1,7 +1,7 @@
 import CN from '../CN'
 
 const Find: typeof CN.Find = {
-  TOGGLE_FIND_ITEM: "Afficher ou masquer des éléments dans 'Onglet Explorer", //need to be translated
+  TOGGLE_FIND_ITEM: "Afficher ou masquer des éléments dans 'Onglet Explorer",
   PUBLIC_DATA: 'Données publiques',
   APPLET: 'Applet',
   GIS_ACADEMY: 'Académie GIS',
@@ -52,7 +52,7 @@ const Find: typeof CN.Find = {
   LAB_FORM_COLLECT_INFO: 'Position：Cartographie RA-Cartographie RA-Collecte de Haute-Précision\nCollecte de Haute-Précision，support l\'arpentage intérieur des points, ligne et région, panoramique etc..',
   BETA_TIPS: 'Conseil: il ne s\'agit que d\'une fonctionnalité bêta expérimentale.',
   LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
-  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map。', // 待翻译
+  LAB_ONLINE_COWORK_INFO: "Position：RA：Trouver un coworking en ligne\nCowork en ligne，Vous pouvez travailler avec l'équipe sur la carte.",
 }
 
 export { Find }

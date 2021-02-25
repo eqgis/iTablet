@@ -3,6 +3,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
+import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 
@@ -231,7 +232,8 @@ function showAnalystResult(type) {
       {
         type: ToolbarBtnType.MEASURE_CLEAR,
         action: () => clearMeasure(type),
-        image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+        // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+        image: getThemeAssets().mark.icon_mark_erase,
       },
     ],
     // buttons: [ToolbarBtnType.CLOSE_ANALYST, ToolbarBtnType.CLEAR],

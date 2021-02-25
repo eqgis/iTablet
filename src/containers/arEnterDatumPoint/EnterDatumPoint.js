@@ -188,6 +188,8 @@ export default class EnterDatumPoint extends Component {
 
   submit = async () => {
     let point = GLOBAL.DATUMPOINTVIEW.getLatitudeAndLongitude()
+    // 保存选点
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
     if (!point) {
       Toast.show(
         getLanguage(GLOBAL.language).Profile
@@ -314,7 +316,8 @@ export default class EnterDatumPoint extends Component {
     }
     GLOBAL.NAVIGATIONSTARTBUTTON?.setVisible(true)
     GLOBAL.NAVIGATIONSTARTHEAD?.setVisible(true)
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = undefined
+    // 选点不再清除，二次进入默认填入
+    // GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = undefined
     NavigationService.goBack()
     return true
   }

@@ -27,7 +27,7 @@ const Find: typeof CN.Find = {
   NO_MORE_DATA: 'Daha fazla veri bulunamadı',
   DOWNLOADED: 'İndirme tamamlandı. İçeri aktarabilir',
 
-  LABORATORY: 'Laboratuvar', // need to be translated
+  LABORATORY: 'Laboratuvar',
   ONLINE_COWORK: 'Çevrimiçi işbirliği',
   COWORK_LOGIN: 'SuperMap Online hizmete giriş yapın',
   APPLET_DOWNLOADED_RELOAD: 'İndirme tamamlandı, yüklenebilir apleti yeniden yükleyin ',
@@ -44,15 +44,15 @@ const Find: typeof CN.Find = {
   SUPERMAP_FORUM_INFO: 'SuperMap teknolojisi iletişim topluluğuna hoşgeldiniz',
   GIS_ACADEMY_INFO: 'SuperMap CBS hakkında çok sayıda Eğitim Dokümanı sağlar',
   ONLINE_COWORK_INFO: 'Birden çok kullanıcı arasında işbirliğini destekler.',
-  LABORATORY_INFO: 'Deneysel İşlevler', //need to be translated
+  LABORATORY_INFO: 'Deneysel İşlevler',
 
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，You can browse the map with gestures to achieve map zooming, panning and etc.', //need to be translated
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，You can browse the map with gestures to achieve map zooming, panning and etc.', //need to be translated
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，support indoor surveying of point, line and region, panning and etc.', //need to be translated
-  BETA_TIPS: 'İpuçları: Bu yalnızca deneysel bir beta özelliktir.', //need to be translated
-  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
-  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map。', // 待翻译
+  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
+  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
+  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，nokta, çizgi ve poligonun iç mekan araştırmasını, kaydırma vb. destekler.',
+  BETA_TIPS: 'İpuçları: Bu yalnızca deneysel bir beta özelliktir.',
+  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',// Need to be translated
+  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，Ekibinizle harita üzerinde çalışabilirsiniz.',
 }
 
 export { Find }

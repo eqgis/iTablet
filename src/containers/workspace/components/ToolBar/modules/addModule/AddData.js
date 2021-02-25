@@ -37,10 +37,10 @@ async function getUDBsAndMaps() {
   filterUDBs.map(item => {
     // item.image = require('../../../../../../assets/mapToolbar/list_type_udb_black.png')
     item.image = getThemeAssets().dataType.icon_data_source
-    if (item.isDirectory) {
-      // item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
-      item.image = getThemeAssets().dataType.icon_data_set
-    }
+    // if (item.isDirectory) {
+    //   // item.image = require('../../../../../../assets/Mine/mine_my_local_data.png')
+    //   item.image = getThemeAssets().dataType.icon_data_set
+    // }
     item.info = {
       infoType: 'mtime',
       lastModifiedDate: item.mtime,
@@ -49,7 +49,7 @@ async function getUDBsAndMaps() {
 
   let mapData = await DataHandler.getLocalData(user, 'MAP')
   mapData.forEach(item => {
-    item.image = getThemeAssets().dataType.icon_map
+    item.image = getThemeAssets().dataType.icon_mapdata
     item.info = {
       infoType: 'mtime',
       lastModifiedDate: item.mtime,
@@ -89,11 +89,13 @@ async function getUDBsAndMaps() {
       title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
         .OPEN_DATASOURCE,
       // Const.DATA_SOURCE,
-      image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      // image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      image: getThemeAssets().dataType.icon_data_source,
       data: filterUDBs,
       addDatasource: true,
       extraData: {
-        image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+        // image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+        image: getThemeAssets().dataType.icon_newdata,
         action: () => {
           NavigationService.navigate('MyDatasource', {
             title: getLanguage(GLOBAL.language).Profile.DATA,
@@ -124,12 +126,14 @@ async function getUDBsAndMaps() {
       title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
         .OPEN_MAP,
       // Const.MAP,
-      image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
+      // image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
+      image: getThemeAssets().dataType.icon_map,
       data: mapData,
     },
     {
       title: getLanguage(ToolbarModule.getParams().language).Profile.SYMBOL,
-      image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      // image: require('../../../../../../assets/mapToolbar/list_type_udbs.png'),
+      image: getThemeAssets().dataType.icon_symbol_library,
       data: symbol,
     },
   ]
@@ -173,7 +177,8 @@ async function getDatasets(type, params = {}) {
     data = [
       {
         title: alias,
-        image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        image: getThemeAssets().dataType.icon_data_source,
         data: list,
       },
     ]
@@ -194,7 +199,8 @@ async function getSymbolPath() {
       style={{
         flex: 1,
         paddingHorizontal: scaleSize(30),
-        backgroundColor: color.bgW,
+        paddingTop: scaleSize(20),
+        backgroundColor: color.white,
       }}
       itemTextColor={color.themeText2}
       data={groups}

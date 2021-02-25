@@ -216,7 +216,8 @@ async function getClipData(type) {
     },
     {
       type: ToolbarBtnType.CLEAR,
-      image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+      // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+      image: getThemeAssets().mark.icon_mark_erase,
       action: () => Tool3DAction.clearMeasure(type),
     },
   ]

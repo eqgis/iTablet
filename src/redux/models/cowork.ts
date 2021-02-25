@@ -24,7 +24,9 @@ export const COWORK_GROUP_SET_CURRENT = 'COWORK_GROUP_SET_CURRENT'
 export const COWORK_TASK_SET_CURRENT = 'COWORK_TASK_SET_CURRENT'
 /** 协作群组任务添加成员 */
 export const COWORK_TASK_MEMBERS_ADD = 'COWORK_TASK_MEMBERS_ADD'
-/** 协作群组任务添加成员 */
+/** 协作群组任务删除成员 */
+export const COWORK_TASK_MEMBERS_DELETE = 'COWORK_TASK_MEMBERS_DELETE'
+/** 协作群组任务消息 */
 export const COWORK_NEW_MESSAGE_SET = 'COWORK_NEW_MESSAGE_SET'
 
 export const COWORK_TASK_INFO_ADD = 'COWORK_TASK_INFO_ADD'
@@ -75,6 +77,12 @@ export interface TaskMemberLocationParams {
   memberId?: string, // 没有指定memberId，则是全部成员
   show: boolean,
   location?: Location,
+}
+
+export interface TaskMemberDeleteParams {
+  groupId: string,
+  taskId: string,
+  members: Array<Member>,
 }
 
 export interface TaskInfo {
@@ -233,14 +241,13 @@ export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (
  * @param params {groupID: number | string}
  * @param cb () => {}
  */
-export const exitGroup = (params: {groupID: number | string}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const exitGroup = (params: {groupID: number | string}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
-  await dispatch({
+  return await dispatch({
     type: COWORK_GROUP_EXIT,
     payload: params,
     userId: userId,
   })
-  cb && cb()
 }
 
 /**
@@ -350,6 +357,20 @@ export const addMemberLocation = (params: TaskMemberLocationParams) => async (di
   const userId = getState().user.toJS().currentUser.userId || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_INFO_MEMBER_LOCATION_ADD,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/**
+ * 删除任务群成员
+ * @param params TaskMemberDeleteParams
+ */
+export const deleteTaskMembers = (params: TaskMemberDeleteParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  let result = await dispatch({
+    type: COWORK_TASK_MEMBERS_DELETE,
     payload: params,
     userId: userId,
   })
@@ -1123,6 +1144,53 @@ export default handleActions(
       allTask[userId] = myTasks
       return state.setIn(['tasks'], fromJS(allTask)).setIn(['coworkInfo'], fromJS(coworkInfo))
     },
+    [`${COWORK_TASK_MEMBERS_DELETE}`]: (state: any, { payload, userId }: {payload: TaskMemberDeleteParams, userId: string}) => {
+      let allTask = state.toJS().tasks
+      let myTasks: any = allTask[userId] || {}
+      let tasks: any = myTasks[payload.groupId] || []
+
+      let coworkInfo = state.toJS().coworkInfo
+
+      if (payload.members.length > 0) {
+        let task
+        for (let x = 0; x < tasks.length; x++) {
+          // 修改已有消息的状态
+          if (payload.taskId === tasks[x].id) {
+            task = tasks[x]
+
+            // 删除task中的成员
+            for (let i = payload.members.length - 1; i >= 0; i--) {
+              for (let j = 0; j < task.members.length; j++) {
+                if (task.members[j].id === payload.members[i].id) {
+                  task.members.splice(j, 1)
+                  break
+                }
+              }
+            }
+
+            let taskInfo = getTaskInfo(coworkInfo, userId, payload.groupId, payload.taskId, false)
+            for (let i = payload.members.length - 1; i >= 0; i--) {
+              for (let j = 0; j < taskInfo.members.length; j++) {
+                if (taskInfo.members[j].id === payload.members[i].id) {
+                  taskInfo.members.splice(j, 1)
+                  break
+                }
+              }
+            }
+
+            CoworkFileHandle.removeTaskGroupMember(
+              payload.groupId,
+              payload.taskId,
+              payload.members,
+            )
+            break
+          }
+        }
+      }
+      myTasks[payload.groupId] = tasks
+      allTask[userId] = myTasks
+      return state.setIn(['tasks'], fromJS(allTask)).setIn(['coworkInfo'], fromJS(coworkInfo))
+    },
     [`${COWORK_GROUP_SET_CURRENT}`]: (state: any, { payload }: any) => {
       if (!payload || !payload.id) { // 退出当前群组页面，并清空当前任务数据
         return state.setIn(['currentGroup'], fromJS({})).setIn(['currentTask'], fromJS({}))
@@ -1151,6 +1219,10 @@ export default handleActions(
             break
           }
         }
+      }
+      let coworkInfo = state.toJS().coworkInfo
+      if (coworkInfo?.[userId]?.[payload.groupID]) {
+        delete coworkInfo[userId][payload.groupID]
       }
       if (tasks[userId] && tasks[userId][payload.groupID]) delete tasks[userId][payload.groupID]
       return state.setIn(['groups'], fromJS(groups)).setIn(['tasks'], fromJS(tasks))

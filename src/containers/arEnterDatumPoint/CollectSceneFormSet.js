@@ -65,8 +65,11 @@ export default class CollectSceneFormSet extends Component {
 
   componentDidMount() {
     // this.getFixedPosition()
-    this.point &&
+    // 如果之前输入过点，就不再根据this.point更新界面 而是使用之前的输入
+    if(!GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
+      this.point &&
       this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
+    }
   }
 
   getFixedPosition = async () => {
@@ -271,6 +274,7 @@ export default class CollectSceneFormSet extends Component {
           if(this.fixedPositions){
             let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
             this.fixedPositions(point)
+            GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
           }
           if(this.setTolerance){
             this.setTolerance(this.state.Tolerance)

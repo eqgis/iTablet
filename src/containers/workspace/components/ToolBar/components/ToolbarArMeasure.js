@@ -93,7 +93,7 @@ export default class ToolbarArMeasure extends React.Component {
                         flexDirection: 'row',
                         width: '100%',
                         height: scaleSize(120),
-                        backgroundColor: '#F0F0F0',
+                        backgroundColor: color.white,
                         alignItems: 'center',
                     }}
                 >

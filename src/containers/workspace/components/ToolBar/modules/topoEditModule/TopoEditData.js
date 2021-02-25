@@ -23,7 +23,8 @@ async function getData(type) {
     // },
     {
       type: ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD,
-      image: getThemeAssets().navigation.btn_increment_change_type,
+      // image: getThemeAssets().navigation.btn_increment_change_type,
+      image: getThemeAssets().toolbar.icon_toolbar_switch,
       action: TopoEditAction.changeEditType,
     },
     ToolbarBtnType.MENU_FLEX,

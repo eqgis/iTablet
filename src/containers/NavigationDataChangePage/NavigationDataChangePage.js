@@ -66,6 +66,18 @@ export default class NavigationDataChangePage extends Component {
     this.currentDataset = params.currentDataset || {}
   }
 
+  componentDidMount() {
+    //返回时更新数据
+    this.focusListener = this.props.navigation.addListener(
+      'willFocus',
+      this.update,
+    )
+  }
+
+  componentWillUnmount() {
+    this.focusListener && this.focusListener.remove()
+  }
+
   /**
    * 点击复选框事件，设置选中 zhangxt
    * @param {*} item
@@ -126,6 +138,41 @@ export default class NavigationDataChangePage extends Component {
     })
   }
 
+  update =  async () => {
+    try {
+      let datas = await SMap.getAllNavData()
+      const mapDatasource = datas[0]
+      const mapDataset = datas[1]
+      mapDatasource.data.map(item => {
+        this.selectedDatasources &&
+          this.selectedDatasources.map(ds => {
+            if (item.name === ds.name) {
+              item.selected = true
+            }
+          })
+      })
+      mapDataset.data.map(item => {
+        this.selectedDatasets &&
+          this.selectedDatasets.map(dt => {
+            //对比是否是同一数据源内的同一数据集 zhangxt
+            if (
+              item.name === dt.name &&
+              item.datasourceName === dt.datasourceName
+            ) {
+              item.selected = true
+            }
+          })
+      })
+      let data = [mapDatasource, mapDataset]
+      this.setState({
+        data,
+        isRefresh: false,
+      })
+    } catch (e) {
+      //
+    }
+  }
+
   /**
    * 手动下拉刷新 在新建室外数据集返回此页面时需要手动刷新才会显示出来 zhangxt
    */
@@ -134,36 +181,8 @@ export default class NavigationDataChangePage extends Component {
       {
         isRefresh: true,
       },
-      async () => {
-        let datas = await SMap.getAllNavData()
-        const mapDatasource = datas[0]
-        const mapDataset = datas[1]
-        mapDatasource.data.map(item => {
-          this.selectedDatasources &&
-            this.selectedDatasources.map(ds => {
-              if (item.name === ds.name) {
-                item.selected = true
-              }
-            })
-        })
-        mapDataset.data.map(item => {
-          this.selectedDatasets &&
-            this.selectedDatasets.map(dt => {
-              //对比是否是同一数据源内的同一数据集 zhangxt
-              if (
-                item.name === dt.name &&
-                item.datasourceName === dt.datasourceName
-              ) {
-                item.selected = true
-              }
-            })
-        })
-        let data = [mapDatasource, mapDataset]
-        this.setState({
-          data,
-          isRefresh: false,
-        })
-      },
+      this.update
+      ,
     )
   }
 

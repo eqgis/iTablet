@@ -18,9 +18,11 @@ import {
   Platform,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { scaleSize, setSpText } from '../../../../utils'
 import { Height } from '../../../../constants'
+import { color } from '../../../../styles'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 const IMAGE_SIZE = scaleSize(25)
 const MARGIN = scaleSize(30)
@@ -89,6 +91,14 @@ export default class TouchProgress extends Component {
       width -= Height.TOOLBAR_BUTTONS
     }
     return width
+  }
+
+  getHeightByOrientation = () => {
+    let height = this.props.device.height
+    if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
+      height -= height.TOOLBAR_BUTTONS
+    }
+    return height
   }
 
   _updateNativeStyles = () => {
@@ -328,16 +338,17 @@ export default class TouchProgress extends Component {
 
   render() {
     let container = {
-      backgroundColor: '#rgba(110, 110, 110, 1)',
+      // backgroundColor: '#rgba(110, 110, 110, 1)',
+      backgroundColor: color.white,
       flexDirection: 'column',
       height: scaleSize(40),
       justifyContent: 'center',
       alignItems: 'center',
-      shadowOffset: { width: 0, height: 0 },
-      shadowColor: 'black',
-      shadowOpacity: 1,
-      shadowRadius: 2,
-      elevation: 20,
+      // shadowOffset: { width: 0, height: 0 },
+      // shadowColor: 'black',
+      // shadowOpacity: 1,
+      // shadowRadius: 2,
+      // elevation: 20,
     }
     let num, strArray
     if (this.state.tips !== '') {
@@ -351,34 +362,69 @@ export default class TouchProgress extends Component {
       }
     }
     return (
-      <View
-        style={[styles.box, { width: this.getWidthByOrientation() }]}
+      <KeyboardAvoidingView
+        style={[styles.box, { width: this.getWidthByOrientation(), height: this.getHeightByOrientation() }]}
+        behavior={Platform.OS === 'ios' && 'position'}
       >
         <View
-          style={{ flex: 1, backgroundColor: 'transparent' }}
+          style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'column', justifyContent: 'flex-end' }}
           {...this._panResponder.panHandlers}
         >
-          <View style={[container, { width: this.getWidthByOrientation() }]}>
-            <View
-              style={[
-                styles.line,
-                { width: this.getWidthByOrientation() - MARGIN * 2 },
-              ]}
-            >
+          <View style={styles.progressContainer} >
+            {this.state.tips !== '' && (
+              <TouchableOpacity
+                style={styles.tips}
+                onPress={() => {
+                  this.input && this.input.focus()
+                }}
+                activeOpacity={1}
+              >
+                <Text style={styles.tipsText}>{strArray[0]}</Text>
+                <TextInput
+                  ref={ref => (this.input = ref)}
+                  value={num !== undefined ? num + '' : ' '}
+                  keyboardType={'numeric'}
+                  returnKeyType={'done'}
+                  onChangeText={text => {
+                    let matchRel = text.match(/([-0-9][0-9]*)/)
+                    text = matchRel ? matchRel[0] : ''
+                    this.tempText = text
+                    let tips = this._getTips(this.tempText)
+                    this.setState({
+                      tips,
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setData(~~this.tempText)
+                    this._updateProgress(this.tempText)
+                  }}
+                  style={styles.input}
+                />
+                <Text style={styles.tipsText}>{strArray[1]}</Text>
+              </TouchableOpacity>
+            )}
+            <View style={[container, { width: this.getWidthByOrientation() }]}>
               <View
-                style={[styles.backline]}
-                ref={ref => (this.backLine = ref)}
-              />
-            </View>
-            <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
-              <Image
-                style={[styles.image]}
-                source={require('../../../../assets/function/icon_progress.png')}
-              />
+                style={[
+                  styles.line,
+                  { width: this.getWidthByOrientation() - MARGIN * 2 },
+                ]}
+              >
+                <View
+                  style={[styles.backline]}
+                  ref={ref => (this.backLine = ref)}
+                />
+              </View>
+              <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
+                {/* <Image
+                  style={[styles.image]}
+                  source={require('../../../../assets/function/icon_progress.png')}
+                /> */}
+              </View>
             </View>
           </View>
         </View>
-        {this.state.tips !== '' && (
+        {/* {this.state.tips !== '' && (
           <TouchableOpacity
             style={styles.tips}
             onPress={() => {
@@ -409,8 +455,8 @@ export default class TouchProgress extends Component {
             />
             <Text style={styles.tipsText}>{strArray[1]}</Text>
           </TouchableOpacity>
-        )}
-      </View>
+        )} */}
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -428,17 +474,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  progressContainer: {
+    flexDirection: 'column',
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
+    overflow: 'hidden',
+  },
   pointer: {
     position: 'absolute',
     justifyContent: 'center',
+    height: IMAGE_SIZE,
+    width: IMAGE_SIZE,
+    borderRadius: IMAGE_SIZE / 2,
+    borderWidth: scaleSize(2),
+    borderColor: 'black',
+    backgroundColor: color.white,
   },
   line: {
     justifyContent: 'center',
-    height: scaleSize(7),
-    backgroundColor: '#rgba(96,122,137,1)',
+    height: scaleSize(2),
+    // backgroundColor: '#rgba(96,122,137,1)',
+    backgroundColor: color.separateColorGray3,
   },
   backline: {
-    backgroundColor: '#rgba(0,157,249,1)',
+    // backgroundColor: '#rgba(0,157,249,1)',
+    backgroundColor: color.black,
     height: '100%',
     width: 0,
   },
@@ -447,10 +507,11 @@ const styles = StyleSheet.create({
     width: IMAGE_SIZE,
   },
   tips: {
-    position: 'absolute',
-    top: scaleSize(50),
+    // position: 'absolute',
+    // top: scaleSize(50),
     paddingHorizontal: scaleSize(20),
-    backgroundColor: 'rgba(110,110,110,0.85)',
+    // backgroundColor: 'rgba(110,110,110,0.85)',
+    backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -458,15 +519,17 @@ const styles = StyleSheet.create({
   tipsText: {
     textAlign: 'center',
     fontSize: setSpText(24),
-    fontWeight: 'bold',
-    color: 'white',
+    // fontWeight: 'bold',
+    // color: 'white',
+    color: color.itemColorBlack,
   },
   input: {
     height: setSpText(50),
     fontSize: setSpText(24),
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textAlign: 'right',
-    color: 'white',
+    // color: 'white',
+    color: color.itemColorBlack,
     width: scaleSize(100),
     ...Platform.select({
       android: {
@@ -479,7 +542,8 @@ const styles = StyleSheet.create({
     fontSize: setSpText(24),
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white',
+    // color: 'white',
+    color: color.itemColorBlack,
     minWidth: scaleSize(40),
   },
 })

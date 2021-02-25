@@ -11,7 +11,7 @@ const FieldType: typeof CN.FieldType = {
   LONGBINARY: 'Long Binary',
   TEXT: 'Text',
   CHAR: 'Char',
-  WTEXT: 'WText',
+  WTEXT: 'Wide Text',
 }
 
 export { FieldType }

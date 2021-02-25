@@ -106,7 +106,8 @@ async function getSceneData() {
         }
       }
       data.push({
-        image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
+        // image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
+        image: getThemeAssets().mine.my_scene,
         title: getLanguage(params.language).Map_Label.SCENE,
         data: _data,
       })
@@ -152,7 +153,7 @@ async function getSceneData() {
               fontSize: size.fontSize.fontSizeMd,
               height: scaleSize(30),
               backgroundColor: 'transparent',
-              color: color.section_text,
+              color: color.fontColorBlack,
               textAlignVertical: 'center',
               textAlign: 'right',
             }}
@@ -177,7 +178,8 @@ async function getSceneData() {
   data[0].buttons = [
     renderRightButton({
       title: getLanguage(params.language).Map_Main_Menu.OPEN,
-      image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+      // image: require('../../../../../../assets/mapTools/icon_add_white.png'),
+      image: getThemeAssets().dataType.icon_newdata,
       action: addOnlineScene,
     }),
     renderRightButton({

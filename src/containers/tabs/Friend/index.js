@@ -25,6 +25,8 @@ import {
   addTaskMessage,
   readTaskMessage,
   addMemberLocation,
+  deleteTaskMembers,
+  exitGroup,
 } from '../../../redux/models/cowork'
 import {
   addChat,
@@ -57,6 +59,8 @@ const mapDispatchToProps = {
   addCoworkMsg,
   setCoworkGroup,
   addMemberLocation,
+  deleteTaskMembers,
+  exitGroup,
 }
 export default connect(
   mapStateToProps,

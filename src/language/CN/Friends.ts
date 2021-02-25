@@ -152,6 +152,7 @@ const Friends = {
   ADDED: '已添加',
 
   // 创建群组
+  JOIN: '加入',
   TITLE_CHOOSE_MEMBER: '选择成员',
   VIEW_MORE_MEMBERS: '查看更多成员',
   MY_GROUPS: '我创建的群组',
@@ -173,11 +174,11 @@ const Friends = {
   GROUP_MANAGE: '管理',
   GROUP_MEMBER: '成员',
   NAME: '名称',
-  GROUP_NAME_PLACEHOLDER: '最多输入20字',
+  GROUP_NAME_PLACEHOLDER: '名称最多输入20字',
   GROUP_TAG: '标签',
   GROUP_TAG_PLACEHOLDER: '多个标签用逗号分隔，最多不超过6个',
   GROUP_REMARK: '备注',
-  GROUP_REMARK_PLACEHOLDER: '最多输入100字',
+  GROUP_REMARK_PLACEHOLDER: '备注最多输入100字',
   RESOURCE_SHARER: '资源共享者',
   CREATOR: '创建者',
   ALL_MEMBER: '所有成员',
@@ -245,6 +246,7 @@ const Friends = {
   GROUP_DELETE_INFO: '是否解散群组',
   GROUP_DELETE_INFO2: '当前群组已被解散',
   GROUP_MEMBER_DELETE_INFO: '是否删除被选中的成员',
+  GROUP_MEMBER_DELETE_INFO2: '您已经被踢出当前群组',
   GROUP_TASK_DELETE_INFO: '是否删除任务',
 
   GROUP_MESSAGE_NULL: '暂时没有群消息',

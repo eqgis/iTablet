@@ -78,8 +78,11 @@ class LoginCloud extends Component {
 
   _queryLicense = async () => {
     let result
-    this.onlineLogin?.logining()
-    // this.container && this.container.setLoading(true)
+    if(this.state.reLogin) {
+      this.container && this.container.setLoading(true)
+    } else {
+      this.onlineLogin?.logining()
+    }
     try {
       result = await SMap.queryCloudLicense()
     } catch (error) {
@@ -88,8 +91,11 @@ class LoginCloud extends Component {
         hasTrial: false,
       }
     }
-    this.onlineLogin?.loginResult()
-    // this.container && this.container.setLoading(false)
+    if(this.state.reLogin) {
+      this.container && this.container.setLoading(false)
+    } else {
+      this.onlineLogin?.loginResult()
+    }
     this.props.navigation.navigate('LicenseJoinCloud', {
       licenseInfo: result,
     })
@@ -110,11 +116,14 @@ class LoginCloud extends Component {
 
       let isConnected = await NetInfo.isConnected.fetch()
       if (isConnected) {
-        this.onlineLogin?.logining()
-        // this.container.setLoading(
-        //   true,
-        //   getLanguage(GLOBAL.language).Prompt.LOG_IN,
-        // )
+        if(this.state.reLogin) {
+          this.container.setLoading(
+            true,
+            getLanguage(GLOBAL.language).Prompt.LOG_IN,
+          )
+        } else {
+          this.onlineLogin?.logining()
+        }
         let startLogin = async () => {
           let loginResult = SMap.loginCloudLicense(userName, password)
           return loginResult
@@ -157,8 +166,11 @@ class LoginCloud extends Component {
       SMap.logoutCloudLicense()
       return false
     } finally {
-      this.onlineLogin?.loginResult()
-      // this.container && this.container.setLoading(false)
+      if(this.state.reLogin) {
+        this.container && this.container.setLoading(false)
+      } else{
+        this.onlineLogin?.loginResult()
+      }
     }
   }
 
@@ -298,6 +310,7 @@ class LoginCloud extends Component {
         language={GLOBAL.language}
         login={this.login}
         showRegister={false}
+        useDefaultName={true}
       />
     )
   }

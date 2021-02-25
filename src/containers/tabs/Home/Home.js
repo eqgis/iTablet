@@ -113,10 +113,6 @@ export default class Home extends Component {
   _onImportWorkspace = async filePath => {
     try {
       if (filePath !== undefined) {
-        let index = filePath.lastIndexOf('/')
-        let path = filePath.substring(0, index)
-        let snmFiles = await FileTools.getPathListByFilterDeep(path, 'snm')
-        await SMap.copyNaviSnmFile(snmFiles)
         // if (isFirstImportWorkspace === true) {
         //   this.container && this.container.setLoading(true, '导入数据中...')
         // }
@@ -244,7 +240,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -583,7 +579,7 @@ export default class Home extends Component {
           }}
         />
         <TouchableOpacity
-           style={[{
+          style={[{
             position: 'absolute',
             backgroundColor:'white',
             borderRadius: scaleSize(20),

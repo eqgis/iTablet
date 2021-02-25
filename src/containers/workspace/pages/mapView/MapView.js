@@ -206,6 +206,9 @@ export default class MapView extends React.Component {
     setToolbarStatus: PropTypes.func,
   }
 
+  /** 是否导航中 */
+  isGuiding = false
+
   constructor(props) {
     super(props)
     let { params } = this.props.navigation.state
@@ -820,6 +823,7 @@ export default class MapView extends React.Component {
   }
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
+    this.isGuiding = false
     SMap.clearPoint()
     this.showFullMap(false)
     this.props.setMapNavigation({ isShow: false, name: '' })
@@ -1128,7 +1132,7 @@ export default class MapView extends React.Component {
   }
 
   /** 关闭地图，并返回首页 **/
-  closeMapHandler = async (baskFrom) => {
+  closeMapHandler = async baskFrom => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.props.closeMap()
@@ -1145,12 +1149,13 @@ export default class MapView extends React.Component {
 
       this.setLoading(false)
       if (GLOBAL.coworkMode) {
+        CoworkInfo.setId('') // 退出任务清空任务ID
         GLOBAL.coworkMode = false
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
       NavigationService.goBack(baskFrom)
-      
+
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
@@ -1232,12 +1237,25 @@ export default class MapView extends React.Component {
       // Android物理返回事件
       if (Platform.OS === 'android') {
         // Toolbar显示时，返回事件Toolbar的close
-        if (this.toolBox && this.toolBox.getState().isShow) {
-          this.toolBox.buttonView.close()
+        if (this.toolBox && this.toolBox.isShow) {
+          //在此处理 toolbar 显示时的返回事件
+          // this.toolBox.buttonView.close()
           return true
         }
+
+        //处理导航时返回键
+        if(GLOBAL.NAVIGATIONSTARTHEAD?.state.show) {
+          GLOBAL.NAVIGATIONSTARTHEAD?.close()
+          return true
+        }
+
+        //处理导航中返回键
+        if(this.isGuiding) {
+          return true
+        }
+
         // 删除对象Dialog显示时，返回事件关闭Dialog
-        else if (
+        if (
           GLOBAL.removeObjectDialog &&
           GLOBAL.removeObjectDialog.getState().visible
         ) {
@@ -3324,6 +3342,9 @@ export default class MapView extends React.Component {
         path={this.state.path}
         pathLength={this.state.pathLength}
         ref={ref => (GLOBAL.NAVIGATIONSTARTBUTTON = ref)}
+        onNavigationStart={() => {
+          this.isGuiding = true
+        }}
       />
     )
   }

@@ -7,7 +7,7 @@ import {
   Height,
 } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
-import { setSpText } from '../../../../../../utils'
+import { scaleSize, setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ColorTable } from '../../../../../mapSetting/secondMapSettings/components'
 import { Row, MTBtn, Picker } from '../../../../../../components'

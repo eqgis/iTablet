@@ -64,7 +64,7 @@ declare namespace GLOBAL {
   /** 导航数据数组 */
   let NAV_PARAMS: Array<object>        
   /** 暂存点，返回地图选点时使用 */
-  let SELECTPOINTLATITUDEANDLONGITUDETEMP: Point  
+  let SELECTPOINTLATITUDEANDLONGITUDETEMP: Point
   /** 地图选点时使用? */
   let SELECTPOINTLATITUDEANDLONGITUDE: Point      
   /** 标绘动画数据 */
@@ -99,7 +99,8 @@ declare namespace GLOBAL {
   let showMenu: boolean                    
   /** 场景名字 */
   let sceneName: string                   
-
+  /** 专题图-地图是否由xml加载 */
+  let IS_MAP_FROM_XML: boolean
   // 组件ref
   /** 地图界面-地图组件 MapView.js SMMapView */
   let mapView: any                   

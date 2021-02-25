@@ -45,7 +45,7 @@ const Friends: typeof CN.Friends = {
   CONFIRM2: 'OK',
   TITLE_CHOOSE_FRIEND: '友達の選択',
   TITLE_CHOOSE_GROUP: 'グループの選択',
-  TITLE_CHOOSE_MEMBER: 'メンバーの選択', //待翻译
+  TITLE_CHOOSE_MEMBER: 'メンバーの選択',
   TOAST_CHOOSE_2: '2人以下ではグループチャットを開始できません',
   NO_FRIEND: 'まだ友達を追加していません',
   // AddFriend
@@ -115,7 +115,7 @@ const Friends: typeof CN.Friends = {
   DELETE_FRIEND: '友達の削除',
   LIST_MEMBERS: 'グループメンバーの表示',
   LEAVE_GROUP: 'グループチャットを閉じる',
-  MEMBERS: 'メンバー', 
+  MEMBERS: 'メンバー',
   CLEAR_HISTORY: 'チャットレコードのクリア',
   DISBAND_GROUP: 'グループの解除',
   DELETE_MEMBER: 'グループメンバーの削除',
@@ -155,8 +155,8 @@ const Friends: typeof CN.Friends = {
 
   ADDED: '追加済',
 
-  // 创建群组 待翻译
-  TITLE_CHOOSE_MEMBER: 'メンバーの選択',
+  // 创建群组
+  JOIN: '加入', // need to be translated
   VIEW_MORE_MEMBERS: 'もっと',
   MY_GROUPS: 'マイグループ',
   JOINED_GROUPS: '参加グループ',
@@ -198,7 +198,7 @@ const Friends: typeof CN.Friends = {
   GROUP_NAME_NOT_EMPTY: 'グループ名を空にすることはできません',
   GROUP_ALREADY_JOINED: 'すでにグループに参加しています',
   GROUP_APPLY_REASON: '申請理由',
-  APPLY: 'Apply',
+  APPLY: '申請',
   GROUP_APPLY_INFO: '適用',
   GROUP_APPLY_AGREE: '同意',
   GROUP_APPLY_REFUSE: '拒否',
@@ -247,10 +247,12 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'グループから脱退しますか?',
   GROUP_DELETE_INFO: 'グループを解除しますか?',
+  GROUP_DELETE_INFO2: 'The current group has been disbanded', // need to be translated
   GROUP_MEMBER_DELETE_INFO: '選択したメンバーを削除しますか?',
+  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', // need to be translated
   GROUP_TASK_DELETE_INFO: 'タスクを削除しますか?',
 
-  
+
   GROUP_MESSAGE_NULL: 'メッセージはありません',
   GROUP_DATA_NULL: 'データはありません',
   GROUP_TASK_NULL: 'タスクはありません',

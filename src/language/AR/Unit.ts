@@ -11,6 +11,6 @@ const FieldType: typeof CN.FieldType = {
   LONGBINARY: 'رقم ثناثى طويل',
   TEXT: 'نص',
   CHAR: 'حرف',
-  WTEXT: 'WText',
+  WTEXT: 'نص واسع',
 }
 export { FieldType }

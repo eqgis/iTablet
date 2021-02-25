@@ -67,5 +67,9 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(10),
     marginLeft: scaleSize(40),
   },
+  customInputStyle: {
+    fontSize: scaleSize(28),
+    paddingLeft: scaleSize(52),
+  },
 })
 export default styles

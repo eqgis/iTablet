@@ -81,7 +81,7 @@ const Friends: typeof CN.Friends = {
   PICTURE: 'Picture',
   LOCATION_FAILED: 'Failed to locate',
   // Cowork
-  COWORK_MESSAGE: 'Cowork Message', 
+  COWORK_MESSAGE: 'Cowork Message',
   SEND_COWORK_INVITE: 'Do you want to send the cowork invitation?',
   COWORK_INVITATION: 'Cowork Invitation',
   COWORK_MEMBER: 'Cowork Members',
@@ -154,8 +154,8 @@ const Friends: typeof CN.Friends = {
   SYS_MSG_GEO_UPDATED2: '',
   ADDED: 'Added',
 
-  // 创建群组 待翻译
-  TITLE_CHOOSE_MEMBER: 'Select Members',
+  // 创建群组
+  JOIN: 'Join', // need to be translated
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',
@@ -176,11 +176,11 @@ const Friends: typeof CN.Friends = {
   GROUP_MANAGE: 'Manage',
   GROUP_MEMBER: 'Member',
   NAME: 'Name',
-  GROUP_NAME_PLACEHOLDER: 'Please enter at most 20 characters',
+  GROUP_NAME_PLACEHOLDER: 'Please enter at most 20 characters for Name',
   GROUP_TAG: 'Tag',
   GROUP_TAG_PLACEHOLDER: '6 tags at most seperating each with comma',
   GROUP_REMARK: 'Note',
-  GROUP_REMARK_PLACEHOLDER: 'Please enter at most 100 characters',
+  GROUP_REMARK_PLACEHOLDER: 'Please enter at most 100 characters for Note',
   RESOURCE_SHARER: 'Sharer',
   CREATOR: 'Creator',
   ALL_MEMBER: 'All Members',
@@ -246,7 +246,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'Do you want to leave the group',
   GROUP_DELETE_INFO: 'Do you want to delete the group',
+  GROUP_DELETE_INFO2: 'The current group has been disbanded',
   GROUP_MEMBER_DELETE_INFO: 'Do you want to delete the selected member',
+  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group',
   GROUP_TASK_DELETE_INFO: 'Do you want to delete tasks?',
 
   GROUP_MESSAGE_NULL: 'No Message',

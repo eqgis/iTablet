@@ -137,7 +137,8 @@ function getData(type, params) {
         {
           type: ToolbarBtnType.MEASURE_CLEAR,
           action: ToolAction.clearMeasure,
-          image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+          image: getThemeAssets().mark.icon_mark_erase,
         },
       ]
       break
@@ -162,7 +163,8 @@ function getData(type, params) {
         {
           type: ToolbarBtnType.SHOW_ATTRIBUTE,
           action: ToolAction.showAttribute,
-          image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+          // image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
+          image: getThemeAssets().tabBar.tab_attribute,
         },
       ]
       break
@@ -253,12 +255,14 @@ function getData(type, params) {
         {
           type: ToolbarBtnType.STYLE_TRANSFER,
           action: ToolAction.matchPictureStyle,
-          image: getPublicAssets().common.icon_album,
+          // image: getPublicAssets().common.icon_album,
+          image: getThemeAssets().toolbar.icon_album,
         },
         {
           type: ToolbarBtnType.STYLE_TRANSFER_PICKER,
           action: ToolAction.showMenuBox,
-          image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_option,
         },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
@@ -269,12 +273,14 @@ function getData(type, params) {
         {
           type: ToolbarBtnType.STYLE_TRANSFER,
           action: ToolAction.matchPictureStyle,
-          image: getPublicAssets().common.icon_album,
+          // image: getPublicAssets().common.icon_album,
+          image: getThemeAssets().toolbar.icon_album,
         },
         {
           type: ToolbarBtnType.STYLE_TRANSFER_PICKER,
           action: ToolAction.showMenuBox,
-          image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_option,
         },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]

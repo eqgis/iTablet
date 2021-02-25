@@ -264,6 +264,7 @@ let defaultMapLegend = (() => {
     fontPercent: 50,
     imagePercent: 50,
     legendPosition: 'topLeft',
+    position: {x: -1, y: -1},
   }
 
   let moduleKeys = Object.keys(ChunkType)

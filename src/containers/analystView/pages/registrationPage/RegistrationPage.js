@@ -408,6 +408,7 @@ export default class RegistrationPage extends Component {
           height: scaleSize(60),
           marginTop: scaleSize(30),
           marginLeft: scaleSize(30),
+          flex: 0,
         }}
       >
         <Button
@@ -839,9 +840,14 @@ export default class RegistrationPage extends Component {
                 }}
                 language={GLOBAL.language}
               />
-
-              {this.renderAssociatView()}
-              {this.renderArithmeticTitle()}
+              <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+              }}>
+                {this.renderAssociatView()}
+                {this.renderArithmeticTitle()}
+              </View>
               {this.state.isEditPoint ? null : this.renderToolBar()}
             </View>
 

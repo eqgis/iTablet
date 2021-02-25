@@ -10,16 +10,16 @@ const Map_Label: typeof CN.Map_Label = {
   SCENE: 'مشهد',
   NAME: 'اسم',
   TOOL_BOX: 'صندوق الأدوات',
-  ARMAP: 'مشهد',
+  ARMAP: 'خريطة الواقع المعزز',
   NAVIGATION: 'ملاحى',
   INCREMENT: 'زيادة',
-  ENCLOSURE: 'نسيج',
+  ENCLOSURE: 'نسييج',
 }
 
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: 'الخريطة الحالية',
-  CURRENT_SCENCE: 'الوضع الحالى',
+  CURRENT_SCENCE: 'المشهد الحالى',
   CURRENT_MODEL: 'الوضع الحالى',
   // 地图制图及公共 开始
   START: 'أبدء',
@@ -286,9 +286,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 外业采集 采集
   CREATE_WITH_SYMBOLS: 'أنشاء عرض الرمز',
   CREATE_WITH_TEMPLATE: 'أنشاء مع القالب',
-  POINT_SYMBOL_LIBRARY: 'Marker Libarary', // Libarary => Library
-  LINE_SYMBOL_LIBRARY: 'Line Libarary',
-  REGION_SYMBOL_LIBRARY: 'Fill Libarary',
+  POINT_SYMBOL_LIBRARY: 'مكتبة العلامات',
+  LINE_SYMBOL_LIBRARY: 'مكتبة الخطوت',
+  REGION_SYMBOL_LIBRARY: 'مكتبة ملء الاشكال',
 
   COLLECTION: 'جمع',
   COLLECTION_RECENT: 'حديث',
@@ -323,7 +323,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   EDIT_FILL_HOLLOW: 'ملىء تجويف',
   EDIT_CANCEL_SELECTION: 'الغاء الاختيار',
   MOVE: 'حرك',
-  OBJMOVE: 'Move',  //objevt move or jest move
+  OBJMOVE: 'تحريك الكائن',
   FREE_DRAW_ERASE: 'مسح رسم الحر',
 
   // 标绘
@@ -343,26 +343,26 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAO_ROAD_DISTRIBUTION: 'شبكة/الطرق',
 
   MAP_AR_DONT_SUPPORT_DEVICE: ' لا ندعم هذا الجهاز',
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'Don not support this device,Higher than android7',//待翻译
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: 'لا يدعم هذا الجهاز أعلى من android 7',
 
-  MAP_AR_MEASURE: 'قياس الواقع المعزز', //need to be translated  AR Measure = Augmented Reality Measurement
-  MAP_AR_ANALYZE: 'تحليل الواقع المعزز', //need to be translated
+  MAP_AR_MEASURE: 'قياس الواقع المعزز',
+  MAP_AR_ANALYZE: 'تحليل الواقع المعزز',
   MAP_AR_MAPPING: ' خرائط الواقع المعزز',
-  MAP_AR_TOOL: 'ادوات الواقع المعزز', //need to be translated
+  MAP_AR_TOOL: 'ادوات الواقع المعزز',
   MAP_AR_CAMERA_EXCEPTION: 'الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا',
-  MAP_AR_AI_ASSISTANT: 'AI\nCollect',   //  AI\nCollect =AI Collect
-  MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'Custom Collect',
-  MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'Municipal Collect',
-  MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'Violation Collect',
-  MAP_AI_POSE_ESTIMATION: 'تقدير الوضع', //need to be translated
-  MAP_AI_GESTURE_BONE: 'Gesture Bone', //need to be translated
+  MAP_AR_AI_ASSISTANT: 'الذكاء الاصطناعي\n جمع',
+  MAP_AR_AI_ASSISTANT_CUSTOM_COLLECT: 'جمع مخصص',
+  MAP_AR_AI_ASSISTANT_MUNICIPAL_COLLECT: 'جمع البلدية',
+  MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT: 'جمع المخالفات',
+  MAP_AI_POSE_ESTIMATION: 'تقدير الوضع',
+  MAP_AI_GESTURE_BONE: 'إيماءة العظام',
   MAP_AR_AI_ASSISTANT_ROAD_COLLECT: 'جمع الطرق',
   MAP_AR_AI_ASSISTANT_POI_COLLECT: 'خريطة نقاط الاهتمام',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT: 'قياس الذكاء الاصطناعى',
   MAP_AR_AI_ASSISTANT_CLASSIFY: 'تصنيف الهدف',
   MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT: 'التجميع الكلي',
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'جمع الهدف',
-  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'AR Track', //待翻译
+  MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'مسار الواقع المعزز',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'تجميع المتنزهات غير القانونية',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'منطقة AR',
@@ -372,27 +372,27 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'نقاط رسم AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
 
-  MAP_AR_VIDEO: 'فيديو للواقع المعزز', //need to be translated
+  MAP_AR_VIDEO: 'فيديو للواقع المعزز',
   MAP_AR_IMAGE: 'صور للواقع المعزز',
   MAP_AR_EFFECT: 'تاثير للواقع المعزز',
   MAP_AR_WEBVIEW: ' مواقع الويب للواقع المعزز',
   MAP_AR_TEXT: 'نص للواقع المعزز',
   MAP_AR_SELECT_EFFECT: 'تحديد التاثير',
-  MAP_AR_PIPELINE: 'PipeLine',
+  MAP_AR_PIPELINE: 'خط انابيب',
   MAP_AR_AI_ASSISTANT_NEWDATA: 'بيانات جديدة',
   MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME: 'ادخل الاسم',
-  MAP_AR_TO_CURRENT_POSITION: 'إلى الحالي', //need to be translated
+  MAP_AR_TO_CURRENT_POSITION: 'إلى الحالي',
   MAP_AR_SELECT_POINT_PLANE: 'إلى المستوى',
   MAP_AR_ADD_TO_CURRENT_POSITION: 'إلى الحالي',
   MAP_AR_ADD_TO_PLANE: 'تحديد النقطة',
   MAP_AR_MOVE_TO_CURRENT_POSITION: 'إلى الحالي',
   MAP_AR_MOVE_TO_PLANE: 'تحديد النقطة',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'Polygon',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'Rectangle',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'Circular',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Polygon Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure Area',//待翻译
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circular Measure Area',//待翻译
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON: 'مضلع',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE: 'مستطيل',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR: 'دائري',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'قياس المضلع',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'قياس المستطيل',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'قياس دائري',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',
@@ -408,10 +408,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: 'جارى بحث السطح',
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: 'رؤيه المسافة',
 
-  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Stay Away',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Too Dim,Take More Light',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Too Fast,Please Slow Down',//待翻译
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'Move Device To Find Feature',//待翻译
+  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'ابق بعيدا',
+  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'خافت للغاية ، خذ المزيد من الضوء',
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'سريع جدًا ، يرجى الإبطاء',
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:'نقل الجهاز للعثور على ميزة',
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: 'اجمالى الطول',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: 'اجمالى الطول',
@@ -429,7 +429,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_CLEAR: 'مسح',
   MAP_AR_AI_NEW_ROAD: 'من فضلك انشاء خط جديد',
 
-  // need to be translated
+
   MAP_AR_AI_SAVE_REGION: 'حفظ المنطقة',
   MAP_AR_AI_SCENE_TRACK_COLLECT: 'تجميع المسار',
   MAP_AR_AI_SCENE_POINT_COLLECT: 'تجميع النقاط',
@@ -437,21 +437,21 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAP_AR_AI_MEASURE_LENGTH: 'قياس الطول',
   MAP_AR_AI_MEASURE_AREA: 'منطقة القياس',
-  MAP_AI_POSE_ESTIMATION_ZOOM: 'Pose Zoom', //need to be translated
-  MAP_AI_POSE_ESTIMATION_PAN: 'Pose Pan', //need to be translated
-  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'Pose Overlook', //need to be translated
-  MAP_AI_POSE_ESTIMATION_LOOK: 'Pose Look', //need to be translated
-  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'تبديل الكاميرا', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'خريطة الترابط', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'إلغاء الترابط', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: 'أعلى', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: 'أسفل', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: 'يسار', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'يمين', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'تقليص', //need to be translated
-  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'تكبير', //need to be translated
-  MAP_AI_GESTURE_BONE_DETAIL: 'تفاصيل الإيماءة', //need to be translated
-  MAP_AI_GESTURE_BONE_CLOSE: 'إغلاق', //need to be translated
+  MAP_AI_POSE_ESTIMATION_ZOOM: 'وضع التكبير',
+  MAP_AI_POSE_ESTIMATION_PAN: 'وضع العمومي',
+  MAP_AI_POSE_ESTIMATION_OVERLOOK: 'وضع التجاهل',
+  MAP_AI_POSE_ESTIMATION_LOOK: 'وضع المراقبة',
+  MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA: 'تبديل الكاميرا',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION: 'خريطة الترابط',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL: 'إلغاء الترابط',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP: 'أعلى',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN: 'أسفل',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT: 'يسار',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT: 'يمين',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK: 'تقليص',
+  MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY: 'تكبير',
+  MAP_AI_GESTURE_BONE_DETAIL: 'تفاصيل الإيماءة',
+  MAP_AI_GESTURE_BONE_CLOSE: 'إغلاق',
 
   MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING: 'تصنيف التحميل',
   MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED: 'فشل التصنيف,حاول مرة اخرى',
@@ -486,8 +486,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DISPLAY_MAP: 'عرض الخريطة',
   START_FROM_START_POINT: 'بدءا من النقطة الأولية',
   ARRIVE_AT_THE_DESTINATION: 'الوصول الى المكان المقصود',
-  REAL_NAVIGATION: 'بدء التنقل',
+  START_NAVIGATION: 'بدء التنقل',
   SIMULATED_NAVIGATION: 'التنقل المحاكي',
+  WALK_NAVIGATION: 'Walk Navi', // Need to be translated
+  CAR_NAVIGATION: 'Car Navi', // Need to be translated
+  CRUISE_NAVIGATION: 'Cruise', // Need to be translated
   GO_STRAIGHT: 'الذهاب مباشرة',
   SELECT_START_POINT: 'اختر البداية',
   SELECT_DESTINATION: 'اختر المكان المقصود',
@@ -505,7 +508,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MY_LOCATION: 'موقعى',
 
   //导航采集
-  MAP_INDOOR_NETWORK: 'داخلي', //need to be translated
+  MAP_INDOOR_NETWORK: 'داخلي',
   MAP_OUTDOOR_NETWORK: 'خارجي',
 
   MAP_INCREMENT_START: 'ابدأ',
@@ -539,9 +542,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MERGE_ADD: 'إلحاق',
   MERGE_DATASET: 'دمج مجموعات البيانات',
 
-  // 专题制图加载/输出xml 待翻译
-  MAP_OUTPUT_XML: 'Output',
-  MAP_LOAD_XML: 'Load',
+  // 专题制图加载/输出xml
+  MAP_OUTPUT_XML: 'مخرجات',
+  MAP_LOAD_XML: 'تحميل',
 }
 
 // 推演动画
@@ -616,7 +619,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   PLOTS: 'علامة',
   PLOTS_IMPORT: 'استيراد علامات',
   PLOTS_DELETE: 'حذف علامات',
-  PLOTS_EDIT: 'Edit Marks',
+  PLOTS_EDIT: 'تحرير العلامات',
   PLOTS_SET_AS_CURRENT: 'تعيين كالعلامات الحالية',
 
   LAYERS: 'طبقاتى',
@@ -671,7 +674,6 @@ const Map_Layer: typeof CN.Map_Layer = {
   BASEMAP_SWITH: 'تبديل خريطة الأساس',
   MY_TERRAIN: 'تضاريس بلادي',
 
-  //need to be translated
   SCALE_TO_CURRENT_LAYER: 'تحجيم الطبقة الحالية',
   ADD_A_TERRAIN_LAYER: 'إضافة طبقة تضاريس',
   ADD_A_IMAGE_LAYER: 'إضافة طبقة صورة',
@@ -680,15 +682,15 @@ const Map_Layer: typeof CN.Map_Layer = {
   ADD_LAYER_URL: 'اضافة طبقة من Url',
   TERRAIN: 'تضاريس',
   IMAGE: 'صورة',
-  IS_ADD_NOTATION_LAYER: 'هل تريد إضافة طبقة الرموز', //need to be translated
+  IS_ADD_NOTATION_LAYER: 'هل تريد إضافة طبقة الرموز',
 
-  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'وضع العرض', //need to be translated
+  LAYER_SETTING_IMAGE_DISPLAY_MODE: 'وضع العرض',
   LAYER_SETTING_IMAGE_STRETCH_TYPE: 'نوع التمدد',
   DISPLAY_MODE_COMPOSITE: 'مركب',
   DISPLAY_MODE_STRETCHED: 'ممتدة',
   STRETCH_TYPE_NONE: 'لا شئ',
   STRETCH_TYPE_STANDARDDEVIATION: 'الانحراف المعياري',
-  STRETCH_TYPE_MINIMUMMAXIMUM: 'الحد الأدنى-الحد الأقصى', // Minimum-Maximum
+  STRETCH_TYPE_MINIMUMMAXIMUM: 'الحد الأدنى-الحد الأقصى',
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: 'معادلة المدرج التكراري',
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: 'مواصفات المدرج التكراري',
   STRETCH_TYPE_GAUSSIAN: 'غاوسي',
@@ -822,9 +824,9 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 二级菜单 基本设置
   MAP_NAME: 'اسم الخريطة',
   SHOW_SCALE: 'عرض المقياس',
-  SHOW_LOCATION: 'اعرض الموقع',//need to be translated
+  SHOW_LOCATION: 'اعرض الموقع',
   ROTATION_GESTURE: 'إيماءة الدوران',
-  PITCH_GESTURE: 'Pitch Gesture',
+  PITCH_GESTURE: 'إيماءة الاهتزاز',
   ROTATION_ANGLE: 'زاوية الدوران',
   COLOR_MODE: 'وضع اللون',
   BACKGROUND_COLOR: 'لون الخلفية',
@@ -907,7 +909,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   CANCEL: 'الغاء',
   COPY: 'نسخ',
 
-  CONFIDENCE: 'Confidence', //need to be translated
+  CONFIDENCE: 'الثقة',
 }
 
 // 地图工具

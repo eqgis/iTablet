@@ -34,6 +34,7 @@ interface Props {
   currentGroup: GroupType,
   user: Users,
   device: any,
+  exitGroup: (params: {groupID: number | string}) => Promise<any>,
 }
 
 type State = {
@@ -246,6 +247,38 @@ class GroupFriendListPage extends Component<Props, State> {
     }
   }
 
+  _sendDeleteMsg = (ids: Array<string>) => {
+    if (ids.length === 0) return
+    let timeStr = new Date().getTime()
+    let _message = {
+      id: 'GROUP_DELETE_' + timeStr,
+      message: {
+        groupId: this.props.currentGroup.id,
+        creator: this.props.currentGroup.creator,
+        type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
+      },
+      type: MsgConstant.MSG_COWORK,
+      user: {
+        name: this.props.user.currentUser.nickname || '',
+        id: this.props.user.currentUser.userId || '',
+      },
+      time: timeStr,
+    }
+
+    for (let i = 0; i < ids.length; i++) {
+      if (ids[i] === this.props.user.currentUser.userName) {
+        continue
+      }
+      SMessageService.sendMessage(
+        JSON.stringify(_message),
+        ids[i],
+      )
+    }
+    // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
+    // this._setDialogVisible(false)
+    // NavigationService.goBack('CoworkManagePage', null)
+  }
+
   _setDialogVisible = (visible: boolean, info?: string) => {
     if (visible === false) {
       this.dialogAction = null
@@ -288,26 +321,27 @@ class GroupFriendListPage extends Component<Props, State> {
         }).then(async result => {
           if (result.succeed) {
             // 给删除对象发送被删除消息
-            let timeStr = new Date().getTime()
-            let message = {
-              type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
-              user: {
-                name: this.props.user.currentUser.nickname || '',
-                id: this.props.user.currentUser.userName || '',
-              },
-              group: {
-                groupID: this.props.currentGroup.id,
-                groupName: this.props.currentGroup.groupName,
-                groupCreator: this.props.currentGroup.creator,
-              },
-              time: timeStr,
-            }
-            for (let i = 0; i < userIds.length; i++) {
-              SMessageService.sendMessage(
-                JSON.stringify(message),
-                userIds[i],
-              )
-            }
+            // let timeStr = new Date().getTime()
+            // let message = {
+            //   type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
+            //   user: {
+            //     name: this.props.user.currentUser.nickname || '',
+            //     id: this.props.user.currentUser.userName || '',
+            //   },
+            //   group: {
+            //     groupID: this.props.currentGroup.id,
+            //     groupName: this.props.currentGroup.groupName,
+            //     groupCreator: this.props.currentGroup.creator,
+            //   },
+            //   time: timeStr,
+            // }
+            // for (let i = 0; i < userIds.length; i++) {
+            //   SMessageService.sendMessage(
+            //     JSON.stringify(message),
+            //     userIds[i],
+            //   )
+            // }
+            this._sendDeleteMsg(userIds)
             await this.getContacts()
             this.callBack && this.callBack()
             this._setDialogVisible(false)

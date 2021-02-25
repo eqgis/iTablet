@@ -1,5 +1,5 @@
-// const icon_undo = require('./icon_undo_light.png')
-// const icon_redo = require('./icon_redo_light.png')
+const icon_undo_light = require('./icon_undo_light.png')
+const icon_redo_light = require('./icon_redo_light.png')
 const icon_undo_dark = require('./icon_undo_dark.png')
 const icon_undo_disable = require('./icon_undo_disable.png')
 const icon_redo_dark = require('./icon_redo_dark.png')
@@ -26,6 +26,8 @@ const icon_undo = require('./icon_undo.png')
 export default {
   icon_undo,
   icon_redo,
+  icon_undo_light,
+  icon_redo_light,
   icon_undo_dark,
   icon_redo_dark,
   icon_undo_disable,

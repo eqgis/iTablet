@@ -25,6 +25,7 @@ import mark from './mark'
 import start from './start'
 import navigation from './navigation'
 import cowork from './cowork'
+import toolbar from './toolbar'
 
 export default {
   publicAssets,
@@ -54,4 +55,5 @@ export default {
   start,
   navigation,
   cowork,
+  toolbar,
 }

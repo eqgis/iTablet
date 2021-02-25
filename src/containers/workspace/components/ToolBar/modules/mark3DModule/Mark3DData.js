@@ -73,14 +73,16 @@ async function getData(type, params) {
         ToolbarBtnType.CANCEL,
         {
           type: ToolbarBtnType.BACK,
-          image: require('../../../../../../assets/mapEdit/icon_back.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_back.png'),
+          image: getThemeAssets().edit.icon_back_off,
           action: () => {
             if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
           type: ToolbarBtnType.SAVE,
-          image: require('../../../../../../assets/mapEdit/commit.png'),
+          // image: require('../../../../../../assets/mapEdit/commit.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
               if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
@@ -99,19 +101,22 @@ async function getData(type, params) {
         ToolbarBtnType.CANCEL,
         {
           type: ToolbarBtnType.BACK,
-          image: require('../../../../../../assets/mapEdit/icon_back.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_back.png'),
+          image: getThemeAssets().edit.icon_back_off,
           action: () => {
             if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
           type: ToolbarBtnType.CLEAR_CURRENT_LABEL,
-          image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+          // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
+          image: getThemeAssets().mark.icon_mark_erase,
           action: () => SScene.clearcurrentLabel(),
         },
         {
           type: ToolbarBtnType.SAVE,
-          image: require('../../../../../../assets/mapEdit/commit.png'),
+          // image: require('../../../../../../assets/mapEdit/commit.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
               if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()

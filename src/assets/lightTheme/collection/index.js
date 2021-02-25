@@ -1,4 +1,5 @@
 const icon_collection_change = require('./icon_collection_change.png')
+const icon_symbol = require('./icon_symbol.png')
 
 const icon_track_start = require('./icon_click_track.png')
 const icon_track_pause = require('./icon_acquisition_track.png')
@@ -11,6 +12,7 @@ const icon_collect_point = require('./icon_collect_point.png')
 const icon_ar_effect_download = require('./ar_effect_download.png')
 export default {
   icon_collection_change,
+  icon_symbol,
 
   icon_track_start,
   icon_track_pause,

@@ -412,7 +412,7 @@ export default class LayerManager_tolbar extends React.Component {
         device={this.props.device}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
-        layerManager={true}
+        // layerManager={true}
       />
     )
   }

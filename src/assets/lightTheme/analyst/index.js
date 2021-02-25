@@ -48,7 +48,8 @@ const analysis_stop = require('./analysis_stop_light.png')
 const analysis_barrier = require('./analysis_barrier_light.png')
 const analysis_startpoint = require('./analysis_startpoint_light.png')
 const analysis_endpoint = require('./analysis_endpoint_light.png')
-const analysis_analyst = require('./analysis_analyst.png')
+// const analysis_analyst = require('./analysis_analyst.png')
+const analysis_analyst = require('./icon_data_analysis.png')
 
 export default {
   analysis_adjacent,

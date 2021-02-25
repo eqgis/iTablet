@@ -98,8 +98,8 @@ function openMap() {
         item.title = name
         item.name = name.split('.')[0]
         item.image = item.isTemplate
-          ? require('../../../../../../assets/mapToolbar/list_type_template_black.png')
-          : getThemeAssets().dataType.icon_map
+          ? getThemeAssets().dataType.icon_map_template
+          : getThemeAssets().dataType.icon_mapdata
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -147,7 +147,7 @@ function openMap() {
     data.push({
       title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN_MAP,
       // '我的地图',
-      image: require('../../../../../../assets/mapToolbar/list_type_maps.png'),
+      image: getThemeAssets().dataType.icon_map,
       data: userFileList || [],
       extraData: {
         title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,

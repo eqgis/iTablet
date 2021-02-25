@@ -4,7 +4,8 @@ import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { scaleSize, screen } from '../../utils'
 import { View, TouchableOpacity, Image } from 'react-native'
-import { getThemeAssets, getPublicAssets } from '../../assets'
+import { getThemeAssets } from '../../assets'
+import { color } from '../../styles'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { FileTools } from '../../native'
@@ -100,7 +101,7 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
           bottom: 0,
           width: '100%',
           height: scaleSize(80),
-          backgroundColor: 'black',
+          backgroundColor: color.white,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -113,7 +114,8 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              width: scaleSize(80),
+              height: scaleSize(60),
+              width: scaleSize(60),
             }}
             onPress={() => {
               this.setVisible()
@@ -122,10 +124,10 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
             <Image
               source={
                 this.state.visible
-                  ? getPublicAssets().mapTools.tools_legend_off
-                  : getPublicAssets().mapTools.tools_legend_on
+                  ? getThemeAssets().toolbar.icon_toolbar_invisible
+                  : getThemeAssets().toolbar.icon_toolbar_visible
               }
-              style={{ width: scaleSize(60), height: scaleSize(60) }}
+              style={{ width: scaleSize(45), height: scaleSize(45) }}
             />
           </TouchableOpacity>
         )}
@@ -134,7 +136,8 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            width: scaleSize(80),
+            height: scaleSize(60),
+            width: scaleSize(60),
           }}
           onPress={() => {
             NavigationService.navigate('ChooseWeather', {
@@ -144,8 +147,8 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
           }}
         >
           <Image
-            source={getThemeAssets().collection.icon_collection_change}
-            style={{ width: scaleSize(60), height: scaleSize(60) }}
+            source={getThemeAssets().toolbar.icon_toolbar_switch}
+            style={{ width: scaleSize(45), height: scaleSize(45) }}
           />
         </TouchableOpacity>
       </View>

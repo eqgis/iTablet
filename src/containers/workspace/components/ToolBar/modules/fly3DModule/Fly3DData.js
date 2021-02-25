@@ -52,7 +52,8 @@ async function getFlyList() {
         onPress={Fly3DAction.newFly}
       >
         <Image
-          source={require('../../../../../../assets/map/Frenchgrey/scene_addfly_light.png')}
+          // source={require('../../../../../../assets/map/Frenchgrey/scene_addfly_light.png')}
+          source={getThemeAssets().dataType.icon_newdata}
           style={{
             width: scaleSize(55),
             height: scaleSize(55),
@@ -62,7 +63,7 @@ async function getFlyList() {
     )
     data = [
       {
-        image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly_white.png'),
+        image: require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png'),
         title: getLanguage(params.language).Map_Main_Menu.FLY_ROUTE,
         data: flyData,
         buttons,

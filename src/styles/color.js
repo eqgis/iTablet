@@ -65,6 +65,7 @@ const lightTheme = {
   separateColorGray: '#EEEEEE',
   separateColorGray2: '#6C7B8A',
   separateColorGray3: '#F1F3F8',
+  separateColorGray4: '#F2F2F2',
 
   imageColorBlack: '#181818',
   imageColorWhite: '#FBFBFB',
@@ -132,7 +133,7 @@ export default {
   content: '#555555',
   /** 浅色版 */
   item_separate_white: '#A0A0A0', // 分割线
-  content_white: '#FBFBFB', // 列表项目背景
+  content_white: 'white', // 列表项目背景 '#FBFBFB'
   font_color_white: '#181818', // 列表项目文字颜色
   image_bg_white: '#727272',
   theme_white: '#181818',

@@ -21,12 +21,14 @@ function getData(type) {
       buttons = [
         {
           type: 'add',
-          image: require('../../../assets/mapTools/icon_add_white.png'),
+          // image: require('../../../assets/mapTools/icon_add_white.png'),
+          image: getThemeAssets().functionBar.icon_tool_add,
           action: action.selectImage,
         },
         {
           type: 'select',
-          image: require('../../../assets/mapEdit/icon_action3d.png'),
+          // image: require('../../../assets/mapEdit/icon_action3d.png'),
+          image: getThemeAssets().mapTools.icon_tool_click,
           action: () =>
             ToolbarModule.getParams().setToolbarVisible(
               true,
@@ -39,7 +41,7 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case 'SM_ARIMAGEMODULE_add':
+    case '_adSM_ARIMAGEMODULEd':
       data = [
         {
           key: 'addAtCurrent',

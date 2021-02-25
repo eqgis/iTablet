@@ -32,12 +32,12 @@ async function getData(type, params) {
         {
           type: constants.UNDO,
           action: MarkAction.undo,
-          image: require('../../../../../../assets/mapTools/icon_undo_white.png'),
+          image: getThemeAssets().edit.icon_undo,
         },
         {
           type: constants.REDO,
           action: MarkAction.redo,
-          image: require('../../../../../../assets/mapTools/icon_recover_white.png'),
+          image: getThemeAssets().edit.icon_redo,
         },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]

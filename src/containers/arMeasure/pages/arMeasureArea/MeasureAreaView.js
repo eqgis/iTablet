@@ -511,7 +511,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_classify_settings}
+                // source={getThemeAssets().ar.toolbar.icon_classify_settings}
+                source={getThemeAssets().toolbar.icon_toolbar_option}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -522,14 +523,16 @@ export default class MeasureAreaView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+              source={getThemeAssets().toolbar.icon_toolbar_delete}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.undo()} style={styles.iconView}>
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_undo}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_undo}
+              source={getThemeAssets().toolbar.icon_toolbar_undo}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -541,7 +544,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -553,7 +557,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -567,7 +572,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.ai_setting}
+                // source={getThemeAssets().ar.toolbar.ai_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_setting}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -581,7 +587,8 @@ export default class MeasureAreaView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.ai_setting}
+                // source={getThemeAssets().ar.toolbar.ai_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_setting}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>

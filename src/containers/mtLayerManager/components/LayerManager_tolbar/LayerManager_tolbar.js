@@ -773,7 +773,7 @@ export default class LayerManager_tolbar extends React.Component {
         device={this.props.device}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
-        layerManager={true}
+        // layerManager={true}
       />
     )
   }
@@ -789,7 +789,7 @@ export default class LayerManager_tolbar extends React.Component {
           height: scaleSize(86),
           alignItems: 'center',
           flexDirection: 'row',
-          backgroundColor: color.bgW,
+          backgroundColor: color.white,
         }}
       >
         {section.headers.map((item, index) => {

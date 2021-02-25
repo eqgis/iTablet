@@ -262,7 +262,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().publicAssets.icon_undo_dark}
+                source={getThemeAssets().edit.icon_undo}
                 style={styles.smallIcon}
               />
 
@@ -294,7 +294,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().publicAssets.icon_redo_dark}
+                source={getThemeAssets().edit.icon_redo}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -328,7 +328,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
               <Image
                 resizeMode={'contain'}
                 source={
-                  getThemeAssets().layer3dType.layer3d_image_selected
+                  getThemeAssets().layer3dType.layer3d_image
                 }
                 style={styles.smallIcon}
               />
@@ -366,8 +366,8 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
                 resizeMode={'contain'}
                 source={
                   this.state.showSandTable
-                    ? getThemeAssets().layerType.layer_group_selected
-                    : getThemeAssets().layerType.layer_group
+                    ? getThemeAssets().layerType.layer_group
+                    : getThemeAssets().layerType.layer_group_selected
                 }
                 style={styles.smallIcon}
               />
@@ -375,7 +375,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
                 style={[
                   styles.buttonname,
                   {
-                    color: this.state.showSandTable ? color.white : color.gray,
+                    color: this.state.showSandTable ? color.fontColorBlack : color.gray,
                   },
                 ]}
               >

@@ -277,6 +277,7 @@ export default class MergeDatasetView extends Component {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.sectionSeparateViewStyle} />
         <SectionList
           style={styles.padding}
           keyExtractor={(item, index) => item.toString() + index}
@@ -402,18 +403,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#303030',
+    backgroundColor: color.white,
   },
   titleTxt: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: setSpText(22),
   },
   actionTxt: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: setSpText(20),
   },
   titleTxtWrap: {
-    width: scaleSize(80),
+    minWidth: scaleSize(110),
     height: scaleSize(80),
     alignItems: 'center',
     justifyContent: 'center',
@@ -423,15 +424,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  sectionSeparateViewStyle: {
+    height: scaleSize(2),
+    marginHorizontal: scaleSize(30),
+    backgroundColor: color.separateColorGray4,
+  },
   row: {
     height: scaleSize(61),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: scaleSize(20),
+    marginHorizontal: scaleSize(20),
     paddingLeft: scaleSize(20),
     borderBottomWidth: 1,
-    borderBottomColor: color.USUAL_SEPARATORCOLOR,
+    borderBottomColor: color.separateColorGray4,
   },
   imageWrap: {
     width: scaleSize(60),
@@ -456,7 +462,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.content_white,
     marginHorizontal: scaleSize(20),
     borderBottomWidth: 1,
-    borderBottomColor: color.USUAL_SEPARATORCOLOR,
+    borderBottomColor: color.separateColorGray4,
   },
   dropDownStyle: {
     marginRight: scaleSize(10),

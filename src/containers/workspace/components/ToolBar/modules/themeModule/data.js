@@ -4,7 +4,6 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import {
   ConstToolType,
   ConstPath,
-  Const,
   ToolbarType,
 } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
@@ -101,7 +100,8 @@ async function showDatasetsList(type, filter = {}) {
       if (list.length === 0) continue
       data.push({
         title: datalist.datasource.alias,
-        image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+        image: getThemeAssets().dataType.icon_data_source,
         data: list,
       })
     }

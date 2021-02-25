@@ -396,6 +396,7 @@ export default class LineList extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.sectionSeparateViewStyle} />
           <FlatList
             style={styles.padding}
             keyExtractor={(item, index) => item.toString() + index}
@@ -429,6 +430,7 @@ export default class LineList extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.sectionSeparateViewStyle} />
           <FlatList
             style={styles.padding}
             keyExtractor={(item, index) => item.toString() + index}
@@ -457,25 +459,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#303030',
+    // backgroundColor: '#303030',
+    backgroundColor: color.white,
   },
   titleTxt: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: setSpText(22),
     flex: 1,
     textAlign: 'center',
   },
   actionTxt: {
-    color: 'white',
+    color: color.fontColorBlack,
     fontSize: setSpText(20),
   },
   titleTxtWrap: {
-    width: scaleSize(120),
+    // width: scaleSize(120),
     minWidth: scaleSize(110),
     height: scaleSize(80),
     alignItems: 'center',
     justifyContent: 'center',
     flex: -1,
+  },
+  sectionSeparateViewStyle: {
+    height: scaleSize(2),
+    marginHorizontal: scaleSize(30),
+    backgroundColor: color.separateColorGray4,
   },
   section: {
     width: '100%',
@@ -486,17 +494,17 @@ const styles = StyleSheet.create({
     backgroundColor: color.content_white,
     marginHorizontal: scaleSize(20),
     borderBottomWidth: 1,
-    borderBottomColor: color.USUAL_SEPARATORCOLOR,
+    borderBottomColor: color.separateColorGray4,
   },
   row: {
     height: scaleSize(61),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: scaleSize(20),
+    marginHorizontal: scaleSize(20),
     paddingLeft: scaleSize(20),
     borderBottomWidth: 1,
-    borderBottomColor: color.USUAL_SEPARATORCOLOR,
+    borderBottomColor: color.separateColorGray4,
   },
   imageWrap: {
     width: scaleSize(60),

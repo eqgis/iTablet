@@ -869,6 +869,7 @@ export default class ToolBar extends React.Component {
             this.props.device.orientation.indexOf('LANDSCAPE') === 0
               ? styles.containersLandscape
               : styles.containers,
+            !(this.state.isTouchProgress && this.state.isFullScreen) && styles.containerRadius,
           ]}
           pointerEvents={'box-none'}
         >

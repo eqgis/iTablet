@@ -5,6 +5,7 @@ import NavigationService from '../../../../../NavigationService'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
 import { ConstPath, ConstToolType } from '../../../../../../constants'
+import { getThemeAssets } from '../../../../../../assets'
 import FetchUtils from '../../../../../../utils/FetchUtils'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../../../../../containers/workspace/components/ToolBar/ToolbarBtnType'
@@ -227,7 +228,8 @@ function aiDetect() {
       {
         type: ToolbarBtnType.SETTIING,
         action: ToolAction.setting,
-        image: require('../../../../../../assets/mapTools/ai_setting.png'),
+        // image: require('../../../../../../assets/mapTools/ai_setting.png'),
+        image: getThemeAssets().toolbar.icon_toolbar_setting,
       },
     ]
     ;(await GLOBAL.toolBox) &&
@@ -281,7 +283,8 @@ function polymerizeCollect() {
       {
         type: ToolbarBtnType.SETTIING,
         action: ToolAction.setting,
-        image: require('../../../../../../assets/mapTools/ai_setting.png'),
+        // image: require('../../../../../../assets/mapTools/ai_setting.png'),
+        image: getThemeAssets().toolbar.icon_toolbar_setting,
       },
     ]
     ;(await GLOBAL.toolBox) &&

@@ -5,7 +5,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
 import { Toast } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
-import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
+import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import PlotAction from './PlotAction'
 
@@ -32,24 +32,26 @@ function getPlotButtons() {
     // ToolbarBtnType.PLOT_ANIMATION_XML_LIST,
     {
       type: ToolbarBtnType.SHOW_LIST,
-      image: getPublicAssets().plot.plot_animation_list,
+      image: getThemeAssets().toolbar.icon_list,
       action: PlotAction.showAnimationXmlList,
     },
     // ToolbarBtnType.PLOT_ANIMATION_PLAY,
     {
       type: ToolbarBtnType.PLAY,
-      image: getPublicAssets().plot.plot_play,
+      image: getThemeAssets().mapTools.icon_tool_play,
       action: PlotAction.animationPlay,
     },
     // ToolbarBtnType.PLOT_ANIMATION_GO_OBJECT_LIST,
     {
       type: ToolbarBtnType.SHOW_NODE_LIST,
-      image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+      // image: require('../../../../../../assets/mapEdit/icon_function_theme_param_menu.png'),
+      image: getThemeAssets().toolbar.icon_toolbar_option,
       action: PlotAction.showAnimationNodeList,
     },
     {
       type: ToolbarBtnType.SAVE,
-      image: require('../../../../../../assets/mapTools/icon_save.png'),
+      // image: require('../../../../../../assets/mapTools/icon_save.png'),
+      image: getThemeAssets().start.icon_save,
       action: PlotAction.animationSave,
     },
   ]
@@ -219,7 +221,8 @@ function getCollectionData(libId, symbolCode, params) {
     // ToolbarBtnType.CHANGE_COLLECTION,
     {
       type: ToolbarBtnType.MAP_SYMBOL,
-      image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+      // image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
+      image: getThemeAssets().collection.icon_symbol,
       action: PlotAction.showSymbol,
     },
     ToolbarBtnType.COMPLETE,

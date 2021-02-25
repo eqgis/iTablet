@@ -1034,7 +1034,8 @@ export default class CollectSceneFormView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_classify_settings}
+              // source={getThemeAssets().ar.toolbar.icon_classify_settings}
+              source={getThemeAssets().toolbar.icon_toolbar_option}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -1050,7 +1051,8 @@ export default class CollectSceneFormView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_ar_toolbar_switch}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_switch}
+              source={getThemeAssets().toolbar.icon_toolbar_switch}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -1066,7 +1068,8 @@ export default class CollectSceneFormView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.icon_flex}
+              // source={getThemeAssets().ar.toolbar.icon_flex}
+              source={getThemeAssets().toolbar.icon_toolbar_style}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -1078,7 +1081,8 @@ export default class CollectSceneFormView extends React.Component {
           >
             <Image
               resizeMode={'contain'}
-              source={getThemeAssets().ar.toolbar.ai_setting}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -1165,9 +1169,11 @@ export default class CollectSceneFormView extends React.Component {
           onGetInstance={this._onGetInstance}
         />
         {/*{this.state.showHistory && this.renderHistoryView()}*/}
-        {this.state.showbuttons && this.renderBottomBtns()}
-        {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
-        {this.renderBottomBtn()}
+        <View style={styles.toolbarView}>
+          {this.state.showbuttons && this.renderBottomBtns()}
+          {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
+          {this.renderBottomBtn()}
+        </View>
         {this.renderLengthChangeView()}
         {/* {this.state.isClickCollect && this.renderClickCollectHintView()} */}
         {this.state.isnew && this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}

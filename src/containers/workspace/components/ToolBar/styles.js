@@ -30,6 +30,16 @@ export default StyleSheet.create({
     minHeight: Height.TOOLBAR_BUTTONS,
     backgroundColor: 'transparent',
   },
+  containerRadius: {
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
+    overflow: 'hidden',
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 20,
+  },
   containersLandscape: {
     flexDirection: 'row',
     height: '100%',

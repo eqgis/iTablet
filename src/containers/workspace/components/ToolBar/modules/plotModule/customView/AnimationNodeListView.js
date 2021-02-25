@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   fltListHeader: {
     flex: 1,
-    backgroundColor: color.section_bg,
+    backgroundColor: color.white,
     height: scaleSize(80),
     alignItems: 'center',
     flexDirection: 'row',
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(30),
     fontSize: size.fontSize.fontSizeLg,
     fontWeight: 'bold',
-    color: color.section_text,
+    color: color.fontColorBlack,
     textAlign: 'left',
   },
   Separator: {

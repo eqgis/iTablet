@@ -93,6 +93,14 @@ export default class TouchProgress extends Component {
     return width
   }
 
+  getHeightByOrientation = () => {
+    let height = this.props.device.height
+    if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
+      height -= height.TOOLBAR_BUTTONS
+    }
+    return height
+  }
+
   _updateNativeStyles = () => {
     this.panBtn && this.panBtn.setNativeProps(this._panBtnStyles)
   }
@@ -355,7 +363,7 @@ export default class TouchProgress extends Component {
     }
     return (
       <KeyboardAvoidingView
-        style={[styles.box, { width: this.getWidthByOrientation() }]}
+        style={[styles.box, { width: this.getWidthByOrientation(), height: this.getHeightByOrientation() }]}
         behavior={Platform.OS === 'ios' && 'position'}
       >
         <View

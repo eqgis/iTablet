@@ -392,7 +392,8 @@ function showHistory() {
     latestMap = ToolbarModule.getParams().map.latestMap[userName][GLOBAL.Type]
   }
   latestMap.forEach(item => {
-    item.image = getThemeAssets().dataType.icon_map
+    // item.image = getThemeAssets().dataType.icon_map
+    item.image = getThemeAssets().dataType.icon_mapdata
   })
   const data = [
     {

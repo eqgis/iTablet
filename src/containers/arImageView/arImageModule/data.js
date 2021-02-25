@@ -41,7 +41,7 @@ function getData(type) {
         SARImage.setPlaneVisible(false)
       }
       break
-    case '_adSM_ARIMAGEMODULEd':
+    case 'SM_ARIMAGEMODULE_add':
       data = [
         {
           key: 'addAtCurrent',

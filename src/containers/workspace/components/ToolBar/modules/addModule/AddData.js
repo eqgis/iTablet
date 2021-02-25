@@ -178,7 +178,7 @@ async function getDatasets(type, params = {}) {
       {
         title: alias,
         // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
-        image: getThemeAssets().dataType.icon_data_set,
+        image: getThemeAssets().dataType.icon_data_source,
         data: list,
       },
     ]

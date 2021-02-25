@@ -48,7 +48,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: ITEM_VIEW_HEIGHT_P,
+    // height: ITEM_VIEW_HEIGHT_P,
+    minHeight: ITEM_VIEW_HEIGHT_P,
     backgroundColor: 'transparent',
   },
   btnViewL: {

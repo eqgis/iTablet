@@ -184,7 +184,7 @@ export default StyleSheet.create({
     backgroundColor: color.contentWhite,
   },
   dialogStyle: {
-    height: scaleSize(160),
+    // height: scaleSize(160),
   },
   dialogHeaderImg: {
     width: scaleSize(80),

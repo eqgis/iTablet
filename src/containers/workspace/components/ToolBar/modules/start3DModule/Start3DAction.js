@@ -81,8 +81,9 @@ async function getSceneData() {
                   style={{
                     marginTop: scaleSize(8),
                     marginRight: scaleSize(8),
-                    height: scaleSize(30),
-                    width: scaleSize(120),
+                    paddingHorizontal: scaleSize(8),
+                    // height: scaleSize(30),
+                    // width: scaleSize(120),
                     borderRadius: scaleSize(4),
                     backgroundColor: color.bgG,
                     justifyContent: 'center',
@@ -96,7 +97,7 @@ async function getSceneData() {
                       backgroundColor: 'transparent',
                     }}
                   >
-                    {getLanguage(params.language).Map_Main_Menu.CURRENT_MAP}
+                    {getLanguage(params.language).Map_Main_Menu.CURRENT_SCENCE}
                   </Text>
                 </View>
               </View>

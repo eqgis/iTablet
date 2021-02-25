@@ -876,7 +876,7 @@ export default class LayerAttributeTabs extends React.Component {
           attributesData={this.state.attributes.head}
           currentIndex={this.state.currentIndex}
           refreshAction={this.refreshAction}
-          selectionAttribute={true}
+          collectionAttribute={this.state.isCollection}
         />
         {this.state.isShowView && (
           <View

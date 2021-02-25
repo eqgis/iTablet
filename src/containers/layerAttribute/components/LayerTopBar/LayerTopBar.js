@@ -35,7 +35,7 @@ export default class LayerTopBar extends React.Component {
     orientation?: String,
     canDelete?: boolean, //是否可以点击删除
     currentIndex?: Object,//点击的数据集字段位置
-    selectionAttribute?: Object,
+    collectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
   }
 
   static defaultProps = {
@@ -47,7 +47,7 @@ export default class LayerTopBar extends React.Component {
     hasTabBtn: false,
     canDelete:false,
     currentIndex:0,
-    selectionAttribute:false,
+    collectionAttribute:false,
   }
 
   constructor(props) {
@@ -99,7 +99,7 @@ export default class LayerTopBar extends React.Component {
 
   // 多媒体采集
  captureImage = () => {
-    const selectionAttribute = this.props.selectionAttribute
+    const collectionAttribute = this.props.collectionAttribute
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
@@ -112,7 +112,7 @@ export default class LayerTopBar extends React.Component {
           datasetName,
           index,
           attribute:true,
-          selectionAttribute,
+          collectionAttribute,
           atcb: () => {
             if (
               this.props.refreshAction &&
@@ -141,7 +141,8 @@ export default class LayerTopBar extends React.Component {
   }
   
   renderContentView = () => {
-    let data = [
+    let data
+    data = [
       {
         icon: this.props.canAddField
           ? getPublicAssets().common.icon_plus
@@ -152,7 +153,7 @@ export default class LayerTopBar extends React.Component {
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
       },
-      {
+     {
         icon: this.props.canLocated
           ? getThemeAssets().attribute.icon_location
           : getThemeAssets().attribute.icon_unlocation,
@@ -192,6 +193,40 @@ export default class LayerTopBar extends React.Component {
         enabled: this.props.canRelated,
       }
     ]
+
+    if(this.props.collectionAttribute){
+      data = [
+        {
+          icon: this.props.canAddField
+            ? getPublicAssets().common.icon_plus
+            : getPublicAssets().common.icon_plus_gray,
+          key: '添加',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_FIELD_ADD,
+          action: this.addAttributeFieldAction,
+          enabled: this.props.canAddField,
+        },
+        {
+          icon: this.props.canDelete
+          ? getThemeAssets().attribute.icon_delete_select
+          : getThemeAssets().attribute.icon_delete_un_select,
+          key: '删除',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .EDIT_DELETE,
+          action: this.deleteAction,
+          enabled: this.props.canDelete,
+        },
+        {
+          icon: this.props.canRelated
+          ? getThemeAssets().mapTools.icon_tool_multi_media
+          : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+          key: '拍照',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+          action: this.captureImage,
+          enabled: this.props.canRelated,
+        }
+      ]
+    }
     
     let items = []
     data.forEach((item, index) => {

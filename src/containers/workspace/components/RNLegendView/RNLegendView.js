@@ -13,7 +13,9 @@ import color from '../../../../styles/color'
 const FOOTER_HEIGHT = scaleSize(88)
 const TOP_DEFAULT = Platform.select({
   android: 0,
-  ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
+  // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
+  // ios: screen.isIphoneX() ? 0 : screen.IOS_TOP,
+  ios: 0,
 })
 export default class RNLegendView extends React.Component {
   props: {
@@ -123,29 +125,27 @@ export default class RNLegendView extends React.Component {
       y = TOP_DEFAULT
     } else if (y < 0 && this.props.device.orientation.indexOf('LANDSCAPE') >= 0) {
       y = 0
-    } else if (y > screen.getScreenHeight(this.props.device.orientation) - scaleSize(
-      (this.state.height *
-        this.props.legendSettings[GLOBAL.Type].heightPercent) /
-        100,
-    )) {
-      y = screen.getScreenHeight(this.props.device.orientation) - scaleSize(
+    } else {
+      const maxY = this.props.device.safeHeight - scaleSize(
         (this.state.height *
           this.props.legendSettings[GLOBAL.Type].heightPercent) /
           100,
       )
+      if (y > maxY) {
+        y = maxY
+      }
     }
     if (x < 0) {
       x = 0
-    } else if (x > screen.getScreenWidth(this.props.device.orientation) - scaleSize(
-      (this.state.width *
-        this.props.legendSettings[GLOBAL.Type].widthPercent) /
-        100,
-    )) {
-      x = screen.getScreenWidth(this.props.device.orientation) - scaleSize(
+    } else {
+      const maxX = this.props.device.safeWidth - scaleSize(
         (this.state.width *
           this.props.legendSettings[GLOBAL.Type].widthPercent) /
           100,
       )
+      if (x > maxX) {
+        x = maxX
+      }
     }
     return {x, y}
   }
@@ -174,8 +174,14 @@ export default class RNLegendView extends React.Component {
   }
 
   _handlePanResponderEnd = (evt, gestureState) => {
-    this._previousTop += gestureState.dy
-    this._previousLeft += gestureState.dx
+    this._previousTop = this._moveViewStyles.style.top
+    this._previousLeft = this._moveViewStyles.style.left
+
+    // console.warn(this._previousTop, this._previousLeft)
+
+    // const position = this._getAvailablePosition(this._previousTop, this._previousLeft)
+    // this._previousTop = position.dy
+    // this._previousLeft = position.dx
 
     let legendData = this.props.legendSettings
     legendData[GLOBAL.Type].position = {

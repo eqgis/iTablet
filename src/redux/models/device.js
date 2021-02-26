@@ -23,6 +23,8 @@ const initialState = fromJS({
       screen.deviceHeight > screen.deviceWidth ? 'PORTRAIT' : 'LANDSCAPE',
     width: screen.getScreenWidth(),
     height: screen.getScreenHeight(),
+    safeWidth: screen.getScreenSafeWidth(),
+    safeHeight: screen.getScreenSafeHeight(),
   },
 })
 
@@ -30,21 +32,11 @@ export default handleActions(
   {
     [`${SHOW_SET}`]: (state, { payload }) => {
       const { device } = state.toJS()
-      const deviceWidth = screen.getScreenWidth()
-      const deviceHeight = screen.getScreenHeight()
-      if (payload.orientation) {
-        device.orientation = payload.orientation
-        // if (payload.orientation.indexOf('LANDSCAPE') === 0) {
-        if (payload.orientation.indexOf('LANDSCAPE') === 0) {
-          device.width = deviceWidth > deviceHeight ? deviceWidth : deviceHeight
-          device.height =
-            deviceWidth < deviceHeight ? deviceWidth : deviceHeight
-        } else {
-          device.width = deviceWidth < deviceHeight ? deviceWidth : deviceHeight
-          device.height =
-            deviceWidth > deviceHeight ? deviceWidth : deviceHeight
-        }
-      }
+      device.width = screen.getScreenWidth(payload.orientation)
+      device.height = screen.getScreenHeight(payload.orientation)
+      device.safeWidth = screen.getScreenSafeWidth()
+      device.safeHeight = screen.getScreenSafeHeight()
+      device.orientation = payload.orientation
       return state.setIn(['device'], fromJS(device))
     },
     // [REHYDRATE]: (state, { payload }) => {

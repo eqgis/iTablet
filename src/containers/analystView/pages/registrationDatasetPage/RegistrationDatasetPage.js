@@ -474,7 +474,7 @@ export default class RegistrationDatasetPage extends Component {
   render() {
     if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
       this.iosTop = screen.getIphonePaddingTop()
-      this.height = screen.getScreenSafeHeight()
+      this.height = screen.getScreenSafeHeight(this.props.device.orientation)
       this.selectImgHeight = scaleSize(190)
       this.selectHeight = scaleSize(240)
     } else {

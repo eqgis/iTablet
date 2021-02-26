@@ -153,7 +153,7 @@ async function getSceneData() {
             style={{
               fontSize: size.fontSize.fontSizeMd,
               // height: scaleSize(30),
-              maxWidth: scaleSize(100),
+              maxWidth: scaleSize(120),
               backgroundColor: 'transparent',
               color: color.fontColorBlack,
               textAlignVertical: 'center',

@@ -68,6 +68,8 @@ const icon_location = require('./icon_location.png')
 const icon_add_site = require('./icon_add_site.png')
 const icon_fly = require('./icon_fly.png')
 const icon_suspend = require('./icon_suspend.png')
+const icon_tool_clip_in = require('./icon_tool_clip_in.png')
+const icon_tool_clip_out = require('./icon_tool_clip_out.png')
 
 export default {
   icon_free_line_disable,
@@ -135,4 +137,6 @@ export default {
   icon_add_site,
   icon_fly,
   icon_suspend,
+  icon_tool_clip_in,
+  icon_tool_clip_out,
 }

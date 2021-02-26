@@ -148,15 +148,16 @@ async function getSceneData() {
       >
         {title && (
           <Text
-            numberOfLines={1}
-            ellipsizeMode={'tail'}
+            // numberOfLines={1}
+            // ellipsizeMode={'tail'}
             style={{
               fontSize: size.fontSize.fontSizeMd,
-              height: scaleSize(30),
+              // height: scaleSize(30),
+              maxWidth: scaleSize(100),
               backgroundColor: 'transparent',
               color: color.fontColorBlack,
               textAlignVertical: 'center',
-              textAlign: 'right',
+              textAlign: 'left',
             }}
           >
             {title}

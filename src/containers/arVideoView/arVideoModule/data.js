@@ -255,7 +255,7 @@ function getData(type) {
         },
         {
           type: 'modify_confirm',
-          image: require('../../../assets/mapEdit/commit.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: () => {
             let { currentX, currentY, currentZ } = ToolbarModule.getData()
             currentX = currentX === undefined ? 0 : currentX
@@ -324,7 +324,7 @@ function getData(type) {
         },
         {
           type: 'modify_confirm',
-          image: require('../../../assets/mapEdit/commit.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: () => {
             let { viewRange } = ToolbarModule.getData()
             viewRange = viewRange === undefined ? 1 : viewRange
@@ -383,7 +383,7 @@ function getMenuData(type) {
             ToolbarModule.getParams().setToolbarVisible(
               true,
               'SM_ARVIDEOMODULE_modifyViewRange',
-              { containerType: 'xyzslide' },
+              { containerType: 'slide' },
             )
           },
         },

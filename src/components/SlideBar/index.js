@@ -119,7 +119,7 @@ export default class SlideBar extends Component {
         <View
           style={{
             width: '100%',
-            height: scaleSize(5),
+            height: scaleSize(2),
             backgroundColor: '#F1F3F8',
             flexDirection: 'row',
             alignItems: 'center',
@@ -127,7 +127,7 @@ export default class SlideBar extends Component {
         >
           <View
             style={{
-              height: scaleSize(5),
+              height: scaleSize(2),
               backgroundColor: '#000000',
               width: this.state.left,
             }}

@@ -27,15 +27,15 @@ export default class Slide extends Component {
   }
 
   onStart = () => {
-    this.setState({
-      backgroundColor: '#FFFFFFAA',
-    })
+    // this.setState({
+    //   backgroundColor: '#FFFFFFAA',
+    // })
   }
 
   onEnd = () => {
-    this.setState({
-      backgroundColor: '#FFFFFF',
-    })
+    // this.setState({
+    //   backgroundColor: '#FFFFFF',
+    // })
   }
 
   onMove = value => {
@@ -74,9 +74,10 @@ export default class Slide extends Component {
             paddingTop: scaleSize(20),
             width: '100%',
             alignItems: 'center',
-            borderTopStartRadius: scaleSize(25),
-            borderTopRightRadius: scaleSize(25),
+            borderTopStartRadius: scaleSize(40),
+            borderTopRightRadius: scaleSize(40),
             backgroundColor: this.state.backgroundColor,
+            height: scaleSize(120),
           },
         ]}
       >

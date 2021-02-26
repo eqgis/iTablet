@@ -33,12 +33,16 @@ export default StyleSheet.create({
   containerRadius: {
     borderTopLeftRadius: scaleSize(40),
     borderTopRightRadius: scaleSize(40),
-    overflow: 'hidden',
+  },
+  containerShadow: {
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: 'black',
+    shadowColor: color.itemColorGray3,
     shadowOpacity: 1,
     shadowRadius: 2,
     elevation: 20,
+  },
+  hidden: {
+    overflow: 'hidden',
   },
   containersLandscape: {
     flexDirection: 'row',

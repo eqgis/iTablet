@@ -166,7 +166,6 @@ export default class ToolbarBottomButtons extends React.Component {
         case ToolbarBtnType.TOOLBAR_COMMIT:
           image =
             image ||
-            // require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
             getThemeAssets().toolbar.icon_toolbar_submit
           action = action || this.commit
           break
@@ -187,7 +186,6 @@ export default class ToolbarBottomButtons extends React.Component {
         case ToolbarBtnType.CANCEL:
           image =
             image ||
-            // require('../../../../../../assets/mapEdit/icon_function_cancel.png')
             getThemeAssets().toolbar.icon_toolbar_quit
           action = action || this.close
           break
@@ -228,12 +226,10 @@ export default class ToolbarBottomButtons extends React.Component {
           break
 
         case ToolbarBtnType.COMPLETE:
-          // image = require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png')
           image = getThemeAssets().toolbar.icon_toolbar_submit
           action = this.props.close
           break
         case ToolbarBtnType.CANCEL_2:
-          // image = require('../../../../../../assets/mapEdit/icon_function_cancel.png')
           image = getThemeAssets().toolbar.icon_toolbar_quit
           action = () => this.props.close(this.props.type, true)
           break

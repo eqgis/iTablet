@@ -824,6 +824,8 @@ export default class ToolBar extends React.Component {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       size.width = this.props.device.width
     }
+    let showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
+      this.props.device.orientation.indexOf('LANDSCAPE') < 0
     return (
       <Animated.View
         style={[
@@ -865,18 +867,27 @@ export default class ToolBar extends React.Component {
         )}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         <View
-          style={[
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0
-              ? styles.containersLandscape
-              : styles.containers,
-            !(this.state.isTouchProgress && this.state.isFullScreen) &&
-            this.props.device.orientation.indexOf('LANDSCAPE') < 0 &&
-            styles.containerRadius,
-          ]}
-          pointerEvents={'box-none'}
+          style={
+            (
+              !(this.state.isTouchProgress && this.state.isFullScreen) ||
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+            ) &&
+            [styles.containerRadius, styles.containerShadow]
+          }
         >
-          {this.renderView()}
-          {this.renderBottomBtns()}
+          <View
+            style={[
+              this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? styles.containersLandscape
+                : styles.containers,
+              showContainerRadius && styles.containerRadius,
+              styles.hidden,
+            ]}
+            pointerEvents={'box-none'}
+          >
+            {this.renderView()}
+            {this.renderBottomBtns()}
+          </View>
         </View>
       </Animated.View>
     )

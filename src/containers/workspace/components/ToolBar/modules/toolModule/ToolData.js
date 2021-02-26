@@ -137,7 +137,6 @@ function getData(type, params) {
         {
           type: ToolbarBtnType.MEASURE_CLEAR,
           action: ToolAction.clearMeasure,
-          // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
           image: getThemeAssets().mark.icon_mark_erase,
         },
       ]

@@ -370,56 +370,58 @@ export default class TouchProgress extends Component {
           style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'column', justifyContent: 'flex-end' }}
           {...this._panResponder.panHandlers}
         >
-          <View style={styles.progressContainer} >
-            {this.state.tips !== '' && (
-              <TouchableOpacity
-                style={styles.tips}
-                onPress={() => {
-                  this.input && this.input.focus()
-                }}
-                activeOpacity={1}
-              >
-                <Text style={styles.tipsText}>{strArray[0]}</Text>
-                <TextInput
-                  ref={ref => (this.input = ref)}
-                  value={num !== undefined ? num + '' : ' '}
-                  keyboardType={'numeric'}
-                  returnKeyType={'done'}
-                  onChangeText={text => {
-                    let matchRel = text.match(/([-0-9][0-9]*)/)
-                    text = matchRel ? matchRel[0] : ''
-                    this.tempText = text
-                    let tips = this._getTips(this.tempText)
-                    this.setState({
-                      tips,
-                    })
+          <View style={[styles.containerRadius, styles.containerShadow]}>
+            <View style={[styles.containerRadius, styles.hidden]} >
+              {this.state.tips !== '' && (
+                <TouchableOpacity
+                  style={styles.tips}
+                  onPress={() => {
+                    this.input && this.input.focus()
                   }}
-                  onBlur={() => {
-                    this.setData(~~this.tempText)
-                    this._updateProgress(this.tempText)
-                  }}
-                  style={styles.input}
-                />
-                <Text style={styles.tipsText}>{strArray[1]}</Text>
-              </TouchableOpacity>
-            )}
-            <View style={[container, { width: this.getWidthByOrientation() }]}>
-              <View
-                style={[
-                  styles.line,
-                  { width: this.getWidthByOrientation() - MARGIN * 2 },
-                ]}
-              >
+                  activeOpacity={1}
+                >
+                  <Text style={styles.tipsText}>{strArray[0]}</Text>
+                  <TextInput
+                    ref={ref => (this.input = ref)}
+                    value={num !== undefined ? num + '' : ' '}
+                    keyboardType={'numeric'}
+                    returnKeyType={'done'}
+                    onChangeText={text => {
+                      let matchRel = text.match(/([-0-9][0-9]*)/)
+                      text = matchRel ? matchRel[0] : ''
+                      this.tempText = text
+                      let tips = this._getTips(this.tempText)
+                      this.setState({
+                        tips,
+                      })
+                    }}
+                    onBlur={() => {
+                      this.setData(~~this.tempText)
+                      this._updateProgress(this.tempText)
+                    }}
+                    style={styles.input}
+                  />
+                  <Text style={styles.tipsText}>{strArray[1]}</Text>
+                </TouchableOpacity>
+              )}
+              <View style={[container, { width: this.getWidthByOrientation() }]}>
                 <View
-                  style={[styles.backline]}
-                  ref={ref => (this.backLine = ref)}
-                />
-              </View>
-              <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
-                {/* <Image
-                  style={[styles.image]}
-                  source={require('../../../../assets/function/icon_progress.png')}
-                /> */}
+                  style={[
+                    styles.line,
+                    { width: this.getWidthByOrientation() - MARGIN * 2 },
+                  ]}
+                >
+                  <View
+                    style={[styles.backline]}
+                    ref={ref => (this.backLine = ref)}
+                  />
+                </View>
+                <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
+                  {/* <Image
+                    style={[styles.image]}
+                    source={require('../../../../assets/function/icon_progress.png')}
+                  /> */}
+                </View>
               </View>
             </View>
           </View>
@@ -474,12 +476,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  progressContainer: {
-    flexDirection: 'column',
+  containerRadius: {
     borderTopLeftRadius: scaleSize(40),
     borderTopRightRadius: scaleSize(40),
+  },
+  containerShadow: {
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: color.itemColorGray3,
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 20,
+  },
+  hidden: {
     overflow: 'hidden',
   },
+  // progressContainer: {
+  //   flexDirection: 'column',
+  //   borderTopLeftRadius: scaleSize(40),
+  //   borderTopRightRadius: scaleSize(40),
+  //   // overflow: 'hidden',
+  //   shadowOffset: { width: 0, height: 0 },
+  //   shadowColor: 'black',
+  //   shadowOpacity: 1,
+  //   shadowRadius: 2,
+  //   elevation: 20,
+  // },
   pointer: {
     position: 'absolute',
     justifyContent: 'center',

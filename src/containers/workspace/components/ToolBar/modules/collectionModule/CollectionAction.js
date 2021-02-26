@@ -15,6 +15,7 @@ import {
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
+import NavigationService from '../../../../../NavigationService'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -29,6 +30,10 @@ function openTemplate(type) {
     containerType: ToolbarType.tabs,
     ...data,
   })
+}
+
+async function showAttribute() {
+  NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
 }
 
 /**
@@ -345,4 +350,5 @@ export default {
   cancel,
   undo,
   redo,
+  showAttribute,
 }

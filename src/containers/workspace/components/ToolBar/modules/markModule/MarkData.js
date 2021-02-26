@@ -39,6 +39,11 @@ async function getData(type, params) {
           action: MarkAction.redo,
           image: getThemeAssets().edit.icon_redo,
         },
+        {
+          type: ToolbarBtnType.SHOW_ATTRIBUTE,
+          action: MarkAction.showAttribute,
+          image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
+        },
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
@@ -47,6 +52,11 @@ async function getData(type, params) {
         {
           type: ToolbarBtnType.CANCEL,
           action: MarkAction.back,
+        },
+        {
+          type: ToolbarBtnType.SHOW_ATTRIBUTE,
+          action: () => MarkAction.showAttribute,
+          image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
         },
       ]
       break

@@ -19,6 +19,8 @@ const icon_variance = require('./icon_attribute_variance.png')
 const icon_attribute_show = require('./icon_nav_visible.png')
 const icon_attribute_hide = require('./icon_nav_invisible.png')
 const info_no_attribute = require('./info_no_attribute.png')
+const icon_delete_select = require('./icon_delete_select.png')
+const icon_delete_un_select = require('./icon_delete_un_select.png')
 
 export default {
   attribute_statistics,
@@ -55,4 +57,7 @@ export default {
   icon_attribute_hide,
 
   info_no_attribute,
+
+  icon_delete_select,
+  icon_delete_un_select,
 }

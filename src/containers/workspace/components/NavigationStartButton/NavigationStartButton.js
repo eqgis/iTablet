@@ -471,7 +471,7 @@ export default class NavigationStartButton extends React.Component {
         <Text
           style={{ fontSize: setSpText(24) }}
           numberOfLines={1}
-          ellipsizeMode={'head'}
+          ellipsizeMode={'tail'}
         >
           {GLOBAL.ENDNAME}
         </Text>

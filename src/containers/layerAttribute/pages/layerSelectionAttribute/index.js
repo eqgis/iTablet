@@ -5,6 +5,7 @@ import {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  setSelection,
 } from '../../../../redux/models/layers'
 import {
   setBackAction,
@@ -29,6 +30,7 @@ const mapDispatchToProps = {
   clearAttributeHistory,
   setBackAction,
   removeBackAction,
+  setSelection,
 }
 
 export default connect(

@@ -22,6 +22,7 @@ const icon_cancel = require('./icon_cancel.png')
 const icon_redo = require('./icon_redo.png')
 const icon_submit = require('./icon_submit.png')
 const icon_undo = require('./icon_undo.png')
+const icon_bar_attribute_selected = require('./icon_bar_attribute_selected.png')
 
 export default {
   icon_undo,
@@ -48,4 +49,5 @@ export default {
 
   icon_cancel,
   icon_submit,
+  icon_bar_attribute_selected,
 }

@@ -23,6 +23,7 @@ import {
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import Utils from '../../utils'
+import NavigationService from '../../../../../NavigationService'
 
 async function point() {
   const _params = ToolbarModule.getParams()
@@ -241,6 +242,11 @@ function commit(type) {
     // console.warn(e)
   }
 }
+
+function showAttribute() {
+  NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+}
+
 function undo() {
   SMap.undo()
 }
@@ -851,4 +857,5 @@ export default {
   geometrySelected,
   colorAction,
   setTaggingTextFont,
+  showAttribute,
 }

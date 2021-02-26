@@ -115,6 +115,11 @@ function getData(type) {
       image: getThemeAssets().toolbar.icon_toolbar_switch,
       action: () => CollectionAction.changeCollection(type),
     },
+    {
+      type: ToolbarBtnType.SHOW_ATTRIBUTE,
+      action: () => CollectionAction.showAttribute(),
+      image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
+    },
     // {
     //   type: ToolbarBtnType.MAP_SYMBOL,
     //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),

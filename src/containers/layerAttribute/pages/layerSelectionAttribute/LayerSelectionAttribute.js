@@ -41,6 +41,7 @@ export default class LayerSelectionAttribute extends React.Component {
 
   constructor(props) {
     super(props)
+    const { params } = this.props.navigation.state
     this.checkToolIsViable()
     this.state = {
       attributes: {
@@ -53,6 +54,7 @@ export default class LayerSelectionAttribute extends React.Component {
       startIndex: 0,
       relativeIndex: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
       currentIndex: -1,
+      isCollection:params && params.isCollection ? params.isCollection : false,
     }
 
     this.total = 0
@@ -127,20 +129,32 @@ export default class LayerSelectionAttribute extends React.Component {
     }
   }
 
-  getAttribute = (params = {}, cb = () => {}, resetCurrent = false) => {
-    if (!this.props.layerSelection.layerInfo.path || params.currentPage < 0)
+  getAttribute = async (params = {}, cb = () => {}, resetCurrent = false) => {
+    if (!this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
       return
     let { currentPage, pageSize, type, ...others } = params
-    ;(async function() {
+    // ;(async function() {
       try {
-        let result = await LayerUtils.getSelectionAttributeByLayer(
-          JSON.parse(JSON.stringify(this.state.attributes)),
-          this.props.layerSelection.layerInfo.path,
-          currentPage,
-          pageSize !== undefined ? pageSize : PAGE_SIZE,
-          type,
-        )
-
+        let result 
+        if(this.state.isCollection){
+          result = await LayerUtils.getSelectionAttributeByLayer(
+            JSON.parse(JSON.stringify(this.state.attributes)),
+            GLOBAL.currentLayer.name,
+            currentPage,
+            pageSize !== undefined ? pageSize : PAGE_SIZE,
+            type,
+            true,
+          )
+        }else{
+          result = await LayerUtils.getSelectionAttributeByLayer(
+            JSON.parse(JSON.stringify(this.state.attributes)),
+            this.props.layerSelection.layerInfo.path,
+            currentPage,
+            pageSize !== undefined ? pageSize : PAGE_SIZE,
+            type,
+          )
+        }
+          
         this.total = result.total || 0
         let attributes = result.attributes || []
 
@@ -256,7 +270,7 @@ export default class LayerSelectionAttribute extends React.Component {
         this.isLoading = false
         this.setLoading(false)
       }
-    }.bind(this)())
+    // }.bind(this)())
   }
 
   /** 下拉刷新 **/
@@ -1037,7 +1051,6 @@ export default class LayerSelectionAttribute extends React.Component {
     //     )}
     //   </Container>
     // )
-
     return this.renderTable()
   }
 }

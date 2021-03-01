@@ -48,7 +48,7 @@ async function getDatasets(params = {}) {
     data = [
       {
         title: datasets.datasource.alias,
-        image: getThemeAssets().dataType.icon_data_source,
+        image: getThemeAssets().dataType.icon_data_set,
         data: baseLayers,
       },
     ]

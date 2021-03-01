@@ -1,3 +1,5 @@
+import * as React from 'react'
+import { Platform } from 'react-native'
 import { SMeasureView } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import ARMeasureData from './ARMeasureData'
@@ -126,6 +128,30 @@ function arMeasureLength() {
   })()
 }
 
+
+// AR测量角度
+function arMeasureAngle() {
+  (async function() {
+    if (Platform.OS === 'android') {
+      return
+    }
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'measureAngle',
+    })
+  })()
+}
+
 // AR测量距离
 function arMeasureHeight() {
   (async function() {
@@ -155,6 +181,7 @@ export default {
   arMeasureArea,
   arMeasureLength,
   arMeasureHeight,
+  arMeasureAngle,
 
   arMeasurePolygon,
   arMeasureRectanglet,

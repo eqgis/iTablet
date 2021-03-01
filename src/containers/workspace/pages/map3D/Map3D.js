@@ -268,6 +268,12 @@ export default class Map3D extends React.Component {
         this.mapLoaded = true
         //'无场景显示')
       }, 1500)
+      // iOS上次打开的场景被删除、且没有其余场景时，再次进入模块场景会卡住，调这个接口初始化一下 zcj
+      if(Platform.OS === 'ios'){
+        SScene.initNoScene()
+        // initNoScene() 里设置了isRender 需要closeWorkspace里设置
+        GLOBAL.openWorkspace = true
+      }
       return
     }
     try {

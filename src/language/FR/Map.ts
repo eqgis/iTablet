@@ -366,6 +366,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illégalement-Pack Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Modèle en fonte',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone RA',
+  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Measure Angle',//Need to be translated
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'allant RA',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'Dessin au trait RA',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'Photo RA',

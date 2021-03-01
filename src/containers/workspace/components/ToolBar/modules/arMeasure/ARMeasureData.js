@@ -33,6 +33,15 @@ function getData() {
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
     },
+    {
+      //AR测量角度
+      key: 'arMeasureAngle',
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
+      action: ARMeasureAction.arMeasureAngle,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_analyst_angle,
+    },
   ]
 
   return { data }
@@ -66,6 +75,15 @@ function getMeasureAreaData() {
       action: ARMeasureAction.arMeasureArea,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
+    },
+    {
+      //AR测量角度
+      key: 'arMeasureAngle',
+      title: getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
+      action: ARMeasureAction.arMeasureAngle,
+      size: 'large',
+      image: getThemeAssets().ar.functiontoolbar.ar_analyst_angle,
     },
   ]
 

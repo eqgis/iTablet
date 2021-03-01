@@ -477,8 +477,7 @@ export default class TouchProgress extends Component {
 
 const styles = StyleSheet.create({
   boxP: {
-    // backgroundColor: '#rgba(0, 0, 0, 0)',
-    backgroundColor: '#rgba(0, 255, 0, 0.3)',
+    backgroundColor: '#rgba(0, 0, 0, 0)',
     flex: 1,
     alignItems: 'center',
   },
@@ -488,7 +487,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    backgroundColor: '#rgba(255, 0, 0, 0.3)',
+    backgroundColor: '#rgba(0, 0, 0, 0)',
   },
   panView: {
     flex: 1,

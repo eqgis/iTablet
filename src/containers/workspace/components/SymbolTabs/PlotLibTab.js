@@ -107,12 +107,12 @@ export default class PlotLibTab extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   listItem: {
     height: scaleSize(64),
     justifyContent: 'flex-start',
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
     flexDirection: 'row',
   },
   listItemContent: {

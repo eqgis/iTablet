@@ -154,6 +154,6 @@ export default class TemplateList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
 })

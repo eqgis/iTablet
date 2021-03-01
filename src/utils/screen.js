@@ -235,7 +235,6 @@ function getIphonePaddingHorizontal(orientation) {
     // paddingHorizontal.paddingLeft = 34
     paddingHorizontal.paddingRight = X_TOP
   }
-  console.log(JSON.stringify(paddingHorizontal))
   return paddingHorizontal
 }
 

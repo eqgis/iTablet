@@ -13,14 +13,13 @@ import {
   StyleSheet,
   View,
   PanResponder,
-  Image,
   Text,
   Platform,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText, screen } from '../../../../utils'
 import { Height } from '../../../../constants'
 import { color } from '../../../../styles'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
@@ -86,7 +85,7 @@ export default class TouchProgress extends Component {
   }
 
   getWidthByOrientation = () => {
-    let width = this.props.device.width
+    let width = this.props.device.safeWidth
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       width -= Height.TOOLBAR_BUTTONS
     }
@@ -94,11 +93,11 @@ export default class TouchProgress extends Component {
   }
 
   getHeightByOrientation = () => {
-    let height = this.props.device.height
+    let height = this.props.device.safeHeight
     if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
       height -= height.TOOLBAR_BUTTONS
     }
-    return height
+    return '100%'
   }
 
   _updateNativeStyles = () => {
@@ -171,9 +170,9 @@ export default class TouchProgress extends Component {
     // 解决PanResponder中的onPress无作用
     // 当大于5时才进入移动事件，有的情况下需要将onStartShouldSetPanResponderCapture设为false
     if (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5) {
-      return true;
+      return true
     } else if (Math.abs(gestureState.dx) === 0 || Math.abs(gestureState.dy) === 0) {
-      return false;
+      return false
     }
   }
 
@@ -361,13 +360,18 @@ export default class TouchProgress extends Component {
         strArray[0] += TIP_SPACE
       }
     }
+    let isIphoneXLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0 && screen.isIphoneX()
     return (
       <KeyboardAvoidingView
-        style={[styles.box, { width: this.getWidthByOrientation(), height: this.getHeightByOrientation() }]}
+        style={[
+          // styles.box,
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? styles.boxL : styles.boxP,
+          { flex: 1, width: this.getWidthByOrientation(), height: this.getHeightByOrientation() },
+        ]}
         behavior={Platform.OS === 'ios' && 'position'}
       >
         <View
-          style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'column', justifyContent: 'flex-end' }}
+          style={styles.panView}
           {...this._panResponder.panHandlers}
         >
           <View style={[styles.containerRadius, styles.containerShadow]}>
@@ -404,7 +408,11 @@ export default class TouchProgress extends Component {
                   <Text style={styles.tipsText}>{strArray[1]}</Text>
                 </TouchableOpacity>
               )}
-              <View style={[container, { width: this.getWidthByOrientation() }]}>
+              <View style={[
+                container,
+                { width: this.getWidthByOrientation() },
+                isIphoneXLandscape && {paddingBottom: screen.X_BOTTOM},
+              ]}>
                 <View
                   style={[
                     styles.line,
@@ -416,7 +424,11 @@ export default class TouchProgress extends Component {
                     ref={ref => (this.backLine = ref)}
                   />
                 </View>
-                <View ref={ref => (this.panBtn = ref)} style={[styles.pointer]}>
+                <View
+                  ref={ref => (this.panBtn = ref)}
+                  style={[
+                    styles.pointer, isIphoneXLandscape && { top: -screen.X_BOTTOM / 4 },
+                  ]}>
                   {/* <Image
                     style={[styles.image]}
                     source={require('../../../../assets/function/icon_progress.png')}
@@ -464,10 +476,25 @@ export default class TouchProgress extends Component {
 }
 
 const styles = StyleSheet.create({
-  box: {
-    backgroundColor: '#rgba(0, 0, 0, 0)',
+  boxP: {
+    // backgroundColor: '#rgba(0, 0, 0, 0)',
+    backgroundColor: '#rgba(0, 255, 0, 0.3)',
     flex: 1,
     alignItems: 'center',
+  },
+  boxL: {
+    flex: 1,
+    // backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    backgroundColor: '#rgba(255, 0, 0, 0.3)',
+  },
+  panView: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   container: {
     backgroundColor: '#rgba(0, 0, 0, 0)',

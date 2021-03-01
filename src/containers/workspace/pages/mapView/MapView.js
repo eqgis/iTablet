@@ -2273,7 +2273,23 @@ export default class MapView extends React.Component {
    */
   renderEditControllerView = () => {
     return (
-      <View style={[styles.editControllerView, { width: '100%' }]}>
+      <View style={[
+        styles.editControllerView,
+        screen.isIphoneX()
+          ? (
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? {
+              height: scaleSize(124),
+              paddingBottom: scaleSize(24),
+            } : {
+              height: scaleSize(100),
+              marginBottom: screen.X_BOTTOM,
+            }
+          )
+          : {
+            width: '100%',
+            height: scaleSize(100),
+          },
+      ]}>
         <MTBtn
           key={'undo'}
           title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_UNDO}

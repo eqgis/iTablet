@@ -108,7 +108,7 @@ export default StyleSheet.create({
   },
   editControllerView: {
     flexDirection: 'row',
-    height: scaleSize(100),
+    // height: scaleSize(100),
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: color.contentColorWhite,

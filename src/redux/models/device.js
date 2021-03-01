@@ -34,8 +34,8 @@ export default handleActions(
       const { device } = state.toJS()
       device.width = screen.getScreenWidth(payload.orientation)
       device.height = screen.getScreenHeight(payload.orientation)
-      device.safeWidth = screen.getScreenSafeWidth()
-      device.safeHeight = screen.getScreenSafeHeight()
+      device.safeWidth = screen.getScreenSafeWidth(payload.orientation)
+      device.safeHeight = screen.getScreenSafeHeight(payload.orientation)
       device.orientation = payload.orientation
       return state.setIn(['device'], fromJS(device))
     },

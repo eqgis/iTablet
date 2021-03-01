@@ -366,6 +366,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'تجميع المتنزهات غير القانونية',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'منطقة AR',
+  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Measure Angle',//Need to be translated
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'تنظيم',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'رسم خط الواقع المعزز',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'صورة الواقع المعزز',

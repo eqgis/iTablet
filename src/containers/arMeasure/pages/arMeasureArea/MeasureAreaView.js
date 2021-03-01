@@ -969,6 +969,8 @@ export default class MeasureAreaView extends React.Component {
         SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
       } else if (this.measureType === 'arMeasureRectangle') {
         SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
+      } else if (this.measureType === 'measureAngle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
       }
       this.setState({isfirst:true})
     }

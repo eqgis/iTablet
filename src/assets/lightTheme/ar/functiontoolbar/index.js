@@ -8,6 +8,7 @@ const rightbar_ai_violation_light = require('./icon_tool_ai_violation.png')
 const ar_cast = require('./ar_cast.png')
 const ar_analyst_length = require('./icon_ar_measure_distance.png')
 const ar_analyst_area = require('./icon_ar_measure_area.png')
+const ar_analyst_angle = require('./icon_ar_angle_select.png')
 const ar_draw_point = require('./icon_ar_drawpoint.png')
 const ar_draw_line = require('./icon_ar_line.png')
 const ar_draw_area = require('./icon_ar_frame.png')
@@ -40,6 +41,7 @@ export default {
   ar_cast,
   ar_analyst_length, //ar测距
   ar_analyst_area, //ar测面
+  ar_analyst_angle, //ar测量角度
   ar_draw_point,
   ar_draw_line, //ar画线
   ar_draw_area, //ar画面

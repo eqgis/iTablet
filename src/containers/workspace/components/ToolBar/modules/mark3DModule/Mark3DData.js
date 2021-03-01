@@ -73,7 +73,6 @@ async function getData(type, params) {
         ToolbarBtnType.CANCEL,
         {
           type: ToolbarBtnType.BACK,
-          // image: require('../../../../../../assets/mapEdit/icon_back.png'),
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
             if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
@@ -81,7 +80,6 @@ async function getData(type, params) {
         },
         {
           type: ToolbarBtnType.SAVE,
-          // image: require('../../../../../../assets/mapEdit/commit.png'),
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
@@ -101,7 +99,6 @@ async function getData(type, params) {
         ToolbarBtnType.CANCEL,
         {
           type: ToolbarBtnType.BACK,
-          // image: require('../../../../../../assets/mapEdit/icon_back.png'),
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
             if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
@@ -109,13 +106,11 @@ async function getData(type, params) {
         },
         {
           type: ToolbarBtnType.CLEAR_CURRENT_LABEL,
-          // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
           image: getThemeAssets().mark.icon_mark_erase,
           action: () => SScene.clearcurrentLabel(),
         },
         {
           type: ToolbarBtnType.SAVE,
-          // image: require('../../../../../../assets/mapEdit/commit.png'),
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {

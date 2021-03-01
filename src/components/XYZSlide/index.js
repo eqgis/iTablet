@@ -45,15 +45,15 @@ export default class XYZSlide extends Component {
   }
 
   onStart = () => {
-    this.setState({
-      backgroundColor: '#FFFFFFAA',
-    })
+    // this.setState({
+    //   backgroundColor: '#FFFFFFAA',
+    // })
   }
 
   onEnd = () => {
-    this.setState({
-      backgroundColor: '#FFFFFF',
-    })
+    // this.setState({
+    //   backgroundColor: '#FFFFFF',
+    // })
   }
   
   onMoveX = (value) => {
@@ -191,11 +191,12 @@ export default class XYZSlide extends Component {
           {
             position: 'absolute',
             bottom: 0,
-            paddingTop: this.props.hasTitle ? 0 : scaleSize(40),
+            paddingTop: this.props.hasTitle ? 0 : scaleSize(20),
             width: '100%',
-            borderTopStartRadius: scaleSize(25),
-            borderTopRightRadius: scaleSize(25),
+            borderTopStartRadius: scaleSize(40),
+            borderTopRightRadius: scaleSize(40),
             backgroundColor: this.state.backgroundColor,
+            height: scaleSize(200),
           },
         ]}
       >

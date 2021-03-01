@@ -379,9 +379,10 @@ export default StyleSheet.create({
     height: scaleSize(70),
     justifyContent: 'center',
     paddingLeft: scaleSize(20),
-    backgroundColor: color.title2,
+    backgroundColor: color.white,
   },
   text: {
     fontSize: setSpText(20),
+    color: color.itemColorBlack,
   },
 })

@@ -136,7 +136,13 @@ function measureLength() {
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureLength(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
-      const redoArr = []
+      // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
+      const { isUndo = false, isRedo = false } = ToolbarModule.getData()
+      let redoArr = []
+      if(isUndo || isRedo){
+        redoArr = ToolbarModule.getData().redoArr || []
+        ToolbarModule.addData({ isUndo: false, isRedo: false })
+      }
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
         pointArr.push(JSON.stringify(obj.curPoint))
@@ -171,7 +177,13 @@ function measureArea() {
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureArea(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
-      const redoArr = []
+      // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
+      const { isUndo = false, isRedo = false } = ToolbarModule.getData()
+      let redoArr = []
+      if(isUndo || isRedo){
+        redoArr = ToolbarModule.getData().redoArr || []
+        ToolbarModule.addData({ isUndo: false, isRedo: false })
+      }
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
         pointArr.push(JSON.stringify(obj.curPoint))
@@ -206,7 +218,13 @@ function measureAngle() {
   StyleUtils.setDefaultMapControlStyle().then(() => {
     SMap.measureAngle(obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
-      const redoArr = []
+      // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
+      const { isUndo = false, isRedo = false } = ToolbarModule.getData()
+      let redoArr = []
+      if(isUndo || isRedo){
+        redoArr = ToolbarModule.getData().redoArr || []
+        ToolbarModule.addData({ isUndo: false, isRedo: false })
+      }
       // 防止重复添加
       if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
@@ -260,7 +278,7 @@ function clearMeasure(type) {
         SMap.setAction(Action.MEASUREANGLE)
         break
     }
-    ToolbarModule.addData({ pointArr: [], redoArr: [], isFinished: true })
+    ToolbarModule.addData({ pointArr: [], redoArr: [], isFinished: true, isUndo: false, isRedo: false })
     _params.setToolbarStatus({
       canUndo: false,
       canRedo: false,
@@ -302,6 +320,7 @@ async function undo(type) {
     ToolbarModule.addData({
       pointArr,
       redoArr,
+      isUndo: true,
       isFinished: pointArr.length === 0,
     })
   })
@@ -328,7 +347,7 @@ async function redo(type = null) {
     _params.setToolbarStatus(newState, async () => {
       await SMap.redo()
       // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
-      ToolbarModule.addData({ pointArr, redoArr, isFinished: false })
+      ToolbarModule.addData({ pointArr, redoArr, isFinished: false, isRedo: true })
     })
 }
 

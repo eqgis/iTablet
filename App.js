@@ -581,9 +581,15 @@ class AppRoot extends Component {
         this.login()
         this.reCircleLogin()
       }
-      Orientation.getOrientation((e, orientation) => {
-        this.props.setShow({ orientation: orientation })
-      })
+      if (Platform.OS === 'ios') {
+        Orientation.getSpecificOrientation((e, orientation) => {
+          this.props.setShow({ orientation: orientation })
+        })
+      } else {
+        Orientation.getOrientation((e, orientation) => {
+          this.props.setShow({ orientation: orientation })
+        })
+      }
     }
   }
 
@@ -1104,40 +1110,40 @@ class AppRoot extends Component {
         {!this.state.isInit ? (
           <Loading info="Loading" />
         ) : (
-            <View style={{ flex: 1 }}>
-              <View style={[
-                { flex: 1 },
-                screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
-                {
-                  backgroundColor: '#201F20',
-                },
-                {
-                  paddingTop:
-                    screen.isIphoneX() &&
-                      this.props.device.orientation.indexOf('PORTRAIT') >= 0
-                      ? screen.X_TOP
-                      : 0,
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                  ...screen.getIphonePaddingHorizontal(
-                    this.props.device.orientation,
-                  ),
-                },
-              ]}>
-                <RootNavigator
-                  appConfig={this.props.appConfig}
-                  setModules={this.props.setModules}
-                  setNav={this.props.setNav}
-                />
-              </View>
-              {this.renderDialog()}
-              {this.renderImportDialog()}
-              {this.renderARDeviceListDialog()}
-              {this.renderNoNativeOfficialLicenseDialog()}
-              {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
-              <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
-              <MyToast ref={ref => GLOBAL.Toast = ref} />
+          <View style={{ flex: 1 }}>
+            <View style={[
+              { flex: 1 },
+              screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+              {
+                backgroundColor: '#201F20',
+              },
+              {
+                paddingTop:
+                  screen.isIphoneX() &&
+                    this.props.device.orientation.indexOf('PORTRAIT') >= 0
+                    ? screen.X_TOP
+                    : 0,
+                paddingBottom: screen.getIphonePaddingBottom(),
+                ...screen.getIphonePaddingHorizontal(
+                  this.props.device.orientation,
+                ),
+              },
+            ]}>
+              <RootNavigator
+                appConfig={this.props.appConfig}
+                setModules={this.props.setModules}
+                setNav={this.props.setNav}
+              />
             </View>
-          )}
+            {this.renderDialog()}
+            {this.renderImportDialog()}
+            {this.renderARDeviceListDialog()}
+            {this.renderNoNativeOfficialLicenseDialog()}
+            {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
+            <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
+            <MyToast ref={ref => GLOBAL.Toast = ref} />
+          </View>
+        )}
         {this.renderSimpleDialog()}
       </>
     )

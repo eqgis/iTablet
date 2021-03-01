@@ -406,9 +406,8 @@ export default class RegistrationPage extends Component {
         style={{
           width: scaleSize(160),
           height: scaleSize(60),
-          marginTop: scaleSize(30),
+          // marginTop: scaleSize(30),
           marginLeft: scaleSize(30),
-          flex: 0,
         }}
       >
         <Button
@@ -841,9 +840,10 @@ export default class RegistrationPage extends Component {
                 language={GLOBAL.language}
               />
               <View style={{
-                flex: 1,
                 flexDirection: 'row',
-                alignItems: 'flex-start',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: scaleSize(15),
               }}>
                 {this.renderAssociatView()}
                 {this.renderArithmeticTitle()}

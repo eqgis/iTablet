@@ -204,10 +204,13 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
           style={{
             backgroundColor: color.white,
             height: scaleSize(480),
+            borderTopLeftRadius: scaleSize(40),
+            borderTopRightRadius: scaleSize(40),
+            overflow: 'hidden',
           }}
         >
           <View style={styles.titleView}>
-            <Text style={[styles.text, { color: color.white }]}>
+            <Text style={styles.text}>
               {
                 getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_OPREATE_MODEL

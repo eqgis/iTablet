@@ -128,7 +128,7 @@ async function getData(type, params) {
         ToolbarBtnType.CANCEL,
         {
           type: ToolbarBtnType.COMMIT_3D_CUT,
-          image: require('../../../../../../assets/mapEdit/icon_function_theme_param_commit.png'),
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: Tool3DAction.map3dCut,
         },
       ]
@@ -195,12 +195,13 @@ async function getClipData(type) {
   const buttons = [
     {
       type: ToolbarBtnType.CANCEL,
-      image: require('../../../../../../assets/mapEdit/icon_function_cancel.png'),
+      image: getThemeAssets().toolbar.icon_toolbar_quit,
       action: () => Tool3DAction.closeClip(),
     },
     {
       type: ToolbarBtnType.CLIP_LAYER,
-      image: getPublicAssets().mapTools.tab_layer,
+      // image: getPublicAssets().mapTools.tab_layer,
+      image: getThemeAssets().tabBar.tab_layer,
       action: () => Tool3DAction.showLayerList(),
     },
     {
@@ -210,13 +211,12 @@ async function getClipData(type) {
     {
       type: ToolbarBtnType.CHANGE_CLIP,
       image: isClipInner
-        ? getPublicAssets().mapTools.scene_tool_clip_in
-        : getPublicAssets().mapTools.scene_tool_clip_out,
+        ? getThemeAssets().mapTools.icon_tool_clip_in
+        : getThemeAssets().mapTools.icon_tool_clip_out,
       action: () => Tool3DAction.changeClip(),
     },
     {
       type: ToolbarBtnType.CLEAR,
-      // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
       image: getThemeAssets().mark.icon_mark_erase,
       action: () => Tool3DAction.clearMeasure(type),
     },

@@ -1,6 +1,7 @@
 import actions from './action'
 import data from './data'
 import FunctionModule from '../../../class/FunctionModule'
+import { scaleSize } from '../../../utils'
 
 class arImageModule extends FunctionModule {
   constructor(props) {
@@ -11,7 +12,10 @@ class arImageModule extends FunctionModule {
     let size
     switch (type) {
       case 'xyzslide':
-        size = { height: 100 }
+        size = { height: scaleSize(200) }
+        break
+      case 'slide':
+        size = { height: scaleSize(120) }
         break
     }
     return size

@@ -47,17 +47,49 @@ function getScreenHeight(orientation) {
   }
   return deviceHeight
 }
-function getScreenSafeHeight() {
+function getScreenSafeHeight(orientation) {
   if (Platform.OS === 'ios') {
-    return getScreenHeight()
+    const _orientation = orientation || getOrientation()
+    let paddings = 0
+    if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
+      paddings = X_BOTTOM + X_TOP
+    }
+    return getScreenHeight(orientation) - paddings
   }
-  let screenHeight = ExtraDimensions.getRealWindowHeight()
-  const temp = ExtraDimensions.getRealWindowWidth()
-  if (screenHeight < temp) {
-    screenHeight = temp
+  // let screenHeight = ExtraDimensions.getRealWindowHeight()
+  if (!orientation) {
+    deviceSafeHeight = ExtraDimensions.getRealWindowHeight()
+  } else if (orientation.indexOf('LANDSCAPE') === 0) {
+    deviceSafeHeight = Math.min(
+      ExtraDimensions.getRealWindowHeight(),
+      ExtraDimensions.getRealWindowWidth(),
+    )
+  } else if (orientation.indexOf('PORTRAIT') >= 0) {
+    let screenHeight = Math.max(
+      ExtraDimensions.getRealWindowHeight(),
+      ExtraDimensions.getRealWindowWidth(),
+    )
+    deviceSafeHeight = screenHeight - ExtraDimensions.getStatusBarHeight()
   }
-  deviceSafeHeight = screenHeight - ExtraDimensions.getStatusBarHeight()
+  // const temp = ExtraDimensions.getRealWindowWidth()
+  // if (screenHeight < temp) {
+  //   screenHeight = temp
+  // }
+  // deviceSafeHeight = screenHeight - ExtraDimensions.getStatusBarHeight()
   return deviceSafeHeight
+}
+
+function getScreenSafeWidth(orientation) {
+  if (Platform.OS === 'ios') {
+    const _orientation = orientation || getOrientation()
+    let paddings = 0
+    if (isIphoneX() && _orientation.indexOf('LANDSCAPE') >= 0) {
+      paddings = X_TOP
+    }
+    return getScreenWidth(orientation) - paddings
+  } else {
+    return getScreenWidth(orientation)
+  }
 }
 
 function getRatio() {
@@ -157,6 +189,9 @@ function getOrientation() {
  */
 function getIphonePaddingTop(orientation) {
   let paddingTop = 0
+  if (Platform.OS === 'android') {
+    return paddingTop
+  }
   const _orientation = orientation || getOrientation()
   if (_orientation.indexOf('PORTRAIT') < 0) return paddingTop
   if (isIphoneX()) {
@@ -173,6 +208,9 @@ function getIphonePaddingTop(orientation) {
  */
 function getIphonePaddingBottom(orientation) {
   let paddingBottom = 0
+  if (Platform.OS === 'android') {
+    return paddingBottom
+  }
   const _orientation = orientation || getOrientation()
   if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
     paddingBottom = X_BOTTOM
@@ -197,6 +235,7 @@ function getIphonePaddingHorizontal(orientation) {
     // paddingHorizontal.paddingLeft = 34
     paddingHorizontal.paddingRight = X_TOP
   }
+  console.log(JSON.stringify(paddingHorizontal))
   return paddingHorizontal
 }
 
@@ -246,6 +285,7 @@ export default {
   getScreenWidth,
   getScreenHeight,
   getScreenSafeHeight,
+  getScreenSafeWidth,
   setOrientation,
   getOrientation,
   deviceWidth,

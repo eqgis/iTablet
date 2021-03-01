@@ -290,7 +290,6 @@ async function getData(type) {
             },
             {
               type: 'modify_confirm',
-              // image: require('../../../assets/mapEdit/icon_clear.png'),
               image: getThemeAssets().mark.icon_mark_erase,
               action: () => {
                 SSceneAR.setSceneTransLation(TransLation.TransLationx, TransLation.TransLationy, TransLation.TransLationz)
@@ -372,7 +371,6 @@ async function getData(type) {
             },
             {
               type: 'modify_confirm',
-              // image: require('../../../assets/mapEdit/icon_clear.png'),
               image: getThemeAssets().mark.icon_mark_erase,
               action: () => {
                 SSceneAR.setSceneRotation(Rotation.Rotationx, Rotation.Rotationy, Rotation.Rotationz)

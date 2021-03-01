@@ -182,7 +182,7 @@ export default class AIPoseEstimationView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getPublicAssets().mapTools.scene_tool_clip_out}
+                source={getThemeAssets().mapTools.icon_tool_clip_out}
                 style={styles.smallIcon}
               />
 
@@ -216,7 +216,7 @@ export default class AIPoseEstimationView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getPublicAssets().mapTools.tools_legend_off}
+                source={getThemeAssets().layer.icon_invisible}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>
@@ -248,7 +248,7 @@ export default class AIPoseEstimationView extends React.Component {
             >
               <Image
                 resizeMode={'contain'}
-                source={getThemeAssets().ar.toolbar.icon_ar_toolbar_switch}
+                source={getThemeAssets().toolbar.icon_toolbar_switch}
                 style={styles.smallIcon}
               />
               <Text style={styles.buttonname}>

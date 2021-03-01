@@ -362,7 +362,7 @@ const Prompt = {
   ONLY_INTEGER_GREATER_THAN_2: '只能输入大于2的整数！',
   PARAMS_ERROR: '参数错误，设置失败！',
 
-  SPEECH_TIP: '您可以说:\n\n"放大"，"缩小"，"定位"，"关闭"，"搜索"或者地名',
+  SPEECH_TIP: '您可以说:\n"放大"，"缩小"，"定位"，"关闭"，"搜索"或者地名',
   SPEECH_ERROR: '识别出错，请稍后再试',
   SPEECH_NONE: '您好像没有说话哦',
 

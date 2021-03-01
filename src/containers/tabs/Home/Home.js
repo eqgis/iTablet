@@ -995,8 +995,6 @@ export default class Home extends Component {
 
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
-    // this.width = scaleSize(600)
-    // this.height = screen.getScreenSafeHeight(this.props.device.orientation) - screen.getScreenSafeHeight(this.props.device.orientation)/2
     this.height = scaleSize(600)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       this.height = scaleSize(400)

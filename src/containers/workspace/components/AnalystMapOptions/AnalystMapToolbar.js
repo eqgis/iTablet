@@ -4,6 +4,7 @@ import { color, size } from '../../../../styles'
 import { scaleSize, AnalystTools } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { Const, TouchType, ConstToolType } from '../../../../constants'
+import { getThemeAssets } from '../../../../assets'
 import { TextBtn } from '../../../../components'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
 import { SMap, Action } from 'imobile_for_reactnative'
@@ -13,9 +14,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: Const.BOTTOM_HEIGHT,
     paddingHorizontal: scaleSize(20),
-    backgroundColor: color.theme,
+    backgroundColor: color.white,
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
+    // overflow: 'hidden',
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 20,
   },
   button: {
     // flex: 1,
@@ -23,7 +32,7 @@ const styles = StyleSheet.create({
     width: scaleSize(60),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.theme,
+    backgroundColor: color.white,
   },
   img: {
     height: scaleSize(45),
@@ -32,7 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnText: {
-    color: 'white',
+    color: color.itemColorBlack,
     fontSize: size.fontSize.fontSizeXl,
   },
 })
@@ -76,13 +85,13 @@ export default class AnalystMapToolbar extends React.Component {
     return (
       <View style={styles.buttons}>
         {this.renderBottomBtn(
-          require('../../../../assets/mapEdit/icon_function_cancel.png'),
+          getThemeAssets().toolbar.icon_toolbar_quit,
           () => {
             this.props.back && this.props.back()
           },
         )}
         {this.renderBottomBtn(
-          require('../../../../assets/mapEdit/icon_function_theme_param_commit.png'),
+          getThemeAssets().toolbar.icon_toolbar_submit,
           async () => {
             if (this.props.analyst) {
               this.props.analyst()

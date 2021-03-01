@@ -232,7 +232,6 @@ function getButtons(type) {
           {
             type: ToolbarBtnType.NOT_VISIBLE,
             action: LegendAction.changeLegendVisible,
-            // image: getPublicAssets().mapTools.tools_legend_off,
             image: getThemeAssets().layer.icon_invisible,
           },
           ToolbarBtnType.MENU,

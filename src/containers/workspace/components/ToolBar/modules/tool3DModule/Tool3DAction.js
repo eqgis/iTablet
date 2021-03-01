@@ -232,7 +232,6 @@ function showAnalystResult(type) {
       {
         type: ToolbarBtnType.MEASURE_CLEAR,
         action: () => clearMeasure(type),
-        // image: require('../../../../../../assets/mapEdit/icon_clear.png'),
         image: getThemeAssets().mark.icon_mark_erase,
       },
     ],

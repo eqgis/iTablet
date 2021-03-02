@@ -179,6 +179,8 @@ function commit(type) {
             SMap.refreshMap()
             //提交标注后 需要刷新属性表
             GLOBAL.NEEDREFRESHTABLE = true
+            // 是否有新的采集或标注
+            GLOBAL.HAVEATTRIBUTE = true
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
               let layerType = LayerUtils.getLayerType(currentLayer)
               if (layerType !== 'TAGGINGLAYER') {
@@ -244,7 +246,10 @@ function commit(type) {
 }
 
 function showAttribute() {
-  NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+  if(GLOBAL.HAVEATTRIBUTE){
+    NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+  }
+  return true
 }
 
 function undo() {
@@ -286,6 +291,8 @@ function back() {
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS, {
     isFullScreen: true,
   })
+   // 是否有新的采集或标注
+   GLOBAL.HAVEATTRIBUTE = false
 }
 /**
  * 显示编辑标注菜单

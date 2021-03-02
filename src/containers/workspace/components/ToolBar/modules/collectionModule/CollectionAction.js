@@ -33,7 +33,10 @@ function openTemplate(type) {
 }
 
 async function showAttribute() {
-  NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+  if(GLOBAL.HAVEATTRIBUTE){
+    NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+  }
+  return true
 }
 
 /**
@@ -267,6 +270,8 @@ async function collectionSubmit(type) {
     }
     // 采集后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
+    // 是否有新的采集或标注
+    GLOBAL.HAVEATTRIBUTE = true
   }
   return result
 }

@@ -417,6 +417,10 @@ export default class LayerAttributeTabs extends React.Component {
     let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path, this.state.currentIndex, this.state.isCollection)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+      if(this.state.isCollection){
+        GLOBAL.HAVEATTRIBUTE = false
+        this.props.navigation.goBack()
+      }
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
     }
@@ -805,30 +809,51 @@ export default class LayerAttributeTabs extends React.Component {
 
     let buttons = []
     if (this.type !== 'MAP_3D') {
-      buttons = [
-        <MTBtn
-          key={'attribute'}
-          image={
-            this.state.isShowSystemFields
-              ? getThemeAssets().attribute.icon_attribute_hide
-              : getThemeAssets().attribute.icon_attribute_show
-          }
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.showSystemFields}
-        />,
-        <MTBtn
-          key={'undo'}
-          image={getPublicAssets().common.icon_undo}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.showUndoView}
-        />,
-        <MTBtn
-          key={'search'}
-          image={getPublicAssets().common.icon_search}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.goToSearch}
-        />,
-      ]
+      if(!this.state.isCollection){
+        buttons = [
+          <MTBtn
+            key={'attribute'}
+            image={
+              this.state.isShowSystemFields
+                ? getThemeAssets().attribute.icon_attribute_hide
+                : getThemeAssets().attribute.icon_attribute_show
+            }
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            onPress={this.showSystemFields}
+          />,
+          <MTBtn
+            key={'undo'}
+            image={getPublicAssets().common.icon_undo}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            onPress={this.showUndoView}
+          />,
+          <MTBtn
+            key={'search'}
+            image={getPublicAssets().common.icon_search}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            onPress={this.goToSearch}
+          />,
+        ]
+      }else{
+        buttons = [
+          <MTBtn
+            key={'attribute'}
+            image={
+              this.state.isShowSystemFields
+                ? getThemeAssets().attribute.icon_attribute_hide
+                : getThemeAssets().attribute.icon_attribute_show
+            }
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            onPress={this.showSystemFields}
+          />,
+          <MTBtn
+            key={'undo'}
+            image={getPublicAssets().common.icon_undo}
+            imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+            onPress={this.showUndoView}
+          />,
+        ]
+      }
     }
     return (
       <View

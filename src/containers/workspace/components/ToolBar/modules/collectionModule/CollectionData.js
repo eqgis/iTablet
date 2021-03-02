@@ -115,11 +115,6 @@ function getData(type) {
       image: getThemeAssets().toolbar.icon_toolbar_switch,
       action: () => CollectionAction.changeCollection(type),
     },
-    {
-      type: ToolbarBtnType.SHOW_ATTRIBUTE,
-      action: () => CollectionAction.showAttribute(),
-      image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
-    },
     // {
     //   type: ToolbarBtnType.MAP_SYMBOL,
     //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
@@ -127,6 +122,14 @@ function getData(type) {
     // },
     // ToolbarBtnType.COMPLETE,
   ]
+
+  
+  buttons.push({
+    type: ToolbarBtnType.SHOW_ATTRIBUTE,
+    action: () => CollectionAction.showAttribute(),
+    image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
+  })
+
 
   const _params = ToolbarModule.getParams()
   // 若是在线协作采集，则没有打开符号库

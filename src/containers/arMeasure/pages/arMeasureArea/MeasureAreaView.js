@@ -84,11 +84,16 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
+      } else if (this.measureType === 'measureAngle') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE
       }
 
       if(this.measureType === 'arMeasureHeight' ||
       this.measureType === 'measureLength' ||
-      this.measureType === 'measureArea') {
+      this.measureType === 'measureArea' ||
+      this.measureType === 'measureAngle') {
         this.isMeasure = true
       }
 
@@ -105,7 +110,8 @@ export default class MeasureAreaView extends React.Component {
       }
       if (
         this.measureType === 'measureLength' ||
-        this.measureType === 'measureArea'
+        this.measureType === 'measureArea' || 
+        this.measureType === 'measureAngle'
       ) {
         this.canContinuousDraw = true
       }

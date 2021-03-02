@@ -163,7 +163,7 @@ function getData(type, params) {
           type: ToolbarBtnType.SHOW_ATTRIBUTE,
           action: ToolAction.showAttribute,
           // image: require('../../../../../../assets/mapTools/icon_attribute_white.png'),
-          image: getThemeAssets().tabBar.tab_attribute,
+          image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
         },
       ]
       break

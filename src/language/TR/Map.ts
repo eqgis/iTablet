@@ -392,6 +392,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Poligon Ölçümü',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Dikdörtgen Ölçümü',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Dairesel Ölçüm',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Sola çevirin',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Sağa dönün',

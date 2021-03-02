@@ -393,6 +393,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Mesure de polygone',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Mesure rectangle',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Mesure circulaire',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Tournez à gauche',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Tournez à droite',

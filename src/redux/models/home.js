@@ -9,6 +9,7 @@ import { REHYDRATE } from 'redux-persist'
 export const GUIDE_SHOW = 'GUIDE_SHOW'
 export const VERSION = 'VERSION'
 export const DATA_GUIDE = 'DATA_GUIDE'
+export const THEME_GUIDE = 'THEME_GUIDE'
 
 // Actions
 // --------------------------------------------------
@@ -34,10 +35,18 @@ export const setMapAnalystGuide = (params = {}) => async dispatch => {
   })
 }
 
+export const setThemeGuide = (params = {}) => async dispatch => {
+  await dispatch({
+    type: THEME_GUIDE,
+    payload: params,
+  })
+}
+
 const initialState = fromJS({
     guideshow: false,//首页引导显隐
     version: '',//新手引导版本号
     mapAnalystGuide:true,//数据处理模块引导
+    themeGuide:true,//专题制图模块引导
 })
 
 export default handleActions(
@@ -60,6 +69,11 @@ export default handleActions(
         let data = state.toJS().mapAnalystGuide
         data = payload
         return state.setIn(['mapAnalystGuide'], fromJS(data))
+      },
+      [`${THEME_GUIDE}`]: (state, { payload }) => {
+        let data = state.toJS().themeGuide
+        data = payload
+        return state.setIn(['themeGuide'], fromJS(data))
       },
       [REHYDRATE]: (state, { payload }) => {
         if (payload && payload.home) {

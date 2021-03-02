@@ -394,6 +394,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'قياس المضلع',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'قياس المستطيل',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'قياس دائري',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',

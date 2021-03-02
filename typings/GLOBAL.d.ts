@@ -42,7 +42,11 @@ declare namespace GLOBAL {
   /** 进入地图，是否打开了工作空间 */
   let openWorkspace: boolean          
   /** AR和二维地图切换 */
-  let showAIDetect: boolean           
+  let showAIDetect: boolean  
+  
+  //采集属性查看 add jiakai
+  /** 是否采集或者标注 */ 
+  let HAVEATTRIBUTE: boolean
   
   // 临时数据，是否移除待定
   /** 离线导航起点x */

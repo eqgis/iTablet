@@ -79,13 +79,14 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if(this.props.version!==GLOBAL.GUIDE_VERSION){
-      if(this.props.isAgreeToProtocol){
+    if (this.props.version !== GLOBAL.GUIDE_VERSION) {
+      if (this.props.isAgreeToProtocol) {
         this.props.setVersion(GLOBAL.GUIDE_VERSION)
         this.props.setGuideShow(true)
         this.props.setMapArGuide(true)
         this.props.setMapArMappingGuide(true)
         this.props.setMapAnalystGuide(true)
+        this.props.setThemeGuide(true)
       }
     }
     InteractionManager.runAfterInteractions(() => {
@@ -240,7 +241,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+          GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -537,8 +538,8 @@ export default class Home extends Component {
       borderRadius: scaleSize(60),
     }
     let skipStyle = {
-      right:scaleSize(40),
-      top:scaleSize(30)+ screen.getIphonePaddingTop(),
+      right: scaleSize(40),
+      top: scaleSize(30) + screen.getIphonePaddingTop(),
     }
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       mineStyle = {
@@ -551,8 +552,8 @@ export default class Home extends Component {
         borderRadius: scaleSize(60),
       }
       skipStyle = {
-        right:scaleSize(20),
-        top:scaleSize(30),
+        right: scaleSize(20),
+        top: scaleSize(30),
       }
     }
     return (
@@ -574,17 +575,17 @@ export default class Home extends Component {
             height: '100%',
             backgroundColor: 'black',
             opacity: 0.8,
-            borderColor:'black',
-            borderWidth:scaleSize(2),
+            borderColor: 'black',
+            borderWidth: scaleSize(2),
           }}
         />
         <TouchableOpacity
           style={[{
             position: 'absolute',
-            backgroundColor:'white',
+            backgroundColor: 'white',
             borderRadius: scaleSize(20),
             opacity: 0.8,
-          },skipStyle]} 
+          }, skipStyle]}
           onPress={this.skip}
         >
           <Text
@@ -601,7 +602,7 @@ export default class Home extends Component {
         <View
           style={{
             position: 'absolute',
-            backgroundColor: 'white',
+            backgroundColor: 'transparents',
             borderRadius: scaleSize(20),
             width: this.width,
             height: this.height,
@@ -610,13 +611,26 @@ export default class Home extends Component {
             alignItems: 'center',
           }}
         >
+
+          <Image
+            style={
+              {
+                position: 'absolute',
+                height: this.height,
+                width: this.width,
+                marginTop: scaleSize(20)
+              }}
+            source={getThemeAssets().home.map_bgboard01}
+            resizeMode={'stretch'}
+          />
+
           <Text
             style={styles.titleText}
           >
             {getLanguage(this.props.language).Profile.MY_GUIDE}
           </Text>
 
-          <ScrollView
+          {/* <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={
               this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -625,7 +639,23 @@ export default class Home extends Component {
             }
           >
             {this._renderItems()}
-          </ScrollView>
+          </ScrollView> */}
+
+          <View style={this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? styles.scrollContentStyleL
+            : styles.scrollContentStyleP}>
+            <Image
+              style={
+                {
+                  height: this.imgheight,
+                  width: this.width - scaleSize(50)
+                }
+              }
+              source={getThemeAssets().home.map_my}
+              resizeMode={'contain'}
+            />
+          </View>
+
 
           <TouchableOpacity
             style={styles.knowView}
@@ -998,6 +1028,10 @@ export default class Home extends Component {
     this.height = scaleSize(600)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       this.height = scaleSize(400)
+    }
+    this.imgheight = this.height-scaleSize(350)
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      this.imgheight = scaleSize(200)
     }
     return (
       <View style={{ flex: 1 }}>

@@ -197,7 +197,7 @@ export default StyleSheet.create({
     color: color.fontColorGray2,
   },
   titleText: {
-    marginTop: scaleSize(10),
+    marginTop: scaleSize(30),
     textAlign: 'center',
     fontSize: scaleSize(30),
     color: color.black,

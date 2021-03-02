@@ -177,12 +177,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   table: {
     flex: 1,
     paddingHorizontal: scaleSize(30),
     alignItems: 'center',
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
 })

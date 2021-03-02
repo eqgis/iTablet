@@ -48,7 +48,7 @@ async function getDatasets(params = {}) {
     data = [
       {
         title: datasets.datasource.alias,
-        image: getThemeAssets().dataType.icon_data_set_selected,
+        image: getThemeAssets().dataType.icon_data_set,
         data: baseLayers,
       },
     ]
@@ -88,7 +88,7 @@ async function getDatasources(params = {}) {
     data = [
       {
         title: _data.mapName,
-        image: getThemeAssets().dataType.icon_data_source_selected,
+        image: getThemeAssets().dataType.icon_data_source,
         data: datasources,
       },
     ]

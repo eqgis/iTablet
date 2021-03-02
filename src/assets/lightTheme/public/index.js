@@ -25,6 +25,11 @@ const icon_undo = require('./icon_undo.png')
 const icon_bar_attribute_selected = require('./icon_bar_attribute_selected.png')
 const icon_bar_attribute = require('./icon_bar_attribute.png')
 
+const icon_common_bullet = require('./icon_common_bullet.png')
+const icon_common_expanded = require('./icon_common_expanded.png')
+const icon_common_multilevel = require('./icon_common_multilevel.png')
+const icon_common_unexpanded = require('./icon_common_unexpanded.png')
+
 export default {
   icon_undo,
   icon_redo,
@@ -52,4 +57,9 @@ export default {
   icon_submit,
   icon_bar_attribute_selected,
   icon_bar_attribute,
+
+  icon_common_bullet,
+  icon_common_expanded,
+  icon_common_multilevel,
+  icon_common_unexpanded,
 }

@@ -49,7 +49,9 @@ async function getUDBsAndMaps() {
 
   let mapData = await DataHandler.getLocalData(user, 'MAP')
   mapData.forEach(item => {
-    item.image = getThemeAssets().dataType.icon_mapdata
+    item.image = item.isTemplate
+      ? getThemeAssets().dataType.icon_map_template
+      : getThemeAssets().dataType.icon_mapdata
     item.info = {
       infoType: 'mtime',
       lastModifiedDate: item.mtime,

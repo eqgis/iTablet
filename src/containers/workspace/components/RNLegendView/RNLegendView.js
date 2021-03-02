@@ -356,7 +356,7 @@ export default class RNLegendView extends React.Component {
             style={{
               width: '100%',
               height: scaleSize(60),
-              // backgroundColor: 'yellow',
+              backgroundColor: 'transparent',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'space-around',

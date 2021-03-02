@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: scaleSize(30),
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   separatorStyle: {
     height: 1,
     width: '100%',
-    backgroundColor: color.bgG,
+    backgroundColor: color.white,
   },
 })

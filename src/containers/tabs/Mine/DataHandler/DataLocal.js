@@ -83,7 +83,12 @@ async function _getListByFilter(user, type) {
       }
       break
   }
-  const list = await FileTools.getPathListByFilter(path, filter)
+  let list
+  if (type === 'MAP') {
+    list = await FileTools.getMaps(path, filter)
+  } else {
+    list = await FileTools.getPathListByFilter(path, filter)
+  }
   return list
 }
 

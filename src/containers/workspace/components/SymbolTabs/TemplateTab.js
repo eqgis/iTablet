@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { color, size } from '../../../../styles'
 import { TableList } from '../../../../components'
-import { scaleSize, Toast } from '../../../../utils'
+import { scaleSize, Toast, screen } from '../../../../utils'
 import { Height, ToolbarType } from '../../../../constants'
 import { ThemeType, SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -21,7 +21,7 @@ export default class TemplateTab extends React.Component {
   }
 
   static defaultProps = {
-    column: 3,
+    column: 4,
   }
 
   constructor(props) {
@@ -147,17 +147,18 @@ export default class TemplateTab extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   listItem: {
     flex: 1,
     // height: scaleSize(64),
     height: Height.TABLE_ROW_HEIGHT_4,
     paddingHorizontal: scaleSize(20),
+    marginVertical: scaleSize(20),
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: color.bgW,
-    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: color.white,
+    flexDirection: 'column',
   },
   listItemImg: {
     height: scaleSize(64),
@@ -179,5 +180,6 @@ const styles = StyleSheet.create({
     maxWidth: scaleSize(140),
     color: color.themeText2,
     fontSize: size.fontSize.fontSizeSm,
+    textAlign: 'center',
   },
 })

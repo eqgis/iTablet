@@ -78,7 +78,7 @@ export default class PlotTab extends React.Component {
         data={this.props.data}
         // data={this.state.data}
         type={ToolbarType.scrollTable}
-        column={3}
+        column={4}
         renderCell={this._renderItem}
         device={this.props.device}
       />
@@ -89,7 +89,7 @@ export default class PlotTab extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   listItem: {
     flex: 1,
@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(20),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.bgW,
-    flexDirection: 'row',
+    backgroundColor: color.white,
+    flexDirection: 'column',
   },
   listItemImg: {
     height: scaleSize(64),
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     width: scaleSize(120),
     color: color.font_color_white,
     fontSize: size.fontSize.fontSizeSm,
+    textAlign: 'center',
   },
   listItemSubTitle: {
     height: scaleSize(32),

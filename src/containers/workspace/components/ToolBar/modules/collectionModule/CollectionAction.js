@@ -125,6 +125,7 @@ function showSymbol() {
 
 /** 创建采集 * */
 async function createCollector(type, layerName) {
+  const _params = ToolbarModule.getParams()
   // 风格
   const geoStyle = new GeoStyle()
   const collectorStyle = new GeoStyle()
@@ -140,13 +141,13 @@ async function createCollector(type, layerName) {
     case SMCollectorType.POINT_GPS:
     case SMCollectorType.POINT_HAND: {
       if (
-        ToolbarModule.getParams().symbol.currentSymbol &&
-        ToolbarModule.getParams().symbol.currentSymbol.type &&
-        ToolbarModule.getParams().symbol.currentSymbol.type.toLowerCase() ===
+        _params.symbol.currentSymbol &&
+        _params.symbol.currentSymbol.type &&
+        _params.symbol.currentSymbol.type.toLowerCase() ===
           'marker'
       ) {
         geoStyle.setMarkerStyle(
-          ToolbarModule.getParams().symbol.currentSymbol.id,
+          _params.symbol.currentSymbol.id,
         )
       }
       mType = DatasetType.POINT
@@ -157,12 +158,12 @@ async function createCollector(type, layerName) {
     case SMCollectorType.LINE_HAND_POINT:
     case SMCollectorType.LINE_HAND_PATH: {
       if (
-        ToolbarModule.getParams().symbol.currentSymbol &&
-        ToolbarModule.getParams().symbol.currentSymbol.type &&
-        ToolbarModule.getParams().symbol.currentSymbol.type.toLowerCase() ===
+        _params.symbol.currentSymbol &&
+        _params.symbol.currentSymbol.type &&
+        _params.symbol.currentSymbol.type.toLowerCase() ===
           'line'
       ) {
-        geoStyle.setLineStyle(ToolbarModule.getParams().symbol.currentSymbol.id)
+        geoStyle.setLineStyle(_params.symbol.currentSymbol.id)
       }
       mType = DatasetType.LINE
       break
@@ -172,12 +173,12 @@ async function createCollector(type, layerName) {
     case SMCollectorType.REGION_HAND_POINT:
     case SMCollectorType.REGION_HAND_PATH: {
       if (
-        ToolbarModule.getParams().symbol.currentSymbol &&
-        ToolbarModule.getParams().symbol.currentSymbol.type &&
-        ToolbarModule.getParams().symbol.currentSymbol.type.toLowerCase() ===
+        _params.symbol.currentSymbol &&
+        _params.symbol.currentSymbol.type &&
+        _params.symbol.currentSymbol.type.toLowerCase() ===
           'fill'
       ) {
-        geoStyle.setFillStyle(ToolbarModule.getParams().symbol.currentSymbol.id)
+        geoStyle.setFillStyle(_params.symbol.currentSymbol.id)
       }
       mType = DatasetType.REGION
       break
@@ -185,39 +186,39 @@ async function createCollector(type, layerName) {
   }
 
   let params = {}
-  if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
+  if (_params.template.currentTemplateInfo.layerPath) {
     params = {
-      layerPath: ToolbarModule.getParams().template.currentTemplateInfo
+      layerPath: _params.template.currentTemplateInfo
         .layerPath,
     }
   } else if (layerName !== undefined) {
     params = { layerPath: layerName }
   } else {
-    const datasetName = ToolbarModule.getParams().symbol.currentSymbol.type
-      ? `${ToolbarModule.getParams().symbol.currentSymbol.type}_${
-          ToolbarModule.getParams().symbol.currentSymbol.id
-        }`
+    const datasetName = _params.symbol.currentSymbol.type
+      ? `${_params.symbol.currentSymbol.type}_${
+        _params.symbol.currentSymbol.id
+      }`
       : ''
     const datasourcePath =
-      ToolbarModule.getParams().collection.datasourceParentPath ||
+      _params.collection.datasourceParentPath ||
       (await FileTools.appendingHomeDirectory(
-        ToolbarModule.getParams().user &&
-          ToolbarModule.getParams().user.currentUser &&
-          ToolbarModule.getParams().user.currentUser.name
+        _params.user &&
+          _params.user.currentUser &&
+          _params.user.currentUser.userName
           ? `${ConstPath.UserPath +
-              ToolbarModule.getParams().user.currentUser.name}/${
-              ConstPath.RelativePath.Datasource
-            }`
+              _params.user.currentUser.userName}/${
+            ConstPath.RelativePath.Datasource
+          }`
           : ConstPath.CustomerPath + ConstPath.RelativePath.Datasource,
       ))
 
     const mapInfo = await SMap.getMapInfo()
 
     const datasourceName =
-      ToolbarModule.getParams().collection.datasourceName ||
-      (ToolbarModule.getParams().map &&
-        ToolbarModule.getParams().map.currentMap.name &&
-        `${ToolbarModule.getParams().map.currentMap.name}_collection`) ||
+      _params.collection.datasourceName ||
+      (_params.map &&
+        _params.map.currentMap.name &&
+        `${_params.map.currentMap.name}_collection`) ||
       `${mapInfo.name}_collection` ||
       `Collection-${new Date().getTime()}`
 

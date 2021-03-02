@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
-import { color, size } from '../../../../styles'
-import { scaleSize, setSpText } from '../../../../utils'
-import { ChunkType } from '../../../../constants'
+import { color } from '../../../../styles'
+import { scaleSize, setSpText, screen } from '../../../../utils'
+import { ChunkType, Height } from '../../../../constants'
 import DefaultTabBar from './DefaultTabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import GroupTab from './GroupTab'
@@ -180,6 +180,14 @@ class SymbolTabs extends React.Component {
       })
   }
 
+  _getWidth = () => {
+    let width = screen.getScreenWidth(this.props.device.orientation)
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      width = Height.TABLE_ROW_HEIGHT_2 * 8
+    }
+    return width
+  }
+
   renderTabs = () => {
     return (
       <ScrollableTabView
@@ -190,22 +198,17 @@ class SymbolTabs extends React.Component {
         onChangeTab={({ i }) => this.goToPage(i)}
         renderTabBar={() => (
           <DefaultTabBar
-            activeBackgroundColor={color.bgW}
+            activeBackgroundColor={color.white}
             activeTextColor={color.themeText2}
-            inactiveTextColor={'white'}
-            textStyle={{
-              // fontSize: size.fontSize.fontSizeSm,
-              fontSize: setSpText(22),
-              backgroundColor: 'transparent',
-            }}
-            tabStyle={{
-              backgroundColor: color.subTheme,
-            }}
+            inactiveTextColor={color.white}
+            textStyle={styles.tabTextStyle}
+            tabStyle={styles.tabStyle}
           />
         )}
-        tabBarUnderlineStyle={{
-          height: 0,
-        }}
+        tabBarUnderlineStyle={[
+          styles.tabBarUnderlineStyle,
+          {marginLeft: this._getWidth() / 3 / 2 - scaleSize(32)},
+        ]}
       >
         <SymbolTab
           tabLabel={
@@ -252,21 +255,18 @@ class SymbolTabs extends React.Component {
         onChangeTab={({ i }) => this.goToPage(i)}
         renderTabBar={() => (
           <DefaultTabBar
-            activeBackgroundColor={color.bgW}
+            style={styles.tabs}
+            activeBackgroundColor={color.white}
             activeTextColor={color.themeText2}
-            inactiveTextColor={'white'}
-            textStyle={{
-              fontSize: size.fontSize.fontSizeSm,
-              backgroundColor: 'transparent',
-            }}
-            tabStyle={{
-              backgroundColor: color.subTheme,
-            }}
+            inactiveTextColor={color.white}
+            textStyle={styles.tabTextStyle}
+            tabStyle={styles.tabStyle}
           />
         )}
-        tabBarUnderlineStyle={{
-          height: 0,
-        }}
+        tabBarUnderlineStyle={[
+          styles.tabBarUnderlineStyle,
+          {marginLeft: this._getWidth() / 3 / 2 - scaleSize(32)},
+        ]}
       >
         <TemplateTab
           tabLabel={
@@ -333,21 +333,17 @@ class SymbolTabs extends React.Component {
         onChangeTab={({ i }) => this.goToPage(i)}
         renderTabBar={() => (
           <DefaultTabBar
-            activeBackgroundColor={color.bgW}
+            activeBackgroundColor={color.white}
             activeTextColor={color.themeText2}
-            inactiveTextColor={'white'}
-            textStyle={{
-              fontSize: size.fontSize.fontSizeSm,
-              backgroundColor: 'transparent',
-            }}
-            tabStyle={{
-              backgroundColor: color.subTheme,
-            }}
+            inactiveTextColor={color.white}
+            textStyle={styles.tabTextStyle}
+            tabStyle={styles.tabStyle}
           />
         )}
-        tabBarUnderlineStyle={{
-          height: 0,
-        }}
+        tabBarUnderlineStyle={[
+          styles.tabBarUnderlineStyle,
+          {marginLeft: this._getWidth() / 4 / 2 - scaleSize(32)},
+        ]}
       >
         <PlotTab
           tabLabel={
@@ -435,11 +431,30 @@ class SymbolTabs extends React.Component {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
     overflow: 'hidden',
   },
   temple: {
     paddingHorizontal: scaleSize(30),
+  },
+  tabs: {
+    // marginHorizontal: scaleSize(80),
+  },
+  tabBarUnderlineStyle: {
+    backgroundColor: color.black,
+    height: scaleSize(4),
+    width: scaleSize(64),
+    borderRadius: scaleSize(2),
+    marginBottom: scaleSize(12),
+  },
+  tabTextStyle: {
+    fontSize: setSpText(22),
+    backgroundColor: color.white,
+    color: color.fontColorBlack,
+  },
+  tabStyle: {
+    // backgroundColor: color.subTheme,
+    backgroundColor: color.white,
   },
 })
 

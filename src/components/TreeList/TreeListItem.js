@@ -56,7 +56,7 @@ export default class TreeListItem extends React.Component {
   }
 
   renderIcon = () => {
-    const arrowImg = require('../../assets/mapEdit/icon-arrow-down.png')
+    const arrowImg = getThemeAssets().publicAssets.icon_common_expanded
     if (this.props.data.childGroups && this.props.data.childGroups.length > 0) {
       return (
         <TouchableOpacity
@@ -87,7 +87,8 @@ export default class TreeListItem extends React.Component {
         <View style={styles.btn}>
           <Image
             style={styles.circleImg}
-            source={getPublicAssets().common.icon_circle_dot}
+            // source={getPublicAssets().common.icon_circle_dot}
+            source={getThemeAssets().publicAssets.icon_common_bullet}
           />
         </View>
       )
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
   children: {
     flex: 1,
     flexDirection: 'column',
-    paddingLeft: scaleSize(30),
+    paddingLeft: scaleSize(80),
   },
   btn: {
     // paddingVertical: scaleSize(20),
@@ -262,14 +263,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   arrowImg: {
-    marginRight: scaleSize(20),
-    height: scaleSize(20),
-    width: scaleSize(20),
+    marginRight: scaleSize(24),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
   circleImg: {
     marginRight: scaleSize(24),
-    height: scaleSize(12),
-    width: scaleSize(12),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
   icon: {
     height: scaleSize(40),

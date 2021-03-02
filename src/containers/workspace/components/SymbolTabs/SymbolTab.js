@@ -17,7 +17,7 @@ export default class SymbolTab extends React.Component {
 
   static defaultProps = {
     data: [],
-    column: 3,
+    column: 4,
   }
 
   constructor(props) {
@@ -87,7 +87,7 @@ export default class SymbolTab extends React.Component {
               (this.props.device.orientation.indexOf('LANDSCAPE') === 0
                 ? 3
                 : 4),
-            legendBackgroundColor: dataUtil.colorRgba(color.bgW),
+            legendBackgroundColor: dataUtil.colorRgba(color.white),
             textColor: dataUtil.colorRgba(color.font_color_white),
           }}
           onSymbolClick={this._onSymbolClick}
@@ -101,12 +101,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
   table: {
     flex: 1,
     paddingHorizontal: scaleSize(30),
     alignItems: 'center',
-    backgroundColor: color.bgW,
+    backgroundColor: color.white,
   },
 })

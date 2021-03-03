@@ -30,6 +30,11 @@ const ar_draw_point_disable = require('./icon_ar_drawpoint_ash.png')
 const icon_ar_polygon = require('./icon_ar_polygon.png')
 const icon_ar_rectangle = require('./icon_ar_rectangle.png')
 const icon_ar_circular = require('./icon_ar_circular.png')
+const icon_ar_altimetry_unselect = require('./icon_ar_altimetry_unselect.png')
+const icon_ar_area_unselect = require('./icon_ar_area_unselect.png')
+const icon_ar_distance_unselect = require('./icon_ar_distance_unselect.png')
+const icon_ar_altimetry_select = require('./icon_ar_altimetry_select.png')
+const icon_ar_angle = require('./icon_ar_angle.png')
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
   rightbar_ai_classify_light, // 目标分类
@@ -65,4 +70,9 @@ export default {
   icon_ar_polygon,
   icon_ar_rectangle,
   icon_ar_circular,
+  icon_ar_altimetry_unselect,
+  icon_ar_area_unselect,
+  icon_ar_distance_unselect,
+  icon_ar_altimetry_select,
+  icon_ar_angle,
 }

@@ -22,7 +22,7 @@ function getData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
+      image: getThemeAssets().ar.functiontoolbar.icon_ar_altimetry_select,
     },
     {
       //AR面积
@@ -56,7 +56,7 @@ function getMeasureAreaData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
       action: ARMeasureAction.arMeasureLength,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
+      image: getThemeAssets().ar.functiontoolbar.icon_ar_distance_unselect,
     },
     {
       //AR测高
@@ -65,7 +65,7 @@ function getMeasureAreaData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_measure_height,
+      image: getThemeAssets().ar.functiontoolbar.icon_ar_altimetry_unselect,
     },
     {
       //AR面积
@@ -83,7 +83,7 @@ function getMeasureAreaData() {
         .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
       action: ARMeasureAction.arMeasureAngle,
       size: 'large',
-      image: getThemeAssets().ar.functiontoolbar.ar_analyst_angle,
+      image: getThemeAssets().ar.functiontoolbar.icon_ar_angle,
     },
   ]
 

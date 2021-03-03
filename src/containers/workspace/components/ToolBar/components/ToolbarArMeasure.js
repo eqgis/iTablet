@@ -71,7 +71,7 @@ export default class ToolbarArMeasure extends React.Component {
                             {
                                 marginTop: scaleSize(5),
                                 color: color.font_color_white,
-                                fontSize: setSpText(15),
+                                fontSize: setSpText(18),
                                 backgroundColor: 'transparent',
                                 textAlign: 'center',
                             },
@@ -100,7 +100,7 @@ export default class ToolbarArMeasure extends React.Component {
                     {this.renderItems()}
                 </View>
 
-                <View style={{ width: '100%', height: scaleSize(2), backgroundColor: '#E5E5E6' }} />
+                {/* <View style={{ width: '100%', height: scaleSize(2), backgroundColor: '#E5E5E6' }} /> */}
 
                 <ToolbarTableList
                     data={this.props.data}

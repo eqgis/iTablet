@@ -35,7 +35,7 @@ export default class LayerTopBar extends React.Component {
     orientation?: String,
     canDelete?: boolean, //是否可以点击删除
     currentIndex?: Object,//点击的数据集字段位置
-    collectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
+    selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
   }
 
   static defaultProps = {
@@ -47,7 +47,7 @@ export default class LayerTopBar extends React.Component {
     hasTabBtn: false,
     canDelete:false,
     currentIndex:0,
-    collectionAttribute:false,
+    selectionAttribute:false,
   }
 
   constructor(props) {
@@ -99,7 +99,7 @@ export default class LayerTopBar extends React.Component {
 
   // 多媒体采集
  captureImage = () => {
-    const collectionAttribute = this.props.collectionAttribute
+    const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
@@ -112,7 +112,7 @@ export default class LayerTopBar extends React.Component {
           datasetName,
           index,
           attribute:true,
-          collectionAttribute,
+          selectionAttribute,
           atcb: () => {
             if (
               this.props.refreshAction &&
@@ -194,7 +194,7 @@ export default class LayerTopBar extends React.Component {
       }
     ]
 
-    if(this.props.collectionAttribute){
+    if(this.props.selectionAttribute){
       data = [
         {
           icon: this.props.canAddField

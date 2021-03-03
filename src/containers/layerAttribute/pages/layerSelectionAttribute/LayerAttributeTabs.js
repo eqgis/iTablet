@@ -596,6 +596,10 @@ export default class LayerAttributeTabs extends React.Component {
       GLOBAL.SelectedSelectionAttribute = null // 清除选择集中当前选中的属性
 
       NavigationService.goBack()
+
+      setTimeout(() => {
+        this.backClicked = false
+      }, 1500)
     }
   }
 

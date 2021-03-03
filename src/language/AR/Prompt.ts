@@ -228,6 +228,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'يرجى إعداد الموقع',
   OUT_OF_MAP_BOUNDS: 'خارج حدود الخريطة',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: 'الموقع الحالي خارج حدود الخريطة بحيث لا يمكنك استخدام التتبع لزيادة الطريق',
+  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
 
   POI: 'نقاط الاهتمام',
 

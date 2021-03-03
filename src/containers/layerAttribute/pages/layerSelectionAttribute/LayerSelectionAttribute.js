@@ -982,6 +982,11 @@ export default class LayerSelectionAttribute extends React.Component {
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
           geoID = data.rowData[0].value
+        let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
+          if(!has){
+            Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+            return
+          }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
         NavigationService.navigate('MediaEdit', {
           info,

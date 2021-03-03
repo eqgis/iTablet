@@ -77,8 +77,6 @@ export default class MediaEdit extends React.Component {
   dealData = async (mediaPaths = []) => {
     let paths = []
     for (let item of mediaPaths) {
-      item=item.replace("[","");
-      item=item.replace("]","");
       const type = checkType.getMediaTypeByPath(item)
       let info,
         path = item

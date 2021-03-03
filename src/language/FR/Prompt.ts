@@ -228,6 +228,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'Veuillez configurer le lieu',
   OUT_OF_MAP_BOUNDS: 'Hors des limites de la carte',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: "L'emplacement actuel est hors des limites de la carte afin que vous ne puissiez pas utiliser le suivi pour incrémenter la route",
+  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
 
   POI: 'POI',
 

@@ -226,6 +226,7 @@ const Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: '请选择定位信息',
   OUT_OF_MAP_BOUNDS: '不在地图范围内',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: '当前位置不在路网数据集范围内，无法使用轨迹增量路网',
+  AFTER_COLLECT: '请先拍照采集后查看',
 
   POI: '兴趣点',
 

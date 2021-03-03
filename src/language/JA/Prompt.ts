@@ -228,6 +228,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'ポジショニング情報を選択してください',
   OUT_OF_MAP_BOUNDS: 'マップ範囲内にありません',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: '現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。',
+  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
 
   POI: 'POI',
 

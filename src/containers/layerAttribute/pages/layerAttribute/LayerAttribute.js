@@ -1220,9 +1220,14 @@ export default class LayerAttribute extends React.Component {
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
       buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
-      async data => {
+      async data => {  
         let layerName = this.props.currentLayer.name,
-          geoID = data.rowData[0].value
+          geoID = data.rowData[1].value
+        let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
+        if(!has){
+          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          return
+        }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
         Object.assign(info, { addToMap: this.props.currentLayer.isVisible })
         NavigationService.navigate('MediaEdit', {

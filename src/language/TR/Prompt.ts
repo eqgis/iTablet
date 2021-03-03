@@ -228,6 +228,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'Lütfen Konum belirleyin.',
   OUT_OF_MAP_BOUNDS: 'Harita sınırları dışında',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: 'Geçerli konum harita sınırları dışında, bu yüzden yolu artırmak için izlemeyi kullanamazsınız',
+  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
 
   POI: 'POI',
 

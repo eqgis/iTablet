@@ -121,9 +121,8 @@ export default class Login extends React.Component {
         isCreate = fileCreated && isCreate
       }
       if (isCreate) {
-        FileTools.initUserDefaultData(userName).then(result => {
-          !result && Toast.show('初始化用户数据失败')
-        })
+        let result = await FileTools.initUserDefaultData(userName)
+        !result && Toast.show('初始化用户数据失败')
       } else {
         Toast.show('创建用户目录失败')
       }

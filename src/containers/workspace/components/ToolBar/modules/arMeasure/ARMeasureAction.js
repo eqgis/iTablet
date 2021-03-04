@@ -132,9 +132,9 @@ function arMeasureLength() {
 // AR测量角度
 function arMeasureAngle() {
   (async function() {
-    if (Platform.OS === 'android') {
-      return
-    }
+    // if (Platform.OS === 'android') {
+    //   return
+    // }
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       GLOBAL.ARDeviceListDialog.setVisible(true)

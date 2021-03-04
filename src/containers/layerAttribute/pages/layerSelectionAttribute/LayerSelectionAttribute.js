@@ -988,6 +988,13 @@ export default class LayerSelectionAttribute extends React.Component {
             return
           }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
+        let layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+        let isTaggingLayer = layerType === 'TAGGINGLAYER'
+        if(isTaggingLayer){
+          Object.assign(info, { addToMap: GLOBAL.currentLayer.isVisible })
+        }else{
+          Object.assign(info, { addToMap: false })
+        }
         NavigationService.navigate('MediaEdit', {
           info,
         })

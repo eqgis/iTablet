@@ -1223,13 +1223,24 @@ export default class LayerAttribute extends React.Component {
       async data => {  
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
+        let count = await SMediaCollector.getDataCount(layerName)
+        if(count === 1){
+          geoID = data.rowData[0].value
+        }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
         if(!has){
           Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
-        Object.assign(info, { addToMap: this.props.currentLayer.isVisible })
+        let layerType = LayerUtils.getLayerType(this.props.currentLayer)
+        let isTaggingLayer = layerType === 'TAGGINGLAYER'
+        if(isTaggingLayer){
+          Object.assign(info, { addToMap: this.props.currentLayer.isVisible })
+        }else{
+          Object.assign(info, { addToMap: false })
+        }
+        
         NavigationService.navigate('MediaEdit', {
           info,
           cb: mData => {

@@ -579,7 +579,7 @@ export default class Home extends Component {
             borderWidth: scaleSize(2),
           }}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[{
             position: 'absolute',
             backgroundColor: 'white',
@@ -598,7 +598,7 @@ export default class Home extends Component {
             }}>
             {getLanguage(this.props.language).Profile.MY_GUIDE_SKIP}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View
           style={{
             position: 'absolute',
@@ -701,6 +701,27 @@ export default class Home extends Component {
           </View>
 
         </View>
+
+        <TouchableOpacity
+            style={{
+              position: 'absolute',
+              bottom:scaleSize(45),
+              width: scaleSize(60),
+              height: scaleSize(60),
+            }}
+            onPress={this.skip}
+          >
+          <Image
+            style={
+              {
+                width: scaleSize(50),
+                height: scaleSize(50),
+              }}
+            source={getThemeAssets().home.icon_map_close}
+            resizeMode={'stretch'}
+          />
+          </TouchableOpacity>
+
       </View>
     )
   }

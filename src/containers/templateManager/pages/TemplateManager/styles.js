@@ -27,7 +27,8 @@ export default StyleSheet.create({
   },
   currentView: {
     height: scaleSize(30),
-    width: scaleSize(120),
+    minWidth: scaleSize(120),
+    paddingHorizontal: scaleSize(4),
     borderRadius: scaleSize(4),
     backgroundColor: color.bgG,
     justifyContent: 'center',

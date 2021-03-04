@@ -1459,6 +1459,7 @@ export default class SecondMapSettings extends Component {
                 <Text style={styles.headerRight}>{this.state.rightBtn}</Text>
               </TouchableOpacity>,
             ],
+            isResponseHeader: true,
           }}
         >
           <ScrollView>

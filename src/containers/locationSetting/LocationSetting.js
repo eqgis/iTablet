@@ -156,6 +156,7 @@ class LocationSetting extends React.Component {
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
+          isResponseHeader: true,   
         }}
       >
         <View style={styles.container}>

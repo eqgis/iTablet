@@ -90,7 +90,7 @@ export default StyleSheet.create({
   },
   headerRight: {
     color: 'black',
-    width: scaleSize(100),
+    minWidth: scaleSize(100),
     fontSize: size.fontSize.fontSizeXXl,
     textAlign: 'right',
     marginRight: scaleSize(30),

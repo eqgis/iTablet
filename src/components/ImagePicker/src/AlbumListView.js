@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     color: color.content,
-    width: scaleSize(100),
+    minWidth: scaleSize(100),
     fontSize: size.fontSize.fontSizeXXl,
     textAlign: 'right',
   },

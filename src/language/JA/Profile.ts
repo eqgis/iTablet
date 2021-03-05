@@ -43,6 +43,9 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'「チェック」してデータセットを追加します',
   ADD_SELECT_DATASET:'データを追加',
   MOVE_BROWSING:'左右に移動して完全な情報を閲覧する',
+  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
+  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
+  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
 
   // 我的——登录
   LOGIN: 'ログイン',

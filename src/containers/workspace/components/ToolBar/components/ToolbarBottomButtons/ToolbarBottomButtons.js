@@ -102,8 +102,6 @@ export default class ToolbarBottomButtons extends React.Component {
       this.props.close && this.props.close(this.props.type)
     }
     // this.ToolbarModule.setData() // 关闭Toolbar清除临时数据
-    //清除新增标注或者采集状态 add jiakai
-    GLOBAL.HAVEATTRIBUTE = false
   }
 
   back = () => this.props.back(this.props.type)

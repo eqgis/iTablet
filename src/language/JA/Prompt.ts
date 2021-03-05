@@ -77,6 +77,8 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: '上書き',
   CHOOSE_DATASET: 'データセットを選択してください',
 
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',
   LONG_PRESS_TO_SORT: '（長押しソート）',

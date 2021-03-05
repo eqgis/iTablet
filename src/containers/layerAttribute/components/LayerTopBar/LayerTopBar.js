@@ -10,7 +10,7 @@ import { ImageButton } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { screen, scaleSize ,LayerUtils} from '../../../../utils'
+import { screen, scaleSize, LayerUtils } from '../../../../utils'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../NavigationService'
 
@@ -21,7 +21,7 @@ export default class LayerTopBar extends React.Component {
     locateAction: () => {},
     undoAction: () => {},
     deleteAction: () => {},
-    refreshAction:() => {},
+    refreshAction: () => {},
     relateAction: () => {},
     addFieldAction: () => {},
     tabsAction?: () => {}, // 显示侧滑栏
@@ -45,9 +45,9 @@ export default class LayerTopBar extends React.Component {
     canRelated: false,
     canAddField: false,
     hasTabBtn: false,
-    canDelete:false,
-    currentIndex:0,
-    selectionAttribute:false,
+    canDelete: false,
+    currentIndex: 0,
+    selectionAttribute: false,
   }
 
   constructor(props) {
@@ -98,38 +98,32 @@ export default class LayerTopBar extends React.Component {
   }
 
   // 多媒体采集
- captureImage = () => {
+  captureImage = () => {
     const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
 
     if (currentLayer) {
-        const { datasourceAlias } = currentLayer // 标注数据源名称
-        const { datasetName } = currentLayer // 标注图层名称
-        NavigationService.navigate('Camera', {
-          datasourceAlias,
-          datasetName,
-          index,
-          attribute:true,
-          selectionAttribute,
-          atcb: () => {
-            if (
-              this.props.refreshAction &&
-              typeof this.props.refreshAction === 'function'
-            ) {
-              this.props.refreshAction()
-            }
-          },
-        })
-    } else {
-      Toast.show(
-        getLanguage(ToolbarModule.getParams().language).Prompt
-          .PLEASE_SELECT_PLOT_LAYER,
-      )
-      ToolbarModule.getParams().navigation.navigate('LayerManager')
+      const { datasourceAlias } = currentLayer // 标注数据源名称
+      const { datasetName } = currentLayer // 标注图层名称
+      NavigationService.navigate('Camera', {
+        datasourceAlias,
+        datasetName,
+        index,
+        attribute: true,
+        selectionAttribute,
+        atcb: () => {
+          if (
+            this.props.refreshAction &&
+            typeof this.props.refreshAction === 'function'
+          ) {
+            this.props.refreshAction()
+          }
+        },
+      })
     }
-}
+  }
 
   addAttributeFieldAction = fieldInfo => {
     if (
@@ -139,7 +133,7 @@ export default class LayerTopBar extends React.Component {
       this.props.addFieldAction(fieldInfo)
     }
   }
-  
+
   renderContentView = () => {
     let data
     data = [
@@ -153,7 +147,7 @@ export default class LayerTopBar extends React.Component {
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
       },
-     {
+      {
         icon: this.props.canLocated
           ? getThemeAssets().attribute.icon_location
           : getThemeAssets().attribute.icon_unlocation,
@@ -175,8 +169,8 @@ export default class LayerTopBar extends React.Component {
       },
       {
         icon: this.props.canDelete
-        ? getThemeAssets().attribute.icon_delete_select
-        : getThemeAssets().attribute.icon_delete_un_select,
+          ? getThemeAssets().attribute.icon_delete_select
+          : getThemeAssets().attribute.icon_delete_un_select,
         key: '删除',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .EDIT_DELETE,
@@ -185,16 +179,16 @@ export default class LayerTopBar extends React.Component {
       },
       {
         icon: this.props.canRelated
-        ? getThemeAssets().mapTools.icon_tool_multi_media
-        : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+          ? getThemeAssets().mapTools.icon_tool_multi_media
+          : getThemeAssets().mapTools.icon_tool_multi_media_ash,
         key: '拍照',
         title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
         action: this.captureImage,
         enabled: this.props.canRelated,
-      }
+      },
     ]
 
-    if(this.props.selectionAttribute){
+    if (this.props.selectionAttribute) {
       data = [
         {
           icon: this.props.canAddField
@@ -207,9 +201,19 @@ export default class LayerTopBar extends React.Component {
           enabled: this.props.canAddField,
         },
         {
+          icon: this.props.canRelated
+            ? getThemeAssets().attribute.icon_relation
+            : getThemeAssets().attribute.icon_unrelation,
+          key: '关联',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_ASSOCIATION,
+          action: this.relateAction,
+          enabled: this.props.canRelated,
+        },
+        {
           icon: this.props.canDelete
-          ? getThemeAssets().attribute.icon_delete_select
-          : getThemeAssets().attribute.icon_delete_un_select,
+            ? getThemeAssets().attribute.icon_delete_select
+            : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .EDIT_DELETE,
@@ -218,28 +222,28 @@ export default class LayerTopBar extends React.Component {
         },
         {
           icon: this.props.canRelated
-          ? getThemeAssets().mapTools.icon_tool_multi_media
-          : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+            ? getThemeAssets().mapTools.icon_tool_multi_media
+            : getThemeAssets().mapTools.icon_tool_multi_media_ash,
           key: '拍照',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
           action: this.captureImage,
           enabled: this.props.canRelated,
-        }
+        },
       ]
     }
-    
+
     let items = []
     data.forEach((item, index) => {
       if (index !== 0) {
         item = Object.assign(item, {
           containerStyle: {
-            marginLeft: itemGap
+            marginLeft: itemGap,
           },
         })
       }
       items.push(this.renderBtn(item))
     })
-    
+
     // if (isScroll) {
     return (
       <ScrollView

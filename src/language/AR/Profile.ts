@@ -43,6 +43,9 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'حدد لإضافة مجموعة بيانات',
   ADD_SELECT_DATASET:'إضافة مجموعة بيانات',
   MOVE_BROWSING:'"تحرك إلى اليسار واليمين" لتصفح المعلومات الكاملة',
+  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
+  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
+  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',

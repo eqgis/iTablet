@@ -112,6 +112,7 @@ async function touchCallback(event) {
               event.screenPoint.x,
               event.screenPoint.y,
             )
+            GLOBAL.HAVEATTRIBUTE = true
             NavigationService.goBack()
             //GLOBAL.TouchType = TouchType.NORMAL
           }

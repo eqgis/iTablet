@@ -41,6 +41,7 @@ async function point() {
     layerType === 'POINTLAYER'
   ) {
     SMap.setAction(Action.CREATEPOINT)
+    ToolbarModule.addData({MarkType:'CREATEPOINT'})
     _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS_DRAW, {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
@@ -67,6 +68,7 @@ async function words() {
       // height: ConstToolType.HEIGHT[4],
     })
     GLOBAL.TouchType = TouchType.MAP_MARKS_TAGGING
+    ToolbarModule.addData({MarkType:'MAP_MARKS_TAGGING'})
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
@@ -90,6 +92,7 @@ async function pointline() {
       // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.CREATEPOLYLINE)
+    ToolbarModule.addData({MarkType:'CREATEPOLYLINE'})
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
@@ -112,6 +115,7 @@ async function freeline() {
       // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.FREEDRAW)
+    ToolbarModule.addData({MarkType:'FREEDRAW'})
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
@@ -135,6 +139,7 @@ async function pointcover() {
       // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.CREATEPOLYGON)
+    ToolbarModule.addData({MarkType:'CREATEPOLYGON'})
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
@@ -160,14 +165,20 @@ async function freecover() {
       // height: ConstToolType.HEIGHT[4],
     })
     SMap.setAction(Action.DRAWPLOYGON)
+    ToolbarModule.addData({MarkType:'DRAWPLOYGON'})
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
-function commit(type) {
+async function commit(type) {
   try {
     const _params = ToolbarModule.getParams()
     if (type === ConstToolType.SM_MAP_MARKS_DRAW) {
+      let have = await SMap.haveCurrentGeometry()
+      if(have){
+        // 是否有新的采集或标注
+        GLOBAL.HAVEATTRIBUTE = true
+      }
       let currentLayer = _params.currentLayer
       SMap.setTaggingGrid(
         currentLayer.datasetName,
@@ -179,8 +190,6 @@ function commit(type) {
             SMap.refreshMap()
             //提交标注后 需要刷新属性表
             GLOBAL.NEEDREFRESHTABLE = true
-            // 是否有新的采集或标注
-            GLOBAL.HAVEATTRIBUTE = true
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
               let layerType = LayerUtils.getLayerType(currentLayer)
               if (layerType !== 'TAGGINGLAYER') {
@@ -245,9 +254,26 @@ function commit(type) {
   }
 }
 
-function showAttribute() {
-  if(GLOBAL.HAVEATTRIBUTE){
-    NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+async function showAttribute() {
+  let have = await SMap.haveCurrentGeometry()
+  if(have){
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+  }else{
+    if(GLOBAL.HAVEATTRIBUTE){
+      NavigationService.navigate('LayerSelectionAttribute',{isCollection:true,preType:'SM_MAP_MARKS_DRAW'})
+    }
+  }
+  return true
+}
+
+async function showAttribute1() {
+  let have = await SMap.haveCurrentGeometry()
+  if(have){
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+  }else{
+    if(GLOBAL.HAVEATTRIBUTE){
+      NavigationService.navigate('LayerSelectionAttribute',{isCollection:true,preType:'SM_MAP_MARKS_DRAW_TEXT'})
+    }
   }
   return true
 }
@@ -579,6 +605,7 @@ function geometrySelected(event) {
 }
 
 async function close(type) {
+  const _data = ToolbarModule.getData()
   const _params = ToolbarModule.getParams()
   if (type === ConstToolType.SM_MAP_MARKS_TAGGING_SETTING) {
     await SMap.undo()
@@ -600,6 +627,38 @@ async function close(type) {
       }
     }
     _params.setToolbarVisible(false)
+  } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+    // 返回框选/点选属性界面，并清除属性关联选中的对象
+    NavigationService.navigate('LayerSelectionAttribute', {
+      isCollection:true,
+    })
+    await SMap.clearTrackingLayer()
+    GLOBAL.toolBox &&
+        GLOBAL.toolBox.setVisible(true, _data.preType, {
+          containerType: 'table',
+          isFullScreen: false,
+        })
+    switch (_data.MarkType) {
+      case 'CREATEPOINT':
+        SMap.setAction(Action.CREATEPOINT)
+        break
+      case 'MAP_MARKS_TAGGING':
+        GLOBAL.TouchType = TouchType.MAP_MARKS_TAGGING
+        break
+      case 'CREATEPOLYLINE':
+        SMap.setAction(Action.CREATEPOLYLINE)
+        break
+      case 'FREEDRAW':
+        SMap.setAction(Action.FREEDRAW)
+        break
+      case 'CREATEPOLYGON':
+        SMap.setAction(Action.CREATEPOLYGON)
+        break
+      case 'DRAWPLOYGON':
+        SMap.setAction(Action.DRAWPLOYGON)
+        break
+    }
+    // NavigationService.goBack()
   } else {
     return false
   }
@@ -865,4 +924,5 @@ export default {
   colorAction,
   setTaggingTextFont,
   showAttribute,
+  showAttribute1,
 }

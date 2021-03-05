@@ -77,6 +77,8 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'Overwrite',
   CHOOSE_DATASET: 'Lütfen veri kümesi seçin',
 
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
   SET_ALL_MAP_INVISIBLE: 'Tamamı Görünmez',
   LONG_PRESS_TO_SORT: '(Sıralamak için uzun basın)',

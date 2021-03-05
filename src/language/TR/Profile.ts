@@ -43,6 +43,9 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'Veri kümesi eklemek için kontrol edin',
   ADD_SELECT_DATASET:'Veri Kümesi Ekle ',
   MOVE_BROWSING:'Tüm bilgilere göz atmak için "sola ve sağa hareket edin"',
+  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
+  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
+  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
 
   // 我的——登录
   LOGIN: 'Giriş',

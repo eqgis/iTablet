@@ -77,6 +77,8 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'الكتابة فوق',
   CHOOSE_DATASET: 'الرجاء اختيار مجموعة البيانات',
 
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',
   LONG_PRESS_TO_SORT: '(اضط طويلا للترتيب)',

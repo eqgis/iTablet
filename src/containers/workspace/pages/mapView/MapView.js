@@ -108,6 +108,7 @@ import { Bar } from 'react-native-progress'
 import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
 import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
+import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
 
 GLOBAL.markerTag = 118082
 
@@ -154,6 +155,7 @@ export default class MapView extends React.Component {
     mapArGuide: PropTypes.bool,
     mapArMappingGuide: PropTypes.bool,
     mapAnalystGuide: PropTypes.bool,
+    themeGuide: PropTypes.bool,
 
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
@@ -3458,6 +3460,15 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderMapThemeGuideView = () => {
+    return(
+      <GuideViewMapThemeModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
 
   renderContainer = () => {
     return (
@@ -3698,6 +3709,7 @@ export default class MapView extends React.Component {
         {(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
         {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
         {(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
+        {(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
       </View>
     )
   }

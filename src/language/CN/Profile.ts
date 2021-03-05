@@ -41,6 +41,9 @@ const Profile = {
   SELECT_DATASET:'“勾选”添加数据集',
   ADD_SELECT_DATASET:'"添加"数据',
   MOVE_BROWSING:'"左右移动"可浏览完整信息',
+  ADD_THEME_DATA:'1.添加制作专题图的数据',
+  CHOOSE_THEME_TYPE:'2.选择需要制作的专题图类型',
+  CHANGE_THEME_STYLE:'3.修改专题图字段表达式及图层风格',
 
   // 我的——登录
   LOGIN: '登录',

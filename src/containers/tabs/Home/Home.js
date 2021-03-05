@@ -65,6 +65,7 @@ export default class Home extends Component {
     setMapArGuide: () => {},
     setMapArMappingGuide: () => {},
     setMapAnalystGuide: () => {},
+    setThemeGuide: () => {},
   }
 
   constructor(props) {
@@ -618,7 +619,7 @@ export default class Home extends Component {
                 position: 'absolute',
                 height: this.height,
                 width: this.width,
-                marginTop: scaleSize(20)
+                marginTop: scaleSize(20),
               }}
             source={getThemeAssets().home.map_bgboard01}
             resizeMode={'stretch'}
@@ -648,7 +649,7 @@ export default class Home extends Component {
               style={
                 {
                   height: this.imgheight,
-                  width: this.width - scaleSize(50)
+                  width: this.width - scaleSize(50),
                 }
               }
               source={getThemeAssets().home.map_my}
@@ -703,14 +704,14 @@ export default class Home extends Component {
         </View>
 
         <TouchableOpacity
-            style={{
-              position: 'absolute',
-              bottom:scaleSize(45),
-              width: scaleSize(60),
-              height: scaleSize(60),
-            }}
-            onPress={this.skip}
-          >
+          style={{
+            position: 'absolute',
+            bottom: scaleSize(45),
+            width: scaleSize(60),
+            height: scaleSize(60),
+          }}
+          onPress={this.skip}
+        >
           <Image
             style={
               {
@@ -720,7 +721,7 @@ export default class Home extends Component {
             source={getThemeAssets().home.icon_map_close}
             resizeMode={'stretch'}
           />
-          </TouchableOpacity>
+        </TouchableOpacity>
 
       </View>
     )
@@ -1049,8 +1050,9 @@ export default class Home extends Component {
     this.height = scaleSize(600)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       this.height = scaleSize(400)
+      this.width = scaleSize(500)
     }
-    this.imgheight = this.height-scaleSize(350)
+    this.imgheight = this.height - scaleSize(350)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       this.imgheight = scaleSize(200)
     }

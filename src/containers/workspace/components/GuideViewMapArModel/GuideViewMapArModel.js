@@ -100,8 +100,9 @@ export default class GuideViewMapArModel extends React.Component {
         style={{
           position: 'absolute',
           alignItems: 'center',
-          alignSelf: 'center', 
+          alignSelf: 'center',
           bottom:Platform.OS === 'ios' ? scaleSize(110) : scaleSize(240),
+          maxWidth: scaleSize(350),
         }}
         arrowstyle={{
           borderTopWidth: 9,

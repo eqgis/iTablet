@@ -964,6 +964,7 @@ export default class MT_layerManager extends React.Component {
         image={getThemeAssets().nav.icon_nav_import}
         title={getLanguage(this.props.language).Map_Main_Menu.MAP_LOAD_XML}
         imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        style={{marginRight: scaleSize(10)}}
         onPress={()=>{
           this.setState({
             isOutput: false,
@@ -985,7 +986,8 @@ export default class MT_layerManager extends React.Component {
 
     return (
       <View style={{
-        width: scaleSize(itemWidth * buttons.length),
+        width: scaleSize((itemWidth + 10)* buttons.length),
+        marginRight: scaleSize(10),
         flexDirection: 'row',
         justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
         alignItems: 'center',

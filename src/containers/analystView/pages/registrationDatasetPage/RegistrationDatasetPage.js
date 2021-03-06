@@ -235,6 +235,7 @@ export default class RegistrationDatasetPage extends Component {
           position: 'absolute',
           backgroundColor: 'transparent',
           left: scaleSize(240),
+          maxWidth: scaleSize(350),
         }}
         arrowstyle={{
           borderBottomWidth: 9,
@@ -308,27 +309,27 @@ export default class RegistrationDatasetPage extends Component {
   }
 
   renderMoveTextGuide = () => {
-    return(
+    return (
       <View
         style={{
           position: 'absolute',
-          top:this.height/2+scaleSize(120)+ this.iosTop,
-          left:scaleSize(180),
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
+          top: this.height / 2 + scaleSize(120) + this.iosTop,
+          left: scaleSize(180),
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
         }}
       >
-      <Text
-        style={{
-          textAlign: 'center',
-          fontSize: scaleSize(25),
-          color: 'black',
-          textAlignVertical: 'center',
-          maxWidth: scaleSize(280),
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: scaleSize(25),
+            color: 'black',
+            textAlignVertical: 'center',
+            maxWidth: scaleSize(280),
           }}>
-            {getLanguage(this.props.language).Profile.MOVE_BROWSING}
-        </Text> 
+          {getLanguage(this.props.language).Profile.MOVE_BROWSING}
+        </Text>
       </View>
     )
   }
@@ -413,7 +414,7 @@ export default class RegistrationDatasetPage extends Component {
 
         {this.state.move && this.renderMoveTextGuide()}
         {this.state.move && this.renderMoveGuide()}
-        
+
 
         {this.state.add && this.renderAddGuideButton()}
 

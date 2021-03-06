@@ -10,7 +10,9 @@ import NavigationService from "../../../../../NavigationService"
 
 function close() {
   const _params = ToolbarModule.getParams()
-  _params.setToolbarVisible(false)
+  _params.setToolbarVisible(false, undefined, {
+    isExistFullMap: false,
+  })
   NavigationService.navigate('CustomModePage')
 }
 

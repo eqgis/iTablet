@@ -325,8 +325,8 @@ export default class GuideViewMapThemeModel extends React.Component {
         rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop()},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_thematic,
-        landguideStyle:{left: screen.getScreenWidth() / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenWidth() / 2 + scaleSize(80)},
+        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(250)},
+        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(80)},
       })
     } else if(this.state.count === 2){
       this.setState({
@@ -337,8 +337,8 @@ export default class GuideViewMapThemeModel extends React.Component {
         rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop()},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
-        landguideStyle:{left: screen.getScreenWidth() / 2 - scaleSize(130)},
-        landrightViewStyle:{left: screen.getScreenWidth() / 2 + scaleSize(200)},
+        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(130)},
+        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(200)},
       })
     } else {
       this.props.setThemeGuide(false)

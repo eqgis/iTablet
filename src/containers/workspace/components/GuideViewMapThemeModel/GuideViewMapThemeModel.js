@@ -30,6 +30,7 @@ export default class GuideViewMapThemeModel extends React.Component {
     setMapArGuide: () => {},
     setMapArMappingGuide: () => {},
     setThemeGuide: () => {},
+    device: any,
   }
 
 
@@ -44,6 +45,8 @@ export default class GuideViewMapThemeModel extends React.Component {
       rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
       rightViewStyle: {},
       guideStyle: {},
+      landguideStyle: {},
+      landrightViewStyle: {},
     }
   }
 
@@ -149,8 +152,6 @@ export default class GuideViewMapThemeModel extends React.Component {
     )
   }
 
-
-
   renderAddRight = () => {
     return (
       <View
@@ -182,6 +183,135 @@ export default class GuideViewMapThemeModel extends React.Component {
     )
   }
 
+  renderAddGuideLand = () => {
+    return (
+      <View
+        style={[{
+          position: 'absolute',
+          height: scaleSize(500),
+          width: scaleSize(400),
+          bottom: scaleSize(40),
+          left: screen.getScreenWidth() / 2 - scaleSize(510),
+          // justifyContent: 'center',
+          alignItems: 'center',
+        },this.state.landguideStyle]}
+      >
+
+        <Image
+          style={
+            {
+              position: 'absolute',
+              height: scaleSize(400),
+              width: scaleSize(400),
+            }}
+          source={getThemeAssets().home.map_bgboard01}
+          resizeMode={'stretch'}
+        />
+
+        <Text
+          style={{
+            marginTop: scaleSize(30),
+            textAlign: 'center',
+            fontSize: scaleSize(30),
+            color: 'black',
+            fontWeight: 'bold',
+            textAlignVertical: 'center',
+            maxWidth: scaleSize(380),
+          }}
+        >
+          {this.state.title}
+        </Text>
+
+        <Image
+          style={
+            {
+              height: scaleSize(200),
+              width: scaleSize(350),
+            }
+          }
+          source={this.state.sourceImage}
+          resizeMode={'contain'}
+        />
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#505050',
+            borderRadius: scaleSize(50),
+            width: scaleSize(220),
+            height: scaleSize(60),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={this.next}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: scaleSize(25),
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            {this.state.nextText}
+          </Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            bottom: scaleSize(10),
+            width: scaleSize(60),
+            height: scaleSize(60),
+          }}
+          onPress={this.skip}
+        >
+          <Image
+            style={
+              {
+                width: scaleSize(50),
+                height: scaleSize(50),
+              }}
+            source={getThemeAssets().home.icon_map_close}
+            resizeMode={'stretch'}
+          />
+        </TouchableOpacity>
+
+      </View>
+    )
+  }
+
+  renderAddRightLand = () => {
+    return (
+      <View
+        style={[{
+          position: 'absolute',
+          backgroundColor: 'white',
+          left: screen.getScreenWidth() / 2 - scaleSize(180),
+          bottom: scaleSize(20),
+          width: scaleSize(100),
+          height: scaleSize(100),
+          borderRadius: scaleSize(50),
+          alignItems: 'center',
+          justifyContent: 'center',
+        },this.state.landrightViewStyle]}
+      >
+        <MTBtn
+          style={styles.btn}
+          imageStyle={styles.btnImage}
+          key={0}
+          title={this.state.rightTitle}
+          textColor={'black'}
+          textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
+          size={MTBtn.Size.NORMAL}
+          image={this.state.rightsourceImage}
+          opacity={0}
+        // separator={scaleSize(2)}
+        />
+      </View>
+    )
+  }
+
 
 
   next = () => {
@@ -195,6 +325,8 @@ export default class GuideViewMapThemeModel extends React.Component {
         rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop()},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_thematic,
+        landguideStyle:{left: screen.getScreenWidth() / 2 - scaleSize(250)},
+        landrightViewStyle:{left: screen.getScreenWidth() / 2 + scaleSize(80)},
       })
     } else if(this.state.count === 2){
       this.setState({
@@ -205,6 +337,8 @@ export default class GuideViewMapThemeModel extends React.Component {
         rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop()},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
+        landguideStyle:{left: screen.getScreenWidth() / 2 - scaleSize(130)},
+        landrightViewStyle:{left: screen.getScreenWidth() / 2 + scaleSize(200)},
       })
     } else {
       this.props.setThemeGuide(false)
@@ -216,6 +350,10 @@ export default class GuideViewMapThemeModel extends React.Component {
   }
 
   render() {
+    this.isLand = false
+    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      this.isLand = true
+    }
     return (
       <View
         style={{
@@ -232,9 +370,13 @@ export default class GuideViewMapThemeModel extends React.Component {
             opacity: 0.8,
           }]} />
 
-        {this.renderAddGuide()}
+        {!this.isLand&&this.renderAddGuide()}
 
-        {this.renderAddRight()}
+        {!this.isLand&&this.renderAddRight()}
+
+        {this.isLand&&this.renderAddGuideLand()}
+
+        {this.isLand&&this.renderAddRightLand()}
 
       </View>
     )

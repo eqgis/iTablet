@@ -175,7 +175,7 @@ export default class GuideViewMapThemeModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={this.state.rightsourceImage}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>

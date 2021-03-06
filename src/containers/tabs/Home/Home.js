@@ -607,7 +607,7 @@ export default class Home extends Component {
             borderRadius: scaleSize(20),
             width: this.width,
             height: this.height,
-            bottom: scaleSize(150),
+            bottom: this.bottom,
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
@@ -706,7 +706,7 @@ export default class Home extends Component {
         <TouchableOpacity
           style={{
             position: 'absolute',
-            bottom: scaleSize(45),
+            bottom: this.skipbottom,
             width: scaleSize(60),
             height: scaleSize(60),
           }}
@@ -1048,14 +1048,17 @@ export default class Home extends Component {
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
     this.height = scaleSize(600)
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      this.height = scaleSize(400)
-      this.width = scaleSize(500)
-    }
+    this.bottom = scaleSize(150)
     this.imgheight = this.height - scaleSize(350)
+    this.skipbottom = scaleSize(45)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      this.height = scaleSize(500)
+      this.width = scaleSize(550)
+      this.bottom = scaleSize(100)
       this.imgheight = scaleSize(200)
+      this.skipbottom = scaleSize(20)
     }
+
     return (
       <View style={{ flex: 1 }}>
         <Container

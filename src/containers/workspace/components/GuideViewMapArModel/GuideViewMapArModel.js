@@ -86,7 +86,7 @@ export default class GuideViewMapArModel extends React.Component {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          alignSelf: 'center', 
+          alignSelf: 'center',
           top: scaleSize(440) + screen.getIphonePaddingTop(),
         }}
       />
@@ -100,8 +100,8 @@ export default class GuideViewMapArModel extends React.Component {
         style={{
           position: 'absolute',
           alignItems: 'center',
-          alignSelf: 'center', 
-          bottom:Platform.OS === 'ios' ? scaleSize(110) : scaleSize(240),
+          alignSelf: 'center',
+          bottom: Platform.OS === 'ios' ? scaleSize(110) : scaleSize(240),
         }}
         arrowstyle={{
           borderTopWidth: 9,
@@ -139,7 +139,7 @@ export default class GuideViewMapArModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().functionBar.icon_ar_special_effects}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>
@@ -170,7 +170,7 @@ export default class GuideViewMapArModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().functionBar.icon_tool_launch}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>
@@ -189,7 +189,7 @@ export default class GuideViewMapArModel extends React.Component {
         launch: false,
         tool: true,
         backgroundStyle: { opacity: 0.2 },
-        nextStyle: {bottom: Platform.OS === 'ios' ? scaleSize(120) : scaleSize(250)},
+        nextStyle: { bottom: Platform.OS === 'ios' ? scaleSize(120) : scaleSize(250) },
       })
 
       const params = ToolbarModule.getParams()
@@ -251,7 +251,7 @@ export default class GuideViewMapArModel extends React.Component {
             opacity: 0.8,
             borderColor: 'black',
             borderWidth: scaleSize(2),
-          },this.state.nextStyle]}
+          }, this.state.nextStyle]}
           onPress={this.next}
         >
           <Text

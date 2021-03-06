@@ -46,9 +46,9 @@ export default class GuideViewMapArMappingModel extends React.Component {
     super(props)
     this.state = {
       measure: true,
-      tool:false,
-      backgroundStyle:{},
-      nextStyle:{},
+      tool: false,
+      backgroundStyle: {},
+      nextStyle: {},
     }
   }
 
@@ -57,21 +57,21 @@ export default class GuideViewMapArMappingModel extends React.Component {
   }
 
   renderMeasureGuide = () => {
-      return (
-        <GuideView
-          title={getLanguage(this.props.language).Profile.MEASURE_GUIDE}
-          style={{
-            position: 'absolute',
-            backgroundColor: 'transparent',
-            top: scaleSize(350) + screen.getIphonePaddingTop(),
-            right: scaleSize(120),
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}
-        />
-      )
+    return (
+      <GuideView
+        title={getLanguage(this.props.language).Profile.MEASURE_GUIDE}
+        style={{
+          position: 'absolute',
+          backgroundColor: 'transparent',
+          top: scaleSize(350) + screen.getIphonePaddingTop(),
+          right: scaleSize(120),
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+      />
+    )
   }
 
   renderToolGuide = () => {
@@ -81,8 +81,8 @@ export default class GuideViewMapArMappingModel extends React.Component {
         style={{
           position: 'absolute',
           alignItems: 'center',
-          alignSelf: 'center', 
-          bottom:Platform.OS === 'ios' ? scaleSize(110) : scaleSize(110),
+          alignSelf: 'center',
+          bottom: Platform.OS === 'ios' ? scaleSize(110) : scaleSize(110),
         }}
         arrowstyle={{
           borderTopWidth: 9,
@@ -120,7 +120,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().functionBar.icon_tool_ar_measure}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>
@@ -128,12 +128,12 @@ export default class GuideViewMapArMappingModel extends React.Component {
   }
 
   next = () => {
-    if(this.state.measure){
+    if (this.state.measure) {
       this.setState({
-        measure:false,
-        tool:true,
+        measure: false,
+        tool: true,
         backgroundStyle: { opacity: 0.2 },
-        nextStyle: { bottom : scaleSize(120)},
+        nextStyle: { bottom: scaleSize(120) },
       })
       const params = ToolbarModule.getParams()
       const _data = ARMeasureData.getData()
@@ -148,7 +148,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
         data: _data.data,
         ...data,
       })
-    }else{
+    } else {
       ToolbarModule.getParams().setToolbarVisible(false)
       this.props.setMapArMappingGuide(false)
     }
@@ -174,11 +174,11 @@ export default class GuideViewMapArMappingModel extends React.Component {
             width: '100%',
             height: '100%',
             opacity: 0.8,
-          },this.state.backgroundStyle]} />
+          }, this.state.backgroundStyle]} />
         {this.state.measure && this.renderMeasureGuide()}
         {this.state.tool && this.renderToolGuide()}
 
-        {this.state.measure&&this.renderMeasurebackgr()}
+        {this.state.measure && this.renderMeasurebackgr()}
 
         <TouchableOpacity
           style={[{
@@ -190,7 +190,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
             opacity: 0.8,
             borderColor: 'black',
             borderWidth: scaleSize(2),
-          },this.state.nextStyle]}
+          }, this.state.nextStyle]}
           onPress={this.next}
         >
           <Text

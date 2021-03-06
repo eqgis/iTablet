@@ -631,6 +631,7 @@ async function close(type) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerSelectionAttribute', {
       isCollection:true,
+      preType:_data.preType,
     })
     await SMap.clearTrackingLayer()
     GLOBAL.toolBox &&

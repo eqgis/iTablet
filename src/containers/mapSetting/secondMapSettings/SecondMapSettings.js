@@ -307,7 +307,7 @@ export default class SecondMapSettings extends Component {
     let centerY = this.formatNumberToString(mapCenter.y)
     let mapScale = await SMap.getMapScale()
     let scale = this.formatNumberToString(mapScale)
-    data[0].value = `${centerX}/${centerY}`
+    data[0].value = `${centerX}\n${centerY}`
     data[1].value = `1:${scale}`
     data[2].value = await SMap.isVisibleScalesEnabled()
     return data

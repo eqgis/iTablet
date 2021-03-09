@@ -240,7 +240,7 @@ export default class ToolbarBottomButtons extends React.Component {
         //   break
         case ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE:
           // image = require('../../../../../../assets/mapTools/icon_attribute_white.png')
-          image = getThemeAssets().tabBar.tab_attribute
+          image = getThemeAssets().publicAssets.icon_bar_attribute_selected
           action = () => {
             NavigationService.navigate('LayerAttribute3D', { type: 'MAP_3D' })
           }

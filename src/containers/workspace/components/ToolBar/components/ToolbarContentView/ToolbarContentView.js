@@ -347,6 +347,7 @@ export default class ToolbarContentView extends React.Component {
   /***************************************** HorizontalTable ***************************************/
   renderHorizontalTable = () => {
     let numColumns = 1
+    const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     return (
       <FlatList
         key={this.props.device.orientation + '_ScrollView'}
@@ -357,14 +358,16 @@ export default class ToolbarContentView extends React.Component {
               style={[
                 {
                   width: Height.TABLE_ROW_HEIGHT_4,
-                  height: Height.TABLE_ROW_HEIGHT_4,
+                  // height: Height.TABLE_ROW_HEIGHT_4,
                   justifyContent: 'center',
                   alignItems: 'center',
                 },
+                !isLandscape && { height: Height.TABLE_ROW_HEIGHT_4 },
               ]}
               title={item.title}
               textColor={item.disable ? '#A0A0A0' : color.font_color_white}
               textStyle={{ fontSize: setSpText(20) }}
+              textProps={isLandscape ? {} : { numberOfLines:2 }}
               image={item.image}
               background={item.background}
               onPress={async () => {

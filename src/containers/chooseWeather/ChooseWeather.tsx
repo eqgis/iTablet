@@ -42,23 +42,23 @@ export default class ChooseWeather extends React.Component<IProps, IState> {
 
   weatherData = [
     {
-      title: GLOBAL.language === 'CN' ? '春天' : 'spring',
+      title: GLOBAL.language === 'CN' ? '春天' : 'Spring',
       key: 'SpringFlower',
     },
     {
-      title: GLOBAL.language === 'CN' ? '夏天' : 'summer',
+      title: GLOBAL.language === 'CN' ? '夏天' : 'Summer',
       key: 'CloudLightening',
     },
     {
-      title: GLOBAL.language === 'CN' ? '秋天' : 'autumn',
+      title: GLOBAL.language === 'CN' ? '秋天' : 'Autumn',
       key: 'AutumnLeave',
     },
     {
-      title: GLOBAL.language === 'CN' ? '冬天' : 'winter',
+      title: GLOBAL.language === 'CN' ? '冬天' : 'Winter',
       key: 'Snow',
     },
     {
-      title: GLOBAL.language === 'CN' ? '雪花' : 'snow',
+      title: GLOBAL.language === 'CN' ? '雪花' : 'Snow',
       key: 'CartoonSnow',
     },
     {

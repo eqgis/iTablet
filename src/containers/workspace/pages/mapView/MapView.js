@@ -109,6 +109,8 @@ import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
 import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
 import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
+import GuideViewMapCollectModel from '../../components/GuideViewMapCollectModel'
+import GuideViewMapEditModel from '../../components/GuideViewMapEditModel'
 
 GLOBAL.markerTag = 118082
 
@@ -156,6 +158,8 @@ export default class MapView extends React.Component {
     mapArMappingGuide: PropTypes.bool,
     mapAnalystGuide: PropTypes.bool,
     themeGuide: PropTypes.bool,
+    collectGuide: PropTypes.bool,
+    mapEditGuide: PropTypes.bool,
 
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
@@ -3460,6 +3464,7 @@ export default class MapView extends React.Component {
     )
   }
 
+  //专题图引导界面 add jiakai
   renderMapThemeGuideView = () => {
     return(
       <GuideViewMapThemeModel
@@ -3468,6 +3473,27 @@ export default class MapView extends React.Component {
       />
     )
   }
+
+  //外业采集引导界面 add jiakai
+  renderMapCollectGuideView = () => {
+    return(
+      <GuideViewMapCollectModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
+  //地图浏览引导界面 add jiakai
+  renderMapEditGuideView = () => {
+    return(
+      <GuideViewMapEditModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
 
 
   renderContainer = () => {
@@ -3710,6 +3736,8 @@ export default class MapView extends React.Component {
         {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
         {(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
         {(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
+        {(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
+        {(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
       </View>
     )
   }

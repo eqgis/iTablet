@@ -5,6 +5,10 @@ const map_bgboard = require('./map_bgboard.png')
 const map_add_data = require('./map_add_data.png')
 const map_making_thematic = require('./map_making_thematic.png')
 const map_style = require('./map_style.png')
+const map_newmap =require('./map_newmap.png')
+const map_symbol_selection = require('./map_symbol_selection.png')
+const map_data_edit = require('./map_data_edit.png')
+const icon_small_close = require('./icon_small_close.png')
 
 export default {
   map_my,
@@ -14,4 +18,8 @@ export default {
   map_add_data,
   map_making_thematic,
   map_style,
+  map_newmap,
+  map_symbol_selection,
+  map_data_edit,
+  icon_small_close,
 }

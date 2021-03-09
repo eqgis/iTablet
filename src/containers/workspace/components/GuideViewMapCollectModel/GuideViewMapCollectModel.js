@@ -21,15 +21,11 @@ import { getThemeAssets } from '../../../../assets'
 
 
 
-//专题制图引导界面
-export default class GuideViewMapThemeModel extends React.Component {
+//外业采集引导界面
+export default class GuideViewMapCollectModel extends React.Component {
   props: {
-    mapArGuide: Boolean,
-    mapArMappingGuide: Boolean,
     language: any,
-    setMapArGuide: () => {},
-    setMapArMappingGuide: () => {},
-    setThemeGuide: () => {},
+    setCollectGuide:() => {},
     device: any,
   }
 
@@ -38,11 +34,11 @@ export default class GuideViewMapThemeModel extends React.Component {
     super(props)
     this.state = {
       count:1,
-      title: getLanguage(this.props.language).Profile.ADD_THEME_DATA,
+      title: getLanguage(this.props.language).Profile.START_COLLECT,
       nextText: getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(1/3)',
-      sourceImage:getThemeAssets().home.map_add_data,
-      rightsourceImage:getThemeAssets().functionBar.icon_tool_add,
-      rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+      sourceImage:getThemeAssets().home.map_newmap,
+      rightsourceImage:getThemeAssets().functionBar.icon_tool_start,
+      rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.START,
       rightViewStyle: {},
       guideStyle: {},
       landguideStyle: {},
@@ -61,7 +57,7 @@ export default class GuideViewMapThemeModel extends React.Component {
           position: 'absolute',
           height: scaleSize(500),
           width: scaleSize(400),
-          top: scaleSize(340) + screen.getIphonePaddingTop(),
+          top: scaleSize(240) + screen.getIphonePaddingTop(),
           right: scaleSize(140),
           // justifyContent: 'center',
           alignItems: 'center',
@@ -158,7 +154,7 @@ export default class GuideViewMapThemeModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          top: scaleSize(295) + screen.getIphonePaddingTop(),
+          top: scaleSize(195) + screen.getIphonePaddingTop(),
           right: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
@@ -287,7 +283,7 @@ export default class GuideViewMapThemeModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenWidth() / 2 - scaleSize(180),
+          left: screen.getScreenWidth() / 2 - scaleSize(300),
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
@@ -318,35 +314,36 @@ export default class GuideViewMapThemeModel extends React.Component {
     if(this.state.count === 1){
       this.setState({
         count:2,
-        title:getLanguage(this.props.language).Profile.CHOOSE_THEME_TYPE,
+        title:getLanguage(this.props.language).Profile.CHOOSE_COLLECT,
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(2/3)',
-        sourceImage:getThemeAssets().home.map_making_thematic,
-        guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
-        rightsourceImage:getThemeAssets().functionBar.icon_tool_thematic,
-        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(80)},
+        sourceImage:getThemeAssets().home.map_symbol_selection,
+        guideStyle:{top: scaleSize(420) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(395) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+        rightsourceImage:getThemeAssets().functionBar.icon_tool_collection,
+        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(370)},
+        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(50)},
       })
     } else if(this.state.count === 2){
       this.setState({
         count:3,
-        title:getLanguage(this.props.language).Profile.CHANGE_THEME_STYLE,
+        title:getLanguage(this.props.language).Profile.EDIT_COLLECT,
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(3/3)',
-        sourceImage:getThemeAssets().home.map_style,
-        rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
-        rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
-        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(130)},
-        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(200)},
+        sourceImage:getThemeAssets().home.map_data_edit,
+        guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+        rightsourceImage:getThemeAssets().functionBar.icon_tool_edit,
+        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(250)},
+        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(80)},
       })
     } else {
-      this.props.setThemeGuide(false)
+      this.props.setCollectGuide(false)
     }
   }
 
   skip = () => {
-    this.props.setThemeGuide(false)
+    this.props.setCollectGuide(false)
   }
 
   render() {

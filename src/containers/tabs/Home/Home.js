@@ -66,6 +66,9 @@ export default class Home extends Component {
     setMapArMappingGuide: () => {},
     setMapAnalystGuide: () => {},
     setThemeGuide: () => {},
+    setCollectGuide: () => {},
+    setMapEditGuide: () => {},
+    setMapSceneGuide: () => {},
   }
 
   constructor(props) {
@@ -88,6 +91,9 @@ export default class Home extends Component {
         this.props.setMapArMappingGuide(true)
         this.props.setMapAnalystGuide(true)
         this.props.setThemeGuide(true)
+        this.props.setCollectGuide(true)
+        this.props.setMapEditGuide(true)
+        this.props.setMapSceneGuide(true)
       }
     }
     InteractionManager.runAfterInteractions(() => {

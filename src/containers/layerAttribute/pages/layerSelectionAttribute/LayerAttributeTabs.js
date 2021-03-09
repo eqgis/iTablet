@@ -84,6 +84,7 @@ export default class LayerAttributeTabs extends React.Component {
     clearAttributeHistory: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
+    setSelection:() => {},
   }
 
   constructor(props) {
@@ -749,6 +750,7 @@ export default class LayerAttributeTabs extends React.Component {
         showAddModal={this.showLayerAddView}
         isShowSystemFields={this.state.isShowSystemFields}
         navigation={this.props.navigation}
+        selection={this.props.selection}
       />
     )
   }

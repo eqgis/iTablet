@@ -37,6 +37,7 @@ export default class LayerSelectionAttribute extends React.Component {
     onGetToolVisible?: () => {},
     onAttributeFieldDelete?: () => {},
     isShowSystemFields: boolean,
+    selection: Object,
   }
 
   constructor(props) {
@@ -981,12 +982,15 @@ export default class LayerSelectionAttribute extends React.Component {
     let buttonActions = [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
+          geoID = data.rowData[1].value
+        if (this.props.selection.length === 1) {
           geoID = data.rowData[0].value
+        }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
-          if(!has){
-            Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
-            return
-          }
+        if (!has) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          return
+        }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
         let layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
         let isTaggingLayer = layerType === 'TAGGINGLAYER'

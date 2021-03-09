@@ -6,11 +6,14 @@ import * as React from 'react'
 import {
   View,
   Text,
+  Image,
+  TouchableOpacity,
 } from 'react-native'
 import {
   scaleSize,
   screen,
 } from '../../../../utils'
+import { getThemeAssets } from '../../../../assets'
 
 //气泡弹窗控件
 export default class GuideView extends React.Component {
@@ -18,7 +21,11 @@ export default class GuideView extends React.Component {
     title: any,//显示内容
     arrowstyle: any,//弹窗风格
     style: any,//弹窗箭头风格
-    type: any,
+    type: any,//控制箭头和气泡排列顺序
+    winstyle: any,//弹窗内容风格
+    titlestyle:any,//显示内容风格
+    delete:any,//控制是否显示删除按钮
+    deleteAction:()=>{},
   }
 
 
@@ -52,7 +59,8 @@ export default class GuideView extends React.Component {
           }, this.props.arrowstyle]} />}
 
         <View
-          style={{
+          style={[{
+            flexDirection:'row',
             backgroundColor: 'white',
             borderRadius: scaleSize(20),
             // height: scaleSize(80),
@@ -63,16 +71,40 @@ export default class GuideView extends React.Component {
             paddingRight: scaleSize(30),
             paddingTop: scaleSize(20),
             paddingBottom: scaleSize(20),
-          }}>
+          },this.props.winstyle]}>
           <Text
-            style={{
-              textAlign: 'center',
+            style={[{
+              textAlign: 'left',
               fontSize: scaleSize(25),
               color: 'black',
-              maxWidth: scaleSize(400),
-            }}>
+              maxWidth: scaleSize(350),
+            },this.props.titlestyle]}>
             {this.props.title}
           </Text>
+
+          {this.props.delete &&
+            <TouchableOpacity
+              activeOpacity={1}
+              style={ {
+                marginLeft: scaleSize(20),
+                height: scaleSize(40),
+                width: scaleSize(40),
+              }}
+              onPress={() => {
+                this.props.deleteAction()
+              }}
+            >
+              <Image
+                style={
+                  {
+                    height: scaleSize(40),
+                    width: scaleSize(40),
+                  }
+                }
+                source={getThemeAssets().home.icon_small_close}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>}
         </View>
 
         {!this.props.type &&

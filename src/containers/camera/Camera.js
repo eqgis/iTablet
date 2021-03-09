@@ -196,7 +196,7 @@ export default class Camera extends React.Component {
       datasourceName: this.datasourceAlias,
       datasetName: this.datasetName,
       mediaPaths,
-    },!this.attribute,this.attribute,this.index,this.selectionAttribute)
+    },!this.attribute,this.index,this.selectionAttribute)
     if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)&&!this.attribute) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
     }

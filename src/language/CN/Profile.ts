@@ -44,6 +44,13 @@ const Profile = {
   ADD_THEME_DATA:'1.添加制作专题图的数据',
   CHOOSE_THEME_TYPE:'2.选择需要制作的专题图类型',
   CHANGE_THEME_STYLE:'3.修改专题图字段表达式及图层风格',
+  START_COLLECT:'1.基于模版新建采集地图',
+  CHOOSE_COLLECT:'2.选择符号进行数据采集',
+  EDIT_COLLECT:'3.对采集后的数据进行编辑',
+  MAP_BROWSE:'点击打开浏览地图',
+  MAP_TAGGINGL:'点击选择标注方式，进行标注',
+  SCENE_BROWSE:'点击打开浏览场景',
+  SCENE_FLY:'点击设置飞行路线，从不同角度自动浏览场景',
 
   // 我的——登录
   LOGIN: '登录',

@@ -1830,7 +1830,8 @@ function getThemeFiveMenu() {
     ToolbarBtnType.MENU_FLEX,
     {
       type: ToolbarBtnType.THEME_GRAPH_TYPE,
-      image: getThemeAssets().themeType.theme_graphmap_selected,
+      // image: getThemeAssets().themeType.theme_graphmap_selected,
+      image: getThemeAssets().themeType.theme_graphmap,
       action: ThemeAction.changeGraphType,
     },
     ToolbarBtnType.TOOLBAR_COMMIT,

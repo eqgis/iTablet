@@ -400,7 +400,9 @@ export default class ToolBar extends React.Component {
             if (!isNaN(params.column)) this.column = params.column
             if (!isNaN(params.row)) this.row = params.row
             this.showToolbarAndBox(isShow, type)
-            !isShow && this.props.existFullMap && this.props.existFullMap()
+            // setVisible之后是否退出全屏
+            const { isExistFullMap = true } = params
+            !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
             // }
             if (params.cb) {
               setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)

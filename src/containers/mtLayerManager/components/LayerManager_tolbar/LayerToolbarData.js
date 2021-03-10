@@ -106,11 +106,12 @@ function layersetting(language, isGroup = false) {
       //   title: '插入复制的图层',
       //   data: [],
       // },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // 屏蔽分享图层
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
@@ -197,11 +198,11 @@ function layerThemeCreateSetting(language, isGroup = false) {
         // '重命名',
         image: getThemeAssets().layer.icon_layer_rename,
       },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
@@ -247,11 +248,11 @@ function layerThemeModifySetting(language, isGroup = false) {
         // '重命名',
         image: getThemeAssets().layer.icon_layer_rename,
       },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
@@ -479,11 +480,11 @@ function layerPlottingSetting(language, isGroup = false) {
         // '重命名',
         image: getThemeAssets().layer.icon_layer_rename,
       },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
     ]
   }
   return [
@@ -519,11 +520,11 @@ function layerNavigationSetting(language, isGroup = false) {
         // '重命名',
         image: getThemeAssets().layer.icon_layer_rename,
       },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',
@@ -569,11 +570,11 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
         // '重命名',
         image: getThemeAssets().layer.icon_layer_rename,
       },
-      {
-        title: getLanguage(language).Map_Layer.LAYERS_SHARE,
-        // '分享图层',
-        image: getThemeAssets().nav.icon_nav_share,
-      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SHARE,
+      //   // '分享图层',
+      //   image: getThemeAssets().nav.icon_nav_share,
+      // },
       {
         title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
         // '移除',

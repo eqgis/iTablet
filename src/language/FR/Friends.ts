@@ -74,6 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'Veuillez attendre la fin du téléchargement',
   DATA_NOT_FOUND: 'Les données non retrouvées, souhaitez-vous les télécharger à nouveau?',
   LOAD_ORIGIN_PIC: 'Origine de la charge',
+  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
   // CustomActions
   MAP: 'Carte',
   TEMPLATE: 'Modèle',

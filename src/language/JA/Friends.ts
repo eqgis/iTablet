@@ -74,6 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'データダウンロード完了を待ってください',
   DATA_NOT_FOUND: 'ファイルを見つかりません。再度ダウンロードしますか?',
   LOAD_ORIGIN_PIC: '原図のロード',
+  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
   // CustomActions
   MAP: 'マップ',
   TEMPLATE: 'テンプレート',

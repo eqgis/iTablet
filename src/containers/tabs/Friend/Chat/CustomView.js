@@ -13,6 +13,7 @@ import {
 import { scaleSize } from '../../../../utils/screen'
 import MSGConstant from '../../../../constants/MsgConstant'
 import CoworkInviteView from '../Cowork/CoworkInviteView'
+import { getLanguage } from '../../../../language'
 
 export default class CustomView extends React.Component {
   props: {
@@ -37,9 +38,10 @@ export default class CustomView extends React.Component {
           textAlign: 'center',
           fontSize: scaleSize(20),
           color: textColor,
+          padding: scaleSize(10),
         }}
       >
-        {'暂不支持的消息类型'}
+        {getLanguage().Friends.UNSUPPORTED_MESSAGE}
       </Text>
     )
   }
@@ -95,9 +97,10 @@ export default class CustomView extends React.Component {
      * 文件下载通知消息，包括图层，数据集等
      */
     if (
-      type === MSGConstant.MSG_MAP ||
-      type === MSGConstant.MSG_LAYER ||
-      type === MSGConstant.MSG_DATASET
+      type === MSGConstant.MSG_MAP 
+      // ||
+      // type === MSGConstant.MSG_LAYER ||
+      // type === MSGConstant.MSG_DATASET
     ) {
       let fileSize = this.props.currentMessage.originMsg.message.message
         .fileSize

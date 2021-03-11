@@ -74,6 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'Lütfen indirme tamamlanana kadar bekleyin',
   DATA_NOT_FOUND: 'Veri bulunamadı, tekrar indirmek ister misiniz?',
   LOAD_ORIGIN_PIC: 'Başlangıcı Yükle',
+  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
   // CustomActions
   MAP: 'Harita',
   TEMPLATE: 'Taslak',

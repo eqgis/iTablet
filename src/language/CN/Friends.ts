@@ -71,6 +71,7 @@ const Friends = {
   WAIT_DOWNLOADING: '请等待数据下载完成',
   DATA_NOT_FOUND: '找不到文件，是否重新下载?',
   LOAD_ORIGIN_PIC: '加载原图',
+  UNSUPPORTED_MESSAGE: '暂不支持的消息类型',
   // CustomActions
   MAP: '地图',
   TEMPLATE: '模板',

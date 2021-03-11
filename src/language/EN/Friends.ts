@@ -74,6 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'Please wait until download completed',
   DATA_NOT_FOUND: 'Data not fond, would you like to download it again?',
   LOAD_ORIGIN_PIC: 'Load Origin',
+  UNSUPPORTED_MESSAGE: 'Unsupported Message',
   // CustomActions
   MAP: 'Map',
   TEMPLATE: 'Template',

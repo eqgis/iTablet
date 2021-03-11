@@ -73,6 +73,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'يرجى الانتظار حتى اكتمال التنزيل',
   DATA_NOT_FOUND: 'لم يتم العثور على البيانات ، هل ترغب في تنزيلها مرة أخرى؟',
   LOAD_ORIGIN_PIC: 'تحميل الأصل',
+  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
   // CustomActions
   MAP: 'خريطة',
   TEMPLATE: 'تنسيق الملف',

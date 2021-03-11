@@ -39,7 +39,7 @@ export default class GuideViewMapEditModel extends React.Component {
   componentDidMount() {
     this.timer = setInterval(() => {
       this.next()
-    }, 3000)
+    }, 5000)
   }
 
   componentWillUnmount() {
@@ -60,7 +60,7 @@ export default class GuideViewMapEditModel extends React.Component {
       style = {
         position: 'absolute',
         backgroundColor: 'transparent',
-        left: screen.getScreenWidth() / 2 - left,
+        left: screen.getScreenSafeWidth() / 2 - left,
         bottom: scaleSize(110),
         flexDirection: 'column',
         justifyContent: 'center',
@@ -108,7 +108,7 @@ export default class GuideViewMapEditModel extends React.Component {
       style = {
         position: 'absolute',
         backgroundColor: 'transparent',
-        left: screen.getScreenWidth() / 2 - scaleSize(210),
+        left: screen.getScreenSafeWidth() / 2 - scaleSize(210),
         bottom: scaleSize(110),
         flexDirection: 'column',
         justifyContent: 'center',

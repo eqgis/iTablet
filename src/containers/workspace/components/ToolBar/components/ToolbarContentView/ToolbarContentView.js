@@ -27,6 +27,7 @@ export default class ToolbarContentView extends React.Component {
     device: Object,
     currentLayer: Object,
     data: Array,
+    secdata: Array,
     language: string,
     selection: Array,
     existFullMap: () => {},
@@ -316,7 +317,7 @@ export default class ToolbarContentView extends React.Component {
     return (
       <ToolbarArMeasure
       data={this.props.data}
-      secdata={ARMeasureData.getMeasureAreaData().measureAreadata}
+      secdata={this.props.secdata}
       type={this.props.type}
       containerType={ToolbarType.table}
       column={this.state.column}

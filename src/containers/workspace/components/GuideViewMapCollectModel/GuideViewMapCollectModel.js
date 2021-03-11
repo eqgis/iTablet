@@ -64,7 +64,19 @@ export default class GuideViewMapCollectModel extends React.Component {
         },this.state.guideStyle]}
       >
 
-        <Image
+
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: 'white',
+            borderRadius: scaleSize(20),
+            height: scaleSize(400),
+            width: scaleSize(400),
+            alignItems: 'center',
+          }}
+        >
+
+          {/* <Image
           style={
             {
               position: 'absolute',
@@ -73,55 +85,58 @@ export default class GuideViewMapCollectModel extends React.Component {
             }}
           source={getThemeAssets().home.map_bgboard}
           resizeMode={'stretch'}
-        />
+        /> */}
 
-        <Text
-          style={{
-            marginTop: scaleSize(30),
-            textAlign: 'left',
-            fontSize: scaleSize(30),
-            color: 'black',
-            fontWeight: 'bold',
-            textAlignVertical: 'center',
-            maxWidth: scaleSize(380),
-          }}
-        >
-          {this.state.title}
-        </Text>
-
-        <Image
-          style={
-            {
-              height: scaleSize(200),
-              width: scaleSize(350),
-            }
-          }
-          source={this.state.sourceImage}
-          resizeMode={'contain'}
-        />
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#505050',
-            borderRadius: scaleSize(50),
-            width: scaleSize(220),
-            height: scaleSize(60),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={this.next}
-        >
           <Text
             style={{
-              textAlign: 'center',
-              fontSize: scaleSize(25),
-              color: 'white',
+              marginTop: scaleSize(30),
+              textAlign: 'left',
+              fontSize: scaleSize(30),
+              color: 'black',
               fontWeight: 'bold',
+              textAlignVertical: 'center',
+              maxWidth: scaleSize(380),
             }}
           >
-            {this.state.nextText}
+            {this.state.title}
           </Text>
-        </TouchableOpacity>
+
+
+          <Image
+            style={
+              {
+                height: scaleSize(200),
+                width: scaleSize(350),
+              }
+            }
+            source={this.state.sourceImage}
+            resizeMode={'contain'}
+          />
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#505050',
+              borderRadius: scaleSize(50),
+              width: scaleSize(220),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={this.next}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: scaleSize(25),
+                color: 'white',
+                fontWeight: 'bold',
+              }}
+            >
+              {this.state.nextText}
+            </Text>
+          </TouchableOpacity>
+
+        </View>
 
 
         <TouchableOpacity
@@ -187,13 +202,24 @@ export default class GuideViewMapCollectModel extends React.Component {
           height: scaleSize(500),
           width: scaleSize(400),
           bottom: scaleSize(40),
-          left: screen.getScreenWidth() / 2 - scaleSize(510),
+          left: screen.getScreenSafeWidth() / 2 - scaleSize(510),
           // justifyContent: 'center',
           alignItems: 'center',
         },this.state.landguideStyle]}
       >
 
-        <Image
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: 'white',
+            borderRadius: scaleSize(20),
+            height: scaleSize(400),
+            width: scaleSize(400),
+            alignItems: 'center',
+          }}
+        >
+
+          {/* <Image
           style={
             {
               position: 'absolute',
@@ -202,55 +228,57 @@ export default class GuideViewMapCollectModel extends React.Component {
             }}
           source={getThemeAssets().home.map_bgboard01}
           resizeMode={'stretch'}
-        />
+        /> */}
 
-        <Text
-          style={{
-            marginTop: scaleSize(30),
-            textAlign: 'left',
-            fontSize: scaleSize(30),
-            color: 'black',
-            fontWeight: 'bold',
-            textAlignVertical: 'center',
-            maxWidth: scaleSize(380),
-          }}
-        >
-          {this.state.title}
-        </Text>
-
-        <Image
-          style={
-            {
-              height: scaleSize(200),
-              width: scaleSize(350),
-            }
-          }
-          source={this.state.sourceImage}
-          resizeMode={'contain'}
-        />
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#505050',
-            borderRadius: scaleSize(50),
-            width: scaleSize(220),
-            height: scaleSize(60),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={this.next}
-        >
           <Text
             style={{
-              textAlign: 'center',
-              fontSize: scaleSize(25),
-              color: 'white',
+              marginTop: scaleSize(30),
+              textAlign: 'left',
+              fontSize: scaleSize(30),
+              color: 'black',
               fontWeight: 'bold',
+              textAlignVertical: 'center',
+              maxWidth: scaleSize(380),
             }}
           >
-            {this.state.nextText}
+            {this.state.title}
           </Text>
-        </TouchableOpacity>
+
+          <Image
+            style={
+              {
+                height: scaleSize(200),
+                width: scaleSize(350),
+              }
+            }
+            source={this.state.sourceImage}
+            resizeMode={'contain'}
+          />
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#505050',
+              borderRadius: scaleSize(50),
+              width: scaleSize(220),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={this.next}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: scaleSize(25),
+                color: 'white',
+                fontWeight: 'bold',
+              }}
+            >
+              {this.state.nextText}
+            </Text>
+          </TouchableOpacity>
+
+        </View>
 
 
         <TouchableOpacity
@@ -283,7 +311,7 @@ export default class GuideViewMapCollectModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenWidth() / 2 - scaleSize(300),
+          left: screen.getScreenSafeWidth() / 2 - scaleSize(300),
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
@@ -321,8 +349,8 @@ export default class GuideViewMapCollectModel extends React.Component {
         rightViewStyle:{top: scaleSize(395) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_collection,
-        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(370)},
-        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(50)},
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(370)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
       })
     } else if(this.state.count === 2){
       this.setState({
@@ -334,8 +362,8 @@ export default class GuideViewMapCollectModel extends React.Component {
         rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_edit,
-        landguideStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenWidth('LANDSCAPE') / 2 + scaleSize(80)},
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
       })
     } else {
       this.props.setCollectGuide(false)

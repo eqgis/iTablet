@@ -146,6 +146,7 @@ export default class ToolBar extends React.Component {
       // column: props.containerProps.column,
       // data: this.getData(props.type),
       data: [],
+      secdata: [],
       buttons: [],
       bottom: new Animated.Value(-props.device.height),
       right: new Animated.Value(-props.device.width),
@@ -377,6 +378,7 @@ export default class ToolBar extends React.Component {
             showMenuDialog: params.showMenuDialog || false,
             type: type,
             data: params.data || data,
+            secdata: params.secdata || [],
             customView: customView,
             buttons: params.buttons || buttons,
             isTouchProgress: params.isTouchProgress || false,
@@ -763,6 +765,7 @@ export default class ToolBar extends React.Component {
         type={this.state.type}
         containerType={this.state.containerType}
         data={this.state.data}
+        secdata={this.state.secdata}
         existFullMap={this.existFullMap}
         setVisible={this.setVisible}
         showBox={this.showBox}

@@ -14,19 +14,29 @@ class ArMeasure extends FunctionModule {
 
   getToolbarSize = (type, orientation, additional = {}) => {
     let size,
-    height = 0,
-    column = -1,
-    row = -1
+      height = 0,
+      column = -1,
+      row = -1
     switch (type) {
       case 'arMeasure':
         if (additional.data === undefined) additional.data = []
         let maxLimit = 6
-        column = additional.column !== undefined ? additional.column : 4
+        column = additional.column !== undefined ? additional.column : 5
         row = Math.ceil(additional.data.length / column)
         row = row > maxLimit ? maxLimit : row // 限制最大宽度
         height = scaleSize(240) * row
-        size = { height , column, row  }
+        size = { height, column, row }
         break
+      case ToolbarType.table: {
+        if (additional.data === undefined) additional.data = []
+        let maxLimit = type === ToolbarType.scrollTable ? 2 : 6
+        column = 5
+        row = Math.ceil(additional.data.length / column)
+        row = row > maxLimit ? maxLimit : row // 限制最大宽度
+        height = scaleSize(120) * row
+        size = { height, column, row }
+        break
+      }
     }
     return size
   }

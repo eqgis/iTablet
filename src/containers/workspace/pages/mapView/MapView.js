@@ -3732,12 +3732,12 @@ export default class MapView extends React.Component {
         {this.renderProgress()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this.renderIncrementDialog()}
-        {(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
+        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
       </View>
     )
   }

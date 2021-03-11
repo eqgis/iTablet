@@ -609,7 +609,7 @@ export default class Home extends Component {
         <View
           style={{
             position: 'absolute',
-            backgroundColor: 'transparents',
+            backgroundColor: 'white',
             borderRadius: scaleSize(20),
             width: this.width,
             height: this.height,
@@ -619,7 +619,7 @@ export default class Home extends Component {
           }}
         >
 
-          <Image
+          {/* <Image
             style={
               {
                 position: 'absolute',
@@ -629,7 +629,7 @@ export default class Home extends Component {
               }}
             source={getThemeAssets().home.map_bgboard01}
             resizeMode={'stretch'}
-          />
+          /> */}
 
           <Text
             style={styles.titleText}

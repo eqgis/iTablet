@@ -13,6 +13,9 @@ import { getLanguage } from '../../../../language'
 import { screen, scaleSize, LayerUtils } from '../../../../utils'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../NavigationService'
+import {
+  SMap,
+} from 'imobile_for_reactnative'
 
 const itemGap = scaleSize(20)
 
@@ -36,6 +39,7 @@ export default class LayerTopBar extends React.Component {
     canDelete?: boolean, //是否可以点击删除
     currentIndex?: Object,//点击的数据集字段位置
     selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
+    islayerSelection?: Object,//当前属性拦选中的属性的图层名
   }
 
   static defaultProps = {
@@ -98,15 +102,20 @@ export default class LayerTopBar extends React.Component {
   }
 
   // 多媒体采集
-  captureImage = () => {
+  captureImage = async ()=> {
     const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
 
     if (currentLayer) {
-      const { datasourceAlias } = currentLayer // 标注数据源名称
-      const { datasetName } = currentLayer // 标注图层名称
+      let { datasourceAlias } = currentLayer // 标注数据源名称
+      let { datasetName } = currentLayer // 标注图层名称
+      if(this.props.islayerSelection){
+        let info = await SMap.getDataNameByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path)
+        datasetName = info.datasetName
+        datasourceAlias = info.datasourceAlias
+      }
       NavigationService.navigate('Camera', {
         datasourceAlias,
         datasetName,

@@ -57,6 +57,7 @@ export default class Camera extends React.Component {
     this.attribute = params.attribute || false
     this.atcb = params.atcb
     this.selectionAttribute = params.selectionAttribute || false
+    this.ids = GLOBAL.layerSelection.ids || []
 
     this.state = {
       data: null,
@@ -196,7 +197,7 @@ export default class Camera extends React.Component {
       datasourceName: this.datasourceAlias,
       datasetName: this.datasetName,
       mediaPaths,
-    },!this.attribute,this.index,this.selectionAttribute)
+    }, !this.attribute, { index: this.index, selectionAttribute: this.selectionAttribute, ids: this.ids })
     if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)&&!this.attribute) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
     }

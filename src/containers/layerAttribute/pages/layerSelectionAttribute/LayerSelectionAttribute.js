@@ -976,14 +976,14 @@ export default class LayerSelectionAttribute extends React.Component {
     //   head = ['名称', '属性值']
     //   type = LayerAttributeTable.Type.SINGLE_DATA
     // }
-
+    GLOBAL.layerSelection = this.props.layerSelection
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
       buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
           geoID = data.rowData[1].value
-        if (this.props.selection.length === 1) {
+        if (this.props.layerSelection.ids.length === 1) {
           geoID = data.rowData[0].value
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)

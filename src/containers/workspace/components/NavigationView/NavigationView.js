@@ -729,10 +729,16 @@ export default class NavigationView extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{
+                    style={[{
                       fontSize: setSpText(24),
                       padding: 0,
-                    }}
+                    },
+                    // 部分安卓多行文字最后一行显示不全问题 zcj
+                    Platform.OS === 'android' && {
+                      lineHeight: setSpText(25),
+                      paddingTop: setSpText(6),
+                    },
+                    ]}
                   >
                     {this.state.startName || GLOBAL.STARTNAME}
                   </Text>
@@ -771,10 +777,15 @@ export default class NavigationView extends React.Component {
                   <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={{
+                    style={[{
                       fontSize: setSpText(24),
                       padding: 0,
-                    }}
+                    },
+                    Platform.OS === 'android' && {
+                      lineHeight: setSpText(25),
+                      paddingTop: setSpText(6),
+                    },
+                    ]}
                   >
                     {this.state.endName || GLOBAL.ENDNAME}
                   </Text>

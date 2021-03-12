@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, Platform } from 'react-native'
 import { color } from '../../styles'
 
 export const itemWidth = Dimensions.get('window').width
@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     flexWrap: 'wrap',
     marginRight: 100,
+    ...Platform.select({
+      android: {
+        lineHeight: largeFontSize,
+        paddingTop: 5,
+      },
+    }),
   },
 
   viewStyle2: {

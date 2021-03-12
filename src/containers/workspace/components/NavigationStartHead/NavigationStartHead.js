@@ -262,11 +262,15 @@ export default class NavigationStartHead extends React.Component {
                     <Text
                       numberOfLines={2}
                       ellipsizeMode={'tail'}
-                      style={{
+                      style={[{
                         fontSize: setSpText(24),
-                        // lineHeight: scaleSize(26),
                         padding: 0,
-                      }}
+                      },
+                      Platform.OS === 'android' && {
+                        lineHeight: setSpText(25),
+                        paddingTop: setSpText(6),
+                      },
+                      ]}
                     >
                       {GLOBAL.STARTNAME}
                     </Text>
@@ -305,11 +309,15 @@ export default class NavigationStartHead extends React.Component {
                     <Text
                       numberOfLines={2}
                       ellipsizeMode={'tail'}
-                      style={{
+                      style={[{
                         fontSize: setSpText(24),
-                        // lineHeight: scaleSize(26),
                         padding: 0,
-                      }}
+                      },
+                      Platform.OS === 'android' && {
+                        lineHeight: setSpText(25),
+                        paddingTop: setSpText(6),
+                      },
+                      ]}
                     >
                       {GLOBAL.ENDNAME}
                     </Text>

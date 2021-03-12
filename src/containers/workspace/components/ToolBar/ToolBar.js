@@ -819,7 +819,7 @@ export default class ToolBar extends React.Component {
           : 0
       }
 
-      size = { height: screen.getScreenSafeHeight() - softBarHeight }
+      size = { height: screen.getScreenSafeHeight(this.props.device.orientation) - softBarHeight }
     }
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       size.width = this.props.device.width

@@ -138,7 +138,7 @@ async function getData(type) {
                     element.mtime = info
                   }
                   element.subTitle = element.mtime
-                  element.image = getThemeAssets().ar.toolbar.icon_mapdata
+                  element.image = getThemeAssets().module.icon_map_3d
                   if (element.name === customname.name) {
                     element.rightView = (
                       <View

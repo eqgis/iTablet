@@ -164,6 +164,7 @@ export default class MapView extends React.Component {
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
     coworkMessages: PropTypes.object,
+    currentGroup: PropTypes.object,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -3732,12 +3733,12 @@ export default class MapView extends React.Component {
         {this.renderProgress()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this.renderIncrementDialog()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
-        {!GLOBAL.coworkMode&&(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
       </View>
     )
   }

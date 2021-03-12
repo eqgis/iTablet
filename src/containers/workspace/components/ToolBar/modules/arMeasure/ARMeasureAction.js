@@ -143,9 +143,6 @@ function arMeasureCircular() {
 //AR体积 长方体
 function arMeasureCuboid() {
   (async function() {
-    if (Platform.OS === 'ios') {
-      return
-    }
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       GLOBAL.ARDeviceListDialog.setVisible(true)
@@ -168,9 +165,6 @@ function arMeasureCuboid() {
 //AR体积 圆柱体
 function arMeasureCylinder() {
   (async function() {
-    if (Platform.OS === 'ios') {
-      return
-    }
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
       GLOBAL.ARDeviceListDialog.setVisible(true)

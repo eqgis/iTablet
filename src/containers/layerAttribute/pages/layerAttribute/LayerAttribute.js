@@ -1516,6 +1516,7 @@ export default class LayerAttribute extends React.Component {
             attributesData={this.state.attributes.head}
             currentIndex={this.state.currentIndex}
             refreshAction={this.refreshAction}
+            layerAttribute={true}
           />
         )}
         <View

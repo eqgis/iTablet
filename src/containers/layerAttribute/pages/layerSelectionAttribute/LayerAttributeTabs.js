@@ -173,7 +173,7 @@ export default class LayerAttributeTabs extends React.Component {
             caption: GLOBAL.currentLayer.name,
             name: GLOBAL.currentLayer.name,
           },
-          ids: id,
+          ids: [id],
         }])
       }
       this.setState({

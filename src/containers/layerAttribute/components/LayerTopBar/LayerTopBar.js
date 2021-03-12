@@ -40,6 +40,7 @@ export default class LayerTopBar extends React.Component {
     currentIndex?: Object,//点击的数据集字段位置
     selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
     islayerSelection?: Object,//当前属性拦选中的属性的图层名
+    layerAttribute?:Object,//是否为地图界面跳转属性
   }
 
   static defaultProps = {
@@ -52,6 +53,7 @@ export default class LayerTopBar extends React.Component {
     canDelete: false,
     currentIndex: 0,
     selectionAttribute: false,
+    layerAttribute:false,
   }
 
   constructor(props) {
@@ -107,6 +109,7 @@ export default class LayerTopBar extends React.Component {
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
+    const layerAttribute = this.props.layerAttribute
 
     if (currentLayer) {
       let { datasourceAlias } = currentLayer // 标注数据源名称
@@ -122,6 +125,7 @@ export default class LayerTopBar extends React.Component {
         index,
         attribute: true,
         selectionAttribute,
+        layerAttribute,
         atcb: () => {
           if (
             this.props.refreshAction &&

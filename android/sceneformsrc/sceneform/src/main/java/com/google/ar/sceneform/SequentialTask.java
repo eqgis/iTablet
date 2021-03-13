@@ -14,7 +14,7 @@ import java.util.concurrent.Executor;
  */
 @TargetApi(24)
 @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
-class SequentialTask {
+public class SequentialTask {
   @Nullable private CompletableFuture<Void> future;
 
   /**

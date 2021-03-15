@@ -173,12 +173,12 @@ export default StyleSheet.create({
   scrollContentStyleP: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingTop: scaleSize(20),
+    paddingTop: scaleSize(30),
   },
   scrollContentStyleL: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingTop: scaleSize(10),
+    paddingTop: scaleSize(15),
   },
   itemView: {
     marginVertical: scaleSize(15),

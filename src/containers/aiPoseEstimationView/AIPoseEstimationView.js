@@ -378,10 +378,12 @@ export default class AIPoseEstimationView extends React.Component {
           style={{
             backgroundColor: color.white,
             height: scaleSize(480),
+            borderTopLeftRadius: scaleSize(40),
+            borderTopRightRadius: scaleSize(40),
           }}
         >
           <View style={styles.titleView}>
-            <Text style={[styles.text, { color: color.white }]}>
+            <Text style={[styles.text, { color: color.black }]}>
               {
                 getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AI_POSE_ESTIMATION_LOOK

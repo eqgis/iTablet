@@ -51,7 +51,7 @@ async function getData(type) {
           trackData,
           {
             type: 'add',
-            image: require('../../../assets/mapTools/icon_add_white.png'),
+            image: getThemeAssets().ar.toolbar.icon_newdata,
             action: async () => {
               GLOBAL.ARContainer.setHeaderVisible(false)
               const type = ConstToolType.SM_ARSCENEMODULE_WORKSPACE
@@ -69,7 +69,7 @@ async function getData(type) {
       buttons = [
         {
           type: 'style',
-          image: require('../../../assets/lightTheme/themeType/theme_create_unique_style_white.png'),
+          image: getThemeAssets().functionBar.icon_tool_thematic,
           action: () => {
             GLOBAL.ARContainer.setHeaderVisible(false)
             ToolbarModule.getParams().setToolbarVisible(
@@ -83,7 +83,7 @@ async function getData(type) {
         },
         {
           type: 'change',
-          image: require('../../../assets/lightTheme/collection/icon_collection_change.png'),
+          image: getThemeAssets().ar.toolbar.icon_toolbar_switch,
           action: () => {
             const containerType = ToolbarType.list
             GLOBAL.ARContainer.setHeaderVisible(false)
@@ -94,7 +94,7 @@ async function getData(type) {
         },
         {
           type: 'add',
-          image: require('../../../assets/mapTools/icon_add_white.png'),
+          image: getThemeAssets().ar.toolbar.icon_newdata,
           action: async () => {
             GLOBAL.ARContainer.setHeaderVisible(false)
             const type = ConstToolType.SM_ARSCENEMODULE_WORKSPACE
@@ -138,7 +138,7 @@ async function getData(type) {
                     element.mtime = info
                   }
                   element.subTitle = element.mtime
-                  element.image = require('../../../assets/mapToolbar/list_type_map_black.png')
+                  element.image = getThemeAssets().module.icon_map_3d
                   if (element.name === customname.name) {
                     element.rightView = (
                       <View
@@ -169,7 +169,7 @@ async function getData(type) {
               }
               }
               data1.push({
-                image: require('../../../assets/mapToolbar/list_type_maps.png'),
+                image: getThemeAssets().module.icon_map_3d,
                 title: getLanguage(GLOBAL.language).Map_Label.SCENE,
                 data: _data,
               })
@@ -197,7 +197,7 @@ async function getData(type) {
                       fontSize: size.fontSize.fontSizeMd,
                       height: scaleSize(30),
                       backgroundColor: 'transparent',
-                      color: color.section_text,
+                      color: 'black',
                       textAlignVertical: 'center',
                       textAlign: 'right',
                     }}
@@ -430,7 +430,7 @@ async function getData(type) {
               const _data = []
               for (let index = 0; index < mapData.length; index++) {
                 const element = mapData[index]
-                element.image = require('../../../assets/mapToolbar/list_type_map_black.png')
+                element.image = getThemeAssets().ar.toolbar.icon_mapdata
                 element.name = mapData[index].name
                 if (element.name=== CurrentLayer.name) {
                   element.rightView = (
@@ -480,7 +480,7 @@ async function getData(type) {
             {
             title: getLanguage(GLOBAL.language).Map_Main_Menu
               .NETWORK_MODEL,
-            image: require('../../../assets/mapToolbar/list_type_map.png'),
+            image: getThemeAssets().ar.toolbar.icon_mapdata,
             data: _data,
             }
           ]

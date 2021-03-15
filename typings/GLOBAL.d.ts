@@ -158,7 +158,10 @@ declare namespace GLOBAL {
   /** 地图界面专题图预览时的header MapView.js PreviewHeader */
   let PreviewHeader: any              
   /** 地图选点界面 EnterDatumPoint.js MapSelectPointLatitudeAndLongitude */
-  let DATUMPOINTVIEW: any             
+  let DATUMPOINTVIEW: any      
+  
+  /** 框选点选属性界面 当前页浏览属性数据 LayerSelectionAttribute.js*/
+  let layerSelection: any
 
   let currentUser: any
  /** 三维AR管线header ARSceneView.js Container */

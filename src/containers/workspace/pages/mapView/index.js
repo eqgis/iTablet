@@ -98,6 +98,10 @@ const mapStateToProps = state => ({
   coworkInfo: state.cowork.toJS().coworkInfo,
   currentTask: state.cowork.toJS().currentTask,
   coworkMessages: state.cowork.toJS().messages,
+  themeGuide: state.home.toJS().themeGuide,
+  collectGuide: state.home.toJS().collectGuide,
+  mapEditGuide: state.home.toJS().mapEditGuide,
+  currentGroup: state.cowork.toJS().currentGroup,
 })
 
 const mapDispatchToProps = {

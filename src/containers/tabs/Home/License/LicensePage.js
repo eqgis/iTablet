@@ -184,7 +184,7 @@ class LicensePage extends Component {
         }}
         opacity={1}
         opacityStyle={styles.opacityView}
-        style={styles.dialogBackground}
+        style={[styles.dialogBackground, { height: GLOBAL.language == 'FR' ? scaleSize(340) : scaleSize(300)}]}
       >
         {this.renderLicenseDialogChildren()}
       </Dialog>
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dialogBackground: {
-    height: scaleSize(300),
+    // height: scaleSize(300),
     backgroundColor: color.content_white,
   },
   dialogHeaderImg: {

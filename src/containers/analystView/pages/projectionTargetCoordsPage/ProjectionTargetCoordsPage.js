@@ -301,6 +301,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     let newData = this.state.coordSysData
     for (let i = 0; i < newData.length; i++) {
       if (i === section.index) {
+        if(newData[i].allData.length == 0) return
         section.visible = !section.visible
         newData[section.index] = section
       } else {

@@ -84,6 +84,7 @@ export default class LayerAttributeTabs extends React.Component {
     clearAttributeHistory: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
+    setSelection:() => {},
   }
 
   constructor(props) {
@@ -172,7 +173,7 @@ export default class LayerAttributeTabs extends React.Component {
             caption: GLOBAL.currentLayer.name,
             name: GLOBAL.currentLayer.name,
           },
-          ids: id,
+          ids: [id],
         }])
       }
       this.setState({
@@ -749,6 +750,7 @@ export default class LayerAttributeTabs extends React.Component {
         showAddModal={this.showLayerAddView}
         isShowSystemFields={this.state.isShowSystemFields}
         navigation={this.props.navigation}
+        selection={this.props.selection}
       />
     )
   }
@@ -906,6 +908,7 @@ export default class LayerAttributeTabs extends React.Component {
           currentIndex={this.state.currentIndex}
           refreshAction={this.refreshAction}
           selectionAttribute={this.state.isCollection}
+          islayerSelection = {true}
         />
         {this.state.isShowView && (
           <View

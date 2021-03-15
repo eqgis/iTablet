@@ -55,7 +55,7 @@ async function getData(type, params) {
         },
         {
           type: ToolbarBtnType.SHOW_ATTRIBUTE,
-          action: () => MarkAction.showAttribute,
+          action: MarkAction.showAttribute1,
           image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
         },
       ]
@@ -727,6 +727,9 @@ async function getData(type, params) {
         ToolbarBtnType.MENU_FLEX,
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
+      break
+    case ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE:
+      buttons = [ToolbarBtnType.CANCEL]
       break
   }
   return { data, buttons }

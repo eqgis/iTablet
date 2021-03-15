@@ -16,6 +16,8 @@ import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
+import { jsonUtil, Toast } from '../../../../../../utils'
+import { getLanguage } from '../../../../../../language'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -33,8 +35,13 @@ function openTemplate(type) {
 }
 
 async function showAttribute() {
-  if(GLOBAL.HAVEATTRIBUTE){
-    NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+  let have = await SMap.haveCurrentGeometry()
+  if(have){
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+  }else{
+    if(GLOBAL.HAVEATTRIBUTE){
+      NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+    }
   }
   return true
 }
@@ -65,7 +72,7 @@ function changeCollection(type) {
       toolbarType = ConstToolType.SM_MAP_COLLECTION_POINT
       break
   }
-  
+
   if (isGPSCollect(type)) {
     SLocation.setBackgroundLocationEnable(false)
   }
@@ -107,6 +114,7 @@ function showCollection(type, layerName) {
     cb: () => {
       ToolbarModule.addData({
         lastType: type,
+        lastLayer:layerName,
       })
       createCollector(type, layerName)
     },
@@ -114,6 +122,7 @@ function showCollection(type, layerName) {
 }
 
 function showSymbol() {
+  GLOBAL.HAVEATTRIBUTE = false
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
@@ -248,6 +257,11 @@ async function createCollector(type, layerName) {
 }
 
 async function collectionSubmit(type) {
+  let have = await SMap.haveCurrentGeometry()
+  if (have) {
+    // 是否有新的采集或标注
+    GLOBAL.HAVEATTRIBUTE = true
+  }
   const result = await SCollector.submit(type)
   if (result) {
     //协作时同步编辑对象
@@ -271,8 +285,6 @@ async function collectionSubmit(type) {
     }
     // 采集后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
-    // 是否有新的采集或标注
-    GLOBAL.HAVEATTRIBUTE = true
   }
   return result
 }
@@ -325,13 +337,22 @@ async function close(type) {
       await SLocation.setBackgroundLocationEnable(false)
     }
   }
-  params.existFullMap && params.existFullMap()
-  // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
-  params.setToolbarVisible(false)
-  params.setCurrentTemplateInfo()
-  params.setCurrentSymbol()
-  ToolbarModule.setData() // 关闭Toolbar清除临时数据
-  SMap.setAction(Action.PAN)
+  if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+    NavigationService.navigate('LayerSelectionAttribute', {
+      isCollection:true,
+    })
+    await SMap.clearTrackingLayer()
+    let data = ToolbarModule.getData()
+    showCollection(data.lastType, data.lastLayer)
+  }else{
+    params.existFullMap && params.existFullMap()
+    // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
+    params.setToolbarVisible(false)
+    params.setCurrentTemplateInfo()
+    params.setCurrentSymbol()
+    ToolbarModule.setData() // 关闭Toolbar清除临时数据
+    SMap.setAction(Action.PAN)
+  }
 }
 
 function isGPSCollect (type) {

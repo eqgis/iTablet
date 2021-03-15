@@ -37,6 +37,7 @@ export default class LayerSelectionAttribute extends React.Component {
     onGetToolVisible?: () => {},
     onAttributeFieldDelete?: () => {},
     isShowSystemFields: boolean,
+    selection: Object,
   }
 
   constructor(props) {
@@ -975,18 +976,21 @@ export default class LayerSelectionAttribute extends React.Component {
     //   head = ['名称', '属性值']
     //   type = LayerAttributeTable.Type.SINGLE_DATA
     // }
-
+    GLOBAL.layerSelection = this.props.layerSelection
     let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
       buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
+          geoID = data.rowData[1].value
+        if (this.props.layerSelection.ids.length === 1) {
           geoID = data.rowData[0].value
+        }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
-          if(!has){
-            Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
-            return
-          }
+        if (!has) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          return
+        }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
         let layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
         let isTaggingLayer = layerType === 'TAGGINGLAYER'

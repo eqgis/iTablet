@@ -57,6 +57,8 @@ export default class Camera extends React.Component {
     this.attribute = params.attribute || false
     this.atcb = params.atcb
     this.selectionAttribute = params.selectionAttribute || false
+    this.ids = []
+    this.layerAttribute = params.layerAttribute || false
 
     this.state = {
       data: null,
@@ -190,13 +192,16 @@ export default class Camera extends React.Component {
   }
 
   addMedia = async (mediaPaths = []) => {
+    if(GLOBAL.layerSelection !== undefined){
+      this.ids = GLOBAL.layerSelection.ids
+    }
     // TODO 添加提示
     if (!this.datasourceAlias) return
     let result = await SMediaCollector.addMedia({
       datasourceName: this.datasourceAlias,
       datasetName: this.datasetName,
       mediaPaths,
-    },!this.attribute,this.attribute,this.index,this.selectionAttribute)
+    }, !this.attribute, { index: this.index, selectionAttribute: this.selectionAttribute, ids: this.ids ,layerAttribute:this.layerAttribute})
     if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)&&!this.attribute) {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
     }

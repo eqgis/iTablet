@@ -123,7 +123,7 @@ function getData(type) {
     // ToolbarBtnType.COMPLETE,
   ]
 
-  
+
   buttons.push({
     type: ToolbarBtnType.SHOW_ATTRIBUTE,
     action: () => CollectionAction.showAttribute(),

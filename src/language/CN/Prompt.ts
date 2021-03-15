@@ -75,6 +75,8 @@ const Prompt = {
   OVERWRITE: '覆盖',
   CHOOSE_DATASET: '请选择数据集',
 
+  PLEASE_SUBMIT_EDIT_GEOMETRY: '请先提交当前绘制对象后查看属性',
+
   SET_ALL_MAP_VISIBLE: '全部显示',
   SET_ALL_MAP_INVISIBLE: '全部隐藏',
   LONG_PRESS_TO_SORT: '（长按排序）',

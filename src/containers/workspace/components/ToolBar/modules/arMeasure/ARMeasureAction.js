@@ -36,6 +36,7 @@ function arMeasureArea() {
     GLOBAL.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
       containerType,
       data:_data.data,
+      secdata:_data.measureAreadata,
       ...data,
     })
     // NavigationService.navigate('MeasureAreaView', {
@@ -43,6 +44,38 @@ function arMeasureArea() {
     // })
   })()
 }
+
+// AR测量体积
+function arMeasureVolume() {
+  (async function() {
+    // const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    // if (!isSupportedARCore) {
+    //   GLOBAL.ARDeviceListDialog.setVisible(true)
+    //   return
+    // }
+
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    const _data = ARMeasureData.getMeasureAreaData()
+    const containerType = ToolbarType.arMeasure
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data1,
+    })
+    GLOBAL.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
+      containerType,
+      data:_data.data1,
+      secdata:_data.measureAreadata1,
+      ...data,
+    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'measureArea',
+    // })
+  })()
+}
+
 
 //AR测量面积 多边形
 function arMeasurePolygon() {
@@ -107,6 +140,48 @@ function arMeasureCircular() {
   })()
 }
 
+//AR体积 长方体
+function arMeasureCuboid() {
+  (async function() {
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'arMeasureCuboid',
+    })
+  })()
+}
+
+
+//AR体积 圆柱体
+function arMeasureCylinder() {
+  (async function() {
+    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    if (!isSupportedARCore) {
+      GLOBAL.ARDeviceListDialog.setVisible(true)
+      return
+    }
+
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+
+    NavigationService.navigate('MeasureAreaView', {
+      measureType: 'arMeasureCylinder',
+    })
+  })()
+}
 
 // AR测量距离
 function arMeasureLength() {
@@ -186,4 +261,7 @@ export default {
   arMeasurePolygon,
   arMeasureRectanglet,
   arMeasureCircular,
+  arMeasureVolume,
+  arMeasureCuboid,
+  arMeasureCylinder,
 }

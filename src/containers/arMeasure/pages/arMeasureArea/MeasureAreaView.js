@@ -88,12 +88,22 @@ export default class MeasureAreaView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
+      } else if (this.measureType === 'arMeasureCuboid') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
+      } else if (this.measureType === 'arMeasureCylinder') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
       }
 
       if(this.measureType === 'arMeasureHeight' ||
       this.measureType === 'measureLength' ||
       this.measureType === 'measureArea' ||
-      this.measureType === 'measureAngle') {
+      this.measureType === 'measureAngle' ||
+      this.measureType === 'arMeasureCuboid' ||
+      this.measureType === 'arMeasureCylinder' ) {
         this.isMeasure = true
       }
 
@@ -110,8 +120,8 @@ export default class MeasureAreaView extends React.Component {
       }
       if (
         this.measureType === 'measureLength' ||
-        this.measureType === 'measureArea' || 
-        this.measureType === 'measureAngle'
+        this.measureType === 'measureArea' ||
+        this.measureType === 'measureAngle' 
       ) {
         this.canContinuousDraw = true
       }
@@ -977,6 +987,10 @@ export default class MeasureAreaView extends React.Component {
         SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
       } else if (this.measureType === 'measureAngle') {
         SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
+      } else if (this.measureType === 'arMeasureCuboid') {
+        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CUBOID')
+      } else if (this.measureType === 'arMeasureCylinder') {
+        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
       }
       this.setState({isfirst:true})
     }

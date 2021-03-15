@@ -36,7 +36,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
     mapAnalystGuide: Boolean,
     language: any,
     setMapAnalystGuide: () => {},
-    device:any,
+    device: any,
   }
 
 
@@ -53,8 +53,8 @@ export default class GuideViewMapAnalystModel extends React.Component {
   }
 
   renderAnalystGuide = () => {
-    let style ,arrowstyle
-    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
+    let style, arrowstyle
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       style = {
         top: scaleSize(500) + this.iosTop,
         position: 'absolute',
@@ -65,18 +65,18 @@ export default class GuideViewMapAnalystModel extends React.Component {
         alignItems: 'center',
         alignSelf: 'center',
       }
-      arrowstyle={}
+      arrowstyle = {}
     } else {
       style = {
         bottom: scaleSize(110),
         position: 'absolute',
         backgroundColor: 'transparent',
-        left:screen.getScreenWidth()/2-scaleSize(40),
+        left: screen.getScreenWidth() / 2 - scaleSize(40),
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
       }
-      arrowstyle={
+      arrowstyle = {
         borderTopWidth: 9,
         borderTopColor: 'white',
         borderLeftWidth: 8,
@@ -89,14 +89,14 @@ export default class GuideViewMapAnalystModel extends React.Component {
       <GuideView
         title={getLanguage(this.props.language).Profile.ANALYST_GUIDE}
         style={style}
-        arrowstyle = {arrowstyle}
+        arrowstyle={arrowstyle}
       />
     )
   }
 
   renderProcessGuide = () => {
-    let style ,arrowstyle
-    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
+    let style, arrowstyle
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       style = {
         top: scaleSize(600) + this.iosTop,
         position: 'absolute',
@@ -107,18 +107,18 @@ export default class GuideViewMapAnalystModel extends React.Component {
         alignItems: 'center',
         alignSelf: 'center',
       }
-      arrowstyle={}
+      arrowstyle = {}
     } else {
       style = {
         bottom: scaleSize(110),
         position: 'absolute',
         backgroundColor: 'transparent',
-        left:screen.getScreenWidth()/2+scaleSize(50),
+        left: screen.getScreenWidth() / 2 + scaleSize(50),
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
       }
-      arrowstyle={
+      arrowstyle = {
         borderTopWidth: 9,
         borderTopColor: 'white',
         borderLeftWidth: 8,
@@ -137,30 +137,30 @@ export default class GuideViewMapAnalystModel extends React.Component {
   }
 
   renderAnalystBackgr = () => {
-    let style 
-    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
+    let style
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       style = {
         position: 'absolute',
-          backgroundColor: 'white',
-          top: scaleSize(490) + this.iosTop,
-          right: scaleSize(20),
-          width: scaleSize(100),
-          height: scaleSize(100),
-          borderRadius: scaleSize(50),
-          alignItems: 'center',
-          justifyContent: 'center',
+        backgroundColor: 'white',
+        top: scaleSize(490) + this.iosTop,
+        right: scaleSize(20),
+        width: scaleSize(100),
+        height: scaleSize(100),
+        borderRadius: scaleSize(50),
+        alignItems: 'center',
+        justifyContent: 'center',
       }
     } else {
-        style = {
-          position: 'absolute',
-          backgroundColor: 'white',
-          bottom: scaleSize(20),
-          left:screen.getScreenWidth()/2+scaleSize(80),
-          width: scaleSize(100),
-          height: scaleSize(100),
-          borderRadius: scaleSize(50),
-          alignItems: 'center',
-          justifyContent: 'center',
+      style = {
+        position: 'absolute',
+        backgroundColor: 'white',
+        bottom: scaleSize(20),
+        left: screen.getScreenWidth() / 2 + scaleSize(80),
+        width: scaleSize(100),
+        height: scaleSize(100),
+        borderRadius: scaleSize(50),
+        alignItems: 'center',
+        justifyContent: 'center',
       }
     }
     return (
@@ -176,7 +176,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().functionBar.icon_tool_analysis}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>
@@ -184,8 +184,8 @@ export default class GuideViewMapAnalystModel extends React.Component {
   }
 
   renderProcessBackgr = () => {
-    let style 
-    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
+    let style
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       style = {
         position: 'absolute',
         backgroundColor: 'white',
@@ -198,16 +198,16 @@ export default class GuideViewMapAnalystModel extends React.Component {
         justifyContent: 'center',
       }
     } else {
-        style = {
-          position: 'absolute',
-          backgroundColor: 'white',
-          bottom: scaleSize(20),
-          left:screen.getScreenWidth()/2+scaleSize(205),
-          width: scaleSize(100),
-          height: scaleSize(100),
-          borderRadius: scaleSize(50),
-          alignItems: 'center',
-          justifyContent: 'center',
+      style = {
+        position: 'absolute',
+        backgroundColor: 'white',
+        bottom: scaleSize(20),
+        left: screen.getScreenWidth() / 2 + scaleSize(205),
+        width: scaleSize(100),
+        height: scaleSize(100),
+        borderRadius: scaleSize(50),
+        alignItems: 'center',
+        justifyContent: 'center',
       }
     }
     return (
@@ -223,7 +223,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={getThemeAssets().functionBar.icon_tool_handle}
-          activeOpacity={0.5}
+          opacity={0}
         // separator={scaleSize(2)}
         />
       </View>
@@ -242,10 +242,10 @@ export default class GuideViewMapAnalystModel extends React.Component {
         let sdk = await SMap.getPhoneSDK()
         if (sdk <= 24) {
           this.props.setMapAnalystGuide(false)
-        }else{
+        } else {
           NavigationService.navigate('RegistrationDatasetPage', {})
         }
-      }else{
+      } else {
         NavigationService.navigate('RegistrationDatasetPage', {})
       }
     }
@@ -256,7 +256,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
   }
 
   render() {
-    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0){
+    if (this.props.device.orientation.indexOf('LANDSCAPE') !== 0) {
       this.iosTop = screen.getIphonePaddingTop()
     } else {
       this.iosTop = 0

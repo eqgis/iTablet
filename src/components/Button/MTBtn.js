@@ -37,6 +37,7 @@ export default class MTBtn extends React.Component {
     onPressIn?: () => void, // 按下时的事件
     onPressOut?: () => void, // 松开时的事件
     opacity?: number, // 点击后透明度，若无，在为TouchableHighlight，反之为TouchableOpacity
+    textProps?: any, // 文字属性
   }
 
   static defaultProps = {
@@ -162,6 +163,7 @@ export default class MTBtn extends React.Component {
                 this.props.textColor && { color: this.props.textColor },
                 this.props.separator && { marginTop: this.props.separator },
               ]}
+              {...this.props.textProps}
             >
               {this.props.title}
             </Text>

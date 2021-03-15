@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, Platform } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize } from '../../../../utils'
 
@@ -59,6 +59,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     flexWrap: 'wrap',
     marginRight: 100,
+    // 部分安卓多行文字最后一行显示不全问题 zcj
+    ...Platform.select({
+      android: {
+        lineHeight: largeFontSize,
+        paddingTop: 5,
+      },
+    }),
   },
   viewStyle2: {
     width: '100%',

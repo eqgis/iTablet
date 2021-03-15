@@ -108,6 +108,9 @@ import { Bar } from 'react-native-progress'
 import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
 import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
+import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
+import GuideViewMapCollectModel from '../../components/GuideViewMapCollectModel'
+import GuideViewMapEditModel from '../../components/GuideViewMapEditModel'
 
 GLOBAL.markerTag = 118082
 
@@ -154,10 +157,14 @@ export default class MapView extends React.Component {
     mapArGuide: PropTypes.bool,
     mapArMappingGuide: PropTypes.bool,
     mapAnalystGuide: PropTypes.bool,
+    themeGuide: PropTypes.bool,
+    collectGuide: PropTypes.bool,
+    mapEditGuide: PropTypes.bool,
 
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
     coworkMessages: PropTypes.object,
+    currentGroup: PropTypes.object,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -3458,6 +3465,37 @@ export default class MapView extends React.Component {
     )
   }
 
+  //专题图引导界面 add jiakai
+  renderMapThemeGuideView = () => {
+    return(
+      <GuideViewMapThemeModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
+  //外业采集引导界面 add jiakai
+  renderMapCollectGuideView = () => {
+    return(
+      <GuideViewMapCollectModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
+  //地图浏览引导界面 add jiakai
+  renderMapEditGuideView = () => {
+    return(
+      <GuideViewMapEditModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
+
+
 
   renderContainer = () => {
     return (
@@ -3695,9 +3733,12 @@ export default class MapView extends React.Component {
         {this.renderProgress()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this.renderIncrementDialog()}
-        {(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
-        {(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
+        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
       </View>
     )
   }

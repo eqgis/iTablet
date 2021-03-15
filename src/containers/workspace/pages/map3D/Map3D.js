@@ -45,6 +45,7 @@ import SurfaceView from '../../../../components/SurfaceView'
 import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
+import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -70,6 +71,7 @@ export default class Map3D extends React.Component {
     setBackAction: () => {},
     removeBackAction: () => {},
     setToolbarStatus: () => {},
+    mapSceneGuide: Object,
   }
 
   constructor(props) {
@@ -1034,6 +1036,16 @@ export default class Map3D extends React.Component {
     )
   }
 
+    //三维浏览引导界面 add jiakai
+    renderMapSceneGuideView = () => {
+      return(
+        <GuideViewMapSceneModel
+          language={this.props.language}
+          device={this.props.device}
+        />
+      )
+    }
+
   renderContainer = () => {
     return (
       <Container
@@ -1092,6 +1104,7 @@ export default class Map3D extends React.Component {
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
         {this.renderProgress()}
+        {this.props.mapSceneGuide && this.renderMapSceneGuideView()}
       </View>
     )
   }

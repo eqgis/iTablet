@@ -146,6 +146,7 @@ export default class ToolBar extends React.Component {
       // column: props.containerProps.column,
       // data: this.getData(props.type),
       data: [],
+      secdata: [],
       buttons: [],
       bottom: new Animated.Value(-props.device.height),
       right: new Animated.Value(-props.device.width),
@@ -377,6 +378,7 @@ export default class ToolBar extends React.Component {
             showMenuDialog: params.showMenuDialog || false,
             type: type,
             data: params.data || data,
+            secdata: params.secdata || [],
             customView: customView,
             buttons: params.buttons || buttons,
             isTouchProgress: params.isTouchProgress || false,
@@ -400,7 +402,9 @@ export default class ToolBar extends React.Component {
             if (!isNaN(params.column)) this.column = params.column
             if (!isNaN(params.row)) this.row = params.row
             this.showToolbarAndBox(isShow, type)
-            !isShow && this.props.existFullMap && this.props.existFullMap()
+            // setVisible之后是否退出全屏
+            const { isExistFullMap = true } = params
+            !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
             // }
             if (params.cb) {
               setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
@@ -761,6 +765,7 @@ export default class ToolBar extends React.Component {
         type={this.state.type}
         containerType={this.state.containerType}
         data={this.state.data}
+        secdata={this.state.secdata}
         existFullMap={this.existFullMap}
         setVisible={this.setVisible}
         showBox={this.showBox}

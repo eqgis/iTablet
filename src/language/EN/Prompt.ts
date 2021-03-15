@@ -77,6 +77,8 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'Overwrite',
   CHOOSE_DATASET: 'Please select dataset',
 
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+
   SET_ALL_MAP_VISIBLE: 'All visible',
   SET_ALL_MAP_INVISIBLE: 'All invisible',
   LONG_PRESS_TO_SORT: '(Long press to sort)',

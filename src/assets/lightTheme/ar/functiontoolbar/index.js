@@ -35,6 +35,10 @@ const icon_ar_area_unselect = require('./icon_ar_area_unselect.png')
 const icon_ar_distance_unselect = require('./icon_ar_distance_unselect.png')
 const icon_ar_altimetry_select = require('./icon_ar_altimetry_select.png')
 const icon_ar_angle = require('./icon_ar_angle.png')
+const icon_ar_volume_select = require('./icon_ar_volume_select.png')
+const icon_ar_volume = require('./icon_ar_volume.png')
+const icon_ar_cuboid = require('./icon_ar_cuboid.png')
+const icon_ar_cylinder = require('./icon_ar_cylinder.png')
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
   rightbar_ai_classify_light, // 目标分类
@@ -75,4 +79,8 @@ export default {
   icon_ar_distance_unselect,
   icon_ar_altimetry_select,
   icon_ar_angle,
+  icon_ar_volume_select,
+  icon_ar_volume,
+  icon_ar_cuboid,
+  icon_ar_cylinder,
 }

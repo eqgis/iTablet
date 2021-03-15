@@ -3,6 +3,10 @@ import AboutITablet from './AboutITablet'
 import {
   setGuideShow,
   setMapAnalystGuide,
+  setThemeGuide,
+  setCollectGuide,
+  setMapEditGuide,
+  setMapSceneGuide,
 } from '../../../../redux/models/home'
 import {
   setMapArGuide,
@@ -18,6 +22,10 @@ const mapDispatchToProps = {
   setMapArGuide,
   setMapArMappingGuide,
   setMapAnalystGuide,
+  setThemeGuide,
+  setCollectGuide,
+  setMapEditGuide,
+  setMapSceneGuide,
 }
 export default connect(
   mapStateToProps,

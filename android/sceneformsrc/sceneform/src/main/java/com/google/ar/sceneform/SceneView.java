@@ -227,7 +227,7 @@ public class SceneView extends SurfaceView implements Choreographer.FrameCallbac
   }
 
   /** Returns the Sceneform Scene created by this view. */
-  public Scene getScene() {
+  public Scene getArScene() {
     return scene;
   }
 

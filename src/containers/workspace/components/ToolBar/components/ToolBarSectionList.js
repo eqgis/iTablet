@@ -286,6 +286,7 @@ export default class ToolBarSectionList extends React.Component {
       // : getPublicAssets().mapTools.tools_legend_off
       ? getThemeAssets().layer.icon_visible
       : getThemeAssets().layer.icon_invisible
+    const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     return (
       <TouchableOpacity
         activeOpacity={this.props.activeOpacity}
@@ -333,7 +334,10 @@ export default class ToolBarSectionList extends React.Component {
           <Text
             numberOfLines={1}
             ellipsizeMode={'tail'}
-            style={[styles.sectionTitle, this.props.sectionTitleStyle]}
+            style={[styles.sectionTitle, this.props.sectionTitleStyle,
+              isLandscape && (section.expressionType || section.buttons || section.extraData) &&{
+                maxWidth: scaleSize(100),
+              }]}
           >
             {section.title}
           </Text>

@@ -102,8 +102,6 @@ export default class ToolbarBottomButtons extends React.Component {
       this.props.close && this.props.close(this.props.type)
     }
     // this.ToolbarModule.setData() // 关闭Toolbar清除临时数据
-    //清除新增标注或者采集状态 add jiakai
-    GLOBAL.HAVEATTRIBUTE = false
   }
 
   back = () => this.props.back(this.props.type)
@@ -242,7 +240,7 @@ export default class ToolbarBottomButtons extends React.Component {
         //   break
         case ToolbarBtnType.SHOW_MAP3D_ATTRIBUTE:
           // image = require('../../../../../../assets/mapTools/icon_attribute_white.png')
-          image = getThemeAssets().tabBar.tab_attribute
+          image = getThemeAssets().publicAssets.icon_bar_attribute_selected
           action = () => {
             NavigationService.navigate('LayerAttribute3D', { type: 'MAP_3D' })
           }

@@ -65,6 +65,10 @@ export default class Home extends Component {
     setMapArGuide: () => {},
     setMapArMappingGuide: () => {},
     setMapAnalystGuide: () => {},
+    setThemeGuide: () => {},
+    setCollectGuide: () => {},
+    setMapEditGuide: () => {},
+    setMapSceneGuide: () => {},
   }
 
   constructor(props) {
@@ -87,6 +91,9 @@ export default class Home extends Component {
         this.props.setMapArMappingGuide(true)
         this.props.setMapAnalystGuide(true)
         this.props.setThemeGuide(true)
+        this.props.setCollectGuide(true)
+        this.props.setMapEditGuide(true)
+        this.props.setMapSceneGuide(true)
       }
     }
     InteractionManager.runAfterInteractions(() => {
@@ -602,27 +609,27 @@ export default class Home extends Component {
         <View
           style={{
             position: 'absolute',
-            backgroundColor: 'transparents',
+            backgroundColor: 'white',
             borderRadius: scaleSize(20),
             width: this.width,
             height: this.height,
-            bottom: scaleSize(150),
+            bottom: this.bottom,
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
 
-          <Image
+          {/* <Image
             style={
               {
                 position: 'absolute',
                 height: this.height,
                 width: this.width,
-                marginTop: scaleSize(20)
+                marginTop: scaleSize(20),
               }}
             source={getThemeAssets().home.map_bgboard01}
             resizeMode={'stretch'}
-          />
+          /> */}
 
           <Text
             style={styles.titleText}
@@ -648,7 +655,7 @@ export default class Home extends Component {
               style={
                 {
                   height: this.imgheight,
-                  width: this.width - scaleSize(50)
+                  width: this.width - scaleSize(50),
                 }
               }
               source={getThemeAssets().home.map_my}
@@ -703,14 +710,14 @@ export default class Home extends Component {
         </View>
 
         <TouchableOpacity
-            style={{
-              position: 'absolute',
-              bottom:scaleSize(45),
-              width: scaleSize(60),
-              height: scaleSize(60),
-            }}
-            onPress={this.skip}
-          >
+          style={{
+            position: 'absolute',
+            bottom: this.skipbottom,
+            width: scaleSize(60),
+            height: scaleSize(60),
+          }}
+          onPress={this.skip}
+        >
           <Image
             style={
               {
@@ -720,7 +727,7 @@ export default class Home extends Component {
             source={getThemeAssets().home.icon_map_close}
             resizeMode={'stretch'}
           />
-          </TouchableOpacity>
+        </TouchableOpacity>
 
       </View>
     )
@@ -1047,13 +1054,17 @@ export default class Home extends Component {
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
     this.height = scaleSize(600)
+    this.bottom = scaleSize(150)
+    this.imgheight = this.height - scaleSize(350)
+    this.skipbottom = scaleSize(45)
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      this.height = scaleSize(400)
-    }
-    this.imgheight = this.height-scaleSize(350)
-    if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      this.height = scaleSize(500)
+      this.width = scaleSize(550)
+      this.bottom = scaleSize(100)
       this.imgheight = scaleSize(200)
+      this.skipbottom = scaleSize(20)
     }
+
     return (
       <View style={{ flex: 1 }}>
         <Container

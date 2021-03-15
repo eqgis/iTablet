@@ -371,6 +371,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR Draw Region',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR Draw Point',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Measure Height',
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Measure Volume',//Need to be translated
   MAP_AR_VIDEO: 'Video',
   MAP_AR_IMAGE: 'Picture',
   MAP_AR_EFFECT: 'Effect',
@@ -393,6 +394,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Rectangle Measure',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Circle Measure',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboid',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylinder',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Cuboid Measure',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Cylinder Measure',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Turn left',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Turn right',

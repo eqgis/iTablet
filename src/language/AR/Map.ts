@@ -372,6 +372,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'صورة الواقع المعزز',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'نقاط رسم AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Measure Volume',//Need to be translated
 
   MAP_AR_VIDEO: 'فيديو للواقع المعزز',
   MAP_AR_IMAGE: 'صور للواقع المعزز',
@@ -395,6 +396,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'قياس المستطيل',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'قياس دائري',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboid',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylinder',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Cuboid Measure',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Cylinder Measure',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',

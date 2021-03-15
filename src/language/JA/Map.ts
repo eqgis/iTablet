@@ -371,6 +371,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'ARポリゴン描画',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'ARドローポイント',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'ARの高さ測定',
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Measure Volume',//Need to be translated
   MAP_AR_VIDEO: '動画', //jp0730
   MAP_AR_IMAGE: '画像',
   MAP_AR_EFFECT: '特殊効果',
@@ -393,6 +394,10 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: '矩形計測',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: '円形計測',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboid',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylinder',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Cuboid Measure',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Cylinder Measure',//Need to be translated
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: '左折してください',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: '右に曲がる',

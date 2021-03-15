@@ -43,6 +43,16 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'Veri kümesi eklemek için kontrol edin',
   ADD_SELECT_DATASET:'Veri Kümesi Ekle ',
   MOVE_BROWSING:'Tüm bilgilere göz atmak için "sola ve sağa hareket edin"',
+  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
+  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
+  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
+  START_COLLECT:'1.New collection map based on template',//need to translate
+  CHOOSE_COLLECT:'2.Select symbols for data acquisition',//need to translate
+  EDIT_COLLECT:'3.Edit the collected data',//need to translate
+  MAP_BROWSE:'Click to open the map',//need to translate
+  MAP_TAGGINGL:'Click to select the marking method to mark',//need to translate
+  SCENE_BROWSE:'Click to open the scene',//need to translate
+  SCENE_FLY:'Click Set flight route to automatically browse the scene from different angles',//need to translate
 
   // 我的——登录
   LOGIN: 'Giriş',

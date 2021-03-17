@@ -427,6 +427,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: 'لايوجد تاريخ',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: 'بدء التسجيل',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: 'وقف التسجيل',
+  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',//need to translate
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'خط',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'نقطة',
   MAP_AR_AI_SAVE_SUCCESS: 'حفظ بنجاح',

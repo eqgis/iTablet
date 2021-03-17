@@ -1223,8 +1223,7 @@ export default class LayerAttribute extends React.Component {
       async data => {  
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
-        let count = await SMediaCollector.getDataCount(layerName)
-        if(count === 1){
+        if(this.state.attributes.data.length === 1){
           geoID = data.rowData[0].value
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)

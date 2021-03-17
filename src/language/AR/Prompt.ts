@@ -102,6 +102,10 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'فشل إنشاء',
   INVALID_DATASET_NAME: 'اسم مجموعة بيانات غير صالح أو الاسم موجود بالفعل',
 
+  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
+  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
+  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+
   NO_PLOTTING_DEDUCTION: 'لا يوجد رسم تخطيطي في الخريطة الحالية',
   NO_FLY: 'لايوجد طيران فى المشهد الحالى',
   PLEASE_OPEN_SCENE: 'من فضلك افتح المشهد',

@@ -24,7 +24,7 @@ import { Container, Dialog, ImageButton } from '../../components'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
-import { Toast, dataUtil, scaleSize, LayerUtils } from '../../utils'
+import { Toast, dataUtil, scaleSize, LayerUtils,setSpText } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
 
@@ -62,6 +62,125 @@ export default class CollectSceneFormView extends React.Component {
     this.SceneViewVisible = true
     this.isRecording = true
     this.isNewCreate = false
+
+    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    let disablePoint = true,
+      disableArea = true,
+      disbaleLine = true
+    // 如果当前没有图层或类型不满足，不能绘制
+    // 如果是CAD或者标注图层，则可以绘制点线面 by zcj
+    if (["CADLAYER", "TAGGINGLAYER"].indexOf(layerType) != -1) {
+      disablePoint = false
+      disbaleLine = false
+      disableArea = false
+    } else if (layerType === "POINTLAYER") {
+      disablePoint = false
+    } else if (layerType === "REGIONLAYER") {
+      disableArea = false
+    } else if (layerType === "LINELAYER") {
+      disbaleLine = false
+    }
+
+    this.data = [
+      {
+        //新建开始
+        key: 'replease',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_NEWDATA,
+        action: () => { this.switchStatus() },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_new,
+      },
+      {
+        //清除
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: () => { this.clearAll() },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_delete,
+      },
+      {
+        //线
+        key: 'line',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+        action: () => {
+          if (!disbaleLine) {
+            this.save()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_line,
+      },
+      {
+        //保存点
+        key: 'POINT',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SAVE_POINT,
+        action: () => {
+          if (!disablePoint) {
+            this.savepoint()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_spot,
+      },
+      {
+        //保存面
+        key: 'REGION',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SAVE_REGION,
+        action: () => {
+          if (!disableArea) {
+            this.saveRegion()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_region,
+      },
+    ]
+
+
+    this.switchdata = [
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+      {
+        //轨迹
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SCENE_TRACK_COLLECT,
+        action: ()=>{ this.trackCollect()},
+        size: 'large',
+        image: getThemeAssets().collection.icon_track_start,
+      },
+      {
+        //点
+        key: 'point',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SCENE_POINT_COLLECT,
+        action: ()=>{ this.pointCollect()},
+        size: 'large',
+        image: require('../../assets/mapTools/icon_point_black.png'),
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+    ]
+
     this.state = {
       totalLength: 0,
       showHistory: false,
@@ -81,6 +200,7 @@ export default class CollectSceneFormView extends React.Component {
       collectData: this.datasourceAlias,
       chooseDataSource: false,
       isnew: false,
+      data: this.data,
     }
     this.clickAble = true // 防止重复点击
   }
@@ -276,6 +396,37 @@ export default class CollectSceneFormView extends React.Component {
     this.setState({
       totalLength: 0,
     })
+  }
+
+  /** 轨迹式 **/
+  trackCollect = () => {
+    try {
+      SCollectSceneFormView.setViewMode(0)
+      this.setState({
+        showbuttons: true,
+        showSwithchButtons: false,
+        isClickCollect: false,
+        data:this.data,
+      })
+    } catch (e) {
+      () => {}
+    }
+  }
+
+  /** 打点式 **/
+  pointCollect = () => {
+    try {
+      SCollectSceneFormView.setViewMode(1)
+      this.setState({
+        // showbuttons: true,
+        showSwithchButtons: false,
+        showbuttons:true,
+        isClickCollect: true,
+        data:this.data,
+      })
+    } catch (e) {
+      () => {}
+    }
   }
 
   /** 保存 **/
@@ -767,7 +918,20 @@ export default class CollectSceneFormView extends React.Component {
     return (
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
-          <TouchableOpacity
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: scaleSize(150),
+              marginTop: scaleSize(10),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderItems()}
+          </View>
+          {/* <TouchableOpacity
             onPress={() => this.switchStatus()}
             style={styles.iconView}
           >
@@ -898,7 +1062,9 @@ export default class CollectSceneFormView extends React.Component {
                 }
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+
           {/* <TouchableOpacity
               onPress={() => this.switchViewMode()}
               style={{
@@ -928,11 +1094,85 @@ export default class CollectSceneFormView extends React.Component {
       </View>
     )
   }
+
+  renderItems = () => {
+    let items = []
+    for (let i = 0; i < this.state.data.length; i++) {
+      items.push(this.renderItem(this.state.data[i]))
+    }
+    return items
+  }
+
+
+  renderItem = (item) => {
+    let backgroundColor = '#E5E5E6'
+    if(item.image === undefined){
+      backgroundColor = 'transparent'
+    }
+    return (
+      <View
+        style={{
+          width: scaleSize(80),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          onPress={item.action}
+          style={[{
+            width: scaleSize(80),
+            height: scaleSize(80),
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: scaleSize(40),
+            backgroundColor: backgroundColor,
+          }]}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={item.image}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={[
+            {
+              marginTop: scaleSize(10),
+              color: color.font_color_white,
+              fontSize: setSpText(18),
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
+      </View>
+    )
+  }
+
+
   renderBottomSwitchBtns = () => {
     return (
       <View style={styles.toolbar}>
         <View style={styles.buttonView}>
-          <TouchableOpacity
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: scaleSize(150),
+              marginTop: scaleSize(10),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderItems()}
+          </View>
+
+
+
+          {/* <TouchableOpacity
             onPress={() => {
               try {
                 SCollectSceneFormView.setViewMode(0)
@@ -1016,7 +1256,7 @@ export default class CollectSceneFormView extends React.Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-          />
+          /> */}
         </View>
       </View>
     )
@@ -1044,7 +1284,7 @@ export default class CollectSceneFormView extends React.Component {
               if (this.state.showSwithchButtons) {
                 this.setState({ showbuttons: false, showSwithchButtons: false })
               } else {
-                this.setState({ showbuttons: false, showSwithchButtons: true })
+                this.setState({ showbuttons: false, showSwithchButtons: true ,data:this.switchdata})
               }
             }}
             style={styles.iconView}
@@ -1060,7 +1300,7 @@ export default class CollectSceneFormView extends React.Component {
               if (this.state.showbuttons) {
                 this.setState({ showbuttons: false, showSwithchButtons: false })
               } else {
-                this.setState({ showbuttons: true, showSwithchButtons: false })
+                this.setState({ showbuttons: true, showSwithchButtons: false ,data:this.data})
               }
             }}
             style={styles.iconView}

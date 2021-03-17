@@ -17,6 +17,12 @@ const icon_remake = require('./icon_remake.png')
 const icon_album = require('./icon_album.png')
 const icon_signout = require('./icon_signout.png')
 const icon_list = require('./icon_list.png')
+const icon_toolbar_type = require('./icon_toolbar_type.png')
+const icon_analysis_critical_element = require('./icon_analysis_critical_element.png')
+const icon_toolbar_savespot = require('./icon_toolbar_savespot.png')
+const icon_toolbar_saveline = require('./icon_toolbar_saveline.png')
+const icon_toolbar_region = require('./icon_toolbar_region.png')
+const icon_toolbar_substance_selected = require('./icon_toolbar_substance_selected.png')
 
 export default {
   icon_toolbar_add,
@@ -38,4 +44,10 @@ export default {
   icon_album,
   icon_signout,
   icon_list,
+  icon_toolbar_type,
+  icon_analysis_critical_element,
+  icon_toolbar_savespot,
+  icon_toolbar_saveline,
+  icon_toolbar_region,
+  icon_toolbar_substance_selected,
 }

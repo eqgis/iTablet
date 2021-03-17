@@ -192,8 +192,8 @@ public abstract class BaseArFragment extends Fragment
               }
             });
 
-    arSceneView.getArScene().addOnPeekTouchListener(this);
-    arSceneView.getArScene().addOnUpdateListener(this);
+    arSceneView.getScene().addOnPeekTouchListener(this);
+    arSceneView.getScene().addOnUpdateListener(this);
 
     if (isArRequired()) {
       // Request permissions

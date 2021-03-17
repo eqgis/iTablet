@@ -102,6 +102,10 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'Create failed',
   INVALID_DATASET_NAME: 'Invalid dataset name or the name already exists',
 
+  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
+  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
+  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+
   NO_PLOTTING_DEDUCTION: 'No Plotting Deduction in the current map',
   NO_FLY: 'No Fly in the current scene',
   PLEASE_OPEN_SCENE: 'Please open a scene',

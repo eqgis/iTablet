@@ -316,15 +316,15 @@ export default class ToolbarContentView extends React.Component {
   renderMeasure = () => {
     return (
       <ToolbarArMeasure
-      data={this.props.data}
-      secdata={this.props.secdata}
-      type={this.props.type}
-      containerType={ToolbarType.table}
-      column={this.state.column}
-      row={this.state.row}
-      device={this.props.device}
-      language={this.props.language}
-      getToolbarModule={this.props.getToolbarModule}
+        data={this.props.data}
+        secdata={this.props.secdata}
+        type={this.props.type}
+        containerType={ToolbarType.table}
+        column={this.state.column}
+        row={this.state.row}
+        device={this.props.device}
+        language={this.props.language}
+        getToolbarModule={this.props.getToolbarModule}
       />
     )
   }

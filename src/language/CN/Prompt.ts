@@ -100,6 +100,10 @@ const Prompt = {
   CREATE_FAILED: '创建失败',
   INVALID_DATASET_NAME: '数据集名称不合法或重名',
 
+  PLEASE_CHOOSE_POINT_LAYER: '请先选择点图层采集',
+  PLEASE_CHOOSE_LINE_LAYER: '请先选择线图层采集',
+  PLEASE_CHOOSE_REGION_LAYER: '请先选择面图层采集',
+
   NO_PLOTTING_DEDUCTION: '当前地图没有推演列表',
   NO_FLY: '当前场景无飞行轨迹',
   PLEASE_OPEN_SCENE: '请打开场景',

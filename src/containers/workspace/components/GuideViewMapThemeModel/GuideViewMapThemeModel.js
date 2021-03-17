@@ -94,7 +94,7 @@ export default class GuideViewMapThemeModel extends React.Component {
             style={{
               marginTop: scaleSize(30),
               textAlign: 'left',
-              fontSize: scaleSize(30),
+              fontSize: scaleSize(25),
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',
@@ -236,7 +236,7 @@ export default class GuideViewMapThemeModel extends React.Component {
             style={{
               marginTop: scaleSize(30),
               textAlign: 'left',
-              fontSize: scaleSize(30),
+              fontSize: scaleSize(25),
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',

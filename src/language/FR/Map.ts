@@ -426,6 +426,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: 'Aucun historique de collecte',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: "Commencer l'enregistrement",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: "Arrêter l'enregistrement",
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
+  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',//need to translate
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Ligne',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'Point',
   MAP_AR_AI_SAVE_SUCCESS: 'Enregistré succès',

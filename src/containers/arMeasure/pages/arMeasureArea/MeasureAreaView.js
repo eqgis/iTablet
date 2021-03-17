@@ -24,7 +24,7 @@ import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
 import { Container, Dialog } from '../../../../components'
-import { Toast, scaleSize } from '../../../../utils'
+import { Toast, scaleSize,setSpText,LayerUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 const SMeasureViewiOS = NativeModules.SMeasureAreaView
@@ -50,6 +50,131 @@ export default class MeasureAreaView extends React.Component {
 
     this.isDrawing = false
     this.isMeasure = false
+
+    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    let disablePoint = true,
+      disableArea = true,
+      disbaleLine = true
+    // 如果当前没有图层或类型不满足，不能绘制
+    // 如果是CAD或者标注图层，则可以绘制点线面 by zcj
+    if (["CADLAYER", "TAGGINGLAYER"].indexOf(layerType) != -1) {
+      disablePoint = false
+      disbaleLine = false
+      disableArea = false
+    } else if (layerType === "POINTLAYER") {
+      disablePoint = false
+    } else if (layerType === "REGIONLAYER") {
+      disableArea = false
+    } else if (layerType === "LINELAYER") {
+      disbaleLine = false
+    }
+
+    this.data = [
+      {
+        //轨迹
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .TRACK,
+        action: ()=>{ this.back() , this.critical()},
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_analysis_critical_element,
+      },
+      {
+        //点
+        key: 'point',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_POINT,
+        action: ()=>{
+          if(!disablePoint){
+            SMeasureAreaView.setMeasureMode('DRAW_POINT'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+              GLOBAL.language,
+            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT})
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+          }
+
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_savespot,
+      },
+      {
+        //线
+        key: 'line',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_LINE,
+        action: ()=>{
+          if(!disbaleLine){
+            SMeasureAreaView.setMeasureMode('DRAW_LINE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+              GLOBAL.language,
+            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE })
+          }else{
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_saveline,
+      },
+      {
+        //面
+        key: 'region',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
+        action: ()=>{
+          if(!disableArea){
+            this.setState({ data:this.areadata })
+          }else{
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_region,
+      },
+      // {
+      //   //体
+      //   key: 'substance',
+      //   title: getLanguage(GLOBAL.language).Map_Main_Menu
+      //     .MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
+      //   action: ()=>{},
+      //   size: 'large',
+      //   image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
+      // },
+    ]
+
+    this.areadata = [
+      {
+        // 多边形
+        key: 'polygon',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
+        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_polygon,
+      },
+      {
+        // 矩形
+        key: 'rectangle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
+        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_rectangle,
+      },
+      {
+        // 圆
+        key: 'circular',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
+        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
+      },
+    ]
 
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
@@ -98,12 +223,12 @@ export default class MeasureAreaView extends React.Component {
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
       }
 
-      if(this.measureType === 'arMeasureHeight' ||
-      this.measureType === 'measureLength' ||
-      this.measureType === 'measureArea' ||
-      this.measureType === 'measureAngle' ||
-      this.measureType === 'arMeasureCuboid' ||
-      this.measureType === 'arMeasureCylinder' ) {
+      if (this.measureType === 'arMeasureHeight' ||
+        this.measureType === 'measureLength' ||
+        this.measureType === 'measureArea' ||
+        this.measureType === 'measureAngle' ||
+        this.measureType === 'arMeasureCuboid' ||
+        this.measureType === 'arMeasureCylinder') {
         this.isMeasure = true
       }
 
@@ -121,7 +246,7 @@ export default class MeasureAreaView extends React.Component {
       if (
         this.measureType === 'measureLength' ||
         this.measureType === 'measureArea' ||
-        this.measureType === 'measureAngle' 
+        this.measureType === 'measureAngle'
       ) {
         this.canContinuousDraw = true
       }
@@ -138,13 +263,17 @@ export default class MeasureAreaView extends React.Component {
 
       showCurrentHeightView: false,
       currentHeight: '0m',
-      showADDPoint:false,
-      showADD:true,//默认先显示
-      isfirst:true,
-      showLog:false,
-      dioLog:'',
-      diologStyle:{},
-      is_showLog:false,
+      showADDPoint: false,
+      showADD: true,//默认先显示
+      isfirst: true,
+      showLog: false,
+      dioLog: '',
+      diologStyle: {},
+      is_showLog: false,
+      showSwitch: false,
+      toolbar: {},
+      title:this.title,
+      data:this.data,
     }
 
     AppState.addEventListener('change', this.handleStateChange)
@@ -160,7 +289,7 @@ export default class MeasureAreaView extends React.Component {
 
     // InteractionManager.runAfterInteractions(() => {//这里表示下面代码是在动画结束后才执行，但是外面有动画在执行就会导致下面代码一直不执行，开发者需要自己考虑 add xiezhy
     // 初始化数据
-    (async function() {
+    (async function () {
       //提供测量等界面添加按钮及提示语的回调方法 add jiakai
       if (Platform.OS === 'ios') {
         iOSEventEmi.addListener(
@@ -171,18 +300,18 @@ export default class MeasureAreaView extends React.Component {
           'com.supermap.RN.SMeasureAreaView.CLOSE',
           this.onshowLog,
         )
-      }else{
+      } else {
         SMeasureAreaView.setAddListener({
           callback: async result => {
             if (result) {
               // Toast.show("add******")
-              if(this.state.isfirst){
-                this.setState({showADD:true,showADDPoint:true,is_showLog:true})
-              }else{
-                this.setState({showADD:true})
+              if (this.state.isfirst) {
+                this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+              } else {
+                this.setState({ showADD: true })
               }
-            }else{
-              this.setState({showADD:false,showADDPoint:false})
+            } else {
+              this.setState({ showADD: false, showADDPoint: false })
             }
           },
         })
@@ -200,16 +329,16 @@ export default class MeasureAreaView extends React.Component {
           this.datasetName,
         )
         let fixedPoint = this.point
-        setTimeout(function() {
+        setTimeout(function () {
           //设置基点
           SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
         }, 1000)
       }
 
       //没有动画回调的话提示语默认5秒后开启
-      if(!this.state.is_showLog){
+      if (!this.state.is_showLog) {
         setTimeout(() => {
-          this.setState({is_showLog:true})
+          this.setState({ is_showLog: true })
         }, 5000)
       }
 
@@ -252,7 +381,7 @@ export default class MeasureAreaView extends React.Component {
 
   handleStateChange = async appState => {
     if (Platform.OS === 'android') {
-      if(appState === 'background'){
+      if (appState === 'background') {
         SMeasureAreaView.onPause()
       }
 
@@ -272,49 +401,57 @@ export default class MeasureAreaView extends React.Component {
   /**添加按钮 */
   onAdd = result => {
     if (result.add) {
-      if(this.state.isfirst){
-        this.setState({showADD:true,showADDPoint:true})
-      }else{
-        this.setState({showADD:true})
+      if (this.state.isfirst) {
+        this.setState({ showADD: true, showADDPoint: true })
+      } else {
+        this.setState({ showADD: true })
       }
-    }else{
-      this.setState({showADD:false,showADDPoint:false})
+    } else {
+      this.setState({ showADD: false, showADDPoint: false })
     }
   }
 
   /**提示语回调 */
   onshowLog = result => {
-    if(result.close){
-      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE,showLog:true})
+    if (result.close) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
+      })
     }
 
-    if(result.dark){
-      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK,showLog:true})
+    if (result.dark) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+      })
     }
 
-    if(result.fast){
-      this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_FAST,showLog:true})
+    if (result.fast) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+      })
     }
 
-    if(result.nofeature){
-      if(this.state.dioLog!=getLanguage(GLOBAL.language).Map_Main_Menu
+    if (result.nofeature) {
+      if (this.state.dioLog != getLanguage(GLOBAL.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
-        this.setState({dioLog:getLanguage(GLOBAL.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE,showLog:true})
+        this.setState({
+          dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+        })
     }
 
-    if(result.none){
-      this.setState({dioLog:'',showLog:false})
+    if (result.none) {
+      this.setState({ dioLog: '', showLog: false })
     }
   }
 
   /** 添加 **/
   addNewRecord = async () => {
     await SMeasureAreaView.addNewRecord()
-    this.setState({showADDPoint:false,isfirst:false})
+    this.setState({ showADDPoint: false, isfirst: false })
   }
 
   /** 添加 **/
@@ -360,12 +497,12 @@ export default class MeasureAreaView extends React.Component {
   save = async () => {
     if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
     let datasourceAlias = this.props.currentLayer.datasourceAlias
-    let datasetName =  this.props.currentLayer.datasetName
-    if(this.props.currentLayer.themeType !== 0 || (
+    let datasetName = this.props.currentLayer.datasetName
+    if (this.props.currentLayer.themeType !== 0 || (
       this.props.currentLayer.type !== DatasetType.CAD &&
-        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
-        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawPoint' &&  this.props.currentLayer.type !== DatasetType.POINT)
+      (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+      (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+      (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
       datasetName = 'Default_Tagging'
@@ -389,7 +526,7 @@ export default class MeasureAreaView extends React.Component {
   }
 
   /** 确认 **/
-  confirm = () => {}
+  confirm = () => { }
 
   back = () => {
     //返回时立即释放资源，以免ai检测冲突 zhangxt
@@ -401,6 +538,15 @@ export default class MeasureAreaView extends React.Component {
 
     NavigationService.goBack()
     return true
+  }
+
+  critical = async () => {
+    if (GLOBAL.showAIDetect) {
+      GLOBAL.arSwitchToMap = true
+      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    }
+    GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
+    NavigationService.navigate('EnterDatumPoint')
   }
 
   choseMoreModel = () => {
@@ -425,19 +571,19 @@ export default class MeasureAreaView extends React.Component {
     let isSnap = await SMeasureAreaView.getIsSnapRange()
     let tole = await SMeasureAreaView.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
-      isMeasure:true,
-      isSnap:isSnap,
-      tole:tole,
+      isMeasure: true,
+      isSnap: isSnap,
+      tole: tole,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
       },
       setTolerance: value => {
         NavigationService.goBack()
-        if(value>100){
-          value=100
+        if (value > 100) {
+          value = 100
         }
-        if(value<0){
-          value=0
+        if (value < 0) {
+          value = 0
         }
         SMeasureAreaView.setSnapTolerance(value)
       },
@@ -454,21 +600,30 @@ export default class MeasureAreaView extends React.Component {
         NavigationService.goBack()
         SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
       },
-      isSnap:isSnap,
-      tole:tole,
+      isSnap: isSnap,
+      tole: tole,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
       },
       setTolerance: value => {
-        if(value>100){
-          value=100
+        if (value > 100) {
+          value = 100
         }
-        if(value<0){
-          value=0
+        if (value < 0) {
+          value = 0
         }
         SMeasureAreaView.setSnapTolerance(value)
       },
     })
+  }
+
+  /** ar画面切换 */
+  switch = async () => {
+    if(!this.state.showSwitch){
+      this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) } })
+    }else{
+      this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) } , data:this.data })
+    }
   }
 
   renderDialog = () => {
@@ -510,9 +665,9 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
-  renderBottomBtns = () => {
+  renderHeaderRight = () => {
     let filters
-    if(this.measureType === 'drawLine') {
+    if (this.measureType === 'drawLine') {
       filters = [DatasetType.LINE]
     } else if (this.measureType === 'arDrawArea') {
       filters = [DatasetType.REGION]
@@ -520,25 +675,142 @@ export default class MeasureAreaView extends React.Component {
       filters = [DatasetType.POINT]
     }
     return (
-      <View style={styles.toolbar}>
+      <View style={{flexDirection: 'row'}}>
+        {this.isDrawing && (
+          <TouchableOpacity
+            onPress={() => NavigationService.navigate('ChooseLayer', {
+              filters: filters,
+            })}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'}}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.icon_classify_settings}
+              source={getThemeAssets().toolbar.icon_toolbar_option}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>)}
+        {this.isDrawing && (
+          <TouchableOpacity
+            onPress={() => {
+              this.setting()
+            }}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'}}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+        {this.isMeasure && (
+          <TouchableOpacity
+            onPress={() => {
+              this.Measuresetting()
+            }}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'}}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+    )
+  }
+
+  renderItems = () => {
+    let items = []
+    for (let i = 0; i < this.state.data.length; i++) {
+      items.push(this.renderItem(this.state.data[i]))
+    }
+    return items
+  }
+
+  renderItem = (item) => {
+    return (
+      <View
+        style={{
+          width: scaleSize(80),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          onPress={item.action}
+          style={[{
+            width: scaleSize(80),
+            height: scaleSize(80),
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: scaleSize(40),
+            backgroundColor: '#E5E5E6',
+          }]}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={item.image}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={[
+            {
+              marginTop: scaleSize(10),
+              color: color.font_color_white,
+              fontSize: setSpText(18),
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
+      </View>
+    )
+  }
+
+  renderBottomBtns = () => {
+    return (
+      <View style={[styles.toolbar, this.state.toolbar]}>
+
+        {this.state.showSwitch && (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: scaleSize(150),
+              marginTop: scaleSize(10),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderItems()}
+          </View>)}
+
+
         <View style={styles.buttonView}>
-          {(this.measureType === 'drawLine' ||
-            this.measureType === 'arDrawArea' ||
-            this.measureType === 'arDrawPoint') && (
-            <TouchableOpacity
-              onPress={() =>  NavigationService.navigate('ChooseLayer', {
-                filters: filters,
-              })}
-              style={styles.iconView}
-            >
-              <Image
-                resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.icon_classify_settings}
-                source={getThemeAssets().toolbar.icon_toolbar_option}
-                style={styles.smallIcon}
-              />
-            </TouchableOpacity>
-          )}
+          {this.state.showSwitch &&<View style={{ position: 'absolute', top: 0, width: '100%', height: scaleSize(2), backgroundColor: '#E5E5E6' }} />}
           <TouchableOpacity
             onPress={() => this.clearAll()}
             style={styles.iconView}
@@ -587,30 +859,12 @@ export default class MeasureAreaView extends React.Component {
           )}
           {this.isDrawing && (
             <TouchableOpacity
-              onPress={() => {
-                this.setting()
-              }}
+              onPress={() => this.switch()}
               style={styles.iconView}
             >
               <Image
                 resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.ai_setting}
-                source={getThemeAssets().toolbar.icon_toolbar_setting}
-                style={styles.smallIcon}
-              />
-            </TouchableOpacity>
-          )}
-          {this.isMeasure && (
-            <TouchableOpacity
-              onPress={() => {
-                this.Measuresetting()
-              }}
-              style={styles.iconView}
-            >
-              <Image
-                resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.ai_setting}
-                source={getThemeAssets().toolbar.icon_toolbar_setting}
+                source={getThemeAssets().toolbar.icon_toolbar_type}
                 style={styles.smallIcon}
               />
             </TouchableOpacity>
@@ -839,7 +1093,7 @@ export default class MeasureAreaView extends React.Component {
                   showSwithchButtons: false,
                 })
               } catch (e) {
-                () => {}
+                () => { }
               }
             }}
             style={{
@@ -992,7 +1246,7 @@ export default class MeasureAreaView extends React.Component {
       } else if (this.measureType === 'arMeasureCylinder') {
         SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
       }
-      this.setState({isfirst:true})
+      this.setState({ isfirst: true })
     }
   }
   render() {
@@ -1000,10 +1254,11 @@ export default class MeasureAreaView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: this.title,
+          title: this.state.title,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',
+          headerRight: this.renderHeaderRight(),
         }}
         bottomProps={{ type: 'fix' }}
       >
@@ -1024,9 +1279,9 @@ export default class MeasureAreaView extends React.Component {
           this.renderTotalAreaChangeView()}
         {this.state.showCurrentHeightView &&
           this.renderCurrentHeightChangeView()}
-        {this.state.showADDPoint&&this.renderADDPoint()}
-        {this.state.showADD&&this.renderCenterBtn()}
-        {this.state.is_showLog&&this.state.showLog&&this.renderDioLog()}
+        {!this.state.showSwitch&&this.state.showADDPoint && this.renderADDPoint()}
+        {!this.state.showSwitch&&this.state.showADD && this.renderCenterBtn()}
+        {!this.state.showSwitch&&this.state.is_showLog && this.state.showLog && this.renderDioLog()}
       </Container>
     )
   }

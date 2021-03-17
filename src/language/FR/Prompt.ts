@@ -102,6 +102,10 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'Échec de la création',
   INVALID_DATASET_NAME: 'Nom de jeu de données non valide ou le nom existe déjà',
 
+  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
+  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
+  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+
   NO_PLOTTING_DEDUCTION: 'Aucune déduction de traçage dans la carte actuelle',
   NO_FLY: 'No Fly dans la scène actuelle',
   PLEASE_OPEN_SCENE: 'Veuillez ouvrir une scène',

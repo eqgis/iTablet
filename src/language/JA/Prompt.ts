@@ -102,6 +102,10 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: '作成に失敗',
   INVALID_DATASET_NAME: 'データセット名は無効で、または存在します',
 
+  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
+  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
+  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+
   NO_PLOTTING_DEDUCTION: '現在マップに展開リストはありません',
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',

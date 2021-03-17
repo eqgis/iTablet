@@ -1588,11 +1588,14 @@ export default class MapView extends React.Component {
         for (let i = 0; i < messages.length; i++) {
           let _message = messages[i]
           if (_message.status) continue
-          let result = await SMap.isUserGeometryExist(
-            messages[i].message.layerPath,
-            messages[i].message.id,
-            messages[i].message.geoUserID,
-          )
+          let result = false
+          if (messages[i].message.geoUserID !== undefined) {
+            result = await SMap.isUserGeometryExist(
+              messages[i].message.layerPath,
+              messages[i].message.id,
+              messages[i].message.geoUserID,
+            )
+          }
           if (result) {
             await SMap.addMessageCallout(
               messages[i].message.layerPath,

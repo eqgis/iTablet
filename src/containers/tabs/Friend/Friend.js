@@ -941,6 +941,91 @@ export default class Friend extends Component {
     }
   }
 
+  onThemeLayerAdd = async layerInfo => {
+    try {
+      if (this.props.cowork.currentTask.id !== '') {
+        let layerXML = await SMap.getLayerAsXML(layerInfo.path)
+        // let themeXML = await SMap.getLayerThemeXML(layerInfo.path)
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: this.props.cowork.currentTask.id,
+            groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_ADD,
+            layerPath: layerInfo.path,
+            layerName: layerInfo.name,
+            caption: layerInfo.caption,
+            layer: layerXML, // 专题图图层xml
+            themeType: layerInfo.themeType,
+            isHeatmap: layerInfo.isHeatmap,
+            DatasetName: layerInfo.datasetName,
+            DatasourceAlias: layerInfo.datasourceAlias,
+          },
+        }
+        // 若创建的是热力图，则传入热力图数据
+        if (layerInfo.isHeatmap) {
+          msgObj.message.layerHeatmap = layerInfo.layerHeatmap
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, this.props.cowork.currentTask.id, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  /**
+   * 发送专题图修改信息
+   * @param {*} layerInfo 图层信息
+   */
+  onThemeEdit = async layerInfo => {
+    try {
+      if (this.props.cowork.currentTask.id !== '') {
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userId,
+            groupID: this.props.cowork.currentTask.id,     // 任务群组
+            groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_UPDATE,
+            layerPath: layerInfo.path,
+            layerName: layerInfo.name,
+            caption: layerInfo.caption,
+            // theme: themeXML, // 专题图xml
+            themeType: layerInfo.themeType,
+            isHeatmap: layerInfo.isHeatmap,
+          },
+        }
+        if (layerInfo.isHeatmap) {
+          let _layerInfo = await SMap.getLayerInfo(layerInfo.path)
+          msgObj.message.layerHeatmap = _layerInfo.layerHeatmap
+        } else {
+          let themeXML = await SMap.getLayerThemeXML(layerInfo.path)
+          msgObj.message.theme = themeXML
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, this.props.cowork.currentTask.id, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
   /**
    * 开始发送位置
    * @param {*} forceShow 第一次是否强制显示

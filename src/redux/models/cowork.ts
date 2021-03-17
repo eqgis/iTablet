@@ -539,11 +539,14 @@ function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
     // this.addMessageNum && this.addMessageNum(1),
     ;(async function() {
       try {
-        let result = await SMap.isUserGeometryExist(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-        )
+        let result = false
+        if (message.message.geoUserID !== undefined) {
+          result = await SMap.isUserGeometryExist(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+          )
+        }
         if (result) {
           await SMap.addMessageCallout(
             message.message.layerPath,

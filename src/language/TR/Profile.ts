@@ -375,6 +375,7 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'Y Koordinatı',
   MAP_AR_DATUM_AUTO_CATCH: 'Otomatik yakala',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerans',
+  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

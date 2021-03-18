@@ -375,6 +375,7 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'Y 座標',
   MAP_AR_DATUM_AUTO_CATCH: '自動でキャッシュ使用',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'スナップトレランス',
+  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

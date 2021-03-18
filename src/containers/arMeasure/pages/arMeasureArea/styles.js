@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { Const } from '../../../../constants'
 import { scaleSize, setSpText } from '../../../../utils'
-import { size, color } from '../../../../styles'
+import { size, color ,zIndexLevel} from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -26,6 +26,7 @@ export default StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: zIndexLevel.SYSTEM,
   },
   iconView: {
     width: scaleSize(120),
@@ -46,6 +47,7 @@ export default StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: zIndexLevel.SYSTEM,
   },
   addcapture:{
     position: 'absolute',

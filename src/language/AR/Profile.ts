@@ -384,6 +384,7 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'احداثيات Y',
   MAP_AR_DATUM_AUTO_CATCH: 'الالتقاط التلقائي',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'التسامح مع الخطأ',
+  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
 
   // ar地图
   COLLECT_SCENE_RENAME: 'إعادة تسمية',

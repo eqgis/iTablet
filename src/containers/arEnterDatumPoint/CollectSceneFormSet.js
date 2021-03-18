@@ -36,6 +36,8 @@ export default class CollectSceneFormSet extends Component {
     this.tole = params && params.tole//AR测量等捕捉容限 add jiakai
     this.setTolerance = params && params.setTolerance//AR测量等方法设置捕捉容限 add jiakai
     this.isMeasure = params && params.isMeasure//量算等界面不显示定位点 add jiakai
+    this.showGenera = params && params.showGenera || false//测量界面开启绘制窗口
+    this.showGeneracb = params && params.showGeneracb//测量界面开启绘制窗口回调
 
     let problemItems = []
     problemItems.push({
@@ -60,6 +62,7 @@ export default class CollectSceneFormSet extends Component {
       latitude: '',
       isSnap:this.isSnap,//AR测量等方法调用开启捕捉 add jiakai
       Tolerance: this.tole,//AR测量等捕捉容限 add jiakai
+      showGenera: this.showGenera,
     }
   }
 
@@ -194,6 +197,36 @@ export default class CollectSceneFormSet extends Component {
     )
   }
 
+  //ar测图是否开启小窗口
+  renderShowGenera() {
+    return (
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.separateLine} />
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DRAW_WINDOW}
+          </Text>
+
+          <View style={styles.switchItem}>
+
+            <Switch
+              trackColor={{ false: color.bgG, true: color.switch }}
+              thumbColor={color.bgW}
+              ios_backgroundColor={
+                this.state.showGenera ? color.switch : color.bgG
+              }
+              value={this.state.showGenera}
+              onValueChange={value => {
+                this.setState({ showGenera: value })
+                this.showGeneracb(value)
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   clearNoNum = value => {
     value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
     value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
@@ -298,6 +331,7 @@ export default class CollectSceneFormSet extends Component {
           {!this.isMeasure&&this.renderButtons()}
           {this.autoCatch&&this.renderSwitch()}
           {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}
+          {!this.isMeasure&&this.renderShowGenera()}
         </View>
       </ScrollView>
     )

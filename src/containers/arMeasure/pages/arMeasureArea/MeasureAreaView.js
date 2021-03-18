@@ -11,6 +11,7 @@ import {
   NativeModules,
   NativeEventEmitter,
   AppState,
+  PanResponder,
 } from 'react-native'
 import NavigationService from '../../../../containers/NavigationService'
 import { getThemeAssets } from '../../../../assets'
@@ -19,16 +20,23 @@ import {
   SMeasureAreaView,
   SMap,
   DatasetType,
+  SMMeasureARGeneraView,
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
 import { Container, Dialog } from '../../../../components'
-import { Toast, scaleSize,setSpText,LayerUtils } from '../../../../utils'
+import { Toast, scaleSize,setSpText,LayerUtils ,screen} from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import { color } from '../../../../styles'
+import { color ,zIndexLevel} from '../../../../styles'
 const SMeasureViewiOS = NativeModules.SMeasureAreaView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
+const TOP_DEFAULT = Platform.select({
+  android: 0,
+  // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
+  // ios: screen.isIphoneX() ? 0 : screen.IOS_TOP,
+  ios: 0,
+})
 
 /*
  * AR高精度采集界面
@@ -39,7 +47,8 @@ export default class MeasureAreaView extends React.Component {
     language: String,
     user: Object,
     nav: Object,
-    currentLayer: SMap.LayerInfo
+    currentLayer: SMap.LayerInfo,
+    device: Object,
   }
 
   constructor(props) {
@@ -274,9 +283,102 @@ export default class MeasureAreaView extends React.Component {
       toolbar: {},
       title:this.title,
       data:this.data,
+      showGenera:false,
     }
 
     AppState.addEventListener('change', this.handleStateChange)
+
+
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+      onPanResponderMove: this._handlePanResponderMove,
+      onPanResponderRelease: this._handlePanResponderEnd,
+      onPanResponderTerminate: this._handlePanResponderEnd,
+    })
+
+    // 初始化位置
+    this._previousTop = screen.getHeaderHeight(this.props.device.orientation) + scaleSize(8)
+    this._previousLeft = 0
+    const position = this._getAvailablePosition(this._previousLeft, this._previousTop)
+    this._previousTop = position.y
+    this._previousLeft = position.x
+    this._moveViewStyles = {
+      style: {
+        top: this._previousTop,
+        left: this._previousLeft,
+      },
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      const position = this._getAvailablePosition(this._moveViewStyles.style.left, this._moveViewStyles.style.top)
+
+      this._moveViewStyles.style.top = position.y
+      this._moveViewStyles.style.left = position.x
+      this._previousTop = position.y
+      this._previousLeft = position.x
+
+      this._updateNativeStyles()
+    }
+  }
+
+  _updateNativeStyles = () => {
+    this.moveView && this.moveView.setNativeProps(this._moveViewStyles)
+  }
+
+  _handleStartShouldSetPanResponder = () => {
+    return true
+  }
+
+  _handleMoveShouldSetPanResponder = (evt, gestureState) => {
+    if (Math.abs(gestureState.dy) < 1 && Math.abs(gestureState.dx) < 1) {
+      return false
+    }
+    return true
+  }
+
+  _handlePanResponderMove = (evt, gestureState) => {
+    let y = this._previousTop + gestureState.dy
+    let x = this._previousLeft + gestureState.dx
+
+    const position = this._getAvailablePosition(x, y)
+
+    this._moveViewStyles.style.top = position.y
+    this._moveViewStyles.style.left = position.x
+
+    this._updateNativeStyles()
+  }
+
+  _handlePanResponderEnd = (evt, gestureState) => {
+    this._previousTop = this._moveViewStyles.style.top
+    this._previousLeft = this._moveViewStyles.style.left
+  }
+
+  /**
+ * 获取图例可用位置, 不能超出屏幕
+ */
+  _getAvailablePosition = (x, y) => {
+    if (y < TOP_DEFAULT && this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+      y = TOP_DEFAULT
+    } else if (y < 0 && this.props.device.orientation.indexOf('LANDSCAPE') >= 0) {
+      y = 0
+    } else {
+      const maxY = this.props.device.safeHeight - scaleSize(250)
+      if (y > maxY) {
+        y = maxY
+      }
+    }
+    if (x < 0) {
+      x = 0
+    } else {
+      const maxX = this.props.device.safeWidth - scaleSize(250)
+      if (x > maxX) {
+        x = maxX
+      }
+    }
+    return { x, y }
   }
 
   // eslint-disable-next-line
@@ -306,7 +408,7 @@ export default class MeasureAreaView extends React.Component {
             if (result) {
               // Toast.show("add******")
               if (this.state.isfirst) {
-                this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+                this.setState({ showADD: true, showADDPoint: true, is_showLog: true, showGenera: true })
               } else {
                 this.setState({ showADD: true })
               }
@@ -402,7 +504,7 @@ export default class MeasureAreaView extends React.Component {
   onAdd = result => {
     if (result.add) {
       if (this.state.isfirst) {
-        this.setState({ showADD: true, showADDPoint: true })
+        this.setState({ showADD: true, showADDPoint: true ,is_showLog: true,showGenera:true})
       } else {
         this.setState({ showADD: true })
       }
@@ -594,6 +696,7 @@ export default class MeasureAreaView extends React.Component {
   setting = async () => {
     let isSnap = await SMeasureAreaView.getIsSnapRange()
     let tole = await SMeasureAreaView.getSnapTolerance()
+    let showGenera = this.state.showGenera
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
       fixedPositions: point => {
@@ -602,6 +705,7 @@ export default class MeasureAreaView extends React.Component {
       },
       isSnap: isSnap,
       tole: tole,
+      showGenera:showGenera,
       autoCatch: value => {
         SMeasureAreaView.setIsSnapRange(value)
       },
@@ -613,6 +717,9 @@ export default class MeasureAreaView extends React.Component {
           value = 0
         }
         SMeasureAreaView.setSnapTolerance(value)
+      },
+      showGeneracb: value => {
+        this.setState({showGenera:value})
       },
     })
   }
@@ -752,6 +859,7 @@ export default class MeasureAreaView extends React.Component {
       <View
         style={{
           width: scaleSize(80),
+          height: scaleSize(100),
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -778,7 +886,7 @@ export default class MeasureAreaView extends React.Component {
             {
               marginTop: scaleSize(10),
               color: color.font_color_white,
-              fontSize: setSpText(18),
+              fontSize: setSpText(15),
               backgroundColor: 'transparent',
               textAlign: 'center',
             },
@@ -943,6 +1051,7 @@ export default class MeasureAreaView extends React.Component {
         flexDirection: 'row',
         paddingLeft: scaleSize(10),
         paddingRight: scaleSize(10),
+        zIndex: zIndexLevel.SYSTEM,
       }]}>
         <Image
           source={img}
@@ -1212,6 +1321,40 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
+  renderGeneralView() {
+    if (Platform.OS === 'ios') {
+      return (
+        <View
+          ref={ref => this.moveView = ref}
+          style={{
+            position: 'absolute',
+            top: scaleSize(400),
+            width: scaleSize(250),
+            height: scaleSize(250),
+            borderRadius: scaleSize(4),
+            ...this._moveViewStyles.style,
+          }}>
+          <View
+            style={{
+              width: '100%',
+              bottom: 0,
+              height: scaleSize(250),
+              backgroundColor: 'transparent',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+            {...this._panResponder.panHandlers}
+          >
+            <SMMeasureARGeneraView />
+          </View>
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+
   /** 原生mapview加载完成回调 */
   _onGetInstance = async () => {
     //设置类型需要放到原生空间初始化完成，放到componentDidMount 也不靠谱 add xiezhy
@@ -1282,6 +1425,7 @@ export default class MeasureAreaView extends React.Component {
         {!this.state.showSwitch&&this.state.showADDPoint && this.renderADDPoint()}
         {!this.state.showSwitch&&this.state.showADD && this.renderCenterBtn()}
         {!this.state.showSwitch&&this.state.is_showLog && this.state.showLog && this.renderDioLog()}
+        {this.isDrawing && this.state.showGenera && this.renderGeneralView()}
       </Container>
     )
   }

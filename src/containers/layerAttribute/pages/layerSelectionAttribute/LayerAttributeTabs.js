@@ -22,6 +22,7 @@ import {
   GeoStyle,
   TextStyle,
   GeometryType,
+  SMediaCollector,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
@@ -415,6 +416,24 @@ export default class LayerAttributeTabs extends React.Component {
 
   /** 删除事件 **/
   deleteAction = async () => {
+    let smID = -1, // 用于找到删除的对象
+      hasMedia = false // 是否包含多媒体图片
+    for (let i = 0; i < this.state.attributes.data[this.state.currentIndex].length; i++) {
+      if (this.state.attributes.data[this.state.currentIndex][i].name === 'SmID') {
+        smID = this.state.attributes.data[this.state.currentIndex][i].value
+        if (smID >= 0 && hasMedia) break
+      } else if (
+        this.state.attributes.data[this.state.currentIndex][i].name === 'MediaFilePaths' &&
+        this.state.attributes.data[this.state.currentIndex][i].value != ''
+      ) {
+        hasMedia = true
+        if (smID >= 0 && hasMedia) break
+      }
+    }
+    // 若包含多媒体图片，则删除
+    if (hasMedia && smID >= 0) {
+      await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
+    }
     let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path, this.state.currentIndex, this.state.isCollection)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
@@ -465,7 +484,7 @@ export default class LayerAttributeTabs extends React.Component {
     )
       return
     let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-      .layerSelection.layerInfo.path,
+        .layerSelection.layerInfo.path,
       selection = this.currentTabRefs[this.state.currentTabIndex].getSelection()
 
     if (!selection || !selection.data) return

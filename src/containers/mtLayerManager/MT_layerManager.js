@@ -953,7 +953,7 @@ export default class MT_layerManager extends React.Component {
 
   // 专题制图导入导出按钮
   _renderHeaderRight = () =>{
-    if(this.state.type !== "MAP_THEME") return null
+    if(this.state.type !== ChunkType.MAP_THEME || GLOBAL.coworkMode) return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =

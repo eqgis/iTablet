@@ -1113,6 +1113,7 @@ export default class CollectSceneFormView extends React.Component {
       <View
         style={{
           width: scaleSize(80),
+          height: scaleSize(100),
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -1139,7 +1140,7 @@ export default class CollectSceneFormView extends React.Component {
             {
               marginTop: scaleSize(10),
               color: color.font_color_white,
-              fontSize: setSpText(18),
+              fontSize: setSpText(15),
               backgroundColor: 'transparent',
               textAlign: 'center',
             },

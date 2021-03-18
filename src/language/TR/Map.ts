@@ -365,13 +365,13 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Yasadışı Park Toplama',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Eğilim Modeli',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'AR alanı',
-  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Measure Angle',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Angle',//Need to be translated
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'AR aralığı',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'AR çizgi çizme',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'AR resmi',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'AR çekme noktaları',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'AR çekme noktaları',
-  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Measure Volume',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Volume',//Need to be translated
   MAP_AR_VIDEO: 'Video',
   MAP_AR_IMAGE: 'Resim',
   MAP_AR_EFFECT: 'Etkisi',

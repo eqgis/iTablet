@@ -1,5 +1,5 @@
 // import { AsyncStorage } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, ThemeType, SThemeCartography } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
@@ -112,13 +112,35 @@ export default class CoworkInfo {
         type === MsgConstant.MSG_COWORK_ADD ||
         type === MsgConstant.MSG_COWORK_UPDATE
       ) {
-        result = await SMap.addUserGeometry(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-          message.message.geometry,
-          message.message.geoType,
-        )
+        if (message.message.geometry) {
+          result = await SMap.addUserGeometry(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+            message.message.geometry,
+            message.message.geoType,
+          )
+        } else if (message.message.isHeatmap && message.message.layerHeatmap) {
+          let res = await SThemeCartography.createHeatMap({
+            DatasourceAlias: message.message.DatasourceAlias,
+            DatasetName: message.message.DatasetName,
+            kernelRadius: message.message.layerHeatmap.kernelRadius,
+            fuzzyDegree: message.message.layerHeatmap.fuzzyDegree,
+            intensity: message.message.layerHeatmap.intensity,
+            maxColor: message.message.layerHeatmap.maxColor,
+            minColor: message.message.layerHeatmap.minColor,
+            colorset: message.message.layerHeatmap.colorset,
+          })
+          result = res.result
+          result && SMap.refreshMap()
+        } else if (message.message.themeType > 0 && message.message.layer) {
+          let index = 0
+          if (message.message.themeType === ThemeType.GRAPH) {
+            index = -1
+          }
+          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result && SMap.refreshMap()
+        }
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
@@ -136,34 +158,73 @@ export default class CoworkInfo {
       let result = false
       let type = message.message.type
       if (type === MsgConstant.MSG_COWORK_ADD) {
-        result = await SMap.addUserGeometry(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-          message.message.geometry,
-          message.message.geoType,
-        )
-        result && this.consumeMessage(message.messageID)
-      } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
-        let exist = await SMap.isUserGeometryExist(
-          message.message.layerPath,
-          message.message.id,
-          message.message.geoUserID,
-        )
-        if (exist) {
-          result = await SMap.updateUserGeometry(
+        if (message.message.geometry) {
+          result = await SMap.addUserGeometry(
             message.message.layerPath,
             message.message.id,
             message.message.geoUserID,
             message.message.geometry,
+            message.message.geoType,
           )
-          result && this.consumeMessage(message.messageID)
-        } else {
-          notify &&
-            Toast.show(
-              getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,
-            )
+        } else if (message.message.isHeatmap && message.message.layerHeatmap) {
+          // 添加热力图
+          let res = await SThemeCartography.createHeatMap({
+            DatasourceAlias: message.message.DatasourceAlias,
+            DatasetName: message.message.DatasetName,
+            kernelRadius: message.message.layerHeatmap.kernelRadius,
+            fuzzyDegree: message.message.layerHeatmap.fuzzyDegree,
+            intensity: message.message.layerHeatmap.intensity,
+            maxColor: message.message.layerHeatmap.maxColor,
+            minColor: message.message.layerHeatmap.minColor,
+            colorset: message.message.layerHeatmap.colorset,
+          })
+          result = res.result
+          result && SMap.refreshMap()
+        } else if (message.message.themeType > 0 && message.message.layer) {
+          // 添加专题图层
+          let index = 0
+          if (message.message.themeType === ThemeType.GRAPH) {
+            index = -1
+          }
+          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result && SMap.refreshMap()
         }
+        result && this.consumeMessage(message.messageID)
+      } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
+        if (message.message.geometry) {
+          let exist = await SMap.isUserGeometryExist(
+            message.message.layerPath,
+            message.message.id,
+            message.message.geoUserID,
+          )
+          if (exist) {
+            result = await SMap.updateUserGeometry(
+              message.message.layerPath,
+              message.message.id,
+              message.message.geoUserID,
+              message.message.geometry,
+            )
+          } else {
+            notify &&
+              Toast.show(
+                getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,
+              )
+          }
+        } else if (message.message.isHeatmap && message.message.layerHeatmap) {
+          let res = await SThemeCartography.modifyHeatMap(
+            message.message.layerPath,
+            message.message.layerHeatmap,
+          )
+          result = res.result
+          result && SMap.refreshMap()
+        } else if (message.message.themeType > 0 && message.message.theme) {
+          result = await SMap.updateLayerThemeFromXML(
+            message.message.layerPath,
+            message.message.theme,
+          )
+          result && SMap.refreshMap()
+        }
+        result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         //TODO 处理删除
         result = true

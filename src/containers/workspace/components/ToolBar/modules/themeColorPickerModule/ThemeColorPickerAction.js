@@ -4,9 +4,10 @@
  * Copyright © SuperMap. All rights reserved.
  * https://github.com/AsortKeven
  */
-
+import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from "../ToolbarModule"
 import NavigationService from "../../../../../NavigationService"
+import ThemeAction from "../themeModule/ThemeAction"
 
 function close() {
   const _params = ToolbarModule.getParams()
@@ -16,8 +17,12 @@ function close() {
   NavigationService.navigate('CustomModePage')
 }
 
-function commit() {
+async function commit() {
   const _params = ToolbarModule.getParams()
+  if (GLOBAL.coworkMode) {
+    let layerInfo = await SMap.getLayerInfo(_params.currentLayer.path)
+    ThemeAction.sendUpdateThemeMsg(layerInfo)
+  }
   _params.setToolbarVisible(false)
   _params.existFullMap()
 }

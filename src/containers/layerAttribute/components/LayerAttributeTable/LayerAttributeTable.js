@@ -484,9 +484,14 @@ export default class LayerAttributeTable extends React.Component {
         this.props.buttonNameFilter &&
         this.props.buttonNameFilter instanceof Array
       ) {
-        for (let filter of this.props.buttonNameFilter) {
-          if (item.name === filter) {
-            buttonTitles = this.props.buttonTitles || []
+        buttonTitles = this.props.buttonTitles || []
+        for (let filterIndex in this.props.buttonNameFilter) {
+          if (item.name === this.props.buttonNameFilter[filterIndex]) {
+            if (this.props.buttonTitles.length > 0 && this.props.buttonTitles.length - 1 < filterIndex) {
+              buttonTitles = [this.props.buttonTitles[this.props.buttonTitles.length - 1]]
+            } else {
+              buttonTitles = [this.props.buttonTitles[filterIndex]] || []
+            }
             buttonIndexes = [1]
             this.props.buttonActions &&
               this.props.buttonActions instanceof Array &&
@@ -515,7 +520,6 @@ export default class LayerAttributeTable extends React.Component {
           }
         }
       }
-      buttonTitles = this.props.buttonTitles || []
     }
 
     return (

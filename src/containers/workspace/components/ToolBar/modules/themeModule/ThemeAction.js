@@ -8,7 +8,7 @@ import {
 import ThemeMenuData from './data'
 import ThemeData from './ThemeData'
 import { getLanguage } from '../../../../../../language'
-import { Toast } from '../../../../../../utils'
+import { Toast, LayerUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import constants from '../../../../constants'
@@ -1218,7 +1218,10 @@ async function commit(type) {
       GraphExpressions: expressions,
       ThemeGraphType: themeCreateType,
     }
-    const result = await SThemeCartography.createThemeGraphMap(params)
+    const {result, layer} = await SThemeCartography.createThemeGraphMap(params)
+    if (result && layer) {
+      sendAddThemeMsg(layer)
+    }
     result &&
       _params.getLayers(-1, layers => {
         _params.setCurrentLayer(layers.length > 0 && layers[0])
@@ -1240,7 +1243,10 @@ async function commit(type) {
       GraphExpressions: expressions,
       ThemeGraphType: themeCreateType,
     }
-    let result = await SThemeCartography.createThemeGraphMapByLayer(params)
+    let {result, layer} = await SThemeCartography.createThemeGraphMapByLayer(params)
+    if (result && layer) {
+      sendAddThemeMsg(layer)
+    }
     result &&
       _params.getLayers(-1, layers => {
         _params.setCurrentLayer(layers.length > 0 && layers[0])
@@ -1254,6 +1260,7 @@ async function commit(type) {
     }
   } else {
     ToolbarModule.setData()
+    sendUpdateThemeMsg(_params.currentLayer)
     _params.setToolbarVisible(false)
   }
 }
@@ -1316,7 +1323,7 @@ function tableAction(type, item = {}) {
       themeParams = {
         LayerName: currentLayer.name,
         Color: item.key,
-        ColorType: 'UNIFORMLABEL_FORE_COLOR',
+        colorType: 'UNIFORMLABEL_FORE_COLOR',
       }
       break
     case ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_BACKSHAPE_COLOR:
@@ -1324,7 +1331,7 @@ function tableAction(type, item = {}) {
       themeParams = {
         LayerName: currentLayer.name,
         Color: item.key,
-        ColorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
+        colorType: 'UNIFORMLABEL_BACKSHAPE_COLOR',
       }
       break
     case ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE:
@@ -1353,7 +1360,7 @@ function tableAction(type, item = {}) {
       themeParams = {
         LayerName: currentLayer.name,
         LineColor: item.key,
-        ColorType: 'DOT_DENSITY_COLOR',
+        colorType: 'DOT_DENSITY_COLOR',
       }
       break
     case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_COLOR:
@@ -1361,7 +1368,7 @@ function tableAction(type, item = {}) {
       themeParams = {
         LayerName: currentLayer.name,
         LineColor: item.key,
-        ColorType: 'GRADUATED_SYMBOL_COLOR',
+        colorType: 'GRADUATED_SYMBOL_COLOR',
       }
       break
     default:
@@ -1766,7 +1773,7 @@ function setTouchProgressInfo(title, value) {
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
       _params = {
         LayerName: Params.currentLayer.name,
-        FuzzyDegree: value,
+        fuzzyDegree: value,
       }
       SThemeCartography.setHeatMapFuzzyDegree(_params)
       break
@@ -1847,6 +1854,24 @@ function setTouchProgressInfo(title, value) {
   }
 }
 
+function sendUpdateThemeMsg(layerInfo) {
+  if (GLOBAL.coworkMode && GLOBAL.getFriend && layerInfo) {
+    let layerType = LayerUtils.getLayerType(layerInfo)
+    if (layerType !== 'TAGGINGLAYER') {
+      let friend = GLOBAL.getFriend()
+      friend.onThemeEdit(layerInfo)
+    }
+  }
+}
+
+function sendAddThemeMsg(layerInfo) {
+  //协作时同步编辑对象
+  if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+    let friend = GLOBAL.getFriend()
+    friend.onThemeLayerAdd(layerInfo)
+  }
+}
+
 const actions = {
   commit,
   listAction,
@@ -1885,5 +1910,8 @@ const actions = {
   getLabelFontRotation,
   getLabelFontSize,
   getLabelFont,
+
+  sendUpdateThemeMsg,
+  sendAddThemeMsg,
 }
 export default actions

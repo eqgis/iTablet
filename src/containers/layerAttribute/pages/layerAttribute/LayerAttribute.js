@@ -29,7 +29,7 @@ import {
   LayerTopBar,
   LocationView,
 } from '../../components'
-import { getPublicAssets, getThemeAssets } from '../../../../assets'
+import { getThemeAssets } from '../../../../assets'
 import styles from './styles'
 import {
   SMap,
@@ -264,131 +264,131 @@ export default class LayerAttribute extends React.Component {
     let { currentPage, pageSize, type, ...others } = params
     let result = {},
       attributes = {}
-      ; (async function () {
-        try {
-          let checkData = this.checkToolIsViable()
-          result = await LayerUtils.getLayerAttribute(
-            JSON.parse(JSON.stringify(this.state.attributes)),
-            this.props.currentLayer.path,
-            currentPage,
-            pageSize !== undefined ? pageSize : PAGE_SIZE,
-            {
-              filter: this.filter,
-            },
-            type,
-          )
+    ; (async function () {
+      try {
+        let checkData = this.checkToolIsViable()
+        result = await LayerUtils.getLayerAttribute(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          this.props.currentLayer.path,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          {
+            filter: this.filter,
+          },
+          type,
+        )
 
-          this.total = result.total || 0
-          attributes = result.attributes || []
+        this.total = result.total || 0
+        attributes = result.attributes || []
 
-          // this.noMore =
-          //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
-          //   attributes.data.length < PAGE_SIZE
+        // this.noMore =
+        //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
+        //   attributes.data.length < PAGE_SIZE
 
-          if (attributes.data.length === 1) {
-            this.setState({
-              showTable: true,
-              attributes,
-              currentIndex: 0,
-              relativeIndex: 0,
-              currentFieldInfo: attributes.data[0],
-              startIndex: 0,
-              ...checkData,
-              ...others,
-            })
-            this.setLoading(false)
-          } else {
-            let newAttributes = JSON.parse(JSON.stringify(attributes))
-            let startIndex =
-              others.startIndex >= 0
-                ? others.startIndex
-                : this.state.startIndex || 0
-            // 截取数据，最多显示 ROWS_LIMIT 行
-            if (attributes.data.length > ROWS_LIMIT) {
-              if (type === 'refresh') {
-                newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
-                startIndex = result.startIndex
-              } else {
-                startIndex = result.startIndex + result.resLength - ROWS_LIMIT
-                startIndex =
-                  parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
-
-                let sliceStartIndex = 0
-                if (attributes.data.length >= ROWS_LIMIT) {
-                  sliceStartIndex =
-                    parseInt(
-                      (
-                        (attributes.data.length - ROWS_LIMIT) /
-                        PAGE_SIZE
-                      ).toFixed(),
-                    ) * PAGE_SIZE
-                }
-                newAttributes.data = newAttributes.data.slice(
-                  sliceStartIndex,
-                  attributes.data.length,
-                )
-              }
-            }
-
-            let currentIndex = resetCurrent
-              ? -1
-              : others.currentIndex !== undefined
-                ? others.currentIndex
-                : this.state.currentIndex
-            let relativeIndex =
-              resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
-            // : currentIndex - startIndex - 1
-            let prevStartIndex = this.state.startIndex
-            this.currentPage = Math.floor(
-              (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
-            )
-            this.noMore = startIndex + newAttributes.data.length === this.total
-            this.setState(
-              {
-                showTable: true,
-                attributes: newAttributes,
-                currentIndex,
-                relativeIndex,
-                currentFieldInfo:
-                  relativeIndex >= 0 && relativeIndex < newAttributes.data.length
-                    ? newAttributes.data[relativeIndex]
-                    : this.state.currentFieldInfo,
-                startIndex,
-                ...checkData,
-                // ...others,
-              },
-              () => {
-                setTimeout(() => {
-                  if (type === 'refresh') {
-                    this.table &&
-                      this.table.scrollToLocation({
-                        animated: false,
-                        itemIndex: prevStartIndex - startIndex,
-                        sectionIndex: 0,
-                        viewPosition: 0,
-                        viewOffset: COL_HEIGHT,
-                      })
-                  } else if (type === 'loadMore') {
-                    this.table &&
-                      this.table.scrollToLocation({
-                        animated: false,
-                        itemIndex: newAttributes.data.length - result.resLength,
-                        sectionIndex: 0,
-                        viewPosition: 1,
-                      })
-                  }
-                  this.setLoading(false)
-                  cb && cb(attributes)
-                }, 0)
-              },
-            )
-          }
-        } catch (e) {
-          this.isLoading = false
+        if (attributes.data.length === 1) {
+          this.setState({
+            showTable: true,
+            attributes,
+            currentIndex: 0,
+            relativeIndex: 0,
+            currentFieldInfo: attributes.data[0],
+            startIndex: 0,
+            ...checkData,
+            ...others,
+          })
           this.setLoading(false)
-          cb && cb(attributes)
+        } else {
+          let newAttributes = JSON.parse(JSON.stringify(attributes))
+          let startIndex =
+            others.startIndex >= 0
+              ? others.startIndex
+              : this.state.startIndex || 0
+          // 截取数据，最多显示 ROWS_LIMIT 行
+          if (attributes.data.length > ROWS_LIMIT) {
+            if (type === 'refresh') {
+              newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
+              startIndex = result.startIndex
+            } else {
+              startIndex = result.startIndex + result.resLength - ROWS_LIMIT
+              startIndex =
+                parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
+
+              let sliceStartIndex = 0
+              if (attributes.data.length >= ROWS_LIMIT) {
+                sliceStartIndex =
+                  parseInt(
+                    (
+                      (attributes.data.length - ROWS_LIMIT) /
+                      PAGE_SIZE
+                    ).toFixed(),
+                  ) * PAGE_SIZE
+              }
+              newAttributes.data = newAttributes.data.slice(
+                sliceStartIndex,
+                attributes.data.length,
+              )
+            }
+          }
+
+          let currentIndex = resetCurrent
+            ? -1
+            : others.currentIndex !== undefined
+              ? others.currentIndex
+              : this.state.currentIndex
+          let relativeIndex =
+            resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
+          // : currentIndex - startIndex - 1
+          let prevStartIndex = this.state.startIndex
+          this.currentPage = Math.floor(
+            (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
+          )
+          this.noMore = startIndex + newAttributes.data.length === this.total
+          this.setState(
+            {
+              showTable: true,
+              attributes: newAttributes,
+              currentIndex,
+              relativeIndex,
+              currentFieldInfo:
+                relativeIndex >= 0 && relativeIndex < newAttributes.data.length
+                  ? newAttributes.data[relativeIndex]
+                  : this.state.currentFieldInfo,
+              startIndex,
+              ...checkData,
+              // ...others,
+            },
+            () => {
+              setTimeout(() => {
+                if (type === 'refresh') {
+                  this.table &&
+                    this.table.scrollToLocation({
+                      animated: false,
+                      itemIndex: prevStartIndex - startIndex,
+                      sectionIndex: 0,
+                      viewPosition: 0,
+                      viewOffset: COL_HEIGHT,
+                    })
+                } else if (type === 'loadMore') {
+                  this.table &&
+                    this.table.scrollToLocation({
+                      animated: false,
+                      itemIndex: newAttributes.data.length - result.resLength,
+                      sectionIndex: 0,
+                      viewPosition: 1,
+                    })
+                }
+                this.setLoading(false)
+                cb && cb(attributes)
+              }, 0)
+            },
+          )
         }
-      }.bind(this)())
+      } catch (e) {
+        this.isLoading = false
+        this.setLoading(false)
+        cb && cb(attributes)
+      }
+    }.bind(this)())
   }
 
   /**
@@ -763,7 +763,25 @@ export default class LayerAttribute extends React.Component {
 
   /** 删除事件 **/
   deleteAction = async () => {
-    let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.currentLayer.name, this.state.currentIndex, false)
+    let smID = -1, // 用于找到删除的对象
+      hasMedia = false // 是否包含多媒体图片
+    for (let i = 0; i < this.state.attributes.data[this.state.currentIndex].length; i++) {
+      if (this.state.attributes.data[this.state.currentIndex][i].name === 'SmID') {
+        smID = this.state.attributes.data[this.state.currentIndex][i].value
+        if (smID >= 0 && hasMedia) break
+      } else if (
+        this.state.attributes.data[this.state.currentIndex][i].name === 'MediaFilePaths' &&
+        this.state.attributes.data[this.state.currentIndex][i].value != ''
+      ) {
+        hasMedia = true
+        if (smID >= 0 && hasMedia) break
+      }
+    }
+    // 若包含多媒体图片，则删除
+    if (hasMedia && smID >= 0) {
+      await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
+    }
+    let result = await LayerUtils.deleteSelectionAttributeByLayer(this.props.currentLayer.name, this.state.currentIndex, false)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
     } else {
@@ -946,7 +964,7 @@ export default class LayerAttribute extends React.Component {
               filter: `SmID=${isSingleData
                 ? this.state.attributes.data[0][0].value
                 : data.rowData[1].value // 0为序号
-                }`, // 过滤条件
+              }`, // 过滤条件
               cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           },
@@ -1217,10 +1235,10 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderMapLayerAttribute = () => {
-    let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
-      async data => {  
+      async data => {
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
         if(this.state.attributes.data.length === 1){
@@ -1239,7 +1257,7 @@ export default class LayerAttribute extends React.Component {
         }else{
           Object.assign(info, { addToMap: false })
         }
-        
+
         NavigationService.navigate('MediaEdit', {
           info,
           cb: mData => {

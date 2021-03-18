@@ -317,7 +317,7 @@ public class ArSceneView extends SceneView {
     lightEstimationEnabled = enable;
     if (!lightEstimationEnabled) {
       // Update the light probe with the current best light estimate.
-      getArScene().setLightEstimate(DEFAULT_COLOR_CORRECTION, DEFAULT_PIXEL_INTENSITY);
+      getScene().setLightEstimate(DEFAULT_COLOR_CORRECTION, DEFAULT_PIXEL_INTENSITY);
       lastValidPixelIntensity = DEFAULT_PIXEL_INTENSITY;
       lastValidColorCorrection.set(DEFAULT_COLOR_CORRECTION);
     }
@@ -405,7 +405,7 @@ public class ArSceneView extends SceneView {
     // No camera, no drawing.
     com.google.ar.core.Camera currentArCamera = currentFrame.getCamera();
     if (currentArCamera == null) {
-      getArScene().setUseHdrLightEstimate(false);
+      getScene().setUseHdrLightEstimate(false);
       return false;
     }
 
@@ -413,7 +413,7 @@ public class ArSceneView extends SceneView {
     if (updated) {
       // At the start of the frame, update the tracked pose of the camera
       // to use in any calculations during the frame.
-      getArScene().getCamera().updateTrackedPose(currentArCamera);
+      getScene().getCamera().updateTrackedPose(currentArCamera);
 
       Frame frame = currentFrame;
       if (frame != null) {
@@ -509,7 +509,7 @@ public class ArSceneView extends SceneView {
     if (estimate.getState() != LightEstimate.State.VALID) {
       return;
     }
-    getArScene().setUseHdrLightEstimate(true);
+    getScene().setUseHdrLightEstimate(true);
 
     // Updating the direction shouldn't be skipped if it hasn't ever been acquired yet.
     if (isLightDirectionUpdateEnabled || lastValidEnvironmentalHdrMainLightDirection == null) {
@@ -614,7 +614,7 @@ public class ArSceneView extends SceneView {
       onNextHdrLightingEstimate = null;
     }
 
-    getArScene()
+    getScene()
         .setEnvironmentalHdrLightEstimate(
             lastValidEnvironmentalHdrAmbientSphericalHarmonics,
             currentLightDirection,
@@ -627,7 +627,7 @@ public class ArSceneView extends SceneView {
   }
 
   private void updateNormalLightEstimate(LightEstimate estimate) {
-    getArScene().setUseHdrLightEstimate(false);
+    getScene().setUseHdrLightEstimate(false);
     // Verify that the estimate is valid
     float pixelIntensity = lastValidPixelIntensity;
     // Only update the estimate if it is valid.
@@ -640,7 +640,7 @@ public class ArSceneView extends SceneView {
           colorCorrectionPixelIntensity[2]);
     }
     // Update the light probe with the current best light estimate.
-    getArScene().setLightEstimate(lastValidColorCorrection, pixelIntensity);
+    getScene().setLightEstimate(lastValidColorCorrection, pixelIntensity);
     // Update the last valid estimate.
     lastValidPixelIntensity = pixelIntensity;
   }

@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, TouchableOpacity } from 'react-native'
+import { View, Animated, FlatList, TouchableOpacity, Platform } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
 import { scaleSize, Toast, screen, LayerUtils } from '../../../../utils'
@@ -264,9 +264,13 @@ export default class FunctionToolbar extends React.Component {
       if (_item.type === ConstToolType.SM_MAP_STYLE) {
         _item.action = () => {
           let currentLayer = this.props.currentLayer
-          if (
+          if (currentLayer.type === undefined) {
+            // 当前图层为空时，跳转
+            NavigationService.navigate('LayerManager')
+            Toast.show(getLanguage(this.props.language).Prompt.PLEASE_SELECT_THEMATIC_LAYER)
+          } else if (
             currentLayer.type === DatasetType.IMAGE ||
-            currentLayer.type === DatasetType.MBImage
+            Platform.OS === 'ios' && currentLayer.type === DatasetType.MBImage
           ) {
             layerSettingImageModule().actions.showSetting()
           } else if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {

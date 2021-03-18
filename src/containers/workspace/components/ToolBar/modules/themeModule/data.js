@@ -213,8 +213,11 @@ async function createThemeGridUniqueMap(params) {
     GridUniqueColorScheme: 'EE_Lake',
   }
   await SThemeCartography.createThemeGridUniqueMap(paramsTheme).then(msg => {
-    isSuccess = msg.Result
-    // errorInfo = msg.Error && msg.Error
+    isSuccess = msg.result
+    // errorInfo = msg.error && msg.error
+    if (isSuccess && msg.layer) {
+      ThemeAction.sendAddThemeMsg(msg.layer)
+    }
   })
   // .catch(err => {
   //   errorInfo = err.message
@@ -242,8 +245,11 @@ async function createThemeGridRangeMap(params) {
     GridRangeColorScheme: 'FF_Blues',
   }
   await SThemeCartography.createThemeGridRangeMap(paramsTheme).then(msg => {
-    isSuccess = msg.Result
-    // errorInfo = msg.Error && msg.Error
+    isSuccess = msg.result
+    // errorInfo = msg.error && msg.error
+    if (isSuccess && msg.layer) {
+      ThemeAction.sendAddThemeMsg(msg.layer)
+    }
   })
   // .catch(err => {
   //   errorInfo = err.message
@@ -272,8 +278,11 @@ async function createThemeGridUniqueMapByLayer() {
   }
   await SThemeCartography.createThemeGridUniqueMapByLayer(paramsTheme).then(
     msg => {
-      isSuccess = msg.Result
-      // errorInfo = msg.Error && msg.Error
+      isSuccess = msg.result
+      // errorInfo = msg.error && msg.error
+      if (isSuccess && msg.layer) {
+        ThemeAction.sendAddThemeMsg(msg.layer)
+      }
     },
   )
   // .catch(err => {
@@ -303,8 +312,11 @@ async function createThemeGridRangeMapByLayer() {
   }
   await SThemeCartography.createThemeGridRangeMapByLayer(paramsTheme).then(
     msg => {
-      isSuccess = msg.Result
-      // errorInfo = msg.Error && msg.Error
+      isSuccess = msg.result
+      // errorInfo = msg.error && msg.error
+      if (isSuccess && msg.layer) {
+        ThemeAction.sendAddThemeMsg(msg.layer)
+      }
     },
   )
   // .catch(err => {
@@ -1119,16 +1131,16 @@ function getLabelFontRotation() {
 /** 设置颜色 */
 function setColor() {
   const _params = ToolbarModule.getData().themeParams
-  if (_params.ColorType === 'UNIFORMLABEL_FORE_COLOR') {
+  if (_params.colorType === 'UNIFORMLABEL_FORE_COLOR') {
     return SThemeCartography.setUniformLabelColor(_params)
   }
-  if (_params.ColorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
+  if (_params.colorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
     return SThemeCartography.setUniformLabelBackColor(_params)
   }
-  if (_params.ColorType === 'DOT_DENSITY_COLOR') {
+  if (_params.colorType === 'DOT_DENSITY_COLOR') {
     return SThemeCartography.modifyDotDensityThemeMap(_params)
   }
-  if (_params.ColorType === 'GRADUATED_SYMBOL_COLOR') {
+  if (_params.colorType === 'GRADUATED_SYMBOL_COLOR') {
     return SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
   }
 }
@@ -2867,7 +2879,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         ColorScheme: 'BB_Green', // 有ColorScheme，则ColorGradientType无效（ColorGradientType的颜色方案会被覆盖）
       }
       await SThemeCartography.createThemeUniqueMap(paramsTheme).then(msg => {
-        isSuccess = msg
+        isSuccess = msg.result
+        if (isSuccess && msg.layer) {
+          ThemeAction.sendAddThemeMsg(msg.layer)
+        }
       })
       // .catch(err => {
       //   errorInfo = err.message
@@ -2884,7 +2899,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         ColorScheme: 'FF_Blues',
       }
       await SThemeCartography.createThemeRangeMap(paramsTheme).then(msg => {
-        isSuccess = msg
+        isSuccess = msg.result
+        if (isSuccess && msg.layer) {
+          ThemeAction.sendAddThemeMsg(msg.layer)
+        }
       })
       // .catch(err => {
       //   errorInfo = err.message
@@ -2900,7 +2918,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createDotDensityThemeMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -2918,7 +2939,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -2938,7 +2962,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createUniformThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -2957,7 +2984,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -2976,7 +3006,10 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createRangeThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3013,7 +3046,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         ColorScheme: 'BB_Green',
       }
       await SThemeCartography.createThemeUniqueMap(paramsTheme).then(msg => {
-        isSuccess = msg
+        isSuccess = msg.result
+        if (isSuccess && msg.layer) {
+          ThemeAction.sendAddThemeMsg(msg.layer)
+        }
       })
       // .catch(err => {
       //   errorInfo = err.message
@@ -3030,7 +3066,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         ColorScheme: 'CD_Cyans',
       }
       await SThemeCartography.createThemeRangeMap(paramsTheme).then(msg => {
-        isSuccess = msg
+        isSuccess = msg.result
+        if (isSuccess && msg.layer) {
+          ThemeAction.sendAddThemeMsg(msg.layer)
+        }
       })
       // .catch(err => {
       //   errorInfo = err.message
@@ -3046,7 +3085,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createDotDensityThemeMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3064,7 +3106,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3084,7 +3129,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createUniformThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3103,7 +3151,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3122,7 +3173,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       }
       await SThemeCartography.createRangeThemeLabelMap(paramsTheme).then(
         msg => {
-          isSuccess = msg
+          isSuccess = msg.result
+          if (isSuccess && msg.layer) {
+            ThemeAction.sendAddThemeMsg(msg.layer)
+          }
         },
       )
       // .catch(err => {
@@ -3230,15 +3284,18 @@ async function createHeatMap(params) {
   paramsTheme = {
     DatasourceAlias: params.themeDatasourceAlias,
     DatasetName: params.themeDatasetName,
-    KernelRadius: '40',
-    FuzzyDegree: '0.8',
-    Intensity: '0.1',
-    ColorType: 'ZA_Insights',
+    kernelRadius: 40,
+    fuzzyDegree: 0.8,
+    intensity: 0.1,
+    colorType: 'ZA_Insights',
   }
   await SThemeCartography.createHeatMap(paramsTheme)
     .then(msg => {
-      isSuccess = msg.Result
-      errorInfo = msg.Error && msg.Error
+      isSuccess = msg.result
+      errorInfo = msg.error && msg.error
+      if (isSuccess && msg.layer) {
+        ThemeAction.sendAddThemeMsg(msg.layer)
+      }
     })
     .catch(err => {
       errorInfo = err.message
@@ -3250,7 +3307,7 @@ async function createHeatMap(params) {
       ToolbarModule.getParams().setCurrentLayer(layers.length > 0 && layers[0])
     })
     ToolbarModule.getParams().setToolbarVisible(false)
-  } else if (errorInfo === 'TypeError') {
+  } else if (errorInfo === 'Typeerror') {
     Toast.show(getLanguage(GLOBAL.language).Prompt.HEAT_MAP_DATASET_TYPE_ERROR)
   }
 }

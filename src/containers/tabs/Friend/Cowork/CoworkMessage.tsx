@@ -306,6 +306,12 @@ class CoworkMessageItem extends PureComponent<ItemProps, {}> {
       case GeometryType.GEOGRAPHICOBJECT:
         geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
     }
+    if (!geoType && message.message.theme) {
+      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME
+    }
+    if (!geoType && message.message.isHeatmap) {
+      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP
+    }
     if (action) {
       action = action + ' '
     }

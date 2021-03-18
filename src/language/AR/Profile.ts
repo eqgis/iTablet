@@ -386,18 +386,17 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'التسامح مع الخطأ',
   MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
 
-  // 以下待翻译 位置校准新界面
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location',
-  MAR_AR_POSITION_CORRECT: 'Position calibration',
-  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north',
-  MAP_AR_SCAN_TIP: 'QR code with location information can be recognized\nTry to make sure that the QR code just fills the scan box',
-  MAP_AR_SCAN_IT: 'Scan',
-  MAP_AR_DATUM_HEIGHT: 'Height',
-  MAP_AR_DATUM_DIRECTION: 'Direction',
-  MAR_AR_DATUM_NORTH: 'North',
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed',
-  MAR_AR_QR_INVALID: 'QR code information not recognized',
-  // 以上待翻译
+  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
+  MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
+  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
+  MAP_AR_SCAN_TIP: 'QR code with location information can be recognized\nTry to make sure that the QR code just fills the scan box', // need to be translated
+  MAP_AR_SCAN_IT: 'Scan', // need to be translated
+  MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
+  MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated
+  MAR_AR_DATUM_NORTH: 'North', // need to be translated
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed', // need to be translated
+  MAR_AR_QR_INVALID: 'QR code information not recognized', // need to be translated
+
   // ar地图
   COLLECT_SCENE_RENAME: 'إعادة تسمية',
   COLLECT_SCENE_RENAME_SUCCEED: 'نجحت إعادة التسمية',

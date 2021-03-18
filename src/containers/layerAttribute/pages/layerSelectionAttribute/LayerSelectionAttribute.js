@@ -977,8 +977,8 @@ export default class LayerSelectionAttribute extends React.Component {
     //   type = LayerAttributeTable.Type.SINGLE_DATA
     // }
     GLOBAL.layerSelection = this.props.layerSelection
-    let buttonNameFilter = ['MediaFilePaths'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,

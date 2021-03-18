@@ -374,6 +374,16 @@ const Profile = {
   MAP_AR_DATUM_AUTO_CATCH: '自动捕捉',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: '捕捉容限',
 
+  MAR_AR_DATUM_PICTURE_LOCATION: '图片定位',
+  MAR_AR_POSITION_CORRECT: '位置校准',
+  MAP_AR_TOWARDS_NORTH: '手机后摄像头朝北',
+  MAP_AR_SCAN_TIP: '带位置信息的二维码可以被识别\n尽量保证二维码刚好填满扫描框',
+  MAP_AR_SCAN_IT: '扫一扫',
+  MAP_AR_DATUM_HEIGHT: '高度',
+  MAP_AR_DATUM_DIRECTION: '方向',
+  MAR_AR_DATUM_NORTH: '正北',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: '图片定位成功',
+  MAR_AR_QR_INVALID: '未识别到二维码信息',
   // ar地图
   COLLECT_SCENE_RENAME: '重命名',
   COLLECT_SCENE_RENAME_SUCCEED: '重命名成功',

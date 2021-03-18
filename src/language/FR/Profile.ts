@@ -376,6 +376,19 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_AUTO_CATCH: 'Capture automatique',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolérance',
 
+  // 以下待翻译 位置校准新界面
+  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location',
+  MAR_AR_POSITION_CORRECT: 'Position calibration',
+  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north',
+  MAP_AR_SCAN_TIP: 'QR code with location information can be recognized\nTry to make sure that the QR code just fills the scan box',
+  MAP_AR_SCAN_IT: 'Scan',
+  MAP_AR_DATUM_HEIGHT: 'Height',
+  MAP_AR_DATUM_DIRECTION: 'Direction',
+  MAR_AR_DATUM_NORTH: 'North',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed',
+  MAR_AR_QR_INVALID: 'QR code information not recognized',
+  // 以上待翻译
+
   // ar地图
   COLLECT_SCENE_RENAME: 'Renommer',
   COLLECT_SCENE_RENAME_SUCCEED: 'Renommer avec succès',

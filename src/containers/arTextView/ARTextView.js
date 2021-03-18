@@ -7,6 +7,7 @@ import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
 import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arTextModule from './arTextModule'
+import DatumPointCalibration from '../arDatumPointCalibration'
 
 let ToolbarModule
 export default class ARTextView extends React.Component {
@@ -22,6 +23,11 @@ export default class ARTextView extends React.Component {
     let params = this.props.navigation.state.params || {}
     this.point = params.point
     this.clickAble = true // 防止重复点击
+    this.datumPointRef = null
+    // this.scanTimes = 0 // 尝试扫描次数
+    this.state = {
+      showDatumPoint: true,
+    }
   }
 
   // eslint-disable-next-line
@@ -34,14 +40,14 @@ export default class ARTextView extends React.Component {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arTextModule)
     ToolbarModule.setToolBarData('SM_ARTEXTMODULE')
-    this.toolbar.setVisible(true, 'SM_ARTEXTMODULE', {
-      type: 'table',
-    })
-    setTimeout(async () => {
-      if (this.point) {
-        await SARText.setPosition(this.point.x, this.point.y)
-      }
-    }, 1000)
+    // this.toolbar.setVisible(true, 'SM_ARTEXTMODULE', {
+    //   type: 'table',
+    // })
+    // setTimeout(async () => {
+    //   if (this.point) {
+    //     await SARText.setPosition(this.point.x, this.point.y)
+    //   }
+    // }, 1000)
   }
 
   componentWillUnmount() {}
@@ -63,21 +69,65 @@ export default class ARTextView extends React.Component {
     return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
+  _onDatumPointClose = () => {
+    const point = this.datumPointRef.getPositionData()
+    // 关闭时进行位置校准
+    SARText.setPosition(Number(point.x), Number(point.y), Number(point.h))
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    this.setState({
+      showDatumPoint: false,
+    }, () => {
+      this.toolbar.setVisible(true, 'SM_ARTEXTMODULE', {
+        type: 'table',
+      })
+    })
+  }
+
+  _startScan = () => {
+    // 开始扫描二维码
+    return SARText.startScan()
+    // if(res === "" && this.scanTimes <= 4){
+    //   // 没有扫描到信息 重试
+    //   setTimeout(()=>{
+    //     this._startScan()
+    //   },1000)
+    //   this.scanTimes++
+    // }else{
+    //   this.scanTimes = 0
+    //   this.datumPointRef && this.datumPointRef.onScanCallback(res)
+    //   // if(valid){
+    //   //   const point = JSON.parse(res)
+    //   //   SARText.setPosition(Number(point.x), Number(point.y))
+    //   // }
+    // }
+  }
+
+  renderDatumPointCalibration = () => {
+    const { showDatumPoint } = this.state
+    return <>
+      {showDatumPoint ? <DatumPointCalibration routeName={'ARTextView'} ref={ref => this.datumPointRef = ref} onClose={this._onDatumPointClose}
+        startScan={this._startScan}/> : null}
+    </>
+  }
+
   render() {
     return (
-      <Container
-        ref={ref => (this.Container = ref)}
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TEXT,
-          navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
-        }}
-        bottomProps={{ type: 'fix' }}
-      >
-        <SMARTextView style={{ flex: 1 }} />
-        {this.renderToolbar()}
-      </Container>
+      <>
+        <Container
+          ref={ref => (this.Container = ref)}
+          headerProps={{
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TEXT,
+            navigation: this.props.navigation,
+            backAction: this.back,
+            type: 'fix',
+          }}
+          bottomProps={{ type: 'fix' }}
+        >
+          <SMARTextView style={{ flex: 1 }} />
+          {this.renderToolbar()}
+        </Container>
+        {this.renderDatumPointCalibration()}
+      </>
     )
   }
 }

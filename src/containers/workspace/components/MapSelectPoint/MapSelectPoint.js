@@ -1,9 +1,13 @@
 import * as React from 'react'
-import { View } from 'react-native'
+import { View, Image, Text, StyleSheet, Platform } from 'react-native'
+import { SMap } from 'imobile_for_reactnative'
 import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 import Header from '../../../../components/Header'
 import MapSelectPointLatitudeAndLongitude from '../MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
-
+import Input from '../../../../components/Input'
+import { getThemeAssets } from '../../../../assets'
+import { getLanguage } from '../../../../language'
+import { scaleSize } from '../../../../utils' 
 export default class MapSelectPoint extends React.Component {
   props: {
     headerProps: Object,
@@ -19,23 +23,45 @@ export default class MapSelectPoint extends React.Component {
     super(props)
     this.state = {
       show: false,
+      longitude: '',
+      latitude: '',
     }
+  }
+
+  componentDidMount = async () => {
+    let position
+    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
+      position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
+    } else {
+      position = await SMap.getCurrentPosition()
+    }
+    this.setState({
+      longitude: position.x,
+      latitude: position.y,
+    })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     // console.warn(this.props.selectPointType, nextProps.selectPointType)
     return (
       nextState.show !== this.state.show ||
-      nextProps.selectPointType !== this.props.selectPointType
+      nextProps.selectPointType !== this.props.selectPointType ||
+      nextState.latitude !== this.state.latitude ||
+      nextState.longitude !== this.state.longitude
     )
   }
 
   updateLatitudeAndLongitude = point => {
-    if(this.pointLatitudeAndLongitude)
-    {
-      this.pointLatitudeAndLongitude.updateLatitudeAndLongitude(point)
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
-    }
+    // if(this.pointLatitudeAndLongitude)
+    // {
+    //   this.pointLatitudeAndLongitude.updateLatitudeAndLongitude(point)
+    //   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    // }
+    this.setState({
+      longitude: point.x,
+      latitude: point.y,
+    })
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
   }
 
   setVisible = (iShow, title = this.props.headerProps.title || '') => {
@@ -61,16 +87,30 @@ export default class MapSelectPoint extends React.Component {
       this.props.selectPointType &&
       (this.props.selectPointType === 'selectPoint' || // 普通地图地图选点
         this.props.selectPointType ===
-          'SELECTPOINTFORARNAVIGATION_INDOOR') // 室内导航地图选点
+          'SELECTPOINTFORARNAVIGATION_INDOOR') || // 室内导航地图选点
+          this.props.selectPointType === 'DatumPointCalibration' // 新位置校准
     ) {
       return (
-        <MapSelectPointLatitudeAndLongitude
-          style={{
-            alignItems: 'flex-end',
-          }}
-          ref={ref => (this.pointLatitudeAndLongitude = ref)}
-          isEdit={false}
-        />
+        // <MapSelectPointLatitudeAndLongitude
+        //   style={{
+        //     alignItems: 'flex-end',
+        //   }}
+        //   ref={ref => (this.pointLatitudeAndLongitude = ref)}
+        //   isEdit={false}
+        // />
+        <View style={styles.inputView}>
+          <View style={styles.inputBox}>
+            <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
+            <Text>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
+            <Input style={styles.input} editable={false} showClear={false} value={this.state.longitude}/>
+          </View>
+          <View style={styles.line}></View>
+          <View style={styles.inputBox}>
+            <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
+            <Text>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
+            <Input style={styles.input} editable={false} showClear={false} value={this.state.latitude}/>
+          </View>
+        </View>
       )
     } else {
       return <View />
@@ -104,7 +144,7 @@ export default class MapSelectPoint extends React.Component {
               height: '100%',
               justifyContent: 'flex-end',
               flexDirection: 'column',
-              alignItems: 'flex-end',
+              alignItems: 'center',
             }}
             pointerEvents={'none'}
           >
@@ -117,3 +157,39 @@ export default class MapSelectPoint extends React.Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  inputView: {
+    width: scaleSize(656),
+    height: scaleSize(140),
+    borderRadius: scaleSize(48),
+    paddingHorizontal: scaleSize(20),
+    paddingVertical: scaleSize(10),
+    backgroundColor: "#fff",
+    marginBottom: scaleSize(36),
+    justifyContent: 'space-around',
+    ...Platform.select({
+      android: {elevation: scaleSize(5)},
+      ios:{}
+    }),
+  },
+  inputBox: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputIcon: {
+    width: scaleSize(44),
+    height: scaleSize(44),
+  },
+  input: {
+    flex: 1,
+    height: scaleSize(44),
+  },
+  line: {
+    width: scaleSize(572),
+    height: 1,
+    alignSelf: 'flex-end',
+    backgroundColor: '#f2f2f2',
+  },
+})

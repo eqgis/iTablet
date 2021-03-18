@@ -7,6 +7,7 @@ import NavigationService from '../NavigationService'
 import { ToolBar } from '../workspace/components'
 import { getToolbarModule } from '../workspace/components/ToolBar/modules/ToolbarModule'
 import arWebViewModule from './arWebViewModule'
+import DatumPointCalibration from '../arDatumPointCalibration'
 
 let ToolbarModule
 export default class ARWebView extends React.Component {
@@ -22,6 +23,10 @@ export default class ARWebView extends React.Component {
     let params = this.props.navigation.state.params || {}
     this.point = params.point
     this.clickAble = true // 防止重复点击
+    this.datumPointRef = null
+    this.state = {
+      showDatumPoint: true,
+    }
   }
 
   // eslint-disable-next-line
@@ -34,14 +39,14 @@ export default class ARWebView extends React.Component {
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arWebViewModule)
     ToolbarModule.setToolBarData('SM_ARWEBVIEWMODULE')
-    this.toolbar.setVisible(true, 'SM_ARWEBVIEWMODULE', {
-      type: 'table',
-    })
-    setTimeout(async () => {
-      if (this.point) {
-        await SARWebView.setPosition(this.point.x, this.point.y)
-      }
-    }, 1000)
+    // this.toolbar.setVisible(true, 'SM_ARWEBVIEWMODULE', {
+    //   type: 'table',
+    // })
+    // setTimeout(async () => {
+    //   if (this.point) {
+    //     await SARWebView.setPosition(this.point.x, this.point.y)
+    //   }
+    // }, 1000)
   }
 
   componentWillUnmount() {}
@@ -60,21 +65,51 @@ export default class ARWebView extends React.Component {
     return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
+  _onDatumPointClose = () => {
+    const point = this.datumPointRef.getPositionData()
+    // 关闭时进行位置校准
+    SARWebView.setPosition(Number(point.x), Number(point.y), Number(point.h))
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    this.setState({
+      showDatumPoint: false,
+    }, () => {
+      this.toolbar.setVisible(true, 'SM_ARWEBVIEWMODULE', {
+        type: 'table',
+      })
+    })
+  }
+
+  _startScan = () => {
+    // 开始扫描二维码
+    return SARWebView.startScan()
+  }
+
+  renderDatumPointCalibration = () => {
+    const { showDatumPoint } = this.state
+    return <>
+      {showDatumPoint ? <DatumPointCalibration routeName={'ARWebView'} ref={ref => this.datumPointRef = ref} onClose={this._onDatumPointClose}
+        startScan={this._startScan}/> : null}
+    </>
+  }
+
   render() {
     return (
-      <Container
-        ref={ref => (this.Container = ref)}
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-          navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
-        }}
-        bottomProps={{ type: 'fix' }}
-      >
-        <SMARWebView style={{ flex: 1 }} />
-        {this.renderToolbar()}
-      </Container>
+      <>
+        <Container
+          ref={ref => (this.Container = ref)}
+          headerProps={{
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+            navigation: this.props.navigation,
+            backAction: this.back,
+            type: 'fix',
+          }}
+          bottomProps={{ type: 'fix' }}
+        >
+          <SMARWebView style={{ flex: 1 }} />
+          {this.renderToolbar()}
+        </Container>
+        {this.renderDatumPointCalibration()}
+      </>
     )
   }
 }

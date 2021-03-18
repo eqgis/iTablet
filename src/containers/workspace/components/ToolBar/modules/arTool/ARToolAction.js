@@ -122,8 +122,10 @@ async function arVideo() {
     GLOBAL.arSwitchToMap = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   GLOBAL.EnterDatumPointType = 'arVideo'
-  NavigationService.navigate('EnterDatumPoint')
+  // NavigationService.navigate('EnterDatumPoint')
+  NavigationService.navigate('ARVideoView')
 }
 
 async function arImage() {
@@ -137,8 +139,10 @@ async function arImage() {
     GLOBAL.arSwitchToMap = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   GLOBAL.EnterDatumPointType = 'arImage'
-  NavigationService.navigate('EnterDatumPoint')
+  // NavigationService.navigate('EnterDatumPoint')
+  NavigationService.navigate('ARImageView')
 }
 
 async function arWebView() {
@@ -152,8 +156,10 @@ async function arWebView() {
     GLOBAL.arSwitchToMap = true
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   GLOBAL.EnterDatumPointType = 'arWebView'
-  NavigationService.navigate('EnterDatumPoint')
+  // NavigationService.navigate('EnterDatumPoint')
+  NavigationService.navigate('ARWebView')
 }
 
 async function arText() {
@@ -164,11 +170,13 @@ async function arText() {
   }
 
   if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
+    GLOBAL.arSwitchToMap = false
     ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
   }
+  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
   GLOBAL.EnterDatumPointType = 'arText'
-  NavigationService.navigate('EnterDatumPoint')
+  // NavigationService.navigate('EnterDatumPoint')
+  NavigationService.navigate('ARTextView')
 }
 
 async function ar3D() {

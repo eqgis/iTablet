@@ -3120,16 +3120,21 @@ export default class MapView extends React.Component {
   _renderMapSelectPointHeaderRight = () => {
     if (
       this.state.selectPointType === 'selectPoint' ||
-      this.state.selectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR'
+      this.state.selectPointType === 'SELECTPOINTFORARNAVIGATION_INDOOR' ||
+      this.state.selectPointType === 'DatumPointCalibration'
     ) {
       return (
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            if (this.state.selectPointType === 'selectPoint') {
+            if (this.state.selectPointType === 'selectPoint'  || this.state.selectPointType === 'DatumPointCalibration') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-              NavigationService.navigate('EnterDatumPoint', {})
+              // 如果是新校准界面 则返回原界面
+              this.state.selectPointType === 'DatumPointCalibration' ?
+                NavigationService.navigate(this.props.navigation.state.params.backPage, {}) :
+                NavigationService.navigate('EnterDatumPoint', {})
+
               if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
                 GLOBAL.MapXmlStr = undefined
@@ -3233,13 +3238,17 @@ export default class MapView extends React.Component {
           type: 'fix',
           headerRight: this._renderMapSelectPointHeaderRight(),
           backAction: async () => {
-            if (this.state.selectPointType === 'selectPoint') {
+            if (this.state.selectPointType === 'selectPoint' || this.state.selectPointType === 'DatumPointCalibration') {
               GLOBAL.mapController.move({
                 bottom: scaleSize(-50),
                 left: 'default',
               })
 
-              NavigationService.navigate('EnterDatumPoint', {})
+              // 如果是新校准界面 则返回原界面
+              this.state.selectPointType === 'DatumPointCalibration' ?
+                NavigationService.navigate(this.props.navigation.state.params.backPage, {}) :
+                NavigationService.navigate('EnterDatumPoint', {})
+
               this.setState({
                 showScaleView: true,
                 selectPointType: undefined,

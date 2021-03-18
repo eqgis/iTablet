@@ -33,6 +33,7 @@ export default class Input extends PureComponent {
     keyboardType?: string, // 弹出键盘类型
     textContentType?: string, // iOS输入内容类型，eg：password
     secureTextEntry?: boolean, // 密码
+    textAlign?: string,
     onChangeText?: () => {}, // 输入回调
     onClear?: () => {}, // 自定义清除事件
     onFocus?: () => {},
@@ -148,6 +149,7 @@ export default class Input extends PureComponent {
           returnKeyType={this.props.returnKeyType}
           keyboardType={this.props.keyboardType}
           onFocus={this.props.onFocus}
+          textAlign={this.props.textAlign}
         />
         {this.props.showClear && this.renderClearBtn()}
       </View>

@@ -439,6 +439,7 @@ export default class MediaEdit extends React.Component {
           data={this.state.paths}
           withBackBtn
           isModal
+          device={this.props.device}
         />
       </Container>
     )

@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { View, Modal, Platform } from 'react-native'
-import { checkType } from '../../utils'
+import { checkType, screen } from '../../utils'
 import Swiper from 'react-native-swiper' // eslint-disable-line
 import styles from './styles'
 import VideoViewer from './VideoViewer'
@@ -16,6 +16,7 @@ export default class MediaPager extends React.Component {
     withBackBtn: boolean,
     backHide?: boolean,
     defaultIndex: number,
+    device: Object,
   }
 
   static defaultProps = {
@@ -102,41 +103,38 @@ export default class MediaPager extends React.Component {
 
   renderContent = () => {
     return (
-      <Swiper
-        // eslint-disable-next-line
-        onScrollBeginDrag={(e, state, context) => {
-          const type = checkType.getMediaTypeByPath(
-            this.props.data[state.index].uri,
-          )
-          if (type === 'video') {
-            this.dataRef[state.index] && this.dataRef[state.index].pause()
-          }
+      <View
+        style={{
+          flex: 1,
+          paddingTop:
+            screen.isIphoneX() &&
+              this.props.device.orientation.indexOf('PORTRAIT') >= 0
+              ? screen.X_TOP
+              : 0,
+          paddingBottom: screen.getIphonePaddingBottom(),
+          ...screen.getIphonePaddingHorizontal(
+            this.props.device.orientation,
+          ),
         }}
-        dot={<View style={styles.dot} />}
-        activeDot={<View style={styles.activeDot} />}
-        // paginationStyle={styles.paginationStyle}
-        index={this.state.defaultIndex}
-        loop={false}
-        // showsButtons={this.props.data.length > 1}
-        // prevButton={
-        //   <View style={styles.arrowView}>
-        //     <Image
-        //       style={styles.arrowImg}
-        //       source={getPublicAssets().common.icon_back}
-        //     />
-        //   </View>
-        // }
-        // nextButton={
-        //   <View style={styles.arrowView}>
-        //     <Image
-        //       style={styles.arrowImg}
-        //       source={getPublicAssets().common.icon_next}
-        //     />
-        //   </View>
-        // }
       >
-        {this.getData()}
-      </Swiper>
+        <Swiper
+          // eslint-disable-next-line
+          onScrollBeginDrag={(e, state, context) => {
+            const type = checkType.getMediaTypeByPath(
+              this.props.data[state.index].uri,
+            )
+            if (type === 'video') {
+              this.dataRef[state.index] && this.dataRef[state.index].pause()
+            }
+          }}
+          dot={<View style={styles.dot} />}
+          activeDot={<View style={styles.activeDot} />}
+          index={this.state.defaultIndex}
+          loop={false}
+        >
+          {this.getData()}
+        </Swiper>
+      </View>
     )
   }
 

@@ -507,7 +507,7 @@ export default class MyDataPage extends Component {
               fileName: fileName,
             },
           ]
-          NavigationService.replace('CoworkTabs', {
+          NavigationService.navigate('Chat', {
             targetId: targetId,
             action: action,
           })

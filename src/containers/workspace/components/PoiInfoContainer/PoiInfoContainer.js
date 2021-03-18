@@ -241,23 +241,33 @@ export default class PoiInfoContainer extends React.Component {
 
   //online返回存在的缺陷，没有直接返回楼层，地址中包含有楼层，但格式不统一，无法拿到，后续导航无法到正确楼层
   getSearchResult = (params, cb) => {
-    LocateUtils.getSearchResult(params, this.state.location, data => {
-      if (data) {
-        let newState = {resultList: data.resultList, radius: 50000, showList: true}
-        if (data.radius !== undefined) {
-          newState.radius = data.radius
+    try {
+      GLOBAL.Loading.setLoading(
+        true,
+        getLanguage(GLOBAL.language).Prompt.SEARCHING,
+      )
+      LocateUtils.getSearchResult(params, this.state.location, data => {
+        if (data) {
+          let newState = {resultList: data.resultList, radius: 50000, showList: true}
+          if (data.radius !== undefined) {
+            newState.radius = data.radius
+          }
+          this.setState(newState,
+            async () => {
+              this.show()
+              await SMap.addCallouts(data.resultList)
+              cb && cb(data)
+              GLOBAL.Loading.setLoading(false)
+            },
+          )
+        } else {
+          cb && cb()
+          GLOBAL.Loading.setLoading(false)
         }
-        this.setState(newState,
-          async () => {
-            this.show()
-            await SMap.addCallouts(data.resultList)
-            cb && cb(data)
-          },
-        )
-      } else {
-        cb && cb()
-      }
-    })
+      })
+    } catch (error) {
+      GLOBAL.Loading.setLoading(false)
+    }
   }
 
   //搜索结果列表点击事件

@@ -32,10 +32,10 @@ import { color ,zIndexLevel} from '../../../../styles'
 const SMeasureViewiOS = NativeModules.SMeasureAreaView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
 const TOP_DEFAULT = Platform.select({
-  android: 0,
+  android:screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
   // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
   // ios: screen.isIphoneX() ? 0 : screen.IOS_TOP,
-  ios: 0,
+  ios: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
 })
 
 /*
@@ -166,7 +166,7 @@ export default class MeasureAreaView extends React.Component {
         key: 'rectangle',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
-        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
         size: 'large',
@@ -177,7 +177,7 @@ export default class MeasureAreaView extends React.Component {
         key: 'circular',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
-        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
         size: 'large',
@@ -408,7 +408,7 @@ export default class MeasureAreaView extends React.Component {
             if (result) {
               // Toast.show("add******")
               if (this.state.isfirst) {
-                this.setState({ showADD: true, showADDPoint: true, is_showLog: true, showGenera: true })
+                this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
               } else {
                 this.setState({ showADD: true })
               }
@@ -456,6 +456,8 @@ export default class MeasureAreaView extends React.Component {
           this.onCurrentHeightChanged,
         )
       }
+
+      this.setState({showGenera:true})
     }.bind(this)())
     // })
   }
@@ -504,7 +506,7 @@ export default class MeasureAreaView extends React.Component {
   onAdd = result => {
     if (result.add) {
       if (this.state.isfirst) {
-        this.setState({ showADD: true, showADDPoint: true ,is_showLog: true,showGenera:true})
+        this.setState({ showADD: true, showADDPoint: true ,is_showLog: true })
       } else {
         this.setState({ showADD: true })
       }
@@ -1322,37 +1324,41 @@ export default class MeasureAreaView extends React.Component {
   }
 
   renderGeneralView() {
-    if (Platform.OS === 'ios') {
-      return (
+    return (
+      <View
+        ref={ref => this.moveView = ref}
+        style={{
+          position: 'absolute',
+          top: scaleSize(400),
+          width: scaleSize(250),
+          height: scaleSize(250),
+          borderRadius: scaleSize(4),
+          backgroundColor: 'white',
+          ...this._moveViewStyles.style,
+        }}>
         <View
-          ref={ref => this.moveView = ref}
           style={{
-            position: 'absolute',
-            top: scaleSize(400),
-            width: scaleSize(250),
-            height: scaleSize(250),
-            borderRadius: scaleSize(4),
-            ...this._moveViewStyles.style,
-          }}>
+            width: '100%',
+            height: scaleSize(30),
+            backgroundColor: 'transparent',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
+          {...this._panResponder.panHandlers}
+        >
           <View
             style={{
-              width: '100%',
-              bottom: 0,
-              height: scaleSize(250),
-              backgroundColor: 'transparent',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-around',
+              height: scaleSize(8),
+              width: scaleSize(60),
+              borderRadius: scaleSize(4),
+              backgroundColor: color.separateColorGray4,
             }}
-            {...this._panResponder.panHandlers}
-          >
-            <SMMeasureARGeneraView />
-          </View>
+          />
         </View>
-      )
-    } else {
-      return null
-    }
+        <SMMeasureARGeneraView />
+      </View>
+    )
   }
 
   /** 原生mapview加载完成回调 */

@@ -387,6 +387,7 @@ export default class CollectSceneFormView extends React.Component {
         NavigationService.goBack()
         SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
       },
+      collectScene: true,
     })
   }
 

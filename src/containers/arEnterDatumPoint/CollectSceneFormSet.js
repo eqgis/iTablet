@@ -38,6 +38,7 @@ export default class CollectSceneFormSet extends Component {
     this.isMeasure = params && params.isMeasure//量算等界面不显示定位点 add jiakai
     this.showGenera = params && params.showGenera || false//测量界面开启绘制窗口
     this.showGeneracb = params && params.showGeneracb//测量界面开启绘制窗口回调
+    this.collectScene = params && params.collectScene || false//高静采集跳转设置参数
 
     let problemItems = []
     problemItems.push({
@@ -331,7 +332,7 @@ export default class CollectSceneFormSet extends Component {
           {!this.isMeasure&&this.renderButtons()}
           {this.autoCatch&&this.renderSwitch()}
           {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}
-          {!this.isMeasure&&this.renderShowGenera()}
+          {!this.collectScene&&!this.isMeasure&&this.renderShowGenera()}
         </View>
       </ScrollView>
     )

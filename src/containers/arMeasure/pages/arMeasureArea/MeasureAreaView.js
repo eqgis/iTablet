@@ -456,8 +456,6 @@ export default class MeasureAreaView extends React.Component {
           this.onCurrentHeightChanged,
         )
       }
-
-      this.setState({showGenera:true})
     }.bind(this)())
     // })
   }
@@ -1395,7 +1393,7 @@ export default class MeasureAreaView extends React.Component {
       } else if (this.measureType === 'arMeasureCylinder') {
         SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
       }
-      this.setState({ isfirst: true })
+      this.setState({ isfirst: true ,showGenera:true})
     }
   }
   render() {

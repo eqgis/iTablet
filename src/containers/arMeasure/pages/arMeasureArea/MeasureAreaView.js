@@ -84,7 +84,10 @@ export default class MeasureAreaView extends React.Component {
         key: 'critical',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .TRACK,
-        action: ()=>{ this.back() , this.critical()},
+        action: ()=>{
+          this.back()
+          this.critical()
+        },
         size: 'large',
         image: getThemeAssets().toolbar.icon_analysis_critical_element,
       },
@@ -643,10 +646,11 @@ export default class MeasureAreaView extends React.Component {
   }
 
   critical = async () => {
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    GLOBAL.arSwitchToMap = false
     GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
     NavigationService.navigate('EnterDatumPoint')
   }

@@ -240,6 +240,7 @@ class NewDataset extends Component {
             this.container && this.container.setLoading(false)
           }, 1000)
         }
+        NavigationService.goBack()
       }
     } catch (error) {
       setTimeout(() => {

@@ -44,7 +44,7 @@ import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
-import { FileTools } from './src/native'
+import { FileTools, SplashScreen } from './src/native'
 import ConfigStore from './src/redux/store'
 import { scaleSize, Toast, screen, OnlineServicesUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
@@ -54,7 +54,7 @@ import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
 import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
-import SplashScreen from 'react-native-splash-screen'
+// import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
@@ -473,24 +473,24 @@ class AppRoot extends Component {
       SSpeechRecognizer.init('5b63b509')
     }
     AppState.addEventListener('change', this.handleStateChange)
-    ; (async function () {
-      await this.initDirectories()
-      await this.initUser()
-      SOnlineService.init()
-      // SOnlineService.removeCookie()
-      SIPortalService.init()
-      await this.getVersion()
-      await this.getImportState()
-      await this.addImportExternalDataListener()
-      await this.addGetShareResultListener()
-      await this.openWorkspace()
-      await this.initOrientation()
+    // ; (async function () {
+    await this.initDirectories()
+    await this.initUser()
+    SOnlineService.init()
+    // SOnlineService.removeCookie()
+    SIPortalService.init()
+    await this.getVersion()
+    await this.getImportState()
+    await this.addImportExternalDataListener()
+    await this.addGetShareResultListener()
+    await this.openWorkspace()
+    await this.initOrientation()
 
-      // 显示界面，之前的为预加载
-      this.setState({ isInit: true }, () => {
-        this.login()
-      })
-    }).bind(this)()
+    // 显示界面，之前的为预加载
+    this.setState({ isInit: true }, () => {
+      this.login()
+    })
+    // }).bind(this)()
 
     GLOBAL.clearMapData = () => {
       this.props.setEditLayer(null) // 清空地图图层中的数据

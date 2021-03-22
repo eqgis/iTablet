@@ -8,6 +8,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.NativeMethod;
 import com.supermap.RN.SPUtils;
+import com.supermap.itablet.splashscreen.SplashScreenModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ public class MyReactpackge implements  ReactPackage {
         modules.add(new NativeMethod(reactContext));
         modules.add(new SPUtils(reactContext));
         modules.add(new AppUtils(reactContext));
+        modules.add(new SplashScreenModule(reactContext));
         return modules;
     }
 

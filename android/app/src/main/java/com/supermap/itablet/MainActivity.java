@@ -29,11 +29,10 @@ import com.supermap.component.activity.AiGestureBoneActivity;
 import com.supermap.data.Environment;
 import com.supermap.data.ITabletLicenseManager;
 import com.supermap.data.Toolkit;
+import com.supermap.itablet.splashscreen.SplashScreen;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
-
-import org.devio.rn.splashscreen.SplashScreen;
 
 import java.io.File;
 import java.lang.reflect.Field;

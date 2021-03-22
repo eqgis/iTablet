@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../utils/index'
-const SCAN_SIZE = scaleSize(640)
+const SCAN_SIZE = scaleSize(512)
+const CORNER_SIZE = scaleSize(60)
+const BORDER_SIZE = 3
+const OFFSET = -2
 export default StyleSheet.create({
   container: {
     position: 'absolute',
@@ -26,9 +29,10 @@ export default StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: "rgba(0,0,0,0.9)",
+    backgroundColor: "rgba(0,0,0,0.7)",
     justifyContent: 'flex-end',
     alignItems: 'center',
+    zIndex: 0,
   },
   scanMaskCenter: {
     flex: 0,
@@ -40,16 +44,64 @@ export default StyleSheet.create({
     flex: 0,
     height: '100%',
     width: SCAN_SIZE,
-    borderColor: '#0379FF',
-    borderWidth: 2,
+    borderColor: 'rgba(200,200,200,0.6)',
+    borderWidth: 1,
+    zIndex: 1,
+  },
+  windowCornerLT: {
+    height: CORNER_SIZE,
+    width: CORNER_SIZE,
+    borderTopColor: '#ffffff',
+    borderTopWidth: BORDER_SIZE,
+    borderLeftColor: '#ffffff',
+    borderLeftWidth: BORDER_SIZE,
+    position: 'absolute',
+    top: OFFSET,
+    left: OFFSET,
+  },
+  windowCornerLB: {
+    height: CORNER_SIZE,
+    width: CORNER_SIZE,
+    borderBottomColor: '#ffffff',
+    borderBottomWidth: BORDER_SIZE,
+    borderLeftColor: '#ffffff',
+    borderLeftWidth: BORDER_SIZE,
+    position: 'absolute',
+    bottom: OFFSET,
+    left: OFFSET,
+  },
+  windowCornerRT: {
+    height: CORNER_SIZE,
+    width: CORNER_SIZE,
+    borderTopColor: '#ffffff',
+    borderTopWidth: BORDER_SIZE,
+    borderRightColor: '#ffffff',
+    borderRightWidth: BORDER_SIZE,
+    position: 'absolute',
+    top: OFFSET,
+    right: OFFSET,
+  },
+  windowCornerRB: {
+    height: CORNER_SIZE,
+    width: CORNER_SIZE,
+    borderBottomColor: '#ffffff',
+    borderBottomWidth: BORDER_SIZE,
+    borderRightColor: '#ffffff',
+    borderRightWidth: BORDER_SIZE,
+    position: 'absolute',
+    bottom: OFFSET,
+    right: OFFSET,
   },
   scanTip: {
     color: '#ffffff',
     textAlign: 'center',
+    position: 'absolute',
+    top: scaleSize(10),
   },
   scanButton: {
     position: 'absolute',
     bottom: scaleSize(100),
+    width: scaleSize(112),
   },
   scanButtonImg: {
     width: scaleSize(112),
@@ -66,7 +118,7 @@ export default StyleSheet.create({
 
 
   viewBox: {
-    height: scaleSize(880),
+    height: scaleSize(848),
     width: scaleSize(656),
     borderRadius: scaleSize(40),
     backgroundColor: '#fff',
@@ -81,8 +133,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   titleBtn: {
-    height: scaleSize(44),
-    width: scaleSize(44),
+    height: scaleSize(34),
+    width: scaleSize(34),
   },
   title: {
     fontSize: scaleSize(32),
@@ -139,17 +191,14 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0)',
   },
   closeBtn: {
-    width: scaleSize(52),
-    height: scaleSize(52),
-    borderRadius: scaleSize(26),
-    marginTop: scaleSize(40),
-    backgroundColor: '#fff',
+    width: scaleSize(80),
+    height: scaleSize(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
   closeIcon: {
-    width: scaleSize(24),
-    height: scaleSize(24),
+    width: scaleSize(50),
+    height: scaleSize(50),
   },
 
   listItem: {

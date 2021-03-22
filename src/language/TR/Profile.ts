@@ -380,7 +380,7 @@ const Profile: typeof CN.Profile = {
   MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
   MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
   MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
-  MAP_AR_SCAN_TIP: 'QR code with location information can be recognized\nTry to make sure that the QR code just fills the scan box', // need to be translated
+  MAP_AR_SCAN_TIP: 'Make sure that the QR code just fills the scan box', // need to be translated
   MAP_AR_SCAN_IT: 'Scan', // need to be translated
   MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
   MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated

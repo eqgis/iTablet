@@ -102,13 +102,13 @@ export default class MapSelectPoint extends React.Component {
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
             <Text>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
-            <Input style={styles.input} editable={false} showClear={false} value={this.state.longitude}/>
+            <Input style={styles.input} editable={false} showClear={false} value={this.state.longitude} textAlign="left"/>
           </View>
           <View style={styles.line}></View>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
             <Text>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
-            <Input style={styles.input} editable={false} showClear={false} value={this.state.latitude}/>
+            <Input style={styles.input} editable={false} showClear={false} value={this.state.latitude} textAlign="left"/>
           </View>
         </View>
       )

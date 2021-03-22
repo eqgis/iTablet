@@ -69,9 +69,7 @@ export default class ARTextView extends React.Component {
     return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
-  _onDatumPointClose = () => {
-    const point = this.datumPointRef.getPositionData()
-    // 关闭时进行位置校准
+  _onDatumPointClose = point => {
     SARText.setPosition(Number(point.x), Number(point.y), Number(point.h))
     GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
     this.setState({
@@ -111,6 +109,7 @@ export default class ARTextView extends React.Component {
   }
 
   render() {
+    const { showDatumPoint } = this.state
     return (
       <>
         <Container
@@ -122,6 +121,7 @@ export default class ARTextView extends React.Component {
             type: 'fix',
           }}
           bottomProps={{ type: 'fix' }}
+          withoutHeader={showDatumPoint}
         >
           <SMARTextView style={{ flex: 1 }} />
           {this.renderToolbar()}

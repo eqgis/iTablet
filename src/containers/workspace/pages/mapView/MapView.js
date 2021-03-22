@@ -3131,9 +3131,16 @@ export default class MapView extends React.Component {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               // 如果是新校准界面 则返回原界面
-              this.state.selectPointType === 'DatumPointCalibration' ?
-                NavigationService.navigate(this.props.navigation.state.params.backPage, {}) :
+              if(this.state.selectPointType === 'selectPoint'){
                 NavigationService.navigate('EnterDatumPoint', {})
+              }else{
+                NavigationService.navigate(this.props.navigation.state.params.backPage, {})
+              }
+
+              GLOBAL.mapController.move({
+                bottom: scaleSize(-50),
+                left: 'default',
+              })
 
               if (GLOBAL.MapXmlStr) {
                 await SMap.mapFromXml(GLOBAL.MapXmlStr)
@@ -3239,15 +3246,17 @@ export default class MapView extends React.Component {
           headerRight: this._renderMapSelectPointHeaderRight(),
           backAction: async () => {
             if (this.state.selectPointType === 'selectPoint' || this.state.selectPointType === 'DatumPointCalibration') {
+              let backPage = 'EnterDatumPoint'
+              if(this.state.selectPointType === 'DatumPointCalibration'){
+                backPage = this.props.navigation.state.params.backPage
+              }
               GLOBAL.mapController.move({
                 bottom: scaleSize(-50),
                 left: 'default',
               })
 
               // 如果是新校准界面 则返回原界面
-              this.state.selectPointType === 'DatumPointCalibration' ?
-                NavigationService.navigate(this.props.navigation.state.params.backPage, {}) :
-                NavigationService.navigate('EnterDatumPoint', {})
+              NavigationService.navigate(backPage, {})
 
               this.setState({
                 showScaleView: true,

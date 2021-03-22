@@ -3134,7 +3134,8 @@ export default class MapView extends React.Component {
               if(this.state.selectPointType === 'selectPoint'){
                 NavigationService.navigate('EnterDatumPoint', {})
               }else{
-                NavigationService.navigate(this.props.navigation.state.params.backPage, {})
+                NavigationService.navigate(this.props.navigation.state.params.backPage,
+                  this.props.navigation.state.params.routeData)
               }
 
               GLOBAL.mapController.move({
@@ -3256,7 +3257,7 @@ export default class MapView extends React.Component {
               })
 
               // 如果是新校准界面 则返回原界面
-              NavigationService.navigate(backPage, {})
+              NavigationService.navigate(backPage, this.props.navigation.state.params.routeData)
 
               this.setState({
                 showScaleView: true,

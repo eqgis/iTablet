@@ -29,6 +29,8 @@ import { Container, Dialog ,CustomAlertDialog} from '../../../../components'
 import { Toast, scaleSize,setSpText,LayerUtils ,screen} from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { color ,zIndexLevel} from '../../../../styles'
+import DatumPointCalibration from '../../../arDatumPointCalibration/'
+
 const SMeasureViewiOS = NativeModules.SMeasureAreaView
 const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
 const TOP_DEFAULT = Platform.select({
@@ -55,7 +57,7 @@ export default class MeasureAreaView extends React.Component {
     super(props)
     const { params } = this.props.navigation.state || {}
 
-    this.measureType = params.measureType
+    this.measureType = params && params.measureType
 
     this.isDrawing = false
     this.isMeasure = false
@@ -326,6 +328,7 @@ export default class MeasureAreaView extends React.Component {
       title:this.title,
       data:this.data,
       showGenera:false,
+      showDatumPoint: this.measureType ? this.isDrawing : true,
       showSave:this.showSave,
     }
 
@@ -473,11 +476,11 @@ export default class MeasureAreaView extends React.Component {
           this.datasourceAlias,
           this.datasetName,
         )
-        let fixedPoint = this.point
-        setTimeout(function () {
-          //设置基点
-          SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
-        }, 1000)
+        // let fixedPoint = this.point
+        // setTimeout(function () {
+        //   //设置基点
+        //   SMeasureAreaView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
+        // }, 1000)
       }
 
       //没有动画回调的话提示语默认5秒后开启
@@ -504,6 +507,9 @@ export default class MeasureAreaView extends React.Component {
   }
 
   componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      SMeasureAreaView.onPause()
+    }
     //移除监听
     DeviceEventEmitter.removeListener(
       'onCurrentHeightChanged',
@@ -745,7 +751,14 @@ export default class MeasureAreaView extends React.Component {
       point: this.point,
       fixedPositions: point => {
         NavigationService.goBack()
-        SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
+        // SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
+      },
+      showType: 'newDatumPoint', // 新的位置校准界面
+      reshowDatumPoint: ()=>{
+        NavigationService.goBack()
+        this.setState({
+          showDatumPoint: true,
+        })
       },
       isSnap: isSnap,
       tole: tole,
@@ -1403,17 +1416,6 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
-/**
- * 用户自定义信息弹窗
- * @returns {*}
- */
-renderCustomAlertDialog = () => {
-  return (
-    <CustomAlertDialog
-      ref={ref => (this.AlertDialog = ref)}
-    />)
-}
-
   /** 原生mapview加载完成回调 */
   _onGetInstance = async () => {
     //设置类型需要放到原生空间初始化完成，放到componentDidMount 也不靠谱 add xiezhy
@@ -1464,42 +1466,64 @@ renderCustomAlertDialog = () => {
       this.setState({ isfirst: true ,showGenera:true})
     }
   }
+
+  _startScan = () => {
+    return SMeasureAreaView.startScan()
+  }
+
+  _onDatumPointClose = point => {
+    SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
+
   render() {
+    const { showDatumPoint } = this.state
     return (
-      <Container
-        ref={ref => (this.Container = ref)}
-        headerProps={{
-          title: this.state.title,
-          navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
-          headerRight: this.renderHeaderRight(),
-        }}
-        bottomProps={{ type: 'fix' }}
-      >
-        <SMMeasureAreaView
-          ref={ref => (this.SMMeasureAreaView = ref)}
-          onGetInstance={this._onGetInstance}
-        />
-        {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
-        {this.renderBottomBtns()}
-        {this.state.showModelViews && this.renderSwitchModels()}
-        {this.state.SearchingSurfacesSucceed &&
-          this.renderTotalLengthChangeView()}
-        {this.state.SearchingSurfacesSucceed &&
-          this.renderCurrentLengthChangeView()}
-        {this.state.SearchingSurfacesSucceed &&
-          this.renderToLastLengthChangeView()}
-        {this.state.SearchingSurfacesSucceed &&
-          this.renderTotalAreaChangeView()}
-        {this.state.showCurrentHeightView &&
-          this.renderCurrentHeightChangeView()}
-        {!this.state.showSwitch&&this.state.showADDPoint && this.renderADDPoint()}
-        {!this.state.showSwitch&&this.state.showADD && this.renderCenterBtn()}
-        {!this.state.showSwitch&&this.state.is_showLog && this.state.showLog && this.renderDioLog()}
-        {this.isDrawing && this.state.showGenera && this.renderGeneralView()}
-        {this.renderCustomAlertDialog()}
-      </Container>
+      <>
+        <Container
+          ref={ref => (this.Container = ref)}
+          headerProps={{
+            title: this.state.title,
+            navigation: this.props.navigation,
+            backAction: this.back,
+            type: 'fix',
+            headerRight: this.renderHeaderRight(),
+          }}
+          bottomProps={{ type: 'fix' }}
+          withoutHeader={showDatumPoint}
+        >
+          <SMMeasureAreaView
+            ref={ref => (this.SMMeasureAreaView = ref)}
+            onGetInstance={this._onGetInstance}
+          />
+          { !showDatumPoint && <>
+            {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
+            {this.renderBottomBtns()}
+            {this.state.showModelViews && this.renderSwitchModels()}
+            {this.state.SearchingSurfacesSucceed &&
+              this.renderTotalLengthChangeView()}
+            {this.state.SearchingSurfacesSucceed &&
+              this.renderCurrentLengthChangeView()}
+            {this.state.SearchingSurfacesSucceed &&
+              this.renderToLastLengthChangeView()}
+            {this.state.SearchingSurfacesSucceed &&
+              this.renderTotalAreaChangeView()}
+            {this.state.showCurrentHeightView &&
+              this.renderCurrentHeightChangeView()}
+            {!this.state.showSwitch&&this.state.showADDPoint && this.renderADDPoint()}
+            {!this.state.showSwitch&&this.state.showADD && this.renderCenterBtn()}
+            {!this.state.showSwitch&&this.state.is_showLog && this.state.showLog && this.renderDioLog()}
+            {this.isDrawing && this.state.showGenera && this.renderGeneralView()}
+          </>}
+        </Container>
+        {showDatumPoint && <DatumPointCalibration routeName = "MeasureAreaView"
+          routeData={{
+            measureType: this.measureType,
+          }}
+          startScan={this._startScan} onClose={this._onDatumPointClose}/>}
+      </>
     )
   }
 }

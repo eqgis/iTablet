@@ -28,12 +28,12 @@
         android:src="@drawable/logo" />
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/subTitle"
+        android:id="@+id/slogan"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/launch_slogan" />
+        android:src="@drawable/launch_slogan_cn" />
 
 <!--    <TextView-->
 <!--        android:id="@+id/version"-->

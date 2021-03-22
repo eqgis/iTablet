@@ -71,7 +71,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new ReactNativeContacts(),
             new AMapGeolocationPackage(),
             new OrientationPackage(),
-            new SplashScreenReactPackage(),
+//            new SplashScreenReactPackage(),
                     new SupermapFullPackage(),
                     new MyReactpackge()
 

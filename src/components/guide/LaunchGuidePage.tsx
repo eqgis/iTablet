@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, PanResponder, PanResponderInstance, Text, Image } from 'react-native'
+import { View, PanResponder, PanResponderInstance, Text, Image, Animated, Easing } from 'react-native'
 import Swiper from 'react-native-swiper' // eslint-disable-line
 import Orientation from 'react-native-orientation'
 import styles from './styles'
@@ -27,6 +27,9 @@ interface State {
 export default class LaunchGuidePage extends PureComponent<Props, State> {
 
   panResponder: PanResponderInstance
+  fadeOutOpacity: Animated.AnimatedValue
+  fadeOutAnimated: Animated.CompositeAnimation
+  isAnimated: boolean
 
   static defaultProps = {
     data: [],
@@ -40,6 +43,20 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
       visible: this.props.defaultVisible || false,
     }
 
+    this.isAnimated = false
+
+    this.fadeOutOpacity = new Animated.Value(1)
+
+    this.fadeOutAnimated = Animated.timing(
+      this.fadeOutOpacity,
+      {
+        toValue: 0,  //透明度动画最终值
+        duration: 100,   //动画时长3000毫秒
+        easing: Easing.linear,
+        useNativeDriver: true,
+      },
+    )
+
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -49,12 +66,13 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
           return true
         }
       },
-      onPanResponderMove: (evt, gestureState) => {},
-      onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dx < -100) {
-          this.setVisible(false)
+      onPanResponderMove: (evt, gestureState) => {
+        if (gestureState.dx < -60) {
+          this.state.visible && this.setVisible(false)
         }
       },
+      onPanResponderEnd: (evt, gestureState) => {},
+      onPanResponderRelease: (evt, gestureState) => {},
     })
 
     if (!GLOBAL.isPad) {
@@ -63,6 +81,8 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
   }
 
   setVisible = (visible: boolean) => {
+    if (this.isAnimated) return
+    this.isAnimated = true
     let _visible
     if (visible === undefined) {
       _visible = !this.state.visible
@@ -70,9 +90,8 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
       _visible = visible
     }
     if (_visible !== undefined) {
-      this.setState({
-        visible,
-      }, () => {
+      this.fadeOutAnimated.start(() => {
+        this.isAnimated = false
         if (!visible && this.props.dismissCallback) {
           this.props.dismissCallback()
         }
@@ -80,6 +99,8 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
           Orientation.unlockAllOrientations()
         }
       })
+    } else {
+      this.isAnimated = false
     }
   }
 
@@ -163,7 +184,7 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
       return null
     }
     return (
-      <View
+      <Animated.View
         style={{
           position: 'absolute',
           top: 0,
@@ -180,7 +201,7 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
         >
           {this.getGuidePage()}
         </Swiper>
-      </View>
+      </Animated.View>
     )
   }
 

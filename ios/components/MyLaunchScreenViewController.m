@@ -24,7 +24,12 @@
   NSMutableArray *frames = [[NSMutableArray alloc] init];                                      // 定义数组存储拆分出来的图片
   
   // 从gif提取图片数组显示slogan
-  NSURL* fileUrl = [[NSBundle mainBundle] URLForResource:@"launch_slogan" withExtension:@"gif"];
+  NSString* language = [SLanguage getLanguage];
+  NSString* slogan = @"launch_slogan_cn";
+  if (![language isEqual:@"CN"] && ![language isEqual:@""]) {
+    slogan = @"launch_slogan_en";
+  }
+  NSURL* fileUrl = [[NSBundle mainBundle] URLForResource:slogan withExtension:@"gif"];
   CGImageSourceRef gifSource = CGImageSourceCreateWithURL((CFURLRef) fileUrl, NULL);          //将GIF图片转换成对应的图片源
 
   size_t frameCout = CGImageSourceGetCount(gifSource);                                        // 获取其中图片源个数，即由多少帧图片组成

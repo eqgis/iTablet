@@ -38,7 +38,9 @@ function collectSceneForm() {
     // })
 
     GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
-    NavigationService.navigate('EnterDatumPoint')
+    // NavigationService.navigate('EnterDatumPoint')
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    NavigationService.navigate('CollectSceneFormView')
 
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu

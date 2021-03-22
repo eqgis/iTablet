@@ -40,6 +40,8 @@ export default class CollectSceneFormSet extends Component {
     this.showGeneracb = params && params.showGeneracb//测量界面开启绘制窗口回调
     this.collectScene = params && params.collectScene || false//高静采集跳转设置参数
 
+    this.showType = params && params.showType // 是否是新的校准界面
+    this.reshowDatumPoint = params && params.reshowDatumPoint // 点击设置里的位置校准 回到上一页并且重新显示位置校准
     let problemItems = []
     problemItems.push({
       title: getLanguage(GLOBAL.language).Profile.SUGGESTION_FUNCTION_ABNORMAL,
@@ -72,13 +74,13 @@ export default class CollectSceneFormSet extends Component {
     // 如果之前输入过点，就不再根据this.point更新界面 而是使用之前的输入
     if(!GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
       this.point &&
-      this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
+      this.DATUMPOINTVIEWSET && this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(this.point)
     }
   }
 
   getFixedPosition = async () => {
     let fiexdPoint = await SCollectSceneFormView.getFixedPosition()
-    this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(fiexdPoint)
+    this.DATUMPOINTVIEWSET && this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(fiexdPoint)
   }
 
   getCurrentPosition = async () => {
@@ -88,7 +90,7 @@ export default class CollectSceneFormSet extends Component {
     )
     let map = await SMap.getCurrentPosition()
 
-    this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(map)
+    this.DATUMPOINTVIEWSET && this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(map)
 
     GLOBAL.Loading.setLoading(false)
     Toast.show(
@@ -246,7 +248,7 @@ export default class CollectSceneFormSet extends Component {
   }
 
   renderButtons() {
-    return (
+    return this.showType !== 'newDatumPoint' ?  (
       <View style={styles.buttonItem}>
         <TouchableOpacity
           style={styles.buttonTouable}
@@ -269,7 +271,21 @@ export default class CollectSceneFormSet extends Component {
 
     </TouchableOpacity> */}
       </View>
-    )
+    ) :
+      (
+        <View style={styles.buttonItem}>
+          <TouchableOpacity
+            style={styles.buttonTouable}
+            onPress={()=>{
+              this.reshowDatumPoint && this.reshowDatumPoint()
+            }}
+          >
+            <Text style={styles.itemButton}>
+              {getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )
   }
 
   renderTitle() {
@@ -306,7 +322,7 @@ export default class CollectSceneFormSet extends Component {
         key={'search'}
         onPress={async () => {
           if(this.fixedPositions){
-            let point = this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
+            let point = this.DATUMPOINTVIEWSET && this.DATUMPOINTVIEWSET.getLatitudeAndLongitude()
             this.fixedPositions(point)
             GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
           }
@@ -328,7 +344,7 @@ export default class CollectSceneFormSet extends Component {
         <View style={{ flex: 1, backgroundColor: color.background }}>
           <View style={{ height: 10 }} />
 
-          {!this.isMeasure&&this.renderTitle()}
+          {!this.isMeasure && this.showType !== 'newDatumPoint' && this.renderTitle()}
           {!this.isMeasure&&this.renderButtons()}
           {this.autoCatch&&this.renderSwitch()}
           {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}

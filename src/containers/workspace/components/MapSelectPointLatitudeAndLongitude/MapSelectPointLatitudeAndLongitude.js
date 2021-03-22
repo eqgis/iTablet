@@ -110,6 +110,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
                 value={this.state.longitude + ''}
                 showClear={true}
                 inputStyle={{textAlign: 'left'}}
+                textAlign="left"
               />
             </View>
 
@@ -144,6 +145,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
                 value={this.state.latitude + ''}
                 showClear={true}
                 inputStyle={{textAlign: 'left'}}
+                textAlign="left"
               />
             </View>
             <View style={styles.separateLine} />

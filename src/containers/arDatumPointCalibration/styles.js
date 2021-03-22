@@ -142,6 +142,7 @@ export default StyleSheet.create({
   subTitle : {
     fontSize: scaleSize(24),
     color: '#8a8a8f',
+    textAlign: 'center',
   },
   iconPhone: {
     width: scaleSize(320),
@@ -167,9 +168,11 @@ export default StyleSheet.create({
     borderRadius: scaleSize(36),
   },
   buttonText: {
+    width: scaleSize(112),
     color: '#505050',
     marginTop: scaleSize(10),
     fontSize: scaleSize(22),
+    textAlign: 'center',
   },
   inputBox: {
     width: '100%',

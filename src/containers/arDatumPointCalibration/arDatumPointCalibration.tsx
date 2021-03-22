@@ -25,6 +25,7 @@ interface IProps {
   onConfirm: Function, // 选点确认
   startScan: Function, // 调用各自界面的camera进行二维码扫描
   routeName: string,
+  routeData: Object,
 }
 
 export default class DatumPointCalibration extends Component<IProps,IState> {
@@ -275,6 +276,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         // selectPointType: 'selectPoint',
         selectPointType: 'DatumPointCalibration',
         backPage: this.props.routeName,
+        routeData: this.props.routeData,
       })
       GLOBAL.toolBox.showFullMap(true)
       GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
@@ -299,7 +301,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
+            getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'X'}</Text>
           <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
             value={longitude}
             onChangeText={text => {
@@ -311,7 +314,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.Y_COORDINATE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
+            getLanguage(GLOBAL.language).Profile.Y_COORDINATE : 'Y'}</Text>
           <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
             value={latitude}
             onChangeText={text => {

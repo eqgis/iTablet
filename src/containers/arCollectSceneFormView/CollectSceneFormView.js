@@ -27,7 +27,7 @@ import { color } from '../../styles'
 import { Toast, dataUtil, scaleSize, LayerUtils,setSpText } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstPath, UserType } from '../../constants'
-
+import DatumPointCalibration from '../arDatumPointCalibration/'
 let nativeSCollectSceneFormView = NativeModules.SCollectSceneFormView
 const nativeEvt = new NativeEventEmitter(nativeSCollectSceneFormView)
 
@@ -58,7 +58,8 @@ export default class CollectSceneFormView extends React.Component {
     // this.disableLine = true
     // this.disableRegion = true
 
-    this.datumPoint = params.point
+    // 替换新校准界面 坐标点不再来自于上个页面
+    this.datumPoint = params && params.point
     this.SceneViewVisible = true
     this.isRecording = true
     this.isNewCreate = false
@@ -201,6 +202,8 @@ export default class CollectSceneFormView extends React.Component {
       chooseDataSource: false,
       isnew: false,
       data: this.data,
+
+      showDatumPoint: true,
     }
     this.clickAble = true // 防止重复点击
   }
@@ -237,7 +240,7 @@ export default class CollectSceneFormView extends React.Component {
     // }, 500)
 
     // this.DatumPointDialog.setDialogVisible(true)
-    GLOBAL.Loading.setLoading(true)
+    // GLOBAL.Loading.setLoading(true)
     //注册监听
     if (Platform.OS === 'ios') {
       nativeEvt.addListener('onTotalLengthChanged', this.onTotalLengthChanged)
@@ -255,6 +258,7 @@ export default class CollectSceneFormView extends React.Component {
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
+    SCollectSceneFormView.onPause()
     //移除监听
     if (Platform.OS === 'ios') {
       nativeEvt.removeListener(
@@ -323,14 +327,15 @@ export default class CollectSceneFormView extends React.Component {
     )
 
     // let point = this.datumPoint
-    let DatumPointDialogTemp = this.DatumPointDialog
-    setTimeout(function() {
-      //设置基点
-      // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
-      // SCollectSceneFormView.startRecording()
-      GLOBAL.Loading.setLoading(false)
-      DatumPointDialogTemp.setDialogVisible(true)
-    }, 500)
+    // 不再由Dialog确定来设置基点
+    // let DatumPointDialogTemp = this.DatumPointDialog
+    // setTimeout(function() {
+    //   //设置基点
+    //   // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+    //   // SCollectSceneFormView.startRecording()
+    //   GLOBAL.Loading.setLoading(false)
+    //   DatumPointDialogTemp.setDialogVisible(true)
+    // }, 500)
   }
 
   _onGetInstance = async view => {
@@ -382,10 +387,17 @@ export default class CollectSceneFormView extends React.Component {
   /** 设置 */
   setting = () => {
     NavigationService.navigate('CollectSceneFormSet', {
+      showType: 'newDatumPoint', // 新的位置校准界面
       point: this.datumPoint,
       fixedPositions: point => {
         NavigationService.goBack()
-        SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+        // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+      },
+      reshowDatumPoint: ()=>{
+        NavigationService.goBack()
+        this.setState({
+          showDatumPoint: true,
+        })
       },
       collectScene: true,
     })
@@ -1316,7 +1328,7 @@ export default class CollectSceneFormView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               this.setting()
             }}
@@ -1328,7 +1340,7 @@ export default class CollectSceneFormView extends React.Component {
               source={getThemeAssets().toolbar.icon_toolbar_setting}
               style={styles.smallIcon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     )
@@ -1393,36 +1405,74 @@ export default class CollectSceneFormView extends React.Component {
     )
   }
 
+  _renderHeaderRight = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.setting()
+        }}
+        style={styles.iconView}
+      >
+        <Image
+          resizeMode={'contain'}
+          // source={getThemeAssets().ar.toolbar.ai_setting}
+          source={getThemeAssets().toolbar.icon_toolbar_setting}
+          style={styles.smallIcon}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  _startScan = () => {
+    return SCollectSceneFormView.startScan()
+  }
+
+  _onDatumPointClose = point => {
+    SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
 
   render() {
+    const { showDatumPoint } = this.state
     return (
-      <Container
-        ref={ref => (this.Container = ref)}
-        headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
-          navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
-        }}
-        bottomProps={{ type: 'fix' }}
-      >
-        <SMCollectSceneFormView
-          ref={ref => (this.SMCollectSceneFormView = ref)}
-          onGetInstance={this._onGetInstance}
-        />
-        {/*{this.state.showHistory && this.renderHistoryView()}*/}
-        <View style={styles.toolbarView}>
-          {this.state.showbuttons && this.renderBottomBtns()}
-          {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
-          {this.renderBottomBtn()}
-        </View>
-        {this.renderLengthChangeView()}
-        {/* {this.state.isClickCollect && this.renderClickCollectHintView()} */}
-        {this.state.isnew && this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}
-        {this.state.isnew && this.state.isClickCollect && this.renderCenterBtn()}
-        {this.renderDialog()}
-      </Container>
+      <>
+        <Container
+          ref={ref => (this.Container = ref)}
+          headerProps={{
+            title: getLanguage(GLOBAL.language).Map_Main_Menu
+              .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT,
+            navigation: this.props.navigation,
+            backAction: this.back,
+            type: 'fix',
+            headerRight: this._renderHeaderRight(),
+          }}
+          bottomProps={{ type: 'fix' }}
+          withoutHeader={showDatumPoint}
+        >
+          <SMCollectSceneFormView
+            ref={ref => (this.SMCollectSceneFormView = ref)}
+            onGetInstance={this._onGetInstance}
+          />
+          {/*{this.state.showHistory && this.renderHistoryView()}*/}
+          {!showDatumPoint && <>
+            <View style={styles.toolbarView}>
+              {this.state.showbuttons && this.renderBottomBtns()}
+              {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}
+              {this.renderBottomBtn()}
+            </View>
+            {this.renderLengthChangeView()}
+            {/* {this.state.isClickCollect && this.renderClickCollectHintView()} */}
+            {this.state.isnew && this.state.isClickCollect && !this.state.isClickFirst && this.renderADDPoint()}
+            {this.state.isnew && this.state.isClickCollect && this.renderCenterBtn()}
+            {this.renderDialog()}
+            </>
+          }
+        </Container>
+        { showDatumPoint && <DatumPointCalibration startScan={this._startScan} onClose={this._onDatumPointClose}
+          routeName={'CollectSceneFormView'}/>}
+      </>
     )
   }
 }

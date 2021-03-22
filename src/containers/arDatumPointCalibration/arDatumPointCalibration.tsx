@@ -22,6 +22,7 @@ interface IState {
 
 interface IProps {
   onClose: Function, // 选点结束回调
+  onConfirm: Function, // 选点确认
   startScan: Function, // 调用各自界面的camera进行二维码扫描
   routeName: string,
 }
@@ -56,12 +57,25 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     })
   }
 
-  _onClose = () => {
-    const { longitude, latitude } = this.state
+  _onClose = async () => {
+    // 点击关闭使用当前定位
+    const { onClose } = this.props
+    let curPoint = await SMap.getCurrentPosition()
+    curPoint.h = 1.5
+    onClose && onClose(curPoint)
+    this.setState({
+      close: true,
+    })
+  }
+
+  _onConfirm = () => {
+    // 定义确定使用修改过的值定位
+    const { longitude, latitude, height } = this.state
     const { onClose } = this.props
     onClose && onClose({
       x: longitude,
       y: latitude,
+      h: height,
     })
     this.setState({
       close: true,
@@ -115,9 +129,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   getPositionData = () => {
     const { longitude, latitude, height } = this.state
     return {
-      x: longitude,
-      y: latitude,
-      h: height,
+      x: Number(longitude),
+      y: Number(latitude),
+      h: Number(height),
     }
   }
 
@@ -169,7 +183,10 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       activeBtn: 0,
     })
     this._startAnim()
-    this._startScan()
+    // 让动画先显示
+    setTimeout(()=>{
+      this._startScan()
+    }, 500)
   }
 
   // 过滤输入值
@@ -240,9 +257,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       //导航选点 全屏时保留mapController
       GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
 
-      let map = await SMap.getCurrentPosition()
-      let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
-      wsData.layerIndex = 3
+      // let map = await SMap.getCurrentPosition()
+      // let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
+      // wsData.layerIndex = 3
       let licenseStatus = await SMap.getEnvironmentStatus()
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
@@ -270,16 +287,16 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       GLOBAL.scaleView.isvisible(false)
       GLOBAL.mapController.setVisible(true)
       GLOBAL.mapController.move({
-        bottom: scaleSize(80),
+        bottom: scaleSize(50),
         left: 'default',
       })
     }
   }
 
   _renderInputs = () => {
-    const { longitude, latitude } = this.state
+    const { longitude, latitude, height } = this.state
     return (
-      <View>
+      <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.X_COORDINATE}</Text>
@@ -289,7 +306,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               this.setState({longitude: this.clearNoNum(text)})
             }}
             onClear={() => {
-              this.setState({longitude: ""})
+              this.setState({longitude: "0"})
             }}/>
         </View>
         <View style={styles.inputBox}>
@@ -301,7 +318,19 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               this.setState({latitude: this.clearNoNum(text)})
             }}
             onClear={() => {
-              this.setState({latitude: ""})
+              this.setState({latitude: "0"})
+            }}/>
+        </View>
+        <View style={styles.inputBox}>
+          <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+          <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
+            value={height}
+            onChangeText={text => {
+              this.setState({height: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              this.setState({height: "0"})
             }}/>
         </View>
       </View>
@@ -363,23 +392,29 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
                 position: 'absolute',
                 right: scaleSize(-20),
               }}
-              onPress={()=>{
-                this.setState({
-                  showStatus: 'setting',
-                })
-              }}
+              onPress={this._onClose}
             >
-              <Image style={styles.titleBtn} source={getThemeAssets().collection.icon_general_full} />
+              <Image style={styles.titleBtn} source={getThemeAssets().mapTools.icon_tool_cancel} />
             </TouchableOpacity>
           </View>
           <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Profile.MAP_AR_TOWARDS_NORTH}</Text>
-          <Image source={getThemeAssets().collection.icon_mobile_position} style={styles.iconPhone} />
           {this._renderInputs()}
           {this._renderBtns()}
+          <TouchableOpacity style={{
+            width: scaleSize(200),
+            height: scaleSize(60),
+            borderRadius: scaleSize(30),
+            backgroundColor: '#505050',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: scaleSize(100),
+          }} onPress={this._onConfirm}>
+            <Text style={{
+              color: '#ffffff',
+              fontSize: scaleSize(22),
+            }}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_SURE}</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.closeBtn} onPress={this._onClose}>
-          <Image source={getThemeAssets().mapTools.icon_tool_cancel} style={styles.closeIcon}/>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -388,7 +423,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     const { scanning } = this.state
     const transY = this.state.animValue.interpolate({
       inputRange: [0,1],
-      outputRange: [scaleSize(0),scaleSize(540)],
+      outputRange: [scaleSize(0),scaleSize(512 - 100)],
     })
     const opacity = this.state.animValue.interpolate({
       inputRange: [0,0.25,0.75,1],
@@ -396,12 +431,15 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     })
     return (
       <View style={styles.scanContainer}>
-        <View style={styles.scanMask}>
-          <Text style={[styles.scanTip, {marginBottom: scaleSize(20)}]}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_TIP}</Text>
-        </View>
+        <View style={styles.scanMask}></View>
         <View style={styles.scanMaskCenter}>
           <View style={styles.scanMask}></View>
           <View style={styles.scanWindow}>
+            {/* 图片有间隙 用View实现四个角 */}
+            <View style={styles.windowCornerLT}></View>
+            <View style={styles.windowCornerLB}></View>
+            <View style={styles.windowCornerRT}></View>
+            <View style={styles.windowCornerRB}></View>
             <Animated.View style={{
               opacity,
               transform: [{ translateY: transY }],
@@ -412,23 +450,23 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={styles.scanMask}></View>
         </View>
         <View style={styles.scanMask}>
+          <Text style={styles.scanTip}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_TIP}</Text>
           {!scanning && <TouchableOpacity style={styles.scanButton} onPress={this._onScanClick}>
             <Image source={getThemeAssets().collection.icon_scanit} style={styles.scanButtonImg} />
-            <Text style={styles.scanTip}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_IT}</Text>
+            <Text style={{color: '#ffffff', textAlign: 'center'}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_IT}</Text>
           </TouchableOpacity>}
         </View>
-        <TouchableOpacity style={[styles.closeBtn,{
+        <TouchableOpacity style={{
           position: 'absolute',
-          top: scaleSize(100),
-          right: scaleSize(50),
-        }]} onPress={()=>{
+          top: scaleSize(20),
+          left: scaleSize(20)}} onPress={()=>{
           this.scanTimes = 0
           this.setState({
             scanning: false,
             showStatus: 'main',
           })
         }}>
-          <Image source={getThemeAssets().mapTools.icon_tool_cancel} style={styles.closeIcon}/>
+          <Image source={getThemeAssets().collection.icon_ar_scan_back} style={styles.closeIcon}/>
         </TouchableOpacity>
       </View>
     )

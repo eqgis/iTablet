@@ -65,8 +65,7 @@ export default class ARWebView extends React.Component {
     return <ToolBar ref={ref => (this.toolbar = ref)} toolbarModuleKey={'AR'} />
   }
 
-  _onDatumPointClose = () => {
-    const point = this.datumPointRef.getPositionData()
+  _onDatumPointClose = point => {
     // 关闭时进行位置校准
     SARWebView.setPosition(Number(point.x), Number(point.y), Number(point.h))
     GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
@@ -93,6 +92,7 @@ export default class ARWebView extends React.Component {
   }
 
   render() {
+    const { showDatumPoint } = this.state
     return (
       <>
         <Container
@@ -104,6 +104,7 @@ export default class ARWebView extends React.Component {
             type: 'fix',
           }}
           bottomProps={{ type: 'fix' }}
+          withoutHeader={showDatumPoint}
         >
           <SMARWebView style={{ flex: 1 }} />
           {this.renderToolbar()}

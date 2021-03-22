@@ -58,7 +58,6 @@ import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
-import CoworkFileHandle from './src/containers/tabs/Find/CoworkManagePage/CoworkFileHandle'
 import { SimpleDialog } from './src/containers/tabs/Friend'
 import DataHandler from './src/containers/tabs/Mine/DataHandler'
 let AppUtils = NativeModules.AppUtils
@@ -75,6 +74,9 @@ import {
   setMapArGuide,
   setMapArMappingGuide,
 } from './src/redux/models/ar'
+
+import LaunchGuidePage from './src/components/guide'
+import LaunchGuide from './configs/guide'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -191,11 +193,15 @@ class AppRoot extends Component {
 
   constructor(props) {
     super(props)
+    const guidePages = LaunchGuide.getGuide(this.props.language) || []
     this.state = {
       sceneStyle: styles.invisibleMap,
       import: null,
       isInit: false,
+      /**判断是否显示APP启动引导页，根据launchGuideVersion是否一致和是否有启动页 */
+      showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
     }
+    // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     this.props.setModules(config) // 设置模块
     this.initGlobal()
     PT.initCustomPrototype()
@@ -356,10 +362,6 @@ class AppRoot extends Component {
         // iOS防止第一次登录timeout
         result = await this.loginOnline()
       }
-      // if (result) {
-      //   // 初始化协作文件
-      //   CoworkFileHandle.initCoworkList(this.props.user.currentUser)
-      // }
       if(result === true){
         let JSOnlineservice = new OnlineServicesUtils('online')
         //登录后更新用户信息 zhangxt
@@ -417,6 +419,7 @@ class AppRoot extends Component {
 
   /** 先申请权限再初始化 */
   componentDidMount() {
+    // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     if (Platform.OS === 'android') {
       this.requestPermission()
     } else {
@@ -525,7 +528,7 @@ class AppRoot extends Component {
     GLOBAL.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
     GLOBAL.isAudit = await SMap.isAudit()
-    GLOBAL.GUIDE_VERSION = bundleInfo.GuideVersion
+    GLOBAL.GUIDE_VERSION = appInfo.GuideVersion
   }
 
   openWorkspace = async () => {
@@ -1104,10 +1107,28 @@ class AppRoot extends Component {
     )
   }
 
+  renderGuidePage = () => {
+    const guidePages = LaunchGuide.getGuide(this.props.language)
+    if (!this.state.showLaunchGuide) return null
+    return (
+      <LaunchGuidePage
+        ref={ref => this.guidePage = ref}
+        defaultVisible={true}
+        data={guidePages}
+        getCustomGuide={LaunchGuide.getCustomGuide}
+        dismissCallback={() => {
+          this.setState({
+            showLaunchGuide: false,
+          })
+        }}
+      />
+    )
+  }
+
   render() {
     return (
       <>
-        {!this.state.isInit ? (
+        {!this.state.showLaunchGuide && !this.state.isInit ? (
           <Loading info="Loading" />
         ) : (
           <View style={{ flex: 1 }}>
@@ -1145,6 +1166,7 @@ class AppRoot extends Component {
           </View>
         )}
         {this.renderSimpleDialog()}
+        {this.renderGuidePage()}
       </>
     )
   }

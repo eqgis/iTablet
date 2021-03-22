@@ -232,7 +232,7 @@ async function getData(type, params) {
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
         // },
       ]
-      if (!LayerUtils.isMediaData(event.fieldInfo)) {
+      if (!LayerUtils.isMediaData(event?.fieldInfo)) {
         data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
@@ -309,7 +309,7 @@ async function getData(type, params) {
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
         // },
       ]
-      if (!LayerUtils.isMediaData(event.fieldInfo)) {
+      if (!LayerUtils.isMediaData(event?.fieldInfo)) {
         data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,

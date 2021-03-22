@@ -15,7 +15,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,JPUSHRegisterDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,JPUSHRegisterDelegate>{
+  UIView *launchView;
+}
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UINavigationController *nav;

@@ -149,7 +149,7 @@ export default class Input extends PureComponent {
           returnKeyType={this.props.returnKeyType}
           keyboardType={this.props.keyboardType}
           onFocus={this.props.onFocus}
-          textAlign={this.props.textAlign}
+          textAlign={this.props.textAlign || 'center'}
         />
         {this.props.showClear && this.renderClearBtn()}
       </View>

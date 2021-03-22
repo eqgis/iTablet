@@ -59,6 +59,7 @@ export default class MeasureAreaView extends React.Component {
 
     this.isDrawing = false
     this.isMeasure = false
+    this.showSave = false
 
     const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
     let disablePoint = true,
@@ -98,7 +99,7 @@ export default class MeasureAreaView extends React.Component {
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: ()=>{
           if(!disablePoint){
-            SMeasureAreaView.setMeasureMode('DRAW_POINT'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+            SMeasureAreaView.setMeasureMode('DRAW_POINT'),this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
               GLOBAL.language,
             ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT})
           } else {
@@ -116,7 +117,8 @@ export default class MeasureAreaView extends React.Component {
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
         action: ()=>{
           if(!disbaleLine){
-            SMeasureAreaView.setMeasureMode('DRAW_LINE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+            SMeasureAreaView.setMeasureMode('DRAW_LINE')
+            this.setState({ showSave: true,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
               GLOBAL.language,
             ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE })
           }else{
@@ -158,9 +160,14 @@ export default class MeasureAreaView extends React.Component {
         key: 'polygon',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
-        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-          GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        action: ()=>{
+          SMeasureAreaView.setMeasureMode('DRAW_AREA')
+          this.setState({
+            showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+              GLOBAL.language,
+            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+          })
+        },
         size: 'large',
         image: getThemeAssets().ar.functiontoolbar.icon_ar_polygon,
       },
@@ -169,9 +176,14 @@ export default class MeasureAreaView extends React.Component {
         key: 'rectangle',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
-        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-          GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        action: ()=>{
+          SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+          this.setState({
+            showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+              GLOBAL.language,
+            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+          })
+        },
         size: 'large',
         image: getThemeAssets().ar.functiontoolbar.icon_ar_rectangle,
       },
@@ -180,9 +192,13 @@ export default class MeasureAreaView extends React.Component {
         key: 'circular',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
-        action: ()=>{SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE'),this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-          GLOBAL.language,
-        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA , data:this.data})},
+        action: ()=>{
+          SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+          this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
+            GLOBAL.language,
+          ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+          })
+        },
         size: 'large',
         image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
       },
@@ -255,6 +271,14 @@ export default class MeasureAreaView extends React.Component {
         this.datasetName = params.datasetName
         this.point = params.point
       }
+
+      if (
+        this.measureType === 'drawLine' ||
+        this.measureType === 'arDrawArea'
+      ) {
+        this.showSave = true
+      }
+
       if (
         this.measureType === 'measureLength' ||
         this.measureType === 'measureArea' ||
@@ -287,6 +311,7 @@ export default class MeasureAreaView extends React.Component {
       title:this.title,
       data:this.data,
       showGenera:false,
+      showSave:this.showSave,
     }
 
     AppState.addEventListener('change', this.handleStateChange)
@@ -956,7 +981,7 @@ export default class MeasureAreaView extends React.Component {
               />
             </TouchableOpacity>
           )}
-          {this.isDrawing && (
+          {this.state.showSave && this.isDrawing && (
             <TouchableOpacity
               onPress={() => this.save()}
               style={styles.iconView}
@@ -1397,6 +1422,19 @@ export default class MeasureAreaView extends React.Component {
       } else if (this.measureType === 'arMeasureCylinder') {
         SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
       }
+      if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
+      let datasourceAlias = this.props.currentLayer.datasourceAlias
+      let datasetName = this.props.currentLayer.datasetName
+      if (this.props.currentLayer.themeType !== 0 || (
+        this.props.currentLayer.type !== DatasetType.CAD &&
+        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
+      )) {
+        datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
+        datasetName = 'Default_Tagging'
+      }
+      SMeasureAreaView.setSavePath(datasourceAlias,datasetName)
       this.setState({ isfirst: true ,showGenera:true})
     }
   }

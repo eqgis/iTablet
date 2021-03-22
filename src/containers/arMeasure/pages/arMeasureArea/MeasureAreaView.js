@@ -25,7 +25,7 @@ import {
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
-import { Container, Dialog } from '../../../../components'
+import { Container, Dialog ,CustomAlertDialog} from '../../../../components'
 import { Toast, scaleSize,setSpText,LayerUtils ,screen} from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { color ,zIndexLevel} from '../../../../styles'
@@ -97,15 +97,20 @@ export default class MeasureAreaView extends React.Component {
         key: 'point',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
-        action: ()=>{
-          if(!disablePoint){
-            SMeasureAreaView.setMeasureMode('DRAW_POINT'),this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-              GLOBAL.language,
-            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT})
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disablePoint) {
+            SMeasureAreaView.setMeasureMode('DRAW_POINT'), this.setState({
+              showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
+            })
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
           }
-
         },
         size: 'large',
         image: getThemeAssets().toolbar.icon_toolbar_savespot,
@@ -115,13 +120,19 @@ export default class MeasureAreaView extends React.Component {
         key: 'line',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
-        action: ()=>{
-          if(!disbaleLine){
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disbaleLine) {
             SMeasureAreaView.setMeasureMode('DRAW_LINE')
-            this.setState({ showSave: true,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-              GLOBAL.language,
-            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE })
-          }else{
+            this.setState({
+              showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+            })
+          } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
           }
         },
@@ -133,10 +144,14 @@ export default class MeasureAreaView extends React.Component {
         key: 'region',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
-        action: ()=>{
-          if(!disableArea){
-            this.setState({ data:this.areadata })
-          }else{
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disableArea) {
+            this.setState({ data: this.areadata })
+          } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
           }
         },
@@ -1388,6 +1403,17 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
+/**
+ * 用户自定义信息弹窗
+ * @returns {*}
+ */
+renderCustomAlertDialog = () => {
+  return (
+    <CustomAlertDialog
+      ref={ref => (this.AlertDialog = ref)}
+    />)
+}
+
   /** 原生mapview加载完成回调 */
   _onGetInstance = async () => {
     //设置类型需要放到原生空间初始化完成，放到componentDidMount 也不靠谱 add xiezhy
@@ -1472,6 +1498,7 @@ export default class MeasureAreaView extends React.Component {
         {!this.state.showSwitch&&this.state.showADD && this.renderCenterBtn()}
         {!this.state.showSwitch&&this.state.is_showLog && this.state.showLog && this.renderDioLog()}
         {this.isDrawing && this.state.showGenera && this.renderGeneralView()}
+        {this.renderCustomAlertDialog()}
       </Container>
     )
   }

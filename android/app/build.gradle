@@ -261,6 +261,7 @@ dependencies {
 
     implementation 'de.javagl:obj:0.2.1'
     implementation 'org.rajawali3d:rajawali:1.0.325@aar'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
 }
 
 // Run this once to be able to run the application with BUCK

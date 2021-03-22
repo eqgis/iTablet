@@ -17,6 +17,7 @@
 #import "Common/HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
+#import "MyLaunchScreenViewController.h"
 
 static NSString* g_sampleCodeName = @"#";;
 @implementation AppDelegate
@@ -75,6 +76,22 @@ static NSString* g_sampleCodeName = @"#";;
   
 }
 
+/**添加启动页闪屏*/
+-(void)addLaunchSlogan {
+  UIViewController *viewController = [[UIStoryboard storyboardWithName:@"MyLaunchScreen" bundle:nil] instantiateViewControllerWithIdentifier:@"MyLaunchScreen"];
+
+  UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+  launchView = viewController.view;
+  launchView.frame = [UIApplication sharedApplication].keyWindow.frame;
+  [mainWindow addSubview:launchView];
+  
+  [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(removeLanchSlogan) userInfo:nil repeats:NO];
+}
+
+-(void)removeLanchSlogan {
+  [launchView removeFromSuperview];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
@@ -95,6 +112,8 @@ static NSString* g_sampleCodeName = @"#";;
   
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
+  
+  [self addLaunchSlogan];
   
   
 //  [self initDefaultData];
@@ -180,7 +199,8 @@ static NSString* g_sampleCodeName = @"#";;
     jsCodeLocation = [NSURL URLWithString:jsBundlePath];
   } else {
     #if DEBUG
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
+//    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.192.84"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

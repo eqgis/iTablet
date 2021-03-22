@@ -6,6 +6,7 @@ export default {
   name: 'SuperMap iTablet',
   alias: 'iTablet',
   version: '0.0.1',
+  launchGuideVersion: '0.0.3',
   language: 'AUTO',
   supportLanguage: [],
   about: {

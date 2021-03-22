@@ -1128,7 +1128,7 @@ class AppRoot extends Component {
   render() {
     return (
       <>
-        {!this.state.showLaunchGuide && !this.state.isInit ? (
+        {!this.state.showLaunchGuide && (!this.state.isInit ? (
           <Loading info="Loading" />
         ) : (
           <View style={{ flex: 1 }}>
@@ -1164,7 +1164,7 @@ class AppRoot extends Component {
             <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
             <MyToast ref={ref => GLOBAL.Toast = ref} />
           </View>
-        )}
+        ))}
         {this.renderSimpleDialog()}
         {this.renderGuidePage()}
       </>

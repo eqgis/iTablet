@@ -698,7 +698,9 @@ export default class MeasureAreaView extends React.Component {
     // }
     GLOBAL.arSwitchToMap = false
     GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
-    NavigationService.navigate('EnterDatumPoint')
+    // NavigationService.navigate('EnterDatumPoint')
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    NavigationService.navigate('CollectSceneFormView')
   }
 
   choseMoreModel = () => {

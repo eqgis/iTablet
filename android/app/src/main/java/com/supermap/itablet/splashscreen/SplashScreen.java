@@ -76,7 +76,7 @@ public class SplashScreen {
     public static void show(final Activity activity, final boolean fullScreen) {
         int resourceId = fullScreen ? R.style.SplashScreen_Fullscreen : R.style.SplashScreen_SplashTheme;
 
-        mHandler.post(fadeInTask);
+//        mHandler.post(fadeInTask);
 
         show(activity, resourceId);
     }

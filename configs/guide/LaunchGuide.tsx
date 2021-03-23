@@ -8,7 +8,7 @@ import { GuideDataType } from '../../src/components/guide/LaunchGuidePage'
 
 const data_en = [
   {
-    title: 'AR Survey',
+    title: 'AR Surveying',
     subTitle: 'Surveying with AR, collecting vector data',
     image: require('./assets/ar_analyst.png'),
   },

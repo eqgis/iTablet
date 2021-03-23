@@ -230,6 +230,14 @@ function layerManagerData() {
       themeType: -1,
     },
     {
+      title: 'Google labelmap',
+      action: () => OpenData(ConstOnline.Google, 4),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],

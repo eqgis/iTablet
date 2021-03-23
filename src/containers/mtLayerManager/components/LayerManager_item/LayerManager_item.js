@@ -529,7 +529,7 @@ export default class LayerManager_item extends React.Component {
                   'Customer',
               )
               for (let i = 0; i < count; i++) {
-                await SMap.moveDownLayer(layer.path)
+                await SMap.moveToTop(layer.path)
               }
             }
             if (this.props.parentData) {

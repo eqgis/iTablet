@@ -29,12 +29,36 @@ export default class MapCutDS extends React.Component {
     this.changeDSData = null
   }
 
+  _getAvailableName = (name, fileList) => {
+    let AvailabeName = name
+    if (this._isInlList(AvailabeName, fileList)) {
+      for (let i = 1; ; i++) {
+        AvailabeName = `${name}_${i}`
+        if (!this._isInlList(AvailabeName, fileList)) {
+          return AvailabeName
+        }
+      }
+    } else {
+      return AvailabeName
+    }
+  }
+
+  _isInlList = (name, fileList) => {
+    for (let i = 0; i < fileList.length; i++) {
+      if (name === fileList[i].alias) {
+        return true
+      }
+    }
+    return false
+  }
+
   newDatasource = async () => {
     let homeDir = await FileTools.getHomeDirectory()
     NavigationService.navigate('InputPage', {
       headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE,
       type: 'name',
       cb: async value => {
+        value = this._getAvailableName(value, this.state.data)
         let params = {
           alias: value,
           engineType: 219,
@@ -42,7 +66,7 @@ export default class MapCutDS extends React.Component {
             this.currentUser.userName
           }/Data/Datasource/${value}.udb`,
         }
-        let data = this.state.data
+        let data = this.state.data.concat()
         data.push(params)
         this.setState(
           {

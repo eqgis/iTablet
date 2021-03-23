@@ -257,7 +257,7 @@ export default class MT_layerManager extends React.Component {
       // 影像图层不能被设为当前图层
       return
     }
-    if (this.props.currentLayer.caption === data.name) {
+    if (this.props.currentLayer.name === data.name) {
       this.props.setCurrentLayer &&
         this.props.setCurrentLayer(null, () => {
           // 取消当前地图，清除历史记录

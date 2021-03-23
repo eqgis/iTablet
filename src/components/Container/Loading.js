@@ -64,7 +64,7 @@ export default class Loading extends Component {
       let timeout =
         extra.timeout >= 0 ? extra.timeout : this.state.extra.timeout
       if (loading && timeout) {
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           if (this.state.animating) {
             this.setState(
               {
@@ -73,11 +73,14 @@ export default class Loading extends Component {
                 extra,
               },
               () => {
+                this.timer && clearTimeout(this.timer)
                 if (extra.timeoutMsg) {
                   Toast.show(extra.timeoutMsg)
                 }
               },
             )
+          } else {
+            this.timer && clearTimeout(this.timer)
           }
         }, timeout)
       } else {

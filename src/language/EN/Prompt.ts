@@ -121,6 +121,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'View supported devices list',
   PLEASE_NEW_PLOT_LAYER: 'Please Create New Plot Layer',
   DOWNLOADING_PLEASE_WAIT: 'Downloading Please Wait',
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
   SELECT_DELETE_BY_RECTANGLE: 'Please select delete item by rectangle select',
 
   CHOOSE_LAYER: 'Choose Layer',

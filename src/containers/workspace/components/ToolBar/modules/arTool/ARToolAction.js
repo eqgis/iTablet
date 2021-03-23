@@ -39,6 +39,11 @@ function arCastModelOperate() {
       const isDustbin = await FileTools.fileIsExist(dustbinPath)
 
       if (isDustbin) {
+        // 其他文件正在下载
+        if (_params.downloads?.length > 0) {
+          Toast.show(getLanguage(_params.language).Prompt.DOWNLOADING_OTHERS_PLEASE_WAIT)
+          return
+        }
         GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
         if (GLOBAL.showAIDetect) {
           GLOBAL.arSwitchToMap = true

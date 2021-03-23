@@ -1,7 +1,6 @@
 import { SMap, EngineType,SScene } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import SplashScreen from 'react-native-splash-screen'
 
 async function importExternalData(user, item) {
   let type = item.fileType

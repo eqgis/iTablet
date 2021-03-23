@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 
 import com.supermap.interfaces.utils.SLanguage;
 import com.supermap.itablet.R;
@@ -12,17 +13,26 @@ import java.lang.ref.WeakReference;
 
 import pl.droidsonroids.gif.GifImageView;
 
-/**
- * SplashScreen
- * 启动屏
- * from：http://www.devio.org
- * Author:CrazyCodeBoy
- * GitHub:https://github.com/crazycodeboy
- * Email:crazycodeboy@gmail.com
- */
 public class SplashScreen {
     private static Dialog mSplashDialog;
     private static WeakReference<Activity> mActivity;
+
+    private static int intCounter = 0;
+    private static Handler mHandler = new Handler();
+
+    static GifImageView gifImageView;
+
+    private static Runnable fadeInTask = new Runnable() {
+        public void run() {
+            if (intCounter < 17) {
+                intCounter = intCounter + 1;
+                gifImageView.setImageAlpha(intCounter * 15);
+                mHandler.postDelayed(fadeInTask, 50);
+            } else {
+                intCounter = 0;
+            }
+        }
+    };
 
     /**
      * 打开启动屏
@@ -36,7 +46,7 @@ public class SplashScreen {
                 if (!activity.isFinishing()) {
                     mSplashDialog = new Dialog(activity, themeResId);
                     mSplashDialog.setContentView(R.layout.launch_screen);
-                    GifImageView gifImageView = mSplashDialog.findViewById(R.id.slogan);
+                    gifImageView = mSplashDialog.findViewById(R.id.slogan);
 
                     SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("SmData", 0);
                     String language = pref.getString("language","");
@@ -65,6 +75,8 @@ public class SplashScreen {
      */
     public static void show(final Activity activity, final boolean fullScreen) {
         int resourceId = fullScreen ? R.style.SplashScreen_Fullscreen : R.style.SplashScreen_SplashTheme;
+
+        mHandler.post(fadeInTask);
 
         show(activity, resourceId);
     }

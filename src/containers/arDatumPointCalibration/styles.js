@@ -140,6 +140,7 @@ export default StyleSheet.create({
     fontSize: scaleSize(32),
   },
   subTitle : {
+    marginTop: scaleSize(10),
     fontSize: scaleSize(24),
     color: '#8a8a8f',
     textAlign: 'center',
@@ -151,7 +152,7 @@ export default StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     width: '100%',
   },
   button:{

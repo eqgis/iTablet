@@ -211,6 +211,7 @@ const baseMapsOrigin = [
   'satellite@GoogleMaps',
   'terrain@GoogleMaps',
   'hybrid@GoogleMaps',
+  'labelmap@GoogleMaps',
   // 'vec@TD',
   // 'cva@TDWZ',
   // 'img@TDYXM',

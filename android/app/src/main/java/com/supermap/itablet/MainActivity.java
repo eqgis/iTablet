@@ -121,17 +121,8 @@ public class MainActivity extends ReactActivity {
 //        }
         return super.onKeyDown(keyCode, event);
     }
-    private void initEnvironment() {
-        Environment.initialization(this);
 
-        //init itablet license
-        ITabletLicenseManager.getInstance(this);
-        Toolkit.ReCheackLic();
-    }
 
-    private void initDefaultData() {
-//        FileTools.initUserDefaultData("Customer", this);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

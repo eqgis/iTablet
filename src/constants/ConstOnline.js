@@ -93,7 +93,7 @@ export default {
   Google: {
     type: 'Datasource',
     DSParams: {
-      server: 'http://www.google.CN/maps',
+      server: 'http://www.google.cn/maps?scale=2',
       engineType: 223,
       alias: 'GoogleMaps',
     },

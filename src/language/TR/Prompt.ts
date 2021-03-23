@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'SuperMap Grup',
   INSTRUCTION_MANUAL: 'Kullanım Kılavuzu',
   THE_CURRENT_LAYER: 'Geçerli Katman',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: 'Lütfen anahtar kelimeleri girin',
   SEARCHING: 'Arıyor',
   SEARCHING_DEVICE_NOT_FOUND: 'hiçbir cihaz bulunamadı',

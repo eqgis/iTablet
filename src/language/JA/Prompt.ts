@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'SuperMap Group',
   INSTRUCTION_MANUAL: 'ヘルプ',
   THE_CURRENT_LAYER: '現在レイヤー',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: '検索キーワード入力してください',
   SEARCHING: '検索中',
   SEARCHING_DEVICE_NOT_FOUND: '外部デバイスは検出されませんでした',

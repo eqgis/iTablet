@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'مجموعة سوبرماب',
   INSTRUCTION_MANUAL: 'كتيب التعليمات',
   THE_CURRENT_LAYER: 'الطبقة الحالية تكون',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: 'يرجى إدخال الكلمات الرئيسية',
   SEARCHING: 'جارى البحث',
   SEARCHING_DEVICE_NOT_FOUND: 'لا يوجد جهاز',

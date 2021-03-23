@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'Groupe SuperMap',
   INSTRUCTION_MANUAL: 'Instruction Manual',
   THE_CURRENT_LAYER: 'La couche actuelle est',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: 'Veuillez saisir des mots clés',
   SEARCHING: 'Recherche',
   SEARCHING_DEVICE_NOT_FOUND: 'Aucun appareil trouvé',

@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   Switch,
   TextInput,
+  Image,
 } from 'react-native'
 import { Container } from '../../components'
-
+import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
 import { SMap, SCollectSceneFormView} from 'imobile_for_reactnative'
@@ -273,17 +274,24 @@ export default class CollectSceneFormSet extends Component {
       </View>
     ) :
       (
-        <View style={styles.buttonItem}>
-          <TouchableOpacity
-            style={styles.buttonTouable}
-            onPress={()=>{
-              this.reshowDatumPoint && this.reshowDatumPoint()
-            }}
-          >
-            <Text style={styles.itemButton}>
+        <View style={{ backgroundColor: color.background }}>
+          <View style={styles.separateLine} />
+          <View style={styles.item}>
+            <Text style={styles.itemtitle}>
               {getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}
             </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.switchItem}
+              onPress={()=>{
+                this.reshowDatumPoint && this.reshowDatumPoint()
+              }}
+            >
+              <Image source={getThemeAssets().publicAssets.icon_arrow_right} style={{
+                width: scaleSize(40),
+                height: scaleSize(40),
+              }} />
+            </TouchableOpacity>
+          </View>
         </View>
       )
   }

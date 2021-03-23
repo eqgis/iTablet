@@ -25,7 +25,7 @@ import {
 import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
-import { Container, Dialog } from '../../../../components'
+import { Container, Dialog ,CustomAlertDialog} from '../../../../components'
 import { Toast, scaleSize,setSpText,LayerUtils ,screen} from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { color ,zIndexLevel} from '../../../../styles'
@@ -99,15 +99,20 @@ export default class MeasureAreaView extends React.Component {
         key: 'point',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
-        action: ()=>{
-          if(!disablePoint){
-            SMeasureAreaView.setMeasureMode('DRAW_POINT'),this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-              GLOBAL.language,
-            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT})
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disablePoint) {
+            SMeasureAreaView.setMeasureMode('DRAW_POINT'), this.setState({
+              showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
+            })
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
           }
-
         },
         size: 'large',
         image: getThemeAssets().toolbar.icon_toolbar_savespot,
@@ -117,13 +122,19 @@ export default class MeasureAreaView extends React.Component {
         key: 'line',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
-        action: ()=>{
-          if(!disbaleLine){
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disbaleLine) {
             SMeasureAreaView.setMeasureMode('DRAW_LINE')
-            this.setState({ showSave: true,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
-              GLOBAL.language,
-            ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE })
-          }else{
+            this.setState({
+              showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+            })
+          } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
           }
         },
@@ -135,10 +146,14 @@ export default class MeasureAreaView extends React.Component {
         key: 'region',
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
-        action: ()=>{
-          if(!disableArea){
-            this.setState({ data:this.areadata })
-          }else{
+        action: async ()=>{
+          let is = await SMeasureAreaView.isMeasuring()
+          if(is){
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disableArea) {
+            this.setState({ data: this.areadata })
+          } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
           }
         },
@@ -683,7 +698,9 @@ export default class MeasureAreaView extends React.Component {
     // }
     GLOBAL.arSwitchToMap = false
     GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
-    NavigationService.navigate('EnterDatumPoint')
+    // NavigationService.navigate('EnterDatumPoint')
+    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    NavigationService.navigate('CollectSceneFormView')
   }
 
   choseMoreModel = () => {

@@ -650,8 +650,8 @@ export default class MyLocalData extends Component {
 
   deleteDataOfOnline = async () => {
     this.setLoading(true, getLanguage(this.props.language).Prompt.DELETING_DATA, {
-      timeout: 10000,
-      timeoutMsg: getLanguage(this.props.language).Prompt.REQUEST_TIMEOUT,
+      timeout: 20000,
+      // timeoutMsg: getLanguage(this.props.language).Prompt.REQUEST_TIMEOUT,
     })
     // if (this.deleteDataing) return
     // Toast.show(getLanguage(this.props.language).Prompt.DELETING_DATA)

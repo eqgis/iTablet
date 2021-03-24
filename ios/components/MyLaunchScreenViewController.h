@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyLaunchScreenViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *slogan;
+@property (weak, nonatomic) IBOutlet UIImageView *sloganEN;
 
 @end
 

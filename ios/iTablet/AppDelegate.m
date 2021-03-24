@@ -85,7 +85,7 @@ static NSString* g_sampleCodeName = @"#";;
   launchView.frame = [UIApplication sharedApplication].keyWindow.frame;
   [mainWindow addSubview:launchView];
   
-  [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(removeLanchSlogan) userInfo:nil repeats:NO];
+  [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(removeLanchSlogan) userInfo:nil repeats:NO];
 }
 
 -(void)removeLanchSlogan {
@@ -113,7 +113,7 @@ static NSString* g_sampleCodeName = @"#";;
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
   
-//  [self addLaunchSlogan];
+  [self addLaunchSlogan];
   
   
 //  [self initDefaultData];

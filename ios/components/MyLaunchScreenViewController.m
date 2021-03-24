@@ -25,9 +25,13 @@
   
   // 从gif提取图片数组显示slogan
   NSString* language = [SLanguage getLanguage];
-  NSString* slogan = @"launch_slogan_cn";
-  if (![language isEqual:@"CN"] && ![language isEqual:@""]) {
-    slogan = @"launch_slogan_en";
+//  NSString* slogan = @"launch_slogan_cn";
+  self.slogan.hidden = true;
+  self.sloganEN.hidden = true;
+  if ([language isEqual:@"CN"] ) {
+    self.slogan.hidden = false;
+  }else{
+    self.sloganEN.hidden = false;
   }
 //  NSURL* fileUrl = [[NSBundle mainBundle] URLForResource:slogan withExtension:@"gif"];
 //  CGImageSourceRef gifSource = CGImageSourceCreateWithURL((CFURLRef) fileUrl, NULL);          //将GIF图片转换成对应的图片源
@@ -60,8 +64,8 @@
 //  [_slogan startAnimating];
   
   
-  NSString* fileUrl = [[NSBundle mainBundle] pathForResource:slogan ofType:@"png"];
-  _slogan.image = [UIImage imageWithContentsOfFile:fileUrl];
+//  NSString* fileUrl = [[NSBundle mainBundle] pathForResource:slogan ofType:@"png"];
+//  _slogan.image = [UIImage imageWithContentsOfFile:fileUrl];
 }
 
 /*

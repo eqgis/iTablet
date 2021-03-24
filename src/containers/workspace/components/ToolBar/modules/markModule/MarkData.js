@@ -195,6 +195,10 @@ async function getData(type, params) {
       buttons = [ToolbarBtnType.CANCEL]
       break
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
+      layerType = LayerUtils.getLayerType(
+        ToolbarModule.getParams().currentLayer,
+      )
+      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
       data = [
         {
           key: constants.MOVE,
@@ -232,7 +236,8 @@ async function getData(type, params) {
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
         // },
       ]
-      if (!LayerUtils.isMediaData(event?.fieldInfo)) {
+      // if (!LayerUtils.isMediaData(event?.fieldInfo)) {
+      if (!isTourLayer) {
         data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
@@ -248,6 +253,10 @@ async function getData(type, params) {
       ]
       break
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE:
+      layerType = LayerUtils.getLayerType(
+        ToolbarModule.getParams().currentLayer,
+      )
+      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
       data = [
         {
           key: constants.MOVE,
@@ -309,7 +318,8 @@ async function getData(type, params) {
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
         // },
       ]
-      if (!LayerUtils.isMediaData(event?.fieldInfo)) {
+      // if (!LayerUtils.isMediaData(event?.fieldInfo)&&!isTourLayer) {
+      if (!isTourLayer) {
         data.push({
           key: 'tagging_style',
           title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,

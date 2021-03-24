@@ -239,6 +239,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_DEVICE: 'Konumlandır',
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
   SETTING_CLEAR_CACHE: 'Çerezleri temizle',
+  SETTING_CLEAR_CACHE_SUCCESS:'Clear Success',//need to translate
 
   // 许可
   LICENSE: 'Lisans',

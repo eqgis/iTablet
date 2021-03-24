@@ -237,6 +237,7 @@ const Profile = {
   SETTING_LOCATION_DEVICE: '定位设备',
   SETTING_LOCATION_LOCAL: '此设备',
   SETTING_CLEAR_CACHE: '清除缓存',
+  SETTING_CLEAR_CACHE_SUCCESS:'清除成功',
 
   // 许可
   LICENSE: '许可',

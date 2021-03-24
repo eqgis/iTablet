@@ -103,11 +103,7 @@ export default class Setting extends Component {
           await FileTools.deleteFile(path,'bru')
           await FileTools.deleteFile(path,'sym')
           await FileTools.deleteFile(path,'lsl')
-          Toast.show(
-            GLOBAL.language === 'CN'
-              ? '清除成功'
-              : 'Clear Success',
-          )
+          Toast.show(getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE_SUCCESS)
         }else{
           await RNFS.mkdir(path)
         }

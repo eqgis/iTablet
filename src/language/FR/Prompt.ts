@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'Groupe SuperMap',
   INSTRUCTION_MANUAL: 'Instruction Manual',
   THE_CURRENT_LAYER: 'La couche actuelle est',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: 'Veuillez saisir des mots clés',
   SEARCHING: 'Recherche',
   SEARCHING_DEVICE_NOT_FOUND: 'Aucun appareil trouvé',
@@ -121,6 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'Afficher la liste des appareils pris en charge',
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer une nouvelle couche de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
   SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
 
   CHOOSE_LAYER: 'Choisir une couche',

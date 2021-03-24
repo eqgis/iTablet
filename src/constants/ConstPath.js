@@ -68,12 +68,13 @@ export default {
   // SampleDataPath: AppPath + 'data/sample/', // 存放示例数据
   // LocalDataPath: AppPath + 'data/local/', // 存放用户地图数据
   // UserPath: AppPath + '/user/', // 存放用户数据
-  LicensePath: `${AppPath}license/`, // 存放许可文件
+  // LicensePath: `${AppPath}license/`, // 存放许可文件
   // Audio: AppPath + 'audio/', // 存放语音
   /**  所有用户导入导出使用的文件夹,注意最后没有加'/' */
   ExternalData: `${AppPath}ExternalData`,
   CachePath: `${AppPath}Cache/`,
   CachePath2: `${AppPath}Cache`,
+  // WebCachePath: `${AppPath}WebCache`,// 存放网络地图缓存
   // SampleDataPath: AppPath + '/SampleData/', // 存放示例数据
   UserPath: `${AppPath}User/`, // 存放用户数据
   UserPath2: `${AppPath}User`, // 存放用户数据

@@ -879,6 +879,7 @@ export default class ToolBar extends React.Component {
             ) &&
             [styles.containerRadius, styles.containerShadow]
           }
+          pointerEvents={'box-none'}
         >
           <View
             style={[

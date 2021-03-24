@@ -113,7 +113,7 @@ static NSString* g_sampleCodeName = @"#";;
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
   
-  [self addLaunchSlogan];
+//  [self addLaunchSlogan];
   
   
 //  [self initDefaultData];

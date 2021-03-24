@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'مجموعة سوبرماب',
   INSTRUCTION_MANUAL: 'كتيب التعليمات',
   THE_CURRENT_LAYER: 'الطبقة الحالية تكون',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: 'يرجى إدخال الكلمات الرئيسية',
   SEARCHING: 'جارى البحث',
   SEARCHING_DEVICE_NOT_FOUND: 'لا يوجد جهاز',
@@ -121,6 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'عرض قائمة الأجهزة المدعومة',
   PLEASE_NEW_PLOT_LAYER: 'من فضلك أنشىء طبقة نقاط جديدة',
   DOWNLOADING_PLEASE_WAIT: 'من فضلك انتظر جارى التنزيل',
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
   SELECT_DELETE_BY_RECTANGLE: 'الرجاء تحديد حذف العنصر عن طريق تحديد المستطيل',
 
   CHOOSE_LAYER: 'اختر الطبقة',

@@ -87,6 +87,7 @@ const Prompt = {
   SUPERMAP_GROUP: '超图集团',
   INSTRUCTION_MANUAL: '使用帮助',
   THE_CURRENT_LAYER: '当前图层为',
+  NO_BASE_MAP: '无底图可移除',
   ENTER_KEY_WORDS: '请输入搜索关键字',
   SEARCHING: '搜索中',
   SEARCHING_DEVICE_NOT_FOUND: '未能搜索到外部设备',
@@ -119,6 +120,7 @@ const Prompt = {
   GET_SUPPORTED_DEVICE_LIST: '获取受支持的设备列表',
   PLEASE_NEW_PLOT_LAYER: '请新建标注图层',
   DOWNLOADING_PLEASE_WAIT: '下载中请稍等',
+  DOWNLOADING_OTHERS_PLEASE_WAIT: '其他文件正在下载，请稍等',
   SELECT_DELETE_BY_RECTANGLE: '请框选删除对象',
 
   CHOOSE_LAYER: '选择图层',

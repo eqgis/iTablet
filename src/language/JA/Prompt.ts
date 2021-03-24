@@ -89,6 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'SuperMap Group',
   INSTRUCTION_MANUAL: 'ヘルプ',
   THE_CURRENT_LAYER: '現在レイヤー',
+  NO_BASE_MAP: 'No base map can be removed', // need to translate
   ENTER_KEY_WORDS: '検索キーワード入力してください',
   SEARCHING: '検索中',
   SEARCHING_DEVICE_NOT_FOUND: '外部デバイスは検出されませんでした',
@@ -121,6 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: '対応しているデバイスのリストを表示',
   PLEASE_NEW_PLOT_LAYER: '新規マークレイヤーを作成しますか',
   DOWNLOADING_PLEASE_WAIT: 'ダウンロード中、お待ちください',
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
   SELECT_DELETE_BY_RECTANGLE: '削除オブジェクトを選択してください',
 
   CHOOSE_LAYER: '選択レイヤー',

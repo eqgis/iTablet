@@ -117,7 +117,8 @@ export default class LayerManager_tolbar extends React.Component {
           {
             header: {
               title: getLanguage(GLOBAL.language).Map_Layer.ONLINE_BASE_MAP,
-              image: getThemeAssets().layer3dType.layer3d_normal_selected,
+              // image: getThemeAssets().layer3dType.layer3d_normal_selected,
+              image: getThemeAssets().layer3dType.layer3d_normal,
             },
             data: [
               // {
@@ -147,7 +148,8 @@ export default class LayerManager_tolbar extends React.Component {
         let terrainDatas = {
           header: {
             title: getLanguage(GLOBAL.language).Map_Layer.TERRAIN,
-            image: getThemeAssets().layer3dType.layer3d_terrain_layer_selected,
+            // image: getThemeAssets().layer3dType.layer3d_terrain_layer_selected,
+            image: getThemeAssets().layer3dType.layer3d_terrain_layer,
             type: 'Terrain',
           },
           data: [],
@@ -172,7 +174,8 @@ export default class LayerManager_tolbar extends React.Component {
         let terrainDatas = {
           header: {
             title: getLanguage(GLOBAL.language).Map_Layer.IMAGE,
-            image: getThemeAssets().layer3dType.layer3d_image_selected,
+            // image: getThemeAssets().layer3dType.layer3d_image_selected,
+            image: getThemeAssets().layer3dType.layer3d_image,
             type: 'Image',
           },
           data: [],
@@ -428,7 +431,7 @@ export default class LayerManager_tolbar extends React.Component {
           height: scaleSize(80),
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: color.subTheme,
+          backgroundColor: color.white,
         }}
       >
         <View
@@ -436,7 +439,7 @@ export default class LayerManager_tolbar extends React.Component {
             height: scaleSize(80),
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: color.subTheme,
+            backgroundColor: color.white,
           }}
         >
           <Image
@@ -450,7 +453,7 @@ export default class LayerManager_tolbar extends React.Component {
           <Text
             style={{
               fontSize: setSpText(28),
-              color: '#FBFBFB',
+              color: color.themeText2,
               paddingLeft: scaleSize(30),
             }}
           >
@@ -494,7 +497,8 @@ export default class LayerManager_tolbar extends React.Component {
           }}
         >
           <Image
-            source={require('../../../../assets/map/Frenchgrey/scene_addfly_light.png')}
+            // source={require('../../../../assets/map/Frenchgrey/scene_addfly_light.png')}
+            source={getThemeAssets().mapTools.icon_enlarge}
             style={{
               width: imgSize,
               height: imgSize,

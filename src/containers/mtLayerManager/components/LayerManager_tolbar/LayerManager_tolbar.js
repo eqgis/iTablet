@@ -472,6 +472,7 @@ export default class LayerManager_tolbar extends React.Component {
         ) {
           if (this.state.layerData.caption === 'baseMap') {
             // 没有底图时，不能移除
+            Toast.show(getLanguage(GLOBAL.language).Prompt.NO_BASE_MAP)
             return
           }
           let layers = []

@@ -14,11 +14,14 @@ import ConstPath from '../../constants/ConstPath'
 import { color } from '../../styles'
 import UserType from '../../constants/UserType'
 import { getLanguage } from '../../language'
+import { IDownloadProps } from '../../redux/models/down'
 
 export default class RenderFindItem extends Component {
   props: {
     data: Object,
     user: Object,
+    downloads: Array<any>,
+    downloadFile: (param: IDownloadProps) => Promise<any>,
   }
 
   constructor(props) {
@@ -43,10 +46,10 @@ export default class RenderFindItem extends Component {
     this.timer = null
   }
 
-   /**
-   * 获取下载进度
-   * @returns {Number} 下载进度，1-100。未下载时返回-1
-   */
+  /**
+  * 获取下载进度
+  * @returns {Number} 下载进度，1-100。未下载时返回-1
+  */
   getDownloadProgress = () => {
     let downloads = this.props.downloads
     if (downloads.length > 0) {
@@ -63,40 +66,40 @@ export default class RenderFindItem extends Component {
   }
   /** 获取并设置此特效的状态 */
   getStatus = async () => {
-      let progress = this.getDownloadProgress()
-      if (progress >= 0) {//下载中
+    let progress = this.getDownloadProgress()
+    if (progress >= 0) {//下载中
+      this.setState({
+        progress: progress + '%',
+        isDownloading: 1,
+      })
+      this.addDownloadListener()
+    } else {
+      // debugger
+      this.exist = await FileTools.fileIsExist(this.path)
+      if (this.exist) {//文件存在，下载完成
         this.setState({
-          progress: progress+'%',
-          isDownloading: 1,
+          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+          isDownloading: 2,
         })
-        this.addDownloadListener()
-      } else {
-        // debugger
-        this.exist = await FileTools.fileIsExist(this.path)
-        if (this.exist) {//文件存在，下载完成
-          this.setState({
-            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
-            isDownloading: 2,
-          })
-        }else{//文件不存在，可以下载
-          this.setState({
-            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
-            isDownloading: 0,
-          })
-        }
+      } else {//文件不存在，可以下载
+        this.setState({
+          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+          isDownloading: 0,
+        })
       }
+    }
   }
   /** 下载完成监听 */
   addDownloadListener = () => {
-    this.timer = setInterval(() => {
-      
+    this.timer = setInterval(async () => {
+
       let progress = this.getDownloadProgress()
       if (progress >= 0) {//下载中
         this.setState({
-          progress: progress+'%',
+          progress: progress + '%',
           isDownloading: 1,
         })
-      }else{
+      } else {
         let downloaded = false
         let downloads = this.props.downloads
         if (downloads.length > 0) {
@@ -108,6 +111,7 @@ export default class RenderFindItem extends Component {
           }
         }
         if (downloaded) {
+          this.exist = await FileTools.fileIsExist(this.path) // 下载完成，检测本地文件是否存在
           this.setState({
             progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
             isDownloading: 2,
@@ -131,12 +135,12 @@ export default class RenderFindItem extends Component {
   async componentDidMount() {
 
     this.path =
-    (await FileTools.getHomeDirectory()) +
-    ConstPath.UserPath +
-    this.props.user.currentUser.userName +
-    '/' +
-    ConstPath.RelativePath.Temp +
-    this.props.data.fileName
+      (await FileTools.getHomeDirectory()) +
+      ConstPath.UserPath +
+      this.props.user.currentUser.userName +
+      '/' +
+      ConstPath.RelativePath.Temp +
+      this.props.data.fileName
 
     this.getStatus()
   }
@@ -144,7 +148,8 @@ export default class RenderFindItem extends Component {
   _downloadFile = async () => {
     if (this.exist) {
       await this.unZipFile()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
     if (
@@ -172,9 +177,8 @@ export default class RenderFindItem extends Component {
         fromUrl: dataUrl,
         toFile: this.path,
         background: true,
-        key:this.props.data.MD5
+        key: this.props.data.MD5,
       }
-      
 
       try {
         this.props.downloadFile(downloadOptions)
@@ -201,7 +205,7 @@ export default class RenderFindItem extends Component {
       await RNFS.mkdir(fileDir)
     } else {
       for (let i = 1; ; i++) {
-        if(!await RNFS.exists(fileDir + '_' + i)){
+        if (!await RNFS.exists(fileDir + '_' + i)) {
           fileDir = fileDir + '_' + i
           break
         }

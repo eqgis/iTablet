@@ -26,7 +26,6 @@ import com.supermap.file.CrashHandler;
 import com.supermap.rnsupermap.BuildConfig;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import org.reactnative.camera.RNCameraPackage;
 
 import java.io.File;
@@ -71,7 +70,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new ReactNativeContacts(),
             new AMapGeolocationPackage(),
             new OrientationPackage(),
-//            new SplashScreenReactPackage(),
                     new SupermapFullPackage(),
                     new MyReactpackge()
 

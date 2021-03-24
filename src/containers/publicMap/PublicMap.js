@@ -28,6 +28,7 @@ export default class PublicMap extends Component {
     navigation: Object,
     user: Object,
     downloadFile: () => {},
+    downloads: Array<any>,
   }
 
   constructor(props) {
@@ -303,12 +304,14 @@ export default class PublicMap extends Component {
         ]}
         data={this.state.data}
         renderItem={data => {
-          return <RenderFindItem 
-                  user={this.props.user} 
-                  data={data.item} 
-                  downloads={this.props.downloads}
-                  downloadFile={this.props.downloadFile}
-                />
+          return (
+            <RenderFindItem
+              user={this.props.user}
+              data={data.item}
+              downloads={this.props.downloads}
+              downloadFile={this.props.downloadFile}
+            />
+          )
         }}
         refreshControl={
           <RefreshControl

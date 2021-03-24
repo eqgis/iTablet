@@ -649,11 +649,14 @@ export default class MyLocalData extends Component {
   }
 
   deleteDataOfOnline = async () => {
-    // this.setLoading(true, getLanguage(this.props.language).Prompt.DELETING_DATA)
-    //'删除数据中...')
-    Toast.show(getLanguage(this.props.language).Prompt.DELETING_DATA)
+    this.setLoading(true, getLanguage(this.props.language).Prompt.DELETING_DATA, {
+      timeout: 10000,
+      timeoutMsg: getLanguage(this.props.language).Prompt.REQUEST_TIMEOUT,
+    })
+    // if (this.deleteDataing) return
+    // Toast.show(getLanguage(this.props.language).Prompt.DELETING_DATA)
     this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
-    this.deleteDataing = true
+    // this.deleteDataing = true
     try {
       let objContent = this.itemInfo
       let dataId = objContent.id + ''
@@ -668,18 +671,21 @@ export default class MyLocalData extends Component {
         let oldOnline = sectionData[sectionData.length - 1]
         oldOnline.data.splice(this.itemInfo.index, 1)
         this.setState({ sectionData: sectionData }, () => {
+          this.setLoading(false)
           Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
           //'数据删除成功')
-          this.deleteDataing = false
+          // this.deleteDataing = false
         })
       } else {
-        this.deleteDataing = false
+        this.setLoading(false)
+        // this.deleteDataing = false
         Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
         //'数据删除失败')
       }
     } catch (e) {
-      this.deleteDataing = false
-      Toast.show('网络错误')
+      // this.deleteDataing = false
+      this.setLoading(false)
+      Toast.show(getLanguage(this.props.language).Prompt.NETWORK_ERROR)
     } finally {
       // this.setLoading(false)
     }
@@ -743,8 +749,8 @@ export default class MyLocalData extends Component {
     }
   }
 
-  setLoading = (visible, info) => {
-    this.container && this.container.setLoading(visible, info)
+  setLoading = (visible, info, extra = {}) => {
+    this.container && this.container.setLoading(visible, info, extra)
   }
 
   _onLoadData = async () => {

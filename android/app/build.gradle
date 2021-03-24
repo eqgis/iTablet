@@ -243,7 +243,6 @@ dependencies {
 //    implementation project(':jcore-react-native')
     implementation project(':react-native-contacts')
     implementation project(':react-native-amap-geolocation')
-    implementation project(':react-native-splash-screen')
     implementation project(':react-native-fs')
     implementation project(':react-native-orientation')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'

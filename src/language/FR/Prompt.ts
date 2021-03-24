@@ -173,6 +173,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'Veuillez sélectionner le symbole de tracé',
 
   ENTER_NAME: 'Veuillez saisir le nom',
+  ENTER_CAPTION: 'Please input caption', // need to translate
+  CHOICE_TYPE: 'Please choice type', // need to translate
+  INPUT_LENGTH: 'Please input max length', // need to translate
+  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
+  SELECT_REQUIRED: 'Please select required', // need to translate
 
   CLIPPING: 'Coupure',
   CLIPPED_SUCCESS: 'Coupé avec succès',

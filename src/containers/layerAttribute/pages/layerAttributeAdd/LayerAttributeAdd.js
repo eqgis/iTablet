@@ -52,8 +52,8 @@ export default class LayerAttributeAdd extends React.Component {
     }
   }
 
-  componentDidMount() {}
-  
+  componentDidMount() { }
+
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.data) !==
@@ -64,7 +64,7 @@ export default class LayerAttributeAdd extends React.Component {
       this.setState(data)
     }
   }
-  
+
   dealData = (data, isDetail = this.props.isDetail) => {
     let _data = data && data.fieldInfo
     if (!_data) return {}
@@ -76,21 +76,21 @@ export default class LayerAttributeAdd extends React.Component {
       data: _data,
       name:
         (_data &&
-        (_isDetail
-          ? _data.name
-          : this.getTrimSmStr(_data.name) + '_1')) ||
+          (_isDetail
+            ? _data.name
+            : this.getTrimSmStr(_data.name) + '_1')) ||
         '',
       caption:
         (_data &&
-        (_isDetail
-          ? _data.caption
-          : this.getTrimSmStr(_data.caption) + '_1')) ||
+          (_isDetail
+            ? _data.caption
+            : this.getTrimSmStr(_data.caption) + '_1')) ||
         '',
       type: (_data && _data.type) || '',
       maxLength: this.getDefaultMaxLength(_data.type),
       defaultValue:
         (_data && _data.defaultValue) ||
-        typeof _data.defaultValue === 'boolean'
+          typeof _data.defaultValue === 'boolean'
           ? _data.defaultValue
           : '',
       isRequired:
@@ -103,7 +103,7 @@ export default class LayerAttributeAdd extends React.Component {
     }
     return newState
   }
-  
+
   setVisible = (visible, params) => {
     this.addPopModal && this.addPopModal.setVisible(visible)
     if (params && params.data) {
@@ -122,33 +122,23 @@ export default class LayerAttributeAdd extends React.Component {
   confirmValidate = () => {
     let isConfirm = false
     if (!this.state.name || this.state.name === '') {
-      Toast.show(GLOBAL.language === 'CN' ? '请输入名称' : 'Please input name')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_NAME)
     } else if (!this.state.caption || this.state.caption === '') {
-      Toast.show(
-        GLOBAL.language === 'CN' ? '请输入别名' : 'Please input caption',
-      )
+      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_CAPTION)
     } else if (!this.state.type) {
-      Toast.show(GLOBAL.language === 'CN' ? '请选择类型' : 'Please choice type')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.CHOICE_TYPE)
     } else if (!this.state.maxLength) {
-      Toast.show(
-        GLOBAL.language === 'CN' ? '请输入长度' : 'Please input max length',
-      )
+      Toast.show(getLanguage(GLOBAL.language).Prompt.INPUT_LENGTH)
     } else if (
       this.state.defaultValue &&
       !this.checkDefaultValue(this.state.defaultValue)
     ) {
-      Toast.show(
-        GLOBAL.language === 'CN'
-          ? '缺省值输入错误'
-          : 'Default value input error',
-      )
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_VALUE_EROROR)
     } else if (
       this.state.isRequired === '' ||
       this.state.isRequired === undefined
     ) {
-      Toast.show(
-        GLOBAL.language === 'CN' ? '请选择是否必选' : 'Please select required',
-      )
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_REQUIRED)
     } else if (
       this.state.isRequired &&
       (this.state.defaultValue === '' || this.state.defaultValue === undefined)
@@ -189,10 +179,6 @@ export default class LayerAttributeAdd extends React.Component {
     } else {
       this.setVisible(false)
     }
-  }
-
-  reset = () => {
-    Toast.show('待做')
   }
 
   getTrimSmStr = text => {
@@ -298,17 +284,47 @@ export default class LayerAttributeAdd extends React.Component {
   checkDefaultValue(text) {
     let checkFlag = true
     let r
+    let value
     switch (this.state.type) {
       case 3:
+        r = /^(0|\+?[1-9][0-9]*)$/ //正整数和0
+        checkFlag = r.test(text)
+        if (checkFlag) {
+          value = parseInt(text)
+          checkFlag = value <= Math.pow(2, 15) - 1 && value >= -Math.pow(2, 15)
+        }
+        break
       case 4:
+        r = /^(0|\+?[1-9][0-9]*)$/ //正整数和0
+        checkFlag = r.test(text)
+        if (checkFlag) {
+          value = parseInt(text)
+          checkFlag = value <= Math.pow(2, 31) - 1 && value >= -Math.pow(2, 31)
+        }
+        break
       case 16:
         r = /^(0|\+?[1-9][0-9]*)$/ //正整数和0
         checkFlag = r.test(text)
+        if (checkFlag) {
+          value = parseInt(text)
+          checkFlag = value <= Math.pow(2, 63) - 1 && value >= -Math.pow(2, 63)
+        }
         break
       case 6:
+        r = /^\d+(\.\d+)?$/ //小数
+        checkFlag = r.test(text)
+        if (checkFlag) {
+          value = parseFloat(text)
+          checkFlag = value <= 3.40E+38 && value >= -3.40E+38
+        }
+        break
       case 7:
         r = /^\d+(\.\d+)?$/ //小数
         checkFlag = r.test(text)
+        if (checkFlag) {
+          value = parseFloat(text)
+          checkFlag = value <= 1.79E+308 && value >= -1.79E+308
+        }
         break
     }
     return checkFlag
@@ -379,7 +395,7 @@ export default class LayerAttributeAdd extends React.Component {
       />
     )
   }
-  
+
   renderHeader = () => {
     return (
       <Header
@@ -399,7 +415,7 @@ export default class LayerAttributeAdd extends React.Component {
       />
     )
   }
-  
+
   renderTypeSelect = () => {
     let types = [], row = [], column = this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? 2 : 3
     for (let i = 0; i < typeStr.length; i++) {

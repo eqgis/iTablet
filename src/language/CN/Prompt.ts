@@ -171,6 +171,11 @@ const Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: '请选择标绘符号',
 
   ENTER_NAME: '请输入名称',
+  ENTER_CAPTION: '请输入别名',
+  CHOICE_TYPE: '请选择类型',
+  INPUT_LENGTH: '请输入长度',
+  DEFAULT_VALUE_EROROR: '缺省值输入错误',
+  SELECT_REQUIRED: '请选择是否必选',
 
   CLIPPING: '地图裁剪中',
   CLIPPED_SUCCESS: '裁剪成功',

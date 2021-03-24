@@ -173,6 +173,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'Lütfen çizim sembolü seçin',
 
   ENTER_NAME: 'Lütfen adı girin',
+  ENTER_CAPTION: 'Please input caption', // need to translate
+  CHOICE_TYPE: 'Please choice type', // need to translate
+  INPUT_LENGTH: 'Please input max length', // need to translate
+  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
+  SELECT_REQUIRED: 'Please select required', // need to translate
 
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',

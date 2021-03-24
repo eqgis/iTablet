@@ -112,6 +112,10 @@ export default class RenderFindItem extends Component {
         }
         if (downloaded) {
           this.exist = await FileTools.fileIsExist(this.path) // 下载完成，检测本地文件是否存在
+          if(this.exist)
+          {
+            Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
+          }
           this.setState({
             progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
             isDownloading: 2,

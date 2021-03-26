@@ -30,8 +30,6 @@
 		0A25E343226182950009CB35 /* libCorePlot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A25E33F226182950009CB35 /* libCorePlot.a */; };
 		0A25E344226182950009CB35 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A25E340226182950009CB35 /* libSocketRocket.a */; };
 		0A25E345226182950009CB35 /* libflyMSC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A25E341226182950009CB35 /* libflyMSC.a */; };
-		0A298D662605CC140062F370 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A298D652605CC140062F370 /* MyLaunchScreen.storyboard */; };
-		0A298D692605CD100062F370 /* MyLaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A298D682605CD100062F370 /* MyLaunchScreenViewController.m */; };
 		0A334D1D229793DA00E4F302 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D1C229793C600E4F302 /* libimageCropPicker.a */; };
 		0A334D23229797C900E4F302 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D1E229795E600E4F302 /* QBImagePicker.framework */; };
 		0A334D24229797C900E4F302 /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D1E229795E600E4F302 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -95,6 +93,8 @@
 		4E045E34246AC6A9009F64CE /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4E045DD9246AC6A9009F64CE /* python2.7.zip */; };
 		4E045E36246AC6C6009F64CE /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E045E35246AC6C6009F64CE /* PIL */; };
 		4E0D303E24DA9980001AE116 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4E0D303D24DA9980001AE116 /* resources.bundle */; };
+		4E2E2D16260C8365008D0FB2 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E2E2D13260C8365008D0FB2 /* MyLaunchScreen.storyboard */; };
+		4E2E2D17260C8365008D0FB2 /* MyLaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E2D15260C8365008D0FB2 /* MyLaunchScreenViewController.m */; };
 		4E51DC0F37A544EEAA87110D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161B72053D084F8288A022CA /* Foundation.framework */; };
 		4EE4616E239A497C00775A76 /* labelmap_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4616D239A497C00775A76 /* labelmap_cn.txt */; };
 		4EFB3DE123BBF28700688642 /* libiconv.2.4.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */; };
@@ -599,9 +599,6 @@
 		0A25E33F226182950009CB35 /* libCorePlot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCorePlot.a; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/libCorePlot.a; sourceTree = "<group>"; };
 		0A25E340226182950009CB35 /* libSocketRocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocketRocket.a; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/libSocketRocket.a; sourceTree = "<group>"; };
 		0A25E341226182950009CB35 /* libflyMSC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libflyMSC.a; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/libflyMSC.a; sourceTree = "<group>"; };
-		0A298D652605CC140062F370 /* MyLaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyLaunchScreen.storyboard; sourceTree = "<group>"; };
-		0A298D672605CD100062F370 /* MyLaunchScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLaunchScreenViewController.h; sourceTree = "<group>"; };
-		0A298D682605CD100062F370 /* MyLaunchScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyLaunchScreenViewController.m; sourceTree = "<group>"; };
 		0A334D1E229795E600E4F302 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A334D28229797F800E4F302 /* Supermap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Supermap.xcodeproj; path = ../node_modules/imobile_for_reactnative/ios/Supermap.xcodeproj; sourceTree = "<group>"; };
 		0A61803D22A51A3500E3D69B /* RSKImageCropper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RSKImageCropper.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/iTablet-fpwwspvlpqkvcrhauagxetirlcrf/Build/Products/Debug-iphoneos/RSKImageCropper.framework"; sourceTree = "<group>"; };
@@ -682,6 +679,9 @@
 		4E045E35246AC6C6009F64CE /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
 		4E0D303D24DA9980001AE116 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		4E1ADBD1246ABBAE00F11C42 /* NativeUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeUtil.h; sourceTree = "<group>"; };
+		4E2E2D13260C8365008D0FB2 /* MyLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyLaunchScreen.storyboard; sourceTree = "<group>"; };
+		4E2E2D14260C8365008D0FB2 /* MyLaunchScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLaunchScreenViewController.h; sourceTree = "<group>"; };
+		4E2E2D15260C8365008D0FB2 /* MyLaunchScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLaunchScreenViewController.m; sourceTree = "<group>"; };
 		4EE4616D239A497C00775A76 /* labelmap_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap_cn.txt; sourceTree = "<group>"; };
 		4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.4.0.tbd; path = usr/lib/libiconv.2.4.0.tbd; sourceTree = SDKROOT; };
 		5ACE6D6C17F9429194D7409D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
@@ -990,9 +990,9 @@
 		0A298D5926059EE70062F370 /* components */ = {
 			isa = PBXGroup;
 			children = (
-				0A298D652605CC140062F370 /* MyLaunchScreen.storyboard */,
-				0A298D672605CD100062F370 /* MyLaunchScreenViewController.h */,
-				0A298D682605CD100062F370 /* MyLaunchScreenViewController.m */,
+				4E2E2D13260C8365008D0FB2 /* MyLaunchScreen.storyboard */,
+				4E2E2D14260C8365008D0FB2 /* MyLaunchScreenViewController.h */,
+				4E2E2D15260C8365008D0FB2 /* MyLaunchScreenViewController.m */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -1999,7 +1999,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A298D662605CC140062F370 /* MyLaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0A11D9E921F9641D00AFE6D6 /* logo.png in Resources */,
 				614D856E23C71A1900BDEC31 /* Segmentation.caffemodel in Resources */,
@@ -2018,6 +2017,7 @@
 				4E0D303E24DA9980001AE116 /* resources.bundle in Resources */,
 				2ABCAA1B2386616D0052EB6B /* detect.tflite in Resources */,
 				4EE4616E239A497C00775A76 /* labelmap_cn.txt in Resources */,
+				4E2E2D16260C8365008D0FB2 /* MyLaunchScreen.storyboard in Resources */,
 				0AECCF782328E034004F84A4 /* Images.zip in Resources */,
 				0AC5859B2609861C001AB8B5 /* launch_slogan_en.png in Resources */,
 				4E045E36246AC6C6009F64CE /* PIL in Resources */,
@@ -2081,10 +2081,10 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				0A298D692605CD100062F370 /* MyLaunchScreenViewController.m in Sources */,
 				0A9573C821C0B8EE00B5853A /* NativeMethod.m in Sources */,
 				0ABCB8C42246056500992994 /* WeiXinUtils.m in Sources */,
 				0A64601A21FEB82C00928DAD /* AppUtils.m in Sources */,
+				4E2E2D17260C8365008D0FB2 /* MyLaunchScreenViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

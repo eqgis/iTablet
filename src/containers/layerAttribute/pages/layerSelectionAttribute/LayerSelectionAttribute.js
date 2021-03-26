@@ -66,11 +66,17 @@ export default class LayerSelectionAttribute extends React.Component {
     this.isInit = true // 初始化，防止多次加载
     this.noMore = false // 判断是否加载完毕
     this.isLoading = false // 防止同时重复加载多次
+    this.isMediaLayer = false // 是否是多媒体图层
   }
 
   componentDidMount() {
     this.isInit = true
-    this.getAttribute()
+    SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => {
+      this.isMediaLayer = result
+      this.getAttribute()
+    }).catch(() =>{
+      this.getAttribute()
+    })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -94,6 +100,7 @@ export default class LayerSelectionAttribute extends React.Component {
       JSON.stringify(prevProps.layerSelection) !==
         JSON.stringify(this.props.layerSelection)
     ) {
+      SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => this.isMediaLayer = result)
       let checkData = this.checkToolIsViable()
       // this.isInit = true
       this.currentPage = 0
@@ -135,142 +142,142 @@ export default class LayerSelectionAttribute extends React.Component {
       return
     let { currentPage, pageSize, type, ...others } = params
     // ;(async function() {
-      try {
-        let result 
-        if(this.state.isCollection){
-          result = await LayerUtils.getSelectionAttributeByLayer(
-            JSON.parse(JSON.stringify(this.state.attributes)),
-            GLOBAL.currentLayer.name,
-            currentPage,
-            pageSize !== undefined ? pageSize : PAGE_SIZE,
-            type,
-            true,
-          )
-        }else{
-          result = await LayerUtils.getSelectionAttributeByLayer(
-            JSON.parse(JSON.stringify(this.state.attributes)),
-            this.props.layerSelection.layerInfo.path,
-            currentPage,
-            pageSize !== undefined ? pageSize : PAGE_SIZE,
-            type,
-          )
-        }
-          
-        this.total = result.total || 0
-        let attributes = result.attributes || []
-
-        // || attributes.data.length < PAGE_SIZE
-
-        if (!attributes.data || attributes.data.length === 1) {
-          if (!attributes.data) {
-            attributes = {
-              head: [],
-              data: [],
-            }
-          }
-          this.setState({
-            showTable: true,
-            attributes,
-            currentIndex: 0,
-            relativeIndex: 0,
-            currentFieldInfo: !attributes.data ? [] : attributes.data[0],
-            startIndex: 0,
-            ...others,
-          })
-          this.setLoading(false)
-          this.props.onGetAttribute && this.props.onGetAttribute(attributes)
-        } else {
-          let newAttributes = JSON.parse(JSON.stringify(attributes))
-          let startIndex =
-            others.startIndex >= 0
-              ? others.startIndex
-              : this.state.startIndex || 0
-          // 截取数据，最多显示 ROWS_LIMIT 行
-          if (attributes.data.length > ROWS_LIMIT) {
-            if (type === 'refresh') {
-              newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
-              startIndex = result.startIndex
-            } else {
-              startIndex = result.startIndex + result.resLength - ROWS_LIMIT
-              startIndex =
-                parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
-
-              let sliceStartIndex = 0
-              if (attributes.data.length >= ROWS_LIMIT) {
-                sliceStartIndex =
-                  parseInt(
-                    (
-                      (attributes.data.length - ROWS_LIMIT) /
-                      PAGE_SIZE
-                    ).toFixed(),
-                  ) * PAGE_SIZE
-              }
-              newAttributes.data = newAttributes.data.slice(
-                sliceStartIndex,
-                attributes.data.length,
-              )
-            }
-          }
-          // let startIndex = others.startIndex || this.state.startIndex || 0
-          let currentIndex = resetCurrent
-            ? -1
-            : others.currentIndex !== undefined
-              ? others.currentIndex
-              : this.state.currentIndex
-          let relativeIndex =
-            resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
-          let prevStartIndex = this.state.startIndex
-          this.currentPage = Math.floor(
-            (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
-          )
-          // this.noMore = Math.floor(this.total / PAGE_SIZE) <= this.currentPage
-          this.noMore = startIndex + newAttributes.data.length === this.total
-          this.setState(
-            {
-              showTable: true,
-              attributes: newAttributes,
-              currentIndex,
-              relativeIndex,
-              currentFieldInfo:
-                relativeIndex >= 0 && relativeIndex < newAttributes.data.length
-                  ? newAttributes.data[relativeIndex]
-                  : this.state.currentFieldInfo,
-              startIndex,
-              // ...others,
-            },
-            () => {
-              setTimeout(() => {
-                if (type === 'refresh') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: prevStartIndex - startIndex,
-                      sectionIndex: 0,
-                      viewPosition: 0,
-                      viewOffset: COL_HEIGHT,
-                    })
-                } else if (type === 'loadMore') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: newAttributes.data.length - result.resLength,
-                      sectionIndex: 0,
-                      viewPosition: 1,
-                    })
-                }
-                this.setLoading(false)
-                this.props.onGetAttribute &&
-                  this.props.onGetAttribute(attributes)
-                cb && cb(attributes)
-              }, 0)
-            },
-          )
-        }
-      } catch (e) {
-        cb && cb()
-        this.isLoading = false
-        this.setLoading(false)
+    try {
+      let result
+      if(this.state.isCollection){
+        result = await LayerUtils.getSelectionAttributeByLayer(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          GLOBAL.currentLayer.name,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          type,
+          true,
+        )
+      }else{
+        result = await LayerUtils.getSelectionAttributeByLayer(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          this.props.layerSelection.layerInfo.path,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          type,
+        )
       }
+
+      this.total = result.total || 0
+      let attributes = result.attributes || []
+
+      this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name)
+
+      if (!attributes.data || attributes.data.length === 1) {
+        if (!attributes.data) {
+          attributes = {
+            head: [],
+            data: [],
+          }
+        }
+        this.setState({
+          showTable: true,
+          attributes,
+          currentIndex: 0,
+          relativeIndex: 0,
+          currentFieldInfo: !attributes.data ? [] : attributes.data[0],
+          startIndex: 0,
+          ...others,
+        })
+        this.setLoading(false)
+        this.props.onGetAttribute && this.props.onGetAttribute(attributes)
+      } else {
+        let newAttributes = JSON.parse(JSON.stringify(attributes))
+        let startIndex =
+          others.startIndex >= 0
+            ? others.startIndex
+            : this.state.startIndex || 0
+        // 截取数据，最多显示 ROWS_LIMIT 行
+        if (attributes.data.length > ROWS_LIMIT) {
+          if (type === 'refresh') {
+            newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
+            startIndex = result.startIndex
+          } else {
+            startIndex = result.startIndex + result.resLength - ROWS_LIMIT
+            startIndex =
+              parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
+
+            let sliceStartIndex = 0
+            if (attributes.data.length >= ROWS_LIMIT) {
+              sliceStartIndex =
+                parseInt(
+                  (
+                    (attributes.data.length - ROWS_LIMIT) /
+                    PAGE_SIZE
+                  ).toFixed(),
+                ) * PAGE_SIZE
+            }
+            newAttributes.data = newAttributes.data.slice(
+              sliceStartIndex,
+              attributes.data.length,
+            )
+          }
+        }
+        // let startIndex = others.startIndex || this.state.startIndex || 0
+        let currentIndex = resetCurrent
+          ? -1
+          : others.currentIndex !== undefined
+            ? others.currentIndex
+            : this.state.currentIndex
+        let relativeIndex =
+          resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
+        let prevStartIndex = this.state.startIndex
+        this.currentPage = Math.floor(
+          (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
+        )
+        // this.noMore = Math.floor(this.total / PAGE_SIZE) <= this.currentPage
+        this.noMore = startIndex + newAttributes.data.length === this.total
+        this.setState(
+          {
+            showTable: true,
+            attributes: newAttributes,
+            currentIndex,
+            relativeIndex,
+            currentFieldInfo:
+              relativeIndex >= 0 && relativeIndex < newAttributes.data.length
+                ? newAttributes.data[relativeIndex]
+                : this.state.currentFieldInfo,
+            startIndex,
+            // ...others,
+          },
+          () => {
+            setTimeout(() => {
+              if (type === 'refresh') {
+                this.table &&
+                  this.table.scrollToLocation({
+                    animated: false,
+                    itemIndex: prevStartIndex - startIndex,
+                    sectionIndex: 0,
+                    viewPosition: 0,
+                    viewOffset: COL_HEIGHT,
+                  })
+              } else if (type === 'loadMore') {
+                this.table &&
+                  this.table.scrollToLocation({
+                    animated: false,
+                    itemIndex: newAttributes.data.length - result.resLength,
+                    sectionIndex: 0,
+                    viewPosition: 1,
+                  })
+              }
+              this.setLoading(false)
+              this.props.onGetAttribute &&
+                this.props.onGetAttribute(attributes)
+              cb && cb(attributes)
+            }, 0)
+          },
+        )
+      }
+    } catch (e) {
+      cb && cb()
+      this.isLoading = false
+      this.setLoading(false)
+    }
     // }.bind(this)())
   }
 
@@ -669,7 +676,7 @@ export default class LayerSelectionAttribute extends React.Component {
             //   defaultParams: { fieldInfo },
             //   isDetail: true,
             // })
-  // TODO this.addPopModal
+            // TODO this.addPopModal
             this.props.showAddModal && this.props.showAddModal(true, {
               data: {fieldInfo},
               isDetail: true,
@@ -680,7 +687,19 @@ export default class LayerSelectionAttribute extends React.Component {
     ]
     let tempStr = fieldInfo.caption.toLowerCase()
     let isSystemField = tempStr.substring(0, 2) == 'sm'
-    if (!fieldInfo.isSystemField && !isSystemField) {
+    if (
+      !fieldInfo.isSystemField &&
+      !isSystemField && (
+        !this.isMediaLayer ||
+        this.isMediaLayer &&
+        fieldInfo.name !== 'MediaFilePaths' &&
+        fieldInfo.name !== 'MediaServiceIds' &&
+        fieldInfo.name !== 'MediaName' &&
+        fieldInfo.name !== 'ModifiedDate' &&
+        fieldInfo.name !== 'Description' &&
+        fieldInfo.name !== 'HttpAddress'
+      )
+    ) {
       items.push({
         title: getLanguage(GLOBAL.language).Profile.DELETE,
         onPress: () => {
@@ -977,9 +996,9 @@ export default class LayerSelectionAttribute extends React.Component {
     //   type = LayerAttributeTable.Type.SINGLE_DATA
     // }
     GLOBAL.layerSelection = this.props.layerSelection
-    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
-    let buttonActions = [
+    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
+      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
           geoID = data.rowData[1].value
@@ -1003,7 +1022,7 @@ export default class LayerSelectionAttribute extends React.Component {
           info,
         })
       },
-    ]
+    ] : []
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}

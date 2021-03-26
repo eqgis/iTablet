@@ -108,18 +108,24 @@ export default class LayerAttribute extends React.Component {
     this.noMore = false // 是否可以加载更多
     this.isLoading = false // 防止同时重复加载多次
     this.filter = '' // 属性查询过滤
+    this.isMediaLayer = false // 是否是多媒体图层
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      if (this.type === 'MAP_3D') {
-        this.getMap3DAttribute()
-      } else {
-        this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
-        //ConstInfo.LOADING_DATA)
+    // InteractionManager.runAfterInteractions(() => {
+    if (this.type === 'MAP_3D') {
+      this.getMap3DAttribute()
+    } else {
+      this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
+      //ConstInfo.LOADING_DATA)
+      SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
+        this.isMediaLayer = result
         this.refresh()
-      }
-    })
+      }).catch(() =>{
+        this.refresh()
+      })
+    }
+    // })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -150,6 +156,9 @@ export default class LayerAttribute extends React.Component {
       this.total = 0 // 属性总数
       this.canBeRefresh = false
       this.noMore = false
+      SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
+        this.isMediaLayer = result
+      })
       this.refresh(null, true)
     } else if (
       JSON.stringify(prevProps.attributesHistory) !==
@@ -693,8 +702,16 @@ export default class LayerAttribute extends React.Component {
     // 系统字段或者多媒体路径字段不能删除
     if (
       !fieldInfo.isSystemField &&
-      !isSystemField &&
-      fieldInfo.name !== 'MediaFilePaths'
+      !isSystemField && (
+        !this.isMediaLayer ||
+        this.isMediaLayer &&
+        fieldInfo.name !== 'MediaFilePaths' &&
+        fieldInfo.name !== 'MediaServiceIds' &&
+        fieldInfo.name !== 'MediaName' &&
+        fieldInfo.name !== 'ModifiedDate' &&
+        fieldInfo.name !== 'Description' &&
+        fieldInfo.name !== 'HttpAddress'
+      )
     ) {
       items.push({
         title: getLanguage(GLOBAL.language).Profile.DELETE,
@@ -797,7 +814,10 @@ export default class LayerAttribute extends React.Component {
 
   /** 拍照后刷新事件 **/
   refreshAction = async () => {
-    this.refresh()
+    SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
+      this.isMediaLayer = result
+      this.refresh()
+    }).catch(() => this.refresh())
   }
 
   /** 添加属性字段 **/
@@ -1235,9 +1255,9 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderMapLayerAttribute = () => {
-    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
-    let buttonActions = [
+    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
+      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
@@ -1292,7 +1312,7 @@ export default class LayerAttribute extends React.Component {
           },
         })
       },
-    ]
+    ] : []
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}

@@ -296,7 +296,7 @@ export default class Container extends Component {
           ref={ref => (this.containerHeader = ref)}
           navigation={this.props.navigation}
           {...this.props.headerProps}
-          headerStyle = {this.props.headStyle}
+          headStyle = {this.props.headStyle}
         />
       )
   }

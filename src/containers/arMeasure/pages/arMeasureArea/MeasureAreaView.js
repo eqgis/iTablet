@@ -917,10 +917,10 @@ export default class MeasureAreaView extends React.Component {
     return (
       <View
         style={{
-          width: scaleSize(80),
-          height: scaleSize(100),
+          width: scaleSize(100),
+          // height: scaleSize(100),
           alignItems: 'center',
-          justifyContent: 'center',
+          // justifyContent: 'center',
         }}>
         <TouchableOpacity
           onPress={item.action}
@@ -969,7 +969,7 @@ export default class MeasureAreaView extends React.Component {
               height: scaleSize(150),
               marginTop: scaleSize(10),
               justifyContent: 'space-between',
-              alignItems: 'center',
+              // alignItems: 'center',
             }}
           >
             {this.renderItems()}

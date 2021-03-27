@@ -3558,6 +3558,7 @@ export default class MapView extends React.Component {
           this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
+        headStyle={this.isExample&&{width:'100%'}}
       >
         {this.state.showMap && (
           <SMMapView

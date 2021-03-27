@@ -231,6 +231,11 @@ export default class MapController extends React.Component {
 
   location = async () => {
     if (this.props.type === 'MAP_3D') {
+      // 平面场景不进行当前点定位 add jiakai
+      if(!(await SScene.isEarthScene())){
+        SScene.ensureVisibleLayer(await SScene.getVisableLayer())
+        return
+      }
       await SScene.setHeading()
       // 定位到当前位置
       await SScene.location()

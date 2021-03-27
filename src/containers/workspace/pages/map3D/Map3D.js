@@ -279,7 +279,7 @@ export default class Map3D extends React.Component {
       return
     }
     try {
-      SScene.openScence(this.name).then(result => {
+      SScene.openScence(this.name).then(async result => {
         if (!result) {
           this.container.setLoading(false)
           this.mapLoaded = true
@@ -295,6 +295,10 @@ export default class Map3D extends React.Component {
         }, 1500)
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
+        // 只有是球面场景时才添加底图 add jiakai
+        if (await SScene.isEarthScene()) {
+          SScene.changeBaseLayer(1)
+        }
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
@@ -310,7 +314,6 @@ export default class Map3D extends React.Component {
         this.mapLoaded = true
       }, 1500)
     }
-    await SScene.changeBaseLayer(1)
     // await SScene.addLayer3D(
     //   'http://t0.tianditu.com/img_c/wmts',
     //   'l3dBingMaps',

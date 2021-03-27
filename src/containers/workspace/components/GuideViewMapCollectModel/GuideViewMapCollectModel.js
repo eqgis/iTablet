@@ -43,6 +43,7 @@ export default class GuideViewMapCollectModel extends React.Component {
       guideStyle: {},
       landguideStyle: {},
       landrightViewStyle: {},
+      landSize: - scaleSize(300),
     }
   }
 
@@ -95,7 +96,7 @@ export default class GuideViewMapCollectModel extends React.Component {
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',
-              maxWidth: scaleSize(380),
+              maxWidth: scaleSize(360),
             }}
           >
             {this.state.title}
@@ -238,7 +239,7 @@ export default class GuideViewMapCollectModel extends React.Component {
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',
-              maxWidth: scaleSize(380),
+              maxWidth: scaleSize(360),
             }}
           >
             {this.state.title}
@@ -311,14 +312,14 @@ export default class GuideViewMapCollectModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenSafeWidth() / 2 - scaleSize(300),
+          left: screen.getScreenSafeWidth() / 2 + this.state.landSize,
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
           borderRadius: scaleSize(50),
           alignItems: 'center',
           justifyContent: 'center',
-        },this.state.landrightViewStyle]}
+        }]}
       >
         <MTBtn
           style={styles.btn}
@@ -351,12 +352,13 @@ export default class GuideViewMapCollectModel extends React.Component {
         rightsourceImage:getThemeAssets().functionBar.icon_tool_collection,
         landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(370)},
         landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
+        landSize:- scaleSize(50),
       })
     } else if(this.state.count === 2){
       this.setState({
         count:3,
         title:getLanguage(this.props.language).Profile.EDIT_COLLECT,
-        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(3/3)',
+        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
         sourceImage:getThemeAssets().home.map_data_edit,
         guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
         rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
@@ -364,6 +366,7 @@ export default class GuideViewMapCollectModel extends React.Component {
         rightsourceImage:getThemeAssets().functionBar.icon_tool_edit,
         landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
         landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
+        landSize:scaleSize(80),
       })
     } else {
       this.props.setCollectGuide(false)

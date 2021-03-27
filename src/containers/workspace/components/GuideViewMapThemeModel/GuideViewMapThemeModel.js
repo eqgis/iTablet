@@ -47,12 +47,14 @@ export default class GuideViewMapThemeModel extends React.Component {
       guideStyle: {},
       landguideStyle: {},
       landrightViewStyle: {},
+      landSize:- scaleSize(180),
     }
   }
 
   componentDidMount() {
 
   }
+
 
   renderAddGuide = () => {
     return (
@@ -98,7 +100,7 @@ export default class GuideViewMapThemeModel extends React.Component {
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',
-              maxWidth: scaleSize(380),
+              maxWidth: scaleSize(360),
             }}
           >
             {this.state.title}
@@ -240,7 +242,7 @@ export default class GuideViewMapThemeModel extends React.Component {
               color: 'black',
               fontWeight: 'bold',
               textAlignVertical: 'center',
-              maxWidth: scaleSize(380),
+              maxWidth: scaleSize(360),
             }}
           >
             {this.state.title}
@@ -312,14 +314,14 @@ export default class GuideViewMapThemeModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenSafeWidth() / 2 - scaleSize(180),
+          left: screen.getScreenSafeWidth() / 2 + this.state.landSize,
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
           borderRadius: scaleSize(50),
           alignItems: 'center',
           justifyContent: 'center',
-        },this.state.landrightViewStyle]}
+        }]}
       >
         <MTBtn
           style={styles.btn}
@@ -352,18 +354,20 @@ export default class GuideViewMapThemeModel extends React.Component {
         rightsourceImage:getThemeAssets().functionBar.icon_tool_thematic,
         landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
         landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
+        landSize:scaleSize(80),
       })
     } else if(this.state.count === 2){
       this.setState({
         count:3,
         title:getLanguage(this.props.language).Profile.CHANGE_THEME_STYLE,
-        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(3/3)',
+        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
         sourceImage:getThemeAssets().home.map_style,
         rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
         landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(130)},
         landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(200)},
+        landSize:scaleSize(200),
       })
     } else {
       this.props.setThemeGuide(false)

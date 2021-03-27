@@ -27,6 +27,7 @@ const AnimatedView = Animated.View
 export default class Container extends Component {
   props: {
     style?: StyleSheet, // 自定义内容样式
+    headStyle?: StyleSheet, // 头部自定义内容样式
     children: any, // Component自带属性，子组件
     header?: any, // 自定义导航栏
     bottomBar?: any, // 自定义底部栏
@@ -295,6 +296,7 @@ export default class Container extends Component {
           ref={ref => (this.containerHeader = ref)}
           navigation={this.props.navigation}
           {...this.props.headerProps}
+          headerStyle = {this.props.headStyle}
         />
       )
   }
